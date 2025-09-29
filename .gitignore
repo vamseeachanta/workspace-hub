@@ -1,0 +1,113 @@
+# Individual Git Repositories - Exclude all subdirectory repos
+aceengineer-admin/
+aceengineer-website/
+aceengineercode/
+achantas-data/
+achantas-media/
+acma-projects/
+ai-native-traditional-eng/
+assethold/
+assetutilities/
+client_projects/
+coordination/
+digitalmodel/
+doris/
+energy/
+frontierdeepwater/
+hobbies/
+investments/
+OGManufacturing/
+pyproject-starter/
+rock-oil-field/
+sabithaandkrishnaestates/
+saipem/
+sd-work/
+seanation/
+teamresumes/
+worldenergydata/
+
+# Build and dependency directories
+node_modules/
+dist/
+coverage/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary and cache files
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+venv/
+env/
+ENV/
+
+# Log files
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test reports
+test-results/
+junit.xml
+coverage.xml
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Agent OS and swarm directories (already initialized)
+.agent-os/
+.claude/
+.claude-flow/
+.hive-mind/
+.swarm/
+memory/
+
+# Other working directories
+docker/
+examples/
+reports/
+monitoring-dashboard/
+test-framework-integrations/
+
+# Sync reports
+.sync-reports/
+.SLASH_COMMAND_ECOSYSTEM/
+
+# Keep only management files at root level

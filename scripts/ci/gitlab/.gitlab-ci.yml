@@ -1,0 +1,446 @@
+# GitLab CI/CD Pipeline for Baseline Testing
+# Comprehensive testing with caching, parallel execution, and notifications
+
+# Global configuration
+image: node:18-alpine
+
+# Variables
+variables:
+  NODE_VERSION: "18"
+  PYTHON_VERSION: "3.11"
+  BASELINE_THRESHOLD: "85"
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+  BASELINE_LOG_LEVEL: "INFO"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  npm_config_cache: "$CI_PROJECT_DIR/.cache/npm"
+  BASELINE_CACHE_DIR: "$CI_PROJECT_DIR/.baseline-cache"
+
+# Cache configuration
+cache: &global_cache
+  key:
+    files:
+      - package-lock.json
+      - requirements.txt
+  paths:
+    - .cache/pip/
+    - .cache/npm/
+    - node_modules/
+    - .baseline-cache/
+  policy: pull-push
+
+# Before script - runs before each job
+before_script:
+  - apk add --no-cache python3 py3-pip git bash curl jq bc
+  - mkdir -p .baseline-cache/{logs,results,artifacts}
+  - mkdir -p reports/{junit,coverage,performance,security}
+
+# Stages definition
+stages:
+  - prepare
+  - validate
+  - test-unit
+  - test-integration
+  - test-performance
+  - test-security
+  - analyze
+  - report
+  - deploy
+  - notify
+
+# Job templates
+.baseline_test_template: &baseline_test
+  stage: test-unit
+  cache:
+    <<: *global_cache
+  artifacts:
+    reports:
+      junit: reports/junit/*.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: reports/coverage/cobertura.xml
+    paths:
+      - reports/
+      - .baseline-cache/
+    expire_in: 1 week
+    when: always
+  retry:
+    max: 3
+    when:
+      - runner_system_failure
+      - stuck_or_timeout_failure
+      - api_failure
+
+.docker_template: &docker_job
+  services:
+    - docker:20.10.16-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_CERTDIR: "/certs"
+
+# Prepare stage
+prepare:dependencies:
+  stage: prepare
+  cache:
+    <<: *global_cache
+    policy: push
+  script:
+    - echo "Installing Node.js dependencies..."
+    - npm ci --prefer-offline --no-audit
+    - echo "Installing Python dependencies..."
+    - pip3 install --cache-dir $PIP_CACHE_DIR pytest black flake8 coverage
+    - if [ -f requirements.txt ]; then pip3 install --cache-dir $PIP_CACHE_DIR -r requirements.txt; fi
+    - echo "Installing global tools..."
+    - npm install -g eslint prettier typescript
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour
+
+prepare:docker:
+  <<: *docker_job
+  stage: prepare
+  script:
+    - echo "Building Docker image for testing..."
+    - docker build -f docker/Dockerfile.baseline-test -t baseline-test:$CI_COMMIT_SHA .
+    - docker tag baseline-test:$CI_COMMIT_SHA baseline-test:latest
+    - echo "Docker image built successfully"
+  artifacts:
+    reports:
+      dotenv: docker-image.env
+  only:
+    variables:
+      - $USE_DOCKER == "true"
+
+# Validation stage
+validate:syntax:
+  stage: validate
+  cache:
+    <<: *global_cache
+    policy: pull
+  script:
+    - echo "Running syntax validation..."
+    - npm run lint:check || true
+    - python3 -m py_compile **/*.py || true
+    - echo "Syntax validation completed"
+  allow_failure: true
+
+validate:security:
+  stage: validate
+  cache:
+    <<: *global_cache
+    policy: pull
+  script:
+    - echo "Running security scan..."
+    - npm audit --audit-level=moderate || true
+    - pip3 install safety
+    - safety check || true
+  allow_failure: true
+
+# Unit tests
+test:unit:
+  <<: *baseline_test
+  stage: test-unit
+  script:
+    - echo "Running unit baseline tests..."
+    - export BASELINE_TEST_TYPE=unit
+    - export BASELINE_TIMEOUT=900  # 15 minutes
+    - npm run test:baseline:unit -- --reporter=junit --outputFile=reports/junit/unit-results.xml
+    - echo "Unit tests completed"
+  coverage: '/Statements\s*:\s*(\d+(?:\.\d+)?)%/'
+  rules:
+    - if: '$TEST_SUITE == "unit" || $TEST_SUITE == "all"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+test:unit:parallel:
+  <<: *baseline_test
+  stage: test-unit
+  parallel:
+    matrix:
+      - TEST_GROUP: ["auth", "utils", "components", "services", "api"]
+  script:
+    - echo "Running unit tests for group: $TEST_GROUP"
+    - export BASELINE_TEST_TYPE=unit
+    - export BASELINE_TEST_GROUP=$TEST_GROUP
+    - npm run test:baseline:unit:$TEST_GROUP -- --reporter=junit --outputFile=reports/junit/unit-$TEST_GROUP.xml
+  rules:
+    - if: '$PARALLEL_TESTING == "true"'
+      when: manual
+
+# Integration tests
+test:integration:
+  <<: *baseline_test
+  stage: test-integration
+  services:
+    - redis:7-alpine
+    - postgres:13-alpine
+  variables:
+    POSTGRES_DB: baseline_test
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+    REDIS_URL: redis://redis:6379
+  script:
+    - echo "Running integration baseline tests..."
+    - export BASELINE_TEST_TYPE=integration
+    - export BASELINE_TIMEOUT=1800  # 30 minutes
+    - export DATABASE_URL=postgresql://test:test@postgres:5432/baseline_test
+    - npm run test:baseline:integration -- --reporter=junit --outputFile=reports/junit/integration-results.xml
+  rules:
+    - if: '$TEST_SUITE == "integration" || $TEST_SUITE == "all"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# Performance tests
+test:performance:
+  <<: *baseline_test
+  stage: test-performance
+  timeout: 1h 30m
+  script:
+    - echo "Running performance baseline tests..."
+    - export BASELINE_TEST_TYPE=performance
+    - export BASELINE_TIMEOUT=3600  # 1 hour
+    - npm run test:baseline:performance
+    - python3 scripts/ci/analyze-performance.py
+  artifacts:
+    reports:
+      performance: reports/performance/performance.json
+    paths:
+      - reports/performance/
+  rules:
+    - if: '$TEST_SUITE == "performance" || $TEST_SUITE == "all"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+
+# Security tests
+test:security:
+  <<: *baseline_test
+  stage: test-security
+  script:
+    - echo "Running security baseline tests..."
+    - export BASELINE_TEST_TYPE=security
+    - export BASELINE_TIMEOUT=1200  # 20 minutes
+    - npm run test:baseline:security
+    - npm audit --json > reports/security/npm-audit.json || true
+    - pip3 install bandit
+    - bandit -r . -f json -o reports/security/bandit-report.json || true
+  artifacts:
+    reports:
+      sast: reports/security/sast-report.json
+    paths:
+      - reports/security/
+  rules:
+    - if: '$TEST_SUITE == "security" || $TEST_SUITE == "all"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# Analysis stage
+analyze:results:
+  stage: analyze
+  cache:
+    <<: *global_cache
+    policy: pull
+  dependencies:
+    - test:unit
+    - test:integration
+    - test:performance
+    - test:security
+  script:
+    - echo "Analyzing baseline test results..."
+    - python3 scripts/ci/aggregate-results.py
+    - python3 scripts/ci/trend-analysis.py
+    - python3 scripts/ci/quality-gates.py --threshold $BASELINE_THRESHOLD
+  artifacts:
+    reports:
+      junit: reports/junit/*.xml
+    paths:
+      - reports/analysis/
+    expire_in: 1 month
+  rules:
+    - when: always
+
+# Reporting stage
+report:generate:
+  stage: report
+  image: python:3.11-alpine
+  dependencies:
+    - analyze:results
+  script:
+    - pip3 install jinja2 matplotlib seaborn pandas
+    - echo "Generating comprehensive baseline report..."
+    - python3 scripts/ci/generate-report.py
+  artifacts:
+    paths:
+      - reports/final-report.html
+      - reports/charts/
+    expire_in: 1 month
+  rules:
+    - when: always
+
+report:pages:
+  stage: report
+  dependencies:
+    - report:generate
+  script:
+    - mkdir public
+    - cp -r reports/* public/
+    - echo "Reports published to GitLab Pages"
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# Deployment stage
+deploy:baseline-update:
+  stage: deploy
+  cache:
+    <<: *global_cache
+    policy: pull
+  dependencies:
+    - analyze:results
+  before_script:
+    - apk add --no-cache git
+    - git config --global user.email "gitlab-ci@example.com"
+    - git config --global user.name "GitLab CI"
+  script:
+    - echo "Checking if baseline update is needed..."
+    - |
+      if [ -f "reports/analysis/baseline-update-needed.flag" ]; then
+        echo "Updating baseline files..."
+        mkdir -p tests/baselines
+        cp -r .baseline-cache/results/*.baseline tests/baselines/
+        git add tests/baselines/
+        git commit -m "Update baseline files from GitLab CI pipeline $CI_PIPELINE_ID"
+        git push https://oauth2:$CI_PUSH_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git HEAD:main
+        echo "Baseline files updated successfully"
+      else
+        echo "No baseline update needed"
+      fi
+  rules:
+    - if: '$UPDATE_BASELINE == "true" && $CI_COMMIT_BRANCH == "main"'
+      when: manual
+
+# Notification stage
+notify:slack:
+  stage: notify
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache curl jq
+  dependencies:
+    - analyze:results
+  script:
+    - echo "Sending Slack notification..."
+    - |
+      if [ -f "reports/analysis/summary.json" ]; then
+        SCORE=$(jq -r '.overall_score' reports/analysis/summary.json)
+        STATUS=$(jq -r '.status' reports/analysis/summary.json)
+
+        if [ "$STATUS" = "PASS" ]; then
+          COLOR="good"
+          EMOJI="✅"
+        elif [ "$STATUS" = "UNSTABLE" ]; then
+          COLOR="warning"
+          EMOJI="⚠️"
+        else
+          COLOR="danger"
+          EMOJI="❌"
+        fi
+
+        PAYLOAD=$(cat <<EOF
+{
+  "attachments": [
+    {
+      "color": "$COLOR",
+      "title": "$EMOJI Baseline Tests $STATUS",
+      "fields": [
+        {
+          "title": "Pipeline",
+          "value": "$CI_PIPELINE_ID",
+          "short": true
+        },
+        {
+          "title": "Branch",
+          "value": "$CI_COMMIT_REF_NAME",
+          "short": true
+        },
+        {
+          "title": "Score",
+          "value": "${SCORE}%",
+          "short": true
+        },
+        {
+          "title": "Commit",
+          "value": "$CI_COMMIT_SHORT_SHA",
+          "short": true
+        }
+      ],
+      "actions": [
+        {
+          "type": "button",
+          "text": "View Pipeline",
+          "url": "$CI_PIPELINE_URL"
+        },
+        {
+          "type": "button",
+          "text": "View Report",
+          "url": "$CI_PAGES_URL"
+        }
+      ]
+    }
+  ]
+}
+EOF
+)
+        curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" $SLACK_WEBHOOK_URL
+      fi
+  rules:
+    - if: '$SLACK_WEBHOOK_URL && ($CI_COMMIT_BRANCH == "main" || $CI_PIPELINE_SOURCE == "merge_request_event")'
+      when: always
+
+notify:email:
+  stage: notify
+  image: alpine:latest
+  dependencies:
+    - analyze:results
+  script:
+    - echo "Sending email notification..."
+    - |
+      if [ -f "reports/analysis/summary.json" ]; then
+        STATUS=$(jq -r '.status' reports/analysis/summary.json)
+        if [ "$STATUS" = "FAIL" ]; then
+          echo "Baseline tests failed - email notification would be sent"
+          # Email sending logic would go here
+        fi
+      fi
+  rules:
+    - if: '$EMAIL_NOTIFICATIONS == "true"'
+      when: on_failure
+
+# Manual jobs
+baseline:full-audit:
+  extends: .baseline_test_template
+  stage: test-performance
+  script:
+    - echo "Running comprehensive baseline audit..."
+    - npm run test:baseline:all
+    - python3 scripts/ci/comprehensive-analysis.py
+  timeout: 3h
+  rules:
+    - when: manual
+  allow_failure: false
+
+baseline:reset:
+  stage: deploy
+  script:
+    - echo "Resetting baseline files to defaults..."
+    - git checkout HEAD -- tests/baselines/
+    - echo "Baseline files reset"
+  rules:
+    - when: manual
+  allow_failure: false
+
+# Include additional pipeline configurations
+include:
+  - local: '.gitlab-ci/security.yml'
+  - local: '.gitlab-ci/performance.yml'
+  - template: 'Code-Quality.gitlab-ci.yml'
+  - template: 'Security/SAST.gitlab-ci.yml'

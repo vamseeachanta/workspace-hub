@@ -1,0 +1,565 @@
+#!/usr/bin/env groovy
+
+// Jenkins Pipeline for Baseline Testing
+// Supports parallel execution, caching, and comprehensive error handling
+
+pipeline {
+    agent any
+
+    // Pipeline options
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timeout(time: 2, unit: 'HOURS')
+        retry(3)
+        parallelsAlwaysFailFast()
+    }
+
+    // Environment variables
+    environment {
+        NODE_VERSION = '18'
+        PYTHON_VERSION = '3.11'
+        BASELINE_THRESHOLD = '85'
+        DOCKER_IMAGE = 'baseline-test'
+        CACHE_KEY = "${env.JOB_NAME}-${env.BUILD_NUMBER}"
+        BASELINE_LOG_LEVEL = 'INFO'
+        MAX_RETRIES = '3'
+    }
+
+    // Build parameters
+    parameters {
+        choice(
+            name: 'TEST_SUITE',
+            choices: ['all', 'unit', 'integration', 'performance', 'security'],
+            description: 'Test suite to run'
+        )
+        booleanParam(
+            name: 'UPDATE_BASELINE',
+            defaultValue: false,
+            description: 'Update baseline files after successful tests'
+        )
+        booleanParam(
+            name: 'ENABLE_NOTIFICATIONS',
+            defaultValue: true,
+            description: 'Send notifications on completion'
+        )
+        string(
+            name: 'BASELINE_BRANCH',
+            defaultValue: 'main',
+            description: 'Baseline branch for comparison'
+        )
+    }
+
+    // Pipeline stages
+    stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    // Set build description
+                    currentBuild.description = "Baseline Tests - ${params.TEST_SUITE}"
+
+                    // Create necessary directories
+                    sh '''
+                        mkdir -p .baseline-cache/{logs,results,artifacts}
+                        mkdir -p reports/{junit,coverage,performance}
+                    '''
+
+                    // Display environment info
+                    echo "Pipeline Configuration:"
+                    echo "- Test Suite: ${params.TEST_SUITE}"
+                    echo "- Update Baseline: ${params.UPDATE_BASELINE}"
+                    echo "- Baseline Threshold: ${env.BASELINE_THRESHOLD}%"
+                    echo "- Node Version: ${env.NODE_VERSION}"
+                    echo "- Python Version: ${env.PYTHON_VERSION}"
+                }
+            }
+        }
+
+        stage('Checkout & Setup') {
+            parallel {
+                stage('Source Code') {
+                    steps {
+                        checkout scm
+
+                        script {
+                            // Get commit information
+                            env.GIT_COMMIT_SHORT = sh(
+                                script: 'git rev-parse --short HEAD',
+                                returnStdout: true
+                            ).trim()
+
+                            env.GIT_COMMIT_MESSAGE = sh(
+                                script: 'git log -1 --pretty=%B',
+                                returnStdout: true
+                            ).trim()
+                        }
+                    }
+                }
+
+                stage('Cache Restore') {
+                    steps {
+                        script {
+                            // Restore caches
+                            try {
+                                sh '''
+                                    if [ -f ".baseline-cache/cache-manifest.json" ]; then
+                                        echo "Restoring baseline cache..."
+                                        # Restore cache logic here
+                                    fi
+                                '''
+                            } catch (Exception e) {
+                                echo "Cache restore failed: ${e.getMessage()}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Environment Setup') {
+            parallel {
+                stage('Node.js Setup') {
+                    steps {
+                        script {
+                            withNodeJS(nodeJSInstallationName: "Node-${env.NODE_VERSION}") {
+                                sh '''
+                                    echo "Node.js version:"
+                                    node --version
+                                    npm --version
+
+                                    echo "Installing dependencies..."
+                                    npm ci --prefer-offline --no-audit
+
+                                    echo "Installing global tools..."
+                                    npm install -g eslint prettier typescript
+                                '''
+                            }
+                        }
+                    }
+                }
+
+                stage('Python Setup') {
+                    steps {
+                        script {
+                            sh '''
+                                echo "Python version:"
+                                python3 --version
+                                pip3 --version
+
+                                echo "Installing Python dependencies..."
+                                if [ -f "requirements.txt" ]; then
+                                    pip3 install -r requirements.txt
+                                fi
+
+                                echo "Installing testing tools..."
+                                pip3 install pytest black flake8 coverage
+                            '''
+                        }
+                    }
+                }
+
+                stage('Docker Setup') {
+                    steps {
+                        script {
+                            sh '''
+                                echo "Building Docker image for testing..."
+                                docker build -f docker/Dockerfile.baseline-test -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .
+                                docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
+                            '''
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Baseline Testing') {
+            parallel {
+                stage('Unit Tests') {
+                    when {
+                        anyOf {
+                            expression { params.TEST_SUITE == 'all' }
+                            expression { params.TEST_SUITE == 'unit' }
+                        }
+                    }
+                    steps {
+                        script {
+                            runBaselineTests('unit', 15)
+                        }
+                    }
+                    post {
+                        always {
+                            publishTestResults testResultsPattern: 'reports/junit/unit-*.xml'
+                            publishHTML([
+                                allowMissing: false,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: 'reports/coverage/unit',
+                                reportFiles: 'index.html',
+                                reportName: 'Unit Test Coverage'
+                            ])
+                        }
+                    }
+                }
+
+                stage('Integration Tests') {
+                    when {
+                        anyOf {
+                            expression { params.TEST_SUITE == 'all' }
+                            expression { params.TEST_SUITE == 'integration' }
+                        }
+                    }
+                    steps {
+                        script {
+                            runBaselineTests('integration', 30)
+                        }
+                    }
+                    post {
+                        always {
+                            publishTestResults testResultsPattern: 'reports/junit/integration-*.xml'
+                        }
+                    }
+                }
+
+                stage('Performance Tests') {
+                    when {
+                        anyOf {
+                            expression { params.TEST_SUITE == 'all' }
+                            expression { params.TEST_SUITE == 'performance' }
+                        }
+                    }
+                    steps {
+                        script {
+                            runBaselineTests('performance', 60)
+                        }
+                    }
+                    post {
+                        always {
+                            publishHTML([
+                                allowMissing: false,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: 'reports/performance',
+                                reportFiles: 'index.html',
+                                reportName: 'Performance Report'
+                            ])
+                        }
+                    }
+                }
+
+                stage('Security Tests') {
+                    when {
+                        anyOf {
+                            expression { params.TEST_SUITE == 'all' }
+                            expression { params.TEST_SUITE == 'security' }
+                        }
+                    }
+                    steps {
+                        script {
+                            runBaselineTests('security', 20)
+                        }
+                    }
+                    post {
+                        always {
+                            publishHTML([
+                                allowMissing: false,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: 'reports/security',
+                                reportFiles: 'index.html',
+                                reportName: 'Security Report'
+                            ])
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Results Analysis') {
+            steps {
+                script {
+                    // Aggregate test results
+                    sh '''
+                        echo "Aggregating baseline test results..."
+
+                        # Create summary report
+                        python3 scripts/ci/aggregate-results.py \
+                            --input-dir .baseline-cache/results \
+                            --output-file reports/baseline-summary.json \
+                            --threshold ${BASELINE_THRESHOLD}
+
+                        # Generate trend analysis
+                        if [ -f "historical-baseline-data.json" ]; then
+                            python3 scripts/ci/trend-analysis.py \
+                                --historical historical-baseline-data.json \
+                                --current reports/baseline-summary.json \
+                                --output reports/trend-analysis.json
+                        fi
+                    '''
+
+                    // Read and parse results
+                    def summaryFile = readFile('reports/baseline-summary.json')
+                    def summary = readJSON text: summaryFile
+
+                    env.BASELINE_SCORE = summary.overall_score.toString()
+                    env.BASELINE_STATUS = summary.status
+                    env.FAILED_TESTS = summary.failed_tests.toString()
+
+                    // Update build status
+                    if (summary.status == 'PASS') {
+                        currentBuild.result = 'SUCCESS'
+                        currentBuild.description += " ✅ (${env.BASELINE_SCORE}%)"
+                    } else {
+                        currentBuild.result = 'UNSTABLE'
+                        currentBuild.description += " ❌ (${env.BASELINE_SCORE}%)"
+                    }
+                }
+            }
+        }
+
+        stage('Baseline Update') {
+            when {
+                allOf {
+                    expression { params.UPDATE_BASELINE == true }
+                    expression { env.BASELINE_STATUS == 'PASS' }
+                    branch 'main'
+                }
+            }
+            steps {
+                script {
+                    sh '''
+                        echo "Updating baseline files..."
+
+                        # Backup current baseline
+                        if [ -d "tests/baselines" ]; then
+                            cp -r tests/baselines tests/baselines.backup.$(date +%s)
+                        fi
+
+                        # Update baseline files
+                        mkdir -p tests/baselines
+                        cp -r .baseline-cache/results/*.baseline tests/baselines/
+
+                        # Commit changes
+                        git config user.name "Jenkins CI"
+                        git config user.email "jenkins@ci.local"
+                        git add tests/baselines/
+                        git commit -m "Update baseline files from Jenkins build ${BUILD_NUMBER}"
+                        git push origin main
+                    '''
+                }
+            }
+        }
+
+        stage('Artifacts & Cache') {
+            parallel {
+                stage('Archive Artifacts') {
+                    steps {
+                        script {
+                            archiveArtifacts artifacts: '''
+                                reports/**/*,
+                                .baseline-cache/results/**/*,
+                                .baseline-cache/logs/**/*
+                            ''', fingerprint: true
+                        }
+                    }
+                }
+
+                stage('Update Cache') {
+                    steps {
+                        script {
+                            sh '''
+                                echo "Updating build cache..."
+
+                                # Create cache manifest
+                                cat > .baseline-cache/cache-manifest.json << EOF
+{
+  "build_number": "${BUILD_NUMBER}",
+  "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "git_commit": "${GIT_COMMIT_SHORT}",
+  "baseline_score": "${BASELINE_SCORE}",
+  "test_suite": "${TEST_SUITE}"
+}
+EOF
+
+                                # Cache dependencies and results
+                                tar -czf baseline-cache-${BUILD_NUMBER}.tar.gz .baseline-cache/
+                            '''
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Post-build actions
+    post {
+        always {
+            script {
+                // Clean up Docker images
+                sh '''
+                    docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER} || true
+                    docker system prune -f || true
+                '''
+
+                // Generate final report
+                generateFinalReport()
+            }
+        }
+
+        success {
+            script {
+                if (params.ENABLE_NOTIFICATIONS) {
+                    sendNotification('SUCCESS')
+                }
+            }
+        }
+
+        failure {
+            script {
+                if (params.ENABLE_NOTIFICATIONS) {
+                    sendNotification('FAILURE')
+                }
+            }
+        }
+
+        unstable {
+            script {
+                if (params.ENABLE_NOTIFICATIONS) {
+                    sendNotification('UNSTABLE')
+                }
+            }
+        }
+    }
+}
+
+// Helper function to run baseline tests
+def runBaselineTests(testType, timeoutMinutes) {
+    timeout(time: timeoutMinutes, unit: 'MINUTES') {
+        retry(env.MAX_RETRIES.toInteger()) {
+            sh """
+                echo "Running ${testType} baseline tests..."
+
+                # Set test-specific environment
+                export BASELINE_TEST_TYPE=${testType}
+                export BASELINE_TIMEOUT=${timeoutMinutes * 60}
+
+                # Run tests in Docker container
+                docker run --rm \
+                    -v \$(pwd):/app \
+                    -w /app \
+                    -e BASELINE_TEST_TYPE \
+                    -e BASELINE_TIMEOUT \
+                    -e BASELINE_LOG_LEVEL \
+                    ${env.DOCKER_IMAGE}:latest \
+                    npm run test:baseline:${testType}
+
+                # Verify results
+                if [ ! -f ".baseline-cache/results/${testType}-results.json" ]; then
+                    echo "ERROR: ${testType} test results not found"
+                    exit 1
+                fi
+            """
+        }
+    }
+}
+
+// Helper function to send notifications
+def sendNotification(status) {
+    def color = status == 'SUCCESS' ? 'good' : (status == 'UNSTABLE' ? 'warning' : 'danger')
+    def emoji = status == 'SUCCESS' ? '✅' : (status == 'UNSTABLE' ? '⚠️' : '❌')
+
+    def message = """
+${emoji} Baseline Tests ${status}
+
+**Build**: ${env.BUILD_NUMBER}
+**Branch**: ${env.BRANCH_NAME}
+**Commit**: ${env.GIT_COMMIT_SHORT}
+**Score**: ${env.BASELINE_SCORE}%
+**Test Suite**: ${params.TEST_SUITE}
+
+[View Build](${env.BUILD_URL})
+    """.trim()
+
+    // Send to Slack if configured
+    try {
+        slackSend(
+            channel: '#ci-baseline-tests',
+            color: color,
+            message: message
+        )
+    } catch (Exception e) {
+        echo "Slack notification failed: ${e.getMessage()}"
+    }
+
+    // Send email notification for failures
+    if (status == 'FAILURE') {
+        try {
+            emailext(
+                subject: "Baseline Tests Failed - Build ${env.BUILD_NUMBER}",
+                body: message,
+                to: '${DEFAULT_RECIPIENTS}',
+                mimeType: 'text/plain'
+            )
+        } catch (Exception e) {
+            echo "Email notification failed: ${e.getMessage()}"
+        }
+    }
+}
+
+// Helper function to generate final report
+def generateFinalReport() {
+    sh '''
+        echo "Generating final baseline report..."
+
+        cat > reports/final-report.html << EOF
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Baseline Test Report - Build ${BUILD_NUMBER}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { background: #f5f5f5; padding: 15px; border-radius: 5px; }
+        .status-pass { color: #28a745; }
+        .status-fail { color: #dc3545; }
+        .status-unstable { color: #ffc107; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Baseline Test Report</h1>
+        <p><strong>Build:</strong> ${BUILD_NUMBER}</p>
+        <p><strong>Status:</strong> <span class="status-${BASELINE_STATUS?.toLowerCase()}">${BASELINE_STATUS}</span></p>
+        <p><strong>Score:</strong> ${BASELINE_SCORE}%</p>
+        <p><strong>Timestamp:</strong> $(date)</p>
+    </div>
+
+    <h2>Test Results Summary</h2>
+    <table>
+        <tr><th>Metric</th><th>Value</th></tr>
+        <tr><td>Overall Score</td><td>${BASELINE_SCORE}%</td></tr>
+        <tr><td>Test Suite</td><td>${TEST_SUITE}</td></tr>
+        <tr><td>Failed Tests</td><td>${FAILED_TESTS}</td></tr>
+        <tr><td>Git Commit</td><td>${GIT_COMMIT_SHORT}</td></tr>
+    </table>
+
+    <h2>Detailed Reports</h2>
+    <ul>
+        <li><a href="coverage/index.html">Test Coverage</a></li>
+        <li><a href="performance/index.html">Performance Report</a></li>
+        <li><a href="security/index.html">Security Report</a></li>
+    </ul>
+</body>
+</html>
+EOF
+    '''
+
+    publishHTML([
+        allowMissing: false,
+        alwaysLinkToLastBuild: true,
+        keepAll: true,
+        reportDir: 'reports',
+        reportFiles: 'final-report.html',
+        reportName: 'Baseline Test Report'
+    ])
+}
