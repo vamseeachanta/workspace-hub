@@ -105,9 +105,17 @@ examples/
 reports/
 monitoring-dashboard/
 test-framework-integrations/
+_organized_non_repo_files/
+
+# Development directories (not part of modules)
+src/
+tests/
+docs/
+.github/
 
 # Sync reports
 .sync-reports/
 .SLASH_COMMAND_ECOSYSTEM/
 
 # Keep only management files at root level
+# Modules directory is tracked for management tools
