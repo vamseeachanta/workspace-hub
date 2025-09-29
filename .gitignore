@@ -117,5 +117,191 @@ docs/
 .sync-reports/
 .SLASH_COMMAND_ECOSYSTEM/
 
+# ==========================================
+# TEAM DEVELOPMENT REPOSITORY
+# Shared across multiple teams
+# ==========================================
+
+# Security & Credentials - CRITICAL
+# ==========================================
+# API Keys and Secrets
+*.key
+*.pem
+*.cert
+*.crt
+*.p12
+*.pfx
+.env
+.env.*
+.env.local
+.env.*.local
+secrets/
+credentials/
+*_secret*
+*_token*
+*_api_key*
+
+# Authentication & SSH
+id_rsa*
+id_dsa*
+*.ppk
+.ssh/
+known_hosts
+authorized_keys
+
+# Cloud Provider Credentials
+.aws/
+.gcloud/
+.azure/
+*.json.keyfile
+service-account-*.json
+
+# Database credentials
+*.sql.password
+database.yml
+database.json
+db-config.json
+
+# Personal & Private Data
+# ==========================================
+# Personal workspace configurations
+.personal/
+personal-*
+private/
+private-*
+*-personal.*
+*-private.*
+my-*
+local-*
+
+# Team member specific settings
+.user-settings/
+user-config/
+developer-notes/
+workspace-*.json
+
+# AI Assistant Memory & State
+# ==========================================
+# Claude Flow and AI memory (local only)
+.claude/
+.claude-flow/
+.hive-mind/
+.swarm/
+memory/
+*.memory.json
+*.session.json
+ai-memory/
+agent-state/
+
+# Database Files
+# ==========================================
+*.db
+*.sqlite
+*.sqlite3
+*.db3
+*.s3db
+*.sl3
+database.db
+
+# Team Collaboration
+# ==========================================
+# Temporary collaboration files
+*.tmp
+*.temp
+temp/
+tmp/
+scratch/
+sandbox/
+experiments/
+
+# Meeting notes and recordings
+meeting-notes/
+recordings/
+*.mp4
+*.mov
+*.avi
+*.webm
+
+# Large binary files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.dmg
+*.iso
+*.exe
+*.msi
+*.deb
+*.rpm
+
+# Generated documentation
+generated-docs/
+api-docs-generated/
+*.generated.md
+
+# Team-specific configurations
+team-*/
+teams/*/local/
+*-team-config.json
+
+# Development Machine Specific
+# ==========================================
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/*
+!.vscode/settings.json.template
+!.vscode/extensions.json.template
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+*.iml
+*.ipr
+*.iws
+
+# Debugging
+*.map
+*.debug
+debug/
+debugging/
+.gdb_history
+core
+
+# Testing & Coverage
+# ==========================================
+test-results/
+test-reports/
+coverage/
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+.phpunit.result.cache
+junit.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Shared Configuration Templates
+# ==========================================
+# Allow templates for team setup
+!*.template
+!*.example
+!example-*
+!template-*
+!docs/examples/
+
 # Keep only management files at root level
 # Modules directory is tracked for management tools
