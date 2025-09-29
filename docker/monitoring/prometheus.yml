@@ -1,0 +1,49 @@
+# Prometheus configuration for baseline testing metrics
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "baseline_rules.yml"
+
+scrape_configs:
+  # Baseline testing metrics
+  - job_name: 'baseline-tests'
+    static_configs:
+      - targets: ['baseline-test:3000']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    honor_labels: true
+
+  # Performance testing metrics
+  - job_name: 'baseline-performance'
+    static_configs:
+      - targets: ['baseline-performance:3000']
+    scrape_interval: 60s
+    metrics_path: /performance/metrics
+
+  # Security testing metrics
+  - job_name: 'baseline-security'
+    static_configs:
+      - targets: ['baseline-security:3000']
+    scrape_interval: 300s  # 5 minutes
+    metrics_path: /security/metrics
+
+  # Redis metrics
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+
+  # Docker container metrics
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['localhost:9323']
+    scrape_interval: 30s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093

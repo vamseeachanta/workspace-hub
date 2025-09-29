@@ -100,18 +100,15 @@ coverage.xml
 memory/
 
 # Other working directories
-docker/
-examples/
 reports/
-monitoring-dashboard/
 test-framework-integrations/
 _organized_non_repo_files/
 
-# Development directories (not part of modules)
-src/
-tests/
-docs/
-.github/
+# Note: docker/, examples/, and monitoring-dashboard/ are now tracked
+# as they contain important development resources for teams
+
+# GitHub workflows and configurations
+# .github/ is now tracked for CI/CD workflows
 
 # Sync reports
 .sync-reports/
