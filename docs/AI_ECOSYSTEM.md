@@ -290,11 +290,14 @@ modules/
   - Lock file management
   - Virtual environment isolation
   - Upgrade automation
+  - Tool installation from Git repositories
 - **Commands:**
   ```bash
-  uv venv                    # Create environment
-  uv pip install package     # Install package
-  uv pip sync requirements   # Sync dependencies
+  uv venv                           # Create environment
+  uv pip install package            # Install package
+  uv pip sync requirements          # Sync dependencies
+  uv tool install specify-cli \
+    --from git+https://github.com/github/spec-kit.git  # Install spec-kit
   ```
 
 #### Node.js/npm
@@ -504,6 +507,8 @@ npx claude-flow@alpha hooks session-end
 - **Claude Flow:** https://github.com/ruvnet/claude-flow
 - **Agent OS:** https://buildermethods.com/agent-os
 - **Flow-Nexus:** https://flow-nexus.ruv.io
+- **Factory AI:** https://factory.ai/ ✅ **INSTALLED** - v0.18.0 (see `/docs/FACTORY_AI_GUIDE.md`)
+- **Spec-Kit:** https://github.com/github/spec-kit
 
 ### Support
 - **Issues:** https://github.com/ruvnet/claude-flow/issues
@@ -513,6 +518,9 @@ npx claude-flow@alpha hooks session-end
 - **SPARC Methodology:** See `modules/documentation/`
 - **Agent Guides:** See `.claude/agents/`
 - **MCP Tools:** Run `npx claude-flow@alpha help`
+- **Spec-Kit Guide:** Run `specify --help`
+- **Factory AI Platform:** https://factory.ai/docs ✅ **ACTIVE** (Droids available in all 26 repos)
+- **Agent OS Workflows:** https://buildermethods.com/agent-os/docs
 
 ---
 
