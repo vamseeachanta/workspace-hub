@@ -45,9 +45,32 @@
 - `/scripts` - Utility scripts
 - `/examples` - Example code
 
+## 🤖 AI Agent Orchestration System
+
+**IMPORTANT:** This repository uses an intelligent AI agent orchestration system that:
+- ✅ **Automatically selects the best AI agent** for each task type
+- ✅ **Runs gate-pass reviews** at critical SPARC checkpoints
+- ✅ **Updates agent capabilities daily** to stay current
+- ✅ **Integrates factory.ai, claude-flow, spec-kit, and agent-os**
+
+### Quick Start
+
+```bash
+# Select best agent for your task
+./modules/automation/agent_orchestrator.sh <task-type> "<description>" --with-review
+
+# Run gate-pass review for current phase
+./modules/automation/gate_pass_review.sh <phase> . --auto
+
+# Update agent capabilities
+./modules/automation/update_ai_agents_daily.sh
+```
+
+**See full documentation:** `docs/AI_AGENT_ORCHESTRATION.md`
+
 ## Project Overview
 
-This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Completion) methodology with Claude-Flow orchestration for systematic Test-Driven Development.
+This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Completion) methodology with AI Agent Orchestration for systematic Test-Driven Development.
 
 ## SPARC Commands
 
