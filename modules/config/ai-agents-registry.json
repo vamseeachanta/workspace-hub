@@ -152,6 +152,94 @@
       "bestFor": ["product-planning", "workflow-orchestration", "standards"],
       "limitations": ["code-implementation"],
       "costTier": "free"
+    },
+    "plotly-visualization-agent": {
+      "platform": "python-plotly",
+      "type": "specialist",
+      "capabilities": {
+        "interactive-plotting": {"score": 95, "domains": ["time-series", "scatter", "line", "bar", "heatmap", "3d"]},
+        "html-report-generation": {"score": 93, "domains": ["analysis", "dashboard", "monitoring"]},
+        "csv-data-handling": {"score": 94, "domains": ["pandas", "relative-paths", "data-import"]},
+        "responsive-design": {"score": 88, "domains": ["mobile", "tablet", "desktop"]},
+        "data-visualization": {"score": 96, "domains": ["scientific", "engineering", "business"]},
+        "statistical-plots": {"score": 91, "domains": ["distribution", "correlation", "regression"]}
+      },
+      "bestFor": ["interactive-html-reports", "scientific-visualization", "general-analysis"],
+      "limitations": ["real-time-streaming", "very-large-datasets"],
+      "costTier": "free",
+      "dependencies": ["plotly", "pandas"],
+      "reportingStandards": {
+        "interactiveOnly": true,
+        "csvRelativePaths": true,
+        "htmlOutputRequired": true,
+        "responsiveDesign": true
+      }
+    },
+    "bokeh-dashboard-agent": {
+      "platform": "python-bokeh",
+      "type": "specialist",
+      "capabilities": {
+        "dashboard-creation": {"score": 94, "domains": ["real-time", "multi-plot", "complex-layouts"]},
+        "interactive-plots": {"score": 92, "domains": ["scatter", "line", "bar", "network"]},
+        "real-time-updates": {"score": 90, "domains": ["streaming", "server-side", "websockets"]},
+        "large-dataset-handling": {"score": 93, "domains": ["100k+points", "performance-optimization"]},
+        "html-reports": {"score": 91, "domains": ["standalone", "embedded"]},
+        "csv-integration": {"score": 92, "domains": ["pandas", "data-loading"]}
+      },
+      "bestFor": ["complex-dashboards", "real-time-monitoring", "large-datasets"],
+      "limitations": ["3d-plotting", "statistical-transforms"],
+      "costTier": "free",
+      "dependencies": ["bokeh", "pandas"],
+      "reportingStandards": {
+        "interactiveOnly": true,
+        "csvRelativePaths": true,
+        "htmlOutputRequired": true,
+        "responsiveDesign": true
+      }
+    },
+    "altair-analysis-agent": {
+      "platform": "python-altair",
+      "type": "specialist",
+      "capabilities": {
+        "statistical-visualization": {"score": 93, "domains": ["distributions", "correlations", "trends"]},
+        "exploratory-analysis": {"score": 92, "domains": ["data-exploration", "pattern-discovery"]},
+        "declarative-plotting": {"score": 94, "domains": ["grammar-of-graphics", "vega-lite"]},
+        "interactive-plots": {"score": 91, "domains": ["filtering", "selection", "tooltips"]},
+        "html-reports": {"score": 90, "domains": ["analysis", "research"]},
+        "csv-handling": {"score": 93, "domains": ["pandas", "data-transforms"]}
+      },
+      "bestFor": ["statistical-analysis", "exploratory-data-analysis", "research-reports"],
+      "limitations": ["complex-dashboards", "real-time-data"],
+      "costTier": "free",
+      "dependencies": ["altair", "pandas", "vega"],
+      "reportingStandards": {
+        "interactiveOnly": true,
+        "csvRelativePaths": true,
+        "htmlOutputRequired": true,
+        "responsiveDesign": true
+      }
+    },
+    "d3js-custom-viz-agent": {
+      "platform": "javascript-d3",
+      "type": "specialist",
+      "capabilities": {
+        "custom-visualizations": {"score": 96, "domains": ["bespoke", "highly-interactive", "animated"]},
+        "web-integration": {"score": 94, "domains": ["html", "javascript", "svg"]},
+        "csv-loading": {"score": 92, "domains": ["d3-fetch", "relative-paths"]},
+        "advanced-interactions": {"score": 95, "domains": ["drag-drop", "zoom", "brush", "transitions"]},
+        "data-binding": {"score": 93, "domains": ["dynamic-updates", "enter-exit-update"]},
+        "geospatial": {"score": 91, "domains": ["maps", "projections", "choropleth"]}
+      },
+      "bestFor": ["custom-interactive-viz", "unique-requirements", "web-applications"],
+      "limitations": ["python-integration", "learning-curve"],
+      "costTier": "free",
+      "dependencies": ["d3.js"],
+      "reportingStandards": {
+        "interactiveOnly": true,
+        "csvRelativePaths": true,
+        "htmlOutputRequired": true,
+        "responsiveDesign": true
+      }
     }
   },
   "gatePassReviewMatrix": {
@@ -323,6 +411,31 @@
       "primary": "claude-flow-reviewer",
       "alternatives": ["claude-sonnet-4.5"],
       "reviewers": ["claude-flow-architect"]
+    },
+    "html-report-generation": {
+      "primary": "plotly-visualization-agent",
+      "alternatives": ["bokeh-dashboard-agent", "altair-analysis-agent"],
+      "reviewers": ["claude-flow-reviewer"]
+    },
+    "interactive-visualization": {
+      "primary": "plotly-visualization-agent",
+      "alternatives": ["bokeh-dashboard-agent", "d3js-custom-viz-agent"],
+      "reviewers": ["claude-flow-reviewer", "claude-sonnet-4.5"]
+    },
+    "dashboard-creation": {
+      "primary": "bokeh-dashboard-agent",
+      "alternatives": ["plotly-visualization-agent", "d3js-custom-viz-agent"],
+      "reviewers": ["claude-flow-reviewer"]
+    },
+    "data-analysis-report": {
+      "primary": "altair-analysis-agent",
+      "alternatives": ["plotly-visualization-agent", "claude-sonnet-4.5"],
+      "reviewers": ["claude-flow-researcher"]
+    },
+    "csv-data-visualization": {
+      "primary": "plotly-visualization-agent",
+      "alternatives": ["altair-analysis-agent", "bokeh-dashboard-agent"],
+      "reviewers": ["claude-flow-reviewer"]
     }
   },
   "agentSelectionRules": {
