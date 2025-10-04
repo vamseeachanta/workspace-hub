@@ -103,6 +103,7 @@ memory/
 reports/
 test-framework-integrations/
 _organized_non_repo_files/
+_temp/
 
 # Note: docker/, examples/, and monitoring-dashboard/ are now tracked
 # as they contain important development resources for teams
