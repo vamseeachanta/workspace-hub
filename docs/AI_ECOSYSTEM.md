@@ -507,7 +507,7 @@ npx claude-flow@alpha hooks session-end
 - **Claude Flow:** https://github.com/ruvnet/claude-flow
 - **Agent OS:** https://buildermethods.com/agent-os
 - **Flow-Nexus:** https://flow-nexus.ruv.io
-- **Factory AI:** https://factory.ai/ ✅ **INSTALLED** - v0.18.0 (see `/docs/FACTORY_AI_GUIDE.md`)
+- **Factory AI:** https://factory.ai/ ✅ **INSTALLED** - v0.18.2 Enhanced (see `/docs/FACTORY_AI_ENHANCED_GUIDE.md`)
 - **Spec-Kit:** https://github.com/github/spec-kit
 
 ### Support
@@ -519,7 +519,11 @@ npx claude-flow@alpha hooks session-end
 - **Agent Guides:** See `.claude/agents/`
 - **MCP Tools:** Run `npx claude-flow@alpha help`
 - **Spec-Kit Guide:** Run `specify --help`
-- **Factory AI Platform:** https://factory.ai/docs ✅ **ACTIVE** (Droids available in all 26 repos)
+- **Factory AI Platform:** https://factory.ai/docs ✅ **ACTIVE** (Enhanced droids.yml config in all 26 repos)
+  - **Configuration:** Workspace-level + repository-specific droids.yml
+  - **Repository Types:** 12 Python Analysis, 7 Engineering, 7 Web App
+  - **Specialized Droids:** refactor, feature, bugfix, docs, testing, migration
+  - **Integration:** AI orchestration, gate-pass reviews, SPARC methodology
 - **Agent OS Workflows:** https://buildermethods.com/agent-os/docs
 
 ---

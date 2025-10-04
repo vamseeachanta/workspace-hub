@@ -1,0 +1,58 @@
+{
+  "version": "1.0",
+  "workspace": "workspace-hub",
+  "description": "Multi-repository workspace with centralized management",
+  "features": {
+    "multiRepo": true,
+    "automation": true,
+    "cicd": true,
+    "ai_orchestration": true,
+    "interactive_reporting": true
+  },
+  "ai": {
+    "droids_config": ".drcode/droids.yml",
+    "agents_registry": "modules/config/ai-agents-registry.json",
+    "orchestrator": "modules/automation/agent_orchestrator.sh",
+    "gate_pass": "modules/automation/gate_pass_review.sh"
+  },
+  "repositories": {
+    "count": 26,
+    "config_inheritance": true,
+    "shared_config": ".drcode/droids.yml"
+  },
+  "reporting": {
+    "interactive_plots_only": true,
+    "html_output_required": true,
+    "csv_relative_paths": true,
+    "allowed_viz_libraries": ["plotly", "bokeh", "altair", "d3.js"]
+  },
+  "development": {
+    "methodology": "SPARC",
+    "tdd_required": true,
+    "min_test_coverage": 80,
+    "code_review_required": true
+  },
+  "integrations": {
+    "claude_flow": {
+      "enabled": true,
+      "version": "alpha"
+    },
+    "spec_kit": {
+      "enabled": true
+    },
+    "agent_os": {
+      "enabled": true,
+      "product_docs": ".agent-os/product/"
+    },
+    "factory_ai": {
+      "enabled": true,
+      "version": "v0.18.0",
+      "cli_path": "/home/vamsee/.local/bin/droid"
+    }
+  },
+  "standards": {
+    "code_style": ".agent-os/standards/code-style.md",
+    "best_practices": ".agent-os/standards/best-practices.md",
+    "tech_stack": ".agent-os/product/tech-stack.md"
+  }
+}

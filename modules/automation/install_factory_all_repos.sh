@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Factory.ai Droid Initialization Script for All Repositories
-# This script initializes factory.ai droid in workspace-hub and all sub-repositories
+# Factory.ai Enhanced Initialization Script for All Repositories
+# This script initializes factory.ai with droids.yml configurations
+# Version: 2.0.0 - Enhanced with AI orchestration integration
 
 set -e
 
