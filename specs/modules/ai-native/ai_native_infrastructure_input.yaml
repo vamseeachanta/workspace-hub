@@ -86,6 +86,17 @@ file_structure:
           reasoning:
             - "Packaged projects like coordination/ rely on module-relative imports, pyproject metadata, and coverage outputs; keeping them under modules/ preserves those contracts."
             - "Archives of standalone automation assets (formerly in _organized_non_repo_files/) should be consolidated into modules/automation/ to maintain a module-first structure."
+          review_reference_points:
+            - path: ".agent-runtime/agents/"
+              purpose: "Root-level entry point (symlink) exposing reusable agent templates, prompt contexts, and workflow scaffolds from modules/automation/_organized_non_repo_files/agents."
+            - path: ".agent-runtime/commands/"
+              purpose: "Symlinked access to agent command handlers (.agent-os/commands) so reviewers locate dispatch logic beside runtime assets."
+            - path: ".agent-runtime/resources/"
+              purpose: "Shortcut to .agent-os/resources for agent catalogs and capability metadata referenced during orchestration."
+            - path: ".agent-runtime/mcp/.mcp.json"
+              purpose: "Canonical MCP server registry (symlinked from modules/config/.mcp.json) used by automation hooks."
+            - path: ".agent-runtime/mcp/setup_mcp_servers.sh"
+              purpose: "Symlinked provisioning script coordinating MCP server setup sourced from modules/automation/setup_mcp_servers.sh."
           summary:
             - "modules/ is the canonical home for shared functionality—automation, analytics, orchestration—allowing other repositories or agents to import consistent building blocks."
           contrasted_with_scripts:
@@ -186,8 +197,13 @@ file_structure:
           - "Repository runs agent swarms locally and needs persistent state between sessions"
         contents:
           - "agents/"
+          - "commands/"
+          - "resources/"
+          - "mcp/"
           - "coordination/"
           - "memory/"
+        notes:
+          - "Expose runtime state via symlinks or mirrored folders so agents, command handlers, and MCP connectors are discoverable without cross-repo searches."
 
       - name: "memory"
         purpose: "Standalone runtime memory service shipped as its own package"
@@ -935,3 +951,4 @@ notes:
   - "Regular audits ensure AI-native standards are maintained across all repositories"
   - "AI agents should reference this file when working across multiple repositories"
   - "Treat this specification as living guidance; incorporate lessons learned from each repository rollout and update the file (with last_updated) to reflect improvements."
+  - "When this file guides work in another repository, log observed improvements or gaps in that repository's coordination notes and feed them back here to sustain cross-repo learning."

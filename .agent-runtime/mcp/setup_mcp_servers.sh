@@ -1,0 +1,1 @@
+/mnt/github/workspace-hub/modules/automation/setup_mcp_servers.sh
