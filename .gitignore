@@ -23,6 +23,7 @@ sabithaandkrishnaestates/
 saipem/
 sd-work/
 seanation/
+spire_projects/
 teamresumes/
 worldenergydata/
 
@@ -303,3 +304,6 @@ coverage.xml
 
 # Keep only management files at root level
 # Modules directory is tracked for management tools
+# Claude Code project memory - ignore local settings and checkpoints
+.claude/settings.local.json
+.claude/checkpoints/
