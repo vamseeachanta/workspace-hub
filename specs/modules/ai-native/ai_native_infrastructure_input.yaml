@@ -204,6 +204,7 @@ file_structure:
           - "memory/"
         notes:
           - "Expose runtime state via symlinks or mirrored folders so agents, command handlers, and MCP connectors are discoverable without cross-repo searches."
+          - "If runtime assets need deeper categorization, mirror module-based subfolders (e.g., orchestration/, security/, testing/) beneath each .agent-runtime section while keeping the top-level namespace consistent across repositories."
 
       - name: "memory"
         purpose: "Standalone runtime memory service shipped as its own package"
