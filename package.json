@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "ccusage": "^15.7.1"
+    "ccusage": "^15.7.1",
+    "codex": "^0.2.3"
   }
 }
