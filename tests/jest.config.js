@@ -44,6 +44,12 @@ module.exports = {
     '^.+\\.(js|ts)$': 'babel-jest'
   },
 
+  // Ignore virtual environments embedded in sibling repositories
+  modulePathIgnorePatterns: [
+    '<rootDir>/.*/\\.venv/.*',
+    '<rootDir>/.*/node_modules/.*'
+  ],
+
   // Extensions to resolve
   moduleFileExtensions: ['ts', 'js', 'json'],
 

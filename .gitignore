@@ -101,7 +101,12 @@ coverage.xml
 memory/
 
 # Other working directories
-reports/
+reports/*
+!reports/.gitkeep
+!reports/test-summary/
+!reports/test-summary/.gitkeep
+!reports/test-summary/baseline-summary.json
+src/workspace_hub/reports/
 test-framework-integrations/
 _organized_non_repo_files/
 _temp/
