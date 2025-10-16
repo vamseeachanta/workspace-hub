@@ -371,6 +371,7 @@ This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Co
 claude mcp add claude-flow npx claude-flow@alpha mcp start
 claude mcp add ruv-swarm npx ruv-swarm mcp start  # Optional: Enhanced coordination
 claude mcp add flow-nexus npx flow-nexus@latest mcp start  # Optional: Cloud features
+claude mcp add chrome-devtools npx chrome-devtools-mcp@latest  # Optional: Chrome DevTools debugging
 ```
 
 ## MCP Tool Categories
@@ -389,6 +390,9 @@ claude mcp add flow-nexus npx flow-nexus@latest mcp start  # Optional: Cloud fea
 
 ### System
 `benchmark_run`, `features_detect`, `swarm_monitor`
+
+### Chrome DevTools (Browser Debugging)
+`browser_launch`, `browser_navigate`, `performance_start_trace`, `performance_stop_trace`, `console_get_logs`, `network_get_requests`, `dom_query_selector`, `dom_get_styles`
 
 ### Flow-Nexus MCP Tools (Optional Advanced Features)
 Flow-Nexus extends MCP capabilities with 70+ cloud-based orchestration tools:
