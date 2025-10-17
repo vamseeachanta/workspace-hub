@@ -334,13 +334,104 @@ setup_uv() {
     fi
 }
 
+find_uv_repos() {
+    local repos=()
+    for dir in "$WORKSPACE_ROOT"/*/; do
+        local repo_name=$(basename "$dir")
+        if [ -f "$dir/pyproject.toml" ]; then
+            repos+=("$repo_name")
+        fi
+    done
+    echo "${repos[@]}"
+}
+
+sync_repo_uv_env() {
+    local repo=$1
+    local repo_path="${WORKSPACE_ROOT}/${repo}"
+    
+    if [ ! -f "$repo_path/pyproject.toml" ]; then
+        log_error "$repo does not have pyproject.toml"
+        return 1
+    fi
+    
+    if ! command -v uv &> /dev/null; then
+        log_error "uv is not installed"
+        return 1
+    fi
+    
+    log_info "Syncing UV environment for: $repo"
+    cd "$repo_path"
+    
+    if uv sync >> "$LOG_FILE" 2>&1; then
+        log_success "$repo UV environment synced"
+        return 0
+    else
+        log_error "$repo UV sync failed"
+        return 1
+    fi
+}
+
+sync_all_uv_envs() {
+    local repos=($(find_uv_repos))
+    local total=${#repos[@]}
+    local success=0
+    local failed=0
+    
+    if [ "$total" -eq 0 ]; then
+        log_warning "No repositories with pyproject.toml found"
+        return
+    fi
+    
+    log_info "Found $total repositories with UV environments"
+    echo ""
+    
+    for repo in "${repos[@]}"; do
+        if sync_repo_uv_env "$repo"; then
+            ((success++))
+        else
+            ((failed++))
+        fi
+    done
+    
+    echo ""
+    log_info "Summary: ${GREEN}$success succeeded${NC}, ${RED}$failed failed${NC} (total: $total)"
+}
+
+list_uv_repos() {
+    local repos=($(find_uv_repos))
+    
+    if [ "${#repos[@]}" -eq 0 ]; then
+        log_warning "No repositories with pyproject.toml found"
+        return
+    fi
+    
+    echo "Repositories with UV environments (${#repos[@]} total):"
+    echo ""
+    
+    for repo in "${repos[@]}"; do
+        local repo_path="${WORKSPACE_ROOT}/${repo}"
+        local has_lock=""
+        
+        if [ -f "$repo_path/uv.lock" ]; then
+            has_lock=" ${GREEN}[locked]${NC}"
+        else
+            has_lock=" ${YELLOW}[no lock]${NC}"
+        fi
+        
+        echo -e "  • $repo$has_lock"
+    done
+}
+
 uv_menu() {
     while true; do
         print_header
         print_menu_header "UV Environment Manager"
         
-        echo "  1) Install/Update uv"
+        echo "  1) Install/Update uv tool"
         echo "  2) Check uv status"
+        echo "  3) List repos with UV environments"
+        echo "  4) Sync all repo UV environments"
+        echo "  5) Sync specific repo UV environment"
         echo "  0) Back to main menu"
         echo ""
         read -p "Select option: " choice
@@ -360,6 +451,43 @@ uv_menu() {
                     log_warning "uv is not installed"
                 fi
                 pause
+                ;;
+            3)
+                echo ""
+                list_uv_repos
+                pause
+                ;;
+            4)
+                echo ""
+                sync_all_uv_envs
+                pause
+                ;;
+            5)
+                echo ""
+                local repos=($(find_uv_repos))
+                
+                if [ "${#repos[@]}" -eq 0 ]; then
+                    log_warning "No repositories with pyproject.toml found"
+                    pause
+                    continue
+                fi
+                
+                echo "Repositories with UV environments:"
+                echo ""
+                for i in "${!repos[@]}"; do
+                    printf "  %2d) %s\n" $((i+1)) "${repos[$i]}"
+                done
+                echo ""
+                read -p "Select repository (1-${#repos[@]}): " repo_num
+                
+                if [[ "$repo_num" =~ ^[0-9]+$ ]] && [ "$repo_num" -ge 1 ] && [ "$repo_num" -le "${#repos[@]}" ]; then
+                    echo ""
+                    sync_repo_uv_env "${repos[$((repo_num-1))]}"
+                    pause
+                else
+                    log_error "Invalid selection"
+                    pause
+                fi
                 ;;
             0)
                 return
@@ -545,6 +673,8 @@ sync_all() {
     
     log_info "=== UV Environment ==="
     setup_uv
+    echo ""
+    sync_all_uv_envs
     echo ""
     
     log_info "=== NPM Packages ==="
