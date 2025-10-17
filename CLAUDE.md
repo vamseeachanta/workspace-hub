@@ -366,6 +366,27 @@ This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Co
 
 ## 🚀 Quick Setup
 
+### Workspace Sync Manager
+
+Use the interactive sync CLI to manage all workspace components:
+
+```bash
+# Launch interactive sync menu
+./scripts/sync
+
+# Main menu options:
+# 1) Git Repositories - Sync all or specific repos
+# 2) MCP Servers - Install MCP servers for Claude Code
+# 3) UV Environment - Setup Python package manager
+# 4) NPM Packages - Install global npm packages
+# 5) Agent Configurations - Manage agent config directories
+# 9) Sync Everything - Full workspace sync
+```
+
+Configuration is stored in `config/sync-items.json` and can be customized per machine.
+
+### Manual MCP Setup
+
 ```bash
 # Add MCP servers (Claude Flow required, others optional)
 claude mcp add claude-flow npx claude-flow@alpha mcp start

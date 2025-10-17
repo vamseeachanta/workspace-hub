@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "description": "Sync configuration for workspace-hub across machines",
+  "sync_items": {
+    "git_repositories": {
+      "enabled": true,
+      "base_path": "/mnt/github/workspace-hub",
+      "repos": [
+        "aceengineer-admin",
+        "aceengineercode",
+        "aceengineer-website",
+        "achantas-data",
+        "achantas-media",
+        "acma-projects",
+        "ai-native-traditional-eng",
+        "assethold",
+        "assetutilities",
+        "client_projects",
+        "digitalmodel",
+        "doris",
+        "energy",
+        "frontierdeepwater",
+        "hobbies",
+        "investments",
+        "OGManufacturing",
+        "pyproject-starter",
+        "rock-oil-field",
+        "sabithaandkrishnaestates",
+        "saipem",
+        "sd-work",
+        "seanation",
+        "teamresumes",
+        "worldenergydata"
+      ]
+    },
+    "mcp_servers": {
+      "enabled": true,
+      "config_file": "~/.claude.json",
+      "servers": [
+        {
+          "name": "playwright",
+          "command": "npx",
+          "args": ["@executeautomation/playwright-mcp-server"]
+        },
+        {
+          "name": "chrome-devtools",
+          "command": "npx",
+          "args": ["chrome-devtools-mcp@latest"]
+        },
+        {
+          "name": "claude-flow",
+          "command": "npx",
+          "args": ["claude-flow@alpha", "mcp", "start"]
+        },
+        {
+          "name": "ruv-swarm",
+          "command": "npx",
+          "args": ["ruv-swarm", "mcp", "start"]
+        },
+        {
+          "name": "flow-nexus",
+          "command": "npx",
+          "args": ["flow-nexus@latest", "mcp", "start"]
+        }
+      ]
+    },
+    "uv_environments": {
+      "enabled": true,
+      "ensure_uv_installed": true,
+      "templates_path": "/mnt/github/workspace-hub/docs/modules/environment/uv-templates"
+    },
+    "npm_packages": {
+      "enabled": true,
+      "global_packages": [
+        "@executeautomation/playwright-mcp-server",
+        "chrome-devtools-mcp@latest",
+        "claude-flow@alpha",
+        "ruv-swarm",
+        "flow-nexus@latest"
+      ]
+    },
+    "agent_configs": {
+      "enabled": true,
+      "config_files": [
+        "/mnt/github/workspace-hub/.factory/droids",
+        "/home/vamsee/.factory/droids"
+      ]
+    }
+  },
+  "sync_options": {
+    "parallel_repos": 5,
+    "timeout_seconds": 300,
+    "verbose": true,
+    "dry_run": false,
+    "auto_stash": true
+  }
+}
