@@ -1,0 +1,162 @@
+name: Refactor Analysis
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  refactor-analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm install -g jscpd knip
+          
+      - name: Create reports directory
+        run: mkdir -p .refactor-reports
+        
+      - name: Run refactor analysis
+        run: ./scripts/refactor-analysis.sh
+        continue-on-error: true
+        
+      - name: Code Duplication Analysis
+        id: duplication
+        run: |
+          if [ -f .jscpd.json ]; then
+            npx jscpd src/ --min-lines 5 --format json > .refactor-reports/jscpd-result.json || true
+            
+            # Extract duplication percentage
+            if [ -f .refactor-reports/jscpd-result.json ]; then
+              duplication=$(jq -r '.statistics.total.percentage' .refactor-reports/jscpd-result.json || echo "0")
+              echo "duplication_pct=$duplication" >> $GITHUB_OUTPUT
+              
+              # Fail if duplication is too high
+              if (( $(echo "$duplication > 10" | bc -l) )); then
+                echo "::warning::Code duplication is ${duplication}% (threshold: 10%)"
+              fi
+            fi
+          fi
+        continue-on-error: true
+        
+      - name: Dead Code Detection
+        id: deadcode
+        run: |
+          if [ -f knip.json ]; then
+            npx knip --no-exit-code --reporter json > .refactor-reports/knip-result.json || true
+            
+            # Count unused exports
+            if [ -f .refactor-reports/knip-result.json ]; then
+              unused_count=$(jq '[.issues[] | select(.type == "exports")] | length' .refactor-reports/knip-result.json || echo "0")
+              echo "unused_count=$unused_count" >> $GITHUB_OUTPUT
+              
+              if [ "$unused_count" -gt 20 ]; then
+                echo "::warning::Found $unused_count unused exports"
+              fi
+            fi
+          fi
+        continue-on-error: true
+        
+      - name: Large Files Check
+        id: large_files
+        run: |
+          large_files=$(find src -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" \) -exec wc -l {} \; | awk '$1 > 500 {print}' | wc -l)
+          echo "large_file_count=$large_files" >> $GITHUB_OUTPUT
+          
+          if [ "$large_files" -gt 0 ]; then
+            echo "::warning::Found $large_files files with >500 lines"
+          fi
+        continue-on-error: true
+        
+      - name: Comment PR with Results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let comment = '## 🔍 Refactor Analysis Report\n\n';
+            
+            // Duplication
+            const duplication = '${{ steps.duplication.outputs.duplication_pct }}' || '0';
+            const dupStatus = parseFloat(duplication) > 10 ? '❌' : '✅';
+            comment += `${dupStatus} **Code Duplication:** ${duplication}% (threshold: 10%)\n`;
+            
+            // Dead Code
+            const unusedCount = '${{ steps.deadcode.outputs.unused_count }}' || '0';
+            const deadStatus = parseInt(unusedCount) > 20 ? '⚠️' : '✅';
+            comment += `${deadStatus} **Unused Exports:** ${unusedCount} (threshold: 20)\n`;
+            
+            // Large Files
+            const largeFiles = '${{ steps.large_files.outputs.large_file_count }}' || '0';
+            const fileStatus = parseInt(largeFiles) > 0 ? '⚠️' : '✅';
+            comment += `${fileStatus} **Large Files (>500 lines):** ${largeFiles}\n\n`;
+            
+            comment += '### 💡 Recommendations\n\n';
+            
+            if (parseFloat(duplication) > 5) {
+              comment += '- **Reduce code duplication** by extracting common logic into shared utilities\n';
+            }
+            if (parseInt(unusedCount) > 10) {
+              comment += '- **Remove unused exports** to reduce bundle size and improve maintainability\n';
+            }
+            if (parseInt(largeFiles) > 0) {
+              comment += '- **Split large files** into smaller, focused modules\n';
+            }
+            
+            if (parseFloat(duplication) <= 5 && parseInt(unusedCount) <= 10 && parseInt(largeFiles) === 0) {
+              comment += '✨ Code quality looks great! No major refactoring needed.\n';
+            }
+            
+            comment += '\n---\n📊 Full report available in workflow artifacts\n';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+            
+      - name: Upload Analysis Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: refactor-reports-${{ github.run_number }}
+          path: .refactor-reports/
+          retention-days: 30
+          
+      - name: Check Quality Gates
+        run: |
+          duplication=${{ steps.duplication.outputs.duplication_pct }}
+          unused=${{ steps.deadcode.outputs.unused_count }}
+          
+          if (( $(echo "$duplication > 15" | bc -l) )); then
+            echo "::error::Code duplication ${duplication}% exceeds 15% threshold"
+            exit 1
+          fi
+          
+          if [ "$unused" -gt 50 ]; then
+            echo "::error::Unused exports ($unused) exceeds 50 threshold"
+            exit 1
+          fi
+          
+          echo "✅ Quality gates passed"

@@ -299,8 +299,32 @@ This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Co
 1. **Specification** - Requirements analysis (`sparc run spec-pseudocode`)
 2. **Pseudocode** - Algorithm design (`sparc run spec-pseudocode`)
 3. **Architecture** - System design (`sparc run architect`)
-4. **Refinement** - TDD implementation (`sparc tdd`)
+4. **Refinement** - TDD implementation + continuous refactoring (`sparc tdd`)
 5. **Completion** - Integration (`sparc run integration`)
+
+### Continuous Refactoring (Refinement Phase)
+
+The Refinement phase includes automated code quality improvement:
+
+```bash
+# Run automated refactor analysis
+./scripts/refactor-analysis.sh
+
+# Generates reports in .refactor-reports/:
+# - Code duplication (jscpd)
+# - Dead code (knip)  
+# - Large files (>500 lines)
+# - Outdated dependencies
+# - Slow tests (>100ms)
+```
+
+**Tools integrated:**
+- `jscpd` - Code duplication detection (threshold: 5%)
+- `knip` - Dead code and unused exports detection
+- `eslint-react-compiler` - React optimization suggestions
+- `eslint-deprecation` - Deprecated API detection
+
+**Workflow:** Continuous small improvements with approval required before committing.
 
 ## Code Style & Best Practices
 
@@ -594,6 +618,44 @@ Message 4: Write "file.js"
 ---
 
 # PART 3: PROJECT-SPECIFIC CONTEXT (AGENT OS)
+
+## 🚨 MANDATORY: Development Workflow
+
+**ALL AI agents (Claude, OpenAI, Factory.ai) MUST follow this workflow:**
+
+1. **READ** `docs/AI_AGENT_GUIDELINES.md` - **HIGHEST PRIORITY**
+2. **READ** `user_prompt.md` for requirements
+3. **ASK** clarifying questions before proceeding
+4. **WAIT** for user approval
+5. **FOLLOW** the 6-phase workflow in `docs/DEVELOPMENT_WORKFLOW.md`
+
+**Never assume requirements. Always ask when uncertain.**
+
+---
+
+## Development Workflow Documentation
+
+### Core Workflow (MANDATORY)
+- **🚨 AI Agent Guidelines:** @docs/AI_AGENT_GUIDELINES.md (READ FIRST!)
+- **Development Workflow:** @docs/DEVELOPMENT_WORKFLOW.md
+- **User Requirements:** @user_prompt.md (user-edited only)
+
+### Templates
+- **User Prompt:** @templates/user_prompt.md
+- **YAML Config:** @templates/input_config.yaml
+- **Pseudocode:** @templates/pseudocode.md
+- **Test Runner:** @templates/run_tests.sh
+- **Workflow Automation:** @templates/workflow.sh
+
+### Workflow Phases
+1. **User Prompt** → Read `user_prompt.md`, ask questions
+2. **YAML Config** → Generate from requirements, wait for approval
+3. **Pseudocode** → Design algorithm, wait for approval
+4. **TDD** → Write tests first, then implementation
+5. **Code** → Implement in `src/`, keep tests passing
+6. **Bash Execution** → Single command with YAML input
+
+---
 
 ## Agent OS Documentation
 

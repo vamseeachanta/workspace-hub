@@ -312,3 +312,8 @@ coverage.xml
 # Claude Code project memory - ignore local settings and checkpoints
 .claude/settings.local.json
 .claude/checkpoints/
+
+# Refactor Analysis Reports
+.refactor-reports/
+*.refactor-report.*
+jscpd-report/

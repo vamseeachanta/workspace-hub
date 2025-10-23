@@ -85,6 +85,19 @@
         "/mnt/github/workspace-hub/.factory/droids",
         "/home/vamsee/.factory/droids"
       ]
+    },
+    "terminal_configs": {
+      "enabled": true,
+      "tabby": {
+        "workspace_path": "/mnt/github/workspace-hub/config/tabby",
+        "linux_config_path": "~/.config/tabby",
+        "windows_config_path": "%APPDATA%\\tabby",
+        "sync_script_linux": "/mnt/github/workspace-hub/scripts/sync-tabby-linux.sh",
+        "sync_script_windows": "C:\\workspace-hub\\scripts\\sync-tabby-windows.ps1",
+        "files_to_sync": [
+          "config.yaml"
+        ]
+      }
     }
   },
   "sync_options": {
