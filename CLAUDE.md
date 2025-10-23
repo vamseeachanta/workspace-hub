@@ -276,6 +276,35 @@ YOU MUST follow this debugging framework for ANY technical issue:
 - `/data` - CSV data files (raw/, processed/, results/)
 - `/reports` - Generated HTML reports
 
+### 🤖 AI Folder Organization Responsibility
+
+**After basic structure is established, AI manages file organization:**
+
+1. **Recognize Need**: When 5+ files accumulate without clear organization
+2. **Propose Structure**: Suggest module/domain-driven subfolder organization
+3. **Wait for Approval**: Never create folders without user confirmation
+4. **Execute**: Create folders, move files, update imports, commit
+
+**Rules:**
+- **Module-driven naming**: Use domain/business names (marine_analysis/, authentication/, data_processing/)
+- **Maximum depth**: 5 levels of nesting
+- **Consistency**: Same structure patterns across all 26 repositories
+- **Always propose first**: Describe structure and rationale, wait for "yes"
+
+**Example proposal:**
+```
+"I notice 12 files related to stress analysis. I propose:
+
+marine_analysis/
+├── stress/              # Stress calculations (4 files)
+├── buckling/            # Buckling analysis (4 files)
+└── fatigue/             # Fatigue analysis (4 files)
+
+Should I proceed with this organization?"
+```
+
+**See full standards**: `docs/FILE_ORGANIZATION_STANDARDS.md`
+
 ### 📊 HTML Reporting Requirements
 
 **MANDATORY FOR ALL MODULES:**
