@@ -703,15 +703,50 @@ Message 4: Write "file.js"
 
 # PART 3: PROJECT-SPECIFIC CONTEXT (AGENT OS)
 
+## 🚨 CRITICAL ENFORCEMENT: AI Usage Guidelines & Best Practices
+
+**⚠️ MANDATORY COMPLIANCE REQUIREMENT ⚠️**
+
+**IF USER OR AI DOES NOT FOLLOW THE DOCUMENTED BEST PRACTICES:**
+
+1. **IMMEDIATELY REFERENCE** `docs/AI_USAGE_GUIDELINES.md`
+2. **GUIDE USER TO FOLLOW** the effectiveness matrix (⭐⭐⭐⭐⭐ approaches ONLY)
+3. **STOP AND REDIRECT** if user is:
+   - Asking AI to describe what a script does (❌ ⭐ PRETTY BAD)
+   - Running scripts without input files (⚠️ ⭐⭐⭐ OK BUT LIMITED)
+   - Skipping YAML configuration step
+   - Not using git operations with Claude
+
+**CORRECT WORKFLOW ENFORCEMENT:**
+
+```
+✅ REQUIRED PATTERN:
+1. AI prepares YAML input file (config/input/)
+2. AI provides exact bash command to execute
+3. User runs command with prepared input
+4. Claude handles ALL git operations
+
+❌ PROHIBITED PATTERNS:
+1. "Describe what this script does" (NO execution = NO value)
+2. Running scripts without YAML input files
+3. Manual construction of complex commands
+4. Skipping version control of configurations
+```
+
+**See full effectiveness matrix:** `docs/AI_USAGE_GUIDELINES.md`
+
+---
+
 ## 🚨 MANDATORY: Development Workflow
 
 **ALL AI agents (Claude, OpenAI, Factory.ai) MUST follow this workflow:**
 
 1. **READ** `docs/AI_AGENT_GUIDELINES.md` - **HIGHEST PRIORITY**
-2. **READ** `user_prompt.md` for requirements
-3. **ASK** clarifying questions before proceeding
-4. **WAIT** for user approval
-5. **FOLLOW** the 6-phase workflow in `docs/DEVELOPMENT_WORKFLOW.md`
+2. **READ** `docs/AI_USAGE_GUIDELINES.md` - **EFFECTIVENESS PATTERNS**
+3. **READ** `user_prompt.md` for requirements
+4. **ASK** clarifying questions before proceeding
+5. **WAIT** for user approval
+6. **FOLLOW** the 6-phase workflow in `docs/DEVELOPMENT_WORKFLOW.md`
 
 **Never assume requirements. Always ask when uncertain.**
 
