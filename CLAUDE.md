@@ -703,37 +703,145 @@ Message 4: Write "file.js"
 
 # PART 3: PROJECT-SPECIFIC CONTEXT (AGENT OS)
 
-## 🚨 CRITICAL ENFORCEMENT: AI Usage Guidelines & Best Practices
+## 💡 AI Usage Best Practices: Helpful Guidance for Maximum Effectiveness
 
-**⚠️ MANDATORY COMPLIANCE REQUIREMENT ⚠️**
+**Your AI Partner is Here to Help You Work More Effectively!**
 
-**IF USER OR AI DOES NOT FOLLOW THE DOCUMENTED BEST PRACTICES:**
+When you interact with AI agents in workspace-hub repositories, they'll gently guide you toward approaches that have **proven to save 90% of time** with very low error rates. This isn't about rules—it's about helping you get better results faster.
 
-1. **IMMEDIATELY REFERENCE** `docs/AI_USAGE_GUIDELINES.md`
-2. **GUIDE USER TO FOLLOW** the effectiveness matrix (⭐⭐⭐⭐⭐ approaches ONLY)
-3. **STOP AND REDIRECT** if user is:
-   - Asking AI to describe what a script does (❌ ⭐ PRETTY BAD)
-   - Running scripts without input files (⚠️ ⭐⭐⭐ OK BUT LIMITED)
-   - Skipping YAML configuration step
-   - Not using git operations with Claude
+### 🎯 How AI Agents Help You
 
-**CORRECT WORKFLOW ENFORCEMENT:**
+**When you ask for something less effective**, your AI partner will:
 
+1. ✅ **Acknowledge your request** - "I understand you want to know what this script does"
+2. ✅ **Offer a better way** - "Instead of describing it, let me help you run it and see real results"
+3. ✅ **Show concrete steps** - "Here's exactly what I'll do for you..."
+4. ✅ **Explain the benefit** - "This saves 90% of your time and gives you actual results"
+5. ✅ **Respect your choice** - "Would you like me to proceed this way, or would you prefer a description?"
+
+### 📋 Example: Gentle Guidance in Action
+
+**❓ You ask:** "Can you describe what `run_analysis.sh` does?"
+
+**💡 AI responds:**
 ```
-✅ REQUIRED PATTERN:
-1. AI prepares YAML input file (config/input/)
-2. AI provides exact bash command to execute
-3. User runs command with prepared input
-4. Claude handles ALL git operations
+I understand you want to know what the script does! Let me help you get actual
+results instead of just a description. Here's what I'll do:
 
-❌ PROHIBITED PATTERNS:
-1. "Describe what this script does" (NO execution = NO value)
-2. Running scripts without YAML input files
-3. Manual construction of complex commands
-4. Skipping version control of configurations
+1. 📝 Prepare YAML input file (I'll create: config/input/analysis_config.yaml)
+2. 🔧 Provide exact command to run (you just copy/paste)
+3. 📊 You'll see real results instead of theoretical description
+
+This approach:
+- ⏱️  Saves 90% of your time
+- ✅ Gives you actual working results
+- 📁 Creates reproducible configuration
+- 🎯 Shows exactly what the script produces
+
+Shall I prepare the input file and command for you?
+(Or if you still prefer a description, I can do that too!)
 ```
 
-**See full effectiveness matrix:** `docs/AI_USAGE_GUIDELINES.md`
+### 🔄 Visual Workflow Guide
+
+```mermaid
+graph TD
+    A[User Request] --> B{Is there a more effective approach?}
+    B -->|Yes| C[AI: "I have a better way to help you!"]
+    C --> D[AI: Explain the benefits]
+    D --> E[AI: Show concrete steps]
+    E --> F[AI: Offer to proceed]
+    F --> G{User chooses}
+    G -->|Better way| H[AI: Execute ⭐⭐⭐⭐⭐ approach]
+    G -->|Original way| I[AI: Assist with original request]
+    B -->|No| J[AI: Proceed as requested]
+
+    style H fill:#90EE90
+    style I fill:#FFE4B5
+```
+
+### 🌟 Most Effective Patterns (AI Will Suggest These)
+
+```mermaid
+graph LR
+    A[Your Task] --> B[AI Prepares YAML Config]
+    B --> C[AI Provides Bash Command]
+    C --> D[You Run Command]
+    D --> E[View Real Results]
+    E --> F[AI Handles Git Operations]
+
+    style B fill:#90EE90
+    style C fill:#90EE90
+    style D fill:#87CEEB
+    style E fill:#FFD700
+    style F fill:#90EE90
+```
+
+**Benefits:**
+- ⭐⭐⭐⭐⭐ 90% time savings
+- ⭐⭐⭐⭐⭐ Very low error rate
+- ⭐⭐⭐⭐⭐ Excellent reproducibility
+- ⭐⭐⭐⭐⭐ Clear audit trail
+
+### 🛠️ How AI Helps You Through Each Step
+
+**Step 1: Prepare Input File**
+```
+AI: "I'll create config/input/your_task.yaml with:
+     - All parameters clearly defined
+     - Comments explaining each setting
+     - Validation rules included
+
+     You can review and modify it anytime!"
+```
+
+**Step 2: Generate Pseudocode** (when needed)
+```
+AI: "I'll write pseudocode showing:
+     - Algorithm logic flow
+     - Error handling approach
+     - Performance considerations
+
+     Saved to: docs/pseudocode/your_task.md
+     Includes mermaid diagrams for clarity!"
+```
+
+**Step 3: Provide Command**
+```
+AI: "Just copy and run this command:
+     ./scripts/run_your_task.sh
+
+     I've prepared everything for you!"
+```
+
+**Step 4: Handle Git**
+```
+AI: "I'll handle all git operations:
+     - Create feature branch
+     - Commit changes with good message
+     - Push to remote
+     - Create pull request
+
+     You focus on the results!"
+```
+
+### 📚 Complete Guide Available
+
+For detailed examples, workflow diagrams, and effectiveness ratings:
+- 📖 **Full Guide:** `docs/AI_USAGE_GUIDELINES.md`
+- 🎓 **Quick Start:** `docs/README_COMPLIANCE.md`
+- 🔧 **Workflows:** `docs/DEVELOPMENT_WORKFLOW.md`
+
+### 🤝 Remember: AI is Your Helpful Partner
+
+AI agents will always:
+- ✅ Guide you toward better approaches
+- ✅ Explain why they're suggesting alternatives
+- ✅ Show concrete examples and steps
+- ✅ Respect your final choice
+- ✅ Help you succeed either way
+
+**The goal:** Help you get better results in less time, not enforce rigid rules!
 
 ---
 
