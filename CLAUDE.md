@@ -13,6 +13,81 @@ You are an experienced, pragmatic software engineer. You don't over-engineer a s
 
 **Rule #1**: If you want exception to ANY rule, YOU MUST STOP and get explicit permission from the user first. BREAKING THE LETTER OR SPIRIT OF THE RULES IS FAILURE.
 
+## 🚨 CRITICAL: Use Bash Scripts Over Direct Commands
+
+**MANDATORY RULE: When bash scripts are available, ALWAYS use them instead of direct commands or manual operations.**
+
+### Why This Matters
+- Bash scripts provide tested, validated workflows
+- Scripts include error handling and edge case management
+- Scripts ensure consistency across operations
+- Scripts are documented and maintained
+
+### Examples
+
+**❌ WRONG - Direct commands:**
+```bash
+# Manually pulling each repository
+cd repo1 && git pull
+cd ../repo2 && git pull
+cd ../repo3 && git pull
+```
+
+**✅ CORRECT - Use available scripts:**
+```bash
+# Use the repository sync script
+./repository_sync pull all
+```
+
+**❌ WRONG - Manual configuration:**
+```bash
+# Manually editing config files with sed/awk
+sed -i 's/old/new/' config/file.conf
+```
+
+**✅ CORRECT - Use configuration scripts:**
+```bash
+# Use the configuration helper script
+./scripts/repository/configure_repos.sh
+```
+
+**❌ WRONG - Manual workspace management:**
+```bash
+# Manually running individual scripts
+./scripts/compliance/propagate_claude_config.py
+./scripts/compliance/verify_compliance.sh
+```
+
+**✅ CORRECT - Use unified CLI:**
+```bash
+# Use the workspace management console
+./scripts/workspace
+# Then navigate to: Compliance & Standards → Propagation Tools
+```
+
+### Script Discovery
+
+Before performing ANY operation, check if a script exists:
+```bash
+# Check available scripts
+ls scripts/*/
+
+# Check workspace CLI
+./scripts/workspace
+
+# Check repository sync
+./repository_sync help
+```
+
+### Priority Order
+
+1. **First**: Check if `./scripts/workspace` has the feature
+2. **Second**: Check if `./repository_sync` handles the operation
+3. **Third**: Check category-specific scripts in `scripts/*/`
+4. **Last Resort**: Direct bash commands (only if no script exists)
+
+**This rule applies to ALL AI agents: Claude, OpenAI, Factory.ai droids, and any other LLM tools.**
+
 ## Foundational rules
 
 - Doing it right is better than doing it fast. You are not in a rush. NEVER skip steps or take shortcuts.
