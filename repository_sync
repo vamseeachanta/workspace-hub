@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# ABOUTME: Repository synchronization script with CLI menu for cloning work/personal repos
-# ABOUTME: Parses .gitignore to identify repos and their categories (Work/Personal)
+# ABOUTME: Repository synchronization script with CLI menu for cloning and syncing work/personal repos
+# ABOUTME: Handles cloning, staging, committing, and syncing repositories to remote
 
 set -e
 
@@ -11,6 +11,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
 NC='\033[0m' # No Color
 
 # Configuration
@@ -136,6 +137,34 @@ repo_exists() {
     fi
 }
 
+# Function to check git status of a repository
+check_git_status() {
+    local repo_name="$1"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo "not_cloned"
+        return
+    fi
+
+    cd "$repo_path"
+
+    # Check for uncommitted changes
+    if [ -n "$(git status --porcelain)" ]; then
+        echo "dirty"
+    # Check for unpushed commits
+    elif [ -n "$(git log @{u}.. 2>/dev/null)" ]; then
+        echo "unpushed"
+    # Check if behind remote
+    elif [ -n "$(git log ..@{u} 2>/dev/null)" ]; then
+        echo "behind"
+    else
+        echo "clean"
+    fi
+
+    cd "$WORKSPACE_ROOT"
+}
+
 # Function to clone a repository
 clone_repo() {
     local repo_name="$1"
@@ -161,6 +190,180 @@ clone_repo() {
         echo -e "${RED}✗ Failed to clone $repo_name${NC}"
         return 1
     fi
+}
+
+# Function to stage and commit changes in a repository
+commit_repo() {
+    local repo_name="$1"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+    local commit_message="$2"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    # Check if there are changes
+    if [ -z "$(git status --porcelain)" ]; then
+        echo -e "${YELLOW}⊘ $repo_name: No changes to commit${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    fi
+
+    echo -e "${BLUE}→ Committing changes in $repo_name...${NC}"
+
+    # Stage all changes
+    git add .
+
+    # Commit with message
+    if [ -z "$commit_message" ]; then
+        commit_message="Update: Batch commit from repository_sync
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+    fi
+
+    if git commit -m "$commit_message"; then
+        echo -e "${GREEN}✓ Committed changes in $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    else
+        echo -e "${RED}✗ Failed to commit in $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 1
+    fi
+}
+
+# Function to push repository to remote
+push_repo() {
+    local repo_name="$1"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    # Check if there's anything to push
+    if [ -z "$(git log @{u}.. 2>/dev/null)" ]; then
+        echo -e "${YELLOW}⊘ $repo_name: Nothing to push${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    fi
+
+    echo -e "${BLUE}→ Pushing $repo_name to remote...${NC}"
+
+    if git push; then
+        echo -e "${GREEN}✓ Successfully pushed $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    else
+        echo -e "${RED}✗ Failed to push $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 1
+    fi
+}
+
+# Function to pull from remote
+pull_repo() {
+    local repo_name="$1"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    echo -e "${BLUE}→ Pulling updates for $repo_name...${NC}"
+
+    if git pull; then
+        echo -e "${GREEN}✓ Successfully pulled $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    else
+        echo -e "${RED}✗ Failed to pull $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 1
+    fi
+}
+
+# Function to sync repository (commit + push)
+sync_repo() {
+    local repo_name="$1"
+    local commit_message="$2"
+
+    echo -e "${CYAN}Syncing $repo_name...${NC}"
+
+    # Commit if there are changes
+    commit_repo "$repo_name" "$commit_message"
+
+    # Push to remote
+    push_repo "$repo_name"
+}
+
+# Function to process multiple repositories
+process_repos() {
+    local -n repos=$1
+    local operation="$2"
+    local category="$3"
+    local commit_message="$4"
+
+    echo ""
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "${CYAN}$operation $category Repositories${NC}"
+    echo -e "${CYAN}======================================${NC}"
+    echo ""
+
+    local success_count=0
+    local skip_count=0
+    local fail_count=0
+    local total=${#repos[@]}
+
+    for repo in "${repos[@]}"; do
+        case "$operation" in
+            "Committing")
+                if commit_repo "$repo" "$commit_message"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+            "Pushing")
+                if push_repo "$repo"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+            "Pulling")
+                if pull_repo "$repo"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+            "Syncing")
+                sync_repo "$repo" "$commit_message"
+                ((success_count++)) || true
+                ;;
+        esac
+    done
+
+    echo ""
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "${CYAN}Summary${NC}"
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "Total repositories: ${total}"
+    echo -e "${GREEN}Successful operations: ${success_count}${NC}"
+    echo -e "${RED}Failed operations: ${fail_count}${NC}"
+    echo ""
 }
 
 # Function to clone multiple repos
@@ -202,7 +405,7 @@ clone_repos() {
     echo ""
 }
 
-# Function to list repositories with status
+# Function to list repositories with detailed status
 list_repos() {
     local filter="$1"
     local -a repos_to_list
@@ -223,24 +426,58 @@ list_repos() {
     esac
 
     echo ""
-    printf "%-30s %-15s %-10s %s\n" "Repository" "Category" "Status" "URL"
+    printf "%-30s %-15s %-15s %s\n" "Repository" "Category" "Git Status" "URL"
     echo "--------------------------------------------------------------------------------"
 
     for repo in "${repos_to_list[@]}"; do
         local category="${REPO_CATEGORIES[$repo]}"
         local url="${REPO_URLS[$repo]:-"Not configured"}"
-        local status
+        local git_status=$(check_git_status "$repo")
+        local status_display
 
-        if repo_exists "$repo"; then
-            status="${GREEN}Cloned${NC}"
-        else
-            status="${YELLOW}Not cloned${NC}"
-        fi
+        case "$git_status" in
+            "not_cloned")
+                status_display="${YELLOW}Not cloned${NC}"
+                ;;
+            "clean")
+                status_display="${GREEN}Clean${NC}"
+                ;;
+            "dirty")
+                status_display="${RED}Uncommitted${NC}"
+                ;;
+            "unpushed")
+                status_display="${MAGENTA}Unpushed${NC}"
+                ;;
+            "behind")
+                status_display="${CYAN}Behind remote${NC}"
+                ;;
+        esac
 
-        printf "%-30s %-15s %-20b %-40s\n" "$repo" "$category" "$status" "$url"
+        printf "%-30s %-15s %-30b %-40s\n" "$repo" "$category" "$status_display" "$url"
     done
 
     echo ""
+}
+
+# Function to get commit message from user
+get_commit_message() {
+    echo ""
+    echo -e "${CYAN}Enter commit message (or press Enter for default):${NC}"
+    read -r custom_message
+
+    if [ -z "$custom_message" ]; then
+        echo "Update: Batch commit from repository_sync
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+    else
+        echo "$custom_message
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+    fi
 }
 
 # Function to display main menu
@@ -255,16 +492,38 @@ show_menu() {
     echo -e "  Work repositories: ${#WORK_REPOS[@]}"
     echo -e "  Personal repositories: ${#PERSONAL_REPOS[@]}"
     echo ""
-    echo -e "${CYAN}Main Menu:${NC}"
+    echo -e "${CYAN}═══ Repository Management ═══${NC}"
     echo ""
     echo "  1) List all repositories"
     echo "  2) List work repositories"
     echo "  3) List personal repositories"
     echo ""
+    echo -e "${CYAN}═══ Clone Operations ═══${NC}"
+    echo ""
     echo "  4) Clone all repositories"
-    echo "  5) Clone work repositories only"
-    echo "  6) Clone personal repositories only"
+    echo "  5) Clone work repositories"
+    echo "  6) Clone personal repositories"
     echo "  7) Clone specific repository"
+    echo ""
+    echo -e "${CYAN}═══ Git Operations ═══${NC}"
+    echo ""
+    echo "  10) Commit all repositories"
+    echo "  11) Commit work repositories"
+    echo "  12) Commit personal repositories"
+    echo ""
+    echo "  13) Push all repositories"
+    echo "  14) Push work repositories"
+    echo "  15) Push personal repositories"
+    echo ""
+    echo "  16) Pull all repositories"
+    echo "  17) Pull work repositories"
+    echo "  18) Pull personal repositories"
+    echo ""
+    echo "  19) Full sync all (commit + push)"
+    echo "  20) Full sync work (commit + push)"
+    echo "  21) Full sync personal (commit + push)"
+    echo ""
+    echo -e "${CYAN}═══ Configuration ═══${NC}"
     echo ""
     echo "  8) Edit repository configuration"
     echo "  9) Refresh repository list"
@@ -374,6 +633,72 @@ main() {
                 load_repo_config
                 echo -e "${GREEN}✓ Repository list refreshed${NC}"
                 sleep 1
+                ;;
+            10)
+                commit_msg=$(get_commit_message)
+                process_repos ALL_REPOS "Committing" "All" "$commit_msg"
+                echo -n "Press Enter to continue..."
+                read -r
+                ;;
+            11)
+                commit_msg=$(get_commit_message)
+                process_repos WORK_REPOS "Committing" "Work" "$commit_msg"
+                echo -n "Press Enter to continue..."
+                read -r
+                ;;
+            12)
+                commit_msg=$(get_commit_message)
+                process_repos PERSONAL_REPOS "Committing" "Personal" "$commit_msg"
+                echo -n "Press Enter to continue..."
+                read -r
+                ;;
+            13)
+                process_repos ALL_REPOS "Pushing" "All"
+                echo -n "Press Enter to continue..."
+                read -r
+                ;;
+            14)
+                process_repos WORK_REPOS "Pushing" "Work"
+                echo -n "Press Enter to continue..."
+                read -r
+                ;;
+            15)
+                process_repos PERSONAL_REPOS "Pushing" "Personal"
+                echo -n "Press Enter to continue..."
+                read -r
+                ;;
+            16)
+                process_repos ALL_REPOS "Pulling" "All"
+                echo -n "Press Enter to continue..."
+                read -r
+                ;;
+            17)
+                process_repos WORK_REPOS "Pulling" "Work"
+                echo -n "Press Enter to continue..."
+                read -r
+                ;;
+            18)
+                process_repos PERSONAL_REPOS "Pulling" "Personal"
+                echo -n "Press Enter to continue..."
+                read -r
+                ;;
+            19)
+                commit_msg=$(get_commit_message)
+                process_repos ALL_REPOS "Syncing" "All" "$commit_msg"
+                echo -n "Press Enter to continue..."
+                read -r
+                ;;
+            20)
+                commit_msg=$(get_commit_message)
+                process_repos WORK_REPOS "Syncing" "Work" "$commit_msg"
+                echo -n "Press Enter to continue..."
+                read -r
+                ;;
+            21)
+                commit_msg=$(get_commit_message)
+                process_repos PERSONAL_REPOS "Syncing" "Personal" "$commit_msg"
+                echo -n "Press Enter to continue..."
+                read -r
                 ;;
             0)
                 echo ""

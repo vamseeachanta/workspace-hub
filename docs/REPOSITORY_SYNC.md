@@ -137,6 +137,102 @@ Available repositories:
 Enter repository number (or 0 to cancel): 1
 ```
 
+### Git Operations
+
+The script provides comprehensive git operations for all repositories:
+
+#### Commit Operations (Options 10-12)
+
+Stage and commit all changes in repositories:
+
+```bash
+# Option 10: Commit all repositories
+# Option 11: Commit work repositories only
+# Option 12: Commit personal repositories only
+```
+
+**Workflow:**
+1. Script checks each repository for uncommitted changes
+2. Prompts for custom commit message (or uses default)
+3. Stages all changes (`git add .`)
+4. Commits with the provided message
+5. Skips repositories with no changes
+
+**Commit message format:**
+```
+Your custom message (or default: "Update: Batch commit from repository_sync")
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+#### Push Operations (Options 13-15)
+
+Push committed changes to remote:
+
+```bash
+# Option 13: Push all repositories
+# Option 14: Push work repositories only
+# Option 15: Push personal repositories only
+```
+
+**Workflow:**
+1. Checks for unpushed commits
+2. Pushes to remote origin
+3. Skips repositories with nothing to push
+4. Reports success/failure for each repository
+
+#### Pull Operations (Options 16-18)
+
+Pull updates from remote:
+
+```bash
+# Option 16: Pull all repositories
+# Option 17: Pull work repositories only
+# Option 18: Pull personal repositories only
+```
+
+**Workflow:**
+1. Pulls latest changes from remote
+2. Updates local branches
+3. Reports success/failure
+
+#### Full Sync Operations (Options 19-21)
+
+Complete synchronization (commit + push):
+
+```bash
+# Option 19: Full sync all repositories
+# Option 20: Full sync work repositories
+# Option 21: Full sync personal repositories
+```
+
+**Workflow:**
+1. Commits all changes (if any)
+2. Pushes to remote (if needed)
+3. One-command workflow for quick syncs
+
+### Repository Status
+
+Enhanced status display shows git state:
+
+```
+Repository                     Category        Git Status       URL
+--------------------------------------------------------------------------------
+digitalmodel                   Work            Clean           git@github.com:user/digitalmodel.git
+aceengineer-admin              Personal        Uncommitted     git@github.com:user/aceengineer-admin.git
+energy                         Work            Unpushed        git@github.com:user/energy.git
+frontierdeepwater              Work            Behind remote   git@github.com:user/frontierdeepwater.git
+```
+
+**Status Indicators:**
+- 🟢 **Clean**: No changes, up to date with remote
+- 🔴 **Uncommitted**: Has uncommitted local changes
+- 🟣 **Unpushed**: Has commits not pushed to remote
+- 🔵 **Behind remote**: Remote has commits not pulled locally
+- 🟡 **Not cloned**: Repository doesn't exist locally
+
 ## Configuration
 
 ### Repository Configuration File
@@ -197,6 +293,41 @@ Supported categories:
 # Review the list
 
 # Clone personal repositories (Option 6)
+```
+
+### Example 4: Commit and Push All Repos
+
+```bash
+# Run the script
+./repository_sync
+
+# Commit all repositories (Option 10)
+# Enter commit message when prompted
+
+# Push all repositories to remote (Option 13)
+```
+
+### Example 5: Full Sync Workflow
+
+```bash
+# Run the script
+./repository_sync
+
+# Full sync all repos (Option 19)
+# This commits changes AND pushes to remote in one operation
+```
+
+### Example 6: Daily Development Workflow
+
+```bash
+# Morning: Pull latest changes
+./repository_sync → Option 16 (Pull all repositories)
+
+# During work: Make changes in various repos
+# ...
+
+# End of day: Commit and push all changes
+./repository_sync → Option 19 (Full sync all)
 ```
 
 ### Example 3: Add New Repository
