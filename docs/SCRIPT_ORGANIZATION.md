@@ -39,7 +39,7 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 
 **Menu Access:**
 ```
-./workspace → Repository Management
+./scripts/workspace → Repository Management
 ```
 
 ---
@@ -59,7 +59,7 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 
 **Menu Access:**
 ```
-./workspace → Compliance & Standards
+./scripts/workspace → Compliance & Standards
 ```
 
 **Workflow:**
@@ -92,7 +92,7 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 
 **Menu Access:**
 ```
-./workspace → Remote Connection Tools
+./scripts/workspace → Remote Connection Tools
 ```
 
 ---
@@ -109,7 +109,7 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 
 **Menu Access:**
 ```
-./workspace → Development Tools
+./scripts/workspace → Development Tools
 ```
 
 **Analysis Features:**
@@ -134,7 +134,7 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 
 **Menu Access:**
 ```
-./workspace → System Setup & Configuration
+./scripts/workspace → System Setup & Configuration
 ```
 
 **Sync Components:**
@@ -150,7 +150,7 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 
 | Tool | Location | Purpose | Interface |
 |------|----------|---------|-----------|
-| **workspace** | `./workspace` | Unified management console | Interactive 3-level menus |
+| **workspace** | `./scripts/workspace` | Unified management console | Interactive 3-level menus |
 | **repository_sync** | `./repository_sync` | Multi-repo git operations | Interactive menu + CLI |
 
 ---
@@ -160,7 +160,7 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 ### Interactive Menus
 ```bash
 # Main workspace console
-./workspace
+./scripts/workspace
 
 # Repository sync manager
 ./repository_sync
@@ -216,10 +216,10 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 ```
 workspace-hub/
 │
-├── workspace                    # Main unified CLI (new)
 ├── repository_sync              # Repository sync manager
 │
 ├── scripts/
+│   ├── workspace                # Main unified CLI
 │   │
 │   ├── repository/              # Repository management
 │   │   ├── configure_repos.sh   # (new) URL configuration
@@ -265,25 +265,25 @@ workspace-hub/
 ### By Function
 
 **Need to manage repositories?**
-- `scripts/repository/` or `./workspace → Repository Management`
+- `scripts/repository/` or `./scripts/workspace → Repository Management`
 
 **Need to enforce standards?**
-- `scripts/compliance/` or `./workspace → Compliance & Standards`
+- `scripts/compliance/` or `./scripts/workspace → Compliance & Standards`
 
 **Need to connect remotely?**
-- `scripts/connection/` or `./workspace → Remote Connection Tools`
+- `scripts/connection/` or `./scripts/workspace → Remote Connection Tools`
 
 **Need development tools?**
-- `scripts/development/` or `./workspace → Development Tools`
+- `scripts/development/` or `./scripts/workspace → Development Tools`
 
 **Need system configuration?**
-- `scripts/system/` or `./workspace → System Setup & Configuration`
+- `scripts/system/` or `./scripts/workspace → System Setup & Configuration`
 
 ### By Platform
 
 **Linux/Mac:**
 - Use `.sh` scripts directly
-- Menu: `./workspace`
+- Menu: `./scripts/workspace`
 
 **Windows:**
 - Use `.ps1` PowerShell scripts
@@ -294,7 +294,7 @@ workspace-hub/
 ## Best Practices
 
 ### Script Usage
-1. **Use menus for discovery:** `./workspace` helps find features
+1. **Use menus for discovery:** `./scripts/workspace` helps find features
 2. **Use commands for automation:** Direct script paths for scripts
 3. **Check categories first:** Know which category contains what you need
 4. **Read documentation:** Each category has specific workflows
@@ -317,7 +317,7 @@ workspace-hub/
 ### Interactive Help
 ```bash
 # Workspace help menu
-./workspace → Help & Documentation
+./scripts/workspace → Help & Documentation
 
 # Repository sync help
 ./repository_sync help

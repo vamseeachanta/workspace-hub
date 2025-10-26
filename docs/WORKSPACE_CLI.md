@@ -13,7 +13,7 @@ The Workspace CLI provides a unified, organized interface to all workspace manag
 
 ### Launch Interactive Menu
 ```bash
-./workspace
+./scripts/workspace
 ```
 
 ### Direct Script Access
@@ -243,7 +243,7 @@ scripts/
 ### Example 1: Configure and Clone Repositories
 
 ```
-./workspace
+./scripts/workspace
   ↓
 Main Menu → Select: 1 (Repository Management)
   ↓
@@ -263,7 +263,7 @@ Back to main menus
 ### Example 2: Setup Compliance
 
 ```
-./workspace
+./scripts/workspace
   ↓
 Main Menu → Select: 2 (Compliance & Standards)
   ↓
@@ -283,7 +283,7 @@ Back to verify with option 3
 ### Example 3: Refactor Analysis
 
 ```
-./workspace
+./scripts/workspace
   ↓
 Main Menu → Select: 4 (Development Tools)
   ↓
@@ -302,7 +302,7 @@ Review results
 
 ```bash
 # Launch workspace management console
-./workspace
+./scripts/workspace
 
 # Navigate menus with number keys
 # Press 0 to go back
@@ -400,7 +400,7 @@ AI-assisted development workflow:
 echo $TERM
 
 # Run with basic terminal
-TERM=xterm ./workspace
+TERM=xterm ./scripts/workspace
 ```
 
 **Problem:** Script not found
@@ -417,7 +417,7 @@ pwd
 **Problem:** Permission denied
 ```bash
 # Make scripts executable
-chmod +x ./workspace
+chmod +x ./scripts/workspace
 chmod +x ./scripts/*/*.sh
 chmod +x ./scripts/*/*.py
 ```
@@ -428,7 +428,7 @@ chmod +x ./scripts/*/*.py
 ls -R ./scripts/
 
 # Use workspace menu to navigate
-./workspace
+./scripts/workspace
 ```
 
 ### Repository Configuration Issues
@@ -455,19 +455,19 @@ ls -R ./scripts/
 ### Getting Help
 ```bash
 # Help menu in workspace CLI
-./workspace → Select: 6 (Help & Documentation)
+./scripts/workspace → Select: 6 (Help & Documentation)
 
 # Repository sync help
 ./repository_sync help
 
 # Quick start guide
-./workspace → Help & Documentation → Quick Start Guide
+./scripts/workspace → Help & Documentation → Quick Start Guide
 ```
 
 ### Command Reference
 ```bash
 # Available commands
-./workspace → Help & Documentation → Available Commands
+./scripts/workspace → Help & Documentation → Available Commands
 
 # Individual script help
 ./scripts/<category>/<script> --help
