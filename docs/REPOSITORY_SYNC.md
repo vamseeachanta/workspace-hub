@@ -4,10 +4,11 @@
 
 ## Overview
 
-The `repository_sync` script provides an interactive menu-driven interface for:
+The `repository_sync` script provides a command-based interface for:
 - Listing all repositories (categorized as Work/Personal)
 - Cloning repositories that don't exist locally
-- Bulk operations on Work or Personal repositories
+- Bulk git operations (commit, push, pull, sync) on Work or Personal repositories
+- Branch management (fetch, sync with main, switch branches)
 - Managing repository URLs through a configuration file
 
 ## Quick Start
@@ -34,35 +35,49 @@ aceengineer-admin=git@github.com:username/aceengineer-admin.git
 energy=git@github.com:username/energy.git
 ```
 
-### 3. Use the menu
+### 3. Use the commands
 
-The interactive menu provides the following options:
+The script provides command-based operations. Basic usage:
 
+```bash
+repository_sync <command> [scope] [options]
 ```
-╔════════════════════════════════════════════════════════════════╗
-║                  Repository Sync Manager                      ║
-╚════════════════════════════════════════════════════════════════╝
 
-Repository Statistics:
-  Total repositories: 73
-  Work repositories: 17
-  Personal repositories: 9
+**Available commands:**
+- `list` - View repository status
+- `clone` - Download repositories
+- `commit` - Stage and commit changes
+- `push` - Upload to remote
+- `pull` - Download from remote
+- `sync` - Commit + push in one command
+- `status` - Detailed git information
+- `branches` - List all branches
+- `fetch-branches` - Fetch and track remote branches
+- `sync-main` - Merge/rebase main into current branch
+- `switch` - Switch to specified branch
+- `config` - Edit configuration
+- `refresh` - Refresh repository list
+- `help` - Show help message
 
-Main Menu:
+**Scope options:**
+- `all` - All repositories (default)
+- `work` - Work repositories only
+- `personal` - Personal repositories only
+- `<repo-name>` - Specific repository
 
-  1) List all repositories
-  2) List work repositories
-  3) List personal repositories
+**Quick examples:**
+```bash
+# List all work repositories
+repository_sync list work
 
-  4) Clone all repositories
-  5) Clone work repositories only
-  6) Clone personal repositories only
-  7) Clone specific repository
+# Clone all personal repositories
+repository_sync clone personal
 
-  8) Edit repository configuration
-  9) Refresh repository list
+# Commit all repos with custom message
+repository_sync commit all -m "Fix critical bug"
 
-  0) Exit
+# Full sync work repos
+repository_sync sync work
 ```
 
 ## Features
@@ -141,22 +156,26 @@ Enter repository number (or 0 to cancel): 1
 
 The script provides comprehensive git operations for all repositories:
 
-#### Commit Operations (Options 10-12)
+#### Commit Operations
 
 Stage and commit all changes in repositories:
 
 ```bash
-# Option 10: Commit all repositories
-# Option 11: Commit work repositories only
-# Option 12: Commit personal repositories only
+# Commit all repositories
+repository_sync commit all
+
+# Commit work repositories with custom message
+repository_sync commit work -m "Update dependencies"
+
+# Commit personal repositories
+repository_sync commit personal
 ```
 
 **Workflow:**
 1. Script checks each repository for uncommitted changes
-2. Prompts for custom commit message (or uses default)
-3. Stages all changes (`git add .`)
-4. Commits with the provided message
-5. Skips repositories with no changes
+2. Stages all changes (`git add .`)
+3. Commits with the provided message (or default)
+4. Skips repositories with no changes
 
 **Commit message format:**
 ```
@@ -167,14 +186,19 @@ Your custom message (or default: "Update: Batch commit from repository_sync")
 Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
-#### Push Operations (Options 13-15)
+#### Push Operations
 
 Push committed changes to remote:
 
 ```bash
-# Option 13: Push all repositories
-# Option 14: Push work repositories only
-# Option 15: Push personal repositories only
+# Push all repositories
+repository_sync push all
+
+# Push work repositories only
+repository_sync push work
+
+# Push personal repositories only
+repository_sync push personal
 ```
 
 **Workflow:**
@@ -183,14 +207,19 @@ Push committed changes to remote:
 3. Skips repositories with nothing to push
 4. Reports success/failure for each repository
 
-#### Pull Operations (Options 16-18)
+#### Pull Operations
 
 Pull updates from remote:
 
 ```bash
-# Option 16: Pull all repositories
-# Option 17: Pull work repositories only
-# Option 18: Pull personal repositories only
+# Pull all repositories
+repository_sync pull all
+
+# Pull work repositories only
+repository_sync pull work
+
+# Pull personal repositories only
+repository_sync pull personal
 ```
 
 **Workflow:**
@@ -198,20 +227,125 @@ Pull updates from remote:
 2. Updates local branches
 3. Reports success/failure
 
-#### Full Sync Operations (Options 19-21)
+#### Full Sync Operations
 
 Complete synchronization (commit + push):
 
 ```bash
-# Option 19: Full sync all repositories
-# Option 20: Full sync work repositories
-# Option 21: Full sync personal repositories
+# Full sync all repositories
+repository_sync sync all
+
+# Full sync work repositories with custom message
+repository_sync sync work -m "End of day sync"
+
+# Full sync personal repositories
+repository_sync sync personal
 ```
 
 **Workflow:**
 1. Commits all changes (if any)
 2. Pushes to remote (if needed)
 3. One-command workflow for quick syncs
+
+### Branch Management
+
+The script provides advanced branch management across all repositories:
+
+#### List Branches
+
+View all branches in repositories:
+
+```bash
+# List branches in all repositories
+repository_sync branches all
+
+# List branches in work repositories
+repository_sync branches work
+
+# List branches in personal repositories
+repository_sync branches personal
+```
+
+**Displays:**
+- Current branch (highlighted in green)
+- All local branches
+- Remote branches (first 5, with count of additional branches)
+
+#### Fetch All Remote Branches
+
+Fetch all remote branches and create local tracking branches:
+
+```bash
+# Fetch branches for all repositories
+repository_sync fetch-branches all
+
+# Fetch branches for work repositories only
+repository_sync fetch-branches work
+
+# Fetch branches for personal repositories only
+repository_sync fetch-branches personal
+```
+
+**Workflow:**
+1. Fetches all remotes (`git fetch --all`)
+2. Identifies all remote branches
+3. Creates local tracking branches for any remote branches not already tracked
+4. Reports number of branches created per repository
+
+**Use case:** After a team member pushes new feature branches, quickly track them locally across all repos.
+
+#### Sync with Main Branch
+
+Merge or rebase main branch into current feature branches:
+
+```bash
+# Merge main into current branches (all repos)
+repository_sync sync-main all
+
+# Rebase current branches with main (work repos only)
+repository_sync sync-main work --rebase
+
+# Merge main into current branches (personal repos)
+repository_sync sync-main personal
+```
+
+**Workflow:**
+1. Determines main branch name (main or master)
+2. Fetches latest from origin
+3. Checks for uncommitted changes (blocks if found)
+4. Merges or rebases origin/main into current branch
+5. Aborts on conflicts and reports which repos need manual resolution
+
+**Important notes:**
+- Repositories already on main/master are skipped
+- Requires clean working directory (no uncommitted changes)
+- On conflict, operation is aborted and repository is left clean
+- Use `--rebase` flag for rebase instead of merge
+
+**Use case:** Keep all feature branches up to date with latest main branch changes.
+
+#### Switch Branches
+
+Switch all repositories to a specified branch:
+
+```bash
+# Switch all repos to feature/new-design branch
+repository_sync switch all feature/new-design
+
+# Switch work repos to main branch
+repository_sync switch work main
+
+# Switch personal repos to develop branch
+repository_sync switch personal develop
+```
+
+**Workflow:**
+1. Checks if branch exists locally
+2. If local: switches to branch (`git checkout branch`)
+3. If remote only: creates local tracking branch and switches
+4. If branch doesn't exist: skips repository with warning
+
+**Use case:** Quickly switch entire workspace to a specific branch for testing or development.
 
 ### Repository Status
 

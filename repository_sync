@@ -80,6 +80,30 @@ ${BOLD}COMMANDS:${NC}
             repository_sync status
             repository_sync status work
 
+    ${CYAN}branches${NC} [all|work|personal]
+        List all branches across repositories
+        Examples:
+            repository_sync branches
+            repository_sync branches work
+
+    ${CYAN}fetch-branches${NC} [all|work|personal]
+        Fetch all remote branches and create local tracking branches
+        Examples:
+            repository_sync fetch-branches all
+            repository_sync fetch-branches work
+
+    ${CYAN}sync-main${NC} [all|work|personal] [--rebase]
+        Merge or rebase main branch into current branch
+        Examples:
+            repository_sync sync-main all
+            repository_sync sync-main work --rebase
+
+    ${CYAN}switch${NC} [all|work|personal] <branch-name>
+        Switch all repositories to specified branch
+        Examples:
+            repository_sync switch all feature/new-design
+            repository_sync switch work main
+
     ${CYAN}config${NC}
         Edit repository configuration file
 
@@ -110,13 +134,20 @@ ${BOLD}EXAMPLES:${NC}
     repository_sync pull all
 
 ${BOLD}QUICK REFERENCE:${NC}
-    list        View repository status
-    clone       Download repositories
-    commit      Save local changes
-    push        Upload to remote
-    pull        Download from remote
-    sync        Commit + Push in one command
-    status      Detailed git information
+    ${BOLD}Repository Operations:${NC}
+    list            View repository status
+    clone           Download repositories
+    commit          Save local changes
+    push            Upload to remote
+    pull            Download from remote
+    sync            Commit + Push in one command
+    status          Detailed git information
+
+    ${BOLD}Branch Management:${NC}
+    branches        List all branches
+    fetch-branches  Fetch and track remote branches
+    sync-main       Merge/rebase main into current branch
+    switch          Switch to specified branch
 
 EOF
 }
@@ -625,6 +656,286 @@ show_status() {
     done
 }
 
+# Function to list branches in repositories
+list_branches() {
+    local scope="${1:-all}"
+
+    local repos=($(get_repos_by_scope "$scope"))
+
+    if [ ${#repos[@]} -eq 0 ]; then
+        echo -e "${RED}✗ No repositories found for scope: $scope${NC}"
+        return 1
+    fi
+
+    echo ""
+    echo -e "${BOLD}${CYAN}Branch Information${NC}"
+    echo ""
+
+    for repo in "${repos[@]}"; do
+        if ! repo_exists "$repo"; then
+            continue
+        fi
+
+        local repo_path="$WORKSPACE_ROOT/$repo"
+        cd "$repo_path"
+
+        echo -e "${BOLD}${BLUE}$repo${NC}"
+        echo -e "${CYAN}────────────────────────────────${NC}"
+
+        # Get current branch
+        local current_branch=$(git branch --show-current)
+        echo -e "Current: ${GREEN}$current_branch${NC}"
+
+        # List all branches (local and remote)
+        echo -e "Local branches:"
+        git branch --format="  %(refname:short)" | grep -v "^\*"
+
+        echo -e "Remote branches:"
+        git branch -r --format="  %(refname:short)" | head -5
+        local total_remote=$(git branch -r | wc -l)
+        if [ $total_remote -gt 5 ]; then
+            echo -e "  ${YELLOW}... and $((total_remote - 5)) more${NC}"
+        fi
+
+        echo ""
+
+        cd "$WORKSPACE_ROOT"
+    done
+}
+
+# Function to fetch all remote branches
+fetch_all_branches() {
+    local repo_name="$1"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    echo -e "${BLUE}→ Fetching all branches for $repo_name...${NC}"
+
+    # Fetch all remotes
+    if ! git fetch --all 2>/dev/null; then
+        echo -e "${RED}✗ Failed to fetch branches for $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 1
+    fi
+
+    # Get all remote branches
+    local remote_branches=$(git branch -r | grep -v '\->' | sed 's/origin\///' | xargs)
+
+    # Create local tracking branches for all remote branches
+    local created=0
+    for branch in $remote_branches; do
+        # Skip if local branch already exists
+        if git show-ref --verify --quiet refs/heads/$branch; then
+            continue
+        fi
+
+        # Create tracking branch
+        if git branch --track "$branch" "origin/$branch" 2>/dev/null; then
+            ((created++)) || true
+        fi
+    done
+
+    if [ $created -gt 0 ]; then
+        echo -e "${GREEN}✓ Created $created tracking branches in $repo_name${NC}"
+    else
+        echo -e "${YELLOW}⊘ All remote branches already tracked in $repo_name${NC}"
+    fi
+
+    cd "$WORKSPACE_ROOT"
+    return 0
+}
+
+# Function to sync current branch with main
+sync_with_main() {
+    local repo_name="$1"
+    local use_rebase="${2:-false}"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    # Get current branch
+    local current_branch=$(git branch --show-current)
+
+    # Skip if already on main/master
+    if [[ "$current_branch" == "main" ]] || [[ "$current_branch" == "master" ]]; then
+        echo -e "${YELLOW}⊘ $repo_name: Already on $current_branch, skipping${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    fi
+
+    echo -e "${BLUE}→ Syncing $repo_name ($current_branch) with main...${NC}"
+
+    # Fetch latest
+    git fetch origin 2>/dev/null
+
+    # Determine main branch name
+    local main_branch="main"
+    if ! git show-ref --verify --quiet refs/heads/main; then
+        if git show-ref --verify --quiet refs/heads/master; then
+            main_branch="master"
+        else
+            echo -e "${RED}✗ No main or master branch found in $repo_name${NC}"
+            cd "$WORKSPACE_ROOT"
+            return 1
+        fi
+    fi
+
+    # Check for uncommitted changes
+    if [ -n "$(git status --porcelain)" ]; then
+        echo -e "${RED}✗ $repo_name has uncommitted changes. Commit or stash before syncing.${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 1
+    fi
+
+    # Merge or rebase
+    if [ "$use_rebase" = "true" ]; then
+        if git rebase "origin/$main_branch" 2>/dev/null; then
+            echo -e "${GREEN}✓ Successfully rebased $repo_name with $main_branch${NC}"
+        else
+            echo -e "${RED}✗ Rebase conflict in $repo_name. Resolve manually.${NC}"
+            git rebase --abort 2>/dev/null
+            cd "$WORKSPACE_ROOT"
+            return 1
+        fi
+    else
+        if git merge "origin/$main_branch" 2>/dev/null; then
+            echo -e "${GREEN}✓ Successfully merged $main_branch into $repo_name${NC}"
+        else
+            echo -e "${RED}✗ Merge conflict in $repo_name. Resolve manually.${NC}"
+            git merge --abort 2>/dev/null
+            cd "$WORKSPACE_ROOT"
+            return 1
+        fi
+    fi
+
+    cd "$WORKSPACE_ROOT"
+    return 0
+}
+
+# Function to switch branch across repositories
+switch_branch() {
+    local repo_name="$1"
+    local branch_name="$2"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    # Check if branch exists locally
+    if git show-ref --verify --quiet refs/heads/$branch_name; then
+        echo -e "${BLUE}→ Switching $repo_name to $branch_name...${NC}"
+        if git checkout "$branch_name" 2>/dev/null; then
+            echo -e "${GREEN}✓ Switched $repo_name to $branch_name${NC}"
+            cd "$WORKSPACE_ROOT"
+            return 0
+        else
+            echo -e "${RED}✗ Failed to switch $repo_name to $branch_name${NC}"
+            cd "$WORKSPACE_ROOT"
+            return 1
+        fi
+    # Check if branch exists remotely
+    elif git show-ref --verify --quiet refs/remotes/origin/$branch_name; then
+        echo -e "${BLUE}→ Creating and switching $repo_name to $branch_name...${NC}"
+        if git checkout -b "$branch_name" "origin/$branch_name" 2>/dev/null; then
+            echo -e "${GREEN}✓ Created and switched $repo_name to $branch_name${NC}"
+            cd "$WORKSPACE_ROOT"
+            return 0
+        else
+            echo -e "${RED}✗ Failed to create $branch_name in $repo_name${NC}"
+            cd "$WORKSPACE_ROOT"
+            return 1
+        fi
+    else
+        echo -e "${YELLOW}⊘ Branch $branch_name not found in $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    fi
+}
+
+# Function to process branch operations
+process_branch_ops() {
+    local operation="$1"
+    local scope="$2"
+    local use_rebase="${3:-false}"
+    local branch_name="${4:-}"
+
+    local repos=($(get_repos_by_scope "$scope"))
+
+    if [ ${#repos[@]} -eq 0 ]; then
+        echo -e "${RED}✗ No repositories found for scope: $scope${NC}"
+        return 1
+    fi
+
+    local scope_display
+    case "$scope" in
+        all|"") scope_display="All" ;;
+        work) scope_display="Work" ;;
+        personal) scope_display="Personal" ;;
+        *) scope_display="$scope" ;;
+    esac
+
+    echo ""
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "${CYAN}$operation $scope_display Repositories${NC}"
+    echo -e "${CYAN}======================================${NC}"
+    echo ""
+
+    local success_count=0
+    local fail_count=0
+
+    for repo in "${repos[@]}"; do
+        case "$operation" in
+            "Fetching branches for")
+                if fetch_all_branches "$repo"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+            "Syncing with main for")
+                if sync_with_main "$repo" "$use_rebase"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+            "Switching branches for")
+                if switch_branch "$repo" "$branch_name"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+        esac
+    done
+
+    echo ""
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "${CYAN}Summary${NC}"
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "Total repositories: ${#repos[@]}"
+    echo -e "${GREEN}Successful: ${success_count}${NC}"
+    if [ $fail_count -gt 0 ]; then
+        echo -e "${RED}Failed: ${fail_count}${NC}"
+    fi
+    echo ""
+}
+
 # Main command handler
 main() {
     cd "$WORKSPACE_ROOT"
@@ -641,6 +952,8 @@ main() {
     local command="${1:-help}"
     local scope="${2:-all}"
     local commit_message=""
+    local use_rebase="false"
+    local branch_name=""
 
     # Parse options
     shift 2 2>/dev/null || shift $# 2>/dev/null
@@ -654,14 +967,24 @@ main() {
 Co-Authored-By: Claude <noreply@anthropic.com>"
                 shift 2
                 ;;
+            --rebase)
+                use_rebase="true"
+                shift
+                ;;
             -h|--help)
                 show_usage
                 exit 0
                 ;;
             *)
-                echo -e "${RED}Unknown option: $1${NC}"
-                echo "Run 'repository_sync help' for usage information"
-                exit 1
+                # Check if it's a branch name for switch command
+                if [[ "$command" == "switch" ]] && [[ -z "$branch_name" ]]; then
+                    branch_name="$1"
+                    shift
+                else
+                    echo -e "${RED}Unknown option: $1${NC}"
+                    echo "Run 'repository_sync help' for usage information"
+                    exit 1
+                fi
                 ;;
         esac
     done
@@ -688,6 +1011,23 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
             ;;
         status)
             show_status "$scope"
+            ;;
+        branches)
+            list_branches "$scope"
+            ;;
+        fetch-branches)
+            process_branch_ops "Fetching branches for" "$scope"
+            ;;
+        sync-main)
+            process_branch_ops "Syncing with main for" "$scope" "$use_rebase"
+            ;;
+        switch)
+            if [ -z "$branch_name" ]; then
+                echo -e "${RED}✗ Branch name required for switch command${NC}"
+                echo "Usage: repository_sync switch [all|work|personal] <branch-name>"
+                exit 1
+            fi
+            process_branch_ops "Switching branches for" "$scope" "false" "$branch_name"
             ;;
         config|edit)
             ${EDITOR:-nano} "$REPO_CONFIG_FILE"
