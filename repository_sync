@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ABOUTME: Repository synchronization script with CLI menu for cloning and syncing work/personal repos
+# ABOUTME: Repository synchronization CLI tool with command-based interface
 # ABOUTME: Handles cloning, staging, committing, and syncing repositories to remote
 
 set -e
@@ -12,6 +12,7 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 MAGENTA='\033[0;35m'
+BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 # Configuration
@@ -26,10 +27,102 @@ declare -a ALL_REPOS
 declare -a WORK_REPOS
 declare -a PERSONAL_REPOS
 
+# Function to show usage
+show_usage() {
+    cat << EOF
+${BOLD}${BLUE}Repository Sync Manager${NC}
+
+${BOLD}USAGE:${NC}
+    repository_sync <command> [scope] [options]
+
+${BOLD}COMMANDS:${NC}
+    ${CYAN}list${NC} [all|work|personal]
+        List repositories with their status
+        Examples:
+            repository_sync list
+            repository_sync list work
+            repository_sync list personal
+
+    ${CYAN}clone${NC} [all|work|personal|<repo-name>]
+        Clone repositories that don't exist locally
+        Examples:
+            repository_sync clone all
+            repository_sync clone work
+            repository_sync clone digitalmodel
+
+    ${CYAN}commit${NC} [all|work|personal] [-m "message"]
+        Stage and commit changes in repositories
+        Examples:
+            repository_sync commit all
+            repository_sync commit work -m "Update dependencies"
+
+    ${CYAN}push${NC} [all|work|personal]
+        Push committed changes to remote
+        Examples:
+            repository_sync push all
+            repository_sync push work
+
+    ${CYAN}pull${NC} [all|work|personal]
+        Pull updates from remote repositories
+        Examples:
+            repository_sync pull all
+            repository_sync pull work
+
+    ${CYAN}sync${NC} [all|work|personal] [-m "message"]
+        Full synchronization (commit + push)
+        Examples:
+            repository_sync sync all
+            repository_sync sync work -m "End of day sync"
+
+    ${CYAN}status${NC} [all|work|personal]
+        Show detailed git status for repositories
+        Examples:
+            repository_sync status
+            repository_sync status work
+
+    ${CYAN}config${NC}
+        Edit repository configuration file
+
+    ${CYAN}refresh${NC}
+        Refresh repository list from .gitignore
+
+    ${CYAN}help${NC}
+        Show this help message
+
+${BOLD}OPTIONS:${NC}
+    -m, --message <msg>     Commit message for commit/sync commands
+    -h, --help              Show help message
+
+${BOLD}EXAMPLES:${NC}
+    # List all repositories
+    repository_sync list
+
+    # Clone all work repositories
+    repository_sync clone work
+
+    # Commit all repos with custom message
+    repository_sync commit all -m "Fix critical bug"
+
+    # Full sync personal repos
+    repository_sync sync personal
+
+    # Pull updates for all repos
+    repository_sync pull all
+
+${BOLD}QUICK REFERENCE:${NC}
+    list        View repository status
+    clone       Download repositories
+    commit      Save local changes
+    push        Upload to remote
+    pull        Download from remote
+    sync        Commit + Push in one command
+    status      Detailed git information
+
+EOF
+}
+
 # Function to parse .gitignore and extract repo information
 parse_gitignore() {
-    echo -e "${BLUE}Parsing .gitignore for repository list...${NC}"
-
     while IFS= read -r line; do
         # Skip empty lines and comments that don't have repo info
         if [[ -z "$line" ]] || [[ "$line" =~ ^#[^P][^e] ]]; then
@@ -64,10 +157,6 @@ parse_gitignore() {
             fi
         fi
     done < "$GITIGNORE_FILE"
-
-    echo -e "${GREEN}✓ Found ${#ALL_REPOS[@]} repositories${NC}"
-    echo -e "  ${CYAN}Work repos: ${#WORK_REPOS[@]}${NC}"
-    echo -e "  ${CYAN}Personal repos: ${#PERSONAL_REPOS[@]}${NC}"
 }
 
 # Function to load repo URLs from config file
@@ -77,10 +166,9 @@ load_repo_config() {
         echo -e "${YELLOW}Creating template configuration file...${NC}"
         create_config_template
         echo -e "${YELLOW}Please edit $REPO_CONFIG_FILE with your repository URLs${NC}"
+        echo -e "${YELLOW}Run: repository_sync config${NC}"
         return 1
     fi
-
-    echo -e "${BLUE}Loading repository URLs from config...${NC}"
 
     while IFS='=' read -r repo_name repo_url; do
         # Skip comments and empty lines
@@ -94,8 +182,6 @@ load_repo_config() {
 
         REPO_URLS["$repo_name"]="$repo_url"
     done < "$REPO_CONFIG_FILE"
-
-    echo -e "${GREEN}✓ Loaded ${#REPO_URLS[@]} repository URLs${NC}"
 }
 
 # Function to create config template
@@ -183,7 +269,7 @@ clone_repo() {
 
     echo -e "${BLUE}→ Cloning $repo_name...${NC}"
 
-    if git clone "$repo_url" "$repo_path"; then
+    if git clone "$repo_url" "$repo_path" 2>/dev/null; then
         echo -e "${GREEN}✓ Successfully cloned $repo_name${NC}"
         return 0
     else
@@ -226,7 +312,7 @@ commit_repo() {
 Co-Authored-By: Claude <noreply@anthropic.com>"
     fi
 
-    if git commit -m "$commit_message"; then
+    if git commit -m "$commit_message" 2>/dev/null; then
         echo -e "${GREEN}✓ Committed changes in $repo_name${NC}"
         cd "$WORKSPACE_ROOT"
         return 0
@@ -258,7 +344,7 @@ push_repo() {
 
     echo -e "${BLUE}→ Pushing $repo_name to remote...${NC}"
 
-    if git push; then
+    if git push 2>/dev/null; then
         echo -e "${GREEN}✓ Successfully pushed $repo_name${NC}"
         cd "$WORKSPACE_ROOT"
         return 0
@@ -283,7 +369,7 @@ pull_repo() {
 
     echo -e "${BLUE}→ Pulling updates for $repo_name...${NC}"
 
-    if git pull; then
+    if git pull 2>/dev/null; then
         echo -e "${GREEN}✓ Successfully pulled $repo_name${NC}"
         cd "$WORKSPACE_ROOT"
         return 0
@@ -299,8 +385,6 @@ sync_repo() {
     local repo_name="$1"
     local commit_message="$2"
 
-    echo -e "${CYAN}Syncing $repo_name...${NC}"
-
     # Commit if there are changes
     commit_repo "$repo_name" "$commit_message"
 
@@ -308,26 +392,76 @@ sync_repo() {
     push_repo "$repo_name"
 }
 
+# Function to get repository list by scope
+get_repos_by_scope() {
+    local scope="$1"
+
+    case "$scope" in
+        all|"")
+            echo "${ALL_REPOS[@]}"
+            ;;
+        work)
+            echo "${WORK_REPOS[@]}"
+            ;;
+        personal)
+            echo "${PERSONAL_REPOS[@]}"
+            ;;
+        *)
+            # Check if it's a specific repo name
+            if [[ " ${ALL_REPOS[@]} " =~ " $scope " ]]; then
+                echo "$scope"
+            else
+                echo ""
+            fi
+            ;;
+    esac
+}
+
 # Function to process multiple repositories
 process_repos() {
-    local -n repos=$1
-    local operation="$2"
-    local category="$3"
-    local commit_message="$4"
+    local operation="$1"
+    local scope="$2"
+    local commit_message="$3"
+
+    local repos=($(get_repos_by_scope "$scope"))
+
+    if [ ${#repos[@]} -eq 0 ]; then
+        echo -e "${RED}✗ No repositories found for scope: $scope${NC}"
+        echo -e "${YELLOW}Valid scopes: all, work, personal, or specific repo name${NC}"
+        return 1
+    fi
+
+    local scope_display
+    case "$scope" in
+        all|"") scope_display="All" ;;
+        work) scope_display="Work" ;;
+        personal) scope_display="Personal" ;;
+        *) scope_display="$scope" ;;
+    esac
 
     echo ""
     echo -e "${CYAN}======================================${NC}"
-    echo -e "${CYAN}$operation $category Repositories${NC}"
+    echo -e "${CYAN}$operation $scope_display Repositories${NC}"
     echo -e "${CYAN}======================================${NC}"
     echo ""
 
     local success_count=0
     local skip_count=0
     local fail_count=0
-    local total=${#repos[@]}
 
     for repo in "${repos[@]}"; do
         case "$operation" in
+            "Cloning")
+                if clone_repo "$repo"; then
+                    if repo_exists "$repo"; then
+                        ((skip_count++)) || true
+                    else
+                        ((success_count++)) || true
+                    fi
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
             "Committing")
                 if commit_repo "$repo" "$commit_message"; then
                     ((success_count++)) || true
@@ -360,78 +494,44 @@ process_repos() {
     echo -e "${CYAN}======================================${NC}"
     echo -e "${CYAN}Summary${NC}"
     echo -e "${CYAN}======================================${NC}"
-    echo -e "Total repositories: ${total}"
-    echo -e "${GREEN}Successful operations: ${success_count}${NC}"
-    echo -e "${RED}Failed operations: ${fail_count}${NC}"
+    echo -e "Total repositories: ${#repos[@]}"
+    echo -e "${GREEN}Successful: ${success_count}${NC}"
+    if [ $skip_count -gt 0 ]; then
+        echo -e "${YELLOW}Skipped: ${skip_count}${NC}"
+    fi
+    if [ $fail_count -gt 0 ]; then
+        echo -e "${RED}Failed: ${fail_count}${NC}"
+    fi
     echo ""
 }
 
-# Function to clone multiple repos
-clone_repos() {
-    local -n repos=$1
-    local category="$2"
-
-    echo ""
-    echo -e "${CYAN}======================================${NC}"
-    echo -e "${CYAN}Cloning $category Repositories${NC}"
-    echo -e "${CYAN}======================================${NC}"
-    echo ""
-
-    local success_count=0
-    local skip_count=0
-    local fail_count=0
-    local total=${#repos[@]}
-
-    for repo in "${repos[@]}"; do
-        if clone_repo "$repo"; then
-            if repo_exists "$repo"; then
-                ((skip_count++)) || true
-            else
-                ((success_count++)) || true
-            fi
-        else
-            ((fail_count++)) || true
-        fi
-    done
-
-    echo ""
-    echo -e "${CYAN}======================================${NC}"
-    echo -e "${CYAN}Summary${NC}"
-    echo -e "${CYAN}======================================${NC}"
-    echo -e "Total repositories: ${total}"
-    echo -e "${GREEN}Successfully cloned: ${success_count}${NC}"
-    echo -e "${YELLOW}Already existed: ${skip_count}${NC}"
-    echo -e "${RED}Failed: ${fail_count}${NC}"
-    echo ""
-}
-
-# Function to list repositories with detailed status
+# Function to list repositories
 list_repos() {
-    local filter="$1"
-    local -a repos_to_list
+    local scope="${1:-all}"
 
-    case "$filter" in
-        "work")
-            repos_to_list=("${WORK_REPOS[@]}")
-            echo -e "${CYAN}Work Repositories:${NC}"
-            ;;
-        "personal")
-            repos_to_list=("${PERSONAL_REPOS[@]}")
-            echo -e "${CYAN}Personal Repositories:${NC}"
-            ;;
-        *)
-            repos_to_list=("${ALL_REPOS[@]}")
-            echo -e "${CYAN}All Repositories:${NC}"
-            ;;
+    local repos=($(get_repos_by_scope "$scope"))
+
+    if [ ${#repos[@]} -eq 0 ]; then
+        echo -e "${RED}✗ No repositories found for scope: $scope${NC}"
+        return 1
+    fi
+
+    local scope_display
+    case "$scope" in
+        all|"") scope_display="All Repositories" ;;
+        work) scope_display="Work Repositories" ;;
+        personal) scope_display="Personal Repositories" ;;
+        *) scope_display="Repository: $scope" ;;
     esac
 
     echo ""
-    printf "%-30s %-15s %-15s %s\n" "Repository" "Category" "Git Status" "URL"
+    echo -e "${BOLD}${CYAN}$scope_display${NC}"
+    echo ""
+    printf "%-30s %-15s %-15s\n" "Repository" "Category" "Git Status"
     echo "--------------------------------------------------------------------------------"
 
-    for repo in "${repos_to_list[@]}"; do
+    for repo in "${repos[@]}"; do
         local category="${REPO_CATEGORIES[$repo]}"
-        local url="${REPO_URLS[$repo]:-"Not configured"}"
         local git_status=$(check_git_status "$repo")
         local status_display
 
@@ -453,123 +553,79 @@ list_repos() {
                 ;;
         esac
 
-        printf "%-30s %-15s %-30b %-40s\n" "$repo" "$category" "$status_display" "$url"
+        printf "%-30s %-15s %-30b\n" "$repo" "$category" "$status_display"
     done
 
     echo ""
+    echo -e "${BOLD}Status Legend:${NC}"
+    echo -e "  ${GREEN}Clean${NC}        - No changes, up to date"
+    echo -e "  ${RED}Uncommitted${NC}  - Has uncommitted changes"
+    echo -e "  ${MAGENTA}Unpushed${NC}     - Has commits not pushed"
+    echo -e "  ${CYAN}Behind${NC}       - Remote has new commits"
+    echo -e "  ${YELLOW}Not cloned${NC}   - Repository not present locally"
+    echo ""
 }
 
-# Function to get commit message from user
-get_commit_message() {
-    echo ""
-    echo -e "${CYAN}Enter commit message (or press Enter for default):${NC}"
-    read -r custom_message
+# Function to show detailed status
+show_status() {
+    local scope="${1:-all}"
 
-    if [ -z "$custom_message" ]; then
-        echo "Update: Batch commit from repository_sync
+    local repos=($(get_repos_by_scope "$scope"))
 
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>"
-    else
-        echo "$custom_message
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>"
+    if [ ${#repos[@]} -eq 0 ]; then
+        echo -e "${RED}✗ No repositories found for scope: $scope${NC}"
+        return 1
     fi
-}
 
-# Function to display main menu
-show_menu() {
-    clear
-    echo -e "${BLUE}╔════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BLUE}║                  Repository Sync Manager                      ║${NC}"
-    echo -e "${BLUE}╚════════════════════════════════════════════════════════════════╝${NC}"
     echo ""
-    echo -e "${CYAN}Repository Statistics:${NC}"
-    echo -e "  Total repositories: ${#ALL_REPOS[@]}"
-    echo -e "  Work repositories: ${#WORK_REPOS[@]}"
-    echo -e "  Personal repositories: ${#PERSONAL_REPOS[@]}"
-    echo ""
-    echo -e "${CYAN}═══ Repository Management ═══${NC}"
-    echo ""
-    echo "  1) List all repositories"
-    echo "  2) List work repositories"
-    echo "  3) List personal repositories"
-    echo ""
-    echo -e "${CYAN}═══ Clone Operations ═══${NC}"
-    echo ""
-    echo "  4) Clone all repositories"
-    echo "  5) Clone work repositories"
-    echo "  6) Clone personal repositories"
-    echo "  7) Clone specific repository"
-    echo ""
-    echo -e "${CYAN}═══ Git Operations ═══${NC}"
-    echo ""
-    echo "  10) Commit all repositories"
-    echo "  11) Commit work repositories"
-    echo "  12) Commit personal repositories"
-    echo ""
-    echo "  13) Push all repositories"
-    echo "  14) Push work repositories"
-    echo "  15) Push personal repositories"
-    echo ""
-    echo "  16) Pull all repositories"
-    echo "  17) Pull work repositories"
-    echo "  18) Pull personal repositories"
-    echo ""
-    echo "  19) Full sync all (commit + push)"
-    echo "  20) Full sync work (commit + push)"
-    echo "  21) Full sync personal (commit + push)"
-    echo ""
-    echo -e "${CYAN}═══ Configuration ═══${NC}"
-    echo ""
-    echo "  8) Edit repository configuration"
-    echo "  9) Refresh repository list"
-    echo ""
-    echo "  0) Exit"
-    echo ""
-    echo -n "Enter your choice: "
-}
-
-# Function to clone specific repository
-clone_specific_repo() {
-    echo ""
-    echo -e "${CYAN}Available repositories:${NC}"
+    echo -e "${BOLD}${CYAN}Repository Status Details${NC}"
     echo ""
 
-    local i=1
-    for repo in "${ALL_REPOS[@]}"; do
-        local status
-        if repo_exists "$repo"; then
-            status="${GREEN}[Cloned]${NC}"
-        else
-            status="${YELLOW}[Not cloned]${NC}"
+    for repo in "${repos[@]}"; do
+        if ! repo_exists "$repo"; then
+            continue
         fi
-        printf "%2d) %-30s %b\n" "$i" "$repo" "$status"
-        ((i++))
+
+        local repo_path="$WORKSPACE_ROOT/$repo"
+        cd "$repo_path"
+
+        echo -e "${BOLD}${BLUE}$repo${NC}"
+        echo -e "${CYAN}────────────────────────────────${NC}"
+
+        # Get current branch
+        local branch=$(git branch --show-current)
+        echo -e "Branch: ${GREEN}$branch${NC}"
+
+        # Get status
+        local status_output=$(git status --short)
+        if [ -n "$status_output" ]; then
+            echo -e "Changes:"
+            echo "$status_output" | head -5
+            local total_changes=$(echo "$status_output" | wc -l)
+            if [ $total_changes -gt 5 ]; then
+                echo -e "${YELLOW}... and $((total_changes - 5)) more files${NC}"
+            fi
+        else
+            echo -e "Changes: ${GREEN}None${NC}"
+        fi
+
+        # Check remote status
+        local ahead=$(git rev-list --count @{u}.. 2>/dev/null || echo "0")
+        local behind=$(git rev-list --count ..@{u} 2>/dev/null || echo "0")
+
+        if [ "$ahead" != "0" ] || [ "$behind" != "0" ]; then
+            echo -e "Remote: ${YELLOW}↑$ahead ↓$behind${NC}"
+        else
+            echo -e "Remote: ${GREEN}Up to date${NC}"
+        fi
+
+        echo ""
+
+        cd "$WORKSPACE_ROOT"
     done
-
-    echo ""
-    echo -n "Enter repository number (or 0 to cancel): "
-    read -r choice
-
-    if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -gt 0 ] && [ "$choice" -le "${#ALL_REPOS[@]}" ]; then
-        local repo="${ALL_REPOS[$((choice-1))]}"
-        echo ""
-        clone_repo "$repo"
-        echo ""
-        echo -n "Press Enter to continue..."
-        read -r
-    elif [ "$choice" != "0" ]; then
-        echo -e "${RED}Invalid choice${NC}"
-        echo -n "Press Enter to continue..."
-        read -r
-    fi
 }
 
-# Main execution
+# Main command handler
 main() {
     cd "$WORKSPACE_ROOT"
 
@@ -578,141 +634,81 @@ main() {
 
     # Load repo URLs
     if ! load_repo_config; then
-        echo -e "${YELLOW}Please configure repository URLs and run this script again.${NC}"
         exit 1
     fi
 
-    # Main menu loop
-    while true; do
-        show_menu
-        read -r choice
+    # Parse command line arguments
+    local command="${1:-help}"
+    local scope="${2:-all}"
+    local commit_message=""
 
-        case "$choice" in
-            1)
-                clear
-                list_repos "all"
-                echo -n "Press Enter to continue..."
-                read -r
+    # Parse options
+    shift 2 2>/dev/null || shift $# 2>/dev/null
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -m|--message)
+                commit_message="$2
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+                shift 2
                 ;;
-            2)
-                clear
-                list_repos "work"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            3)
-                clear
-                list_repos "personal"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            4)
-                clone_repos ALL_REPOS "All"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            5)
-                clone_repos WORK_REPOS "Work"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            6)
-                clone_repos PERSONAL_REPOS "Personal"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            7)
-                clone_specific_repo
-                ;;
-            8)
-                ${EDITOR:-nano} "$REPO_CONFIG_FILE"
-                load_repo_config
-                ;;
-            9)
-                parse_gitignore
-                load_repo_config
-                echo -e "${GREEN}✓ Repository list refreshed${NC}"
-                sleep 1
-                ;;
-            10)
-                commit_msg=$(get_commit_message)
-                process_repos ALL_REPOS "Committing" "All" "$commit_msg"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            11)
-                commit_msg=$(get_commit_message)
-                process_repos WORK_REPOS "Committing" "Work" "$commit_msg"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            12)
-                commit_msg=$(get_commit_message)
-                process_repos PERSONAL_REPOS "Committing" "Personal" "$commit_msg"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            13)
-                process_repos ALL_REPOS "Pushing" "All"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            14)
-                process_repos WORK_REPOS "Pushing" "Work"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            15)
-                process_repos PERSONAL_REPOS "Pushing" "Personal"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            16)
-                process_repos ALL_REPOS "Pulling" "All"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            17)
-                process_repos WORK_REPOS "Pulling" "Work"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            18)
-                process_repos PERSONAL_REPOS "Pulling" "Personal"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            19)
-                commit_msg=$(get_commit_message)
-                process_repos ALL_REPOS "Syncing" "All" "$commit_msg"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            20)
-                commit_msg=$(get_commit_message)
-                process_repos WORK_REPOS "Syncing" "Work" "$commit_msg"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            21)
-                commit_msg=$(get_commit_message)
-                process_repos PERSONAL_REPOS "Syncing" "Personal" "$commit_msg"
-                echo -n "Press Enter to continue..."
-                read -r
-                ;;
-            0)
-                echo ""
-                echo -e "${GREEN}Goodbye!${NC}"
-                echo ""
+            -h|--help)
+                show_usage
                 exit 0
                 ;;
             *)
-                echo -e "${RED}Invalid choice. Please try again.${NC}"
-                sleep 1
+                echo -e "${RED}Unknown option: $1${NC}"
+                echo "Run 'repository_sync help' for usage information"
+                exit 1
                 ;;
         esac
     done
+
+    # Execute command
+    case "$command" in
+        list|ls)
+            list_repos "$scope"
+            ;;
+        clone)
+            process_repos "Cloning" "$scope"
+            ;;
+        commit)
+            process_repos "Committing" "$scope" "$commit_message"
+            ;;
+        push)
+            process_repos "Pushing" "$scope"
+            ;;
+        pull)
+            process_repos "Pulling" "$scope"
+            ;;
+        sync)
+            process_repos "Syncing" "$scope" "$commit_message"
+            ;;
+        status)
+            show_status "$scope"
+            ;;
+        config|edit)
+            ${EDITOR:-nano} "$REPO_CONFIG_FILE"
+            load_repo_config
+            ;;
+        refresh|reload)
+            parse_gitignore
+            load_repo_config
+            echo -e "${GREEN}✓ Repository list refreshed${NC}"
+            ;;
+        help|--help|-h)
+            show_usage
+            ;;
+        *)
+            echo -e "${RED}✗ Unknown command: $command${NC}"
+            echo ""
+            echo "Run 'repository_sync help' for usage information"
+            exit 1
+            ;;
+    esac
 }
 
 # Run main function
-main
+main "$@"
