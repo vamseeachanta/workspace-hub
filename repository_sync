@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# ABOUTME: Repository synchronization CLI tool with command-based interface
-# ABOUTME: Handles cloning, staging, committing, and syncing repositories to remote
+# ABOUTME: Repository synchronization CLI tool with interactive multi-level menus
+# ABOUTME: Handles cloning, staging, committing, syncing, and branch management
 
 set -e
 
@@ -33,7 +33,8 @@ show_usage() {
 ${BOLD}${BLUE}Repository Sync Manager${NC}
 
 ${BOLD}USAGE:${NC}
-    repository_sync <command> [scope] [options]
+    repository_sync                     # Launch interactive menu mode
+    repository_sync <command> [scope] [options]   # Command-based mode
 
 ${BOLD}COMMANDS:${NC}
     ${CYAN}list${NC} [all|work|personal]
@@ -936,6 +937,484 @@ process_branch_ops() {
     echo ""
 }
 
+# ============================================================================
+# INTERACTIVE MULTI-LEVEL MENU SYSTEM
+# ============================================================================
+
+# Function to display main menu header
+show_menu_header() {
+    clear
+    echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}${CYAN}║           Repository Sync Manager - Interactive Menu          ║${NC}"
+    echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+}
+
+# Function to show repository statistics
+show_repo_stats() {
+    echo -e "${BOLD}Repository Statistics:${NC}"
+    echo -e "  Total repositories: ${GREEN}${#ALL_REPOS[@]}${NC}"
+    echo -e "  Work repositories: ${CYAN}${#WORK_REPOS[@]}${NC}"
+    echo -e "  Personal repositories: ${MAGENTA}${#PERSONAL_REPOS[@]}${NC}"
+    echo ""
+}
+
+# Function to read menu choice
+read_choice() {
+    local prompt="$1"
+    local choice
+    echo -ne "${BOLD}${prompt}${NC}"
+    read choice
+    echo "$choice"
+}
+
+# Function to pause and wait for user
+pause() {
+    echo ""
+    echo -ne "${YELLOW}Press ENTER to continue...${NC}"
+    read
+}
+
+# Level 1: Main Menu
+show_main_menu() {
+    while true; do
+        show_menu_header
+        show_repo_stats
+
+        echo -e "${BOLD}Main Menu:${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Repository Operations"
+        echo -e "  ${CYAN}2)${NC} Git Operations"
+        echo -e "  ${CYAN}3)${NC} Branch Management"
+        echo -e "  ${CYAN}4)${NC} Configuration"
+        echo -e "  ${CYAN}5)${NC} Help"
+        echo ""
+        echo -e "  ${RED}0)${NC} Exit"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) show_repository_operations_menu ;;
+            2) show_git_operations_menu ;;
+            3) show_branch_management_menu ;;
+            4) show_configuration_menu ;;
+            5) show_usage; pause ;;
+            0) echo -e "${GREEN}Goodbye!${NC}"; exit 0 ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 2: Repository Operations Menu
+show_repository_operations_menu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Repository Operations${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} List All Repositories"
+        echo -e "  ${CYAN}2)${NC} List Work Repositories"
+        echo -e "  ${CYAN}3)${NC} List Personal Repositories"
+        echo -e "  ${CYAN}4)${NC} Clone Repositories"
+        echo -e "  ${CYAN}5)${NC} Repository Status"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back to Main Menu"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) list_repos "all"; pause ;;
+            2) list_repos "work"; pause ;;
+            3) list_repos "personal"; pause ;;
+            4) show_clone_submenu ;;
+            5) show_status_submenu ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Clone Submenu
+show_clone_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Clone Repositories${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Clone All Repositories"
+        echo -e "  ${CYAN}2)${NC} Clone Work Repositories Only"
+        echo -e "  ${CYAN}3)${NC} Clone Personal Repositories Only"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) process_repos "Cloning" "all"; pause ;;
+            2) process_repos "Cloning" "work"; pause ;;
+            3) process_repos "Cloning" "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Status Submenu
+show_status_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Repository Status${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Status All Repositories"
+        echo -e "  ${CYAN}2)${NC} Status Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Status Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) show_status "all"; pause ;;
+            2) show_status "work"; pause ;;
+            3) show_status "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 2: Git Operations Menu
+show_git_operations_menu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Git Operations${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Commit Changes"
+        echo -e "  ${CYAN}2)${NC} Push to Remote"
+        echo -e "  ${CYAN}3)${NC} Pull from Remote"
+        echo -e "  ${CYAN}4)${NC} Full Sync (Commit + Push)"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back to Main Menu"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) show_commit_submenu ;;
+            2) show_push_submenu ;;
+            3) show_pull_submenu ;;
+            4) show_sync_submenu ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Commit Submenu
+show_commit_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Commit Changes${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Commit All Repositories"
+        echo -e "  ${CYAN}2)${NC} Commit Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Commit Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1|2|3)
+                echo ""
+                echo -ne "${BOLD}Enter commit message (or press ENTER for default): ${NC}"
+                read commit_msg
+                case "$choice" in
+                    1) process_repos "Committing" "all" "$commit_msg" ;;
+                    2) process_repos "Committing" "work" "$commit_msg" ;;
+                    3) process_repos "Committing" "personal" "$commit_msg" ;;
+                esac
+                pause
+                ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Push Submenu
+show_push_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Push to Remote${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Push All Repositories"
+        echo -e "  ${CYAN}2)${NC} Push Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Push Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) process_repos "Pushing" "all"; pause ;;
+            2) process_repos "Pushing" "work"; pause ;;
+            3) process_repos "Pushing" "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Pull Submenu
+show_pull_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Pull from Remote${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Pull All Repositories"
+        echo -e "  ${CYAN}2)${NC} Pull Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Pull Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) process_repos "Pulling" "all"; pause ;;
+            2) process_repos "Pulling" "work"; pause ;;
+            3) process_repos "Pulling" "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Sync Submenu
+show_sync_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Full Sync (Commit + Push)${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Sync All Repositories"
+        echo -e "  ${CYAN}2)${NC} Sync Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Sync Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1|2|3)
+                echo ""
+                echo -ne "${BOLD}Enter commit message (or press ENTER for default): ${NC}"
+                read commit_msg
+                case "$choice" in
+                    1) process_repos "Syncing" "all" "$commit_msg" ;;
+                    2) process_repos "Syncing" "work" "$commit_msg" ;;
+                    3) process_repos "Syncing" "personal" "$commit_msg" ;;
+                esac
+                pause
+                ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 2: Branch Management Menu
+show_branch_management_menu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Branch Management${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} List Branches"
+        echo -e "  ${CYAN}2)${NC} Fetch Remote Branches"
+        echo -e "  ${CYAN}3)${NC} Sync with Main Branch"
+        echo -e "  ${CYAN}4)${NC} Switch Branch"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back to Main Menu"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) show_list_branches_submenu ;;
+            2) show_fetch_branches_submenu ;;
+            3) show_sync_main_submenu ;;
+            4) show_switch_branch_submenu ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: List Branches Submenu
+show_list_branches_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}List Branches${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} List All Repositories"
+        echo -e "  ${CYAN}2)${NC} List Work Repositories"
+        echo -e "  ${CYAN}3)${NC} List Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) list_branches "all"; pause ;;
+            2) list_branches "work"; pause ;;
+            3) list_branches "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Fetch Branches Submenu
+show_fetch_branches_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Fetch Remote Branches${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Fetch All Repositories"
+        echo -e "  ${CYAN}2)${NC} Fetch Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Fetch Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) process_branch_ops "Fetching branches for" "all"; pause ;;
+            2) process_branch_ops "Fetching branches for" "work"; pause ;;
+            3) process_branch_ops "Fetching branches for" "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Sync with Main Submenu
+show_sync_main_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Sync with Main Branch${NC}"
+        echo ""
+        echo -e "  ${GREEN}Merge Strategy:${NC}"
+        echo -e "  ${CYAN}1)${NC} Sync All (Merge)"
+        echo -e "  ${CYAN}2)${NC} Sync Work (Merge)"
+        echo -e "  ${CYAN}3)${NC} Sync Personal (Merge)"
+        echo ""
+        echo -e "  ${GREEN}Rebase Strategy:${NC}"
+        echo -e "  ${CYAN}4)${NC} Sync All (Rebase)"
+        echo -e "  ${CYAN}5)${NC} Sync Work (Rebase)"
+        echo -e "  ${CYAN}6)${NC} Sync Personal (Rebase)"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) process_branch_ops "Syncing with main for" "all" "false"; pause ;;
+            2) process_branch_ops "Syncing with main for" "work" "false"; pause ;;
+            3) process_branch_ops "Syncing with main for" "personal" "false"; pause ;;
+            4) process_branch_ops "Syncing with main for" "all" "true"; pause ;;
+            5) process_branch_ops "Syncing with main for" "work" "true"; pause ;;
+            6) process_branch_ops "Syncing with main for" "personal" "true"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Switch Branch Submenu
+show_switch_branch_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Switch Branch${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Switch All Repositories"
+        echo -e "  ${CYAN}2)${NC} Switch Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Switch Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1|2|3)
+                echo ""
+                echo -ne "${BOLD}Enter branch name: ${NC}"
+                read branch_name
+                if [ -n "$branch_name" ]; then
+                    case "$choice" in
+                        1) process_branch_ops "Switching branches for" "all" "false" "$branch_name" ;;
+                        2) process_branch_ops "Switching branches for" "work" "false" "$branch_name" ;;
+                        3) process_branch_ops "Switching branches for" "personal" "false" "$branch_name" ;;
+                    esac
+                    pause
+                else
+                    echo -e "${RED}Branch name cannot be empty${NC}"
+                    sleep 1
+                fi
+                ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 2: Configuration Menu
+show_configuration_menu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Configuration${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Edit Repository Configuration"
+        echo -e "  ${CYAN}2)${NC} Refresh Repository List"
+        echo -e "  ${CYAN}3)${NC} View Statistics"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back to Main Menu"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1)
+                ${EDITOR:-nano} "$REPO_CONFIG_FILE"
+                load_repo_config
+                echo -e "${GREEN}✓ Configuration reloaded${NC}"
+                pause
+                ;;
+            2)
+                parse_gitignore
+                load_repo_config
+                echo -e "${GREEN}✓ Repository list refreshed${NC}"
+                pause
+                ;;
+            3)
+                show_repo_stats
+                pause
+                ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
 # Main command handler
 main() {
     cd "$WORKSPACE_ROOT"
@@ -946,6 +1425,12 @@ main() {
     # Load repo URLs
     if ! load_repo_config; then
         exit 1
+    fi
+
+    # If no arguments provided, launch interactive menu mode
+    if [ $# -eq 0 ]; then
+        show_main_menu
+        exit 0
     fi
 
     # Parse command line arguments
