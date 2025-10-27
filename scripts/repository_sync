@@ -16,7 +16,8 @@ BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 # Configuration
-WORKSPACE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Since script is now in scripts/, go up one directory to get workspace root
+WORKSPACE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 GITIGNORE_FILE="$WORKSPACE_ROOT/.gitignore"
 REPO_CONFIG_FILE="$WORKSPACE_ROOT/config/repos.conf"
 
