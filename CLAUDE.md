@@ -36,7 +36,7 @@ cd ../repo3 && git pull
 **✅ CORRECT - Use available scripts:**
 ```bash
 # Use the repository sync script
-./repository_sync pull all
+./scripts/repository_sync pull all
 ```
 
 **❌ WRONG - Manual configuration:**
@@ -76,13 +76,13 @@ ls scripts/*/
 ./scripts/workspace
 
 # Check repository sync
-./repository_sync help
+./scripts/repository_sync help
 ```
 
 ### Priority Order
 
 1. **First**: Check if `./scripts/workspace` has the feature
-2. **Second**: Check if `./repository_sync` handles the operation
+2. **Second**: Check if `./scripts/repository_sync` handles the operation
 3. **Third**: Check category-specific scripts in `scripts/*/`
 4. **Last Resort**: Direct bash commands (only if no script exists)
 

@@ -35,7 +35,7 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 | `check_all_status.sh` | Quick status check | `./scripts/repository/check_all_status.sh` |
 
 **Related Tools:**
-- `repository_sync` (workspace root) - Main multi-repo git operations tool
+- `scripts/repository_sync` - Main multi-repo git operations tool
 
 **Menu Access:**
 ```
@@ -151,7 +151,7 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 | Tool | Location | Purpose | Interface |
 |------|----------|---------|-----------|
 | **workspace** | `./scripts/workspace` | Unified management console | Interactive 3-level menus |
-| **repository_sync** | `./repository_sync` | Multi-repo git operations | Interactive menu + CLI |
+| **repository_sync** | `./scripts/repository_sync` | Multi-repo git operations | Interactive menu + CLI |
 
 ---
 
@@ -163,14 +163,14 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 ./scripts/workspace
 
 # Repository sync manager
-./repository_sync
+./scripts/repository_sync
 ```
 
 ### Direct Command Access
 ```bash
 # Repository management
 ./scripts/repository/configure_repos.sh
-./repository_sync list all
+./scripts/repository_sync list all
 
 # Compliance
 ./scripts/compliance/verify_compliance.sh
@@ -216,10 +216,9 @@ All scripts have been reorganized into 5 logical categories for better maintaina
 ```
 workspace-hub/
 │
-├── repository_sync              # Repository sync manager
-│
 ├── scripts/
 │   ├── workspace                # Main unified CLI
+│   ├── repository_sync          # Repository sync manager
 │   │
 │   ├── repository/              # Repository management
 │   │   ├── configure_repos.sh   # (new) URL configuration
@@ -320,7 +319,7 @@ workspace-hub/
 ./scripts/workspace → Help & Documentation
 
 # Repository sync help
-./repository_sync help
+./scripts/repository_sync help
 ```
 
 ---

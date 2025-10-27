@@ -75,7 +75,7 @@ Workspace Management:
 - Status monitoring
 
 **Related Scripts:**
-- `repository_sync` (main CLI in workspace root)
+- `scripts/repository_sync` (main repository sync CLI)
 - `scripts/repository/configure_repos.sh`
 - `scripts/repository/check_all_status.sh`
 
@@ -313,17 +313,17 @@ Review results
 
 ```bash
 # Repository operations
-./repository_sync list all
-./repository_sync clone work
-./repository_sync commit all -m "Update dependencies"
-./repository_sync push all
-./repository_sync sync personal -m "End of day sync"
+./scripts/repository_sync list all
+./scripts/repository_sync clone work
+./scripts/repository_sync commit all -m "Update dependencies"
+./scripts/repository_sync push all
+./scripts/repository_sync sync personal -m "End of day sync"
 
 # Branch operations
-./repository_sync branches all
-./repository_sync fetch-branches work
-./repository_sync sync-main all
-./repository_sync switch work feature-branch
+./scripts/repository_sync branches all
+./scripts/repository_sync fetch-branches work
+./scripts/repository_sync sync-main all
+./scripts/repository_sync switch work feature-branch
 
 # Compliance operations
 ./scripts/compliance/propagate_claude_config.py

@@ -16,7 +16,7 @@ The `repository_sync` script provides a command-based interface for:
 ### 1. Run the script
 
 ```bash
-./repository_sync
+./scripts/repository_sync
 ```
 
 ### 2. Configure repository URLs
@@ -40,7 +40,7 @@ energy=git@github.com:username/energy.git
 The script provides command-based operations. Basic usage:
 
 ```bash
-repository_sync <command> [scope] [options]
+./scripts/repository_sync <command> [scope] [options]
 ```
 
 **Available commands:**
@@ -68,16 +68,16 @@ repository_sync <command> [scope] [options]
 **Quick examples:**
 ```bash
 # List all work repositories
-repository_sync list work
+./scripts/repository_sync list work
 
 # Clone all personal repositories
-repository_sync clone personal
+./scripts/repository_sync clone personal
 
 # Commit all repos with custom message
-repository_sync commit all -m "Fix critical bug"
+./scripts/repository_sync commit all -m "Fix critical bug"
 
 # Full sync work repos
-repository_sync sync work
+./scripts/repository_sync sync work
 ```
 
 ## Features
@@ -162,13 +162,13 @@ Stage and commit all changes in repositories:
 
 ```bash
 # Commit all repositories
-repository_sync commit all
+./scripts/repository_sync commit all
 
 # Commit work repositories with custom message
-repository_sync commit work -m "Update dependencies"
+./scripts/repository_sync commit work -m "Update dependencies"
 
 # Commit personal repositories
-repository_sync commit personal
+./scripts/repository_sync commit personal
 ```
 
 **Workflow:**
@@ -192,13 +192,13 @@ Push committed changes to remote:
 
 ```bash
 # Push all repositories
-repository_sync push all
+./scripts/repository_sync push all
 
 # Push work repositories only
-repository_sync push work
+./scripts/repository_sync push work
 
 # Push personal repositories only
-repository_sync push personal
+./scripts/repository_sync push personal
 ```
 
 **Workflow:**
@@ -213,13 +213,13 @@ Pull updates from remote:
 
 ```bash
 # Pull all repositories
-repository_sync pull all
+./scripts/repository_sync pull all
 
 # Pull work repositories only
-repository_sync pull work
+./scripts/repository_sync pull work
 
 # Pull personal repositories only
-repository_sync pull personal
+./scripts/repository_sync pull personal
 ```
 
 **Workflow:**
@@ -233,13 +233,13 @@ Complete synchronization (commit + push):
 
 ```bash
 # Full sync all repositories
-repository_sync sync all
+./scripts/repository_sync sync all
 
 # Full sync work repositories with custom message
-repository_sync sync work -m "End of day sync"
+./scripts/repository_sync sync work -m "End of day sync"
 
 # Full sync personal repositories
-repository_sync sync personal
+./scripts/repository_sync sync personal
 ```
 
 **Workflow:**
@@ -257,13 +257,13 @@ View all branches in repositories:
 
 ```bash
 # List branches in all repositories
-repository_sync branches all
+./scripts/repository_sync branches all
 
 # List branches in work repositories
-repository_sync branches work
+./scripts/repository_sync branches work
 
 # List branches in personal repositories
-repository_sync branches personal
+./scripts/repository_sync branches personal
 ```
 
 **Displays:**
@@ -277,13 +277,13 @@ Fetch all remote branches and create local tracking branches:
 
 ```bash
 # Fetch branches for all repositories
-repository_sync fetch-branches all
+./scripts/repository_sync fetch-branches all
 
 # Fetch branches for work repositories only
-repository_sync fetch-branches work
+./scripts/repository_sync fetch-branches work
 
 # Fetch branches for personal repositories only
-repository_sync fetch-branches personal
+./scripts/repository_sync fetch-branches personal
 ```
 
 **Workflow:**
@@ -300,13 +300,13 @@ Merge or rebase main branch into current feature branches:
 
 ```bash
 # Merge main into current branches (all repos)
-repository_sync sync-main all
+./scripts/repository_sync sync-main all
 
 # Rebase current branches with main (work repos only)
-repository_sync sync-main work --rebase
+./scripts/repository_sync sync-main work --rebase
 
 # Merge main into current branches (personal repos)
-repository_sync sync-main personal
+./scripts/repository_sync sync-main personal
 ```
 
 **Workflow:**
@@ -330,13 +330,13 @@ Switch all repositories to a specified branch:
 
 ```bash
 # Switch all repos to feature/new-design branch
-repository_sync switch all feature/new-design
+./scripts/repository_sync switch all feature/new-design
 
 # Switch work repos to main branch
-repository_sync switch work main
+./scripts/repository_sync switch work main
 
 # Switch personal repos to develop branch
-repository_sync switch personal develop
+./scripts/repository_sync switch personal develop
 ```
 
 **Workflow:**
