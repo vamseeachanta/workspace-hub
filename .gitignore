@@ -312,3 +312,4 @@ coverage.xml
 # Claude Code project memory - ignore local settings and checkpoints
 .claude/settings.local.json
 .claude/checkpoints/
+simpledigitalmarketing/
