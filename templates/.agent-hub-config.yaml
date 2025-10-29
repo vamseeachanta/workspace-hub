@@ -1,0 +1,125 @@
+# Agent Hub Configuration Template
+# This file designates a repository as a domain agent hub
+
+meta:
+  repository: REPO_NAME
+  role: domain_hub
+  domain: DOMAIN_NAME
+  last_updated: "YYYY-MM-DD"
+
+hub_info:
+  name: "Domain Agent Hub Name"
+  description: "Brief description of this agent hub"
+  maintainers:
+    - "team-name"
+  contact: "team-email@example.com"
+
+agents:
+  owned:
+    # List all agents this hub provides
+    - name: agent-name-1
+      type: specialist  # specialist | workflow | orchestrator | proxy
+      status: production  # production | beta | experimental
+      version: "1.0.0"
+      specialization: "What this agent specializes in"
+      description: "Brief description of agent capabilities"
+
+    - name: agent-name-2
+      type: specialist
+      status: production
+      version: "1.0.0"
+      specialization: "Agent specialization"
+      description: "Brief description"
+
+  dependencies:
+    # Universal agents this hub depends on
+    universal:
+      source: "@workspace-hub/.claude/agents/universal/"
+      agents:
+        - coder
+        - reviewer
+        - tester
+        - plotly-visualization-agent
+
+    # Other domain hub agents (if any)
+    external: []
+      # Example:
+      # - source: "@other-hub/.claude/agents/"
+      #   agents:
+      #     - some-agent
+
+integration:
+  # Sync with central registry
+  auto_sync_to_central: true
+  sync_schedule: "daily"  # daily | weekly | manual
+  central_registry: "@workspace-hub/.claude/agents/registry.yaml"
+
+  # Notification settings
+  notify_on_update: false
+  notification_channels: []
+    # - slack
+    # - email
+
+discovery:
+  # Make this hub discoverable
+  discoverable: true
+
+  # Categories for agent discovery
+  categories:
+    - category-1
+    - category-2
+
+  # Keywords for search
+  keywords:
+    - keyword-1
+    - keyword-2
+
+  # Related domains
+  related_domains: []
+    # - related-domain-1
+
+documentation:
+  # Hub documentation
+  readme: "README.md"
+  agent_guide: "docs/agents/AGENT_GUIDE.md"
+  development_guide: "docs/agents/DEVELOPMENT.md"
+
+  # External documentation
+  website: ""
+  wiki: ""
+
+versioning:
+  # Version control strategy
+  strategy: "semver"  # semver | date-based | custom
+
+  # Changelog
+  changelog: "CHANGELOG.md"
+
+  # Deprecation policy
+  deprecation_notice_days: 90  # Days before removing deprecated agents
+
+quality:
+  # Quality gates
+  required_tests: true
+  min_coverage_percent: 80
+
+  # Review requirements
+  requires_review: true
+  min_reviewers: 1
+
+  # Documentation requirements
+  requires_documentation: true
+
+statistics:
+  # Usage tracking (optional)
+  track_usage: false
+  metrics_endpoint: ""
+
+  # Performance tracking
+  track_performance: false
+
+notes: |
+  Additional notes about this agent hub.
+
+  - Note 1
+  - Note 2
