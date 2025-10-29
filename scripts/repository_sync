@@ -1,0 +1,1540 @@
+#!/bin/bash
+
+# ABOUTME: Repository synchronization CLI tool with interactive multi-level menus
+# ABOUTME: Handles cloning, staging, committing, syncing, and branch management
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
+BOLD='\033[1m'
+NC='\033[0m' # No Color
+
+# Configuration
+# Since script is now in scripts/, go up one directory to get workspace root
+WORKSPACE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+GITIGNORE_FILE="$WORKSPACE_ROOT/.gitignore"
+REPO_CONFIG_FILE="$WORKSPACE_ROOT/config/repos.conf"
+
+# Arrays to store repo information
+declare -A REPO_CATEGORIES
+declare -A REPO_URLS
+declare -a ALL_REPOS
+declare -a WORK_REPOS
+declare -a PERSONAL_REPOS
+
+# Function to show usage
+show_usage() {
+    cat << EOF
+${BOLD}${BLUE}Repository Sync Manager${NC}
+
+${BOLD}USAGE:${NC}
+    repository_sync                     # Launch interactive menu mode
+    repository_sync <command> [scope] [options]   # Command-based mode
+
+${BOLD}COMMANDS:${NC}
+    ${CYAN}list${NC} [all|work|personal]
+        List repositories with their status
+        Examples:
+            repository_sync list
+            repository_sync list work
+            repository_sync list personal
+
+    ${CYAN}clone${NC} [all|work|personal|<repo-name>]
+        Clone repositories that don't exist locally
+        Examples:
+            repository_sync clone all
+            repository_sync clone work
+            repository_sync clone digitalmodel
+
+    ${CYAN}commit${NC} [all|work|personal] [-m "message"]
+        Stage and commit changes in repositories
+        Examples:
+            repository_sync commit all
+            repository_sync commit work -m "Update dependencies"
+
+    ${CYAN}push${NC} [all|work|personal]
+        Push committed changes to remote
+        Examples:
+            repository_sync push all
+            repository_sync push work
+
+    ${CYAN}pull${NC} [all|work|personal]
+        Pull updates from remote repositories
+        Examples:
+            repository_sync pull all
+            repository_sync pull work
+
+    ${CYAN}sync${NC} [all|work|personal] [-m "message"]
+        Full synchronization (commit + push)
+        Examples:
+            repository_sync sync all
+            repository_sync sync work -m "End of day sync"
+
+    ${CYAN}status${NC} [all|work|personal]
+        Show detailed git status for repositories
+        Examples:
+            repository_sync status
+            repository_sync status work
+
+    ${CYAN}branches${NC} [all|work|personal]
+        List all branches across repositories
+        Examples:
+            repository_sync branches
+            repository_sync branches work
+
+    ${CYAN}fetch-branches${NC} [all|work|personal]
+        Fetch all remote branches and create local tracking branches
+        Examples:
+            repository_sync fetch-branches all
+            repository_sync fetch-branches work
+
+    ${CYAN}sync-main${NC} [all|work|personal] [--rebase]
+        Merge or rebase main branch into current branch
+        Examples:
+            repository_sync sync-main all
+            repository_sync sync-main work --rebase
+
+    ${CYAN}switch${NC} [all|work|personal] <branch-name>
+        Switch all repositories to specified branch
+        Examples:
+            repository_sync switch all feature/new-design
+            repository_sync switch work main
+
+    ${CYAN}config${NC}
+        Edit repository configuration file
+
+    ${CYAN}refresh${NC}
+        Refresh repository list from .gitignore
+
+    ${CYAN}help${NC}
+        Show this help message
+
+${BOLD}OPTIONS:${NC}
+    -m, --message <msg>     Commit message for commit/sync commands
+    -h, --help              Show help message
+
+${BOLD}EXAMPLES:${NC}
+    # List all repositories
+    repository_sync list
+
+    # Clone all work repositories
+    repository_sync clone work
+
+    # Commit all repos with custom message
+    repository_sync commit all -m "Fix critical bug"
+
+    # Full sync personal repos
+    repository_sync sync personal
+
+    # Pull updates for all repos
+    repository_sync pull all
+
+${BOLD}QUICK REFERENCE:${NC}
+    ${BOLD}Repository Operations:${NC}
+    list            View repository status
+    clone           Download repositories
+    commit          Save local changes
+    push            Upload to remote
+    pull            Download from remote
+    sync            Commit + Push in one command
+    status          Detailed git information
+
+    ${BOLD}Branch Management:${NC}
+    branches        List all branches
+    fetch-branches  Fetch and track remote branches
+    sync-main       Merge/rebase main into current branch
+    switch          Switch to specified branch
+
+EOF
+}
+
+# Function to parse .gitignore and extract repo information
+parse_gitignore() {
+    while IFS= read -r line; do
+        # Skip empty lines and comments that don't have repo info
+        if [[ -z "$line" ]] || [[ "$line" =~ ^#[^P][^e] ]]; then
+            continue
+        fi
+
+        # Match lines with repo directories (ending with /) and optional category comments
+        if [[ "$line" =~ ^([a-zA-Z0-9_-]+)/[[:space:]]*(#[[:space:]]*(Personal|Work|Personal,[[:space:]]*Work|Work,[[:space:]]*Personal))?$ ]]; then
+            repo_name="${BASH_REMATCH[1]}"
+            category="${BASH_REMATCH[3]}"
+
+            # Skip coordination and other non-repo directories
+            if [[ "$repo_name" == "coordination" ]]; then
+                continue
+            fi
+
+            ALL_REPOS+=("$repo_name")
+
+            # Categorize repos
+            if [[ -z "$category" ]]; then
+                REPO_CATEGORIES["$repo_name"]="Uncategorized"
+            elif [[ "$category" =~ Personal.*Work|Work.*Personal ]]; then
+                REPO_CATEGORIES["$repo_name"]="Both"
+                WORK_REPOS+=("$repo_name")
+                PERSONAL_REPOS+=("$repo_name")
+            elif [[ "$category" == "Work" ]]; then
+                REPO_CATEGORIES["$repo_name"]="Work"
+                WORK_REPOS+=("$repo_name")
+            elif [[ "$category" == "Personal" ]]; then
+                REPO_CATEGORIES["$repo_name"]="Personal"
+                PERSONAL_REPOS+=("$repo_name")
+            fi
+        fi
+    done < "$GITIGNORE_FILE"
+}
+
+# Function to load repo URLs from config file
+load_repo_config() {
+    if [ ! -f "$REPO_CONFIG_FILE" ]; then
+        echo -e "${YELLOW}⚠ Repository configuration file not found: $REPO_CONFIG_FILE${NC}"
+        echo -e "${YELLOW}Creating template configuration file...${NC}"
+        create_config_template
+        echo -e "${YELLOW}Please edit $REPO_CONFIG_FILE with your repository URLs${NC}"
+        echo -e "${YELLOW}Run: repository_sync config${NC}"
+        return 1
+    fi
+
+    while IFS='=' read -r repo_name repo_url; do
+        # Skip comments and empty lines
+        if [[ "$repo_name" =~ ^#.*$ ]] || [[ -z "$repo_name" ]]; then
+            continue
+        fi
+
+        # Trim whitespace
+        repo_name=$(echo "$repo_name" | xargs)
+        repo_url=$(echo "$repo_url" | xargs)
+
+        REPO_URLS["$repo_name"]="$repo_url"
+    done < "$REPO_CONFIG_FILE"
+}
+
+# Function to create config template
+create_config_template() {
+    mkdir -p "$(dirname "$REPO_CONFIG_FILE")"
+
+    cat > "$REPO_CONFIG_FILE" << 'EOF'
+# Repository URL Configuration
+# Format: repo_name=git_url
+#
+# Example:
+# digitalmodel=git@github.com:username/digitalmodel.git
+# aceengineer-admin=git@github.com:username/aceengineer-admin.git
+#
+# Add your repository URLs below:
+
+EOF
+
+    # Add entries for all repos found in .gitignore
+    for repo in "${ALL_REPOS[@]}"; do
+        category="${REPO_CATEGORIES[$repo]}"
+        echo "# $repo ($category)" >> "$REPO_CONFIG_FILE"
+        echo "$repo=" >> "$REPO_CONFIG_FILE"
+        echo "" >> "$REPO_CONFIG_FILE"
+    done
+
+    echo -e "${GREEN}✓ Created template: $REPO_CONFIG_FILE${NC}"
+}
+
+# Function to check if repo exists
+repo_exists() {
+    local repo_name="$1"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if [ -d "$repo_path/.git" ]; then
+        return 0  # Exists
+    else
+        return 1  # Does not exist
+    fi
+}
+
+# Function to check git status of a repository
+check_git_status() {
+    local repo_name="$1"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo "not_cloned"
+        return
+    fi
+
+    cd "$repo_path"
+
+    # Check for uncommitted changes
+    if [ -n "$(git status --porcelain)" ]; then
+        echo "dirty"
+    # Check for unpushed commits
+    elif [ -n "$(git log @{u}.. 2>/dev/null)" ]; then
+        echo "unpushed"
+    # Check if behind remote
+    elif [ -n "$(git log ..@{u} 2>/dev/null)" ]; then
+        echo "behind"
+    else
+        echo "clean"
+    fi
+
+    cd "$WORKSPACE_ROOT"
+}
+
+# Function to clone a repository
+clone_repo() {
+    local repo_name="$1"
+    local repo_url="${REPO_URLS[$repo_name]}"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if [ -z "$repo_url" ]; then
+        echo -e "${RED}✗ No URL configured for $repo_name${NC}"
+        return 1
+    fi
+
+    if repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name already exists, skipping${NC}"
+        return 0
+    fi
+
+    echo -e "${BLUE}→ Cloning $repo_name...${NC}"
+
+    if git clone "$repo_url" "$repo_path" 2>/dev/null; then
+        echo -e "${GREEN}✓ Successfully cloned $repo_name${NC}"
+        return 0
+    else
+        echo -e "${RED}✗ Failed to clone $repo_name${NC}"
+        return 1
+    fi
+}
+
+# Function to stage and commit changes in a repository
+commit_repo() {
+    local repo_name="$1"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+    local commit_message="$2"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    # Check if there are changes
+    if [ -z "$(git status --porcelain)" ]; then
+        echo -e "${YELLOW}⊘ $repo_name: No changes to commit${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    fi
+
+    echo -e "${BLUE}→ Committing changes in $repo_name...${NC}"
+
+    # Stage all changes
+    git add .
+
+    # Commit with message
+    if [ -z "$commit_message" ]; then
+        commit_message="Update: Batch commit from repository_sync
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+    fi
+
+    if git commit -m "$commit_message" 2>/dev/null; then
+        echo -e "${GREEN}✓ Committed changes in $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    else
+        echo -e "${RED}✗ Failed to commit in $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 1
+    fi
+}
+
+# Function to push repository to remote
+push_repo() {
+    local repo_name="$1"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    # Check if there's anything to push
+    if [ -z "$(git log @{u}.. 2>/dev/null)" ]; then
+        echo -e "${YELLOW}⊘ $repo_name: Nothing to push${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    fi
+
+    echo -e "${BLUE}→ Pushing $repo_name to remote...${NC}"
+
+    if git push 2>/dev/null; then
+        echo -e "${GREEN}✓ Successfully pushed $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    else
+        echo -e "${RED}✗ Failed to push $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 1
+    fi
+}
+
+# Function to pull from remote
+pull_repo() {
+    local repo_name="$1"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    echo -e "${BLUE}→ Pulling updates for $repo_name...${NC}"
+
+    if git pull 2>/dev/null; then
+        echo -e "${GREEN}✓ Successfully pulled $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    else
+        echo -e "${RED}✗ Failed to pull $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 1
+    fi
+}
+
+# Function to sync repository (commit + push)
+sync_repo() {
+    local repo_name="$1"
+    local commit_message="$2"
+
+    # Commit if there are changes
+    commit_repo "$repo_name" "$commit_message"
+
+    # Push to remote
+    push_repo "$repo_name"
+}
+
+# Function to get repository list by scope
+get_repos_by_scope() {
+    local scope="$1"
+
+    case "$scope" in
+        all|"")
+            echo "${ALL_REPOS[@]}"
+            ;;
+        work)
+            echo "${WORK_REPOS[@]}"
+            ;;
+        personal)
+            echo "${PERSONAL_REPOS[@]}"
+            ;;
+        *)
+            # Check if it's a specific repo name
+            if [[ " ${ALL_REPOS[@]} " =~ " $scope " ]]; then
+                echo "$scope"
+            else
+                echo ""
+            fi
+            ;;
+    esac
+}
+
+# Function to process multiple repositories
+process_repos() {
+    local operation="$1"
+    local scope="$2"
+    local commit_message="$3"
+
+    local repos=($(get_repos_by_scope "$scope"))
+
+    if [ ${#repos[@]} -eq 0 ]; then
+        echo -e "${RED}✗ No repositories found for scope: $scope${NC}"
+        echo -e "${YELLOW}Valid scopes: all, work, personal, or specific repo name${NC}"
+        return 1
+    fi
+
+    local scope_display
+    case "$scope" in
+        all|"") scope_display="All" ;;
+        work) scope_display="Work" ;;
+        personal) scope_display="Personal" ;;
+        *) scope_display="$scope" ;;
+    esac
+
+    echo ""
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "${CYAN}$operation $scope_display Repositories${NC}"
+    echo -e "${CYAN}======================================${NC}"
+    echo ""
+
+    local success_count=0
+    local skip_count=0
+    local fail_count=0
+
+    for repo in "${repos[@]}"; do
+        case "$operation" in
+            "Cloning")
+                if clone_repo "$repo"; then
+                    if repo_exists "$repo"; then
+                        ((skip_count++)) || true
+                    else
+                        ((success_count++)) || true
+                    fi
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+            "Committing")
+                if commit_repo "$repo" "$commit_message"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+            "Pushing")
+                if push_repo "$repo"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+            "Pulling")
+                if pull_repo "$repo"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+            "Syncing")
+                sync_repo "$repo" "$commit_message"
+                ((success_count++)) || true
+                ;;
+        esac
+    done
+
+    echo ""
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "${CYAN}Summary${NC}"
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "Total repositories: ${#repos[@]}"
+    echo -e "${GREEN}Successful: ${success_count}${NC}"
+    if [ $skip_count -gt 0 ]; then
+        echo -e "${YELLOW}Skipped: ${skip_count}${NC}"
+    fi
+    if [ $fail_count -gt 0 ]; then
+        echo -e "${RED}Failed: ${fail_count}${NC}"
+    fi
+    echo ""
+}
+
+# Function to list repositories
+list_repos() {
+    local scope="${1:-all}"
+
+    local repos=($(get_repos_by_scope "$scope"))
+
+    if [ ${#repos[@]} -eq 0 ]; then
+        echo -e "${RED}✗ No repositories found for scope: $scope${NC}"
+        return 1
+    fi
+
+    local scope_display
+    case "$scope" in
+        all|"") scope_display="All Repositories" ;;
+        work) scope_display="Work Repositories" ;;
+        personal) scope_display="Personal Repositories" ;;
+        *) scope_display="Repository: $scope" ;;
+    esac
+
+    echo ""
+    echo -e "${BOLD}${CYAN}$scope_display${NC}"
+    echo ""
+    printf "%-30s %-15s %-15s\n" "Repository" "Category" "Git Status"
+    echo "--------------------------------------------------------------------------------"
+
+    for repo in "${repos[@]}"; do
+        local category="${REPO_CATEGORIES[$repo]}"
+        local git_status=$(check_git_status "$repo")
+        local status_display
+
+        case "$git_status" in
+            "not_cloned")
+                status_display="${YELLOW}Not cloned${NC}"
+                ;;
+            "clean")
+                status_display="${GREEN}Clean${NC}"
+                ;;
+            "dirty")
+                status_display="${RED}Uncommitted${NC}"
+                ;;
+            "unpushed")
+                status_display="${MAGENTA}Unpushed${NC}"
+                ;;
+            "behind")
+                status_display="${CYAN}Behind remote${NC}"
+                ;;
+        esac
+
+        printf "%-30s %-15s %-30b\n" "$repo" "$category" "$status_display"
+    done
+
+    echo ""
+    echo -e "${BOLD}Status Legend:${NC}"
+    echo -e "  ${GREEN}Clean${NC}        - No changes, up to date"
+    echo -e "  ${RED}Uncommitted${NC}  - Has uncommitted changes"
+    echo -e "  ${MAGENTA}Unpushed${NC}     - Has commits not pushed"
+    echo -e "  ${CYAN}Behind${NC}       - Remote has new commits"
+    echo -e "  ${YELLOW}Not cloned${NC}   - Repository not present locally"
+    echo ""
+}
+
+# Function to show detailed status
+show_status() {
+    local scope="${1:-all}"
+
+    local repos=($(get_repos_by_scope "$scope"))
+
+    if [ ${#repos[@]} -eq 0 ]; then
+        echo -e "${RED}✗ No repositories found for scope: $scope${NC}"
+        return 1
+    fi
+
+    echo ""
+    echo -e "${BOLD}${CYAN}Repository Status Details${NC}"
+    echo ""
+
+    for repo in "${repos[@]}"; do
+        if ! repo_exists "$repo"; then
+            continue
+        fi
+
+        local repo_path="$WORKSPACE_ROOT/$repo"
+        cd "$repo_path"
+
+        echo -e "${BOLD}${BLUE}$repo${NC}"
+        echo -e "${CYAN}────────────────────────────────${NC}"
+
+        # Get current branch
+        local branch=$(git branch --show-current)
+        echo -e "Branch: ${GREEN}$branch${NC}"
+
+        # Get status
+        local status_output=$(git status --short)
+        if [ -n "$status_output" ]; then
+            echo -e "Changes:"
+            echo "$status_output" | head -5
+            local total_changes=$(echo "$status_output" | wc -l)
+            if [ $total_changes -gt 5 ]; then
+                echo -e "${YELLOW}... and $((total_changes - 5)) more files${NC}"
+            fi
+        else
+            echo -e "Changes: ${GREEN}None${NC}"
+        fi
+
+        # Check remote status
+        local ahead=$(git rev-list --count @{u}.. 2>/dev/null || echo "0")
+        local behind=$(git rev-list --count ..@{u} 2>/dev/null || echo "0")
+
+        if [ "$ahead" != "0" ] || [ "$behind" != "0" ]; then
+            echo -e "Remote: ${YELLOW}↑$ahead ↓$behind${NC}"
+        else
+            echo -e "Remote: ${GREEN}Up to date${NC}"
+        fi
+
+        echo ""
+
+        cd "$WORKSPACE_ROOT"
+    done
+}
+
+# Function to list branches in repositories
+list_branches() {
+    local scope="${1:-all}"
+
+    local repos=($(get_repos_by_scope "$scope"))
+
+    if [ ${#repos[@]} -eq 0 ]; then
+        echo -e "${RED}✗ No repositories found for scope: $scope${NC}"
+        return 1
+    fi
+
+    echo ""
+    echo -e "${BOLD}${CYAN}Branch Information${NC}"
+    echo ""
+
+    for repo in "${repos[@]}"; do
+        if ! repo_exists "$repo"; then
+            continue
+        fi
+
+        local repo_path="$WORKSPACE_ROOT/$repo"
+        cd "$repo_path"
+
+        echo -e "${BOLD}${BLUE}$repo${NC}"
+        echo -e "${CYAN}────────────────────────────────${NC}"
+
+        # Get current branch
+        local current_branch=$(git branch --show-current)
+        echo -e "Current: ${GREEN}$current_branch${NC}"
+
+        # List all branches (local and remote)
+        echo -e "Local branches:"
+        git branch --format="  %(refname:short)" | grep -v "^\*"
+
+        echo -e "Remote branches:"
+        git branch -r --format="  %(refname:short)" | head -5
+        local total_remote=$(git branch -r | wc -l)
+        if [ $total_remote -gt 5 ]; then
+            echo -e "  ${YELLOW}... and $((total_remote - 5)) more${NC}"
+        fi
+
+        echo ""
+
+        cd "$WORKSPACE_ROOT"
+    done
+}
+
+# Function to fetch all remote branches
+fetch_all_branches() {
+    local repo_name="$1"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    echo -e "${BLUE}→ Fetching all branches for $repo_name...${NC}"
+
+    # Fetch all remotes
+    if ! git fetch --all 2>/dev/null; then
+        echo -e "${RED}✗ Failed to fetch branches for $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 1
+    fi
+
+    # Get all remote branches
+    local remote_branches=$(git branch -r | grep -v '\->' | sed 's/origin\///' | xargs)
+
+    # Create local tracking branches for all remote branches
+    local created=0
+    for branch in $remote_branches; do
+        # Skip if local branch already exists
+        if git show-ref --verify --quiet refs/heads/$branch; then
+            continue
+        fi
+
+        # Create tracking branch
+        if git branch --track "$branch" "origin/$branch" 2>/dev/null; then
+            ((created++)) || true
+        fi
+    done
+
+    if [ $created -gt 0 ]; then
+        echo -e "${GREEN}✓ Created $created tracking branches in $repo_name${NC}"
+    else
+        echo -e "${YELLOW}⊘ All remote branches already tracked in $repo_name${NC}"
+    fi
+
+    cd "$WORKSPACE_ROOT"
+    return 0
+}
+
+# Function to sync current branch with main
+sync_with_main() {
+    local repo_name="$1"
+    local use_rebase="${2:-false}"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    # Get current branch
+    local current_branch=$(git branch --show-current)
+
+    # Skip if already on main/master
+    if [[ "$current_branch" == "main" ]] || [[ "$current_branch" == "master" ]]; then
+        echo -e "${YELLOW}⊘ $repo_name: Already on $current_branch, skipping${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    fi
+
+    echo -e "${BLUE}→ Syncing $repo_name ($current_branch) with main...${NC}"
+
+    # Fetch latest
+    git fetch origin 2>/dev/null
+
+    # Determine main branch name
+    local main_branch="main"
+    if ! git show-ref --verify --quiet refs/heads/main; then
+        if git show-ref --verify --quiet refs/heads/master; then
+            main_branch="master"
+        else
+            echo -e "${RED}✗ No main or master branch found in $repo_name${NC}"
+            cd "$WORKSPACE_ROOT"
+            return 1
+        fi
+    fi
+
+    # Check for uncommitted changes
+    if [ -n "$(git status --porcelain)" ]; then
+        echo -e "${RED}✗ $repo_name has uncommitted changes. Commit or stash before syncing.${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 1
+    fi
+
+    # Merge or rebase
+    if [ "$use_rebase" = "true" ]; then
+        if git rebase "origin/$main_branch" 2>/dev/null; then
+            echo -e "${GREEN}✓ Successfully rebased $repo_name with $main_branch${NC}"
+        else
+            echo -e "${RED}✗ Rebase conflict in $repo_name. Resolve manually.${NC}"
+            git rebase --abort 2>/dev/null
+            cd "$WORKSPACE_ROOT"
+            return 1
+        fi
+    else
+        if git merge "origin/$main_branch" 2>/dev/null; then
+            echo -e "${GREEN}✓ Successfully merged $main_branch into $repo_name${NC}"
+        else
+            echo -e "${RED}✗ Merge conflict in $repo_name. Resolve manually.${NC}"
+            git merge --abort 2>/dev/null
+            cd "$WORKSPACE_ROOT"
+            return 1
+        fi
+    fi
+
+    cd "$WORKSPACE_ROOT"
+    return 0
+}
+
+# Function to switch branch across repositories
+switch_branch() {
+    local repo_name="$1"
+    local branch_name="$2"
+    local repo_path="$WORKSPACE_ROOT/$repo_name"
+
+    if ! repo_exists "$repo_name"; then
+        echo -e "${YELLOW}⊘ $repo_name not cloned, skipping${NC}"
+        return 0
+    fi
+
+    cd "$repo_path"
+
+    # Check if branch exists locally
+    if git show-ref --verify --quiet refs/heads/$branch_name; then
+        echo -e "${BLUE}→ Switching $repo_name to $branch_name...${NC}"
+        if git checkout "$branch_name" 2>/dev/null; then
+            echo -e "${GREEN}✓ Switched $repo_name to $branch_name${NC}"
+            cd "$WORKSPACE_ROOT"
+            return 0
+        else
+            echo -e "${RED}✗ Failed to switch $repo_name to $branch_name${NC}"
+            cd "$WORKSPACE_ROOT"
+            return 1
+        fi
+    # Check if branch exists remotely
+    elif git show-ref --verify --quiet refs/remotes/origin/$branch_name; then
+        echo -e "${BLUE}→ Creating and switching $repo_name to $branch_name...${NC}"
+        if git checkout -b "$branch_name" "origin/$branch_name" 2>/dev/null; then
+            echo -e "${GREEN}✓ Created and switched $repo_name to $branch_name${NC}"
+            cd "$WORKSPACE_ROOT"
+            return 0
+        else
+            echo -e "${RED}✗ Failed to create $branch_name in $repo_name${NC}"
+            cd "$WORKSPACE_ROOT"
+            return 1
+        fi
+    else
+        echo -e "${YELLOW}⊘ Branch $branch_name not found in $repo_name${NC}"
+        cd "$WORKSPACE_ROOT"
+        return 0
+    fi
+}
+
+# Function to process branch operations
+process_branch_ops() {
+    local operation="$1"
+    local scope="$2"
+    local use_rebase="${3:-false}"
+    local branch_name="${4:-}"
+
+    local repos=($(get_repos_by_scope "$scope"))
+
+    if [ ${#repos[@]} -eq 0 ]; then
+        echo -e "${RED}✗ No repositories found for scope: $scope${NC}"
+        return 1
+    fi
+
+    local scope_display
+    case "$scope" in
+        all|"") scope_display="All" ;;
+        work) scope_display="Work" ;;
+        personal) scope_display="Personal" ;;
+        *) scope_display="$scope" ;;
+    esac
+
+    echo ""
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "${CYAN}$operation $scope_display Repositories${NC}"
+    echo -e "${CYAN}======================================${NC}"
+    echo ""
+
+    local success_count=0
+    local fail_count=0
+
+    for repo in "${repos[@]}"; do
+        case "$operation" in
+            "Fetching branches for")
+                if fetch_all_branches "$repo"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+            "Syncing with main for")
+                if sync_with_main "$repo" "$use_rebase"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+            "Switching branches for")
+                if switch_branch "$repo" "$branch_name"; then
+                    ((success_count++)) || true
+                else
+                    ((fail_count++)) || true
+                fi
+                ;;
+        esac
+    done
+
+    echo ""
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "${CYAN}Summary${NC}"
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "Total repositories: ${#repos[@]}"
+    echo -e "${GREEN}Successful: ${success_count}${NC}"
+    if [ $fail_count -gt 0 ]; then
+        echo -e "${RED}Failed: ${fail_count}${NC}"
+    fi
+    echo ""
+}
+
+# ============================================================================
+# INTERACTIVE MULTI-LEVEL MENU SYSTEM
+# ============================================================================
+
+# Function to display main menu header
+show_menu_header() {
+    clear
+    echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}${CYAN}║           Repository Sync Manager - Interactive Menu          ║${NC}"
+    echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+}
+
+# Function to show repository statistics
+show_repo_stats() {
+    echo -e "${BOLD}Repository Statistics:${NC}"
+    echo -e "  Total repositories: ${GREEN}${#ALL_REPOS[@]}${NC}"
+    echo -e "  Work repositories: ${CYAN}${#WORK_REPOS[@]}${NC}"
+    echo -e "  Personal repositories: ${MAGENTA}${#PERSONAL_REPOS[@]}${NC}"
+    echo ""
+}
+
+# Function to read menu choice
+read_choice() {
+    local prompt="$1"
+    local choice
+    echo -ne "${BOLD}${prompt}${NC}"
+    read choice
+    echo "$choice"
+}
+
+# Function to pause and wait for user
+pause() {
+    echo ""
+    echo -ne "${YELLOW}Press ENTER to continue...${NC}"
+    read
+}
+
+# Level 1: Main Menu
+show_main_menu() {
+    while true; do
+        show_menu_header
+        show_repo_stats
+
+        echo -e "${BOLD}Main Menu:${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Repository Operations"
+        echo -e "  ${CYAN}2)${NC} Git Operations"
+        echo -e "  ${CYAN}3)${NC} Branch Management"
+        echo -e "  ${CYAN}4)${NC} Configuration"
+        echo -e "  ${CYAN}5)${NC} Help"
+        echo ""
+        echo -e "  ${RED}0)${NC} Exit"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) show_repository_operations_menu ;;
+            2) show_git_operations_menu ;;
+            3) show_branch_management_menu ;;
+            4) show_configuration_menu ;;
+            5) show_usage; pause ;;
+            0) echo -e "${GREEN}Goodbye!${NC}"; exit 0 ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 2: Repository Operations Menu
+show_repository_operations_menu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Repository Operations${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} List All Repositories"
+        echo -e "  ${CYAN}2)${NC} List Work Repositories"
+        echo -e "  ${CYAN}3)${NC} List Personal Repositories"
+        echo -e "  ${CYAN}4)${NC} Clone Repositories"
+        echo -e "  ${CYAN}5)${NC} Repository Status"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back to Main Menu"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) list_repos "all"; pause ;;
+            2) list_repos "work"; pause ;;
+            3) list_repos "personal"; pause ;;
+            4) show_clone_submenu ;;
+            5) show_status_submenu ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Clone Submenu
+show_clone_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Clone Repositories${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Clone All Repositories"
+        echo -e "  ${CYAN}2)${NC} Clone Work Repositories Only"
+        echo -e "  ${CYAN}3)${NC} Clone Personal Repositories Only"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) process_repos "Cloning" "all"; pause ;;
+            2) process_repos "Cloning" "work"; pause ;;
+            3) process_repos "Cloning" "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Status Submenu
+show_status_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Repository Status${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Status All Repositories"
+        echo -e "  ${CYAN}2)${NC} Status Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Status Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) show_status "all"; pause ;;
+            2) show_status "work"; pause ;;
+            3) show_status "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 2: Git Operations Menu
+show_git_operations_menu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Git Operations${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Commit Changes"
+        echo -e "  ${CYAN}2)${NC} Push to Remote"
+        echo -e "  ${CYAN}3)${NC} Pull from Remote"
+        echo -e "  ${CYAN}4)${NC} Full Sync (Commit + Push)"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back to Main Menu"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) show_commit_submenu ;;
+            2) show_push_submenu ;;
+            3) show_pull_submenu ;;
+            4) show_sync_submenu ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Commit Submenu
+show_commit_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Commit Changes${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Commit All Repositories"
+        echo -e "  ${CYAN}2)${NC} Commit Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Commit Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1|2|3)
+                echo ""
+                echo -ne "${BOLD}Enter commit message (or press ENTER for default): ${NC}"
+                read commit_msg
+                case "$choice" in
+                    1) process_repos "Committing" "all" "$commit_msg" ;;
+                    2) process_repos "Committing" "work" "$commit_msg" ;;
+                    3) process_repos "Committing" "personal" "$commit_msg" ;;
+                esac
+                pause
+                ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Push Submenu
+show_push_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Push to Remote${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Push All Repositories"
+        echo -e "  ${CYAN}2)${NC} Push Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Push Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) process_repos "Pushing" "all"; pause ;;
+            2) process_repos "Pushing" "work"; pause ;;
+            3) process_repos "Pushing" "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Pull Submenu
+show_pull_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Pull from Remote${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Pull All Repositories"
+        echo -e "  ${CYAN}2)${NC} Pull Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Pull Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) process_repos "Pulling" "all"; pause ;;
+            2) process_repos "Pulling" "work"; pause ;;
+            3) process_repos "Pulling" "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Sync Submenu
+show_sync_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Full Sync (Commit + Push)${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Sync All Repositories"
+        echo -e "  ${CYAN}2)${NC} Sync Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Sync Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1|2|3)
+                echo ""
+                echo -ne "${BOLD}Enter commit message (or press ENTER for default): ${NC}"
+                read commit_msg
+                case "$choice" in
+                    1) process_repos "Syncing" "all" "$commit_msg" ;;
+                    2) process_repos "Syncing" "work" "$commit_msg" ;;
+                    3) process_repos "Syncing" "personal" "$commit_msg" ;;
+                esac
+                pause
+                ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 2: Branch Management Menu
+show_branch_management_menu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Branch Management${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} List Branches"
+        echo -e "  ${CYAN}2)${NC} Fetch Remote Branches"
+        echo -e "  ${CYAN}3)${NC} Sync with Main Branch"
+        echo -e "  ${CYAN}4)${NC} Switch Branch"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back to Main Menu"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) show_list_branches_submenu ;;
+            2) show_fetch_branches_submenu ;;
+            3) show_sync_main_submenu ;;
+            4) show_switch_branch_submenu ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: List Branches Submenu
+show_list_branches_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}List Branches${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} List All Repositories"
+        echo -e "  ${CYAN}2)${NC} List Work Repositories"
+        echo -e "  ${CYAN}3)${NC} List Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) list_branches "all"; pause ;;
+            2) list_branches "work"; pause ;;
+            3) list_branches "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Fetch Branches Submenu
+show_fetch_branches_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Fetch Remote Branches${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Fetch All Repositories"
+        echo -e "  ${CYAN}2)${NC} Fetch Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Fetch Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) process_branch_ops "Fetching branches for" "all"; pause ;;
+            2) process_branch_ops "Fetching branches for" "work"; pause ;;
+            3) process_branch_ops "Fetching branches for" "personal"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Sync with Main Submenu
+show_sync_main_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Sync with Main Branch${NC}"
+        echo ""
+        echo -e "  ${GREEN}Merge Strategy:${NC}"
+        echo -e "  ${CYAN}1)${NC} Sync All (Merge)"
+        echo -e "  ${CYAN}2)${NC} Sync Work (Merge)"
+        echo -e "  ${CYAN}3)${NC} Sync Personal (Merge)"
+        echo ""
+        echo -e "  ${GREEN}Rebase Strategy:${NC}"
+        echo -e "  ${CYAN}4)${NC} Sync All (Rebase)"
+        echo -e "  ${CYAN}5)${NC} Sync Work (Rebase)"
+        echo -e "  ${CYAN}6)${NC} Sync Personal (Rebase)"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1) process_branch_ops "Syncing with main for" "all" "false"; pause ;;
+            2) process_branch_ops "Syncing with main for" "work" "false"; pause ;;
+            3) process_branch_ops "Syncing with main for" "personal" "false"; pause ;;
+            4) process_branch_ops "Syncing with main for" "all" "true"; pause ;;
+            5) process_branch_ops "Syncing with main for" "work" "true"; pause ;;
+            6) process_branch_ops "Syncing with main for" "personal" "true"; pause ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 3: Switch Branch Submenu
+show_switch_branch_submenu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Switch Branch${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Switch All Repositories"
+        echo -e "  ${CYAN}2)${NC} Switch Work Repositories"
+        echo -e "  ${CYAN}3)${NC} Switch Personal Repositories"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1|2|3)
+                echo ""
+                echo -ne "${BOLD}Enter branch name: ${NC}"
+                read branch_name
+                if [ -n "$branch_name" ]; then
+                    case "$choice" in
+                        1) process_branch_ops "Switching branches for" "all" "false" "$branch_name" ;;
+                        2) process_branch_ops "Switching branches for" "work" "false" "$branch_name" ;;
+                        3) process_branch_ops "Switching branches for" "personal" "false" "$branch_name" ;;
+                    esac
+                    pause
+                else
+                    echo -e "${RED}Branch name cannot be empty${NC}"
+                    sleep 1
+                fi
+                ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Level 2: Configuration Menu
+show_configuration_menu() {
+    while true; do
+        show_menu_header
+        echo -e "${BOLD}${BLUE}Configuration${NC}"
+        echo ""
+        echo -e "  ${CYAN}1)${NC} Edit Repository Configuration"
+        echo -e "  ${CYAN}2)${NC} Refresh Repository List"
+        echo -e "  ${CYAN}3)${NC} View Statistics"
+        echo ""
+        echo -e "  ${YELLOW}0)${NC} Back to Main Menu"
+        echo ""
+
+        choice=$(read_choice "Select option: ")
+
+        case "$choice" in
+            1)
+                ${EDITOR:-nano} "$REPO_CONFIG_FILE"
+                load_repo_config
+                echo -e "${GREEN}✓ Configuration reloaded${NC}"
+                pause
+                ;;
+            2)
+                parse_gitignore
+                load_repo_config
+                echo -e "${GREEN}✓ Repository list refreshed${NC}"
+                pause
+                ;;
+            3)
+                show_repo_stats
+                pause
+                ;;
+            0) return ;;
+            *) echo -e "${RED}Invalid option${NC}"; sleep 1 ;;
+        esac
+    done
+}
+
+# Main command handler
+main() {
+    cd "$WORKSPACE_ROOT"
+
+    # Parse .gitignore
+    parse_gitignore
+
+    # Load repo URLs
+    if ! load_repo_config; then
+        exit 1
+    fi
+
+    # If no arguments provided, launch interactive menu mode
+    if [ $# -eq 0 ]; then
+        show_main_menu
+        exit 0
+    fi
+
+    # Parse command line arguments
+    local command="${1:-help}"
+    local scope="${2:-all}"
+    local commit_message=""
+    local use_rebase="false"
+    local branch_name=""
+
+    # Parse options
+    shift 2 2>/dev/null || shift $# 2>/dev/null
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -m|--message)
+                commit_message="$2
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+                shift 2
+                ;;
+            --rebase)
+                use_rebase="true"
+                shift
+                ;;
+            -h|--help)
+                show_usage
+                exit 0
+                ;;
+            *)
+                # Check if it's a branch name for switch command
+                if [[ "$command" == "switch" ]] && [[ -z "$branch_name" ]]; then
+                    branch_name="$1"
+                    shift
+                else
+                    echo -e "${RED}Unknown option: $1${NC}"
+                    echo "Run 'repository_sync help' for usage information"
+                    exit 1
+                fi
+                ;;
+        esac
+    done
+
+    # Execute command
+    case "$command" in
+        list|ls)
+            list_repos "$scope"
+            ;;
+        clone)
+            process_repos "Cloning" "$scope"
+            ;;
+        commit)
+            process_repos "Committing" "$scope" "$commit_message"
+            ;;
+        push)
+            process_repos "Pushing" "$scope"
+            ;;
+        pull)
+            process_repos "Pulling" "$scope"
+            ;;
+        sync)
+            process_repos "Syncing" "$scope" "$commit_message"
+            ;;
+        status)
+            show_status "$scope"
+            ;;
+        branches)
+            list_branches "$scope"
+            ;;
+        fetch-branches)
+            process_branch_ops "Fetching branches for" "$scope"
+            ;;
+        sync-main)
+            process_branch_ops "Syncing with main for" "$scope" "$use_rebase"
+            ;;
+        switch)
+            if [ -z "$branch_name" ]; then
+                echo -e "${RED}✗ Branch name required for switch command${NC}"
+                echo "Usage: repository_sync switch [all|work|personal] <branch-name>"
+                exit 1
+            fi
+            process_branch_ops "Switching branches for" "$scope" "false" "$branch_name"
+            ;;
+        config|edit)
+            ${EDITOR:-nano} "$REPO_CONFIG_FILE"
+            load_repo_config
+            ;;
+        refresh|reload)
+            parse_gitignore
+            load_repo_config
+            echo -e "${GREEN}✓ Repository list refreshed${NC}"
+            ;;
+        help|--help|-h)
+            show_usage
+            ;;
+        *)
+            echo -e "${RED}✗ Unknown command: $command${NC}"
+            echo ""
+            echo "Run 'repository_sync help' for usage information"
+            exit 1
+            ;;
+    esac
+}
+
+# Run main function
+main "$@"

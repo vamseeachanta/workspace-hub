@@ -62,6 +62,70 @@
       "limitations": ["complex-architecture", "multi-repo-coordination"],
       "costTier": "medium"
     },
+    "openai-gpt-4o": {
+      "platform": "openai",
+      "type": "primary",
+      "capabilities": {
+        "code-generation": {"score": 93, "domains": ["python", "javascript", "typescript", "go", "rust"]},
+        "code-review": {"score": 88, "domains": ["all"]},
+        "architecture": {"score": 90, "domains": ["system-design", "api-design", "microservices"]},
+        "testing": {"score": 86, "domains": ["unit", "integration", "e2e"]},
+        "documentation": {"score": 91, "domains": ["technical", "api", "guides"]},
+        "refactoring": {"score": 89, "domains": ["all"]},
+        "debugging": {"score": 87, "domains": ["all"]},
+        "web-development": {"score": 94, "domains": ["react", "vue", "angular", "node.js"]}
+      },
+      "bestFor": ["fast-responses", "web-development", "modern-frameworks", "api-design"],
+      "limitations": ["very-long-context", "specialized-domains"],
+      "costTier": "medium",
+      "modelDetails": {
+        "name": "gpt-4o",
+        "contextWindow": "128K tokens",
+        "speed": "fast"
+      }
+    },
+    "openai-gpt-4-turbo": {
+      "platform": "openai",
+      "type": "specialist",
+      "capabilities": {
+        "code-generation": {"score": 92, "domains": ["python", "javascript", "typescript", "java", "c++"]},
+        "code-review": {"score": 90, "domains": ["all"]},
+        "architecture": {"score": 93, "domains": ["system-design", "distributed-systems", "scalability"]},
+        "testing": {"score": 88, "domains": ["unit", "integration", "performance"]},
+        "documentation": {"score": 90, "domains": ["technical", "api", "architecture"]},
+        "refactoring": {"score": 92, "domains": ["all"]},
+        "debugging": {"score": 89, "domains": ["all"]},
+        "complex-reasoning": {"score": 94, "domains": ["algorithms", "optimization", "system-design"]}
+      },
+      "bestFor": ["complex-architecture", "system-design", "performance-optimization", "algorithms"],
+      "limitations": ["response-speed", "cost"],
+      "costTier": "high",
+      "modelDetails": {
+        "name": "gpt-4-turbo",
+        "contextWindow": "128K tokens",
+        "speed": "medium"
+      }
+    },
+    "openai-gpt-35-turbo": {
+      "platform": "openai",
+      "type": "specialist",
+      "capabilities": {
+        "code-generation": {"score": 82, "domains": ["python", "javascript", "typescript"]},
+        "code-review": {"score": 78, "domains": ["basic", "style"]},
+        "testing": {"score": 80, "domains": ["unit", "basic-integration"]},
+        "documentation": {"score": 85, "domains": ["docstrings", "comments", "basic-guides"]},
+        "refactoring": {"score": 83, "domains": ["simple-refactoring"]},
+        "bug-fixing": {"score": 81, "domains": ["simple-bugs"]}
+      },
+      "bestFor": ["simple-tasks", "documentation", "cost-optimization", "fast-iterations"],
+      "limitations": ["complex-reasoning", "advanced-architecture"],
+      "costTier": "low",
+      "modelDetails": {
+        "name": "gpt-3.5-turbo",
+        "contextWindow": "16K tokens",
+        "speed": "very-fast"
+      }
+    },
     "claude-flow-coder": {
       "platform": "claude-flow",
       "type": "specialist",

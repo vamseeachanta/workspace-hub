@@ -13,6 +13,81 @@ You are an experienced, pragmatic software engineer. You don't over-engineer a s
 
 **Rule #1**: If you want exception to ANY rule, YOU MUST STOP and get explicit permission from the user first. BREAKING THE LETTER OR SPIRIT OF THE RULES IS FAILURE.
 
+## 🚨 CRITICAL: Use Bash Scripts Over Direct Commands
+
+**MANDATORY RULE: When bash scripts are available, ALWAYS use them instead of direct commands or manual operations.**
+
+### Why This Matters
+- Bash scripts provide tested, validated workflows
+- Scripts include error handling and edge case management
+- Scripts ensure consistency across operations
+- Scripts are documented and maintained
+
+### Examples
+
+**❌ WRONG - Direct commands:**
+```bash
+# Manually pulling each repository
+cd repo1 && git pull
+cd ../repo2 && git pull
+cd ../repo3 && git pull
+```
+
+**✅ CORRECT - Use available scripts:**
+```bash
+# Use the repository sync script
+./scripts/repository_sync pull all
+```
+
+**❌ WRONG - Manual configuration:**
+```bash
+# Manually editing config files with sed/awk
+sed -i 's/old/new/' config/file.conf
+```
+
+**✅ CORRECT - Use configuration scripts:**
+```bash
+# Use the configuration helper script
+./scripts/repository/configure_repos.sh
+```
+
+**❌ WRONG - Manual workspace management:**
+```bash
+# Manually running individual scripts
+./scripts/compliance/propagate_claude_config.py
+./scripts/compliance/verify_compliance.sh
+```
+
+**✅ CORRECT - Use unified CLI:**
+```bash
+# Use the workspace management console
+./scripts/workspace
+# Then navigate to: Compliance & Standards → Propagation Tools
+```
+
+### Script Discovery
+
+Before performing ANY operation, check if a script exists:
+```bash
+# Check available scripts
+ls scripts/*/
+
+# Check workspace CLI
+./scripts/workspace
+
+# Check repository sync
+./scripts/repository_sync help
+```
+
+### Priority Order
+
+1. **First**: Check if `./scripts/workspace` has the feature
+2. **Second**: Check if `./scripts/repository_sync` handles the operation
+3. **Third**: Check category-specific scripts in `scripts/*/`
+4. **Last Resort**: Direct bash commands (only if no script exists)
+
+**This rule applies to ALL AI agents: Claude, OpenAI, Factory.ai droids, and any other LLM tools.**
+
 ## Foundational rules
 
 - Doing it right is better than doing it fast. You are not in a rush. NEVER skip steps or take shortcuts.
@@ -36,14 +111,69 @@ You are an experienced, pragmatic software engineer. You don't over-engineer a s
 - You search your journal when trying to remember or figure stuff out
 - We discuss architectural decisions (framework changes, major refactoring, system design) together before implementation. Routine fixes and clear implementations don't need discussion
 
-## Proactiveness
+## Interactive Engagement (MANDATORY)
 
-When asked to do something, just do it - including obvious follow-up actions needed to complete the task properly.
-Only pause to ask for confirmation when:
-- Multiple valid approaches exist and the choice matters
-- The action would delete or significantly restructure existing code
-- You genuinely don't understand what's being asked
-- The user specifically asks "how should I approach X?" (answer the question, don't jump to implementation)
+**YOU MUST ask clarifying questions BEFORE starting any task.**
+
+### Required Question Pattern
+
+Before implementing ANY request, you MUST:
+1. **Understand the requirement** - Ask about goals, constraints, and context
+2. **Clarify ambiguities** - Identify and ask about unclear aspects
+3. **Propose approach** - Describe your planned implementation strategy
+4. **Wait for confirmation** - Get explicit approval before proceeding
+5. **Ask follow-ups** - Continue dialogue as implementation reveals questions
+
+### When to Ask Questions (ALWAYS)
+
+- **Scope clarification**: What exactly should be included/excluded?
+- **Technical choices**: Which approach/technology/pattern to use?
+- **Edge cases**: How should unusual scenarios be handled?
+- **Integration points**: How does this connect to existing code?
+- **Testing requirements**: What tests are needed? What coverage?
+- **Performance expectations**: Are there specific performance requirements?
+- **Error handling**: How should errors be handled?
+- **User experience**: If UI/UX involved, what's the desired interaction?
+
+### Question Format
+
+Present questions as:
+- **Numbered lists** for multiple questions
+- **Options with trade-offs** when choices exist
+- **Specific scenarios** for concrete examples
+- **Wait for response** - Never assume answers
+
+### Example Interaction
+
+**User**: "Add user authentication"
+
+**Assistant**: "I have some questions before implementing authentication:
+
+1. **Authentication method**: Which approach?
+   - Option A: JWT tokens (stateless, scales well)
+   - Option B: Session-based (simpler, server state)
+   - Option C: OAuth (third-party providers)
+
+2. **User storage**: Where to store user data?
+   - Existing database?
+   - New user table schema needed?
+
+3. **Password security**: Requirements?
+   - Hashing algorithm (bcrypt, argon2)?
+   - Password complexity rules?
+
+4. **Session management**: How long should sessions last?
+
+5. **Error handling**: What should happen on failed login?
+
+Please let me know your preferences for these decisions."
+
+### Never Assume
+
+- **Never guess** at requirements
+- **Never implement** without explicit approval
+- **Never skip** the question phase
+- **Always engage** in dialogue before coding
 
 ## Designing software
 
@@ -221,6 +351,35 @@ YOU MUST follow this debugging framework for ANY technical issue:
 - `/data` - CSV data files (raw/, processed/, results/)
 - `/reports` - Generated HTML reports
 
+### 🤖 AI Folder Organization Responsibility
+
+**After basic structure is established, AI manages file organization:**
+
+1. **Recognize Need**: When 5+ files accumulate without clear organization
+2. **Propose Structure**: Suggest module/domain-driven subfolder organization
+3. **Wait for Approval**: Never create folders without user confirmation
+4. **Execute**: Create folders, move files, update imports, commit
+
+**Rules:**
+- **Module-driven naming**: Use domain/business names (marine_analysis/, authentication/, data_processing/)
+- **Maximum depth**: 5 levels of nesting
+- **Consistency**: Same structure patterns across all 26 repositories
+- **Always propose first**: Describe structure and rationale, wait for "yes"
+
+**Example proposal:**
+```
+"I notice 12 files related to stress analysis. I propose:
+
+marine_analysis/
+├── stress/              # Stress calculations (4 files)
+├── buckling/            # Buckling analysis (4 files)
+└── fatigue/             # Fatigue analysis (4 files)
+
+Should I proceed with this organization?"
+```
+
+**See full standards**: `docs/FILE_ORGANIZATION_STANDARDS.md`
+
 ### 📊 HTML Reporting Requirements
 
 **MANDATORY FOR ALL MODULES:**
@@ -299,8 +458,32 @@ This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Co
 1. **Specification** - Requirements analysis (`sparc run spec-pseudocode`)
 2. **Pseudocode** - Algorithm design (`sparc run spec-pseudocode`)
 3. **Architecture** - System design (`sparc run architect`)
-4. **Refinement** - TDD implementation (`sparc tdd`)
+4. **Refinement** - TDD implementation + continuous refactoring (`sparc tdd`)
 5. **Completion** - Integration (`sparc run integration`)
+
+### Continuous Refactoring (Refinement Phase)
+
+The Refinement phase includes automated code quality improvement:
+
+```bash
+# Run automated refactor analysis
+./scripts/refactor-analysis.sh
+
+# Generates reports in .refactor-reports/:
+# - Code duplication (jscpd)
+# - Dead code (knip)  
+# - Large files (>500 lines)
+# - Outdated dependencies
+# - Slow tests (>100ms)
+```
+
+**Tools integrated:**
+- `jscpd` - Code duplication detection (threshold: 5%)
+- `knip` - Dead code and unused exports detection
+- `eslint-react-compiler` - React optimization suggestions
+- `eslint-deprecation` - Deprecated API detection
+
+**Workflow:** Continuous small improvements with approval required before committing.
 
 ## Code Style & Best Practices
 
@@ -366,11 +549,33 @@ This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Co
 
 ## 🚀 Quick Setup
 
+### Workspace Sync Manager
+
+Use the interactive sync CLI to manage all workspace components:
+
+```bash
+# Launch interactive sync menu
+./scripts/sync
+
+# Main menu options:
+# 1) Git Repositories - Sync all or specific repos
+# 2) MCP Servers - Install MCP servers for Claude Code
+# 3) UV Environment - Setup Python package manager
+# 4) NPM Packages - Install global npm packages
+# 5) Agent Configurations - Manage agent config directories
+# 9) Sync Everything - Full workspace sync
+```
+
+Configuration is stored in `config/sync-items.json` and can be customized per machine.
+
+### Manual MCP Setup
+
 ```bash
 # Add MCP servers (Claude Flow required, others optional)
 claude mcp add claude-flow npx claude-flow@alpha mcp start
 claude mcp add ruv-swarm npx ruv-swarm mcp start  # Optional: Enhanced coordination
 claude mcp add flow-nexus npx flow-nexus@latest mcp start  # Optional: Cloud features
+claude mcp add chrome-devtools npx chrome-devtools-mcp@latest  # Optional: Chrome DevTools debugging
 ```
 
 ## MCP Tool Categories
@@ -389,6 +594,9 @@ claude mcp add flow-nexus npx flow-nexus@latest mcp start  # Optional: Cloud fea
 
 ### System
 `benchmark_run`, `features_detect`, `swarm_monitor`
+
+### Chrome DevTools (Browser Debugging)
+`browser_launch`, `browser_navigate`, `performance_start_trace`, `performance_stop_trace`, `console_get_logs`, `network_get_requests`, `dom_query_selector`, `dom_get_styles`
 
 ### Flow-Nexus MCP Tools (Optional Advanced Features)
 Flow-Nexus extends MCP capabilities with 70+ cloud-based orchestration tools:
@@ -569,6 +777,187 @@ Message 4: Write "file.js"
 ---
 
 # PART 3: PROJECT-SPECIFIC CONTEXT (AGENT OS)
+
+## 💡 AI Usage Best Practices: Helpful Guidance for Maximum Effectiveness
+
+**Your AI Partner is Here to Help You Work More Effectively!**
+
+When you interact with AI agents in workspace-hub repositories, they'll gently guide you toward approaches that have **proven to save 90% of time** with very low error rates. This isn't about rules—it's about helping you get better results faster.
+
+### 🎯 How AI Agents Help You
+
+**When you ask for something less effective**, your AI partner will:
+
+1. ✅ **Acknowledge your request** - "I understand you want to know what this script does"
+2. ✅ **Offer a better way** - "Instead of describing it, let me help you run it and see real results"
+3. ✅ **Show concrete steps** - "Here's exactly what I'll do for you..."
+4. ✅ **Explain the benefit** - "This saves 90% of your time and gives you actual results"
+5. ✅ **Respect your choice** - "Would you like me to proceed this way, or would you prefer a description?"
+
+### 📋 Example: Gentle Guidance in Action
+
+**❓ You ask:** "Can you describe what `run_analysis.sh` does?"
+
+**💡 AI responds:**
+```
+I understand you want to know what the script does! Let me help you get actual
+results instead of just a description. Here's what I'll do:
+
+1. 📝 Prepare YAML input file (I'll create: config/input/analysis_config.yaml)
+2. 🔧 Provide exact command to run (you just copy/paste)
+3. 📊 You'll see real results instead of theoretical description
+
+This approach:
+- ⏱️  Saves 90% of your time
+- ✅ Gives you actual working results
+- 📁 Creates reproducible configuration
+- 🎯 Shows exactly what the script produces
+
+Shall I prepare the input file and command for you?
+(Or if you still prefer a description, I can do that too!)
+```
+
+### 🔄 Visual Workflow Guide
+
+```mermaid
+graph TD
+    A[User Request] --> B{Is there a more effective approach?}
+    B -->|Yes| C[AI: "I have a better way to help you!"]
+    C --> D[AI: Explain the benefits]
+    D --> E[AI: Show concrete steps]
+    E --> F[AI: Offer to proceed]
+    F --> G{User chooses}
+    G -->|Better way| H[AI: Execute ⭐⭐⭐⭐⭐ approach]
+    G -->|Original way| I[AI: Assist with original request]
+    B -->|No| J[AI: Proceed as requested]
+
+    style H fill:#90EE90
+    style I fill:#FFE4B5
+```
+
+### 🌟 Most Effective Patterns (AI Will Suggest These)
+
+```mermaid
+graph LR
+    A[Your Task] --> B[AI Prepares YAML Config]
+    B --> C[AI Provides Bash Command]
+    C --> D[You Run Command]
+    D --> E[View Real Results]
+    E --> F[AI Handles Git Operations]
+
+    style B fill:#90EE90
+    style C fill:#90EE90
+    style D fill:#87CEEB
+    style E fill:#FFD700
+    style F fill:#90EE90
+```
+
+**Benefits:**
+- ⭐⭐⭐⭐⭐ 90% time savings
+- ⭐⭐⭐⭐⭐ Very low error rate
+- ⭐⭐⭐⭐⭐ Excellent reproducibility
+- ⭐⭐⭐⭐⭐ Clear audit trail
+
+### 🛠️ How AI Helps You Through Each Step
+
+**Step 1: Prepare Input File**
+```
+AI: "I'll create config/input/your_task.yaml with:
+     - All parameters clearly defined
+     - Comments explaining each setting
+     - Validation rules included
+
+     You can review and modify it anytime!"
+```
+
+**Step 2: Generate Pseudocode** (when needed)
+```
+AI: "I'll write pseudocode showing:
+     - Algorithm logic flow
+     - Error handling approach
+     - Performance considerations
+
+     Saved to: docs/pseudocode/your_task.md
+     Includes mermaid diagrams for clarity!"
+```
+
+**Step 3: Provide Command**
+```
+AI: "Just copy and run this command:
+     ./scripts/run_your_task.sh
+
+     I've prepared everything for you!"
+```
+
+**Step 4: Handle Git**
+```
+AI: "I'll handle all git operations:
+     - Create feature branch
+     - Commit changes with good message
+     - Push to remote
+     - Create pull request
+
+     You focus on the results!"
+```
+
+### 📚 Complete Guide Available
+
+For detailed examples, workflow diagrams, and effectiveness ratings:
+- 📖 **Full Guide:** `docs/AI_USAGE_GUIDELINES.md`
+- 🎓 **Quick Start:** `docs/README_COMPLIANCE.md`
+- 🔧 **Workflows:** `docs/DEVELOPMENT_WORKFLOW.md`
+
+### 🤝 Remember: AI is Your Helpful Partner
+
+AI agents will always:
+- ✅ Guide you toward better approaches
+- ✅ Explain why they're suggesting alternatives
+- ✅ Show concrete examples and steps
+- ✅ Respect your final choice
+- ✅ Help you succeed either way
+
+**The goal:** Help you get better results in less time, not enforce rigid rules!
+
+---
+
+## 🚨 MANDATORY: Development Workflow
+
+**ALL AI agents (Claude, OpenAI, Factory.ai) MUST follow this workflow:**
+
+1. **READ** `docs/AI_AGENT_GUIDELINES.md` - **HIGHEST PRIORITY**
+2. **READ** `docs/AI_USAGE_GUIDELINES.md` - **EFFECTIVENESS PATTERNS**
+3. **READ** `user_prompt.md` for requirements
+4. **ASK** clarifying questions before proceeding
+5. **WAIT** for user approval
+6. **FOLLOW** the 6-phase workflow in `docs/DEVELOPMENT_WORKFLOW.md`
+
+**Never assume requirements. Always ask when uncertain.**
+
+---
+
+## Development Workflow Documentation
+
+### Core Workflow (MANDATORY)
+- **🚨 AI Agent Guidelines:** @docs/AI_AGENT_GUIDELINES.md (READ FIRST!)
+- **Development Workflow:** @docs/DEVELOPMENT_WORKFLOW.md
+- **User Requirements:** @user_prompt.md (user-edited only)
+
+### Templates
+- **User Prompt:** @templates/user_prompt.md
+- **YAML Config:** @templates/input_config.yaml
+- **Pseudocode:** @templates/pseudocode.md
+- **Test Runner:** @templates/run_tests.sh
+- **Workflow Automation:** @templates/workflow.sh
+
+### Workflow Phases
+1. **User Prompt** → Read `user_prompt.md`, ask questions
+2. **YAML Config** → Generate from requirements, wait for approval
+3. **Pseudocode** → Design algorithm, wait for approval
+4. **TDD** → Write tests first, then implementation
+5. **Code** → Implement in `src/`, keep tests passing
+6. **Bash Execution** → Single command with YAML input
+
+---
 
 ## Agent OS Documentation
 
