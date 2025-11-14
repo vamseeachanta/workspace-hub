@@ -1,0 +1,3 @@
+[submodule "digitaltwinfeed"]
+	path = digitaltwinfeed
+	url = https://github.com/vamseeachanta/digitaltwinfeed
