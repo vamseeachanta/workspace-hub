@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "@openai/codex": "^0.53.0",
-    "ccusage": "^15.7.1",
-    "codex": "^0.2.3"
+    "ccusage": "^15.7.1"
   }
 }
