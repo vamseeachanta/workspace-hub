@@ -55,19 +55,19 @@ MCP tools (`mcp__claude-flow__*`) for coordination setup only.
 ## Documentation References
 
 ### Workflow (MANDATORY)
-- @docs/ai/AI_AGENT_GUIDELINES.md - **READ FIRST**
-- @docs/workflow/DEVELOPMENT_WORKFLOW.md
-- @docs/ai/AI_USAGE_GUIDELINES.md
+- @docs/modules/ai/AI_AGENT_GUIDELINES.md - **READ FIRST**
+- @docs/modules/workflow/DEVELOPMENT_WORKFLOW.md
+- @docs/modules/ai/AI_USAGE_GUIDELINES.md
 
 ### Standards
-- @docs/standards/FILE_ORGANIZATION_STANDARDS.md
-- @docs/standards/HTML_REPORTING_STANDARDS.md
-- @docs/standards/TESTING_FRAMEWORK_STANDARDS.md
-- @docs/standards/LOGGING_STANDARDS.md
+- @docs/modules/standards/FILE_ORGANIZATION_STANDARDS.md
+- @docs/modules/standards/HTML_REPORTING_STANDARDS.md
+- @docs/modules/standards/TESTING_FRAMEWORK_STANDARDS.md
+- @docs/modules/standards/LOGGING_STANDARDS.md
 
 ### CLI & Tools
-- @docs/cli/WORKSPACE_CLI.md
-- @docs/cli/REPOSITORY_SYNC.md
+- @docs/modules/cli/WORKSPACE_CLI.md
+- @docs/modules/cli/REPOSITORY_SYNC.md
 
 ### Agent OS
 - @.agent-os/product/mission.md

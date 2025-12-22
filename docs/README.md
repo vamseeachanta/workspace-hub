@@ -15,40 +15,32 @@ docs/
 ├── README.md                        # This file - main index
 ├── WORKSPACE_HUB_CAPABILITIES_SUMMARY.md  # Full capabilities overview
 │
-├── ai/                              # AI agent & Claude documentation
-│   ├── AI_AGENT_GUIDELINES.md       # AI agent workflow rules (MANDATORY)
-│   ├── AI_USAGE_GUIDELINES.md       # AI effectiveness patterns
-│   ├── AI_HELPER_EXAMPLES.md        # Example interactions
-│   ├── AI_development_tools.md      # AI tools & memberships
-│   ├── INTERACTIVE_MODE_GUIDELINES.md
-│   ├── MCP_SETUP_GUIDE.md           # MCP server configuration
-│   ├── CLAUDE_INTERACTION_GUIDE.md
-│   ├── CLAUDE_PROJECT_MEMORY.md
-│   ├── CLAUDE_RULES_*.md            # Claude configuration guides
-│   └── ...
-│
-├── workflow/                        # Development workflow documentation
-│   ├── DEVELOPMENT_WORKFLOW.md      # Main workflow guide
-│   ├── DEVELOPMENT_WORKFLOW_GUIDELINES.md
-│   ├── DEVELOPMENT_WORKFLOW_SUMMARY.md
-│   └── IMPLEMENTATION_ROADMAP.md
-│
-├── standards/                       # Standards & compliance
-│   ├── FILE_ORGANIZATION_STANDARDS.md
-│   ├── LOGGING_STANDARDS.md
-│   ├── TESTING_FRAMEWORK_STANDARDS.md
-│   ├── HTML_REPORTING_STANDARDS.md
-│   ├── COMPLIANCE_ENFORCEMENT.md
-│   └── README_COMPLIANCE.md
-│
-├── cli/                             # CLI & tools documentation
-│   ├── WORKSPACE_CLI.md             # Main CLI guide
-│   ├── CLI_MENU_STRUCTURE.md
-│   ├── MENU_VISUAL_GUIDE.md
-│   ├── SCRIPT_ORGANIZATION.md
-│   └── REPOSITORY_SYNC.md
-│
-├── modules/                         # Module-specific documentation
+├── modules/                         # All module documentation
+│   ├── ai/                          # AI agent & Claude documentation
+│   │   ├── AI_AGENT_GUIDELINES.md   # AI agent workflow rules (MANDATORY)
+│   │   ├── AI_USAGE_GUIDELINES.md   # AI effectiveness patterns
+│   │   ├── AI_HELPER_EXAMPLES.md    # Example interactions
+│   │   ├── MCP_SETUP_GUIDE.md       # MCP server configuration
+│   │   ├── CLAUDE_INTERACTION_GUIDE.md
+│   │   └── ...
+│   │
+│   ├── workflow/                    # Development workflow documentation
+│   │   ├── DEVELOPMENT_WORKFLOW.md  # Main workflow guide
+│   │   ├── DEVELOPMENT_WORKFLOW_GUIDELINES.md
+│   │   └── IMPLEMENTATION_ROADMAP.md
+│   │
+│   ├── standards/                   # Standards & compliance
+│   │   ├── FILE_ORGANIZATION_STANDARDS.md
+│   │   ├── LOGGING_STANDARDS.md
+│   │   ├── TESTING_FRAMEWORK_STANDARDS.md
+│   │   ├── HTML_REPORTING_STANDARDS.md
+│   │   └── COMPLIANCE_ENFORCEMENT.md
+│   │
+│   ├── cli/                         # CLI & tools documentation
+│   │   ├── WORKSPACE_CLI.md         # Main CLI guide
+│   │   ├── CLI_MENU_STRUCTURE.md
+│   │   └── REPOSITORY_SYNC.md
+│   │
 │   ├── ai-native/                   # AI-native infrastructure
 │   ├── automation/                  # AI agent orchestration
 │   ├── testing/                     # Testing infrastructure
@@ -67,31 +59,31 @@ docs/
 
 **All AI agents (Claude, OpenAI, Factory.ai) MUST read these first:**
 
-1. 📋 [AI Agent Guidelines](ai/AI_AGENT_GUIDELINES.md) - **HIGHEST PRIORITY**
-2. 💡 [AI Usage Guidelines](ai/AI_USAGE_GUIDELINES.md) - Effectiveness patterns
-3. 🔧 [MCP Setup Guide](ai/MCP_SETUP_GUIDE.md) - MCP server configuration
+1. 📋 [AI Agent Guidelines](modules/ai/AI_AGENT_GUIDELINES.md) - **HIGHEST PRIORITY**
+2. 💡 [AI Usage Guidelines](modules/ai/AI_USAGE_GUIDELINES.md) - Effectiveness patterns
+3. 🔧 [MCP Setup Guide](modules/ai/MCP_SETUP_GUIDE.md) - MCP server configuration
 
 ### Getting Started
 
 - 🚀 [Workspace Hub Capabilities](WORKSPACE_HUB_CAPABILITIES_SUMMARY.md)
-- 📋 [Development Workflow](workflow/DEVELOPMENT_WORKFLOW.md)
-- 🤖 [Claude Interaction Guide](ai/CLAUDE_INTERACTION_GUIDE.md)
-- 📖 [Implementation Roadmap](workflow/IMPLEMENTATION_ROADMAP.md)
+- 📋 [Development Workflow](modules/workflow/DEVELOPMENT_WORKFLOW.md)
+- 🤖 [Claude Interaction Guide](modules/ai/CLAUDE_INTERACTION_GUIDE.md)
+- 📖 [Implementation Roadmap](modules/workflow/IMPLEMENTATION_ROADMAP.md)
 
 ### Standards & Compliance
 
-- 📁 [File Organization Standards](standards/FILE_ORGANIZATION_STANDARDS.md)
-- 📝 [Logging Standards](standards/LOGGING_STANDARDS.md)
-- ✅ [Testing Framework Standards](standards/TESTING_FRAMEWORK_STANDARDS.md)
-- 📊 [HTML Reporting Standards](standards/HTML_REPORTING_STANDARDS.md)
-- 🔒 [Compliance Enforcement](standards/COMPLIANCE_ENFORCEMENT.md)
+- 📁 [File Organization Standards](modules/standards/FILE_ORGANIZATION_STANDARDS.md)
+- 📝 [Logging Standards](modules/standards/LOGGING_STANDARDS.md)
+- ✅ [Testing Framework Standards](modules/standards/TESTING_FRAMEWORK_STANDARDS.md)
+- 📊 [HTML Reporting Standards](modules/standards/HTML_REPORTING_STANDARDS.md)
+- 🔒 [Compliance Enforcement](modules/standards/COMPLIANCE_ENFORCEMENT.md)
 
 ### CLI & Tools
 
-- 💻 [Workspace CLI](cli/WORKSPACE_CLI.md)
-- 📋 [CLI Menu Structure](cli/CLI_MENU_STRUCTURE.md)
-- 🔄 [Repository Sync](cli/REPOSITORY_SYNC.md)
-- 📦 [Script Organization](cli/SCRIPT_ORGANIZATION.md)
+- 💻 [Workspace CLI](modules/cli/WORKSPACE_CLI.md)
+- 📋 [CLI Menu Structure](modules/cli/CLI_MENU_STRUCTURE.md)
+- 🔄 [Repository Sync](modules/cli/REPOSITORY_SYNC.md)
+- 📦 [Script Organization](modules/cli/SCRIPT_ORGANIZATION.md)
 
 ## Core Modules
 
@@ -166,10 +158,10 @@ Monitoring, metrics collection, and reporting systems.
 
 | Topic | Location | Key Documents |
 |-------|----------|---------------|
-| AI Agents | [ai/](ai/) | AI_AGENT_GUIDELINES.md, AI_USAGE_GUIDELINES.md |
-| Development Workflow | [workflow/](workflow/) | DEVELOPMENT_WORKFLOW.md |
-| Standards | [standards/](standards/) | FILE_ORGANIZATION_STANDARDS.md |
-| CLI Tools | [cli/](cli/) | WORKSPACE_CLI.md |
+| AI Agents | [modules/ai/](modules/ai/) | AI_AGENT_GUIDELINES.md, AI_USAGE_GUIDELINES.md |
+| Development Workflow | [modules/workflow/](modules/workflow/) | DEVELOPMENT_WORKFLOW.md |
+| Standards | [modules/standards/](modules/standards/) | FILE_ORGANIZATION_STANDARDS.md |
+| CLI Tools | [modules/cli/](modules/cli/) | WORKSPACE_CLI.md |
 | Testing | [modules/testing/](modules/testing/) | baseline-testing-standards.md |
 | CI/CD | [modules/ci-cd/](modules/ci-cd/) | cicd-integration-workflows.md |
 | Monitoring | [modules/monitoring/](modules/monitoring/) | metrics-collection-framework.md |
@@ -178,13 +170,13 @@ Monitoring, metrics collection, and reporting systems.
 
 | Task | Documentation |
 |------|--------------|
-| Configure AI agents | [ai/AI_AGENT_GUIDELINES.md](ai/AI_AGENT_GUIDELINES.md) |
-| Setup development workflow | [workflow/DEVELOPMENT_WORKFLOW.md](workflow/DEVELOPMENT_WORKFLOW.md) |
+| Configure AI agents | [modules/ai/AI_AGENT_GUIDELINES.md](modules/ai/AI_AGENT_GUIDELINES.md) |
+| Setup development workflow | [modules/workflow/DEVELOPMENT_WORKFLOW.md](modules/workflow/DEVELOPMENT_WORKFLOW.md) |
 | Configure CI/CD | [modules/ci-cd/ci-cd-baseline-integration.md](modules/ci-cd/ci-cd-baseline-integration.md) |
 | Add testing | [modules/testing/testing-templates/](modules/testing/testing-templates/) |
 | Install UV | [modules/environment/uv-modernization-plan.md](modules/environment/uv-modernization-plan.md) |
 | Setup monitoring | [modules/monitoring/metrics-collection-framework.md](modules/monitoring/metrics-collection-framework.md) |
-| Use workspace CLI | [cli/WORKSPACE_CLI.md](cli/WORKSPACE_CLI.md) |
+| Use workspace CLI | [modules/cli/WORKSPACE_CLI.md](modules/cli/WORKSPACE_CLI.md) |
 
 ## Directory Reference
 
@@ -194,11 +186,14 @@ workspace-hub/
 ├── .agent-os/              # Agent OS configuration
 │   └── product/            # Product docs (mission, tech-stack, roadmap, decisions)
 ├── docs/                   # THIS DOCUMENTATION
-│   ├── ai/                 # AI agent documentation
-│   ├── workflow/           # Development workflow
-│   ├── standards/          # Standards & compliance
-│   ├── cli/                # CLI documentation
-│   └── modules/            # Module-specific docs
+│   └── modules/            # All module documentation
+│       ├── ai/             # AI agent documentation
+│       ├── workflow/       # Development workflow
+│       ├── standards/      # Standards & compliance
+│       ├── cli/            # CLI documentation
+│       ├── testing/        # Testing infrastructure
+│       ├── ci-cd/          # CI/CD pipelines
+│       └── ...             # Other modules
 ├── specs/                  # Feature specifications
 ├── modules/                # Functional modules (workspace-level)
 ├── scripts/                # Automation scripts
@@ -210,7 +205,7 @@ workspace-hub/
 ## Contributing to Documentation
 
 ### Documentation Standards
-- ✅ Use **organized subdirectories** (ai/, workflow/, standards/, cli/, modules/)
+- ✅ Use **organized subdirectories** under `modules/` (ai/, workflow/, standards/, cli/, testing/, etc.)
 - ✅ Create **README.md** in each module directory
 - ✅ Include **code examples** and **quick starts**
 - ✅ Add **cross-references** to related documentation
