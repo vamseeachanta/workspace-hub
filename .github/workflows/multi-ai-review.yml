@@ -1,0 +1,394 @@
+# ABOUTME: Multi-AI Commit Workflow for automated code review and testing
+# ABOUTME: Uses Claude for implementation, OpenAI for review, and multi-framework testing
+
+name: Multi-AI Review
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/*'
+    paths:
+      - 'src/**'
+      - 'modules/**'
+      - 'scripts/**/*.py'
+      - 'scripts/**/*.sh'
+      - '!scripts/ai-workflow/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+env:
+  REPORT_DIR: reports/ai-workflow
+  MAX_FIX_ITERATIONS: 3
+
+jobs:
+  # Stage 1: Analyze changes with Claude
+  analyze:
+    name: Analyze Changes (Claude)
+    runs-on: ubuntu-latest
+    outputs:
+      has_issues: ${{ steps.analyze.outputs.has_issues }}
+      report_path: ${{ steps.analyze.outputs.report_path }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install -g jq
+          chmod +x scripts/ai-workflow/*.sh
+
+      - name: Create report directory
+        run: mkdir -p ${{ env.REPORT_DIR }}
+
+      - name: Analyze with Claude
+        id: analyze
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          REPORT_PATH="${{ env.REPORT_DIR }}/analyze-${{ github.run_id }}.json"
+
+          ./scripts/ai-workflow/primary-claude.sh \
+            --diff \
+            --report "$REPORT_PATH" || true
+
+          if [ -f "$REPORT_PATH" ]; then
+            ISSUES=$(jq '.summary.total_issues // 0' "$REPORT_PATH")
+            echo "has_issues=$([[ $ISSUES -gt 0 ]] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+            echo "report_path=$REPORT_PATH" >> $GITHUB_OUTPUT
+          else
+            echo "has_issues=false" >> $GITHUB_OUTPUT
+            echo "report_path=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload analysis report
+        uses: actions/upload-artifact@v4
+        with:
+          name: analysis-report
+          path: ${{ env.REPORT_DIR }}/analyze-*.json
+          retention-days: 30
+
+  # Stage 2: Code Review with OpenAI
+  review:
+    name: Code Review (OpenAI)
+    runs-on: ubuntu-latest
+    needs: analyze
+    outputs:
+      status: ${{ steps.review.outputs.status }}
+      errors: ${{ steps.review.outputs.errors }}
+      warnings: ${{ steps.review.outputs.warnings }}
+      report_path: ${{ steps.review.outputs.report_path }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup tools
+        run: |
+          chmod +x scripts/ai-workflow/*.sh
+          mkdir -p ${{ env.REPORT_DIR }}
+
+      - name: Run OpenAI Review
+        id: review
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          REPORT_PATH="${{ env.REPORT_DIR }}/review-${{ github.run_id }}.json"
+
+          ./scripts/ai-workflow/review-openai.sh \
+            --diff \
+            --checks "quality,security,performance,best_practices" \
+            --severity warning \
+            --report "$REPORT_PATH" || true
+
+          if [ -f "$REPORT_PATH" ]; then
+            STATUS=$(jq -r '.status // "unknown"' "$REPORT_PATH")
+            ERRORS=$(jq '.summary.errors // 0' "$REPORT_PATH")
+            WARNINGS=$(jq '.summary.warnings // 0' "$REPORT_PATH")
+
+            echo "status=$STATUS" >> $GITHUB_OUTPUT
+            echo "errors=$ERRORS" >> $GITHUB_OUTPUT
+            echo "warnings=$WARNINGS" >> $GITHUB_OUTPUT
+            echo "report_path=$REPORT_PATH" >> $GITHUB_OUTPUT
+          else
+            echo "status=error" >> $GITHUB_OUTPUT
+            echo "errors=0" >> $GITHUB_OUTPUT
+            echo "warnings=0" >> $GITHUB_OUTPUT
+            echo "report_path=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload review report
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-report
+          path: ${{ env.REPORT_DIR }}/review-*.json
+          retention-days: 30
+
+      - name: Comment on PR with review results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const reportPath = '${{ steps.review.outputs.report_path }}';
+
+            if (!fs.existsSync(reportPath)) {
+              console.log('No review report found');
+              return;
+            }
+
+            const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+            const errors = report.summary?.errors || 0;
+            const warnings = report.summary?.warnings || 0;
+
+            let body = `## 🤖 AI Code Review Results\n\n`;
+            body += `| Metric | Count |\n|--------|-------|\n`;
+            body += `| ❌ Errors | ${errors} |\n`;
+            body += `| ⚠️ Warnings | ${warnings} |\n\n`;
+
+            if (report.reviews) {
+              for (const review of report.reviews) {
+                if (review.findings && review.findings.length > 0) {
+                  body += `### 📄 ${review.file}\n`;
+                  body += `Score: ${review.overall_score}/10\n\n`;
+                  for (const finding of review.findings.slice(0, 5)) {
+                    const icon = finding.severity === 'error' ? '❌' : '⚠️';
+                    body += `- ${icon} **${finding.category}**: ${finding.issue}\n`;
+                    if (finding.line) body += `  - Line: ${finding.line}\n`;
+                    body += `  - Fix: ${finding.recommendation}\n`;
+                  }
+                  if (review.findings.length > 5) {
+                    body += `\n*...and ${review.findings.length - 5} more issues*\n`;
+                  }
+                  body += '\n';
+                }
+              }
+            }
+
+            body += `\n---\n*Review powered by OpenAI GPT-4o*`;
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+  # Stage 3: Comprehensive Testing
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: [analyze, review]
+    outputs:
+      status: ${{ steps.test.outputs.status }}
+      passed: ${{ steps.test.outputs.passed }}
+      failed: ${{ steps.test.outputs.failed }}
+      coverage: ${{ steps.test.outputs.coverage }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Python dependencies
+        run: |
+          pip install pytest pytest-cov pytest-json-report || true
+
+      - name: Install Node dependencies
+        run: |
+          if [ -f "package.json" ]; then
+            npm ci || npm install
+          fi
+
+      - name: Setup test runner
+        run: |
+          chmod +x scripts/ai-workflow/*.sh
+          mkdir -p ${{ env.REPORT_DIR }}
+
+      - name: Run tests
+        id: test
+        run: |
+          REPORT_PATH="${{ env.REPORT_DIR }}/test-${{ github.run_id }}.json"
+
+          ./scripts/ai-workflow/test-runner.sh \
+            --levels unit,integration \
+            --coverage \
+            --threshold 80 \
+            --report "$REPORT_PATH" || true
+
+          if [ -f "$REPORT_PATH" ]; then
+            STATUS=$(jq -r '.status // "unknown"' "$REPORT_PATH")
+            PASSED=$(jq '.summary.total_passed // 0' "$REPORT_PATH")
+            FAILED=$(jq '.summary.total_failed // 0' "$REPORT_PATH")
+            COVERAGE=$(jq '.summary.coverage_percent // 0' "$REPORT_PATH")
+
+            echo "status=$STATUS" >> $GITHUB_OUTPUT
+            echo "passed=$PASSED" >> $GITHUB_OUTPUT
+            echo "failed=$FAILED" >> $GITHUB_OUTPUT
+            echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+          else
+            echo "status=skipped" >> $GITHUB_OUTPUT
+            echo "passed=0" >> $GITHUB_OUTPUT
+            echo "failed=0" >> $GITHUB_OUTPUT
+            echo "coverage=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: ${{ env.REPORT_DIR }}/test-*.json
+          retention-days: 30
+
+  # Stage 4: Auto-fix (only on errors)
+  auto-fix:
+    name: Auto-Fix Issues (Claude)
+    runs-on: ubuntu-latest
+    needs: [review, test]
+    if: needs.review.outputs.errors > 0 && github.event_name == 'push'
+    outputs:
+      fixed: ${{ steps.fix.outputs.fixed }}
+      remaining: ${{ steps.fix.outputs.remaining }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download review report
+        uses: actions/download-artifact@v4
+        with:
+          name: review-report
+          path: ${{ env.REPORT_DIR }}
+
+      - name: Setup tools
+        run: |
+          chmod +x scripts/ai-workflow/*.sh
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run auto-fix loop
+        id: fix
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          ISSUES_FILE=$(ls -t ${{ env.REPORT_DIR }}/review-*.json | head -1)
+          REPORT_PATH="${{ env.REPORT_DIR }}/auto-fix-${{ github.run_id }}.json"
+
+          ./scripts/ai-workflow/auto-fix-loop.sh \
+            --issues "$ISSUES_FILE" \
+            --max-iterations ${{ env.MAX_FIX_ITERATIONS }} \
+            --commit \
+            --commit-prefix "[auto-fix]" \
+            --report "$REPORT_PATH" || true
+
+          if [ -f "$REPORT_PATH" ]; then
+            FIXED=$(jq '.summary.fixed // 0' "$REPORT_PATH")
+            REMAINING=$(jq '.summary.remaining // 0' "$REPORT_PATH")
+
+            echo "fixed=$FIXED" >> $GITHUB_OUTPUT
+            echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          else
+            echo "fixed=0" >> $GITHUB_OUTPUT
+            echo "remaining=${{ needs.review.outputs.errors }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Push fixes
+        if: steps.fix.outputs.fixed > 0
+        run: |
+          git push origin HEAD:${{ github.ref_name }} || echo "No changes to push"
+
+      - name: Upload auto-fix report
+        uses: actions/upload-artifact@v4
+        with:
+          name: auto-fix-report
+          path: ${{ env.REPORT_DIR }}/auto-fix-*.json
+          retention-days: 30
+
+  # Final Summary
+  summary:
+    name: Workflow Summary
+    runs-on: ubuntu-latest
+    needs: [analyze, review, test]
+    if: always()
+
+    steps:
+      - name: Download all reports
+        uses: actions/download-artifact@v4
+        with:
+          path: reports
+
+      - name: Generate summary
+        run: |
+          echo "## 🤖 Multi-AI Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Stage | Status | Details |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|---------|" >> $GITHUB_STEP_SUMMARY
+
+          # Analysis
+          echo "| 🔍 Claude Analysis | ✅ | Issues found: ${{ needs.analyze.outputs.has_issues }} |" >> $GITHUB_STEP_SUMMARY
+
+          # Review
+          REVIEW_STATUS="${{ needs.review.outputs.status }}"
+          REVIEW_ICON="✅"
+          [ "$REVIEW_STATUS" = "failed" ] && REVIEW_ICON="❌"
+          [ "$REVIEW_STATUS" = "warnings" ] && REVIEW_ICON="⚠️"
+          echo "| 📝 OpenAI Review | $REVIEW_ICON | Errors: ${{ needs.review.outputs.errors }}, Warnings: ${{ needs.review.outputs.warnings }} |" >> $GITHUB_STEP_SUMMARY
+
+          # Tests
+          TEST_STATUS="${{ needs.test.outputs.status }}"
+          TEST_ICON="✅"
+          [ "$TEST_STATUS" = "failed" ] && TEST_ICON="❌"
+          [ "$TEST_STATUS" = "skipped" ] && TEST_ICON="⏭️"
+          echo "| 🧪 Tests | $TEST_ICON | Passed: ${{ needs.test.outputs.passed }}, Failed: ${{ needs.test.outputs.failed }}, Coverage: ${{ needs.test.outputs.coverage }}% |" >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*Powered by Claude (Anthropic), GPT-4o (OpenAI), and GitHub Actions*" >> $GITHUB_STEP_SUMMARY
+
+      - name: Post summary to PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summary = `## 🤖 Multi-AI Workflow Complete
+
+            | Stage | Status |
+            |-------|--------|
+            | 🔍 Analysis | ${{ needs.analyze.outputs.has_issues == 'true' && 'Issues Found' || 'Clean' }} |
+            | 📝 Review | Errors: ${{ needs.review.outputs.errors }}, Warnings: ${{ needs.review.outputs.warnings }} |
+            | 🧪 Tests | Passed: ${{ needs.test.outputs.passed }}, Failed: ${{ needs.test.outputs.failed }} |
+
+            _See workflow run for detailed reports._`;
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });

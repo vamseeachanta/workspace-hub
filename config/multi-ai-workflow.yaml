@@ -1,0 +1,110 @@
+# ABOUTME: Multi-AI Workflow Configuration
+# ABOUTME: Defines AI models, stages, and automation settings for the commit workflow
+
+version: "1.0"
+name: "Multi-AI Commit Workflow"
+
+# Trigger configuration
+triggers:
+  on_commit: true
+  on_pr: true
+  branches:
+    - main
+    - develop
+    - "feature/*"
+
+# AI Model Configuration
+models:
+  primary:
+    name: "claude"
+    provider: "anthropic"
+    model: "claude-sonnet-4-20250514"
+    purpose: "Code implementation and auto-fix"
+    api_env: "ANTHROPIC_API_KEY"
+    fallback: "claude-3-haiku-20240307"
+    max_tokens: 8192
+
+  reviewer:
+    name: "openai"
+    provider: "openai"
+    model: "gpt-4o"
+    purpose: "Code review (quality, security, performance)"
+    api_env: "OPENAI_API_KEY"
+    fallback: "gpt-4-turbo"
+    max_tokens: 4096
+
+  tester:
+    name: "factory"
+    provider: "factory.ai"
+    model: "claude-sonnet"  # Factory.ai uses Claude under the hood
+    purpose: "Comprehensive testing"
+    command: "droid"
+    fallback_provider: "gemini"
+    fallback_model: "gemini-2.0-flash"
+
+# Stage Configuration
+stages:
+  implementation:
+    enabled: true
+    timeout_seconds: 300
+    retry_count: 2
+
+  review:
+    enabled: true
+    timeout_seconds: 180
+    checks:
+      - code_quality
+      - security
+      - performance
+      - best_practices
+    severity_threshold: "warning"  # error, warning, info
+
+  testing:
+    enabled: true
+    timeout_seconds: 600
+    levels:
+      - unit
+      - integration
+      - e2e
+    coverage_threshold: 80
+    fail_on_coverage_drop: true
+
+# Auto-fix Configuration
+auto_fix:
+  enabled: true
+  max_iterations: 3
+  re_review_after_fix: true
+  commit_fixes: true
+  commit_message_prefix: "[auto-fix]"
+
+# Reporting
+reporting:
+  format: "markdown"  # markdown, json, html
+  output_dir: "reports/ai-workflow"
+  include_metrics: true
+  post_to_pr: true
+  slack_webhook_env: "SLACK_WEBHOOK_URL"
+  notify_on_failure: true
+
+# File Patterns
+patterns:
+  include:
+    - "src/**/*.py"
+    - "src/**/*.js"
+    - "src/**/*.ts"
+    - "modules/**/*.sh"
+    - "scripts/**/*.sh"
+  exclude:
+    - "**/*.test.js"
+    - "**/*.spec.ts"
+    - "**/node_modules/**"
+    - "**/.git/**"
+    - "**/dist/**"
+    - "**/build/**"
+
+# Performance Limits
+limits:
+  max_files_per_run: 50
+  max_file_size_kb: 500
+  concurrent_reviews: 3
+  rate_limit_delay_ms: 1000
