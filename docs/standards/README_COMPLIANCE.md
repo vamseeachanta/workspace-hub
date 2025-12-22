@@ -74,13 +74,13 @@ Instead, let me follow the ⭐⭐⭐⭐⭐ BEST PRACTICE:
 
 This approach is 90% faster with very low error rate.
 
-See docs/AI_USAGE_GUIDELINES.md for the full effectiveness matrix.
+See docs/ai/AI_USAGE_GUIDELINES.md for the full effectiveness matrix.
 
 Should I proceed with the correct approach?
 ```
 
 **KEY RULES:**
-1. ✅ Always reference `docs/AI_USAGE_GUIDELINES.md`
+1. ✅ Always reference `docs/ai/AI_USAGE_GUIDELINES.md`
 2. ✅ Explain the effectiveness matrix (⭐ ratings)
 3. ✅ Stop and wait for user agreement
 4. ✅ Guide user to ⭐⭐⭐⭐⭐ patterns
@@ -270,7 +270,7 @@ From `AI_USAGE_GUIDELINES.md`:
 **IF user asks for ⭐ (BAD) pattern:**
 
 1. ✅ **STOP IMMEDIATELY**
-2. ✅ **REFERENCE** `docs/AI_USAGE_GUIDELINES.md`
+2. ✅ **REFERENCE** `docs/ai/AI_USAGE_GUIDELINES.md`
 3. ✅ **EXPLAIN** the correct ⭐⭐⭐⭐⭐ approach
 4. ✅ **WAIT** for user agreement
 5. ✅ **GUIDE** user to proper workflow
@@ -360,7 +360,7 @@ cd /mnt/github/workspace-hub
 ### Quarterly
 ```bash
 # Review and update guidelines
-vim docs/AI_USAGE_GUIDELINES.md
+vim docs/ai/AI_USAGE_GUIDELINES.md
 # Test changes
 ./scripts/verify_compliance.sh . true
 # Propagate
@@ -463,9 +463,9 @@ cat compliance_report.txt
 ---
 
 **Quick Links:**
-- Full Guidelines: `docs/AI_USAGE_GUIDELINES.md`
+- Full Guidelines: `docs/ai/AI_USAGE_GUIDELINES.md`
 - Detailed Enforcement: `docs/COMPLIANCE_ENFORCEMENT.md`
-- Development Workflow: `docs/DEVELOPMENT_WORKFLOW.md`
+- Development Workflow: `docs/workflow/DEVELOPMENT_WORKFLOW.md`
 - Verify Compliance: `./scripts/verify_compliance.sh`
 - Setup Compliance: `./scripts/setup_compliance.sh`
 

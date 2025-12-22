@@ -40,7 +40,7 @@ Research across all workspace-hub repositories has shown that following the ⭐�
 ## 🚨 CRITICAL ENFORCEMENT: AI Usage Guidelines & Best Practices
 
 IF USER OR AI DOES NOT FOLLOW THE DOCUMENTED BEST PRACTICES:
-1. IMMEDIATELY REFERENCE `docs/AI_USAGE_GUIDELINES.md`
+1. IMMEDIATELY REFERENCE `docs/ai/AI_USAGE_GUIDELINES.md`
 2. GUIDE USER TO FOLLOW the effectiveness matrix (⭐⭐⭐⭐⭐ only)
 3. STOP AND REDIRECT if patterns are violated
 ```
@@ -55,7 +55,7 @@ IF USER OR AI DOES NOT FOLLOW THE DOCUMENTED BEST PRACTICES:
 
 ### 2. AI_USAGE_GUIDELINES.md
 
-**Location:** `docs/AI_USAGE_GUIDELINES.md`
+**Location:** `docs/ai/AI_USAGE_GUIDELINES.md`
 
 **Purpose:** Complete best practices with effectiveness ratings
 
@@ -276,7 +276,7 @@ Instead, let me follow the ⭐⭐⭐⭐⭐ BEST PRACTICE:
 
 This approach is 90% faster with very low error rate.
 
-See docs/AI_USAGE_GUIDELINES.md for the full effectiveness matrix.
+See docs/ai/AI_USAGE_GUIDELINES.md for the full effectiveness matrix.
 
 Should I proceed with the correct approach?
 ```
@@ -400,7 +400,7 @@ cat compliance_report.txt
 1. **Update workspace-hub first:**
    ```bash
    cd /mnt/github/workspace-hub
-   vim docs/AI_USAGE_GUIDELINES.md
+   vim docs/ai/AI_USAGE_GUIDELINES.md
    git commit -m "Update AI usage guidelines"
    ```
 
@@ -450,12 +450,12 @@ jobs:
 
 **For compliance issues:**
 1. Review this document
-2. Check `docs/AI_USAGE_GUIDELINES.md`
+2. Check `docs/ai/AI_USAGE_GUIDELINES.md`
 3. Run `./scripts/verify_compliance.sh` for diagnostics
 4. Check propagation report if recently updated
 
 **For guideline questions:**
-1. Review `docs/AI_USAGE_GUIDELINES.md`
+1. Review `docs/ai/AI_USAGE_GUIDELINES.md`
 2. Check effectiveness matrix for ratings
 3. See examples in guideline document
 4. Test approach and update guidelines with learnings

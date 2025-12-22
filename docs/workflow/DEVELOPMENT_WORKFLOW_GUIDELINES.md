@@ -1045,7 +1045,7 @@ Before deployment, verify:
 ## 15. Support and Resources
 
 **Documentation:**
-- This Guide: `/mnt/github/workspace-hub/docs/DEVELOPMENT_WORKFLOW_GUIDELINES.md`
+- This Guide: `/mnt/github/workspace-hub/docs/workflow/DEVELOPMENT_WORKFLOW_GUIDELINES.md`
 - YAML Standards: `/mnt/github/workspace-hub/docs/YAML_SCHEMA_STANDARDS.md`
 - Testing Standards: `/mnt/github/workspace-hub/docs/TESTING_STANDARDS.md`
 - Logging Standards: `/mnt/github/workspace-hub/docs/LOGGING_STANDARDS.md`

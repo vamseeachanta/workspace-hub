@@ -43,7 +43,7 @@ python modules/automation/pseudocode_diff.py \
 
 | Document | Purpose | Location | Pages | Status |
 |----------|---------|----------|-------|--------|
-| **Development Workflow Guidelines** | Complete workflow standards | `docs/DEVELOPMENT_WORKFLOW_GUIDELINES.md` | 500+ | ✅ Complete |
+| **Development Workflow Guidelines** | Complete workflow standards | `docs/workflow/DEVELOPMENT_WORKFLOW_GUIDELINES.md` | 500+ | ✅ Complete |
 | **Testing Framework Standards** | Testing requirements & best practices | `docs/TESTING_FRAMEWORK_STANDARDS.md` | 400+ | ✅ Complete |
 | **Logging Standards** | Mandatory logging specifications | `docs/LOGGING_STANDARDS.md` | 450+ | ✅ Complete |
 
@@ -588,10 +588,10 @@ Track these metrics to measure workflow effectiveness:
 
 ### Documentation
 
-- **Master Workflow:** `docs/DEVELOPMENT_WORKFLOW_GUIDELINES.md`
+- **Master Workflow:** `docs/workflow/DEVELOPMENT_WORKFLOW_GUIDELINES.md`
 - **Testing Standards:** `docs/TESTING_FRAMEWORK_STANDARDS.md`
 - **Logging Standards:** `docs/LOGGING_STANDARDS.md`
-- **This Summary:** `docs/DEVELOPMENT_WORKFLOW_SUMMARY.md`
+- **This Summary:** `docs/workflow/DEVELOPMENT_WORKFLOW_SUMMARY.md`
 
 ### Tools
 
