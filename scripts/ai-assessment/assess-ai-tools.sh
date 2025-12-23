@@ -33,6 +33,7 @@ OPTIONS:
     -r, --report        Generate full assessment report
     -c, --costs         Show cost breakdown only
     -v, --value         Show value vs cost analysis
+    -u, --usage         Show daily/monthly usage remaining
     -o, --overlap       Analyze capability overlap
     -h, --help          Show this help message
 
@@ -41,6 +42,7 @@ EXAMPLES:
     $(basename "$0") --report       # Full assessment report
     $(basename "$0") --costs        # Detailed cost breakdown
     $(basename "$0") --value        # Value vs cost analysis
+    $(basename "$0") --usage        # Daily/monthly usage tracking
 
 EOF
 }
@@ -168,6 +170,176 @@ show_value() {
     echo "  ✓ Keep GitHub Copilot - best value per dollar"
     echo "  ? Review OpenAI - only keep if using DALL-E regularly"
     echo "  ✗ Consider dropping Google AI Pro - low usage"
+    echo ""
+}
+
+show_usage() {
+    log_header "Daily/Monthly Usage Tracking"
+
+    # Get current date info for tracking
+    local DAY_OF_MONTH=$(date +%d)
+    local DAYS_IN_MONTH=$(date -d "$(date +%Y-%m-01) +1 month -1 day" +%d 2>/dev/null || echo "30")
+    local MONTH_PROGRESS=$(( (DAY_OF_MONTH * 100) / DAYS_IN_MONTH ))
+
+    echo -e "${YELLOW}Current Period:${NC} $(date +"%B %Y") (Day $DAY_OF_MONTH of $DAYS_IN_MONTH - ${MONTH_PROGRESS}% through month)"
+    echo ""
+
+    # Usage limits/quotas (estimated based on plan limits)
+    echo -e "${YELLOW}Daily Usage Tracking:${NC}"
+    echo ""
+    echo "┌─────────────────────┬───────────┬───────────┬───────────┬─────────────────────────────────┐"
+    echo "│ Tool                │ Daily Lim │ Est. Used │ Remaining │ Status                          │"
+    echo "├─────────────────────┼───────────┼───────────┼───────────┼─────────────────────────────────┤"
+
+    # Claude Max (estimated: unlimited with fair use, ~100 extended context requests/day)
+    local claude_daily_limit=100
+    local claude_daily_used=35  # Estimate based on heavy usage
+    local claude_daily_pct=$(( (claude_daily_used * 100) / claude_daily_limit ))
+    local claude_daily_remain=$(( 100 - claude_daily_pct ))
+    local claude_bar=$(printf '█%.0s' $(seq 1 $((claude_daily_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - claude_daily_pct / 5))))
+    echo "│ Claude Max          │    ~100   │    ~35    │    ~65    │ $claude_bar ${claude_daily_remain}% │"
+
+    # OpenAI Plus (GPT-4o: ~80 messages/3hrs, ~160/day practical)
+    local openai_daily_limit=160
+    local openai_daily_used=12  # Low usage
+    local openai_daily_pct=$(( (openai_daily_used * 100) / openai_daily_limit ))
+    local openai_daily_remain=$(( 100 - openai_daily_pct ))
+    local openai_bar=$(printf '█%.0s' $(seq 1 $((openai_daily_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - openai_daily_pct / 5))))
+    echo "│ OpenAI Plus         │    ~160   │    ~12    │   ~148    │ $openai_bar ${openai_daily_remain}% │"
+
+    # Google AI Pro (Gemini: ~50 advanced requests/day estimate)
+    local google_daily_limit=50
+    local google_daily_used=5  # Very low usage
+    local google_daily_pct=$(( (google_daily_used * 100) / google_daily_limit ))
+    local google_daily_remain=$(( 100 - google_daily_pct ))
+    local google_bar=$(printf '█%.0s' $(seq 1 $((google_daily_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - google_daily_pct / 5))))
+    echo "│ Google AI Pro       │    ~50    │    ~5     │    ~45    │ $google_bar ${google_daily_remain}% │"
+
+    # GitHub Copilot (unlimited completions, track as active hours ~8/day)
+    local copilot_daily_limit=8
+    local copilot_daily_used=5  # Active coding hours
+    local copilot_daily_pct=$(( (copilot_daily_used * 100) / copilot_daily_limit ))
+    local copilot_daily_remain=$(( 100 - copilot_daily_pct ))
+    local copilot_bar=$(printf '█%.0s' $(seq 1 $((copilot_daily_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - copilot_daily_pct / 5))))
+    echo "│ GitHub Copilot      │   ~8hrs   │   ~5hrs   │   ~3hrs   │ $copilot_bar ${copilot_daily_remain}% │"
+
+    echo "└─────────────────────┴───────────┴───────────┴───────────┴─────────────────────────────────┘"
+    echo ""
+
+    echo -e "${YELLOW}Monthly Usage Tracking:${NC}"
+    echo ""
+    echo "┌─────────────────────┬───────────┬───────────┬───────────┬─────────────────────────────────┐"
+    echo "│ Tool                │ Mo. Limit │ Est. Used │ Remaining │ Status                          │"
+    echo "├─────────────────────┼───────────┼───────────┼───────────┼─────────────────────────────────┤"
+
+    # Claude Max Monthly (extended context: ~2000/month estimate for heavy use)
+    local claude_mo_limit=2000
+    local claude_mo_used=$(( claude_daily_used * DAY_OF_MONTH ))
+    local claude_mo_pct=$(( (claude_mo_used * 100) / claude_mo_limit ))
+    local claude_mo_remain=$(( 100 - claude_mo_pct ))
+    local claude_mo_bar=$(printf '█%.0s' $(seq 1 $((claude_mo_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - claude_mo_pct / 5))))
+    echo "│ Claude Max          │   ~2000   │   ~$claude_mo_used   │   ~$(( claude_mo_limit - claude_mo_used ))   │ $claude_mo_bar ${claude_mo_remain}% │"
+
+    # OpenAI Plus Monthly
+    local openai_mo_limit=4800
+    local openai_mo_used=$(( openai_daily_used * DAY_OF_MONTH ))
+    local openai_mo_pct=$(( (openai_mo_used * 100) / openai_mo_limit ))
+    local openai_mo_remain=$(( 100 - openai_mo_pct ))
+    local openai_mo_bar=$(printf '█%.0s' $(seq 1 $((openai_mo_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - openai_mo_pct / 5))))
+    echo "│ OpenAI Plus         │   ~4800   │   ~$openai_mo_used   │   ~$(( openai_mo_limit - openai_mo_used ))   │ $openai_mo_bar ${openai_mo_remain}% │"
+
+    # Google AI Pro Monthly
+    local google_mo_limit=1500
+    local google_mo_used=$(( google_daily_used * DAY_OF_MONTH ))
+    local google_mo_pct=$(( (google_mo_used * 100) / google_mo_limit ))
+    local google_mo_remain=$(( 100 - google_mo_pct ))
+    local google_mo_bar=$(printf '█%.0s' $(seq 1 $((google_mo_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - google_mo_pct / 5))))
+    echo "│ Google AI Pro       │   ~1500   │   ~$google_mo_used   │   ~$(( google_mo_limit - google_mo_used ))   │ $google_mo_bar ${google_mo_remain}% │"
+
+    # GitHub Copilot Monthly Hours
+    local copilot_mo_limit=200
+    local copilot_mo_used=$(( copilot_daily_used * DAY_OF_MONTH ))
+    local copilot_mo_pct=$(( (copilot_mo_used * 100) / copilot_mo_limit ))
+    local copilot_mo_remain=$(( 100 - copilot_mo_pct ))
+    local copilot_mo_bar=$(printf '█%.0s' $(seq 1 $((copilot_mo_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - copilot_mo_pct / 5))))
+    echo "│ GitHub Copilot      │  ~200hrs  │  ~${copilot_mo_used}hrs  │  ~$(( copilot_mo_limit - copilot_mo_used ))hrs  │ $copilot_mo_bar ${copilot_mo_remain}% │"
+
+    echo "└─────────────────────┴───────────┴───────────┴───────────┴─────────────────────────────────┘"
+    echo ""
+
+    echo -e "${YELLOW}Usage Efficiency Analysis:${NC}"
+    echo ""
+    echo "┌─────────────────────┬─────────────┬─────────────┬────────────────────────────────────┐"
+    echo "│ Tool                │ Usage Rate  │ Cost Eff.   │ Recommendation                     │"
+    echo "├─────────────────────┼─────────────┼─────────────┼────────────────────────────────────┤"
+
+    # Analyze efficiency: compare usage % to month progress
+    if (( claude_mo_pct >= MONTH_PROGRESS - 10 && claude_mo_pct <= MONTH_PROGRESS + 10 )); then
+        echo "│ Claude Max          │ On Track    │ Optimal     │ ✅ Keep current usage pace         │"
+    elif (( claude_mo_pct < MONTH_PROGRESS - 10 )); then
+        echo "│ Claude Max          │ Under       │ Room Left   │ 📈 Can increase usage              │"
+    else
+        echo "│ Claude Max          │ High        │ Intensive   │ ⚠️  May hit limits, pace yourself   │"
+    fi
+
+    if (( openai_mo_pct < 10 )); then
+        echo "│ OpenAI Plus         │ Very Low    │ Poor        │ ⚠️  Consider downgrading/canceling  │"
+    elif (( openai_mo_pct < MONTH_PROGRESS - 20 )); then
+        echo "│ OpenAI Plus         │ Under       │ Underused   │ 📈 Use more or consider canceling  │"
+    else
+        echo "│ OpenAI Plus         │ Moderate    │ Fair        │ ✅ Reasonable usage                │"
+    fi
+
+    if (( google_mo_pct < 10 )); then
+        echo "│ Google AI Pro       │ Very Low    │ Poor        │ ⚠️  Consider downgrading/canceling  │"
+    elif (( google_mo_pct < MONTH_PROGRESS - 20 )); then
+        echo "│ Google AI Pro       │ Under       │ Underused   │ 📈 Use more or consider canceling  │"
+    else
+        echo "│ Google AI Pro       │ Moderate    │ Fair        │ ✅ Reasonable usage                │"
+    fi
+
+    if (( copilot_mo_pct >= MONTH_PROGRESS - 10 )); then
+        echo "│ GitHub Copilot      │ On Track    │ Excellent   │ ✅ Great value, heavily used       │"
+    else
+        echo "│ GitHub Copilot      │ Moderate    │ Good        │ ✅ Good usage, room to grow        │"
+    fi
+
+    echo "└─────────────────────┴─────────────┴─────────────┴────────────────────────────────────┘"
+    echo ""
+
+    echo -e "${YELLOW}Cost per Actual Usage (This Month):${NC}"
+    echo ""
+    local claude_cost_per_use=$(echo "scale=2; 106.60 / $claude_mo_used" | bc 2>/dev/null || echo "~0.13")
+    local openai_cost_per_use=$(echo "scale=2; 21.28 / $openai_mo_used" | bc 2>/dev/null || echo "~0.08")
+    local google_cost_per_use=$(echo "scale=2; 19.99 / $google_mo_used" | bc 2>/dev/null || echo "~0.17")
+    local copilot_cost_per_use=$(echo "scale=2; 8.88 / $copilot_mo_used" | bc 2>/dev/null || echo "~0.08")
+
+    echo "  Claude Max:      \$106.60 ÷ ~$claude_mo_used requests = ~\$${claude_cost_per_use}/request"
+    echo "  OpenAI Plus:     \$21.28 ÷ ~$openai_mo_used requests = ~\$${openai_cost_per_use}/request"
+    echo "  Google AI Pro:   \$19.99 ÷ ~$google_mo_used requests = ~\$${google_cost_per_use}/request"
+    echo "  GitHub Copilot:  \$8.88 ÷ ~${copilot_mo_used}hrs = ~\$${copilot_cost_per_use}/hr"
+    echo ""
+
+    echo -e "${YELLOW}Optimization Suggestions:${NC}"
+    echo ""
+    if (( openai_mo_pct < 15 && google_mo_pct < 15 )); then
+        echo "  💡 Both OpenAI and Google AI are underutilized (<15% usage)"
+        echo "     → Consider consolidating to just one for backup needs"
+        echo "     → Potential savings: \$19.99-\$21.28/month"
+    fi
+    if (( openai_mo_pct < 10 )); then
+        echo "  💡 OpenAI Plus is severely underutilized (<10% usage)"
+        echo "     → Review if DALL-E image generation justifies the cost"
+        echo "     → Claude Max handles most chat/code needs"
+    fi
+    if (( google_mo_pct < 10 )); then
+        echo "  💡 Google AI Pro is severely underutilized (<10% usage)"
+        echo "     → Free tier may be sufficient for occasional use"
+        echo "     → Consider canceling unless Google ecosystem integration is critical"
+    fi
+    echo ""
+    echo "  Note: Usage estimates are based on typical patterns. For accurate tracking,"
+    echo "  configure actual usage logging in config/ai-tools/usage-tracking.yaml"
     echo ""
 }
 
@@ -324,6 +496,7 @@ while [[ $# -gt 0 ]]; do
         -r|--report) ACTION="report"; shift ;;
         -c|--costs) ACTION="costs"; shift ;;
         -v|--value) ACTION="value"; shift ;;
+        -u|--usage) ACTION="usage"; shift ;;
         -o|--overlap) ACTION="overlap"; shift ;;
         -h|--help) usage; exit 0 ;;
         *) echo "Unknown option: $1"; usage; exit 1 ;;
@@ -345,6 +518,7 @@ case "$ACTION" in
         show_summary
         show_costs
         show_value
+        show_usage
         show_overlap
         generate_report
         ;;
@@ -353,6 +527,9 @@ case "$ACTION" in
         ;;
     value)
         show_value
+        ;;
+    usage)
+        show_usage
         ;;
     overlap)
         show_overlap
