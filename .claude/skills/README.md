@@ -6,32 +6,52 @@
 
 ## Overview
 
-This collection provides **22 specialized skills** organized into **7 categories**. Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
+This collection provides **31 specialized skills** organized into **7 categories**. Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
 
 ## Quick Reference
 
 | Category | Skills | Purpose |
 |----------|--------|---------|
 | [Document Handling](#document-handling) | 4 | Work with PDF, DOCX, PPTX, XLSX files |
-| [Development](#development) | 2 | Build MCP servers, test web applications |
+| [Development](#development) | 6 | MCP servers, web testing, reports, workflows, pipelines, parallel processing |
 | [Content & Design](#content--design) | 4 | Frontend UI, themes, canvas graphics, algorithmic art |
 | [Communication](#communication) | 4 | Internal comms, Slack GIFs, document collaboration, branding |
 | [Builders](#builders) | 2 | Web artifacts, skill creation |
 | [Workspace Hub](#workspace-hub) | 5 | Repository sync, SPARC workflow, agent orchestration |
 | [Tools](#tools) | 1 | AI tool assessment and utilities |
 
+**Plus repository-specific skills:**
+- **digitalmodel**: 3 skills (fatigue-analysis, mooring-design, structural-analysis)
+- **worldenergydata**: 2 skills (bsee-data-extractor, npv-analyzer)
+
 ## Directory Structure
 
 ```
 skills/
 ├── document-handling/       # PDF, DOCX, PPTX, XLSX manipulation
-├── development/             # MCP servers, web testing
+├── development/             # MCP servers, web testing, reports, workflows, pipelines
+│   ├── mcp-builder/
+│   ├── webapp-testing/
+│   ├── engineering-report-generator/
+│   ├── yaml-workflow-executor/
+│   ├── data-pipeline-processor/
+│   └── parallel-file-processor/
 ├── content-design/          # UI, themes, graphics, generative art
 ├── communication/           # Business communications
 ├── builders/                # Meta-tools for creation
 ├── workspace-hub/           # Workspace-specific automation
 ├── tools/                   # Assessment and utility skills
 └── README.md                # This file
+
+# Repository-specific skills (in individual repos)
+digitalmodel/.claude/skills/
+├── fatigue-analysis/        # S-N curves, damage accumulation
+├── mooring-design/          # CALM/SALM buoy analysis
+└── structural-analysis/     # Stress, buckling, capacity checks
+
+worldenergydata/.claude/skills/
+├── bsee-data-extractor/     # BSEE production data extraction
+└── npv-analyzer/            # NPV and economic evaluation
 ```
 
 ---
@@ -51,12 +71,16 @@ Work with business documents - reading, creating, editing, and analyzing files.
 
 ### Development
 
-Tools for building software - MCP servers for Claude integration, web application testing.
+Tools for building software - MCP servers, web testing, engineering reports, workflow automation, data pipelines, and parallel processing.
 
 | Skill | Description |
 |-------|-------------|
 | [mcp-builder](development/mcp-builder/SKILL.md) | Build Model Context Protocol servers with Claude integration |
 | [webapp-testing](development/webapp-testing/SKILL.md) | Test web applications with Playwright and Chrome DevTools |
+| [engineering-report-generator](development/engineering-report-generator/SKILL.md) | Generate interactive HTML reports with Plotly visualizations |
+| [yaml-workflow-executor](development/yaml-workflow-executor/SKILL.md) | Execute configuration-driven analysis workflows from YAML files |
+| [data-pipeline-processor](development/data-pipeline-processor/SKILL.md) | Build ETL pipelines with validation, transformation, and reporting |
+| [parallel-file-processor](development/parallel-file-processor/SKILL.md) | Process multiple files in parallel with aggregation and progress tracking |
 
 ### Content & Design
 
