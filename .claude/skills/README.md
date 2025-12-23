@@ -21,7 +21,7 @@ This collection provides **31 specialized skills** organized into **7 categories
 | [Tools](#tools) | 1 | AI tool assessment and utilities |
 
 **Plus repository-specific skills:**
-- **digitalmodel**: 3 skills (fatigue-analysis, mooring-design, structural-analysis)
+- **digitalmodel**: 5 skills (fatigue-analysis, mooring-design, structural-analysis, orcaflex-modeling, orcaflex-post-processing)
 - **worldenergydata**: 2 skills (bsee-data-extractor, npv-analyzer)
 
 ## Directory Structure
@@ -47,7 +47,9 @@ skills/
 digitalmodel/.claude/skills/
 ├── fatigue-analysis/        # S-N curves, damage accumulation
 ├── mooring-design/          # CALM/SALM buoy analysis
-└── structural-analysis/     # Stress, buckling, capacity checks
+├── structural-analysis/     # Stress, buckling, capacity checks
+├── orcaflex-modeling/       # OrcaFlex simulation setup and running
+└── orcaflex-post-processing/ # OrcaFlex results post-processing
 
 worldenergydata/.claude/skills/
 ├── bsee-data-extractor/     # BSEE production data extraction
