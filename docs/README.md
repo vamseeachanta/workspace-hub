@@ -14,6 +14,7 @@ Workspace-hub is a centralized repository management system that helps developme
 docs/
 ├── README.md                        # This file - main index
 ├── WORKSPACE_HUB_CAPABILITIES_SUMMARY.md  # Full capabilities overview
+├── WORKSPACE_HUB_REPOSITORY_OVERVIEW.md   # Repository relationships & navigation
 │
 ├── modules/                         # All module documentation
 │   ├── ai/                          # AI agent & Claude documentation
@@ -65,6 +66,7 @@ docs/
 
 ### Getting Started
 
+- 🗺️ [Repository Overview](WORKSPACE_HUB_REPOSITORY_OVERVIEW.md) - **Repository relationships & navigation**
 - 🚀 [Workspace Hub Capabilities](WORKSPACE_HUB_CAPABILITIES_SUMMARY.md)
 - 📋 [Development Workflow](modules/workflow/DEVELOPMENT_WORKFLOW.md)
 - 🤖 [Claude Interaction Guide](modules/ai/CLAUDE_INTERACTION_GUIDE.md)
