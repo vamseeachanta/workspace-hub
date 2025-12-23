@@ -93,6 +93,8 @@ coverage.xml
 # Agent OS and swarm directories (already initialized)
 .agent-os/
 .claude/
+!.claude/skills/
+!.claude/CLAUDE.md
 .claude-flow/
 .hive-mind/
 .swarm/
@@ -185,7 +187,7 @@ workspace-*.json
 # AI Assistant Memory & State
 # ==========================================
 # Claude Flow and AI memory (local only)
-.claude/
+# Note: .claude/ is ignored above, with exceptions for skills/ and CLAUDE.md
 .claude-flow/
 .hive-mind/
 .swarm/
