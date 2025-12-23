@@ -7,6 +7,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 CONFIG_FILE="${REPO_ROOT}/config/ai-tools/subscriptions.yaml"
+USAGE_FILE="${REPO_ROOT}/config/ai-tools/usage-tracking.yaml"
 REPORT_DIR="${REPO_ROOT}/reports/ai-tool-assessment"
 DATE=$(date +%Y%m%d)
 REPORT_FILE="${REPORT_DIR}/assessment-${DATE}.md"
@@ -55,6 +56,67 @@ parse_yaml() {
     else
         # Fallback to grep-based extraction
         grep -A1 "^  $key:" "$CONFIG_FILE" 2>/dev/null | tail -1 | sed 's/.*: //' || echo "N/A"
+    fi
+}
+
+# Read usage data from YAML file
+read_usage() {
+    local tool="$1"
+    local period="$2"  # daily or monthly
+    local field="$3"   # limit, used (today_used for daily)
+    local default="$4"
+
+    if [[ ! -f "$USAGE_FILE" ]]; then
+        echo "$default"
+        return
+    fi
+
+    local yaml_field="$field"
+    [[ "$period" == "daily" && "$field" == "used" ]] && yaml_field="today_used"
+
+    if command -v yq &>/dev/null; then
+        local value
+        value=$(yq eval ".usage.${tool}.${period}.${yaml_field}" "$USAGE_FILE" 2>/dev/null)
+        if [[ -n "$value" && "$value" != "null" ]]; then
+            echo "$value"
+        else
+            echo "$default"
+        fi
+    else
+        # Fallback to grep-based extraction - extract only the numeric value
+        local value
+        value=$(grep -A10 "^  ${tool}:" "$USAGE_FILE" 2>/dev/null | \
+                grep -A5 "${period}:" | \
+                grep "^ *${yaml_field}:" | \
+                head -1 | \
+                sed 's/.*: *//' | \
+                sed 's/#.*//' | \
+                tr -d ' "' || echo "")
+        if [[ -n "$value" && "$value" =~ ^[0-9]+$ ]]; then
+            echo "$value"
+        else
+            echo "$default"
+        fi
+    fi
+}
+
+# Safe division - returns default if divisor is zero
+safe_divide() {
+    local numerator="$1"
+    local divisor="$2"
+    local scale="${3:-2}"
+    local default="${4:-0}"
+
+    if [[ "$divisor" -eq 0 || -z "$divisor" ]]; then
+        echo "$default"
+        return
+    fi
+
+    if command -v bc &>/dev/null; then
+        echo "scale=$scale; $numerator / $divisor" | bc 2>/dev/null || echo "$default"
+    else
+        # Integer division fallback
+        echo $(( numerator / divisor ))
     fi
 }
 
@@ -176,6 +238,18 @@ show_value() {
 show_usage() {
     log_header "Daily/Monthly Usage Tracking"
 
+    # Check if usage tracking file exists
+    if [[ -f "$USAGE_FILE" ]]; then
+        echo -e "${GREEN}[INFO]${NC} Reading usage data from: config/ai-tools/usage-tracking.yaml"
+        local LAST_UPDATED
+        LAST_UPDATED=$(grep "last_updated:" "$USAGE_FILE" 2>/dev/null | sed 's/.*: "//' | tr -d '"' || echo "unknown")
+        echo -e "${GREEN}[INFO]${NC} Last updated: $LAST_UPDATED"
+    else
+        echo -e "${YELLOW}[WARN]${NC} Usage tracking file not found, using estimates"
+        echo -e "${YELLOW}[WARN]${NC} Create config/ai-tools/usage-tracking.yaml for accurate tracking"
+    fi
+    echo ""
+
     # Get current date info for tracking
     local DAY_OF_MONTH=$(date +%d)
     local DAYS_IN_MONTH=$(date -d "$(date +%Y-%m-01) +1 month -1 day" +%d 2>/dev/null || echo "30")
@@ -184,85 +258,113 @@ show_usage() {
     echo -e "${YELLOW}Current Period:${NC} $(date +"%B %Y") (Day $DAY_OF_MONTH of $DAYS_IN_MONTH - ${MONTH_PROGRESS}% through month)"
     echo ""
 
-    # Usage limits/quotas (estimated based on plan limits)
+    # Read usage from YAML or use defaults
+    local claude_daily_limit=$(read_usage "claude" "daily" "limit" "100")
+    local claude_daily_used=$(read_usage "claude" "daily" "used" "35")
+    local openai_daily_limit=$(read_usage "openai" "daily" "limit" "160")
+    local openai_daily_used=$(read_usage "openai" "daily" "used" "12")
+    local google_daily_limit=$(read_usage "google_ai" "daily" "limit" "50")
+    local google_daily_used=$(read_usage "google_ai" "daily" "used" "5")
+    local copilot_daily_limit=$(read_usage "github_copilot" "daily" "limit" "8")
+    local copilot_daily_used=$(read_usage "github_copilot" "daily" "used" "5")
+
+    # Daily Usage Table
     echo -e "${YELLOW}Daily Usage Tracking:${NC}"
     echo ""
     echo "┌─────────────────────┬───────────┬───────────┬───────────┬─────────────────────────────────┐"
-    echo "│ Tool                │ Daily Lim │ Est. Used │ Remaining │ Status                          │"
+    echo "│ Tool                │ Daily Lim │ Used      │ Remaining │ Status                          │"
     echo "├─────────────────────┼───────────┼───────────┼───────────┼─────────────────────────────────┤"
 
-    # Claude Max (estimated: unlimited with fair use, ~100 extended context requests/day)
-    local claude_daily_limit=100
-    local claude_daily_used=35  # Estimate based on heavy usage
-    local claude_daily_pct=$(( (claude_daily_used * 100) / claude_daily_limit ))
+    # Claude Max
+    local claude_daily_pct=$(( claude_daily_limit > 0 ? (claude_daily_used * 100) / claude_daily_limit : 0 ))
     local claude_daily_remain=$(( 100 - claude_daily_pct ))
-    local claude_bar=$(printf '█%.0s' $(seq 1 $((claude_daily_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - claude_daily_pct / 5))))
-    echo "│ Claude Max          │    ~100   │    ~35    │    ~65    │ $claude_bar ${claude_daily_remain}% │"
+    local claude_bar_fill=$(( claude_daily_pct / 5 ))
+    [[ $claude_bar_fill -gt 20 ]] && claude_bar_fill=20
+    [[ $claude_bar_fill -lt 0 ]] && claude_bar_fill=0
+    local claude_bar=$(printf '█%.0s' $(seq 1 $claude_bar_fill 2>/dev/null) 2>/dev/null)$(printf '░%.0s' $(seq 1 $((20 - claude_bar_fill)) 2>/dev/null) 2>/dev/null)
+    printf "│ Claude Max          │    %3d    │    %3d    │    %3d    │ %-20s %3d%% │\n" "$claude_daily_limit" "$claude_daily_used" "$((claude_daily_limit - claude_daily_used))" "$claude_bar" "$claude_daily_remain"
 
-    # OpenAI Plus (GPT-4o: ~80 messages/3hrs, ~160/day practical)
-    local openai_daily_limit=160
-    local openai_daily_used=12  # Low usage
-    local openai_daily_pct=$(( (openai_daily_used * 100) / openai_daily_limit ))
+    # OpenAI Plus
+    local openai_daily_pct=$(( openai_daily_limit > 0 ? (openai_daily_used * 100) / openai_daily_limit : 0 ))
     local openai_daily_remain=$(( 100 - openai_daily_pct ))
-    local openai_bar=$(printf '█%.0s' $(seq 1 $((openai_daily_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - openai_daily_pct / 5))))
-    echo "│ OpenAI Plus         │    ~160   │    ~12    │   ~148    │ $openai_bar ${openai_daily_remain}% │"
+    local openai_bar_fill=$(( openai_daily_pct / 5 ))
+    [[ $openai_bar_fill -gt 20 ]] && openai_bar_fill=20
+    [[ $openai_bar_fill -lt 0 ]] && openai_bar_fill=0
+    local openai_bar=$(printf '█%.0s' $(seq 1 $openai_bar_fill 2>/dev/null) 2>/dev/null)$(printf '░%.0s' $(seq 1 $((20 - openai_bar_fill)) 2>/dev/null) 2>/dev/null)
+    printf "│ OpenAI Plus         │    %3d    │    %3d    │    %3d    │ %-20s %3d%% │\n" "$openai_daily_limit" "$openai_daily_used" "$((openai_daily_limit - openai_daily_used))" "$openai_bar" "$openai_daily_remain"
 
-    # Google AI Pro (Gemini: ~50 advanced requests/day estimate)
-    local google_daily_limit=50
-    local google_daily_used=5  # Very low usage
-    local google_daily_pct=$(( (google_daily_used * 100) / google_daily_limit ))
+    # Google AI Pro
+    local google_daily_pct=$(( google_daily_limit > 0 ? (google_daily_used * 100) / google_daily_limit : 0 ))
     local google_daily_remain=$(( 100 - google_daily_pct ))
-    local google_bar=$(printf '█%.0s' $(seq 1 $((google_daily_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - google_daily_pct / 5))))
-    echo "│ Google AI Pro       │    ~50    │    ~5     │    ~45    │ $google_bar ${google_daily_remain}% │"
+    local google_bar_fill=$(( google_daily_pct / 5 ))
+    [[ $google_bar_fill -gt 20 ]] && google_bar_fill=20
+    [[ $google_bar_fill -lt 0 ]] && google_bar_fill=0
+    local google_bar=$(printf '█%.0s' $(seq 1 $google_bar_fill 2>/dev/null) 2>/dev/null)$(printf '░%.0s' $(seq 1 $((20 - google_bar_fill)) 2>/dev/null) 2>/dev/null)
+    printf "│ Google AI Pro       │    %3d    │    %3d    │    %3d    │ %-20s %3d%% │\n" "$google_daily_limit" "$google_daily_used" "$((google_daily_limit - google_daily_used))" "$google_bar" "$google_daily_remain"
 
-    # GitHub Copilot (unlimited completions, track as active hours ~8/day)
-    local copilot_daily_limit=8
-    local copilot_daily_used=5  # Active coding hours
-    local copilot_daily_pct=$(( (copilot_daily_used * 100) / copilot_daily_limit ))
+    # GitHub Copilot
+    local copilot_daily_pct=$(( copilot_daily_limit > 0 ? (copilot_daily_used * 100) / copilot_daily_limit : 0 ))
     local copilot_daily_remain=$(( 100 - copilot_daily_pct ))
-    local copilot_bar=$(printf '█%.0s' $(seq 1 $((copilot_daily_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - copilot_daily_pct / 5))))
-    echo "│ GitHub Copilot      │   ~8hrs   │   ~5hrs   │   ~3hrs   │ $copilot_bar ${copilot_daily_remain}% │"
+    local copilot_bar_fill=$(( copilot_daily_pct / 5 ))
+    [[ $copilot_bar_fill -gt 20 ]] && copilot_bar_fill=20
+    [[ $copilot_bar_fill -lt 0 ]] && copilot_bar_fill=0
+    local copilot_bar=$(printf '█%.0s' $(seq 1 $copilot_bar_fill 2>/dev/null) 2>/dev/null)$(printf '░%.0s' $(seq 1 $((20 - copilot_bar_fill)) 2>/dev/null) 2>/dev/null)
+    printf "│ GitHub Copilot      │   %2dhrs   │   %2dhrs   │   %2dhrs   │ %-20s %3d%% │\n" "$copilot_daily_limit" "$copilot_daily_used" "$((copilot_daily_limit - copilot_daily_used))" "$copilot_bar" "$copilot_daily_remain"
 
     echo "└─────────────────────┴───────────┴───────────┴───────────┴─────────────────────────────────┘"
     echo ""
 
+    # Read monthly usage from YAML or use defaults
+    local claude_mo_limit=$(read_usage "claude" "monthly" "limit" "2000")
+    local claude_mo_used=$(read_usage "claude" "monthly" "used" "$((claude_daily_used * DAY_OF_MONTH))")
+    local openai_mo_limit=$(read_usage "openai" "monthly" "limit" "4800")
+    local openai_mo_used=$(read_usage "openai" "monthly" "used" "$((openai_daily_used * DAY_OF_MONTH))")
+    local google_mo_limit=$(read_usage "google_ai" "monthly" "limit" "1500")
+    local google_mo_used=$(read_usage "google_ai" "monthly" "used" "$((google_daily_used * DAY_OF_MONTH))")
+    local copilot_mo_limit=$(read_usage "github_copilot" "monthly" "limit" "200")
+    local copilot_mo_used=$(read_usage "github_copilot" "monthly" "used" "$((copilot_daily_used * DAY_OF_MONTH))")
+
     echo -e "${YELLOW}Monthly Usage Tracking:${NC}"
     echo ""
     echo "┌─────────────────────┬───────────┬───────────┬───────────┬─────────────────────────────────┐"
-    echo "│ Tool                │ Mo. Limit │ Est. Used │ Remaining │ Status                          │"
+    echo "│ Tool                │ Mo. Limit │ Used      │ Remaining │ Status                          │"
     echo "├─────────────────────┼───────────┼───────────┼───────────┼─────────────────────────────────┤"
 
-    # Claude Max Monthly (extended context: ~2000/month estimate for heavy use)
-    local claude_mo_limit=2000
-    local claude_mo_used=$(( claude_daily_used * DAY_OF_MONTH ))
-    local claude_mo_pct=$(( (claude_mo_used * 100) / claude_mo_limit ))
+    # Claude Max Monthly
+    local claude_mo_pct=$(( claude_mo_limit > 0 ? (claude_mo_used * 100) / claude_mo_limit : 0 ))
     local claude_mo_remain=$(( 100 - claude_mo_pct ))
-    local claude_mo_bar=$(printf '█%.0s' $(seq 1 $((claude_mo_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - claude_mo_pct / 5))))
-    echo "│ Claude Max          │   ~2000   │   ~$claude_mo_used   │   ~$(( claude_mo_limit - claude_mo_used ))   │ $claude_mo_bar ${claude_mo_remain}% │"
+    local claude_mo_bar_fill=$(( claude_mo_pct / 5 ))
+    [[ $claude_mo_bar_fill -gt 20 ]] && claude_mo_bar_fill=20
+    [[ $claude_mo_bar_fill -lt 0 ]] && claude_mo_bar_fill=0
+    local claude_mo_bar=$(printf '█%.0s' $(seq 1 $claude_mo_bar_fill 2>/dev/null) 2>/dev/null)$(printf '░%.0s' $(seq 1 $((20 - claude_mo_bar_fill)) 2>/dev/null) 2>/dev/null)
+    printf "│ Claude Max          │   %4d    │   %4d    │   %4d    │ %-20s %3d%% │\n" "$claude_mo_limit" "$claude_mo_used" "$((claude_mo_limit - claude_mo_used))" "$claude_mo_bar" "$claude_mo_remain"
 
     # OpenAI Plus Monthly
-    local openai_mo_limit=4800
-    local openai_mo_used=$(( openai_daily_used * DAY_OF_MONTH ))
-    local openai_mo_pct=$(( (openai_mo_used * 100) / openai_mo_limit ))
+    local openai_mo_pct=$(( openai_mo_limit > 0 ? (openai_mo_used * 100) / openai_mo_limit : 0 ))
     local openai_mo_remain=$(( 100 - openai_mo_pct ))
-    local openai_mo_bar=$(printf '█%.0s' $(seq 1 $((openai_mo_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - openai_mo_pct / 5))))
-    echo "│ OpenAI Plus         │   ~4800   │   ~$openai_mo_used   │   ~$(( openai_mo_limit - openai_mo_used ))   │ $openai_mo_bar ${openai_mo_remain}% │"
+    local openai_mo_bar_fill=$(( openai_mo_pct / 5 ))
+    [[ $openai_mo_bar_fill -gt 20 ]] && openai_mo_bar_fill=20
+    [[ $openai_mo_bar_fill -lt 0 ]] && openai_mo_bar_fill=0
+    local openai_mo_bar=$(printf '█%.0s' $(seq 1 $openai_mo_bar_fill 2>/dev/null) 2>/dev/null)$(printf '░%.0s' $(seq 1 $((20 - openai_mo_bar_fill)) 2>/dev/null) 2>/dev/null)
+    printf "│ OpenAI Plus         │   %4d    │   %4d    │   %4d    │ %-20s %3d%% │\n" "$openai_mo_limit" "$openai_mo_used" "$((openai_mo_limit - openai_mo_used))" "$openai_mo_bar" "$openai_mo_remain"
 
     # Google AI Pro Monthly
-    local google_mo_limit=1500
-    local google_mo_used=$(( google_daily_used * DAY_OF_MONTH ))
-    local google_mo_pct=$(( (google_mo_used * 100) / google_mo_limit ))
+    local google_mo_pct=$(( google_mo_limit > 0 ? (google_mo_used * 100) / google_mo_limit : 0 ))
     local google_mo_remain=$(( 100 - google_mo_pct ))
-    local google_mo_bar=$(printf '█%.0s' $(seq 1 $((google_mo_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - google_mo_pct / 5))))
-    echo "│ Google AI Pro       │   ~1500   │   ~$google_mo_used   │   ~$(( google_mo_limit - google_mo_used ))   │ $google_mo_bar ${google_mo_remain}% │"
+    local google_mo_bar_fill=$(( google_mo_pct / 5 ))
+    [[ $google_mo_bar_fill -gt 20 ]] && google_mo_bar_fill=20
+    [[ $google_mo_bar_fill -lt 0 ]] && google_mo_bar_fill=0
+    local google_mo_bar=$(printf '█%.0s' $(seq 1 $google_mo_bar_fill 2>/dev/null) 2>/dev/null)$(printf '░%.0s' $(seq 1 $((20 - google_mo_bar_fill)) 2>/dev/null) 2>/dev/null)
+    printf "│ Google AI Pro       │   %4d    │   %4d    │   %4d    │ %-20s %3d%% │\n" "$google_mo_limit" "$google_mo_used" "$((google_mo_limit - google_mo_used))" "$google_mo_bar" "$google_mo_remain"
 
     # GitHub Copilot Monthly Hours
-    local copilot_mo_limit=200
-    local copilot_mo_used=$(( copilot_daily_used * DAY_OF_MONTH ))
-    local copilot_mo_pct=$(( (copilot_mo_used * 100) / copilot_mo_limit ))
+    local copilot_mo_pct=$(( copilot_mo_limit > 0 ? (copilot_mo_used * 100) / copilot_mo_limit : 0 ))
     local copilot_mo_remain=$(( 100 - copilot_mo_pct ))
-    local copilot_mo_bar=$(printf '█%.0s' $(seq 1 $((copilot_mo_pct / 5))))$(printf '░%.0s' $(seq 1 $((20 - copilot_mo_pct / 5))))
-    echo "│ GitHub Copilot      │  ~200hrs  │  ~${copilot_mo_used}hrs  │  ~$(( copilot_mo_limit - copilot_mo_used ))hrs  │ $copilot_mo_bar ${copilot_mo_remain}% │"
+    local copilot_mo_bar_fill=$(( copilot_mo_pct / 5 ))
+    [[ $copilot_mo_bar_fill -gt 20 ]] && copilot_mo_bar_fill=20
+    [[ $copilot_mo_bar_fill -lt 0 ]] && copilot_mo_bar_fill=0
+    local copilot_mo_bar=$(printf '█%.0s' $(seq 1 $copilot_mo_bar_fill 2>/dev/null) 2>/dev/null)$(printf '░%.0s' $(seq 1 $((20 - copilot_mo_bar_fill)) 2>/dev/null) 2>/dev/null)
+    printf "│ GitHub Copilot      │  %3dhrs   │  %3dhrs   │  %3dhrs   │ %-20s %3d%% │\n" "$copilot_mo_limit" "$copilot_mo_used" "$((copilot_mo_limit - copilot_mo_used))" "$copilot_mo_bar" "$copilot_mo_remain"
 
     echo "└─────────────────────┴───────────┴───────────┴───────────┴─────────────────────────────────┘"
     echo ""
@@ -309,15 +411,20 @@ show_usage() {
 
     echo -e "${YELLOW}Cost per Actual Usage (This Month):${NC}"
     echo ""
-    local claude_cost_per_use=$(echo "scale=2; 106.60 / $claude_mo_used" | bc 2>/dev/null || echo "~0.13")
-    local openai_cost_per_use=$(echo "scale=2; 21.28 / $openai_mo_used" | bc 2>/dev/null || echo "~0.08")
-    local google_cost_per_use=$(echo "scale=2; 19.99 / $google_mo_used" | bc 2>/dev/null || echo "~0.17")
-    local copilot_cost_per_use=$(echo "scale=2; 8.88 / $copilot_mo_used" | bc 2>/dev/null || echo "~0.08")
+    # Use safe_divide to avoid division by zero
+    local claude_cost_per_use=$(safe_divide "10660" "$claude_mo_used" "2" "N/A")
+    [[ "$claude_cost_per_use" != "N/A" ]] && claude_cost_per_use=$(echo "scale=2; $claude_cost_per_use / 100" | bc 2>/dev/null || echo "$claude_cost_per_use")
+    local openai_cost_per_use=$(safe_divide "2128" "$openai_mo_used" "2" "N/A")
+    [[ "$openai_cost_per_use" != "N/A" ]] && openai_cost_per_use=$(echo "scale=2; $openai_cost_per_use / 100" | bc 2>/dev/null || echo "$openai_cost_per_use")
+    local google_cost_per_use=$(safe_divide "1999" "$google_mo_used" "2" "N/A")
+    [[ "$google_cost_per_use" != "N/A" ]] && google_cost_per_use=$(echo "scale=2; $google_cost_per_use / 100" | bc 2>/dev/null || echo "$google_cost_per_use")
+    local copilot_cost_per_use=$(safe_divide "888" "$copilot_mo_used" "2" "N/A")
+    [[ "$copilot_cost_per_use" != "N/A" ]] && copilot_cost_per_use=$(echo "scale=2; $copilot_cost_per_use / 100" | bc 2>/dev/null || echo "$copilot_cost_per_use")
 
-    echo "  Claude Max:      \$106.60 ÷ ~$claude_mo_used requests = ~\$${claude_cost_per_use}/request"
-    echo "  OpenAI Plus:     \$21.28 ÷ ~$openai_mo_used requests = ~\$${openai_cost_per_use}/request"
-    echo "  Google AI Pro:   \$19.99 ÷ ~$google_mo_used requests = ~\$${google_cost_per_use}/request"
-    echo "  GitHub Copilot:  \$8.88 ÷ ~${copilot_mo_used}hrs = ~\$${copilot_cost_per_use}/hr"
+    echo "  Claude Max:      \$106.60 ÷ $claude_mo_used requests = \$${claude_cost_per_use}/request"
+    echo "  OpenAI Plus:     \$21.28 ÷ $openai_mo_used requests = \$${openai_cost_per_use}/request"
+    echo "  Google AI Pro:   \$19.99 ÷ $google_mo_used requests = \$${google_cost_per_use}/request"
+    echo "  GitHub Copilot:  \$8.88 ÷ ${copilot_mo_used}hrs = \$${copilot_cost_per_use}/hr"
     echo ""
 
     echo -e "${YELLOW}Optimization Suggestions:${NC}"
@@ -338,8 +445,11 @@ show_usage() {
         echo "     → Consider canceling unless Google ecosystem integration is critical"
     fi
     echo ""
-    echo "  Note: Usage estimates are based on typical patterns. For accurate tracking,"
-    echo "  configure actual usage logging in config/ai-tools/usage-tracking.yaml"
+    if [[ -f "$USAGE_FILE" ]]; then
+        echo "  📝 Update your usage data: config/ai-tools/usage-tracking.yaml"
+    else
+        echo "  📝 Create config/ai-tools/usage-tracking.yaml for accurate tracking"
+    fi
     echo ""
 }
 
