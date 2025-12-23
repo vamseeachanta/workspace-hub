@@ -32,6 +32,7 @@ OPTIONS:
     -s, --summary       Show quick summary only
     -r, --report        Generate full assessment report
     -c, --costs         Show cost breakdown only
+    -v, --value         Show value vs cost analysis
     -o, --overlap       Analyze capability overlap
     -h, --help          Show this help message
 
@@ -39,6 +40,7 @@ EXAMPLES:
     $(basename "$0") --summary      # Quick cost summary
     $(basename "$0") --report       # Full assessment report
     $(basename "$0") --costs        # Detailed cost breakdown
+    $(basename "$0") --value        # Value vs cost analysis
 
 EOF
 }
@@ -94,6 +96,78 @@ show_costs() {
     echo "├────────────────────┼────────────┼─────────────┤"
     echo "│ TOTAL              │ \$156.75    │ \$1,881.04   │"
     echo "└────────────────────┴────────────┴─────────────┘"
+    echo ""
+}
+
+show_value() {
+    log_header "Value vs Cost Analysis"
+
+    # Usage estimates (hours per week)
+    echo -e "${YELLOW}Estimated Weekly Usage:${NC}"
+    echo ""
+    echo "┌─────────────────────┬──────────┬───────────┬──────────────┬────────────┐"
+    echo "│ Tool                │ Cost/Mo  │ Hrs/Week  │ Cost/Hour    │ Value/\$    │"
+    echo "├─────────────────────┼──────────┼───────────┼──────────────┼────────────┤"
+    echo "│ Claude Max          │ \$106.60  │   25-30   │ \$0.82-0.98   │ ★★★★★      │"
+    echo "│ GitHub Copilot      │   \$8.88  │   20-25   │ \$0.08-0.10   │ ★★★★★      │"
+    echo "│ OpenAI Plus         │  \$21.28  │    3-5    │ \$0.98-1.64   │ ★★★☆☆      │"
+    echo "│ Google AI Pro       │  \$19.99  │    2-4    │ \$1.15-2.31   │ ★★☆☆☆      │"
+    echo "└─────────────────────┴──────────┴───────────┴──────────────┴────────────┘"
+    echo ""
+    echo "  Cost/Hour = Monthly Cost ÷ (Weekly Hours × 4.33 weeks)"
+    echo ""
+
+    echo -e "${YELLOW}Productivity Impact (Est. Hours Saved/Week):${NC}"
+    echo ""
+    echo "┌─────────────────────┬───────────┬────────────┬─────────────┬────────────┐"
+    echo "│ Tool                │ Hrs Saved │ \$/Hr Saved │ Monthly ROI │ Verdict    │"
+    echo "├─────────────────────┼───────────┼────────────┼─────────────┼────────────┤"
+    echo "│ Claude Max          │   15-20   │ \$1.23-1.64 │   390-520%  │ Essential  │"
+    echo "│ GitHub Copilot      │   10-15   │ \$0.14-0.20 │  1950-2925% │ Essential  │"
+    echo "│ OpenAI Plus         │    2-3    │ \$1.64-2.46 │    41-61%   │ Review     │"
+    echo "│ Google AI Pro       │    1-2    │ \$2.31-4.62 │    22-43%   │ Optional   │"
+    echo "└─────────────────────┴───────────┴────────────┴─────────────┴────────────┘"
+    echo ""
+    echo "  Monthly ROI = (Hours Saved × 4.33 × \$50/hr) ÷ Monthly Cost × 100"
+    echo "  Assumes \$50/hr productivity value"
+    echo ""
+
+    echo -e "${YELLOW}Value Breakdown by Use Case:${NC}"
+    echo ""
+    echo "┌───────────────────────────┬─────────┬─────────┬─────────┬─────────┐"
+    echo "│ Use Case                  │ Claude  │ OpenAI  │ Google  │ Copilot │"
+    echo "├───────────────────────────┼─────────┼─────────┼─────────┼─────────┤"
+    echo "│ Code Development          │  \$\$\$\$\$  │   \$\$    │   \$\$    │  \$\$\$\$\$  │"
+    echo "│ Code Review & Analysis    │  \$\$\$\$\$  │   \$\$    │   \$\$    │   \$\$    │"
+    echo "│ Documentation Writing     │  \$\$\$\$   │  \$\$\$    │  \$\$\$    │   \$     │"
+    echo "│ Problem Solving           │  \$\$\$\$\$  │  \$\$\$    │  \$\$\$    │   -     │"
+    echo "│ Research & Learning       │  \$\$\$\$   │  \$\$\$    │  \$\$\$\$   │   -     │"
+    echo "│ Image Generation          │   -     │  \$\$\$\$   │  \$\$\$    │   -     │"
+    echo "│ Quick Inline Suggestions  │   \$\$    │   \$     │   \$     │  \$\$\$\$\$  │"
+    echo "│ Multi-Agent Orchestration │  \$\$\$\$\$  │   \$     │   \$\$    │   -     │"
+    echo "└───────────────────────────┴─────────┴─────────┴─────────┴─────────┘"
+    echo ""
+    echo "  Legend: \$\$\$\$\$ = Excellent value, \$\$\$\$ = Good, \$\$\$ = Fair, \$\$ = Low, \$ = Minimal, - = N/A"
+    echo ""
+
+    echo -e "${YELLOW}Value Summary:${NC}"
+    echo ""
+    echo "  🏆 Best Value Overall:     GitHub Copilot (\$8.88/mo, ~2500% ROI)"
+    echo "  🥇 Best for Development:   Claude Max (\$106.60/mo, ~450% ROI)"
+    echo "  🔄 Under Review:           OpenAI Plus - moderate usage, alternatives exist"
+    echo "  ⚠️  Consider Canceling:     Google AI Pro - low usage, free tier may suffice"
+    echo ""
+
+    echo -e "${YELLOW}Optimization Recommendation:${NC}"
+    echo ""
+    echo "  Current Spend:    \$156.75/month"
+    echo "  Recommended:      \$115.48/month (Claude Max + Copilot)"
+    echo "  Potential Save:   \$41.27/month (\$495/year)"
+    echo ""
+    echo "  ✓ Keep Claude Max - primary tool, excellent ROI"
+    echo "  ✓ Keep GitHub Copilot - best value per dollar"
+    echo "  ? Review OpenAI - only keep if using DALL-E regularly"
+    echo "  ✗ Consider dropping Google AI Pro - low usage"
     echo ""
 }
 
@@ -249,6 +323,7 @@ while [[ $# -gt 0 ]]; do
         -s|--summary) ACTION="summary"; shift ;;
         -r|--report) ACTION="report"; shift ;;
         -c|--costs) ACTION="costs"; shift ;;
+        -v|--value) ACTION="value"; shift ;;
         -o|--overlap) ACTION="overlap"; shift ;;
         -h|--help) usage; exit 0 ;;
         *) echo "Unknown option: $1"; usage; exit 1 ;;
@@ -269,11 +344,15 @@ case "$ACTION" in
     report)
         show_summary
         show_costs
+        show_value
         show_overlap
         generate_report
         ;;
     costs)
         show_costs
+        ;;
+    value)
+        show_value
         ;;
     overlap)
         show_overlap
