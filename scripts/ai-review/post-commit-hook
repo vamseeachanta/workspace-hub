@@ -1,0 +1,109 @@
+#!/bin/bash
+
+# ABOUTME: Git post-commit hook to trigger Codex review for Claude commits
+# ABOUTME: Automatically detects Claude-authored commits and queues for review
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# Configuration
+WORKSPACE_HUB="/mnt/github/workspace-hub"
+CODEX_REVIEW_SCRIPT="$WORKSPACE_HUB/scripts/ai-review/codex-review.sh"
+
+# Get repository info
+REPO_ROOT=$(git rev-parse --show-toplevel)
+REPO_NAME=$(basename "$REPO_ROOT")
+COMMIT_SHA=$(git rev-parse HEAD)
+SHORT_SHA=$(git rev-parse --short HEAD)
+
+# Get commit info
+COMMIT_MSG=$(git log -1 --format="%B" HEAD)
+COMMIT_AUTHOR=$(git log -1 --format="%an" HEAD)
+COMMIT_EMAIL=$(git log -1 --format="%ae" HEAD)
+
+# Check if this is a Claude commit
+is_claude_commit() {
+    # Check for Claude Code signature in commit message
+    if echo "$COMMIT_MSG" | grep -qi "Claude Code\|claude.com/claude-code"; then
+        return 0
+    fi
+
+    # Check for Co-Authored-By: Claude
+    if echo "$COMMIT_MSG" | grep -qi "Co-Authored-By:.*Claude\|Co-authored-by:.*Claude"; then
+        return 0
+    fi
+
+    # Check for Claude in author email
+    if echo "$COMMIT_EMAIL" | grep -qi "claude\|anthropic"; then
+        return 0
+    fi
+
+    # Check for Generated with Claude markers
+    if echo "$COMMIT_MSG" | grep -qi "Generated with.*Claude\|🤖.*Claude"; then
+        return 0
+    fi
+
+    return 1
+}
+
+# Main logic
+echo ""
+echo -e "${BLUE}🔍 Post-commit hook: Checking for Claude commits...${NC}"
+
+if is_claude_commit; then
+    echo -e "${GREEN}✓ Claude commit detected!${NC}"
+    echo -e "${CYAN}Repository:${NC} $REPO_NAME"
+    echo -e "${CYAN}Commit:${NC}     $SHORT_SHA"
+    echo ""
+
+    # Check if codex is available
+    if ! command -v codex &> /dev/null; then
+        echo -e "${YELLOW}⚠ Codex CLI not found. Skipping review.${NC}"
+        echo "  Install Codex: npm install -g @openai/codex-cli"
+        exit 0
+    fi
+
+    # Check if review script exists
+    if [ ! -f "$CODEX_REVIEW_SCRIPT" ]; then
+        echo -e "${YELLOW}⚠ Codex review script not found: $CODEX_REVIEW_SCRIPT${NC}"
+        exit 0
+    fi
+
+    echo -e "${BLUE}🚀 Triggering Codex review...${NC}"
+    echo ""
+
+    # Run review in background to not block the commit
+    (
+        # Small delay to ensure git is fully done
+        sleep 1
+
+        # Run the review
+        bash "$CODEX_REVIEW_SCRIPT" -r "$REPO_ROOT" HEAD
+
+        # Notify completion
+        echo ""
+        echo -e "${GREEN}╔════════════════════════════════════════════════════════════════╗${NC}"
+        echo -e "${GREEN}║     Codex Review Queued for Approval                          ║${NC}"
+        echo -e "${GREEN}╚════════════════════════════════════════════════════════════════╝${NC}"
+        echo ""
+        echo -e "${YELLOW}To view pending reviews:${NC}"
+        echo "  $WORKSPACE_HUB/scripts/ai-review/review-manager.sh list"
+        echo ""
+
+    ) &
+
+    echo -e "${CYAN}Review running in background...${NC}"
+    echo -e "${YELLOW}Check pending reviews with:${NC}"
+    echo "  $WORKSPACE_HUB/scripts/ai-review/review-manager.sh list"
+    echo ""
+
+else
+    echo -e "${CYAN}Not a Claude commit. Skipping Codex review.${NC}"
+fi
+
+exit 0
