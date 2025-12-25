@@ -95,6 +95,7 @@ coverage.xml
 .claude/
 !.claude/skills/
 !.claude/CLAUDE.md
+!.claude/settings.json
 .claude-flow/
 .hive-mind/
 .swarm/
