@@ -102,6 +102,10 @@ See `modules/config/` for all configuration files.
 
 Detailed documentation available in `modules/documentation/`.
 
+- **[Skills Index](docs/SKILLS_INDEX.md)** - Complete catalog of 51 Claude Code skills across all repositories
+- **[Repository Overview](docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md)** - Repository relationships & navigation
+- **[Capabilities Summary](docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md)** - Full workspace capabilities
+
 ## 🤝 Contributing
 
 1. Work within the appropriate module
