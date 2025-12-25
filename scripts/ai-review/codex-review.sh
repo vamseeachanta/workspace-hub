@@ -104,88 +104,18 @@ echo -e "${BLUE}Extracting changes...${NC}"
 DIFF=$(git show "$COMMIT_SHA" --format="" --stat)
 FULL_DIFF=$(git show "$COMMIT_SHA" --format="")
 
-# Count changes
-FILES_CHANGED=$(echo "$DIFF" | grep -c "file" || echo "0")
-INSERTIONS=$(git show "$COMMIT_SHA" --format="" --stat | tail -1 | grep -oP '\d+(?= insertion)' || echo "0")
-DELETIONS=$(git show "$COMMIT_SHA" --format="" --stat | tail -1 | grep -oP '\d+(?= deletion)' || echo "0")
+# Count changes - parse git stat output correctly
+# Count file lines (all lines except the summary line which contains "changed")
+FILES_CHANGED=$(echo "$DIFF" | grep -v "changed\|^$" | wc -l | tr -d ' ')
+# Extract insertions and deletions from summary line
+STAT_SUMMARY=$(git show "$COMMIT_SHA" --format="" --stat | tail -1)
+INSERTIONS=$(echo "$STAT_SUMMARY" | grep -oP '\d+(?= insertion)' || echo "0")
+DELETIONS=$(echo "$STAT_SUMMARY" | grep -oP '\d+(?= deletion)' || echo "0")
 
 echo -e "${CYAN}Files changed:${NC} $FILES_CHANGED"
 echo -e "${CYAN}Insertions:${NC}   +$INSERTIONS"
 echo -e "${CYAN}Deletions:${NC}    -$DELETIONS"
 echo ""
-
-# Create review prompt based on type
-if [ "$REVIEW_TYPE" = "full" ]; then
-    REVIEW_PROMPT="Please review this git commit comprehensively. Analyze the following aspects and provide specific, actionable feedback:
-
-## Review Aspects
-
-1. **Code Quality**
-   - Code style and readability
-   - Naming conventions
-   - Code organization
-   - DRY principle adherence
-   - SOLID principles
-
-2. **Security**
-   - Potential vulnerabilities (injection, XSS, CSRF)
-   - Hardcoded secrets or credentials
-   - Input validation
-   - Authentication/authorization issues
-
-3. **Performance**
-   - Algorithmic efficiency
-   - Memory usage concerns
-   - Database query optimization
-   - Caching opportunities
-
-4. **Documentation**
-   - Code comments adequacy
-   - Function/class documentation
-   - README updates if needed
-
-5. **Test Coverage**
-   - Are tests included for new code?
-   - Test quality and coverage
-   - Edge cases considered
-
-## Commit Information
-- Repository: $REPO_NAME
-- Commit: $ACTUAL_SHA
-- Author: $COMMIT_AUTHOR
-- Message: $COMMIT_MSG
-
-## Changes Summary
-$DIFF
-
-## Full Diff
-\`\`\`diff
-$FULL_DIFF
-\`\`\`
-
-## Output Format
-
-Please provide:
-1. **Summary**: One paragraph overall assessment
-2. **Findings**: List of specific issues found (categorized by severity: Critical, High, Medium, Low)
-3. **Suggestions**: Specific code improvements with examples
-4. **Verdict**: APPROVE, REQUEST_CHANGES, or NEEDS_DISCUSSION
-
-Be specific and provide line-by-line feedback where applicable."
-else
-    REVIEW_PROMPT="Quick code quality review of this commit:
-
-Repository: $REPO_NAME
-Commit: $ACTUAL_SHA
-Message: $COMMIT_MSG
-
-Changes:
-\`\`\`diff
-$FULL_DIFF
-\`\`\`
-
-Provide brief feedback on code quality, any obvious issues, and a quick verdict (APPROVE/REQUEST_CHANGES)."
-fi
 
 # Set output file
 if [ -z "$OUTPUT_FILE" ]; then
@@ -193,25 +123,61 @@ if [ -z "$OUTPUT_FILE" ]; then
     OUTPUT_FILE="$REVIEWS_DIR/pending/${REPO_NAME}_${ACTUAL_SHA}_${TIMESTAMP}.md"
 fi
 
+# Create temp file for review output
+TEMP_OUTPUT=$(mktemp)
+
 echo -e "${BLUE}Running Codex review...${NC}"
 echo ""
 
-# Create a temp file with the prompt
-PROMPT_FILE=$(mktemp)
-echo "$REVIEW_PROMPT" > "$PROMPT_FILE"
+# Build review prompt based on type
+if [ "$REVIEW_TYPE" = "full" ]; then
+    CUSTOM_PROMPT="Review this commit for: code quality, security vulnerabilities, performance issues, documentation completeness, and test coverage. Categorize findings by severity (Critical, High, Medium, Low). Provide specific, actionable suggestions with code examples. End with a verdict: APPROVE, REQUEST_CHANGES, or NEEDS_DISCUSSION."
+else
+    CUSTOM_PROMPT="Quick review: check code quality and obvious issues. Provide brief verdict: APPROVE or REQUEST_CHANGES."
+fi
 
-# Run Codex in non-interactive mode
-REVIEW_OUTPUT=$(codex exec --quiet "$(cat "$PROMPT_FILE")" 2>&1) || {
-    echo -e "${RED}Codex review failed. Trying alternative approach...${NC}"
-    # Try with direct prompt
-    REVIEW_OUTPUT=$(echo "$REVIEW_PROMPT" | codex exec --quiet 2>&1) || {
-        echo -e "${RED}Failed to run Codex review.${NC}"
-        rm -f "$PROMPT_FILE"
-        exit 1
+# Run Codex review command (direct command, not exec subcommand)
+echo -e "${CYAN}Running Codex review for commit: $FULL_SHA${NC}"
+echo ""
+
+# Use codex review directly with --commit flag
+# Note: codex review --commit <SHA> uses the commit diff automatically
+REVIEW_OUTPUT=$(codex review --commit "$FULL_SHA" --title "$COMMIT_MSG" "$CUSTOM_PROMPT" 2>&1) || {
+    # If review with custom prompt fails, try without custom prompt
+    echo -e "${YELLOW}Trying review without custom prompt...${NC}"
+
+    REVIEW_OUTPUT=$(codex review --commit "$FULL_SHA" --title "$COMMIT_MSG" 2>&1) || {
+        # Final fallback: use exec with manual diff
+        echo -e "${YELLOW}Using exec mode with diff...${NC}"
+
+        FALLBACK_PROMPT="Review this git commit and provide feedback:
+
+Repository: $REPO_NAME
+Commit: $ACTUAL_SHA
+Author: $COMMIT_AUTHOR
+Message: $COMMIT_MSG
+
+Changes:
+$DIFF
+
+Full Diff:
+$FULL_DIFF
+
+$CUSTOM_PROMPT"
+
+        REVIEW_OUTPUT=$(echo "$FALLBACK_PROMPT" | codex exec 2>&1) || {
+            echo -e "${RED}Failed to run Codex review.${NC}"
+            rm -f "$TEMP_OUTPUT"
+            exit 1
+        }
     }
 }
 
-rm -f "$PROMPT_FILE"
+# Read output if written to file, otherwise use stdout
+if [ -f "$TEMP_OUTPUT" ] && [ -s "$TEMP_OUTPUT" ]; then
+    REVIEW_OUTPUT=$(cat "$TEMP_OUTPUT")
+fi
+rm -f "$TEMP_OUTPUT"
 
 # Create review report
 cat > "$OUTPUT_FILE" << EOF
