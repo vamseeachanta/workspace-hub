@@ -37,6 +37,7 @@ usage() {
     echo "  reject <id>       Reject a review"
     echo "  implement <id>    Implement approved review suggestions"
     echo "  stats             Show review statistics"
+    echo "  history [n]       Show recent review activity (default: 10)"
     echo "  clean             Clean old reviews (>30 days)"
     echo ""
     echo "Examples:"
@@ -313,6 +314,48 @@ show_stats() {
     done
 }
 
+# Show recent review activity history
+show_history() {
+    local LIMIT="${1:-10}"
+
+    echo -e "${BLUE}╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BLUE}║              Recent Review Activity                            ║${NC}"
+    echo -e "${BLUE}╚════════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+
+    echo -e "${CYAN}Last $LIMIT reviews (most recent first):${NC}"
+    echo ""
+    printf "%-20s %-12s %-30s %-15s\n" "Date" "Status" "Review ID" "Repository"
+    echo "────────────────────────────────────────────────────────────────────────────────────"
+
+    # Collect all reviews with timestamps
+    {
+        for dir in pending approved rejected implemented; do
+            if [ -d "$REVIEWS_DIR/$dir" ]; then
+                find "$REVIEWS_DIR/$dir" -maxdepth 1 -name "*.md" -type f 2>/dev/null | while read -r file; do
+                    REVIEW_ID=$(basename "$file" .md)
+                    REPO=$(echo "$REVIEW_ID" | cut -d'_' -f1)
+                    TIMESTAMP=$(stat -c %Y "$file" 2>/dev/null || stat -f %m "$file" 2>/dev/null)
+                    DATE=$(date -d "@$TIMESTAMP" "+%Y-%m-%d %H:%M" 2>/dev/null || date -r "$TIMESTAMP" "+%Y-%m-%d %H:%M" 2>/dev/null)
+                    echo "$TIMESTAMP|$DATE|$dir|$REVIEW_ID|$REPO"
+                done
+            fi
+        done
+    } | sort -t'|' -k1 -rn | head -n "$LIMIT" | while IFS='|' read -r ts date status review_id repo; do
+        # Color code status
+        case "$status" in
+            pending)     STATUS_COLOR="${YELLOW}pending${NC}" ;;
+            approved)    STATUS_COLOR="${GREEN}approved${NC}" ;;
+            rejected)    STATUS_COLOR="${RED}rejected${NC}" ;;
+            implemented) STATUS_COLOR="${MAGENTA}implemented${NC}" ;;
+            *)           STATUS_COLOR="$status" ;;
+        esac
+        printf "%-20s %-22b %-30s %-15s\n" "$date" "$STATUS_COLOR" "$review_id" "$repo"
+    done
+
+    echo ""
+}
+
 # Clean old reviews
 clean_reviews() {
     echo -e "${BLUE}Cleaning reviews older than 30 days...${NC}"
@@ -365,6 +408,9 @@ case "${1:-list}" in
         ;;
     stats)
         show_stats
+        ;;
+    history)
+        show_history "${2:-10}"
         ;;
     clean)
         clean_reviews
