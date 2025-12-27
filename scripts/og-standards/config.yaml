@@ -4,18 +4,18 @@
 
 # Source directories to scan for standards
 source_directories:
-  - /mnt/ace/0000 O&G/0000 Codes & Standards
-  - /mnt/ace/0000 O&G/Oil and Gas Codes
+  - "/mnt/ace/0000 O&G/0000 Codes & Standards"
+  - "/mnt/ace/0000 O&G/Oil and Gas Codes"
 
 # Target consolidated directory
-target_directory: /mnt/ace/O&G-Standards
+target_directory: "/mnt/ace/O&G-Standards"
 
 # Database for inventory tracking
-database_path: /mnt/ace/O&G-Standards/_inventory.db
+database_path: "/mnt/ace/O&G-Standards/_inventory.db"
 
 # Catalog output
-catalog_json: /mnt/ace/O&G-Standards/_catalog.json
-catalog_html: /mnt/ace/O&G-Standards/_catalog.html
+catalog_json: "/mnt/ace/O&G-Standards/_catalog.json"
+catalog_html: "/mnt/ace/O&G-Standards/_catalog.html"
 
 # File extensions to process
 file_extensions:
@@ -117,4 +117,4 @@ duplicate_strategy:
 # Logging configuration
 logging:
   level: INFO
-  log_file: /mnt/ace/O&G-Standards/_consolidation.log
+  log_file: "/mnt/ace/O&G-Standards/_consolidation.log"
