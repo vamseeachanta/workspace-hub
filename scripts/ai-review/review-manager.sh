@@ -16,7 +16,29 @@ NC='\033[0m'
 
 # Configuration
 REVIEWS_DIR="${REVIEWS_DIR:-$HOME/.codex-reviews}"
-WORKSPACE_HUB="/mnt/github/workspace-hub"
+
+# Detect workspace-hub root (works on Windows and Linux)
+if [ -n "$WORKSPACE_HUB" ]; then
+    # Use environment variable if set
+    WORKSPACE_HUB="$WORKSPACE_HUB"
+elif [ -f "$(dirname "$0")/../../CLAUDE.md" ]; then
+    # Script is in workspace-hub/scripts/ai-review/
+    WORKSPACE_HUB="$(cd "$(dirname "$0")/../.." && pwd)"
+else
+    # Fallback: search for workspace-hub in parents
+    CURRENT_DIR="$(pwd)"
+    while [ "$CURRENT_DIR" != "/" ] && [ "$CURRENT_DIR" != "" ]; do
+        if [ -f "$CURRENT_DIR/CLAUDE.md" ] && [ -d "$CURRENT_DIR/scripts/ai-review" ]; then
+            WORKSPACE_HUB="$CURRENT_DIR"
+            break
+        fi
+        CURRENT_DIR="$(dirname "$CURRENT_DIR")"
+    done
+    # Final fallback
+    if [ -z "$WORKSPACE_HUB" ] || [ ! -d "$WORKSPACE_HUB" ]; then
+        WORKSPACE_HUB="$(cd "$(dirname "$0")/../.." && pwd)"
+    fi
+fi
 
 # Ensure directories exist
 mkdir -p "$REVIEWS_DIR/pending"

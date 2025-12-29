@@ -11,8 +11,37 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-# Configuration
-WORKSPACE_HUB="/mnt/github/workspace-hub"
+# Configuration - Detect workspace-hub root (works on Windows and Linux)
+if [ -n "$WORKSPACE_HUB" ]; then
+    # Use environment variable if set
+    WORKSPACE_HUB="$WORKSPACE_HUB"
+else
+    # Try to find workspace-hub from git repo
+    CURRENT_REPO=$(git rev-parse --show-toplevel 2>/dev/null || echo "")
+    
+    # Check if we're in a workspace-hub subdirectory
+    if [ -n "$CURRENT_REPO" ]; then
+        PARENT_DIR="$(dirname "$CURRENT_REPO")"
+        if [ -f "$PARENT_DIR/CLAUDE.md" ] && [ -d "$PARENT_DIR/scripts/ai-review" ]; then
+            WORKSPACE_HUB="$PARENT_DIR"
+        elif [ -f "$CURRENT_REPO/CLAUDE.md" ] && [ -d "$CURRENT_REPO/scripts/ai-review" ]; then
+            WORKSPACE_HUB="$CURRENT_REPO"
+        fi
+    fi
+    
+    # Final fallback: search parent directories
+    if [ -z "$WORKSPACE_HUB" ]; then
+        SEARCH_DIR="$(pwd)"
+        while [ "$SEARCH_DIR" != "/" ] && [ "$SEARCH_DIR" != "" ]; do
+            if [ -f "$SEARCH_DIR/CLAUDE.md" ] && [ -d "$SEARCH_DIR/scripts/ai-review" ]; then
+                WORKSPACE_HUB="$SEARCH_DIR"
+                break
+            fi
+            SEARCH_DIR="$(dirname "$SEARCH_DIR")"
+        done
+    fi
+fi
+
 CODEX_REVIEW_SCRIPT="$WORKSPACE_HUB/scripts/ai-review/codex-review.sh"
 
 # Get repository info
