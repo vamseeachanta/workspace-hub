@@ -25,7 +25,7 @@ This collection provides **35 specialized skills** organized into **8 categories
 
 **Plus repository-specific skills:**
 - **digitalmodel**: 10 skills (fatigue-analysis, mooring-design, structural-analysis, orcaflex-modeling, orcaflex-post-processing, aqwa-analysis, catenary-riser, hydrodynamics, signal-analysis, viv-analysis)
-- **worldenergydata**: 9 skills (bsee-data-extractor, npv-analyzer, energy-data-visualizer, fdas-economics, field-analyzer, marine-safety-incidents, sodir-data-extractor, web-scraper-energy, well-production-dashboard)
+- **worldenergydata**: 10 skills (bsee-data-extractor, energy-data-visualizer, fdas-economics, field-analyzer, marine-safety-incidents, npv-analyzer, production-forecaster, sodir-data-extractor, web-scraper-energy, well-production-dashboard)
 
 ## Directory Structure
 
@@ -79,6 +79,7 @@ worldenergydata/.claude/skills/
 ├── field-analyzer/          # Oil/gas field analysis
 ├── marine-safety-incidents/ # Marine safety incident analysis
 ├── npv-analyzer/            # NPV and economic evaluation
+├── production-forecaster/   # Arps decline curves and EUR forecasting
 ├── sodir-data-extractor/    # SODIR (Norwegian) data extraction
 ├── web-scraper-energy/      # Energy website scraping
 └── well-production-dashboard/ # Well production dashboards
