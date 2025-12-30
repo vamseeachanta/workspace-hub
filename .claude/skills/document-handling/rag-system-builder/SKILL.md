@@ -330,6 +330,7 @@ query_embeddings = model.embed_batch(questions)
 Combine keyword and semantic search for better results:
 
 ```python
+import sqlite3
 from rank_bm25 import BM25Okapi
 import numpy as np
 

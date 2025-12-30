@@ -8,13 +8,13 @@
 
 ## Overview
 
-This collection provides **40 specialized skills** organized into **8 categories**. Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
+This collection provides **35 specialized skills** organized into **8 categories**. Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
 
 ## Quick Reference
 
 | Category | Skills | Purpose |
 |----------|--------|---------|
-| [Document Handling](#document-handling) | 11 | PDF, DOCX, PPTX, XLSX, OCR, RAG, knowledge bases, semantic search |
+| [Document Handling](#document-handling) | 10 | PDF, DOCX, PPTX, XLSX, OCR, RAG, knowledge bases, semantic search |
 | [Development](#development) | 7 | MCP servers, web testing, reports, workflows, pipelines, git worktrees |
 | [Content & Design](#content--design) | 4 | Frontend UI, themes, canvas graphics, algorithmic art |
 | [Communication](#communication) | 4 | Internal comms, Slack GIFs, document collaboration, branding |
@@ -24,8 +24,8 @@ This collection provides **40 specialized skills** organized into **8 categories
 | [Meta](#meta) | 1 | Session routines, skill maintenance |
 
 **Plus repository-specific skills:**
-- **digitalmodel**: 5 skills (fatigue-analysis, mooring-design, structural-analysis, orcaflex-modeling, orcaflex-post-processing)
-- **worldenergydata**: 2 skills (bsee-data-extractor, npv-analyzer)
+- **digitalmodel**: 10 skills (fatigue-analysis, mooring-design, structural-analysis, orcaflex-modeling, orcaflex-post-processing, aqwa-analysis, catenary-riser, hydrodynamics, signal-analysis, viv-analysis)
+- **worldenergydata**: 9 skills (bsee-data-extractor, npv-analyzer, energy-data-visualizer, fdas-economics, field-analyzer, marine-safety-incidents, sodir-data-extractor, web-scraper-energy, well-production-dashboard)
 
 ## Directory Structure
 
@@ -91,6 +91,7 @@ Work with business documents - reading, creating, editing, analyzing, and buildi
 | [knowledge-base-builder](document-handling/knowledge-base-builder/SKILL.md) | Build document inventories with SQLite catalogs |
 | [semantic-search-setup](document-handling/semantic-search-setup/SKILL.md) | Generate vector embeddings for semantic search |
 | [rag-system-builder](document-handling/rag-system-builder/SKILL.md) | Add LLM-powered Q&A to document collections |
+| [document-inventory](document-handling/document-inventory/SKILL.md) | Build and manage document inventories with catalogs |
 
 ### Development
 
