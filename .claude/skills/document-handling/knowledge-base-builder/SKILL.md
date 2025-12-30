@@ -239,3 +239,9 @@ python index.py --db knowledge.db
 - `semantic-search-setup` - Add vector embeddings for AI search
 - `rag-system-builder` - Build AI Q&A on top of knowledge base
 - `pdf-text-extractor` - Detailed PDF extraction options
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with SQLite FTS5 full-text search, PDF extraction, CLI

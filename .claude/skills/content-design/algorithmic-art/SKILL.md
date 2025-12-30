@@ -194,3 +194,9 @@ The algorithm flows from the philosophy, not from a menu of options.
 - **Emergence**: Focus on particle interactions and self-organization
 - **Mathematical beauty**: Golden ratio, Fibonacci, geometric precision
 - **Controlled chaos**: Combine noise fields with rule-based systems
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with p5.js templates, seeded randomness, noise fields, particle systems, recursive structures

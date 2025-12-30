@@ -305,3 +305,9 @@ Track these metrics when possible:
 - Read time (intranet)
 - Questions received (indicates clarity)
 - Action completion rates (for calls to action)
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with announcement, newsletter, memo, executive, and crisis communication templates

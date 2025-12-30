@@ -371,3 +371,9 @@ python search.py "fatigue analysis requirements"
 - `knowledge-base-builder` - Build the document database first
 - `rag-system-builder` - Add AI Q&A on top of semantic search
 - `pdf-text-extractor` - Extract text from PDFs
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with sentence-transformers, cosine similarity search, batch processing

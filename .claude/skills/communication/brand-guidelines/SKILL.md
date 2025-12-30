@@ -472,3 +472,9 @@ Slack: #[brand-channel]
 
 Example: `acme_logo_primary_fullcolor.svg`
 ```
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with complete guidelines template, logo usage, color system, typography, imagery, voice and tone, applications

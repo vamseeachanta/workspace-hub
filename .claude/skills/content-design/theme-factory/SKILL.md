@@ -256,3 +256,9 @@ When existing themes don't fit:
 | Tech Innovation | Cutting-edge, bold | Startups, tech |
 | Botanical Garden | Fresh, organic | Food, wellness |
 | Midnight Galaxy | Creative, mysterious | Entertainment, gaming |
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with 10 curated themes, HTML/CSS, PowerPoint, Excel integration, custom generation

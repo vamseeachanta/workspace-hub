@@ -1,6 +1,8 @@
 ---
 name: mcp-builder
 description: Guide for building high-quality Model Context Protocol (MCP) servers that allow LLMs to interact with external services. Use when creating new MCP integrations, tools, or servers for Claude or other AI systems.
+version: 1.1.0
+last_updated: 2025-12-30
 ---
 
 # MCP Builder Skill
@@ -226,8 +228,76 @@ if (!API_KEY) {
 }
 ```
 
+## Project Configuration (New in 2025)
+
+### .mcp.json for Team Sharing
+
+Commit MCP server configs to your repository:
+
+```json
+// .mcp.json (project root)
+{
+  "mcpServers": {
+    "project-db": {
+      "command": "node",
+      "args": ["./tools/mcp-server/dist/index.js"],
+      "env": {
+        "DB_PATH": "./data/project.db"
+      }
+    }
+  }
+}
+```
+
+**Scope changes (2025):**
+- `project` scope → Now called `local` (per-project)
+- `global` scope → Now called `user` (user-wide)
+- **New**: Checked-in `.mcp.json` files for team sharing
+
+### Permission Wildcards
+
+Use wildcard syntax for server permissions:
+
+```bash
+# Allow all tools from a server
+mcp__my-server__*
+
+# In settings.json allowlist
+{
+  "permissions": {
+    "allow": ["mcp__database__*", "mcp__github__*"]
+  }
+}
+```
+
+### Timeout Configuration
+
+```bash
+# Set MCP server startup timeout (default: 30s)
+export MCP_TIMEOUT=60000  # 60 seconds
+
+# Debug mode for troubleshooting
+claude --mcp-debug
+```
+
+## Security Best Practices
+
+1. **Use trusted servers** - Only from official/verified sources
+2. **Least privilege** - Grant minimal required permissions
+3. **Audit logs** - Maintain comprehensive access logs
+4. **Environment isolation** - Use containers for high-risk automation
+5. **No hardcoded secrets** - Always use environment variables
+
 ## Resources
 
 - MCP Documentation: https://modelcontextprotocol.io
 - MCP TypeScript SDK: https://github.com/modelcontextprotocol/typescript-sdk
 - MCP Inspector: https://github.com/modelcontextprotocol/inspector
+- Top MCP Servers: https://mcpcat.io/guides/best-mcp-servers-for-claude-code/
+
+---
+
+## Version History
+
+- **1.1.0** (2025-12-30): Added .mcp.json project config, permission wildcards, MCP_TIMEOUT, security best practices
+- **1.0.0** (2025-10-15): Initial release with four-phase development process

@@ -360,3 +360,9 @@ const Button = ({ children, variant = 'primary', ...props }) => {
 **Claude is capable of extraordinary creative work. Don't hold back.**
 
 Design complexity should match the aesthetic vision—maximalist designs warrant elaborate animations; minimalist approaches require restraint and precision. The right amount of design is whatever serves the purpose with distinction.
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with typography, color, motion, spatial design patterns, component examples, Tailwind/React integration

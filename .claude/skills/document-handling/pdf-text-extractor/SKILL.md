@@ -414,3 +414,9 @@ python extract.py /path/to/pdfs --chunk-size 1500
 - `knowledge-base-builder` - Build searchable database from extracted text
 - `semantic-search-setup` - Add vector embeddings for AI search
 - `document-inventory` - Catalog documents before extraction
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with PyMuPDF, batch processing, OCR support, metadata extraction

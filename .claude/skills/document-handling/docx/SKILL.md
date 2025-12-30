@@ -227,3 +227,9 @@ pip install python-docx
 System tools:
 - Pandoc (for format conversion)
 - LibreOffice (for PDF conversion)
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with python-docx, pandoc integration, redlining workflow

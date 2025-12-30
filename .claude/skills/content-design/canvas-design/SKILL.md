@@ -191,3 +191,9 @@ dwg.save()
 ## Philosophy
 
 The goal is creating visual work that appears to have been crafted by someone at the absolute pinnacle of their field—work that demands attention, rewards study, and achieves lasting aesthetic impact.
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with PIL/Pillow, Cairo, SVG implementations, visual styles, quality guidelines

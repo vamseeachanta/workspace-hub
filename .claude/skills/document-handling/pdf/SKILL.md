@@ -217,3 +217,9 @@ System tools:
 - qpdf
 - pdftk
 - Tesseract OCR
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with pypdf, pdfplumber, reportlab, CLI tools

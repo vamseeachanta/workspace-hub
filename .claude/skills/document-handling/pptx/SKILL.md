@@ -260,3 +260,9 @@ pip install python-pptx
 Optional tools:
 - LibreOffice (for PDF conversion)
 - Pandoc (for format conversion)
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with python-pptx, templates, OOXML editing

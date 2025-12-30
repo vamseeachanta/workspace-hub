@@ -504,3 +504,9 @@ python inventory.py export inventory.csv --db inventory.db
 - `knowledge-base-builder` - Build searchable database after inventory
 - `pdf-text-extractor` - Extract text from inventoried PDFs
 - `semantic-search-setup` - Add AI search capabilities
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with SQLite storage, auto-categorization, CLI interface

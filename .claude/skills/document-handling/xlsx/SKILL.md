@@ -300,3 +300,9 @@ pip install pandas openpyxl xlrd
 Optional:
 - xlwings (Windows/Mac Excel automation)
 - xlsxwriter (alternative writer)
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with pandas, openpyxl, financial model standards

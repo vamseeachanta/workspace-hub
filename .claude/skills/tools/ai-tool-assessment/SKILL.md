@@ -86,3 +86,9 @@ Before generating report, ask:
 - Assessment report in `reports/ai-tool-assessment/`
 - Updated `docs/AI_development_tools.md` if status changes
 - Summary printed to console
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with subscription inventory, usage analysis, cost-effectiveness reporting, recommendation framework

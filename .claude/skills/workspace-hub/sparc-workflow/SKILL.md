@@ -488,3 +488,9 @@ npx claude-flow sparc tdd "feature to implement"
 2. Run full test suite
 3. Update documentation
 4. Plan deployment
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with 5 SPARC phases, TDD integration, Claude Flow support, Agent OS integration

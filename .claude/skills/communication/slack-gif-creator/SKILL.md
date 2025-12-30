@@ -389,3 +389,9 @@ pip install ffmpeg-python
 2. **Inclusive**: Avoid content that could exclude
 3. **On-brand**: Match company culture
 4. **Clear meaning**: The GIF's purpose should be obvious
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with PIL/Pillow, moviepy methods, Slack optimization, celebration GIF templates

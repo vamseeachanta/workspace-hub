@@ -485,3 +485,9 @@ mcp__claude-flow__swarm_scale({
     targetSize: 2
 })
 ```
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with swarm topologies, agent spawning, task orchestration, memory management, performance optimization

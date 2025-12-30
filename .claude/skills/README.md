@@ -3,22 +3,25 @@
 > User-level skills for Claude Code, accessible across all projects.
 >
 > Location: `~/.claude/skills/` (symlinked to `/mnt/github/workspace-hub/.claude/skills/`)
+>
+> Last Updated: 2025-12-30
 
 ## Overview
 
-This collection provides **31 specialized skills** organized into **7 categories**. Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
+This collection provides **40 specialized skills** organized into **8 categories**. Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
 
 ## Quick Reference
 
 | Category | Skills | Purpose |
 |----------|--------|---------|
-| [Document Handling](#document-handling) | 4 | Work with PDF, DOCX, PPTX, XLSX files |
-| [Development](#development) | 6 | MCP servers, web testing, reports, workflows, pipelines, parallel processing |
+| [Document Handling](#document-handling) | 11 | PDF, DOCX, PPTX, XLSX, OCR, RAG, knowledge bases, semantic search |
+| [Development](#development) | 7 | MCP servers, web testing, reports, workflows, pipelines, git worktrees |
 | [Content & Design](#content--design) | 4 | Frontend UI, themes, canvas graphics, algorithmic art |
 | [Communication](#communication) | 4 | Internal comms, Slack GIFs, document collaboration, branding |
 | [Builders](#builders) | 2 | Web artifacts, skill creation |
 | [Workspace Hub](#workspace-hub) | 5 | Repository sync, SPARC workflow, agent orchestration |
-| [Tools](#tools) | 1 | AI tool assessment and utilities |
+| [Tools](#tools) | 2 | AI tool assessment, background services |
+| [Meta](#meta) | 1 | Session routines, skill maintenance |
 
 **Plus repository-specific skills:**
 - **digitalmodel**: 5 skills (fatigue-analysis, mooring-design, structural-analysis, orcaflex-modeling, orcaflex-post-processing)
@@ -28,19 +31,32 @@ This collection provides **31 specialized skills** organized into **7 categories
 
 ```
 skills/
-├── document-handling/       # PDF, DOCX, PPTX, XLSX manipulation
+├── document-handling/       # PDF, DOCX, PPTX, XLSX, OCR, RAG, knowledge bases
+│   ├── pdf/
+│   ├── docx/
+│   ├── pptx/
+│   ├── xlsx/
+│   ├── document-rag-pipeline/
+│   ├── pdf-text-extractor/
+│   ├── knowledge-base-builder/
+│   ├── semantic-search-setup/
+│   ├── rag-system-builder/         # v1.1.0 - Added hybrid search, reranking
+│   └── document-inventory/
 ├── development/             # MCP servers, web testing, reports, workflows, pipelines
-│   ├── mcp-builder/
+│   ├── mcp-builder/                # v1.1.0 - Added .mcp.json, wildcards, security
 │   ├── webapp-testing/
 │   ├── engineering-report-generator/
 │   ├── yaml-workflow-executor/
 │   ├── data-pipeline-processor/
-│   └── parallel-file-processor/
+│   ├── parallel-file-processor/
+│   └── git-worktree-workflow/      # NEW v1.0.0
 ├── content-design/          # UI, themes, graphics, generative art
 ├── communication/           # Business communications
 ├── builders/                # Meta-tools for creation
 ├── workspace-hub/           # Workspace-specific automation
 ├── tools/                   # Assessment and utility skills
+├── meta/                    # Skills about skills
+│   └── session-start-routine/      # NEW v1.0.0
 └── README.md                # This file
 
 # Repository-specific skills (in individual repos)
@@ -62,7 +78,7 @@ worldenergydata/.claude/skills/
 
 ### Document Handling
 
-Work with business documents - reading, creating, editing, and analyzing files.
+Work with business documents - reading, creating, editing, analyzing, and building searchable knowledge bases.
 
 | Skill | Description |
 |-------|-------------|
@@ -70,19 +86,25 @@ Work with business documents - reading, creating, editing, and analyzing files.
 | [docx](document-handling/docx/SKILL.md) | Create and edit Word documents with formatting |
 | [pptx](document-handling/pptx/SKILL.md) | Build PowerPoint presentations with slides and layouts |
 | [xlsx](document-handling/xlsx/SKILL.md) | Generate Excel spreadsheets with formulas and charts |
+| [document-rag-pipeline](document-handling/document-rag-pipeline/SKILL.md) | **Complete RAG pipeline** - PDF extraction, OCR, embeddings, semantic search |
+| [pdf-text-extractor](document-handling/pdf-text-extractor/SKILL.md) | Extract text from PDFs (regular and OCR) |
+| [knowledge-base-builder](document-handling/knowledge-base-builder/SKILL.md) | Build document inventories with SQLite catalogs |
+| [semantic-search-setup](document-handling/semantic-search-setup/SKILL.md) | Generate vector embeddings for semantic search |
+| [rag-system-builder](document-handling/rag-system-builder/SKILL.md) | Add LLM-powered Q&A to document collections |
 
 ### Development
 
-Tools for building software - MCP servers, web testing, engineering reports, workflow automation, data pipelines, and parallel processing.
+Tools for building software - MCP servers, web testing, engineering reports, workflow automation, data pipelines, git worktrees, and parallel processing.
 
 | Skill | Description |
 |-------|-------------|
-| [mcp-builder](development/mcp-builder/SKILL.md) | Build Model Context Protocol servers with Claude integration |
+| [mcp-builder](development/mcp-builder/SKILL.md) | Build Model Context Protocol servers with Claude integration (v1.1.0) |
 | [webapp-testing](development/webapp-testing/SKILL.md) | Test web applications with Playwright and Chrome DevTools |
 | [engineering-report-generator](development/engineering-report-generator/SKILL.md) | Generate interactive HTML reports with Plotly visualizations |
 | [yaml-workflow-executor](development/yaml-workflow-executor/SKILL.md) | Execute configuration-driven analysis workflows from YAML files |
 | [data-pipeline-processor](development/data-pipeline-processor/SKILL.md) | Build ETL pipelines with validation, transformation, and reporting |
 | [parallel-file-processor](development/parallel-file-processor/SKILL.md) | Process multiple files in parallel with aggregation and progress tracking |
+| [git-worktree-workflow](development/git-worktree-workflow/SKILL.md) | **NEW** Use git worktrees for parallel Claude workflows (v1.0.0) |
 
 ### Content & Design
 
@@ -134,6 +156,15 @@ Assessment and utility skills.
 | Skill | Description |
 |-------|-------------|
 | [ai-tool-assessment](tools/ai-tool-assessment/SKILL.md) | Assess AI tool subscriptions, usage, and cost-effectiveness |
+| [background-service-manager](tools/background-service-manager/SKILL.md) | Manage background services and daemons |
+
+### Meta
+
+Skills about skills - maintenance, creation, and session management.
+
+| Skill | Description |
+|-------|-------------|
+| [session-start-routine](meta/session-start-routine/SKILL.md) | **NEW** Session initialization routine for skill maintenance (v1.0.0) |
 
 ---
 
@@ -246,6 +277,25 @@ cat ~/.claude/skills/document-handling/pdf/SKILL.md
 - [Workspace Hub Documentation](../../docs/README.md)
 - [AI Agent Guidelines](../../docs/modules/ai/AI_AGENT_GUIDELINES.md)
 - [Repo-Specific Skills Guide](../../docs/modules/ai/REPO_SPECIFIC_SKILLS.md)
+
+---
+
+## Changelog
+
+### 2025-12-30
+
+**New Skills:**
+- `meta/session-start-routine` (v1.0.0) - Session initialization and skill maintenance routine
+- `development/git-worktree-workflow` (v1.0.0) - Parallel Claude workflows with git worktrees
+
+**Updated Skills:**
+- `development/mcp-builder` (v1.1.0) - Added .mcp.json project config, permission wildcards, MCP_TIMEOUT, security best practices
+- `document-handling/rag-system-builder` (v1.1.0) - Added hybrid search (BM25+vector), reranking, streaming responses
+
+**Research Sources Used:**
+- [Anthropic Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
+- [Top MCP Servers 2025](https://mcpcat.io/guides/best-mcp-servers-for-claude-code/)
+- [Anthropic Skills Repository](https://github.com/anthropics/skills)
 
 ---
 

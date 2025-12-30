@@ -299,3 +299,9 @@ context.tracing.stop(path="trace.zip")
 pip install playwright pytest requests
 playwright install chromium
 ```
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with Playwright patterns, server management, debugging tools

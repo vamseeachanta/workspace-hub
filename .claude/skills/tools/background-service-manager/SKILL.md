@@ -460,3 +460,9 @@ if __name__ == '__main__':
 - `pdf-text-extractor` - Long-running extraction job
 - `semantic-search-setup` - Embedding generation service
 - `knowledge-base-builder` - Background indexing
+
+---
+
+## Version History
+
+- **1.0.0** (2024-10-15): Initial release with service manager scripts, multi-service support, status dashboard, Python wrapper, graceful shutdown handling

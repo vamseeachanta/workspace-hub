@@ -1,6 +1,8 @@
 ---
 name: rag-system-builder
 description: Build Retrieval-Augmented Generation (RAG) Q&A systems with Claude or OpenAI. Use for creating AI assistants that answer questions from document collections, technical libraries, or knowledge bases.
+version: 1.1.0
+last_updated: 2025-12-30
 ---
 
 # RAG System Builder Skill
@@ -323,8 +325,124 @@ query_embeddings = model.embed_batch(questions)
 ./rag --provider openai "Explain API 2RD requirements"
 ```
 
+## Advanced: Hybrid Search (BM25 + Vector)
+
+Combine keyword and semantic search for better results:
+
+```python
+from rank_bm25 import BM25Okapi
+import numpy as np
+
+class HybridSearch:
+    def __init__(self, db_path, embedding_model):
+        self.db_path = db_path
+        self.model = embedding_model
+        self._build_bm25_index()
+
+    def _build_bm25_index(self):
+        """Build BM25 index from chunks."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute('SELECT id, chunk_text FROM chunks')
+
+        self.chunk_ids = []
+        tokenized_corpus = []
+        for chunk_id, text in cursor.fetchall():
+            self.chunk_ids.append(chunk_id)
+            tokenized_corpus.append(text.lower().split())
+
+        self.bm25 = BM25Okapi(tokenized_corpus)
+        conn.close()
+
+    def search(self, query, top_k=10, alpha=0.5):
+        """Hybrid search with alpha weighting.
+
+        alpha=0.0: Pure BM25 (keyword)
+        alpha=1.0: Pure vector (semantic)
+        alpha=0.5: Balanced hybrid
+        """
+        # BM25 scores
+        tokenized_query = query.lower().split()
+        bm25_scores = self.bm25.get_scores(tokenized_query)
+        bm25_scores = bm25_scores / (bm25_scores.max() + 1e-6)  # Normalize
+
+        # Vector scores
+        vector_results = semantic_search(self.db_path, query, self.model, top_k=len(self.chunk_ids))
+        vector_scores = {r['chunk_id']: r['score'] for r in vector_results}
+
+        # Combine scores
+        combined = []
+        for i, chunk_id in enumerate(self.chunk_ids):
+            score = (1 - alpha) * bm25_scores[i] + alpha * vector_scores.get(chunk_id, 0)
+            combined.append((chunk_id, score))
+
+        combined.sort(key=lambda x: x[1], reverse=True)
+        return combined[:top_k]
+```
+
+## Advanced: Reranking
+
+Add a reranking step for improved precision:
+
+```python
+from sentence_transformers import CrossEncoder
+
+class Reranker:
+    def __init__(self, model_name='cross-encoder/ms-marco-MiniLM-L-6-v2'):
+        self.model = CrossEncoder(model_name)
+
+    def rerank(self, query, candidates, top_k=5):
+        """Rerank candidates using cross-encoder."""
+        pairs = [(query, c['text']) for c in candidates]
+        scores = self.model.predict(pairs)
+
+        for i, score in enumerate(scores):
+            candidates[i]['rerank_score'] = float(score)
+
+        reranked = sorted(candidates, key=lambda x: x['rerank_score'], reverse=True)
+        return reranked[:top_k]
+
+# Usage in RAG pipeline
+def query_with_rerank(self, question, initial_k=20, final_k=5):
+    # First pass: retrieve more candidates
+    candidates = semantic_search(self.db_path, question, self.model, top_k=initial_k)
+
+    # Second pass: rerank for precision
+    reranked = self.reranker.rerank(question, candidates, top_k=final_k)
+
+    return reranked
+```
+
+## Streaming Responses
+
+For better UX with long answers:
+
+```python
+def query_streaming(self, question, top_k=5):
+    """Stream RAG response for real-time display."""
+    context = self.get_context(question, top_k)
+    prompt = self.build_prompt(context, question)
+
+    # Anthropic streaming
+    with anthropic.Anthropic().messages.stream(
+        model="claude-sonnet-4-20250514",
+        max_tokens=1024,
+        messages=[{"role": "user", "content": prompt}]
+    ) as stream:
+        for text in stream.text_stream:
+            yield text
+```
+
 ## Related Skills
 
 - `knowledge-base-builder` - Build the document database first
 - `semantic-search-setup` - Generate vector embeddings
 - `pdf-text-extractor` - Extract text from PDFs
+- `document-rag-pipeline` - Complete end-to-end pipeline
+
+---
+
+## Version History
+
+- **1.1.0** (2025-12-30): Added hybrid search (BM25+vector), reranking, streaming responses
+- **1.0.0** (2025-10-15): Initial release with basic RAG implementation
