@@ -61,15 +61,27 @@ skills/
 
 # Repository-specific skills (in individual repos)
 digitalmodel/.claude/skills/
+├── aqwa-analysis/           # AQWA hydrodynamic analysis
+├── catenary-riser/          # Catenary riser design
 ├── fatigue-analysis/        # S-N curves, damage accumulation
+├── hydrodynamics/           # Hydrodynamic calculations
 ├── mooring-design/          # CALM/SALM buoy analysis
-├── structural-analysis/     # Stress, buckling, capacity checks
 ├── orcaflex-modeling/       # OrcaFlex simulation setup and running
-└── orcaflex-post-processing/ # OrcaFlex results post-processing
+├── orcaflex-post-processing/ # OrcaFlex results post-processing
+├── signal-analysis/         # Signal processing and analysis
+├── structural-analysis/     # Stress, buckling, capacity checks
+└── viv-analysis/            # Vortex-induced vibration analysis
 
 worldenergydata/.claude/skills/
 ├── bsee-data-extractor/     # BSEE production data extraction
-└── npv-analyzer/            # NPV and economic evaluation
+├── energy-data-visualizer/  # Energy data visualization
+├── fdas-economics/          # FDAS economics analysis
+├── field-analyzer/          # Oil/gas field analysis
+├── marine-safety-incidents/ # Marine safety incident analysis
+├── npv-analyzer/            # NPV and economic evaluation
+├── sodir-data-extractor/    # SODIR (Norwegian) data extraction
+├── web-scraper-energy/      # Energy website scraping
+└── well-production-dashboard/ # Well production dashboards
 ```
 
 ---
