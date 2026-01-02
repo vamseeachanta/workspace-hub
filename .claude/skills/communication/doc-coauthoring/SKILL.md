@@ -1,6 +1,13 @@
 ---
 name: doc-coauthoring
 description: Collaborate on documents with tracked changes, suggestions, and iterative refinement. Use for reviewing drafts, providing editorial feedback, and collaborative document development.
+version: 2.0.0
+category: communication
+last_updated: 2026-01-02
+related_skills:
+  - internal-comms
+  - brand-guidelines
+  - skill-creator
 ---
 
 # Document Co-Authoring Skill
@@ -8,6 +15,37 @@ description: Collaborate on documents with tracked changes, suggestions, and ite
 ## Overview
 
 This skill enables effective document collaboration through tracked changes, structured feedback, and iterative refinement workflows. It applies to any document type requiring review and revision.
+
+## When to Use
+
+- Reviewing and editing drafts
+- Providing structured editorial feedback
+- Collaborative document development
+- Technical document review
+- Business document refinement
+- Any multi-revision document workflow
+
+## Quick Start
+
+1. **Choose collaboration mode** (suggestion, track changes, comment, rewrite)
+2. **Categorize feedback** (content, structure, style, technical)
+3. **Follow review phases** (initial read, detailed review, summary)
+4. **Use version control** for document iterations
+5. **Provide actionable feedback** with specific solutions
+
+```markdown
+<!-- Suggestion Mode -->
+Original text here
+--> **Suggested:** Revised text with improvements
+
+**Reason:** Brief explanation of why this change improves the document.
+
+<!-- Track Changes Mode -->
+~~deleted text~~ **added text**
+
+<!-- Comment Mode -->
+[COMMENT: Your feedback here]
+```
 
 ## Collaboration Modes
 
@@ -18,7 +56,7 @@ Provide non-destructive suggestions that the author can accept or reject.
 **Format:**
 ```markdown
 Original text here
-→ **Suggested:** Revised text with improvements
+--> **Suggested:** Revised text with improvements
 
 **Reason:** Brief explanation of why this change improves the document.
 ```
@@ -26,7 +64,7 @@ Original text here
 **Example:**
 ```markdown
 The system processes data efficiently.
-→ **Suggested:** The system processes up to 10,000 records per second with 99.9% accuracy.
+--> **Suggested:** The system processes up to 10,000 records per second with 99.9% accuracy.
 
 **Reason:** Adding specific metrics makes the claim more credible and verifiable.
 ```
@@ -233,9 +271,9 @@ Guide improvements through questions:
 
 **Common issues:**
 ```markdown
-[JARGON]: "Leverage the API endpoint" → "Use the API endpoint"
+[JARGON]: "Leverage the API endpoint" --> "Use the API endpoint"
 [ASSUMPTION]: This assumes reader knows X. Add brief explanation or link.
-[MISSING STEP]: Step 3 and 4 have a gap—what happens between them?
+[MISSING STEP]: Step 3 and 4 have a gap--what happens between them?
 ```
 
 ### Business Documents
@@ -248,8 +286,8 @@ Guide improvements through questions:
 
 **Common issues:**
 ```markdown
-[VAGUE]: "Significant improvement" → "23% improvement in processing time"
-[PASSIVE]: "Mistakes were made" → "The team identified three errors"
+[VAGUE]: "Significant improvement" --> "23% improvement in processing time"
+[PASSIVE]: "Mistakes were made" --> "The team identified three errors"
 [WEAK CLOSE]: End with clear next steps or call to action
 ```
 
@@ -292,6 +330,48 @@ document_v2.0_final.md
 | 2.0 | 2025-01-18 | Alice | Final version |
 ```
 
+## Execution Checklist
+
+- [ ] Completed initial read-through
+- [ ] Noted overall impressions and priorities
+- [ ] Performed detailed section-by-section review
+- [ ] Categorized feedback (content, structure, style, technical)
+- [ ] Used appropriate collaboration mode
+- [ ] Provided specific, actionable suggestions
+- [ ] Included rationale for changes
+- [ ] Created summary with next steps
+- [ ] Updated version control
+- [ ] Communicated timeline for next revision
+
+## Error Handling
+
+### Common Issues
+
+**Issue: Author feels overwhelmed by feedback**
+- Cause: Too many suggestions at once
+- Solution: Prioritize top 3-5 issues, address others in later rounds
+
+**Issue: Feedback is ignored**
+- Cause: Not actionable or unclear rationale
+- Solution: Be specific, explain "why", offer solutions not just problems
+
+**Issue: Revision cycle never ends**
+- Cause: Scope creep or perfectionism
+- Solution: Define "done" criteria upfront, limit revision rounds
+
+**Issue: Conflicting feedback from multiple reviewers**
+- Cause: No clear decision owner
+- Solution: Designate final decision maker, use RACI matrix
+
+## Metrics
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| Feedback Clarity | > 90% actionable | Ratio of accepted to clarification-needed |
+| Revision Rounds | <= 3 | Count from draft to final |
+| Review Turnaround | < 48 hours | Time from receipt to feedback |
+| Author Satisfaction | > 4/5 | Post-review survey |
+
 ## Best Practices
 
 ### For Reviewers
@@ -316,39 +396,15 @@ document_v2.0_final.md
 3. **Use consistent tools**: Same markup/format for all feedback
 4. **Communicate changes**: Notify when versions are ready
 
-## Review Checklist
+## Related Skills
 
-```markdown
-## Pre-Submission Checklist
-
-### Content
-- [ ] All sections complete
-- [ ] Claims supported with evidence
-- [ ] No factual errors
-- [ ] Logical flow throughout
-
-### Structure
-- [ ] Clear introduction and conclusion
-- [ ] Appropriate headings and subheadings
-- [ ] Consistent formatting
-- [ ] Table of contents (if applicable)
-
-### Style
-- [ ] Appropriate tone for audience
-- [ ] Consistent voice
-- [ ] No jargon (or jargon defined)
-- [ ] Active voice preferred
-
-### Technical
-- [ ] Spelling checked
-- [ ] Grammar reviewed
-- [ ] Citations formatted correctly
-- [ ] Links working
-- [ ] Images have alt text
-```
+- [internal-comms](../internal-comms/SKILL.md) - Writing communications
+- [brand-guidelines](../brand-guidelines/SKILL.md) - Voice consistency
+- [skill-creator](../../builders/skill-creator/SKILL.md) - Documentation patterns
 
 ---
 
 ## Version History
 
+- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections
 - **1.0.0** (2024-10-15): Initial release with collaboration modes, feedback categories, review workflow, document type guidance, version control

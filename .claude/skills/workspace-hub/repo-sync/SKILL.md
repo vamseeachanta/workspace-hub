@@ -1,9 +1,56 @@
 ---
 name: repo-sync
 description: Manage and synchronize multiple Git repositories across workspace-hub. Use for bulk git operations, repository status checks, branch management, and coordinated commits across 26+ repositories.
+version: 1.1.0
+category: workspace-hub
+type: skill
+capabilities:
+  - bulk_git_operations
+  - repository_status_monitoring
+  - branch_management
+  - coordinated_commits
+  - multi_repo_sync
+tools:
+  - Bash
+  - Read
+  - Write
+related_skills:
+  - workspace-cli
+  - compliance-check
+  - sparc-workflow
 ---
 
 # Repository Sync Skill
+
+> Efficiently manage and synchronize 26+ Git repositories with bulk operations, status monitoring, and coordinated commits.
+
+## Quick Start
+
+```bash
+# Check status of all repositories
+./scripts/repository_sync status all
+
+# Pull latest from all repos
+./scripts/repository_sync pull all
+
+# Sync (commit + push) all work repos
+./scripts/repository_sync sync work -m "End of day sync"
+```
+
+## When to Use
+
+- Starting a work session and need to pull latest changes across all repos
+- End of day sync to commit and push all pending changes
+- Checking which repos have uncommitted changes or are behind remote
+- Coordinating branch changes across multiple related repositories
+- Releasing updates across the entire workspace ecosystem
+
+## Prerequisites
+
+- Git installed and configured with SSH keys
+- Access to all repositories in workspace-hub
+- `./scripts/repository_sync` script available and executable
+- Repository URLs configured in `config/repos.conf`
 
 ## Overview
 
@@ -283,6 +330,16 @@ For faster operations on many repos:
 ls -d */ | xargs -P 4 -I {} git -C {} pull
 ```
 
+## Execution Checklist
+
+- [ ] Verify SSH authentication (`ssh -T git@github.com`)
+- [ ] Check repository configuration (`./scripts/repository_sync list all`)
+- [ ] Run status check before operations (`./scripts/repository_sync status all`)
+- [ ] Review changes in repos with uncommitted work
+- [ ] Execute bulk operation with appropriate scope (all/work/personal)
+- [ ] Verify operation success with status check
+- [ ] Resolve any conflicts or errors reported
+
 ## Error Handling
 
 ### Merge Conflicts
@@ -331,7 +388,45 @@ git reflog
 git reset --hard HEAD@{2}
 ```
 
-## Integration
+### Authentication Issues
+
+```bash
+# Verify SSH key
+ssh -T git@github.com
+
+# Check credential helper
+git config --global credential.helper
+```
+
+### Network Issues
+
+```bash
+# Test connectivity
+git ls-remote origin
+
+# Use HTTPS fallback
+git remote set-url origin https://github.com/user/repo.git
+```
+
+### Permission Denied
+
+```bash
+# Check file permissions
+ls -la .git/
+
+# Fix permissions
+chmod -R u+rwX .git/
+```
+
+## Metrics & Success Criteria
+
+- **Sync Time**: All repos synced in < 5 minutes
+- **Status Accuracy**: 100% accurate status reporting
+- **Error Rate**: < 1% failed operations
+- **Recovery Time**: Conflicts resolved within 10 minutes
+- **Coverage**: All 26+ repos included in sync operations
+
+## Integration Points
 
 ### With Workspace CLI
 
@@ -349,6 +444,12 @@ Agents can use repository sync for:
 - Cross-repo refactoring
 - Synchronized releases
 - Documentation updates
+
+### Related Skills
+
+- [workspace-cli](../workspace-cli/SKILL.md) - Unified CLI interface
+- [compliance-check](../compliance-check/SKILL.md) - Standards verification
+- [sparc-workflow](../sparc-workflow/SKILL.md) - Development methodology
 
 ## Best Practices
 
@@ -384,41 +485,9 @@ Always verify before pushing:
 cd repo-name && git diff origin/main
 ```
 
-## Troubleshooting
+## References
 
-### Authentication Issues
-
-```bash
-# Verify SSH key
-ssh -T git@github.com
-
-# Check credential helper
-git config --global credential.helper
-```
-
-### Network Issues
-
-```bash
-# Test connectivity
-git ls-remote origin
-
-# Use HTTPS fallback
-git remote set-url origin https://github.com/user/repo.git
-```
-
-### Permission Denied
-
-```bash
-# Check file permissions
-ls -la .git/
-
-# Fix permissions
-chmod -R u+rwX .git/
-```
-
-## Related Documentation
-
-- [Workspace CLI](../docs/modules/cli/WORKSPACE_CLI.md)
+- [Workspace CLI Documentation](../docs/modules/cli/WORKSPACE_CLI.md)
 - [Repository Sync Documentation](../docs/modules/cli/REPOSITORY_SYNC.md)
 - [Development Workflow](../docs/modules/workflow/DEVELOPMENT_WORKFLOW.md)
 
@@ -426,4 +495,5 @@ chmod -R u+rwX .git/
 
 ## Version History
 
+- **1.1.0** (2026-01-02): Upgraded to SKILL_TEMPLATE_v2 format - added Quick Start, When to Use, Execution Checklist, Error Handling consolidation, Metrics, Integration Points
 - **1.0.0** (2024-10-15): Initial release with bulk operations, branch management, workflows, error handling, workspace integration

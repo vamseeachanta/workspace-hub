@@ -1,6 +1,13 @@
 ---
 name: canvas-design
 description: Create original visual art in PNG and PDF formats using design philosophy principles. Express aesthetic movements visually with minimal text. Use for creating museum-quality visual artifacts, design manifestos, and artistic compositions.
+version: 2.0.0
+category: content-design
+last_updated: 2026-01-02
+related_skills:
+  - algorithmic-art
+  - frontend-design
+  - theme-factory
 ---
 
 # Canvas Design Skill
@@ -8,6 +15,44 @@ description: Create original visual art in PNG and PDF formats using design phil
 ## Overview
 
 This skill guides creation of original visual art in PNG and PDF formats using design philosophy principles. Emphasize craftsmanship and express aesthetic movements visually rather than through text.
+
+## When to Use
+
+- Creating museum-quality visual artifacts
+- Generating design manifestos with visual expression
+- Building artistic compositions for presentations or publications
+- Producing abstract art for branding or decoration
+- Any project requiring 90%+ visual design with minimal text
+
+## Quick Start
+
+1. **Write design philosophy** (4-6 paragraphs articulating visual essence)
+2. **Choose visual style** (geometric, organic, structured chaos, typographic)
+3. **Select implementation** (PIL/Pillow, Cairo, SVG)
+4. **Execute with precision** (museum-quality craftsmanship)
+5. **Export** (PNG at 300 DPI or vector PDF)
+
+```python
+# Quick geometric composition
+from PIL import Image, ImageDraw
+import math
+
+canvas = Image.new('RGB', (2400, 3200), '#0a0a0a')
+draw = ImageDraw.Draw(canvas)
+
+# Golden ratio spiral
+phi = (1 + math.sqrt(5)) / 2
+center_x, center_y = 1200, 1600
+for i in range(50):
+    angle = i * phi * 2 * math.pi
+    radius = i * 8
+    x = center_x + radius * math.cos(angle)
+    y = center_y + radius * math.sin(angle)
+    size = max(2, 20 - i * 0.3)
+    draw.ellipse([x-size, y-size, x+size, y+size], fill='#c084fc')
+
+canvas.save('composition.png', quality=95)
+```
 
 ## Two-Step Process
 
@@ -51,7 +96,7 @@ Designs should reward sustained viewing through layered patterns, hidden details
 Final output must achieve quality suitable for museum display or high-end publication.
 
 ### Originality
-Create original work only—never copy existing artists or styles directly.
+Create original work only--never copy existing artists or styles directly.
 
 ## Implementation
 
@@ -162,7 +207,7 @@ dwg.save()
 - Spatial composition
 - Minimal readable text
 
-## Quality Checklist
+## Execution Checklist
 
 - [ ] Philosophy document articulates clear vision
 - [ ] Visual work is 90%+ imagery
@@ -172,7 +217,7 @@ dwg.save()
 - [ ] Composition has clear visual hierarchy
 - [ ] Work rewards extended viewing
 - [ ] Resolution appropriate for intended use
-- [ ] Original—not derivative of specific artists
+- [ ] Original--not derivative of specific artists
 
 ## Output Specifications
 
@@ -188,12 +233,49 @@ dwg.save()
 - CMYK for print production
 - RGB for screen display
 
+## Error Handling
+
+### Common Issues
+
+**Issue: Artifacts appear pixelated**
+- Cause: Low resolution or aggressive compression
+- Solution: Use 300+ DPI, quality=95 for PNG
+
+**Issue: Colors print differently than screen**
+- Cause: RGB to CMYK conversion
+- Solution: Design in CMYK for print, or soft-proof
+
+**Issue: Elements appear misaligned**
+- Cause: Floating-point rounding errors
+- Solution: Use integer coordinates, snap to grid
+
+**Issue: File size too large**
+- Cause: High resolution bitmap
+- Solution: Use vector (SVG/PDF) where possible
+
+## Metrics
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| Resolution | >= 300 DPI | Image properties |
+| Visual-to-text ratio | >= 90% visual | Visual inspection |
+| Color consistency | Delta E < 3 | Color measurement |
+| Alignment precision | < 1px deviation | Grid overlay check |
+| File quality | Lossless or quality 95+ | Export settings |
+
 ## Philosophy
 
-The goal is creating visual work that appears to have been crafted by someone at the absolute pinnacle of their field—work that demands attention, rewards study, and achieves lasting aesthetic impact.
+The goal is creating visual work that appears to have been crafted by someone at the absolute pinnacle of their field--work that demands attention, rewards study, and achieves lasting aesthetic impact.
+
+## Related Skills
+
+- [algorithmic-art](../algorithmic-art/SKILL.md) - Generative art with p5.js
+- [frontend-design](../frontend-design/SKILL.md) - Web interface design
+- [theme-factory](../theme-factory/SKILL.md) - Color and typography systems
 
 ---
 
 ## Version History
 
+- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections
 - **1.0.0** (2024-10-15): Initial release with PIL/Pillow, Cairo, SVG implementations, visual styles, quality guidelines

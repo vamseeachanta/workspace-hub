@@ -1,15 +1,31 @@
 ---
 name: webapp-testing
 description: Web application testing toolkit using Playwright with Python. Use for verifying frontend functionality, debugging UI behavior, capturing browser screenshots, viewing browser logs, and automating web interactions.
+version: 1.1.0
+category: development
+related_skills:
+  - engineering-report-generator
+  - data-pipeline-processor
+  - parallel-file-processor
 ---
 
 # Web Application Testing Skill
+
+> Version: 1.1.0
+> Category: Development
+> Last Updated: 2026-01-02
 
 ## Overview
 
 This toolkit enables testing local web applications using Playwright with Python for frontend verification, UI debugging, screenshot capture, and browser automation.
 
 ## Quick Start
+
+```bash
+# Install dependencies
+pip install playwright pytest requests
+playwright install chromium
+```
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -29,12 +45,15 @@ with sync_playwright() as p:
     browser.close()
 ```
 
-## Installation
+## When to Use
 
-```bash
-pip install playwright
-playwright install chromium
-```
+- Verifying frontend functionality after code changes
+- Debugging UI behavior and layout issues
+- Capturing screenshots for documentation
+- Viewing browser console logs for errors
+- Automating repetitive web interactions
+- End-to-end testing of web applications
+- Validating form submissions and user flows
 
 ## Decision Tree
 
@@ -256,6 +275,79 @@ def test_login(page):
     page.wait_for_url("**/dashboard")
 ```
 
+## Usage Examples
+
+### Example 1: Screenshot Comparison Testing
+
+```python
+from playwright.sync_api import sync_playwright
+from pathlib import Path
+
+def capture_page_state(url: str, output_dir: str):
+    """Capture full page screenshot and HTML content."""
+    output = Path(output_dir)
+    output.mkdir(parents=True, exist_ok=True)
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        page.goto(url)
+        page.wait_for_load_state("networkidle")
+
+        # Screenshot
+        page.screenshot(path=str(output / "screenshot.png"), full_page=True)
+
+        # HTML content
+        (output / "content.html").write_text(page.content())
+
+        browser.close()
+
+    return output
+
+# Usage
+capture_page_state("http://localhost:3000", "tests/snapshots/")
+```
+
+### Example 2: Form Automation
+
+```python
+def submit_contact_form(page, name, email, message):
+    """Submit a contact form and verify success."""
+    page.goto("http://localhost:3000/contact")
+
+    # Fill form fields
+    page.fill("[name='name']", name)
+    page.fill("[name='email']", email)
+    page.fill("[name='message']", message)
+
+    # Submit
+    page.click("button[type='submit']")
+
+    # Wait for success message
+    page.wait_for_selector(".success-message")
+
+    return page.locator(".success-message").text_content()
+```
+
+### Example 3: API Response Verification
+
+```python
+def verify_api_call(page, endpoint_pattern):
+    """Intercept and verify API calls."""
+    api_response = None
+
+    def handle_response(response):
+        nonlocal api_response
+        if endpoint_pattern in response.url:
+            api_response = response.json()
+
+    page.on("response", handle_response)
+    page.goto("http://localhost:3000/dashboard")
+    page.wait_for_load_state("networkidle")
+
+    return api_response
+```
+
 ## Debugging
 
 ### Slow Motion
@@ -287,11 +379,72 @@ context.tracing.stop(path="trace.zip")
 
 ## Best Practices
 
-1. **Wait appropriately**: Use `networkidle` for dynamic content
-2. **Select elements**: Prefer text, role, or data-testid over CSS
-3. **Handle async**: Always wait for elements before interacting
-4. **Clean up**: Close browsers and pages after tests
-5. **Use fixtures**: Reuse browser instances across tests
+### Do
+
+1. Wait appropriately using `networkidle` for dynamic content
+2. Select elements by text, role, or data-testid over CSS
+3. Handle async operations with proper waits
+4. Clean up browsers and pages after tests
+5. Use fixtures for browser instance reuse
+6. Capture console logs for debugging
+
+### Don't
+
+1. Use arbitrary `time.sleep()` for waits
+2. Rely on fragile CSS selectors
+3. Skip error handling in test cleanup
+4. Run tests without checking server status
+5. Ignore network errors during testing
+
+## Error Handling
+
+### Common Errors
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| `TimeoutError` | Element not found in time | Use explicit waits or increase timeout |
+| `Page closed` | Browser closed prematurely | Check cleanup order in fixtures |
+| `Connection refused` | Server not running | Start server before tests |
+| `Element not visible` | Hidden by CSS/JS | Wait for visibility state |
+| `Target closed` | Navigation during action | Wait for navigation to complete |
+
+### Debugging Tips
+
+```python
+# Increase default timeout
+page.set_default_timeout(60000)  # 60 seconds
+
+# Take screenshot on failure
+try:
+    page.click("#submit")
+except Exception as e:
+    page.screenshot(path="error_screenshot.png")
+    raise
+
+# Print page HTML for debugging
+print(page.content())
+```
+
+## Execution Checklist
+
+- [ ] Playwright and chromium installed
+- [ ] Server running before tests
+- [ ] Proper wait states for dynamic content
+- [ ] Screenshots captured for visual verification
+- [ ] Console logs monitored for errors
+- [ ] Network requests validated
+- [ ] Fixtures clean up browser resources
+- [ ] Error screenshots captured on failure
+- [ ] Tests run in both headed and headless modes
+
+## Metrics
+
+| Metric | Target | Description |
+|--------|--------|-------------|
+| Test Duration | <10s per test | Individual test execution time |
+| Flakiness Rate | <2% | Tests passing consistently |
+| Screenshot Match | 100% | Visual regression accuracy |
+| Network Coverage | >90% | API endpoints tested |
 
 ## Dependencies
 
@@ -300,8 +453,15 @@ pip install playwright pytest requests
 playwright install chromium
 ```
 
+## Related Skills
+
+- [engineering-report-generator](../engineering-report-generator/SKILL.md) - Generate test reports
+- [data-pipeline-processor](../data-pipeline-processor/SKILL.md) - Process test data
+- [parallel-file-processor](../parallel-file-processor/SKILL.md) - Batch screenshot processing
+
 ---
 
 ## Version History
 
+- **1.1.0** (2026-01-02): Upgraded to SKILL_TEMPLATE_v2 format with Quick Start, Usage Examples, Error Handling, Metrics, Execution Checklist
 - **1.0.0** (2024-10-15): Initial release with Playwright patterns, server management, debugging tools

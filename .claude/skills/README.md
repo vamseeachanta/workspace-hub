@@ -4,92 +4,77 @@
 >
 > Location: `~/.claude/skills/` (symlinked to `/mnt/github/workspace-hub/.claude/skills/`)
 >
-> Last Updated: 2025-12-30
+> Last Updated: 2026-01-02
+> Template Version: 2.0.0
 
 ## Overview
 
-This collection provides **35 specialized skills** organized into **8 categories**. Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
+This collection provides **91 specialized skills** organized into **8 categories** (plus 15 repo-specific). Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
+
+**Total Skills: 106** (91 central + 15 repo-specific)
 
 ## Quick Reference
 
 | Category | Skills | Purpose |
 |----------|--------|---------|
 | [Document Handling](#document-handling) | 10 | PDF, DOCX, PPTX, XLSX, OCR, RAG, knowledge bases, semantic search |
-| [Development](#development) | 7 | MCP servers, web testing, reports, workflows, pipelines, git worktrees |
+| [Development](#development) | 33 | MCP, testing, SPARC, GitHub, planning, reports, workflows, pipelines |
 | [Content & Design](#content--design) | 4 | Frontend UI, themes, canvas graphics, algorithmic art |
 | [Communication](#communication) | 4 | Internal comms, Slack GIFs, document collaboration, branding |
 | [Builders](#builders) | 2 | Web artifacts, skill creation |
-| [Workspace Hub](#workspace-hub) | 5 | Repository sync, SPARC workflow, agent orchestration |
-| [Tools](#tools) | 2 | AI tool assessment, background services |
+| [Workspace Hub](#workspace-hub) | 25 | Core agents, swarm coordination, consensus, repository management |
+| [Tools](#tools) | 17 | Optimization, cloud platform, AI assessment, background services |
 | [Meta](#meta) | 1 | Session routines, skill maintenance |
 
-**Plus repository-specific skills:**
-- **digitalmodel**: 10 skills (fatigue-analysis, mooring-design, structural-analysis, orcaflex-modeling, orcaflex-post-processing, aqwa-analysis, catenary-riser, hydrodynamics, signal-analysis, viv-analysis)
-- **worldenergydata**: 10 skills (bsee-data-extractor, energy-data-visualizer, fdas-economics, field-analyzer, marine-safety-incidents, npv-analyzer, production-forecaster, sodir-data-extractor, web-scraper-energy, well-production-dashboard)
+**Repository-Specific Skills:**
+- **digitalmodel**: 15 skills (engineering analysis, CAD, simulation)
+- **worldenergydata**: 10 skills (energy data, production forecasting)
+
+---
 
 ## Directory Structure
 
 ```
 skills/
-├── document-handling/       # PDF, DOCX, PPTX, XLSX, OCR, RAG, knowledge bases
-│   ├── pdf/
-│   ├── docx/
-│   ├── pptx/
-│   ├── xlsx/
-│   ├── document-rag-pipeline/
-│   ├── pdf-text-extractor/
-│   ├── knowledge-base-builder/
-│   ├── semantic-search-setup/
-│   ├── rag-system-builder/         # v1.1.0 - Added hybrid search, reranking
-│   └── document-inventory/
-├── development/             # MCP servers, web testing, reports, workflows, pipelines
-│   ├── mcp-builder/                # v1.1.0 - Added .mcp.json, wildcards, security
+├── document-handling/       # PDF, DOCX, PPTX, XLSX, OCR, RAG, knowledge bases (10)
+├── development/             # Software development (33)
+│   ├── mcp-builder/
 │   ├── webapp-testing/
 │   ├── engineering-report-generator/
 │   ├── yaml-workflow-executor/
 │   ├── data-pipeline-processor/
 │   ├── parallel-file-processor/
-│   └── git-worktree-workflow/      # NEW v1.0.0
-├── content-design/          # UI, themes, graphics, generative art
-├── communication/           # Business communications
-├── builders/                # Meta-tools for creation
-├── workspace-hub/           # Workspace-specific automation
-├── tools/                   # Assessment and utility skills
-├── meta/                    # Skills about skills
-│   └── session-start-routine/      # NEW v1.0.0
-└── README.md                # This file
-
-# Repository-specific skills (in individual repos)
-digitalmodel/.claude/skills/
-├── aqwa-analysis/           # AQWA hydrodynamic analysis
-├── catenary-riser/          # Catenary riser design
-├── fatigue-analysis/        # S-N curves, damage accumulation
-├── hydrodynamics/           # Hydrodynamic calculations
-├── mooring-design/          # CALM/SALM buoy analysis
-├── orcaflex-modeling/       # OrcaFlex simulation setup and running
-├── orcaflex-post-processing/ # OrcaFlex results post-processing
-├── signal-analysis/         # Signal processing and analysis
-├── structural-analysis/     # Stress, buckling, capacity checks
-└── viv-analysis/            # Vortex-induced vibration analysis
-
-worldenergydata/.claude/skills/
-├── bsee-data-extractor/     # BSEE production data extraction
-├── energy-data-visualizer/  # Energy data visualization
-├── fdas-economics/          # FDAS economics analysis
-├── field-analyzer/          # Oil/gas field analysis
-├── marine-safety-incidents/ # Marine safety incident analysis
-├── npv-analyzer/            # NPV and economic evaluation
-├── production-forecaster/   # Arps decline curves and EUR forecasting
-├── sodir-data-extractor/    # SODIR (Norwegian) data extraction
-├── web-scraper-energy/      # Energy website scraping
-└── well-production-dashboard/ # Well production dashboards
+│   ├── git-worktree-workflow/
+│   ├── github/              # GitHub integration skills (13) NEW
+│   ├── sparc/               # SPARC methodology skills (4) NEW
+│   ├── planning/            # Goal planning skills (2) NEW
+│   └── testing/             # Testing skills (2) NEW
+├── content-design/          # UI, themes, graphics, generative art (4)
+├── communication/           # Business communications (4)
+├── builders/                # Meta-tools for creation (2)
+├── workspace-hub/           # Workspace ecosystem (25)
+│   ├── repo-sync/
+│   ├── sparc-workflow/
+│   ├── agent-orchestration/
+│   ├── compliance-check/
+│   ├── workspace-cli/
+│   ├── core/                # Core development agents (5) NEW
+│   ├── swarm/               # Swarm coordination (8) NEW
+│   └── consensus/           # Distributed consensus (7) NEW
+├── tools/                   # Utilities (17)
+│   ├── ai-tool-assessment/
+│   ├── background-service-manager/
+│   ├── optimization/        # Performance optimization (6) NEW
+│   └── cloud/               # Flow-Nexus cloud platform (9) NEW
+├── meta/                    # Skills about skills (1)
+└── README.md
 ```
 
 ---
 
 ## Skills by Category
 
-### Document Handling
+### Document Handling (10)
 
 Work with business documents - reading, creating, editing, analyzing, and building searchable knowledge bases.
 
@@ -99,28 +84,71 @@ Work with business documents - reading, creating, editing, analyzing, and buildi
 | [docx](document-handling/docx/SKILL.md) | Create and edit Word documents with formatting |
 | [pptx](document-handling/pptx/SKILL.md) | Build PowerPoint presentations with slides and layouts |
 | [xlsx](document-handling/xlsx/SKILL.md) | Generate Excel spreadsheets with formulas and charts |
-| [document-rag-pipeline](document-handling/document-rag-pipeline/SKILL.md) | **Complete RAG pipeline** - PDF extraction, OCR, embeddings, semantic search |
+| [document-rag-pipeline](document-handling/document-rag-pipeline/SKILL.md) | Complete RAG pipeline - PDF extraction, OCR, embeddings, semantic search |
 | [pdf-text-extractor](document-handling/pdf-text-extractor/SKILL.md) | Extract text from PDFs (regular and OCR) |
 | [knowledge-base-builder](document-handling/knowledge-base-builder/SKILL.md) | Build document inventories with SQLite catalogs |
 | [semantic-search-setup](document-handling/semantic-search-setup/SKILL.md) | Generate vector embeddings for semantic search |
-| [rag-system-builder](document-handling/rag-system-builder/SKILL.md) | Add LLM-powered Q&A to document collections |
+| [rag-system-builder](document-handling/rag-system-builder/SKILL.md) | Add LLM-powered Q&A to document collections (v1.2.0) |
 | [document-inventory](document-handling/document-inventory/SKILL.md) | Build and manage document inventories with catalogs |
 
-### Development
+### Development (33)
 
-Tools for building software - MCP servers, web testing, engineering reports, workflow automation, data pipelines, git worktrees, and parallel processing.
+Tools for building software - MCP servers, web testing, SPARC methodology, GitHub integration, planning, testing.
+
+#### Core Development (7)
 
 | Skill | Description |
 |-------|-------------|
-| [mcp-builder](development/mcp-builder/SKILL.md) | Build Model Context Protocol servers with Claude integration (v1.1.0) |
+| [mcp-builder](development/mcp-builder/SKILL.md) | Build Model Context Protocol servers with Claude integration (v1.2.0) |
 | [webapp-testing](development/webapp-testing/SKILL.md) | Test web applications with Playwright and Chrome DevTools |
 | [engineering-report-generator](development/engineering-report-generator/SKILL.md) | Generate interactive HTML reports with Plotly visualizations |
 | [yaml-workflow-executor](development/yaml-workflow-executor/SKILL.md) | Execute configuration-driven analysis workflows from YAML files |
 | [data-pipeline-processor](development/data-pipeline-processor/SKILL.md) | Build ETL pipelines with validation, transformation, and reporting |
 | [parallel-file-processor](development/parallel-file-processor/SKILL.md) | Process multiple files in parallel with aggregation and progress tracking |
-| [git-worktree-workflow](development/git-worktree-workflow/SKILL.md) | **NEW** Use git worktrees for parallel Claude workflows (v1.0.0) |
+| [git-worktree-workflow](development/git-worktree-workflow/SKILL.md) | Use git worktrees for parallel Claude workflows |
 
-### Content & Design
+#### GitHub Integration (13) - NEW
+
+| Skill | Description |
+|-------|-------------|
+| [github-pr-manager](development/github/github-pr-manager/SKILL.md) | Comprehensive PR management with swarm coordination |
+| [github-code-review](development/github/github-code-review/SKILL.md) | Automated code review with multiple agents |
+| [github-issue-tracker](development/github/github-issue-tracker/SKILL.md) | Issue triage and management |
+| [github-release-manager](development/github/github-release-manager/SKILL.md) | Release coordination and versioning |
+| [github-release-swarm](development/github/github-release-swarm/SKILL.md) | Multi-agent release automation |
+| [github-repo-architect](development/github/github-repo-architect/SKILL.md) | Repository structure and design |
+| [github-multi-repo](development/github/github-multi-repo/SKILL.md) | Cross-repository coordination |
+| [github-sync](development/github/github-sync/SKILL.md) | Repository synchronization |
+| [github-workflow](development/github/github-workflow/SKILL.md) | GitHub Actions automation |
+| [github-project-board](development/github/github-project-board/SKILL.md) | GitHub Projects integration |
+| [github-modes](development/github/github-modes/SKILL.md) | Multi-mode GitHub integration |
+| [github-swarm-pr](development/github/github-swarm-pr/SKILL.md) | PR-based swarm coordination |
+| [github-swarm-issue](development/github/github-swarm-issue/SKILL.md) | Issue-based swarm coordination |
+
+#### SPARC Methodology (4) - NEW
+
+| Skill | Description |
+|-------|-------------|
+| [sparc-specification](development/sparc/sparc-specification/SKILL.md) | Requirements analysis and specification writing |
+| [sparc-pseudocode](development/sparc/sparc-pseudocode/SKILL.md) | Algorithm design and pseudocode generation |
+| [sparc-architecture](development/sparc/sparc-architecture/SKILL.md) | System architecture design |
+| [sparc-refinement](development/sparc/sparc-refinement/SKILL.md) | TDD implementation and code refinement |
+
+#### Planning (2) - NEW
+
+| Skill | Description |
+|-------|-------------|
+| [planning-goal](development/planning/planning-goal/SKILL.md) | Goal-Oriented Action Planning (GOAP) for complex objectives |
+| [planning-code-goal](development/planning/planning-code-goal/SKILL.md) | Code-centric goal planning for software development |
+
+#### Testing (2) - NEW
+
+| Skill | Description |
+|-------|-------------|
+| [testing-tdd-london](development/testing/testing-tdd-london/SKILL.md) | TDD London School methodology with mocks |
+| [testing-production](development/testing/testing-production/SKILL.md) | Production environment validation |
+
+### Content & Design (4)
 
 Create visual content - UI components, design systems, diagrams, and generative art.
 
@@ -131,7 +159,7 @@ Create visual content - UI components, design systems, diagrams, and generative 
 | [canvas-design](content-design/canvas-design/SKILL.md) | Create diagrams, graphics, and visualizations with canvas |
 | [algorithmic-art](content-design/algorithmic-art/SKILL.md) | Generate algorithmic and generative art with code |
 
-### Communication
+### Communication (4)
 
 Business communications - internal memos, Slack engagement, collaborative editing, brand identity.
 
@@ -142,7 +170,7 @@ Business communications - internal memos, Slack engagement, collaborative editin
 | [doc-coauthoring](communication/doc-coauthoring/SKILL.md) | Collaborate on documents with tracked changes |
 | [brand-guidelines](communication/brand-guidelines/SKILL.md) | Create and maintain brand guidelines |
 
-### Builders
+### Builders (2)
 
 Meta-tools for creating things - interactive web applications and new skills.
 
@@ -151,9 +179,11 @@ Meta-tools for creating things - interactive web applications and new skills.
 | [web-artifacts-builder](builders/web-artifacts-builder/SKILL.md) | Build self-contained interactive web applications |
 | [skill-creator](builders/skill-creator/SKILL.md) | Create new Claude Code skills |
 
-### Workspace Hub
+### Workspace Hub (25)
 
-Specialized for workspace-hub ecosystem - repository management, development methodology, AI orchestration.
+Specialized for workspace-hub ecosystem - repository management, development methodology, AI orchestration, swarm coordination, consensus protocols.
+
+#### Core Workspace (5)
 
 | Skill | Description |
 |-------|-------------|
@@ -163,22 +193,150 @@ Specialized for workspace-hub ecosystem - repository management, development met
 | [compliance-check](workspace-hub/compliance-check/SKILL.md) | Verify coding standards and workspace compliance |
 | [workspace-cli](workspace-hub/workspace-cli/SKILL.md) | Use the unified workspace-hub CLI |
 
-### Tools
+#### Core Development Agents (5) - NEW
 
-Assessment and utility skills.
+| Skill | Description |
+|-------|-------------|
+| [core-coder](workspace-hub/core/core-coder/SKILL.md) | Implementation specialist for writing clean, efficient code |
+| [core-reviewer](workspace-hub/core/core-reviewer/SKILL.md) | Code review and quality assurance |
+| [core-tester](workspace-hub/core/core-tester/SKILL.md) | Testing and test automation |
+| [core-planner](workspace-hub/core/core-planner/SKILL.md) | Project planning and task breakdown |
+| [core-researcher](workspace-hub/core/core-researcher/SKILL.md) | Research and information gathering |
+
+#### Swarm Coordination (8) - NEW
+
+| Skill | Description |
+|-------|-------------|
+| [swarm-hierarchical](workspace-hub/swarm/swarm-hierarchical/SKILL.md) | Queen-led hierarchical swarm coordination |
+| [swarm-mesh](workspace-hub/swarm/swarm-mesh/SKILL.md) | Peer-to-peer mesh network coordination |
+| [swarm-adaptive](workspace-hub/swarm/swarm-adaptive/SKILL.md) | Dynamic topology switching and optimization |
+| [swarm-queen](workspace-hub/swarm/swarm-queen/SKILL.md) | Central orchestrator for swarm operations |
+| [swarm-collective](workspace-hub/swarm/swarm-collective/SKILL.md) | Collective intelligence coordination |
+| [swarm-memory](workspace-hub/swarm/swarm-memory/SKILL.md) | Distributed memory management |
+| [swarm-scout](workspace-hub/swarm/swarm-scout/SKILL.md) | Information reconnaissance and exploration |
+| [swarm-worker](workspace-hub/swarm/swarm-worker/SKILL.md) | Dedicated task execution specialist |
+
+#### Consensus/Distributed (7) - NEW
+
+| Skill | Description |
+|-------|-------------|
+| [consensus-byzantine](workspace-hub/consensus/consensus-byzantine/SKILL.md) | Byzantine fault-tolerant consensus |
+| [consensus-raft](workspace-hub/consensus/consensus-raft/SKILL.md) | Raft consensus with leader election |
+| [consensus-gossip](workspace-hub/consensus/consensus-gossip/SKILL.md) | Gossip-based eventual consistency |
+| [consensus-crdt](workspace-hub/consensus/consensus-crdt/SKILL.md) | Conflict-free replicated data types |
+| [consensus-quorum](workspace-hub/consensus/consensus-quorum/SKILL.md) | Quorum-based voting systems |
+| [consensus-security](workspace-hub/consensus/consensus-security/SKILL.md) | Security validation and enforcement |
+| [consensus-benchmark](workspace-hub/consensus/consensus-benchmark/SKILL.md) | Consensus performance benchmarking |
+
+### Tools (17)
+
+Assessment, optimization, and cloud platform utilities.
+
+#### Core Tools (2)
 
 | Skill | Description |
 |-------|-------------|
 | [ai-tool-assessment](tools/ai-tool-assessment/SKILL.md) | Assess AI tool subscriptions, usage, and cost-effectiveness |
 | [background-service-manager](tools/background-service-manager/SKILL.md) | Manage background services and daemons |
 
-### Meta
+#### Performance Optimization (6) - NEW
+
+| Skill | Description |
+|-------|-------------|
+| [optimization-monitor](tools/optimization/optimization-monitor/SKILL.md) | Real-time performance monitoring |
+| [optimization-benchmark](tools/optimization/optimization-benchmark/SKILL.md) | Performance benchmarking suite |
+| [optimization-load-balancer](tools/optimization/optimization-load-balancer/SKILL.md) | Task distribution and load balancing |
+| [optimization-resources](tools/optimization/optimization-resources/SKILL.md) | Resource allocation and management |
+| [optimization-topology](tools/optimization/optimization-topology/SKILL.md) | Network topology optimization |
+| [optimization-analyzer](tools/optimization/optimization-analyzer/SKILL.md) | Performance bottleneck analysis |
+
+#### Flow-Nexus Cloud Platform (9) - NEW
+
+| Skill | Description |
+|-------|-------------|
+| [cloud-swarm](tools/cloud/cloud-swarm/SKILL.md) | Cloud-based swarm orchestration |
+| [cloud-neural](tools/cloud/cloud-neural/SKILL.md) | Neural network training and deployment |
+| [cloud-sandbox](tools/cloud/cloud-sandbox/SKILL.md) | E2B sandbox management |
+| [cloud-workflow](tools/cloud/cloud-workflow/SKILL.md) | Event-driven workflow automation |
+| [cloud-app-store](tools/cloud/cloud-app-store/SKILL.md) | Application marketplace |
+| [cloud-auth](tools/cloud/cloud-auth/SKILL.md) | Authentication and user management |
+| [cloud-payments](tools/cloud/cloud-payments/SKILL.md) | Credit management and billing |
+| [cloud-challenges](tools/cloud/cloud-challenges/SKILL.md) | Coding challenges and gamification |
+| [cloud-user-tools](tools/cloud/cloud-user-tools/SKILL.md) | User utilities and Seraphina |
+
+### Meta (1)
 
 Skills about skills - maintenance, creation, and session management.
 
 | Skill | Description |
 |-------|-------------|
-| [session-start-routine](meta/session-start-routine/SKILL.md) | **NEW** Session initialization routine for skill maintenance (v1.0.0) |
+| [session-start-routine](meta/session-start-routine/SKILL.md) | Session initialization routine for skill maintenance (v2.0.0) |
+
+---
+
+## Repository-Specific Skills
+
+### digitalmodel (15)
+
+| Skill | Description |
+|-------|-------------|
+| [orcaflex-modeling](../../digitalmodel/.claude/skills/orcaflex-modeling/SKILL.md) | OrcaFlex simulation setup and running (v2.0.0) |
+| [orcaflex-post-processing](../../digitalmodel/.claude/skills/orcaflex-post-processing/SKILL.md) | OrcaFlex results post-processing |
+| [aqwa-analysis](../../digitalmodel/.claude/skills/aqwa-analysis/SKILL.md) | AQWA hydrodynamic analysis (v3.0.0) |
+| [orcawave-analysis](../../digitalmodel/.claude/skills/orcawave-analysis/SKILL.md) | Wave spectrum generation and analysis - NEW |
+| [freecad-automation](../../digitalmodel/.claude/skills/freecad-automation/SKILL.md) | FreeCAD CAD automation - NEW |
+| [gmsh-meshing](../../digitalmodel/.claude/skills/gmsh-meshing/SKILL.md) | Mesh generation for simulations - NEW |
+| [cad-engineering](../../digitalmodel/.claude/skills/cad-engineering/SKILL.md) | CAD expertise and format conversions - NEW |
+| [cathodic-protection](../../digitalmodel/.claude/skills/cathodic-protection/SKILL.md) | Cathodic protection systems - NEW |
+| [fatigue-analysis](../../digitalmodel/.claude/skills/fatigue-analysis/SKILL.md) | S-N curves, damage accumulation |
+| [mooring-design](../../digitalmodel/.claude/skills/mooring-design/SKILL.md) | CALM/SALM buoy analysis |
+| [structural-analysis](../../digitalmodel/.claude/skills/structural-analysis/SKILL.md) | Stress, buckling, capacity checks |
+| [catenary-riser](../../digitalmodel/.claude/skills/catenary-riser/SKILL.md) | Catenary riser design |
+| [hydrodynamics](../../digitalmodel/.claude/skills/hydrodynamics/SKILL.md) | Hydrodynamic calculations |
+| [signal-analysis](../../digitalmodel/.claude/skills/signal-analysis/SKILL.md) | Signal processing and analysis |
+| [viv-analysis](../../digitalmodel/.claude/skills/viv-analysis/SKILL.md) | Vortex-induced vibration analysis |
+
+### worldenergydata (10)
+
+| Skill | Description |
+|-------|-------------|
+| [bsee-data-extractor](../../worldenergydata/.claude/skills/bsee-data-extractor/SKILL.md) | BSEE production data extraction |
+| [energy-data-visualizer](../../worldenergydata/.claude/skills/energy-data-visualizer/SKILL.md) | Energy data visualization |
+| [fdas-economics](../../worldenergydata/.claude/skills/fdas-economics/SKILL.md) | FDAS economics analysis |
+| [field-analyzer](../../worldenergydata/.claude/skills/field-analyzer/SKILL.md) | Oil/gas field analysis |
+| [marine-safety-incidents](../../worldenergydata/.claude/skills/marine-safety-incidents/SKILL.md) | Marine safety incident analysis |
+| [npv-analyzer](../../worldenergydata/.claude/skills/npv-analyzer/SKILL.md) | NPV and economic evaluation |
+| [production-forecaster](../../worldenergydata/.claude/skills/production-forecaster/SKILL.md) | Arps decline curves and EUR forecasting |
+| [sodir-data-extractor](../../worldenergydata/.claude/skills/sodir-data-extractor/SKILL.md) | SODIR (Norwegian) data extraction |
+| [web-scraper-energy](../../worldenergydata/.claude/skills/web-scraper-energy/SKILL.md) | Energy website scraping |
+| [well-production-dashboard](../../worldenergydata/.claude/skills/well-production-dashboard/SKILL.md) | Well production dashboards |
+
+---
+
+## Skill Template v2.0
+
+All skills follow [SKILL_TEMPLATE_v2.md](../../docs/SKILL_TEMPLATE_v2.md) format:
+
+```yaml
+---
+name: skill-name
+description: Trigger description for auto-detection
+version: 1.0.0
+category: development|workspace-hub|tools|etc
+related_skills:
+  - related-skill-1
+  - related-skill-2
+---
+```
+
+Required sections:
+- Quick Start
+- When to Use
+- Core Concepts
+- Usage Examples
+- Best Practices
+- Error Handling
+- Version History
 
 ---
 
@@ -192,8 +350,8 @@ Skills activate automatically when Claude Code determines they're relevant:
 User: "Create a PDF summary of this document"
 Claude: [Activates pdf skill, provides PDF processing guidance]
 
-User: "I need to sync all my work repositories"
-Claude: [Activates repo-sync skill, provides repository sync commands]
+User: "Initialize a hierarchical swarm for code review"
+Claude: [Activates swarm-hierarchical skill, provides swarm coordination]
 ```
 
 ### Manual Invocation
@@ -202,114 +360,75 @@ Reference skills directly in prompts:
 
 ```
 "Using the sparc-workflow skill, help me plan this feature"
-"Apply the compliance-check skill to verify this repository"
+"Apply the consensus-raft skill to implement leader election"
 ```
-
----
-
-## Repository-Specific Skills
-
-Individual repositories can have their own skills that supplement these global skills.
-
-### Creating Repo-Specific Skills
-
-1. Create a `.claude/skills/` directory in your repository
-2. Add skill subdirectories with `SKILL.md` files
-3. Skills will be available only when working in that repository
-
-**Example:**
-```
-digitalmodel/
-└── .claude/
-    └── skills/
-        └── structural-analysis/
-            └── SKILL.md
-```
-
-For detailed guidance, see [REPO_SPECIFIC_SKILLS.md](../../docs/modules/ai/REPO_SPECIFIC_SKILLS.md).
-
----
-
-## Skill Structure
-
-Each skill follows this structure:
-
-```
-skill-name/
-└── SKILL.md           # Skill definition with YAML frontmatter
-```
-
-### SKILL.md Format
-
-```markdown
----
-name: skill-name
-description: Trigger description that tells Claude when to use this skill
----
-
-# Skill Title
-
-[Detailed instructions, templates, examples, best practices]
-```
-
----
-
-## Creating New Skills
-
-Use the [skill-creator](builders/skill-creator/SKILL.md) skill to create new skills:
-
-1. Determine skill category
-2. Create descriptive name (kebab-case)
-3. Write clear trigger description
-4. Include practical examples
-5. Add to appropriate category directory
-6. Update this index
 
 ---
 
 ## Installation Verification
 
-Check that skills are accessible:
-
 ```bash
 # Verify symlink
 ls -la ~/.claude/skills
 
-# List available categories
+# Count all skills
+find ~/.claude/skills -name "SKILL.md" | wc -l
+# Expected: 91
+
+# List categories
 ls ~/.claude/skills/
 
 # Check specific skill
-cat ~/.claude/skills/document-handling/pdf/SKILL.md
+cat ~/.claude/skills/workspace-hub/swarm/swarm-hierarchical/SKILL.md
 ```
 
 ---
 
 ## Related Documentation
 
+- [SKILL_TEMPLATE_v2.md](../../docs/SKILL_TEMPLATE_v2.md) - Skill template standard
+- [AGENT_TO_SKILL_CONVERSION.md](../../docs/AGENT_TO_SKILL_CONVERSION.md) - Conversion tracking
 - [Claude Code Skills Documentation](https://docs.anthropic.com/en/docs/claude-code/skills)
 - [Anthropic Official Skills](https://github.com/anthropics/skills)
-- [Workspace Hub Documentation](../../docs/README.md)
 - [AI Agent Guidelines](../../docs/modules/ai/AI_AGENT_GUIDELINES.md)
-- [Repo-Specific Skills Guide](../../docs/modules/ai/REPO_SPECIFIC_SKILLS.md)
 
 ---
 
 ## Changelog
 
+### 2026-01-02 - Major Agent-to-Skill Conversion
+
+**New Skills (56):**
+- `workspace-hub/core/` (5) - Core development agents
+- `workspace-hub/swarm/` (8) - Swarm coordination
+- `workspace-hub/consensus/` (7) - Distributed consensus
+- `development/github/` (13) - GitHub integration
+- `development/sparc/` (4) - SPARC methodology
+- `development/planning/` (2) - Goal planning
+- `development/testing/` (2) - Testing skills
+- `tools/optimization/` (6) - Performance optimization
+- `tools/cloud/` (9) - Flow-Nexus cloud platform
+
+**Upgraded Skills (35):**
+- All existing skills upgraded to v2.0 template format
+- Added: Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections
+
+**digitalmodel Repository (5 new):**
+- `orcawave-analysis` - Wave spectrum generation
+- `freecad-automation` - FreeCAD CAD automation
+- `gmsh-meshing` - Mesh generation
+- `cad-engineering` - CAD engineering specialist
+- `cathodic-protection` - Cathodic protection systems
+
 ### 2025-12-30
 
 **New Skills:**
-- `meta/session-start-routine` (v1.0.0) - Session initialization and skill maintenance routine
-- `development/git-worktree-workflow` (v1.0.0) - Parallel Claude workflows with git worktrees
+- `meta/session-start-routine` (v1.0.0) - Session initialization routine
+- `development/git-worktree-workflow` (v1.0.0) - Parallel Claude workflows
 
 **Updated Skills:**
-- `development/mcp-builder` (v1.1.0) - Added .mcp.json project config, permission wildcards, MCP_TIMEOUT, security best practices
-- `document-handling/rag-system-builder` (v1.1.0) - Added hybrid search (BM25+vector), reranking, streaming responses
-
-**Research Sources Used:**
-- [Anthropic Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
-- [Top MCP Servers 2025](https://mcpcat.io/guides/best-mcp-servers-for-claude-code/)
-- [Anthropic Skills Repository](https://github.com/anthropics/skills)
+- `development/mcp-builder` (v1.1.0) - Added .mcp.json, wildcards, security
+- `document-handling/rag-system-builder` (v1.1.0) - Added hybrid search, reranking
 
 ---
 

@@ -1,6 +1,13 @@
 ---
 name: brand-guidelines
 description: Create and maintain brand guidelines including visual identity, voice and tone, and usage rules. Use for establishing brand standards, style guides, and ensuring brand consistency across materials.
+version: 2.0.0
+category: communication
+last_updated: 2026-01-02
+related_skills:
+  - theme-factory
+  - frontend-design
+  - internal-comms
 ---
 
 # Brand Guidelines Skill
@@ -8,6 +15,43 @@ description: Create and maintain brand guidelines including visual identity, voi
 ## Overview
 
 This skill guides the creation of comprehensive brand guidelines that ensure consistency across all brand touchpoints. A strong brand guideline document serves as the single source of truth for brand expression.
+
+## When to Use
+
+- Establishing new brand identity
+- Documenting existing brand standards
+- Creating style guides for teams
+- Ensuring brand consistency across materials
+- Onboarding designers and content creators
+- Rebranding projects
+
+## Quick Start
+
+1. **Define brand foundation** (mission, vision, values, personality)
+2. **Document visual identity** (logo, colors, typography)
+3. **Establish voice and tone** (writing style, tone variations)
+4. **Create usage examples** (do's and don'ts)
+5. **Compile assets** (logos, fonts, templates)
+
+```markdown
+# [Brand Name] Brand Guidelines
+
+## Brand Foundation
+- **Mission:** [Why we exist]
+- **Vision:** [Future state we aim to create]
+- **Values:** [3-5 core values]
+- **Personality:** Confident not arrogant, Expert not elitist
+
+## Visual Identity
+- **Primary Color:** #[HEX] (Pantone [XXX])
+- **Primary Font:** [Font Name] for headings
+- **Logo Usage:** Minimum clear space = logo height
+
+## Voice
+- Clear, not clever
+- Confident, not arrogant
+- Human, not robotic
+```
 
 ## Brand Guidelines Structure
 
@@ -125,13 +169,13 @@ Maintain minimum clear space equal to [X] around all sides of the logo.
 ## Logo Misuse
 
 Never:
-- ❌ Stretch or distort the logo
-- ❌ Change logo colors
-- ❌ Add effects (shadows, outlines, gradients)
-- ❌ Rotate the logo
-- ❌ Place on busy backgrounds
-- ❌ Recreate or modify the logo
-- ❌ Use outdated versions
+- [X] Stretch or distort the logo
+- [X] Change logo colors
+- [X] Add effects (shadows, outlines, gradients)
+- [X] Rotate the logo
+- [X] Place on busy backgrounds
+- [X] Recreate or modify the logo
+- [X] Use outdated versions
 
 [Include visual examples of each misuse]
 ```
@@ -268,18 +312,18 @@ All color combinations must meet WCAG 2.1 AA standards:
 - **Subjects:** Real people in genuine moments
 
 ### Photography Do's
-✅ Show diverse, authentic people
-✅ Capture genuine emotions
-✅ Use natural lighting when possible
-✅ Include environmental context
-✅ Maintain consistent color treatment
+[check] Show diverse, authentic people
+[check] Capture genuine emotions
+[check] Use natural lighting when possible
+[check] Include environmental context
+[check] Maintain consistent color treatment
 
 ### Photography Don'ts
-❌ Overly staged or stock-looking images
-❌ Heavy filters or effects
-❌ Isolated subjects on white backgrounds
-❌ Outdated technology or fashion
-❌ Images that could be any brand
+[X] Overly staged or stock-looking images
+[X] Heavy filters or effects
+[X] Isolated subjects on white backgrounds
+[X] Outdated technology or fashion
+[X] Images that could be any brand
 ```
 
 ### Illustration Style
@@ -295,7 +339,7 @@ All color combinations must meet WCAG 2.1 AA standards:
 - **Perspective:** [Flat/Isometric/3D]
 
 ### Icon Style
-- **Grid:** [X]px × [X]px
+- **Grid:** [X]px x [X]px
 - **Stroke:** [X]px
 - **Corners:** [X]px radius
 - **Style:** [Outlined/Filled/Duotone]
@@ -318,8 +362,8 @@ We speak with one voice that is:
 - We explain complex ideas simply
 
 **Example:**
-- ✅ "Connect your accounts in 3 steps"
-- ❌ "Leverage our seamless integration capabilities"
+- [check] "Connect your accounts in 3 steps"
+- [X] "Leverage our seamless integration capabilities"
 
 #### [Voice Attribute 2]: [e.g., Confident]
 - We know our value
@@ -327,8 +371,8 @@ We speak with one voice that is:
 - We avoid hedging language
 
 **Example:**
-- ✅ "The best way to manage your finances"
-- ❌ "We think we might be a good option"
+- [check] "The best way to manage your finances"
+- [X] "We think we might be a good option"
 
 #### [Voice Attribute 3]: [e.g., Human]
 - We write like we speak
@@ -336,8 +380,8 @@ We speak with one voice that is:
 - We show empathy
 
 **Example:**
-- ✅ "We're here to help"
-- ❌ "The company is available to assist"
+- [check] "We're here to help"
+- [X] "The company is available to assist"
 ```
 
 ### Tone Variations
@@ -412,7 +456,7 @@ Our tone adapts to the situation while maintaining our voice:
 ```markdown
 ## Quick Reference: Do's and Don'ts
 
-### Do ✅
+### Do [check]
 - Use approved logo files only
 - Maintain minimum clear space
 - Follow the color system
@@ -421,12 +465,12 @@ Our tone adapts to the situation while maintaining our voice:
 - Use authentic photography
 - Check accessibility
 
-### Don't ❌
+### Don't [X]
 - Modify the logo
 - Create new color variations
 - Use unapproved fonts
 - Write in passive voice
-- Use stock photography clichés
+- Use stock photography cliches
 - Ignore contrast requirements
 - Deviate without approval
 ```
@@ -454,27 +498,59 @@ Contact: [Brand Team Email]
 Slack: #[brand-channel]
 ```
 
-## File Resources
+## Execution Checklist
 
-```markdown
-## Brand Assets
+- [ ] Defined mission, vision, and values
+- [ ] Documented brand personality traits
+- [ ] Created logo usage guidelines with examples
+- [ ] Defined complete color system with accessibility
+- [ ] Established typography hierarchy
+- [ ] Set photography and illustration style
+- [ ] Documented voice attributes with examples
+- [ ] Created tone variations by context
+- [ ] Provided application examples
+- [ ] Included do's and don'ts
+- [ ] Established governance process
+- [ ] Compiled downloadable assets
 
-### Download Links
-- Logo package: [Link]
-- Color swatches: [Link]
-- Font files: [Link/instructions]
-- Templates: [Link]
-- Photography: [Link]
-- Icons: [Link]
+## Error Handling
 
-### File Naming Convention
-`[brand]_[asset-type]_[variant]_[size].[format]`
+### Common Issues
 
-Example: `acme_logo_primary_fullcolor.svg`
-```
+**Issue: Brand inconsistency across teams**
+- Cause: Guidelines not accessible or unclear
+- Solution: Central asset library, regular training sessions
+
+**Issue: Logo misuse**
+- Cause: Wrong files or unclear rules
+- Solution: Provide multiple approved formats, visual misuse examples
+
+**Issue: Off-brand writing**
+- Cause: Voice guidelines too abstract
+- Solution: Add concrete examples for each voice attribute
+
+**Issue: Color accessibility failures**
+- Cause: Using brand colors without checking contrast
+- Solution: Pre-approved color combinations, automated checks
+
+## Metrics
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| Brand Consistency Score | > 90% | Quarterly audit |
+| Asset Library Usage | > 80% of team | Download analytics |
+| Guideline Awareness | > 95% | Team survey |
+| Accessibility Compliance | 100% | Automated testing |
+
+## Related Skills
+
+- [theme-factory](../../content-design/theme-factory/SKILL.md) - Quick color/font themes
+- [frontend-design](../../content-design/frontend-design/SKILL.md) - Web implementation
+- [internal-comms](../internal-comms/SKILL.md) - Brand voice in communications
 
 ---
 
 ## Version History
 
+- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections
 - **1.0.0** (2024-10-15): Initial release with complete guidelines template, logo usage, color system, typography, imagery, voice and tone, applications

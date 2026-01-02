@@ -1,6 +1,13 @@
 ---
 name: semantic-search-setup
 description: Setup vector embeddings and semantic search for document collections. Use for AI-powered similarity search, finding related documents, and preparing knowledge bases for RAG systems.
+version: 1.1.0
+last_updated: 2026-01-02
+category: document-handling
+related_skills:
+  - knowledge-base-builder
+  - rag-system-builder
+  - pdf-text-extractor
 ---
 
 # Semantic Search Setup Skill
@@ -8,6 +15,23 @@ description: Setup vector embeddings and semantic search for document collection
 ## Overview
 
 This skill sets up vector embedding infrastructure for semantic search. Unlike keyword search (FTS5), semantic search finds conceptually similar content even without exact word matches.
+
+## Quick Start
+
+```python
+from sentence_transformers import SentenceTransformer
+import numpy as np
+
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
+# Generate embeddings
+texts = ["How to fix a bug", "Debugging software issues"]
+embeddings = model.encode(texts, normalize_embeddings=True)
+
+# Compute similarity
+similarity = np.dot(embeddings[0], embeddings[1])
+print(f"Similarity: {similarity:.3f}")  # ~0.85
+```
 
 ## When to Use
 
@@ -21,23 +45,23 @@ This skill sets up vector embedding infrastructure for semantic search. Unlike k
 
 ```
 Text Chunk                    Query
-    │                           │
-    ▼                           ▼
-┌─────────┐               ┌─────────┐
-│ Embed   │               │ Embed   │
-│ Model   │               │ Model   │
-└────┬────┘               └────┬────┘
-     │                         │
-     ▼                         ▼
+    |                           |
+    v                           v
++---------+               +---------+
+| Embed   |               | Embed   |
+| Model   |               | Model   |
++----+----+               +----+----+
+     |                         |
+     v                         v
 [0.12, -0.34, ...]       [0.15, -0.31, ...]
-     │                         │
-     └──────────┬──────────────┘
-                │
-                ▼
-         Cosine Similarity
-                │
-                ▼
-           0.847 (similar!)
+     |                         |
+     +------------+------------+
+                  |
+                  v
+           Cosine Similarity
+                  |
+                  v
+             0.847 (similar!)
 ```
 
 ## Model Selection
@@ -275,6 +299,51 @@ case "$1" in
 esac
 ```
 
+## Execution Checklist
+
+- [ ] Install sentence-transformers and numpy
+- [ ] Choose appropriate embedding model for use case
+- [ ] Create embeddings table in database
+- [ ] Generate embeddings for all text chunks
+- [ ] Test semantic search with sample queries
+- [ ] Compare results with keyword search (FTS5)
+- [ ] Optimize batch size for available memory
+- [ ] Set up background service for continuous updates
+
+## Error Handling
+
+### Common Errors
+
+**Error: CUDA out of memory**
+- Cause: GPU memory insufficient for model
+- Solution: Set `CUDA_VISIBLE_DEVICES=""` to force CPU mode
+
+**Error: Model download fails**
+- Cause: Network issues or model not found
+- Solution: Check internet connection, verify model name
+
+**Error: numpy.frombuffer dimension mismatch**
+- Cause: Embedding stored with different model
+- Solution: Regenerate embeddings with consistent model
+
+**Error: sqlite3.OperationalError (database is locked)**
+- Cause: Concurrent write operations
+- Solution: Use `timeout=30` and batch commits
+
+**Error: Memory issues with large batches**
+- Cause: Batch size too large for available RAM
+- Solution: Reduce batch_size to 50 or lower
+
+## Metrics
+
+| Metric | Typical Value |
+|--------|---------------|
+| Embedding speed (CPU) | ~100 chunks/second |
+| Embedding speed (GPU) | ~500 chunks/second |
+| Storage per embedding | 1.5KB (384 dims) |
+| Search latency (10K) | <100ms |
+| Model load time | 2-5 seconds |
+
 ## Performance Tips
 
 ### 1. CPU vs GPU
@@ -372,8 +441,19 @@ python search.py "fatigue analysis requirements"
 - `rag-system-builder` - Add AI Q&A on top of semantic search
 - `pdf-text-extractor` - Extract text from PDFs
 
+## Dependencies
+
+```bash
+pip install sentence-transformers numpy
+```
+
+Optional:
+- CUDA toolkit (for GPU acceleration)
+- tqdm (for progress bars)
+
 ---
 
 ## Version History
 
+- **1.1.0** (2026-01-02): Added Quick Start, Execution Checklist, Error Handling, Metrics sections; updated frontmatter with version, category, related_skills
 - **1.0.0** (2024-10-15): Initial release with sentence-transformers, cosine similarity search, batch processing

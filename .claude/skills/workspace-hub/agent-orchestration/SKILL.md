@@ -1,9 +1,77 @@
 ---
 name: agent-orchestration
 description: Orchestrate AI agents using Claude Flow, swarm coordination, and multi-agent workflows. Use for complex tasks requiring multiple specialized agents, parallel execution, or coordinated problem-solving.
+version: 1.1.0
+category: workspace-hub
+type: skill
+capabilities:
+  - swarm_coordination
+  - agent_spawning
+  - task_orchestration
+  - memory_management
+  - parallel_execution
+tools:
+  - Task
+  - Bash
+  - mcp__claude-flow__swarm_init
+  - mcp__claude-flow__agent_spawn
+  - mcp__claude-flow__agents_spawn_parallel
+  - mcp__claude-flow__task_orchestrate
+  - mcp__claude-flow__swarm_status
+  - mcp__claude-flow__agent_list
+  - mcp__claude-flow__memory_usage
+  - mcp__claude-flow__memory_search
+related_skills:
+  - sparc-workflow
+  - repo-sync
+  - compliance-check
+hooks:
+  pre: |
+    npx claude-flow@alpha hooks pre-task --description "Agent orchestration"
+  post: |
+    npx claude-flow@alpha hooks post-task --task-id "swarm-complete"
 ---
 
 # Agent Orchestration Skill
+
+> Coordinate multiple AI agents using swarm topologies, parallel execution, and Claude Flow for complex multi-step tasks.
+
+## Quick Start
+
+```javascript
+// Initialize a swarm for complex task
+mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 5 })
+
+// Spawn specialized agents
+mcp__claude-flow__agents_spawn_parallel({
+    agents: [
+        { type: "coder", name: "backend" },
+        { type: "tester", name: "qa" },
+        { type: "reviewer", name: "quality" }
+    ]
+})
+
+// Orchestrate the task
+mcp__claude-flow__task_orchestrate({
+    task: "Build REST API with tests",
+    strategy: "adaptive"
+})
+```
+
+## When to Use
+
+- Complex tasks requiring multiple specialized agents (coder, tester, reviewer)
+- Parallel execution to speed up independent subtasks
+- Code review requiring multiple perspectives (security, performance, style)
+- Research tasks needing distributed information gathering
+- Cross-repository changes requiring coordinated commits
+
+## Prerequisites
+
+- Claude Flow MCP server configured (`claude mcp add claude-flow npx claude-flow@alpha mcp start`)
+- Understanding of swarm topologies
+- Familiarity with agent types and capabilities
+- Claude Code Task tool for agent execution
 
 ## Overview
 
@@ -312,6 +380,18 @@ await mcp__claude-flow__task_orchestrate({
 });
 ```
 
+## Execution Checklist
+
+- [ ] Determine task complexity and required agent types
+- [ ] Select appropriate swarm topology
+- [ ] Initialize swarm with correct configuration
+- [ ] Spawn required agents (prefer parallel spawning)
+- [ ] Define task with clear objectives and dependencies
+- [ ] Orchestrate with appropriate strategy
+- [ ] Monitor progress with status checks
+- [ ] Collect and consolidate results
+- [ ] Clean up swarm when complete
+
 ## Monitoring and Status
 
 ### Check Swarm Status
@@ -371,6 +451,54 @@ mcp__claude-flow__memory_search({
 })
 ```
 
+## Error Handling
+
+### Agent Spawn Failures
+
+```javascript
+// Check agent status after spawning
+const status = await mcp__claude-flow__agent_list({ swarmId: "current" });
+if (status.agents.length < expectedCount) {
+    // Retry failed spawns
+    await mcp__claude-flow__agent_spawn({ type: "coder", name: "retry-agent" });
+}
+```
+
+### Task Orchestration Failures
+
+```javascript
+// Use fault tolerance for critical tasks
+mcp__claude-flow__daa_fault_tolerance({
+    agentId: "agent-123",
+    strategy: "restart"  // or "failover", "ignore"
+})
+```
+
+### Recovery
+
+```javascript
+// Create snapshot before risky operations
+mcp__claude-flow__state_snapshot({ name: "before-risky-operation" })
+
+// Restore if needed
+mcp__claude-flow__context_restore({ snapshotId: "snapshot-id" })
+```
+
+### Swarm Coordination Issues
+
+- **Topology mismatch**: Choose topology based on task structure
+- **Agent overload**: Scale down or use load balancing
+- **Memory conflicts**: Use namespaced memory storage
+- **Timeout issues**: Set reasonable timeouts, monitor progress
+
+## Metrics & Success Criteria
+
+- **Agent Spawn Time**: < 2 seconds per agent
+- **Task Completion Rate**: >= 95%
+- **Coordination Overhead**: < 10% of total execution time
+- **Memory Usage**: Efficient namespace isolation
+- **Parallel Speedup**: 2-4x improvement for parallelizable tasks
+
 ## Performance Optimization
 
 ### Topology Selection
@@ -400,27 +528,6 @@ mcp__claude-flow__load_balance({
 })
 ```
 
-## Error Handling
-
-### Fault Tolerance
-
-```javascript
-mcp__claude-flow__daa_fault_tolerance({
-    agentId: "agent-123",
-    strategy: "restart"  // or "failover", "ignore"
-})
-```
-
-### Recovery
-
-```javascript
-// Create snapshot
-mcp__claude-flow__state_snapshot({ name: "before-risky-operation" })
-
-// Restore if needed
-mcp__claude-flow__context_restore({ snapshotId: "snapshot-id" })
-```
-
 ## Integration with Claude Code
 
 ### Using Task Tool
@@ -445,6 +552,35 @@ Task({ subagent_type: "researcher", ... })
 Task({ subagent_type: "coder", ... })
 Task({ subagent_type: "reviewer", ... })
 ```
+
+## Integration Points
+
+### MCP Tools
+
+```javascript
+// Full orchestration example
+mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 6 })
+mcp__claude-flow__agents_spawn_parallel({ agents: [...] })
+mcp__claude-flow__task_orchestrate({ task: "...", strategy: "adaptive" })
+mcp__claude-flow__swarm_status({})
+mcp__claude-flow__swarm_destroy({ swarmId: "..." })
+```
+
+### Hooks
+
+```bash
+# Pre-task hook
+npx claude-flow@alpha hooks pre-task --description "[task]"
+
+# Post-task hook
+npx claude-flow@alpha hooks post-task --task-id "[task]"
+```
+
+### Related Skills
+
+- [sparc-workflow](../sparc-workflow/SKILL.md) - SPARC methodology
+- [repo-sync](../repo-sync/SKILL.md) - Repository management
+- [compliance-check](../compliance-check/SKILL.md) - Standards verification
 
 ## Best Practices
 
@@ -486,8 +622,15 @@ mcp__claude-flow__swarm_scale({
 })
 ```
 
+## References
+
+- [Claude Flow Documentation](https://github.com/ruvnet/claude-flow)
+- [AI Agent Guidelines](../docs/modules/ai/AI_AGENT_GUIDELINES.md)
+- [Development Workflow](../docs/modules/workflow/DEVELOPMENT_WORKFLOW.md)
+
 ---
 
 ## Version History
 
+- **1.1.0** (2026-01-02): Upgraded to SKILL_TEMPLATE_v2 format - added Quick Start, When to Use, Execution Checklist, Error Handling consolidation, Metrics, Integration Points, MCP hooks
 - **1.0.0** (2024-10-15): Initial release with swarm topologies, agent spawning, task orchestration, memory management, performance optimization

@@ -1,6 +1,13 @@
 ---
 name: document-inventory
 description: Scan and catalog document collections with metadata extraction, categorization, and statistics. Use for auditing document libraries, preparing for knowledge base creation, or understanding large file collections.
+version: 1.1.0
+last_updated: 2026-01-02
+category: document-handling
+related_skills:
+  - knowledge-base-builder
+  - pdf-text-extractor
+  - semantic-search-setup
 ---
 
 # Document Inventory Skill
@@ -8,6 +15,32 @@ description: Scan and catalog document collections with metadata extraction, cat
 ## Overview
 
 This skill scans document collections (PDFs, Word docs, text files) and creates a structured inventory with metadata, automatic categorization, and collection statistics. Essential first step before building knowledge bases.
+
+## Quick Start
+
+```python
+from pathlib import Path
+import sqlite3
+
+# Scan directory
+documents = []
+for filepath in Path("/path/to/docs").rglob("*.pdf"):
+    documents.append({
+        'filename': filepath.name,
+        'size': filepath.stat().st_size,
+        'path': str(filepath)
+    })
+
+# Store in database
+conn = sqlite3.connect("inventory.db")
+cursor = conn.cursor()
+cursor.execute("CREATE TABLE IF NOT EXISTS docs (name TEXT, size INTEGER, path TEXT)")
+for doc in documents:
+    cursor.execute("INSERT INTO docs VALUES (?, ?, ?)",
+                   (doc['filename'], doc['size'], doc['path']))
+conn.commit()
+print(f"Inventoried {len(documents)} documents")
+```
 
 ## When to Use
 
@@ -474,6 +507,51 @@ def categorize_hierarchical(filepath):
     return f"{primary}/{secondary}"
 ```
 
+## Execution Checklist
+
+- [ ] Identify target directory for scanning
+- [ ] Create SQLite database for inventory
+- [ ] Run initial scan and review results
+- [ ] Customize categorization patterns if needed
+- [ ] Generate statistics report
+- [ ] Export to CSV for review
+- [ ] Generate HTML report for stakeholders
+- [ ] Plan next steps (knowledge base creation)
+
+## Error Handling
+
+### Common Errors
+
+**Error: PermissionError**
+- Cause: Insufficient permissions to read files
+- Solution: Run with appropriate permissions or skip protected files
+
+**Error: sqlite3.OperationalError (database is locked)**
+- Cause: Concurrent access without timeout
+- Solution: Use `timeout=30` when connecting
+
+**Error: UnicodeDecodeError in filenames**
+- Cause: Non-UTF8 characters in file paths
+- Solution: Use `errors='replace'` when processing paths
+
+**Error: OSError (too many open files)**
+- Cause: Not closing file handles properly
+- Solution: Use context managers and batch commits
+
+**Error: Slow scanning on network drives**
+- Cause: Network latency for each file access
+- Solution: Copy to local drive or use async scanning
+
+## Metrics
+
+| Metric | Typical Value |
+|--------|---------------|
+| Scan speed (local) | ~1000 files/second |
+| Scan speed (network) | ~100 files/second |
+| Database size | ~1KB per 10 documents |
+| Memory usage | ~50MB for 100K documents |
+| Report generation | <1 second |
+
 ## Best Practices
 
 1. **Scan before processing** - Always inventory first
@@ -505,8 +583,17 @@ python inventory.py export inventory.csv --db inventory.db
 - `pdf-text-extractor` - Extract text from inventoried PDFs
 - `semantic-search-setup` - Add AI search capabilities
 
+## Dependencies
+
+```bash
+# No external dependencies - uses Python standard library
+# Optional: pandas for advanced data manipulation
+pip install pandas
+```
+
 ---
 
 ## Version History
 
+- **1.1.0** (2026-01-02): Added Quick Start, Execution Checklist, Error Handling, Metrics sections; updated frontmatter with version, category, related_skills
 - **1.0.0** (2024-10-15): Initial release with SQLite storage, auto-categorization, CLI interface

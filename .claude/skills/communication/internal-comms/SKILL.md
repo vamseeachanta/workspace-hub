@@ -1,6 +1,13 @@
 ---
 name: internal-comms
 description: Create professional internal communications including memos, announcements, newsletters, and company updates. Use for employee communications, policy announcements, team updates, and organizational messaging.
+version: 2.0.0
+category: communication
+last_updated: 2026-01-02
+related_skills:
+  - doc-coauthoring
+  - brand-guidelines
+  - slack-gif-creator
 ---
 
 # Internal Communications Skill
@@ -8,6 +15,45 @@ description: Create professional internal communications including memos, announ
 ## Overview
 
 This skill guides creation of professional internal communications that effectively inform, engage, and align employees with organizational goals and updates.
+
+## When to Use
+
+- Announcing company-wide policy changes
+- Creating team newsletters and updates
+- Writing executive communications
+- Drafting crisis communications
+- Sending policy memos
+- Any employee-facing messaging
+
+## Quick Start
+
+1. **Identify communication type** (announcement, newsletter, memo, executive, crisis)
+2. **Select appropriate tone** (professional, warm, formal, calm)
+3. **Use template structure** for the type
+4. **Lead with important information** (inverted pyramid)
+5. **Include clear next steps** or call to action
+
+```markdown
+Subject: [Action]: [Topic] Effective [Date]
+
+Hi team,
+
+[One sentence summary of what's changing]
+
+**Key Details:**
+- [Detail 1]
+- [Detail 2]
+- [Detail 3]
+
+**Timeline:** [When this takes effect]
+
+**Action Needed:** [What people need to do]
+
+Questions? [Contact info]
+
+Thanks,
+[Name]
+```
 
 ## Communication Types
 
@@ -257,23 +303,23 @@ Thanks,
 ```markdown
 # [Team] Update - Week of [Date]
 
-## 🎉 Wins
+## Wins
 - [Achievement 1]
 - [Achievement 2]
 
-## 📊 Metrics
+## Metrics
 - [Key metric]: [Value]
 - [Key metric]: [Value]
 
-## 🔄 In Progress
+## In Progress
 - [Project 1] - [Status]
 - [Project 2] - [Status]
 
-## 👀 Coming Up
+## Coming Up
 - [Event/Deadline 1] - [Date]
 - [Event/Deadline 2] - [Date]
 
-## 💡 FYI
+## FYI
 - [Important info]
 - [Reminder]
 ```
@@ -297,17 +343,58 @@ Thanks,
 - **Urgent:** Immediately, regardless of timing
 - **Consider:** Time zones for global teams
 
-## Measuring Effectiveness
+## Execution Checklist
 
-Track these metrics when possible:
-- Open rates (email)
-- Click-through rates (links)
-- Read time (intranet)
-- Questions received (indicates clarity)
-- Action completion rates (for calls to action)
+- [ ] Identified correct communication type
+- [ ] Selected appropriate tone
+- [ ] Used relevant template
+- [ ] Led with most important information
+- [ ] Included specific dates and actions
+- [ ] Added clear next steps
+- [ ] Proofread for errors
+- [ ] Considered mobile formatting
+- [ ] Selected appropriate distribution channel
+- [ ] Scheduled for optimal timing
+
+## Error Handling
+
+### Common Issues
+
+**Issue: Low engagement/open rates**
+- Cause: Unclear subject line or wrong timing
+- Solution: A/B test subject lines, send Tuesday-Thursday 10am-2pm
+
+**Issue: Confusion after announcement**
+- Cause: Missing context or unclear next steps
+- Solution: Add "Why" section and explicit action items
+
+**Issue: Message feels impersonal**
+- Cause: Overly formal or template-heavy
+- Solution: Add personal anecdotes, use "we" and "you"
+
+**Issue: Important info buried**
+- Cause: Not using inverted pyramid structure
+- Solution: Lead with key point, details after
+
+## Metrics
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| Email Open Rate | > 60% | Email platform analytics |
+| Click-through Rate | > 20% | Email platform analytics |
+| Read Time | > 30 seconds | Intranet analytics |
+| Questions Received | Minimal | Support ticket count |
+| Action Completion | > 80% | Survey or system tracking |
+
+## Related Skills
+
+- [doc-coauthoring](../doc-coauthoring/SKILL.md) - Collaborative editing
+- [brand-guidelines](../brand-guidelines/SKILL.md) - Brand voice consistency
+- [slack-gif-creator](../slack-gif-creator/SKILL.md) - Celebration GIFs
 
 ---
 
 ## Version History
 
+- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections
 - **1.0.0** (2024-10-15): Initial release with announcement, newsletter, memo, executive, and crisis communication templates

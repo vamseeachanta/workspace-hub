@@ -1,23 +1,60 @@
 ---
 name: workspace-cli
 description: Use the workspace-hub unified CLI for repository management, compliance, development tools, and system configuration. Use for navigating workspace tools and executing common operations.
+version: 1.1.0
+category: workspace-hub
+type: skill
+capabilities:
+  - interactive_menu_navigation
+  - repository_management
+  - compliance_tools_access
+  - development_utilities
+  - system_configuration
+tools:
+  - Bash
+  - Read
+related_skills:
+  - repo-sync
+  - compliance-check
+  - sparc-workflow
 ---
 
 # Workspace CLI Skill
+
+> Unified CLI interface for all workspace-hub management tools across 26+ repositories.
+
+## Quick Start
+
+```bash
+# Launch interactive menu
+./scripts/workspace
+
+# Direct repository sync
+./scripts/repository_sync status all
+
+# Quick compliance check
+./scripts/compliance/verify_compliance.sh
+```
+
+## When to Use
+
+- Starting a work session and need quick access to common tools
+- Managing multiple repositories with bulk operations
+- Running compliance checks across the workspace
+- Accessing development tools and refactoring utilities
+- Configuring system settings and remote connections
+
+## Prerequisites
+
+- Access to workspace-hub repository
+- Bash shell (Linux/macOS/WSL)
+- Scripts marked as executable (`chmod +x ./scripts/workspace`)
 
 ## Overview
 
 The Workspace CLI provides a unified interface to all workspace-hub management tools. This skill covers navigation, common operations, and integration with other workspace systems.
 
-## Quick Start
-
-### Launch Interactive Menu
-
-```bash
-./scripts/workspace
-```
-
-### Direct Script Access
+## Direct Script Access
 
 ```bash
 # Repository management
@@ -36,9 +73,9 @@ The Workspace CLI provides a unified interface to all workspace-hub management t
 ## Main Menu Structure
 
 ```
-╔════════════════════════════════════════════════════════════════╗
-║              Workspace Hub - Management Console                 ║
-╚════════════════════════════════════════════════════════════════╝
++================================================================+
+|              Workspace Hub - Management Console                 |
++================================================================+
 
 Workspace Management:
 
@@ -51,6 +88,16 @@ Workspace Management:
 
   0) Exit
 ```
+
+## Execution Checklist
+
+- [ ] Navigate to workspace-hub root directory
+- [ ] Verify scripts are executable (`chmod +x ./scripts/workspace`)
+- [ ] Launch CLI with `./scripts/workspace`
+- [ ] Select appropriate menu category
+- [ ] Execute required operation
+- [ ] Verify operation success
+- [ ] Exit cleanly (option 0)
 
 ## Category Details
 
@@ -237,36 +284,36 @@ Help & Documentation:
 
 ```
 scripts/
-├── workspace                    # Main CLI entry point
-│
-├── repository/                  # Repository management
-│   ├── configure_repos.sh
-│   └── check_all_status.sh
-│
-├── compliance/                  # Compliance tools
-│   ├── propagate_claude_config.py
-│   ├── propagate_guidelines.sh
-│   ├── propagate_interactive_mode.sh
-│   ├── setup_compliance.sh
-│   ├── install_compliance_hooks.sh
-│   └── verify_compliance.sh
-│
-├── connection/                  # Remote connections
-│   ├── connect-workspace-linux.sh
-│   ├── connect-workspace-windows.ps1
-│   ├── connect-workspace-tailscale.sh
-│   ├── connect-workspace-tailscale.ps1
-│   ├── sync-tabby-linux.sh
-│   └── sync-tabby-windows.ps1
-│
-├── development/                 # Development tools
-│   ├── install_factory_ai.sh
-│   ├── refactor-analysis.sh
-│   └── droid
-│
-└── system/                      # System configuration
-    ├── sync
-    └── setup_xrdp.sh
++-- workspace                    # Main CLI entry point
+|
++-- repository/                  # Repository management
+|   +-- configure_repos.sh
+|   +-- check_all_status.sh
+|
++-- compliance/                  # Compliance tools
+|   +-- propagate_claude_config.py
+|   +-- propagate_guidelines.sh
+|   +-- propagate_interactive_mode.sh
+|   +-- setup_compliance.sh
+|   +-- install_compliance_hooks.sh
+|   +-- verify_compliance.sh
+|
++-- connection/                  # Remote connections
+|   +-- connect-workspace-linux.sh
+|   +-- connect-workspace-windows.ps1
+|   +-- connect-workspace-tailscale.sh
+|   +-- connect-workspace-tailscale.ps1
+|   +-- sync-tabby-linux.sh
+|   +-- sync-tabby-windows.ps1
+|
++-- development/                 # Development tools
+|   +-- install_factory_ai.sh
+|   +-- refactor-analysis.sh
+|   +-- droid
+|
++-- system/                      # System configuration
+    +-- sync
+    +-- setup_xrdp.sh
 ```
 
 ## Common Workflows
@@ -277,8 +324,8 @@ scripts/
 # 1. Launch workspace CLI
 ./scripts/workspace
 
-# 2. Repository Management → Repository Sync Manager
-# 3. Navigate to: Pull → All
+# 2. Repository Management -> Repository Sync Manager
+# 3. Navigate to: Pull -> All
 # Or directly:
 ./scripts/repository_sync pull all
 ```
@@ -322,76 +369,7 @@ scripts/
 ./scripts/compliance/propagate_interactive_mode.sh
 ```
 
-## Navigation Tips
-
-### Keyboard Navigation
-
-- **Number keys**: Select menu options
-- **0**: Go back / Exit
-- **Ctrl+C**: Force exit
-
-### Direct Access
-
-Skip menus with direct commands:
-
-```bash
-# Instead of navigating menus
-./scripts/workspace
-
-# Use direct script path
-./scripts/repository_sync sync all -m "Quick update"
-```
-
-### Command Aliases
-
-Add to `.bashrc` or `.zshrc`:
-
-```bash
-# Workspace CLI aliases
-alias ws='./scripts/workspace'
-alias rs='./scripts/repository_sync'
-alias rsync='./scripts/repository_sync sync all'
-alias rstatus='./scripts/repository_sync status all'
-alias rpull='./scripts/repository_sync pull all'
-```
-
-## Integration
-
-### With Repository Sync
-
-The CLI wraps repository_sync for menu access:
-
-```bash
-# Menu access
-./scripts/workspace → 1 → 1
-
-# Direct access
-./scripts/repository_sync <command>
-```
-
-### With Compliance System
-
-```bash
-# Menu access
-./scripts/workspace → 2 → 3
-
-# Direct access
-./scripts/compliance/verify_compliance.sh
-```
-
-### With AI Agents
-
-AI agents can use CLI scripts:
-
-```python
-# Run status check
-subprocess.run(['./scripts/repository_sync', 'status', 'all'])
-
-# Verify compliance
-subprocess.run(['./scripts/compliance/verify_compliance.sh'])
-```
-
-## Troubleshooting
+## Error Handling
 
 ### Menu Display Issues
 
@@ -434,6 +412,89 @@ chmod +x ./scripts/*/*.py
 nano config/repos.conf
 ```
 
+## Metrics & Success Criteria
+
+- **Navigation Speed**: Access any tool in < 3 menu selections
+- **Script Execution**: 100% success rate for available scripts
+- **Cross-Platform**: Works on Linux, macOS, WSL
+- **Documentation**: All menu options have help text
+- **Error Handling**: Clear error messages with recovery steps
+
+## Navigation Tips
+
+### Keyboard Navigation
+
+- **Number keys**: Select menu options
+- **0**: Go back / Exit
+- **Ctrl+C**: Force exit
+
+### Direct Access
+
+Skip menus with direct commands:
+
+```bash
+# Instead of navigating menus
+./scripts/workspace
+
+# Use direct script path
+./scripts/repository_sync sync all -m "Quick update"
+```
+
+### Command Aliases
+
+Add to `.bashrc` or `.zshrc`:
+
+```bash
+# Workspace CLI aliases
+alias ws='./scripts/workspace'
+alias rs='./scripts/repository_sync'
+alias rsync='./scripts/repository_sync sync all'
+alias rstatus='./scripts/repository_sync status all'
+alias rpull='./scripts/repository_sync pull all'
+```
+
+## Integration Points
+
+### With Repository Sync
+
+The CLI wraps repository_sync for menu access:
+
+```bash
+# Menu access
+./scripts/workspace -> 1 -> 1
+
+# Direct access
+./scripts/repository_sync <command>
+```
+
+### With Compliance System
+
+```bash
+# Menu access
+./scripts/workspace -> 2 -> 3
+
+# Direct access
+./scripts/compliance/verify_compliance.sh
+```
+
+### With AI Agents
+
+AI agents can use CLI scripts:
+
+```python
+# Run status check
+subprocess.run(['./scripts/repository_sync', 'status', 'all'])
+
+# Verify compliance
+subprocess.run(['./scripts/compliance/verify_compliance.sh'])
+```
+
+### Related Skills
+
+- [repo-sync](../repo-sync/SKILL.md) - Repository synchronization
+- [compliance-check](../compliance-check/SKILL.md) - Compliance verification
+- [sparc-workflow](../sparc-workflow/SKILL.md) - Development methodology
+
 ## Environment Variables
 
 ### Supported Variables
@@ -460,13 +521,7 @@ PARALLEL_ENABLED=true
 MAX_PARALLEL_JOBS=4
 ```
 
-## Related Skills
-
-- [repo-sync](../repo-sync/SKILL.md) - Repository synchronization
-- [compliance-check](../compliance-check/SKILL.md) - Compliance verification
-- [sparc-workflow](../sparc-workflow/SKILL.md) - Development methodology
-
-## Related Documentation
+## References
 
 - [WORKSPACE_CLI.md](../docs/modules/cli/WORKSPACE_CLI.md)
 - [REPOSITORY_SYNC.md](../docs/modules/cli/REPOSITORY_SYNC.md)
@@ -476,4 +531,5 @@ MAX_PARALLEL_JOBS=4
 
 ## Version History
 
+- **1.1.0** (2026-01-02): Upgraded to SKILL_TEMPLATE_v2 format - added When to Use, Execution Checklist, Error Handling consolidation, Metrics, Integration Points
 - **1.0.0** (2024-10-15): Initial release with 6 main categories, script organization, workflows, navigation, troubleshooting

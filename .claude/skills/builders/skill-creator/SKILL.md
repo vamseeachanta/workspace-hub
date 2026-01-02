@@ -1,6 +1,13 @@
 ---
 name: skill-creator
 description: Create new Claude Code skills with proper structure, documentation, and best practices. Use when building custom skills for specific domains, workflows, or organizational needs.
+version: 2.0.0
+category: builders
+last_updated: 2026-01-02
+related_skills:
+  - session-start-routine
+  - sparc-workflow
+  - mcp-builder
 ---
 
 # Skill Creator Skill
@@ -8,6 +15,48 @@ description: Create new Claude Code skills with proper structure, documentation,
 ## Overview
 
 This skill guides the creation of new Claude Code skills. Skills are specialized instruction sets that enhance Claude's capabilities for specific domains, tasks, or workflows.
+
+## Quick Start
+
+1. **Define scope** - Answer: What problem? Who uses it? What outputs?
+2. **Create structure** - `.claude/skills/skill-name/SKILL.md`
+3. **Write frontmatter** - Name, description, version, category
+4. **Add content** - Overview, Instructions, Examples, Best Practices
+5. **Test** - Verify skill triggers correctly
+
+```bash
+# Create skill directory
+mkdir -p .claude/skills/my-new-skill
+
+# Create SKILL.md with template
+cat > .claude/skills/my-new-skill/SKILL.md << 'EOF'
+---
+name: my-new-skill
+description: Action-oriented description. Use for X, Y, and Z.
+version: 1.0.0
+category: [builders|tools|content-design|communication|meta]
+---
+
+# My New Skill
+
+## Overview
+[1-2 sentences explaining purpose]
+
+## Instructions
+[Step-by-step guidance]
+
+## Examples
+[Concrete examples]
+EOF
+```
+
+## When to Use
+
+- Building custom skills for specific domains
+- Creating reusable workflow templates
+- Standardizing organizational processes
+- Extending Claude Code capabilities
+- Documenting specialized knowledge
 
 ## Skill Anatomy
 
@@ -29,12 +78,21 @@ This skill guides the creation of new Claude Code skills. Skills are specialized
 ---
 name: skill-name
 description: One-line description of what this skill does and when to use it.
+version: 1.0.0
+category: builders
+last_updated: 2026-01-02
+related_skills:
+  - related-skill-1
+  - related-skill-2
 ---
 
 # Skill Title
 
 ## Overview
 Brief explanation of the skill's purpose and capabilities.
+
+## Quick Start
+Fastest path to value.
 
 ## When to Use
 - Scenario 1
@@ -50,15 +108,24 @@ Concrete examples of the skill in action.
 ## Best Practices
 Guidelines for effective use.
 
+## Error Handling
+Common issues and solutions.
+
+## Metrics
+How to measure success.
+
 ## Related Skills
 Links to complementary skills.
+
+## Version History
+- **1.0.0** (YYYY-MM-DD): Initial release
 ```
 
 ## Skill Design Principles
 
 ### 1. Clear Triggering
 
-The `description` field is crucial—it determines when the skill activates:
+The `description` field is crucial--it determines when the skill activates:
 
 **Good descriptions:**
 ```yaml
@@ -136,6 +203,11 @@ Answer these questions:
 ---
 name: lowercase-kebab-case
 description: Action-oriented description with use cases. Use for X, Y, and Z.
+version: 1.0.0
+category: builders
+last_updated: 2026-01-02
+related_skills:
+  - related-skill-1
 ---
 ```
 
@@ -224,6 +296,8 @@ See [starter template](resources/templates/starter.template) for a quick start.
 ---
 name: tech-skill-name
 description: Technical capability description. Use for specific technical tasks.
+version: 1.0.0
+category: builders
 ---
 
 # Technical Skill Name
@@ -290,6 +364,8 @@ This skill provides [capability] using [technology/tool].
 ---
 name: process-skill-name
 description: Process/workflow description. Use for organizational tasks.
+version: 1.0.0
+category: communication
 ---
 
 # Process Skill Name
@@ -354,6 +430,8 @@ This skill guides [process type] for [outcome].
 ---
 name: creative-skill-name
 description: Creative capability description. Use for design/content creation.
+version: 1.0.0
+category: content-design
 ---
 
 # Creative Skill Name
@@ -403,6 +481,26 @@ This skill enables creation of [output type] with [characteristics].
 [Gallery of examples with explanations]
 ```
 
+## Execution Checklist
+
+Before creating a skill:
+- [ ] Scope clearly defined (problem, users, inputs, outputs)
+- [ ] Name follows kebab-case convention
+- [ ] Description is action-oriented with use cases
+
+During creation:
+- [ ] Frontmatter complete (name, description, version, category)
+- [ ] Overview explains value in 2-3 sentences
+- [ ] Quick Start provides immediate value
+- [ ] Instructions are actionable, not conceptual
+- [ ] Examples are complete and runnable
+
+After creation:
+- [ ] Skill triggers correctly when invoked
+- [ ] Code examples tested and working
+- [ ] Related skills referenced
+- [ ] Version history added
+
 ## Skill Quality Checklist
 
 ### Content Quality
@@ -415,7 +513,7 @@ This skill enables creation of [output type] with [characteristics].
 
 ### Structure Quality
 
-- [ ] Follows progressive disclosure (general → specific)
+- [ ] Follows progressive disclosure (general -> specific)
 - [ ] Uses consistent heading hierarchy
 - [ ] Code blocks have language tags
 - [ ] Tables are properly formatted
@@ -435,6 +533,26 @@ This skill enables creation of [output type] with [characteristics].
 - [ ] Dependencies are listed
 - [ ] Version requirements are specified
 - [ ] Installation steps are complete
+
+## Error Handling
+
+### Common Errors
+
+**Error: Skill not triggering**
+- Cause: Description too vague or doesn't match user intent
+- Solution: Rewrite description with specific use cases and action verbs
+
+**Error: Skill content too large**
+- Cause: Too much content in single SKILL.md
+- Solution: Move large examples to resources/ folder, keep SKILL.md under 500 lines
+
+**Error: Circular skill references**
+- Cause: Skills reference each other in loops
+- Solution: Review related_skills, ensure DAG structure
+
+**Error: Outdated code examples**
+- Cause: Dependencies or APIs changed
+- Solution: Test examples regularly, update version history
 
 ## Skill Maintenance
 
@@ -461,8 +579,23 @@ When retiring a skill:
 ---
 name: old-skill-name
 description: DEPRECATED - Use new-skill-name instead. [Original description]
+deprecated: true
+deprecated_date: 2026-01-02
+replacement: new-skill-name
 ---
 ```
+
+## Metrics
+
+Track skill effectiveness:
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| Trigger accuracy | >90% | Skill activates when intended |
+| Completion rate | >85% | Users complete skill workflow |
+| Error rate | <10% | Failed executions / total |
+| Update frequency | Monthly | Last update within 30 days |
+| User satisfaction | >4/5 | Feedback ratings |
 
 ## Integration with Claude Code
 
@@ -483,4 +616,17 @@ Skills are discovered from:
 1. Keep SKILL.md focused (under 500 lines ideal)
 2. Move large examples to resources/
 3. Reference external documentation for comprehensive APIs
-4. Use code blocks sparingly—quality over quantity
+4. Use code blocks sparingly--quality over quantity
+
+## Related Skills
+
+- [session-start-routine](../../meta/session-start-routine/SKILL.md) - Skill library maintenance
+- [sparc-workflow](../../development/sparc-workflow/SKILL.md) - Development methodology
+- [mcp-builder](../mcp-builder/SKILL.md) - MCP server creation
+
+---
+
+## Version History
+
+- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections; enhanced frontmatter with version, category, related_skills
+- **1.0.0** (2024-10-15): Initial release with skill anatomy, design principles, templates, quality checklist

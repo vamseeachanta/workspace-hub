@@ -1,6 +1,13 @@
 ---
 name: knowledge-base-builder
 description: Build searchable knowledge bases from document collections (PDFs, Word, text files). Use for creating technical libraries, standards repositories, research databases, or any large document collection requiring full-text search.
+version: 1.1.0
+last_updated: 2026-01-02
+category: document-handling
+related_skills:
+  - pdf-text-extractor
+  - semantic-search-setup
+  - rag-system-builder
 ---
 
 # Knowledge Base Builder Skill
@@ -8,6 +15,29 @@ description: Build searchable knowledge bases from document collections (PDFs, W
 ## Overview
 
 This skill creates searchable knowledge bases from document collections using SQLite FTS5 full-text search indexing. It handles PDF extraction, text chunking, metadata cataloging, and search interface creation.
+
+## Quick Start
+
+```python
+import sqlite3
+
+conn = sqlite3.connect("knowledge.db", timeout=30)
+cursor = conn.cursor()
+
+# Create FTS5 search table
+cursor.execute('''
+    CREATE VIRTUAL TABLE IF NOT EXISTS search_index
+    USING fts5(content, filename)
+''')
+
+# Add content
+cursor.execute('INSERT INTO search_index VALUES (?, ?)',
+               ("Sample document text...", "doc.pdf"))
+
+# Search
+cursor.execute("SELECT * FROM search_index WHERE search_index MATCH 'sample'")
+print(cursor.fetchall())
+```
 
 ## When to Use
 
@@ -21,23 +51,23 @@ This skill creates searchable knowledge bases from document collections using SQ
 
 ```
 Document Collection
-       │
-       ▼
-┌─────────────────┐
-│  1. Inventory   │  Scan files, extract metadata
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│  2. Extract     │  PDF → text, chunk by pages
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│  3. Index       │  SQLite FTS5 full-text search
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│  4. Search CLI  │  Query interface with filtering
-└─────────────────┘
+       |
+       v
++------------------+
+|  1. Inventory    |  Scan files, extract metadata
++--------+---------+
+         v
++------------------+
+|  2. Extract      |  PDF -> text, chunk by pages
++--------+---------+
+         v
++------------------+
+|  3. Index        |  SQLite FTS5 full-text search
++--------+---------+
+         v
++------------------+
+|  4. Search CLI   |  Query interface with filtering
++------------------+
 ```
 
 ## Implementation Steps
@@ -213,6 +243,47 @@ case "$1" in
 esac
 ```
 
+## Execution Checklist
+
+- [ ] Scan and inventory target document collection
+- [ ] Create SQLite database with FTS5 support
+- [ ] Extract text from all documents
+- [ ] Chunk text appropriately (1000-2000 chars)
+- [ ] Build FTS5 search index
+- [ ] Test search with sample queries
+- [ ] Validate search results accuracy
+- [ ] Create CLI or API interface
+
+## Error Handling
+
+### Common Errors
+
+**Error: sqlite3.OperationalError (database is locked)**
+- Cause: Concurrent access without proper timeout
+- Solution: Use `timeout=30` when connecting
+
+**Error: FTS5 not available**
+- Cause: SQLite compiled without FTS5 support
+- Solution: Upgrade SQLite or use FTS4 fallback
+
+**Error: Empty search results**
+- Cause: FTS index not synced with data
+- Solution: Rebuild FTS index with `INSERT INTO chunks_fts(chunks_fts) VALUES('rebuild')`
+
+**Error: Memory issues with large collections**
+- Cause: Loading all chunks at once
+- Solution: Process in batches, commit every 500 documents
+
+## Metrics
+
+| Metric | Typical Value |
+|--------|---------------|
+| Indexing speed | ~1000 documents/minute |
+| Search latency | <50ms for 100K chunks |
+| Storage overhead | ~10-20% over raw text |
+| FTS5 index size | ~30% of text size |
+| Memory usage | ~100MB per 50K documents |
+
 ## Best Practices
 
 1. **Use SQLite timeout** - Add `timeout=30` for concurrent access
@@ -240,8 +311,18 @@ python index.py --db knowledge.db
 - `rag-system-builder` - Build AI Q&A on top of knowledge base
 - `pdf-text-extractor` - Detailed PDF extraction options
 
+## Dependencies
+
+```bash
+pip install PyMuPDF
+```
+
+System tools:
+- SQLite 3.9+ (for FTS5 support)
+
 ---
 
 ## Version History
 
+- **1.1.0** (2026-01-02): Added Quick Start, Execution Checklist, Error Handling, Metrics sections; updated frontmatter with version, category, related_skills
 - **1.0.0** (2024-10-15): Initial release with SQLite FTS5 full-text search, PDF extraction, CLI

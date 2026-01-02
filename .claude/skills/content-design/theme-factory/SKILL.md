@@ -1,6 +1,13 @@
 ---
 name: theme-factory
 description: Professional styling toolkit with 10 pre-set themes for slides, documents, reports, and HTML pages. Use when applying consistent colors and fonts to any artifact, or when generating custom themes on-the-fly.
+version: 2.0.0
+category: content-design
+last_updated: 2026-01-02
+related_skills:
+  - frontend-design
+  - brand-guidelines
+  - canvas-design
 ---
 
 # Theme Factory Skill
@@ -8,6 +15,37 @@ description: Professional styling toolkit with 10 pre-set themes for slides, doc
 ## Overview
 
 A curated collection of professional font and color themes with cohesive palettes and complementary typeface pairings suited for diverse contexts. Apply to slides, documents, reports, and HTML pages.
+
+## When to Use
+
+- Applying consistent styling to presentations or documents
+- Starting a new project and need a cohesive color scheme
+- Creating branded materials without existing guidelines
+- Generating HTML reports with professional appearance
+- Quick theming for prototypes or demos
+
+## Quick Start
+
+1. **Display themes** - Show all 10 themes with visual swatches
+2. **Select theme** - User picks one or requests custom generation
+3. **Confirm choice** - Verify before applying
+4. **Apply theme** - Inject colors and fonts into artifact
+
+```css
+/* Quick apply: Tech Innovation theme */
+:root {
+  --primary: #0d0221;
+  --secondary: #1a0533;
+  --accent: #7c3aed;
+  --highlight: #a78bfa;
+  --text: #f5f3ff;
+}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--primary);
+  color: var(--text);
+}
+```
 
 ## Available Themes (10 Total)
 
@@ -257,8 +295,54 @@ When existing themes don't fit:
 | Botanical Garden | Fresh, organic | Food, wellness |
 | Midnight Galaxy | Creative, mysterious | Entertainment, gaming |
 
+## Execution Checklist
+
+- [ ] Presented theme options to user
+- [ ] Confirmed theme selection
+- [ ] Loaded appropriate Google Fonts
+- [ ] Applied CSS variables to document
+- [ ] Verified contrast ratios meet accessibility
+- [ ] Tested in both light and dark contexts
+- [ ] Documented theme choice for future reference
+
+## Error Handling
+
+### Common Issues
+
+**Issue: Fonts not loading**
+- Cause: Missing Google Fonts import or network issue
+- Solution: Verify import URL, add fallback fonts in font-family
+
+**Issue: Colors look washed out**
+- Cause: Theme designed for dark mode used on light background
+- Solution: Swap primary/text colors or choose light-mode theme
+
+**Issue: Poor contrast ratio**
+- Cause: Using accent color for body text
+- Solution: Use text color for body, accent only for highlights
+
+**Issue: Theme doesn't match brand**
+- Cause: Using preset without customization
+- Solution: Generate custom theme with brand colors as inputs
+
+## Metrics
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| Color Contrast (text) | >= 4.5:1 | WebAIM Contrast Checker |
+| Color Contrast (large text) | >= 3:1 | WebAIM Contrast Checker |
+| Font Load Time | < 500ms | Network DevTools |
+| Theme Consistency | 100% | Manual audit |
+
+## Related Skills
+
+- [frontend-design](../frontend-design/SKILL.md) - Custom UI development
+- [brand-guidelines](../../communication/brand-guidelines/SKILL.md) - Full brand systems
+- [canvas-design](../canvas-design/SKILL.md) - Visual art creation
+
 ---
 
 ## Version History
 
+- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections
 - **1.0.0** (2024-10-15): Initial release with 10 curated themes, HTML/CSS, PowerPoint, Excel integration, custom generation

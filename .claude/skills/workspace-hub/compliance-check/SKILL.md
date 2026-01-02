@@ -1,9 +1,58 @@
 ---
 name: compliance-check
 description: Verify and enforce coding standards, AI guidelines, and workspace compliance across repositories. Use for standards propagation, compliance verification, and enforcing development best practices.
+version: 1.1.0
+category: workspace-hub
+type: skill
+capabilities:
+  - standards_verification
+  - compliance_propagation
+  - git_hooks_management
+  - ci_cd_integration
+  - code_quality_enforcement
+tools:
+  - Bash
+  - Read
+  - Write
+  - Glob
+  - Grep
+related_skills:
+  - repo-sync
+  - sparc-workflow
+  - workspace-cli
 ---
 
 # Compliance Check Skill
+
+> Verify and enforce coding standards, AI guidelines, and workspace compliance across all 26+ repositories.
+
+## Quick Start
+
+```bash
+# Quick compliance check
+./scripts/compliance/verify_compliance.sh
+
+# Check specific repository
+./scripts/compliance/verify_compliance.sh --repo=digitalmodel
+
+# Propagate standards to all repos
+./scripts/compliance/propagate_claude_config.py
+```
+
+## When to Use
+
+- Setting up a new repository that needs workspace standards
+- Verifying all repos meet coding and documentation standards
+- Propagating updated guidelines across the workspace
+- Installing pre-commit hooks for enforcement
+- Auditing compliance before releases
+
+## Prerequisites
+
+- Access to workspace-hub compliance scripts
+- Write access to target repositories
+- Python 3.x for propagation scripts
+- Git for hook installation
 
 ## Overview
 
@@ -27,7 +76,7 @@ Ensure AI agents follow required workflows:
 
 Ensure proper workflow adherence:
 
-- user_prompt.md → YAML config → Pseudocode → TDD → Implementation
+- user_prompt.md -> YAML config -> Pseudocode -> TDD -> Implementation
 - Bash-based execution
 - Interactive engagement
 - Gate-pass reviews
@@ -84,7 +133,17 @@ Ensure code meets quality requirements:
 ./scripts/compliance/verify_compliance.sh --area=file-org
 ```
 
-## Compliance Verification Checklist
+## Execution Checklist
+
+- [ ] Run full compliance scan on all repos
+- [ ] Review compliance report for failures
+- [ ] Fix critical compliance issues first
+- [ ] Propagate standards to non-compliant repos
+- [ ] Install git hooks for enforcement
+- [ ] Verify CI/CD integration
+- [ ] Document any approved exceptions
+
+## Compliance Verification Checklists
 
 ### Repository Structure
 
@@ -107,7 +166,7 @@ Ensure code meets quality requirements:
 ## Testing Compliance
 
 - [ ] pytest configured as test framework
-- [ ] Test coverage ≥ 80%
+- [ ] Test coverage >= 80%
 - [ ] Unit tests in /tests/unit/
 - [ ] Integration tests in /tests/integration/
 - [ ] No mock data (use real repository data)
@@ -226,6 +285,111 @@ fi
 echo "Compliance checks passed!"
 ```
 
+## Error Handling
+
+### Common Compliance Failures
+
+| Issue | Cause | Resolution |
+|-------|-------|------------|
+| Structure violation | Files in wrong directory | Move files to correct location |
+| Low test coverage | Insufficient tests | Add unit/integration tests |
+| Static images | matplotlib exports | Convert to Plotly/Bokeh HTML |
+| Missing CLAUDE.md | New repo setup | Run propagation script |
+| Hook not running | Permission issue | `chmod +x .git/hooks/pre-commit` |
+
+### Fixing Non-Compliance
+
+#### Structure Issues
+
+```bash
+# Create missing directories
+mkdir -p src tests docs config scripts data reports logs
+
+# Move misplaced files
+git mv root_file.py src/
+git mv old_tests.py tests/unit/
+```
+
+#### Testing Issues
+
+```bash
+# Install pytest and coverage
+pip install pytest pytest-cov
+
+# Run tests with coverage
+pytest --cov=src --cov-report=html --cov-fail-under=80
+```
+
+#### Logging Issues
+
+```python
+# Add proper logging configuration
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s',
+    handlers=[
+        logging.FileHandler('logs/app.log'),
+        logging.StreamHandler()
+    ]
+)
+```
+
+#### Reporting Issues
+
+```python
+# Replace matplotlib with Plotly
+# Before (non-compliant):
+import matplotlib.pyplot as plt
+plt.savefig('reports/chart.png')
+
+# After (compliant):
+import plotly.express as px
+fig = px.line(df, x='x', y='y')
+fig.write_html('reports/chart.html')
+```
+
+### Troubleshooting
+
+#### Hook Not Running
+
+```bash
+# Make hook executable
+chmod +x .git/hooks/pre-commit
+
+# Check hook exists
+ls -la .git/hooks/pre-commit
+```
+
+#### False Positives
+
+```bash
+# Add exceptions to compliance config
+# config/compliance.yaml
+exceptions:
+  - path: legacy/old_module.py
+    reason: "Legacy code, scheduled for refactoring in Q2"
+```
+
+#### Coverage Not Detected
+
+```bash
+# Ensure coverage config exists
+# pyproject.toml or .coveragerc
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "*/migrations/*"]
+```
+
+## Metrics & Success Criteria
+
+- **Compliance Rate**: >= 95% of repos fully compliant
+- **Propagation Success**: 100% of repos have latest standards
+- **Hook Coverage**: Git hooks installed in all active repos
+- **CI Integration**: All repos have compliance in CI/CD
+- **Exception Rate**: < 5% of checks have documented exceptions
+
 ## Compliance Reports
 
 ### Generate Compliance Report
@@ -270,59 +434,6 @@ echo "Compliance checks passed!"
     {{/each}}
 </body>
 </html>
-```
-
-## Fixing Non-Compliance
-
-### Structure Issues
-
-```bash
-# Create missing directories
-mkdir -p src tests docs config scripts data reports logs
-
-# Move misplaced files
-git mv root_file.py src/
-git mv old_tests.py tests/unit/
-```
-
-### Testing Issues
-
-```bash
-# Install pytest and coverage
-pip install pytest pytest-cov
-
-# Run tests with coverage
-pytest --cov=src --cov-report=html --cov-fail-under=80
-```
-
-### Logging Issues
-
-```python
-# Add proper logging configuration
-import logging
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s',
-    handlers=[
-        logging.FileHandler('logs/app.log'),
-        logging.StreamHandler()
-    ]
-)
-```
-
-### Reporting Issues
-
-```python
-# Replace matplotlib with Plotly
-# Before (non-compliant):
-import matplotlib.pyplot as plt
-plt.savefig('reports/chart.png')
-
-# After (compliant):
-import plotly.express as px
-fig = px.line(df, x='x', y='y')
-fig.write_html('reports/chart.html')
 ```
 
 ## Automation
@@ -384,6 +495,30 @@ jobs:
           path: reports/compliance_report.html
 ```
 
+## Integration Points
+
+### With Repository Sync
+
+```bash
+# After pulling, verify compliance
+./scripts/repository_sync pull all
+./scripts/compliance/verify_compliance.sh
+```
+
+### With AI Agents
+
+AI agents should:
+1. Check compliance status before making changes
+2. Maintain compliance during modifications
+3. Report compliance issues found during work
+4. Follow guidelines in CLAUDE.md
+
+### Related Skills
+
+- [repo-sync](../repo-sync/SKILL.md) - Repository management
+- [sparc-workflow](../sparc-workflow/SKILL.md) - Development methodology
+- [workspace-cli](../workspace-cli/SKILL.md) - Unified CLI interface
+
 ## Best Practices
 
 ### For Repository Maintainers
@@ -407,39 +542,7 @@ jobs:
 3. **Address root causes** not just symptoms
 4. **Document exceptions** in decisions.md
 
-## Troubleshooting
-
-### Hook Not Running
-
-```bash
-# Make hook executable
-chmod +x .git/hooks/pre-commit
-
-# Check hook exists
-ls -la .git/hooks/pre-commit
-```
-
-### False Positives
-
-```bash
-# Add exceptions to compliance config
-# config/compliance.yaml
-exceptions:
-  - path: legacy/old_module.py
-    reason: "Legacy code, scheduled for refactoring in Q2"
-```
-
-### Coverage Not Detected
-
-```bash
-# Ensure coverage config exists
-# pyproject.toml or .coveragerc
-[tool.coverage.run]
-source = ["src"]
-omit = ["tests/*", "*/migrations/*"]
-```
-
-## Related Documentation
+## References
 
 - [AI Agent Guidelines](../docs/modules/ai/AI_AGENT_GUIDELINES.md)
 - [Development Workflow](../docs/modules/workflow/DEVELOPMENT_WORKFLOW.md)
@@ -452,4 +555,5 @@ omit = ["tests/*", "*/migrations/*"]
 
 ## Version History
 
+- **1.1.0** (2026-01-02): Upgraded to SKILL_TEMPLATE_v2 format - added Quick Start, When to Use, Execution Checklist, Error Handling consolidation, Metrics, Integration Points
 - **1.0.0** (2024-10-15): Initial release with compliance verification, propagation tools, git hooks, CI/CD integration, troubleshooting

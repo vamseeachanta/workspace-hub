@@ -1,6 +1,13 @@
 ---
 name: algorithmic-art
 description: Create generative art using p5.js with seeded randomness and interactive exploration. Use for computational aesthetics, parametric design, particle systems, noise fields, and procedural generation.
+version: 2.0.0
+category: content-design
+last_updated: 2026-01-02
+related_skills:
+  - canvas-design
+  - frontend-design
+  - web-artifacts-builder
 ---
 
 # Algorithmic Art Skill
@@ -8,6 +15,64 @@ description: Create generative art using p5.js with seeded randomness and intera
 ## Overview
 
 Create generative art using p5.js with seeded randomness and interactive exploration. Beauty emerges from algorithmic execution rather than static composition.
+
+## When to Use
+
+- Creating generative art with reproducible randomness
+- Building interactive visual explorations
+- Implementing particle systems and flow fields
+- Designing parametric compositions
+- Procedural pattern generation
+- Art that rewards exploration through seed navigation
+
+## Quick Start
+
+1. **Write algorithmic philosophy** (how art emerges from code)
+2. **Set up p5.js template** with seed controls
+3. **Implement core algorithm** (noise, particles, recursion)
+4. **Add parameter controls** for exploration
+5. **Enable seed navigation** for reproducibility
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+<script>
+let seed = 0;
+
+function setup() {
+  createCanvas(800, 800);
+  generate();
+}
+
+function generate() {
+  randomSeed(seed);
+  noiseSeed(seed);
+  background(10);
+
+  // Your algorithm here
+  for (let i = 0; i < 500; i++) {
+    let x = random(width);
+    let y = random(height);
+    let r = noise(x * 0.01, y * 0.01) * 50;
+    fill(255, 100);
+    noStroke();
+    ellipse(x, y, r);
+  }
+}
+
+function keyPressed() {
+  if (key === 'n') { seed++; generate(); }
+  if (key === 'p') { seed--; generate(); }
+  if (key === 's') saveCanvas('art_' + seed, 'png');
+}
+</script>
+</body>
+</html>
+```
 
 ## Two-Phase Process
 
@@ -187,6 +252,46 @@ function fractalTree(x, y, len, angle, depth) {
 }
 ```
 
+## Execution Checklist
+
+- [ ] Algorithmic philosophy articulates clear vision
+- [ ] Seed navigation enables reproducibility
+- [ ] Parameter controls allow exploration
+- [ ] Same seed produces identical output
+- [ ] Visual output rewards exploration
+- [ ] Algorithm demonstrates craftsmanship
+- [ ] Download functionality works
+- [ ] Performance is acceptable (60fps target)
+
+## Error Handling
+
+### Common Issues
+
+**Issue: Different output on reload**
+- Cause: Missing randomSeed/noiseSeed call
+- Solution: Always call both at start of generate()
+
+**Issue: Performance is slow**
+- Cause: Too many particles or per-pixel operations
+- Solution: Reduce count, use noLoop() for static art
+
+**Issue: Canvas not rendering**
+- Cause: p5.js not loaded or syntax error
+- Solution: Check CDN link, open browser console
+
+**Issue: Downloaded image is black**
+- Cause: saveCanvas called before render complete
+- Solution: Call saveCanvas after all drawing completes
+
+## Metrics
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| Frame Rate | 60 FPS | frameRate() function |
+| Reproducibility | 100% | Same seed = same output |
+| Parameter Range | Meaningful variation | Visual inspection across range |
+| Load Time | < 2s | Performance panel |
+
 ## Philosophy-Driven Implementation
 
 The algorithm flows from the philosophy, not from a menu of options.
@@ -195,8 +300,15 @@ The algorithm flows from the philosophy, not from a menu of options.
 - **Mathematical beauty**: Golden ratio, Fibonacci, geometric precision
 - **Controlled chaos**: Combine noise fields with rule-based systems
 
+## Related Skills
+
+- [canvas-design](../canvas-design/SKILL.md) - Static visual art
+- [frontend-design](../frontend-design/SKILL.md) - Web interface design
+- [web-artifacts-builder](../../builders/web-artifacts-builder/SKILL.md) - Self-contained HTML apps
+
 ---
 
 ## Version History
 
+- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections
 - **1.0.0** (2024-10-15): Initial release with p5.js templates, seeded randomness, noise fields, particle systems, recursive structures

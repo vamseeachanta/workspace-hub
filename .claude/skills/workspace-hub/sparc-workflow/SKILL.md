@@ -1,9 +1,65 @@
 ---
 name: sparc-workflow
 description: Apply SPARC methodology (Specification, Pseudocode, Architecture, Refinement, Completion) for systematic development. Use for feature development, TDD workflows, and structured problem-solving.
+version: 1.1.0
+category: workspace-hub
+type: skill
+capabilities:
+  - specification_analysis
+  - pseudocode_design
+  - architecture_design
+  - tdd_implementation
+  - production_completion
+tools:
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - Task
+  - mcp__claude-flow__sparc_mode
+  - mcp__claude-flow__task_orchestrate
+related_skills:
+  - agent-orchestration
+  - compliance-check
+  - repo-sync
+hooks:
+  pre: |
+    npx claude-flow@alpha hooks pre-task --description "SPARC workflow"
+  post: |
+    npx claude-flow@alpha hooks post-task --task-id "sparc-complete"
 ---
 
 # SPARC Workflow Skill
+
+> Systematic software development through Specification, Pseudocode, Architecture, Refinement (TDD), and Completion phases.
+
+## Quick Start
+
+```bash
+# Run full SPARC development cycle
+npx claude-flow sparc run dev "feature description"
+
+# Run TDD-focused workflow
+npx claude-flow sparc tdd "feature to implement"
+
+# List available SPARC modes
+npx claude-flow sparc modes
+```
+
+## When to Use
+
+- Implementing a new feature from scratch
+- Complex problem requiring structured analysis before coding
+- Building production-quality code with comprehensive tests
+- Refactoring existing code systematically
+- API or UI development requiring clear specifications
+
+## Prerequisites
+
+- Claude Flow installed (`npx claude-flow@alpha`)
+- Understanding of TDD (Test-Driven Development)
+- Project with `.agent-os/` directory structure
+- Access to testing framework (pytest, jest, etc.)
 
 ## Overview
 
@@ -436,6 +492,18 @@ npx claude-flow sparc tdd "feature to implement"
     └── decisions.md             # Decision log
 ```
 
+## Execution Checklist
+
+- [ ] Requirements gathered and documented in spec.md
+- [ ] Pseudocode designed with edge cases identified
+- [ ] Architecture defined with clear interfaces
+- [ ] Tests written BEFORE implementation (TDD)
+- [ ] Implementation passes all tests
+- [ ] Code refactored for quality
+- [ ] Documentation complete
+- [ ] Code review completed
+- [ ] Deployed to staging/production
+
 ## Integration with Agent OS
 
 ### Creating a Spec
@@ -451,6 +519,34 @@ npx claude-flow sparc tdd "feature to implement"
 # Use the execute-tasks workflow
 # Reference: @~/.agent-os/instructions/execute-tasks.md
 ```
+
+## Error Handling
+
+### Specification Phase Issues
+
+- **Unclear requirements**: Ask clarifying questions before proceeding
+- **Scope creep**: Document out-of-scope items explicitly
+- **Missing acceptance criteria**: Derive from requirements
+
+### TDD Phase Issues
+
+- **Tests too complex**: Break into smaller units
+- **Flaky tests**: Isolate external dependencies with mocks
+- **Low coverage**: Add edge case tests
+
+### Completion Phase Issues
+
+- **Documentation gaps**: Review against checklist
+- **Performance issues**: Profile and optimize hot paths
+- **Security concerns**: Run security audit tools
+
+## Metrics & Success Criteria
+
+- **Test Coverage**: >= 80% for all new code
+- **Code Quality**: Zero linting errors, all type hints present
+- **Documentation**: 100% of public APIs documented
+- **Performance**: Meets defined NFR benchmarks
+- **TDD Adherence**: Tests written before implementation
 
 ## Best Practices
 
@@ -489,8 +585,40 @@ npx claude-flow sparc tdd "feature to implement"
 3. Update documentation
 4. Plan deployment
 
+## Integration Points
+
+### MCP Tools
+
+```javascript
+// Start SPARC mode
+mcp__claude-flow__sparc_mode({
+    mode: "dev",
+    task_description: "Implement user authentication"
+})
+
+// Orchestrate tasks
+mcp__claude-flow__task_orchestrate({
+    task: "Complete SPARC refinement phase",
+    strategy: "sequential",
+    priority: "high"
+})
+```
+
+### Related Skills
+
+- [agent-orchestration](../agent-orchestration/SKILL.md) - Multi-agent coordination
+- [compliance-check](../compliance-check/SKILL.md) - Standards verification
+- [repo-sync](../repo-sync/SKILL.md) - Repository management
+
+## References
+
+- [Agent OS Create Spec](~/.agent-os/instructions/create-spec.md)
+- [Agent OS Execute Tasks](~/.agent-os/instructions/execute-tasks.md)
+- [Claude Flow Documentation](https://github.com/ruvnet/claude-flow)
+
 ---
 
 ## Version History
 
+- **1.1.0** (2026-01-02): Upgraded to SKILL_TEMPLATE_v2 format - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics, Integration Points, MCP hooks
 - **1.0.0** (2024-10-15): Initial release with 5 SPARC phases, TDD integration, Claude Flow support, Agent OS integration

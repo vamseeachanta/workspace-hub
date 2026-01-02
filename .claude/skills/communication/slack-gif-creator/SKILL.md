@@ -1,6 +1,13 @@
 ---
 name: slack-gif-creator
 description: Create custom animated GIFs for Slack reactions and celebrations. Use for team milestones, custom emoji reactions, inside jokes, and workplace fun.
+version: 2.0.0
+category: communication
+last_updated: 2026-01-02
+related_skills:
+  - internal-comms
+  - canvas-design
+  - algorithmic-art
 ---
 
 # Slack GIF Creator Skill
@@ -8,6 +15,47 @@ description: Create custom animated GIFs for Slack reactions and celebrations. U
 ## Overview
 
 Create custom animated GIFs for Slack workspaces, including celebration GIFs, reaction GIFs, and custom emoji animations. These add personality and fun to team communications.
+
+## When to Use
+
+- Celebrating team wins and milestones
+- Creating custom emoji reactions
+- Building "Ship it!" or "LGTM" animations
+- Designing status indicators
+- Adding personality to team channels
+- Inside jokes and team culture building
+
+## Quick Start
+
+1. **Choose GIF type** (celebration, reaction, status)
+2. **Select method** (PIL/Pillow for simple, moviepy for video)
+3. **Create frames** with animation loop
+4. **Optimize for Slack** (128x128px emoji, <200KB)
+5. **Upload to workspace**
+
+```python
+from PIL import Image, ImageDraw, ImageFont
+
+def create_shipped_gif(output_path):
+    frames = []
+    size = (128, 128)
+
+    for i in range(10):
+        img = Image.new('RGBA', size, (255, 255, 255, 0))
+        draw = ImageDraw.Draw(img)
+
+        # Pulsing effect
+        scale = 0.8 + 0.2 * abs(i - 5) / 5
+        font_size = int(20 * scale)
+
+        draw.text((20, 50), "SHIPPED!", fill=(255, 100, 100))
+        frames.append(img)
+
+    frames[0].save(output_path, save_all=True, append_images=frames[1:],
+                   duration=100, loop=0, transparency=0, disposal=2)
+
+create_shipped_gif("shipped.gif")
+```
 
 ## GIF Types
 
@@ -140,7 +188,7 @@ def video_to_slack_gif(video_path, output_path, start=0, duration=3, text=None):
     )
 
 # Usage
-video_to_slack_gif("celebration.mp4", "party.gif", text="🎉 SHIPPED!")
+video_to_slack_gif("celebration.mp4", "party.gif", text="SHIPPED!")
 ```
 
 ### Method 3: Frame-by-Frame Animation
@@ -307,48 +355,46 @@ def resize_for_emoji(input_path, output_path, size=64):
     ])
 ```
 
-## Common Celebration GIFs
+## Execution Checklist
 
-### "Ship It" Animation
+- [ ] Identified GIF type (celebration, reaction, status)
+- [ ] Selected appropriate creation method
+- [ ] Created animation frames
+- [ ] Verified smooth loop transition
+- [ ] Optimized file size (< 200KB for messages, < 128KB for emoji)
+- [ ] Tested visibility in light and dark modes
+- [ ] Ensured work-appropriate content
+- [ ] Uploaded to Slack workspace
 
-```python
-def create_ship_it_gif(output_path):
-    """Create 'Ship It!' celebration GIF with rocket."""
-    from PIL import Image, ImageDraw, ImageFont
+## Error Handling
 
-    frames = 15
-    size = (128, 128)
-    images = []
+### Common Issues
 
-    for i in range(frames):
-        img = Image.new('RGBA', size, (255, 255, 255, 0))
-        draw = ImageDraw.Draw(img)
+**Issue: GIF not animating in Slack**
+- Cause: Only one frame or corrupted file
+- Solution: Verify multiple frames saved with `save_all=True`
 
-        # Background gradient effect
-        progress = i / frames
+**Issue: File too large for emoji**
+- Cause: Too many frames or high resolution
+- Solution: Reduce to 64x64, limit to 10-15 frames, use gifsicle
 
-        # Rocket emoji position (moving up)
-        rocket_y = int(100 - (progress * 80))
-        draw.text((50, rocket_y), "🚀", font=ImageFont.truetype("/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf", 30) if os.path.exists("/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf") else ImageFont.load_default())
+**Issue: Transparency not working**
+- Cause: Missing transparency and disposal settings
+- Solution: Add `transparency=0, disposal=2` to save()
 
-        # "SHIPPED!" text
-        try:
-            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
-        except:
-            font = ImageFont.load_default()
+**Issue: Colors look wrong**
+- Cause: Palette reduction too aggressive
+- Solution: Increase color count in gifsicle or use dithering
 
-        draw.text((30, 100), "SHIPPED!", font=font, fill=(255, 100, 100))
+## Metrics
 
-        images.append(img)
-
-    images[0].save(
-        output_path,
-        save_all=True,
-        append_images=images[1:],
-        duration=100,
-        loop=0
-    )
-```
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| File Size (emoji) | < 128 KB | File properties |
+| File Size (message) | < 200 KB | File properties |
+| Dimensions (emoji) | 128x128 max | Image properties |
+| Frame Rate | 10-15 FPS | frame_count / duration |
+| Loop Smoothness | Seamless | Visual inspection |
 
 ## Dependencies
 
@@ -390,8 +436,15 @@ pip install ffmpeg-python
 3. **On-brand**: Match company culture
 4. **Clear meaning**: The GIF's purpose should be obvious
 
+## Related Skills
+
+- [internal-comms](../internal-comms/SKILL.md) - Team communications
+- [canvas-design](../../content-design/canvas-design/SKILL.md) - Static visual art
+- [algorithmic-art](../../content-design/algorithmic-art/SKILL.md) - Generative animations
+
 ---
 
 ## Version History
 
+- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections
 - **1.0.0** (2024-10-15): Initial release with PIL/Pillow, moviepy methods, Slack optimization, celebration GIF templates

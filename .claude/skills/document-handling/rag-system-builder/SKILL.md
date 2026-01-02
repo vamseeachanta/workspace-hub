@@ -1,8 +1,14 @@
 ---
 name: rag-system-builder
 description: Build Retrieval-Augmented Generation (RAG) Q&A systems with Claude or OpenAI. Use for creating AI assistants that answer questions from document collections, technical libraries, or knowledge bases.
-version: 1.1.0
-last_updated: 2025-12-30
+version: 1.2.0
+last_updated: 2026-01-02
+category: document-handling
+related_skills:
+  - knowledge-base-builder
+  - semantic-search-setup
+  - pdf-text-extractor
+  - document-rag-pipeline
 ---
 
 # RAG System Builder Skill
@@ -10,6 +16,30 @@ last_updated: 2025-12-30
 ## Overview
 
 This skill creates complete RAG (Retrieval-Augmented Generation) systems that combine semantic search with LLM-powered Q&A. Users can ask natural language questions and receive accurate answers grounded in your document collection.
+
+## Quick Start
+
+```python
+from sentence_transformers import SentenceTransformer
+import anthropic
+
+# Setup
+model = SentenceTransformer('all-MiniLM-L6-v2')
+client = anthropic.Anthropic()
+
+# Retrieve context (simplified)
+query = "What are the safety requirements?"
+query_embedding = model.encode(query, normalize_embeddings=True)
+# ... search for similar chunks ...
+
+# Generate answer
+response = client.messages.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": f"Context: {context}\n\nQuestion: {query}"}]
+)
+print(response.content[0].text)
+```
 
 ## When to Use
 
@@ -23,27 +53,27 @@ This skill creates complete RAG (Retrieval-Augmented Generation) systems that co
 
 ```
 User Question
-      │
-      ▼
-┌─────────────────┐
-│ 1. Embed Query  │  sentence-transformers
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│ 2. Vector Search│  Cosine similarity
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│ 3. Retrieve Top │  Top-K relevant chunks
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│ 4. Build Prompt │  Context + Question
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│ 5. LLM Answer   │  Claude/OpenAI
-└─────────────────┘
+      |
+      v
++------------------+
+| 1. Embed Query   |  sentence-transformers
++--------+---------+
+         v
++------------------+
+| 2. Vector Search |  Cosine similarity
++--------+---------+
+         v
++------------------+
+| 3. Retrieve Top  |  Top-K relevant chunks
++--------+---------+
+         v
++------------------+
+| 4. Build Prompt  |  Context + Question
++--------+---------+
+         v
++------------------+
+| 5. LLM Answer    |  Claude/OpenAI
++------------------+
 ```
 
 ## Prerequisites
@@ -279,6 +309,51 @@ def query_with_history(self, question, history=[]):
     return self.llm.query(messages)
 ```
 
+## Execution Checklist
+
+- [ ] Set up knowledge base with text extraction
+- [ ] Generate vector embeddings for all chunks
+- [ ] Configure API keys (ANTHROPIC_API_KEY or OPENAI_API_KEY)
+- [ ] Test semantic search independently
+- [ ] Build and test RAG pipeline end-to-end
+- [ ] Tune top_k parameter for answer quality
+- [ ] Add source attribution to responses
+- [ ] Implement error handling for API failures
+
+## Error Handling
+
+### Common Errors
+
+**Error: anthropic.APIError (rate limit)**
+- Cause: Too many API requests
+- Solution: Add exponential backoff retry logic
+
+**Error: Empty search results**
+- Cause: No relevant documents in knowledge base
+- Solution: Expand search with lower similarity threshold
+
+**Error: Context too long**
+- Cause: Top-k chunks exceed model context window
+- Solution: Reduce top_k or chunk size
+
+**Error: API key not found**
+- Cause: Environment variable not set
+- Solution: Export ANTHROPIC_API_KEY or OPENAI_API_KEY
+
+**Error: Low quality answers**
+- Cause: Poor retrieval or insufficient context
+- Solution: Tune chunk size, overlap, and top_k parameters
+
+## Metrics
+
+| Metric | Typical Value |
+|--------|---------------|
+| Query latency (end-to-end) | 2-5 seconds |
+| Retrieval time | <100ms |
+| LLM response time | 1-4 seconds |
+| Token usage per query | 500-2000 tokens |
+| Answer relevance | 85-95% with good tuning |
+
 ## Performance Optimization
 
 ### 1. Cache Embeddings
@@ -441,9 +516,20 @@ def query_streaming(self, question, top_k=5):
 - `pdf-text-extractor` - Extract text from PDFs
 - `document-rag-pipeline` - Complete end-to-end pipeline
 
+## Dependencies
+
+```bash
+pip install sentence-transformers anthropic openai numpy
+```
+
+Optional:
+- faiss-cpu (for large-scale vector search)
+- rank-bm25 (for hybrid search)
+
 ---
 
 ## Version History
 
+- **1.2.0** (2026-01-02): Added Quick Start, Execution Checklist, Error Handling, Metrics sections; updated frontmatter with version, category, related_skills
 - **1.1.0** (2025-12-30): Added hybrid search (BM25+vector), reranking, streaming responses
 - **1.0.0** (2025-10-15): Initial release with basic RAG implementation

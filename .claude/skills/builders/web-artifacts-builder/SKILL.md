@@ -1,6 +1,13 @@
 ---
 name: web-artifacts-builder
 description: Build self-contained interactive web applications as single HTML files. Use for creating demos, prototypes, interactive tools, and standalone web experiences that work without external servers.
+version: 2.0.0
+category: builders
+last_updated: 2026-01-02
+related_skills:
+  - frontend-design
+  - algorithmic-art
+  - theme-factory
 ---
 
 # Web Artifacts Builder Skill
@@ -8,6 +15,48 @@ description: Build self-contained interactive web applications as single HTML fi
 ## Overview
 
 Create self-contained, interactive web applications as single HTML files. These artifacts require no server, no build process, and can be shared as standalone files that run in any modern browser.
+
+## When to Use
+
+- Creating interactive demos or prototypes
+- Building standalone calculators or tools
+- Data visualization dashboards
+- Interactive documentation
+- Shareable proof-of-concepts
+- Any web experience that needs to work offline
+
+## Quick Start
+
+1. **Create single HTML file** with all CSS/JS inline
+2. **Use CDN for libraries** (Chart.js, Plotly, etc.)
+3. **Embed data directly** as JSON or JS objects
+4. **Test locally** by opening file in browser
+5. **Share** as single file attachment
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Artifact</title>
+  <style>
+    body { font-family: system-ui; padding: 20px; }
+    .btn { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Interactive Tool</h1>
+  <button class="btn" onclick="calculate()">Calculate</button>
+  <div id="result"></div>
+  <script>
+    function calculate() {
+      document.getElementById('result').textContent = 'Result: ' + (Math.random() * 100).toFixed(2);
+    }
+  </script>
+</body>
+</html>
+```
 
 ## Core Principles
 
@@ -392,7 +441,7 @@ Everything in one HTML file:
 </head>
 <body>
     <div class="calculator">
-        <h1>💰 Savings Calculator</h1>
+        <h1>Savings Calculator</h1>
         <div class="form-group">
             <label for="principal">Initial Investment ($)</label>
             <input type="number" id="principal" value="10000" min="0">
@@ -469,145 +518,6 @@ Everything in one HTML file:
 </html>
 ```
 
-### 3. Data Visualization
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Visualization</title>
-    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: system-ui, sans-serif;
-            background: #f0f2f5;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-        .controls {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        select, input {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        .chart-container {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        #chart {
-            width: 100%;
-            height: 500px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>📊 Interactive Data Visualization</h1>
-        <div class="controls">
-            <div class="control-group">
-                <label for="chartType">Chart Type:</label>
-                <select id="chartType" onchange="updateChart()">
-                    <option value="scatter">Scatter</option>
-                    <option value="line">Line</option>
-                    <option value="bar">Bar</option>
-                </select>
-            </div>
-            <div class="control-group">
-                <label for="dataPoints">Data Points:</label>
-                <input type="range" id="dataPoints" min="10" max="100" value="50" onchange="generateData()">
-                <span id="pointsValue">50</span>
-            </div>
-        </div>
-        <div class="chart-container">
-            <div id="chart"></div>
-        </div>
-    </div>
-
-    <script>
-        let data = [];
-
-        function generateData() {
-            const n = parseInt(document.getElementById('dataPoints').value);
-            document.getElementById('pointsValue').textContent = n;
-
-            data = [];
-            for (let i = 0; i < n; i++) {
-                data.push({
-                    x: i,
-                    y: Math.sin(i * 0.2) * 50 + Math.random() * 20 + 50,
-                    z: Math.cos(i * 0.1) * 30 + 40
-                });
-            }
-            updateChart();
-        }
-
-        function updateChart() {
-            const chartType = document.getElementById('chartType').value;
-
-            const trace = {
-                x: data.map(d => d.x),
-                y: data.map(d => d.y),
-                mode: chartType === 'scatter' ? 'markers' : 'lines+markers',
-                type: chartType === 'bar' ? 'bar' : 'scatter',
-                marker: {
-                    color: data.map(d => d.z),
-                    colorscale: 'Viridis',
-                    size: 10
-                },
-                line: { color: '#667eea', width: 2 }
-            };
-
-            const layout = {
-                title: 'Sample Data Visualization',
-                xaxis: { title: 'X Axis' },
-                yaxis: { title: 'Y Axis' },
-                paper_bgcolor: 'white',
-                plot_bgcolor: '#f8f9fa'
-            };
-
-            const config = {
-                responsive: true,
-                displayModeBar: true
-            };
-
-            Plotly.newPlot('chart', [trace], layout, config);
-        }
-
-        // Initialize
-        generateData();
-    </script>
-</body>
-</html>
-```
-
 ## Best Practices
 
 ### Performance
@@ -628,7 +538,7 @@ Everything in one HTML file:
 <main>, <nav>, <article>, <section>, <header>, <footer>
 
 <!-- Add ARIA labels -->
-<button aria-label="Close dialog">×</button>
+<button aria-label="Close dialog">x</button>
 
 <!-- Ensure color contrast -->
 /* Minimum 4.5:1 for normal text */
@@ -690,6 +600,48 @@ Everything in one HTML file:
 <script src="https://unpkg.com/lucide@latest"></script>
 ```
 
+## Execution Checklist
+
+- [ ] All CSS and JS inline or from CDN
+- [ ] No server dependencies
+- [ ] Works offline (or gracefully degrades)
+- [ ] Responsive across devices
+- [ ] Accessible (ARIA labels, contrast, keyboard nav)
+- [ ] Data embedded or loaded from CDN
+- [ ] File size reasonable (< 500KB ideal)
+- [ ] Tested in multiple browsers
+- [ ] Clear user instructions
+
+## Error Handling
+
+### Common Issues
+
+**Issue: CDN library not loading**
+- Cause: Network issue or wrong URL
+- Solution: Pin version, add fallback, test offline
+
+**Issue: File doesn't open in browser**
+- Cause: Browser blocking local file access
+- Solution: Use a simple HTTP server or data: URLs
+
+**Issue: Charts not rendering**
+- Cause: DOM not ready when script runs
+- Solution: Use DOMContentLoaded event
+
+**Issue: Styles not applying**
+- Cause: CSS specificity or load order
+- Solution: Use more specific selectors, check order
+
+## Metrics
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| File Size | < 500 KB | File properties |
+| Load Time | < 2 seconds | Browser DevTools |
+| Accessibility | > 90 | Lighthouse |
+| Mobile Usability | 100% | Manual testing |
+| Browser Support | 95%+ | caniuse.com |
+
 ## Sharing & Distribution
 
 ### File Naming
@@ -728,8 +680,15 @@ function downloadData() {
 }
 ```
 
+## Related Skills
+
+- [frontend-design](../../content-design/frontend-design/SKILL.md) - Advanced UI design
+- [algorithmic-art](../../content-design/algorithmic-art/SKILL.md) - Generative visuals
+- [theme-factory](../../content-design/theme-factory/SKILL.md) - Color and typography
+
 ---
 
 ## Version History
 
+- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections
 - **1.0.0** (2024-10-15): Initial release with basic template, dashboard, calculator, data visualization examples, CDN library references, best practices

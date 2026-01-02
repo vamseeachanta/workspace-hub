@@ -1,6 +1,13 @@
 ---
 name: frontend-design
 description: Create distinctive, production-grade web interfaces with high design quality. Use for components, pages, dashboards, and full applications that need to stand out from generic AI aesthetics.
+version: 2.0.0
+category: content-design
+last_updated: 2026-01-02
+related_skills:
+  - theme-factory
+  - web-artifacts-builder
+  - canvas-design
 ---
 
 # Frontend Design Skill
@@ -8,6 +15,39 @@ description: Create distinctive, production-grade web interfaces with high desig
 ## Overview
 
 This skill enables creation of distinctive, production-grade web interfaces that prioritize high design quality and avoid generic aesthetics. It applies to components, pages, dashboards, and full applications.
+
+## When to Use
+
+- Building custom UI components that need visual distinction
+- Creating landing pages or marketing sites
+- Designing dashboards and data visualization interfaces
+- Full web applications requiring cohesive design systems
+- Any interface that must avoid "generic AI" aesthetics
+
+## Quick Start
+
+1. **Establish design direction** before coding (purpose, tone, constraints)
+2. **Select distinctive typography** (avoid Inter, Roboto, Arial defaults)
+3. **Create intentional color palette** with clear primary/accent roles
+4. **Add purposeful motion** for micro-interactions
+5. **Break visual monotony** with asymmetry and grid variations
+
+```css
+/* Quick distinctive setup */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
+
+:root {
+  --primary: #1a1a2e;
+  --accent: #e94560;
+  --text: #eaeaea;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--primary);
+  color: var(--text);
+}
+```
 
 ## Before Coding: Design Direction
 
@@ -344,7 +384,7 @@ const Button = ({ children, variant = 'primary', ...props }) => {
 };
 ```
 
-## Design Checklist
+## Execution Checklist
 
 - [ ] Established clear design direction before coding
 - [ ] Selected distinctive typography (not defaults)
@@ -354,15 +394,53 @@ const Button = ({ children, variant = 'primary', ...props }) => {
 - [ ] Avoided generic AI aesthetic patterns
 - [ ] Matched complexity to design vision
 - [ ] Tested across viewport sizes
+- [ ] Verified accessibility (contrast, focus states)
+
+## Error Handling
+
+### Common Issues
+
+**Issue: Design looks generic**
+- Cause: Using default fonts and colors
+- Solution: Audit for Inter/Roboto/system fonts, replace with distinctive choices
+
+**Issue: Animations feel janky**
+- Cause: Using wrong easing or duration
+- Solution: Use `ease-out` for entrances, keep durations 200-600ms
+
+**Issue: Layout breaks on mobile**
+- Cause: Fixed widths or no responsive breakpoints
+- Solution: Use relative units, add media queries, test at 320px
+
+**Issue: Colors clash in dark mode**
+- Cause: Using light-mode palette directly
+- Solution: Design dark mode first, derive light mode from it
+
+## Metrics
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| First Contentful Paint | <1.5s | Lighthouse |
+| Cumulative Layout Shift | <0.1 | Lighthouse |
+| Accessibility Score | >90 | Lighthouse |
+| Color Contrast | WCAG AA | Contrast checker |
+| Animation FPS | 60fps | DevTools Performance |
 
 ## Philosophy
 
 **Claude is capable of extraordinary creative work. Don't hold back.**
 
-Design complexity should match the aesthetic vision—maximalist designs warrant elaborate animations; minimalist approaches require restraint and precision. The right amount of design is whatever serves the purpose with distinction.
+Design complexity should match the aesthetic vision--maximalist designs warrant elaborate animations; minimalist approaches require restraint and precision. The right amount of design is whatever serves the purpose with distinction.
+
+## Related Skills
+
+- [theme-factory](../theme-factory/SKILL.md) - Pre-built color/font themes
+- [web-artifacts-builder](../../builders/web-artifacts-builder/SKILL.md) - Self-contained HTML apps
+- [canvas-design](../canvas-design/SKILL.md) - Visual art generation
 
 ---
 
 ## Version History
 
+- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections
 - **1.0.0** (2024-10-15): Initial release with typography, color, motion, spatial design patterns, component examples, Tailwind/React integration

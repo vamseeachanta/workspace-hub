@@ -1,6 +1,13 @@
 ---
 name: background-service-manager
 description: Create and manage long-running background processes with start/stop/status controls, logging, and monitoring. Use for batch processing jobs, data pipelines, continuous services, or any long-running tasks.
+version: 2.0.0
+category: tools
+last_updated: 2026-01-02
+related_skills:
+  - pdf-text-extractor
+  - semantic-search-setup
+  - knowledge-base-builder
 ---
 
 # Background Service Manager Skill
@@ -8,6 +15,38 @@ description: Create and manage long-running background processes with start/stop
 ## Overview
 
 This skill creates service management scripts for long-running background processes. Includes start/stop controls, PID management, log rotation, status monitoring, and graceful shutdown handling.
+
+## Quick Start
+
+1. **Create service script** - Copy the basic template below
+2. **Customize command** - Set `SERVICE_CMD` to your process
+3. **Make executable** - `chmod +x service.sh`
+4. **Start service** - `./service.sh start`
+5. **Monitor** - `./service.sh status` or `./service.sh logs`
+
+```bash
+#!/bin/bash
+# Quick service wrapper
+SERVICE_NAME="myservice"
+PID_FILE="/tmp/${SERVICE_NAME}.pid"
+LOG_FILE="/tmp/${SERVICE_NAME}.log"
+SERVICE_CMD="python3 ./worker.py"
+
+case "$1" in
+    start)
+        nohup $SERVICE_CMD >> "$LOG_FILE" 2>&1 &
+        echo $! > "$PID_FILE"
+        echo "Started (PID: $!)"
+        ;;
+    stop)
+        [ -f "$PID_FILE" ] && kill $(cat "$PID_FILE") && rm "$PID_FILE"
+        ;;
+    status)
+        [ -f "$PID_FILE" ] && kill -0 $(cat "$PID_FILE") 2>/dev/null && echo "Running" || echo "Stopped"
+        ;;
+    *) echo "Usage: $0 {start|stop|status}" ;;
+esac
+```
 
 ## When to Use
 
@@ -20,23 +59,23 @@ This skill creates service management scripts for long-running background proces
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────┐
-│              Service Manager Script              │
-├─────────────────────────────────────────────────┤
-│  start    │  stop    │  status  │  restart     │
-└─────┬─────┴────┬─────┴────┬─────┴──────┬───────┘
-      │          │          │            │
-      ▼          ▼          ▼            ▼
-┌──────────┐ ┌────────┐ ┌────────┐ ┌──────────────┐
-│ PID File │ │  Kill  │ │ Check  │ │ Stop + Start │
-│ + nohup  │ │Process │ │  PID   │ │              │
-└──────────┘ └────────┘ └────────┘ └──────────────┘
-      │
-      ▼
-┌──────────────────────────────────────┐
-│           Log Files                   │
-│  /tmp/service.log  /tmp/service.pid  │
-└──────────────────────────────────────┘
++-------------------------------------------------+
+|              Service Manager Script              |
++-------------------------------------------------+
+|  start    |  stop    |  status  |  restart     |
++-----+-----+----+-----+----+-----+------+-------+
+      |          |          |            |
+      v          v          v            v
++----------+ +--------+ +--------+ +--------------+
+| PID File | |  Kill  | | Check  | | Stop + Start |
+| + nohup  | |Process | |  PID   | |              |
++----------+ +--------+ +--------+ +--------------+
+      |
+      v
++--------------------------------------+
+|           Log Files                   |
+|  /tmp/service.log  /tmp/service.pid  |
++--------------------------------------+
 ```
 
 ## Implementation
@@ -213,13 +252,13 @@ stop_service() {
 
 status_all() {
     echo "Service Status:"
-    echo "─────────────────────────────────"
+    echo "-------------------------------------"
     for name in "${!SERVICES[@]}"; do
         local pid_file=$(get_pid_file "$name")
         if [ -f "$pid_file" ] && kill -0 $(cat "$pid_file") 2>/dev/null; then
-            printf "  %-12s  ● Running (PID: %s)\n" "$name" "$(cat $pid_file)"
+            printf "  %-12s  * Running (PID: %s)\n" "$name" "$(cat $pid_file)"
         else
-            printf "  %-12s  ○ Stopped\n" "$name"
+            printf "  %-12s  o Stopped\n" "$name"
         fi
     done
 }
@@ -283,11 +322,12 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 BOLD='\033[1m'
+CYAN='\033[0;36m'
 
 print_header() {
-    echo -e "${BLUE}${BOLD}═══════════════════════════════════════════════════════${NC}"
+    echo -e "${BLUE}${BOLD}=======================================================${NC}"
     echo -e "${BLUE}${BOLD}       SERVICE STATUS DASHBOARD${NC}"
-    echo -e "${BLUE}${BOLD}═══════════════════════════════════════════════════════${NC}"
+    echo -e "${BLUE}${BOLD}=======================================================${NC}"
     echo ""
 }
 
@@ -300,9 +340,9 @@ check_process() {
     local pid_file="/tmp/${name}.pid"
 
     if [ -f "$pid_file" ] && kill -0 $(cat "$pid_file") 2>/dev/null; then
-        echo -e "   ${name}:  ${GREEN}●${NC} Running (PID: $(cat $pid_file))"
+        echo -e "   ${name}:  ${GREEN}*${NC} Running (PID: $(cat $pid_file))"
     else
-        echo -e "   ${name}:  ${YELLOW}○${NC} Not running"
+        echo -e "   ${name}:  ${YELLOW}o${NC} Not running"
     fi
 }
 
@@ -334,24 +374,24 @@ show_recent_logs() {
 # Main display
 print_header
 
-echo -e "${CYAN}${BOLD}📊 Database Statistics${NC}"
+echo -e "${CYAN}${BOLD}Database Statistics${NC}"
 get_db_stats
 echo ""
 
-echo -e "${CYAN}${BOLD}⚙️  Background Processes${NC}"
+echo -e "${CYAN}${BOLD}Background Processes${NC}"
 check_process "extract"
 check_process "embed"
 check_process "api"
 echo ""
 
-echo -e "${CYAN}${BOLD}📈 Recent Activity${NC}"
+echo -e "${CYAN}${BOLD}Recent Activity${NC}"
 echo -n "   Last extract: "
 show_recent_logs "/tmp/extract.log"
 echo -n "   Last embed:   "
 show_recent_logs "/tmp/embed.log"
 echo ""
 
-echo -e "${BLUE}═══════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}=======================================================${NC}"
 ```
 
 ### Python Service Wrapper
@@ -425,6 +465,51 @@ if __name__ == '__main__':
     main()
 ```
 
+## Execution Checklist
+
+Before creating service:
+- [ ] Process command identified
+- [ ] Working directory determined
+- [ ] Log location decided (/tmp/ or dedicated dir)
+- [ ] Environment variables documented
+
+During setup:
+- [ ] Service script created
+- [ ] Made executable (chmod +x)
+- [ ] SERVICE_CMD customized
+- [ ] PID/LOG paths appropriate
+
+After deployment:
+- [ ] Service starts correctly
+- [ ] Logs capture output
+- [ ] Status shows running
+- [ ] Stop gracefully terminates
+- [ ] Restart works properly
+
+## Error Handling
+
+### Common Errors
+
+**Error: "Already running"**
+- Cause: Stale PID file from crashed process
+- Solution: Check if process actually running, remove stale PID file
+
+**Error: "Permission denied"**
+- Cause: Script not executable or wrong user
+- Solution: `chmod +x service.sh`, check file ownership
+
+**Error: Process dies immediately**
+- Cause: Command fails on startup
+- Solution: Check log file for errors, test command manually first
+
+**Error: Can't write PID file**
+- Cause: Directory permissions or disk full
+- Solution: Check /tmp/ permissions, use alternative location
+
+**Error: Logs not appearing**
+- Cause: stdout/stderr not captured
+- Solution: Ensure `>> "$LOG_FILE" 2>&1` in nohup command
+
 ## Best Practices
 
 1. **Always use PID files** - Track running processes reliably
@@ -435,6 +520,17 @@ if __name__ == '__main__':
 6. **Add status monitoring** - Show resource usage
 7. **Support restart** - Stop + start in one command
 8. **Environment variables** - Configure via env, not hardcoded
+
+## Metrics
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| Uptime | >99.9% | Time running / total time |
+| Restart count | <1/day | Number of restarts needed |
+| Memory usage | <80% limit | ps output / allocated |
+| CPU usage | <70% average | ps output over time |
+| Log size | <100MB/day | Log file growth rate |
+| Graceful shutdowns | 100% | Clean stops / total stops |
 
 ## Example Usage
 
@@ -457,12 +553,13 @@ if __name__ == '__main__':
 
 ## Related Skills
 
-- `pdf-text-extractor` - Long-running extraction job
-- `semantic-search-setup` - Embedding generation service
-- `knowledge-base-builder` - Background indexing
+- [pdf-text-extractor](../../document-handling/pdf-text-extractor/SKILL.md) - Long-running extraction job
+- [semantic-search-setup](../../document-handling/semantic-search-setup/SKILL.md) - Embedding generation service
+- [knowledge-base-builder](../../document-handling/knowledge-base-builder/SKILL.md) - Background indexing
 
 ---
 
 ## Version History
 
+- **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, Execution Checklist, Error Handling, Metrics sections; enhanced frontmatter with version, category, related_skills
 - **1.0.0** (2024-10-15): Initial release with service manager scripts, multi-service support, status dashboard, Python wrapper, graceful shutdown handling
