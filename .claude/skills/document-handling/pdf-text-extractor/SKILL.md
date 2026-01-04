@@ -1,10 +1,11 @@
 ---
 name: pdf-text-extractor
-description: Extract text from PDF files with intelligent chunking and metadata preservation. Use for processing technical documents, standards libraries, research papers, or any PDF collection requiring text extraction.
-version: 1.1.0
-last_updated: 2026-01-02
+description: Extract text from PDF files with intelligent chunking and metadata preservation. IMPORTANT - For best results, first convert PDFs to markdown using OpenAI Codex (see pdf skill), then process the markdown. Also supports direct PDF text extraction for batch processing, technical documents, standards libraries, research papers, or any PDF collection.
+version: 1.2.0
+last_updated: 2026-01-04
 category: document-handling
 related_skills:
+  - pdf
   - knowledge-base-builder
   - semantic-search-setup
   - document-inventory
@@ -16,8 +17,27 @@ related_skills:
 
 This skill extracts text from PDF files using PyMuPDF (fitz), with intelligent chunking, page tracking, and metadata preservation. Handles large PDF collections with batch processing and error recovery.
 
+**RECOMMENDED WORKFLOW:** For all PDF documents, first convert to markdown using OpenAI Codex (see `pdf` skill), then process the structured markdown. This skill is best used for:
+- Batch processing where Codex conversion is impractical
+- Legacy workflows requiring direct PDF extraction
+- Cases where raw text is sufficient
+
 ## Quick Start
 
+**Recommended Approach (with Codex conversion):**
+```python
+# 1. Convert PDF to markdown first (see pdf skill)
+from pdf_skill import pdf_to_markdown_codex
+
+md_path = pdf_to_markdown_codex("document.pdf")
+
+# 2. Process the markdown
+with open(md_path) as f:
+    markdown = f.read()
+    # Work with structured markdown
+```
+
+**Direct Extraction (when Codex not needed):**
 ```python
 import fitz  # PyMuPDF
 
@@ -491,5 +511,6 @@ System tools (for OCR):
 
 ## Version History
 
+- **1.2.0** (2026-01-04): Added OpenAI Codex workflow recommendation as preferred approach; updated Quick Start to show Codex-first workflow; added reference to `pdf` skill for markdown conversion
 - **1.1.0** (2026-01-02): Added Quick Start, Execution Checklist, Error Handling, Metrics sections; updated frontmatter with version, category, related_skills
 - **1.0.0** (2024-10-15): Initial release with PyMuPDF, batch processing, OCR support, metadata extraction
