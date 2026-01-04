@@ -335,19 +335,121 @@ def hybrid_conversion(pdf_path):
 6. **Handle errors gracefully** - Log failures, continue batch processing
 
 **CLI Tool:**
-```bash
+```python
 #!/usr/bin/env python3
 """PDF to Markdown converter using OpenAI Codex."""
 
 import argparse
+import logging
 from pathlib import Path
+import openai
+from pypdf import PdfReader
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+def pdf_to_markdown_codex(pdf_path, output_md_path=None, model="gpt-4"):
+    """
+    Convert PDF to markdown using OpenAI Codex.
+
+    Args:
+        pdf_path: Path to PDF file
+        output_md_path: Optional path for output .md file (auto-generated if None)
+        model: OpenAI model to use (gpt-4, gpt-3.5-turbo, etc.)
+
+    Returns:
+        Path to generated markdown file
+    """
+    # Extract text from PDF
+    reader = PdfReader(pdf_path)
+    pdf_text = ""
+
+    for page_num, page in enumerate(reader.pages, 1):
+        text = page.extract_text()
+        pdf_text += f"\n\n--- Page {page_num} ---\n\n{text}"
+
+    # Generate markdown using OpenAI Codex
+    client = openai.OpenAI()
+
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {
+                "role": "system",
+                "content": """You are an expert document converter. Convert the provided PDF text
+                to well-structured markdown format. Preserve:
+                - Document structure (headings, sections)
+                - Lists and bullet points
+                - Tables (convert to markdown tables)
+                - Code blocks and technical content
+                - Links and references
+
+                Format the output as clean, readable markdown."""
+            },
+            {
+                "role": "user",
+                "content": f"Convert this PDF text to markdown:\n\n{pdf_text}"
+            }
+        ],
+        temperature=0.3,
+    )
+
+    markdown_content = response.choices[0].message.content
+
+    # Save to file
+    if output_md_path is None:
+        pdf_stem = Path(pdf_path).stem
+        output_md_path = Path(pdf_path).parent / f"{pdf_stem}.md"
+
+    Path(output_md_path).write_text(markdown_content, encoding='utf-8')
+
+    return output_md_path
+
+
+def batch_pdf_to_markdown(pdf_directory, output_directory=None, model="gpt-4"):
+    """
+    Convert all PDFs in a directory to markdown.
+
+    Args:
+        pdf_directory: Directory containing PDF files
+        output_directory: Optional output directory (defaults to pdf_directory/markdown)
+        model: OpenAI model to use
+    """
+    pdf_dir = Path(pdf_directory)
+
+    if output_directory is None:
+        output_dir = pdf_dir / "markdown"
+    else:
+        output_dir = Path(output_directory)
+
+    output_dir.mkdir(exist_ok=True)
+
+    pdf_files = list(pdf_dir.glob("*.pdf"))
+    total = len(pdf_files)
+
+    logger.info(f"Found {total} PDF files to convert")
+
+    for i, pdf_file in enumerate(pdf_files, 1):
+        try:
+            output_md = output_dir / f"{pdf_file.stem}.md"
+
+            logger.info(f"[{i}/{total}] Converting {pdf_file.name}...")
+            pdf_to_markdown_codex(pdf_file, output_md, model=model)
+            logger.info(f"✓ Saved to {output_md.name}")
+
+        except Exception as e:
+            logger.error(f"✗ Failed to convert {pdf_file.name}: {e}")
+
+    logger.info(f"\nConversion complete! Files in: {output_dir}")
+
 
 def main():
     parser = argparse.ArgumentParser(description='Convert PDF to Markdown using OpenAI')
     parser.add_argument('input', help='PDF file or directory')
-    parser.add_argument('-o', '--output', help='Output directory')
-    parser.add_argument('-m', '--model', default='gpt-4', help='OpenAI model')
-    parser.add_argument('--chunk-pages', type=int, default=10, help='Pages per chunk')
+    parser.add_argument('-o', '--output', help='Output directory or file')
+    parser.add_argument('-m', '--model', default='gpt-4', help='OpenAI model (gpt-4, gpt-3.5-turbo)')
+    parser.add_argument('--chunk-pages', type=int, default=10, help='Pages per chunk (unused in basic mode)')
 
     args = parser.parse_args()
 
@@ -356,11 +458,12 @@ def main():
     if input_path.is_file():
         # Single file
         output = args.output or input_path.with_suffix('.md')
-        pdf_to_markdown_codex(input_path, output, model=args.model)
-        print(f"✓ Converted: {output}")
+        md_path = pdf_to_markdown_codex(input_path, output, model=args.model)
+        print(f"✓ Converted: {md_path}")
     else:
         # Directory
         batch_pdf_to_markdown(input_path, args.output, model=args.model)
+
 
 if __name__ == '__main__':
     main()
@@ -627,6 +730,7 @@ export OPENAI_API_KEY="your-api-key-here"
 
 ## Version History
 
+- **1.2.1** (2026-01-04): Fixed CLI tool missing imports - added complete standalone script with all required imports (openai, pypdf, logging) and function definitions; resolved P1 issue from Codex review
 - **1.2.0** (2026-01-04): **MAJOR UPDATE** - Added OpenAI Codex integration for PDF-to-Markdown conversion as recommended first step for all PDF processing; includes batch conversion, chunking for large files, cost-effective options, and complete CLI tool
 - **1.1.0** (2026-01-02): Added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections; updated frontmatter with version, category, related_skills
 - **1.0.0** (2024-10-15): Initial release with pypdf, pdfplumber, reportlab, CLI tools
