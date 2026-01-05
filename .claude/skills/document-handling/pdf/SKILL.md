@@ -1,7 +1,7 @@
 ---
 name: pdf
 description: Comprehensive PDF manipulation toolkit with OpenAI Codex integration for intelligent PDF-to-Markdown conversion. IMPORTANT - Always convert PDFs to markdown first using Codex, then process the markdown. Also supports text/table extraction, PDF creation, merging/splitting, and forms. Use for all PDF document processing workflows.
-version: 1.2.0
+version: 1.2.2
 last_updated: 2026-01-04
 category: document-handling
 related_skills:
@@ -119,6 +119,8 @@ def pdf_to_markdown_codex(pdf_path, output_md_path=None, model="gpt-4"):
         pdf_stem = Path(pdf_path).stem
         output_md_path = Path(pdf_path).parent / f"{pdf_stem}.md"
 
+    # Ensure parent directory exists
+    Path(output_md_path).parent.mkdir(parents=True, exist_ok=True)
     Path(output_md_path).write_text(markdown_content, encoding='utf-8')
 
     return output_md_path
@@ -152,7 +154,7 @@ def batch_pdf_to_markdown(pdf_directory, output_directory=None, model="gpt-4"):
     else:
         output_dir = Path(output_directory)
 
-    output_dir.mkdir(exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     pdf_files = list(pdf_dir.glob("*.pdf"))
     total = len(pdf_files)
@@ -230,6 +232,8 @@ def pdf_to_markdown_chunked(pdf_path, output_md_path=None,
     if output_md_path is None:
         output_md_path = Path(pdf_path).with_suffix('.md')
 
+    # Ensure parent directory exists
+    Path(output_md_path).parent.mkdir(parents=True, exist_ok=True)
     Path(output_md_path).write_text(full_markdown, encoding='utf-8')
 
     return output_md_path
@@ -402,6 +406,8 @@ def pdf_to_markdown_codex(pdf_path, output_md_path=None, model="gpt-4"):
         pdf_stem = Path(pdf_path).stem
         output_md_path = Path(pdf_path).parent / f"{pdf_stem}.md"
 
+    # Ensure parent directory exists
+    Path(output_md_path).parent.mkdir(parents=True, exist_ok=True)
     Path(output_md_path).write_text(markdown_content, encoding='utf-8')
 
     return output_md_path
@@ -423,7 +429,7 @@ def batch_pdf_to_markdown(pdf_directory, output_directory=None, model="gpt-4"):
     else:
         output_dir = Path(output_directory)
 
-    output_dir.mkdir(exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     pdf_files = list(pdf_dir.glob("*.pdf"))
     total = len(pdf_files)
@@ -730,6 +736,7 @@ export OPENAI_API_KEY="your-api-key-here"
 
 ## Version History
 
+- **1.2.2** (2026-01-04): Fixed P2 issue - added `parents=True` to all `mkdir()` calls to handle nested output paths; prevents FileNotFoundError when creating directories with non-existent parent paths
 - **1.2.1** (2026-01-04): Fixed CLI tool missing imports - added complete standalone script with all required imports (openai, pypdf, logging) and function definitions; resolved P1 issue from Codex review
 - **1.2.0** (2026-01-04): **MAJOR UPDATE** - Added OpenAI Codex integration for PDF-to-Markdown conversion as recommended first step for all PDF processing; includes batch conversion, chunking for large files, cost-effective options, and complete CLI tool
 - **1.1.0** (2026-01-02): Added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections; updated frontmatter with version, category, related_skills
