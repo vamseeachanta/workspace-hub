@@ -711,13 +711,14 @@ pdf-large-reader document.pdf --verbose
 # Main entry point with automatic strategy
 process_large_pdf(
     pdf_path,
-    output_format="text",        # "text", "list", or "generator"
-    chunk_size=None,              # Auto-calculated if None
-    auto_strategy=True,           # Enable automatic strategy selection
+    output_format="generator",    # "generator" (default), "list", or "text"
     extract_images=False,         # Extract images
     extract_tables=False,         # Extract tables with normalization
-    fallback_api_key=None,        # Claude API key for complex pages
-    progress_callback=None        # Progress tracking function
+    chunk_size=None,              # Auto-calculated if None
+    fallback_api_key=None,        # OpenAI API key for complex pages
+    fallback_model="gpt-4o",      # Model for fallback extraction
+    progress_callback=None,       # Progress tracking function
+    auto_strategy=True            # Enable automatic strategy selection
 )
 
 # Quick text extraction
