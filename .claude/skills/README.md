@@ -9,9 +9,9 @@
 
 ## Overview
 
-This collection provides **91 specialized skills** organized into **8 categories** (plus 15 repo-specific). Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
+This collection provides **98 specialized skills** organized into **8 categories** (plus 15 repo-specific). Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
 
-**Total Skills: 106** (91 central + 15 repo-specific)
+**Total Skills: 113** (98 central + 15 repo-specific)
 
 ## Quick Reference
 
@@ -22,7 +22,7 @@ This collection provides **91 specialized skills** organized into **8 categories
 | [Content & Design](#content--design) | 4 | Frontend UI, themes, canvas graphics, algorithmic art |
 | [Communication](#communication) | 4 | Internal comms, Slack GIFs, document collaboration, branding |
 | [Builders](#builders) | 2 | Web artifacts, skill creation |
-| [Workspace Hub](#workspace-hub) | 25 | Core agents, swarm coordination, consensus, repository management |
+| [Workspace Hub](#workspace-hub) | 32 | Core agents, swarm coordination, consensus, repository management, standards enforcement, automation |
 | [Tools](#tools) | 17 | Optimization, cloud platform, AI assessment, background services |
 | [Meta](#meta) | 1 | Session routines, skill maintenance |
 
@@ -179,9 +179,9 @@ Meta-tools for creating things - interactive web applications and new skills.
 | [web-artifacts-builder](builders/web-artifacts-builder/SKILL.md) | Build self-contained interactive web applications |
 | [skill-creator](builders/skill-creator/SKILL.md) | Create new Claude Code skills |
 
-### Workspace Hub (25)
+### Workspace Hub (32)
 
-Specialized for workspace-hub ecosystem - repository management, development methodology, AI orchestration, swarm coordination, consensus protocols.
+Specialized for workspace-hub ecosystem - repository management, development methodology, AI orchestration, swarm coordination, consensus protocols, standards enforcement, and automation.
 
 #### Core Workspace (5)
 
@@ -227,6 +227,18 @@ Specialized for workspace-hub ecosystem - repository management, development met
 | [consensus-quorum](workspace-hub/consensus/consensus-quorum/SKILL.md) | Quorum-based voting systems |
 | [consensus-security](workspace-hub/consensus/consensus-security/SKILL.md) | Security validation and enforcement |
 | [consensus-benchmark](workspace-hub/consensus/consensus-benchmark/SKILL.md) | Consensus performance benchmarking |
+
+#### Standards & Automation (7) - NEW
+
+| Skill | Description |
+|-------|-------------|
+| [knowledge-base-system](workspace-hub/knowledge-base-system/SKILL.md) | Centralized knowledge base with multi-dimensional indexing and pattern recognition |
+| [development-workflow-orchestrator](workspace-hub/development-workflow-orchestrator/SKILL.md) | Automate 6-phase YAML-driven development workflow |
+| [ai-questioning-pattern](workspace-hub/ai-questioning-pattern/SKILL.md) | MANDATORY questioning pattern before implementation |
+| [html-reporting-enforcer](workspace-hub/html-reporting-enforcer/SKILL.md) | Enforce interactive-only HTML reporting standards |
+| [file-organization-assistant](workspace-hub/file-organization-assistant/SKILL.md) | AI-driven file organization with 5+ file trigger |
+| [compliance-propagation-automator](workspace-hub/compliance-propagation-automator/SKILL.md) | Automate standards propagation across all repositories |
+| [repository-health-analyzer](workspace-hub/repository-health-analyzer/SKILL.md) | 100-point health scoring across 5 dimensions |
 
 ### Tools (17)
 
@@ -373,7 +385,7 @@ ls -la ~/.claude/skills
 
 # Count all skills
 find ~/.claude/skills -name "SKILL.md" | wc -l
-# Expected: 91
+# Expected: 98
 
 # List categories
 ls ~/.claude/skills/
@@ -395,6 +407,20 @@ cat ~/.claude/skills/workspace-hub/swarm/swarm-hierarchical/SKILL.md
 ---
 
 ## Changelog
+
+### 2026-01-05 - Standards & Automation Skills
+
+**New Skills (7):**
+- `workspace-hub/knowledge-base-system` - Multi-dimensional knowledge base with pattern recognition
+- `workspace-hub/development-workflow-orchestrator` - 6-phase YAML-driven workflow automation
+- `workspace-hub/ai-questioning-pattern` - MANDATORY questioning before implementation
+- `workspace-hub/html-reporting-enforcer` - Interactive-only HTML reporting standards
+- `workspace-hub/file-organization-assistant` - AI-driven file organization (5+ file trigger)
+- `workspace-hub/compliance-propagation-automator` - Standards sync across 26+ repositories
+- `workspace-hub/repository-health-analyzer` - 100-point health scoring system
+
+**Total Skills:** 113 (98 central + 15 repo-specific)
+- Workspace Hub expanded from 25 to 32 skills
 
 ### 2026-01-02 - Major Agent-to-Skill Conversion
 
