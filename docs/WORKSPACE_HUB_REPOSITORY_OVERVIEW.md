@@ -75,7 +75,6 @@ Repositories are organized into **Work** (professional/client) and **Personal** 
 |------------|-------------|--------|
 | **aceengineer-admin** | ACE Engineer administrative tools | Personal/Admin |
 | **aceengineer-website** | ACE Engineer company website (www.aceengineer.com) | Website |
-| **aceengineercode** | ACE Engineer code repositories | Development |
 | **achantas-data** | Personal data management | Personal |
 | **achantas-media** | Media and content management | Personal |
 | **hobbies** | Personal hobbies and interests | Personal |
