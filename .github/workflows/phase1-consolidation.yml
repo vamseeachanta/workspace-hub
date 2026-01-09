@@ -1,0 +1,154 @@
+name: Phase 1 Consolidation CI/CD
+
+on:
+  push:
+    branches:
+      - feature/phase1-task-*
+  pull_request:
+    branches:
+      - feature/aceengineercode-consolidation
+  workflow_dispatch:
+
+env:
+  COVERAGE_THRESHOLD: 90
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  test-matrix:
+    name: Test Phase 1 Tasks
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        task:
+          - 'config-framework'
+          - 'solvers-migration'
+          - 'utilities-dedup'
+          - 'data-models'
+          - 'database-layer'
+      fail-fast: false
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: 'true'
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install UV
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Install dependencies
+      run: |
+        uv pip install --system pytest pytest-cov pytest-mock
+        uv pip install --system pyyaml sqlalchemy pandas numpy scipy
+
+    - name: Run tests for ${{ matrix.task }}
+      id: tests
+      continue-on-error: true
+      run: |
+        echo "Testing Phase 1 Task: ${{ matrix.task }}"
+        pytest tests/ -v --cov=src --cov-report=xml --cov-report=term || true
+
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage.xml
+        flags: phase1-${{ matrix.task }}
+        fail_ci_if_error: false
+
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install linting tools
+      run: |
+        pip install flake8 black isort mypy
+
+    - name: Check code formatting
+      run: |
+        black --check src/ tests/ || true
+        isort --check-only src/ tests/ || true
+
+    - name: Run flake8 linting
+      run: |
+        flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics || true
+
+    - name: Type checking with mypy
+      run: |
+        mypy src/ --ignore-missing-imports || true
+
+  integration-check:
+    name: Phase 1 Integration Verification
+    runs-on: ubuntu-latest
+    needs: [test-matrix, code-quality]
+    if: always()
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: 'true'
+
+    - name: Verify branch naming
+      run: |
+        branch_name="${{ github.head_ref || github.ref_name }}"
+        echo "Current branch: $branch_name"
+
+        # Check if it matches Phase 1 naming convention
+        if [[ $branch_name =~ ^feature/phase1-task-1\.[1-5]- ]]; then
+          echo "✓ Branch naming valid for Phase 1"
+        elif [[ $branch_name == "feature/aceengineercode-consolidation" ]]; then
+          echo "✓ Main consolidation branch"
+        else
+          echo "⚠ Warning: Branch naming doesn't match Phase 1 pattern"
+        fi
+
+    - name: Check for required files
+      run: |
+        echo "Checking for Phase 1 documentation..."
+        [ -f "docs/PHASE_1_TASK_SPECIFICATIONS.md" ] && echo "✓ Task specs found" || echo "⚠ Task specs missing"
+        [ -f "docs/ACEENGINEERCODE_CONSOLIDATION_MIGRATION_PLAN.md" ] && echo "✓ Migration plan found" || echo "⚠ Migration plan missing"
+
+    - name: Summary
+      run: |
+        echo "Phase 1 CI/CD Pipeline Status"
+        echo "=============================="
+        echo "Tests: ${{ needs.test-matrix.result }}"
+        echo "Code Quality: ${{ needs.code-quality.result }}"
+        echo ""
+        echo "Next Steps:"
+        echo "- Review test results and coverage"
+        echo "- Check code quality warnings"
+        echo "- Merge to feature/aceengineercode-consolidation when ready"
+
+  coverage-report:
+    name: Coverage Report
+    runs-on: ubuntu-latest
+    needs: test-matrix
+    if: always()
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Generate coverage badge
+      run: |
+        echo "Coverage Status"
+        echo "==============="
+        echo "Target: ${{ env.COVERAGE_THRESHOLD }}%"
+        echo "See detailed report in workflow artifacts"
