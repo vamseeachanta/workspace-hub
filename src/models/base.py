@@ -22,6 +22,13 @@ class BaseModel(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
 
+    def __init__(self, **kwargs):
+        """Initialize model with default values."""
+        # Set is_active default at Python level (database defaults only apply on INSERT)
+        if 'is_active' not in kwargs:
+            kwargs['is_active'] = True
+        super().__init__(**kwargs)
+
     def to_dict(self) -> dict:
         """Convert model to dictionary."""
         return {

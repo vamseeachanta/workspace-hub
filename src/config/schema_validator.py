@@ -20,6 +20,7 @@ class SchemaValidator:
         "title": "Unified Configuration Schema",
         "description": "Schema for unified YAML configuration supporting aceengineercode and digitalmodel patterns",
         "type": "object",
+        "required": ["metadata"],
         "properties": {
             "metadata": {
                 "type": "object",
@@ -160,6 +161,11 @@ class SchemaValidator:
                 },
             },
         }
+
+    @staticmethod
+    def create_base_schema() -> Dict[str, Any]:
+        """Create and return the base configuration schema."""
+        return SchemaValidator.BASE_SCHEMA.copy()
 
     @staticmethod
     def create_solver_schema() -> Dict[str, Any]:

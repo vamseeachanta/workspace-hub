@@ -163,12 +163,12 @@ class TestConfigLoader:
             temp_path.unlink()
 
 
-class TestConfigValidator:
-    """Test ConfigValidator functionality."""
+class TestSchemaValidator:
+    """Test SchemaValidator functionality."""
 
     def test_validate_against_schema(self):
         """Test validating config against schema."""
-        from src.config.config_loader import ConfigValidator
+        from src.config.schema_validator import SchemaValidator
 
         config = {
             'metadata': {
@@ -178,27 +178,27 @@ class TestConfigValidator:
             }
         }
 
-        validator = ConfigValidator()
-        valid, errors = validator.validate(config, ConfigValidator.create_base_schema())
+        validator = SchemaValidator()
+        valid, errors = validator.validate(config)
 
         assert valid is True
         assert len(errors) == 0
 
     def test_validate_missing_required_fields(self):
         """Test validation fails for missing required fields."""
-        from src.config.config_loader import ConfigValidator
+        from src.config.schema_validator import SchemaValidator
 
         config = {}  # Missing required fields
 
-        validator = ConfigValidator()
-        valid, errors = validator.validate(config, ConfigValidator.create_base_schema())
+        validator = SchemaValidator()
+        valid, errors = validator.validate(config)
 
         assert valid is False
         assert len(errors) > 0
 
     def test_validate_wrong_type(self):
         """Test validation fails for wrong field types."""
-        from src.config.config_loader import ConfigValidator
+        from src.config.schema_validator import SchemaValidator
 
         config = {
             'metadata': {
@@ -207,18 +207,18 @@ class TestConfigValidator:
             }
         }
 
-        validator = ConfigValidator()
-        valid, errors = validator.validate(config, ConfigValidator.create_base_schema())
+        validator = SchemaValidator()
+        valid, errors = validator.validate(config)
 
         # Validation should catch type mismatch
         assert valid is False or len(errors) >= 0  # Schema may not enforce strict typing
 
     def test_extend_schema(self):
         """Test extending schema with custom properties."""
-        from src.config.config_loader import ConfigValidator
+        from src.config.schema_validator import SchemaValidator
 
-        validator = ConfigValidator()
-        base_schema = ConfigValidator.create_base_schema()
+        validator = SchemaValidator()
+        base_schema = SchemaValidator.create_base_schema()
 
         extension = {
             'properties': {

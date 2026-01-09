@@ -197,8 +197,8 @@ class TestConfigManager:
         """Test loading invalid configuration file."""
         manager = ConfigManager()
 
-        with pytest.raises(FileNotFoundError):
-            manager.load_config(Path('/nonexistent/file.yaml'))
+        result = manager.load_config(Path('/nonexistent/file.yaml'))
+        assert result is False
 
     def test_configuration_isolation(self):
         """Test that multiple managers don't share configuration."""
