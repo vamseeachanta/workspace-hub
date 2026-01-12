@@ -1,6 +1,6 @@
 #!/bin/bash
-# ABOUTME: Suggest appropriate Claude model based on task description
-# ABOUTME: Uses keyword matching and complexity analysis
+# ABOUTME: Enhanced Claude model selection with usage-aware recommendations
+# ABOUTME: Orchestrates modular helper scripts for complex selection logic
 
 set -e
 
@@ -9,14 +9,23 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
+RED='\033[0;31m'
 NC='\033[0m'
+
+# Script paths
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LIB_DIR="$SCRIPT_DIR/lib"
+LOGS_DIR="$SCRIPT_DIR/logs"
+
+# Initialize logging directory
+mkdir -p "$LOGS_DIR"
 
 # Get repository and task from args or prompt
 REPO="${1:-}"
 TASK="${2:-}"
 
 if [ -z "$REPO" ] || [ -z "$TASK" ]; then
-    echo -e "${CYAN}Model Selection Helper${NC}"
+    echo -e "${CYAN}Model Selection Helper (Usage-Aware)${NC}"
     echo ""
     read -p "Repository: " REPO
     read -p "Task description: " TASK
@@ -76,98 +85,85 @@ else
     repo_tier="Unknown"
 fi
 
-# Determine model
-if [ "$complexity" -ge 3 ]; then
-    model="opus"
-    color=$GREEN
-    confidence="High"
-elif [ "$complexity" -le 0 ]; then
-    model="haiku"
-    color=$YELLOW
-    confidence="High"
-else
-    model="sonnet"
-    color=$BLUE
-    confidence="Medium"
-fi
+# Get usage-aware recommendation
+echo -e "${CYAN}Analyzing usage and recommendations...${NC}"
 
-# Display recommendation
+# Initialize tracking if needed
+bash "$LIB_DIR/usage_tracker.sh" init > /dev/null 2>&1
+
+# Get current usage
+USAGE_JSON=$(bash "$LIB_DIR/usage_checker.sh" get 2>/dev/null || echo '{"opus": 0, "sonnet": 0, "haiku": 0}')
+
+# Get recommendation with availability filtering
+REC_JSON=$(bash "$LIB_DIR/recommender.sh" get "$complexity" "$REPO" "$TASK")
+
+# Extract final recommendation
+FINAL_MODEL=$(echo "$REC_JSON" | grep -o '"recommended_model": "[^"]*"' | cut -d'"' -f4)
+FALLBACK_REASON=$(echo "$REC_JSON" | grep -o '"fallback_reason": "[^"]*"' | cut -d'"' -f4)
+TIME_TO_RESET=$(echo "$REC_JSON" | grep -o '"time_to_reset_minutes": [0-9]*' | cut -d' ' -f2)
+
+# Determine color for output
+case "$FINAL_MODEL" in
+    opus)
+        MODEL_COLOR=$GREEN
+        ;;
+    sonnet)
+        MODEL_COLOR=$BLUE
+        ;;
+    haiku)
+        MODEL_COLOR=$YELLOW
+        ;;
+esac
+
+# Display minimal recommendation (as requested)
+echo ""
 echo -e "${CYAN}═══════════════════════════════════════${NC}"
 echo -e "${CYAN}  Model Recommendation${NC}"
 echo -e "${CYAN}═══════════════════════════════════════${NC}"
 echo ""
-echo -e "  Repository: ${CYAN}$REPO${NC}"
-echo -e "  Tier: ${repo_tier}"
-echo ""
-echo -e "  Task: ${TASK}"
-echo -e "  Complexity Score: ${complexity}"
-echo ""
-echo -e "  ${color}Recommended Model: ${model^^}${NC}"
-echo -e "  Confidence: ${confidence}"
+echo -e "Repository: ${CYAN}$REPO${NC} ($repo_tier)"
+echo -e "Task: $TASK"
+echo -e "Complexity: $complexity"
 echo ""
 
-# Reasoning
-echo -e "${CYAN}Reasoning:${NC}"
-if echo "$TASK_LOWER" | grep -qE "$OPUS_KEYWORDS"; then
-    echo "  • Complex keywords detected (architecture, refactor, design, etc.)"
-fi
-if echo "$TASK_LOWER" | grep -qE "$SONNET_KEYWORDS"; then
-    echo "  • Standard implementation keywords detected (implement, feature, fix, etc.)"
-fi
-if echo "$TASK_LOWER" | grep -qE "$HAIKU_KEYWORDS"; then
-    echo "  • Simple task indicators (check, status, quick, etc.)"
-fi
-if [ "$word_count" -gt 15 ]; then
-    echo "  • Detailed task description suggests complexity"
-fi
-if [ "$word_count" -lt 5 ]; then
-    echo "  • Brief description suggests simple task"
-fi
-echo "  • Repository tier: $repo_tier"
-echo ""
+# Show minimal format
+echo -e "Recommended: ${MODEL_COLOR}${FINAL_MODEL^^}${NC}"
 
-# Check current usage and warn if needed
-USAGE_LOG="${HOME}/.workspace-hub/claude_usage.log"
-if [ -f "$USAGE_LOG" ]; then
-    today_date=$(date +%Y-%m-%d)
-    sonnet_today=$(grep "$today_date" "$USAGE_LOG" 2>/dev/null | grep -c "sonnet" || true)
-    total_today=$(grep "$today_date" "$USAGE_LOG" 2>/dev/null | grep -cE "opus|sonnet|haiku" || true)
-
-    if [ "${total_today:-0}" -gt 0 ]; then
-        sonnet_pct=$((sonnet_today * 100 / total_today))
-        if [ "$sonnet_pct" -gt 60 ] && [ "$model" = "sonnet" ]; then
-            echo -e "${YELLOW}⚠️  Warning: Sonnet usage today is ${sonnet_pct}%${NC}"
-            echo -e "   Consider using ${GREEN}Opus${NC} or ${YELLOW}Haiku${NC} instead"
-            echo ""
+if [ "$FALLBACK_REASON" != "none" ]; then
+    if [ "$FALLBACK_REASON" = "all_models_blocked" ]; then
+        echo -e "${RED}⚠️  All models at capacity (>80%)${NC}"
+        if [ "$TIME_TO_RESET" -gt 0 ]; then
+            hours=$((TIME_TO_RESET / 60))
+            mins=$((TIME_TO_RESET % 60))
+            echo -e "Reset in: ${hours}h ${mins}m (Tuesday 4 PM ET)"
         fi
+    elif [ "$FALLBACK_REASON" = "ideal_blocked" ]; then
+        echo -e "${YELLOW}⚠️  Ideal blocked, using lowest available${NC}"
     fi
 fi
 
-# Alternative suggestions
-echo -e "${CYAN}Alternatives:${NC}"
-case $model in
-    opus)
-        echo -e "  • ${BLUE}Sonnet${NC} - If task is more standard than complex"
-        ;;
-    sonnet)
-        echo -e "  • ${GREEN}Opus${NC} - If task requires deeper analysis"
-        echo -e "  • ${YELLOW}Haiku${NC} - If task is simpler than expected"
-        ;;
-    haiku)
-        echo -e "  • ${BLUE}Sonnet${NC} - If task needs higher quality output"
-        ;;
-esac
-
 echo ""
+
+# Show usage status
+echo -e "${CYAN}Current Usage Status:${NC}"
+bash "$LIB_DIR/usage_checker.sh" display | tail -n +2
+
+# Show what's blocked
+echo -e "${CYAN}Capacity Status (Hard Block at 80%):${NC}"
+bash "$LIB_DIR/model_filter.sh" display | tail -n +2
+
+# Log the recommendation
+bash "$LIB_DIR/usage_tracker.sh" log-recommendation "$REPO" "$TASK" "$complexity" "$FINAL_MODEL" "$USAGE_JSON" 2>/dev/null || true
+
 echo -e "${CYAN}═══════════════════════════════════════${NC}"
 echo ""
 
-# Option to log this prediction
+# Ask user to confirm and log
 read -p "Use this recommendation? (y/n): " use_rec
 if [ "$use_rec" = "y" ]; then
     # Log to usage monitor if available
-    if [ -x "./scripts/monitoring/check_claude_usage.sh" ]; then
+    if [ -x "$SCRIPT_DIR/check_claude_usage.sh" ]; then
         read -p "Estimated tokens (or press Enter to skip): " tokens
-        ./scripts/monitoring/check_claude_usage.sh log "$model" "$REPO" "$TASK" "${tokens:-0}"
+        "$SCRIPT_DIR/check_claude_usage.sh" log "$FINAL_MODEL" "$REPO" "$TASK" "${tokens:-0}"
     fi
 fi

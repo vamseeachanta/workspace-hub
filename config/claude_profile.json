@@ -1,0 +1,16 @@
+
+{
+  "name": "Claude 3.5 Max",
+  "specializations": ["complex_reasoning", "architecture", "design", "strategic_planning", "multi_step"],
+  "strong_keywords": ["architecture", "design", "strategy", "planning", "complex"],
+  "weak_keywords": ["quick", "simple", "check", "status"],
+  "rate_limits": {
+    "requests_per_minute": 1000,
+    "tokens_per_minute": 300000,
+    "cost_per_1k_tokens": 0.006,
+    "cost_per_request": 0.00003
+  },
+  "hard_block_threshold": 80,
+  "cost_tier": "premium",
+  "fallback_order": [0, 1]
+}
