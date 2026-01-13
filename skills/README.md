@@ -32,6 +32,8 @@ Each skill follows the Anthropic skills format with:
 | **Fatigue calculations** | Fatigue Analysis, Wave Theory | 🔴 Critical |
 | **Structural design** | Structural Analysis, Marine/Offshore Engineering | 🔴 Critical |
 | **Wave analysis** | Wave Theory, Hydrodynamic Analysis | 🟠 High |
+| **Production Optimization** | Production Engineering, Data Processing | 🟠 High |
+| **Standards Compliance** | API/DNV/ISO/NORSOK Specialists | 🟠 High |
 | **Risk assessment** | Risk Assessment | 🟠 High |
 | **Simulation automation** | OrcaFlex Specialist, API Integration | 🟠 High |
 | **Geometry creation** | CAD/Mesh Generation | 🟡 Medium |
@@ -435,6 +437,56 @@ graph TD
 - `monte_carlo_simulation()` - MC simulation
 - `calculate_reliability()` - Reliability index
 - `sensitivity_analysis_correlation()` - Sensitivity
+
+---
+
+### 16. Production Engineering
+**Location:** `skills/sme/production-engineering/SKILL.md`
+
+**Core Capabilities:**
+- Production surveillance & workshops
+- EOR evaluations (Waterflood, CO2)
+- Artificial lift (ESP, Jet Pump)
+- Well integrity & "Lessons Learnt"
+
+**When to Use:**
+- Optimizing well performance
+- Managing EOR projects
+- Brownfield asset management
+- Troubleshooting production issues
+
+**Key Functions:**
+- `calculate_vrr()` - Voidage Replacement Ratio
+- `check_well_performance()` - Nodal analysis check
+
+---
+
+## Codes & Standards Skills
+
+### 17. API Standards Specialist
+**Location:** `skills/sme/standards/api/SKILL.md`
+**Focus:** Oil & Gas equipment (Valves, Wellheads), Fixed Platforms.
+**Key Docs:** API 6A, 17D, 2RD.
+
+### 18. DNV Standards Specialist
+**Location:** `skills/sme/standards/dnv/SKILL.md`
+**Focus:** Marine classification, Offshore structures, Pipelines, Fatigue.
+**Key Docs:** DNV-OS-C101, DNV-RP-C203 (Fatigue).
+
+### 19. ISO Standards Specialist
+**Location:** `skills/sme/standards/iso/SKILL.md`
+**Focus:** International harmonization, Sour Service (Materials), Quality.
+**Key Docs:** ISO 15156 (NACE), ISO 9001.
+
+### 20. ASTM Standards Specialist
+**Location:** `skills/sme/standards/astm/SKILL.md`
+**Focus:** Material testing, steel grades, bolting.
+**Key Docs:** ASTM A370, A193 B7.
+
+### 21. NORSOK Standards Specialist
+**Location:** `skills/sme/standards/norsok/SKILL.md`
+**Focus:** North Sea safety, Well barriers, Coatings.
+**Key Docs:** D-010 (Well Integrity), M-501 (Coatings).
 
 ---
 

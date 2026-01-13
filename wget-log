@@ -1,0 +1,11 @@
+--2026-01-09 06:09:11--  https://dl.openfoam.org/gpg.key
+Resolving dl.openfoam.org (dl.openfoam.org)... 13.41.234.222
+Connecting to dl.openfoam.org (dl.openfoam.org)|13.41.234.222|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1710 (1.7K) [application/pgp-keys]
+Saving to: ‘STDOUT’
+
+     0K .                                                     100%  165M=0s
+
+2026-01-09 06:09:11 (165 MB/s) - written to stdout [1710/1710]
+

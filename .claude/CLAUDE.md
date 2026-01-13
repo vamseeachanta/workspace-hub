@@ -37,6 +37,18 @@ claude mcp add claude-flow npx claude-flow@alpha mcp start
 # After:  npx claude-flow@alpha hooks post-task --task-id "[task]"
 ```
 
+## Multi-Provider Orchestration
+
+Intelligent routing to Gemini, Claude, and Codex.
+
+```bash
+# Single Task
+./scripts/routing/orchestrate.sh "<task>"
+
+# Batch Execution (Parallel)
+./scripts/batchtools/batch_runner.sh --parallel 5 < tasks.json
+```
+
 ## Key References
 
 - Full agent list: @docs/modules/ai/AI_AGENT_GUIDELINES.md

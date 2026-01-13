@@ -1,7 +1,6 @@
 # Individual Git Repositories - Exclude all subdirectory repos
 aceengineer-admin/   # Personal
 aceengineer-website/ # Personal, Work
-aceengineercode/ # Personal, Work
 achantas-data/ # Personal
 achantas-media/ # Personal
 acma-projects/ # Work

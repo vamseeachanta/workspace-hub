@@ -104,7 +104,21 @@ Detailed documentation available in `modules/documentation/`.
 
 - **[Skills Index](docs/SKILLS_INDEX.md)** - Complete catalog of 51 Claude Code skills across all repositories
 - **[Repository Overview](docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md)** - Repository relationships & navigation
-- **[Capabilities Summary](docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md)** - Full workspace capabilities
+- **Digital Twin Feed**: [digitaltwinfeed/README.md](digitaltwinfeed/README.md)
+- **Doris**: [doris/README.md](doris/README.md)
+
+## AI Review Workflows
+
+This workspace includes automated code review workflows:
+
+- **Gemini Review**: Automatically reviews ALL commits across all repositories using Google Gemini.
+  - Documentation: [docs/modules/ai/GEMINI_REVIEW_WORKFLOW.md](docs/modules/ai/GEMINI_REVIEW_WORKFLOW.md)
+  - Manager: `./scripts/ai-review/gemini-review-manager.sh list`
+- **Codex Review**: Reviews Claude-authored commits using OpenAI Codex.
+  - Documentation: [docs/modules/ai/CODEX_REVIEW_WORKFLOW.md](docs/modules/ai/CODEX_REVIEW_WORKFLOW.md)
+  - Manager: `./scripts/ai-review/review-manager.sh list`
+
+## Setup & Maintenance
 
 ## 🤝 Contributing
 

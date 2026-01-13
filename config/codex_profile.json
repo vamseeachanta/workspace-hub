@@ -1,0 +1,16 @@
+
+{
+  "name": "OpenAI Codex",
+  "specializations": ["code_generation", "code_review", "refactoring", "debugging"],
+  "strong_keywords": ["implement", "generate", "refactor", "fix", "debug", "optimize"],
+  "weak_keywords": ["reasoning", "analysis", "strategy", "planning"],
+  "rate_limits": {
+    "requests_per_minute": 3000,
+    "tokens_per_minute": 500000,
+    "cost_per_1k_tokens": 0.002,
+    "cost_per_request": 0.00001
+  },
+  "hard_block_threshold": 85,
+  "cost_tier": "budget",
+  "fallback_order": [1, 2]
+}

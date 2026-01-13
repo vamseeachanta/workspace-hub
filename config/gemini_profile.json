@@ -1,0 +1,16 @@
+
+{
+  "name": "Google Gemini",
+  "specializations": ["complex_reasoning", "code_generation", "system_design", "tool_use", "analysis", "refactoring"],
+  "strong_keywords": ["analyze", "refactor", "implement", "design", "debug", "optimize", "plan", "research", "explain"],
+  "weak_keywords": ["simple_text_summary", "creative_writing"],
+  "rate_limits": {
+    "requests_per_minute": 100,
+    "tokens_per_minute": 100000,
+    "cost_per_1k_tokens": 0.0015,
+    "cost_per_request": 0.00002
+  },
+  "hard_block_threshold": 80,
+  "cost_tier": "balanced",
+  "fallback_order": [0, 2]
+}
