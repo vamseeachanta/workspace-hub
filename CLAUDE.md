@@ -124,6 +124,7 @@ MCP tools (`mcp__claude-flow__*`) for coordination setup only.
 
 ### Workflow (MANDATORY)
 - @docs/modules/ai/AI_AGENT_GUIDELINES.md - **READ FIRST**
+- @docs/modules/ai/GEMINI_REVIEW_WORKFLOW.md - **Gemini Review Workflow**
 - @docs/modules/workflow/DEVELOPMENT_WORKFLOW.md
 - @docs/modules/ai/AI_USAGE_GUIDELINES.md
 - @docs/AI_AGENT_USAGE_OPTIMIZATION_PLAN.md - **Model selection strategy**

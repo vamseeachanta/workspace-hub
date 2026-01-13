@@ -17,6 +17,9 @@ NC='\033[0m'
 REVIEWS_DIR="${REVIEWS_DIR:-$HOME/.gemini-reviews}"
 GEMINI_GEN_SCRIPT="$(dirname "$0")/gemini_review_gen.py"
 
+# Enable debug mode
+# set -x
+
 # Detect workspace-hub root (works on Windows and Linux)
 if [ -n "$WORKSPACE_HUB" ]; then
     # Use environment variable if set
@@ -128,7 +131,8 @@ DIFF=$(git show "$COMMIT_SHA" --format="" --stat)
 FULL_DIFF=$(git show "$COMMIT_SHA" --format="")
 
 # Count changes - parse git stat output correctly
-FILES_CHANGED=$(echo "$DIFF" | grep -v "changed|^$" | wc -l | tr -d ' ')
+# Use -E for extended regex support (needed for pipe | char)
+FILES_CHANGED=$(echo "$DIFF" | grep -vE "changed|^$" | wc -l | tr -d ' ')
 STAT_SUMMARY=$(git show "$COMMIT_SHA" --format="" --stat | tail -1)
 INSERTIONS=$(echo "$STAT_SUMMARY" | grep -oP '\d+(?= insertion)' || echo "0")
 DELETIONS=$(echo "$STAT_SUMMARY" | grep -oP '\d+(?= deletion)' || echo "0")
@@ -164,6 +168,8 @@ if ! command -v "$GEMINI_CMD" &> /dev/null && [ ! -x "$GEMINI_CMD" ]; then
     exit 1
 fi
 
+echo -e "${CYAN}Using Gemini CLI: $GEMINI_CMD${NC}"
+
 # Build review prompt based on type
 if [ "$REVIEW_TYPE" = "full" ]; then
     INSTRUCTION="Review this commit for: code quality, security vulnerabilities, performance issues, documentation completeness, and test coverage. Categorize findings by severity (Critical, High, Medium, Low). Provide specific, actionable suggestions with code examples. End with a verdict: APPROVE, REQUEST_CHANGES, or NEEDS_DISCUSSION."
@@ -188,15 +194,55 @@ Instructions:
 $INSTRUCTION"
 
 # Run Gemini CLI
-# We use the -p flag or pipe it. Since we verified piping works:
-REVIEW_OUTPUT=$(echo "$PROMPT" | "$GEMINI_CMD" 2>/dev/null)
+echo -e "${CYAN}Sending request to Gemini...${NC}"
+
+# Verify GEMINI_CMD again
+if [ -z "$GEMINI_CMD" ]; then
+    echo -e "${RED}Error: GEMINI_CMD variable is empty!${NC}"
+    exit 1
+fi
+echo "Debug: GEMINI_CMD='$GEMINI_CMD'"
+
+# Create a temp file for the prompt to avoid pipe issues with large content
+TEMP_PROMPT_FILE=$(mktemp)
+echo "$PROMPT" > "$TEMP_PROMPT_FILE"
+
+# Create output file
+TEMP_GEMINI_OUT=$(mktemp)
+
+# Disable exit on error for this command
+set +e
+
+# Run Gemini using pipe from file
+# We use 'cat' to pipe, which avoids argument length limits and shell expansion issues
+cat "$TEMP_PROMPT_FILE" | "$GEMINI_CMD" > "$TEMP_GEMINI_OUT" 2>&1
 EXIT_CODE=$?
+
+# Re-enable exit on error
+set -e
+
+rm -f "$TEMP_PROMPT_FILE"
+REVIEW_OUTPUT=$(cat "$TEMP_GEMINI_OUT")
+rm -f "$TEMP_GEMINI_OUT"
+
+if [ $EXIT_CODE -ne 0 ]; then
+    echo -e "${RED}Gemini review failed (Exit Code: $EXIT_CODE).${NC}"
+    echo "Output:"
+    echo "$REVIEW_OUTPUT"
+    # Fallback: if gemini failed, maybe it's the environment?
+    exit 1
+fi
+
+if [ -z "$REVIEW_OUTPUT" ]; then
+     echo -e "${RED}Gemini returned empty output.${NC}"
+     exit 1
+fi
+rm -f "$TEMP_GEMINI_OUT"
 
 if [ $EXIT_CODE -ne 0 ] || [ -z "$REVIEW_OUTPUT" ]; then
     echo -e "${RED}Gemini review failed or returned empty output.${NC}"
-    # Try to capture stderr if it failed
-    ERROR_OUTPUT=$(echo "$PROMPT" | "$GEMINI_CMD" 2>&1 >/dev/null)
-    echo "$ERROR_OUTPUT"
+    echo "Output:"
+    echo "$REVIEW_OUTPUT"
     exit 1
 fi
 

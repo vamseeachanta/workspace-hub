@@ -42,11 +42,15 @@ fi
 
 GEMINI_REVIEW_SCRIPT="$WORKSPACE_HUB/scripts/ai-review/gemini-review.sh"
 
-# Get repository info
-REPO_ROOT=$(git rev-parse --show-toplevel)
-REPO_NAME=$(basename "$REPO_ROOT")
-COMMIT_SHA=$(git rev-parse HEAD)
-SHORT_SHA=$(git rev-parse --short HEAD)
+# Get commit info
+COMMIT_MSG=$(git log -1 --format="%B" HEAD)
+COMMIT_AUTHOR=$(git log -1 --format="%an" HEAD)
+
+# Check for skip review flags
+if echo "$COMMIT_MSG" | grep -qi "\[skip review\]\|\[no ai\]\|\[skip-review\]\|\[no-ai\]"; then
+    echo -e "${YELLOW}⏩ Skipping Gemini review (skip flag detected).${NC}"
+    exit 0
+fi
 
 # Main logic
 echo ""
