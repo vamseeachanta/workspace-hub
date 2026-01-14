@@ -1,11 +1,69 @@
 # AI Agent Guidelines - Development Workflow
 
 > **CRITICAL INSTRUCTIONS FOR ALL AI AGENTS**
-> This document MUST be followed by ALL AI systems: OpenAI (GPT-4, GPT-4o, GPT-3.5), Claude (Sonnet, Opus), Factory.ai Droids, and any other AI agents.
+> This document MUST be followed by ALL AI systems: OpenAI (GPT-4, GPT-4o, GPT-3.5), Claude (Sonnet, Opus), Google Gemini, Factory.ai Droids, and any other AI agents.
 >
-> Version: 1.0.0
+> Version: 2.0.0
 > Priority: HIGHEST
-> Last Updated: 2025-10-22
+> Last Updated: 2026-01-13
+
+---
+
+## 🚨 CROSS-REVIEW POLICY (MANDATORY)
+
+**ALL work performed by Claude Code or Google Gemini MUST be reviewed by OpenAI Codex.**
+
+### Core Rule
+
+Before presenting ANY work to the user, Claude Code and Google Gemini must:
+
+1. **Commit changes** immediately after task completion
+2. **Submit for Codex review** via post-commit hook
+3. **Implement feedback** from Codex (maximum 3 iterations)
+4. **Present to user** only after Codex approval OR 3 iterations complete
+
+### Review Workflow
+
+```mermaid
+flowchart TD
+    A["🤖 Claude/Gemini<br/>performs task"] --> B["📝 Commit changes"]
+    B --> C["📋 Codex reviews"]
+    C --> D{{"Feedback?"}}
+    D -->|"No ✓"| E["✅ Present to user<br/>(APPROVED)"]
+    D -->|"Yes"| F["🔨 Implement fixes"]
+    F --> G{{"Iteration < 3?"}}
+    G -->|"Yes"| H["📤 Re-commit"]
+    H --> C
+    G -->|"No"| I["⚠️ Present to user<br/>(LIMIT REACHED)"]
+
+    style A fill:#e1f5fe,stroke:#01579b
+    style C fill:#fff3e0,stroke:#e65100
+    style E fill:#c8e6c9,stroke:#2e7d32
+    style I fill:#ffecb3,stroke:#ff6f00
+```
+
+**Iteration States:**
+| Iteration | Status | Action |
+|-----------|--------|--------|
+| 1 | First review | Codex reviews original commit |
+| 2 | Second review | Codex reviews fix commit |
+| 3 | Final review | Last chance for approval |
+| 3+ | Limit reached | Present to user regardless |
+
+### Commands
+
+```bash
+# Trigger cross-review loop
+./scripts/ai-review/cross-review-loop.sh --max-iterations 3
+
+# Check review status
+./scripts/ai-review/review-manager.sh list
+
+# Check iteration status
+./scripts/ai-review/review-manager.sh iteration-status <review_id>
+```
+
+**Full policy documentation:** @docs/modules/ai/CROSS_REVIEW_POLICY.md
 
 ---
 
@@ -583,3 +641,12 @@ AI agents successfully follow guidelines when:
 **This document is MANDATORY for ALL AI agents in workspace-hub! 🚨**
 
 Any deviation from these guidelines is considered a workflow violation and should be corrected immediately.
+
+---
+
+## Related Documentation
+
+- [Cross-Review Policy](CROSS_REVIEW_POLICY.md) - **MANDATORY cross-review rules**
+- [Codex Review Workflow](CODEX_REVIEW_WORKFLOW.md) - Codex review process
+- [Gemini Review Workflow](GEMINI_REVIEW_WORKFLOW.md) - Gemini review process
+- [Development Workflow](../workflow/DEVELOPMENT_WORKFLOW.md) - Full development workflow

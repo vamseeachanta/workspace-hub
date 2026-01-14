@@ -2,8 +2,18 @@
 
 > Automated code review using Google Gemini for all commits
 >
-> Version: 1.0.0
-> Last Updated: 2026-01-11
+> Version: 2.0.0
+> Last Updated: 2026-01-13
+
+## ⚠️ CROSS-REVIEW POLICY REQUIREMENT
+
+**IMPORTANT:** While Gemini can perform initial code reviews, ALL work performed by Google Gemini MUST also be reviewed by OpenAI Codex before presenting to the user. See @docs/modules/ai/CROSS_REVIEW_POLICY.md for the mandatory cross-review policy.
+
+**Workflow:**
+1. Gemini performs task and commits
+2. **Codex reviews Gemini's commit** (MANDATORY)
+3. Implement Codex feedback (max 3 iterations)
+4. Present to user after Codex approval
 
 ## Overview
 
@@ -198,13 +208,31 @@ When you approve a review and run `implement`, an implementation file is created
 
 ## Workflow Integration
 
-1. **Development**: Work on your code
-2. **Commit**: Commit changes normally
-3. **Review**: Gemini automatically reviews the commit in background
-4. **Approval**: Review suggestions using the manager
-5. **Implementation**: Have an agent implement approved improvements
-6. **Iteration**: Repeat for continuous improvement
+1. **Development**: Work on your code using Gemini
+2. **Commit**: Commit changes with Gemini signature
+3. **Gemini Review**: Gemini can perform initial review (optional)
+4. **Codex Review**: **MANDATORY** - Codex reviews Gemini's commit
+5. **Iteration**: Implement Codex feedback (max 3 iterations)
+6. **Present**: After Codex approval OR 3 iterations → present to user
+
+## Cross-Review Integration
+
+When Gemini performs work:
+
+```bash
+# After Gemini commits, trigger cross-review
+./scripts/ai-review/cross-review-loop.sh --source gemini --max-iterations 3
+
+# Check iteration status
+./scripts/ai-review/review-manager.sh iteration-status <review_id>
+```
+
+## Related Documentation
+
+- [Cross-Review Policy](CROSS_REVIEW_POLICY.md) - **MANDATORY**
+- [Codex Review Workflow](CODEX_REVIEW_WORKFLOW.md)
+- [AI Agent Guidelines](AI_AGENT_GUIDELINES.md)
 
 ---
 
-*Automated Gemini review workflow for continuous code improvement*
+*Automated Gemini review workflow with mandatory Codex cross-review for quality assurance*

@@ -29,6 +29,17 @@
 - Say "I don't know" rather than guess
 - Stop and ask rather than assume
 
+### Cross-Review Policy (MANDATORY)
+
+**ALL work performed by Claude Code or Google Gemini MUST be reviewed by OpenAI Codex.**
+
+- After completing ANY task: commit changes immediately
+- Codex reviews the commit automatically via post-commit hook
+- Implement review feedback (maximum 3 iterations)
+- Only present to user after Codex approval OR 3 iterations complete
+
+**Full policy:** @docs/modules/ai/CROSS_REVIEW_POLICY.md
+
 ## File Organization
 
 **NEVER save to root. Use:** `/src`, `/tests`, `/docs`, `/config`, `/scripts`, `/data`, `/reports`
@@ -124,6 +135,8 @@ MCP tools (`mcp__claude-flow__*`) for coordination setup only.
 
 ### Workflow (MANDATORY)
 - @docs/modules/ai/AI_AGENT_GUIDELINES.md - **READ FIRST**
+- @docs/modules/ai/CROSS_REVIEW_POLICY.md - **Cross-Review Policy (MANDATORY)**
+- @docs/modules/ai/CODEX_REVIEW_WORKFLOW.md - **Codex Review Workflow**
 - @docs/modules/ai/GEMINI_REVIEW_WORKFLOW.md - **Gemini Review Workflow**
 - @docs/modules/workflow/DEVELOPMENT_WORKFLOW.md
 - @docs/modules/ai/AI_USAGE_GUIDELINES.md
