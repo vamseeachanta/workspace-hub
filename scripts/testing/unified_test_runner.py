@@ -401,21 +401,21 @@ def run_tests(
             env['PATH'] = str(repo_path / ".venv" / "bin") + ":" + env.get('PATH', '')
 
         # Execute tests
-        with open(log_file, 'w') as log:
-            test_result = subprocess.run(
-                pytest_args,
-                cwd=repo_path,
-                capture_output=True,
-                text=True,
-                timeout=600,
-                env=env
-            )
+        test_result = subprocess.run(
+            pytest_args,
+            cwd=repo_path,
+            capture_output=True,
+            text=True,
+            timeout=600,
+            env=env
+        )
 
         # Write logs
-        log.write("STDOUT:\n")
-        log.write(test_result.stdout)
-        log.write("\n\nSTDERR:\n")
-        log.write(test_result.stderr)
+        with open(log_file, 'w') as log:
+            log.write("STDOUT:\n")
+            log.write(test_result.stdout)
+            log.write("\n\nSTDERR:\n")
+            log.write(test_result.stderr)
 
         # Parse JUnit XML for metrics
         if junit_file.exists():
