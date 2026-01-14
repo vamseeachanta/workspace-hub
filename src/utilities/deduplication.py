@@ -75,11 +75,11 @@ class DeduplicationAnalyzer:
         self._find_duplicates(code_blocks)
         return self.duplicates
 
-    def _extract_code_blocks(self, content: str, file_path: str) -> Dict[str, Tuple[str, int, str]]:
+    def _extract_code_blocks(self, content: str, file_path: str) -> Dict[str, List[Tuple[str, int, str]]]:
         """Extract code blocks from file.
 
         Returns:
-            Dictionary mapping block_hash -> (block_text, line_number, file_path)
+            Dictionary mapping block_hash -> List[(block_text, line_number, file_path)]
         """
         blocks = {}
         lines = content.split('\n')
