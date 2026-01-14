@@ -60,6 +60,7 @@ usage() {
     echo "  stats             Show review statistics"
     echo "  history [n]       Show recent review activity (default: 10)"
     echo "  clean             Clean old reviews (>30 days)"
+    echo "  clean-empty       Remove empty pending reviews"
     echo ""
     echo "Examples:"
     echo "  $0 list"
@@ -76,7 +77,7 @@ list_reviews() {
     echo -e "${BLUE}╚════════════════════════════════════════════════════════════════╝${NC}"
     echo ""
 
-    PENDING_COUNT=$(find "$REVIEWS_DIR/pending" -name "*.md" 2>/dev/null | wc -l)
+    PENDING_COUNT=$(find "$REVIEWS_DIR/pending" -name "*.md" -size +0c 2>/dev/null | wc -l)
     APPROVED_COUNT=$(find "$REVIEWS_DIR/approved" -name "*.md" 2>/dev/null | wc -l)
     REJECTED_COUNT=$(find "$REVIEWS_DIR/rejected" -name "*.md" 2>/dev/null | wc -l)
     IMPLEMENTED_COUNT=$(find "$REVIEWS_DIR/implemented" -name "*.md" 2>/dev/null | wc -l)
@@ -100,7 +101,7 @@ list_reviews() {
 
     for review in "$REVIEWS_DIR/pending"/*.md;
     do
-        if [ -f "$review" ]; then
+        if [ -f "$review" ] && [ -s "$review" ]; then
             REVIEW_ID=$(basename "$review" .md)
             REPO=$(echo "$REVIEW_ID" | cut -d'_' -f1)
             DATE=$(stat -c %y "$review" 2>/dev/null | cut -d' ' -f1 || date -r "$review" +%Y-%m-%d)
@@ -304,7 +305,7 @@ show_stats() {
     echo -e "${BLUE}╚════════════════════════════════════════════════════════════════╝${NC}"
     echo ""
 
-    PENDING_COUNT=$(find "$REVIEWS_DIR/pending" -name "*.md" 2>/dev/null | wc -l)
+    PENDING_COUNT=$(find "$REVIEWS_DIR/pending" -name "*.md" -size +0c 2>/dev/null | wc -l)
     APPROVED_COUNT=$(find "$REVIEWS_DIR/approved" -name "*.md" 2>/dev/null | wc -l)
     REJECTED_COUNT=$(find "$REVIEWS_DIR/rejected" -name "*.md" 2>/dev/null | wc -l)
     IMPLEMENTED_COUNT=$(find "$REVIEWS_DIR/implemented" -name "*.md" 2>/dev/null | wc -l)
@@ -403,6 +404,21 @@ clean_reviews() {
     echo -e "${GREEN}Cleaned $CLEANED old reviews${NC}"
 }
 
+# Clean empty pending reviews
+clean_empty_reviews() {
+    echo -e "${BLUE}Cleaning empty pending reviews...${NC}"
+
+    CLEANED=0
+    EMPTY_FILES=$(find "$REVIEWS_DIR/pending" -name "*.md" -size 0c 2>/dev/null)
+    for file in $EMPTY_FILES;
+    do
+        rm -f "$file"
+        CLEANED=$((CLEANED + 1))
+    done
+
+    echo -e "${GREEN}Cleaned $CLEANED empty pending reviews${NC}"
+}
+
 # Main
 case "${1:-list}" in
     list)
@@ -444,6 +460,9 @@ case "${1:-list}" in
         ;;
     clean)
         clean_reviews
+        ;;
+    clean-empty)
+        clean_empty_reviews
         ;;
     help|-h|--help)
         usage

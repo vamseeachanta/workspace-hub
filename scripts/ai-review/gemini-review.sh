@@ -128,7 +128,6 @@ echo ""
 # Get the diff
 echo -e "${BLUE}Extracting changes...${NC}"
 DIFF=$(git show "$COMMIT_SHA" --format="" --stat)
-FULL_DIFF=$(git show "$COMMIT_SHA" --format="")
 
 # Count changes - parse git stat output correctly
 # Use -E for extended regex support (needed for pipe | char)
@@ -177,22 +176,6 @@ else
     INSTRUCTION="Quick review: check code quality and obvious issues. Provide brief verdict: APPROVE or REQUEST_CHANGES."
 fi
 
-PROMPT="Review this git commit and provide feedback:
-
-Repository: $REPO_NAME
-Commit: $ACTUAL_SHA
-Author: $COMMIT_AUTHOR
-Message: $COMMIT_MSG
-
-Changes Summary:
-$DIFF
-
-Full Diff:
-$FULL_DIFF
-
-Instructions:
-$INSTRUCTION"
-
 # Run Gemini CLI
 echo -e "${CYAN}Sending request to Gemini...${NC}"
 
@@ -203,9 +186,37 @@ if [ -z "$GEMINI_CMD" ]; then
 fi
 echo "Debug: GEMINI_CMD='$GEMINI_CMD'"
 
+TEMP_PROMPT_FILE=""
+TEMP_GEMINI_OUT=""
+TEMP_DIFF_FILE=""
+
+cleanup() {
+    rm -f "$TEMP_PROMPT_FILE" "$TEMP_GEMINI_OUT" "$TEMP_DIFF_FILE"
+}
+trap cleanup EXIT
+
 # Create a temp file for the prompt to avoid pipe issues with large content
 TEMP_PROMPT_FILE=$(mktemp)
-echo "$PROMPT" > "$TEMP_PROMPT_FILE"
+TEMP_DIFF_FILE=$(mktemp)
+git show "$COMMIT_SHA" --format="" > "$TEMP_DIFF_FILE"
+
+{
+    echo "Review this git commit and provide feedback:"
+    echo ""
+    echo "Repository: $REPO_NAME"
+    echo "Commit: $ACTUAL_SHA"
+    echo "Author: $COMMIT_AUTHOR"
+    echo "Message: $COMMIT_MSG"
+    echo ""
+    echo "Changes Summary:"
+    echo "$DIFF"
+    echo ""
+    echo "Full Diff:"
+    cat "$TEMP_DIFF_FILE"
+    echo ""
+    echo "Instructions:"
+    echo "$INSTRUCTION"
+} > "$TEMP_PROMPT_FILE"
 
 # Create output file
 TEMP_GEMINI_OUT=$(mktemp)
@@ -221,9 +232,7 @@ EXIT_CODE=$?
 # Re-enable exit on error
 set -e
 
-rm -f "$TEMP_PROMPT_FILE"
 REVIEW_OUTPUT=$(cat "$TEMP_GEMINI_OUT")
-rm -f "$TEMP_GEMINI_OUT"
 
 if [ $EXIT_CODE -ne 0 ]; then
     echo -e "${RED}Gemini review failed (Exit Code: $EXIT_CODE).${NC}"
@@ -237,10 +246,9 @@ if [ -z "$REVIEW_OUTPUT" ]; then
      echo -e "${RED}Gemini returned empty output.${NC}"
      exit 1
 fi
-rm -f "$TEMP_GEMINI_OUT"
 
-if [ $EXIT_CODE -ne 0 ] || [ -z "$REVIEW_OUTPUT" ]; then
-    echo -e "${RED}Gemini review failed or returned empty output.${NC}"
+if echo "$REVIEW_OUTPUT" | grep -Eq "RESOURCE_EXHAUSTED|No capacity available|Error executing tool"; then
+    echo -e "${RED}Gemini review failed due to capacity or tool errors.${NC}"
     echo "Output:"
     echo "$REVIEW_OUTPUT"
     exit 1

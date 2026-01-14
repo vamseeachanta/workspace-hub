@@ -56,14 +56,18 @@ class DeduplicationAnalyzer:
         Returns:
             Dictionary of detected duplicates by hash
         """
-        code_blocks = {}
+        code_blocks = {}  # Dict[hash] -> List[(block_text, line_num, file_path)]
 
         for file_path in file_paths:
             try:
                 with open(file_path, 'r') as f:
                     content = f.read()
                     blocks = self._extract_code_blocks(content, str(file_path))
-                    code_blocks.update(blocks)
+                    # Merge blocks preserving ALL occurrences across files
+                    for block_hash, block_data in blocks.items():
+                        if block_hash not in code_blocks:
+                            code_blocks[block_hash] = []
+                        code_blocks[block_hash].extend(block_data)
             except Exception as e:
                 logger.error(f"Error analyzing {file_path}: {e}")
 
@@ -71,8 +75,12 @@ class DeduplicationAnalyzer:
         self._find_duplicates(code_blocks)
         return self.duplicates
 
-    def _extract_code_blocks(self, content: str, file_path: str) -> Dict[str, Tuple[str, int]]:
-        """Extract code blocks from file."""
+    def _extract_code_blocks(self, content: str, file_path: str) -> Dict[str, Tuple[str, int, str]]:
+        """Extract code blocks from file.
+
+        Returns:
+            Dictionary mapping block_hash -> (block_text, line_number, file_path)
+        """
         blocks = {}
         lines = content.split('\n')
 
@@ -83,25 +91,29 @@ class DeduplicationAnalyzer:
             # Skip whitespace-only blocks
             if block_text.strip():
                 block_hash = hashlib.md5(block_text.encode()).hexdigest()
-                blocks[block_hash] = (block_text, i + 1)
+                # Store tuple with all necessary information
+                # NOTE: Using list as value to accumulate multiple occurrences
+                if block_hash not in blocks:
+                    blocks[block_hash] = []
+                blocks[block_hash].append((block_text, i + 1, file_path))
 
         return blocks
 
-    def _find_duplicates(self, code_blocks: Dict[str, Tuple[str, int]]):
-        """Find duplicate code blocks."""
-        hash_to_locations = {}
+    def _find_duplicates(self, code_blocks: Dict[str, List[Tuple[str, int, str]]]):
+        """Find duplicate code blocks.
 
-        for block_hash, (code, line_num) in code_blocks.items():
-            if block_hash not in hash_to_locations:
-                hash_to_locations[block_hash] = []
-            hash_to_locations[block_hash].append((code, line_num))
-
-        # Create duplicates for blocks appearing multiple times
-        for block_hash, locations in hash_to_locations.items():
-            if len(locations) > 1:
-                file_paths = [loc[2] if len(loc) > 2 else 'unknown' for loc in locations]
-                line_numbers = [loc[1] for loc in locations]
-                code_lines = [loc[0] for loc in locations]
+        Args:
+            code_blocks: Dict[hash] -> List[(block_text, line_number, file_path)]
+        """
+        # Iterate through accumulated blocks for each hash
+        for block_hash, locations_list in code_blocks.items():
+            # Only report as duplicate if same block appears in multiple locations
+            if len(locations_list) > 1:
+                # Extract components from location tuples
+                # Locations are already accumulated as list of (code, line_num, file_path)
+                file_paths = [loc[2] for loc in locations_list]
+                line_numbers = [loc[1] for loc in locations_list]
+                code_lines = [loc[0] for loc in locations_list]
 
                 self.duplicates[block_hash] = DuplicateCode(
                     hash_id=block_hash,

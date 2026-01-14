@@ -21,6 +21,21 @@
 
 ---
 
+## Errata (2026-01-13)
+
+This review was generated during an early automated pass. Recomputed metrics below use
+`rg --files` from the repository root (respects `.gitignore`) and reflect the current tree.
+
+- **GitHub Workflows:** 5 total (includes `phase1-consolidation.yml`)
+- **Python Files:** ~4,896 (not 7,431)
+- **Test Files:** ~674 (not 14). Test coverage is still **unknown**; file counts do not equal coverage.
+- **Markdown Files:** ~3,414 (not 11,816)
+
+These corrections do not change the overall priority classification, but they do affect
+the "test coverage gap" narrative and documentation sizing.
+
+---
+
 ## 2. Business Value Assessment
 
 ### Current Business Value
