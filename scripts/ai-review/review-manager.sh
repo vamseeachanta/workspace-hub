@@ -632,7 +632,7 @@ show_cross_review_stats() {
     if [ -d "$REVIEWS_DIR/iterations" ]; then
         for record in "$REVIEWS_DIR/iterations"/*.json; do
             [ -f "$record" ] || continue
-            ((total_reviews++))
+            total_reviews=$((total_reviews + 1))
 
             if command -v jq &> /dev/null; then
                 local final_status current_iter
@@ -644,23 +644,23 @@ show_cross_review_stats() {
 
                 case "$final_status" in
                     "APPROVED")
-                        ((approved_total++))
+                        approved_total=$((approved_total + 1))
                         if [ "$current_iter" -eq 1 ]; then
-                            ((approved_first++))
+                            approved_first=$((approved_first + 1))
                         fi
                         ;;
                     "NO_CHANGES")
-                        ((no_changes++))
+                        no_changes=$((no_changes + 1))
                         ;;
                     "ITERATION_LIMIT")
-                        ((iteration_limit++))
+                        iteration_limit=$((iteration_limit + 1))
                         ;;
                     "FORCE_COMPLETE")
-                        ((force_completed++))
+                        force_completed=$((force_completed + 1))
                         ;;
                     *)
                         if [ "$status" = "in_progress" ] || [ "$status" = "awaiting_fixes" ]; then
-                            ((in_progress++))
+                            in_progress=$((in_progress + 1))
                         fi
                         ;;
                 esac
