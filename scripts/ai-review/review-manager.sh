@@ -45,6 +45,7 @@ mkdir -p "$REVIEWS_DIR/pending"
 mkdir -p "$REVIEWS_DIR/approved"
 mkdir -p "$REVIEWS_DIR/rejected"
 mkdir -p "$REVIEWS_DIR/implemented"
+mkdir -p "$REVIEWS_DIR/iterations"
 
 # Usage
 usage() {
@@ -53,20 +54,25 @@ usage() {
     echo "Usage: $0 <command> [options]"
     echo ""
     echo "Commands:"
-    echo "  list              List all pending reviews"
-    echo "  show <id>         Show a specific review"
-    echo "  approve <id>      Approve a review for implementation"
-    echo "  reject <id>       Reject a review"
-    echo "  implement <id>    Implement approved review suggestions"
-    echo "  stats             Show review statistics"
-    echo "  history [n]       Show recent review activity (default: 10)"
-    echo "  clean             Clean old reviews (>30 days)"
+    echo "  list                    List all pending reviews"
+    echo "  show <id>               Show a specific review"
+    echo "  approve <id>            Approve a review for implementation"
+    echo "  reject <id>             Reject a review"
+    echo "  implement <id>          Implement approved review suggestions"
+    echo "  iteration-status <id>   Show cross-review iteration status"
+    echo "  force-complete <id>     Force complete a cross-review loop"
+    echo "  stats                   Show review statistics"
+    echo "  stats --cross-review    Show cross-review specific metrics"
+    echo "  history [n]             Show recent review activity (default: 10)"
+    echo "  clean                   Clean old reviews (>30 days)"
     echo ""
     echo "Examples:"
     echo "  $0 list"
     echo "  $0 show digitalmodel_abc123_20231225"
     echo "  $0 approve digitalmodel_abc123_20231225"
     echo "  $0 implement digitalmodel_abc123_20231225"
+    echo "  $0 iteration-status digitalmodel_abc123_20231225"
+    echo "  $0 force-complete digitalmodel_abc123_20231225"
     exit 0
 }
 
@@ -395,6 +401,324 @@ clean_reviews() {
     echo -e "${GREEN}Cleaned $CLEANED old reviews${NC}"
 }
 
+# Show iteration status for cross-review loop
+iteration_status() {
+    local REVIEW_ID="$1"
+
+    echo -e "${BLUE}╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BLUE}║              Cross-Review Iteration Status                     ║${NC}"
+    echo -e "${BLUE}╚════════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+
+    # Find iteration record
+    local RECORD_FILE=""
+
+    # Try exact match first
+    if [ -f "$REVIEWS_DIR/iterations/${REVIEW_ID}.json" ]; then
+        RECORD_FILE="$REVIEWS_DIR/iterations/${REVIEW_ID}.json"
+    else
+        # Try partial match
+        RECORD_FILE=$(find "$REVIEWS_DIR/iterations" -name "*${REVIEW_ID}*.json" 2>/dev/null | head -1)
+    fi
+
+    if [ -z "$RECORD_FILE" ] || [ ! -f "$RECORD_FILE" ]; then
+        echo -e "${YELLOW}No iteration record found for: $REVIEW_ID${NC}"
+        echo ""
+        echo "Available iteration records:"
+        find "$REVIEWS_DIR/iterations" -name "*.json" -exec basename {} .json \; 2>/dev/null | head -10
+        return 1
+    fi
+
+    echo -e "${CYAN}Record File:${NC} $RECORD_FILE"
+    echo ""
+
+    # Parse JSON if jq is available
+    if command -v jq &> /dev/null; then
+        local review_id original_commit source_agent max_iterations current_iteration status final_status started_at
+
+        review_id=$(jq -r '.review_id // "N/A"' "$RECORD_FILE")
+        original_commit=$(jq -r '.original_commit // "N/A"' "$RECORD_FILE")
+        source_agent=$(jq -r '.source_agent // "N/A"' "$RECORD_FILE")
+        max_iterations=$(jq -r '.max_iterations // 3' "$RECORD_FILE")
+        current_iteration=$(jq -r '.current_iteration // 0' "$RECORD_FILE")
+        status=$(jq -r '.status // "unknown"' "$RECORD_FILE")
+        final_status=$(jq -r '.final_status // "N/A"' "$RECORD_FILE")
+        started_at=$(jq -r '.started_at // "N/A"' "$RECORD_FILE")
+
+        echo -e "${CYAN}Review Details:${NC}"
+        echo "  Review ID:       $review_id"
+        echo "  Original Commit: ${original_commit:0:8}"
+        echo "  Source Agent:    $source_agent"
+        echo "  Started:         $started_at"
+        echo ""
+
+        echo -e "${CYAN}Iteration Progress:${NC}"
+
+        # Draw progress bar
+        local progress_bar=""
+        for ((i=1; i<=max_iterations; i++)); do
+            if [ "$i" -lt "$current_iteration" ]; then
+                progress_bar+="${GREEN}●${NC} "
+            elif [ "$i" -eq "$current_iteration" ]; then
+                case "$status" in
+                    "approved"|"no_changes"|"completed")
+                        progress_bar+="${GREEN}●${NC} "
+                        ;;
+                    "in_progress"|"awaiting_fixes")
+                        progress_bar+="${YELLOW}◐${NC} "
+                        ;;
+                    *)
+                        progress_bar+="${YELLOW}○${NC} "
+                        ;;
+                esac
+            else
+                progress_bar+="${NC}○ "
+            fi
+        done
+
+        echo -e "  Progress: $progress_bar ($current_iteration/$max_iterations)"
+        echo ""
+
+        # Status with color
+        case "$status" in
+            "completed")
+                echo -e "  Status: ${GREEN}COMPLETED${NC}"
+                ;;
+            "in_progress")
+                echo -e "  Status: ${YELLOW}IN PROGRESS${NC}"
+                ;;
+            "awaiting_fixes")
+                echo -e "  Status: ${YELLOW}AWAITING FIXES${NC}"
+                ;;
+            *)
+                echo -e "  Status: $status"
+                ;;
+        esac
+
+        # Final status with color
+        if [ "$final_status" != "null" ] && [ "$final_status" != "N/A" ]; then
+            case "$final_status" in
+                "APPROVED")
+                    echo -e "  Final:  ${GREEN}✓ APPROVED${NC}"
+                    ;;
+                "ITERATION_LIMIT")
+                    echo -e "  Final:  ${YELLOW}⚠️  ITERATION LIMIT REACHED${NC}"
+                    ;;
+                "NO_CHANGES")
+                    echo -e "  Final:  ${GREEN}✓ NO CHANGES NEEDED${NC}"
+                    ;;
+                "FORCE_COMPLETE")
+                    echo -e "  Final:  ${YELLOW}⚡ FORCE COMPLETED${NC}"
+                    ;;
+                *)
+                    echo -e "  Final:  $final_status"
+                    ;;
+            esac
+        fi
+
+        echo ""
+
+        # Show iterations detail
+        local iterations_count
+        iterations_count=$(jq '.iterations | length' "$RECORD_FILE")
+
+        if [ "$iterations_count" -gt 0 ]; then
+            echo -e "${CYAN}Iteration History:${NC}"
+            echo ""
+            printf "  %-5s %-20s %-15s %-12s\n" "Iter" "Timestamp" "Status" "Fix Commit"
+            echo "  ────────────────────────────────────────────────────────────"
+
+            jq -r '.iterations[] | "  \(.iteration)     \(.timestamp | split("T")[0])       \(.status)       \(.fix_commit | if . == "" then "N/A" else .[0:8] end)"' "$RECORD_FILE" 2>/dev/null
+        fi
+
+        # Show fix commits
+        local fix_commits
+        fix_commits=$(jq -r '.fix_commits | length' "$RECORD_FILE")
+
+        if [ "$fix_commits" -gt 0 ]; then
+            echo ""
+            echo -e "${CYAN}Fix Commits:${NC}"
+            jq -r '.fix_commits[]' "$RECORD_FILE" | while read -r commit; do
+                echo "  - ${commit:0:8}"
+            done
+        fi
+    else
+        # Fallback: just display raw JSON
+        echo -e "${YELLOW}Note: Install jq for better formatting${NC}"
+        echo ""
+        cat "$RECORD_FILE"
+    fi
+
+    echo ""
+}
+
+# Force complete a cross-review loop
+force_complete() {
+    local REVIEW_ID="$1"
+
+    echo -e "${BLUE}╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BLUE}║           Force Complete Cross-Review                          ║${NC}"
+    echo -e "${BLUE}╚════════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+
+    # Find iteration record
+    local RECORD_FILE=""
+
+    if [ -f "$REVIEWS_DIR/iterations/${REVIEW_ID}.json" ]; then
+        RECORD_FILE="$REVIEWS_DIR/iterations/${REVIEW_ID}.json"
+    else
+        RECORD_FILE=$(find "$REVIEWS_DIR/iterations" -name "*${REVIEW_ID}*.json" 2>/dev/null | head -1)
+    fi
+
+    if [ -z "$RECORD_FILE" ] || [ ! -f "$RECORD_FILE" ]; then
+        echo -e "${RED}No iteration record found for: $REVIEW_ID${NC}"
+        return 1
+    fi
+
+    # Check current status
+    local current_status
+    if command -v jq &> /dev/null; then
+        current_status=$(jq -r '.status' "$RECORD_FILE")
+    else
+        current_status=$(grep -o '"status": "[^"]*"' "$RECORD_FILE" | cut -d'"' -f4)
+    fi
+
+    if [ "$current_status" = "completed" ]; then
+        echo -e "${YELLOW}Review is already completed.${NC}"
+        return 0
+    fi
+
+    echo -e "${CYAN}Review ID:${NC} $REVIEW_ID"
+    echo -e "${CYAN}Current Status:${NC} $current_status"
+    echo ""
+
+    # Update status to force complete
+    if command -v jq &> /dev/null; then
+        local updated_json
+        updated_json=$(jq \
+            --arg status "completed" \
+            --arg final "FORCE_COMPLETE" \
+            --arg ended "$(date -Iseconds)" \
+            '.status = $status | .final_status = $final | .ended_at = $ended' \
+            "$RECORD_FILE")
+        echo "$updated_json" > "$RECORD_FILE"
+    else
+        sed -i 's/"status": "[^"]*"/"status": "completed"/' "$RECORD_FILE"
+        sed -i 's/"final_status": [^,}]*/"final_status": "FORCE_COMPLETE"/' "$RECORD_FILE"
+    fi
+
+    echo -e "${GREEN}✓ Cross-review force completed!${NC}"
+    echo ""
+    echo -e "${YELLOW}The review has been marked as complete and can now be presented to the user.${NC}"
+}
+
+# Show cross-review specific statistics
+show_cross_review_stats() {
+    echo -e "${BLUE}╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BLUE}║            Cross-Review Statistics                             ║${NC}"
+    echo -e "${BLUE}╚════════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+
+    local total_reviews=0
+    local approved_first=0
+    local approved_total=0
+    local iteration_limit=0
+    local no_changes=0
+    local force_completed=0
+    local in_progress=0
+    local total_iterations=0
+
+    # Process all iteration records
+    if [ -d "$REVIEWS_DIR/iterations" ]; then
+        for record in "$REVIEWS_DIR/iterations"/*.json; do
+            [ -f "$record" ] || continue
+            ((total_reviews++))
+
+            if command -v jq &> /dev/null; then
+                local final_status current_iter
+                final_status=$(jq -r '.final_status // "null"' "$record")
+                current_iter=$(jq -r '.current_iteration // 0' "$record")
+                status=$(jq -r '.status // "unknown"' "$record")
+
+                total_iterations=$((total_iterations + current_iter))
+
+                case "$final_status" in
+                    "APPROVED")
+                        ((approved_total++))
+                        if [ "$current_iter" -eq 1 ]; then
+                            ((approved_first++))
+                        fi
+                        ;;
+                    "NO_CHANGES")
+                        ((no_changes++))
+                        ;;
+                    "ITERATION_LIMIT")
+                        ((iteration_limit++))
+                        ;;
+                    "FORCE_COMPLETE")
+                        ((force_completed++))
+                        ;;
+                    *)
+                        if [ "$status" = "in_progress" ] || [ "$status" = "awaiting_fixes" ]; then
+                            ((in_progress++))
+                        fi
+                        ;;
+                esac
+            fi
+        done
+    fi
+
+    echo -e "${CYAN}Total Cross-Reviews:${NC}       $total_reviews"
+    echo ""
+    echo -e "${GREEN}Approved:${NC}                  $approved_total"
+    echo -e "${GREEN}  - First iteration:${NC}       $approved_first"
+    echo -e "${GREEN}No Changes Needed:${NC}         $no_changes"
+    echo -e "${YELLOW}Iteration Limit Reached:${NC}   $iteration_limit"
+    echo -e "${YELLOW}Force Completed:${NC}           $force_completed"
+    echo -e "${BLUE}In Progress:${NC}               $in_progress"
+    echo ""
+
+    if [ "$total_reviews" -gt 0 ]; then
+        local first_pass_rate avg_iterations
+        first_pass_rate=$(echo "scale=1; $approved_first * 100 / $total_reviews" | bc 2>/dev/null || echo "N/A")
+        avg_iterations=$(echo "scale=1; $total_iterations / $total_reviews" | bc 2>/dev/null || echo "N/A")
+
+        echo -e "${CYAN}Metrics:${NC}"
+        echo "  First-pass approval rate: ${first_pass_rate}%"
+        echo "  Average iterations:       ${avg_iterations}"
+    fi
+
+    echo ""
+
+    # Show recent cross-reviews
+    echo -e "${CYAN}Recent Cross-Reviews:${NC}"
+    echo ""
+    printf "  %-30s %-10s %-8s %-15s\n" "Review ID" "Source" "Iters" "Status"
+    echo "  ────────────────────────────────────────────────────────────────────"
+
+    if [ -d "$REVIEWS_DIR/iterations" ] && command -v jq &> /dev/null; then
+        ls -t "$REVIEWS_DIR/iterations"/*.json 2>/dev/null | head -5 | while read -r record; do
+            [ -f "$record" ] || continue
+            local rid source iters final
+            rid=$(jq -r '.review_id // "N/A"' "$record" | cut -c1-28)
+            source=$(jq -r '.source_agent // "N/A"' "$record")
+            iters=$(jq -r '.current_iteration // 0' "$record")
+            final=$(jq -r '.final_status // .status // "N/A"' "$record")
+
+            # Color code status
+            case "$final" in
+                "APPROVED"|"NO_CHANGES") final="${GREEN}${final}${NC}" ;;
+                "ITERATION_LIMIT"|"FORCE_COMPLETE") final="${YELLOW}${final}${NC}" ;;
+                "in_progress"|"awaiting_fixes") final="${BLUE}${final}${NC}" ;;
+            esac
+
+            printf "  %-30s %-10s %-8s %-25b\n" "$rid" "$source" "$iters" "$final"
+        done
+    fi
+
+    echo ""
+}
+
 # Main
 case "${1:-list}" in
     list)
@@ -429,7 +753,25 @@ case "${1:-list}" in
         implement_review "$2"
         ;;
     stats)
-        show_stats
+        if [ "$2" = "--cross-review" ]; then
+            show_cross_review_stats
+        else
+            show_stats
+        fi
+        ;;
+    iteration-status)
+        if [ -z "$2" ]; then
+            echo -e "${RED}Usage: $0 iteration-status <review_id>${NC}"
+            exit 1
+        fi
+        iteration_status "$2"
+        ;;
+    force-complete)
+        if [ -z "$2" ]; then
+            echo -e "${RED}Usage: $0 force-complete <review_id>${NC}"
+            exit 1
+        fi
+        force_complete "$2"
         ;;
     history)
         show_history "${2:-10}"
