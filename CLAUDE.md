@@ -38,7 +38,7 @@
 - Implement review feedback (maximum 3 iterations)
 - Only present to user after Codex approval OR 3 iterations complete
 
-**Full policy:** @docs/modules/ai/CROSS_REVIEW_POLICY.md
+**Full policy:** See `cross-review-policy` skill when needed
 
 ## File Organization
 
@@ -94,7 +94,7 @@ MCP tools (`mcp__claude-flow__*`) for coordination setup only.
 
 **Integration:** Run before starting work to get intelligent model recommendation with confidence score and rationale.
 
-**Full automation guide:** @docs/AI_MODEL_SELECTION_AUTOMATION.md
+**Full guide:** See `model-selection` skill when needed
 
 ### Usage Monitoring
 
@@ -117,8 +117,7 @@ MCP tools (`mcp__claude-flow__*`) for coordination setup only.
 - Experimental: 5% Opus, 25% Sonnet, 70% Haiku
 - Archive: 0% Opus, 20% Sonnet, 80% Haiku
 
-**Full guide:** @docs/AI_AGENT_USAGE_OPTIMIZATION_PLAN.md
-**Quick reference:** @docs/CLAUDE_MODEL_SELECTION_QUICK_REFERENCE.md
+**Details:** See `usage-optimization` and `model-selection` skills when needed
 
 ## Quick Commands
 
@@ -131,33 +130,31 @@ MCP tools (`mcp__claude-flow__*`) for coordination setup only.
 ./scripts/monitoring/check_claude_usage.sh             # Monitor AI usage
 ```
 
-## Documentation References
+## On-Demand Skills (Load When Needed)
 
-### Workflow (MANDATORY)
-- @docs/modules/ai/AI_AGENT_GUIDELINES.md - **READ FIRST**
-- @docs/modules/ai/CROSS_REVIEW_POLICY.md - **Cross-Review Policy (MANDATORY)**
-- @docs/modules/ai/CODEX_REVIEW_WORKFLOW.md - **Codex Review Workflow**
-- @docs/modules/ai/GEMINI_REVIEW_WORKFLOW.md - **Gemini Review Workflow**
-- @docs/modules/workflow/DEVELOPMENT_WORKFLOW.md
-- @docs/modules/ai/AI_USAGE_GUIDELINES.md
-- @docs/AI_AGENT_USAGE_OPTIMIZATION_PLAN.md - **Model selection strategy**
+Skills provide detailed guidance without always consuming context. Reference when task requires it.
 
-### Standards
-- @docs/modules/standards/FILE_ORGANIZATION_STANDARDS.md
-- @docs/modules/standards/HTML_REPORTING_STANDARDS.md
-- @docs/modules/standards/TESTING_FRAMEWORK_STANDARDS.md
-- @docs/modules/standards/LOGGING_STANDARDS.md
+| Need | Skill | Trigger |
+|------|-------|---------|
+| AI workflow rules | `ai-agent-guidelines` | Code review, agent tasks |
+| Cross-review process | `cross-review-policy` | Before presenting work |
+| Codex review | `codex-review` | Commit review |
+| Gemini review | `gemini-review` | Gemini commits |
+| Development workflow | `dev-workflow` | YAML/pseudocode/TDD |
+| File organization | `file-org-standards` | Creating files/dirs |
+| HTML reports | `html-reporting-standards` | Report generation |
+| Testing standards | `testing-standards` | Writing tests |
+| Logging standards | `logging-standards` | Adding logging |
+| Model selection | `model-selection` | Choosing model |
+| Usage optimization | `usage-optimization` | High usage alerts |
+| Product roadmap | `product-roadmap` | Planning priorities |
 
-### CLI & Tools
-- @docs/modules/cli/WORKSPACE_CLI.md
-- @docs/modules/cli/REPOSITORY_SYNC.md
+**Skill path:** `@~/.claude/skills/<category>/<skill-name>/SKILL.md`
 
-### Agent OS
-- @.agent-os/product/mission.md
-- @.agent-os/product/tech-stack.md
-- @.agent-os/product/roadmap.md
-- @~/.agent-os/instructions/create-spec.md
-- @~/.agent-os/instructions/execute-tasks.md
+### CLI Reference (Always Available)
+- `./scripts/workspace` - Main CLI
+- `./scripts/repository_sync` - Git operations
+- `./scripts/monitoring/suggest_model.sh` - Model recommendation
 
 ## Rule Precedence
 
@@ -168,4 +165,4 @@ MCP tools (`mcp__claude-flow__*`) for coordination setup only.
 5. Project-specific - overrides when defined
 
 ---
-*See @docs/README.md for complete documentation index*
+*Full docs: `@docs/README.md` | Skills: `@~/.claude/skills/`*
