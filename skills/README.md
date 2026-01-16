@@ -1,10 +1,126 @@
-# Digitalmodel Skills Library
+# Workspace-Hub Skills Library
 
-> Comprehensive skill library for marine and offshore engineering with digitalmodel repository
+> Comprehensive skill library for workspace-hub repositories
 
-**Version:** 1.0.0
-**Created:** 2026-01-06
-**Total Skills:** 16 (7 Programming + 9 SME)
+**Version:** 2.0.0
+**Updated:** 2026-01-14
+**Total Skills:** 31 (7 Programming + 9 SME + 5 Charts + 9 Workspace-Hub + 1 Plotly)
+
+## Skill Categories
+
+| Category | Skills | Purpose |
+|----------|--------|---------|
+| **Workspace-Hub** | 9 | Universal development patterns |
+| **Programming** | 7 | Python, data processing, APIs |
+| **SME** | 9 | Marine/offshore engineering |
+| **Charts** | 5 | Visualization libraries |
+
+---
+
+## Workspace-Hub Skills (Universal)
+
+Skills that apply across all repositories in the workspace.
+
+### 1. Repo Readiness
+**Location:** `skills/workspace-hub/repo-readiness/SKILL.md`
+
+Automatically prepare repositories for new work by analyzing configuration, structure, mission, and establishing complete work context.
+
+**Trigger:** Pre-task (auto-execute)
+
+---
+
+### 2. Skill Learner
+**Location:** `skills/workspace-hub/skill-learner/SKILL.md`
+
+Post-commit skill that reviews completed work, identifies reusable patterns, and creates/enhances skills for continual learning.
+
+**Trigger:** Post-commit (auto-execute)
+
+---
+
+### 3. Data Validation Reporter
+**Location:** `skills/workspace-hub/data-validation-reporter/SKILL.md`
+
+Validate DataFrames and generate interactive HTML quality reports with Plotly visualizations.
+
+---
+
+### 4. Python Project Template
+**Location:** `skills/workspace-hub/python-project-template/SKILL.md`
+
+Generate standardized Python project structure with pyproject.toml, UV environment, pytest configuration, and workspace-hub compliance.
+
+---
+
+### 5. Interactive Report Generator
+**Location:** `skills/workspace-hub/interactive-report-generator/SKILL.md`
+
+Generate interactive HTML reports with Plotly visualizations from data analysis results. Supports dashboards, charts, and professional styling.
+
+---
+
+### 6. YAML Workflow Executor
+**Location:** `skills/workspace-hub/yaml-workflow-executor/SKILL.md`
+
+Execute data processing workflows defined in YAML configuration files. Supports data loading, transformation, validation, and reporting pipelines.
+
+---
+
+### 7. Pytest Fixture Generator
+**Location:** `skills/workspace-hub/pytest-fixture-generator/SKILL.md`
+
+Generate standardized pytest configuration with fixtures, markers, and coverage settings.
+
+---
+
+### 8. Bash Script Framework
+**Location:** `skills/workspace-hub/bash-script-framework/SKILL.md`
+
+Create organized bash script structure with color output, menu systems, error handling, and cross-platform support.
+
+---
+
+### 9. Agent OS Framework
+**Location:** `skills/workspace-hub/agent-os-framework/SKILL.md`
+
+Generate standardized .agent-os directory structure with product documentation, mission, tech-stack, roadmap, and decision records.
+
+---
+
+## Workspace-Hub Skills Quick Reference
+
+| Skill | Purpose | Trigger |
+|-------|---------|---------|
+| **repo-readiness** | Prepare repo for work | Pre-task |
+| **skill-learner** | Extract patterns from commits | Post-commit |
+| **data-validation-reporter** | Data quality reports | Manual |
+| **python-project-template** | Create Python projects | Manual |
+| **interactive-report-generator** | HTML reports with Plotly | Manual |
+| **yaml-workflow-executor** | Config-driven pipelines | Manual |
+| **pytest-fixture-generator** | Test configuration | Manual |
+| **bash-script-framework** | CLI tools | Manual |
+| **agent-os-framework** | Product documentation | Manual |
+
+---
+
+## Chart Visualization Skills
+
+For selecting the right charting library.
+
+| Library | Location | Best For |
+|---------|----------|----------|
+| **Plotly** | `skills/charts/plotly/SKILL.md` | Scientific, 40+ chart types |
+| **D3.js** | `skills/charts/d3js/SKILL.md` | Custom, maximum flexibility |
+| **Chart.js** | `skills/charts/chartjs/SKILL.md` | Quick, lightweight |
+| **ECharts** | `skills/charts/echarts/SKILL.md` | Balanced, mobile |
+| **Highcharts** | `skills/charts/highcharts/SKILL.md` | Enterprise, commercial |
+
+---
+
+## Digitalmodel Skills (Marine/Offshore Engineering)
+
+Comprehensive skills for the digitalmodel repository:
 
 ## Overview
 
