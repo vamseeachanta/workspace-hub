@@ -93,6 +93,7 @@ coverage.xml
 .agent-os/
 .claude/
 !.claude/skills/
+!.claude/agent-library/
 !.claude/CLAUDE.md
 !.claude/settings.json
 .claude-flow/
