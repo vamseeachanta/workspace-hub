@@ -46,6 +46,11 @@ We have successfully transformed the static file archives in `/mnt/ace` into act
     *   `skills/sme/standards/astm` (Testing, Grades)
     *   `skills/sme/standards/norsok` (North Sea Safety, Barriers)
 
+### 6. Marine Safety Data Activation
+*   **Safety Inventory**: Scanned `/mnt/ace/docs/disciplines/integrity_management` and identified **1,087 safety assets** (Reports, Excel data).
+    *   Inventory: `worldenergydata/data/legacy_safety_inventory.json`
+*   **Safety Skill**: Created `skills/sme/marine-safety` to capture Life Extension (LEX) and Fitness-For-Service (FFS) knowledge.
+
 ## Artifacts Created
 
 | Path | Description |
@@ -60,6 +65,9 @@ We have successfully transformed the static file archives in `/mnt/ace` into act
 | `worldenergydata/data/legacy_production_inventory.json` | Inventory of production files |
 | `skills/sme/production-engineering/SKILL.md` | New Production Engineering skill guide |
 | `skills/sme/standards/*/SKILL.md` | 5 new modular Standards Specialist skills |
+| `worldenergydata/scripts/inventory_safety_data.py` | Safety data scanner script |
+| `worldenergydata/data/legacy_safety_inventory.json` | Inventory of safety files |
+| `skills/sme/marine-safety/SKILL.md` | New Marine Safety skill guide |
 
 ## How to Use
 

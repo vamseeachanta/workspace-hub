@@ -150,6 +150,7 @@ Each skill follows the Anthropic skills format with:
 | **Wave analysis** | Wave Theory, Hydrodynamic Analysis | 🟠 High |
 | **Production Optimization** | Production Engineering, Data Processing | 🟠 High |
 | **Standards Compliance** | API/DNV/ISO/NORSOK Specialists | 🟠 High |
+| **Asset Integrity** | Marine Safety & Integrity | 🟠 High |
 | **Risk assessment** | Risk Assessment | 🟠 High |
 | **Simulation automation** | OrcaFlex Specialist, API Integration | 🟠 High |
 | **Geometry creation** | CAD/Mesh Generation | 🟡 Medium |
@@ -603,6 +604,11 @@ graph TD
 **Location:** `skills/sme/standards/norsok/SKILL.md`
 **Focus:** North Sea safety, Well barriers, Coatings.
 **Key Docs:** D-010 (Well Integrity), M-501 (Coatings).
+
+### 22. Marine Safety & Integrity Specialist
+**Location:** `skills/sme/marine-safety/SKILL.md`
+**Focus:** Life Extension, Corrosion, Fitness-for-Service.
+**Key Projects:** Marlin TTR Life Extension, Horn Mountain VIV.
 
 ---
 
