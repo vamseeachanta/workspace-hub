@@ -2,18 +2,26 @@
 
 > Comprehensive skill library for workspace-hub repositories
 
-**Version:** 2.0.0
-**Updated:** 2026-01-14
-**Total Skills:** 31 (7 Programming + 9 SME + 5 Charts + 9 Workspace-Hub + 1 Plotly)
+**Version:** 3.0.0
+**Updated:** 2026-01-17
+**Total Skills:** 74 (31 existing + 43 new)
 
 ## Skill Categories
 
 | Category | Skills | Purpose |
 |----------|--------|---------|
-| **Workspace-Hub** | 9 | Universal development patterns |
+| **Workspace-Hub** | 10 | Universal development patterns |
 | **Programming** | 7 | Python, data processing, APIs |
 | **SME** | 9 | Marine/offshore engineering |
 | **Charts** | 5 | Visualization libraries |
+| **Automation** | 5 | Workflow automation platforms |
+| **AI-Prompting** | 5 | LLM and prompt engineering |
+| **Office-Docs** | 5 | Document generation |
+| **Data-Analysis** | 7 | Data exploration and reporting |
+| **Productivity** | 5 | Task and knowledge management |
+| **Documentation** | 6 | Technical documentation |
+| **Communication** | 4 | Team collaboration APIs |
+| **Devtools** | 5 | Developer tooling |
 
 ---
 
@@ -88,6 +96,13 @@ Generate standardized .agent-os directory structure with product documentation, 
 
 ---
 
+### 10. Claude Reflection
+**Location:** `skills/workspace-hub/claude-reflection/SKILL.md`
+
+Self-improvement and learning skill for analyzing completed work, identifying improvement opportunities, and building institutional knowledge.
+
+---
+
 ## Workspace-Hub Skills Quick Reference
 
 | Skill | Purpose | Trigger |
@@ -101,6 +116,7 @@ Generate standardized .agent-os directory structure with product documentation, 
 | **pytest-fixture-generator** | Test configuration | Manual |
 | **bash-script-framework** | CLI tools | Manual |
 | **agent-os-framework** | Product documentation | Manual |
+| **claude-reflection** | Self-improvement and learning | Manual |
 
 ---
 
@@ -115,6 +131,155 @@ For selecting the right charting library.
 | **Chart.js** | `skills/charts/chartjs/SKILL.md` | Quick, lightweight |
 | **ECharts** | `skills/charts/echarts/SKILL.md` | Balanced, mobile |
 | **Highcharts** | `skills/charts/highcharts/SKILL.md` | Enterprise, commercial |
+
+---
+
+## Everyday Productivity Skills
+
+Skills for automation, document generation, data analysis, and team collaboration.
+
+### Category Overview
+
+| Category | Skills | Purpose |
+|----------|--------|---------|
+| **automation/** | 5 | Workflow automation platforms |
+| **ai-prompting/** | 5 | LLM and prompt engineering |
+| **office-docs/** | 5 | Document generation |
+| **data-analysis/** | 7 | Data exploration and reporting |
+| **productivity/** | 5 | Task and knowledge management |
+| **documentation/** | 6 | Technical documentation |
+| **communication/** | 4 | Team collaboration APIs |
+| **devtools/** | 5 | Developer tooling |
+
+---
+
+### Automation Skills
+
+Workflow automation platforms for orchestrating tasks and integrations.
+
+| Skill | Description | Priority |
+|-------|-------------|----------|
+| **n8n** | Open-source workflow automation with visual editor | High |
+| **activepieces** | No-code automation platform with AI capabilities | Medium |
+| **airflow** | Apache Airflow for data pipeline orchestration | High |
+| **github-actions** | CI/CD and automation workflows for GitHub | High |
+| **windmill** | Developer-first workflow engine with scripts | Medium |
+
+**Location:** `skills/automation/`
+
+---
+
+### AI-Prompting Skills
+
+LLM integration and prompt engineering tools.
+
+| Skill | Description | Priority |
+|-------|-------------|----------|
+| **langchain** | LLM application framework with chains and agents | High |
+| **dspy** | Programmatic prompt optimization framework | Medium |
+| **prompt-engineering** | Best practices for effective prompts | High |
+| **pandasai** | Natural language data analysis with pandas | Medium |
+| **agenta** | LLM app development and evaluation platform | Low |
+
+**Location:** `skills/ai-prompting/`
+
+---
+
+### Office-Docs Skills
+
+Document generation and manipulation for business workflows.
+
+| Skill | Description | Priority |
+|-------|-------------|----------|
+| **python-docx** | Create and modify Word documents | High |
+| **openpyxl** | Excel spreadsheet generation and manipulation | High |
+| **python-pptx** | PowerPoint presentation generation | Medium |
+| **pypdf** | PDF reading, merging, and manipulation | High |
+| **docx-templates** | Template-based document generation | Medium |
+
+**Location:** `skills/office-docs/`
+
+---
+
+### Data-Analysis Skills
+
+Data exploration, profiling, and interactive reporting.
+
+| Skill | Description | Priority |
+|-------|-------------|----------|
+| **polars** | Fast DataFrame library for large datasets | High |
+| **streamlit** | Interactive data apps and dashboards | High |
+| **dash** | Plotly Dash for analytical web applications | High |
+| **autoviz** | Automated visualization and EDA | Medium |
+| **ydata-profiling** | Automated data profiling reports | High |
+| **great-tables** | Publication-quality tables in Python | Medium |
+| **sweetviz** | EDA and dataset comparison reports | Medium |
+
+**Location:** `skills/data-analysis/`
+
+---
+
+### Productivity Skills
+
+Task management and knowledge organization tools.
+
+| Skill | Description | Priority |
+|-------|-------------|----------|
+| **obsidian** | Knowledge management with markdown vaults | High |
+| **todoist-api** | Task management API integration | Medium |
+| **notion-api** | Notion workspace automation | High |
+| **trello-api** | Kanban board automation | Medium |
+| **time-tracking** | Time tracking integrations (Toggl, Clockify) | Low |
+
+**Location:** `skills/productivity/`
+
+---
+
+### Documentation Skills
+
+Technical documentation generation and publishing.
+
+| Skill | Description | Priority |
+|-------|-------------|----------|
+| **mkdocs** | Markdown-based documentation sites | High |
+| **sphinx** | Python documentation generator | High |
+| **pandoc** | Universal document converter | High |
+| **marp** | Markdown presentation slides | Medium |
+| **docusaurus** | React-based documentation platform | Medium |
+| **gitbook** | Collaborative documentation platform | Low |
+
+**Location:** `skills/documentation/`
+
+---
+
+### Communication Skills
+
+Team collaboration and communication APIs.
+
+| Skill | Description | Priority |
+|-------|-------------|----------|
+| **slack-api** | Slack bot and integration development | High |
+| **teams-api** | Microsoft Teams integration | Medium |
+| **miro-api** | Miro whiteboard automation | Low |
+| **calendly-api** | Scheduling and calendar automation | Medium |
+
+**Location:** `skills/communication/`
+
+---
+
+### Devtools Skills
+
+Developer productivity and tooling.
+
+| Skill | Description | Priority |
+|-------|-------------|----------|
+| **docker** | Container management and Dockerfile patterns | High |
+| **cli-productivity** | Shell productivity (fzf, ripgrep, bat) | High |
+| **vscode-extensions** | VS Code extension development | Medium |
+| **raycast-alfred** | Launcher automation and scripts | Low |
+| **git-advanced** | Advanced git workflows and automation | High |
+
+**Location:** `skills/devtools/`
 
 ---
 
@@ -143,19 +308,19 @@ Each skill follows the Anthropic skills format with:
 
 | Task | Recommended Skills | Priority |
 |------|-------------------|----------|
-| **Mooring analysis** | Mooring Analysis, OrcaFlex Specialist | 🔴 Critical |
-| **Vessel dynamics** | Ship Dynamics (6DOF), Hydrodynamic Analysis | 🔴 Critical |
-| **Fatigue calculations** | Fatigue Analysis, Wave Theory | 🔴 Critical |
-| **Structural design** | Structural Analysis, Marine/Offshore Engineering | 🔴 Critical |
-| **Wave analysis** | Wave Theory, Hydrodynamic Analysis | 🟠 High |
-| **Production Optimization** | Production Engineering, Data Processing | 🟠 High |
-| **Standards Compliance** | API/DNV/ISO/NORSOK Specialists | 🟠 High |
-| **Asset Integrity** | Marine Safety & Integrity | 🟠 High |
-| **Risk assessment** | Risk Assessment | 🟠 High |
-| **Simulation automation** | OrcaFlex Specialist, API Integration | 🟠 High |
-| **Geometry creation** | CAD/Mesh Generation | 🟡 Medium |
-| **Data processing** | Pandas, NumPy, Python Scientific Computing | 🟡 Medium |
-| **Configuration** | YAML Configuration | 🟢 Low |
+| **Mooring analysis** | Mooring Analysis, OrcaFlex Specialist | Critical |
+| **Vessel dynamics** | Ship Dynamics (6DOF), Hydrodynamic Analysis | Critical |
+| **Fatigue calculations** | Fatigue Analysis, Wave Theory | Critical |
+| **Structural design** | Structural Analysis, Marine/Offshore Engineering | Critical |
+| **Wave analysis** | Wave Theory, Hydrodynamic Analysis | High |
+| **Production Optimization** | Production Engineering, Data Processing | High |
+| **Standards Compliance** | API/DNV/ISO/NORSOK Specialists | High |
+| **Asset Integrity** | Marine Safety & Integrity | High |
+| **Risk assessment** | Risk Assessment | High |
+| **Simulation automation** | OrcaFlex Specialist, API Integration | High |
+| **Geometry creation** | CAD/Mesh Generation | Medium |
+| **Data processing** | Pandas, NumPy, Python Scientific Computing | Medium |
+| **Configuration** | YAML Configuration | Low |
 
 ### Skill Dependencies
 
@@ -849,6 +1014,8 @@ To add new skills:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 3.0.0 | 2026-01-17 | Added 43 everyday productivity skills across 8 new categories |
+| 2.0.0 | 2026-01-14 | Consolidated workspace-hub and digitalmodel skills |
 | 1.0.0 | 2026-01-06 | Initial release with 16 skills |
 
 ## License
@@ -857,4 +1024,4 @@ Skills are part of the digitalmodel repository. Use in accordance with repositor
 
 ---
 
-**Ready to use all 16 skills for comprehensive marine and offshore engineering analysis! 🚀**
+**Ready to use all 74 skills for comprehensive development and engineering analysis!**
