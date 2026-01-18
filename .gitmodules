@@ -1,3 +1,95 @@
-[submodule "digitaltwinfeed"]
-	path = digitaltwinfeed
-	url = https://github.com/vamseeachanta/digitaltwinfeed
+[submodule "OGManufacturing"]
+	path = OGManufacturing
+	url = https://github.com/vamseeachanta/OGManufacturing
+
+[submodule "aceengineer-admin"]
+	path = aceengineer-admin
+	url = https://github.com/vamseeachanta/aceengineer-admin
+
+[submodule "aceengineer-website"]
+	path = aceengineer-website
+	url = https://github.com/vamseeachanta/aceengineer-website.git
+
+[submodule "achantas-data"]
+	path = achantas-data
+	url = https://github.com/vamseeachanta/achantas-data
+
+[submodule "achantas-media"]
+	path = achantas-media
+	url = https://github.com/vamseeachanta/achantas-media
+
+[submodule "acma-projects"]
+	path = acma-projects
+	url = https://github.com/vamseeachanta/acma-projects
+
+[submodule "ai-native-traditional-eng"]
+	path = ai-native-traditional-eng
+	url = https://github.com/vamseeachanta/ai-native-traditional-eng.git
+
+[submodule "assethold"]
+	path = assethold
+	url = https://github.com/samdansk2/assethold.git
+
+[submodule "assetutilities"]
+	path = assetutilities
+	url = https://github.com/vamseeachanta/assetutilities
+
+[submodule "client_projects"]
+	path = client_projects
+	url = https://github.com/vamseeachanta/client_projects.git
+
+[submodule "digitalmodel"]
+	path = digitalmodel
+	url = https://github.com/vamseeachanta/digitalmodel.git
+
+[submodule "doris"]
+	path = doris
+	url = https://github.com/vamseeachanta/doris
+
+[submodule "energy"]
+	path = energy
+	url = https://github.com/vamseeachanta/energy.git
+
+[submodule "frontierdeepwater"]
+	path = frontierdeepwater
+	url = https://github.com/vamseeachanta/frontierdeepwater
+
+[submodule "hobbies"]
+	path = hobbies
+	url = https://github.com/vamseeachanta/hobbies.git
+
+[submodule "investments"]
+	path = investments
+	url = https://github.com/vamseeachanta/investments
+
+[submodule "pdf-large-reader"]
+	path = pdf-large-reader
+	url = https://github.com/vamseeachanta/pdf-large-reader.git
+
+[submodule "pyproject-starter"]
+	path = pyproject-starter
+	url = https://github.com/vamseeachanta/pyproject-starter.git
+
+[submodule "rock-oil-field"]
+	path = rock-oil-field
+	url = https://github.com/vamseeachanta/rock-oil-field.git
+
+[submodule "sabithaandkrishnaestates"]
+	path = sabithaandkrishnaestates
+	url = https://github.com/vamseeachanta/sabithaandkrishnaestates
+
+[submodule "saipem"]
+	path = saipem
+	url = https://github.com/vamseeachanta/saipem
+
+[submodule "sd-work"]
+	path = sd-work
+	url = https://github.com/vamseeachanta/sd-work
+
+[submodule "seanation"]
+	path = seanation
+	url = https://github.com/vamseeachanta/seanation
+
+[submodule "teamresumes"]
+	path = teamresumes
+	url = https://github.com/vamseeachanta/teamresumes
