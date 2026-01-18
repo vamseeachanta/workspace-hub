@@ -283,7 +283,8 @@ desktop.ini
 debug/
 debugging/
 .gdb_history
-core
+core.*
+core.[0-9]*
 
 # Testing & Coverage
 # ==========================================
