@@ -91,7 +91,8 @@ coverage.xml
 
 # Agent OS and swarm directories (already initialized)
 .agent-os/
-.claude/
+# .claude/ - ignore internals, keep transferable configs
+.claude/*
 !.claude/skills/
 !.claude/agent-library/
 !.claude/CLAUDE.md
@@ -319,3 +320,4 @@ simpledigitalmarketing/
 .refactor-reports/
 *.refactor-report.*
 jscpd-report/
+.claude/skills/.commit-log
