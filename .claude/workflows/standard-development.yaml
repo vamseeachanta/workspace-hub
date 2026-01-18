@@ -1,0 +1,164 @@
+# Standard Development Workflow
+# Version: 1.0.0
+#
+# This workflow template shows how to use Task tool delegation
+# instead of complex claude-flow swarm orchestration.
+
+name: standard-development
+description: Standard TDD development workflow using native Claude Code
+
+# =============================================================================
+# WORKFLOW PHASES
+# =============================================================================
+
+phases:
+  # Phase 1: Understand
+  understand:
+    description: "Explore codebase and understand requirements"
+    delegation:
+      tool: Task
+      subagent_type: Explore
+    actions:
+      - "Find relevant files"
+      - "Understand existing patterns"
+      - "Identify dependencies"
+    output: "Context summary for implementation"
+
+  # Phase 2: Plan
+  plan:
+    description: "Design implementation approach"
+    delegation:
+      tool: Task
+      subagent_type: Plan
+    actions:
+      - "Break down into tasks"
+      - "Identify potential issues"
+      - "Define test cases"
+    output: "Implementation plan"
+
+  # Phase 3: Test First (TDD)
+  test_first:
+    description: "Write tests before implementation"
+    delegation:
+      tool: Task
+      subagent_type: general-purpose
+      load_agent: "@.claude/agent-library/core/tester.md"
+    actions:
+      - "Write failing tests"
+      - "Define expected behavior"
+      - "Set up test fixtures"
+    output: "Test suite (failing)"
+
+  # Phase 4: Implement
+  implement:
+    description: "Write code to pass tests"
+    delegation:
+      tool: Task
+      subagent_type: general-purpose
+      load_agent: "@.claude/agent-library/core/coder.md"
+    actions:
+      - "Implement minimal code"
+      - "Run tests"
+      - "Iterate until green"
+    output: "Working implementation"
+
+  # Phase 5: Refactor
+  refactor:
+    description: "Clean up code while keeping tests green"
+    delegation:
+      tool: Task
+      subagent_type: general-purpose
+    actions:
+      - "Remove duplication"
+      - "Improve naming"
+      - "Optimize if needed"
+    output: "Clean code"
+
+  # Phase 6: Review
+  review:
+    description: "Quality check before commit"
+    delegation:
+      tool: Task
+      subagent_type: general-purpose
+      load_agent: "@.claude/agent-library/core/reviewer.md"
+    actions:
+      - "Check code quality"
+      - "Verify tests pass"
+      - "Review security"
+    output: "Review report"
+
+# =============================================================================
+# USAGE EXAMPLES
+# =============================================================================
+
+examples:
+  feature_implementation:
+    description: "Add new feature with TDD"
+    steps:
+      - phase: understand
+        prompt: "Explore the authentication module and understand how login works"
+      - phase: plan
+        prompt: "Plan adding a password reset feature"
+      - phase: test_first
+        prompt: "Write tests for password reset: email validation, token generation, expiry"
+      - phase: implement
+        prompt: "Implement password reset to pass the tests"
+      - phase: refactor
+        prompt: "Clean up the password reset code"
+      - phase: review
+        prompt: "Review the password reset implementation"
+
+  bug_fix:
+    description: "Fix a bug with regression test"
+    steps:
+      - phase: understand
+        prompt: "Investigate the reported bug in user registration"
+      - phase: test_first
+        prompt: "Write a failing test that reproduces the bug"
+      - phase: implement
+        prompt: "Fix the bug to make the test pass"
+      - phase: review
+        prompt: "Review the fix for edge cases"
+
+  refactoring:
+    description: "Refactor existing code"
+    steps:
+      - phase: understand
+        prompt: "Analyze the payment module for refactoring opportunities"
+      - phase: test_first
+        prompt: "Ensure all existing tests pass and add coverage for uncovered paths"
+      - phase: refactor
+        prompt: "Refactor the payment module to use strategy pattern"
+      - phase: review
+        prompt: "Review the refactored code"
+
+# =============================================================================
+# SIMPLIFIED COMMANDS
+# =============================================================================
+
+quick_commands:
+  # For simple tasks, skip the full workflow
+  quick_fix:
+    description: "Fast path for trivial fixes"
+    when: "Single file, obvious fix, low risk"
+    steps:
+      - "Read the file"
+      - "Make the edit"
+      - "Run tests"
+
+  exploration:
+    description: "Just exploring, no changes"
+    when: "Understanding code, research"
+    delegation:
+      tool: Task
+      subagent_type: Explore
+      prompt: "Explore and report, don't make changes"
+
+  parallel_tasks:
+    description: "Run independent tasks in parallel"
+    when: "Multiple independent changes"
+    example: |
+      Use Task tool multiple times in single message:
+      - Task 1: Update tests in module A
+      - Task 2: Update tests in module B
+      - Task 3: Run lint check
