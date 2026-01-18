@@ -97,6 +97,7 @@ coverage.xml
 !.claude/skills/
 !.claude/agent-library/
 !.claude/tools/
+!.claude/docs/
 !.claude/settings.json
 !.claude/claude-flow-config.yaml
 !.claude/agent-skills-map.yaml
