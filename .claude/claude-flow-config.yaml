@@ -1,0 +1,149 @@
+# Claude-Flow Configuration for Workspace-Hub
+# Version: 1.0.0
+# Last Updated: 2026-01-17
+#
+# This file configures claude-flow integration for the workspace-hub.
+# Copy to ~/.claude-flow/config.yaml for user-level settings, or
+# use as reference for claude-flow MCP server configuration.
+
+# =============================================================================
+# RECOMMENDATION: MINIMAL INTEGRATION
+# =============================================================================
+# Based on architecture review, workspace-hub benefits most from:
+# 1. Native Task tool delegation (already working)
+# 2. Pre-existing 77 skills library
+# 3. Agent-library with specialized agents
+#
+# Claude-flow adds value for:
+# - Session memory persistence
+# - Metrics tracking
+# - Cross-session context
+#
+# NOT recommended for this workspace:
+# - Full swarm orchestration (complexity overhead)
+# - Multi-LLM failover (Claude-native workflow)
+# - Byzantine consensus (single user)
+# =============================================================================
+
+# Core Settings
+version: "3.0"
+workspace: workspace-hub
+
+# Agent Configuration
+agents:
+  # Map to existing agent-library structure
+  library_path: ".claude/agent-library"
+  categories:
+    - core        # coder, tester, reviewer, planner
+    - devops      # database, infrastructure, security-audit
+    - github      # pr-manager, code-review-swarm
+    - sparc       # specification, pseudocode, architecture
+
+  # Default agent settings
+  defaults:
+    timeout_minutes: 30
+    max_retries: 2
+    tdd_required: true
+
+# Skills Integration
+skills:
+  library_path: "skills"
+  auto_load: false  # Load on-demand only
+  categories:
+    - workspace-hub
+    - programming
+    - sme
+    - charts
+    - automation
+    - data-analysis
+
+# Memory Settings (IF using claude-flow MCP)
+memory:
+  enabled: false  # Set to true if MCP server is active
+  persistence:
+    type: "local"  # local | postgresql | redis
+    path: ".claude/state"
+  vector_search:
+    enabled: false  # Requires additional setup
+  retention_days: 30
+
+# Hooks (Lightweight - no external dependencies)
+hooks:
+  # These are already configured in settings.json
+  # Claude-flow hooks are DISABLED to avoid conflicts
+  claude_flow_hooks: false
+
+  # Use native Claude Code hooks instead
+  native_hooks: true
+
+# Metrics (Optional)
+metrics:
+  enabled: false
+  output_dir: ".claude-flow/metrics"
+  track:
+    - token_usage
+    - task_completion
+    - session_duration
+
+# Swarm Configuration (DISABLED for this workspace)
+swarm:
+  enabled: false
+  # Reason: Task tool delegation is simpler and sufficient
+  # Enable only if you need:
+  # - Parallel agent coordination
+  # - Complex multi-agent workflows
+  # - Distributed task execution
+
+# MCP Server Configuration
+mcp:
+  # DISABLED by default - enable only if needed
+  enabled: false
+  server_name: "claude-flow"
+  version: "v3alpha"  # Pin to specific version for stability
+
+  # If enabled, configure these:
+  # endpoints:
+  #   memory: true
+  #   agents: true
+  #   metrics: false
+  #   swarm: false
+
+# Integration with Workspace-Hub
+integration:
+  # Use native Claude Code features
+  delegation:
+    tool: "Task"
+    subagent_types:
+      - Explore
+      - Plan
+      - Bash
+      - general-purpose
+
+  # Load agents from library
+  agent_loading:
+    pattern: "@.claude/agent-library/<category>/<agent>.md"
+    on_demand: true
+
+  # Skills loading
+  skill_loading:
+    command: "/skills"
+    on_demand: true
+
+# Per-Machine Directories (NOT synced to git)
+local_directories:
+  - ".claude/state/"
+  - ".claude/checkpoints/"
+  - ".claude/outputs/"
+  - ".claude-flow/metrics/"
+  - ".claude/settings.local.json"
+
+# Tracked in Repository (synced via git)
+repo_tracked:
+  - ".claude/settings.json"
+  - ".claude/agent-library/"
+  - ".claude/skills/"
+  - ".claude/tools/"
+  - ".claude/CONFIGURATION.md"
+  - ".claude/claude-flow-config.yaml"
+  - "CLAUDE.md"
+  - "skills/"

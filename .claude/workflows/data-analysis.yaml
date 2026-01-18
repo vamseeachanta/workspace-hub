@@ -1,0 +1,198 @@
+# Data Analysis Workflow
+# Version: 1.0.0
+#
+# Workflow for data exploration, analysis, and reporting
+# Optimized for engineering and scientific data
+
+name: data-analysis
+description: Data analysis workflow for engineering projects
+
+# =============================================================================
+# WORKFLOW PHASES
+# =============================================================================
+
+phases:
+  # Phase 1: Data Discovery
+  discover:
+    description: "Find and understand data sources"
+    delegation:
+      tool: Task
+      subagent_type: Explore
+    skills_to_load:
+      - "data-analysis/ydata-profiling"
+    actions:
+      - "Identify data files"
+      - "Understand schema"
+      - "Check data quality"
+    output: "Data inventory and quality report"
+
+  # Phase 2: Data Processing
+  process:
+    description: "Clean, transform, validate data"
+    delegation:
+      tool: Task
+      subagent_type: general-purpose
+    skills_to_load:
+      - "data-analysis/polars"
+      - "programming/pandas-data-processing"
+    actions:
+      - "Load data"
+      - "Clean and transform"
+      - "Validate results"
+    output: "Processed dataset"
+
+  # Phase 3: Analysis
+  analyze:
+    description: "Perform calculations and analysis"
+    delegation:
+      tool: Task
+      subagent_type: general-purpose
+    skills_to_load:
+      - "programming/numpy-numerical-analysis"
+      - "programming/python-scientific-computing"
+    actions:
+      - "Statistical analysis"
+      - "Engineering calculations"
+      - "Pattern identification"
+    output: "Analysis results"
+
+  # Phase 4: Visualization
+  visualize:
+    description: "Create charts and visualizations"
+    delegation:
+      tool: Task
+      subagent_type: general-purpose
+    skills_to_load:
+      - "charts/plotly"
+      - "workspace-hub/interactive-report-generator"
+    actions:
+      - "Create charts"
+      - "Build dashboards"
+      - "Interactive plots"
+    output: "Visualizations"
+
+  # Phase 5: Reporting
+  report:
+    description: "Generate documentation and reports"
+    delegation:
+      tool: Task
+      subagent_type: general-purpose
+    skills_to_load:
+      - "workspace-hub/data-validation-reporter"
+      - "office-docs/python-docx"
+    actions:
+      - "Generate HTML report"
+      - "Create summary document"
+      - "Export results"
+    output: "Final report"
+
+# =============================================================================
+# DOMAIN-SPECIFIC WORKFLOWS
+# =============================================================================
+
+domain_workflows:
+  # Marine Engineering Analysis
+  marine_analysis:
+    name: "Marine/Offshore Analysis"
+    skills:
+      - "sme/hydrodynamic-analysis"
+      - "sme/mooring-analysis"
+      - "sme/wave-theory"
+    phases:
+      - discover: "Find vessel data, environmental conditions"
+      - process: "Process hydrodynamic coefficients"
+      - analyze: "Calculate RAOs, mooring tensions"
+      - visualize: "Plot RAO curves, mooring layout"
+      - report: "Generate analysis report"
+
+  # OrcaFlex Automation
+  orcaflex_workflow:
+    name: "OrcaFlex Analysis"
+    skills:
+      - "sme/orcaflex-specialist"
+      - "programming/api-integration"
+    phases:
+      - discover: "Load OrcaFlex model, check parameters"
+      - process: "Configure load cases"
+      - analyze: "Run simulations, extract results"
+      - visualize: "Plot time histories, statistics"
+      - report: "Generate simulation report"
+
+  # Fatigue Assessment
+  fatigue_workflow:
+    name: "Fatigue Analysis"
+    skills:
+      - "sme/fatigue-analysis"
+      - "sme/structural-analysis"
+    phases:
+      - discover: "Find stress time histories"
+      - process: "Rainflow counting"
+      - analyze: "Calculate fatigue damage"
+      - visualize: "Plot S-N curves, damage distribution"
+      - report: "Fatigue life report"
+
+  # Energy Data Analysis
+  energy_workflow:
+    name: "Energy Data Analysis"
+    skills:
+      - "sme/production-engineering"
+      - "data-analysis/bsee-sodir-extraction"
+    phases:
+      - discover: "Find production data, well records"
+      - process: "Clean and normalize data"
+      - analyze: "Production analysis, decline curves"
+      - visualize: "Production plots, trends"
+      - report: "Production report"
+
+# =============================================================================
+# QUICK PATTERNS
+# =============================================================================
+
+quick_patterns:
+  # Simple data exploration
+  explore_data:
+    description: "Quick data exploration"
+    command: |
+      Load skills/data-analysis/ydata-profiling
+      Generate profile report for [dataset]
+    output: "HTML profiling report"
+
+  # Create chart
+  create_chart:
+    description: "Quick Plotly chart"
+    command: |
+      Load skills/charts/plotly
+      Create [chart_type] from [data]
+    output: "Interactive Plotly chart"
+
+  # Generate report
+  quick_report:
+    description: "Generate HTML report"
+    command: |
+      Load skills/workspace-hub/interactive-report-generator
+      Create report with [sections]
+    output: "Interactive HTML report"
+
+# =============================================================================
+# SKILL LOADING PATTERNS
+# =============================================================================
+
+skill_loading:
+  # Load skill on-demand
+  syntax: "/load-skill skills/<category>/<skill-name>/SKILL.md"
+
+  # Example combinations
+  data_science_stack:
+    - "data-analysis/polars"
+    - "charts/plotly"
+    - "workspace-hub/interactive-report-generator"
+
+  engineering_stack:
+    - "sme/marine-offshore-engineering"
+    - "sme/hydrodynamic-analysis"
+    - "programming/python-scientific-computing"
+
+  reporting_stack:
+    - "workspace-hub/data-validation-reporter"
+    - "office-docs/python-docx"
+    - "documentation/mkdocs"

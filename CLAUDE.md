@@ -28,3 +28,66 @@ Agents on-demand: `@.claude/agent-library/<category>/<agent>.md`
 
 ## SPARC Modes
 `/sparc-*` commands available: architect, coder, reviewer, tester, planner
+
+---
+
+## Portable Configuration
+
+### Tracked in Git (Synced Across Machines)
+| Path | Purpose |
+|------|---------|
+| `.claude/settings.json` | Permissions, hooks, environment |
+| `.claude/agent-library/` | Agent definitions |
+| `.claude/tools/` | Context management utilities |
+| `.claude/claude-flow-config.yaml` | Claude-flow integration config |
+| `skills/` | 77 skills library |
+| `CLAUDE.md` | This file |
+
+### Machine-Local (NOT Synced)
+| Path | Purpose |
+|------|---------|
+| `.claude/settings.local.json` | Session-specific permissions |
+| `.claude/state/` | Runtime state |
+| `.claude/checkpoints/` | Recovery points |
+| `.claude/outputs/` | Large artifacts |
+| `.claude-flow/` | Claude-flow runtime data |
+
+### New Machine Setup
+```bash
+# 1. Clone repository
+git clone <url> workspace-hub
+cd workspace-hub
+git submodule update --init --recursive
+
+# 2. Verify configuration
+cat .claude/settings.json
+
+# 3. Optional: Enable claude-flow MCP (if needed)
+# npm install -g claude-flow@v3alpha
+# claude mcp add claude-flow -- npx claude-flow@v3alpha
+
+# 4. Start working - no additional setup required
+```
+
+## Claude-Flow Integration Status
+
+**Current**: Minimal integration (hooks only)
+
+| Feature | Status | Recommendation |
+|---------|--------|----------------|
+| Edit hooks | Enabled | Keep - lightweight feedback |
+| MCP server | Disabled | Enable only if memory persistence needed |
+| Swarm orchestration | Disabled | Use Task tool delegation instead |
+| Metrics tracking | Disabled | Enable for usage analytics |
+
+**When to enable full claude-flow:**
+- Need persistent memory across sessions
+- Want Q-learning task routing
+- Running parallel multi-agent workflows
+- Require cross-session vector search
+
+**Current workflow (recommended):**
+1. Use Task tool with subagent_type for delegation
+2. Load agents from `.claude/agent-library/` on-demand
+3. Use `/skills` for domain-specific capabilities
+4. Native Claude Code handles context management

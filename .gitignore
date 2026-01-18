@@ -91,12 +91,28 @@ coverage.xml
 
 # Agent OS and swarm directories (already initialized)
 .agent-os/
+
 # .claude/ - ignore internals, keep transferable configs
 .claude/*
 !.claude/skills/
 !.claude/agent-library/
-!.claude/CLAUDE.md
+!.claude/tools/
 !.claude/settings.json
+!.claude/claude-flow-config.yaml
+!.claude/agent-skills-map.yaml
+!.claude/workflows/
+!.claude/CONFIGURATION.md
+!.claude/COORDINATION.md
+!.claude/README.md
+
+# Machine-local Claude directories (never synced)
+.claude/settings.local.json
+.claude/state/
+.claude/checkpoints/
+.claude/outputs/
+.claude/plans/
+
+# Claude-flow runtime (never synced)
 .claude-flow/
 .hive-mind/
 .swarm/

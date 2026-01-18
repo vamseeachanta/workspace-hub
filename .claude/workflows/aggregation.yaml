@@ -1,0 +1,149 @@
+# Aggregation Workflow Template
+# Purpose: Pattern for merging worker results into coordinator summaries
+# Usage: Source this as a template for aggregation steps
+
+metadata:
+  name: aggregation-pattern
+  version: 1.0.0
+  created: 2026-01-14
+  description: Standard aggregation workflow for hierarchical agent coordination
+
+config:
+  # Coordinator receives summaries only, not full outputs
+  coordinator_context: minimal
+  worker_return_type: summary_only
+
+# Aggregation patterns
+patterns:
+  # Pattern 1: Simple count aggregation
+  count_aggregation:
+    description: Count workers by status
+    input_pattern: .claude/state/agent_results/*.json
+    output_file: .claude/state/aggregated_counts.json
+    operations:
+      - field: status
+        operation: count_by_value
+        values: [complete, failed, blocked]
+      - field: key_metrics.exit_code
+        operation: count_by_value
+        values: [0, 1]
+
+  # Pattern 2: Metrics aggregation
+  metrics_aggregation:
+    description: Aggregate numerical metrics across workers
+    input_pattern: .claude/state/agent_results/*.json
+    output_file: .claude/state/aggregated_metrics.json
+    operations:
+      - field: key_metrics.duration_seconds
+        operation: sum
+        output_name: total_duration
+      - field: key_metrics.duration_seconds
+        operation: average
+        output_name: avg_duration
+      - field: key_metrics.test_count
+        operation: sum
+        output_name: total_tests
+
+  # Pattern 3: Summary concatenation
+  summary_concatenation:
+    description: Combine worker summaries into master summary
+    input_pattern: .claude/state/agent_results/*.json
+    output_file: .claude/state/master_summary.md
+    max_length: 2000
+    format: |
+      ## Aggregated Results
+
+      ### Worker Summaries
+      {worker_summaries}
+
+      ### Metrics
+      - Total Workers: {worker_count}
+      - Complete: {complete_count}
+      - Failed: {failed_count}
+      - Total Duration: {total_duration}s
+
+# Standard aggregation step template
+aggregation_step:
+  name: aggregate-worker-results
+  agent: aggregator
+  description: Merge worker outputs following hierarchical pattern
+
+  # Input specification
+  input:
+    type: file_pattern
+    pattern: .claude/state/agent_results/{batch_id}_worker_*.json
+    required_fields:
+      - worker_id
+      - status
+      - summary
+      - key_metrics
+
+  # Processing rules
+  processing:
+    # Read only summary fields, not full output
+    extract_fields:
+      - worker_id
+      - status
+      - summary
+      - key_metrics
+
+    # Group by status
+    group_by: status
+
+    # Calculate aggregates
+    aggregates:
+      - name: complete_count
+        field: status
+        filter: complete
+        operation: count
+      - name: failed_count
+        field: status
+        filter: failed
+        operation: count
+      - name: blocked_count
+        field: status
+        filter: blocked
+        operation: count
+
+  # Output specification
+  output:
+    file: .claude/state/aggregated_state.json
+    format: json
+    schema:
+      batch_id: string
+      timestamp: iso8601
+      worker_count: integer
+      status_summary:
+        complete: integer
+        failed: integer
+        blocked: integer
+      combined_metrics: object
+      next_actions: array
+
+# Integration with batch_runner.sh
+batch_runner_integration:
+  # This workflow is triggered after batch_runner.sh completes
+  trigger: post_batch_completion
+
+  # Read batch results directory
+  batch_results_dir: .claude/state/agent_results
+
+  # Match files by batch ID
+  file_pattern: "{batch_id}_worker_*.json"
+
+  # Generate aggregated output
+  output_template: |
+    ═══════════════════════════════════════════════════════════════
+      Aggregated Results - {batch_id}
+    ═══════════════════════════════════════════════════════════════
+
+      Total workers: {worker_count}
+      ✓ Complete: {complete_count}
+      ✗ Failed: {failed_count}
+      ⚠ Blocked: {blocked_count}
+
+      Success Rate: {success_rate}%
+      Total Duration: {total_duration}s
+
+      Results saved to: {output_file}
+    ═══════════════════════════════════════════════════════════════

@@ -3,32 +3,38 @@
     "CLAUDE_FLOW_AUTO_COMMIT": "false",
     "CLAUDE_FLOW_AUTO_PUSH": "false",
     "CLAUDE_FLOW_HOOKS_ENABLED": "true",
-    "CLAUDE_FLOW_TELEMETRY_ENABLED": "true",
-    "CLAUDE_FLOW_REMOTE_EXECUTION": "true",
+    "CLAUDE_FLOW_TELEMETRY_ENABLED": "false",
+    "CLAUDE_FLOW_REMOTE_EXECUTION": "false",
     "CLAUDE_FLOW_CHECKPOINTS_ENABLED": "true"
   },
   "permissions": {
     "allow": [
-      "Bash(npx claude-flow:*)",
-      "Bash(npm run lint)",
-      "Bash(npm run test:*)",
-      "Bash(npm test:*)",
       "Bash(git status)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push)",
-      "Bash(git config:*)",
-      "Bash(git tag:*)",
+      "Bash(git pull:*)",
       "Bash(git branch:*)",
       "Bash(git checkout:*)",
       "Bash(git stash:*)",
-      "Bash(jq:*)",
+      "Bash(git submodule:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Bash(npm test:*)",
+      "Bash(pytest:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
       "Bash(node:*)",
-      "Bash(which:*)",
+      "Bash(ls:*)",
       "Bash(pwd)",
-      "Bash(ls:*)"
+      "Bash(which:*)",
+      "Bash(tree:*)",
+      "Bash(wc:*)",
+      "Bash(jq:*)",
+      "Bash(./scripts/*:*)"
     ],
     "deny": [
       "Bash(rm -rf /)",
@@ -40,40 +46,22 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cat | jq -r '.tool_input.command // empty' | tr '\\n' '\\0' | xargs -0 -I {} npx claude-flow@alpha hooks pre-command --command '{}' --validate-safety true --prepare-resources true"
-          }
-        ]
-      },
-      {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "cat | jq -r '.tool_input.file_path // .tool_input.path // empty' | tr '\\n' '\\0' | xargs -0 -I {} npx claude-flow@alpha hooks pre-edit --file '{}' --auto-assign-agents true --load-context true"
+            "command": "echo '📝 Edit: '$(cat | jq -r '.tool_input.file_path // .tool_input.path // \"unknown\"')"
           }
         ]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cat | jq -r '.tool_input.command // empty' | tr '\\n' '\\0' | xargs -0 -I {} npx claude-flow@alpha hooks post-command --command '{}' --track-metrics true --store-results true"
-          }
-        ]
-      },
-      {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "cat | jq -r '.tool_input.file_path // .tool_input.path // empty' | tr '\\n' '\\0' | xargs -0 -I {} npx claude-flow@alpha hooks post-edit --file '{}' --format true --update-memory true"
+            "command": "echo '✅ Saved: '$(cat | jq -r '.tool_input.file_path // .tool_input.path // \"unknown\"')"
           }
         ]
       }
@@ -84,7 +72,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/bin/bash -c 'INPUT=$(cat); CUSTOM=$(echo \"$INPUT\" | jq -r \".custom_instructions // \\\"\\\"\"); echo \"🔄 PreCompact Guidance:\"; echo \"📋 IMPORTANT: Review CLAUDE.md in project root for:\"; echo \"   • 54 available agents and concurrent usage patterns\"; echo \"   • Swarm coordination strategies (hierarchical, mesh, adaptive)\"; echo \"   • SPARC methodology workflows with batchtools optimization\"; echo \"   • Critical concurrent execution rules (GOLDEN RULE: 1 MESSAGE = ALL OPERATIONS)\"; if [ -n \"$CUSTOM\" ]; then echo \"🎯 Custom compact instructions: $CUSTOM\"; fi; echo \"✅ Ready for compact operation\"'"
+            "command": "/bin/bash -c 'echo \"📋 Before compact: Review CLAUDE.md for delegation patterns and agent library\"; echo \"   Agents: .claude/agent-library/{core,devops,github,sparc}/\"; echo \"   Skills: skills/ (77 available)\"; echo \"   TDD mandatory, batch operations\"'"
           }
         ]
       },
@@ -93,7 +81,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/bin/bash -c 'echo \"🔄 Auto-Compact Guidance (Context Window Full):\"; echo \"📋 CRITICAL: Before compacting, ensure you understand:\"; echo \"   • All 54 agents available in .claude/agents/ directory\"; echo \"   • Concurrent execution patterns from CLAUDE.md\"; echo \"   • Batchtools optimization for 300% performance gains\"; echo \"   • Swarm coordination strategies for complex tasks\"; echo \"⚡ Apply GOLDEN RULE: Always batch operations in single messages\"; echo \"✅ Auto-compact proceeding with full agent context\"'"
+            "command": "/bin/bash -c 'echo \"🔄 Auto-compact: Preserve context of agent-library and skills\"; echo \"   Use Task tool for delegation (Explore, Plan, Bash, general-purpose)\"'"
           }
         ]
       }
@@ -103,12 +91,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "npx claude-flow@alpha hooks session-end --generate-summary true --persist-state true --export-metrics true"
+            "command": "/bin/bash -c 'echo \"📊 Session ended at $(date +%Y-%m-%d_%H:%M:%S)\"'"
           }
         ]
       }
     ]
   },
   "includeCoAuthoredBy": true,
-  "enabledMcpjsonServers": ["claude-flow", "ruv-swarm"]
+  "enabledMcpjsonServers": []
 }
