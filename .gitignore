@@ -105,6 +105,7 @@ coverage.xml
 !.claude/CONFIGURATION.md
 !.claude/COORDINATION.md
 !.claude/README.md
+!.claude/global/
 
 # Machine-local Claude directories (never synced)
 .claude/settings.local.json
