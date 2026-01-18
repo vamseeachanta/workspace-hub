@@ -26,6 +26,18 @@ Agents on-demand: `@.claude/agent-library/<category>/<agent>.md`
 ## Skills
 `/skills` for list. Load on-demand only.
 
+## Plan Mode Convention
+When using plan mode, save plan files to: `specs/modules/<module>/`
+- `<module>` = relevant module name (e.g., orcaflex, orcawave, mooring, fatigue)
+- Example: `specs/modules/orcaflex/riser-analysis-plan.md`
+- Example: `specs/modules/hydrodynamics/rao-import-plan.md`
+
+**Templates**: Use `specs/templates/plan-template.md` (full) or `plan-template-minimal.md`
+
+**Required Metadata**: `title`, `description`, `version`, `module`, `session.id`, `session.agent`, `review`
+
+**Cross-Review (MANDATORY)**: Min 3 iterations with OpenAI Codex + Google Gemini before implementation
+
 ## SPARC Modes
 `/sparc-*` commands available: architect, coder, reviewer, tester, planner
 
