@@ -150,8 +150,16 @@ if git submodule status &> /dev/null; then
     # Only update if there are uninitialized submodules
     UNINIT_COUNT=$(git submodule status | grep -c "^-" || true)
     if [ "$UNINIT_COUNT" -gt 0 ]; then
-        echo -e "${YELLOW}  Initializing $UNINIT_COUNT submodules...${NC}"
-        git submodule update --init --recursive
+        echo -e "${YELLOW}  Initializing $UNINIT_COUNT submodules (non-recursive to avoid nested issues)...${NC}"
+        # Use non-recursive to avoid nested submodule issues
+        if git submodule update --init 2>/dev/null; then
+            echo -e "${GREEN}  ✓ Submodules initialized${NC}"
+        else
+            echo -e "${YELLOW}  ⚠ Some submodules failed to initialize (non-critical)${NC}"
+            echo -e "${YELLOW}    Run 'git submodule update --init' manually if needed${NC}"
+        fi
+    else
+        echo -e "${GREEN}  ✓ All submodules already initialized${NC}"
     fi
 else
     echo -e "${YELLOW}  No submodules found${NC}"
