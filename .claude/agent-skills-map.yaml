@@ -237,17 +237,18 @@ delegation_patterns:
       - "Best practices check"
 
 # =============================================================================
-# UNUSED/DEPRECATED AGENTS
+# ARCHIVED AGENTS (Moved to _archive/)
 # =============================================================================
-# These agents overlap with native Claude Code capabilities or are rarely used.
-# Consider removing or archiving.
+# These agents were archived on 2026-01-18 for complexity reduction.
+# See .claude/agent-library/_archive/README.md for restoration instructions.
 
-deprecated:
-  - consensus/*        # Overkill for single-user, use Task tool
-  - flow-nexus/*       # External platform integration
-  - hive-mind/*        # Complex orchestration not needed
-  - optimization/*     # Task tool handles this
-  - neural/*           # Experimental
-  - goal/*             # Planning covered by core/planner
+archived:
+  - _archive/consensus/*    # Byzantine/Raft - overkill for single-user
+  - _archive/flow-nexus/*   # External platform integration
+  - _archive/hive-mind/*    # Complex swarm replaced by Task tool
+  - _archive/optimization/* # Task tool handles this
+  - _archive/neural/*       # Experimental
+  - _archive/goal/*         # Planning covered by core/planner
 
-# Recommendation: Archive deprecated agents to .claude/agent-library/_archive/
+# Active agents: 55 (reduced from 84)
+# Active skills: 90
