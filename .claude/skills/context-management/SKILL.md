@@ -1,158 +1,100 @@
 # Context Management Skill
 
-> Version: 1.1.0
+> Version: 2.0.0
 > Created: 2026-01-14
-> Updated: 2026-01-17
-> Purpose: Prevent context overflow through efficient response patterns
+> Updated: 2026-01-18
+> Purpose: Manage context files, enforce limits, and continuously improve based on work patterns
 
 ## Quick Reference
 
 ```
-%ctx = (current_tokens / 80000) * 100
-Alert: >60% = archive older exchanges
-Critical: >80% = trim to essentials only
+CLAUDE.md Limits:
+- Global (~/.claude/CLAUDE.md): 2KB max
+- Workspace CLAUDE.md: 4KB max
+- Project CLAUDE.md: 8KB max
+- CLAUDE.local.md: 2KB max
+- Total Active: 16KB (~4K tokens)
+
+Runtime Context:
+- %ctx = (current_tokens / 200000) * 100
+- Alert: >60% = archive older exchanges
+- Critical: >80% = trim to essentials only
 ```
 
-## Response Format Rules
+---
 
-### Output Constraints
-- **Tables**: Maximum 10 rows, summarize remainder with counts
+## Part 1: Context File Management
+
+### Size Limits (MANDATORY)
+
+| File | Max Size | Max Lines | Purpose |
+|------|----------|-----------|---------|
+| `~/.claude/CLAUDE.md` | 2KB | 50 | Global preferences |
+| Workspace `CLAUDE.md` | 4KB | 100 | Delegation patterns |
+| Project `CLAUDE.md` | 8KB | 200 | Project rules |
+| `CLAUDE.local.md` | 2KB | 50 | User overrides |
+
+### Validation Command
+
+```bash
+# Run validation across all repos
+./scripts/context/validate_context.sh
+
+# Check single repo
+./scripts/context/validate_context.sh digitalmodel
+```
+
+### Content Categories
+
+**MUST be in CLAUDE.md:**
+- Mandatory behavioral rules (TDD, batching, etc.)
+- Plan mode conventions
+- Cross-review requirements
+- File organization rules
+- Key delegation patterns
+
+**MUST be in .claude/docs/ (reference):**
+- Agent lists and descriptions
+- MCP tool reference tables
+- Execution workflow diagrams
+- Code examples and patterns
+- Memory namespace details
+
+### Automated Improvement
+
+The skill analyzes past work to suggest improvements:
+
+1. **Pattern Detection**: Identifies frequently used instructions
+2. **Redundancy Removal**: Flags duplicate content across files
+3. **Usage Analysis**: Tracks which docs are actually loaded
+4. **Suggestion Generation**: Proposes optimizations
+
+---
+
+## Part 2: Runtime Context Management
+
+### Response Format Rules
+
+#### Output Constraints
+- **Tables**: Maximum 10 rows, summarize remainder
 - **Code blocks**: Maximum 50 lines, split larger into files
-- **Lists**: Maximum 15 items, aggregate beyond that
+- **Lists**: Maximum 15 items, aggregate beyond
 - **Large outputs**: Write to `.claude/outputs/`, return path only
 
-### Mandatory Response Ending
-Every response MUST end with status line:
+#### Mandatory Response Ending
 ```
-STATUS: [complete|in_progress|blocked] | NEXT: [single action] | KEY: [metric=value pairs]
-```
-
-Example:
-```
-STATUS: complete | NEXT: Run pytest on digitalmodel | KEY: repos=5, passed=4, blocked=1
+STATUS: [complete|in_progress|blocked] | NEXT: [action] | KEY: [metrics]
 ```
 
-## Prohibited Actions
+### Prohibited Actions
 
-1. **No Echo**: Never repeat input data back to user
-2. **No Redundancy**: Don't repeat previous findings unless explicitly asked
-3. **No Over-Explanation**: Keep explanations ≤3 sentences unless requested
-4. **No Raw Content**: Use file paths instead of pasting file contents
+1. **No Echo**: Never repeat input data back
+2. **No Redundancy**: Don't repeat previous findings
+3. **No Over-Explanation**: Keep explanations ≤3 sentences
+4. **No Raw Content**: Use file paths instead of pasting
 5. **No Unbounded Lists**: Always cap with "and N more..."
 
-## Mandatory Patterns
-
-### Summarize Before Returning
-```python
-# BAD: Return full list
-return all_test_results  # 500 items
-
-# GOOD: Summarize
-return {
-    "total": 500,
-    "passed": 480,
-    "failed": 20,
-    "details_file": ".claude/outputs/test_results.json"
-}
-```
-
-### Use File References
-```python
-# BAD: Paste content
-print(open("large_file.py").read())
-
-# GOOD: Reference
-print("See: src/module/large_file.py:45-120")
-```
-
-### Aggregate Counts
-```python
-# BAD: List all
-["repo1", "repo2", "repo3", ... "repo25"]
-
-# GOOD: Aggregate
-"25 repositories (15 Work, 10 Personal)"
-```
-
-## Context Checkpoints
-
-After major operations, create checkpoint:
-```markdown
-## Checkpoint: [TASK_NAME]
-**Status:** [complete|in_progress|blocked]
-**Key Findings:** [3-5 bullets max]
-**Files Modified:** [paths only]
-**Next Action:** [single sentence]
-**Critical Values:** [key=value pairs]
-```
-
-Save to: `.claude/checkpoints/YYYY-MM-DD-task-name.md`
-
-## Recovery Patterns
-
-### Recovery from High Context (>60%)
-When context exceeds threshold:
-1. Create checkpoint immediately with current state
-2. Write active task details to `.claude/outputs/session-state.json`
-3. Clear verbose history from working memory
-4. Continue with checkpoint reference only
-
-```python
-# Recovery state structure
-{
-  "checkpoint": "YYYY-MM-DD-task-name.md",
-  "active_task": "description",
-  "files_in_scope": ["path1", "path2"],
-  "pending_actions": ["action1"],
-  "critical_values": {"key": "value"}
-}
-```
-
-### Auto-Archive Triggers
-| Threshold | Action |
-|-----------|--------|
-| 60% | Archive completed task summaries to checkpoint |
-| 70% | Compress repeated file reads to line references |
-| 80% | Emergency trim - retain only current task essentials |
-| 90% | Force checkpoint, request fresh context from user |
-
-### Context Recovery Commands
-```bash
-# Resume from checkpoint
-"Resume from checkpoint: .claude/checkpoints/YYYY-MM-DD-task.md"
-
-# Load minimal context
-"Continue task [name] - checkpoint saved, load essentials only"
-```
-
-### Subagent Output Enforcement
-Worker outputs MUST:
-- Return ≤500 chars to coordinator
-- Write full results to `.claude/outputs/<task-id>.json`
-- Include file path in summary response
-- Never echo input parameters back
-
-## Session Metrics
-Track in STATUS line for monitoring:
-```
-KEY: files_read=N, tools_called=N, subagents=N, outputs_written=N, %ctx=N
-```
-
-## Worker Response Contract
-
-When spawning subagents, enforce summary-only returns:
-```json
-{
-  "worker_id": "string",
-  "status": "complete|failed|blocked",
-  "summary": "1-2 sentence result",
-  "output_file": "path to detailed results",
-  "next_action": "recommended next step",
-  "key_metrics": {"metric": "value"}
-}
-```
-
-## Context Health Indicators
+### Context Health Indicators
 
 | %ctx | Status | Action |
 |------|--------|--------|
@@ -161,26 +103,106 @@ When spawning subagents, enforce summary-only returns:
 | 60-80% | 🟠 High | Archive older exchanges |
 | 80-100% | 🔴 Critical | Trim to essentials |
 
-## Integration
+### Recovery Patterns
 
-### With TodoWrite
-- Track tasks, don't describe them
-- Mark complete immediately after finishing
-- One in_progress at a time
+When context exceeds threshold:
+1. Create checkpoint with current state
+2. Write to `.claude/outputs/session-state.json`
+3. Clear verbose history
+4. Continue with checkpoint reference only
 
-### With Task Tool
-- Spawn workers with `--output-format summary`
-- Workers return JSON contract, not full output
-- Coordinator aggregates summaries only
+---
 
-### With File Operations
-- Write large outputs to `.claude/outputs/`
-- Return file path, not content
-- Use relative paths from workspace root
+## Part 3: Continuous Improvement
+
+### Learning from Past Work
+
+The skill tracks patterns across sessions:
+
+```yaml
+# .claude/state/context-patterns.yaml
+patterns:
+  frequently_referenced:
+    - ".claude/docs/agents.md"  # 45 loads
+    - ".claude/docs/execution-patterns.md"  # 32 loads
+  rarely_used:
+    - "verbose section X"  # 0 references in 30 days
+  suggested_additions:
+    - "Add shortcut for OrcaFlex batch processing"
+improvement_suggestions:
+  - "Move agent list to reference doc (saves 1.5KB)"
+  - "Consolidate duplicate file org rules"
+```
+
+### Daily Analysis Tasks
+
+1. **Size Check**: Validate all CLAUDE.md files against limits
+2. **Pattern Analysis**: Analyze git commits for instruction patterns
+3. **Usage Tracking**: Check which docs were loaded
+4. **Suggestion Generation**: Create improvement proposals
+5. **Report Generation**: Output daily health report
+
+### Improvement Workflow
+
+```
+1. Validate sizes → Report violations
+2. Analyze patterns → Identify redundancy
+3. Check usage → Find unused content
+4. Generate suggestions → Propose changes
+5. Apply approved changes → Update files
+6. Commit → Track improvements
+```
+
+---
+
+## Part 4: Scripts
+
+### validate_context.sh
+
+Location: `scripts/context/validate_context.sh`
+
+Validates context file sizes and generates report.
+
+### analyze_patterns.sh
+
+Location: `scripts/context/analyze_patterns.sh`
+
+Analyzes git history to identify instruction patterns.
+
+### improve_context.sh
+
+Location: `scripts/context/improve_context.sh`
+
+Applies approved improvements to context files.
+
+### daily_context_check.sh
+
+Location: `scripts/context/daily_context_check.sh`
+
+Runs all checks and generates daily report.
+
+---
+
+## Part 5: Scheduled Execution
+
+### Windows Task Scheduler
+
+Task: `ContextManagementDaily`
+Schedule: Daily at 6:00 AM
+Action: `scripts/context/daily_context_check.sh`
+Output: `.claude/reports/context-health-YYYY-MM-DD.md`
+
+### Setup Command
+
+```powershell
+# Run as Administrator
+schtasks /create /tn "ContextManagementDaily" /tr "D:\workspace-hub\scripts\context\daily_context_check.sh" /sc daily /st 06:00
+```
 
 ---
 
 ## Version History
 
-- **1.1.0** (2026-01-17): Add recovery patterns, auto-archive triggers, session metrics
+- **2.0.0** (2026-01-18): Add file management, continuous improvement, scheduled tasks
+- **1.1.0** (2026-01-17): Add recovery patterns, auto-archive triggers
 - **1.0.0** (2026-01-14): Initial context management skill
