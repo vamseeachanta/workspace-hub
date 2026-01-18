@@ -97,6 +97,7 @@
       }
     ]
   },
+  "plansDirectory": "specs/modules",
   "includeCoAuthoredBy": true,
   "enabledMcpjsonServers": []
 }
