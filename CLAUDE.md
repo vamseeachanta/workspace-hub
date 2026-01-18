@@ -25,3 +25,6 @@ Agents on-demand: `@.claude/agent-library/<category>/<agent>.md`
 
 ## Skills
 `/skills` for list. Load on-demand only.
+
+## SPARC Modes
+`/sparc-*` commands available: architect, coder, reviewer, tester, planner
