@@ -2,9 +2,9 @@
 
 > Comprehensive skill library for workspace-hub repositories
 
-**Version:** 3.0.0
+**Version:** 3.1.0
 **Updated:** 2026-01-17
-**Total Skills:** 74 (31 existing + 43 new)
+**Total Skills:** 77 (31 existing + 46 new)
 
 ## Skill Categories
 
@@ -17,11 +17,11 @@
 | **Automation** | 5 | Workflow automation platforms |
 | **AI-Prompting** | 5 | LLM and prompt engineering |
 | **Office-Docs** | 5 | Document generation |
-| **Data-Analysis** | 7 | Data exploration and reporting |
+| **Data-Analysis** | 8 | Data exploration and reporting |
 | **Productivity** | 5 | Task and knowledge management |
 | **Documentation** | 6 | Technical documentation |
 | **Communication** | 4 | Team collaboration APIs |
-| **Devtools** | 5 | Developer tooling |
+| **Devtools** | 7 | Developer tooling |
 
 ---
 
@@ -145,11 +145,11 @@ Skills for automation, document generation, data analysis, and team collaboratio
 | **automation/** | 5 | Workflow automation platforms |
 | **ai-prompting/** | 5 | LLM and prompt engineering |
 | **office-docs/** | 5 | Document generation |
-| **data-analysis/** | 7 | Data exploration and reporting |
+| **data-analysis/** | 8 | Data exploration and reporting |
 | **productivity/** | 5 | Task and knowledge management |
 | **documentation/** | 6 | Technical documentation |
 | **communication/** | 4 | Team collaboration APIs |
-| **devtools/** | 5 | Developer tooling |
+| **devtools/** | 7 | Developer tooling |
 
 ---
 
@@ -214,6 +214,7 @@ Data exploration, profiling, and interactive reporting.
 | **ydata-profiling** | Automated data profiling reports | High |
 | **great-tables** | Publication-quality tables in Python | Medium |
 | **sweetviz** | EDA and dataset comparison reports | Medium |
+| **bsee-sodir-extraction** | BSEE/SODIR energy regulatory data extraction | High |
 
 **Location:** `skills/data-analysis/`
 
@@ -278,6 +279,8 @@ Developer productivity and tooling.
 | **vscode-extensions** | VS Code extension development | Medium |
 | **raycast-alfred** | Launcher automation and scripts | Low |
 | **git-advanced** | Advanced git workflows and automation | High |
+| **uv-package-manager** | Fast Python package management with UV | High |
+| **pyproject-toml** | Modern Python project configuration | High |
 
 **Location:** `skills/devtools/`
 
