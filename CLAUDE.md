@@ -8,6 +8,8 @@
 2. **Batch operations** - Single messages
 3. **YAGNI** - Only what's needed
 4. **No sycophancy** - Ask questions when unclear
+5. **Use repo uv environment** - All tasks execute in project's uv environment
+6. **Task completion tracking** - Mark tasks `[x]` with timestamps in tasks.md
 
 ## Delegation Pattern
 
@@ -44,6 +46,11 @@ Save plans to: `specs/modules/<module>/`
 ## SPARC Modes
 
 `/sparc-*` commands: architect, coder, reviewer, tester, planner
+
+## Command Conventions
+
+- `/create-spec` - Assign agents by task, use parallel subagents
+- `/execute-tasks` - Use repo uv environment, mark completed tasks `[x]`
 
 ## Context Limits (MANDATORY)
 
