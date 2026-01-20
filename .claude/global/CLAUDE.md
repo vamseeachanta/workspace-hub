@@ -5,6 +5,13 @@
 - No mocks: Use real data
 - Ask before implementing
 
+## Orchestration Model
+**Claude Code CLI is the orchestrator** for all user prompts:
+- Plans and coordinates work
+- Spawns subagents for execution
+- Stays lean - delegates heavy lifting
+- Never executes complex tasks directly
+
 ## Delegation Pattern
 Main agent stays lean for planning. Delegate execution to subagents:
 
