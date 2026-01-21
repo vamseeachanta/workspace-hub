@@ -181,6 +181,27 @@ Location: `scripts/context/daily_context_check.sh`
 
 Runs all checks and generates daily report.
 
+### optimize_mcp_context.sh
+
+Location: `scripts/optimize-mcp-context.sh`
+
+Optimizes MCP configuration across workspace repos by removing bloated servers (flow-nexus, agentic-payments) to save ~8,500 tokens per repo.
+
+```bash
+# Dry run - see what would change
+./scripts/optimize-mcp-context.sh --dry-run
+
+# Apply lean config (claude-flow only)
+./scripts/optimize-mcp-context.sh --lean
+
+# Apply config with swarm support
+./scripts/optimize-mcp-context.sh --with-swarm
+```
+
+Templates used:
+- `templates/mcp-lean.json` - Minimal (claude-flow@alpha only)
+- `templates/mcp-with-swarm.json` - With swarm (adds ruv-swarm)
+
 ---
 
 ## Part 5: Scheduled Execution
@@ -191,6 +212,15 @@ Task: `ContextManagementDaily`
 Schedule: Daily at 6:00 AM
 Action: `scripts/context/daily_context_check.sh`
 Output: `.claude/reports/context-health-YYYY-MM-DD.md`
+
+### Daily Check Includes
+
+The `daily_context_check.sh` script runs:
+1. `validate_context.sh` - Size validation
+2. `analyze_patterns.sh` - Pattern analysis (7 days)
+3. `improve_context.sh --dry-run` - Improvement suggestions
+4. `optimize-mcp-context.sh --dry-run` - MCP optimization check
+5. Repository status table generation
 
 ### Setup Command
 
