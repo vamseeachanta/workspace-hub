@@ -1,0 +1,719 @@
+# Skill Registry for Claude Code Commands
+# Auto-generated from .claude/commands/
+# Last updated: 2026-01-21
+
+skills:
+  # agents/
+  - name: "agents/agent-capabilities"
+    description: "Matrix of agent capabilities and their specializations"
+    archived: false
+    path: ".claude/commands/agents/agent-capabilities.md"
+
+  - name: "agents/agent-coordination"
+    description: "Coordination patterns for multi-agent collaboration"
+    archived: false
+    path: ".claude/commands/agents/agent-coordination.md"
+
+  - name: "agents/agent-spawning"
+    description: "Guide to spawning agents with Claude Code's Task tool"
+    archived: false
+    path: ".claude/commands/agents/agent-spawning.md"
+
+  - name: "agents/agent-types"
+    description: "Complete guide to all 54 available agent types"
+    archived: false
+    path: ".claude/commands/agents/agent-types.md"
+
+  # analysis/
+  - name: "analysis/bottleneck-detect"
+    description: "Analyze performance bottlenecks and suggest optimizations"
+    archived: false
+    path: ".claude/commands/analysis/bottleneck-detect.md"
+
+  - name: "analysis/COMMAND_COMPLIANCE_REPORT"
+    description: "Analysis Commands Compliance Report"
+    archived: false
+    path: ".claude/commands/analysis/COMMAND_COMPLIANCE_REPORT.md"
+
+  - name: "analysis/performance-bottlenecks"
+    description: "Identify and resolve performance bottlenecks"
+    archived: false
+    path: ".claude/commands/analysis/performance-bottlenecks.md"
+
+  - name: "analysis/performance-report"
+    description: "Generate comprehensive performance reports for swarm operations"
+    archived: false
+    path: ".claude/commands/analysis/performance-report.md"
+
+  - name: "analysis/token-efficiency"
+    description: "Reduce token consumption while maintaining quality"
+    archived: false
+    path: ".claude/commands/analysis/token-efficiency.md"
+
+  - name: "analysis/token-usage"
+    description: "Analyze token usage patterns and optimize for efficiency"
+    archived: false
+    path: ".claude/commands/analysis/token-usage.md"
+
+  # automation/
+  - name: "automation/auto-agent"
+    description: "Automatically spawn and manage agents based on task requirements"
+    archived: false
+    path: ".claude/commands/automation/auto-agent.md"
+
+  - name: "automation/self-healing"
+    description: "Automatically detect and recover from errors"
+    archived: false
+    path: ".claude/commands/automation/self-healing.md"
+
+  - name: "automation/session-memory"
+    description: "Maintain context and learnings across Claude Code sessions"
+    archived: false
+    path: ".claude/commands/automation/session-memory.md"
+
+  - name: "automation/smart-agents"
+    description: "Automatically spawn the right agents at the right time"
+    archived: false
+    path: ".claude/commands/automation/smart-agents.md"
+
+  - name: "automation/smart-spawn"
+    description: "Intelligently spawn agents based on workload analysis"
+    archived: false
+    path: ".claude/commands/automation/smart-spawn.md"
+
+  - name: "automation/workflow-select"
+    description: "Automatically select optimal workflow based on task type"
+    archived: false
+    path: ".claude/commands/automation/workflow-select.md"
+
+  # coordination/
+  - name: "coordination/agent-spawn"
+    description: "Spawn a new agent in the current swarm"
+    archived: false
+    path: ".claude/commands/coordination/agent-spawn.md"
+
+  - name: "coordination/init"
+    description: "Initialize Coordination Framework"
+    archived: false
+    path: ".claude/commands/coordination/init.md"
+
+  - name: "coordination/orchestrate"
+    description: "Coordinate Task Execution"
+    archived: false
+    path: ".claude/commands/coordination/orchestrate.md"
+
+  - name: "coordination/spawn"
+    description: "Create Cognitive Patterns"
+    archived: false
+    path: ".claude/commands/coordination/spawn.md"
+
+  - name: "coordination/swarm-init"
+    description: "Initialize a Claude Flow swarm with specified topology"
+    archived: false
+    path: ".claude/commands/coordination/swarm-init.md"
+
+  - name: "coordination/task-orchestrate"
+    description: "Orchestrate complex tasks across the swarm"
+    archived: false
+    path: ".claude/commands/coordination/task-orchestrate.md"
+
+  # github/
+  - name: "github/code-review"
+    description: "Automated code review with swarm intelligence"
+    archived: false
+    path: ".claude/commands/github/code-review.md"
+
+  - name: "github/code-review-swarm"
+    description: "Automated Code Review with AI Agents"
+    archived: false
+    path: ".claude/commands/github/code-review-swarm.md"
+
+  - name: "github/github-modes"
+    description: "GitHub Integration Modes"
+    archived: false
+    path: ".claude/commands/github/github-modes.md"
+
+  - name: "github/github-swarm"
+    description: "Create a specialized swarm for GitHub repository management"
+    archived: false
+    path: ".claude/commands/github/github-swarm.md"
+
+  - name: "github/issue-tracker"
+    description: "Intelligent issue management and project coordination"
+    archived: false
+    path: ".claude/commands/github/issue-tracker.md"
+
+  - name: "github/issue-triage"
+    description: "Intelligent issue classification and triage"
+    archived: false
+    path: ".claude/commands/github/issue-triage.md"
+
+  - name: "github/multi-repo-swarm"
+    description: "Cross-Repository Swarm Orchestration"
+    archived: false
+    path: ".claude/commands/github/multi-repo-swarm.md"
+
+  - name: "github/pr-enhance"
+    description: "AI-powered pull request enhancements"
+    archived: false
+    path: ".claude/commands/github/pr-enhance.md"
+
+  - name: "github/pr-manager"
+    description: "Comprehensive pull request management with swarm coordination"
+    archived: false
+    path: ".claude/commands/github/pr-manager.md"
+
+  - name: "github/project-board-sync"
+    description: "GitHub Projects Integration"
+    archived: false
+    path: ".claude/commands/github/project-board-sync.md"
+
+  - name: "github/release-manager"
+    description: "Automated release coordination and deployment"
+    archived: false
+    path: ".claude/commands/github/release-manager.md"
+
+  - name: "github/release-swarm"
+    description: "Intelligent Release Automation"
+    archived: false
+    path: ".claude/commands/github/release-swarm.md"
+
+  - name: "github/repo-analyze"
+    description: "Deep analysis of GitHub repository with AI insights"
+    archived: false
+    path: ".claude/commands/github/repo-analyze.md"
+
+  - name: "github/repo-architect"
+    description: "Repository structure optimization and multi-repo management"
+    archived: false
+    path: ".claude/commands/github/repo-architect.md"
+
+  - name: "github/swarm-issue"
+    description: "Issue-Based Swarm Coordination"
+    archived: false
+    path: ".claude/commands/github/swarm-issue.md"
+
+  - name: "github/swarm-pr"
+    description: "Managing Swarms through Pull Requests"
+    archived: false
+    path: ".claude/commands/github/swarm-pr.md"
+
+  - name: "github/sync-coordinator"
+    description: "Multi-package synchronization and version alignment"
+    archived: false
+    path: ".claude/commands/github/sync-coordinator.md"
+
+  - name: "github/workflow-automation"
+    description: "GitHub Actions Integration"
+    archived: false
+    path: ".claude/commands/github/workflow-automation.md"
+
+  # hooks/
+  - name: "hooks/overview"
+    description: "Claude Code Hooks for claude-flow"
+    archived: false
+    path: ".claude/commands/hooks/overview.md"
+
+  - name: "hooks/post-edit"
+    description: "Execute post-edit processing including formatting and validation"
+    archived: false
+    path: ".claude/commands/hooks/post-edit.md"
+
+  - name: "hooks/post-task"
+    description: "Execute post-task cleanup, performance analysis, and memory"
+    archived: false
+    path: ".claude/commands/hooks/post-task.md"
+
+  - name: "hooks/pre-edit"
+    description: "Execute pre-edit validations and agent assignment"
+    archived: false
+    path: ".claude/commands/hooks/pre-edit.md"
+
+  - name: "hooks/pre-task"
+    description: "Execute pre-task preparations and context loading"
+    archived: false
+    path: ".claude/commands/hooks/pre-task.md"
+
+  - name: "hooks/session-end"
+    description: "Cleanup and persist session state before ending work"
+    archived: false
+    path: ".claude/commands/hooks/session-end.md"
+
+  - name: "hooks/setup"
+    description: "Setting Up ruv-swarm Hooks"
+    archived: false
+    path: ".claude/commands/hooks/setup.md"
+
+  # memory/
+  - name: "memory/memory-persist"
+    description: "Persist memory across sessions"
+    archived: false
+    path: ".claude/commands/memory/memory-persist.md"
+
+  - name: "memory/memory-search"
+    description: "Search through stored memory"
+    archived: false
+    path: ".claude/commands/memory/memory-search.md"
+
+  - name: "memory/memory-usage"
+    description: "Manage persistent memory storage"
+    archived: false
+    path: ".claude/commands/memory/memory-usage.md"
+
+  - name: "memory/neural"
+    description: "Neural Pattern Training"
+    archived: false
+    path: ".claude/commands/memory/neural.md"
+
+  - name: "memory/usage"
+    description: "Memory Management"
+    archived: false
+    path: ".claude/commands/memory/usage.md"
+
+  # monitoring/
+  - name: "monitoring/agent-metrics"
+    description: "View agent performance metrics"
+    archived: false
+    path: ".claude/commands/monitoring/agent-metrics.md"
+
+  - name: "monitoring/agents"
+    description: "List Active Patterns"
+    archived: false
+    path: ".claude/commands/monitoring/agents.md"
+
+  - name: "monitoring/real-time-view"
+    description: "Real-time view of swarm activity"
+    archived: false
+    path: ".claude/commands/monitoring/real-time-view.md"
+
+  - name: "monitoring/status"
+    description: "Check Coordination Status"
+    archived: false
+    path: ".claude/commands/monitoring/status.md"
+
+  - name: "monitoring/swarm-monitor"
+    description: "Real-time swarm monitoring"
+    archived: false
+    path: ".claude/commands/monitoring/swarm-monitor.md"
+
+  # optimization/
+  - name: "optimization/auto-topology"
+    description: "Automatically select optimal swarm topology"
+    archived: false
+    path: ".claude/commands/optimization/auto-topology.md"
+
+  - name: "optimization/cache-manage"
+    description: "Manage operation cache for performance"
+    archived: false
+    path: ".claude/commands/optimization/cache-manage.md"
+
+  - name: "optimization/context-management"
+    description: "Optimize Claude Code context usage"
+    archived: false
+    path: ".claude/commands/optimization/context-management.md"
+
+  - name: "optimization/parallel-execute"
+    description: "Execute tasks in parallel for maximum efficiency"
+    archived: false
+    path: ".claude/commands/optimization/parallel-execute.md"
+
+  - name: "optimization/parallel-execution"
+    description: "Execute independent subtasks in parallel"
+    archived: false
+    path: ".claude/commands/optimization/parallel-execution.md"
+
+  - name: "optimization/topology-optimize"
+    description: "Optimize swarm topology for current workload"
+    archived: false
+    path: ".claude/commands/optimization/topology-optimize.md"
+
+  # pair/
+  - name: "pair/commands"
+    description: "Pair Programming Commands Reference"
+    archived: false
+    path: ".claude/commands/pair/commands.md"
+
+  - name: "pair/config"
+    description: "Pair Programming Configuration"
+    archived: false
+    path: ".claude/commands/pair/config.md"
+
+  - name: "pair/examples"
+    description: "Pair Programming Examples"
+    archived: false
+    path: ".claude/commands/pair/examples.md"
+
+  - name: "pair/modes"
+    description: "Pair Programming Modes"
+    archived: false
+    path: ".claude/commands/pair/modes.md"
+
+  - name: "pair/session"
+    description: "Pair Programming Session Management"
+    archived: false
+    path: ".claude/commands/pair/session.md"
+
+  - name: "pair/start"
+    description: "Start a new pair programming session with AI assistance"
+    archived: false
+    path: ".claude/commands/pair/start.md"
+
+  # sparc/
+  - name: "sparc/analyzer"
+    description: "Deep code and data analysis with batch processing"
+    archived: false
+    path: ".claude/commands/sparc/analyzer.md"
+
+  - name: "sparc/architect"
+    description: "System design with Memory-based coordination"
+    archived: false
+    path: ".claude/commands/sparc/architect.md"
+
+  - name: "sparc/batch-executor"
+    description: "Parallel task execution specialist using batch operations"
+    archived: false
+    path: ".claude/commands/sparc/batch-executor.md"
+
+  - name: "sparc/coder"
+    description: "Autonomous code generation with batch file operations"
+    archived: false
+    path: ".claude/commands/sparc/coder.md"
+
+  - name: "sparc/debugger"
+    description: "Systematic debugging with TodoWrite and Memory integration"
+    archived: false
+    path: ".claude/commands/sparc/debugger.md"
+
+  - name: "sparc/designer"
+    description: "UI/UX design with Memory coordination"
+    archived: false
+    path: ".claude/commands/sparc/designer.md"
+
+  - name: "sparc/documenter"
+    description: "Documentation with batch file operations"
+    archived: false
+    path: ".claude/commands/sparc/documenter.md"
+
+  - name: "sparc/innovator"
+    description: "Creative problem solving with WebSearch and Memory"
+    archived: false
+    path: ".claude/commands/sparc/innovator.md"
+
+  - name: "sparc/memory-manager"
+    description: "Knowledge management with Memory tools"
+    archived: false
+    path: ".claude/commands/sparc/memory-manager.md"
+
+  - name: "sparc/optimizer"
+    description: "Performance optimization with systematic analysis"
+    archived: false
+    path: ".claude/commands/sparc/optimizer.md"
+
+  - name: "sparc/orchestrator"
+    description: "Multi-agent task orchestration with MCP tools"
+    archived: false
+    path: ".claude/commands/sparc/orchestrator.md"
+
+  - name: "sparc/researcher"
+    description: "Deep research with parallel WebSearch and Memory"
+    archived: false
+    path: ".claude/commands/sparc/researcher.md"
+
+  - name: "sparc/reviewer"
+    description: "Code review using batch file analysis"
+    archived: false
+    path: ".claude/commands/sparc/reviewer.md"
+
+  - name: "sparc/sparc-modes"
+    description: "SPARC Modes Overview"
+    archived: false
+    path: ".claude/commands/sparc/sparc-modes.md"
+
+  - name: "sparc/swarm-coordinator"
+    description: "Specialized swarm management with batch coordination"
+    archived: false
+    path: ".claude/commands/sparc/swarm-coordinator.md"
+
+  - name: "sparc/tdd"
+    description: "Test-driven development with TodoWrite planning"
+    archived: false
+    path: ".claude/commands/sparc/tdd.md"
+
+  - name: "sparc/tester"
+    description: "Comprehensive testing with parallel execution"
+    archived: false
+    path: ".claude/commands/sparc/tester.md"
+
+  - name: "sparc/workflow-manager"
+    description: "Process automation with TodoWrite and Task execution"
+    archived: false
+    path: ".claude/commands/sparc/workflow-manager.md"
+
+  # stream-chain/
+  - name: "stream-chain/pipeline"
+    description: "Execute predefined pipelines for common workflows"
+    archived: false
+    path: ".claude/commands/stream-chain/pipeline.md"
+
+  - name: "stream-chain/run"
+    description: "Execute a custom stream chain with your own prompts"
+    archived: false
+    path: ".claude/commands/stream-chain/run.md"
+
+  # swarm/
+  - name: "swarm/analysis"
+    description: "Comprehensive analysis through distributed agent coordination"
+    archived: false
+    path: ".claude/commands/swarm/analysis.md"
+
+  - name: "swarm/development"
+    description: "Coordinated development through specialized agent teams"
+    archived: false
+    path: ".claude/commands/swarm/development.md"
+
+  - name: "swarm/examples"
+    description: "Common Swarm Patterns"
+    archived: false
+    path: ".claude/commands/swarm/examples.md"
+
+  - name: "swarm/maintenance"
+    description: "System maintenance and updates through coordinated agents"
+    archived: false
+    path: ".claude/commands/swarm/maintenance.md"
+
+  - name: "swarm/optimization"
+    description: "Performance optimization through specialized analysis"
+    archived: false
+    path: ".claude/commands/swarm/optimization.md"
+
+  - name: "swarm/research"
+    description: "Deep research through parallel information gathering"
+    archived: false
+    path: ".claude/commands/swarm/research.md"
+
+  - name: "swarm/swarm"
+    description: "Main swarm orchestration command for Claude Flow"
+    archived: false
+    path: ".claude/commands/swarm/swarm.md"
+
+  - name: "swarm/swarm-analysis"
+    description: "Swarm analysis command"
+    archived: false
+    path: ".claude/commands/swarm/swarm-analysis.md"
+
+  - name: "swarm/swarm-background"
+    description: "Swarm background command"
+    archived: false
+    path: ".claude/commands/swarm/swarm-background.md"
+
+  - name: "swarm/swarm-init"
+    description: "Initialize a new swarm with specified topology"
+    archived: false
+    path: ".claude/commands/swarm/swarm-init.md"
+
+  - name: "swarm/swarm-modes"
+    description: "Swarm modes command"
+    archived: false
+    path: ".claude/commands/swarm/swarm-modes.md"
+
+  - name: "swarm/swarm-monitor"
+    description: "Swarm monitor command"
+    archived: false
+    path: ".claude/commands/swarm/swarm-monitor.md"
+
+  - name: "swarm/swarm-spawn"
+    description: "Spawn agents in the swarm"
+    archived: false
+    path: ".claude/commands/swarm/swarm-spawn.md"
+
+  - name: "swarm/swarm-status"
+    description: "Swarm status command"
+    archived: false
+    path: ".claude/commands/swarm/swarm-status.md"
+
+  - name: "swarm/swarm-strategies"
+    description: "Swarm strategies command"
+    archived: false
+    path: ".claude/commands/swarm/swarm-strategies.md"
+
+  - name: "swarm/testing"
+    description: "Comprehensive testing through distributed execution"
+    archived: false
+    path: ".claude/commands/swarm/testing.md"
+
+  # training/
+  - name: "training/model-update"
+    description: "Update neural models with new data"
+    archived: false
+    path: ".claude/commands/training/model-update.md"
+
+  - name: "training/neural-patterns"
+    description: "Continuously improve coordination through neural learning"
+    archived: false
+    path: ".claude/commands/training/neural-patterns.md"
+
+  - name: "training/neural-train"
+    description: "Train neural patterns from operations"
+    archived: false
+    path: ".claude/commands/training/neural-train.md"
+
+  - name: "training/pattern-learn"
+    description: "Learn patterns from successful operations"
+    archived: false
+    path: ".claude/commands/training/pattern-learn.md"
+
+  - name: "training/specialization"
+    description: "Train agents to become experts in specific domains"
+    archived: false
+    path: ".claude/commands/training/specialization.md"
+
+  # truth/
+  - name: "truth/start"
+    description: "View truth scores and reliability metrics"
+    archived: false
+    path: ".claude/commands/truth/start.md"
+
+  # verify/
+  - name: "verify/check"
+    description: "Run verification checks on code, tasks, or agent outputs"
+    archived: false
+    path: ".claude/commands/verify/check.md"
+
+  - name: "verify/start"
+    description: "Truth verification system for code quality"
+    archived: false
+    path: ".claude/commands/verify/start.md"
+
+  # workflows/
+  - name: "workflows/development"
+    description: "Structure Claude Code's approach to complex development"
+    archived: false
+    path: ".claude/commands/workflows/development.md"
+
+  - name: "workflows/research"
+    description: "Coordinate Claude Code's research activities"
+    archived: false
+    path: ".claude/commands/workflows/research.md"
+
+  - name: "workflows/workflow-create"
+    description: "Create reusable workflow templates"
+    archived: false
+    path: ".claude/commands/workflows/workflow-create.md"
+
+  - name: "workflows/workflow-execute"
+    description: "Execute saved workflows"
+    archived: false
+    path: ".claude/commands/workflows/workflow-execute.md"
+
+  - name: "workflows/workflow-export"
+    description: "Export workflows for sharing"
+    archived: false
+    path: ".claude/commands/workflows/workflow-export.md"
+
+  # _archive/flow-nexus/
+  - name: "_archive/flow-nexus/app-store"
+    description: "Browse, publish, and deploy applications"
+    archived: true
+    path: ".claude/commands/_archive/flow-nexus/app-store.md"
+
+  - name: "_archive/flow-nexus/challenges"
+    description: "Coding challenges, achievements, and leaderboards"
+    archived: true
+    path: ".claude/commands/_archive/flow-nexus/challenges.md"
+
+  - name: "_archive/flow-nexus/login-registration"
+    description: "Flow Nexus authentication and user management"
+    archived: true
+    path: ".claude/commands/_archive/flow-nexus/login-registration.md"
+
+  - name: "_archive/flow-nexus/neural-network"
+    description: "Train and deploy neural networks in distributed sandboxes"
+    archived: true
+    path: ".claude/commands/_archive/flow-nexus/neural-network.md"
+
+  - name: "_archive/flow-nexus/payments"
+    description: "Credit management, billing, and payment configuration"
+    archived: true
+    path: ".claude/commands/_archive/flow-nexus/payments.md"
+
+  - name: "_archive/flow-nexus/sandbox"
+    description: "E2B sandbox management for isolated code execution"
+    archived: true
+    path: ".claude/commands/_archive/flow-nexus/sandbox.md"
+
+  - name: "_archive/flow-nexus/swarm"
+    description: "AI swarm deployment and coordination in cloud"
+    archived: true
+    path: ".claude/commands/_archive/flow-nexus/swarm.md"
+
+  - name: "_archive/flow-nexus/user-tools"
+    description: "User management, storage, and system utilities"
+    archived: true
+    path: ".claude/commands/_archive/flow-nexus/user-tools.md"
+
+  - name: "_archive/flow-nexus/workflow"
+    description: "Event-driven workflow automation with message queues"
+    archived: true
+    path: ".claude/commands/_archive/flow-nexus/workflow.md"
+
+  # _archive/hive-mind/
+  - name: "_archive/hive-mind/hive-mind"
+    description: "Hive Mind collective intelligence system"
+    archived: true
+    path: ".claude/commands/_archive/hive-mind/hive-mind.md"
+
+  - name: "_archive/hive-mind/hive-mind-consensus"
+    description: "Hive-mind consensus command"
+    archived: true
+    path: ".claude/commands/_archive/hive-mind/hive-mind-consensus.md"
+
+  - name: "_archive/hive-mind/hive-mind-init"
+    description: "Initialize the Hive Mind collective intelligence system"
+    archived: true
+    path: ".claude/commands/_archive/hive-mind/hive-mind-init.md"
+
+  - name: "_archive/hive-mind/hive-mind-memory"
+    description: "Hive-mind memory command"
+    archived: true
+    path: ".claude/commands/_archive/hive-mind/hive-mind-memory.md"
+
+  - name: "_archive/hive-mind/hive-mind-metrics"
+    description: "Hive-mind metrics command"
+    archived: true
+    path: ".claude/commands/_archive/hive-mind/hive-mind-metrics.md"
+
+  - name: "_archive/hive-mind/hive-mind-resume"
+    description: "Hive-mind resume command"
+    archived: true
+    path: ".claude/commands/_archive/hive-mind/hive-mind-resume.md"
+
+  - name: "_archive/hive-mind/hive-mind-sessions"
+    description: "Hive-mind sessions command"
+    archived: true
+    path: ".claude/commands/_archive/hive-mind/hive-mind-sessions.md"
+
+  - name: "_archive/hive-mind/hive-mind-spawn"
+    description: "Spawn a Hive Mind swarm with queen-led coordination"
+    archived: true
+    path: ".claude/commands/_archive/hive-mind/hive-mind-spawn.md"
+
+  - name: "_archive/hive-mind/hive-mind-status"
+    description: "Hive-mind status command"
+    archived: true
+    path: ".claude/commands/_archive/hive-mind/hive-mind-status.md"
+
+  - name: "_archive/hive-mind/hive-mind-stop"
+    description: "Hive-mind stop command"
+    archived: true
+    path: ".claude/commands/_archive/hive-mind/hive-mind-stop.md"
+
+  - name: "_archive/hive-mind/hive-mind-wizard"
+    description: "Hive-mind wizard command"
+    archived: true
+    path: ".claude/commands/_archive/hive-mind/hive-mind-wizard.md"
+
+# Summary
+# Total skills: 131
+# Active skills: 110
+# Archived skills: 21
+# Categories: agents, analysis, automation, coordination, github, hooks, memory, monitoring, optimization, pair, sparc, stream-chain, swarm, training, truth, verify, workflows

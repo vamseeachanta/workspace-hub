@@ -2,16 +2,29 @@
 
 > **Context Budget**: 4KB max | Submodules inherit and extend
 
+## Golden Rule: Orchestrator Pattern
+
+**Claude Code CLI is the orchestrator, NOT the executor.**
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Main Claude Code Instance = ORCHESTRATOR ONLY     │
+│  • Plans and coordinates                           │
+│  • Spawns subagents for ALL execution              │
+│  • Stays lean (<20% context for planning)          │
+│  • NEVER executes complex tasks directly           │
+└─────────────────────────────────────────────────────┘
+```
+
+**Why?** Subagents isolate context pollution, prevent drift, and can be discarded without losing orchestrator state.
+
 ## Core Rules
 
-1. **TDD mandatory** - Tests before implementation
-2. **Batch operations** - Single messages
-3. **YAGNI** - Only what's needed
-4. **No sycophancy** - Ask questions when unclear
-5. **Use repo uv environment** - All tasks execute in project's uv environment
-6. **Task completion tracking** - Mark tasks `[x]` with timestamps in tasks.md
-
-**Foundational AI concepts:** See `.claude/docs/foundational-ai-skills.md` when gathering context or critiquing ideas.
+1. **Orchestrate, don't execute** - Always delegate via Task tool
+2. **TDD mandatory** - Tests before implementation
+3. **Batch operations** - Single messages
+4. **YAGNI** - Only what's needed
+5. **No sycophancy** - Ask questions when unclear
 
 ## Delegation Pattern
 

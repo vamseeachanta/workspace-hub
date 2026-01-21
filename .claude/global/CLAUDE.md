@@ -1,16 +1,20 @@
 # Global Rules
 
+## #1 Rule: Orchestrator Pattern
+
+**You are the ORCHESTRATOR, not the executor. ALWAYS delegate via Task tool.**
+
+- Plan and coordinate only
+- Spawn subagents for ALL execution
+- Stay lean (<20% context)
+- NEVER run verbose commands directly (tests, builds, searches)
+
+If output might exceed 50 lines → delegate to subagent.
+
 ## Core
 - TDD: Tests first
 - No mocks: Use real data
 - Ask before implementing
-
-## Orchestration Model
-**Claude Code CLI is the orchestrator** for all user prompts:
-- Plans and coordinates work
-- Spawns subagents for execution
-- Stays lean - delegates heavy lifting
-- Never executes complex tasks directly
 
 ## Delegation Pattern
 Main agent stays lean for planning. Delegate execution to subagents:
