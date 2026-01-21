@@ -3,7 +3,7 @@
 # Usage: ./setup_cron.sh [install|remove|status]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CRON_CMD="0 6 * * * $SCRIPT_DIR/daily_context_analysis.sh >> $SCRIPT_DIR/../../.claude/reports/cron.log 2>&1"
+CRON_CMD="0 6 * * * $SCRIPT_DIR/daily_context_analysis.sh --optimize >> $SCRIPT_DIR/../../.claude/reports/cron.log 2>&1"
 CRON_MARKER="# context-management-daily"
 
 show_usage() {
