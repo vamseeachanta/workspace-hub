@@ -105,6 +105,9 @@ coverage.xml
 !.claude/CONFIGURATION.md
 !.claude/COORDINATION.md
 !.claude/README.md
+!.claude/global/
+!.claude/commands/
+!.claude/skill-registry.yaml
 
 # Machine-local Claude directories (never synced)
 .claude/settings.local.json

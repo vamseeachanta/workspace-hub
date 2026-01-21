@@ -63,6 +63,18 @@ cat >> "$REPORT_FILE" << EOF
 
 ---
 
+## MCP Optimization
+
+EOF
+
+# Run MCP optimization check
+echo "Checking MCP configuration..."
+"$WORKSPACE_ROOT/scripts/optimize-mcp-context.sh" --dry-run >> "$REPORT_FILE" 2>&1 || true
+
+cat >> "$REPORT_FILE" << EOF
+
+---
+
 ## Repository Status
 
 | Repository | CLAUDE.md Size | Status |
