@@ -163,7 +163,8 @@ SKILLS_ENHANCED=0
 LEARNINGS_STORED=0
 
 # Extract and process each cross-repo pattern
-jq -r '.cross_repo_patterns[] | "\(.message)|\(.repos | join(","))|\(.count)"' "$PATTERN_FILE" | while IFS='|' read -r message repos count; do
+# Using process substitution to avoid subshell (so counters persist)
+while IFS='|' read -r message repos count; do
     repo_count=$(echo "$repos" | tr ',' '\n' | wc -l)
     score=$(score_pattern "$repo_count" "$count" "$message")
 
@@ -175,21 +176,20 @@ jq -r '.cross_repo_patterns[] | "\(.message)|\(.repos | join(","))|\(.count)"' "
 
     # Determine action based on score
     if (( $(echo "$score >= $THRESHOLD_CREATE" | bc -l) )); then
-        echo "  Action: CREATE SKILL"
+        echo "  Action: CREATE SKILL ⭐⭐⭐"
         create_skill "$message" "Pattern detected in $repo_count repositories" "$repos" "$score"
         ((SKILLS_CREATED++)) || true
     elif (( $(echo "$score >= $THRESHOLD_ENHANCE" | bc -l) )); then
-        echo "  Action: ENHANCE EXISTING"
-        # For now, store as learning for manual enhancement
+        echo "  Action: ENHANCE EXISTING ⭐⭐"
         store_learning "$message" "$repos" "$score"
         ((SKILLS_ENHANCED++)) || true
     else
-        echo "  Action: STORE LEARNING"
+        echo "  Action: STORE LEARNING ⭐"
         store_learning "$message" "$repos" "$score"
         ((LEARNINGS_STORED++)) || true
     fi
     echo ""
-done
+done < <(jq -r '.cross_repo_patterns[] | "\(.message)|\(.repos | join(","))|\(.count)"' "$PATTERN_FILE")
 
 # Update state file
 STATE_FILE="${STATE_DIR}/reflect-state.yaml"
