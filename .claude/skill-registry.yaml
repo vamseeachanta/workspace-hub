@@ -712,8 +712,14 @@ skills:
     archived: true
     path: ".claude/commands/_archive/hive-mind/hive-mind-wizard.md"
 
+  # workspace-hub/
+  - name: "workspace-hub/reflect"
+    description: "Run periodic reflection on git history across all workspace-hub repositories"
+    archived: false
+    path: ".claude/commands/workspace-hub/reflect.md"
+
 # Summary
-# Total skills: 131
-# Active skills: 110
+# Total skills: 132
+# Active skills: 111
 # Archived skills: 21
-# Categories: agents, analysis, automation, coordination, github, hooks, memory, monitoring, optimization, pair, sparc, stream-chain, swarm, training, truth, verify, workflows
+# Categories: agents, analysis, automation, coordination, github, hooks, memory, monitoring, optimization, pair, sparc, stream-chain, swarm, training, truth, verify, workflows, workspace-hub
