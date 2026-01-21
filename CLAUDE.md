@@ -11,6 +11,8 @@
 5. **Use repo uv environment** - All tasks execute in project's uv environment
 6. **Task completion tracking** - Mark tasks `[x]` with timestamps in tasks.md
 
+**Foundational AI concepts:** See `.claude/docs/foundational-ai-skills.md` when gathering context or critiquing ideas.
+
 ## Delegation Pattern
 
 Keep main context free. Use Task tool for:
