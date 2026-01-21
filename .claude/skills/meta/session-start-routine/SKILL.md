@@ -408,13 +408,19 @@ Track over time:
 
 ## Related Skills
 
-- [skill-creator](../../builders/skill-creator/SKILL.md) - For creating new skills
-- [compliance-check](../../workspace-hub/compliance-check/SKILL.md) - For standards verification
-- [repo-sync](../../workspace-hub/repo-sync/SKILL.md) - For committing changes
+> **Note**: Skills may be at user-level (`~/.claude/skills/`) or workspace-level (`workspace-hub/.claude/skills/`)
+
+| Skill | Purpose | Location |
+|-------|---------|----------|
+| skill-creator | Create new skills | `workspace-hub/.claude/skills/builders/skill-creator/` |
+| context-management | Manage context limits | `.claude/skills/context-management/` |
+| dev-workflow | Development workflow | `.claude/skills/workflows/dev-workflow/` |
+| codex-review | Cross-review with Codex | `.claude/skills/workflows/codex-review/` |
 
 ---
 
 ## Version History
 
+- **2.0.1** (2026-01-20): Fixed related skills links - replaced broken relative paths with table format showing actual locations
 - **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, enhanced Metrics sections; enhanced frontmatter with version, category, related_skills
 - **1.0.0** (2025-12-30): Initial release - session start routine skill
