@@ -113,6 +113,22 @@ else
     log "extract-corrections.sh not found, skipping correction analysis"
 fi
 
+# Analyze full session transcripts
+SESSIONS_FOUND=0
+if [[ -x "$SCRIPT_DIR/analyze-sessions.sh" ]]; then
+    log "Analyzing session transcripts..."
+    SESSION_FILE="${PATTERNS_DIR}/sessions_${TIMESTAMP}.json"
+    "$SCRIPT_DIR/analyze-sessions.sh" "$DAYS" > "$SESSION_FILE" 2>> "$LOG_FILE" || true
+
+    if [[ -f "$SESSION_FILE" ]]; then
+        SESSIONS_FOUND=$(jq -r '.unique_sessions // 0' "$SESSION_FILE" 2>/dev/null || echo "0")
+        TOTAL_EVENTS=$(jq -r '.total_events // 0' "$SESSION_FILE" 2>/dev/null || echo "0")
+        log "Analyzed $SESSIONS_FOUND sessions with $TOTAL_EVENTS tool events"
+    fi
+else
+    log "analyze-sessions.sh not found, skipping session analysis"
+fi
+
 #############################################
 # PHASE 3: GENERALIZE - Analyze trends
 #############################################

@@ -46,6 +46,15 @@
   "hooks": {
     "PreToolUse": [
       {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | \"${WORKSPACE_HUB:-/mnt/github/workspace-hub}/.claude/hooks/session-logger.sh\" pre"
+          }
+        ]
+      },
+      {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
@@ -57,6 +66,15 @@
     ],
     "PostToolUse": [
       {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | \"${WORKSPACE_HUB:-/mnt/github/workspace-hub}/.claude/hooks/session-logger.sh\" post"
+          }
+        ]
+      },
+      {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
@@ -65,7 +83,7 @@
           },
           {
             "type": "command",
-            "command": "INPUT=$(cat); HOOK='/mnt/github/workspace-hub/.claude/hooks/capture-corrections.sh'; [ ! -f \"$HOOK\" ] && HOOK='/d/workspace-hub/.claude/hooks/capture-corrections.sh'; [ -f \"$HOOK\" ] && echo \"$INPUT\" | bash -c \"$(cat $HOOK)\" || true"
+            "command": "cat | \"${WORKSPACE_HUB:-/mnt/github/workspace-hub}/.claude/hooks/capture-corrections.sh\""
           }
         ]
       }
