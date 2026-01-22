@@ -122,6 +122,51 @@ def file_patterns:
     map({extension: .[0], count: length}) |
     sort_by(-.count) | .[0:10];
 
+# Detect script creation and modification
+def script_activity:
+    [.[] | select(
+        (.tool == "Write" or .tool == "Edit") and
+        .file != null and
+        (.file | test("\\.sh$|\\.py$|\\.js$"))
+    )] |
+    group_by(.file) |
+    map({
+        file: .[0].file,
+        type: (.[0].file | split(".") | .[-1]),
+        edits: length,
+        sessions: ([.[].session_id] | unique | length)
+    }) |
+    sort_by(-.edits) | .[0:15];
+
+# Find script execution patterns
+def script_executions:
+    [.[] | select(.tool == "Bash" and .phase == "pre" and .command != null)] |
+    [.[] | select(.command | test("\\./|bash |sh |python |python3 |node "))] |
+    map({
+        command: (.command | split(" ")[0:2] | join(" ")),
+        repo: .repo
+    }) |
+    group_by(.command) |
+    map({
+        script: .[0].command,
+        count: length,
+        repos: ([.[].repo] | unique)
+    }) |
+    sort_by(-.count) | .[0:10];
+
+# Detect skill-worthy workflow patterns
+def skill_worthy_patterns:
+    tool_sequences |
+    map(select(.count >= 3)) |
+    map(. + {
+        skill_potential: (
+            if .count >= 5 then "high"
+            elif .count >= 3 then "medium"
+            else "low"
+            end
+        )
+    });
+
 # Build output
 {
     extraction_date: (now | strftime("%Y-%m-%dT%H:%M:%SZ")),
@@ -134,6 +179,9 @@ def file_patterns:
     repo_activity: repo_activity,
     slow_tools: slow_tools,
     file_patterns: file_patterns,
+    script_activity: script_activity,
+    script_executions: script_executions,
+    skill_worthy_patterns: skill_worthy_patterns,
     insights: [
         if (tool_counts.Edit // 0) > (tool_counts.Read // 0) then
             "High edit-to-read ratio suggests confident editing or insufficient exploration"
@@ -147,6 +195,16 @@ def file_patterns:
         end,
         if (slow_tools | length) > 0 then
             "Some tools running slowly - check for optimization opportunities"
+        else
+            null
+        end,
+        if (script_activity | length) > 0 then
+            "Active script development detected - review for skill extraction"
+        else
+            null
+        end,
+        if (skill_worthy_patterns | length) > 0 then
+            "Repeated workflow patterns found - candidates for skill creation"
         else
             null
         end

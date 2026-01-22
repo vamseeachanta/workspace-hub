@@ -129,6 +129,22 @@ else
     log "analyze-sessions.sh not found, skipping session analysis"
 fi
 
+# Extract script ideas from session patterns
+SCRIPT_IDEAS=0
+if [[ -x "$SCRIPT_DIR/extract-script-ideas.sh" ]]; then
+    log "Extracting script ideas from sessions..."
+    SCRIPT_IDEAS_FILE="${PATTERNS_DIR}/script-ideas_${TIMESTAMP}.json"
+    "$SCRIPT_DIR/extract-script-ideas.sh" "$DAYS" > "$SCRIPT_IDEAS_FILE" 2>> "$LOG_FILE" || true
+
+    if [[ -f "$SCRIPT_IDEAS_FILE" ]]; then
+        SCRIPT_IDEAS=$(jq -r '.skill_candidates | length // 0' "$SCRIPT_IDEAS_FILE" 2>/dev/null || echo "0")
+        BASH_CMDS=$(jq -r '.total_bash_commands // 0' "$SCRIPT_IDEAS_FILE" 2>/dev/null || echo "0")
+        log "Found $SCRIPT_IDEAS script skill candidates from $BASH_CMDS bash commands"
+    fi
+else
+    log "extract-script-ideas.sh not found, skipping script idea extraction"
+fi
+
 #############################################
 # PHASE 3: GENERALIZE - Analyze trends
 #############################################
@@ -202,6 +218,8 @@ metrics:
   repos_analyzed: $REPOS
   commits_found: $COMMITS
   patterns_extracted: $PATTERNS_FOUND
+  script_ideas_found: $SCRIPT_IDEAS
+  sessions_analyzed: $SESSIONS_FOUND
 actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
@@ -236,7 +254,7 @@ echo "╠═══════════════════════�
 echo "║ Date: $(date '+%Y-%m-%d %H:%M')"
 echo "║ RAGS Loop Status:                      ║"
 echo "║   ✓ REFLECT:    $REPOS repos, $COMMITS commits"
-echo "║   ✓ ABSTRACT:   $PATTERNS_FOUND patterns found"
+echo "║   ✓ ABSTRACT:   $PATTERNS_FOUND patterns, $SCRIPT_IDEAS script ideas"
 echo "║   ✓ GENERALIZE: Trends analyzed"
 echo "║   ✓ STORE:      $SKILLS_CREATED created, $LEARNINGS_STORED logged"
 [[ "$WEEKLY_REPORT" == "true" ]] && echo "║   📊 Weekly report generated"
