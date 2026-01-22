@@ -62,6 +62,10 @@
           {
             "type": "command",
             "command": "echo '✅ Saved: '$(cat | jq -r '.tool_input.file_path // .tool_input.path // \"unknown\"')"
+          },
+          {
+            "type": "command",
+            "command": "cat | /mnt/github/workspace-hub/.claude/hooks/capture-corrections.sh"
           }
         ]
       }

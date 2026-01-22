@@ -92,6 +92,21 @@ else
     log "Skipping pattern extraction (no commits or script missing)"
 fi
 
+# Extract correction patterns from hook data
+CORRECTIONS_FOUND=0
+if [[ -x "$SCRIPT_DIR/extract-corrections.sh" ]]; then
+    log "Extracting correction patterns..."
+    CORRECTION_FILE="${PATTERNS_DIR}/corrections_${TIMESTAMP}.json"
+    "$SCRIPT_DIR/extract-corrections.sh" "$DAYS" > "$CORRECTION_FILE" 2>> "$LOG_FILE" || true
+
+    if [[ -f "$CORRECTION_FILE" ]]; then
+        CORRECTIONS_FOUND=$(jq -r '.total_corrections // 0' "$CORRECTION_FILE" 2>/dev/null || echo "0")
+        log "Found $CORRECTIONS_FOUND corrections from AI/user interaction"
+    fi
+else
+    log "extract-corrections.sh not found, skipping correction analysis"
+fi
+
 #############################################
 # PHASE 3: GENERALIZE - Analyze trends
 #############################################
