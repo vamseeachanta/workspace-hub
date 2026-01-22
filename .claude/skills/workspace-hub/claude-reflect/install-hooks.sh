@@ -21,13 +21,12 @@ cp "$SCRIPT_DIR/../../../hooks/capture-corrections.sh" "$TARGET_REPO/.claude/hoo
 cat > "$TARGET_REPO/.claude/hooks/capture-corrections.sh" << 'HOOK_EOF'
 #!/usr/bin/env bash
 # capture-corrections.sh - Lightweight hook to capture AI correction patterns
+# All corrections saved to workspace-hub for unified RAGS analysis
 set -uo pipefail
 [[ "${CLAUDE_CAPTURE_CORRECTIONS:-true}" != "true" ]] && exit 0
-# Auto-detect workspace and use its state dir, fallback to home
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
-WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(dirname "$(dirname "$SCRIPT_DIR")")}"
-[[ -d "${WORKSPACE_ROOT}/.claude/state" ]] && STATE_BASE="${WORKSPACE_ROOT}/.claude/state" || STATE_BASE="${HOME}/.claude/state"
-STATE_DIR="${STATE_BASE}/corrections"
+# Central state: always save to workspace-hub for unified analysis
+WORKSPACE_HUB="${WORKSPACE_HUB:-/mnt/github/workspace-hub}"
+STATE_DIR="${WORKSPACE_STATE_DIR:-${WORKSPACE_HUB}/.claude/state}/corrections"
 SESSION_FILE="${STATE_DIR}/session_$(date +%Y%m%d).jsonl"
 RECENT_EDITS="${STATE_DIR}/.recent_edits"
 MAX_RECENT=50
