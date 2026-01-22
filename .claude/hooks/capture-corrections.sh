@@ -13,8 +13,16 @@ set -uo pipefail
 [[ "${CLAUDE_CAPTURE_CORRECTIONS:-true}" != "true" ]] && exit 0
 
 # Central state: always save to workspace-hub for unified RAGS analysis
-# Override with WORKSPACE_STATE_DIR if needed
-WORKSPACE_HUB="${WORKSPACE_HUB:-/mnt/github/workspace-hub}"
+# Auto-detect workspace-hub path (WSL vs Windows Git Bash)
+if [[ -z "${WORKSPACE_HUB:-}" ]]; then
+    if [[ -d "/mnt/github/workspace-hub" ]]; then
+        WORKSPACE_HUB="/mnt/github/workspace-hub"
+    elif [[ -d "/d/workspace-hub" ]]; then
+        WORKSPACE_HUB="/d/workspace-hub"
+    else
+        WORKSPACE_HUB="${HOME}/workspace-hub"
+    fi
+fi
 STATE_DIR="${WORKSPACE_STATE_DIR:-${WORKSPACE_HUB}/.claude/state}/corrections"
 SESSION_FILE="${STATE_DIR}/session_$(date +%Y%m%d).jsonl"
 RECENT_EDITS="${STATE_DIR}/.recent_edits"

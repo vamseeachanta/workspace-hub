@@ -65,7 +65,7 @@
           },
           {
             "type": "command",
-            "command": "cat | /mnt/github/workspace-hub/.claude/hooks/capture-corrections.sh"
+            "command": "INPUT=$(cat); HOOK='/mnt/github/workspace-hub/.claude/hooks/capture-corrections.sh'; [ ! -f \"$HOOK\" ] && HOOK='/d/workspace-hub/.claude/hooks/capture-corrections.sh'; [ -f \"$HOOK\" ] && echo \"$INPUT\" | bash -c \"$(cat $HOOK)\" || true"
           }
         ]
       }
