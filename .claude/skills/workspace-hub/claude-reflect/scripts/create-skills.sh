@@ -4,11 +4,21 @@
 
 set -euo pipefail
 
-STATE_DIR="${HOME}/.claude/state"
+# Auto-detect workspace root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(dirname "$(dirname "$(dirname "$(dirname "$SCRIPT_DIR")")")")}"
+
+# State directory: prefer workspace-hub, fallback to home
+if [[ -d "${WORKSPACE_ROOT}/.claude/state" ]]; then
+    STATE_DIR="${WORKSPACE_STATE_DIR:-${WORKSPACE_ROOT}/.claude/state}"
+else
+    STATE_DIR="${WORKSPACE_STATE_DIR:-${HOME}/.claude/state}"
+fi
+
 PATTERNS_DIR="${STATE_DIR}/patterns"
-SKILLS_BASE="${SKILLS_BASE:-/mnt/github/workspace-hub/.claude/skills}"
+SKILLS_BASE="${SKILLS_BASE:-${WORKSPACE_ROOT}/.claude/skills}"
 SKILLS_OUTPUT="${SKILLS_BASE}/workspace-hub/auto-generated"
-MEMORY_DIR="${HOME}/.claude/memory/patterns"
+MEMORY_DIR="${STATE_DIR}/memory/patterns"
 
 mkdir -p "$SKILLS_OUTPUT" "$MEMORY_DIR"
 

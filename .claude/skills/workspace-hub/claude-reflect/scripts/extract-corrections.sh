@@ -7,8 +7,19 @@
 
 set -uo pipefail
 
-CORRECTIONS_DIR="${HOME}/.claude/state/corrections"
-OUTPUT_DIR="${HOME}/.claude/state/patterns"
+# Auto-detect workspace root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(dirname "$(dirname "$(dirname "$(dirname "$SCRIPT_DIR")")")")}"
+
+# State directory: prefer workspace-hub, fallback to home
+if [[ -d "${WORKSPACE_ROOT}/.claude/state" ]]; then
+    STATE_DIR="${WORKSPACE_STATE_DIR:-${WORKSPACE_ROOT}/.claude/state}"
+else
+    STATE_DIR="${WORKSPACE_STATE_DIR:-${HOME}/.claude/state}"
+fi
+
+CORRECTIONS_DIR="${STATE_DIR}/corrections"
+OUTPUT_DIR="${STATE_DIR}/patterns"
 DAYS=${1:-7}
 
 mkdir -p "$OUTPUT_DIR"

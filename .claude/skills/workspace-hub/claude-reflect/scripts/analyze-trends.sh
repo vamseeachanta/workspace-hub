@@ -4,7 +4,17 @@
 
 set -euo pipefail
 
-STATE_DIR="${HOME}/.claude/state"
+# Auto-detect workspace root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(dirname "$(dirname "$(dirname "$(dirname "$SCRIPT_DIR")")")")}"
+
+# State directory: prefer workspace-hub, fallback to home
+if [[ -d "${WORKSPACE_ROOT}/.claude/state" ]]; then
+    STATE_DIR="${WORKSPACE_STATE_DIR:-${WORKSPACE_ROOT}/.claude/state}"
+else
+    STATE_DIR="${WORKSPACE_STATE_DIR:-${HOME}/.claude/state}"
+fi
+
 PATTERNS_DIR="${STATE_DIR}/patterns"
 TRENDS_DIR="${STATE_DIR}/trends"
 

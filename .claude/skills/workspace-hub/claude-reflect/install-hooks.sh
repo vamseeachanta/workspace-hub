@@ -23,7 +23,11 @@ cat > "$TARGET_REPO/.claude/hooks/capture-corrections.sh" << 'HOOK_EOF'
 # capture-corrections.sh - Lightweight hook to capture AI correction patterns
 set -uo pipefail
 [[ "${CLAUDE_CAPTURE_CORRECTIONS:-true}" != "true" ]] && exit 0
-STATE_DIR="${HOME}/.claude/state/corrections"
+# Auto-detect workspace and use its state dir, fallback to home
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(dirname "$(dirname "$SCRIPT_DIR")")}"
+[[ -d "${WORKSPACE_ROOT}/.claude/state" ]] && STATE_BASE="${WORKSPACE_ROOT}/.claude/state" || STATE_BASE="${HOME}/.claude/state"
+STATE_DIR="${STATE_BASE}/corrections"
 SESSION_FILE="${STATE_DIR}/session_$(date +%Y%m%d).jsonl"
 RECENT_EDITS="${STATE_DIR}/.recent_edits"
 MAX_RECENT=50

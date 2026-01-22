@@ -7,7 +7,13 @@ set -euo pipefail
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="${WORKSPACE_ROOT:-/mnt/github/workspace-hub}"
-STATE_DIR="${HOME}/.claude/state"
+
+# State directory: prefer workspace-hub, fallback to home
+if [[ -d "${WORKSPACE_ROOT}/.claude/state" ]]; then
+    STATE_DIR="${WORKSPACE_STATE_DIR:-${WORKSPACE_ROOT}/.claude/state}"
+else
+    STATE_DIR="${WORKSPACE_STATE_DIR:-${HOME}/.claude/state}"
+fi
 REFLECT_DIR="${STATE_DIR}/reflect-history"
 PATTERNS_DIR="${STATE_DIR}/patterns"
 TRENDS_DIR="${STATE_DIR}/trends"
