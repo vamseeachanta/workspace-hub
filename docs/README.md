@@ -23,7 +23,8 @@ docs/
 │   │   ├── AI_HELPER_EXAMPLES.md    # Example interactions
 │   │   ├── MCP_SETUP_GUIDE.md       # MCP server configuration
 │   │   ├── CLAUDE_INTERACTION_GUIDE.md
-│   │   └── ...
+│   │   ├── agent-patterns/          # Agent organization & conversion guides
+│   │   └── skills/                  # Skill deployment & templates
 │   │
 │   ├── workflow/                    # Development workflow documentation
 │   │   ├── DEVELOPMENT_WORKFLOW.md  # Main workflow guide
@@ -41,6 +42,18 @@ docs/
 │   │   ├── WORKSPACE_CLI.md         # Main CLI guide
 │   │   ├── CLI_MENU_STRUCTURE.md
 │   │   └── REPOSITORY_SYNC.md
+│   │
+│   ├── repository/                  # Repository management
+│   │   ├── REPOSITORY_ANALYSIS_RECOMMENDATIONS.md
+│   │   ├── REPOSITORY_IMPROVEMENT_TRACKER.md
+│   │   └── SELF_IMPROVING_REPOSITORIES_FRAMEWORK.md
+│   │
+│   ├── tiers/                       # Repository tier assessments
+│   │   ├── TIER2_ASSESSMENT_DEPLOYMENT_PLAN.md
+│   │   ├── TIER2_REPOSITORY_INDEX.md
+│   │   └── TIER_3_MINIMAL_ASSESSMENT.md
+│   │
+│   ├── archive/                     # Archived documentation
 │   │
 │   ├── ai-native/                   # AI-native infrastructure
 │   ├── automation/                  # AI agent orchestration
@@ -129,6 +142,23 @@ Monitoring, metrics collection, and reporting systems.
 - [Reporting & Notifications](modules/monitoring/reporting-notification-system.md)
 - [Statistical Analysis](modules/monitoring/statistical-analysis-anomaly-detection.md)
 
+### 📁 [Repository](modules/repository/)
+Repository management, analysis, and self-improvement frameworks.
+- [Repository Analysis Recommendations](modules/repository/REPOSITORY_ANALYSIS_RECOMMENDATIONS.md)
+- [Repository Improvement Tracker](modules/repository/REPOSITORY_IMPROVEMENT_TRACKER.md)
+- [Self-Improving Repositories Framework](modules/repository/SELF_IMPROVING_REPOSITORIES_FRAMEWORK.md)
+
+### 🏷️ [Tiers](modules/tiers/)
+Repository tier classification and assessment documentation.
+- [Tier 2 Assessment Plan](modules/tiers/TIER2_ASSESSMENT_DEPLOYMENT_PLAN.md)
+- [Tier 2 Repository Index](modules/tiers/TIER2_REPOSITORY_INDEX.md)
+- [Tier 3 Minimal Assessment](modules/tiers/TIER_3_MINIMAL_ASSESSMENT.md)
+
+### 🤖 AI Subdirectories
+Additional AI-related documentation organized by topic:
+- [Agent Patterns](modules/ai/agent-patterns/) - Agent organization and skill conversion guides
+- [Skills](modules/ai/skills/) - Skill deployment, templates, and installation guides
+
 ## Key Features
 
 ### Multi-Repository Management
@@ -161,12 +191,16 @@ Monitoring, metrics collection, and reporting systems.
 | Topic | Location | Key Documents |
 |-------|----------|---------------|
 | AI Agents | [modules/ai/](modules/ai/) | AI_AGENT_GUIDELINES.md, AI_USAGE_GUIDELINES.md |
+| Agent Patterns | [modules/ai/agent-patterns/](modules/ai/agent-patterns/) | AGENT_ORGANIZATION_GUIDE.md |
+| Skills | [modules/ai/skills/](modules/ai/skills/) | SKILL_TEMPLATE_v2.md |
 | Development Workflow | [modules/workflow/](modules/workflow/) | DEVELOPMENT_WORKFLOW.md |
 | Standards | [modules/standards/](modules/standards/) | FILE_ORGANIZATION_STANDARDS.md |
 | CLI Tools | [modules/cli/](modules/cli/) | WORKSPACE_CLI.md |
 | Testing | [modules/testing/](modules/testing/) | baseline-testing-standards.md |
 | CI/CD | [modules/ci-cd/](modules/ci-cd/) | cicd-integration-workflows.md |
 | Monitoring | [modules/monitoring/](modules/monitoring/) | metrics-collection-framework.md |
+| Repository | [modules/repository/](modules/repository/) | REPOSITORY_ANALYSIS_RECOMMENDATIONS.md |
+| Tiers | [modules/tiers/](modules/tiers/) | TIER2_REPOSITORY_INDEX.md |
 
 ### By Task
 
@@ -233,5 +267,5 @@ workspace-hub/
 
 ---
 
-*Last Updated: 2025-12-22*
+*Last Updated: 2026-01-24*
 *Part of the workspace-hub documentation infrastructure*
