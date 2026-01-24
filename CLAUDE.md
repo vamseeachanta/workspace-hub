@@ -91,7 +91,6 @@ Save plans to: `specs/modules/<module>/`
 ### Machine-Local (NOT Synced)
 - `.claude/settings.local.json` - Session permissions
 - `.claude/state/` - Runtime state
-- `.claude-flow/` - Runtime data
 
 ---
 

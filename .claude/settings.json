@@ -90,6 +90,15 @@
     ],
     "PreCompact": [
       {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | \"${WORKSPACE_HUB:-/mnt/github/workspace-hub}/.claude/hooks/session-memory/pre-compact-save.sh\""
+          }
+        ]
+      },
+      {
         "matcher": "manual",
         "hooks": [
           {
@@ -109,6 +118,15 @@
       }
     ],
     "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | \"${WORKSPACE_HUB:-/mnt/github/workspace-hub}/.claude/hooks/session-memory/session-end-evaluate.sh\""
+          }
+        ]
+      },
       {
         "hooks": [
           {
