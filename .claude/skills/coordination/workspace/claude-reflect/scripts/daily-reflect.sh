@@ -221,11 +221,55 @@ if [[ "$WEEKLY_REPORT" == "true" ]] && [[ -x "$SCRIPT_DIR/generate-report.sh" ]]
 fi
 
 #############################################
+# CHECKLIST EVALUATION (before state update)
+#############################################
+log ""
+log "=== CHECKLIST EVALUATION ==="
+
+# a) Cross-review check: Look for recent Gemini reviews
+PENDING_REVIEWS=0
+REVIEW_MANAGER="${WORKSPACE_ROOT}/scripts/development/ai-review/gemini-review-manager.sh"
+if [[ -x "$REVIEW_MANAGER" ]]; then
+    PENDING_REVIEWS=$("$REVIEW_MANAGER" list 2>/dev/null | grep -c "pending" || echo "0")
+fi
+CROSS_REVIEW_OK=$([[ $PENDING_REVIEWS -eq 0 ]] && echo "pass" || echo "fail")
+log "Cross-review: $PENDING_REVIEWS pending reviews"
+
+# b) Skills development check
+SKILLS_OK=$([[ $SKILLS_CREATED -gt 0 || $SKILLS_ENHANCED -gt 0 ]] && echo "pass" || echo "none")
+log "Skills: $SKILLS_CREATED created, $SKILLS_ENHANCED enhanced"
+
+# c) File structure check: Look for orphan files in key directories
+ORPHAN_DOCS=$(find "${WORKSPACE_ROOT}/docs" -maxdepth 1 -name "*.md" ! -name "README.md" ! -name "SKILLS_INDEX.md" ! -name "WORKSPACE_HUB_*.md" 2>/dev/null | wc -l)
+ORPHAN_SCRIPTS=$(find "${WORKSPACE_ROOT}/scripts" -maxdepth 1 -type f -name "*.sh" ! -name "workspace" ! -name "repository_sync" ! -name "setup-claude-env.sh" 2>/dev/null | wc -l)
+FILE_STRUCTURE_OK=$([[ $ORPHAN_DOCS -le 5 && $ORPHAN_SCRIPTS -le 2 ]] && echo "pass" || echo "fail")
+log "File structure: $ORPHAN_DOCS orphan docs, $ORPHAN_SCRIPTS orphan scripts"
+
+# d) Context management: Check for long sessions or high correction rate
+CONTEXT_ISSUES=0
+AVG_SESSION=0
+CORRECTION_RATE=0
+if [[ -f "$CONVERSATION_FILE" ]]; then
+    AVG_SESSION=$(jq -r '.session_stats.avg_messages_per_session // 0' "$CONVERSATION_FILE" 2>/dev/null | cut -d. -f1)
+    CORRECTION_RATE=$(jq -r '.correction_count // 0' "$CONVERSATION_FILE" 2>/dev/null)
+    [[ $AVG_SESSION -gt 500 ]] && CONTEXT_ISSUES=$((CONTEXT_ISSUES + 1))
+    [[ $CORRECTION_RATE -gt 20 ]] && CONTEXT_ISSUES=$((CONTEXT_ISSUES + 1))
+fi
+CONTEXT_OK=$([[ $CONTEXT_ISSUES -eq 0 ]] && echo "pass" || echo "warn")
+log "Context: avg $AVG_SESSION msgs/session, $CORRECTION_RATE corrections"
+
+# e) Best practices: TDD coverage, git hygiene
+REPOS_WITH_TESTS=$(find "$WORKSPACE_ROOT" -maxdepth 2 -type d -name "tests" 2>/dev/null | wc -l)
+UNCOMMITTED_CHANGES=$(cd "$WORKSPACE_ROOT" && git status --porcelain 2>/dev/null | wc -l)
+PRACTICES_OK=$([[ $REPOS_WITH_TESTS -gt 5 && $UNCOMMITTED_CHANGES -lt 20 ]] && echo "pass" || echo "warn")
+log "Practices: $REPOS_WITH_TESTS repos with tests, $UNCOMMITTED_CHANGES uncommitted changes"
+
+#############################################
 # Update state file
 #############################################
 STATE_FILE="${STATE_DIR}/reflect-state.yaml"
 cat > "$STATE_FILE" << EOF
-version: "2.0"
+version: "2.1"
 last_run: $DATE_ISO
 analysis_window_days: $DAYS
 dry_run: $DRY_RUN
@@ -241,7 +285,22 @@ metrics:
   script_ideas_found: $SCRIPT_IDEAS
   sessions_analyzed: $SESSIONS_FOUND
   conversations_analyzed: $CONVERSATIONS_FOUND
-  corrections_detected: $CORRECTIONS_FROM_CONV
+  corrections_detected: $CORRECTION_RATE
+checklist:
+  cross_review: $CROSS_REVIEW_OK
+  pending_reviews: $PENDING_REVIEWS
+  skills_development: $SKILLS_OK
+  skills_created: $SKILLS_CREATED
+  skills_enhanced: $SKILLS_ENHANCED
+  file_structure: $FILE_STRUCTURE_OK
+  orphan_docs: $ORPHAN_DOCS
+  orphan_scripts: $ORPHAN_SCRIPTS
+  context_management: $CONTEXT_OK
+  avg_session_msgs: $AVG_SESSION
+  correction_rate: $CORRECTION_RATE
+  best_practices: $PRACTICES_OK
+  repos_with_tests: $REPOS_WITH_TESTS
+  uncommitted_changes: $UNCOMMITTED_CHANGES
 actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
@@ -269,17 +328,51 @@ log "Cleanup complete"
 log ""
 log "Daily reflection completed successfully"
 
+# Convert checklist results to display symbols
+CR_SYM=$([[ "$CROSS_REVIEW_OK" == "pass" ]] && echo "✓" || echo "✗")
+SK_SYM=$([[ "$SKILLS_OK" == "pass" ]] && echo "✓" || ([[ "$SKILLS_OK" == "none" ]] && echo "○" || echo "✗"))
+FS_SYM=$([[ "$FILE_STRUCTURE_OK" == "pass" ]] && echo "✓" || echo "✗")
+CX_SYM=$([[ "$CONTEXT_OK" == "pass" ]] && echo "✓" || echo "!")
+BP_SYM=$([[ "$PRACTICES_OK" == "pass" ]] && echo "✓" || echo "!")
+
 # Summary output for cron email
 echo ""
-echo "╔════════════════════════════════════════╗"
-echo "║     Daily Reflection Summary           ║"
-echo "╠════════════════════════════════════════╣"
-echo "║ Date: $(date '+%Y-%m-%d %H:%M')"
-echo "║ RAGS Loop Status:                      ║"
-echo "║   ✓ REFLECT:    $REPOS repos, $COMMITS commits"
-echo "║   ✓ ABSTRACT:   $PATTERNS_FOUND patterns, $SCRIPT_IDEAS scripts"
-echo "║   ✓ CONVERSE:   $CONVERSATIONS_FOUND convos, $CORRECTIONS_FROM_CONV corrections"
-echo "║   ✓ GENERALIZE: Trends analyzed"
-echo "║   ✓ STORE:      $SKILLS_CREATED created, $LEARNINGS_STORED logged"
-[[ "$WEEKLY_REPORT" == "true" ]] && echo "║   📊 Weekly report generated"
-echo "╚════════════════════════════════════════╝"
+echo "╔═══════════════════════════════════════════════════════════╗"
+echo "║           Daily Reflection Summary                        ║"
+echo "║           $(date '+%Y-%m-%d %H:%M')                                    ║"
+echo "╠═══════════════════════════════════════════════════════════╣"
+echo "║  QUALITY CHECKLIST                                        ║"
+echo "║  ─────────────────────────────────────────────────────────║"
+echo "║  $CR_SYM  Cross-Review: ${PENDING_REVIEWS} pending reviews"
+echo "║  $SK_SYM  Skills Dev:   ${SKILLS_CREATED} created, ${SKILLS_ENHANCED} enhanced"
+echo "║  $FS_SYM  File Structure: ${ORPHAN_DOCS} orphan docs, ${ORPHAN_SCRIPTS} orphan scripts"
+echo "║  $CX_SYM  Context Mgmt: avg ${AVG_SESSION} msgs/session, ${CORRECTION_RATE} corrections"
+echo "║  $BP_SYM  Best Practice: ${REPOS_WITH_TESTS} repos w/tests, ${UNCOMMITTED_CHANGES} uncommitted"
+echo "║                                                           ║"
+echo "║  Legend: ✓ Good  ○ None  ! Warning  ✗ Action needed       ║"
+echo "╠═══════════════════════════════════════════════════════════╣"
+echo "║  RAGS LOOP STATUS                                         ║"
+echo "║  ─────────────────────────────────────────────────────────║"
+echo "║  ✓ REFLECT:    $REPOS repos, $COMMITS commits"
+echo "║  ✓ ABSTRACT:   $PATTERNS_FOUND patterns, $SCRIPT_IDEAS scripts"
+echo "║  ✓ CONVERSE:   $CONVERSATIONS_FOUND convos analyzed"
+echo "║  ✓ GENERALIZE: Trends analyzed"
+echo "║  ✓ STORE:      $SKILLS_CREATED created, $LEARNINGS_STORED logged"
+[[ "$WEEKLY_REPORT" == "true" ]] && echo "║  📊 Weekly report generated"
+echo "╚═══════════════════════════════════════════════════════════╝"
+
+# Action items if any checks failed
+if [[ "$CROSS_REVIEW_OK" == "fail" || "$FILE_STRUCTURE_OK" == "fail" ]]; then
+    echo ""
+    echo "ACTION ITEMS:"
+    [[ "$CROSS_REVIEW_OK" == "fail" ]] && echo "  → Run: $REVIEW_MANAGER process"
+    [[ "$FILE_STRUCTURE_OK" == "fail" ]] && echo "  → Organize orphan files into module directories"
+fi
+
+if [[ "$CONTEXT_OK" == "warn" || "$PRACTICES_OK" == "warn" ]]; then
+    echo ""
+    echo "RECOMMENDATIONS:"
+    [[ $AVG_SESSION -gt 500 ]] && echo "  → Sessions averaging ${AVG_SESSION} msgs - consider shorter sessions"
+    [[ $CORRECTION_RATE -gt 20 ]] && echo "  → High correction rate (${CORRECTION_RATE}) - improve initial understanding"
+    [[ $UNCOMMITTED_CHANGES -ge 20 ]] && echo "  → ${UNCOMMITTED_CHANGES} uncommitted changes - commit or discard"
+fi
