@@ -145,6 +145,26 @@ else
     log "extract-script-ideas.sh not found, skipping script idea extraction"
 fi
 
+# Analyze full conversation logs (user prompts, AI responses, thinking)
+CONVERSATIONS_FOUND=0
+CORRECTIONS_FROM_CONV=0
+if [[ -x "$SCRIPT_DIR/analyze-conversations.sh" ]]; then
+    log "Analyzing conversation logs..."
+    CONVERSATION_FILE="${PATTERNS_DIR}/conversations_${TIMESTAMP}.json"
+    "$SCRIPT_DIR/analyze-conversations.sh" "$DAYS" > "$CONVERSATION_FILE" 2>> "$LOG_FILE" || true
+
+    if [[ -f "$CONVERSATION_FILE" ]] && [[ -s "$CONVERSATION_FILE" ]]; then
+        CONVERSATIONS_FOUND=$(jq -r '.conversations_analyzed // 0' "$CONVERSATION_FILE" 2>/dev/null || echo "0")
+        CORRECTIONS_FROM_CONV=$(jq -r '.correction_count // 0' "$CONVERSATION_FILE" 2>/dev/null || echo "0")
+        USER_MSGS=$(jq -r '.total_user_messages // 0' "$CONVERSATION_FILE" 2>/dev/null || echo "0")
+        SKILL_GAPS=$(jq -r '.skill_gaps | length // 0' "$CONVERSATION_FILE" 2>/dev/null || echo "0")
+        log "Analyzed $CONVERSATIONS_FOUND conversations with $USER_MSGS user messages"
+        log "Found $CORRECTIONS_FROM_CONV corrections, $SKILL_GAPS potential skill gaps"
+    fi
+else
+    log "analyze-conversations.sh not found, skipping conversation analysis"
+fi
+
 #############################################
 # PHASE 3: GENERALIZE - Analyze trends
 #############################################
@@ -220,6 +240,8 @@ metrics:
   patterns_extracted: $PATTERNS_FOUND
   script_ideas_found: $SCRIPT_IDEAS
   sessions_analyzed: $SESSIONS_FOUND
+  conversations_analyzed: $CONVERSATIONS_FOUND
+  corrections_detected: $CORRECTIONS_FROM_CONV
 actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
@@ -227,6 +249,7 @@ actions_taken:
 files:
   analysis: $ANALYSIS_FILE
   patterns: ${PATTERN_FILE:-none}
+  conversations: ${CONVERSATION_FILE:-none}
   trends: $(ls -t "$TRENDS_DIR"/trends_*.json 2>/dev/null | head -1 || echo "none")
   report: ${REPORT_FILE:-none}
 EOF
@@ -254,7 +277,8 @@ echo "╠═══════════════════════�
 echo "║ Date: $(date '+%Y-%m-%d %H:%M')"
 echo "║ RAGS Loop Status:                      ║"
 echo "║   ✓ REFLECT:    $REPOS repos, $COMMITS commits"
-echo "║   ✓ ABSTRACT:   $PATTERNS_FOUND patterns, $SCRIPT_IDEAS script ideas"
+echo "║   ✓ ABSTRACT:   $PATTERNS_FOUND patterns, $SCRIPT_IDEAS scripts"
+echo "║   ✓ CONVERSE:   $CONVERSATIONS_FOUND convos, $CORRECTIONS_FROM_CONV corrections"
 echo "║   ✓ GENERALIZE: Trends analyzed"
 echo "║   ✓ STORE:      $SKILLS_CREATED created, $LEARNINGS_STORED logged"
 [[ "$WEEKLY_REPORT" == "true" ]] && echo "║   📊 Weekly report generated"
