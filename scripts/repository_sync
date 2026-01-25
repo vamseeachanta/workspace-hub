@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/opt/homebrew/bin/bash
 
 # ABOUTME: Repository synchronization CLI tool with interactive multi-level menus
 # ABOUTME: Handles cloning, staging, committing, syncing, and branch management
