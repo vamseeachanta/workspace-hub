@@ -226,14 +226,26 @@ fi
 log ""
 log "=== CHECKLIST EVALUATION ==="
 
-# a) Cross-review check: Look for recent Gemini reviews
-PENDING_REVIEWS=0
-REVIEW_MANAGER="${WORKSPACE_ROOT}/scripts/development/ai-review/gemini-review-manager.sh"
-if [[ -x "$REVIEW_MANAGER" ]]; then
-    PENDING_REVIEWS=$("$REVIEW_MANAGER" list 2>/dev/null | grep -c "pending" || echo "0")
+# a) Cross-review check: Look for pending Gemini AND Codex reviews
+GEMINI_PENDING=0
+CODEX_PENDING=0
+GEMINI_MANAGER="${WORKSPACE_ROOT}/scripts/development/ai-review/gemini-review-manager.sh"
+CODEX_MANAGER="${WORKSPACE_ROOT}/scripts/development/ai-review/review-manager.sh"
+CODEX_DIR="${HOME}/.codex-reviews/pending"
+
+# Check Gemini pending reviews
+if [[ -x "$GEMINI_MANAGER" ]]; then
+    GEMINI_PENDING=$("$GEMINI_MANAGER" list 2>/dev/null | grep -c "pending" || echo "0")
 fi
+
+# Check Codex pending reviews (count files in pending directory)
+if [[ -d "$CODEX_DIR" ]]; then
+    CODEX_PENDING=$(find "$CODEX_DIR" -type f -name "*.json" 2>/dev/null | wc -l)
+fi
+
+PENDING_REVIEWS=$((GEMINI_PENDING + CODEX_PENDING))
 CROSS_REVIEW_OK=$([[ $PENDING_REVIEWS -eq 0 ]] && echo "pass" || echo "fail")
-log "Cross-review: $PENDING_REVIEWS pending reviews"
+log "Cross-review: $GEMINI_PENDING Gemini + $CODEX_PENDING Codex = $PENDING_REVIEWS pending"
 
 # b) Skills development check
 SKILLS_OK=$([[ $SKILLS_CREATED -gt 0 || $SKILLS_ENHANCED -gt 0 ]] && echo "pass" || echo "none")
@@ -289,6 +301,8 @@ metrics:
 checklist:
   cross_review: $CROSS_REVIEW_OK
   pending_reviews: $PENDING_REVIEWS
+  gemini_pending: $GEMINI_PENDING
+  codex_pending: $CODEX_PENDING
   skills_development: $SKILLS_OK
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
@@ -343,7 +357,7 @@ echo "║           $(date '+%Y-%m-%d %H:%M')                                   
 echo "╠═══════════════════════════════════════════════════════════╣"
 echo "║  QUALITY CHECKLIST                                        ║"
 echo "║  ─────────────────────────────────────────────────────────║"
-echo "║  $CR_SYM  Cross-Review: ${PENDING_REVIEWS} pending reviews"
+echo "║  $CR_SYM  Cross-Review: ${GEMINI_PENDING} Gemini + ${CODEX_PENDING} Codex pending"
 echo "║  $SK_SYM  Skills Dev:   ${SKILLS_CREATED} created, ${SKILLS_ENHANCED} enhanced"
 echo "║  $FS_SYM  File Structure: ${ORPHAN_DOCS} orphan docs, ${ORPHAN_SCRIPTS} orphan scripts"
 echo "║  $CX_SYM  Context Mgmt: avg ${AVG_SESSION} msgs/session, ${CORRECTION_RATE} corrections"
@@ -365,7 +379,10 @@ echo "╚═══════════════════════�
 if [[ "$CROSS_REVIEW_OK" == "fail" || "$FILE_STRUCTURE_OK" == "fail" ]]; then
     echo ""
     echo "ACTION ITEMS:"
-    [[ "$CROSS_REVIEW_OK" == "fail" ]] && echo "  → Run: $REVIEW_MANAGER process"
+    if [[ "$CROSS_REVIEW_OK" == "fail" ]]; then
+        [[ $GEMINI_PENDING -gt 0 ]] && echo "  → Gemini: $GEMINI_MANAGER process"
+        [[ $CODEX_PENDING -gt 0 ]] && echo "  → Codex:  $CODEX_MANAGER list"
+    fi
     [[ "$FILE_STRUCTURE_OK" == "fail" ]] && echo "  → Organize orphan files into module directories"
 fi
 
