@@ -21,9 +21,9 @@ else
     
     if [ -n "$CURRENT_REPO" ]; then
         PARENT_DIR="$(dirname "$CURRENT_REPO")"
-        if [ -f "$PARENT_DIR/CLAUDE.md" ] && [ -d "$PARENT_DIR/scripts/ai-review" ]; then
+        if [ -f "$PARENT_DIR/CLAUDE.md" ] && [ -d "$PARENT_DIR/scripts/development/ai-review" ]; then
             WORKSPACE_HUB="$PARENT_DIR"
-        elif [ -f "$CURRENT_REPO/CLAUDE.md" ] && [ -d "$CURRENT_REPO/scripts/ai-review" ]; then
+        elif [ -f "$CURRENT_REPO/CLAUDE.md" ] && [ -d "$CURRENT_REPO/scripts/development/ai-review" ]; then
             WORKSPACE_HUB="$CURRENT_REPO"
         fi
     fi
@@ -31,7 +31,7 @@ else
     if [ -z "$WORKSPACE_HUB" ]; then
         SEARCH_DIR="$(pwd)"
         while [ "$SEARCH_DIR" != "/" ] && [ "$SEARCH_DIR" != "" ]; do
-            if [ -f "$SEARCH_DIR/CLAUDE.md" ] && [ -d "$SEARCH_DIR/scripts/ai-review" ]; then
+            if [ -f "$SEARCH_DIR/CLAUDE.md" ] && [ -d "$SEARCH_DIR/scripts/development/ai-review" ]; then
                 WORKSPACE_HUB="$SEARCH_DIR"
                 break
             fi
@@ -40,7 +40,7 @@ else
     fi
 fi
 
-GEMINI_REVIEW_SCRIPT="$WORKSPACE_HUB/scripts/ai-review/gemini-review.sh"
+GEMINI_REVIEW_SCRIPT="$WORKSPACE_HUB/scripts/development/ai-review/gemini-review.sh"
 
 # Get commit info
 COMMIT_MSG=$(git log -1 --format="%B" HEAD)
@@ -77,7 +77,7 @@ echo -e "${CYAN}Repository:${NC} $REPO_NAME"
 echo -e "${CYAN}Commit:${NC}     $SHORT_SHA"
 echo ""
 echo -e "${YELLOW}Check pending reviews with:${NC}"
-echo "  $WORKSPACE_HUB/scripts/ai-review/gemini-review-manager.sh list"
+echo "  $WORKSPACE_HUB/scripts/development/ai-review/gemini-review-manager.sh list"
 echo ""
 
 exit 0
