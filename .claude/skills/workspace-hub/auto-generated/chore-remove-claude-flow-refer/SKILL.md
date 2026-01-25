@@ -1,26 +1,27 @@
 ---
-name: auto-sync-batch-update-2026-01
-description: Auto-generated skill from cross-repo pattern - Pattern detected in 19 repositories
+name: chore-remove-claude-flow-refer
+description: Auto-generated skill from cross-repo pattern - Pattern detected in 20 repositories
 version: 1.0.0
 category: workspace-hub/auto-generated
 type: skill
 auto_generated: true
-source_pattern: "Auto-sync: batch update 2026-01-14"
+source_pattern: "chore: Remove claude-flow references from CLAUDE.md"
 creation_date: 2026-01-24T19:23:03-06:00
-score: .88
+score: .94
 source_repos:
   - OGManufacturing
+  - aceengineer-admin
+  - aceengineer-website
+  - achantas-data
   - achantas-media
   - acma-projects
   - ai-native-traditional-eng
-  - assethold
   - assetutilities
   - client_projects
   - doris
   - frontierdeepwater
   - hobbies
   - investments
-  - pdf-large-reader
   - pyproject-starter
   - rock-oil-field
   - sabithaandkrishnaestates
@@ -30,29 +31,30 @@ source_repos:
   - teamresumes
 ---
 
-# Auto-sync: batch update 2026-01-14
+# chore: Remove claude-flow references from CLAUDE.md
 
 > Auto-generated skill from recurring cross-repository pattern
 
 ## Pattern Details
 
-**Description:** Pattern detected in 19 repositories
+**Description:** Pattern detected in 20 repositories
 
-**Score:** .88
+**Score:** .94
 
 **Detected in repositories:**
 - OGManufacturing
+- aceengineer-admin
+- aceengineer-website
+- achantas-data
 - achantas-media
 - acma-projects
 - ai-native-traditional-eng
-- assethold
 - assetutilities
 - client_projects
 - doris
 - frontierdeepwater
 - hobbies
 - investments
-- pdf-large-reader
 - pyproject-starter
 - rock-oil-field
 - sabithaandkrishnaestates
@@ -63,7 +65,7 @@ source_repos:
 
 ## When to Use
 
-This skill was auto-generated because the pattern "Auto-sync: batch update 2026-01-14" was detected across multiple repositories. Use this when performing similar operations.
+This skill was auto-generated because the pattern "chore: Remove claude-flow references from CLAUDE.md" was detected across multiple repositories. Use this when performing similar operations.
 
 ## Implementation
 
@@ -78,8 +80,8 @@ Based on the detected pattern, this skill captures:
 *Examples extracted from commit history:*
 
 ```
-Pattern: Auto-sync: batch update 2026-01-14
-Repos: OGManufacturing,achantas-media,acma-projects,ai-native-traditional-eng,assethold,assetutilities,client_projects,doris,frontierdeepwater,hobbies,investments,pdf-large-reader,pyproject-starter,rock-oil-field,sabithaandkrishnaestates,saipem,sd-work,seanation,teamresumes
+Pattern: chore: Remove claude-flow references from CLAUDE.md
+Repos: OGManufacturing,aceengineer-admin,aceengineer-website,achantas-data,achantas-media,acma-projects,ai-native-traditional-eng,assetutilities,client_projects,doris,frontierdeepwater,hobbies,investments,pyproject-starter,rock-oil-field,sabithaandkrishnaestates,saipem,sd-work,seanation,teamresumes
 ```
 
 ---

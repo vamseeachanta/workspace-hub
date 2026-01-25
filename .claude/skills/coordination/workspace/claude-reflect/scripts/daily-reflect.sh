@@ -226,12 +226,15 @@ fi
 log ""
 log "=== CHECKLIST EVALUATION ==="
 
-# a) Cross-review check: Look for pending Gemini AND Codex reviews
+# a) Cross-review check: Look for pending Gemini, Codex, AND Claude reviews
 GEMINI_PENDING=0
 CODEX_PENDING=0
+CLAUDE_PENDING=0
 GEMINI_MANAGER="${WORKSPACE_ROOT}/scripts/development/ai-review/gemini-review-manager.sh"
-CODEX_MANAGER="${WORKSPACE_ROOT}/scripts/development/ai-review/review-manager.sh"
+CODEX_MANAGER="${WORKSPACE_ROOT}/scripts/development/ai-review/codex-review-manager.sh"
+CLAUDE_MANAGER="${WORKSPACE_ROOT}/scripts/development/ai-review/claude-review-manager.sh"
 CODEX_DIR="${HOME}/.codex-reviews/pending"
+CLAUDE_DIR="${HOME}/.claude-reviews/pending"
 
 # Check Gemini pending reviews
 if [[ -x "$GEMINI_MANAGER" ]]; then
@@ -240,12 +243,17 @@ fi
 
 # Check Codex pending reviews (count files in pending directory)
 if [[ -d "$CODEX_DIR" ]]; then
-    CODEX_PENDING=$(find "$CODEX_DIR" -type f -name "*.json" 2>/dev/null | wc -l)
+    CODEX_PENDING=$(find "$CODEX_DIR" -type f \( -name "*.json" -o -name "*.md" \) -size +0c 2>/dev/null | wc -l)
 fi
 
-PENDING_REVIEWS=$((GEMINI_PENDING + CODEX_PENDING))
+# Check Claude pending reviews
+if [[ -d "$CLAUDE_DIR" ]]; then
+    CLAUDE_PENDING=$(find "$CLAUDE_DIR" -type f -name "*.md" -size +0c 2>/dev/null | wc -l)
+fi
+
+PENDING_REVIEWS=$((GEMINI_PENDING + CODEX_PENDING + CLAUDE_PENDING))
 CROSS_REVIEW_OK=$([[ $PENDING_REVIEWS -eq 0 ]] && echo "pass" || echo "fail")
-log "Cross-review: $GEMINI_PENDING Gemini + $CODEX_PENDING Codex = $PENDING_REVIEWS pending"
+log "Cross-review: $GEMINI_PENDING Gemini + $CODEX_PENDING Codex + $CLAUDE_PENDING Claude = $PENDING_REVIEWS pending"
 
 # b) Skills development check
 SKILLS_OK=$([[ $SKILLS_CREATED -gt 0 || $SKILLS_ENHANCED -gt 0 ]] && echo "pass" || echo "none")
@@ -303,6 +311,7 @@ checklist:
   pending_reviews: $PENDING_REVIEWS
   gemini_pending: $GEMINI_PENDING
   codex_pending: $CODEX_PENDING
+  claude_pending: $CLAUDE_PENDING
   skills_development: $SKILLS_OK
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
@@ -357,7 +366,7 @@ echo "║           $(date '+%Y-%m-%d %H:%M')                                   
 echo "╠═══════════════════════════════════════════════════════════╣"
 echo "║  QUALITY CHECKLIST                                        ║"
 echo "║  ─────────────────────────────────────────────────────────║"
-echo "║  $CR_SYM  Cross-Review: ${GEMINI_PENDING} Gemini + ${CODEX_PENDING} Codex pending"
+echo "║  $CR_SYM  Cross-Review: ${GEMINI_PENDING} Gemini, ${CODEX_PENDING} Codex, ${CLAUDE_PENDING} Claude"
 echo "║  $SK_SYM  Skills Dev:   ${SKILLS_CREATED} created, ${SKILLS_ENHANCED} enhanced"
 echo "║  $FS_SYM  File Structure: ${ORPHAN_DOCS} orphan docs, ${ORPHAN_SCRIPTS} orphan scripts"
 echo "║  $CX_SYM  Context Mgmt: avg ${AVG_SESSION} msgs/session, ${CORRECTION_RATE} corrections"
@@ -382,6 +391,7 @@ if [[ "$CROSS_REVIEW_OK" == "fail" || "$FILE_STRUCTURE_OK" == "fail" ]]; then
     if [[ "$CROSS_REVIEW_OK" == "fail" ]]; then
         [[ $GEMINI_PENDING -gt 0 ]] && echo "  → Gemini: $GEMINI_MANAGER process"
         [[ $CODEX_PENDING -gt 0 ]] && echo "  → Codex:  $CODEX_MANAGER list"
+        [[ $CLAUDE_PENDING -gt 0 ]] && echo "  → Claude: $CLAUDE_MANAGER process"
     fi
     [[ "$FILE_STRUCTURE_OK" == "fail" ]] && echo "  → Organize orphan files into module directories"
 fi

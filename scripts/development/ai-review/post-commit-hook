@@ -121,14 +121,14 @@ if is_claude_commit; then
         echo -e "${GREEN}╚════════════════════════════════════════════════════════════════╝${NC}"
         echo ""
         echo -e "${YELLOW}To view pending reviews:${NC}"
-        echo "  $WORKSPACE_HUB/scripts/ai-review/review-manager.sh list"
+        echo "  $WORKSPACE_HUB/scripts/ai-review/codex-review-manager.sh list"
         echo ""
 
     ) &
 
     echo -e "${CYAN}Review running in background...${NC}"
     echo -e "${YELLOW}Check pending reviews with:${NC}"
-    echo "  $WORKSPACE_HUB/scripts/ai-review/review-manager.sh list"
+    echo "  $WORKSPACE_HUB/scripts/ai-review/codex-review-manager.sh list"
     echo ""
 
 else

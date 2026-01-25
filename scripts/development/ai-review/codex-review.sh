@@ -241,12 +241,12 @@ $REVIEW_OUTPUT
 
 To approve this review and implement suggestions:
 \`\`\`bash
-$WORKSPACE_HUB/scripts/ai-review/review-manager.sh approve $(basename "$OUTPUT_FILE" .md)
+$WORKSPACE_HUB/scripts/ai-review/codex-review-manager.sh approve $(basename "$OUTPUT_FILE" .md)
 \`\`\`
 
 To reject this review:
 \`\`\`bash
-$WORKSPACE_HUB/scripts/ai-review/review-manager.sh reject $(basename "$OUTPUT_FILE" .md)
+$WORKSPACE_HUB/scripts/ai-review/codex-review-manager.sh reject $(basename "$OUTPUT_FILE" .md)
 \`\`\`
 
 ---
@@ -264,10 +264,10 @@ echo -e "${YELLOW}To view the review:${NC}"
 echo "  cat \"$OUTPUT_FILE\""
 echo ""
 echo -e "${YELLOW}To approve and implement suggestions:${NC}"
-echo "  $WORKSPACE_HUB/scripts/ai-review/review-manager.sh approve $(basename "$OUTPUT_FILE" .md)"
+echo "  $WORKSPACE_HUB/scripts/ai-review/codex-review-manager.sh approve $(basename "$OUTPUT_FILE" .md)"
 echo ""
 echo -e "${YELLOW}To list all pending reviews:${NC}"
-echo "  $WORKSPACE_HUB/scripts/ai-review/review-manager.sh list"
+echo "  $WORKSPACE_HUB/scripts/ai-review/codex-review-manager.sh list"
 echo ""
 
 # Return the output file path
