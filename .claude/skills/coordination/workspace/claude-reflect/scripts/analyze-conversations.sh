@@ -172,6 +172,10 @@ with open(temp_file, 'r') as f:
             message = entry.get('message', {})
             content = message.get('content', '')
 
+            # Skip system/continuation messages (not actual user input)
+            if isinstance(content, str) and content.startswith('This session is being continued'):
+                continue
+
             # Handle content that's a list (tool results, etc.)
             if isinstance(content, list):
                 content = ' '.join([
