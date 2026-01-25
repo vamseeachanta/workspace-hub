@@ -164,7 +164,7 @@ Adjust scores based on context (repository, domain, etc.):
 
 # Repository tiers
 TIER1_REPOS="workspace-hub|digitalmodel|energy|frontierdeepwater"
-TIER2_REPOS="aceengineercode|assetutilities|worldenergydata|rock-oil-field"
+TIER2_REPOS="assetutilities|worldenergydata|rock-oil-field"
 TIER3_REPOS="doris|saipem|OGManufacturing|seanation"
 PERSONAL_ACTIVE="aceengineer-admin|aceengineer-website"
 PERSONAL_EXPERIMENTAL="hobbies|sd-work|acma-projects"
@@ -438,7 +438,7 @@ HAIKU_KEYWORDS="check|status|simple|quick|template|list|grep|find|search|summary
 
 # Repository tiers
 WORK_TIER1="workspace-hub|digitalmodel|energy|frontierdeepwater"
-WORK_TIER2="aceengineercode|assetutilities|worldenergydata"
+WORK_TIER2="assetutilities|worldenergydata"
 WORK_TIER3="doris|saipem|OGManufacturing"
 PERSONAL="hobbies|sd-work|acma-projects"
 

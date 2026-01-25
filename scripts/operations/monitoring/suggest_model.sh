@@ -34,7 +34,7 @@ fi
 
 # Determine repository tier
 WORK_TIER1="workspace-hub|digitalmodel|energy|frontierdeepwater"
-WORK_TIER2="aceengineercode|assetutilities|worldenergydata|rock-oil-field|teamresumes"
+WORK_TIER2="assetutilities|worldenergydata|rock-oil-field|teamresumes"
 WORK_TIER3="doris|saipem|OGManufacturing|seanation"
 PERSONAL_ACTIVE="aceengineer-admin|aceengineer-website"
 PERSONAL_EXPERIMENTAL="hobbies|sd-work|acma-projects|achantas-data"

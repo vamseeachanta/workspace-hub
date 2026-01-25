@@ -35,7 +35,7 @@ NEW TASK
 ./scripts/monitoring/suggest_model.sh digitalmodel "Design authentication architecture"
 # → Recommends: OPUS (complexity score: 4)
 
-./scripts/monitoring/suggest_model.sh aceengineercode "Implement user login"
+./scripts/monitoring/suggest_model.sh digitalmodel "Implement user login"
 # → Recommends: SONNET (complexity score: 1)
 
 ./scripts/monitoring/suggest_model.sh hobbies "Quick file check"
@@ -62,7 +62,7 @@ NEW TASK
 - digitalmodel, energy, frontierdeepwater
 
 **Tier 2 (Active):** 30% Opus, 50% Sonnet, 20% Haiku
-- aceengineercode, assetutilities, worldenergydata
+- assetutilities, worldenergydata
 
 **Tier 3 (Maintenance):** 10% Opus, 30% Sonnet, 60% Haiku
 - doris, saipem, OGManufacturing
