@@ -173,7 +173,8 @@ log "=== PHASE 3: GENERALIZE ==="
 
 if [[ -x "$SCRIPT_DIR/analyze-trends.sh" ]]; then
     # Only run trends if we have multiple pattern files
-    PATTERN_COUNT=$(ls "$PATTERNS_DIR"/patterns_*.json 2>/dev/null | wc -l)
+    PATTERN_COUNT=$(ls "$PATTERNS_DIR"/patterns_*.json 2>/dev/null | wc -l | tr -d '[:space:]')
+    PATTERN_COUNT=${PATTERN_COUNT:-0}
     if [[ $PATTERN_COUNT -gt 1 ]]; then
         log "Running analyze-trends.sh..."
         "$SCRIPT_DIR/analyze-trends.sh" 7 2>> "$LOG_FILE" || true
@@ -216,7 +217,8 @@ if [[ "$WEEKLY_REPORT" == "true" ]] && [[ -x "$SCRIPT_DIR/generate-report.sh" ]]
     log "=== WEEKLY REPORT ==="
     log "Generating weekly digest..."
     "$SCRIPT_DIR/generate-report.sh" 2>> "$LOG_FILE" || true
-    REPORT_FILE=$(ls -t "$REPORTS_DIR"/weekly_digest_*.md 2>/dev/null | head -1)
+    # Check both workspace and home state dirs for reports
+    REPORT_FILE=$(ls -t "$REPORTS_DIR"/weekly_digest_*.md "${HOME}/.claude/state/reports"/weekly_digest_*.md 2>/dev/null | head -1 || true)
     log "Weekly report: $REPORT_FILE"
 fi
 
@@ -238,18 +240,21 @@ CLAUDE_DIR="${HOME}/.claude-reviews/pending"
 
 # Check Gemini pending reviews
 if [[ -x "$GEMINI_MANAGER" ]]; then
-    GEMINI_PENDING=$("$GEMINI_MANAGER" list 2>/dev/null | grep -c "pending" || echo "0")
+    GEMINI_PENDING=$("$GEMINI_MANAGER" list 2>/dev/null | grep -c "pending" 2>/dev/null) || GEMINI_PENDING=0
 fi
+GEMINI_PENDING=${GEMINI_PENDING:-0}
 
 # Check Codex pending reviews (count files in pending directory)
 if [[ -d "$CODEX_DIR" ]]; then
-    CODEX_PENDING=$(find "$CODEX_DIR" -type f \( -name "*.json" -o -name "*.md" \) -size +0c 2>/dev/null | wc -l)
+    CODEX_PENDING=$(find "$CODEX_DIR" -type f \( -name "*.json" -o -name "*.md" \) -size +0c 2>/dev/null | wc -l | tr -d '[:space:]')
 fi
+CODEX_PENDING=${CODEX_PENDING:-0}
 
 # Check Claude pending reviews
 if [[ -d "$CLAUDE_DIR" ]]; then
-    CLAUDE_PENDING=$(find "$CLAUDE_DIR" -type f -name "*.md" -size +0c 2>/dev/null | wc -l)
+    CLAUDE_PENDING=$(find "$CLAUDE_DIR" -type f -name "*.md" -size +0c 2>/dev/null | wc -l | tr -d '[:space:]')
 fi
+CLAUDE_PENDING=${CLAUDE_PENDING:-0}
 
 PENDING_REVIEWS=$((GEMINI_PENDING + CODEX_PENDING + CLAUDE_PENDING))
 CROSS_REVIEW_OK=$([[ $PENDING_REVIEWS -eq 0 ]] && echo "pass" || echo "fail")
@@ -260,8 +265,10 @@ SKILLS_OK=$([[ $SKILLS_CREATED -gt 0 || $SKILLS_ENHANCED -gt 0 ]] && echo "pass"
 log "Skills: $SKILLS_CREATED created, $SKILLS_ENHANCED enhanced"
 
 # c) File structure check: Look for orphan files in key directories
-ORPHAN_DOCS=$(find "${WORKSPACE_ROOT}/docs" -maxdepth 1 -name "*.md" ! -name "README.md" ! -name "SKILLS_INDEX.md" ! -name "WORKSPACE_HUB_*.md" 2>/dev/null | wc -l)
-ORPHAN_SCRIPTS=$(find "${WORKSPACE_ROOT}/scripts" -maxdepth 1 -type f -name "*.sh" ! -name "workspace" ! -name "repository_sync" ! -name "setup-claude-env.sh" 2>/dev/null | wc -l)
+ORPHAN_DOCS=$(find "${WORKSPACE_ROOT}/docs" -maxdepth 1 -name "*.md" ! -name "README.md" ! -name "SKILLS_INDEX.md" ! -name "WORKSPACE_HUB_*.md" 2>/dev/null | wc -l | tr -d '[:space:]')
+ORPHAN_DOCS=${ORPHAN_DOCS:-0}
+ORPHAN_SCRIPTS=$(find "${WORKSPACE_ROOT}/scripts" -maxdepth 1 -type f -name "*.sh" ! -name "workspace" ! -name "repository_sync" ! -name "setup-claude-env.sh" 2>/dev/null | wc -l | tr -d '[:space:]')
+ORPHAN_SCRIPTS=${ORPHAN_SCRIPTS:-0}
 FILE_STRUCTURE_OK=$([[ $ORPHAN_DOCS -le 5 && $ORPHAN_SCRIPTS -le 2 ]] && echo "pass" || echo "fail")
 log "File structure: $ORPHAN_DOCS orphan docs, $ORPHAN_SCRIPTS orphan scripts"
 
@@ -279,10 +286,190 @@ CONTEXT_OK=$([[ $CONTEXT_ISSUES -eq 0 ]] && echo "pass" || echo "warn")
 log "Context: avg $AVG_SESSION msgs/session, $CORRECTION_RATE corrections"
 
 # e) Best practices: TDD coverage, git hygiene
-REPOS_WITH_TESTS=$(find "$WORKSPACE_ROOT" -maxdepth 2 -type d -name "tests" 2>/dev/null | wc -l)
-UNCOMMITTED_CHANGES=$(cd "$WORKSPACE_ROOT" && git status --porcelain 2>/dev/null | wc -l)
+REPOS_WITH_TESTS=$(find "$WORKSPACE_ROOT" -maxdepth 2 -type d -name "tests" 2>/dev/null | wc -l | tr -d '[:space:]')
+REPOS_WITH_TESTS=${REPOS_WITH_TESTS:-0}
+UNCOMMITTED_CHANGES=$(cd "$WORKSPACE_ROOT" && git status --porcelain 2>/dev/null | wc -l | tr -d '[:space:]')
+UNCOMMITTED_CHANGES=${UNCOMMITTED_CHANGES:-0}
 PRACTICES_OK=$([[ $REPOS_WITH_TESTS -gt 5 && $UNCOMMITTED_CHANGES -lt 20 ]] && echo "pass" || echo "warn")
 log "Practices: $REPOS_WITH_TESTS repos with tests, $UNCOMMITTED_CHANGES uncommitted changes"
+
+# f) Submodule sync status: Quick check (limit to 15 submodules for speed)
+SUBMODULES_DIRTY=0
+SUBMODULES_UNPUSHED=0
+SUBMODULES_TOTAL=0
+CHECKED_SUBS=0
+while IFS= read -r submod && [[ $CHECKED_SUBS -lt 15 ]]; do
+    [[ -z "$submod" ]] && continue
+    SUBMODULES_TOTAL=$((SUBMODULES_TOTAL + 1))
+    CHECKED_SUBS=$((CHECKED_SUBS + 1))
+    submod_path="${WORKSPACE_ROOT}/${submod}"
+    if [[ -d "$submod_path/.git" ]]; then
+        # Check for uncommitted changes (quick)
+        if [[ -n $(timeout 2 git -C "$submod_path" status --porcelain 2>/dev/null) ]]; then
+            SUBMODULES_DIRTY=$((SUBMODULES_DIRTY + 1))
+        fi
+        # Check for unpushed commits (quick)
+        UNPUSHED=$(timeout 2 git -C "$submod_path" log --oneline @{upstream}..HEAD 2>/dev/null | wc -l | tr -d '[:space:]') || UNPUSHED=0
+        UNPUSHED=${UNPUSHED:-0}
+        [[ $UNPUSHED -gt 0 ]] && SUBMODULES_UNPUSHED=$((SUBMODULES_UNPUSHED + 1))
+    fi
+done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null | head -15)
+SUBMODULE_SYNC_OK=$([[ $SUBMODULES_DIRTY -eq 0 && $SUBMODULES_UNPUSHED -eq 0 ]] && echo "pass" || echo "warn")
+log "Submodule sync: $SUBMODULES_DIRTY dirty, $SUBMODULES_UNPUSHED unpushed (of $SUBMODULES_TOTAL total)"
+
+# g) CLAUDE.md health: Quick check (limit to 20 files)
+CLAUDE_MD_OVERSIZED=0
+CLAUDE_MD_TOTAL=0
+while IFS= read -r claude_file && [[ $CLAUDE_MD_TOTAL -lt 20 ]]; do
+    [[ -z "$claude_file" ]] && continue
+    CLAUDE_MD_TOTAL=$((CLAUDE_MD_TOTAL + 1))
+    file_size=$(wc -c < "$claude_file" 2>/dev/null | tr -d '[:space:]')
+    file_size=${file_size:-0}
+    # Limits: global=2KB, workspace=4KB, project=8KB
+    if [[ "$claude_file" == *"/.claude/CLAUDE.md" ]]; then
+        max_size=2048
+    elif [[ "$claude_file" == */workspace-hub/CLAUDE.md ]]; then
+        max_size=4096
+    else
+        max_size=8192
+    fi
+    [[ $file_size -gt $max_size ]] && CLAUDE_MD_OVERSIZED=$((CLAUDE_MD_OVERSIZED + 1))
+done < <(find "$WORKSPACE_ROOT" -maxdepth 3 -name "CLAUDE.md" -type f 2>/dev/null | head -20)
+CLAUDE_MD_OK=$([[ $CLAUDE_MD_OVERSIZED -eq 0 ]] && echo "pass" || echo "fail")
+log "CLAUDE.md health: $CLAUDE_MD_OVERSIZED oversized (of $CLAUDE_MD_TOTAL total)"
+
+# h) Hook installation: Quick check (limit to 15 repos)
+HOOKS_INSTALLED=0
+HOOKS_EXPECTED=0
+HOOK_SCRIPT="${WORKSPACE_ROOT}/.claude/hooks/capture-corrections.sh"
+if [[ -x "$HOOK_SCRIPT" ]]; then
+    HOOKS_CHECKED=0
+    while IFS= read -r submod && [[ $HOOKS_CHECKED -lt 15 ]]; do
+        [[ -z "$submod" ]] && continue
+        HOOKS_EXPECTED=$((HOOKS_EXPECTED + 1))
+        HOOKS_CHECKED=$((HOOKS_CHECKED + 1))
+        settings_file="${WORKSPACE_ROOT}/${submod}/.claude/settings.json"
+        if [[ -f "$settings_file" ]] && grep -q "capture-corrections" "$settings_file" 2>/dev/null; then
+            HOOKS_INSTALLED=$((HOOKS_INSTALLED + 1))
+        fi
+    done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null | head -15)
+fi
+HOOKS_COVERAGE=$([[ $HOOKS_EXPECTED -gt 0 ]] && echo "$((HOOKS_INSTALLED * 100 / HOOKS_EXPECTED))" || echo "0")
+HOOKS_OK=$([[ $HOOKS_COVERAGE -ge 80 ]] && echo "pass" || ([[ $HOOKS_COVERAGE -ge 50 ]] && echo "warn" || echo "fail"))
+log "Hook installation: $HOOKS_INSTALLED/$HOOKS_EXPECTED repos (${HOOKS_COVERAGE}% coverage)"
+
+# i) Stale branches: Check for branches not merged for >30 days
+STALE_BRANCHES=0
+STALE_THRESHOLD=$((30 * 24 * 60 * 60))  # 30 days in seconds
+NOW=$(date +%s)
+while IFS= read -r branch; do
+    [[ -z "$branch" || "$branch" == *"HEAD"* || "$branch" == *"main"* || "$branch" == *"master"* ]] && continue
+    branch_date=$(git -C "$WORKSPACE_ROOT" log -1 --format="%ct" "$branch" 2>/dev/null || echo "0")
+    age=$((NOW - branch_date))
+    [[ $age -gt $STALE_THRESHOLD ]] && STALE_BRANCHES=$((STALE_BRANCHES + 1))
+done < <(git -C "$WORKSPACE_ROOT" branch -r 2>/dev/null | grep -v '\->' || true)
+STALE_OK=$([[ $STALE_BRANCHES -le 5 ]] && echo "pass" || echo "warn")
+log "Stale branches: $STALE_BRANCHES branches older than 30 days"
+
+# j) GitHub Actions: Check workflow run status (quick check - workspace only)
+ACTIONS_FAILING=0
+ACTIONS_TOTAL=0
+if command -v gh &> /dev/null && [[ -d "${WORKSPACE_ROOT}/.github/workflows" ]]; then
+    ACTIONS_TOTAL=1
+    # Only check workspace-hub workflows (submodules are too slow)
+    FAILED=$(timeout 10 gh run list --limit 3 --status failure 2>/dev/null | wc -l | tr -d '[:space:]') || FAILED=0
+    FAILED=${FAILED:-0}
+    [[ $FAILED -gt 0 ]] && ACTIONS_FAILING=1
+fi
+GITHUB_ACTIONS_OK=$([[ $ACTIONS_FAILING -eq 0 ]] && echo "pass" || ([[ $ACTIONS_FAILING -le 2 ]] && echo "warn" || echo "fail"))
+log "GitHub Actions: $ACTIONS_FAILING/$ACTIONS_TOTAL repos with failing workflows"
+
+# k) Folder structure: Comprehensive directory organization check
+STRUCTURE_ISSUES=0
+# Check for expected top-level directories
+for dir in scripts docs specs .claude; do
+    [[ ! -d "${WORKSPACE_ROOT}/${dir}" ]] && STRUCTURE_ISSUES=$((STRUCTURE_ISSUES + 1))
+done
+# Check for misplaced files in root
+ROOT_FILES=$(find "$WORKSPACE_ROOT" -maxdepth 1 -type f ! -name ".*" ! -name "README.md" ! -name "LICENSE*" ! -name "*.toml" ! -name "*.yaml" ! -name "*.yml" 2>/dev/null | wc -l | tr -d '[:space:]')
+ROOT_FILES=${ROOT_FILES:-0}
+[[ $ROOT_FILES -gt 5 ]] && STRUCTURE_ISSUES=$((STRUCTURE_ISSUES + 1))
+# Check specs has proper structure
+[[ ! -d "${WORKSPACE_ROOT}/specs/modules" ]] && STRUCTURE_ISSUES=$((STRUCTURE_ISSUES + 1))
+[[ ! -d "${WORKSPACE_ROOT}/specs/templates" ]] && STRUCTURE_ISSUES=$((STRUCTURE_ISSUES + 1))
+FOLDER_STRUCTURE_OK=$([[ $STRUCTURE_ISSUES -eq 0 ]] && echo "pass" || echo "fail")
+log "Folder structure: $STRUCTURE_ISSUES structural issues, $ROOT_FILES misplaced root files"
+
+# l) Test coverage: Quick check for coverage files (limit to 20 repos for speed)
+COVERAGE_PERCENT=0
+COVERAGE_REPOS=0
+LOW_COVERAGE_REPOS=0
+CHECKED_REPOS=0
+while IFS= read -r submod && [[ $CHECKED_REPOS -lt 20 ]]; do
+    [[ -z "$submod" ]] && continue
+    submod_path="${WORKSPACE_ROOT}/${submod}"
+    # Quick check for coverage.xml only (most common)
+    cov_file="$submod_path/coverage.xml"
+    if [[ -f "$cov_file" ]]; then
+        COVERAGE_REPOS=$((COVERAGE_REPOS + 1))
+        CHECKED_REPOS=$((CHECKED_REPOS + 1))
+        COV=$(grep -oP 'line-rate="\K[0-9.]+' "$cov_file" 2>/dev/null | head -1)
+        if [[ -n "$COV" && "$COV" =~ ^0\.([0-9]+) ]]; then
+            COV_DEC="${BASH_REMATCH[1]}"
+            COV_PCT=$((10#${COV_DEC:0:2}))
+        elif [[ "$COV" == "1" || "$COV" == "1.0" ]]; then
+            COV_PCT=100
+        else
+            COV_PCT=0
+        fi
+        [[ ${COV_PCT:-0} -lt 80 ]] && LOW_COVERAGE_REPOS=$((LOW_COVERAGE_REPOS + 1))
+        COVERAGE_PERCENT=$((COVERAGE_PERCENT + ${COV_PCT:-0}))
+    fi
+done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null)
+AVG_COVERAGE=$([[ $COVERAGE_REPOS -gt 0 ]] && echo $((COVERAGE_PERCENT / COVERAGE_REPOS)) || echo "0")
+TEST_COVERAGE_OK=$([[ $AVG_COVERAGE -ge 80 ]] && echo "pass" || ([[ $AVG_COVERAGE -ge 60 ]] && echo "warn" || echo "fail"))
+log "Test coverage: ${AVG_COVERAGE}% avg across $COVERAGE_REPOS repos, $LOW_COVERAGE_REPOS below 80%"
+
+# m) Test pass/fail: Quick check of pytest cache (limit to 20 repos)
+TEST_PASS_COUNT=0
+TEST_FAIL_COUNT=0
+TESTED_REPOS=0
+CHECKED=0
+while IFS= read -r submod && [[ $CHECKED -lt 20 ]]; do
+    [[ -z "$submod" ]] && continue
+    submod_path="${WORKSPACE_ROOT}/${submod}"
+    # Check for pytest cache (quick check)
+    lastfailed="$submod_path/.pytest_cache/v/cache/lastfailed"
+    if [[ -f "$lastfailed" ]]; then
+        TESTED_REPOS=$((TESTED_REPOS + 1))
+        CHECKED=$((CHECKED + 1))
+        CONTENT=$(cat "$lastfailed" 2>/dev/null)
+        if [[ -n "$CONTENT" && "$CONTENT" != "{}" && "$CONTENT" != "null" ]]; then
+            TEST_FAIL_COUNT=$((TEST_FAIL_COUNT + 1))
+        else
+            TEST_PASS_COUNT=$((TEST_PASS_COUNT + 1))
+        fi
+    fi
+done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null)
+TEST_PASS_OK=$([[ $TEST_FAIL_COUNT -eq 0 ]] && echo "pass" || echo "fail")
+log "Test status: $TEST_PASS_COUNT passing, $TEST_FAIL_COUNT failing (of $TESTED_REPOS with tests)"
+
+# n) Refactor opportunities: Quick code smell check
+REFACTOR_NEEDED=0
+LARGE_FILES=0
+# Check for large files (>500 lines) - limit to 50 files for speed
+while IFS= read -r pyfile; do
+    lines=$(wc -l < "$pyfile" 2>/dev/null | tr -d '[:space:]')
+    lines=${lines:-0}
+    [[ $lines -gt 500 ]] && LARGE_FILES=$((LARGE_FILES + 1))
+done < <(find "$WORKSPACE_ROOT" -name "*.py" -type f ! -path "*/.venv/*" ! -path "*/node_modules/*" 2>/dev/null | head -50)
+# Quick TODO count (limit search depth and files)
+TODO_COUNT=$(timeout 10 grep -r "TODO\|FIXME" "$WORKSPACE_ROOT" --include="*.py" -l 2>/dev/null | wc -l | tr -d '[:space:]') || TODO_COUNT=0
+TODO_COUNT=${TODO_COUNT:-0}
+[[ $LARGE_FILES -gt 10 ]] && REFACTOR_NEEDED=$((REFACTOR_NEEDED + 1))
+[[ $TODO_COUNT -gt 50 ]] && REFACTOR_NEEDED=$((REFACTOR_NEEDED + 1))
+REFACTOR_OK=$([[ $REFACTOR_NEEDED -eq 0 ]] && echo "pass" || echo "warn")
+log "Refactor check: $LARGE_FILES large files, $TODO_COUNT TODOs/FIXMEs"
 
 #############################################
 # Update state file
@@ -324,6 +511,36 @@ checklist:
   best_practices: $PRACTICES_OK
   repos_with_tests: $REPOS_WITH_TESTS
   uncommitted_changes: $UNCOMMITTED_CHANGES
+  submodule_sync: $SUBMODULE_SYNC_OK
+  submodules_dirty: $SUBMODULES_DIRTY
+  submodules_unpushed: $SUBMODULES_UNPUSHED
+  submodules_total: $SUBMODULES_TOTAL
+  claude_md_health: $CLAUDE_MD_OK
+  claude_md_oversized: $CLAUDE_MD_OVERSIZED
+  claude_md_total: $CLAUDE_MD_TOTAL
+  hook_installation: $HOOKS_OK
+  hooks_installed: $HOOKS_INSTALLED
+  hooks_expected: $HOOKS_EXPECTED
+  hooks_coverage: $HOOKS_COVERAGE
+  stale_branches: $STALE_OK
+  stale_branch_count: $STALE_BRANCHES
+  github_actions: $GITHUB_ACTIONS_OK
+  actions_failing: $ACTIONS_FAILING
+  actions_total: $ACTIONS_TOTAL
+  folder_structure_detailed: $FOLDER_STRUCTURE_OK
+  structure_issues: $STRUCTURE_ISSUES
+  root_files: $ROOT_FILES
+  test_coverage: $TEST_COVERAGE_OK
+  avg_coverage: $AVG_COVERAGE
+  coverage_repos: $COVERAGE_REPOS
+  low_coverage_repos: $LOW_COVERAGE_REPOS
+  test_pass_fail: $TEST_PASS_OK
+  test_pass_count: $TEST_PASS_COUNT
+  test_fail_count: $TEST_FAIL_COUNT
+  tested_repos: $TESTED_REPOS
+  refactor: $REFACTOR_OK
+  large_files: $LARGE_FILES
+  todo_count: $TODO_COUNT
 actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
@@ -357,35 +574,54 @@ SK_SYM=$([[ "$SKILLS_OK" == "pass" ]] && echo "✓" || ([[ "$SKILLS_OK" == "none
 FS_SYM=$([[ "$FILE_STRUCTURE_OK" == "pass" ]] && echo "✓" || echo "✗")
 CX_SYM=$([[ "$CONTEXT_OK" == "pass" ]] && echo "✓" || echo "!")
 BP_SYM=$([[ "$PRACTICES_OK" == "pass" ]] && echo "✓" || echo "!")
+SM_SYM=$([[ "$SUBMODULE_SYNC_OK" == "pass" ]] && echo "✓" || echo "!")
+CM_SYM=$([[ "$CLAUDE_MD_OK" == "pass" ]] && echo "✓" || echo "✗")
+HK_SYM=$([[ "$HOOKS_OK" == "pass" ]] && echo "✓" || ([[ "$HOOKS_OK" == "warn" ]] && echo "!" || echo "✗"))
+SB_SYM=$([[ "$STALE_OK" == "pass" ]] && echo "✓" || echo "!")
+GA_SYM=$([[ "$GITHUB_ACTIONS_OK" == "pass" ]] && echo "✓" || ([[ "$GITHUB_ACTIONS_OK" == "warn" ]] && echo "!" || echo "✗"))
+TC_SYM=$([[ "$TEST_COVERAGE_OK" == "pass" ]] && echo "✓" || ([[ "$TEST_COVERAGE_OK" == "warn" ]] && echo "!" || echo "✗"))
+TP_SYM=$([[ "$TEST_PASS_OK" == "pass" ]] && echo "✓" || echo "✗")
+RF_SYM=$([[ "$REFACTOR_OK" == "pass" ]] && echo "✓" || echo "!")
+FD_SYM=$([[ "$FOLDER_STRUCTURE_OK" == "pass" ]] && echo "✓" || echo "✗")
 
 # Summary output for cron email
 echo ""
-echo "╔═══════════════════════════════════════════════════════════╗"
-echo "║           Daily Reflection Summary                        ║"
-echo "║           $(date '+%Y-%m-%d %H:%M')                                    ║"
-echo "╠═══════════════════════════════════════════════════════════╣"
-echo "║  QUALITY CHECKLIST                                        ║"
-echo "║  ─────────────────────────────────────────────────────────║"
-echo "║  $CR_SYM  Cross-Review: ${GEMINI_PENDING} Gemini, ${CODEX_PENDING} Codex, ${CLAUDE_PENDING} Claude"
-echo "║  $SK_SYM  Skills Dev:   ${SKILLS_CREATED} created, ${SKILLS_ENHANCED} enhanced"
-echo "║  $FS_SYM  File Structure: ${ORPHAN_DOCS} orphan docs, ${ORPHAN_SCRIPTS} orphan scripts"
-echo "║  $CX_SYM  Context Mgmt: avg ${AVG_SESSION} msgs/session, ${CORRECTION_RATE} corrections"
-echo "║  $BP_SYM  Best Practice: ${REPOS_WITH_TESTS} repos w/tests, ${UNCOMMITTED_CHANGES} uncommitted"
-echo "║                                                           ║"
-echo "║  Legend: ✓ Good  ○ None  ! Warning  ✗ Action needed       ║"
-echo "╠═══════════════════════════════════════════════════════════╣"
-echo "║  RAGS LOOP STATUS                                         ║"
-echo "║  ─────────────────────────────────────────────────────────║"
-echo "║  ✓ REFLECT:    $REPOS repos, $COMMITS commits"
-echo "║  ✓ ABSTRACT:   $PATTERNS_FOUND patterns, $SCRIPT_IDEAS scripts"
-echo "║  ✓ CONVERSE:   $CONVERSATIONS_FOUND convos analyzed"
-echo "║  ✓ GENERALIZE: Trends analyzed"
-echo "║  ✓ STORE:      $SKILLS_CREATED created, $LEARNINGS_STORED logged"
-[[ "$WEEKLY_REPORT" == "true" ]] && echo "║  📊 Weekly report generated"
-echo "╚═══════════════════════════════════════════════════════════╝"
+echo "╔═══════════════════════════════════════════════════════════════════════╗"
+echo "║                    Daily Reflection Summary                           ║"
+echo "║                    $(date '+%Y-%m-%d %H:%M')                                        ║"
+echo "╠═══════════════════════════════════════════════════════════════════════╣"
+echo "║  QUALITY CHECKLIST (13 checks)                                        ║"
+echo "║  ─────────────────────────────────────────────────────────────────────║"
+echo "║  CODE QUALITY                          │  INFRASTRUCTURE              ║"
+echo "║  $CR_SYM Cross-Review: ${GEMINI_PENDING}G ${CODEX_PENDING}C ${CLAUDE_PENDING}Cl pending    │  $SM_SYM Submodule: ${SUBMODULES_DIRTY} dirty, ${SUBMODULES_UNPUSHED} unpushed  ║"
+echo "║  $SK_SYM Skills: ${SKILLS_CREATED} new, ${SKILLS_ENHANCED} enhanced       │  $CM_SYM CLAUDE.md: ${CLAUDE_MD_OVERSIZED}/${CLAUDE_MD_TOTAL} oversized    ║"
+echo "║  $FS_SYM Files: ${ORPHAN_DOCS} orphan docs, ${ORPHAN_SCRIPTS} scripts  │  $HK_SYM Hooks: ${HOOKS_COVERAGE}% coverage       ║"
+echo "║  $CX_SYM Context: ${AVG_SESSION} msgs, ${CORRECTION_RATE} corrections  │  $SB_SYM Branches: ${STALE_BRANCHES} stale         ║"
+echo "║  ─────────────────────────────────────────────────────────────────────║"
+echo "║  TESTING & CI                          │  CODE HEALTH                 ║"
+echo "║  $GA_SYM Actions: ${ACTIONS_FAILING}/${ACTIONS_TOTAL} failing        │  $RF_SYM Refactor: ${LARGE_FILES} large, ${TODO_COUNT} TODOs  ║"
+echo "║  $TC_SYM Coverage: ${AVG_COVERAGE}% avg             │  $BP_SYM Practice: ${REPOS_WITH_TESTS} w/tests       ║"
+echo "║  $TP_SYM Tests: ${TEST_PASS_COUNT} pass, ${TEST_FAIL_COUNT} fail       │  $FD_SYM Structure: ${STRUCTURE_ISSUES} issues         ║"
+echo "║  ─────────────────────────────────────────────────────────────────────║"
+echo "║  Legend: ✓ Good  ○ None  ! Warning  ✗ Action needed                   ║"
+echo "╠═══════════════════════════════════════════════════════════════════════╣"
+echo "║  RAGS LOOP STATUS                                                     ║"
+echo "║  ─────────────────────────────────────────────────────────────────────║"
+echo "║  ✓ REFLECT:    $REPOS repos, $COMMITS commits                                    ║"
+echo "║  ✓ ABSTRACT:   $PATTERNS_FOUND patterns, $SCRIPT_IDEAS scripts                            ║"
+echo "║  ✓ CONVERSE:   $CONVERSATIONS_FOUND convos analyzed                                       ║"
+echo "║  ✓ GENERALIZE: Trends analyzed                                        ║"
+echo "║  ✓ STORE:      $SKILLS_CREATED created, $LEARNINGS_STORED logged                               ║"
+[[ "$WEEKLY_REPORT" == "true" ]] && echo "║  📊 Weekly report generated                                             ║"
+echo "╚═══════════════════════════════════════════════════════════════════════╝"
 
 # Action items if any checks failed
-if [[ "$CROSS_REVIEW_OK" == "fail" || "$FILE_STRUCTURE_OK" == "fail" ]]; then
+HAS_FAILURES=false
+[[ "$CROSS_REVIEW_OK" == "fail" || "$FILE_STRUCTURE_OK" == "fail" || "$CLAUDE_MD_OK" == "fail" || \
+   "$HOOKS_OK" == "fail" || "$GITHUB_ACTIONS_OK" == "fail" || "$TEST_COVERAGE_OK" == "fail" || \
+   "$TEST_PASS_OK" == "fail" || "$FOLDER_STRUCTURE_OK" == "fail" ]] && HAS_FAILURES=true
+
+if [[ "$HAS_FAILURES" == "true" ]]; then
     echo ""
     echo "ACTION ITEMS:"
     if [[ "$CROSS_REVIEW_OK" == "fail" ]]; then
@@ -394,12 +630,29 @@ if [[ "$CROSS_REVIEW_OK" == "fail" || "$FILE_STRUCTURE_OK" == "fail" ]]; then
         [[ $CLAUDE_PENDING -gt 0 ]] && echo "  → Claude: $CLAUDE_MANAGER process"
     fi
     [[ "$FILE_STRUCTURE_OK" == "fail" ]] && echo "  → Organize orphan files into module directories"
+    [[ "$CLAUDE_MD_OK" == "fail" ]] && echo "  → $CLAUDE_MD_OVERSIZED CLAUDE.md files exceed size limits - trim to fit"
+    [[ "$HOOKS_OK" == "fail" ]] && echo "  → Hooks only ${HOOKS_COVERAGE}% coverage - install capture-corrections hook"
+    [[ "$GITHUB_ACTIONS_OK" == "fail" ]] && echo "  → $ACTIONS_FAILING repos have failing GitHub Actions - investigate CI"
+    [[ "$TEST_COVERAGE_OK" == "fail" ]] && echo "  → Test coverage at ${AVG_COVERAGE}% - increase to 80%+ target"
+    [[ "$TEST_PASS_OK" == "fail" ]] && echo "  → $TEST_FAIL_COUNT repos have failing tests - fix before merging"
+    [[ "$FOLDER_STRUCTURE_OK" == "fail" ]] && echo "  → $STRUCTURE_ISSUES structural issues found - organize directories"
 fi
 
-if [[ "$CONTEXT_OK" == "warn" || "$PRACTICES_OK" == "warn" ]]; then
+HAS_WARNINGS=false
+[[ "$CONTEXT_OK" == "warn" || "$PRACTICES_OK" == "warn" || "$SUBMODULE_SYNC_OK" == "warn" || \
+   "$STALE_OK" == "warn" || "$REFACTOR_OK" == "warn" || "$HOOKS_OK" == "warn" || \
+   "$GITHUB_ACTIONS_OK" == "warn" || "$TEST_COVERAGE_OK" == "warn" ]] && HAS_WARNINGS=true
+
+if [[ "$HAS_WARNINGS" == "true" ]]; then
     echo ""
     echo "RECOMMENDATIONS:"
     [[ $AVG_SESSION -gt 500 ]] && echo "  → Sessions averaging ${AVG_SESSION} msgs - consider shorter sessions"
     [[ $CORRECTION_RATE -gt 20 ]] && echo "  → High correction rate (${CORRECTION_RATE}) - improve initial understanding"
     [[ $UNCOMMITTED_CHANGES -ge 20 ]] && echo "  → ${UNCOMMITTED_CHANGES} uncommitted changes - commit or discard"
+    [[ "$SUBMODULE_SYNC_OK" == "warn" ]] && echo "  → ${SUBMODULES_DIRTY} dirty, ${SUBMODULES_UNPUSHED} unpushed submodules - sync them"
+    [[ "$STALE_OK" == "warn" ]] && echo "  → ${STALE_BRANCHES} stale branches (>30 days) - clean up or merge"
+    [[ "$REFACTOR_OK" == "warn" ]] && echo "  → ${LARGE_FILES} large files, ${TODO_COUNT} TODOs - consider refactoring"
+    [[ "$HOOKS_OK" == "warn" ]] && echo "  → Hooks at ${HOOKS_COVERAGE}% - expand to more repos"
+    [[ "$GITHUB_ACTIONS_OK" == "warn" ]] && echo "  → ${ACTIONS_FAILING} repos with CI issues - review failures"
+    [[ "$TEST_COVERAGE_OK" == "warn" ]] && echo "  → Coverage at ${AVG_COVERAGE}% - aim for 80%+ target"
 fi
