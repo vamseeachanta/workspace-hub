@@ -47,6 +47,7 @@ SKILLS_CREATED=0
 SKILLS_ENHANCED=0
 LEARNINGS_STORED=0
 PATTERNS_FOUND=0
+STALE_REVIEWS_APPROVED=0
 
 #############################################
 # PHASE 1: REFLECT - Collect git history
@@ -472,6 +473,25 @@ REFACTOR_OK=$([[ $REFACTOR_NEEDED -eq 0 ]] && echo "pass" || echo "warn")
 log "Refactor check: $LARGE_FILES large files, $TODO_COUNT TODOs/FIXMEs"
 
 #############################################
+# Auto-approve stale Codex reviews (>14 days)
+#############################################
+CODEX_PENDING_DIR="${HOME}/.codex-reviews/pending"
+CODEX_APPROVED_DIR="${HOME}/.codex-reviews/approved"
+
+if [[ -d "$CODEX_PENDING_DIR" ]]; then
+    mkdir -p "$CODEX_APPROVED_DIR"
+    while IFS= read -r review_file; do
+        [[ -z "$review_file" ]] && continue
+        mv "$review_file" "$CODEX_APPROVED_DIR/"
+        STALE_REVIEWS_APPROVED=$((STALE_REVIEWS_APPROVED + 1))
+    done < <(find "$CODEX_PENDING_DIR" -name "*.md" -mtime +14 2>/dev/null)
+
+    if [[ $STALE_REVIEWS_APPROVED -gt 0 ]]; then
+        log "Auto-approved $STALE_REVIEWS_APPROVED stale Codex reviews (>14 days)"
+    fi
+fi
+
+#############################################
 # Update state file
 #############################################
 STATE_FILE="${STATE_DIR}/reflect-state.yaml"
@@ -545,6 +565,7 @@ actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
   learnings_stored: $LEARNINGS_STORED
+  stale_reviews_approved: $STALE_REVIEWS_APPROVED
 files:
   analysis: $ANALYSIS_FILE
   patterns: ${PATTERN_FILE:-none}
