@@ -472,6 +472,42 @@ TODO_COUNT=${TODO_COUNT:-0}
 REFACTOR_OK=$([[ $REFACTOR_NEEDED -eq 0 ]] && echo "pass" || echo "warn")
 log "Refactor check: $LARGE_FILES large files, $TODO_COUNT TODOs/FIXMEs"
 
+# o) Aceengineer-website cron job status
+ACEENGINEER_OK="none"
+ACEENGINEER_STATS_FRESH="no"
+ACEENGINEER_REPORT_FRESH="no"
+ACEENGINEER_STATS_DATE=""
+ACEENGINEER_REPORT_DATE=""
+
+ACEENGINEER_DIR="${WORKSPACE_ROOT}/aceengineer-website"
+STATS_FILE="${ACEENGINEER_DIR}/assets/data/statistics.json"
+REPORT_DIR="${ACEENGINEER_DIR}/reports/competitor-analysis"
+TODAY=$(date +%Y-%m-%d)
+
+# Check statistics.json freshness
+if [[ -f "$STATS_FILE" ]]; then
+    ACEENGINEER_STATS_DATE=$(jq -r '.last_updated // ""' "$STATS_FILE" 2>/dev/null)
+    [[ "$ACEENGINEER_STATS_DATE" == "$TODAY" ]] && ACEENGINEER_STATS_FRESH="yes"
+fi
+
+# Check competitor analysis report freshness
+LATEST_REPORT="${REPORT_DIR}/latest.html"
+if [[ -L "$LATEST_REPORT" ]]; then
+    REPORT_NAME=$(readlink "$LATEST_REPORT")
+    ACEENGINEER_REPORT_DATE="${REPORT_NAME%.html}"
+    [[ "$ACEENGINEER_REPORT_DATE" == "$TODAY" ]] && ACEENGINEER_REPORT_FRESH="yes"
+fi
+
+# Determine overall status
+if [[ "$ACEENGINEER_STATS_FRESH" == "yes" && "$ACEENGINEER_REPORT_FRESH" == "yes" ]]; then
+    ACEENGINEER_OK="pass"
+elif [[ "$ACEENGINEER_STATS_FRESH" == "yes" || "$ACEENGINEER_REPORT_FRESH" == "yes" ]]; then
+    ACEENGINEER_OK="warn"
+elif [[ -f "$STATS_FILE" || -L "$LATEST_REPORT" ]]; then
+    ACEENGINEER_OK="fail"
+fi
+log "Aceengineer cron: stats=$ACEENGINEER_STATS_DATE report=$ACEENGINEER_REPORT_DATE"
+
 #############################################
 # Auto-approve stale Codex reviews (>14 days)
 #############################################
@@ -561,6 +597,9 @@ checklist:
   refactor: $REFACTOR_OK
   large_files: $LARGE_FILES
   todo_count: $TODO_COUNT
+  aceengineer_cron: $ACEENGINEER_OK
+  aceengineer_stats_date: ${ACEENGINEER_STATS_DATE:-none}
+  aceengineer_report_date: ${ACEENGINEER_REPORT_DATE:-none}
 actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
@@ -604,6 +643,7 @@ TC_SYM=$([[ "$TEST_COVERAGE_OK" == "pass" ]] && echo "✓" || ([[ "$TEST_COVERAG
 TP_SYM=$([[ "$TEST_PASS_OK" == "pass" ]] && echo "✓" || echo "✗")
 RF_SYM=$([[ "$REFACTOR_OK" == "pass" ]] && echo "✓" || echo "!")
 FD_SYM=$([[ "$FOLDER_STRUCTURE_OK" == "pass" ]] && echo "✓" || echo "✗")
+AE_SYM=$([[ "$ACEENGINEER_OK" == "pass" ]] && echo "✓" || ([[ "$ACEENGINEER_OK" == "warn" ]] && echo "!" || ([[ "$ACEENGINEER_OK" == "none" ]] && echo "○" || echo "✗")))
 
 # Summary output for cron email
 echo ""
@@ -611,7 +651,7 @@ echo "╔═══════════════════════�
 echo "║                    Daily Reflection Summary                           ║"
 echo "║                    $(date '+%Y-%m-%d %H:%M')                                        ║"
 echo "╠═══════════════════════════════════════════════════════════════════════╣"
-echo "║  QUALITY CHECKLIST (13 checks)                                        ║"
+echo "║  QUALITY CHECKLIST (14 checks)                                        ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  CODE QUALITY                          │  INFRASTRUCTURE              ║"
 echo "║  $CR_SYM Cross-Review: ${GEMINI_PENDING}G ${CODEX_PENDING}C ${CLAUDE_PENDING}Cl pending    │  $SM_SYM Submodule: ${SUBMODULES_DIRTY} dirty, ${SUBMODULES_UNPUSHED} unpushed  ║"
@@ -623,6 +663,9 @@ echo "║  TESTING & CI                          │  CODE HEALTH               
 echo "║  $GA_SYM Actions: ${ACTIONS_FAILING}/${ACTIONS_TOTAL} failing        │  $RF_SYM Refactor: ${LARGE_FILES} large, ${TODO_COUNT} TODOs  ║"
 echo "║  $TC_SYM Coverage: ${AVG_COVERAGE}% avg             │  $BP_SYM Practice: ${REPOS_WITH_TESTS} w/tests       ║"
 echo "║  $TP_SYM Tests: ${TEST_PASS_COUNT} pass, ${TEST_FAIL_COUNT} fail       │  $FD_SYM Structure: ${STRUCTURE_ISSUES} issues         ║"
+echo "║  ─────────────────────────────────────────────────────────────────────║"
+echo "║  CRON JOBS                                                            ║"
+echo "║  $AE_SYM Aceengineer: stats ${ACEENGINEER_STATS_DATE:-N/A} report ${ACEENGINEER_REPORT_DATE:-N/A}              ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  Legend: ✓ Good  ○ None  ! Warning  ✗ Action needed                   ║"
 echo "╠═══════════════════════════════════════════════════════════════════════╣"
@@ -640,7 +683,7 @@ echo "╚═══════════════════════�
 HAS_FAILURES=false
 [[ "$CROSS_REVIEW_OK" == "fail" || "$FILE_STRUCTURE_OK" == "fail" || "$CLAUDE_MD_OK" == "fail" || \
    "$HOOKS_OK" == "fail" || "$GITHUB_ACTIONS_OK" == "fail" || "$TEST_COVERAGE_OK" == "fail" || \
-   "$TEST_PASS_OK" == "fail" || "$FOLDER_STRUCTURE_OK" == "fail" ]] && HAS_FAILURES=true
+   "$TEST_PASS_OK" == "fail" || "$FOLDER_STRUCTURE_OK" == "fail" || "$ACEENGINEER_OK" == "fail" ]] && HAS_FAILURES=true
 
 if [[ "$HAS_FAILURES" == "true" ]]; then
     echo ""
@@ -657,12 +700,13 @@ if [[ "$HAS_FAILURES" == "true" ]]; then
     [[ "$TEST_COVERAGE_OK" == "fail" ]] && echo "  → Test coverage at ${AVG_COVERAGE}% - increase to 80%+ target"
     [[ "$TEST_PASS_OK" == "fail" ]] && echo "  → $TEST_FAIL_COUNT repos have failing tests - fix before merging"
     [[ "$FOLDER_STRUCTURE_OK" == "fail" ]] && echo "  → $STRUCTURE_ISSUES structural issues found - organize directories"
+    [[ "$ACEENGINEER_OK" == "fail" ]] && echo "  → Aceengineer cron job not running - check daily-update.sh logs"
 fi
 
 HAS_WARNINGS=false
 [[ "$CONTEXT_OK" == "warn" || "$PRACTICES_OK" == "warn" || "$SUBMODULE_SYNC_OK" == "warn" || \
    "$STALE_OK" == "warn" || "$REFACTOR_OK" == "warn" || "$HOOKS_OK" == "warn" || \
-   "$GITHUB_ACTIONS_OK" == "warn" || "$TEST_COVERAGE_OK" == "warn" ]] && HAS_WARNINGS=true
+   "$GITHUB_ACTIONS_OK" == "warn" || "$TEST_COVERAGE_OK" == "warn" || "$ACEENGINEER_OK" == "warn" ]] && HAS_WARNINGS=true
 
 if [[ "$HAS_WARNINGS" == "true" ]]; then
     echo ""
@@ -676,4 +720,5 @@ if [[ "$HAS_WARNINGS" == "true" ]]; then
     [[ "$HOOKS_OK" == "warn" ]] && echo "  → Hooks at ${HOOKS_COVERAGE}% - expand to more repos"
     [[ "$GITHUB_ACTIONS_OK" == "warn" ]] && echo "  → ${ACTIONS_FAILING} repos with CI issues - review failures"
     [[ "$TEST_COVERAGE_OK" == "warn" ]] && echo "  → Coverage at ${AVG_COVERAGE}% - aim for 80%+ target"
+    [[ "$ACEENGINEER_OK" == "warn" ]] && echo "  → Aceengineer cron partial - stats or report outdated"
 fi
