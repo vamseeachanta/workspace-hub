@@ -196,7 +196,8 @@ log "=== PHASE 4: STORE ==="
 if [[ -x "$SCRIPT_DIR/create-skills.sh" ]] && [[ $PATTERNS_FOUND -gt 0 ]]; then
     log "Running create-skills.sh..."
     export DRY_RUN
-    SKILL_OUTPUT=$("$SCRIPT_DIR/create-skills.sh" "$PATTERN_FILE" 2>> "$LOG_FILE") || true
+    # Pass both pattern file and session file for complete feedback loop
+    SKILL_OUTPUT=$("$SCRIPT_DIR/create-skills.sh" "$PATTERN_FILE" "${SESSION_FILE:-}" 2>> "$LOG_FILE") || true
 
     # Parse output for counts
     SKILLS_CREATED=$(echo "$SKILL_OUTPUT" | grep -oP 'Skills Created: \K[0-9]+' || echo "0")
@@ -508,6 +509,32 @@ elif [[ -f "$STATS_FILE" || -L "$LATEST_REPORT" ]]; then
 fi
 log "Aceengineer cron: stats=$ACEENGINEER_STATS_DATE report=$ACEENGINEER_REPORT_DATE"
 
+# p) Session RAG analysis status
+SESSION_RAG_OK="none"
+SESSION_RAG_FRESH="no"
+SESSION_RAG_DATE=""
+SESSION_RAG_SESSIONS=0
+SESSION_RAG_EVENTS=0
+
+# Check if session analysis ran today (look for sessions file from today)
+SESSION_RAG_FILE=$(ls -t "${PATTERNS_DIR}"/sessions_*.json 2>/dev/null | head -1)
+if [[ -f "$SESSION_RAG_FILE" ]]; then
+    SESSION_RAG_DATE=$(jq -r '.extraction_date // ""' "$SESSION_RAG_FILE" 2>/dev/null | cut -d'T' -f1)
+    SESSION_RAG_SESSIONS=$(jq -r '.unique_sessions // 0' "$SESSION_RAG_FILE" 2>/dev/null)
+    SESSION_RAG_EVENTS=$(jq -r '.total_events // 0' "$SESSION_RAG_FILE" 2>/dev/null)
+    [[ "$SESSION_RAG_DATE" == "$TODAY" ]] && SESSION_RAG_FRESH="yes"
+fi
+
+# Determine session RAG status based on freshness and data quality
+if [[ "$SESSION_RAG_FRESH" == "yes" && $SESSION_RAG_SESSIONS -gt 0 ]]; then
+    SESSION_RAG_OK="pass"
+elif [[ -f "$SESSION_RAG_FILE" && $SESSION_RAG_SESSIONS -gt 0 ]]; then
+    SESSION_RAG_OK="warn"
+elif [[ -f "$SESSION_RAG_FILE" ]]; then
+    SESSION_RAG_OK="fail"
+fi
+log "Session RAG: date=$SESSION_RAG_DATE sessions=$SESSION_RAG_SESSIONS events=$SESSION_RAG_EVENTS"
+
 #############################################
 # Auto-approve stale Codex reviews (>14 days)
 #############################################
@@ -600,6 +627,10 @@ checklist:
   aceengineer_cron: $ACEENGINEER_OK
   aceengineer_stats_date: ${ACEENGINEER_STATS_DATE:-none}
   aceengineer_report_date: ${ACEENGINEER_REPORT_DATE:-none}
+  session_rag: $SESSION_RAG_OK
+  session_rag_date: ${SESSION_RAG_DATE:-none}
+  session_rag_sessions: $SESSION_RAG_SESSIONS
+  session_rag_events: $SESSION_RAG_EVENTS
 actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
@@ -644,6 +675,7 @@ TP_SYM=$([[ "$TEST_PASS_OK" == "pass" ]] && echo "✓" || echo "✗")
 RF_SYM=$([[ "$REFACTOR_OK" == "pass" ]] && echo "✓" || echo "!")
 FD_SYM=$([[ "$FOLDER_STRUCTURE_OK" == "pass" ]] && echo "✓" || echo "✗")
 AE_SYM=$([[ "$ACEENGINEER_OK" == "pass" ]] && echo "✓" || ([[ "$ACEENGINEER_OK" == "warn" ]] && echo "!" || ([[ "$ACEENGINEER_OK" == "none" ]] && echo "○" || echo "✗")))
+SR_SYM=$([[ "$SESSION_RAG_OK" == "pass" ]] && echo "✓" || ([[ "$SESSION_RAG_OK" == "warn" ]] && echo "!" || ([[ "$SESSION_RAG_OK" == "none" ]] && echo "○" || echo "✗")))
 
 # Summary output for cron email
 echo ""
@@ -651,7 +683,7 @@ echo "╔═══════════════════════�
 echo "║                    Daily Reflection Summary                           ║"
 echo "║                    $(date '+%Y-%m-%d %H:%M')                                        ║"
 echo "╠═══════════════════════════════════════════════════════════════════════╣"
-echo "║  QUALITY CHECKLIST (14 checks)                                        ║"
+echo "║  QUALITY CHECKLIST (15 checks)                                        ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  CODE QUALITY                          │  INFRASTRUCTURE              ║"
 echo "║  $CR_SYM Cross-Review: ${GEMINI_PENDING}G ${CODEX_PENDING}C ${CLAUDE_PENDING}Cl pending    │  $SM_SYM Submodule: ${SUBMODULES_DIRTY} dirty, ${SUBMODULES_UNPUSHED} unpushed  ║"
@@ -666,6 +698,7 @@ echo "║  $TP_SYM Tests: ${TEST_PASS_COUNT} pass, ${TEST_FAIL_COUNT} fail      
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  CRON JOBS                                                            ║"
 echo "║  $AE_SYM Aceengineer: stats ${ACEENGINEER_STATS_DATE:-N/A} report ${ACEENGINEER_REPORT_DATE:-N/A}              ║"
+echo "║  $SR_SYM Session RAG: ${SESSION_RAG_SESSIONS} sessions, ${SESSION_RAG_EVENTS} events (${SESSION_RAG_DATE:-N/A})        ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  Legend: ✓ Good  ○ None  ! Warning  ✗ Action needed                   ║"
 echo "╠═══════════════════════════════════════════════════════════════════════╣"
@@ -683,7 +716,8 @@ echo "╚═══════════════════════�
 HAS_FAILURES=false
 [[ "$CROSS_REVIEW_OK" == "fail" || "$FILE_STRUCTURE_OK" == "fail" || "$CLAUDE_MD_OK" == "fail" || \
    "$HOOKS_OK" == "fail" || "$GITHUB_ACTIONS_OK" == "fail" || "$TEST_COVERAGE_OK" == "fail" || \
-   "$TEST_PASS_OK" == "fail" || "$FOLDER_STRUCTURE_OK" == "fail" || "$ACEENGINEER_OK" == "fail" ]] && HAS_FAILURES=true
+   "$TEST_PASS_OK" == "fail" || "$FOLDER_STRUCTURE_OK" == "fail" || "$ACEENGINEER_OK" == "fail" || \
+   "$SESSION_RAG_OK" == "fail" ]] && HAS_FAILURES=true
 
 if [[ "$HAS_FAILURES" == "true" ]]; then
     echo ""
@@ -701,12 +735,14 @@ if [[ "$HAS_FAILURES" == "true" ]]; then
     [[ "$TEST_PASS_OK" == "fail" ]] && echo "  → $TEST_FAIL_COUNT repos have failing tests - fix before merging"
     [[ "$FOLDER_STRUCTURE_OK" == "fail" ]] && echo "  → $STRUCTURE_ISSUES structural issues found - organize directories"
     [[ "$ACEENGINEER_OK" == "fail" ]] && echo "  → Aceengineer cron job not running - check daily-update.sh logs"
+    [[ "$SESSION_RAG_OK" == "fail" ]] && echo "  → Session RAG analysis failed - check session logs and analyze-sessions.sh"
 fi
 
 HAS_WARNINGS=false
 [[ "$CONTEXT_OK" == "warn" || "$PRACTICES_OK" == "warn" || "$SUBMODULE_SYNC_OK" == "warn" || \
    "$STALE_OK" == "warn" || "$REFACTOR_OK" == "warn" || "$HOOKS_OK" == "warn" || \
-   "$GITHUB_ACTIONS_OK" == "warn" || "$TEST_COVERAGE_OK" == "warn" || "$ACEENGINEER_OK" == "warn" ]] && HAS_WARNINGS=true
+   "$GITHUB_ACTIONS_OK" == "warn" || "$TEST_COVERAGE_OK" == "warn" || "$ACEENGINEER_OK" == "warn" || \
+   "$SESSION_RAG_OK" == "warn" ]] && HAS_WARNINGS=true
 
 if [[ "$HAS_WARNINGS" == "true" ]]; then
     echo ""
@@ -721,4 +757,5 @@ if [[ "$HAS_WARNINGS" == "true" ]]; then
     [[ "$GITHUB_ACTIONS_OK" == "warn" ]] && echo "  → ${ACTIONS_FAILING} repos with CI issues - review failures"
     [[ "$TEST_COVERAGE_OK" == "warn" ]] && echo "  → Coverage at ${AVG_COVERAGE}% - aim for 80%+ target"
     [[ "$ACEENGINEER_OK" == "warn" ]] && echo "  → Aceengineer cron partial - stats or report outdated"
+    [[ "$SESSION_RAG_OK" == "warn" ]] && echo "  → Session RAG data stale (${SESSION_RAG_DATE:-N/A}) - check session-logger hook"
 fi
