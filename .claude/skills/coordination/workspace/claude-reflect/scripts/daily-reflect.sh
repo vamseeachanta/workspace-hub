@@ -535,6 +535,41 @@ elif [[ -f "$SESSION_RAG_FILE" ]]; then
 fi
 log "Session RAG: date=$SESSION_RAG_DATE sessions=$SESSION_RAG_SESSIONS events=$SESSION_RAG_EVENTS"
 
+# q) Claude Code release notes insights
+CC_INSIGHTS_OK="none"
+CC_VERSION=""
+CC_LAST_REVIEWED=""
+CC_GENERAL_COUNT=0
+CC_SPECIFIC_COUNT=0
+
+# Get installed CC version
+if command -v claude &> /dev/null; then
+    CC_VERSION=$(claude --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || echo "")
+fi
+
+# Run insights extraction if script exists
+CC_INSIGHTS_FILE=""
+if [[ -x "$SCRIPT_DIR/extract-cc-insights.sh" ]]; then
+    CC_INSIGHTS_FILE=$("$SCRIPT_DIR/extract-cc-insights.sh" 2>/dev/null) || true
+fi
+
+# Parse insights if file exists
+if [[ -f "$CC_INSIGHTS_FILE" ]] && command -v jq &> /dev/null; then
+    CC_LAST_REVIEWED=$(jq -r '.last_reviewed_version // ""' "$CC_INSIGHTS_FILE" 2>/dev/null)
+    CC_GENERAL_COUNT=$(jq -r '.insights.general_ai_community | length' "$CC_INSIGHTS_FILE" 2>/dev/null || echo "0")
+    CC_SPECIFIC_COUNT=$(jq -r '.insights.specific_workflows | length' "$CC_INSIGHTS_FILE" 2>/dev/null || echo "0")
+
+    # Determine status: pass if reviewed version matches installed
+    if [[ -n "$CC_LAST_REVIEWED" && "$CC_LAST_REVIEWED" == "$CC_VERSION" ]]; then
+        CC_INSIGHTS_OK="pass"
+    elif [[ -n "$CC_LAST_REVIEWED" ]]; then
+        CC_INSIGHTS_OK="warn"  # Reviewed but not current version
+    elif [[ $CC_GENERAL_COUNT -eq 0 && $CC_SPECIFIC_COUNT -eq 0 ]]; then
+        CC_INSIGHTS_OK="none"
+    fi
+fi
+log "CC Insights: v=$CC_VERSION reviewed=$CC_LAST_REVIEWED general=$CC_GENERAL_COUNT specific=$CC_SPECIFIC_COUNT"
+
 #############################################
 # Auto-approve stale Codex reviews (>14 days)
 #############################################
@@ -631,6 +666,11 @@ checklist:
   session_rag_date: ${SESSION_RAG_DATE:-none}
   session_rag_sessions: $SESSION_RAG_SESSIONS
   session_rag_events: $SESSION_RAG_EVENTS
+  cc_insights: $CC_INSIGHTS_OK
+  cc_version: ${CC_VERSION:-unknown}
+  cc_last_reviewed: ${CC_LAST_REVIEWED:-none}
+  cc_general_count: $CC_GENERAL_COUNT
+  cc_specific_count: $CC_SPECIFIC_COUNT
 actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
@@ -676,6 +716,7 @@ RF_SYM=$([[ "$REFACTOR_OK" == "pass" ]] && echo "✓" || echo "!")
 FD_SYM=$([[ "$FOLDER_STRUCTURE_OK" == "pass" ]] && echo "✓" || echo "✗")
 AE_SYM=$([[ "$ACEENGINEER_OK" == "pass" ]] && echo "✓" || ([[ "$ACEENGINEER_OK" == "warn" ]] && echo "!" || ([[ "$ACEENGINEER_OK" == "none" ]] && echo "○" || echo "✗")))
 SR_SYM=$([[ "$SESSION_RAG_OK" == "pass" ]] && echo "✓" || ([[ "$SESSION_RAG_OK" == "warn" ]] && echo "!" || ([[ "$SESSION_RAG_OK" == "none" ]] && echo "○" || echo "✗")))
+CC_SYM=$([[ "$CC_INSIGHTS_OK" == "pass" ]] && echo "✓" || ([[ "$CC_INSIGHTS_OK" == "warn" ]] && echo "!" || ([[ "$CC_INSIGHTS_OK" == "none" ]] && echo "○" || echo "✗")))
 
 # Summary output for cron email
 echo ""
@@ -699,6 +740,9 @@ echo "║  ───────────────────────
 echo "║  CRON JOBS                                                            ║"
 echo "║  $AE_SYM Aceengineer: stats ${ACEENGINEER_STATS_DATE:-N/A} report ${ACEENGINEER_REPORT_DATE:-N/A}              ║"
 echo "║  $SR_SYM Session RAG: ${SESSION_RAG_SESSIONS} sessions, ${SESSION_RAG_EVENTS} events (${SESSION_RAG_DATE:-N/A})        ║"
+echo "║  ─────────────────────────────────────────────────────────────────────║"
+echo "║  CC RELEASE INSIGHTS (v${CC_VERSION:-?})                                         ║"
+echo "║  $CC_SYM Reviewed: ${CC_LAST_REVIEWED:-N/A} | General: ${CC_GENERAL_COUNT} | Workflow: ${CC_SPECIFIC_COUNT}              ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  Legend: ✓ Good  ○ None  ! Warning  ✗ Action needed                   ║"
 echo "╠═══════════════════════════════════════════════════════════════════════╣"
@@ -742,7 +786,7 @@ HAS_WARNINGS=false
 [[ "$CONTEXT_OK" == "warn" || "$PRACTICES_OK" == "warn" || "$SUBMODULE_SYNC_OK" == "warn" || \
    "$STALE_OK" == "warn" || "$REFACTOR_OK" == "warn" || "$HOOKS_OK" == "warn" || \
    "$GITHUB_ACTIONS_OK" == "warn" || "$TEST_COVERAGE_OK" == "warn" || "$ACEENGINEER_OK" == "warn" || \
-   "$SESSION_RAG_OK" == "warn" ]] && HAS_WARNINGS=true
+   "$SESSION_RAG_OK" == "warn" || "$CC_INSIGHTS_OK" == "warn" ]] && HAS_WARNINGS=true
 
 if [[ "$HAS_WARNINGS" == "true" ]]; then
     echo ""
@@ -758,4 +802,5 @@ if [[ "$HAS_WARNINGS" == "true" ]]; then
     [[ "$TEST_COVERAGE_OK" == "warn" ]] && echo "  → Coverage at ${AVG_COVERAGE}% - aim for 80%+ target"
     [[ "$ACEENGINEER_OK" == "warn" ]] && echo "  → Aceengineer cron partial - stats or report outdated"
     [[ "$SESSION_RAG_OK" == "warn" ]] && echo "  → Session RAG data stale (${SESSION_RAG_DATE:-N/A}) - check session-logger hook"
+    [[ "$CC_INSIGHTS_OK" == "warn" ]] && echo "  → CC Insights reviewed v${CC_LAST_REVIEWED:-?} but installed v${CC_VERSION:-?} - update cc-user-insights.yaml"
 fi
