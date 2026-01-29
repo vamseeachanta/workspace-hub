@@ -69,6 +69,49 @@ echo "$COMBINED" | jq -s '
         learning: "File frequently needs corrections - consider validation or clearer patterns"
       })
   ),
+  file_type_patterns: (
+    [.[] | select(.file_extension != null)]
+    | group_by(.file_extension)
+    | map({
+        extension: .[0].file_extension,
+        correction_count: length,
+        avg_gap_seconds: ([.[].correction_gap_seconds] | add / length | floor),
+        rank: null
+      })
+    | sort_by(-.correction_count)
+    | to_entries
+    | map(.value + {rank: (.key + 1)})
+  ),
+  chain_patterns: (
+    [.[] | select(.chain_id != null and .chain_id != "")]
+    | group_by(.chain_id)
+    | map({
+        chain_id: .[0].chain_id,
+        length: length,
+        files: ([.[].file] | unique),
+        chain_type: (
+          [.[].file] | unique | length |
+          if . >= 3 then "cascade"
+          elif . == 2 then "ping_pong"
+          else "single_file_iteration"
+          end
+        )
+      })
+  ),
+  context_patterns: (
+    [.[] | select(.edit_context != null)]
+    | group_by(.file)
+    | map({
+        file: .[0].file,
+        sample_edits: [
+          .[:3][]
+          | {
+              old: (.edit_context.old_string_preview // ""),
+              new: (.edit_context.new_string_preview // "")
+            }
+        ]
+      })
+  ),
   learnings: (
     group_by(.file | split("/") | .[:-1] | join("/"))
     | map(select(length >= 2))

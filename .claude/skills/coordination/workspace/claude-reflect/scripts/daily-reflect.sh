@@ -101,6 +101,10 @@ fi
 
 # Extract correction patterns from hook data
 CORRECTIONS_FOUND=0
+CORRECTION_FILE_TYPES=0
+CORRECTION_CHAINS=0
+CORRECTION_TOP_EXT="none"
+CORRECTION_LONG_CHAINS=0
 if [[ -x "$SCRIPT_DIR/extract-corrections.sh" ]]; then
     log "Extracting correction patterns..."
     CORRECTION_FILE="${PATTERNS_DIR}/corrections_${TIMESTAMP}.json"
@@ -108,7 +112,11 @@ if [[ -x "$SCRIPT_DIR/extract-corrections.sh" ]]; then
 
     if [[ -f "$CORRECTION_FILE" ]]; then
         CORRECTIONS_FOUND=$(jq -r '.total_corrections // 0' "$CORRECTION_FILE" 2>/dev/null || echo "0")
-        log "Found $CORRECTIONS_FOUND corrections from AI/user interaction"
+        CORRECTION_FILE_TYPES=$(jq -r '.file_type_patterns | length // 0' "$CORRECTION_FILE" 2>/dev/null || echo "0")
+        CORRECTION_CHAINS=$(jq -r '.chain_patterns | length // 0' "$CORRECTION_FILE" 2>/dev/null || echo "0")
+        CORRECTION_TOP_EXT=$(jq -r '.file_type_patterns[0].extension // "none"' "$CORRECTION_FILE" 2>/dev/null || echo "none")
+        CORRECTION_LONG_CHAINS=$(jq -r '[.chain_patterns[] | select(.length > 5)] | length' "$CORRECTION_FILE" 2>/dev/null || echo "0")
+        log "Found $CORRECTIONS_FOUND corrections ($CORRECTION_FILE_TYPES file types, $CORRECTION_CHAINS chains)"
     fi
 else
     log "extract-corrections.sh not found, skipping correction analysis"
@@ -611,6 +619,10 @@ metrics:
   sessions_analyzed: $SESSIONS_FOUND
   conversations_analyzed: $CONVERSATIONS_FOUND
   corrections_detected: $CORRECTION_RATE
+  correction_file_types: $CORRECTION_FILE_TYPES
+  correction_chains: $CORRECTION_CHAINS
+  correction_top_extension: $CORRECTION_TOP_EXT
+  correction_long_chains: $CORRECTION_LONG_CHAINS
 checklist:
   cross_review: $CROSS_REVIEW_OK
   pending_reviews: $PENDING_REVIEWS
@@ -750,6 +762,7 @@ echo "║  RAGS LOOP STATUS                                                     
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  ✓ REFLECT:    $REPOS repos, $COMMITS commits                                    ║"
 echo "║  ✓ ABSTRACT:   $PATTERNS_FOUND patterns, $SCRIPT_IDEAS scripts                            ║"
+echo "║  ✓ CORRECTIONS: $CORRECTIONS_FOUND found ($CORRECTION_FILE_TYPES types, $CORRECTION_CHAINS chains)             ║"
 echo "║  ✓ CONVERSE:   $CONVERSATIONS_FOUND convos analyzed                                       ║"
 echo "║  ✓ GENERALIZE: Trends analyzed                                        ║"
 echo "║  ✓ STORE:      $SKILLS_CREATED created, $LEARNINGS_STORED logged                               ║"

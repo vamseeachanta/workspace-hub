@@ -93,3 +93,6 @@
 [submodule "teamresumes"]
 	path = teamresumes
 	url = https://github.com/vamseeachanta/teamresumes
+[submodule "worldenergydata"]
+	path = worldenergydata
+	url = https://github.com/vamseeachanta/worldenergydata.git

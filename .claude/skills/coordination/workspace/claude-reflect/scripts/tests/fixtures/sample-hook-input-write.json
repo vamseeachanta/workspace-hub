@@ -1,0 +1,7 @@
+{
+  "tool_name": "Write",
+  "tool_input": {
+    "file_path": "/mnt/github/workspace-hub/src/newfile.ts",
+    "content": "export function hello(): string {\n  return 'world';\n}\n"
+  }
+}

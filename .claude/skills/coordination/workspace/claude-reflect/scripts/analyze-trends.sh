@@ -122,6 +122,19 @@ echo "$PATTERN_FILES" | xargs cat | jq -s '
     "total_unique_repos": ([.[].repo_patterns.active_repos] | add)
   },
 
+  # File type correction trends
+  "file_type_trends": (
+    [.[].file_type_patterns // [] | .[]] |
+    group_by(.extension) |
+    map({
+      extension: .[0].extension,
+      total_corrections: (map(.correction_count) | add),
+      avg_gap_seconds: (map(.avg_gap_seconds) | add / length | floor),
+      days_seen: length
+    }) |
+    sort_by(-.total_corrections)
+  ),
+
   # Recommendations based on patterns
   "recommendations": (
     [
@@ -139,6 +152,10 @@ echo "$PATTERN_FILES" | xargs cat | jq -s '
 
       if (map(.file_patterns.large_commits // 0) | add) > 5 then
         {type: "practice", message: "Multiple large commits - consider smaller, focused changes"}
+      else empty end,
+
+      if ([.[].chain_patterns // [] | .[] | select(.length > 5)] | length) > 0 then
+        {type: "correction", message: "Long correction chains detected (>5 edits) - consider breaking into smaller changes or adding validation"}
       else empty end
     ]
   )

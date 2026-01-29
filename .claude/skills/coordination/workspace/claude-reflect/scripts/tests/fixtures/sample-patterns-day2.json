@@ -1,0 +1,25 @@
+{
+  "extraction_date": "2026-01-27T10:00:00Z",
+  "days_analyzed": 7,
+  "total_corrections": 8,
+  "correction_patterns": [
+    {
+      "file": "/mnt/github/workspace-hub/src/main.py",
+      "basename": "main.py",
+      "correction_count": 5,
+      "avg_gap_seconds": 30,
+      "pattern_type": "quick_fix"
+    }
+  ],
+  "file_type_patterns": [
+    {"extension": "py", "correction_count": 5, "avg_gap_seconds": 30, "rank": 1},
+    {"extension": "ts", "correction_count": 2, "avg_gap_seconds": 60, "rank": 2},
+    {"extension": "sh", "correction_count": 1, "avg_gap_seconds": 90, "rank": 3}
+  ],
+  "chain_patterns": [
+    {"chain_id": "20260127_x1y2z3w4", "chain_type": "cascade", "length": 4, "files": ["/a.py", "/b.py", "/c.ts", "/d.sh"]},
+    {"chain_id": "20260127_q5r6s7t8", "chain_type": "single_file_iteration", "length": 6, "files": ["/mnt/github/workspace-hub/src/main.py"]}
+  ],
+  "context_patterns": [],
+  "learnings": []
+}
