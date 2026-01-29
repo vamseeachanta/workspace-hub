@@ -718,8 +718,13 @@ skills:
     archived: false
     path: ".claude/commands/workspace-hub/reflect.md"
 
+  - name: "workspace-hub/work"
+    description: "Maintain a queue of work items across workspace-hub repositories with capture and process pipeline"
+    archived: false
+    path: ".claude/commands/workspace-hub/work.md"
+
 # Summary
-# Total skills: 132
-# Active skills: 111
+# Total skills: 133
+# Active skills: 112
 # Archived skills: 21
 # Categories: agents, analysis, automation, coordination, github, hooks, memory, monitoring, optimization, pair, sparc, stream-chain, swarm, training, truth, verify, workflows, workspace-hub

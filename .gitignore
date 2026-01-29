@@ -110,6 +110,8 @@ coverage.xml
 !.claude/hooks/
 !.claude/rules/
 !.claude/skill-registry.yaml
+# Work queue - tracked for cross-machine/user portability
+!.claude/work-queue/
 
 # Machine-local Claude directories (never synced)
 .claude/settings.local.json
