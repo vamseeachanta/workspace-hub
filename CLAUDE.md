@@ -68,29 +68,30 @@ Save plans to: `specs/modules/<module>/`
 - `/create-spec` - Assign agents by task, use parallel subagents
 - `/execute-tasks` - Use repo uv environment, mark completed tasks `[x]`
 
-## Context Limits (MANDATORY)
+## Context Limits
 
-| File | Max Size | Purpose |
-|------|----------|---------|
-| `~/.claude/CLAUDE.md` | 2KB | Global user preferences |
-| Workspace `CLAUDE.md` | 4KB | Delegation patterns |
-| Project `CLAUDE.md` | 8KB | Project-specific rules |
-| `CLAUDE.local.md` | 2KB | User overrides |
-| **Total Active** | 16KB | ~4K tokens |
+Global 2KB + Workspace 4KB + Project 8KB + Local 2KB = 16KB max. See `docs/CONTEXT_LIMITS.md`.
 
-**Reference docs** go in `.claude/docs/` - loaded on-demand, not in CLAUDE.md.
+## Retrieval-Led Reasoning
 
-## Portable Configuration
+**IMPORTANT**: Prefer retrieval over training knowledge.
+Consult `.claude/docs/`, `.claude/rules/`, and project `CLAUDE.md` before relying on general knowledge.
 
-### Tracked in Git
-- `.claude/settings.json` - Permissions, hooks
-- `.claude/agent-library/` - Agent definitions
-- `.claude/docs/` - Reference documentation
-- `specs/templates/` - Plan templates
+## Resource Index
 
-### Machine-Local (NOT Synced)
-- `.claude/settings.local.json` - Session permissions
-- `.claude/state/` - Runtime state
+```
+docs/|orchestrator-pattern:delegation|agent-composition:workflows|command-registry:commands|mcp-tools:tools|execution-patterns:MCP-vs-Task|CONTEXT_LIMITS:budgets|foundational-ai-skills:context-eng
+rules/|security:secrets,injection,auth|testing:tdd,coverage|coding-style:naming,sizes|patterns:DI,SOLID|git-workflow:branches,commits
+agents/core/|coder|tester|reviewer|planner|researcher|explorer
+agents/github/|pr-manager|code-review-swarm|release-manager|repo-architect
+agents/sparc/|specification|pseudocode|architecture|refinement
+agents/devops/|database|infrastructure|security-audit|observability|ci-cd
+agents/swarm/|hierarchical|mesh|adaptive|collective-intelligence|queen|worker
+skills/eng/|orcaflex-specialist|hydrodynamic-analysis|mooring-analysis|fatigue-analysis|marine-offshore
+skills/data/|polars|pandas|numpy|plotly|pdf|document-rag-pipeline
+skills/dev/|github-pr-manager|github-code-review|sparc-*|testing-tdd-london
+skills/ops/|docker|github-actions|uv-package-manager|optimization-*
+```
 
 ---
 
