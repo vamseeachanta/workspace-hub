@@ -606,6 +606,74 @@ if [[ -x "$WQ_SCRIPT" ]]; then
 fi
 log "Work Queue: pending=$WQ_PENDING working=$WQ_WORKING blocked=$WQ_BLOCKED stale=$WQ_STALE"
 
+# s) Skill evaluation: Run eval-skills.py for skill quality
+SKILL_EVAL_OK="none"
+SKILL_EVAL_TOTAL=0
+SKILL_EVAL_PASSED=0
+SKILL_EVAL_CRITICAL=0
+SKILL_EVAL_WARNINGS=0
+
+SKILL_EVAL_SCRIPT="${WORKSPACE_ROOT}/.claude/skills/development/skill-eval/scripts/eval-skills.py"
+if [[ -f "$SKILL_EVAL_SCRIPT" ]] && command -v uv &> /dev/null; then
+    SKILL_EVAL_JSON=$(cd "$WORKSPACE_ROOT" && timeout 60 uv run "$SKILL_EVAL_SCRIPT" --format json 2>/dev/null) || true
+    if [[ -n "$SKILL_EVAL_JSON" ]] && command -v jq &> /dev/null; then
+        SKILL_EVAL_TOTAL=$(echo "$SKILL_EVAL_JSON" | jq -r '.summary.total_skills // 0')
+        SKILL_EVAL_PASSED=$(echo "$SKILL_EVAL_JSON" | jq -r '.summary.passed // 0')
+        SKILL_EVAL_CRITICAL=$(echo "$SKILL_EVAL_JSON" | jq -r '.summary.failed_critical // 0')
+        SKILL_EVAL_WARNINGS=$(echo "$SKILL_EVAL_JSON" | jq -r '.summary.failed_warning_only // 0')
+
+        # Save eval report for trend analysis
+        SKILL_EVAL_REPORT="${REPORTS_DIR}/skill-eval_${TIMESTAMP}.json"
+        echo "$SKILL_EVAL_JSON" > "$SKILL_EVAL_REPORT"
+
+        if [[ $SKILL_EVAL_CRITICAL -eq 0 ]]; then
+            SKILL_EVAL_OK="pass"
+        elif [[ $SKILL_EVAL_CRITICAL -le 10 ]]; then
+            SKILL_EVAL_OK="warn"
+        else
+            SKILL_EVAL_OK="fail"
+        fi
+    fi
+fi
+log "Skill Eval: $SKILL_EVAL_PASSED/$SKILL_EVAL_TOTAL passed, $SKILL_EVAL_CRITICAL critical, $SKILL_EVAL_WARNINGS warnings"
+
+# t) Repo capability map: Check for recent capability report
+CAPABILITY_MAP_OK="none"
+CAPABILITY_REPOS=0
+CAPABILITY_DOMAINS=0
+CAPABILITY_GAPS=0
+CAPABILITY_DATE=""
+
+CAPABILITY_REPORT_DIR="${WORKSPACE_ROOT}/reports/capability-map"
+if [[ -d "$CAPABILITY_REPORT_DIR" ]]; then
+    LATEST_CAP_REPORT=$(ls -t "$CAPABILITY_REPORT_DIR"/capability-report-*.md 2>/dev/null | head -1)
+    if [[ -f "$LATEST_CAP_REPORT" ]]; then
+        CAPABILITY_DATE=$(basename "$LATEST_CAP_REPORT" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
+        # Parse metrics from report YAML frontmatter
+        CAPABILITY_REPOS=$(sed -n '/^---$/,/^---$/p' "$LATEST_CAP_REPORT" | grep -E '^\s*total_repos:' | grep -oE '[0-9]+' | head -1) || CAPABILITY_REPOS=0
+        CAPABILITY_REPOS=${CAPABILITY_REPOS:-0}
+        CAPABILITY_DOMAINS=$(sed -n '/^---$/,/^---$/p' "$LATEST_CAP_REPORT" | grep -E '^\s*domains_covered:' | grep -oE '[0-9]+' | head -1) || CAPABILITY_DOMAINS=0
+        CAPABILITY_DOMAINS=${CAPABILITY_DOMAINS:-0}
+        CAPABILITY_GAPS=$(sed -n '/^---$/,/^---$/p' "$LATEST_CAP_REPORT" | grep -E '^\s*critical_gaps:' | grep -oE '[0-9]+' | head -1) || CAPABILITY_GAPS=0
+        CAPABILITY_GAPS=${CAPABILITY_GAPS:-0}
+
+        # Check freshness
+        if [[ -n "$CAPABILITY_DATE" ]]; then
+            CAP_EPOCH=$(date -d "$CAPABILITY_DATE" +%s 2>/dev/null || echo "0")
+            CAP_EPOCH=${CAP_EPOCH:-0}
+            AGE_DAYS=$(( (NOW - CAP_EPOCH) / 86400 ))
+            if [[ $AGE_DAYS -le 7 ]]; then
+                CAPABILITY_MAP_OK="pass"
+            elif [[ $AGE_DAYS -le 30 ]]; then
+                CAPABILITY_MAP_OK="warn"
+            else
+                CAPABILITY_MAP_OK="fail"
+            fi
+        fi
+    fi
+fi
+log "Capability Map: repos=$CAPABILITY_REPOS domains=$CAPABILITY_DOMAINS gaps=$CAPABILITY_GAPS date=${CAPABILITY_DATE:-N/A}"
+
 #############################################
 # Auto-approve stale Codex reviews (>14 days)
 #############################################
@@ -716,6 +784,16 @@ checklist:
   wq_working: $WQ_WORKING
   wq_blocked: $WQ_BLOCKED
   wq_stale: $WQ_STALE
+  skill_eval: $SKILL_EVAL_OK
+  skill_eval_total: $SKILL_EVAL_TOTAL
+  skill_eval_passed: $SKILL_EVAL_PASSED
+  skill_eval_critical: $SKILL_EVAL_CRITICAL
+  skill_eval_warnings: $SKILL_EVAL_WARNINGS
+  capability_map: $CAPABILITY_MAP_OK
+  capability_repos: $CAPABILITY_REPOS
+  capability_domains: $CAPABILITY_DOMAINS
+  capability_gaps: $CAPABILITY_GAPS
+  capability_date: ${CAPABILITY_DATE:-none}
 actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
@@ -727,6 +805,7 @@ files:
   conversations: ${CONVERSATION_FILE:-none}
   trends: $(ls -t "$TRENDS_DIR"/trends_*.json 2>/dev/null | head -1 || echo "none")
   report: ${REPORT_FILE:-none}
+  skill_eval_report: ${SKILL_EVAL_REPORT:-none}
 EOF
 
 log ""
@@ -739,6 +818,8 @@ cd "$PATTERNS_DIR"
 ls -1t patterns_*.json 2>/dev/null | tail -n +31 | xargs -r rm -f
 cd "$TRENDS_DIR"
 ls -1t trends_*.json 2>/dev/null | tail -n +31 | xargs -r rm -f
+cd "$REPORTS_DIR"
+ls -1t skill-eval_*.json 2>/dev/null | tail -n +31 | xargs -r rm -f
 log "Cleanup complete"
 
 log ""
@@ -763,6 +844,8 @@ AE_SYM=$([[ "$ACEENGINEER_OK" == "pass" ]] && echo "✓" || ([[ "$ACEENGINEER_OK
 SR_SYM=$([[ "$SESSION_RAG_OK" == "pass" ]] && echo "✓" || ([[ "$SESSION_RAG_OK" == "warn" ]] && echo "!" || ([[ "$SESSION_RAG_OK" == "none" ]] && echo "○" || echo "✗")))
 CC_SYM=$([[ "$CC_INSIGHTS_OK" == "pass" ]] && echo "✓" || ([[ "$CC_INSIGHTS_OK" == "warn" ]] && echo "!" || ([[ "$CC_INSIGHTS_OK" == "none" ]] && echo "○" || echo "✗")))
 WQ_SYM=$([[ "$WQ_STATUS_OK" == "pass" ]] && echo "✓" || ([[ "$WQ_STATUS_OK" == "warn" ]] && echo "!" || ([[ "$WQ_STATUS_OK" == "none" ]] && echo "○" || echo "✗")))
+SE_SYM=$([[ "$SKILL_EVAL_OK" == "pass" ]] && echo "✓" || ([[ "$SKILL_EVAL_OK" == "warn" ]] && echo "!" || ([[ "$SKILL_EVAL_OK" == "none" ]] && echo "○" || echo "✗")))
+CM_MAP_SYM=$([[ "$CAPABILITY_MAP_OK" == "pass" ]] && echo "✓" || ([[ "$CAPABILITY_MAP_OK" == "warn" ]] && echo "!" || ([[ "$CAPABILITY_MAP_OK" == "none" ]] && echo "○" || echo "✗")))
 
 # Summary output for cron email
 echo ""
@@ -770,7 +853,7 @@ echo "╔═══════════════════════�
 echo "║                    Daily Reflection Summary                           ║"
 echo "║                    $(date '+%Y-%m-%d %H:%M')                                        ║"
 echo "╠═══════════════════════════════════════════════════════════════════════╣"
-echo "║  QUALITY CHECKLIST (16 checks)                                        ║"
+echo "║  QUALITY CHECKLIST (20 checks)                                        ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  CODE QUALITY                          │  INFRASTRUCTURE              ║"
 echo "║  $CR_SYM Cross-Review: ${GEMINI_PENDING}G ${CODEX_PENDING}C ${CLAUDE_PENDING}Cl pending    │  $SM_SYM Submodule: ${SUBMODULES_DIRTY} dirty, ${SUBMODULES_UNPUSHED} unpushed  ║"
@@ -786,6 +869,10 @@ echo "║  ───────────────────────
 echo "║  CRON JOBS                                                            ║"
 echo "║  $AE_SYM Aceengineer: stats ${ACEENGINEER_STATS_DATE:-N/A} report ${ACEENGINEER_REPORT_DATE:-N/A}              ║"
 echo "║  $SR_SYM Session RAG: ${SESSION_RAG_SESSIONS} sessions, ${SESSION_RAG_EVENTS} events (${SESSION_RAG_DATE:-N/A})        ║"
+echo "║  ─────────────────────────────────────────────────────────────────────║"
+echo "║  SKILL & CAPABILITY HEALTH                                            ║"
+echo "║  $SE_SYM Skill Eval: ${SKILL_EVAL_PASSED}/${SKILL_EVAL_TOTAL} pass, ${SKILL_EVAL_CRITICAL} critical, ${SKILL_EVAL_WARNINGS} warn             ║"
+echo "║  $CM_MAP_SYM Capability Map: ${CAPABILITY_REPOS} repos, ${CAPABILITY_DOMAINS} domains, ${CAPABILITY_GAPS} gaps (${CAPABILITY_DATE:-N/A})    ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  CC RELEASE INSIGHTS (v${CC_VERSION:-?})                                         ║"
 echo "║  $CC_SYM Reviewed: ${CC_LAST_REVIEWED:-N/A} | General: ${CC_GENERAL_COUNT} | Workflow: ${CC_SPECIFIC_COUNT}              ║"
@@ -809,7 +896,8 @@ HAS_FAILURES=false
 [[ "$CROSS_REVIEW_OK" == "fail" || "$FILE_STRUCTURE_OK" == "fail" || "$CLAUDE_MD_OK" == "fail" || \
    "$HOOKS_OK" == "fail" || "$GITHUB_ACTIONS_OK" == "fail" || "$TEST_COVERAGE_OK" == "fail" || \
    "$TEST_PASS_OK" == "fail" || "$FOLDER_STRUCTURE_OK" == "fail" || "$ACEENGINEER_OK" == "fail" || \
-   "$SESSION_RAG_OK" == "fail" || "$WQ_STATUS_OK" == "fail" ]] && HAS_FAILURES=true
+   "$SESSION_RAG_OK" == "fail" || "$WQ_STATUS_OK" == "fail" || \
+   "$SKILL_EVAL_OK" == "fail" || "$CAPABILITY_MAP_OK" == "fail" ]] && HAS_FAILURES=true
 
 if [[ "$HAS_FAILURES" == "true" ]]; then
     echo ""
@@ -829,13 +917,16 @@ if [[ "$HAS_FAILURES" == "true" ]]; then
     [[ "$ACEENGINEER_OK" == "fail" ]] && echo "  → Aceengineer cron job not running - check daily-update.sh logs"
     [[ "$SESSION_RAG_OK" == "fail" ]] && echo "  → Session RAG analysis failed - check session logs and analyze-sessions.sh"
     [[ "$WQ_STATUS_OK" == "fail" ]] && echo "  → $WQ_STALE work items blocked >7 days - review and unblock"
+    [[ "$SKILL_EVAL_OK" == "fail" ]] && echo "  → $SKILL_EVAL_CRITICAL skills have critical issues - run /skill-eval to see details"
+    [[ "$CAPABILITY_MAP_OK" == "fail" ]] && echo "  → Capability map stale (${CAPABILITY_DATE:-N/A}) - run /repo-capability-map report"
 fi
 
 HAS_WARNINGS=false
 [[ "$CONTEXT_OK" == "warn" || "$PRACTICES_OK" == "warn" || "$SUBMODULE_SYNC_OK" == "warn" || \
    "$STALE_OK" == "warn" || "$REFACTOR_OK" == "warn" || "$HOOKS_OK" == "warn" || \
    "$GITHUB_ACTIONS_OK" == "warn" || "$TEST_COVERAGE_OK" == "warn" || "$ACEENGINEER_OK" == "warn" || \
-   "$SESSION_RAG_OK" == "warn" || "$CC_INSIGHTS_OK" == "warn" || "$WQ_STATUS_OK" == "warn" ]] && HAS_WARNINGS=true
+   "$SESSION_RAG_OK" == "warn" || "$CC_INSIGHTS_OK" == "warn" || "$WQ_STATUS_OK" == "warn" || \
+   "$SKILL_EVAL_OK" == "warn" || "$CAPABILITY_MAP_OK" == "warn" ]] && HAS_WARNINGS=true
 
 if [[ "$HAS_WARNINGS" == "true" ]]; then
     echo ""
@@ -853,4 +944,6 @@ if [[ "$HAS_WARNINGS" == "true" ]]; then
     [[ "$SESSION_RAG_OK" == "warn" ]] && echo "  → Session RAG data stale (${SESSION_RAG_DATE:-N/A}) - check session-logger hook"
     [[ "$CC_INSIGHTS_OK" == "warn" ]] && echo "  → CC Insights reviewed v${CC_LAST_REVIEWED:-?} but installed v${CC_VERSION:-?} - update cc-user-insights.yaml"
     [[ "$WQ_STATUS_OK" == "warn" ]] && echo "  → ${WQ_BLOCKED} work items blocked - check repo readiness"
+    [[ "$SKILL_EVAL_OK" == "warn" ]] && echo "  → ${SKILL_EVAL_CRITICAL} skills with critical issues - address frontmatter/structure"
+    [[ "$CAPABILITY_MAP_OK" == "warn" ]] && echo "  → Capability map aging (${CAPABILITY_DATE:-N/A}) - refresh with /repo-capability-map scan"
 fi
