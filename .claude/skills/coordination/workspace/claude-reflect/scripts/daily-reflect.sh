@@ -495,11 +495,17 @@ ACEENGINEER_DIR="${WORKSPACE_ROOT}/aceengineer-website"
 STATS_FILE="${ACEENGINEER_DIR}/assets/data/statistics.json"
 REPORT_DIR="${ACEENGINEER_DIR}/reports/competitor-analysis"
 TODAY=$(date +%Y-%m-%d)
+# daily-reflect runs at 05:00 but aceengineer daily-update runs at 06:00,
+# so at check time the latest data is from yesterday. Accept either today
+# or yesterday as "fresh" to avoid false-fail due to cron ordering.
+YESTERDAY=$(date -d "yesterday" +%Y-%m-%d 2>/dev/null || date -v-1d +%Y-%m-%d 2>/dev/null || echo "")
 
 # Check statistics.json freshness
 if [[ -f "$STATS_FILE" ]]; then
     ACEENGINEER_STATS_DATE=$(jq -r '.last_updated // ""' "$STATS_FILE" 2>/dev/null)
-    [[ "$ACEENGINEER_STATS_DATE" == "$TODAY" ]] && ACEENGINEER_STATS_FRESH="yes"
+    if [[ "$ACEENGINEER_STATS_DATE" == "$TODAY" ]] || [[ -n "$YESTERDAY" && "$ACEENGINEER_STATS_DATE" == "$YESTERDAY" ]]; then
+        ACEENGINEER_STATS_FRESH="yes"
+    fi
 fi
 
 # Check competitor analysis report freshness
@@ -507,7 +513,9 @@ LATEST_REPORT="${REPORT_DIR}/latest.html"
 if [[ -L "$LATEST_REPORT" ]]; then
     REPORT_NAME=$(readlink "$LATEST_REPORT")
     ACEENGINEER_REPORT_DATE="${REPORT_NAME%.html}"
-    [[ "$ACEENGINEER_REPORT_DATE" == "$TODAY" ]] && ACEENGINEER_REPORT_FRESH="yes"
+    if [[ "$ACEENGINEER_REPORT_DATE" == "$TODAY" ]] || [[ -n "$YESTERDAY" && "$ACEENGINEER_REPORT_DATE" == "$YESTERDAY" ]]; then
+        ACEENGINEER_REPORT_FRESH="yes"
+    fi
 fi
 
 # Determine overall status
@@ -580,6 +588,33 @@ if [[ -f "$CC_INSIGHTS_FILE" ]] && command -v jq &> /dev/null; then
     fi
 fi
 log "CC Insights: v=$CC_VERSION reviewed=$CC_LAST_REVIEWED general=$CC_GENERAL_COUNT specific=$CC_SPECIFIC_COUNT"
+
+# r) Work queue status
+WQ_STATUS_OK="none"
+WQ_PENDING=0
+WQ_WORKING=0
+WQ_BLOCKED=0
+WQ_STALE=0
+
+WQ_SCRIPT="${WORKSPACE_ROOT}/scripts/work-queue/queue-status.sh"
+if [[ -x "$WQ_SCRIPT" ]]; then
+    WQ_JSON=$("$WQ_SCRIPT" --json 2>/dev/null) || true
+    if [[ -n "$WQ_JSON" ]] && command -v jq &> /dev/null; then
+        WQ_PENDING=$(echo "$WQ_JSON" | jq -r '.pending // 0')
+        WQ_WORKING=$(echo "$WQ_JSON" | jq -r '.working // 0')
+        WQ_BLOCKED=$(echo "$WQ_JSON" | jq -r '.blocked // 0')
+        WQ_STALE=$(echo "$WQ_JSON" | jq -r '.stale_blocked // 0')
+
+        if [[ $WQ_STALE -gt 0 ]]; then
+            WQ_STATUS_OK="fail"
+        elif [[ $WQ_BLOCKED -gt 0 ]]; then
+            WQ_STATUS_OK="warn"
+        elif [[ $((WQ_PENDING + WQ_WORKING + WQ_BLOCKED)) -gt 0 ]]; then
+            WQ_STATUS_OK="pass"
+        fi
+    fi
+fi
+log "Work Queue: pending=$WQ_PENDING working=$WQ_WORKING blocked=$WQ_BLOCKED stale=$WQ_STALE"
 
 #############################################
 # Auto-approve stale Codex reviews (>14 days)
@@ -686,6 +721,11 @@ checklist:
   cc_last_reviewed: ${CC_LAST_REVIEWED:-none}
   cc_general_count: $CC_GENERAL_COUNT
   cc_specific_count: $CC_SPECIFIC_COUNT
+  work_queue: $WQ_STATUS_OK
+  wq_pending: $WQ_PENDING
+  wq_working: $WQ_WORKING
+  wq_blocked: $WQ_BLOCKED
+  wq_stale: $WQ_STALE
 actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
@@ -732,6 +772,7 @@ FD_SYM=$([[ "$FOLDER_STRUCTURE_OK" == "pass" ]] && echo "✓" || echo "✗")
 AE_SYM=$([[ "$ACEENGINEER_OK" == "pass" ]] && echo "✓" || ([[ "$ACEENGINEER_OK" == "warn" ]] && echo "!" || ([[ "$ACEENGINEER_OK" == "none" ]] && echo "○" || echo "✗")))
 SR_SYM=$([[ "$SESSION_RAG_OK" == "pass" ]] && echo "✓" || ([[ "$SESSION_RAG_OK" == "warn" ]] && echo "!" || ([[ "$SESSION_RAG_OK" == "none" ]] && echo "○" || echo "✗")))
 CC_SYM=$([[ "$CC_INSIGHTS_OK" == "pass" ]] && echo "✓" || ([[ "$CC_INSIGHTS_OK" == "warn" ]] && echo "!" || ([[ "$CC_INSIGHTS_OK" == "none" ]] && echo "○" || echo "✗")))
+WQ_SYM=$([[ "$WQ_STATUS_OK" == "pass" ]] && echo "✓" || ([[ "$WQ_STATUS_OK" == "warn" ]] && echo "!" || ([[ "$WQ_STATUS_OK" == "none" ]] && echo "○" || echo "✗")))
 
 # Summary output for cron email
 echo ""
@@ -739,7 +780,7 @@ echo "╔═══════════════════════�
 echo "║                    Daily Reflection Summary                           ║"
 echo "║                    $(date '+%Y-%m-%d %H:%M')                                        ║"
 echo "╠═══════════════════════════════════════════════════════════════════════╣"
-echo "║  QUALITY CHECKLIST (15 checks)                                        ║"
+echo "║  QUALITY CHECKLIST (16 checks)                                        ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  CODE QUALITY                          │  INFRASTRUCTURE              ║"
 echo "║  $CR_SYM Cross-Review: ${GEMINI_PENDING}G ${CODEX_PENDING}C ${CLAUDE_PENDING}Cl pending    │  $SM_SYM Submodule: ${SUBMODULES_DIRTY} dirty, ${SUBMODULES_UNPUSHED} unpushed  ║"
@@ -758,6 +799,7 @@ echo "║  $SR_SYM Session RAG: ${SESSION_RAG_SESSIONS} sessions, ${SESSION_RAG_
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  CC RELEASE INSIGHTS (v${CC_VERSION:-?})                                         ║"
 echo "║  $CC_SYM Reviewed: ${CC_LAST_REVIEWED:-N/A} | General: ${CC_GENERAL_COUNT} | Workflow: ${CC_SPECIFIC_COUNT}              ║"
+echo "║  $WQ_SYM Work Queue: ${WQ_PENDING}P ${WQ_WORKING}W ${WQ_BLOCKED}B (${WQ_STALE} stale)                   ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  Legend: ✓ Good  ○ None  ! Warning  ✗ Action needed                   ║"
 echo "╠═══════════════════════════════════════════════════════════════════════╣"
@@ -777,7 +819,7 @@ HAS_FAILURES=false
 [[ "$CROSS_REVIEW_OK" == "fail" || "$FILE_STRUCTURE_OK" == "fail" || "$CLAUDE_MD_OK" == "fail" || \
    "$HOOKS_OK" == "fail" || "$GITHUB_ACTIONS_OK" == "fail" || "$TEST_COVERAGE_OK" == "fail" || \
    "$TEST_PASS_OK" == "fail" || "$FOLDER_STRUCTURE_OK" == "fail" || "$ACEENGINEER_OK" == "fail" || \
-   "$SESSION_RAG_OK" == "fail" ]] && HAS_FAILURES=true
+   "$SESSION_RAG_OK" == "fail" || "$WQ_STATUS_OK" == "fail" ]] && HAS_FAILURES=true
 
 if [[ "$HAS_FAILURES" == "true" ]]; then
     echo ""
@@ -796,13 +838,14 @@ if [[ "$HAS_FAILURES" == "true" ]]; then
     [[ "$FOLDER_STRUCTURE_OK" == "fail" ]] && echo "  → $STRUCTURE_ISSUES structural issues found - organize directories"
     [[ "$ACEENGINEER_OK" == "fail" ]] && echo "  → Aceengineer cron job not running - check daily-update.sh logs"
     [[ "$SESSION_RAG_OK" == "fail" ]] && echo "  → Session RAG analysis failed - check session logs and analyze-sessions.sh"
+    [[ "$WQ_STATUS_OK" == "fail" ]] && echo "  → $WQ_STALE work items blocked >7 days - review and unblock"
 fi
 
 HAS_WARNINGS=false
 [[ "$CONTEXT_OK" == "warn" || "$PRACTICES_OK" == "warn" || "$SUBMODULE_SYNC_OK" == "warn" || \
    "$STALE_OK" == "warn" || "$REFACTOR_OK" == "warn" || "$HOOKS_OK" == "warn" || \
    "$GITHUB_ACTIONS_OK" == "warn" || "$TEST_COVERAGE_OK" == "warn" || "$ACEENGINEER_OK" == "warn" || \
-   "$SESSION_RAG_OK" == "warn" || "$CC_INSIGHTS_OK" == "warn" ]] && HAS_WARNINGS=true
+   "$SESSION_RAG_OK" == "warn" || "$CC_INSIGHTS_OK" == "warn" || "$WQ_STATUS_OK" == "warn" ]] && HAS_WARNINGS=true
 
 if [[ "$HAS_WARNINGS" == "true" ]]; then
     echo ""
@@ -819,4 +862,5 @@ if [[ "$HAS_WARNINGS" == "true" ]]; then
     [[ "$ACEENGINEER_OK" == "warn" ]] && echo "  → Aceengineer cron partial - stats or report outdated"
     [[ "$SESSION_RAG_OK" == "warn" ]] && echo "  → Session RAG data stale (${SESSION_RAG_DATE:-N/A}) - check session-logger hook"
     [[ "$CC_INSIGHTS_OK" == "warn" ]] && echo "  → CC Insights reviewed v${CC_LAST_REVIEWED:-?} but installed v${CC_VERSION:-?} - update cc-user-insights.yaml"
+    [[ "$WQ_STATUS_OK" == "warn" ]] && echo "  → ${WQ_BLOCKED} work items blocked - check repo readiness"
 fi
