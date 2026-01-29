@@ -579,6 +579,11 @@ skills:
     archived: false
     path: ".claude/commands/verify/check.md"
 
+  - name: "verify/skill-eval"
+    description: "Evaluate all workspace-hub skills for quality, structure, and consistency"
+    archived: false
+    path: ".claude/commands/verify/skill-eval.md"
+
   - name: "verify/start"
     description: "Truth verification system for code quality"
     archived: false
@@ -718,13 +723,18 @@ skills:
     archived: false
     path: ".claude/commands/workspace-hub/reflect.md"
 
+  - name: "workspace-hub/repo-capability-map"
+    description: "Analyze repository capabilities, classify by domain, assess maturity, and identify strategic gaps"
+    archived: false
+    path: ".claude/commands/workspace-hub/repo-capability-map.md"
+
   - name: "workspace-hub/work"
     description: "Maintain a queue of work items across workspace-hub repositories with capture and process pipeline"
     archived: false
     path: ".claude/commands/workspace-hub/work.md"
 
 # Summary
-# Total skills: 133
-# Active skills: 112
+# Total skills: 134
+# Active skills: 113
 # Archived skills: 21
 # Categories: agents, analysis, automation, coordination, github, hooks, memory, monitoring, optimization, pair, sparc, stream-chain, swarm, training, truth, verify, workflows, workspace-hub
