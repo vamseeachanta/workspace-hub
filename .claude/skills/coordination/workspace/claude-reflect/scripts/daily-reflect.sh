@@ -418,27 +418,22 @@ COVERAGE_PERCENT=0
 COVERAGE_REPOS=0
 LOW_COVERAGE_REPOS=0
 CHECKED_REPOS=0
-while IFS= read -r submod && [[ $CHECKED_REPOS -lt 20 ]]; do
-    [[ -z "$submod" ]] && continue
-    submod_path="${WORKSPACE_ROOT}/${submod}"
-    # Quick check for coverage.xml only (most common)
-    cov_file="$submod_path/coverage.xml"
-    if [[ -f "$cov_file" ]]; then
-        COVERAGE_REPOS=$((COVERAGE_REPOS + 1))
-        CHECKED_REPOS=$((CHECKED_REPOS + 1))
-        COV=$(grep -oP 'line-rate="\K[0-9.]+' "$cov_file" 2>/dev/null | head -1)
-        if [[ -n "$COV" && "$COV" =~ ^0\.([0-9]+) ]]; then
-            COV_DEC="${BASH_REMATCH[1]}"
-            COV_PCT=$((10#${COV_DEC:0:2}))
-        elif [[ "$COV" == "1" || "$COV" == "1.0" ]]; then
-            COV_PCT=100
-        else
-            COV_PCT=0
-        fi
-        [[ ${COV_PCT:-0} -lt 80 ]] && LOW_COVERAGE_REPOS=$((LOW_COVERAGE_REPOS + 1))
-        COVERAGE_PERCENT=$((COVERAGE_PERCENT + ${COV_PCT:-0}))
+while IFS= read -r cov_file && [[ $CHECKED_REPOS -lt 20 ]]; do
+    [[ -z "$cov_file" || ! -f "$cov_file" ]] && continue
+    COVERAGE_REPOS=$((COVERAGE_REPOS + 1))
+    CHECKED_REPOS=$((CHECKED_REPOS + 1))
+    COV=$(grep -oP 'line-rate="\K[0-9.]+' "$cov_file" 2>/dev/null | head -1)
+    if [[ -n "$COV" && "$COV" =~ ^0\.([0-9]+) ]]; then
+        COV_DEC="${BASH_REMATCH[1]}"
+        COV_PCT=$((10#${COV_DEC:0:2}))
+    elif [[ "$COV" == "1" || "$COV" =~ ^1\.0*$ ]]; then
+        COV_PCT=100
+    else
+        COV_PCT=0
     fi
-done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null)
+    [[ ${COV_PCT:-0} -lt 80 ]] && LOW_COVERAGE_REPOS=$((LOW_COVERAGE_REPOS + 1))
+    COVERAGE_PERCENT=$((COVERAGE_PERCENT + ${COV_PCT:-0}))
+done < <(find "$WORKSPACE_ROOT" -maxdepth 2 -name "coverage.xml" -type f 2>/dev/null)
 AVG_COVERAGE=$([[ $COVERAGE_REPOS -gt 0 ]] && echo $((COVERAGE_PERCENT / COVERAGE_REPOS)) || echo "0")
 TEST_COVERAGE_OK=$([[ $AVG_COVERAGE -ge 80 ]] && echo "pass" || ([[ $AVG_COVERAGE -ge 60 ]] && echo "warn" || echo "fail"))
 log "Test coverage: ${AVG_COVERAGE}% avg across $COVERAGE_REPOS repos, $LOW_COVERAGE_REPOS below 80%"
@@ -448,22 +443,17 @@ TEST_PASS_COUNT=0
 TEST_FAIL_COUNT=0
 TESTED_REPOS=0
 CHECKED=0
-while IFS= read -r submod && [[ $CHECKED -lt 20 ]]; do
-    [[ -z "$submod" ]] && continue
-    submod_path="${WORKSPACE_ROOT}/${submod}"
-    # Check for pytest cache (quick check)
-    lastfailed="$submod_path/.pytest_cache/v/cache/lastfailed"
-    if [[ -f "$lastfailed" ]]; then
-        TESTED_REPOS=$((TESTED_REPOS + 1))
-        CHECKED=$((CHECKED + 1))
-        CONTENT=$(cat "$lastfailed" 2>/dev/null)
-        if [[ -n "$CONTENT" && "$CONTENT" != "{}" && "$CONTENT" != "null" ]]; then
-            TEST_FAIL_COUNT=$((TEST_FAIL_COUNT + 1))
-        else
-            TEST_PASS_COUNT=$((TEST_PASS_COUNT + 1))
-        fi
+while IFS= read -r lastfailed && [[ $CHECKED -lt 20 ]]; do
+    [[ -z "$lastfailed" || ! -f "$lastfailed" ]] && continue
+    TESTED_REPOS=$((TESTED_REPOS + 1))
+    CHECKED=$((CHECKED + 1))
+    CONTENT=$(cat "$lastfailed" 2>/dev/null)
+    if [[ -n "$CONTENT" && "$CONTENT" != "{}" && "$CONTENT" != "null" ]]; then
+        TEST_FAIL_COUNT=$((TEST_FAIL_COUNT + 1))
+    else
+        TEST_PASS_COUNT=$((TEST_PASS_COUNT + 1))
     fi
-done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null)
+done < <(find "$WORKSPACE_ROOT" -maxdepth 3 -path "*/.pytest_cache/v/cache/lastfailed" -type f 2>/dev/null)
 TEST_PASS_OK=$([[ $TEST_FAIL_COUNT -eq 0 ]] && echo "pass" || echo "fail")
 log "Test status: $TEST_PASS_COUNT passing, $TEST_FAIL_COUNT failing (of $TESTED_REPOS with tests)"
 
