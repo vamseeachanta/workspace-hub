@@ -207,15 +207,18 @@ if [[ -x "$SCRIPT_DIR/create-skills.sh" ]] && [[ $PATTERNS_FOUND -gt 0 ]]; then
     # Pass both pattern file and session file for complete feedback loop
     SKILL_OUTPUT=$("$SCRIPT_DIR/create-skills.sh" "$PATTERN_FILE" "${SESSION_FILE:-}" 2>> "$LOG_FILE") || true
 
-    # Parse output for counts
-    SKILLS_CREATED=$(echo "$SKILL_OUTPUT" | grep -oP 'Skills Created: \K[0-9]+' || echo "0")
-    SKILLS_ENHANCED=$(echo "$SKILL_OUTPUT" | grep -oP 'Skills Enhanced: \K[0-9]+' || echo "0")
-    LEARNINGS_STORED=$(echo "$SKILL_OUTPUT" | grep -oP 'Learnings Stored: \K[0-9]+' || echo "0")
+    # Parse output for counts (tail -1 ensures single value if grep matches multiple lines)
+    SKILLS_CREATED=$(echo "$SKILL_OUTPUT" | grep -oP 'Skills Created: \K[0-9]+' | tail -1 || echo "0")
+    SKILLS_ENHANCED=$(echo "$SKILL_OUTPUT" | grep -oP 'Skills Enhanced: \K[0-9]+' | tail -1 || echo "0")
+    LEARNINGS_STORED=$(echo "$SKILL_OUTPUT" | grep -oP 'Learnings Stored: \K[0-9]+' | tail -1 || echo "0")
 
     log "Skills created: $SKILLS_CREATED"
     log "Skills enhanced: $SKILLS_ENHANCED"
     log "Learnings stored: $LEARNINGS_STORED"
 else
+    SKILLS_CREATED=0
+    SKILLS_ENHANCED=0
+    LEARNINGS_STORED=0
     log "Skipping skill creation (no patterns or script missing)"
 fi
 
