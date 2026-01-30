@@ -110,6 +110,8 @@ coverage.xml
 !.claude/hooks/
 !.claude/rules/
 !.claude/skill-registry.yaml
+# Knowledge base - institutional memory across sessions
+!.claude/knowledge/
 # Work queue - tracked for cross-machine/user portability
 !.claude/work-queue/
 

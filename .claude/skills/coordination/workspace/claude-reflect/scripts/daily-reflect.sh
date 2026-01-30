@@ -222,6 +222,34 @@ else
     log "Skipping skill creation (no patterns or script missing)"
 fi
 
+# Knowledge capture: auto-capture high-scoring patterns as knowledge entries
+KNOWLEDGE_CAPTURED=0
+KNOWLEDGE_CAPTURE_SCRIPT="${WORKSPACE_ROOT}/.claude/skills/coordination/workspace/knowledge-manager/scripts/knowledge-capture.sh"
+if [[ -x "$KNOWLEDGE_CAPTURE_SCRIPT" ]] && [[ -f "${PATTERN_FILE:-}" ]]; then
+    log "Running knowledge auto-capture..."
+    # Capture patterns with score 0.6-0.79 as knowledge entries (below skill threshold)
+    while IFS= read -r pattern_name; do
+        [[ -z "$pattern_name" ]] && continue
+        "$KNOWLEDGE_CAPTURE_SCRIPT" --auto --type pattern --title "$pattern_name" \
+            --category workflow --tags "auto-captured,reflect" 2>> "$LOG_FILE" && \
+            KNOWLEDGE_CAPTURED=$((KNOWLEDGE_CAPTURED + 1)) || true
+    done < <(jq -r '.cross_repo_patterns[]? | select(.score >= 0.6 and .score < 0.8) | .name // empty' "$PATTERN_FILE" 2>/dev/null)
+
+    # Capture long correction chains (>3) as gotchas
+    if [[ -f "${CORRECTION_FILE:-}" ]]; then
+        while IFS= read -r chain_desc; do
+            [[ -z "$chain_desc" ]] && continue
+            "$KNOWLEDGE_CAPTURE_SCRIPT" --auto --type gotcha --title "$chain_desc" \
+                --category workflow --tags "auto-captured,correction-chain" 2>> "$LOG_FILE" && \
+                KNOWLEDGE_CAPTURED=$((KNOWLEDGE_CAPTURED + 1)) || true
+        done < <(jq -r '.chain_patterns[]? | select(.length > 3) | .description // empty' "${CORRECTION_FILE}" 2>/dev/null)
+    fi
+
+    log "Knowledge entries captured: $KNOWLEDGE_CAPTURED"
+else
+    log "Skipping knowledge capture (script missing or no patterns)"
+fi
+
 #############################################
 # Generate weekly report (Sundays)
 #############################################
@@ -674,6 +702,31 @@ if [[ -d "$CAPABILITY_REPORT_DIR" ]]; then
 fi
 log "Capability Map: repos=$CAPABILITY_REPOS domains=$CAPABILITY_DOMAINS gaps=$CAPABILITY_GAPS date=${CAPABILITY_DATE:-N/A}"
 
+# u) Knowledge base health: Check index freshness and entry counts
+KB_HEALTH_OK="none"
+KB_TOTAL=0
+KB_ACTIVE=0
+KB_STALE=0
+KB_AVG_CONF="0"
+
+KB_INDEX="${WORKSPACE_ROOT}/.claude/knowledge/index.json"
+KB_STATS_SCRIPT="${WORKSPACE_ROOT}/.claude/skills/coordination/workspace/knowledge-manager/scripts/knowledge-stats.sh"
+if [[ -f "$KB_INDEX" ]]; then
+    KB_TOTAL=$(jq -r '.metadata.entry_count // 0' "$KB_INDEX" 2>/dev/null)
+    KB_ACTIVE=$(jq -r '.metadata.active_count // 0' "$KB_INDEX" 2>/dev/null)
+    KB_AVG_CONF=$(jq -r '.metadata.avg_confidence // 0' "$KB_INDEX" 2>/dev/null)
+    KB_STALE=$(jq '[.entries[] | select(.status == "active" and .confidence < 0.5)] | length' "$KB_INDEX" 2>/dev/null || echo "0")
+
+    if [[ $KB_TOTAL -gt 0 && $KB_STALE -eq 0 ]]; then
+        KB_HEALTH_OK="pass"
+    elif [[ $KB_TOTAL -gt 0 && $KB_STALE -le 5 ]]; then
+        KB_HEALTH_OK="warn"
+    elif [[ $KB_TOTAL -gt 0 ]]; then
+        KB_HEALTH_OK="fail"
+    fi
+fi
+log "Knowledge Base: total=$KB_TOTAL active=$KB_ACTIVE stale=$KB_STALE avg_conf=$KB_AVG_CONF"
+
 #############################################
 # Auto-approve stale Codex reviews (>14 days)
 #############################################
@@ -794,10 +847,16 @@ checklist:
   capability_domains: $CAPABILITY_DOMAINS
   capability_gaps: $CAPABILITY_GAPS
   capability_date: ${CAPABILITY_DATE:-none}
+  knowledge_base: $KB_HEALTH_OK
+  kb_total: $KB_TOTAL
+  kb_active: $KB_ACTIVE
+  kb_stale: $KB_STALE
+  kb_avg_confidence: $KB_AVG_CONF
 actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
   learnings_stored: $LEARNINGS_STORED
+  knowledge_captured: $KNOWLEDGE_CAPTURED
   stale_reviews_approved: $STALE_REVIEWS_APPROVED
 files:
   analysis: $ANALYSIS_FILE
@@ -846,6 +905,7 @@ CC_SYM=$([[ "$CC_INSIGHTS_OK" == "pass" ]] && echo "✓" || ([[ "$CC_INSIGHTS_OK
 WQ_SYM=$([[ "$WQ_STATUS_OK" == "pass" ]] && echo "✓" || ([[ "$WQ_STATUS_OK" == "warn" ]] && echo "!" || ([[ "$WQ_STATUS_OK" == "none" ]] && echo "○" || echo "✗")))
 SE_SYM=$([[ "$SKILL_EVAL_OK" == "pass" ]] && echo "✓" || ([[ "$SKILL_EVAL_OK" == "warn" ]] && echo "!" || ([[ "$SKILL_EVAL_OK" == "none" ]] && echo "○" || echo "✗")))
 CM_MAP_SYM=$([[ "$CAPABILITY_MAP_OK" == "pass" ]] && echo "✓" || ([[ "$CAPABILITY_MAP_OK" == "warn" ]] && echo "!" || ([[ "$CAPABILITY_MAP_OK" == "none" ]] && echo "○" || echo "✗")))
+KB_SYM=$([[ "$KB_HEALTH_OK" == "pass" ]] && echo "✓" || ([[ "$KB_HEALTH_OK" == "warn" ]] && echo "!" || ([[ "$KB_HEALTH_OK" == "none" ]] && echo "○" || echo "✗")))
 
 # Summary output for cron email
 echo ""
@@ -853,7 +913,7 @@ echo "╔═══════════════════════�
 echo "║                    Daily Reflection Summary                           ║"
 echo "║                    $(date '+%Y-%m-%d %H:%M')                                        ║"
 echo "╠═══════════════════════════════════════════════════════════════════════╣"
-echo "║  QUALITY CHECKLIST (20 checks)                                        ║"
+echo "║  QUALITY CHECKLIST (21 checks)                                        ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  CODE QUALITY                          │  INFRASTRUCTURE              ║"
 echo "║  $CR_SYM Cross-Review: ${GEMINI_PENDING}G ${CODEX_PENDING}C ${CLAUDE_PENDING}Cl pending    │  $SM_SYM Submodule: ${SUBMODULES_DIRTY} dirty, ${SUBMODULES_UNPUSHED} unpushed  ║"
@@ -873,6 +933,7 @@ echo "║  ───────────────────────
 echo "║  SKILL & CAPABILITY HEALTH                                            ║"
 echo "║  $SE_SYM Skill Eval: ${SKILL_EVAL_PASSED}/${SKILL_EVAL_TOTAL} pass, ${SKILL_EVAL_CRITICAL} critical, ${SKILL_EVAL_WARNINGS} warn             ║"
 echo "║  $CM_MAP_SYM Capability Map: ${CAPABILITY_REPOS} repos, ${CAPABILITY_DOMAINS} domains, ${CAPABILITY_GAPS} gaps (${CAPABILITY_DATE:-N/A})    ║"
+echo "║  $KB_SYM Knowledge Base: ${KB_TOTAL} entries, ${KB_ACTIVE} active, ${KB_STALE} stale (avg ${KB_AVG_CONF})        ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  CC RELEASE INSIGHTS (v${CC_VERSION:-?})                                         ║"
 echo "║  $CC_SYM Reviewed: ${CC_LAST_REVIEWED:-N/A} | General: ${CC_GENERAL_COUNT} | Workflow: ${CC_SPECIFIC_COUNT}              ║"
@@ -887,7 +948,7 @@ echo "║  ✓ ABSTRACT:   $PATTERNS_FOUND patterns, $SCRIPT_IDEAS scripts      
 echo "║  ✓ CORRECTIONS: $CORRECTIONS_FOUND found ($CORRECTION_FILE_TYPES types, $CORRECTION_CHAINS chains)             ║"
 echo "║  ✓ CONVERSE:   $CONVERSATIONS_FOUND convos analyzed                                       ║"
 echo "║  ✓ GENERALIZE: Trends analyzed                                        ║"
-echo "║  ✓ STORE:      $SKILLS_CREATED created, $LEARNINGS_STORED logged                               ║"
+echo "║  ✓ STORE:      $SKILLS_CREATED created, $LEARNINGS_STORED logged, $KNOWLEDGE_CAPTURED knowledge  ║"
 [[ "$WEEKLY_REPORT" == "true" ]] && echo "║  📊 Weekly report generated                                             ║"
 echo "╚═══════════════════════════════════════════════════════════════════════╝"
 
@@ -897,7 +958,7 @@ HAS_FAILURES=false
    "$HOOKS_OK" == "fail" || "$GITHUB_ACTIONS_OK" == "fail" || "$TEST_COVERAGE_OK" == "fail" || \
    "$TEST_PASS_OK" == "fail" || "$FOLDER_STRUCTURE_OK" == "fail" || "$ACEENGINEER_OK" == "fail" || \
    "$SESSION_RAG_OK" == "fail" || "$WQ_STATUS_OK" == "fail" || \
-   "$SKILL_EVAL_OK" == "fail" || "$CAPABILITY_MAP_OK" == "fail" ]] && HAS_FAILURES=true
+   "$SKILL_EVAL_OK" == "fail" || "$CAPABILITY_MAP_OK" == "fail" || "$KB_HEALTH_OK" == "fail" ]] && HAS_FAILURES=true
 
 if [[ "$HAS_FAILURES" == "true" ]]; then
     echo ""
@@ -919,6 +980,7 @@ if [[ "$HAS_FAILURES" == "true" ]]; then
     [[ "$WQ_STATUS_OK" == "fail" ]] && echo "  → $WQ_STALE work items blocked >7 days - review and unblock"
     [[ "$SKILL_EVAL_OK" == "fail" ]] && echo "  → $SKILL_EVAL_CRITICAL skills have critical issues - run /skill-eval to see details"
     [[ "$CAPABILITY_MAP_OK" == "fail" ]] && echo "  → Capability map stale (${CAPABILITY_DATE:-N/A}) - run /repo-capability-map report"
+    [[ "$KB_HEALTH_OK" == "fail" ]] && echo "  → Knowledge base has $KB_STALE stale entries - run /knowledge review --decay --prune"
 fi
 
 HAS_WARNINGS=false
@@ -926,7 +988,7 @@ HAS_WARNINGS=false
    "$STALE_OK" == "warn" || "$REFACTOR_OK" == "warn" || "$HOOKS_OK" == "warn" || \
    "$GITHUB_ACTIONS_OK" == "warn" || "$TEST_COVERAGE_OK" == "warn" || "$ACEENGINEER_OK" == "warn" || \
    "$SESSION_RAG_OK" == "warn" || "$CC_INSIGHTS_OK" == "warn" || "$WQ_STATUS_OK" == "warn" || \
-   "$SKILL_EVAL_OK" == "warn" || "$CAPABILITY_MAP_OK" == "warn" ]] && HAS_WARNINGS=true
+   "$SKILL_EVAL_OK" == "warn" || "$CAPABILITY_MAP_OK" == "warn" || "$KB_HEALTH_OK" == "warn" ]] && HAS_WARNINGS=true
 
 if [[ "$HAS_WARNINGS" == "true" ]]; then
     echo ""
@@ -946,4 +1008,5 @@ if [[ "$HAS_WARNINGS" == "true" ]]; then
     [[ "$WQ_STATUS_OK" == "warn" ]] && echo "  → ${WQ_BLOCKED} work items blocked - check repo readiness"
     [[ "$SKILL_EVAL_OK" == "warn" ]] && echo "  → ${SKILL_EVAL_CRITICAL} skills with critical issues - address frontmatter/structure"
     [[ "$CAPABILITY_MAP_OK" == "warn" ]] && echo "  → Capability map aging (${CAPABILITY_DATE:-N/A}) - refresh with /repo-capability-map scan"
+    [[ "$KB_HEALTH_OK" == "warn" ]] && echo "  → Knowledge base has $KB_STALE stale entries - run /knowledge review --decay"
 fi

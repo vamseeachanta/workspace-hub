@@ -201,6 +201,15 @@ Commands for workspace-hub operations.
 | `/workspace-cli` | workspace-cli | workspace-hub | None | Interactive workspace menu |
 | `/compliance-check` | compliance-check | workspace-hub | None | Standards verification |
 | `/agent-orchestration` | agent-orchestration | workspace-hub | None | Agent coordination framework |
+| `/repo-capability-map` | repo-capability-map | workspace-hub | None | Capability discovery, domain classification, gap analysis |
+| `/reflect` | claude-reflect | workspace-hub | Git history | Periodic reflection on git history across repos |
+| `/work` | work-queue | workspace-hub | None | Work item capture and processing pipeline |
+| `/knowledge` | knowledge-manager | workspace-hub | `jq` | Capture, organize, and surface institutional knowledge |
+| `/knowledge capture` | knowledge-manager | workspace-hub | `jq` | Extract and store knowledge entries |
+| `/knowledge advise` | knowledge-manager | workspace-hub | `jq` | Surface relevant knowledge for a task |
+| `/knowledge search` | knowledge-manager | workspace-hub | `jq` | Search by keyword/tag/type/category |
+| `/knowledge review` | knowledge-manager | workspace-hub | `jq` | Review stale entries, decay confidence |
+| `/knowledge stats` | knowledge-manager | workspace-hub | `jq` | Knowledge base health dashboard |
 
 ### Repository Sync
 
@@ -305,6 +314,13 @@ Common alternative names for commands.
 | `/code` | `/coder` | Implementation agent |
 | `/pr` | `/pr-manager` | PR management |
 | `/sync` | `/repo-sync` | Repository sync |
+| `/capmap` | `/repo-capability-map` | Capability map |
+| `/capability-map` | `/repo-capability-map` | Capability map |
+| `/k` | `/knowledge` | Knowledge base status |
+| `/kc` | `/knowledge capture` | Knowledge capture |
+| `/ka` | `/knowledge advise` | Knowledge advise |
+| `/ks` | `/knowledge search` | Knowledge search |
+| `/kr` | `/knowledge review` | Knowledge review |
 
 ---
 
@@ -327,6 +343,11 @@ Common alternative names for commands.
 | Process PDFs | `/pdf` | pdf |
 | Create a skill | `/skill-creator` | skill-creator |
 | TDD development | `/tdd` | testing-tdd-london |
+| Map repo capabilities | `/repo-capability-map` | repo-capability-map |
+| Find capability gaps | `/repo-capability-map gaps` | repo-capability-map |
+| Capture knowledge | `/knowledge capture` | knowledge-manager |
+| Get task advice | `/knowledge advise` | knowledge-manager |
+| Search knowledge | `/knowledge search` | knowledge-manager |
 
 ---
 
@@ -340,7 +361,7 @@ Common alternative names for commands.
 | `sparc` | SPARC methodology | specification, architecture, refinement |
 | `swarm` | Multi-agent coordination | queen, collective, worker, scout |
 | `optimization` | Performance | monitor, benchmark, load-balancer |
-| `workspace-hub` | Repo management | repo-sync, compliance, orchestration |
+| `workspace-hub` | Repo management | repo-sync, compliance, orchestration, capability-map, reflect, work |
 | `document-handling` | Documents | pdf, docx, xlsx, rag-builder |
 | `builders` | Tool creation | skill-creator, mcp-builder |
 | `devtools` | Dev operations | docker, git-advanced, uv |
@@ -357,4 +378,4 @@ Common alternative names for commands.
 
 ---
 
-*Last updated: 2026-01-24*
+*Last updated: 2026-01-30*
