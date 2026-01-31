@@ -1,3 +1,10 @@
+---
+name: logging-standards
+version: "1.0.0"
+category: _internal
+description: "Logging Standards Skill"
+---
+
 # Logging Standards Skill
 
 > Version: 1.0.0

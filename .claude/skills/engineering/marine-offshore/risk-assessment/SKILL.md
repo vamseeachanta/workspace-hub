@@ -1,3 +1,10 @@
+---
+name: risk-assessment
+version: "1.0.0"
+category: engineering
+description: "Risk Assessment Skill"
+---
+
 # Risk Assessment Skill
 
 ```yaml

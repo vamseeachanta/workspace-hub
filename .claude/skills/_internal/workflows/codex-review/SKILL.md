@@ -1,3 +1,10 @@
+---
+name: codex-review
+version: "1.0.0"
+category: _internal
+description: "Codex Review Workflow Skill"
+---
+
 # Codex Review Workflow Skill
 
 > Version: 1.0.0

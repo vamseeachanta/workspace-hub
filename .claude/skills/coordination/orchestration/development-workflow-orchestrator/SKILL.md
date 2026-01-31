@@ -1,3 +1,10 @@
+---
+name: development-workflow-orchestrator
+version: "1.0.0"
+category: coordination
+description: "Development Workflow Orchestrator"
+---
+
 # Development Workflow Orchestrator
 
 > **Version:** 1.0.0

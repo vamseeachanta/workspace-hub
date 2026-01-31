@@ -1,3 +1,10 @@
+---
+name: production-engineering
+version: "1.0.0"
+category: engineering
+description: "Production Engineering Skill"
+---
+
 # Production Engineering Skill
 
 > Fundamentals of production, surveillance, and lessons learnt for offshore and onshore assets.

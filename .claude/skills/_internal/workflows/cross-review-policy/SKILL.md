@@ -1,3 +1,10 @@
+---
+name: cross-review-policy
+version: "1.0.0"
+category: _internal
+description: "Cross-Review Policy Skill"
+---
+
 # Cross-Review Policy Skill
 
 > Version: 1.0.0

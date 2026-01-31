@@ -1,3 +1,10 @@
+---
+name: html-reporting-standards
+version: "1.0.0"
+category: _internal
+description: "HTML Reporting Standards Skill"
+---
+
 # HTML Reporting Standards Skill
 
 > Version: 1.0.0

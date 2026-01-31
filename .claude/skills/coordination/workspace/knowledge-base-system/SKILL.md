@@ -1,3 +1,10 @@
+---
+name: knowledge-base-system
+version: "1.0.0"
+category: coordination
+description: "Knowledge Base System"
+---
+
 # Knowledge Base System
 
 > **Version:** 1.0.0

@@ -1,3 +1,10 @@
+---
+name: norsok
+version: "1.0.0"
+category: engineering
+description: "NORSOK Standards Specialist"
+---
+
 # NORSOK Standards Specialist
 
 > Norsk Sokkels Konkurranseposisjon (NORSOK) standards for the Norwegian petroleum industry.

@@ -1,3 +1,10 @@
+---
+name: context-management
+version: "1.0.0"
+category: _core
+description: "Context Management Skill"
+---
+
 # Context Management Skill
 
 > Version: 2.0.0

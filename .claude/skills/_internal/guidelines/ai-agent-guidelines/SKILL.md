@@ -1,3 +1,10 @@
+---
+name: ai-agent-guidelines
+version: "1.0.0"
+category: _internal
+description: "AI Agent Guidelines Skill"
+---
+
 # AI Agent Guidelines Skill
 
 > Version: 1.0.0

@@ -1,3 +1,10 @@
+---
+name: html-reporting-enforcer
+version: "1.0.0"
+category: coordination
+description: "HTML Reporting Standards Enforcer"
+---
+
 # HTML Reporting Standards Enforcer
 
 > **Version:** 1.0.0

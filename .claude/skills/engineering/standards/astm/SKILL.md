@@ -1,3 +1,10 @@
+---
+name: astm
+version: "1.0.0"
+category: engineering
+description: "ASTM Standards Specialist"
+---
+
 # ASTM Standards Specialist
 
 > American Society for Testing and Materials (ASTM) standards for material properties and testing methods.

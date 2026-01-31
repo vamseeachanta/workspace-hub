@@ -1,3 +1,10 @@
+---
+name: file-org-standards
+version: "1.0.0"
+category: _internal
+description: "File Organization Standards Skill"
+---
+
 # File Organization Standards Skill
 
 > Version: 1.0.0

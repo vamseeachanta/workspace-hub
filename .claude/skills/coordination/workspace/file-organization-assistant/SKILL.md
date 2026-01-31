@@ -1,3 +1,10 @@
+---
+name: file-organization-assistant
+version: "1.0.0"
+category: coordination
+description: "File Organization AI Assistant"
+---
+
 # File Organization AI Assistant
 
 > **Version:** 1.0.0

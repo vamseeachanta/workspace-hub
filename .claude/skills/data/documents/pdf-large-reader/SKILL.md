@@ -1,3 +1,10 @@
+---
+name: pdf-large-reader
+version: "1.0.0"
+category: data
+description: "pdf-large-reader Skill"
+---
+
 # pdf-large-reader Skill
 
 Memory-efficient PDF processing library for large files (100MB+, 1000+ pages).

@@ -1,3 +1,10 @@
+---
+name: api-integration
+version: "1.0.0"
+category: data
+description: "API Integration Skill"
+---
+
 # API Integration Skill
 
 ```yaml

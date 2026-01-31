@@ -1,3 +1,10 @@
+---
+name: structural-analysis
+version: "1.0.0"
+category: engineering
+description: "Structural Analysis Skill"
+---
+
 # Structural Analysis Skill
 
 ```yaml

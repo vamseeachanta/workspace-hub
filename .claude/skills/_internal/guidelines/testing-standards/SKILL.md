@@ -1,3 +1,10 @@
+---
+name: testing-standards
+version: "1.0.0"
+category: _internal
+description: "Testing Standards Skill"
+---
+
 # Testing Standards Skill
 
 > Version: 1.0.0

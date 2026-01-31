@@ -1,3 +1,10 @@
+---
+name: orcaflex-specialist
+version: "1.0.0"
+category: engineering
+description: "OrcaFlex Specialist Skill"
+---
+
 # OrcaFlex Specialist Skill
 
 ```yaml

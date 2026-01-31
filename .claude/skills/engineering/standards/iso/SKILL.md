@@ -1,3 +1,10 @@
+---
+name: iso
+version: "1.0.0"
+category: engineering
+description: "ISO Standards Specialist"
+---
+
 # ISO Standards Specialist
 
 > International Organization for Standardization (ISO) codes for general engineering, materials, and safety.

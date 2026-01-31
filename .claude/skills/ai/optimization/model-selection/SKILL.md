@@ -1,3 +1,10 @@
+---
+name: model-selection
+version: "1.0.0"
+category: ai
+description: "Model Selection Skill"
+---
+
 # Model Selection Skill
 
 > Version: 1.0.0

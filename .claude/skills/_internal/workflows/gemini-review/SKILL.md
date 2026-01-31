@@ -1,3 +1,10 @@
+---
+name: gemini-review
+version: "1.0.0"
+category: _internal
+description: "Gemini Review Workflow Skill"
+---
+
 # Gemini Review Workflow Skill
 
 > Version: 1.0.0

@@ -1,3 +1,10 @@
+---
+name: product-roadmap
+version: "1.0.0"
+category: business
+description: "Product Roadmap Skill"
+---
+
 # Product Roadmap Skill
 
 > Version: 1.0.0

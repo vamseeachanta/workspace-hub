@@ -1,3 +1,10 @@
+---
+name: usage-optimization
+version: "1.0.0"
+category: ai
+description: "Usage Optimization Skill"
+---
+
 # Usage Optimization Skill
 
 > Version: 1.0.0

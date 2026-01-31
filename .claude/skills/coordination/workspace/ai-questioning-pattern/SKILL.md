@@ -1,3 +1,10 @@
+---
+name: ai-questioning-pattern
+version: "1.0.0"
+category: coordination
+description: "AI Questioning Pattern (MANDATORY)"
+---
+
 # AI Questioning Pattern (MANDATORY)
 
 > **Version:** 1.0.0

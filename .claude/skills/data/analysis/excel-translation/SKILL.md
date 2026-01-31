@@ -1,3 +1,10 @@
+---
+name: excel-translation
+version: "1.0.0"
+category: data
+description: "Excel Translation Skill"
+---
+
 # Excel Translation Skill
 
 > Version: 1.0.0

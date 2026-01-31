@@ -1,3 +1,10 @@
+---
+name: marine-safety
+version: "1.0.0"
+category: engineering
+description: "Marine Safety & Integrity Specialist"
+---
+
 # Marine Safety & Integrity Specialist
 
 > Integrity management, life extension, and safety assessment for offshore assets.

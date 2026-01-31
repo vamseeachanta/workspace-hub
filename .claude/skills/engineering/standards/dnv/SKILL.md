@@ -1,3 +1,10 @@
+---
+name: dnv
+version: "1.0.0"
+category: engineering
+description: "DNV Standards Specialist"
+---
+
 # DNV Standards Specialist
 
 > Det Norske Veritas (DNV) rules and standards for marine, offshore, and renewable energy industries.

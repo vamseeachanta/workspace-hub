@@ -1,3 +1,10 @@
+---
+name: repository-health-analyzer
+version: "1.0.0"
+category: coordination
+description: "Repository Health Analyzer"
+---
+
 # Repository Health Analyzer
 
 > **Version:** 1.0.0

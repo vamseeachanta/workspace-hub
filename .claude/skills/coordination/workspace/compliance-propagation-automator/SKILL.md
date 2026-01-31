@@ -1,3 +1,10 @@
+---
+name: compliance-propagation-automator
+version: "1.0.0"
+category: coordination
+description: "Compliance Propagation Automator"
+---
+
 # Compliance Propagation Automator
 
 > **Version:** 1.0.0
