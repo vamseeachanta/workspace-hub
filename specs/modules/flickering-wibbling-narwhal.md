@@ -1,202 +1,130 @@
-# WRK-009: Reproduce rev30 Lower Tertiary BSEE Field Results
+# V30 Financial Benchmark Tests — D&C, Leases, Economics
 
 ## Summary
 
-Reproduce Roy's FDAS V30 lower tertiary financial results using BSEE field data to confirm repeatability. This unblocks WRK-010, WRK-011, and WRK-024.
+Add granular benchmarking tests that verify drilling & completion days, lease data, and financial metrics against the V30 golden baseline. The V30 generator script (`generate_financial_summary_V30.py`) computed these from raw xlsx inputs — we now verify our Python pipeline reproduces them within tolerance.
 
-## Scope
+## What We're Benchmarking
 
-- **In scope:** Lower tertiary fields only, using V30 assumptions and methodology as-is
-- **Out of scope:** Non-lower-tertiary fields — these require revised assumptions based on publicly available data
-- **Follow-up:** `/work add` a new item for revising assumptions for non-lower-tertiary fields after WRK-009 completes
+The golden baseline (`golden_baseline_v30.yml`) contains per-project:
+- **D&C**: `dnc_total_usd`, `wellbores` (producers + injectors + exploration)
+- **Financials**: `revenue_usd`, `royalty_usd`, `variable_opex_usd`, `fixed_opex_usd`, `net_cashflow_usd`, `npv_usd`, `mirr_monthly`, `mirr_annual`
+- **CAPEX**: `facilities_cost_usd`
+- **Wells**: `producers`, `injectors`, `wellbores`
 
-## Current State
+Source data already loaded by existing functions:
+- `load_v30_drilling()` → 219 wells × 12 columns (drilling days, completion days, depths, spud/TD dates)
+- `load_v30_leases()` → 20 leases × 6 columns (lease-to-development mapping)
+- `load_v30_assumptions()` → 39 assumptions × 7 columns (per dev-system cost rates)
 
-### What exists (key finding: Roy's V30 is in-repo)
+## Plan — 3 Phases
 
-**Roy's V30 code + golden baseline** at `docs/modules/bsee/analysis/production/FDAS_V30/`:
-- `generate_financial_summary_V30.py` — Roy's financial engine (474 lines)
-- `financial_project_summary.xlsx` — Roy's OUTPUT (the golden baseline)
-- `chronological_lease_analysis.xlsx` — Roy's curated production input
-- `lease_assumptions.xlsx`, `leases.xlsx`, `wti_monthly.xlsx` — Roy's config inputs
-- `drilling_and_completion_days.xlsx` — D&C input
-- `V30_Golden_Baseline_Reference_Full_With_AfterTax.docx` — reference doc
+### Phase 1: Create `test_v30_benchmarks.py` (TDD)
 
-**Additional Roy attachments** at `docs/modules/bsee/data/SME_Roy_attachments/` (13 dated folders: 2025-05-14 through 2025-09-19)
+**File:** `tests/modules/lower_tertiary/test_v30_benchmarks.py`
 
-**Reimplemented pipeline (Pipeline B)** at `scripts/bsee/analyze_lower_tertiary_npv.py`:
-- Reads raw BSEE OGOR zip files → YAML configs → flat price NPV
-- Output: `results/lower_tertiary/npv_summary.csv` (5 producing fields)
-- Uses **different methodology** than Roy's V30 (flat prices, no D&C costs, lump-sum CAPEX)
+#### A) Drilling & Completion Benchmarks
 
-**FDAS module** at `src/worldenergydata/modules/fdas/`:
-- `core/financial.py` — NPV, MIRR, IRR (Excel-compatible)
-- `adapters/bsee_adapter.py` — BSEE data transformation
-- `data/production.py`, `data/drilling.py`, `analysis/cashflow.py`
+| Test | What it verifies |
+|------|-----------------|
+| `test_wellbore_counts_match_golden_baseline[{project}]` | Parametrized: wellbore count per development matches `wellbores` field in golden baseline |
+| `test_all_developments_have_dnc_data` | All 10 golden baseline projects have D&C records |
+| `test_drilling_days_positive_for_all_wells` | No negative or NaN drilling days |
+| `test_spud_dates_precede_td_dates` | WELL_SPUD_DATE < TOTAL_DEPTH_DATE for all wells with both dates |
+| `test_well_depths_reasonable` | MAX_BH_TOTAL_MD and MAX_WELL_BORE_TVD within 5,000–45,000 ft |
+| `test_dnc_cost_reproduction[{project}]` | Parametrized: reproduce D&C total cost using V30 assumptions (day rates × days) within ±1% of golden baseline `dnc_total_usd` |
 
-**Validation tests** at `tests/modules/fdas/validation/test_against_original.py`:
-- ALL SKIP because `FDAS_SOURCE_DIR` points to `/home/vamsee/Downloads/FDAS_V30` (doesn't exist)
-- Correct path is `docs/modules/bsee/analysis/production/FDAS_V30/` (in-repo)
+**D&C cost reproduction logic** (extracted from `generate_financial_summary_V30.py`):
+- Drilling cost = drilling_days × MODU_LOADED_DAYRATE_MM × 1e6 (subsea15 rate for dry/pre-FO subsea20)
+- Completion cost = completion_days × rate × 1e6 (DRY_TREE_RIG_RATE for dry, MODU rate for subsea)
+- DnC_Total = sum of drilling + completion costs across all wells
 
-### Key gap: Two pipelines, different methodologies
+#### B) Lease Data Benchmarks
 
-| Aspect | Roy's V30 | Pipeline B (current) |
-|--------|-----------|---------------------|
-| Oil price | Historical WTI (wti_monthly.xlsx) | Flat $75/bbl |
-| Gas | Not modeled | Flat $3.50/mcf |
-| D&C costs | From drilling_and_completion_days.xlsx | Not included |
-| Facilities | Host CAPEX, SURF, pumps, well systems | Not included |
-| OPEX | Variable $/bbl + Fixed $/year | Per-BOE flat rate |
-| Tax | Pre-tax analysis | 21% federal |
-| CAPEX | Time-distributed in cashflow | Lump sum subtracted from NPV |
-| Production source | chronological_lease_analysis.xlsx (curated) | Raw BSEE OGOR zips |
+| Test | What it verifies |
+|------|-----------------|
+| `test_lease_count_per_development` | Expected lease counts: JSM=6, CC=2, Anchor=2, etc. |
+| `test_lease_to_development_mapping_complete` | All 20 V30 leases map to known developments |
+| `test_dev_systems_match_golden_baseline[{project}]` | Parametrized: dev_system (subsea15/subsea20/dry/tieback15) matches golden baseline |
+| `test_no_orphan_leases` | No leases without a DEV_NAME assignment |
 
-The existing `npv_summary.csv` was generated by Pipeline B, NOT Roy's code.
+#### C) Financial Benchmarks
 
-## Plan — Two-Phase Verification
+| Test | What it verifies |
+|------|-----------------|
+| `test_revenue_matches_golden_baseline[{project}]` | Parametrized: revenue within ±0.1% of `revenue_usd` |
+| `test_royalty_matches_golden_baseline[{project}]` | Parametrized: royalty within ±0.1% of `royalty_usd` |
+| `test_variable_opex_matches_golden_baseline[{project}]` | Parametrized: variable opex within ±0.1% |
+| `test_fixed_opex_matches_golden_baseline[{project}]` | Parametrized: fixed opex within ±0.1% |
+| `test_facilities_cost_matches_golden_baseline[{project}]` | Parametrized: facilities CAPEX within ±1% |
+| `test_net_cashflow_matches_golden_baseline[{project}]` | Parametrized: net cashflow within ±0.5% |
+| `test_npv_matches_golden_baseline[{project}]` | Parametrized: NPV within ±1% |
+| `test_mirr_matches_golden_baseline[{project}]` | Parametrized: MIRR within ±0.1% absolute |
 
-### Phase A: Confirm Roy's V30 is deterministic (code → same output)
+### Phase 2: Create `v30_financial_reproducer.py`
 
-Run Roy's original code on his own input files and verify it reproduces `financial_project_summary.xlsx`.
+**File:** `src/worldenergydata/analysis/lower_tertiary/v30_financial_reproducer.py`
 
-### Phase B: Reproduce V30 results from our pipeline (BSEE OGOR → match V30)
+Extracts the financial logic from `generate_financial_summary_V30.py` into a clean, testable module (~200 lines):
 
-Run our reimplemented code against raw BSEE data and confirm results match Roy's golden baseline.
-
----
-
-### Step 1: Fix validation test paths and enable existing tests
-
-**Files to modify:**
-- `tests/modules/fdas/validation/test_against_original.py:20` — change `FDAS_SOURCE_DIR`
-- `tests/modules/fdas/validation/conftest.py` — update fixture paths
-
-**Action:**
 ```python
-# From:
-FDAS_SOURCE_DIR = Path("/home/vamsee/Downloads/FDAS_V30")
-# To:
-FDAS_SOURCE_DIR = Path(__file__).resolve().parents[4] / "docs/modules/bsee/analysis/production/FDAS_V30"
+def reproduce_v30_financials() -> dict[str, dict]:
+    """Reproduce V30 financial summary from raw xlsx inputs.
+
+    Loads leases, assumptions, OGOR production, D&C data, and WTI prices.
+    Computes per-development: D&C costs, facilities CAPEX, revenue, royalty,
+    opex, cashflow, NPV, MIRR — matching the V30 generator methodology.
+
+    Returns dict keyed by development name with all financial metrics.
+    """
+
+def reproduce_dnc_costs(
+    dnc_df: pd.DataFrame,
+    assumptions: pd.DataFrame,
+    dev_name: str,
+    dev_system: str,
+    first_oil: pd.Timestamp | None,
+) -> dict[str, float]:
+    """Reproduce D&C costs for a single development.
+
+    Returns: drilling_cost_usd, completion_cost_usd, dnc_total_usd
+    """
 ```
 
-**Verify:** `uv run pytest tests/modules/fdas/validation/ -v` — tests should no longer skip.
+Key logic to port from `generate_financial_summary_V30.py`:
+- **D&C day rates**: MODU_LOADED_DAYRATE for subsea, DRY_TREE_RIG_RATE for dry completions
+- **Rate switching**: subsea20 pre-FO wells use subsea15 MODU rate
+- **Facilities**: Host CAPEX spread over pre-FO months + SURF per well + booster/injection pumps + dry-tree well systems
+- **Revenue/costs**: WTI × oil, royalty rate, variable opex/bbl, fixed opex/year
+- **NPV/MIRR**: Monthly discount at 10% annual, trimmed cashflow window, Excel-like MIRR
 
-### Step 2: Extract golden baseline from Roy's output
+### Phase 3: Run & verify
 
-**Create:** `scripts/extract_golden_baseline.py`
-- Read `financial_project_summary.xlsx` (Roy's output)
-- Extract per-development metrics: NPV, MIRR, Revenue, Costs, Cashflow
-- Save to `config/analysis/lower_tertiary/golden_baseline_v30.yml`
-
-**Create:** `config/analysis/lower_tertiary/golden_baseline_v30.yml`
-- Per-field reference values from Roy's V30 output
-- Used by all repeatability tests as comparison target
-
-### Step 3: Phase A — Run Roy's V30 code on its own inputs (determinism check)
-
-**Create:** `tests/modules/fdas/validation/test_v30_determinism.py`
-
-Tests:
-1. Run `generate_financial_summary_V30.py` programmatically with V30 input files
-2. Compare output against `financial_project_summary.xlsx` — must be identical
-3. This confirms Roy's code + inputs = deterministic output
-
-If this fails: Roy's code may have external dependencies (date-sensitive, environment-dependent). Document and investigate.
-
-### Step 4: Phase B — Write repeatability tests (TDD — red phase)
-
-**Create:** `tests/modules/lower_tertiary/test_repeatability_v30.py`
-
-Tests to write:
-1. **Production data match** — compare BSEE OGOR production for V30 leases against `chronological_lease_analysis.xlsx` monthly totals per field
-2. **Financial calc match** — run our `calculate_monthly_financials` with V30 assumptions and compare against V30 output
-3. **Per-field NPV match** — for each producing field, NPV within ±1% of golden baseline
-4. **Per-field MIRR match** — MIRR within ±0.1% absolute
-5. **Revenue match** — total revenue within ±0.1%
-6. **Portfolio totals** — aggregate metrics within tolerance
-
-Tolerances (from FDAS spec):
-- NPV: ±1% relative
-- MIRR: ±0.1% absolute
-- Revenue: ±0.1% relative
-- Cashflow: ±0.5% relative
-
-### Step 5: Build V30-aligned reproducer (using V30 assumptions as-is)
-
-**Create:** `src/worldenergydata/analysis/lower_tertiary/v30_reproducer.py`
-
-This module uses the **same assumptions and methodology as V30** — no changes to the financial model. It only swaps the production data source from Roy's curated xlsx to raw BSEE OGOR zips.
-
-This module:
-- Reads BSEE OGOR data (raw zip files) for V30 lease set
-- Maps to V30 development groups using V30 lease mapping
-- Applies V30 assumptions as-is: historical WTI prices, D&C costs, facilities CAPEX, variable + fixed OPEX from `lease_assumptions.xlsx`
-- Calculates NPV/MIRR using V30 trimmed cashflow approach (via `fdas.core.financial`)
-- Returns results in same structure as golden baseline for comparison
-
-Key sub-tasks:
-- Production extraction: load OGOR zips → filter by V30 leases → aggregate by development
-- Price deck: load `wti_monthly.xlsx` → apply to production months (V30 methodology)
-- Cost model: load `lease_assumptions.xlsx` → apply per-development costs (V30 methodology)
-- Financial calcs: use `fdas.core.financial` (already reimplemented and tested)
-
-**Note:** Assumption revision for non-lower-tertiary fields is a separate work item to be captured via `/work add`.
-
-### Step 6: Make tests green
-
-Iterate until all repeatability tests pass:
-- Debug production data mismatches (OGOR vs curated xlsx)
-- Debug financial calculation differences
-- Document any accepted deviations with explanations
-
-### Step 7: Generate repeatability report
-
-**Create:** `reports/lower_tertiary/v30_repeatability_report.md`
-
-Contents:
-- Phase A result: V30 determinism confirmed (yes/no)
-- Phase B summary table: field | metric | V30 baseline | reproduced | delta | pass/fail
-- Production comparison (BSEE OGOR vs Roy's curated xlsx)
-- Financial comparison per field
-- Explanation of any accepted deviations
-- Data vintage, code version, timestamp
-
-### Step 8: Update work item and unblock dependents
-
-- Check off WRK-009 acceptance criteria
-- Record commit hash
-- Unblock: WRK-010, WRK-024
-- `/work add` new item: "Revise financial assumptions for non-lower-tertiary fields using publicly available data" (target: worldenergydata, related: WRK-009)
+1. `uv run pytest tests/modules/lower_tertiary/test_v30_benchmarks.py -v` — All benchmark tests pass
+2. `uv run pytest tests/modules/lower_tertiary/test_repeatability_v30.py -v` — V30 production regression: 12/12 (unchanged)
+3. `uv run pytest tests/modules/lower_tertiary/ -v` — Full suite green
 
 ## Critical Files
 
-| File | Action | Purpose |
-|------|--------|---------|
-| `tests/modules/fdas/validation/test_against_original.py` | Modify | Fix FDAS_SOURCE_DIR path (line 20) |
-| `tests/modules/fdas/validation/conftest.py` | Modify | Fix fixture paths |
-| `tests/modules/fdas/validation/test_v30_determinism.py` | Create | Phase A: V30 determinism tests |
-| `scripts/extract_golden_baseline.py` | Create | Extract V30 reference numbers |
-| `config/analysis/lower_tertiary/golden_baseline_v30.yml` | Create | Structured golden baseline |
-| `tests/modules/lower_tertiary/test_repeatability_v30.py` | Create | Phase B: repeatability test suite |
-| `src/worldenergydata/analysis/lower_tertiary/v30_reproducer.py` | Create | V30-aligned reproduction pipeline |
-| `reports/lower_tertiary/v30_repeatability_report.md` | Create | Results documentation |
+| File | Action |
+|------|--------|
+| `tests/.../lower_tertiary/test_v30_benchmarks.py` | Create (~250 lines) |
+| `src/.../lower_tertiary/v30_financial_reproducer.py` | Create (~200 lines) |
+| `src/.../lower_tertiary/v30_reproducer.py` | No changes |
+| `config/.../golden_baseline_v30.yml` | Read only (NEVER modified) |
 
-## Verification
+## Tolerances (from golden baseline)
 
-**Phase A (determinism):**
-1. `uv run pytest tests/modules/fdas/validation/ -v` — existing tests pass (no skips)
-2. `uv run pytest tests/modules/fdas/validation/test_v30_determinism.py -v` — V30 code reproduces its own output
+| Metric | Tolerance | Source |
+|--------|-----------|--------|
+| Production | ±0.1% | `production_relative: 0.001` |
+| Revenue | ±0.1% | `revenue_relative: 0.001` |
+| NPV | ±1% | `npv_relative: 0.01` |
+| MIRR | ±0.001 | `mirr_absolute: 0.001` |
+| Cashflow | ±0.5% | `cashflow_relative: 0.005` |
 
-**Phase B (repeatability):**
-3. `uv run pytest tests/modules/lower_tertiary/test_repeatability_v30.py -v` — our pipeline matches V30 within tolerance
-4. `reports/lower_tertiary/v30_repeatability_report.md` shows per-field pass/fail with deltas < 1%
+D&C, facilities, royalty, opex use ±0.1% (same as revenue).
 
-**Completion:**
-5. WRK-009 acceptance criteria all checked
-6. Commit with message: `feat(lower-tertiary): WRK-009 - reproduce V30 results with repeatability verification`
+## Key Invariant
 
-## Dependencies
-
-- BSEE OGOR zip files at `data/modules/bsee/zip/historical_production_yearly/` (confirmed present: 1996-2025)
-- Roy's V30 files at `docs/modules/bsee/analysis/production/FDAS_V30/` (confirmed present)
-- Python packages: pandas, numpy, openpyxl, pyyaml (all in pyproject.toml)
+`golden_baseline_v30.yml` is NEVER modified. The benchmark tests compare computed values against it.
