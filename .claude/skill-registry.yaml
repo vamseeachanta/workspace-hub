@@ -92,6 +92,11 @@ skills:
     archived: false
     path: ".claude/commands/coordination/agent-spawn.md"
 
+  - name: "coordination/compound-engineering"
+    description: "Every.to's compound engineering - 4-phase loop (Plan→Work→Review→Compound) where each feature makes the next easier"
+    archived: false
+    path: ".claude/commands/workspace-hub/compound.md"
+
   - name: "coordination/init"
     description: "Initialize Coordination Framework"
     archived: false
@@ -734,7 +739,7 @@ skills:
     path: ".claude/commands/workspace-hub/work.md"
 
 # Summary
-# Total skills: 134
-# Active skills: 113
+# Total skills: 135
+# Active skills: 114
 # Archived skills: 21
 # Categories: agents, analysis, automation, coordination, github, hooks, memory, monitoring, optimization, pair, sparc, stream-chain, swarm, training, truth, verify, workflows, workspace-hub

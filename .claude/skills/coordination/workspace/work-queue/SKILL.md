@@ -95,6 +95,21 @@ Route C (Complex): Triage -> Plan (spec) -> Explore -> Implement -> Test -> Revi
 
 Route C items generate a spec in `specs/modules/` using existing plan templates.
 
+### Compound Integration
+
+Route C items with `compound: true` in frontmatter delegate to the compound engineering loop instead of the standard pipeline:
+
+```
+Route C (compound): /compound "<title>" → Plan → Work → Review → Compound → Archive
+```
+
+To create a compound work item:
+```
+/work add --compound "Add OAuth2 authentication to website"
+```
+
+This sets `compound: true` in the work item frontmatter, causing the process phase to delegate to `/compound` for the full 4-phase loop.
+
 ## Queue Directory Structure
 
 ### Master Queue (workspace-hub)
@@ -134,6 +149,7 @@ title: Brief descriptive title
 status: pending
 priority: medium  # high | medium | low
 complexity: simple  # simple | medium | complex
+compound: false     # true = route via /compound instead of standard pipeline
 created_at: 2026-01-28T10:00:00Z
 target_repos:
   - aceengineer-website
