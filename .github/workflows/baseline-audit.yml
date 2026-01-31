@@ -1,11 +1,8 @@
 name: Scheduled Baseline Audit
 
+# DISABLED: Assumes Node.js project (npm ci, npm run test:*) but workspace-hub
+# is Python/bash. Re-enable when rewritten for uv/pytest.
 on:
-  schedule:
-    # Run every day at 2 AM UTC
-    - cron: '0 2 * * *'
-    # Run every Monday at 6 AM UTC for comprehensive audit
-    - cron: '0 6 * * 1'
   workflow_dispatch:
     inputs:
       audit_type:

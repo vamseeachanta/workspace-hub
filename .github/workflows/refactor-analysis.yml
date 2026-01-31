@@ -1,11 +1,8 @@
 name: Refactor Analysis
 
+# DISABLED: Uses Node.js tools (jscpd, knip, npm ci) but workspace-hub is
+# Python/bash. Re-enable when rewritten for Python tooling (ruff, etc).
 on:
-  pull_request:
-    branches: [ main, develop ]
-  schedule:
-    # Run daily at 2 AM UTC
-    - cron: '0 2 * * *'
   workflow_dispatch:
 
 jobs:

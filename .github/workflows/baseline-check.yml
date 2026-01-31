@@ -1,10 +1,8 @@
 name: Baseline Testing CI/CD
 
+# DISABLED: This workflow assumes a Node.js project (npm ci, npm run test:*)
+# but workspace-hub is a Python/bash workspace. Re-enable when rewritten for uv/pytest.
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
   workflow_dispatch:
     inputs:
       test_suite:

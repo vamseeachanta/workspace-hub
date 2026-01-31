@@ -3,22 +3,10 @@
 
 name: Multi-AI Review
 
+# DISABLED: References scripts/ai-workflow/ which does not exist.
+# Re-enable when AI workflow scripts are created or paths are updated.
 on:
-  push:
-    branches:
-      - main
-      - develop
-      - 'feature/*'
-    paths:
-      - 'src/**'
-      - 'modules/**'
-      - 'scripts/**/*.py'
-      - 'scripts/**/*.sh'
-      - '!scripts/ai-workflow/**'
-  pull_request:
-    branches:
-      - main
-      - develop
+  workflow_dispatch:
 
 env:
   REPORT_DIR: reports/ai-workflow
