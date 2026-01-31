@@ -107,6 +107,63 @@ Keep responses conversational but concise. Use formatting:
 Ready to set your priorities?
 ```
 
+## Ecosystem Report Mode (`--reflect`)
+
+When invoked with `--reflect` or when the user asks for the "daily-reflect report table":
+
+1. Read the latest reflect-state.yaml from `.claude/state/reflect-state.yaml`
+2. If not found, fall back to `~/.claude/state/reflect-state.yaml`
+3. Parse the `checklist` section and present a markdown table with all 21 checks
+
+### Report Table Format
+
+Present the ecosystem health as a table:
+
+```
+## Ecosystem Health Report - {date}
+
+| # | Check | Status | Detail |
+|---|-------|--------|--------|
+| 1 | Cross-Review | pass/fail | {gemini}G {codex}C {claude}Cl pending |
+| 2 | Skills Dev | pass/none | {created} new, {enhanced} enhanced |
+| 3 | File Structure | pass/fail | {orphan_docs} orphan docs, {orphan_scripts} scripts |
+| 4 | Context Mgmt | pass/warn | {avg_session} msgs, {correction_rate} corrections |
+| 5 | Best Practices | pass/warn | {repos_with_tests} repos w/tests, {uncommitted} uncommitted |
+| 6 | Submodule Sync | pass/warn | {dirty} dirty, {unpushed} unpushed |
+| 7 | CLAUDE.md Health | pass/fail | {oversized}/{total} oversized |
+| 8 | Hook Coverage | pass/warn/fail | {coverage}% coverage |
+| 9 | Stale Branches | pass/warn | {count} stale (>30 days) |
+| 10 | GitHub Actions | pass/warn/fail | {failing}/{total} failing |
+| 11 | Folder Structure | pass/fail | {issues} structural issues |
+| 12 | Test Coverage | pass/warn/fail | {avg}% avg across {repos} repos |
+| 13 | Test Pass/Fail | pass/fail | {pass} pass, {fail} fail |
+| 14 | Refactor | pass/warn | {large_files} large, {todos} TODOs |
+| 15 | Aceengineer Cron | pass/warn/fail | stats {date}, report {date} |
+| 16 | Session RAG | pass/warn/fail | {sessions} sessions, {events} events |
+| 17 | CC Insights | pass/warn | v{version} reviewed: {last} |
+| 18 | Work Queue | pass/warn/fail | {pending}P {working}W {blocked}B |
+| 19 | Skill Eval | pass/warn/fail | {passed}/{total} pass, {critical} critical |
+| 20 | Capability Map | pass/warn/fail | {repos} repos, {domains} domains |
+| 21 | Knowledge Base | pass/warn | {total} entries, {stale} stale |
+```
+
+Use status symbols: `pass` = check, `warn` = warning, `fail` = X, `none` = circle
+
+After the table, show:
+- **Action Items**: Any checks with `fail` status
+- **Recommendations**: Any checks with `warn` status
+- **RAGS Loop**: repos analyzed, commits, patterns, sessions
+
+### Quick Reflect Script
+
+You can also run the reflect report data gatherer directly:
+
+```bash
+./scripts/productivity/daily-reflect-report.sh 2>/dev/null
+```
+
+This script reads reflect-state.yaml and outputs the table in markdown format for quick review.
+
 ## Arguments
 
 - `/today` - Auto-detect mode by time
@@ -114,3 +171,4 @@ Ready to set your priorities?
 - `/today midday` - Force midday check-in
 - `/today --eod` or `/today evening` - Force end-of-day
 - `/today --week` - Weekly review instead of daily
+- `/today --reflect` - Show ecosystem health report table from daily-reflect data
