@@ -758,7 +758,7 @@ dry_run: $DRY_RUN
 phases_completed:
   reflect: true
   abstract: $([[ $COMMITS -gt 0 ]] && echo "true" || echo "false")
-  generalize: $([[ -f "$TRENDS_DIR"/trends_*.json ]] && echo "true" || echo "false")
+  generalize: $(ls "$TRENDS_DIR"/trends_*.json &>/dev/null && echo "true" || echo "false")
   store: $([[ $PATTERNS_FOUND -gt 0 ]] && echo "true" || echo "false")
 metrics:
   repos_analyzed: $REPOS
