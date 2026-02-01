@@ -125,3 +125,4 @@ Created 3 work items:
 After successful capture:
 - Increment counter in `state.yaml`
 - Log capture event with timestamp
+- Regenerate index: `python .claude/work-queue/scripts/generate-index.py`

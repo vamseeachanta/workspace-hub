@@ -53,7 +53,7 @@ scripts:
 |---------|--------|-------------|
 | `/work add <desc>` | Capture | Log one or more work items |
 | `/work run` or `/work` | Process | Process next item in queue |
-| `/work list` | Status | Show all pending/working/blocked items |
+| `/work list` | Status | Show all pending/working/blocked items (regenerates INDEX.md) |
 | `/work status WRK-NNN` | Detail | Show specific item details |
 | `/work prioritize` | Reorder | Interactive priority adjustment |
 | `/work archive WRK-NNN` | Archive | Manually archive an item |
@@ -233,6 +233,7 @@ Workspace-hub is always the source of truth. If conflicts arise, master wins.
 | `queue-status.sh` | Report counts per state |
 | `archive-item.sh` | Move to `archive/YYYY-MM/` with metadata |
 | `queue-report.sh` | Generate summary for reflect integration |
+| `generate-index.py` | Generate `INDEX.md` with multi-view lookup tables |
 
 ## Error Handling
 
