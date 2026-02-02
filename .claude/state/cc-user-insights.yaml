@@ -1,0 +1,23 @@
+# Claude Code Release Notes Insights
+# Update this file after reviewing CC release notes
+# Categories:
+#   general: Insights relevant to broader AI community
+#   specific: Insights for your personal workflows
+
+last_reviewed: "2.1.29"
+versions_covered: "2.1.20 to 2.1.29"
+review_date: "2026-02-01"
+pending_review_note: "Release notes for 2.1.28 and 2.1.29 should be reviewed for new insights"
+
+general:
+  - "Permission resolution improved - content-level ask now overrides tool-level allow (security fix)"
+  - "PR session linking - sessions auto-link to PRs via gh pr create, --from-pr flag added"
+  - "Gateway/enterprise fixes - Bedrock/Vertex beta header and context validation errors resolved"
+  - "Corporate proxy support - mTLS and proxy connectivity fixed for enterprise environments"
+
+specific:
+  - "Use --from-pr to resume work on existing PRs - matches orchestrator workflow well"
+  - "Review permission rules - ask now properly overrides allow at content level"
+  - "ripgrep timeout errors now reported instead of silent empty results - improves Grep reliability"
+  - "Claude in Chrome enabled for VSCode - potential for browser automation from IDE"
+  - "CLI remains most stable interface - Windows bash fixes in 2.1.27 if needed"
