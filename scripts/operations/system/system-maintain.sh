@@ -263,8 +263,11 @@ main() {
         local update_args=(-o "$update_log")
         [[ -n "$CONFIG_FILE" ]] && update_args+=(-c "$CONFIG_FILE")
         [[ "$QUIET" -eq 1 ]] && update_args+=(-q)
-        bash "$update_script" "${update_args[@]}"
-        log_success "Update log saved: ${update_log}"
+        if bash "$update_script" "${update_args[@]}"; then
+            log_success "Update log saved: ${update_log}"
+        else
+            log_warn "System update exited with errors (see log). Continuing with remaining phases."
+        fi
     else
         log_info "Skipping system updates"
     fi
