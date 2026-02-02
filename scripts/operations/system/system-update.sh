@@ -532,7 +532,7 @@ update_tools() {
         log_info "  Updating pip..."
         local pip_before
         pip_before="$(get_tool_version pip)"
-        pip3 install --upgrade pip --quiet --root-user-action=ignore 2>/dev/null || true
+        pip3 install --upgrade pip --quiet --root-user-action=ignore >/dev/null 2>&1 || true
         local pip_after
         pip_after="$(get_tool_version pip)"
         if [[ "$pip_before" == "$pip_after" ]]; then
@@ -553,7 +553,7 @@ update_tools() {
         log_info "  Updating npm global packages..."
         local npm_before
         npm_before="$(get_tool_version npm)"
-        npm update -g --loglevel=error 2>/dev/null || true
+        npm update -g --loglevel=error >/dev/null 2>&1 || true
         local npm_after
         npm_after="$(get_tool_version npm)"
         if [[ "$npm_before" == "$npm_after" ]]; then
@@ -574,7 +574,7 @@ update_tools() {
         log_info "  Updating uv..."
         local uv_before
         uv_before="$(get_tool_version uv)"
-        uv self update --quiet 2>/dev/null || true
+        uv self update --quiet >/dev/null 2>&1 || true
         local uv_after
         uv_after="$(get_tool_version uv)"
         if [[ "$uv_before" == "$uv_after" ]]; then

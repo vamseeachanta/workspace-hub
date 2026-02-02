@@ -1,0 +1,132 @@
+{
+  "schema_version": "1.0",
+  "script_version": "1.0.0",
+  "platform": "linux",
+  "timestamp": "2026-02-02T20:50:03Z",
+  "cpu": {
+    "model": "Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz",
+    "architecture": "x86_64",
+    "sockets": 2,
+    "cores_per_socket": 8,
+    "total_cores": 16,
+    "threads_per_core": 2,
+    "total_threads": 32,
+    "max_mhz": "3200.0000",
+    "l3_cache": "40 MiB (2 instances)"
+  },
+  "memory": {
+    "total_kb": 32810676,
+    "total_gb": "31.3",
+    "type": "Other",
+    "speed": "2133 MT/s"
+  },
+  "gpu": [
+    {
+      "name": "NVIDIA Corporation GM107 [GeForce GTX 750 Ti]",
+      "pci_id": "81:00.0",
+      "vram_mb": 2048,
+      "driver_version": "535.288.01"
+    }
+  ],
+  "storage": [
+    {
+      "device": "/dev/sda",
+      "size": "7.3T",
+      "model": "ST8000DM004-2U9188",
+      "serial": "ZR15GL5E",
+      "type": "disk",
+      "transport": "sata",
+      "smart": {
+        "status": "unavailable",
+        "temperature_c": null,
+        "power_on_hours": null
+      }
+    },
+    {
+      "device": "/dev/sdb",
+      "size": "232.9G",
+      "model": "CT250BX100SSD1",
+      "serial": "1532F00A7EF4",
+      "type": "disk",
+      "transport": "sata",
+      "smart": {
+        "status": "unavailable",
+        "temperature_c": null,
+        "power_on_hours": null
+      }
+    },
+    {
+      "device": "/dev/sdc",
+      "size": "931.5G",
+      "model": "WDC WD10EZEX-00BN5A0",
+      "serial": "WD-WCC3F7PV7H4U",
+      "type": "disk",
+      "transport": "sata",
+      "smart": {
+        "status": "unavailable",
+        "temperature_c": null,
+        "power_on_hours": null
+      }
+    }
+  ],
+  "motherboard": {
+    "vendor": "ASUSTeK COMPUTER INC.",
+    "model": "Z10PE-D16 Series",
+    "firmware_version": "0501",
+    "firmware_date": "11/28/2014"
+  },
+  "network": [
+    {
+      "name": "enp3s0f0",
+      "mac": "f0:79:59:39:49:7d",
+      "state": "DOWN",
+      "mtu": 1500,
+      "speed_mbps": null,
+      "ipv4": "none",
+      "driver": "igb"
+    },
+    {
+      "name": "enp3s0f1",
+      "mac": "f0:79:59:39:49:7e",
+      "state": "DOWN",
+      "mtu": 1500,
+      "speed_mbps": null,
+      "ipv4": "none",
+      "driver": "igb"
+    },
+    {
+      "name": "enp4s0f0",
+      "mac": "f0:79:59:39:49:7b",
+      "state": "UP",
+      "mtu": 1500,
+      "speed_mbps": 1000,
+      "ipv4": "192.168.1.100/24",
+      "driver": "igb"
+    },
+    {
+      "name": "enp4s0f1",
+      "mac": "f0:79:59:39:49:7c",
+      "state": "DOWN",
+      "mtu": 1500,
+      "speed_mbps": null,
+      "ipv4": "none",
+      "driver": "igb"
+    },
+    {
+      "name": "tailscale0",
+      "mac": "unknown",
+      "state": "UNKNOWN",
+      "mtu": 1280,
+      "speed_mbps": null,
+      "ipv4": "100.107.64.76/32",
+      "driver": "unknown"
+    }
+  ],
+  "os": {
+    "name": "Ubuntu 24.04.3 LTS",
+    "kernel": "6.8.0-90-generic",
+    "architecture": "x86_64",
+    "hostname": "vamsee-linux1",
+    "uptime_seconds": 101116
+  }
+}
