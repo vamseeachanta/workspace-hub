@@ -3,7 +3,7 @@ name: competitive-analysis
 description: Competitive intelligence with positioning analysis, battlecards, and market monitoring. Use for competitor tracking, differentiation strategy, and win/loss analysis. Based on alirezarezvani/claude-skills.
 version: 1.0.0
 category: marketing
-last_updated: 2026-01-19
+last_updated: 2026-02-03
 source: https://github.com/alirezarezvani/claude-skills
 related_skills:
   - content-strategy
@@ -403,14 +403,93 @@ without the overhead of building an internal team."
 | Intel freshness | <30 days | Weekly |
 | Win/loss interviews | 80% of deals | Per deal |
 
+## Competitive Research Methodology
+
+### Research Sources
+
+#### Primary Sources (Direct from Competitor)
+- **Website**: homepage, product pages, pricing, about page, careers
+- **Blog and resource center**: content themes, publishing frequency, depth
+- **Social media profiles**: messaging, engagement, content strategy
+- **Product demos and free trials**: UX, features, onboarding experience
+- **Webinars and events**: topics, speakers, audience engagement
+- **Press releases and newsroom**: announcements, partnerships, milestones
+- **Job postings**: hiring signals that reveal strategic priorities
+
+#### Secondary Sources (Third-Party)
+- **Review sites**: G2, Capterra, TrustRadius, Product Hunt -- customer sentiment themes
+- **Analyst reports**: Gartner, Forrester, IDC -- market positioning and category placement
+- **News coverage**: TechCrunch, industry publications -- funding, partnerships, narrative
+- **Social listening**: mentions, sentiment, share of voice across social platforms
+- **SEO tools**: keyword rankings, organic traffic estimates, content gaps
+- **Financial filings**: revenue, growth rate, investment areas (for public companies)
+- **Community forums**: Reddit, Discourse, industry Slack communities -- user sentiment
+
+### Research Process
+1. **Set scope**: define which competitors and what aspects to analyze
+2. **Gather data**: systematically collect information from sources above
+3. **Organize findings**: structure by competitor, then by dimension
+4. **Analyze patterns**: identify themes, strengths, weaknesses, and trends
+5. **Compare to your position**: map findings against your own positioning
+6. **Synthesize insights**: extract actionable takeaways and opportunities
+7. **Date-stamp everything**: competitive intelligence has a short shelf life
+
+### Research Cadence
+- **Deep competitive analysis**: quarterly
+- **Competitive monitoring**: monthly
+- **Real-time alerts**: ongoing
+
+## Messaging Comparison Frameworks
+
+### Messaging Matrix
+
+| Dimension | Your Company | Competitor A | Competitor B | Competitor C |
+|-----------|-------------|--------------|--------------|--------------|
+| Tagline/Headline | | | | |
+| Core value proposition | | | | |
+| Primary audience | | | | |
+| Key differentiator claim | | | | |
+| Tone/Voice | | | | |
+| Proof points used | | | | |
+| Category framing | | | | |
+| Primary CTA | | | | |
+
+### Narrative Analysis
+
+Identify each competitor's story arc:
+- **Villain**: what problem or enemy they position against
+- **Hero**: who is the hero in their story
+- **Transformation**: what before/after do they promise
+- **Stakes**: what happens if you do not act
+
+## Content Gap Analysis
+
+### Content Audit Comparison
+
+| Topic/Theme | Your Content | Competitor A | Competitor B | Gap? |
+|-------------|-------------|--------------|--------------|------|
+
+### Identifying Content Opportunities
+1. Topics they cover that you do not
+2. Topics you cover that they do not
+3. Formats they use that you do not
+4. Audience segments they address that you do not
+5. Search terms they rank for that you do not
+
 ## Related Skills
 
 - [content-strategy](../content-strategy/SKILL.md) - Differentiated content
 - [lead-generation](../lead-generation/SKILL.md) - Positioning in market
 - [seo-optimizer](../seo-optimizer/SKILL.md) - Competitive SEO
 
+## Sources
+
+- Original: [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills) (2026-01-19)
+- Enriched: [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins) (2026-02-03)
+
 ---
 
 ## Version History
 
+- **1.1.0** (2026-02-03): Merged competitive research methodology, messaging comparison frameworks, and content gap analysis from anthropics/knowledge-work-plugins
 - **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/claude-skills

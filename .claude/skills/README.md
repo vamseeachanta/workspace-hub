@@ -4,14 +4,14 @@
 >
 > Location: `~/.claude/skills/` (symlinked to `/mnt/github/workspace-hub/.claude/skills/`)
 >
-> Last Updated: 2026-01-02
+> Last Updated: 2026-02-03
 > Template Version: 2.0.0
 
 ## Overview
 
-This collection provides **98 specialized skills** organized into **8 categories** (plus 15 repo-specific). Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
+This collection provides **272 specialized skills** organized into **16 categories** (plus 25 repo-specific). Skills are triggered automatically based on their description field when Claude Code determines they're relevant to the current task.
 
-**Total Skills: 113** (98 central + 15 repo-specific)
+**Total Skills: 297** (272 central + 25 repo-specific)
 
 ## Quick Reference
 
@@ -25,6 +25,14 @@ This collection provides **98 specialized skills** organized into **8 categories
 | [Workspace Hub](#workspace-hub) | 32 | Core agents, swarm coordination, consensus, repository management, standards enforcement, automation |
 | [Tools](#tools) | 17 | Optimization, cloud platform, AI assessment, background services |
 | [Meta](#meta) | 1 | Session routines, skill maintenance |
+| [Sales](#sales-6) | 6 | Account research, call prep, competitive intelligence, deal assets, briefings, outreach |
+| [Customer Support](#customer-support-5) | 5 | Ticket triage, customer research, response drafting, escalation, knowledge management |
+| [Legal](#legal-6) | 6 | Contract review, NDA triage, compliance, canned responses, risk assessment, meeting briefing |
+| [Finance](#finance-6) | 6 | Journal entries, reconciliation, financial statements, variance analysis, close management, audit support |
+| [Enterprise Search](#enterprise-search-3) | 3 | Search strategy, source management, knowledge synthesis |
+| [Data Analytics](#data-analytics-7) | 7 | SQL queries, data exploration, visualization, statistics, validation, dashboards, context extraction |
+| [Bio Research](#bio-research-6) | 6 | Single-cell RNA QC, scVI tools, Nextflow pipelines, clinical trials, Allotrope data, problem selection |
+| [Plugin Management](#plugin-management-1) | 1 | Plugin customization for organizations |
 
 **Repository-Specific Skills:**
 - **digitalmodel**: 15 skills (engineering analysis, CAD, simulation)
@@ -45,27 +53,43 @@ skills/
 │   ├── data-pipeline-processor/
 │   ├── parallel-file-processor/
 │   ├── git-worktree-workflow/
-│   ├── github/              # GitHub integration skills (13) NEW
-│   ├── sparc/               # SPARC methodology skills (4) NEW
-│   ├── planning/            # Goal planning skills (2) NEW
-│   └── testing/             # Testing skills (2) NEW
+│   ├── github/              # GitHub integration skills (13)
+│   ├── sparc/               # SPARC methodology skills (4)
+│   ├── planning/            # Goal planning skills (2)
+│   ├── testing/             # Testing skills (2)
+│   └── plugin-management/   # Plugin customization (1) NEW
 ├── content-design/          # UI, themes, graphics, generative art (4)
 ├── communication/           # Business communications (4)
 ├── builders/                # Meta-tools for creation (2)
-├── workspace-hub/           # Workspace ecosystem (25)
+├── business/                # Business domain skills NEW
+│   ├── sales/               # Sales workflows (6) NEW
+│   ├── customer-support/    # Support operations (5) NEW
+│   ├── legal/               # Legal operations (6) NEW
+│   ├── finance/             # Finance operations (6) NEW
+│   ├── enterprise-search/   # Knowledge discovery (3) NEW
+│   ├── marketing/           # Marketing skills (8, 3 new + 5 existing)
+│   ├── product/             # Product management (6, 5 new + 1 existing)
+│   ├── productivity/        # Productivity tools (8, 2 new + 6 existing)
+│   └── communication/       # Business communications
+├── data/                    # Data skills
+│   └── analytics/           # Data analytics (7) NEW
+├── science/                 # Scientific domain skills NEW
+│   └── bio-research/        # Biological research (6) NEW
+├── workspace-hub/           # Workspace ecosystem (32)
 │   ├── repo-sync/
 │   ├── sparc-workflow/
 │   ├── agent-orchestration/
 │   ├── compliance-check/
 │   ├── workspace-cli/
-│   ├── core/                # Core development agents (5) NEW
-│   ├── swarm/               # Swarm coordination (8) NEW
-│   └── consensus/           # Distributed consensus (7) NEW
+│   ├── core/                # Core development agents (5)
+│   ├── swarm/               # Swarm coordination (8)
+│   ├── consensus/           # Distributed consensus (7)
+│   └── skill-sync/          # Skill synchronization (1) NEW
 ├── tools/                   # Utilities (17)
 │   ├── ai-tool-assessment/
 │   ├── background-service-manager/
-│   ├── optimization/        # Performance optimization (6) NEW
-│   └── cloud/               # Flow-Nexus cloud platform (9) NEW
+│   ├── optimization/        # Performance optimization (6)
+│   └── cloud/               # Flow-Nexus cloud platform (9)
 ├── meta/                    # Skills about skills (1)
 └── README.md
 ```
@@ -276,6 +300,102 @@ Assessment, optimization, and cloud platform utilities.
 | [cloud-challenges](tools/cloud/cloud-challenges/SKILL.md) | Coding challenges and gamification |
 | [cloud-user-tools](tools/cloud/cloud-user-tools/SKILL.md) | User utilities and Seraphina |
 
+### Sales (6)
+
+Account research, call preparation, competitive intelligence, deal assets, daily briefings, and outreach drafting.
+
+| Skill | Description |
+|-------|-------------|
+| [account-research](business/sales/account-research/SKILL.md) | Research accounts for sales preparation |
+| [call-prep](business/sales/call-prep/SKILL.md) | Prepare for sales calls with context and talking points |
+| [competitive-intelligence](business/sales/competitive-intelligence/SKILL.md) | Gather and analyze competitive intelligence |
+| [create-an-asset](business/sales/create-an-asset/SKILL.md) | Create deal assets and sales collateral |
+| [daily-briefing](business/sales/daily-briefing/SKILL.md) | Generate daily sales briefings |
+| [draft-outreach](business/sales/draft-outreach/SKILL.md) | Draft personalized outreach messages |
+
+### Customer Support (5)
+
+Ticket triage, customer research, response drafting, escalation handling, and knowledge management.
+
+| Skill | Description |
+|-------|-------------|
+| [ticket-triage](business/customer-support/ticket-triage/SKILL.md) | Triage and prioritize support tickets |
+| [customer-research](business/customer-support/customer-research/SKILL.md) | Research customer history and context |
+| [response-drafting](business/customer-support/response-drafting/SKILL.md) | Draft support responses with context |
+| [escalation](business/customer-support/escalation/SKILL.md) | Handle ticket escalation workflows |
+| [knowledge-management](business/customer-support/knowledge-management/SKILL.md) | Manage support knowledge base articles |
+
+### Legal (6)
+
+Contract review, NDA triage, compliance checking, canned legal responses, risk assessment, and meeting briefing.
+
+| Skill | Description |
+|-------|-------------|
+| [contract-review](business/legal/contract-review/SKILL.md) | Review contracts for key terms and risks |
+| [nda-triage](business/legal/nda-triage/SKILL.md) | Triage and evaluate NDAs |
+| [compliance](business/legal/compliance/SKILL.md) | Check compliance against regulatory requirements |
+| [canned-responses](business/legal/canned-responses/SKILL.md) | Generate standard legal responses |
+| [legal-risk-assessment](business/legal/legal-risk-assessment/SKILL.md) | Assess legal risks in business activities |
+| [meeting-briefing](business/legal/meeting-briefing/SKILL.md) | Prepare legal briefings for meetings |
+
+### Finance (6)
+
+Journal entry preparation, reconciliation, financial statements, variance analysis, close management, and audit support.
+
+| Skill | Description |
+|-------|-------------|
+| [journal-entry-prep](business/finance/journal-entry-prep/SKILL.md) | Prepare journal entries for accounting |
+| [reconciliation](business/finance/reconciliation/SKILL.md) | Perform account reconciliation |
+| [financial-statements](business/finance/financial-statements/SKILL.md) | Generate and analyze financial statements |
+| [variance-analysis](business/finance/variance-analysis/SKILL.md) | Analyze budget vs actual variances |
+| [close-management](business/finance/close-management/SKILL.md) | Manage month-end and year-end close processes |
+| [audit-support](business/finance/audit-support/SKILL.md) | Prepare documentation for audits |
+
+### Enterprise Search (3)
+
+Search strategy development, source management, and knowledge synthesis across organizational data.
+
+| Skill | Description |
+|-------|-------------|
+| [search-strategy](business/enterprise-search/search-strategy/SKILL.md) | Develop search strategies for knowledge discovery |
+| [source-management](business/enterprise-search/source-management/SKILL.md) | Manage and curate information sources |
+| [knowledge-synthesis](business/enterprise-search/knowledge-synthesis/SKILL.md) | Synthesize knowledge from multiple sources |
+
+### Data Analytics (7)
+
+SQL query generation, data exploration, visualization, statistical analysis, data validation, interactive dashboards, and context extraction.
+
+| Skill | Description |
+|-------|-------------|
+| [sql-queries](data/analytics/sql-queries/SKILL.md) | Generate and optimize SQL queries |
+| [data-exploration](data/analytics/data-exploration/SKILL.md) | Explore and profile datasets |
+| [data-visualization](data/analytics/data-visualization/SKILL.md) | Create data visualizations and charts |
+| [statistical-analysis](data/analytics/statistical-analysis/SKILL.md) | Perform statistical analysis on datasets |
+| [data-validation](data/analytics/data-validation/SKILL.md) | Validate data quality and integrity |
+| [interactive-dashboard-builder](data/analytics/interactive-dashboard-builder/SKILL.md) | Build interactive data dashboards |
+| [data-context-extractor](data/analytics/data-context-extractor/SKILL.md) | Extract context and metadata from data sources |
+
+### Bio Research (6)
+
+Single-cell RNA quality control, scVI tools, Nextflow pipelines, clinical trial protocols, Allotrope instrument data, and scientific problem selection.
+
+| Skill | Description |
+|-------|-------------|
+| [single-cell-rna-qc](science/bio-research/single-cell-rna-qc/SKILL.md) | Quality control for single-cell RNA sequencing |
+| [scvi-tools](science/bio-research/scvi-tools/SKILL.md) | scVI deep learning tools for single-cell analysis |
+| [nextflow-pipelines](science/bio-research/nextflow-pipelines/SKILL.md) | Build and manage Nextflow bioinformatics pipelines |
+| [clinical-trial-protocol](science/bio-research/clinical-trial-protocol/SKILL.md) | Design clinical trial protocols |
+| [instrument-data-allotrope](science/bio-research/instrument-data-allotrope/SKILL.md) | Process instrument data using Allotrope standards |
+| [scientific-problem-selection](science/bio-research/scientific-problem-selection/SKILL.md) | Evaluate and select scientific research problems |
+
+### Plugin Management (1)
+
+Plugin customization and configuration for organizational deployments.
+
+| Skill | Description |
+|-------|-------------|
+| [cowork-plugin-customizer](development/plugin-management/cowork-plugin-customizer/SKILL.md) | Customize Cowork plugins for organizations |
+
 ### Meta (1)
 
 Skills about skills - maintenance, creation, and session management.
@@ -385,7 +505,7 @@ ls -la ~/.claude/skills
 
 # Count all skills
 find ~/.claude/skills -name "SKILL.md" | wc -l
-# Expected: 98
+# Expected: 272
 
 # List categories
 ls ~/.claude/skills/
@@ -406,7 +526,47 @@ cat ~/.claude/skills/workspace-hub/swarm/swarm-hierarchical/SKILL.md
 
 ---
 
+## External Sources
+
+### anthropics/knowledge-work-plugins
+Imported 2026-02-03. Contains 54 skills and 42 commands across 11 plugins.
+- Source: https://github.com/anthropics/knowledge-work-plugins
+- Sync script: `scripts/skills/sync-knowledge-work-plugins.sh`
+- Companion skill: [skill-sync](workspace-hub/skill-sync/SKILL.md)
+
+---
+
 ## Changelog
+
+### 2026-02-03 - Knowledge Work Plugins Import
+
+**New Skills (54):**
+- `business/sales/` (6) - Account research, call prep, competitive intelligence, deal assets, daily briefings, draft outreach
+- `business/customer-support/` (5) - Ticket triage, customer research, response drafting, escalation, knowledge management
+- `business/legal/` (6) - Contract review, NDA triage, compliance, canned responses, legal risk assessment, meeting briefing
+- `business/finance/` (6) - Journal entry prep, reconciliation, financial statements, variance analysis, close management, audit support
+- `business/enterprise-search/` (3) - Search strategy, source management, knowledge synthesis
+- `business/product/` (5 new) - Feature spec, stakeholder comms, user research synthesis, competitive analysis, metrics tracking
+- `business/marketing/` (3 new) - Campaign planning, brand voice, performance analytics
+- `business/productivity/` (2 new) - Task management, memory management
+- `data/analytics/` (7) - SQL queries, data exploration, data visualization, statistical analysis, data validation, interactive dashboards, context extractor
+- `science/bio-research/` (6) - Single-cell RNA QC, scVI tools, Nextflow pipelines, clinical trial protocol, instrument data Allotrope, scientific problem selection
+- `development/plugin-management/` (1) - Cowork plugin customizer
+- `workspace-hub/skill-sync/` (1) - Sync mechanism skill
+
+**Merged Skills (3):**
+- `business/marketing/competitive-analysis` - Enriched with research methodology and messaging frameworks
+- `business/marketing/content-strategy` - Enriched with content creation templates, brand voice, and terminology management
+- `business/product/product-roadmap` - Enriched with generic PM frameworks (RICE, MoSCoW, capacity planning)
+
+**New Commands (42):**
+Commands imported across sales (3), customer-support (5), legal (5), finance (5), data (6), enterprise-search (2), marketing (7), product-management (6), productivity (2), bio-research (1)
+
+**New Infrastructure:**
+- `scripts/skills/sync-knowledge-work-plugins.sh` - Sync and refresh mechanism
+- `workspace-hub/skill-sync/` - Companion documentation skill
+
+**Source:** [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins)
 
 ### 2026-01-05 - Standards & Automation Skills
 
@@ -419,7 +579,7 @@ cat ~/.claude/skills/workspace-hub/swarm/swarm-hierarchical/SKILL.md
 - `workspace-hub/compliance-propagation-automator` - Standards sync across 26+ repositories
 - `workspace-hub/repository-health-analyzer` - 100-point health scoring system
 
-**Total Skills:** 113 (98 central + 15 repo-specific)
+**Total Skills (at time of entry):** 113 (98 central + 15 repo-specific)
 - Workspace Hub expanded from 25 to 32 skills
 
 ### 2026-01-02 - Major Agent-to-Skill Conversion
