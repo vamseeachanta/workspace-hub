@@ -28,6 +28,10 @@ review:
       status: "pending"
       iteration: 0
       feedback: ""
+    legal_sanity:
+      status: "pending"
+      iteration: 0
+      violations: 0
   ready_for_next_step: false
 
 # Status
@@ -67,6 +71,7 @@ links:
 
 | Gate | Status |
 |------|--------|
+| Legal Sanity | ⬜ {{ review.reviewers.legal_sanity.status }} |
 | Iterations (>= 3) | ⬜ {{ review.current_iteration }}/3 |
 | OpenAI Codex | ⬜ {{ review.reviewers.openai_codex.status }} |
 | Google Gemini | ⬜ {{ review.reviewers.google_gemini.status }} |

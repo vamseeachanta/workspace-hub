@@ -39,10 +39,15 @@ review:
       iteration: 0
       last_reviewed: ""
       feedback: ""
+    legal_sanity:
+      status: "pending"            # pending | passed | failed
+      iteration: 0
+      violations: 0
   approval_gate:                   # All must be true to proceed
     min_iterations_met: false      # current_iteration >= required_iterations
     codex_approved: false          # openai_codex.status == "approved"
     gemini_approved: false         # google_gemini.status == "approved"
+    legal_sanity_passed: false     # legal_sanity.status == "passed"
     ready_for_next_step: false     # All above conditions met
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -248,6 +253,7 @@ history:
 | Gate | Requirement | Status |
 |------|-------------|--------|
 | Minimum Iterations | >= 3 iterations completed | ⬜ Not Met |
+| Legal Sanity | No block violations | ⬜ Pending |
 | OpenAI Codex | Approved | ⬜ Pending |
 | Google Gemini | Approved | ⬜ Pending |
 | **Ready for Next Step** | All gates passed | ⬜ **BLOCKED** |

@@ -10,6 +10,7 @@ capabilities:
   - Performance bottleneck detection
   - Architecture pattern validation
   - Style and convention enforcement
+  - Legal compliance scanning
 priority: high
 hooks:
   pre: |
@@ -93,6 +94,19 @@ npx ruv-swarm github review-architecture \
   --check "patterns,coupling,cohesion,solid" \
   --visualize-impact \
   --suggest-refactoring
+```
+
+#### Legal Agent
+```bash
+# Legal compliance scan — runs as pre-gate before other review agents
+# Scans changed files for client project names, proprietary tool refs
+./scripts/legal/legal-sanity-scan.sh --diff-only --json
+
+# Full repo scan (when needed)
+./scripts/legal/legal-sanity-scan.sh --repo=worldenergydata
+
+# Threshold: any "block" severity match fails the review
+# legal: block
 ```
 
 ### 3. Review Configuration
