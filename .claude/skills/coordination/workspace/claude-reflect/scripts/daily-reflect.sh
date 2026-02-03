@@ -101,10 +101,6 @@ fi
 
 # Extract correction patterns from hook data
 CORRECTIONS_FOUND=0
-CORRECTION_FILE_TYPES=0
-CORRECTION_CHAINS=0
-CORRECTION_TOP_EXT="none"
-CORRECTION_LONG_CHAINS=0
 if [[ -x "$SCRIPT_DIR/extract-corrections.sh" ]]; then
     log "Extracting correction patterns..."
     CORRECTION_FILE="${PATTERNS_DIR}/corrections_${TIMESTAMP}.json"
@@ -112,11 +108,7 @@ if [[ -x "$SCRIPT_DIR/extract-corrections.sh" ]]; then
 
     if [[ -f "$CORRECTION_FILE" ]]; then
         CORRECTIONS_FOUND=$(jq -r '.total_corrections // 0' "$CORRECTION_FILE" 2>/dev/null || echo "0")
-        CORRECTION_FILE_TYPES=$(jq -r '.file_type_patterns | length // 0' "$CORRECTION_FILE" 2>/dev/null || echo "0")
-        CORRECTION_CHAINS=$(jq -r '.chain_patterns | length // 0' "$CORRECTION_FILE" 2>/dev/null || echo "0")
-        CORRECTION_TOP_EXT=$(jq -r '.file_type_patterns[0].extension // "none"' "$CORRECTION_FILE" 2>/dev/null || echo "none")
-        CORRECTION_LONG_CHAINS=$(jq -r '[.chain_patterns[] | select(.length > 5)] | length' "$CORRECTION_FILE" 2>/dev/null || echo "0")
-        log "Found $CORRECTIONS_FOUND corrections ($CORRECTION_FILE_TYPES file types, $CORRECTION_CHAINS chains)"
+        log "Found $CORRECTIONS_FOUND corrections from AI/user interaction"
     fi
 else
     log "extract-corrections.sh not found, skipping correction analysis"
@@ -204,50 +196,18 @@ log "=== PHASE 4: STORE ==="
 if [[ -x "$SCRIPT_DIR/create-skills.sh" ]] && [[ $PATTERNS_FOUND -gt 0 ]]; then
     log "Running create-skills.sh..."
     export DRY_RUN
-    # Pass both pattern file and session file for complete feedback loop
-    SKILL_OUTPUT=$("$SCRIPT_DIR/create-skills.sh" "$PATTERN_FILE" "${SESSION_FILE:-}" 2>> "$LOG_FILE") || true
+    SKILL_OUTPUT=$("$SCRIPT_DIR/create-skills.sh" "$PATTERN_FILE" 2>> "$LOG_FILE") || true
 
-    # Parse output for counts (tail -1 ensures single value if grep matches multiple lines)
-    SKILLS_CREATED=$(echo "$SKILL_OUTPUT" | grep -oP 'Skills Created: \K[0-9]+' | tail -1 || echo "0")
-    SKILLS_ENHANCED=$(echo "$SKILL_OUTPUT" | grep -oP 'Skills Enhanced: \K[0-9]+' | tail -1 || echo "0")
-    LEARNINGS_STORED=$(echo "$SKILL_OUTPUT" | grep -oP 'Learnings Stored: \K[0-9]+' | tail -1 || echo "0")
+    # Parse output for counts
+    SKILLS_CREATED=$(echo "$SKILL_OUTPUT" | grep -oP 'Skills Created: \K[0-9]+' || echo "0")
+    SKILLS_ENHANCED=$(echo "$SKILL_OUTPUT" | grep -oP 'Skills Enhanced: \K[0-9]+' || echo "0")
+    LEARNINGS_STORED=$(echo "$SKILL_OUTPUT" | grep -oP 'Learnings Stored: \K[0-9]+' || echo "0")
 
     log "Skills created: $SKILLS_CREATED"
     log "Skills enhanced: $SKILLS_ENHANCED"
     log "Learnings stored: $LEARNINGS_STORED"
 else
-    SKILLS_CREATED=0
-    SKILLS_ENHANCED=0
-    LEARNINGS_STORED=0
     log "Skipping skill creation (no patterns or script missing)"
-fi
-
-# Knowledge capture: auto-capture high-scoring patterns as knowledge entries
-KNOWLEDGE_CAPTURED=0
-KNOWLEDGE_CAPTURE_SCRIPT="${WORKSPACE_ROOT}/.claude/skills/coordination/workspace/knowledge-manager/scripts/knowledge-capture.sh"
-if [[ -x "$KNOWLEDGE_CAPTURE_SCRIPT" ]] && [[ -f "${PATTERN_FILE:-}" ]]; then
-    log "Running knowledge auto-capture..."
-    # Capture patterns with score 0.6-0.79 as knowledge entries (below skill threshold)
-    while IFS= read -r pattern_name; do
-        [[ -z "$pattern_name" ]] && continue
-        "$KNOWLEDGE_CAPTURE_SCRIPT" --auto --type pattern --title "$pattern_name" \
-            --category workflow --tags "auto-captured,reflect" 2>> "$LOG_FILE" && \
-            KNOWLEDGE_CAPTURED=$((KNOWLEDGE_CAPTURED + 1)) || true
-    done < <(jq -r '.cross_repo_patterns[]? | select(.score >= 0.6 and .score < 0.8) | .name // empty' "$PATTERN_FILE" 2>/dev/null)
-
-    # Capture long correction chains (>3) as gotchas
-    if [[ -f "${CORRECTION_FILE:-}" ]]; then
-        while IFS= read -r chain_desc; do
-            [[ -z "$chain_desc" ]] && continue
-            "$KNOWLEDGE_CAPTURE_SCRIPT" --auto --type gotcha --title "$chain_desc" \
-                --category workflow --tags "auto-captured,correction-chain" 2>> "$LOG_FILE" && \
-                KNOWLEDGE_CAPTURED=$((KNOWLEDGE_CAPTURED + 1)) || true
-        done < <(jq -r '.chain_patterns[]? | select(.length > 3) | .description // empty' "${CORRECTION_FILE}" 2>/dev/null)
-    fi
-
-    log "Knowledge entries captured: $KNOWLEDGE_CAPTURED"
-else
-    log "Skipping knowledge capture (script missing or no patterns)"
 fi
 
 #############################################
@@ -446,22 +406,27 @@ COVERAGE_PERCENT=0
 COVERAGE_REPOS=0
 LOW_COVERAGE_REPOS=0
 CHECKED_REPOS=0
-while IFS= read -r cov_file && [[ $CHECKED_REPOS -lt 20 ]]; do
-    [[ -z "$cov_file" || ! -f "$cov_file" ]] && continue
-    COVERAGE_REPOS=$((COVERAGE_REPOS + 1))
-    CHECKED_REPOS=$((CHECKED_REPOS + 1))
-    COV=$(grep -oP 'line-rate="\K[0-9.]+' "$cov_file" 2>/dev/null | head -1)
-    if [[ -n "$COV" && "$COV" =~ ^0\.([0-9]+) ]]; then
-        COV_DEC="${BASH_REMATCH[1]}"
-        COV_PCT=$((10#${COV_DEC:0:2}))
-    elif [[ "$COV" == "1" || "$COV" =~ ^1\.0*$ ]]; then
-        COV_PCT=100
-    else
-        COV_PCT=0
+while IFS= read -r submod && [[ $CHECKED_REPOS -lt 20 ]]; do
+    [[ -z "$submod" ]] && continue
+    submod_path="${WORKSPACE_ROOT}/${submod}"
+    # Quick check for coverage.xml only (most common)
+    cov_file="$submod_path/coverage.xml"
+    if [[ -f "$cov_file" ]]; then
+        COVERAGE_REPOS=$((COVERAGE_REPOS + 1))
+        CHECKED_REPOS=$((CHECKED_REPOS + 1))
+        COV=$(grep -oP 'line-rate="\K[0-9.]+' "$cov_file" 2>/dev/null | head -1)
+        if [[ -n "$COV" && "$COV" =~ ^0\.([0-9]+) ]]; then
+            COV_DEC="${BASH_REMATCH[1]}"
+            COV_PCT=$((10#${COV_DEC:0:2}))
+        elif [[ "$COV" == "1" || "$COV" == "1.0" ]]; then
+            COV_PCT=100
+        else
+            COV_PCT=0
+        fi
+        [[ ${COV_PCT:-0} -lt 80 ]] && LOW_COVERAGE_REPOS=$((LOW_COVERAGE_REPOS + 1))
+        COVERAGE_PERCENT=$((COVERAGE_PERCENT + ${COV_PCT:-0}))
     fi
-    [[ ${COV_PCT:-0} -lt 80 ]] && LOW_COVERAGE_REPOS=$((LOW_COVERAGE_REPOS + 1))
-    COVERAGE_PERCENT=$((COVERAGE_PERCENT + ${COV_PCT:-0}))
-done < <(find "$WORKSPACE_ROOT" -maxdepth 2 -name "coverage.xml" -type f 2>/dev/null)
+done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null)
 AVG_COVERAGE=$([[ $COVERAGE_REPOS -gt 0 ]] && echo $((COVERAGE_PERCENT / COVERAGE_REPOS)) || echo "0")
 TEST_COVERAGE_OK=$([[ $AVG_COVERAGE -ge 80 ]] && echo "pass" || ([[ $AVG_COVERAGE -ge 60 ]] && echo "warn" || echo "fail"))
 log "Test coverage: ${AVG_COVERAGE}% avg across $COVERAGE_REPOS repos, $LOW_COVERAGE_REPOS below 80%"
@@ -471,17 +436,22 @@ TEST_PASS_COUNT=0
 TEST_FAIL_COUNT=0
 TESTED_REPOS=0
 CHECKED=0
-while IFS= read -r lastfailed && [[ $CHECKED -lt 20 ]]; do
-    [[ -z "$lastfailed" || ! -f "$lastfailed" ]] && continue
-    TESTED_REPOS=$((TESTED_REPOS + 1))
-    CHECKED=$((CHECKED + 1))
-    CONTENT=$(cat "$lastfailed" 2>/dev/null)
-    if [[ -n "$CONTENT" && "$CONTENT" != "{}" && "$CONTENT" != "null" ]]; then
-        TEST_FAIL_COUNT=$((TEST_FAIL_COUNT + 1))
-    else
-        TEST_PASS_COUNT=$((TEST_PASS_COUNT + 1))
+while IFS= read -r submod && [[ $CHECKED -lt 20 ]]; do
+    [[ -z "$submod" ]] && continue
+    submod_path="${WORKSPACE_ROOT}/${submod}"
+    # Check for pytest cache (quick check)
+    lastfailed="$submod_path/.pytest_cache/v/cache/lastfailed"
+    if [[ -f "$lastfailed" ]]; then
+        TESTED_REPOS=$((TESTED_REPOS + 1))
+        CHECKED=$((CHECKED + 1))
+        CONTENT=$(cat "$lastfailed" 2>/dev/null)
+        if [[ -n "$CONTENT" && "$CONTENT" != "{}" && "$CONTENT" != "null" ]]; then
+            TEST_FAIL_COUNT=$((TEST_FAIL_COUNT + 1))
+        else
+            TEST_PASS_COUNT=$((TEST_PASS_COUNT + 1))
+        fi
     fi
-done < <(find "$WORKSPACE_ROOT" -maxdepth 3 -path "*/.pytest_cache/v/cache/lastfailed" -type f 2>/dev/null)
+done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null)
 TEST_PASS_OK=$([[ $TEST_FAIL_COUNT -eq 0 ]] && echo "pass" || echo "fail")
 log "Test status: $TEST_PASS_COUNT passing, $TEST_FAIL_COUNT failing (of $TESTED_REPOS with tests)"
 
@@ -513,17 +483,12 @@ ACEENGINEER_DIR="${WORKSPACE_ROOT}/aceengineer-website"
 STATS_FILE="${ACEENGINEER_DIR}/assets/data/statistics.json"
 REPORT_DIR="${ACEENGINEER_DIR}/reports/competitor-analysis"
 TODAY=$(date +%Y-%m-%d)
-# daily-reflect runs at 05:00 but aceengineer daily-update runs at 06:00,
-# so at check time the latest data is from yesterday. Accept either today
-# or yesterday as "fresh" to avoid false-fail due to cron ordering.
-YESTERDAY=$(date -d "yesterday" +%Y-%m-%d 2>/dev/null || date -v-1d +%Y-%m-%d 2>/dev/null || echo "")
+TODAY_COMPACT=$(date +%Y%m%d)
 
 # Check statistics.json freshness
 if [[ -f "$STATS_FILE" ]]; then
     ACEENGINEER_STATS_DATE=$(jq -r '.last_updated // ""' "$STATS_FILE" 2>/dev/null)
-    if [[ "$ACEENGINEER_STATS_DATE" == "$TODAY" ]] || [[ -n "$YESTERDAY" && "$ACEENGINEER_STATS_DATE" == "$YESTERDAY" ]]; then
-        ACEENGINEER_STATS_FRESH="yes"
-    fi
+    [[ "$ACEENGINEER_STATS_DATE" == "$TODAY" ]] && ACEENGINEER_STATS_FRESH="yes"
 fi
 
 # Check competitor analysis report freshness
@@ -531,9 +496,7 @@ LATEST_REPORT="${REPORT_DIR}/latest.html"
 if [[ -L "$LATEST_REPORT" ]]; then
     REPORT_NAME=$(readlink "$LATEST_REPORT")
     ACEENGINEER_REPORT_DATE="${REPORT_NAME%.html}"
-    if [[ "$ACEENGINEER_REPORT_DATE" == "$TODAY" ]] || [[ -n "$YESTERDAY" && "$ACEENGINEER_REPORT_DATE" == "$YESTERDAY" ]]; then
-        ACEENGINEER_REPORT_FRESH="yes"
-    fi
+    [[ "$ACEENGINEER_REPORT_DATE" == "$TODAY" ]] && ACEENGINEER_REPORT_FRESH="yes"
 fi
 
 # Determine overall status
@@ -546,186 +509,44 @@ elif [[ -f "$STATS_FILE" || -L "$LATEST_REPORT" ]]; then
 fi
 log "Aceengineer cron: stats=$ACEENGINEER_STATS_DATE report=$ACEENGINEER_REPORT_DATE"
 
-# p) Session RAG analysis status
-SESSION_RAG_OK="none"
-SESSION_RAG_FRESH="no"
-SESSION_RAG_DATE=""
-SESSION_RAG_SESSIONS=0
-SESSION_RAG_EVENTS=0
+# p) RAG Aggregation scheduled task status
+RAG_AGG_OK="none"
+RAG_AGG_RAN_TODAY="no"
+RAG_AGG_HAS_OUTPUT="no"
+RAG_AGG_LAST_RUN=""
+RAG_AGG_FILES=0
 
-# Check if session analysis ran today (look for sessions file from today)
-SESSION_RAG_FILE=$(ls -t "${PATTERNS_DIR}"/sessions_*.json 2>/dev/null | head -1)
-if [[ -f "$SESSION_RAG_FILE" ]]; then
-    SESSION_RAG_DATE=$(jq -r '.extraction_date // ""' "$SESSION_RAG_FILE" 2>/dev/null | cut -d'T' -f1)
-    SESSION_RAG_SESSIONS=$(jq -r '.unique_sessions // 0' "$SESSION_RAG_FILE" 2>/dev/null)
-    SESSION_RAG_EVENTS=$(jq -r '.total_events // 0' "$SESSION_RAG_FILE" 2>/dev/null)
-    [[ "$SESSION_RAG_DATE" == "$TODAY" ]] && SESSION_RAG_FRESH="yes"
-fi
+RAG_AGG_DIR="${WORKSPACE_ROOT}/.claude/skills/session-logs/aggregated"
+RAG_SCHEDULER_LOG="${WORKSPACE_ROOT}/.claude/skills/session-logs/scheduler.log"
 
-# Determine session RAG status based on freshness and data quality
-if [[ "$SESSION_RAG_FRESH" == "yes" && $SESSION_RAG_SESSIONS -gt 0 ]]; then
-    SESSION_RAG_OK="pass"
-elif [[ -f "$SESSION_RAG_FILE" && $SESSION_RAG_SESSIONS -gt 0 ]]; then
-    SESSION_RAG_OK="warn"
-elif [[ -f "$SESSION_RAG_FILE" ]]; then
-    SESSION_RAG_OK="fail"
-fi
-log "Session RAG: date=$SESSION_RAG_DATE sessions=$SESSION_RAG_SESSIONS events=$SESSION_RAG_EVENTS"
-
-# q) Claude Code release notes insights
-CC_INSIGHTS_OK="none"
-CC_VERSION=""
-CC_LAST_REVIEWED=""
-CC_GENERAL_COUNT=0
-CC_SPECIFIC_COUNT=0
-
-# Get installed CC version
-if command -v claude &> /dev/null; then
-    CC_VERSION=$(claude --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || echo "")
-fi
-
-# Run insights extraction if script exists
-CC_INSIGHTS_FILE=""
-if [[ -x "$SCRIPT_DIR/extract-cc-insights.sh" ]]; then
-    CC_INSIGHTS_FILE=$("$SCRIPT_DIR/extract-cc-insights.sh" 2>/dev/null) || true
-fi
-
-# Parse insights if file exists
-if [[ -f "$CC_INSIGHTS_FILE" ]] && command -v jq &> /dev/null; then
-    CC_LAST_REVIEWED=$(jq -r '.last_reviewed_version // ""' "$CC_INSIGHTS_FILE" 2>/dev/null)
-    CC_GENERAL_COUNT=$(jq -r '.insights.general_ai_community | length' "$CC_INSIGHTS_FILE" 2>/dev/null || echo "0")
-    CC_SPECIFIC_COUNT=$(jq -r '.insights.specific_workflows | length' "$CC_INSIGHTS_FILE" 2>/dev/null || echo "0")
-
-    # Determine status: pass if reviewed version matches installed
-    if [[ -n "$CC_LAST_REVIEWED" && "$CC_LAST_REVIEWED" == "$CC_VERSION" ]]; then
-        CC_INSIGHTS_OK="pass"
-    elif [[ -n "$CC_LAST_REVIEWED" ]]; then
-        CC_INSIGHTS_OK="warn"  # Reviewed but not current version
-    elif [[ $CC_GENERAL_COUNT -eq 0 && $CC_SPECIFIC_COUNT -eq 0 ]]; then
-        CC_INSIGHTS_OK="none"
+# Check if RAG aggregation ran today (check scheduler.log)
+if [[ -f "$RAG_SCHEDULER_LOG" ]]; then
+    # Look for today's completion entry
+    if grep -q "\[.*$(date '+%a %m/%d/%Y').*\] Completed daily RAG aggregation" "$RAG_SCHEDULER_LOG" 2>/dev/null; then
+        RAG_AGG_RAN_TODAY="yes"
+        RAG_AGG_LAST_RUN="$TODAY"
+    else
+        # Try alternate date format
+        RAG_AGG_LAST_RUN=$(grep "Completed daily RAG aggregation" "$RAG_SCHEDULER_LOG" 2>/dev/null | tail -1 | grep -oP '\[\K[^\]]+' | head -1)
     fi
 fi
-log "CC Insights: v=$CC_VERSION reviewed=$CC_LAST_REVIEWED general=$CC_GENERAL_COUNT specific=$CC_SPECIFIC_COUNT"
 
-# r) Work queue status
-WQ_STATUS_OK="none"
-WQ_PENDING=0
-WQ_WORKING=0
-WQ_BLOCKED=0
-WQ_STALE=0
-
-WQ_SCRIPT="${WORKSPACE_ROOT}/scripts/work-queue/queue-status.sh"
-if [[ -x "$WQ_SCRIPT" ]]; then
-    WQ_JSON=$("$WQ_SCRIPT" --json 2>/dev/null) || true
-    if [[ -n "$WQ_JSON" ]] && command -v jq &> /dev/null; then
-        WQ_PENDING=$(echo "$WQ_JSON" | jq -r '.pending // 0')
-        WQ_WORKING=$(echo "$WQ_JSON" | jq -r '.working // 0')
-        WQ_BLOCKED=$(echo "$WQ_JSON" | jq -r '.blocked // 0')
-        WQ_STALE=$(echo "$WQ_JSON" | jq -r '.stale_blocked // 0')
-
-        if [[ $WQ_STALE -gt 0 ]]; then
-            WQ_STATUS_OK="fail"
-        elif [[ $WQ_BLOCKED -gt 0 ]]; then
-            WQ_STATUS_OK="warn"
-        elif [[ $((WQ_PENDING + WQ_WORKING + WQ_BLOCKED)) -gt 0 ]]; then
-            WQ_STATUS_OK="pass"
-        fi
-    fi
+# Check for today's output files
+if [[ -d "$RAG_AGG_DIR" ]]; then
+    RAG_AGG_FILES=$(find "$RAG_AGG_DIR" -name "*_${TODAY_COMPACT}.*" -type f 2>/dev/null | wc -l | tr -d '[:space:]')
+    RAG_AGG_FILES=${RAG_AGG_FILES:-0}
+    [[ $RAG_AGG_FILES -gt 0 ]] && RAG_AGG_HAS_OUTPUT="yes"
 fi
-log "Work Queue: pending=$WQ_PENDING working=$WQ_WORKING blocked=$WQ_BLOCKED stale=$WQ_STALE"
 
-# s) Skill evaluation: Run eval-skills.py for skill quality
-SKILL_EVAL_OK="none"
-SKILL_EVAL_TOTAL=0
-SKILL_EVAL_PASSED=0
-SKILL_EVAL_CRITICAL=0
-SKILL_EVAL_WARNINGS=0
-
-SKILL_EVAL_SCRIPT="${WORKSPACE_ROOT}/.claude/skills/development/skill-eval/scripts/eval-skills.py"
-if [[ -f "$SKILL_EVAL_SCRIPT" ]] && command -v uv &> /dev/null; then
-    SKILL_EVAL_JSON=$(cd "$WORKSPACE_ROOT" && timeout 60 uv run "$SKILL_EVAL_SCRIPT" --format json 2>/dev/null) || true
-    if [[ -n "$SKILL_EVAL_JSON" ]] && command -v jq &> /dev/null; then
-        SKILL_EVAL_TOTAL=$(echo "$SKILL_EVAL_JSON" | jq -r '.summary.total_skills // 0')
-        SKILL_EVAL_PASSED=$(echo "$SKILL_EVAL_JSON" | jq -r '.summary.passed // 0')
-        SKILL_EVAL_CRITICAL=$(echo "$SKILL_EVAL_JSON" | jq -r '.summary.failed_critical // 0')
-        SKILL_EVAL_WARNINGS=$(echo "$SKILL_EVAL_JSON" | jq -r '.summary.failed_warning_only // 0')
-
-        # Save eval report for trend analysis
-        SKILL_EVAL_REPORT="${REPORTS_DIR}/skill-eval_${TIMESTAMP}.json"
-        echo "$SKILL_EVAL_JSON" > "$SKILL_EVAL_REPORT"
-
-        if [[ $SKILL_EVAL_CRITICAL -eq 0 ]]; then
-            SKILL_EVAL_OK="pass"
-        elif [[ $SKILL_EVAL_CRITICAL -le 10 ]]; then
-            SKILL_EVAL_OK="warn"
-        else
-            SKILL_EVAL_OK="fail"
-        fi
-    fi
+# Determine overall status
+if [[ "$RAG_AGG_RAN_TODAY" == "yes" && "$RAG_AGG_HAS_OUTPUT" == "yes" ]]; then
+    RAG_AGG_OK="pass"
+elif [[ "$RAG_AGG_RAN_TODAY" == "yes" || "$RAG_AGG_HAS_OUTPUT" == "yes" ]]; then
+    RAG_AGG_OK="warn"
+elif [[ -f "$RAG_SCHEDULER_LOG" ]]; then
+    RAG_AGG_OK="fail"
 fi
-log "Skill Eval: $SKILL_EVAL_PASSED/$SKILL_EVAL_TOTAL passed, $SKILL_EVAL_CRITICAL critical, $SKILL_EVAL_WARNINGS warnings"
-
-# t) Repo capability map: Check for recent capability report
-CAPABILITY_MAP_OK="none"
-CAPABILITY_REPOS=0
-CAPABILITY_DOMAINS=0
-CAPABILITY_GAPS=0
-CAPABILITY_DATE=""
-
-CAPABILITY_REPORT_DIR="${WORKSPACE_ROOT}/reports/capability-map"
-if [[ -d "$CAPABILITY_REPORT_DIR" ]]; then
-    LATEST_CAP_REPORT=$(ls -t "$CAPABILITY_REPORT_DIR"/capability-report-*.md 2>/dev/null | head -1)
-    if [[ -f "$LATEST_CAP_REPORT" ]]; then
-        CAPABILITY_DATE=$(basename "$LATEST_CAP_REPORT" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
-        # Parse metrics from report YAML frontmatter
-        CAPABILITY_REPOS=$(sed -n '/^---$/,/^---$/p' "$LATEST_CAP_REPORT" | grep -E '^\s*total_repos:' | grep -oE '[0-9]+' | head -1) || CAPABILITY_REPOS=0
-        CAPABILITY_REPOS=${CAPABILITY_REPOS:-0}
-        CAPABILITY_DOMAINS=$(sed -n '/^---$/,/^---$/p' "$LATEST_CAP_REPORT" | grep -E '^\s*domains_covered:' | grep -oE '[0-9]+' | head -1) || CAPABILITY_DOMAINS=0
-        CAPABILITY_DOMAINS=${CAPABILITY_DOMAINS:-0}
-        CAPABILITY_GAPS=$(sed -n '/^---$/,/^---$/p' "$LATEST_CAP_REPORT" | grep -E '^\s*critical_gaps:' | grep -oE '[0-9]+' | head -1) || CAPABILITY_GAPS=0
-        CAPABILITY_GAPS=${CAPABILITY_GAPS:-0}
-
-        # Check freshness
-        if [[ -n "$CAPABILITY_DATE" ]]; then
-            CAP_EPOCH=$(date -d "$CAPABILITY_DATE" +%s 2>/dev/null || echo "0")
-            CAP_EPOCH=${CAP_EPOCH:-0}
-            AGE_DAYS=$(( (NOW - CAP_EPOCH) / 86400 ))
-            if [[ $AGE_DAYS -le 7 ]]; then
-                CAPABILITY_MAP_OK="pass"
-            elif [[ $AGE_DAYS -le 30 ]]; then
-                CAPABILITY_MAP_OK="warn"
-            else
-                CAPABILITY_MAP_OK="fail"
-            fi
-        fi
-    fi
-fi
-log "Capability Map: repos=$CAPABILITY_REPOS domains=$CAPABILITY_DOMAINS gaps=$CAPABILITY_GAPS date=${CAPABILITY_DATE:-N/A}"
-
-# u) Knowledge base health: Check index freshness and entry counts
-KB_HEALTH_OK="none"
-KB_TOTAL=0
-KB_ACTIVE=0
-KB_STALE=0
-KB_AVG_CONF="0"
-
-KB_INDEX="${WORKSPACE_ROOT}/.claude/knowledge/index.json"
-KB_STATS_SCRIPT="${WORKSPACE_ROOT}/.claude/skills/coordination/workspace/knowledge-manager/scripts/knowledge-stats.sh"
-if [[ -f "$KB_INDEX" ]]; then
-    KB_TOTAL=$(jq -r '.metadata.entry_count // 0' "$KB_INDEX" 2>/dev/null)
-    KB_ACTIVE=$(jq -r '.metadata.active_count // 0' "$KB_INDEX" 2>/dev/null)
-    KB_AVG_CONF=$(jq -r '.metadata.avg_confidence // 0' "$KB_INDEX" 2>/dev/null)
-    KB_STALE=$(jq '[.entries[] | select(.status == "active" and .confidence < 0.5)] | length' "$KB_INDEX" 2>/dev/null || echo "0")
-
-    if [[ $KB_TOTAL -gt 0 && $KB_STALE -eq 0 ]]; then
-        KB_HEALTH_OK="pass"
-    elif [[ $KB_TOTAL -gt 0 && $KB_STALE -le 5 ]]; then
-        KB_HEALTH_OK="warn"
-    elif [[ $KB_TOTAL -gt 0 ]]; then
-        KB_HEALTH_OK="fail"
-    fi
-fi
-log "Knowledge Base: total=$KB_TOTAL active=$KB_ACTIVE stale=$KB_STALE avg_conf=$KB_AVG_CONF"
+log "RAG Aggregation: ran=$RAG_AGG_RAN_TODAY output=$RAG_AGG_HAS_OUTPUT files=$RAG_AGG_FILES"
 
 #############################################
 # Auto-approve stale Codex reviews (>14 days)
@@ -758,7 +579,7 @@ dry_run: $DRY_RUN
 phases_completed:
   reflect: true
   abstract: $([[ $COMMITS -gt 0 ]] && echo "true" || echo "false")
-  generalize: $(ls "$TRENDS_DIR"/trends_*.json &>/dev/null && echo "true" || echo "false")
+  generalize: $([[ -f "$TRENDS_DIR"/trends_*.json ]] && echo "true" || echo "false")
   store: $([[ $PATTERNS_FOUND -gt 0 ]] && echo "true" || echo "false")
 metrics:
   repos_analyzed: $REPOS
@@ -768,10 +589,6 @@ metrics:
   sessions_analyzed: $SESSIONS_FOUND
   conversations_analyzed: $CONVERSATIONS_FOUND
   corrections_detected: $CORRECTION_RATE
-  correction_file_types: $CORRECTION_FILE_TYPES
-  correction_chains: $CORRECTION_CHAINS
-  correction_top_extension: $CORRECTION_TOP_EXT
-  correction_long_chains: $CORRECTION_LONG_CHAINS
 checklist:
   cross_review: $CROSS_REVIEW_OK
   pending_reviews: $PENDING_REVIEWS
@@ -823,40 +640,13 @@ checklist:
   aceengineer_cron: $ACEENGINEER_OK
   aceengineer_stats_date: ${ACEENGINEER_STATS_DATE:-none}
   aceengineer_report_date: ${ACEENGINEER_REPORT_DATE:-none}
-  session_rag: $SESSION_RAG_OK
-  session_rag_date: ${SESSION_RAG_DATE:-none}
-  session_rag_sessions: $SESSION_RAG_SESSIONS
-  session_rag_events: $SESSION_RAG_EVENTS
-  cc_insights: $CC_INSIGHTS_OK
-  cc_version: ${CC_VERSION:-unknown}
-  cc_last_reviewed: ${CC_LAST_REVIEWED:-none}
-  cc_general_count: $CC_GENERAL_COUNT
-  cc_specific_count: $CC_SPECIFIC_COUNT
-  work_queue: $WQ_STATUS_OK
-  wq_pending: $WQ_PENDING
-  wq_working: $WQ_WORKING
-  wq_blocked: $WQ_BLOCKED
-  wq_stale: $WQ_STALE
-  skill_eval: $SKILL_EVAL_OK
-  skill_eval_total: $SKILL_EVAL_TOTAL
-  skill_eval_passed: $SKILL_EVAL_PASSED
-  skill_eval_critical: $SKILL_EVAL_CRITICAL
-  skill_eval_warnings: $SKILL_EVAL_WARNINGS
-  capability_map: $CAPABILITY_MAP_OK
-  capability_repos: $CAPABILITY_REPOS
-  capability_domains: $CAPABILITY_DOMAINS
-  capability_gaps: $CAPABILITY_GAPS
-  capability_date: ${CAPABILITY_DATE:-none}
-  knowledge_base: $KB_HEALTH_OK
-  kb_total: $KB_TOTAL
-  kb_active: $KB_ACTIVE
-  kb_stale: $KB_STALE
-  kb_avg_confidence: $KB_AVG_CONF
+  rag_aggregation: $RAG_AGG_OK
+  rag_agg_last_run: ${RAG_AGG_LAST_RUN:-none}
+  rag_agg_files_today: $RAG_AGG_FILES
 actions_taken:
   skills_created: $SKILLS_CREATED
   skills_enhanced: $SKILLS_ENHANCED
   learnings_stored: $LEARNINGS_STORED
-  knowledge_captured: $KNOWLEDGE_CAPTURED
   stale_reviews_approved: $STALE_REVIEWS_APPROVED
 files:
   analysis: $ANALYSIS_FILE
@@ -864,7 +654,6 @@ files:
   conversations: ${CONVERSATION_FILE:-none}
   trends: $(ls -t "$TRENDS_DIR"/trends_*.json 2>/dev/null | head -1 || echo "none")
   report: ${REPORT_FILE:-none}
-  skill_eval_report: ${SKILL_EVAL_REPORT:-none}
 EOF
 
 log ""
@@ -877,8 +666,6 @@ cd "$PATTERNS_DIR"
 ls -1t patterns_*.json 2>/dev/null | tail -n +31 | xargs -r rm -f
 cd "$TRENDS_DIR"
 ls -1t trends_*.json 2>/dev/null | tail -n +31 | xargs -r rm -f
-cd "$REPORTS_DIR"
-ls -1t skill-eval_*.json 2>/dev/null | tail -n +31 | xargs -r rm -f
 log "Cleanup complete"
 
 log ""
@@ -900,12 +687,7 @@ TP_SYM=$([[ "$TEST_PASS_OK" == "pass" ]] && echo "✓" || echo "✗")
 RF_SYM=$([[ "$REFACTOR_OK" == "pass" ]] && echo "✓" || echo "!")
 FD_SYM=$([[ "$FOLDER_STRUCTURE_OK" == "pass" ]] && echo "✓" || echo "✗")
 AE_SYM=$([[ "$ACEENGINEER_OK" == "pass" ]] && echo "✓" || ([[ "$ACEENGINEER_OK" == "warn" ]] && echo "!" || ([[ "$ACEENGINEER_OK" == "none" ]] && echo "○" || echo "✗")))
-SR_SYM=$([[ "$SESSION_RAG_OK" == "pass" ]] && echo "✓" || ([[ "$SESSION_RAG_OK" == "warn" ]] && echo "!" || ([[ "$SESSION_RAG_OK" == "none" ]] && echo "○" || echo "✗")))
-CC_SYM=$([[ "$CC_INSIGHTS_OK" == "pass" ]] && echo "✓" || ([[ "$CC_INSIGHTS_OK" == "warn" ]] && echo "!" || ([[ "$CC_INSIGHTS_OK" == "none" ]] && echo "○" || echo "✗")))
-WQ_SYM=$([[ "$WQ_STATUS_OK" == "pass" ]] && echo "✓" || ([[ "$WQ_STATUS_OK" == "warn" ]] && echo "!" || ([[ "$WQ_STATUS_OK" == "none" ]] && echo "○" || echo "✗")))
-SE_SYM=$([[ "$SKILL_EVAL_OK" == "pass" ]] && echo "✓" || ([[ "$SKILL_EVAL_OK" == "warn" ]] && echo "!" || ([[ "$SKILL_EVAL_OK" == "none" ]] && echo "○" || echo "✗")))
-CM_MAP_SYM=$([[ "$CAPABILITY_MAP_OK" == "pass" ]] && echo "✓" || ([[ "$CAPABILITY_MAP_OK" == "warn" ]] && echo "!" || ([[ "$CAPABILITY_MAP_OK" == "none" ]] && echo "○" || echo "✗")))
-KB_SYM=$([[ "$KB_HEALTH_OK" == "pass" ]] && echo "✓" || ([[ "$KB_HEALTH_OK" == "warn" ]] && echo "!" || ([[ "$KB_HEALTH_OK" == "none" ]] && echo "○" || echo "✗")))
+RA_SYM=$([[ "$RAG_AGG_OK" == "pass" ]] && echo "✓" || ([[ "$RAG_AGG_OK" == "warn" ]] && echo "!" || ([[ "$RAG_AGG_OK" == "none" ]] && echo "○" || echo "✗")))
 
 # Summary output for cron email
 echo ""
@@ -913,7 +695,7 @@ echo "╔═══════════════════════�
 echo "║                    Daily Reflection Summary                           ║"
 echo "║                    $(date '+%Y-%m-%d %H:%M')                                        ║"
 echo "╠═══════════════════════════════════════════════════════════════════════╣"
-echo "║  QUALITY CHECKLIST (21 checks)                                        ║"
+echo "║  QUALITY CHECKLIST (15 checks)                                        ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  CODE QUALITY                          │  INFRASTRUCTURE              ║"
 echo "║  $CR_SYM Cross-Review: ${GEMINI_PENDING}G ${CODEX_PENDING}C ${CLAUDE_PENDING}Cl pending    │  $SM_SYM Submodule: ${SUBMODULES_DIRTY} dirty, ${SUBMODULES_UNPUSHED} unpushed  ║"
@@ -928,16 +710,7 @@ echo "║  $TP_SYM Tests: ${TEST_PASS_COUNT} pass, ${TEST_FAIL_COUNT} fail      
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  CRON JOBS                                                            ║"
 echo "║  $AE_SYM Aceengineer: stats ${ACEENGINEER_STATS_DATE:-N/A} report ${ACEENGINEER_REPORT_DATE:-N/A}              ║"
-echo "║  $SR_SYM Session RAG: ${SESSION_RAG_SESSIONS} sessions, ${SESSION_RAG_EVENTS} events (${SESSION_RAG_DATE:-N/A})        ║"
-echo "║  ─────────────────────────────────────────────────────────────────────║"
-echo "║  SKILL & CAPABILITY HEALTH                                            ║"
-echo "║  $SE_SYM Skill Eval: ${SKILL_EVAL_PASSED}/${SKILL_EVAL_TOTAL} pass, ${SKILL_EVAL_CRITICAL} critical, ${SKILL_EVAL_WARNINGS} warn             ║"
-echo "║  $CM_MAP_SYM Capability Map: ${CAPABILITY_REPOS} repos, ${CAPABILITY_DOMAINS} domains, ${CAPABILITY_GAPS} gaps (${CAPABILITY_DATE:-N/A})    ║"
-echo "║  $KB_SYM Knowledge Base: ${KB_TOTAL} entries, ${KB_ACTIVE} active, ${KB_STALE} stale (avg ${KB_AVG_CONF})        ║"
-echo "║  ─────────────────────────────────────────────────────────────────────║"
-echo "║  CC RELEASE INSIGHTS (v${CC_VERSION:-?})                                         ║"
-echo "║  $CC_SYM Reviewed: ${CC_LAST_REVIEWED:-N/A} | General: ${CC_GENERAL_COUNT} | Workflow: ${CC_SPECIFIC_COUNT}              ║"
-echo "║  $WQ_SYM Work Queue: ${WQ_PENDING}P ${WQ_WORKING}W ${WQ_BLOCKED}B (${WQ_STALE} stale)                   ║"
+echo "║  $RA_SYM RAG Aggregation: ${RAG_AGG_LAST_RUN:-N/A} (${RAG_AGG_FILES} files)                            ║"
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  Legend: ✓ Good  ○ None  ! Warning  ✗ Action needed                   ║"
 echo "╠═══════════════════════════════════════════════════════════════════════╣"
@@ -945,10 +718,9 @@ echo "║  RAGS LOOP STATUS                                                     
 echo "║  ─────────────────────────────────────────────────────────────────────║"
 echo "║  ✓ REFLECT:    $REPOS repos, $COMMITS commits                                    ║"
 echo "║  ✓ ABSTRACT:   $PATTERNS_FOUND patterns, $SCRIPT_IDEAS scripts                            ║"
-echo "║  ✓ CORRECTIONS: $CORRECTIONS_FOUND found ($CORRECTION_FILE_TYPES types, $CORRECTION_CHAINS chains)             ║"
 echo "║  ✓ CONVERSE:   $CONVERSATIONS_FOUND convos analyzed                                       ║"
 echo "║  ✓ GENERALIZE: Trends analyzed                                        ║"
-echo "║  ✓ STORE:      $SKILLS_CREATED created, $LEARNINGS_STORED logged, $KNOWLEDGE_CAPTURED knowledge  ║"
+echo "║  ✓ STORE:      $SKILLS_CREATED created, $LEARNINGS_STORED logged                               ║"
 [[ "$WEEKLY_REPORT" == "true" ]] && echo "║  📊 Weekly report generated                                             ║"
 echo "╚═══════════════════════════════════════════════════════════════════════╝"
 
@@ -957,8 +729,7 @@ HAS_FAILURES=false
 [[ "$CROSS_REVIEW_OK" == "fail" || "$FILE_STRUCTURE_OK" == "fail" || "$CLAUDE_MD_OK" == "fail" || \
    "$HOOKS_OK" == "fail" || "$GITHUB_ACTIONS_OK" == "fail" || "$TEST_COVERAGE_OK" == "fail" || \
    "$TEST_PASS_OK" == "fail" || "$FOLDER_STRUCTURE_OK" == "fail" || "$ACEENGINEER_OK" == "fail" || \
-   "$SESSION_RAG_OK" == "fail" || "$WQ_STATUS_OK" == "fail" || \
-   "$SKILL_EVAL_OK" == "fail" || "$CAPABILITY_MAP_OK" == "fail" || "$KB_HEALTH_OK" == "fail" ]] && HAS_FAILURES=true
+   "$RAG_AGG_OK" == "fail" ]] && HAS_FAILURES=true
 
 if [[ "$HAS_FAILURES" == "true" ]]; then
     echo ""
@@ -976,19 +747,13 @@ if [[ "$HAS_FAILURES" == "true" ]]; then
     [[ "$TEST_PASS_OK" == "fail" ]] && echo "  → $TEST_FAIL_COUNT repos have failing tests - fix before merging"
     [[ "$FOLDER_STRUCTURE_OK" == "fail" ]] && echo "  → $STRUCTURE_ISSUES structural issues found - organize directories"
     [[ "$ACEENGINEER_OK" == "fail" ]] && echo "  → Aceengineer cron job not running - check daily-update.sh logs"
-    [[ "$SESSION_RAG_OK" == "fail" ]] && echo "  → Session RAG analysis failed - check session logs and analyze-sessions.sh"
-    [[ "$WQ_STATUS_OK" == "fail" ]] && echo "  → $WQ_STALE work items blocked >7 days - review and unblock"
-    [[ "$SKILL_EVAL_OK" == "fail" ]] && echo "  → $SKILL_EVAL_CRITICAL skills have critical issues - run /skill-eval to see details"
-    [[ "$CAPABILITY_MAP_OK" == "fail" ]] && echo "  → Capability map stale (${CAPABILITY_DATE:-N/A}) - run /repo-capability-map report"
-    [[ "$KB_HEALTH_OK" == "fail" ]] && echo "  → Knowledge base has $KB_STALE stale entries - run /knowledge review --decay --prune"
+    [[ "$RAG_AGG_OK" == "fail" ]] && echo "  → RAG Aggregation not running - check ClaudeRAGAggregation scheduled task"
 fi
 
 HAS_WARNINGS=false
 [[ "$CONTEXT_OK" == "warn" || "$PRACTICES_OK" == "warn" || "$SUBMODULE_SYNC_OK" == "warn" || \
    "$STALE_OK" == "warn" || "$REFACTOR_OK" == "warn" || "$HOOKS_OK" == "warn" || \
-   "$GITHUB_ACTIONS_OK" == "warn" || "$TEST_COVERAGE_OK" == "warn" || "$ACEENGINEER_OK" == "warn" || \
-   "$SESSION_RAG_OK" == "warn" || "$CC_INSIGHTS_OK" == "warn" || "$WQ_STATUS_OK" == "warn" || \
-   "$SKILL_EVAL_OK" == "warn" || "$CAPABILITY_MAP_OK" == "warn" || "$KB_HEALTH_OK" == "warn" ]] && HAS_WARNINGS=true
+   "$GITHUB_ACTIONS_OK" == "warn" || "$TEST_COVERAGE_OK" == "warn" || "$ACEENGINEER_OK" == "warn" ]] && HAS_WARNINGS=true
 
 if [[ "$HAS_WARNINGS" == "true" ]]; then
     echo ""
@@ -1003,10 +768,4 @@ if [[ "$HAS_WARNINGS" == "true" ]]; then
     [[ "$GITHUB_ACTIONS_OK" == "warn" ]] && echo "  → ${ACTIONS_FAILING} repos with CI issues - review failures"
     [[ "$TEST_COVERAGE_OK" == "warn" ]] && echo "  → Coverage at ${AVG_COVERAGE}% - aim for 80%+ target"
     [[ "$ACEENGINEER_OK" == "warn" ]] && echo "  → Aceengineer cron partial - stats or report outdated"
-    [[ "$SESSION_RAG_OK" == "warn" ]] && echo "  → Session RAG data stale (${SESSION_RAG_DATE:-N/A}) - check session-logger hook"
-    [[ "$CC_INSIGHTS_OK" == "warn" ]] && echo "  → CC Insights reviewed v${CC_LAST_REVIEWED:-?} but installed v${CC_VERSION:-?} - update cc-user-insights.yaml"
-    [[ "$WQ_STATUS_OK" == "warn" ]] && echo "  → ${WQ_BLOCKED} work items blocked - check repo readiness"
-    [[ "$SKILL_EVAL_OK" == "warn" ]] && echo "  → ${SKILL_EVAL_CRITICAL} skills with critical issues - address frontmatter/structure"
-    [[ "$CAPABILITY_MAP_OK" == "warn" ]] && echo "  → Capability map aging (${CAPABILITY_DATE:-N/A}) - refresh with /repo-capability-map scan"
-    [[ "$KB_HEALTH_OK" == "warn" ]] && echo "  → Knowledge base has $KB_STALE stale entries - run /knowledge review --decay"
 fi
