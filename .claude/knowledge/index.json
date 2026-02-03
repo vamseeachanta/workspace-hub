@@ -1,12 +1,12 @@
 {
   "metadata": {
-    "generated_at": "2026-01-30T13:02:11-06:00",
-    "entry_count": 5,
-    "active_count": 5,
+    "generated_at": "2026-02-03T12:00:00-06:00",
+    "entry_count": 6,
+    "active_count": 6,
     "errors": 0,
-    "avg_confidence": 0.92,
+    "avg_confidence": 0.93,
     "type_counts": {
-      "decision": 2,
+      "decision": 3,
       "gotcha": 1,
       "pattern": 1,
       "tip": 1
@@ -14,6 +14,7 @@
     "category_counts": {
       "architecture": 2,
       "data": 1,
+      "skills": 1,
       "testing": 1,
       "tooling": 1
     }
@@ -142,6 +143,33 @@
       "status": "active",
       "access_count": 0,
       "file": ".claude/knowledge/entries/tips/TIP-001-find-based-repo-discovery.md"
+    },
+    {
+      "id": "ADR-003",
+      "type": "decision",
+      "title": "Import anthropics/knowledge-work-plugins into workspace-hub skills",
+      "category": "skills",
+      "tags": [
+        "skills",
+        "knowledge-work-plugins",
+        "import",
+        "sync",
+        "anthropic",
+        "upstream"
+      ],
+      "repos": [
+        "workspace-hub"
+      ],
+      "confidence": 0.95,
+      "created": "2026-02-03",
+      "last_validated": "2026-02-03",
+      "source_type": "session",
+      "related": [
+        "ADR-002"
+      ],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/decisions/ADR-003-import-knowledge-work-plugins.md"
     }
   ]
 }

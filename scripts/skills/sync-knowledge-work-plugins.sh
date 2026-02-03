@@ -55,6 +55,15 @@ declare -A PLUGIN_SKILLS=(
   ["cowork-plugin-management"]="cowork-plugin-customizer"
 )
 
+# Upstream skill name -> local skill directory name (for renamed skills)
+# The upstream name is used for fetching; the local name is used for file paths.
+declare -A SKILL_RENAMES=(
+  ["bio-research:nextflow-development"]="nextflow-pipelines"
+  ["bio-research:instrument-data-to-allotrope"]="instrument-data-allotrope"
+  ["marketing:content-creation"]="content-strategy"
+  ["product-management:roadmap-management"]="product-roadmap"
+)
+
 # ---------------------------------------------------------------------------
 # CLI flags
 # ---------------------------------------------------------------------------
@@ -202,12 +211,20 @@ for plugin in "${plugins_to_process[@]}"; do
 
   for skill in $skills_list; do
     total+=1
-    local_file="${local_dir}/${skill}/SKILL.md"
+    # Resolve renamed skills: upstream name for fetching, local name for file path
+    rename_key="${plugin}:${skill}"
+    local_skill="${SKILL_RENAMES[$rename_key]:-$skill}"
+    local_file="${local_dir}/${local_skill}/SKILL.md"
     remote_url="$(remote_skill_url "$plugin" "$skill")"
 
     # --- Determine status ---
+    display_name="$skill"
+    if [[ "$local_skill" != "$skill" ]]; then
+      display_name="${skill} -> ${local_skill}"
+    fi
+
     if [[ ! -f "$local_file" ]]; then
-      printf "  %-40s %s\n" "$skill" "$(status_missing)"
+      printf "  %-40s %s\n" "$display_name" "$(status_missing)"
       missing+=1
 
       if $DO_SYNC || $DRY_RUN; then
@@ -218,7 +235,7 @@ for plugin in "${plugins_to_process[@]}"; do
           continue
         fi
 
-        converted="$(convert_content "$plugin" "$skill" "$remote_content")"
+        converted="$(convert_content "$plugin" "$local_skill" "$remote_content")"
 
         if $DRY_RUN; then
           printf "    -> ${C_YELLOW}would create${C_RESET} %s\n" "$local_file"
@@ -243,26 +260,26 @@ for plugin in "${plugins_to_process[@]}"; do
         if [[ -z "$remote_content" ]]; then
           # Cannot reach upstream; assume OK for status-only runs
           if $DO_SYNC || $DRY_RUN; then
-            printf "  %-40s %s (${C_YELLOW}upstream unreachable${C_RESET})\n" "$skill" "$(status_ok)"
+            printf "  %-40s %s (${C_YELLOW}upstream unreachable${C_RESET})\n" "$display_name" "$(status_ok)"
             errors+=1
           else
-            printf "  %-40s %s\n" "$skill" "$(status_ok)"
+            printf "  %-40s %s\n" "$display_name" "$(status_ok)"
             ok+=1
           fi
           continue
         fi
 
-        converted="$(convert_content "$plugin" "$skill" "$remote_content")"
+        converted="$(convert_content "$plugin" "$local_skill" "$remote_content")"
 
         # Compare ignoring the last_updated date line (which changes daily)
         local_normalized="$(sed '/^last_updated:/d' "$local_file")"
         remote_normalized="$(echo "$converted" | sed '/^last_updated:/d')"
 
         if [[ "$local_normalized" == "$remote_normalized" ]]; then
-          printf "  %-40s %s\n" "$skill" "$(status_ok)"
+          printf "  %-40s %s\n" "$display_name" "$(status_ok)"
           ok+=1
         else
-          printf "  %-40s %s\n" "$skill" "$(status_outdated)"
+          printf "  %-40s %s\n" "$display_name" "$(status_outdated)"
           outdated+=1
 
           if $SHOW_DIFF; then
@@ -280,7 +297,7 @@ for plugin in "${plugins_to_process[@]}"; do
         fi
       else
         # Status-only: file exists, skip upstream check
-        printf "  %-40s %s\n" "$skill" "$(status_ok)"
+        printf "  %-40s %s\n" "$display_name" "$(status_ok)"
         ok+=1
       fi
     fi
