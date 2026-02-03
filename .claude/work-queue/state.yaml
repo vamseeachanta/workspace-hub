@@ -1,7 +1,7 @@
-last_id: 65
-last_processed: null
+last_id: 85
+last_processed: WRK-073
 created_at: 2026-01-29T00:00:00Z
 stats:
-  total_captured: 65
-  total_processed: 11
-  total_archived: 11
+  total_captured: 85
+  total_processed: 16
+  total_archived: 16

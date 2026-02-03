@@ -1,27 +1,27 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-01T21:14:20Z by generate-index.py -->
+<!-- Generated: 2026-02-02T20:47:09Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-01T21:14:20Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-02T20:47:09Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 65
+**Total items:** 81
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 54 |
-| archived | 11 |
+| pending | 66 |
+| archived | 12 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 32 |
-| medium | 30 |
+| high | 42 |
+| medium | 36 |
 | low | 3 |
 
 ### By Complexity
@@ -29,24 +29,24 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 8 |
-| medium | 16 |
-| complex | 38 |
+| medium | 22 |
+| complex | 45 |
 
 ### By Repository
 
 | Repository | Count |
 |------------|-------|
 | aceengineer-admin | 2 |
-| aceengineer-website | 1 |
+| aceengineer-website | 6 |
 | achantas-data | 8 |
 | acma-projects | 1 |
 | assethold | 4 |
 | assetutilities | 1 |
-| digitalmodel | 31 |
+| digitalmodel | 33 |
 | hobbies | 1 |
 | investments | 1 |
 | workspace-hub | 1 |
-| worldenergydata | 14 |
+| worldenergydata | 23 |
 
 ## Master Table
 
@@ -63,8 +63,6 @@
 | WRK-009 | Reproduce rev30 lower tertiary BSEE field results for repeatability | archived | high | medium | worldenergydata | - |
 | WRK-010 | Rerun lower tertiary analysis with latest BSEE data and validate | archived | high | medium | worldenergydata | WRK-009 |
 | WRK-011 | Run BSEE analysis for all leases with field nicknames and geological era grouping | pending | high | complex | worldenergydata | WRK-010 |
-| WRK-012 | Audit HSE public data coverage and identify gaps | pending | high | medium | worldenergydata | - |
-| WRK-013 | HSE data analysis to identify typical mishaps by activity and subactivity | pending | high | complex | worldenergydata | WRK-012 |
 | WRK-014 | HSE risk index — client-facing risk insights with risk scoring | pending | high | complex | worldenergydata | WRK-013 |
 | WRK-015 | Metocean data extrapolation to target locations using GIS and nearest-source modeling | pending | high | complex | worldenergydata | - |
 | WRK-016 | BSEE completion and intervention activity analysis for insights | pending | high | complex | worldenergydata | - |
@@ -117,6 +115,24 @@
 | WRK-063 | Reverse parsers — AQWA .dat and OrcaWave .yml to canonical spec.yml | archived | high | complex | digitalmodel | WRK-057 |
 | WRK-064 | OrcaFlex format converter: license-required validation and backward-compat wrapper | pending | medium | medium | digitalmodel | - |
 | WRK-065 | S-lay pipeline installation schema + builders for PRPP Eclipse vessel | archived | high | complex | digitalmodel | - |
+| WRK-066 | Review and improve digitalmodel module structure for discoverability | archived | high | complex | digitalmodel | - |
+| WRK-067 | Acquire OSHA enforcement and fatality data | in_progress | high | low | worldenergydata | - |
+| WRK-068 | Acquire BSEE incident investigations and INCs data | in_progress | high | medium | worldenergydata | - |
+| WRK-069 | Acquire USCG MISLE bulk dataset | pending | high | low | worldenergydata | - |
+| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | in_progress | high | low | worldenergydata | - |
+| WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | high | complex | worldenergydata | - |
+| WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | pending | high | complex | worldenergydata | - |
+| WRK-075 | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | pending | high | complex | digitalmodel | - |
+| WRK-076 | Add data collection scheduler/orchestrator for automated refresh pipelines | pending | high | complex | worldenergydata | - |
+| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | pending | high | medium | worldenergydata | - |
+| WRK-078 | Create energy data case study — BSEE field economics with NPV/IRR workflow | pending | high | medium | aceengineer-website | - |
+| WRK-079 | Create marine safety case study — cross-database incident correlation | pending | high | medium | aceengineer-website | WRK-074 |
+| WRK-080 | Write 4 energy data blog posts for SEO | pending | medium | complex | aceengineer-website | - |
+| WRK-081 | Build interactive NPV calculator for website lead generation | pending | medium | complex | aceengineer-website | - |
+| WRK-082 | Complete LNG terminal data pipeline — from config to working collection | pending | medium | medium | worldenergydata | - |
+| WRK-083 | Validate multi-format export (Excel, PDF, Parquet) with real BSEE data | pending | medium | medium | worldenergydata | - |
+| WRK-084 | Integrate metocean data sources into unified aggregation interface | pending | medium | complex | worldenergydata | - |
+| WRK-085 | Create public sample data access page on website | pending | medium | medium | aceengineer-website | WRK-075 |
 
 ## By Status
 
@@ -133,8 +149,6 @@
 | WRK-007 | Upload videos from Doris computer to YouTube | medium | simple | achantas-data |
 | WRK-008 | Upload photos from multiple devices to achantas-media | medium | medium | achantas-data |
 | WRK-011 | Run BSEE analysis for all leases with field nicknames and geological era grouping | high | complex | worldenergydata |
-| WRK-012 | Audit HSE public data coverage and identify gaps | high | medium | worldenergydata |
-| WRK-013 | HSE data analysis to identify typical mishaps by activity and subactivity | high | complex | worldenergydata |
 | WRK-014 | HSE risk index — client-facing risk insights with risk scoring | high | complex | worldenergydata |
 | WRK-015 | Metocean data extrapolation to target locations using GIS and nearest-source modeling | high | complex | worldenergydata |
 | WRK-016 | BSEE completion and intervention activity analysis for insights | high | complex | worldenergydata |
@@ -178,6 +192,20 @@
 | WRK-055 | aceengineer-website test coverage improvement | low | simple | aceengineer-website |
 | WRK-056 | aceengineer-admin test coverage improvement | medium | moderate | aceengineer-admin |
 | WRK-064 | OrcaFlex format converter: license-required validation and backward-compat wrapper | medium | medium | digitalmodel |
+| WRK-069 | Acquire USCG MISLE bulk dataset | high | low | worldenergydata |
+| WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | high | complex | worldenergydata |
+| WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | high | complex | worldenergydata |
+| WRK-075 | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | high | complex | digitalmodel |
+| WRK-076 | Add data collection scheduler/orchestrator for automated refresh pipelines | high | complex | worldenergydata |
+| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | high | medium | worldenergydata |
+| WRK-078 | Create energy data case study — BSEE field economics with NPV/IRR workflow | high | medium | aceengineer-website |
+| WRK-079 | Create marine safety case study — cross-database incident correlation | high | medium | aceengineer-website |
+| WRK-080 | Write 4 energy data blog posts for SEO | medium | complex | aceengineer-website |
+| WRK-081 | Build interactive NPV calculator for website lead generation | medium | complex | aceengineer-website |
+| WRK-082 | Complete LNG terminal data pipeline — from config to working collection | medium | medium | worldenergydata |
+| WRK-083 | Validate multi-format export (Excel, PDF, Parquet) with real BSEE data | medium | medium | worldenergydata |
+| WRK-084 | Integrate metocean data sources into unified aggregation interface | medium | complex | worldenergydata |
+| WRK-085 | Create public sample data access page on website | medium | medium | aceengineer-website |
 
 ### Archived
 
@@ -194,6 +222,7 @@
 | WRK-062 | Test suite for spec converter using existing example data | high | medium | digitalmodel |
 | WRK-063 | Reverse parsers — AQWA .dat and OrcaWave .yml to canonical spec.yml | high | complex | digitalmodel |
 | WRK-065 | S-lay pipeline installation schema + builders for PRPP Eclipse vessel | high | complex | digitalmodel |
+| WRK-066 | Review and improve digitalmodel module structure for discoverability | high | complex | digitalmodel |
 
 ## By Repository
 
@@ -209,6 +238,11 @@
 | ID | Title | Status | Priority | Complexity |
 |-----|-------|--------|----------|------------|
 | WRK-055 | aceengineer-website test coverage improvement | pending | low | simple |
+| WRK-078 | Create energy data case study — BSEE field economics with NPV/IRR workflow | pending | high | medium |
+| WRK-079 | Create marine safety case study — cross-database incident correlation | pending | high | medium |
+| WRK-080 | Write 4 energy data blog posts for SEO | pending | medium | complex |
+| WRK-081 | Build interactive NPV calculator for website lead generation | pending | medium | complex |
+| WRK-085 | Create public sample data access page on website | pending | medium | medium |
 
 ### achantas-data
 
@@ -279,6 +313,8 @@
 | WRK-063 | Reverse parsers — AQWA .dat and OrcaWave .yml to canonical spec.yml | archived | high | complex |
 | WRK-064 | OrcaFlex format converter: license-required validation and backward-compat wrapper | pending | medium | medium |
 | WRK-065 | S-lay pipeline installation schema + builders for PRPP Eclipse vessel | archived | high | complex |
+| WRK-066 | Review and improve digitalmodel module structure for discoverability | archived | high | complex |
+| WRK-075 | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | pending | high | complex |
 
 ### hobbies
 
@@ -305,8 +341,6 @@
 | WRK-009 | Reproduce rev30 lower tertiary BSEE field results for repeatability | archived | high | medium |
 | WRK-010 | Rerun lower tertiary analysis with latest BSEE data and validate | archived | high | medium |
 | WRK-011 | Run BSEE analysis for all leases with field nicknames and geological era grouping | pending | high | complex |
-| WRK-012 | Audit HSE public data coverage and identify gaps | pending | high | medium |
-| WRK-013 | HSE data analysis to identify typical mishaps by activity and subactivity | pending | high | complex |
 | WRK-014 | HSE risk index — client-facing risk insights with risk scoring | pending | high | complex |
 | WRK-015 | Metocean data extrapolation to target locations using GIS and nearest-source modeling | pending | high | complex |
 | WRK-016 | BSEE completion and intervention activity analysis for insights | pending | high | complex |
@@ -316,6 +350,17 @@
 | WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | pending | high | medium |
 | WRK-038 | Compile global LNG terminal project dataset with comprehensive parameters | pending | medium | complex |
 | WRK-054 | worldenergydata test coverage improvement | pending | high | moderate |
+| WRK-067 | Acquire OSHA enforcement and fatality data | in_progress | high | low |
+| WRK-068 | Acquire BSEE incident investigations and INCs data | in_progress | high | medium |
+| WRK-069 | Acquire USCG MISLE bulk dataset | pending | high | low |
+| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | in_progress | high | low |
+| WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | high | complex |
+| WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | pending | high | complex |
+| WRK-076 | Add data collection scheduler/orchestrator for automated refresh pipelines | pending | high | complex |
+| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | pending | high | medium |
+| WRK-082 | Complete LNG terminal data pipeline — from config to working collection | pending | medium | medium |
+| WRK-083 | Validate multi-format export (Excel, PDF, Parquet) with real BSEE data | pending | medium | medium |
+| WRK-084 | Integrate metocean data sources into unified aggregation interface | pending | medium | complex |
 
 ## By Priority
 
@@ -326,8 +371,6 @@
 | WRK-009 | Reproduce rev30 lower tertiary BSEE field results for repeatability | archived | medium | worldenergydata |
 | WRK-010 | Rerun lower tertiary analysis with latest BSEE data and validate | archived | medium | worldenergydata |
 | WRK-011 | Run BSEE analysis for all leases with field nicknames and geological era grouping | pending | complex | worldenergydata |
-| WRK-012 | Audit HSE public data coverage and identify gaps | pending | medium | worldenergydata |
-| WRK-013 | HSE data analysis to identify typical mishaps by activity and subactivity | pending | complex | worldenergydata |
 | WRK-014 | HSE risk index — client-facing risk insights with risk scoring | pending | complex | worldenergydata |
 | WRK-015 | Metocean data extrapolation to target locations using GIS and nearest-source modeling | pending | complex | worldenergydata |
 | WRK-016 | BSEE completion and intervention activity analysis for insights | pending | complex | worldenergydata |
@@ -355,6 +398,18 @@
 | WRK-062 | Test suite for spec converter using existing example data | archived | medium | digitalmodel |
 | WRK-063 | Reverse parsers — AQWA .dat and OrcaWave .yml to canonical spec.yml | archived | complex | digitalmodel |
 | WRK-065 | S-lay pipeline installation schema + builders for PRPP Eclipse vessel | archived | complex | digitalmodel |
+| WRK-066 | Review and improve digitalmodel module structure for discoverability | archived | complex | digitalmodel |
+| WRK-067 | Acquire OSHA enforcement and fatality data | in_progress | low | worldenergydata |
+| WRK-068 | Acquire BSEE incident investigations and INCs data | in_progress | medium | worldenergydata |
+| WRK-069 | Acquire USCG MISLE bulk dataset | pending | low | worldenergydata |
+| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | in_progress | low | worldenergydata |
+| WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | complex | worldenergydata |
+| WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | pending | complex | worldenergydata |
+| WRK-075 | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | pending | complex | digitalmodel |
+| WRK-076 | Add data collection scheduler/orchestrator for automated refresh pipelines | pending | complex | worldenergydata |
+| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | pending | medium | worldenergydata |
+| WRK-078 | Create energy data case study — BSEE field economics with NPV/IRR workflow | pending | medium | aceengineer-website |
+| WRK-079 | Create marine safety case study — cross-database incident correlation | pending | medium | aceengineer-website |
 
 ### Medium
 
@@ -390,6 +445,12 @@
 | WRK-056 | aceengineer-admin test coverage improvement | pending | moderate | aceengineer-admin |
 | WRK-061 | CLI and integration layer for spec converter | archived | medium | digitalmodel |
 | WRK-064 | OrcaFlex format converter: license-required validation and backward-compat wrapper | pending | medium | digitalmodel |
+| WRK-080 | Write 4 energy data blog posts for SEO | pending | complex | aceengineer-website |
+| WRK-081 | Build interactive NPV calculator for website lead generation | pending | complex | aceengineer-website |
+| WRK-082 | Complete LNG terminal data pipeline — from config to working collection | pending | medium | worldenergydata |
+| WRK-083 | Validate multi-format export (Excel, PDF, Parquet) with real BSEE data | pending | medium | worldenergydata |
+| WRK-084 | Integrate metocean data sources into unified aggregation interface | pending | complex | worldenergydata |
+| WRK-085 | Create public sample data access page on website | pending | medium | aceengineer-website |
 
 ### Low
 
@@ -422,7 +483,6 @@
 | WRK-008 | Upload photos from multiple devices to achantas-media | pending | medium | achantas-data |
 | WRK-009 | Reproduce rev30 lower tertiary BSEE field results for repeatability | archived | high | worldenergydata |
 | WRK-010 | Rerun lower tertiary analysis with latest BSEE data and validate | archived | high | worldenergydata |
-| WRK-012 | Audit HSE public data coverage and identify gaps | pending | high | worldenergydata |
 | WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | pending | high | worldenergydata |
 | WRK-027 | AQWA batch analysis execution | pending | high | digitalmodel |
 | WRK-041 | Develop long-term plan for Hobbies repo | pending | low | hobbies |
@@ -434,13 +494,19 @@
 | WRK-061 | CLI and integration layer for spec converter | archived | medium | digitalmodel |
 | WRK-062 | Test suite for spec converter using existing example data | archived | high | digitalmodel |
 | WRK-064 | OrcaFlex format converter: license-required validation and backward-compat wrapper | pending | medium | digitalmodel |
+| WRK-068 | Acquire BSEE incident investigations and INCs data | in_progress | high | worldenergydata |
+| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | pending | high | worldenergydata |
+| WRK-078 | Create energy data case study — BSEE field economics with NPV/IRR workflow | pending | high | aceengineer-website |
+| WRK-079 | Create marine safety case study — cross-database incident correlation | pending | high | aceengineer-website |
+| WRK-082 | Complete LNG terminal data pipeline — from config to working collection | pending | medium | worldenergydata |
+| WRK-083 | Validate multi-format export (Excel, PDF, Parquet) with real BSEE data | pending | medium | worldenergydata |
+| WRK-085 | Create public sample data access page on website | pending | medium | aceengineer-website |
 
 ### Complex
 
 | ID | Title | Status | Priority | Repos |
 |-----|-------|--------|----------|-------|
 | WRK-011 | Run BSEE analysis for all leases with field nicknames and geological era grouping | pending | high | worldenergydata |
-| WRK-013 | HSE data analysis to identify typical mishaps by activity and subactivity | pending | high | worldenergydata |
 | WRK-014 | HSE risk index — client-facing risk insights with risk scoring | pending | high | worldenergydata |
 | WRK-015 | Metocean data extrapolation to target locations using GIS and nearest-source modeling | pending | high | worldenergydata |
 | WRK-016 | BSEE completion and intervention activity analysis for insights | pending | high | worldenergydata |
@@ -477,6 +543,14 @@
 | WRK-059 | OrcaWave input backend — spec.yml to single .yml and modular includes | archived | high | digitalmodel |
 | WRK-063 | Reverse parsers — AQWA .dat and OrcaWave .yml to canonical spec.yml | archived | high | digitalmodel |
 | WRK-065 | S-lay pipeline installation schema + builders for PRPP Eclipse vessel | archived | high | digitalmodel |
+| WRK-066 | Review and improve digitalmodel module structure for discoverability | archived | high | digitalmodel |
+| WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | high | worldenergydata |
+| WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | pending | high | worldenergydata |
+| WRK-075 | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | pending | high | digitalmodel |
+| WRK-076 | Add data collection scheduler/orchestrator for automated refresh pipelines | pending | high | worldenergydata |
+| WRK-080 | Write 4 energy data blog posts for SEO | pending | medium | aceengineer-website |
+| WRK-081 | Build interactive NPV calculator for website lead generation | pending | medium | aceengineer-website |
+| WRK-084 | Integrate metocean data sources into unified aggregation interface | pending | medium | worldenergydata |
 
 ## Dependencies
 
@@ -484,7 +558,6 @@
 |-----|-------|------------|----------|--------|
 | WRK-010 | Rerun lower tertiary analysis with latest BSEE data and validate | WRK-009 | - | - |
 | WRK-011 | Run BSEE analysis for all leases with field nicknames and geological era grouping | WRK-010 | - | - |
-| WRK-013 | HSE data analysis to identify typical mishaps by activity and subactivity | WRK-012 | - | - |
 | WRK-014 | HSE risk index — client-facing risk insights with risk scoring | WRK-013 | - | - |
 | WRK-018 | Extend BSEE field data pipeline to other regulatory sources (RRC, Norway, Mexico, Brazil) | WRK-017 | - | - |
 | WRK-019 | Establish drilling, completion, and intervention cost data by region and environment | WRK-017 | - | - |
@@ -501,4 +574,6 @@
 | WRK-061 | CLI and integration layer for spec converter | WRK-058, WRK-059, WRK-060 | - | WRK-026 |
 | WRK-062 | Test suite for spec converter using existing example data | WRK-057 | - | WRK-026 |
 | WRK-063 | Reverse parsers — AQWA .dat and OrcaWave .yml to canonical spec.yml | WRK-057 | - | WRK-026 |
+| WRK-079 | Create marine safety case study — cross-database incident correlation | WRK-074 | - | - |
+| WRK-085 | Create public sample data access page on website | WRK-075 | - | - |
 
