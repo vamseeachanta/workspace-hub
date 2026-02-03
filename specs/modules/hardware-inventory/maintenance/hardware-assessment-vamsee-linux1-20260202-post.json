@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "script_version": "1.0.0",
   "platform": "linux",
-  "timestamp": "2026-02-02T20:50:03Z",
+  "timestamp": "2026-02-02T21:48:01Z",
   "cpu": {
     "model": "Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz",
     "architecture": "x86_64",
@@ -127,6 +127,6 @@
     "kernel": "6.8.0-90-generic",
     "architecture": "x86_64",
     "hostname": "vamsee-linux1",
-    "uptime_seconds": 101116
+    "uptime_seconds": 104595
   }
 }
