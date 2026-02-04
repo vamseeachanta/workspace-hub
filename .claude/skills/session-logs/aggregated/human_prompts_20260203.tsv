@@ -1,0 +1,161 @@
+
+
+     * Phase 0 generates research.md
+     * Phase 1 generates data-model.md, contracts/, quickstart.md
+     * Phase 2 generates tasks.md
+   - **Core development**: Implement models, services, CLI commands, endpoints
+   - **Execution flow**: Order and dependency requirements
+   - **File-based coordination**: Tasks affecting the same files must run sequentially
+   - **Follow TDD approach**: Execute test tasks before their corresponding implementation tasks
+   - **IF EXISTS**: Read contracts/ for API specifications and test requirements
+   - **IF EXISTS**: Read data-model.md for entities and relationships
+   - **IF EXISTS**: Read quickstart.md for integration scenarios
+   - **IF EXISTS**: Read research.md for technical decisions and constraints
+   - **IMPORTANT** For completed tasks, make sure to mark the task off as [X] in the tasks file.
+   - **Integration work**: Database connections, middleware, logging, external services
+   - **Phase-by-phase execution**: Complete each phase before moving to the next
+   - **Polish and validation**: Unit tests, performance optimization, documentation
+   - **REQUIRED**: Read plan.md for tech stack, architecture, and file structure
+   - **REQUIRED**: Read tasks.md for the complete task list and execution plan
+   - **Respect dependencies**: Run sequential tasks in order, parallel tasks [P] can run together  
+   - **Setup first**: Initialize project structure, dependencies, configuration
+   - **Task dependencies**: Sequential vs parallel execution rules
+   - **Task details**: ID, description, file paths, parallel markers [P]
+   - **Task phases**: Setup, Tests, Core, Integration, Polish
+   - **Tests before code**: If you need to write tests for contracts, entities, and integration scenarios
+   - **Validation checkpoints**: Verify each phase completion before proceeding
+   - Any technical constraints or dependencies mentioned
+   - BEFORE proceeding, inspect FEATURE_SPEC for a `## Clarifications` section with at least one `Session` subheading. If missing or clearly ambiguous areas remain (vague adjectives, unresolved critical choices), PAUSE and instruct the user to run `/clarify` first to reduce rework. Only continue if: (a) Clarifications exist OR (b) an explicit user override is provided (e.g., "proceed without clarification"). Do not attempt to fabricate clarifications yourself.
+   - Check Progress Tracking shows all phases complete
+   - Check that implemented features match the original specification
+   - Confirm no ERROR states in execution
+   - Confirm the implementation follows the technical plan
+   - Ensure all required artifacts were generated
+   - Follow error handling and gate checks as specified
+   - For parallel tasks [P], continue with successful tasks, report failed ones
+   - Functional and non-functional requirements
+   - Halt execution if any non-parallel task fails
+   - Incorporate user-provided details from arguments into Technical Context: for WRK-032
+   - Incorporate user-provided details from arguments into Technical Context: or WRK-032
+   - Let the template guide artifact generation in $SPECS_DIR:
+   - Load `.specify/templates/plan-template.md` (already copied to IMPL_PLAN path)
+   - Provide clear error messages with context for debugging
+   - Report final status with summary of completed work
+   - Report progress after each completed task
+   - Run the Execution Flow (main) function steps 1-9
+   - Set Input path to FEATURE_SPEC
+   - Success criteria and acceptance criteria
+   - Suggest next steps if implementation cannot proceed
+   - The feature requirements and user stories
+   - The template is self-contained and executable
+   - Update Progress Tracking as you complete each phase
+   - Validate that tests pass and coverage meets requirements
+   - Verify all required tasks are completed
+# Archive completed item
+# Capture a simple work item
+# Capture multiple items at once
+# Check specific item
+# Default (no args) also processes
+# List all active items
+# Process next item in queue
+# Queue health report
+## Complexity Routing
+## Examples
+## Related Commands
+## Skill Reference
+## Smart Routing
+## Subcommands
+## Usage
+- **Action verbs** (run, go, start, next) → Process pipeline
+- **Descriptive content** → Capture pipeline
+- `/reflect` - Daily reflection includes work queue health check
+/work
+/work [subcommand] [args]
+/work add 1. Fix login redirect 2. Add dark mode 3. Update footer
+/work add Fix login redirect in aceengineer-website
+/work archive WRK-001
+/work list
+/work report
+/work run
+/work status WRK-001
+1. Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
+1. Run `.specify/scripts/bash/setup-plan.sh --json` from the repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH. All future file paths must be absolute.
+2. Load and analyze the implementation context:
+2. Read and analyze the feature specification to understand:
+2026-01-23T04:31:24.198Z	[Request interrupted by user for tool use]
+2026-01-23T05:18:49.020Z	[Request interrupted by user for tool use]
+2026-01-23T06:44:16.177Z	[Request interrupted by user for tool use]
+2026-01-24T13:47:05.437Z	[Request interrupted by user]
+2026-01-24T14:53:46.530Z	[Request interrupted by user]
+2026-01-24T21:15:50.138Z	[Request interrupted by user]
+2026-01-24T21:16:24.069Z	[Request interrupted by user]
+2026-01-24T21:46:15.952Z	[Request interrupted by user]
+2026-01-24T21:55:10.091Z	[Request interrupted by user for tool use]
+2026-01-25T14:33:16.178Z	[Request interrupted by user]
+2026-01-25T15:36:52.418Z	[Request interrupted by user for tool use]
+2026-01-25T19:57:48.972Z	[Request interrupted by user]
+2026-01-26T20:05:35.878Z	[Request interrupted by user for tool use]
+2026-01-26T20:18:49.399Z	[Request interrupted by user for tool use]
+2026-01-26T20:30:39.569Z	[Request interrupted by user]
+2026-01-26T20:34:59.107Z	[Request interrupted by user]
+2026-01-27T01:31:21.666Z	[Request interrupted by user for tool use]
+2026-01-28T03:17:36.613Z	[Request interrupted by user]
+2026-02-03T00:16:55.781Z	[Request interrupted by user]
+2026-02-03T02:58:30.510Z	[Request interrupted by user for tool use]
+2026-02-03T03:16:47.143Z	[Request interrupted by user for tool use]
+2026-02-03T03:39:12.626Z	# Work Queue Command
+2026-02-03T03:40:18.318Z	# Work Queue Command
+2026-02-03T03:45:24.598Z	# Work Queue Command
+2026-02-03T03:46:36.879Z	# Work Queue Command
+2026-02-03T03:48:52.462Z	[Request interrupted by user for tool use]
+2026-02-03T04:09:57.869Z	[Request interrupted by user for tool use]
+2026-02-03T11:53:39.858Z	[Request interrupted by user for tool use]
+2026-02-03T12:51:02.695Z	[Request interrupted by user]
+2026-02-03T14:10:08.077Z	# Work Queue Command
+2026-02-03T16:52:56.666Z	# Work Queue Command
+2026-02-03T19:10:31.746Z	# Work Queue Command
+2026-02-03T19:33:31.305Z	[Request interrupted by user]
+2026-02-03T19:36:04.382Z	The user input to you can be provided directly by the agent or as a command argument - you **MUST** consider it before proceeding with the prompt (if not empty).
+2026-02-03T19:36:07.724Z	[Request interrupted by user]
+2026-02-03T19:36:20.998Z	The user input to you can be provided directly by the agent or as a command argument - you **MUST** consider it before proceeding with the prompt (if not empty).
+2026-02-03T19:45:16.146Z	[Request interrupted by user for tool use]
+2026-02-03T20:37:02.755Z	The user input can be provided directly by the agent or as a command argument - you **MUST** consider it before proceeding with the prompt (if not empty).
+3. Parse tasks.md structure and extract:
+3. Read the constitution at `.specify/memory/constitution.md` to understand constitutional requirements.
+4. Execute implementation following the task plan:
+4. Execute the implementation plan template:
+5. Implementation execution rules:
+5. Verify execution completed:
+6. Progress tracking and error handling:
+6. Report results with branch name, file paths, and generated artifacts.
+7. Completion validation:
+@.claude/skills/coordination/workspace/work-queue/SKILL.md
+ARGUMENTS: items in digitalmodel repo and orcawave module
+ARGUMENTS: list items in digitalmodel repo and orcaflex module
+ARGUMENTS: review item WRK-032 and improve plan as required. We will do Q&A with user/SME before proceeding
+ARGUMENTS: review work items in digitalmodel
+ARGUMENTS: run WRK-029
+ARGUMENTS: run WRK-066
+Capture and process work items (features, bugs, tasks) across workspace-hub repositories. Two-phase system: rapidly log items, then triage and delegate by complexity.
+Given the implementation details provided as an argument, do this:
+Note: This command assumes a complete task breakdown exists in tasks.md. If tasks are incomplete or missing, suggest running `/tasks` first to regenerate the task list.
+Use absolute paths with the repository root for all file operations to avoid path issues.
+User input:
+```
+```bash
+for WRK-032
+or WRK-032
+| A | Simple | Implement → Test → Archive |
+| B | Medium | Explore → Implement → Test → Archive |
+| C | Complex | Plan → Explore → Implement → Test → Review → Archive |
+| Route | Complexity | Pipeline |
+| Subcommand | Description |
+| `add <desc>` | Capture one or more work items |
+| `archive WRK-NNN` | Manually archive an item |
+| `list` | Show all pending/working/blocked items |
+| `prioritize` | Interactive priority adjustment |
+| `report` | Queue health summary |
+| `run` | Process next pending item (default if no args) |
+| `status WRK-NNN` | Show specific item details |
+|------------|-------------|
+|-------|-----------|----------|
