@@ -1,3 +1,8 @@
+# DEPRECATED: This file is auto-generated from .claude/skills/
+# The authoritative source of truth is skills-index.yaml
+# Last manual edit: 2026-01-21
+# This file will be removed in a future cleanup pass.
+#
 # Skill Registry for Claude Code Commands
 # Auto-generated from .claude/commands/
 # Last updated: 2026-01-21

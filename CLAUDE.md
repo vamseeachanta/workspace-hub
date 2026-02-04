@@ -57,7 +57,7 @@ Save plans to: `specs/modules/<module>/`
 - Templates: `specs/templates/plan-template.md` or `plan-template-minimal.md`
 - Required metadata: `title`, `description`, `version`, `module`, `session.id`, `session.agent`, `review`
 
-**Cross-Review (MANDATORY)**: 3 iterations with OpenAI Codex + Google Gemini
+**Cross-Review (MANDATORY)**: 3 iterations with OpenAI Codex + Google Gemini. Use `scripts/review/cross-review.sh`.
 
 ## SPARC Modes
 

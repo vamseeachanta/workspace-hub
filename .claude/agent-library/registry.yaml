@@ -1,3 +1,8 @@
+# DEPRECATED: Agent definitions live in .claude/agent-library/<category>/<agent>.md
+# The authoritative registry is skills-index.yaml
+# Last manual edit: 2025-10-05
+# This file will be removed in a future cleanup pass.
+#
 # Master Agent Registry - Workspace Hub
 # Central registry for all 78+ agents across 26 repositories
 # Version: 1.0.0

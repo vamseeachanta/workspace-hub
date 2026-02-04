@@ -73,18 +73,20 @@ Smart routing: Action verbs (run, go, start) -> Process. Descriptive content -> 
 ### Phase 2: Process
 - Select next item by priority from `pending/`
 - Triage: classify complexity -> Route A/B/C
-- Claim: move to `working/`, update frontmatter
+- Dependency check: verify `blocked_by` items are archived
+- Auto-claim: move to `working/`, update frontmatter (automatic, no manual step)
 - Pre-check: repo-readiness on target repos
 - Delegate to subagents per route
-- Test, commit, archive pipeline
+- Test, commit, auto-archive pipeline (archives when all acceptance criteria met)
 - Failure handling (3 attempts -> mark failed)
+- Batch mode: `/work run --batch` processes all Route A items in sequence
 
 ## Complexity Routing
 
 ```
 Route A (Simple):  Triage -> Implement -> Test -> Archive
 Route B (Medium):  Triage -> Explore -> Implement -> Test -> Archive
-Route C (Complex): Triage -> Plan (spec) -> Explore -> Implement -> Test -> Review -> Archive
+Route C (Complex): Triage -> Plan+Explore -> Implement -> Test -> Review -> Archive
 ```
 
 | Complexity | Criteria | Route |

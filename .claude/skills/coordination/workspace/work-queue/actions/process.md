@@ -9,7 +9,7 @@ Invoked when `/work run`, `/work`, or `/work` with action verbs (go, start, next
 ## Pipeline Overview
 
 ```
-Select -> Triage -> Claim -> Pre-check -> Execute -> Test -> Archive
+Select -> Triage -> Dependency Check -> Auto-Claim -> Pre-check -> Execute -> Test -> Cross-Review -> Commit -> Auto-Archive
 ```
 
 ## Step 1: Select Next Item
@@ -38,35 +38,73 @@ Read the work item and classify its complexity route:
 |-------|-----------|----------|
 | A | simple | Implement -> Test -> Archive |
 | B | medium | Explore -> Implement -> Test -> Archive |
-| C | complex | Plan -> Explore -> Implement -> Test -> Review -> Archive |
+| C | complex | Plan+Explore -> Implement -> Test -> Review -> Archive |
 
 Validate or reclassify the complexity from capture phase. The triage agent may upgrade complexity if the item is more involved than initially classified.
 
-## Step 3: Claim
+## Step 3: Dependency Check
 
-Move item from `pending/` to `working/` in both master and repo-local queues:
+Before claiming any item, validate that all dependencies are satisfied:
+
+1. Read the `blocked_by` field from the work item frontmatter
+2. For each ID in `blocked_by`, check if that item exists in `archive/`
+3. If ANY blocker is NOT archived (still in `pending/`, `working/`, or `blocked/`), SKIP this item
+4. Log: `"Skipping WRK-NNN: blocked by WRK-MMM (status: pending)"`
+5. Move to the next item in priority order (return to Step 1)
 
 ```bash
+BLOCKED_BY=$(grep "blocked_by:" "$ITEM" | sed 's/blocked_by: *\[//;s/\]//' | tr ',' '\n' | tr -d ' "')
+for DEP_ID in $BLOCKED_BY; do
+  [[ -z "$DEP_ID" ]] && continue
+  # Check if dependency is archived
+  ARCHIVED=$(find "${QUEUE_DIR}/archive" -name "${DEP_ID}-*.md" 2>/dev/null | head -1)
+  if [[ -z "$ARCHIVED" ]]; then
+    # Find where the blocker currently lives
+    for dir in pending working blocked; do
+      DEP_FILE=$(find "${QUEUE_DIR}/${dir}" -name "${DEP_ID}-*.md" 2>/dev/null | head -1)
+      [[ -n "$DEP_FILE" ]] && echo "Skipping ${ITEM_ID}: blocked by ${DEP_ID} (status: ${dir})" && break
+    done
+    SKIP=true
+    break
+  fi
+done
+```
+
+If the item is skipped due to unmet dependencies, select the next item by priority and repeat from Step 1.
+
+## Step 4: Auto-Claim
+
+Claiming happens automatically when processing begins -- no manual intervention required.
+
+The item is moved from `pending/` to `working/` in both master and repo-local queues:
+
+```bash
+# Ensure working/ directory exists
+mkdir -p "${QUEUE_DIR}/working"
+
 # Master queue
 mv "${QUEUE_DIR}/pending/${ITEM_FILE}" "${QUEUE_DIR}/working/${ITEM_FILE}"
 
 # Repo-local queues
 for REPO in ${TARGET_REPOS}; do
   REPO_QUEUE="${WORKSPACE_ROOT}/${REPO}/.claude/work-queue"
+  mkdir -p "${REPO_QUEUE}/working"
   if [[ -f "${REPO_QUEUE}/pending/${ITEM_FILE}" ]]; then
     mv "${REPO_QUEUE}/pending/${ITEM_FILE}" "${REPO_QUEUE}/working/${ITEM_FILE}"
   fi
 done
 ```
 
-Update frontmatter (both copies):
+Update frontmatter automatically (both copies):
 ```yaml
-status: claimed
-claimed_at: <ISO 8601>
+status: working
+claimed_at: <ISO 8601 timestamp>
 route: A  # or B or C
 ```
 
-## Step 4: Pre-check (Repo Readiness)
+This replaces the previous manual claim step. The item transitions to `working` status as soon as the process pipeline selects it and dependencies are satisfied.
+
+## Step 5: Pre-check (Repo Readiness)
 
 For each repository in `target_repos`:
 
@@ -84,7 +122,7 @@ If any repo fails pre-check:
 - Set `blocked_by` field with reason
 - Log the block and move to next item
 
-## Step 5: Execute (Route-Dependent)
+## Step 6: Execute (Route-Dependent)
 
 ### Route A (Simple)
 
@@ -115,15 +153,15 @@ Task(subagent_type="general-purpose"):
 
 ### Route C (Complex)
 
-1. **Plan**: Generate spec in `specs/modules/` using plan template
+1. **Plan+Explore**: Generate spec in `specs/modules/` using plan template. The plan agent performs deep codebase exploration across all target repos as part of spec creation — no separate Explore step.
    - Set `spec_ref` field in work item to spec path
    - Bidirectional link: spec links back to WRK item
    - **Sync spec to target repos**: Copy plan to each `<target-repo>/specs/modules/<module>/plan.md`
-2. **Explore**: Deep codebase exploration across all target repos
-3. **Implement**: Multi-step implementation following spec phases
-4. **Review**: Self-review pass checking acceptance criteria
+   - Explore findings are embedded directly in the spec (relevant files, current patterns, dependencies)
+2. **Implement**: Multi-step implementation following spec phases
+3. **Review**: Self-review pass checking acceptance criteria
 
-## Step 6: Test
+## Step 7: Test
 
 After implementation:
 
@@ -140,7 +178,83 @@ If tests fail:
 - Return to Execute step with error context
 - After 3 failures: mark as `status: failed` with `failure_reason`
 
-## Step 7: Commit
+## Step 8: Cross-Review Gate (MANDATORY)
+
+After tests pass, all changes MUST pass cross-review before committing. This is a hard gate — commits are blocked until reviews clear.
+
+### Review Submission
+
+Generate a diff of all staged changes and submit for review:
+
+```bash
+REVIEW_SCRIPT="${WORKSPACE_ROOT}/scripts/review/cross-review.sh"
+
+# Generate diff for review
+cd "${WORKSPACE_ROOT}/${REPO}"
+git diff HEAD > "/tmp/wrk-${ID}-review.diff"
+
+# Submit to all reviewers (Claude + Codex + Gemini)
+bash "${REVIEW_SCRIPT}" "/tmp/wrk-${ID}-review.diff" all --type implementation
+```
+
+For Route C items, the plan spec must also have been reviewed during the Plan+Explore phase:
+
+```bash
+# Route C only: plan review (3 iterations required)
+bash "${REVIEW_SCRIPT}" "${SPEC_PATH}" all --type plan
+```
+
+### Gate Criteria
+
+Review results are written to `scripts/review/results/`. The gate checks:
+
+1. Parse each reviewer's output for a verdict line: `APPROVE`, `REQUEST_CHANGES`, or `REJECT`
+2. **Pass condition**: No reviewer returned `REJECT` and no P1 (critical) issues were raised
+3. **Fail condition**: Any `REJECT` verdict OR any unresolved P1 issue
+
+```bash
+RESULTS_DIR="${WORKSPACE_ROOT}/scripts/review/results"
+LATEST=$(ls -t "${RESULTS_DIR}"/implementation-* 2>/dev/null | head -3)
+BLOCKED=false
+
+for RESULT in $LATEST; do
+  if grep -q "REJECT" "$RESULT" || grep -q "P1" "$RESULT"; then
+    BLOCKED=true
+    REVIEWER=$(basename "$RESULT" | sed 's/implementation-//;s/-[0-9]*.*//')
+    echo "Cross-review BLOCKED by ${REVIEWER}: $(grep -E 'REJECT|P1' "$RESULT" | head -1)"
+  fi
+done
+
+if [[ "$BLOCKED" == "true" ]]; then
+  echo "Fix P1 issues and re-run: bash ${REVIEW_SCRIPT} <diff> all --type implementation"
+  # Return to Step 6 (Execute) to address feedback
+  exit 1
+fi
+```
+
+### On Failure
+
+If the review gate fails:
+- Log which reviewer(s) blocked and the P1 issues
+- Return to Step 6 (Execute) to address the feedback
+- Increment `review_attempts` in frontmatter (max 3 cycles)
+- After 3 failed review cycles, mark as `status: review_blocked` for manual intervention
+
+```yaml
+review_attempts: 1
+last_review: <ISO 8601>
+review_blocked_by: "codex: P1 - missing error handling in auth flow"
+```
+
+### Reviewer Availability
+
+If a reviewer CLI is not installed (e.g., `codex` or `gemini`), the script logs a fallback notice but does NOT block the commit. At minimum, the Claude self-review must pass. The gate degrades gracefully:
+
+- 3 reviewers available: all 3 must clear (no REJECT/P1)
+- 2 reviewers available: both must clear
+- 1 reviewer (Claude only): Claude must clear
+
+## Step 9: Commit
 
 For each target repo with changes:
 
@@ -155,23 +269,49 @@ Update work item frontmatter with commit SHA:
 commit: "abc1234"
 ```
 
-## Step 8: Archive
+## Step 10: Auto-Archive
 
-Archive in both master and repo-local queues:
+After tests pass and commit is complete, automatically check whether the item qualifies for archiving:
+
+### Acceptance Criteria Check
+
+1. Parse the work item's `## Acceptance Criteria` section
+2. Count all checklist items matching `- [x]` (completed) and `- [ ]` (incomplete)
+3. If ALL criteria are checked (`- [x]`), proceed to archive
+4. If ANY criteria remain unchecked (`- [ ]`), leave the item in `working/` and add a note:
+
+```yaml
+auto_archive_blocked: true
+auto_archive_note: "N of M acceptance criteria incomplete"
+```
+
+### Archive Execution
+
+When all acceptance criteria are satisfied, archive in both master and repo-local queues:
 
 ```bash
-# Master queue
-bash "${WORKSPACE_ROOT}/scripts/work-queue/archive-item.sh" "WRK-${ID}"
+# Check acceptance criteria
+TOTAL=$(grep -c '- \[.\]' "$ITEM_FILE" || echo "0")
+CHECKED=$(grep -c '- \[x\]' "$ITEM_FILE" || echo "0")
 
-# Repo-local queues
-for REPO in ${TARGET_REPOS}; do
-  REPO_QUEUE="${WORKSPACE_ROOT}/${REPO}/.claude/work-queue"
-  ARCHIVE_DIR="${REPO_QUEUE}/archive/$(date +%Y-%m)"
-  mkdir -p "${ARCHIVE_DIR}"
-  if [[ -f "${REPO_QUEUE}/working/${ITEM_FILE}" ]]; then
-    mv "${REPO_QUEUE}/working/${ITEM_FILE}" "${ARCHIVE_DIR}/${ITEM_FILE}"
-  fi
-done
+if [[ "$TOTAL" -gt 0 && "$CHECKED" -eq "$TOTAL" ]]; then
+  # All criteria met - auto-archive
+  # Master queue
+  bash "${WORKSPACE_ROOT}/scripts/work-queue/archive-item.sh" "WRK-${ID}"
+
+  # Repo-local queues
+  for REPO in ${TARGET_REPOS}; do
+    REPO_QUEUE="${WORKSPACE_ROOT}/${REPO}/.claude/work-queue"
+    ARCHIVE_DIR="${REPO_QUEUE}/archive/$(date +%Y-%m)"
+    mkdir -p "${ARCHIVE_DIR}"
+    if [[ -f "${REPO_QUEUE}/working/${ITEM_FILE}" ]]; then
+      mv "${REPO_QUEUE}/working/${ITEM_FILE}" "${ARCHIVE_DIR}/${ITEM_FILE}"
+    fi
+  done
+else
+  echo "Auto-archive skipped: ${CHECKED}/${TOTAL} acceptance criteria met"
+  # Leave in working/ with note
+fi
 ```
 
 Both copies get completion metadata:
@@ -216,3 +356,43 @@ After processing:
 - Update `state.yaml` with last processed item and timestamp
 - Increment processed counter
 - Track route usage for triage accuracy feedback
+
+## Batch Processing Mode
+
+When invoked with `/work run --batch`, process all Route A (simple) items in sequence:
+
+1. Filter pending items where `complexity: simple`
+2. Sort by priority (`high` -> `medium` -> `low`), then by ID (ascending)
+3. For each item:
+   a. Run Dependency Check (Step 3) -- skip if dependencies unmet
+   b. Auto-claim (move to `working/`)
+   c. Execute Route A pipeline (Implement -> Test)
+   d. Run Cross-Review Gate (Step 8) -- block commit if REJECT or P1 issues
+   e. If reviews pass and tests pass, commit and auto-archive
+   f. If tests or reviews fail, mark `status: failed` with `failure_reason` and continue to next item
+4. Report summary: `"Batch complete: N processed, M succeeded, K failed"`
+
+```bash
+# Batch mode pseudocode
+PROCESSED=0; SUCCEEDED=0; FAILED=0
+for ITEM in $(get_simple_items_sorted_by_priority); do
+  PROCESSED=$((PROCESSED + 1))
+  if check_dependencies "$ITEM"; then
+    auto_claim "$ITEM"
+    if execute_route_a "$ITEM" && run_tests "$ITEM" && cross_review "$ITEM"; then
+      commit "$ITEM"
+      auto_archive "$ITEM"
+      SUCCEEDED=$((SUCCEEDED + 1))
+    else
+      mark_failed "$ITEM"
+      FAILED=$((FAILED + 1))
+    fi
+  else
+    echo "Skipped $(get_id "$ITEM"): unmet dependencies"
+    PROCESSED=$((PROCESSED - 1))
+  fi
+done
+echo "Batch complete: ${PROCESSED} processed, ${SUCCEEDED} succeeded, ${FAILED} failed"
+```
+
+Batch mode only processes Route A (simple) items. Medium and complex items are skipped and left in `pending/` for individual processing via `/work run`.
