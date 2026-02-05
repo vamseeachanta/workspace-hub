@@ -290,6 +290,49 @@ uv run python -m digitalmodel.hydrodynamics.diffraction.cli benchmark-solvers \
 | Summary report with discrepancy analysis | `BenchmarkReport` + JSON + HTML export |
 | Pairwise statistics for all 3 pairs | `PairwiseResult` for each combination |
 
+## Phase Status
+
+### Phase 1: Framework ✅ COMPLETE
+- `MultiSolverComparator`, `BenchmarkPlotter`, `BenchmarkRunner` implemented
+- 43 tests passing
+- Commit: `bacd8c1d`
+
+### Phase 2: Trial Run ✅ COMPLETE
+- Script: `scripts/run_benchmark_ship_raos.py`
+- Ran with existing L01_aqwa_benchmark CSV data
+- Result: **NO_CONSENSUS** (expected — source data had mismatched parameters)
+- Output: `docs/modules/orcawave/L01_aqwa_benchmark/benchmark_results/`
+
+### Phase 3: Proper 3-Way Benchmark 🔄 PENDING
+
+**Available Hull Geometries (all exist, no coarsening needed):**
+
+| Hull | File | Panels | Dimensions | Symmetry |
+|------|------|--------|------------|----------|
+| **Unit Box** | `tests/hydrodynamics/bemrosetta/fixtures/sample_box.gdf` | 5 | 1m × 1m × 1m | None |
+| **Barge** | `specs/modules/orcawave/test-configs/geometry/barge.gdf` | 912 | 100m × 20m × 8m | Y-sym |
+| **Spar** | `specs/modules/orcawave/test-configs/geometry/spar.gdf` | 1512 | R=10m, T=50m | None |
+| **Cylinder** | `docs/.../L00_validation_wamit/3.3/.../Cylinder.gdf` | 420 | R=1m (unit) | X+Y sym |
+
+**Solver Requirements:**
+
+| Solver | Executable | License | Status |
+|--------|------------|---------|--------|
+| AQWA | `aqwa_solve` | ANSYS license | Need to verify |
+| OrcaWave | via OrcFxAPI | Orcina license | Need to verify |
+| BEMRosetta | `BEMRosetta_cl.exe` | Open source (GPL) | Need to install |
+
+**Next Steps for Phase 3:**
+1. Verify solver installations on target machine
+2. Create unified DiffractionSpec for each hull with identical parameters:
+   - Same water depth (e.g., 500m or infinite)
+   - Same frequency range (e.g., 0.2–1.5 rad/s)
+   - Same heading range (e.g., 0°, 45°, 90°, 135°, 180°)
+3. Run benchmark for **Unit Box** first (fastest, good for validation)
+4. Run benchmark for **Barge** (practical offshore case)
+5. Run benchmark for **Spar/Cylinder** (axisymmetric case)
+6. Document solver-specific settings and quirks
+
 ## Not in Scope
 
 - Modifying existing `DiffractionComparator` (preserved for backward compat)
