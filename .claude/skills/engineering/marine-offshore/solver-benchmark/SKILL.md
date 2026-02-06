@@ -1,6 +1,6 @@
 ---
 name: solver-benchmark
-version: 1.0.0
+version: 2.0.0
 description: Run N-way diffraction solver benchmarks comparing AQWA, OrcaWave, and BEMRosetta results
 author: workspace-hub
 category: engineering-utilities
@@ -274,6 +274,111 @@ plotter.plot_pairwise_correlation_heatmap(report)
 | NO_CONSENSUS | Mismatched inputs | Verify spec is identical for all solvers |
 | Mesh error | Incompatible format | Convert mesh using `/mesh` skill |
 | Timeout | Complex geometry | Increase timeout or coarsen mesh |
+
+## Solver-Specific Conventions (Battle-Tested)
+
+### OrcaWave (via OrcFxAPI)
+
+Critical data extraction gotchas:
+
+| Property | Convention | Action Required |
+|----------|-----------|-----------------|
+| `.frequencies` | Returns **Hz** (NOT rad/s) | Multiply by `2 * pi` |
+| `.frequencies` | Returns **descending** order | Sort ascending with `np.argsort()` |
+| `.displacementRAOs` | Shape `(nheading, nfreq, 6)` | Transpose to `(nfreq, nheading, 6)` |
+| `.displacementRAOs` | Rotational DOFs in **rad/m** | Convert to deg/m with `np.degrees()` for AQWA comparison |
+| `.addedMass` / `.damping` | Same descending frequency order | Apply same sort index |
+
+```python
+# Correct OrcaWave extraction pattern
+freq_hz = np.array(diffraction.frequencies)          # Hz, descending
+frequencies = 2.0 * np.pi * freq_hz                  # rad/s, descending
+sort_idx = np.argsort(frequencies)                    # ascending sort
+frequencies = frequencies[sort_idx]
+
+raw_raos = np.array(diffraction.displacementRAOs)     # (nheading, nfreq, 6)
+raw_raos = np.transpose(raw_raos, (1, 0, 2))         # (nfreq, nheading, 6)
+raw_raos = raw_raos[sort_idx, :, :]                   # sorted ascending
+
+added_mass = np.array(diffraction.addedMass)[sort_idx]  # (nfreq, 6, 6)
+damping = np.array(diffraction.damping)[sort_idx]       # (nfreq, 6, 6)
+```
+
+### AQWA Standalone (Non-Workbench)
+
+DAT file generation requirements:
+
+| Setting | Requirement | Consequence if Wrong |
+|---------|-------------|----------------------|
+| Element type | `QPPL DIFF` (not `QPPL`) | Zero RAOs — "NON-DIFFRACTING" elements |
+| ILID card | `ILID AUTO <group>` after ZLWL | "REGLID: NO DIFFRACTING ELEMENTS FOUND" |
+| SEAG card | 2 parameters only: `SEAG (nx, ny)` | "FAILED TO READ SEA GRID PARAMETERS" |
+| Line length | Max 80 columns | Delimiter read errors |
+| Mesh quality | Panels ~square, facet radius check | FATAL error at 90° corners (non-overridable) |
+| OPTIONS GOON | Continues past non-fatal errors | Does NOT override FATAL mesh quality |
+| Heading range | -180 to +180 for no-symmetry bodies | Missing heading coverage |
+
+### AQWA LIS File Parsing
+
+| Pattern | Gotcha | Fix |
+|---------|--------|-----|
+| `ADDED  MASS` | Double space between words | Use whitespace normalization |
+| Damping frequency | WAVE FREQUENCY line is ~23 lines before DAMPING header | Search backward 30 lines |
+| Matrix rows | Separated by blank lines | Skip blank lines in row parsing |
+| RAO section | First occurrence = displacement RAOs | Skip subsequent velocity/acceleration sections |
+| Heading expansion | 5 input headings may produce 9 output (-180 to +180) | Filter to requested headings |
+
+### BEMRosetta / Nemoh
+
+| Aspect | Status | Notes |
+|--------|--------|-------|
+| BEMRosetta CLI | Mesh conversion only (`-mesh` mode) | Not a solver itself |
+| Nemoh solver | Open source (GPL) | https://gitlab.com/lheea/Nemoh |
+| Nemoh docs | Workshop tutorials | https://lheea.gitlab.io/Nemoh-Workshop/running-Nemoh.html |
+| Integration | Future work | Nemoh backend adapter not yet implemented |
+
+## Pre-Flight Validation Checklist
+
+Before running a benchmark, verify ALL of these:
+
+```
+[ ] Mesh quality: panels roughly square (aspect ratio < 2:1)
+[ ] Mesh density: sufficient panels (700+ for 100m barge)
+[ ] All solvers use identical:
+    [ ] Frequency range (rad/s)
+    [ ] Wave headings (degrees)
+    [ ] Water depth
+    [ ] Mass properties
+    [ ] Centre of gravity
+[ ] OrcaWave YAML: QTF settings NOT set when QTF disabled
+[ ] AQWA DAT: Elements use QPPL DIFF keyword
+[ ] AQWA DAT: ILID AUTO card present after ZLWL
+[ ] AQWA DAT: SEAG card has 2 params (non-Workbench mode)
+[ ] AQWA DAT: All lines under 80 columns
+[ ] Unit consistency:
+    [ ] Frequencies in rad/s (not Hz)
+    [ ] Rotational RAOs in deg/m (not rad/m)
+    [ ] Phases in consistent convention
+```
+
+## Benchmark Results Interpretation
+
+### Correlation Thresholds
+
+| Range | Interpretation | Action |
+|-------|---------------|--------|
+| > 0.99 | Excellent agreement | Solvers validated |
+| 0.95 – 0.99 | Good agreement | Minor differences (phase convention, numerics) |
+| 0.80 – 0.95 | Fair agreement | Investigate input differences |
+| < 0.80 | Poor agreement | Likely input mismatch or unit error |
+| Negative | Anti-correlated | Data extraction bug (wrong frequency order, wrong units) |
+
+### Common Causes of Poor Correlation
+
+1. **Negative correlations**: Frequency arrays in different order (ascending vs descending)
+2. **Near-zero correlations**: Hz vs rad/s mismatch (factor of 2*pi offset)
+3. **NaN correlations**: Zero standard deviation (all-zero DOF, e.g. yaw for head seas)
+4. **Good amplitude, bad phase**: Different time convention (e^{+iwt} vs e^{-iwt})
 
 ## Related Skills
 
