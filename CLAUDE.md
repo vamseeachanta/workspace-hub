@@ -70,7 +70,11 @@ Save plans to: `specs/modules/<module>/`
 - Templates: `specs/templates/plan-template.md` or `plan-template-minimal.md`
 - Required metadata: `title`, `description`, `version`, `module`, `session.id`, `session.agent`, `review`
 
-**Cross-Review (MANDATORY)**: 3 iterations with OpenAI Codex + Google Gemini. Use `scripts/review/cross-review.sh`.
+**Cross-Review (MANDATORY)**: All available AI agents must review. Use `scripts/review/cross-review.sh <file> all`.
+- **Claude** (current session): inline review by orchestrating agent
+- **Codex CLI**: `codex review --commit <sha>` or `codex exec` for content review
+- **Gemini CLI**: `gemini --prompt` for non-interactive review
+- Minimum: 3 reviewers. If a CLI produces no output, note as NO_OUTPUT and proceed with remaining verdicts.
 
 ## SPARC Modes
 

@@ -34,7 +34,7 @@ HEREDOC
 )"
 
 # Submit to gemini (pipe mode, non-interactive)
-echo "$REVIEW_INPUT" | gemini --quiet 2>/dev/null || {
+echo "$REVIEW_INPUT" | gemini --prompt "Review the following code" 2>/dev/null || {
   echo "# Gemini execution failed"
   echo "# Content saved for manual review"
   echo ""
