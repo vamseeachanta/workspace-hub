@@ -43,6 +43,19 @@ Agents on-demand: `.claude/agent-library/<category>/<agent>.md`
 - `github/` - pr-manager, code-review-swarm, release-manager
 - `sparc/` - specification, pseudocode, architecture
 
+## Git Operations
+
+- Submodules: handle individually, expect force-pushed refs and merge conflicts
+- Never rebase diverged branches — use merge or `reset --hard origin/<branch>` after user confirmation
+- Windows: report path limitations (trailing spaces, long paths, symlinks) immediately, don't retry
+- Shell scripts: use `#!/usr/bin/env bash`, ensure LF line endings
+
+## Work Items & Approval Gates
+
+- Work items (WRK-*) stored at workspace-hub level: `.claude/work-queue/`
+- Before executing plans, running simulations, or making git commits: present plan, wait for explicit approval
+- Never autonomously execute multi-step workflows without user confirmation
+
 ## Commands
 
 `./scripts/workspace` | `./scripts/repository_sync`

@@ -451,6 +451,30 @@ Agents can use repository sync for:
 - [compliance-check](../compliance-check/SKILL.md) - Standards verification
 - [sparc-workflow](../sparc-workflow/SKILL.md) - Development methodology
 
+## Windows / Git Bash Workarounds
+
+These are learned from 44+ sync sessions on Windows MINGW64:
+
+### Path Issues
+- Trailing spaces in remote filenames prevent checkout — use `git config core.protectNTFS false` or skip those files
+- Long paths: enable `git config --global core.longpaths true`
+- Symlinks require admin — use `git config core.symlinks false` as fallback
+
+### Line Endings
+- Shell scripts must use LF, not CRLF — verify with `file script.sh`
+- Fix: `dos2unix script.sh` or `git config core.autocrlf input`
+
+### Force-Pushed Refs
+- When submodule remote was force-pushed: `git fetch origin && git reset --hard origin/main`
+- Never rebase diverged branches — always merge or hard-reset after user confirmation
+
+### Unregistered Submodules
+- Check `.gitmodules` before assuming a directory is a submodule
+- `git submodule status` shows registered vs unregistered
+
+### .gitignore Conflicts
+- When remote adds files matching local .gitignore: `git add -f <file>` to force-track
+
 ## Best Practices
 
 ### Commit Messages
