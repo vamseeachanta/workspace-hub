@@ -6,7 +6,7 @@
 set -euo pipefail
 
 # Determine workspace root
-WORKSPACE_ROOT="${WORKSPACE_HUB:-/mnt/github/workspace-hub}"
+WORKSPACE_ROOT="${WORKSPACE_HUB:-$(cd "$(dirname "$0")/../../.." && pwd)}"
 STATE_DIR="${WORKSPACE_ROOT}/.claude/state"
 STATE_FILE="${STATE_DIR}/session-memory.json"
 SPECS_DIR="${WORKSPACE_ROOT}/specs/modules"

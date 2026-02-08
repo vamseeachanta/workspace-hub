@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # aggregate-learnings.sh - Aggregate session transcripts for RAG
 
-WS="${WORKSPACE_HUB:-/d/workspace-hub}"
-[ ! -d "$WS" ] && WS="/mnt/github/workspace-hub"
+WS="${WORKSPACE_HUB:-$(cd "$(dirname "$0")/../.." && pwd)}"
 
 TRANSCRIPT_DIR="${WS}/.claude/skills/session-logs/transcripts"
 OUTPUT_DIR="${WS}/.claude/skills/session-logs/aggregated"

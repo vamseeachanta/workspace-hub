@@ -8,8 +8,7 @@
 # - Auto-extracts transcript for RAG on exit
 # - Preserves all Claude functionality
 
-WS="${WORKSPACE_HUB:-/d/workspace-hub}"
-[ ! -d "$WS" ] && WS="/mnt/github/workspace-hub"
+WS="${WORKSPACE_HUB:-$(cd "$(dirname "$0")/../.." && pwd)}"
 
 LOG_DIR="${WS}/.claude/skills/session-logs/raw"
 mkdir -p "$LOG_DIR"
