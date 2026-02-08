@@ -13,7 +13,7 @@ This directory contains the **master agent registry** for workspace-hub, central
 
 ```bash
 # Navigate to any repository
-cd /mnt/local-analysis/workspace-hub/<repo-name>
+cd <workspace-hub>/<repo-name>
 
 # Use agent orchestrator for intelligent agent selection
 ./modules/automation/agent_orchestrator.sh code-generation "Create REST API"
@@ -312,7 +312,7 @@ bash modules/automation/validate_agent_configs.sh
 
 ```bash
 # In digitalmodel repository
-cd /mnt/local-analysis/workspace-hub/digitalmodel
+cd <workspace-hub>/digitalmodel
 
 # Use AQWA agent
 droid exec --agent aqwa "Analyze floating platform hydrodynamics"

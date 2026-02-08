@@ -2,7 +2,7 @@
 
 > User-level skills for Claude Code, accessible across all projects.
 >
-> Location: `~/.claude/skills/` (symlinked to `/mnt/local-analysis/workspace-hub/.claude/skills/`)
+> Location: `~/.claude/skills/` (symlinked to `<workspace-hub>/.claude/skills/`)
 >
 > Last Updated: 2026-02-03
 > Template Version: 2.0.0

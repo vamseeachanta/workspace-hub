@@ -50,7 +50,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat | \"${WORKSPACE_HUB:-/mnt/local-analysis/workspace-hub}/.claude/hooks/session-logger.sh\" pre"
+            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null || git rev-parse --show-toplevel)}/.claude/hooks/session-logger.sh\" pre"
           }
         ]
       },
@@ -70,7 +70,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat | \"${WORKSPACE_HUB:-/mnt/local-analysis/workspace-hub}/.claude/hooks/session-logger.sh\" post"
+            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null || git rev-parse --show-toplevel)}/.claude/hooks/session-logger.sh\" post"
           }
         ]
       },
@@ -83,7 +83,7 @@
           },
           {
             "type": "command",
-            "command": "cat | \"${WORKSPACE_HUB:-/mnt/local-analysis/workspace-hub}/.claude/hooks/capture-corrections.sh\""
+            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null || git rev-parse --show-toplevel)}/.claude/hooks/capture-corrections.sh\""
           }
         ]
       }
@@ -94,7 +94,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat | \"${WORKSPACE_HUB:-/mnt/local-analysis/workspace-hub}/.claude/hooks/session-memory/pre-compact-save.sh\""
+            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null || git rev-parse --show-toplevel)}/.claude/hooks/session-memory/pre-compact-save.sh\""
           }
         ]
       },
@@ -123,7 +123,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat | \"${WORKSPACE_HUB:-/mnt/local-analysis/workspace-hub}/.claude/hooks/session-memory/session-end-evaluate.sh\""
+            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null || git rev-parse --show-toplevel)}/.claude/hooks/session-memory/session-end-evaluate.sh\""
           }
         ]
       },
