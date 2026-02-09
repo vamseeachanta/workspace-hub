@@ -3,9 +3,7 @@
 # Usage: ./extract-session-for-rag.sh [--current|--today|--recent N]
 
 CLAUDE_HOME="${HOME}/.claude"
-WS="/d/workspace-hub"
-[ ! -d "$WS" ] && WS="/mnt/github/workspace-hub"
-[ ! -d "$WS" ] && WS="${HOME}/workspace-hub"
+WS="${WORKSPACE_HUB:-$(cd "$(dirname "$0")/../.." && pwd)}"
 
 OUTPUT_DIR="${WS}/.claude/skills/session-logs/transcripts"
 mkdir -p "$OUTPUT_DIR"

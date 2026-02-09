@@ -4,7 +4,8 @@
 #
 # Usage: ./feedback.sh <task_id_or_timestamp> <rating_1_to_5> [comment]
 
-LOG_FILE="/mnt/github/workspace-hub/scripts/routing/logs/provider_recommendations.jsonl"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_FILE="$SCRIPT_DIR/logs/provider_recommendations.jsonl"
 
 if [[ $# -lt 2 ]]; then
     echo "Usage: $0 <timestamp> <rating_1_5> [comment]"
@@ -19,7 +20,7 @@ COMMENT="$3"
 # This is tricky with JSONL. A simple way is to append a new feedback entry 
 # or use a separate file. For simplicity, we'll append to a feedback.jsonl.
 
-FEEDBACK_FILE="/mnt/github/workspace-hub/scripts/routing/logs/feedback.jsonl"
+FEEDBACK_FILE="$SCRIPT_DIR/logs/feedback.jsonl"
 
 jq -n \
   --arg ts "$TIMESTAMP" \

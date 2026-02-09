@@ -3,7 +3,7 @@
 # Usage: ./setup_maintenance_cron.sh [install|remove|status|run]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WORKSPACE_ROOT="${WORKSPACE_ROOT:-/mnt/github/workspace-hub}"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(cd "$(dirname "$0")/../../.." && pwd)}"
 REPORT_DIR="$WORKSPACE_ROOT/.claude/reports/maintenance"
 CRON_CMD="0 6 * * * $SCRIPT_DIR/daily_repo_maintenance.sh >> $REPORT_DIR/cron.log 2>&1"
 CRON_MARKER="# daily-repo-maintenance"

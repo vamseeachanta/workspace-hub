@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # cross-review.sh — Unified cross-review submission script
-# Submits content to Claude, Codex, and/or Gemini for review
+# Submits content to all available AI agents (Claude, Codex, Gemini) for review
+# Cross-review is MANDATORY for all plans and implementations per CLAUDE.md
 # Usage: cross-review.sh <file_or_diff> <reviewer: claude|codex|gemini|all> [--type plan|implementation|commit]
+# Preferred: cross-review.sh <file_or_diff> all --type implementation
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"

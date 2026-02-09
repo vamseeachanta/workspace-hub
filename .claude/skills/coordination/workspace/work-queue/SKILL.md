@@ -1,7 +1,7 @@
 ---
 name: work-queue
 description: Maintains a queue of work items (features, bugs, tasks) across workspace-hub repositories with two-phase capture and process pipeline
-version: 1.1.0
+version: 1.2.0
 category: workspace-hub
 type: skill
 trigger: manual
@@ -74,6 +74,7 @@ Smart routing: Action verbs (run, go, start) -> Process. Descriptive content -> 
 - Select next item by priority from `pending/`
 - Triage: classify complexity -> Route A/B/C
 - Dependency check: verify `blocked_by` items are archived
+- **Plan gate (ALL routes)**: create or confirm a plan with the user before implementation (see Planning Requirement below)
 - Auto-claim: move to `working/`, update frontmatter (automatic, no manual step)
 - Pre-check: repo-readiness on target repos
 - Delegate to subagents per route
@@ -84,8 +85,8 @@ Smart routing: Action verbs (run, go, start) -> Process. Descriptive content -> 
 ## Complexity Routing
 
 ```
-Route A (Simple):  Triage -> Implement -> Test -> Archive
-Route B (Medium):  Triage -> Explore -> Implement -> Test -> Archive
+Route A (Simple):  Triage -> Plan -> Implement -> Test -> Archive
+Route B (Medium):  Triage -> Plan+Explore -> Implement -> Test -> Archive
 Route C (Complex): Triage -> Plan+Explore -> Implement -> Test -> Review -> Archive
 ```
 
@@ -95,7 +96,64 @@ Route C (Complex): Triage -> Plan+Explore -> Implement -> Test -> Review -> Arch
 | Medium | Clear outcome, unknown files, 1-2 repos, 50-200 words | B |
 | Complex | Architectural, 3+ repos, ambiguous scope, >200 words | C |
 
-Route C items generate a spec in `specs/modules/` using existing plan templates.
+**All routes require a plan.** The plan depth scales with complexity (see Planning Requirement below).
+
+## Planning Requirement
+
+**Every work item must have an approved plan before implementation begins.** This ensures sufficient alignment with the user and prevents wasted effort.
+
+### Plan Depth by Route
+
+| Route | Plan Location | Plan Depth | User Approval |
+|-------|--------------|------------|---------------|
+| A (Simple) | Inline in work item body (`## Plan` section) | 3-5 bullet points: what files change, what the change is, how to verify | User confirms before implementation |
+| B (Medium) | Inline in work item body (`## Plan` section) | Exploration summary + numbered steps with file paths, expected changes, and test strategy | User confirms before implementation |
+| C (Complex) | Separate spec in `specs/modules/` (linked via `spec_ref`) | Full spec using `specs/templates/plan-template.md` with architecture, implementation sequence, test plan, and cross-review | User approves spec before implementation |
+
+### Plan Gate Workflow
+
+1. **Check `spec_ref`**: If the work item already has an approved plan, proceed to implementation
+2. **No plan exists**: Generate a plan at the appropriate depth for the route
+3. **Present to user**: Show the plan and wait for explicit approval
+4. **User approves**: Update work item with plan content (Route A/B) or link to spec (Route C), then proceed
+5. **User requests changes**: Revise the plan and re-present
+6. **No implementation without approval**: Never begin coding until the plan is confirmed
+
+### Plan Content (Route A/B — Inline)
+
+Add a `## Plan` section to the work item body:
+
+```markdown
+## Plan
+- **Files**: `src/foo/bar.py` (edit), `tests/test_bar.py` (new)
+- **Change**: Update the `process()` function to handle edge case X
+- **Test**: Add unit test for edge case X, verify existing tests pass
+- **Verify**: Run `pytest tests/test_bar.py -v`
+
+*Approved by user: 2026-02-08*
+```
+
+### Plan Content (Route C — Spec File)
+
+Create spec in `specs/modules/<name>.md` using existing plan templates. Link via `spec_ref` in frontmatter.
+
+### Plan Naming Convention
+
+**Plan documents must use descriptive, human-readable names** — not random codenames. The filename should make the plan's purpose immediately obvious for future retrieval.
+
+Format: `wrk-NNN-<short-description>.md`
+
+| Example | Good | Bad |
+|---------|------|-----|
+| Git cleanup plan | `wrk-098-git-history-cleanup.md` | `enumerated-conjuring-cake.md` |
+| Benchmark plan | `wrk-031-diffraction-benchmark.md` | `mighty-gliding-lemur.md` |
+| OrcaFlex converter | `wrk-064-orcaflex-format-converter.md` | `harmonic-knitting-gizmo.md` |
+
+Rules:
+- Prefix with `wrk-NNN-` to link back to the work item
+- Use `kebab-case` for the description portion
+- Keep the description to 3-5 words that capture the essence
+- Existing randomly-named specs can be renamed incrementally as items are processed
 
 ### Compound Integration
 
@@ -134,7 +192,7 @@ workspace-hub/.claude/work-queue/
   state.yaml        # Repo-local counters
 ```
 
-### Repo-Local Specs (Route C only)
+### Repo-Local Specs (all routes with external plans)
 ```
 <target-repo>/specs/modules/<module>/
   plan.md           # Full plan synced from workspace-hub
@@ -225,7 +283,7 @@ Workspace-hub is always the source of truth. If conflicts arise, master wins.
 | claude-reflect | Checklist item: queue counts, stale item alerts (>7 days blocked) |
 | skill-learner | Post-archive feedback: triage accuracy tracking |
 | repo-readiness | Pre-check before processing each work item |
-| specs/modules | Route C items generate plan files with bidirectional linking |
+| specs/modules | All routes generate plans; Route C produces full spec files with bidirectional linking |
 
 ## Scripts
 
@@ -256,6 +314,12 @@ Workspace-hub is always the source of truth. If conflicts arise, master wins.
 
 ## Version History
 
+- **1.2.0** (2026-02-08): Mandatory planning for all routes
+  - Plan gate required before implementation on ALL routes (A, B, C) — not just Route C
+  - Plan depth scales by complexity: inline bullets (A), inline steps (B), full spec (C)
+  - User must explicitly approve plan before implementation begins
+  - Descriptive plan naming convention: `wrk-NNN-<short-description>.md` replaces random codenames
+  - Existing random-named specs to be renamed incrementally
 - **1.1.0** (2026-01-29): Repo-local sync
   - Work items synced to target repo `.claude/work-queue/`
   - Route C specs synced to target repo `specs/modules/`

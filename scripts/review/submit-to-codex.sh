@@ -33,10 +33,21 @@ ${CONTENT}
 HEREDOC
 )"
 
-# Submit to codex (pipe mode, non-interactive)
-echo "$REVIEW_INPUT" | codex --quiet 2>/dev/null || {
-  echo "# Codex execution failed"
-  echo "# Content saved for manual review"
-  echo ""
-  echo "$REVIEW_INPUT"
-}
+# Submit to codex
+# If reviewing a git commit, use codex review --commit
+# Otherwise pipe content to codex exec
+if [[ "${CODEX_COMMIT_SHA:-}" != "" ]]; then
+  codex review --commit "$CODEX_COMMIT_SHA" "$PROMPT" 2>/dev/null || {
+    echo "# Codex review --commit failed"
+    echo "# Content saved for manual review"
+    echo ""
+    echo "$REVIEW_INPUT"
+  }
+else
+  echo "$REVIEW_INPUT" | codex exec - 2>/dev/null || {
+    echo "# Codex execution failed"
+    echo "# Content saved for manual review"
+    echo ""
+    echo "$REVIEW_INPUT"
+  }
+fi

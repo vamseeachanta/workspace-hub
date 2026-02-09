@@ -5,7 +5,7 @@
 set -uo pipefail
 
 # Configuration
-WORKSPACE_ROOT="${WORKSPACE_ROOT:-/mnt/github/workspace-hub}"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 DATE=$(date '+%Y-%m-%d')
 BACKUP_DIR="$WORKSPACE_ROOT/.claude/backups/$DATE"
 

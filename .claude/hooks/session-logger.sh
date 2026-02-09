@@ -6,10 +6,7 @@
 [ "${CLAUDE_SESSION_LOGGING:-true}" != "true" ] && exit 0
 
 # Detect workspace hub
-WS="${WORKSPACE_HUB:-}"
-[ -z "$WS" ] && [ -d "/d/workspace-hub" ] && WS="/d/workspace-hub"
-[ -z "$WS" ] && [ -d "/mnt/github/workspace-hub" ] && WS="/mnt/github/workspace-hub"
-[ -z "$WS" ] && WS="${HOME}/workspace-hub"
+WS="${WORKSPACE_HUB:-$(cd "$(dirname "$0")/../.." && pwd)}"
 
 # Write to state/sessions for RAGS analysis pipeline
 LOG_DIR="${WS}/.claude/state/sessions"

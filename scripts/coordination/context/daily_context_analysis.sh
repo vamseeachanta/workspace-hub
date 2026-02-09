@@ -6,7 +6,7 @@
 set -uo pipefail
 
 # Configuration
-WORKSPACE_ROOT="${WORKSPACE_ROOT:-/mnt/github/workspace-hub}"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPORT_DIR="$WORKSPACE_ROOT/.claude/reports"
 DATE=$(date '+%Y-%m-%d')

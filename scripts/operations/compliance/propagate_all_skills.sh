@@ -16,9 +16,9 @@ NC='\033[0m' # No Color
 
 # Configuration
 SKILLS_SOURCE="$HOME/.claude/skills"
-WORKSPACE_ROOT="/mnt/github"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_CONFIG="$WORKSPACE_ROOT/workspace-hub/config/repos.conf"
+WORKSPACE_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+REPO_CONFIG="$WORKSPACE_ROOT/config/repos.conf"
 
 # Statistics
 total_repos=0
@@ -133,7 +133,7 @@ if [ -f "$REPO_CONFIG" ]; then
 else
     echo -e "${YELLOW}⚠ No config file found at $REPO_CONFIG${NC}"
     echo "Propagating to workspace-hub only..."
-    propagate_to_repo "$WORKSPACE_ROOT/workspace-hub"
+    propagate_to_repo "$WORKSPACE_ROOT"
     ((total_repos++))
 fi
 

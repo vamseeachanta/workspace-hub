@@ -21,7 +21,7 @@ detect_workspace_hub() {
     fi
     case "$(uname -s)" in
         Linux*)
-            for dir in "/mnt/github/workspace-hub" "$HOME/github/workspace-hub" "$HOME/workspace-hub"; do
+            for dir in "$(cd "$(dirname "$0")/../.." && pwd)" "$HOME/github/workspace-hub" "$HOME/workspace-hub"; do
                 [[ -d "$dir" ]] && echo "$dir" && return
             done
             ;;

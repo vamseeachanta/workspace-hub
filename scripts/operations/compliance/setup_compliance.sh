@@ -12,6 +12,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 REPO_PATH="${1:-.}"
+HUB_ROOT="$HUB_ROOT"
 
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}Setting Up Compliance Infrastructure${NC}"
@@ -37,8 +38,8 @@ echo ""
 echo -e "${BLUE}Setting up guideline documents...${NC}"
 
 if [ ! -f "$REPO_PATH/docs/AI_USAGE_GUIDELINES.md" ]; then
-    if [ -f "/mnt/github/workspace-hub/docs/AI_USAGE_GUIDELINES.md" ]; then
-        cp "/mnt/github/workspace-hub/docs/AI_USAGE_GUIDELINES.md" "$REPO_PATH/docs/"
+    if [ -f "$HUB_ROOT/docs/AI_USAGE_GUIDELINES.md" ]; then
+        cp "$HUB_ROOT/docs/AI_USAGE_GUIDELINES.md" "$REPO_PATH/docs/"
         echo -e "${GREEN}✓ Copied AI_USAGE_GUIDELINES.md${NC}"
     else
         echo -e "${YELLOW}⚠ AI_USAGE_GUIDELINES.md not found in workspace-hub${NC}"
@@ -46,8 +47,8 @@ if [ ! -f "$REPO_PATH/docs/AI_USAGE_GUIDELINES.md" ]; then
 fi
 
 if [ ! -f "$REPO_PATH/docs/AI_AGENT_GUIDELINES.md" ]; then
-    if [ -f "/mnt/github/workspace-hub/docs/AI_AGENT_GUIDELINES.md" ]; then
-        cp "/mnt/github/workspace-hub/docs/AI_AGENT_GUIDELINES.md" "$REPO_PATH/docs/"
+    if [ -f "$HUB_ROOT/docs/AI_AGENT_GUIDELINES.md" ]; then
+        cp "$HUB_ROOT/docs/AI_AGENT_GUIDELINES.md" "$REPO_PATH/docs/"
         echo -e "${GREEN}✓ Copied AI_AGENT_GUIDELINES.md${NC}"
     else
         echo -e "${YELLOW}⚠ AI_AGENT_GUIDELINES.md not found in workspace-hub${NC}"
@@ -55,8 +56,8 @@ if [ ! -f "$REPO_PATH/docs/AI_AGENT_GUIDELINES.md" ]; then
 fi
 
 if [ ! -f "$REPO_PATH/docs/DEVELOPMENT_WORKFLOW.md" ]; then
-    if [ -f "/mnt/github/workspace-hub/docs/DEVELOPMENT_WORKFLOW.md" ]; then
-        cp "/mnt/github/workspace-hub/docs/DEVELOPMENT_WORKFLOW.md" "$REPO_PATH/docs/"
+    if [ -f "$HUB_ROOT/docs/DEVELOPMENT_WORKFLOW.md" ]; then
+        cp "$HUB_ROOT/docs/DEVELOPMENT_WORKFLOW.md" "$REPO_PATH/docs/"
         echo -e "${GREEN}✓ Copied DEVELOPMENT_WORKFLOW.md${NC}"
     else
         echo -e "${YELLOW}⚠ DEVELOPMENT_WORKFLOW.md not found in workspace-hub${NC}"
@@ -77,8 +78,8 @@ TEMPLATE_FILES=(
 
 for template in "${TEMPLATE_FILES[@]}"; do
     if [ ! -f "$REPO_PATH/templates/$template" ]; then
-        if [ -f "/mnt/github/workspace-hub/templates/$template" ]; then
-            cp "/mnt/github/workspace-hub/templates/$template" "$REPO_PATH/templates/"
+        if [ -f "$HUB_ROOT/templates/$template" ]; then
+            cp "$HUB_ROOT/templates/$template" "$REPO_PATH/templates/"
             echo -e "${GREEN}✓ Copied template: $template${NC}"
         else
             echo -e "${YELLOW}⚠ Template not found: $template${NC}"

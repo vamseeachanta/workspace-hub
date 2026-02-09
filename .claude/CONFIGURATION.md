@@ -396,7 +396,7 @@ wrapper.after_task_execution(result, "completed", ["All phases complete"], "Depl
 
 1. **Verify installation**: Run `python -c "from context_manager import ContextManager"`
 2. **Check state directory**: `ls ~/.claude/state/`
-3. **Review CLAUDE.md**: Full context management rules at `/mnt/github/workspace-hub/.claude/CLAUDE.md`
+3. **Review CLAUDE.md**: Full context management rules at `<workspace-hub>/.claude/CLAUDE.md`
 4. **Try checkpoint creation**: `python .claude/tools/context_manager.py checkpoint "test" "complete"`
 
 ## Support

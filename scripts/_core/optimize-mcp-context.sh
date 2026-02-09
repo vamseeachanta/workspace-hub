@@ -4,7 +4,7 @@
 
 set -e
 
-WORKSPACE_ROOT="/mnt/github/workspace-hub"
+WORKSPACE_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 TEMPLATE_DIR="$WORKSPACE_ROOT/templates"
 DRY_RUN=false
 VERBOSE=false

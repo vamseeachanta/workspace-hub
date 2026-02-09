@@ -4,7 +4,7 @@
 
 set -e
 
-WORKSPACE_CONFIG="/mnt/github/workspace-hub/config/tabby"
+WORKSPACE_CONFIG="$(cd "$(dirname "$0")/../../.." && pwd)/config/tabby"
 TABBY_CONFIG="$HOME/.config/tabby"
 
 # Colors for output

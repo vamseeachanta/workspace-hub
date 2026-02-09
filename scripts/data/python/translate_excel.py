@@ -108,7 +108,7 @@ class ExcelTranslator:
             return False
 
 def main():
-    target_dir = "/mnt/github/workspace-hub/doris/62092_sesa/data/calculations"
+    target_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "doris", "62092_sesa", "data", "calculations")
     
     if not os.path.exists(target_dir):
         print(f"❌ Target directory not found: {target_dir}")

@@ -6,7 +6,7 @@
 set -euo pipefail
 
 # Determine workspace root
-WORKSPACE_ROOT="${WORKSPACE_HUB:-/mnt/github/workspace-hub}"
+WORKSPACE_ROOT="${WORKSPACE_HUB:-$(cd "$(dirname "$0")/../../.." && pwd)}"
 STATE_DIR="${WORKSPACE_ROOT}/.claude/state"
 PATTERNS_FILE="${STATE_DIR}/learned-patterns.json"
 SESSION_LOG_DIR="${STATE_DIR}/sessions"
@@ -112,3 +112,9 @@ echo "${NEW_PATTERN}" > "${SESSION_SUMMARY_FILE}"
 echo "Session patterns evaluated and saved"
 echo "  Patterns file: ${PATTERNS_FILE}"
 echo "  Session summary: ${SESSION_SUMMARY_FILE}"
+
+# Generate session report for /insights analysis
+REPORT_SCRIPT="${WORKSPACE_ROOT}/.claude/hooks/session-memory/generate-session-report.sh"
+if [[ -x "$REPORT_SCRIPT" ]]; then
+    echo "${HOOK_INPUT}" | "$REPORT_SCRIPT" "$SESSION_ID" 2>/dev/null || true
+fi
