@@ -53,7 +53,7 @@ scripts:
 |---------|--------|-------------|
 | `/work add <desc>` | Capture | Log one or more work items |
 | `/work run` or `/work` | Process | Process next item in queue |
-| `/work list` | Status | Show all pending/working/blocked items (regenerates INDEX.md) |
+| `/work list` | Status | Read and display `.claude/work-queue/INDEX.md` |
 | `/work status WRK-NNN` | Detail | Show specific item details |
 | `/work prioritize` | Reorder | Interactive priority adjustment |
 | `/work archive WRK-NNN` | Archive | Manually archive an item |
@@ -69,6 +69,7 @@ Smart routing: Action verbs (run, go, start) -> Process. Descriptive content -> 
 - Classify complexity (simple <50 words; medium 50-200 words; complex >200 words or 3+ features)
 - Create file in `pending/` with proper template
 - Create context document for large inputs
+- Regenerate INDEX.md: run `python3 .claude/work-queue/scripts/generate-index.py`
 
 ### Phase 2: Process
 - Select next item by priority from `pending/`
@@ -76,9 +77,11 @@ Smart routing: Action verbs (run, go, start) -> Process. Descriptive content -> 
 - Dependency check: verify `blocked_by` items are archived
 - **Plan gate (ALL routes)**: create or confirm a plan with the user before implementation (see Planning Requirement below)
 - Auto-claim: move to `working/`, update frontmatter (automatic, no manual step)
+- Regenerate INDEX.md after status change
 - Pre-check: repo-readiness on target repos
 - Delegate to subagents per route
 - Test, commit, auto-archive pipeline (archives when all acceptance criteria met)
+- Regenerate INDEX.md after archiving
 - Failure handling (3 attempts -> mark failed)
 - Batch mode: `/work run --batch` processes all Route A items in sequence
 
@@ -294,6 +297,29 @@ Workspace-hub is always the source of truth. If conflicts arise, master wins.
 | `archive-item.sh` | Move to `archive/YYYY-MM/` with metadata |
 | `queue-report.sh` | Generate summary for reflect integration |
 | `generate-index.py` | Generate `INDEX.md` with multi-view lookup tables |
+
+## Index Management
+
+**INDEX.md is the source of truth for listing.** Never scan individual work item files for a list operation.
+
+### `/work list` Behavior
+1. Read `.claude/work-queue/INDEX.md`
+2. Display the relevant section (filter by repo/status/priority if args provided)
+3. If INDEX.md is missing or empty, regenerate: `python3 .claude/work-queue/scripts/generate-index.py`
+
+### Index Regeneration Triggers
+After ANY mutation to work items, regenerate the index:
+- `/work add` — after creating the new item file
+- `/work archive` — after moving the item to archive/
+- Status changes (pending → working, working → done, etc.)
+- Priority or complexity changes
+
+Regeneration command:
+```
+python3 .claude/work-queue/scripts/generate-index.py
+```
+
+This is fast (<2s for 100+ items) and ensures INDEX.md stays current.
 
 ## Error Handling
 
