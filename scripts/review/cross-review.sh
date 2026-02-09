@@ -11,7 +11,11 @@ PROMPTS_DIR="${SCRIPT_DIR}/prompts"
 RESULTS_DIR="${SCRIPT_DIR}/results"
 mkdir -p "$RESULTS_DIR"
 
-FILE_OR_DIFF="${1:?Usage: cross-review.sh <file_or_diff> <reviewer> [--type plan|implementation|commit]}"
+CLEANUP_FILES=()
+cleanup() { for f in "${CLEANUP_FILES[@]}"; do rm -f "$f"; done; }
+trap cleanup EXIT
+
+FILE_OR_DIFF="${1:?Usage: cross-review.sh <file_or_diff_or_sha> <reviewer> [--type plan|implementation|commit]}"
 REVIEWER="${2:?Specify reviewer: claude, codex, gemini, or all}"
 REVIEW_TYPE="implementation"
 
@@ -30,16 +34,29 @@ case "$REVIEW_TYPE" in
   *) echo "Invalid review type: $REVIEW_TYPE (must be plan, implementation, or commit)" >&2; exit 1 ;;
 esac
 
-# Get content to review
+# Determine input mode: file, commit SHA, git range, or inline
+CONTENT_FILE=""
+COMMIT_SHA=""
+SOURCE_NAME=""
+
 if [[ -f "$FILE_OR_DIFF" ]]; then
-  CONTENT="$(cat "$FILE_OR_DIFF")"
+  CONTENT_FILE="$FILE_OR_DIFF"
   SOURCE_NAME="$(basename "$FILE_OR_DIFF")"
+elif git rev-parse --verify "$FILE_OR_DIFF" &>/dev/null && [[ "$FILE_OR_DIFF" != *".."* ]]; then
+  # Valid git commit SHA
+  COMMIT_SHA="$FILE_OR_DIFF"
+  SOURCE_NAME="commit-${COMMIT_SHA:0:10}"
 elif [[ "$FILE_OR_DIFF" == *".."* ]]; then
-  # Treat as git commit range
-  CONTENT="$(git diff "$FILE_OR_DIFF" 2>/dev/null || { echo "ERROR: Invalid git range" >&2; exit 1; })"
+  # Git range — write diff to temp file
+  CONTENT_FILE="$(mktemp)"
+  CLEANUP_FILES+=("$CONTENT_FILE")
+  git diff "$FILE_OR_DIFF" > "$CONTENT_FILE" 2>/dev/null || { echo "ERROR: Invalid git range" >&2; exit 1; }
   SOURCE_NAME="git-diff-${FILE_OR_DIFF//../-}"
 else
-  CONTENT="$FILE_OR_DIFF"
+  # Inline content — write to temp file
+  CONTENT_FILE="$(mktemp)"
+  CLEANUP_FILES+=("$CONTENT_FILE")
+  echo "$FILE_OR_DIFF" > "$CONTENT_FILE"
   SOURCE_NAME="inline-content"
 fi
 
@@ -53,6 +70,18 @@ fi
 PROMPT="$(cat "$PROMPT_FILE")"
 TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
 RESULT_PREFIX="${RESULTS_DIR}/${TIMESTAMP}-${SOURCE_NAME}-${REVIEW_TYPE}"
+
+# Build args for sub-scripts (--file or --commit + --prompt)
+build_review_args() {
+  local args=()
+  if [[ -n "$COMMIT_SHA" ]]; then
+    args+=(--commit "$COMMIT_SHA")
+  else
+    args+=(--file "$CONTENT_FILE")
+  fi
+  args+=(--prompt "$PROMPT")
+  echo "${args[@]}"
+}
 
 # Submit to reviewers
 submit_review() {
@@ -72,23 +101,42 @@ submit_review() {
         echo "[Claude review requires interactive session or API call]"
         echo "## Content to Review"
         echo '```'
-        echo "$CONTENT" | head -200
+        if [[ -n "$CONTENT_FILE" ]]; then
+          head -200 "$CONTENT_FILE"
+        else
+          echo "Commit: $COMMIT_SHA"
+          git show --stat "$COMMIT_SHA" 2>/dev/null | head -50
+        fi
         echo '```'
         echo "## Review Prompt"
         echo "$PROMPT"
       } > "$result_file"
       ;;
     codex)
-      "${SCRIPT_DIR}/submit-to-codex.sh" "$CONTENT" "$PROMPT" > "$result_file" 2>&1 || {
-        echo "# Codex review failed" > "$result_file"
-        echo "# Fallback: manual review required" >> "$result_file"
-      }
+      if [[ -n "$COMMIT_SHA" ]]; then
+        "${SCRIPT_DIR}/submit-to-codex.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || {
+          echo "# Codex review failed" > "$result_file"
+          echo "# Fallback: manual review required" >> "$result_file"
+        }
+      else
+        "${SCRIPT_DIR}/submit-to-codex.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || {
+          echo "# Codex review failed" > "$result_file"
+          echo "# Fallback: manual review required" >> "$result_file"
+        }
+      fi
       ;;
     gemini)
-      "${SCRIPT_DIR}/submit-to-gemini.sh" "$CONTENT" "$PROMPT" > "$result_file" 2>&1 || {
-        echo "# Gemini review failed" > "$result_file"
-        echo "# Fallback: manual review required" >> "$result_file"
-      }
+      if [[ -n "$COMMIT_SHA" ]]; then
+        "${SCRIPT_DIR}/submit-to-gemini.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || {
+          echo "# Gemini review failed" > "$result_file"
+          echo "# Fallback: manual review required" >> "$result_file"
+        }
+      else
+        "${SCRIPT_DIR}/submit-to-gemini.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || {
+          echo "# Gemini review failed" > "$result_file"
+          echo "# Fallback: manual review required" >> "$result_file"
+        }
+      fi
       ;;
   esac
 
