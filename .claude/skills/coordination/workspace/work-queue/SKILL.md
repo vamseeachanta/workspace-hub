@@ -1,7 +1,7 @@
 ---
 name: work-queue
 description: Maintains a queue of work items (features, bugs, tasks) across workspace-hub repositories with two-phase capture and process pipeline
-version: 1.2.0
+version: 1.3.0
 category: workspace-hub
 type: skill
 trigger: manual
@@ -221,6 +221,10 @@ spec_ref:
 related: []
 blocked_by: []
 synced_to: []  # repos where this item has been mirrored
+plan_reviewed: false   # true when plan has been cross-reviewed
+plan_approved: false   # true when user has approved the plan
+percent_complete: 0    # 0-100, auto-set to 100 on archive
+brochure_status:       # pending | updated | synced | n/a
 ---
 
 # Title
@@ -287,6 +291,46 @@ Workspace-hub is always the source of truth. If conflicts arise, master wins.
 | skill-learner | Post-archive feedback: triage accuracy tracking |
 | repo-readiness | Pre-check before processing each work item |
 | specs/modules | All routes generate plans; Route C produces full spec files with bidirectional linking |
+| aceengineer-website | Completion hook triggers brochure update + portfolio sync |
+
+## Completion Hook — Marketing Brochure
+
+When a work item is archived, the `on-complete-hook.sh` fires automatically:
+
+1. **Reads target repos** from the archived work item
+2. **Checks for existing brochures** at `<repo>/docs/marketing/*brochure*.md`
+3. **Sets `brochure_status: pending`** on the work item
+4. **Outputs recommended tasks**: update module brochure, sync to aceengineer-website
+
+### Brochure Lifecycle
+
+```
+Work Item Completed → brochure_status: pending
+  ↓
+Module brochure updated with new capability → brochure_status: updated
+  ↓
+aceengineer-website portfolio synced → brochure_status: synced
+```
+
+### Brochure Status Values
+
+| Status | Meaning |
+|--------|---------|
+| *(empty)* | Not yet evaluated |
+| `pending` | Completion hook fired, brochure update needed |
+| `updated` | Module brochure updated with this capability |
+| `synced` | aceengineer-website portfolio reflects this capability |
+| `n/a` | No marketing relevance (personal items, etc.) |
+
+### Marketing Brochure Locations
+
+Module brochures live at `<repo>/docs/marketing/` and are read by aceengineer-website to market capabilities. Each engineering module should have a brochure documenting its features, capabilities, and business value.
+
+```
+digitalmodel/docs/marketing/dynacard-ai-diagnostics-brochure.md
+digitalmodel/docs/marketing/schematics/*.svg
+aceengineer-website/docs/marketing/PORTFOLIO_CAPABILITIES.md
+```
 
 ## Scripts
 
@@ -294,7 +338,8 @@ Workspace-hub is always the source of truth. If conflicts arise, master wins.
 |--------|---------|
 | `next-id.sh` | Scan queue dirs for max WRK-NNN, return next |
 | `queue-status.sh` | Report counts per state |
-| `archive-item.sh` | Move to `archive/YYYY-MM/` with metadata |
+| `archive-item.sh` | Move to `archive/YYYY-MM/` with metadata, runs completion hook |
+| `on-complete-hook.sh` | Post-archive: check brochure status, set pending, recommend tasks |
 | `queue-report.sh` | Generate summary for reflect integration |
 | `generate-index.py` | Generate `INDEX.md` with multi-view lookup tables |
 
@@ -338,8 +383,27 @@ This is fast (<2s for 100+ items) and ensures INDEX.md stays current.
 - Scripts are idempotent - safe to re-run
 - Archive includes full audit trail
 
+## Index Columns
+
+The Master Table in INDEX.md includes these tracking columns:
+
+| Column | Source | Auto-detected? |
+|--------|--------|----------------|
+| Plan? | `spec_ref` field or `## Plan` body section | Yes |
+| Reviewed? | `plan_reviewed` frontmatter | No — set manually |
+| Approved? | `plan_approved` frontmatter | No — set manually |
+| % Done | `percent_complete` frontmatter (auto 100% on archive) | Partial |
+| Brochure | `brochure_status` frontmatter | Set by completion hook |
+
 ## Version History
 
+- **1.3.0** (2026-02-09): Plan tracking, brochure lifecycle, completion hook
+  - New INDEX.md columns: Plan?, Reviewed?, Approved?, % Done, Brochure
+  - Auto-detect plan existence from `spec_ref` or `## Plan` body section
+  - Completion hook (`on-complete-hook.sh`) fires on archive, sets `brochure_status: pending`
+  - `archive-item.sh` script for full archive workflow with hook integration
+  - Plan Tracking summary section in INDEX.md
+  - aceengineer-website portfolio sync lifecycle
 - **1.2.0** (2026-02-08): Mandatory planning for all routes
   - Plan gate required before implementation on ALL routes (A, B, C) — not just Route C
   - Plan depth scales by complexity: inline bullets (A), inline steps (B), full spec (C)

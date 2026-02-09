@@ -34,11 +34,15 @@ FRONTMATTER_FIELDS = [
     "id", "title", "status", "priority", "complexity", "target_repos",
     "blocked_by", "related", "children", "parent", "compound", "route",
     "created_at", "completed_at",
+    "plan_reviewed", "plan_approved", "percent_complete", "brochure_status",
 ]
 
 
 def parse_frontmatter(path: Path) -> dict | None:
-    """Extract YAML frontmatter from a markdown file."""
+    """Extract YAML frontmatter from a markdown file.
+
+    Also auto-detects plan existence from spec_ref or ``## Plan`` section.
+    """
     text = path.read_text(encoding="utf-8")
     match = re.match(r"^---\s*\n(.*?)\n---", text, re.DOTALL)
     if not match:
@@ -48,13 +52,20 @@ def parse_frontmatter(path: Path) -> dict | None:
     if yaml is not None:
         try:
             data = yaml.safe_load(raw)
-            if isinstance(data, dict):
-                return data
+            if not isinstance(data, dict):
+                data = _regex_parse(raw)
         except yaml.YAMLError:
-            pass
+            data = _regex_parse(raw)
+    else:
+        data = _regex_parse(raw)
 
-    # Fallback: simple regex parser for key: value lines
-    return _regex_parse(raw)
+    # Auto-detect plan existence from spec_ref or body ## Plan section
+    body = text[match.end():]
+    has_spec_ref = bool(data.get("spec_ref"))
+    has_plan_section = bool(re.search(r"^## Plan\b", body, re.MULTILINE))
+    data["_plan_exists"] = has_spec_ref or has_plan_section
+
+    return data
 
 
 def _regex_parse(raw: str) -> dict:
@@ -131,8 +142,16 @@ def discover_items() -> list[dict]:
                 fm.setdefault("status", status_name)
                 items.append(fm)
 
-    # Archive subdirectories
+    # Archive: files directly in archive/ and in archive/YYYY-MM/ subdirs
     if ARCHIVE_DIR.is_dir():
+        # Files directly in archive/
+        for f in sorted(ARCHIVE_DIR.glob("WRK-*.md")):
+            fm = parse_frontmatter(f)
+            if fm:
+                fm["_file"] = str(f.relative_to(QUEUE_ROOT))
+                fm.setdefault("status", "archived")
+                items.append(fm)
+        # Subdirectories (archive/2026-01/, archive/2026-02/, etc.)
         for sub in sorted(ARCHIVE_DIR.iterdir()):
             if sub.is_dir():
                 for f in sorted(sub.glob("WRK-*.md")):
@@ -165,6 +184,12 @@ def normalize(item: dict) -> dict:
     item.setdefault("compound", False)
     item.setdefault("route", "")
 
+    # Plan tracking fields
+    item.setdefault("plan_reviewed", False)
+    item.setdefault("plan_approved", False)
+    item.setdefault("percent_complete", 0)
+    item.setdefault("brochure_status", "")
+
     # Ensure lists are lists
     for field in ("target_repos", "blocked_by", "related", "children"):
         val = item[field]
@@ -182,6 +207,28 @@ def normalize(item: dict) -> dict:
     else:
         item["status"] = status
 
+    # Normalize percent_complete to int
+    try:
+        item["percent_complete"] = int(item["percent_complete"])
+    except (ValueError, TypeError):
+        item["percent_complete"] = 0
+
+    # Normalize booleans
+    for field in ("plan_reviewed", "plan_approved"):
+        val = item[field]
+        if isinstance(val, str):
+            item[field] = val.lower() in ("true", "yes", "1")
+        elif not isinstance(val, bool):
+            item[field] = bool(val)
+
+    # Determine effective plan status (auto-detect or explicit)
+    if not item.get("_plan_exists"):
+        item["_plan_exists"] = bool(item.get("spec_ref"))
+
+    # Archived items are 100% complete
+    if item["status"] == "archived" and item["percent_complete"] == 0:
+        item["percent_complete"] = 100
+
     return item
 
 
@@ -191,6 +238,37 @@ def repos_str(repos: list) -> str:
 
 def list_str(items: list) -> str:
     return ", ".join(str(i) for i in items) if items else "-"
+
+
+def bool_icon(val: bool) -> str:
+    """Render boolean as check/cross icon."""
+    return "\u2705" if val else "\u274c"
+
+
+def pct_str(val: int) -> str:
+    """Render percent complete as bar + number."""
+    if val >= 100:
+        return "\u2588\u2588\u2588 100%"
+    if val >= 75:
+        return "\u2588\u2588\u2591 %d%%" % val
+    if val >= 50:
+        return "\u2588\u2591\u2591 %d%%" % val
+    if val >= 25:
+        return "\u2591\u2591\u2591 %d%%" % val
+    return "- %d%%" % val if val > 0 else "-"
+
+
+def brochure_str(val: str) -> str:
+    """Render brochure status."""
+    if not val:
+        return "-"
+    status_map = {
+        "pending": "\u23f3 pending",
+        "updated": "\u2705 updated",
+        "synced": "\u2705 synced",
+        "n/a": "n/a",
+    }
+    return status_map.get(str(val).lower(), str(val))
 
 
 def generate_index(items: list[dict]) -> str:
@@ -279,11 +357,34 @@ def generate_index(items: list[dict]) -> str:
         w(f"| {r} | {repo_counts[r]} |")
     w("")
 
+    # ── Plan & Brochure Summary ─────────────────────────────
+    plan_count = sum(1 for it in items if it["_plan_exists"])
+    reviewed_count = sum(1 for it in items if it["plan_reviewed"])
+    approved_count = sum(1 for it in items if it["plan_approved"])
+    brochure_pending = sum(1 for it in items
+                          if str(it.get("brochure_status", "")).lower() == "pending")
+    brochure_updated = sum(1 for it in items
+                          if str(it.get("brochure_status", "")).lower()
+                          in ("updated", "synced"))
+
+    w("### Plan Tracking")
+    w("")
+    w(f"| Metric | Count |")
+    w(f"|--------|-------|")
+    w(f"| Plans exist | {plan_count} / {len(items)} |")
+    w(f"| Plans cross-reviewed | {reviewed_count} |")
+    w(f"| Plans approved | {approved_count} |")
+    w(f"| Brochure pending | {brochure_pending} |")
+    w(f"| Brochure updated/synced | {brochure_updated} |")
+    w("")
+
     # ── Master Table ─────────────────────────────────────────
     w("## Master Table")
     w("")
-    w("| ID | Title | Status | Priority | Complexity | Repos | Blocked By |")
-    w("|-----|-------|--------|----------|------------|-------|------------|")
+    w("| ID | Title | Status | Priority | Complexity | Repos | "
+      "Plan? | Reviewed? | Approved? | % Done | Brochure | Blocked By |")
+    w("|-----|-------|--------|----------|------------|-------|"
+      "-------|-----------|-----------|--------|----------|------------|")
     for it in items:
         bid = it.get("id", "?")
         title = it["title"]
@@ -291,8 +392,14 @@ def generate_index(items: list[dict]) -> str:
         prio = it["priority"]
         comp = it["complexity"]
         repos = repos_str(it["target_repos"])
+        plan = bool_icon(it["_plan_exists"])
+        reviewed = bool_icon(it["plan_reviewed"])
+        approved = bool_icon(it["plan_approved"])
+        pct = pct_str(it["percent_complete"])
+        brochure = brochure_str(it.get("brochure_status", ""))
         blocked = list_str(it["blocked_by"])
-        w(f"| {bid} | {title} | {status} | {prio} | {comp} | {repos} | {blocked} |")
+        w(f"| {bid} | {title} | {status} | {prio} | {comp} | {repos} | "
+          f"{plan} | {reviewed} | {approved} | {pct} | {brochure} | {blocked} |")
     w("")
 
     # ── By Status ────────────────────────────────────────────
