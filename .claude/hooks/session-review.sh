@@ -59,19 +59,48 @@ find_latest_transcript() {
     local claude_dir="$HOME/.claude/projects"
     [[ ! -d "$claude_dir" ]] && return 1
 
-    # Find most recently modified .jsonl file across all project dirs
-    local latest=""
-    local latest_mtime=0
-
-    # Use find if available, fallback to ls-based approach
-    while IFS= read -r -d '' f; do
-        local mtime
-        mtime=$(stat -c %Y "$f" 2>/dev/null || stat -f %m "$f" 2>/dev/null || echo 0)
-        if [[ "$mtime" -gt "$latest_mtime" ]]; then
-            latest_mtime="$mtime"
-            latest="$f"
+    # Narrow search to current project dir if possible (much faster than scanning all)
+    # Claude uses format like "D--workspace-hub-digitalmodel" for "D:\workspace-hub\digitalmodel"
+    # Drive letter is uppercase, path separators become single dash
+    local cwd_path
+    cwd_path=$(pwd)
+    # Extract drive letter and uppercase it; convert path separators to single dash
+    local project_key
+    project_key=$(echo "$cwd_path" | sed 's|^/\(.\)/|\U\1--|; s|/|-|g')
+    local search_dirs=()
+    if [[ -d "$claude_dir/$project_key" ]]; then
+        search_dirs=("$claude_dir/$project_key")
+    else
+        # Also try case-insensitive match on Windows
+        local match
+        match=$(ls -d "$claude_dir"/*/ 2>/dev/null | while read -r d; do
+            local base=$(basename "$d")
+            if [[ "${base,,}" == "${project_key,,}" ]]; then
+                echo "$d"
+                break
+            fi
+        done)
+        if [[ -n "$match" && -d "$match" ]]; then
+            search_dirs=("${match%/}")
+        else
+            # Fallback: search all project dirs (slower but works)
+            for d in "$claude_dir"/*/; do
+                [[ -d "$d" ]] && search_dirs+=("${d%/}")
+            done
+            search_dirs+=("$claude_dir")
         fi
-    done < <(find "$claude_dir" -maxdepth 2 -name "*.jsonl" -type f -print0 2>/dev/null)
+    fi
+
+    # Use ls -t to find most recent .jsonl (fast, avoids stat per file)
+    local latest=""
+    for search_dir in "${search_dirs[@]}"; do
+        local candidate
+        candidate=$(ls -t "$search_dir"/*.jsonl 2>/dev/null | head -1)
+        if [[ -n "$candidate" && -f "$candidate" ]]; then
+            latest="$candidate"
+            break
+        fi
+    done
 
     [[ -n "$latest" ]] && echo "$latest"
 }
@@ -102,18 +131,24 @@ else
 fi
 
 # --- Extraction functions ---
+# Claude transcript format: each JSONL line has top-level .type ("user"|"assistant"|"file-history-snapshot")
+# Tool uses: .type=="assistant", .message.content[] has {type:"tool_use", name:"Write", input:{...}}
+# Tool results: .type=="tool_result", .tool_result.content (text)
+# User messages: .type=="user", .message.content (string or [{type:"text",text:"..."}])
 
 # 1. New files created (Write tool events)
 extract_new_files() {
     local outfile="${REVIEW_DIR}/new-files.jsonl"
     jq -c '
-        select(.type == "tool_use" and .tool_name == "Write")
+        select(.type == "assistant")
+        | .message.content[]?
+        | select(.type == "tool_use" and .name == "Write")
         | {
             timestamp: "'"$TIMESTAMP"'",
             session: "'"$SESSION_TAG"'",
             signal: "new_file",
-            file_path: .tool_input.file_path,
-            content_preview: (.tool_input.content // "" | .[0:200])
+            file_path: .input.file_path,
+            content_preview: (.input.content // "" | .[0:200])
         }
     ' "$TRANSCRIPT" >> "$outfile" 2>/dev/null || true
 }
@@ -122,18 +157,16 @@ extract_new_files() {
 extract_errors() {
     local outfile="${REVIEW_DIR}/errors.jsonl"
     jq -c '
-        select(
-            .type == "tool_result"
-            and (
-                (.content // "" | tostring | test("error|Error|ERROR|failed|Failed|FAILED|exception|Exception|traceback|Traceback"))
-            )
+        select(.type == "tool_result")
+        | select(
+            (.tool_result.content // "" | tostring | test("error|Error|ERROR|failed|Failed|FAILED|exception|Exception|traceback|Traceback"))
         )
         | {
             timestamp: "'"$TIMESTAMP"'",
             session: "'"$SESSION_TAG"'",
             signal: "error_pattern",
-            tool: .tool_name,
-            error_preview: (.content // "" | tostring | .[0:500])
+            tool: .tool_result.name,
+            error_preview: (.tool_result.content // "" | tostring | .[0:500])
         }
     ' "$TRANSCRIPT" >> "$outfile" 2>/dev/null || true
 }
@@ -142,15 +175,15 @@ extract_errors() {
 extract_insights() {
     local outfile="${REVIEW_DIR}/insights.jsonl"
     jq -c '
-        select(
-            .role == "user"
-            and (.content // "" | tostring | test("gotcha|lesson|learned|note to self|remember|important|caveat|workaround|trick|pitfall"; "i"))
-        )
+        select(.type == "user")
+        | .message.content
+        | (if type == "array" then map(select(.type == "text") | .text) | join(" ") else tostring end) as $text
+        | select($text | test("gotcha|lesson|learned|note to self|remember|important|caveat|workaround|trick|pitfall"; "i"))
         | {
             timestamp: "'"$TIMESTAMP"'",
             session: "'"$SESSION_TAG"'",
             signal: "insight",
-            content_preview: (.content // "" | tostring | .[0:500])
+            content_preview: ($text | .[0:500])
         }
     ' "$TRANSCRIPT" >> "$outfile" 2>/dev/null || true
 }
@@ -158,11 +191,13 @@ extract_insights() {
 # 4. Skill candidates (repeated tool sequences appearing 3+ times)
 extract_skill_candidates() {
     local outfile="${REVIEW_DIR}/skill-candidates.jsonl"
-    # Extract tool sequence and find repeated 3-grams
+    # Extract tool sequence from assistant message content arrays
     local sequences
     sequences=$(jq -r '
-        select(.type == "tool_use")
-        | .tool_name
+        select(.type == "assistant")
+        | .message.content[]?
+        | select(.type == "tool_use")
+        | .name
     ' "$TRANSCRIPT" 2>/dev/null || true)
 
     [[ -z "$sequences" ]] && return
@@ -205,17 +240,27 @@ extract_skill_candidates() {
 # 5. Memory update candidates (references to MEMORY.md or memory files)
 extract_memory_candidates() {
     local outfile="${REVIEW_DIR}/memory-updates.jsonl"
+    # Check assistant text content and tool_use inputs for memory references
     jq -c '
-        select(
-            (.role == "assistant" or .type == "tool_use")
-            and (.content // .tool_input // {} | tostring | test("MEMORY\\.md|memory/|auto memory|session memory"; "i"))
-        )
-        | {
-            timestamp: "'"$TIMESTAMP"'",
-            session: "'"$SESSION_TAG"'",
-            signal: "memory_candidate",
-            context_preview: ((.content // .tool_input // {}) | tostring | .[0:500])
-        }
+        select(.type == "assistant")
+        | .message.content[]?
+        | if .type == "text" then
+            select(.text | test("MEMORY\\.md|memory/|auto memory|session memory"; "i"))
+            | {
+                timestamp: "'"$TIMESTAMP"'",
+                session: "'"$SESSION_TAG"'",
+                signal: "memory_candidate",
+                context_preview: (.text | .[0:500])
+            }
+        elif .type == "tool_use" then
+            select(.input | tostring | test("MEMORY\\.md|memory/|auto memory|session memory"; "i"))
+            | {
+                timestamp: "'"$TIMESTAMP"'",
+                session: "'"$SESSION_TAG"'",
+                signal: "memory_candidate",
+                context_preview: (.input | tostring | .[0:500])
+            }
+        else empty end
     ' "$TRANSCRIPT" >> "$outfile" 2>/dev/null || true
 }
 
