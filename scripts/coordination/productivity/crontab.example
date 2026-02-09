@@ -9,10 +9,10 @@
 #
 
 # Daily productivity summary at 6 AM
-0 6 * * * /mnt/github/workspace-hub/scripts/coordination/productivity/daily_today.sh >> /tmp/daily_today.log 2>&1
+0 6 * * * <workspace-hub>/scripts/coordination/productivity/daily_today.sh >> /tmp/daily_today.log 2>&1
 
 # Weekly summary on Monday at 6 AM
-0 6 * * 1 /mnt/github/workspace-hub/scripts/coordination/productivity/daily_today.sh --week >> /tmp/weekly_today.log 2>&1
+0 6 * * 1 <workspace-hub>/scripts/coordination/productivity/daily_today.sh --week >> /tmp/weekly_today.log 2>&1
 
 # Optional: Archive old logs on the 1st of each month
-0 0 1 * * find /mnt/github/workspace-hub/logs/daily -name "*.md" -mtime +90 -exec mv {} /mnt/github/workspace-hub/logs/archive/ \;
+0 0 1 * * find <workspace-hub>/logs/daily -name "*.md" -mtime +90 -exec mv {} <workspace-hub>/logs/archive/ \;

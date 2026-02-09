@@ -13,8 +13,8 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 # Configuration
-WORKSPACE_ROOT="/mnt/github"
-HUB_REPO="$WORKSPACE_ROOT/workspace-hub"
+WORKSPACE_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+HUB_REPO="$WORKSPACE_ROOT"
 DRY_RUN="${1:-false}"
 REPORT_FILE="propagation_report.txt"
 

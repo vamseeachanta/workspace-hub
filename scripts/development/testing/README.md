@@ -249,7 +249,7 @@ pip install pytest pytest-cov pytest-xdist
 ### "No repositories found"
 ```bash
 # Ensure repos exist locally
-ls /mnt/github/workspace-hub/digitalmodel
+ls <workspace-hub>/digitalmodel
 ```
 
 ### "Tests timeout"

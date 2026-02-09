@@ -33,7 +33,7 @@ scripts/monitoring/
 
 ### Usage Tracking File
 
-Location: `/mnt/github/workspace-hub/config/model_usage.json`
+Location: `<workspace-hub>/config/model_usage.json`
 
 Format:
 ```json
@@ -327,13 +327,13 @@ opus
 ## Data Files
 
 ### Tracking File
-- **Path:** `/mnt/github/workspace-hub/config/model_usage.json`
+- **Path:** `<workspace-hub>/config/model_usage.json`
 - **Format:** JSON with timestamp, usage %, session info
 - **Updated:** On-demand when cache is stale
 - **Retention:** Persistent (not auto-cleared)
 
 ### Recommendations Log
-- **Path:** `/mnt/github/workspace-hub/scripts/monitoring/logs/recommendations.jsonl`
+- **Path:** `<workspace-hub>/scripts/monitoring/logs/recommendations.jsonl`
 - **Format:** JSONL (one JSON object per line)
 - **Contents:** Timestamp, repo, task, complexity, recommendation, usage at time
 - **Purpose:** Audit trail and historical tracking
@@ -425,7 +425,7 @@ PERSONAL_ACTIVE="your-personal"
 ### Script permission errors
 
 - **Cause:** Scripts not executable
-- **Fix:** `chmod +x /mnt/github/workspace-hub/scripts/monitoring/lib/*.sh`
+- **Fix:** `chmod +x <workspace-hub>/scripts/monitoring/lib/*.sh`
 
 ## Performance
 

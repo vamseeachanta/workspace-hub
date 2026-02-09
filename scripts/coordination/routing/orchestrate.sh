@@ -13,7 +13,7 @@ set -o pipefail
 # --- Configuration ---
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 LIB_DIR="$SCRIPT_DIR/lib"
-CONFIG_DIR="/mnt/github/workspace-hub/config"
+CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)/config"
 LOG_DIR="$SCRIPT_DIR/logs"
 
 # --- Source Libraries ---

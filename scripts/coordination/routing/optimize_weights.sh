@@ -4,8 +4,9 @@
 #
 # Analyzes feedback and suggests adjustments to keyword weights.
 
-FEEDBACK_FILE="/mnt/github/workspace-hub/scripts/routing/logs/feedback.jsonl"
-LOG_FILE="/mnt/github/workspace-hub/scripts/routing/logs/provider_recommendations.jsonl"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FEEDBACK_FILE="$SCRIPT_DIR/logs/feedback.jsonl"
+LOG_FILE="$SCRIPT_DIR/logs/provider_recommendations.jsonl"
 
 if [[ ! -f "$FEEDBACK_FILE" ]]; then
     echo "No feedback data available yet."

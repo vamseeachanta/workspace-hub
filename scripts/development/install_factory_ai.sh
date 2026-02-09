@@ -46,7 +46,7 @@ else
 fi
 
 # Check configuration
-WORKSPACE_ROOT="/mnt/github/workspace-hub"
+WORKSPACE_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 DROIDS_CONFIG="$WORKSPACE_ROOT/.drcode/droids.yml"
 
 if [ -f "$DROIDS_CONFIG" ]; then
