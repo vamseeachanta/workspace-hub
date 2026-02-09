@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-09T22:18:18Z by generate-index.py -->
+<!-- Generated: 2026-02-09T22:32:45Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-09T22:18:18Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-09T22:32:45Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -58,8 +58,8 @@
 | Plans exist | 14 / 107 |
 | Plans cross-reviewed | 0 |
 | Plans approved | 0 |
-| Brochure pending | 5 |
-| Brochure updated/synced | 0 |
+| Brochure pending | 0 |
+| Brochure updated/synced | 5 |
 
 ## Master Table
 
@@ -89,12 +89,12 @@
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | pending | medium | complex | assethold | ❌ | ❌ | ❌ | - | - | - |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | pending | low | complex | assethold | ❌ | ❌ | ❌ | - | - | - |
 | WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | pending | high | medium | worldenergydata | ❌ | ❌ | ❌ | - | - | WRK-009 |
-| WRK-025 | AQWA diffraction analysis runner | archived | high | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | ⏳ pending | - |
+| WRK-025 | AQWA diffraction analysis runner | archived | high | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | - |
 | WRK-026 | Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta) | archived | high | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-027 | AQWA batch analysis execution | archived | high | medium | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | ⏳ pending | WRK-025 |
-| WRK-028 | AQWA postprocessing - RAOs and verification | archived | high | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | ⏳ pending | WRK-025 |
+| WRK-027 | AQWA batch analysis execution | archived | high | medium | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | WRK-025 |
+| WRK-028 | AQWA postprocessing - RAOs and verification | archived | high | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | WRK-025 |
 | WRK-029 | OrcaWave diffraction analysis runner + file preparation | archived | high | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-030 | OrcaWave batch analysis + postprocessing | archived | high | complex | digitalmodel | ✅ | ❌ | ❌ | ███ 100% | ⏳ pending | WRK-029 |
+| WRK-030 | OrcaWave batch analysis + postprocessing | archived | high | complex | digitalmodel | ✅ | ❌ | ❌ | ███ 100% | ✅ synced | WRK-029 |
 | WRK-031 | Benchmark OrcaWave vs AQWA for 2-3 hulls | pending | medium | complex | digitalmodel | ✅ | ❌ | ❌ | - | - | - |
 | WRK-032 | Modular OrcaFlex pipeline installation input with parametric campaign support | pending | medium | complex | digitalmodel | ✅ | ❌ | ❌ | - | - | - |
 | WRK-033 | Develop OrcaFlex include-file modular skill for parametrised analysis input | archived | medium | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
@@ -157,7 +157,7 @@
 | WRK-090 | Identify and refactor large files exceeding 400-line limit | pending | medium | medium | workspace-hub | ❌ | ❌ | ❌ | - | - | - |
 | WRK-091 | Add dynacard module README | archived | low | low | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-092 | Register dynacard CLI entry point | archived | low | low | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-093 | Improve dynacard AI diagnostics | archived | low | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | ⏳ pending | - |
+| WRK-093 | Improve dynacard AI diagnostics | archived | low | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | - |
 | WRK-094 | Plan, reassess, and improve the workspace-hub workflow | pending | high | complex | workspace-hub | ❌ | ❌ | ❌ | - | - | - |
 | WRK-095 | Engineering unit tracking system — spec to code lifecycle | pending | high | complex | rock-oil-field | ❌ | ❌ | ❌ | - | - | - |
 | WRK-096 | Review and improve worldenergydata module structure for discoverability | archived | high | medium | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
