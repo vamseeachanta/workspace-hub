@@ -18,8 +18,6 @@ tools:
   - Write
   - Bash
   - Task
-  - mcp__claude-flow__task_orchestrate
-  - mcp__claude-flow__memory_usage
 related_skills:
   - planning-code-goal
   - sparc-workflow
@@ -334,14 +332,12 @@ if (actionResult.failed) {
 
 ```javascript
 // Orchestrate GOAP plan across swarm
-mcp__claude-flow__task_orchestrate({
   task: "execute_goap_plan",
   strategy: "adaptive",
   priority: "high"
 });
 
 // Store successful patterns
-mcp__claude-flow__memory_usage({
   action: "store",
   namespace: "goap-patterns",
   key: "deployment_plan_v1",
@@ -353,10 +349,8 @@ mcp__claude-flow__memory_usage({
 
 ```bash
 # Pre-task: Initialize GOAP session
-npx claude-flow@alpha hooks pre-task --description "GOAP planning for $GOAL"
 
 # Post-task: Store learned patterns
-npx claude-flow@alpha hooks post-task --task-id "goap-$SESSION_ID"
 ```
 
 ### Related Skills

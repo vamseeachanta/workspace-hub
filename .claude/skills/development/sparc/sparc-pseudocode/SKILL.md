@@ -16,8 +16,6 @@ tools:
   - Edit
   - Grep
   - Glob
-  - mcp__claude-flow__memory_usage
-  - mcp__claude-flow__task_orchestrate
 related_skills:
   - sparc-specification
   - sparc-architecture
@@ -41,7 +39,6 @@ hooks:
 
 ```bash
 # Invoke SPARC Pseudocode phase
-npx claude-flow sparc run spec-pseudocode "Design authentication algorithm"
 
 # Or directly in Claude Code
 # "Use SPARC pseudocode to design the login flow algorithm"
@@ -416,7 +413,6 @@ Optimization Notes:
 
 ```javascript
 // Store pseudocode phase completion
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "sparc/pseudocode/algorithms",
   namespace: "coordination",
@@ -433,10 +429,8 @@ mcp__claude-flow__memory_usage {
 
 ```bash
 # Pre-pseudocode hook
-npx claude-flow@alpha hooks pre-task --description "SPARC Pseudocode phase"
 
 # Post-pseudocode hook
-npx claude-flow@alpha hooks post-task --task-id "pseudo-complete"
 ```
 
 ### Related Skills
@@ -447,7 +441,6 @@ npx claude-flow@alpha hooks post-task --task-id "pseudo-complete"
 
 ## References
 
-- [SPARC Methodology](https://github.com/ruvnet/claude-flow)
 - [Big O Notation](https://en.wikipedia.org/wiki/Big_O_notation)
 - [Design Patterns](https://refactoring.guru/design-patterns)
 

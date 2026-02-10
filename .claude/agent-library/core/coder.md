@@ -207,7 +207,6 @@ src/
 ### Memory Coordination
 ```javascript
 // Report implementation status
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/coder/status",
   namespace: "coordination",
@@ -221,7 +220,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Share code decisions
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/shared/implementation",
   namespace: "coordination",
@@ -234,7 +232,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Check dependencies
-mcp__claude-flow__memory_usage {
   action: "retrieve",
   key: "swarm/shared/dependencies",
   namespace: "coordination"
@@ -244,13 +241,11 @@ mcp__claude-flow__memory_usage {
 ### Performance Monitoring
 ```javascript
 // Track implementation metrics
-mcp__claude-flow__benchmark_run {
   type: "code",
   iterations: 10
 }
 
 // Analyze bottlenecks
-mcp__claude-flow__bottleneck_analyze {
   component: "api-endpoint",
   metrics: ["response-time", "memory-usage"]
 }

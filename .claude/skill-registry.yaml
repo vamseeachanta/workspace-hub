@@ -220,7 +220,6 @@ skills:
 
   # hooks/
   - name: "hooks/overview"
-    description: "Claude Code Hooks for claude-flow"
     archived: false
     path: ".claude/commands/hooks/overview.md"
 

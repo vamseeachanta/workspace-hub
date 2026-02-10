@@ -257,15 +257,8 @@ get_topology() {
 
 ```javascript
 // Initialize PR-specific swarm
-mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 8 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "PR Coordinator" }
-mcp__claude-flow__agent_spawn { type: "reviewer", name: "Code Reviewer" }
-mcp__claude-flow__agent_spawn { type: "tester", name: "Test Engineer" }
-mcp__claude-flow__agent_spawn { type: "analyst", name: "Impact Analyzer" }
-mcp__claude-flow__agent_spawn { type: "optimizer", name: "Performance Optimizer" }
 
 // Store PR context in swarm memory
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "pr/123/context",
   value: {
@@ -278,7 +271,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Orchestrate comprehensive PR review
-mcp__claude-flow__task_orchestrate {
   task: "Execute multi-agent PR review and validation",
   strategy: "parallel",
   priority: "high",
@@ -290,17 +282,14 @@ mcp__claude-flow__task_orchestrate {
 
 ```javascript
 // Coordinate merge decision with swarm
-mcp__claude-flow__coordination_sync { swarmId: "pr-review-swarm" }
 
 // Analyze merge readiness
-mcp__claude-flow__task_orchestrate {
   task: "Evaluate PR merge readiness with comprehensive validation",
   strategy: "sequential",
   priority: "critical"
 }
 
 // Store merge decision
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "pr/123/merge_decision",
   value: {

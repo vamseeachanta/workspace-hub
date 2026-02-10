@@ -13,23 +13,13 @@ capabilities:
 tools:
   - Task
   - Bash
-  - mcp__claude-flow__swarm_init
-  - mcp__claude-flow__agent_spawn
-  - mcp__claude-flow__agents_spawn_parallel
-  - mcp__claude-flow__task_orchestrate
-  - mcp__claude-flow__swarm_status
-  - mcp__claude-flow__agent_list
-  - mcp__claude-flow__memory_usage
-  - mcp__claude-flow__memory_search
 related_skills:
   - sparc-workflow
   - repo-sync
   - compliance-check
 hooks:
   pre: |
-    npx claude-flow@alpha hooks pre-task --description "Agent orchestration"
   post: |
-    npx claude-flow@alpha hooks post-task --task-id "swarm-complete"
 ---
 
 # Agent Orchestration Skill
@@ -40,10 +30,8 @@ hooks:
 
 ```javascript
 // Initialize a swarm for complex task
-mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 5 })
 
 // Spawn specialized agents
-mcp__claude-flow__agents_spawn_parallel({
     agents: [
         { type: "coder", name: "backend" },
         { type: "tester", name: "qa" },
@@ -52,7 +40,6 @@ mcp__claude-flow__agents_spawn_parallel({
 })
 
 // Orchestrate the task
-mcp__claude-flow__task_orchestrate({
     task: "Build REST API with tests",
     strategy: "adaptive"
 })
@@ -68,7 +55,6 @@ mcp__claude-flow__task_orchestrate({
 
 ## Prerequisites
 
-- Claude Flow MCP server configured (`claude mcp add claude-flow npx claude-flow@alpha mcp start`)
 - Understanding of swarm topologies
 - Familiarity with agent types and capabilities
 - Claude Code Task tool for agent execution
@@ -139,7 +125,6 @@ Coordinator delegates to specialized workers:
 
 ```javascript
 // Initialize hierarchical swarm
-mcp__claude-flow__swarm_init({
     topology: "hierarchical",
     maxAgents: 5,
     strategy: "auto"
@@ -166,7 +151,6 @@ Peer-to-peer collaboration:
 **Best for:** Collaborative tasks requiring shared context
 
 ```javascript
-mcp__claude-flow__swarm_init({
     topology: "mesh",
     maxAgents: 4
 })
@@ -193,7 +177,6 @@ Central hub with peripheral agents:
 **Best for:** Tasks with central coordination point
 
 ```javascript
-mcp__claude-flow__swarm_init({
     topology: "star",
     maxAgents: 6
 })
@@ -217,7 +200,6 @@ Sequential processing:
 **Best for:** Pipeline processing, sequential workflows
 
 ```javascript
-mcp__claude-flow__swarm_init({
     topology: "ring",
     maxAgents: 4
 })
@@ -228,7 +210,6 @@ mcp__claude-flow__swarm_init({
 ### Spawn Single Agent
 
 ```javascript
-mcp__claude-flow__agent_spawn({
     type: "coder",
     name: "implementation-agent",
     capabilities: ["python", "typescript", "api-development"]
@@ -238,7 +219,6 @@ mcp__claude-flow__agent_spawn({
 ### Spawn Multiple Agents in Parallel
 
 ```javascript
-mcp__claude-flow__agents_spawn_parallel({
     agents: [
         { type: "coder", name: "backend-coder" },
         { type: "tester", name: "test-writer" },
@@ -278,7 +258,6 @@ const agentTypes = [
 ### Simple Task
 
 ```javascript
-mcp__claude-flow__task_orchestrate({
     task: "Implement user authentication with JWT",
     strategy: "sequential",
     priority: "high"
@@ -288,7 +267,6 @@ mcp__claude-flow__task_orchestrate({
 ### Complex Task with Dependencies
 
 ```javascript
-mcp__claude-flow__task_orchestrate({
     task: "Build complete API with tests and documentation",
     strategy: "adaptive",
     priority: "high",
@@ -316,13 +294,11 @@ mcp__claude-flow__task_orchestrate({
 
 ```javascript
 // Initialize review swarm
-await mcp__claude-flow__swarm_init({
     topology: "hierarchical",
     maxAgents: 4
 });
 
 // Spawn review agents
-await mcp__claude-flow__agents_spawn_parallel({
     agents: [
         { type: "reviewer", name: "security-reviewer" },
         { type: "reviewer", name: "performance-reviewer" },
@@ -331,7 +307,6 @@ await mcp__claude-flow__agents_spawn_parallel({
 });
 
 // Orchestrate review
-await mcp__claude-flow__task_orchestrate({
     task: "Review PR #123 for security, performance, and style",
     strategy: "parallel"
 });
@@ -341,7 +316,6 @@ await mcp__claude-flow__task_orchestrate({
 
 ```javascript
 // Sequential SPARC workflow
-await mcp__claude-flow__swarm_init({ topology: "ring" });
 
 // Phase agents
 const phases = [
@@ -352,9 +326,7 @@ const phases = [
     { type: "tester", name: "testing-agent" }
 ];
 
-await mcp__claude-flow__agents_spawn_parallel({ agents: phases });
 
-await mcp__claude-flow__task_orchestrate({
     task: "Implement new feature following SPARC methodology",
     strategy: "sequential"
 });
@@ -364,9 +336,7 @@ await mcp__claude-flow__task_orchestrate({
 
 ```javascript
 // Mesh for collaborative research
-await mcp__claude-flow__swarm_init({ topology: "mesh" });
 
-await mcp__claude-flow__agents_spawn_parallel({
     agents: [
         { type: "researcher", name: "literature-reviewer" },
         { type: "analyst", name: "data-analyst" },
@@ -374,7 +344,6 @@ await mcp__claude-flow__agents_spawn_parallel({
     ]
 });
 
-await mcp__claude-flow__task_orchestrate({
     task: "Research and analyze best practices for microservices",
     strategy: "adaptive"
 });
@@ -397,25 +366,21 @@ await mcp__claude-flow__task_orchestrate({
 ### Check Swarm Status
 
 ```javascript
-mcp__claude-flow__swarm_status({ swarmId: "current" })
 ```
 
 ### Monitor Agent Metrics
 
 ```javascript
-mcp__claude-flow__agent_metrics({ agentId: "agent-123" })
 ```
 
 ### List Active Agents
 
 ```javascript
-mcp__claude-flow__agent_list({ swarmId: "current" })
 ```
 
 ### Get Task Results
 
 ```javascript
-mcp__claude-flow__task_results({ taskId: "task-456" })
 ```
 
 ## Memory Management
@@ -423,7 +388,6 @@ mcp__claude-flow__task_results({ taskId: "task-456" })
 ### Store Information
 
 ```javascript
-mcp__claude-flow__memory_usage({
     action: "store",
     key: "project-context",
     value: JSON.stringify(projectData),
@@ -434,7 +398,6 @@ mcp__claude-flow__memory_usage({
 ### Retrieve Information
 
 ```javascript
-mcp__claude-flow__memory_usage({
     action: "retrieve",
     key: "project-context",
     namespace: "project-alpha"
@@ -444,7 +407,6 @@ mcp__claude-flow__memory_usage({
 ### Search Memory
 
 ```javascript
-mcp__claude-flow__memory_search({
     pattern: "api-*",
     namespace: "project-alpha",
     limit: 10
@@ -457,10 +419,8 @@ mcp__claude-flow__memory_search({
 
 ```javascript
 // Check agent status after spawning
-const status = await mcp__claude-flow__agent_list({ swarmId: "current" });
 if (status.agents.length < expectedCount) {
     // Retry failed spawns
-    await mcp__claude-flow__agent_spawn({ type: "coder", name: "retry-agent" });
 }
 ```
 
@@ -468,7 +428,6 @@ if (status.agents.length < expectedCount) {
 
 ```javascript
 // Use fault tolerance for critical tasks
-mcp__claude-flow__daa_fault_tolerance({
     agentId: "agent-123",
     strategy: "restart"  // or "failover", "ignore"
 })
@@ -478,10 +437,8 @@ mcp__claude-flow__daa_fault_tolerance({
 
 ```javascript
 // Create snapshot before risky operations
-mcp__claude-flow__state_snapshot({ name: "before-risky-operation" })
 
 // Restore if needed
-mcp__claude-flow__context_restore({ snapshotId: "snapshot-id" })
 ```
 
 ### Swarm Coordination Issues
@@ -516,13 +473,11 @@ Choose topology based on task:
 ### Auto-Optimize
 
 ```javascript
-mcp__claude-flow__topology_optimize({ swarmId: "current" })
 ```
 
 ### Load Balancing
 
 ```javascript
-mcp__claude-flow__load_balance({
     swarmId: "current",
     tasks: ["task1", "task2", "task3"]
 })
@@ -559,21 +514,14 @@ Task({ subagent_type: "reviewer", ... })
 
 ```javascript
 // Full orchestration example
-mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 6 })
-mcp__claude-flow__agents_spawn_parallel({ agents: [...] })
-mcp__claude-flow__task_orchestrate({ task: "...", strategy: "adaptive" })
-mcp__claude-flow__swarm_status({})
-mcp__claude-flow__swarm_destroy({ swarmId: "..." })
 ```
 
 ### Hooks
 
 ```bash
 # Pre-task hook
-npx claude-flow@alpha hooks pre-task --description "[task]"
 
 # Post-task hook
-npx claude-flow@alpha hooks post-task --task-id "[task]"
 ```
 
 ### Related Skills
@@ -610,13 +558,11 @@ npx claude-flow@alpha hooks post-task --task-id "[task]"
 ### Destroy Swarm
 
 ```javascript
-mcp__claude-flow__swarm_destroy({ swarmId: "swarm-123" })
 ```
 
 ### Scale Down
 
 ```javascript
-mcp__claude-flow__swarm_scale({
     swarmId: "current",
     targetSize: 2
 })
@@ -624,7 +570,6 @@ mcp__claude-flow__swarm_scale({
 
 ## References
 
-- [Claude Flow Documentation](https://github.com/ruvnet/claude-flow)
 - [AI Agent Guidelines](../docs/modules/ai/AI_AGENT_GUIDELINES.md)
 - [Development Workflow](../docs/modules/workflow/DEVELOPMENT_WORKFLOW.md)
 

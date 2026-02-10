@@ -16,7 +16,6 @@ tools:
   - Write
   - Bash
   - Task
-  - mcp__claude-flow__memory_usage
 related_skills:
   - testing-production
   - planning-code-goal
@@ -434,7 +433,6 @@ beforeEach(() => {
 
 ```javascript
 // Store successful test patterns
-mcp__claude-flow__memory_usage({
   action: "store",
   namespace: "test-patterns",
   key: "order_processing_mocks",
@@ -442,7 +440,6 @@ mcp__claude-flow__memory_usage({
 });
 
 // Share contracts across swarm
-mcp__claude-flow__memory_usage({
   action: "store",
   namespace: "test-contracts",
   key: "user_service_contract",
@@ -454,10 +451,8 @@ mcp__claude-flow__memory_usage({
 
 ```bash
 # Pre-test: Coordinate with swarm
-npx claude-flow@alpha hooks pre-task --description "TDD London: $TEST_SUITE"
 
 # Post-test: Share results
-npx claude-flow@alpha hooks post-task --task-id "tdd-$SESSION_ID"
 ```
 
 ### Related Skills

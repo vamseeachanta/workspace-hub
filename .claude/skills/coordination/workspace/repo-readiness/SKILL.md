@@ -130,7 +130,6 @@ Generates a comprehensive readiness report with:
 - HTML reporting standards defined
 
 ### MCP Configuration: ✅ Found
-- Active servers: claude-flow, browser-automation
 - Tools available: 47 MCP tools
 ```
 

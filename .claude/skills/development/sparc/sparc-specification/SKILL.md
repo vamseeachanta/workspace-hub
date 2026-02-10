@@ -16,8 +16,6 @@ tools:
   - Edit
   - Grep
   - Glob
-  - mcp__claude-flow__memory_usage
-  - mcp__claude-flow__task_orchestrate
 related_skills:
   - sparc-pseudocode
   - sparc-architecture
@@ -40,7 +38,6 @@ hooks:
 
 ```bash
 # Invoke SPARC Specification phase
-npx claude-flow sparc run spec-pseudocode "Define authentication system requirements"
 
 # Or directly in Claude Code
 # "Use SPARC specification to define requirements for user authentication"
@@ -321,7 +318,6 @@ entities:
 
 ```javascript
 // Store specification phase start
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "sparc/specification/status",
   namespace: "coordination",
@@ -337,10 +333,8 @@ mcp__claude-flow__memory_usage {
 
 ```bash
 # Pre-specification hook
-npx claude-flow@alpha hooks pre-task --description "SPARC Specification phase"
 
 # Post-specification hook
-npx claude-flow@alpha hooks post-task --task-id "spec-complete"
 ```
 
 ### Related Skills
@@ -351,7 +345,6 @@ npx claude-flow@alpha hooks post-task --task-id "spec-complete"
 
 ## References
 
-- [SPARC Methodology](https://github.com/ruvnet/claude-flow)
 - [Gherkin Syntax](https://cucumber.io/docs/gherkin/)
 - [IEEE 830 SRS Standard](https://standards.ieee.org/)
 

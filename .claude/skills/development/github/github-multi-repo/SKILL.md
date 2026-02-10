@@ -143,14 +143,8 @@ done
 
 ```javascript
 // Initialize multi-repo swarm
-mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 8 })
-mcp__claude-flow__agent_spawn({ type: "coordinator", name: "Multi-Repo Coordinator" })
-mcp__claude-flow__agent_spawn({ type: "analyst", name: "Dependency Analyzer" })
-mcp__claude-flow__agent_spawn({ type: "coder", name: "Update Agent" })
-mcp__claude-flow__agent_spawn({ type: "tester", name: "Integration Tester" })
 
 // Store multi-repo state
-mcp__claude-flow__memory_usage({
     action: "store",
     key: "multi-repo/state",
     value: JSON.stringify({
@@ -161,7 +155,6 @@ mcp__claude-flow__memory_usage({
 })
 
 // Orchestrate synchronized operations
-mcp__claude-flow__task_orchestrate({
     task: "Update dependencies across all TypeScript repositories",
     strategy: "parallel",
     priority: "high"
@@ -302,13 +295,11 @@ dependencies:
 ### Swarm Coordination
 
 ```javascript
-mcp__claude-flow__swarm_init({
     topology: "hierarchical",
     maxAgents: 10,
     strategy: "balanced"
 })
 
-mcp__claude-flow__github_sync_coord({
     repos: ["org/frontend", "org/backend", "org/shared"]
 })
 ```
@@ -316,7 +307,6 @@ mcp__claude-flow__github_sync_coord({
 ### Memory for Multi-Repo State
 
 ```javascript
-mcp__claude-flow__memory_usage({
     action: "store",
     key: "multi-repo/sync/status",
     namespace: "coordination",
@@ -334,7 +324,6 @@ mcp__claude-flow__memory_usage({
 ### Metrics Collection
 
 ```javascript
-mcp__claude-flow__github_metrics({
     repos: ["org/frontend", "org/backend"],
     metrics: ["commits", "prs", "issues", "contributors"]
 })

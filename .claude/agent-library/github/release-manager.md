@@ -17,10 +17,6 @@ tools:
   - mcp__github__create_branch
   - mcp__github__push_files
   - mcp__github__create_issue
-  - mcp__claude-flow__swarm_init
-  - mcp__claude-flow__agent_spawn
-  - mcp__claude-flow__task_orchestrate
-  - mcp__claude-flow__memory_usage
 hooks:
   pre_task: |
     echo "🚀 Initializing release management pipeline..."
@@ -53,12 +49,6 @@ Automated release coordination and deployment with ruv-swarm orchestration for s
 ### 1. Coordinated Release Preparation
 ```javascript
 // Initialize release management swarm
-mcp__claude-flow__swarm_init { topology: "hierarchical", maxAgents: 6 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "Release Coordinator" }
-mcp__claude-flow__agent_spawn { type: "tester", name: "QA Engineer" }
-mcp__claude-flow__agent_spawn { type: "reviewer", name: "Release Reviewer" }
-mcp__claude-flow__agent_spawn { type: "coder", name: "Version Manager" }
-mcp__claude-flow__agent_spawn { type: "analyst", name: "Deployment Analyst" }
 
 // Create release preparation branch
 mcp__github__create_branch {
@@ -69,7 +59,6 @@ mcp__github__create_branch {
 }
 
 // Orchestrate release preparation
-mcp__claude-flow__task_orchestrate {
   task: "Prepare release v1.0.72 with comprehensive testing and validation",
   strategy: "sequential",
   priority: "critical"
@@ -87,7 +76,6 @@ mcp__github__push_files {
     {
       path: "claude-code-flow/claude-code-flow/package.json",
       content: JSON.stringify({
-        name: "claude-flow",
         version: "1.0.72",
         // ... rest of package.json
       }, null, 2)
@@ -154,7 +142,6 @@ mcp__github__create_pull_request {
 - **Improved Testing**: Comprehensive integration test suite with 89% success rate
 
 ### 📦 Package Updates
-- **claude-flow**: v1.0.71 → v1.0.72
 - **ruv-swarm**: v1.0.11 → v1.0.12
 
 ### 🔧 Changes
@@ -206,13 +193,6 @@ This release is production-ready with comprehensive validation and testing.
 ```javascript
 [Single Message - Complete Release Management]:
   // Initialize comprehensive release swarm
-  mcp__claude-flow__swarm_init { topology: "star", maxAgents: 8 }
-  mcp__claude-flow__agent_spawn { type: "coordinator", name: "Release Director" }
-  mcp__claude-flow__agent_spawn { type: "tester", name: "QA Lead" }
-  mcp__claude-flow__agent_spawn { type: "reviewer", name: "Senior Reviewer" }
-  mcp__claude-flow__agent_spawn { type: "coder", name: "Version Controller" }
-  mcp__claude-flow__agent_spawn { type: "analyst", name: "Performance Analyst" }
-  mcp__claude-flow__agent_spawn { type: "researcher", name: "Compatibility Checker" }
   
   // Create release branch and prepare files using gh CLI
   Bash("gh api repos/:owner/:repo/git/refs --method POST -f ref='refs/heads/release/v1.0.72' -f sha=$(gh api repos/:owner/:repo/git/refs/heads/main --jq '.object.sha')")
@@ -251,14 +231,12 @@ This release is production-ready with comprehensive validation and testing.
   ]}
   
   // Store release state
-  mcp__claude-flow__memory_usage {
     action: "store", 
     key: "release/v1.0.72/status",
     value: {
       timestamp: Date.now(),
       version: "1.0.72",
       stage: "validation_complete",
-      packages: ["claude-flow", "ruv-swarm"],
       validation_passed: true,
       ready_for_review: true
     }
@@ -349,7 +327,6 @@ jobs:
           cd claude-code-flow/claude-code-flow && npm install && npm test
           cd ../../ruv-swarm/npm && npm install && npm test:all
       - name: Validate Release
-        run: npx claude-flow release validate
 ```
 
 ## Monitoring and Metrics

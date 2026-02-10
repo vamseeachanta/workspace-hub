@@ -257,15 +257,8 @@ jobs:
 
 ```javascript
 // Initialize workflow automation swarm
-mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 12 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "Workflow Coordinator" }
-mcp__claude-flow__agent_spawn { type: "architect", name: "Pipeline Architect" }
-mcp__claude-flow__agent_spawn { type: "coder", name: "Workflow Developer" }
-mcp__claude-flow__agent_spawn { type: "tester", name: "CI/CD Tester" }
-mcp__claude-flow__agent_spawn { type: "optimizer", name: "Performance Optimizer" }
 
 // Create automation rules
-mcp__claude-flow__automation_setup {
   rules: [
     {
       trigger: "pull_request",
@@ -281,7 +274,6 @@ mcp__claude-flow__automation_setup {
 }
 
 // Orchestrate workflow management
-mcp__claude-flow__task_orchestrate {
   task: "Manage intelligent CI/CD pipeline with continuous optimization",
   strategy: "adaptive",
   priority: "high"
@@ -292,19 +284,16 @@ mcp__claude-flow__task_orchestrate {
 
 ```javascript
 // Generate workflow performance reports
-mcp__claude-flow__performance_report {
   format: "detailed",
   timeframe: "30d"
 }
 
 // Analyze bottlenecks
-mcp__claude-flow__bottleneck_analyze {
   component: "github_actions_workflow",
   metrics: ["build_time", "test_duration", "deployment_latency"]
 }
 
 // Store insights
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "workflow/performance/analysis",
   value: {

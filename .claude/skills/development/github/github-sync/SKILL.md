@@ -131,14 +131,8 @@ gh pr create \
 
 ```javascript
 // Initialize sync coordination swarm
-mcp__claude-flow__swarm_init { topology: "hierarchical", maxAgents: 5 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "Sync Coordinator" }
-mcp__claude-flow__agent_spawn { type: "analyst", name: "Dependency Analyzer" }
-mcp__claude-flow__agent_spawn { type: "coder", name: "Integration Developer" }
-mcp__claude-flow__agent_spawn { type: "tester", name: "Validation Engineer" }
 
 // Store sync state in memory
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "sync/packages/status",
   value: {
@@ -149,14 +143,12 @@ mcp__claude-flow__memory_usage {
 }
 
 // Orchestrate validation
-mcp__claude-flow__task_orchestrate {
   task: "Validate package synchronization and run integration tests",
   strategy: "parallel",
   priority: "high"
 }
 
 // Load balance sync tasks
-mcp__claude-flow__load_balance {
   swarmId: "sync-coordination-swarm",
   tasks: [
     "package_json_sync",
@@ -171,13 +163,8 @@ mcp__claude-flow__load_balance {
 
 ```javascript
 // Initialize conflict resolution swarm
-mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 6 }
-mcp__claude-flow__agent_spawn { type: "analyst", name: "Conflict Analyzer" }
-mcp__claude-flow__agent_spawn { type: "coder", name: "Resolution Developer" }
-mcp__claude-flow__agent_spawn { type: "reviewer", name: "Solution Validator" }
 
 // Store conflict context
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "sync/conflicts/current",
   value: {
@@ -188,7 +175,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Coordinate resolution
-mcp__claude-flow__coordination_sync { swarmId: "conflict-resolution-swarm" }
 ```
 
 ## Synchronization Strategies

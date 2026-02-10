@@ -15,9 +15,6 @@ tools:
   - Glob
   - Grep
   - TodoWrite
-  - mcp__claude-flow__task_orchestrate
-  - mcp__claude-flow__memory_usage
-  - mcp__claude-flow__task_status
 related_skills:
   - core-coder
   - core-tester
@@ -43,7 +40,6 @@ hooks:
 Task("Planner agent", "Break down [task] into actionable subtasks with dependencies", "planner")
 
 // Orchestrate task execution
-mcp__claude-flow__task_orchestrate {
   task: "Implement [feature]",
   strategy: "parallel",
   priority: "high",
@@ -207,7 +203,6 @@ agent_capabilities:
 Task("Planner", "Create execution plan for user dashboard feature", "planner")
 
 // Store plan in memory
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/planner/task-breakdown",
   namespace: "coordination",
@@ -228,7 +223,6 @@ mcp__claude-flow__memory_usage {
 
 ```javascript
 // Orchestrate parallel execution
-mcp__claude-flow__task_orchestrate {
   task: "Implement authentication system",
   strategy: "parallel",
   priority: "high",
@@ -236,7 +230,6 @@ mcp__claude-flow__task_orchestrate {
 }
 
 // Monitor progress
-mcp__claude-flow__task_status {
   taskId: "auth-implementation"
 }
 ```
@@ -298,7 +291,6 @@ mcp__claude-flow__task_status {
 
 ```javascript
 // Orchestrate complex tasks
-mcp__claude-flow__task_orchestrate {
   task: "Implement authentication system",
   strategy: "parallel",
   priority: "high",
@@ -306,7 +298,6 @@ mcp__claude-flow__task_orchestrate {
 }
 
 // Share task breakdown
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/planner/task-breakdown",
   namespace: "coordination",
@@ -323,12 +314,10 @@ mcp__claude-flow__memory_usage {
 }
 
 // Monitor task progress
-mcp__claude-flow__task_status {
   taskId: "auth-implementation"
 }
 
 // Report planning status
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/planner/status",
   namespace: "coordination",

@@ -45,7 +45,6 @@ droid  # Automatically loads .claude/CLAUDE.md with agent references
 │       └── finance-analytics.yaml  # Financial analysis
 │
 ├── general/                        # General-purpose agents
-│   ├── claude-flow-agents.yaml    # 54 Claude Flow MCP agents
 │   ├── factory-ai.yaml            # Factory AI platform
 │   ├── spec-kit.yaml              # Spec-Kit platform
 │   └── agent-os.yaml              # Agent OS platform
@@ -186,15 +185,9 @@ Use the agent orchestrator for automatic agent selection based on task type and 
 
 | Task Type | Primary Agent | Alternatives |
 |-----------|---------------|--------------|
-| code-generation | claude-sonnet-4.5 | factory-ai-droid, claude-flow-coder |
-| code-refactoring | claude-flow-coder | claude-sonnet-4.5, spec-kit-analyzer |
-| test-creation | claude-flow-tester | tdd-london-swarm, spec-kit-analyzer |
 | code-review | code-review-swarm | claude-sonnet-4.5, factory-ai-droid |
-| architecture-design | claude-flow-architect | claude-sonnet-4.5, system-architect |
 | spec-creation | spec-kit-analyzer | agent-os-planner, claude-sonnet-4.5 |
 | requirement-analysis | agent-os-planner | claude-sonnet-4.5, researcher |
-| documentation | claude-flow-doc-writer | factory-ai-droid, api-docs |
-| bug-fixing | claude-sonnet-4.5 | factory-ai-droid, claude-flow-debugger |
 | migration | migration-planner | claude-sonnet-4.5, system-architect |
 | performance-opt | perf-analyzer | claude-sonnet-4.5, performance-benchmarker |
 | security-audit | security-manager | claude-sonnet-4.5, code-review-swarm |
@@ -255,7 +248,6 @@ processing_config: {...}
 **3. MCP Registry (JSON):**
 ```json
 {
-  "platform": "claude-flow",
   "type": "orchestrator",
   "capabilities": {...}
 }

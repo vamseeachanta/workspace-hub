@@ -53,15 +53,8 @@ gh release delete v1.0.0 --yes
 
 ```javascript
 // Initialize release management swarm
-mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 6 })
-mcp__claude-flow__agent_spawn({ type: "coordinator", name: "Release Coordinator" })
-mcp__claude-flow__agent_spawn({ type: "tester", name: "QA Engineer" })
-mcp__claude-flow__agent_spawn({ type: "reviewer", name: "Release Reviewer" })
-mcp__claude-flow__agent_spawn({ type: "coder", name: "Version Manager" })
-mcp__claude-flow__agent_spawn({ type: "analyst", name: "Deployment Analyst" })
 
 // Orchestrate release preparation
-mcp__claude-flow__task_orchestrate({
     task: "Prepare release v1.0.72 with comprehensive testing and validation",
     strategy: "sequential",
     priority: "critical"
@@ -99,7 +92,6 @@ gh release edit v1.0.72 --draft=false
 
 ```bash
 # Update package versions
-cd packages/claude-flow && npm version 1.0.72 --no-git-tag-version
 cd ../ruv-swarm && npm version 1.0.12 --no-git-tag-version
 
 # Run tests for all packages
@@ -113,7 +105,6 @@ gh pr create \
   --body "## Release v1.0.72
 
 ### Package Updates
-- **claude-flow**: v1.0.71 -> v1.0.72
 - **ruv-swarm**: v1.0.11 -> v1.0.12
 
 ### Changes
@@ -153,11 +144,6 @@ gh issue create \
 ```javascript
 [Single Message - Complete Release Management]:
     // Initialize comprehensive release swarm
-    mcp__claude-flow__swarm_init({ topology: "star", maxAgents: 8 })
-    mcp__claude-flow__agent_spawn({ type: "coordinator", name: "Release Director" })
-    mcp__claude-flow__agent_spawn({ type: "tester", name: "QA Lead" })
-    mcp__claude-flow__agent_spawn({ type: "reviewer", name: "Senior Reviewer" })
-    mcp__claude-flow__agent_spawn({ type: "coder", name: "Version Controller" })
 
     // Create release branch
     Bash("git checkout -b release/v1.0.72 main")
@@ -182,13 +168,11 @@ gh issue create \
     ]})
 
     // Store release state
-    mcp__claude-flow__memory_usage({
         action: "store",
         key: "release/v1.0.72/status",
         value: JSON.stringify({
             version: "1.0.72",
             stage: "validation_complete",
-            packages: ["claude-flow", "ruv-swarm"],
             validation_passed: true
         })
     })
@@ -236,7 +220,6 @@ const rollbackPlan = {
 ### Swarm Coordination
 
 ```javascript
-mcp__claude-flow__swarm_init({
     topology: "hierarchical",
     maxAgents: 6,
     strategy: "sequential"  // Release stages run in order
@@ -247,14 +230,12 @@ mcp__claude-flow__swarm_init({
 
 ```javascript
 // Store release state
-mcp__claude-flow__memory_usage({
     action: "store",
     key: "release/v1.0.72/state",
     namespace: "releases",
     value: JSON.stringify({
         version: "1.0.72",
         stage: "testing",
-        packages: ["claude-flow", "ruv-swarm"],
         timestamp: Date.now()
     })
 })
@@ -285,7 +266,6 @@ jobs:
           npm run lint
           npm run build
       - name: Validate Release
-        run: npx claude-flow release validate
 ```
 
 ## Best Practices

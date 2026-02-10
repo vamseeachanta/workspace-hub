@@ -18,7 +18,6 @@ tools:
   - Bash
   - Grep
   - Task
-  - mcp__claude-flow__memory_usage
 related_skills:
   - testing-tdd-london
   - webapp-testing
@@ -531,7 +530,6 @@ if (skippedValidations.length > 0) {
 
 ```javascript
 // Store validation results
-mcp__claude-flow__memory_usage({
   action: "store",
   namespace: "production-validation",
   key: "validation_report_" + Date.now(),
@@ -548,10 +546,8 @@ mcp__claude-flow__memory_usage({
 
 ```bash
 # Pre-deploy: Run production validation
-npx claude-flow@alpha hooks pre-task --description "Production validation for deploy"
 
 # Post-validation: Report results
-npx claude-flow@alpha hooks post-task --task-id "prod-validation-$BUILD_ID"
 ```
 
 ### Related Skills

@@ -312,14 +312,8 @@ body:
 
 ```javascript
 // Initialize issue-specific swarm
-mcp__claude-flow__swarm_init { topology: "hierarchical", maxAgents: 8 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "Issue Coordinator" }
-mcp__claude-flow__agent_spawn { type: "analyst", name: "Issue Analyzer" }
-mcp__claude-flow__agent_spawn { type: "coder", name: "Solution Developer" }
-mcp__claude-flow__agent_spawn { type: "tester", name: "Validation Engineer" }
 
 // Store issue context in swarm memory
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "issue/456/context",
   value: {
@@ -332,7 +326,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Orchestrate issue resolution
-mcp__claude-flow__task_orchestrate {
   task: "Coordinate multi-agent issue resolution with progress tracking",
   strategy: "adaptive",
   priority: "high"
@@ -343,19 +336,16 @@ mcp__claude-flow__task_orchestrate {
 
 ```javascript
 // Track issues
-mcp__claude-flow__github_issue_track {
   repo: "owner/repo",
   action: "triage"
 }
 
 // Analyze repository
-mcp__claude-flow__github_repo_analyze {
   repo: "owner/repo",
   analysis_type: "code_quality"
 }
 
 // Get metrics
-mcp__claude-flow__github_metrics {
   repo: "owner/repo"
 }
 ```

@@ -126,16 +126,8 @@ gh issue create \
 
 ```javascript
 // Initialize release swarm
-mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 6 })
-mcp__claude-flow__agent_spawn({ type: "coordinator", name: "Release Director" })
-mcp__claude-flow__agent_spawn({ type: "coder", name: "Changelog Agent" })
-mcp__claude-flow__agent_spawn({ type: "analyst", name: "Version Agent" })
-mcp__claude-flow__agent_spawn({ type: "coder", name: "Build Agent" })
-mcp__claude-flow__agent_spawn({ type: "tester", name: "Test Agent" })
-mcp__claude-flow__agent_spawn({ type: "specialist", name: "Deploy Agent" })
 
 // Orchestrate release
-mcp__claude-flow__task_orchestrate({
     task: "Complete release v2.0.0 with changelog, build, test, and deploy",
     strategy: "sequential",
     priority: "critical"
@@ -242,13 +234,11 @@ deployment:
 ### Swarm Coordination
 
 ```javascript
-mcp__claude-flow__swarm_init({
     topology: "hierarchical",
     maxAgents: 6,
     strategy: "sequential"
 })
 
-mcp__claude-flow__parallel_execute({
     tasks: [
         { task: "generate-changelog", agent: "changelog-agent" },
         { task: "build-artifacts", agent: "build-agent" },
@@ -256,7 +246,6 @@ mcp__claude-flow__parallel_execute({
     ]
 })
 
-mcp__claude-flow__load_balance({
     swarmId: "release-swarm",
     tasks: ["build-linux", "build-macos", "build-windows"]
 })
@@ -265,7 +254,6 @@ mcp__claude-flow__load_balance({
 ### Memory for Release State
 
 ```javascript
-mcp__claude-flow__memory_usage({
     action: "store",
     key: "release/v2.0.0/state",
     value: JSON.stringify({

@@ -53,13 +53,8 @@ gh issue close 54 --reason completed
 
 ```javascript
 // Initialize issue management swarm
-mcp__claude-flow__swarm_init({ topology: "star", maxAgents: 3 })
-mcp__claude-flow__agent_spawn({ type: "coordinator", name: "Issue Coordinator" })
-mcp__claude-flow__agent_spawn({ type: "researcher", name: "Requirements Analyst" })
-mcp__claude-flow__agent_spawn({ type: "coder", name: "Implementation Planner" })
 
 // Set up automated tracking
-mcp__claude-flow__task_orchestrate({
     task: "Monitor and coordinate issue progress with automated updates",
     strategy: "adaptive",
     priority: "medium"
@@ -91,13 +86,11 @@ This issue will be managed by coordinated swarm agents." \
 
 ```javascript
 // Update issue with progress from swarm memory
-mcp__claude-flow__memory_usage({
     action: "retrieve",
     key: "issue/54/progress"
 })
 
 // Store progress
-mcp__claude-flow__memory_usage({
     action: "store",
     key: "issue/54/latest_update",
     value: JSON.stringify({
@@ -146,10 +139,6 @@ gh issue transfer 54 owner/new-repo
 ```javascript
 [Single Message - Issue Lifecycle Management]:
     // Initialize issue coordination swarm
-    mcp__claude-flow__swarm_init({ topology: "mesh", maxAgents: 4 })
-    mcp__claude-flow__agent_spawn({ type: "coordinator", name: "Issue Manager" })
-    mcp__claude-flow__agent_spawn({ type: "analyst", name: "Progress Tracker" })
-    mcp__claude-flow__agent_spawn({ type: "researcher", name: "Context Gatherer" })
 
     // Create multiple related issues
     Bash(`gh issue create --repo owner/repo \
@@ -175,7 +164,6 @@ gh issue transfer 54 owner/new-repo
     ]})
 
     // Store coordination state
-    mcp__claude-flow__memory_usage({
         action: "store",
         key: "project/github_integration/issues",
         value: JSON.stringify({ created: Date.now(), total_issues: 3, status: "initialized" })
@@ -263,7 +251,6 @@ gh issue transfer 54 owner/new-repo
 ### Swarm Coordination
 
 ```javascript
-mcp__claude-flow__swarm_init({
     topology: "star",  // Central coordinator with peripheral agents
     maxAgents: 3,
     strategy: "adaptive"
@@ -274,7 +261,6 @@ mcp__claude-flow__swarm_init({
 
 ```javascript
 // Store issue state
-mcp__claude-flow__memory_usage({
     action: "store",
     key: "issue/54/state",
     namespace: "issues",
@@ -287,7 +273,6 @@ mcp__claude-flow__memory_usage({
 })
 
 // Search issues in memory
-mcp__claude-flow__memory_search({
     pattern: "issue/*",
     namespace: "issues",
     limit: 20
