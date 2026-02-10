@@ -17,8 +17,6 @@ tools:
   - Grep
   - Glob
   - Bash
-  - mcp__claude-flow__memory_usage
-  - mcp__claude-flow__task_orchestrate
 related_skills:
   - sparc-specification
   - sparc-pseudocode
@@ -44,7 +42,6 @@ hooks:
 
 ```bash
 # Invoke SPARC Refinement/TDD phase
-npx claude-flow sparc tdd "Implement authentication service with tests"
 
 # Or directly in Claude Code
 # "Use SPARC refinement to implement login with TDD approach"
@@ -575,7 +572,6 @@ module.exports = {
 
 ```javascript
 // Store refinement phase progress
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "sparc/refinement/metrics",
   namespace: "coordination",
@@ -592,11 +588,9 @@ mcp__claude-flow__memory_usage {
 
 ```bash
 # Pre-refinement hook (run tests)
-npx claude-flow@alpha hooks pre-task --description "SPARC Refinement phase"
 npm test --if-present
 
 # Post-refinement hook (verify coverage)
-npx claude-flow@alpha hooks post-task --task-id "refine-complete"
 npm run test:coverage
 ```
 
@@ -608,7 +602,6 @@ npm run test:coverage
 
 ## References
 
-- [SPARC Methodology](https://github.com/ruvnet/claude-flow)
 - [Test-Driven Development](https://martinfowler.com/bliki/TestDrivenDevelopment.html)
 - [Refactoring Guru](https://refactoring.guru/)
 - [Jest Documentation](https://jestjs.io/docs/getting-started)

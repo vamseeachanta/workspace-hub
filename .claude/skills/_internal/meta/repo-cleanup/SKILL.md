@@ -211,9 +211,7 @@ rm -rf agents .agents agent_configs
 
 ### Runtime/Coordination Data
 
-Runtime data should go to `.claude-flow/` (gitignored).
 
-**Move to `.claude-flow/`:**
 - Session state files
 - Coordination lock files
 - Runtime cache
@@ -222,12 +220,8 @@ Runtime data should go to `.claude-flow/` (gitignored).
 **Commands:**
 ```bash
 # Create runtime directory
-mkdir -p .claude-flow/state
-mkdir -p .claude-flow/cache
 
 # Move runtime files (don't use git mv - these are untracked)
-mv .coordination/* .claude-flow/state/ 2>/dev/null
-mv .session/* .claude-flow/state/ 2>/dev/null
 ```
 
 ### Prototype Code
@@ -533,8 +527,6 @@ coverage.xml
 .temp/
 cache/
 
-# Runtime data (claude-flow)
-.claude-flow/
 .coordination/
 .session/
 
@@ -582,7 +574,6 @@ tests/*.json
 
 ### Consolidation
 - [ ] Agent directories consolidated to `.claude/agents/`
-- [ ] Runtime data moved to `.claude-flow/`
 - [ ] Prototypes moved to `examples/prototypes/`
 - [ ] Test outputs moved to `tests/outputs/`
 - [ ] Benchmark test fixtures moved to `tests/fixtures/`

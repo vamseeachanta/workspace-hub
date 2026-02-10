@@ -12,17 +12,6 @@ tools:
   - Grep
   - LS
   - TodoWrite
-  - mcp__claude-flow__swarm_init
-  - mcp__claude-flow__agent_spawn
-  - mcp__claude-flow__task_orchestrate
-  - mcp__claude-flow__swarm_status
-  - mcp__claude-flow__memory_usage
-  - mcp__claude-flow__github_repo_analyze
-  - mcp__claude-flow__github_pr_manage
-  - mcp__claude-flow__github_issue_track
-  - mcp__claude-flow__github_metrics
-  - mcp__claude-flow__workflow_create
-  - mcp__claude-flow__workflow_execute
 hooks:
   pre:
     - "gh auth status || (echo 'GitHub CLI not authenticated' && exit 1)"

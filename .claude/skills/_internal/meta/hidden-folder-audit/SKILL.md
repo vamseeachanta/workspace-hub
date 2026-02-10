@@ -140,7 +140,6 @@ Based on actual cleanup sessions, this table provides verified recommendations.
 | Folder | Purpose | Action | Notes |
 |--------|---------|--------|-------|
 | `.claude/` | Claude Code configuration, agents, skills, docs | **KEEP** | Authoritative for AI tools |
-| `.claude-flow/` | Runtime data, state, coordination | **KEEP** | Add to .gitignore |
 | `.githooks/` | Git hooks | **KEEP** | Standard location |
 | `.github/` | GitHub workflows, templates | **KEEP** | Required by GitHub |
 | `.git/` | Git repository data | **NEVER TOUCH** | - |
@@ -161,8 +160,6 @@ Based on actual cleanup sessions, this table provides verified recommendations.
 | `.pytest_cache/` | Pytest cache | **DELETE** | Regenerated automatically |
 | `.ruff_cache/` | Ruff linter cache | **DELETE** | Regenerated automatically |
 | `.mypy_cache/` | MyPy type checker cache | **DELETE** | Regenerated automatically |
-| `.coordination/` | Multi-agent coordination | **MIGRATE** | Move to `.claude-flow/` |
-| `.session/` | Session state files | **MIGRATE** | Move to `.claude-flow/` |
 
 ## Related Directory Patterns
 
@@ -258,13 +255,8 @@ rm -rf .agent-runtime
 
 ```bash
 # Create standard runtime directory
-mkdir -p .claude-flow/state
-mkdir -p .claude-flow/cache
-mkdir -p .claude-flow/logs
 
 # Migrate coordination data
-mv .coordination/* .claude-flow/state/ 2>/dev/null
-mv .session/* .claude-flow/state/ 2>/dev/null
 
 # Remove old directories
 rm -rf .coordination .session
@@ -276,7 +268,6 @@ Add these patterns after consolidation:
 
 ```gitignore
 # Runtime and state (not tracked)
-.claude-flow/
 .coordination/
 .session/
 
@@ -349,7 +340,6 @@ find . -maxdepth 1 -type d -name ".*" ! -name ".git" | sort
 
 # Expected remaining folders:
 # .claude/       - AI configuration (authoritative)
-# .claude-flow/  - Runtime data (gitignored)
 # .github/       - GitHub workflows
 # .githooks/     - Git hooks
 # .vscode/       - VS Code settings (if tracked)
@@ -402,7 +392,6 @@ git status --porcelain | grep "^??" | grep "^\./\." || echo "None found"
 
 # Verify .gitignore includes runtime folders
 echo "=== .gitignore Hidden Folder Entries ==="
-grep -E "^\.(claude-flow|coordination|session)" .gitignore || echo "No runtime folders in .gitignore"
 
 # Count tracked files in .claude/
 echo "=== .claude/ Tracked Files ==="
@@ -416,7 +405,6 @@ git ls-files .claude/ | wc -l
 echo "=== Final State Verification ==="
 
 # 1. Only expected hidden folders exist
-hidden_count=$(find . -maxdepth 1 -type d -name ".*" ! -name ".git" ! -name ".claude" ! -name ".claude-flow" ! -name ".github" ! -name ".githooks" ! -name ".vscode" | wc -l)
 if [ "$hidden_count" -eq 0 ]; then
   echo "[OK] No unexpected hidden folders"
 else

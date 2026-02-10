@@ -4,10 +4,12 @@
 
 set -euo pipefail
 
-STATE_DIR="${HOME}/.claude/state"
+WORKSPACE_ROOT="${WORKSPACE_HUB:-/mnt/github/workspace-hub}"
+STATE_DIR="${WORKSPACE_STATE_DIR:-${WORKSPACE_ROOT}/.claude/state}"
 PATTERNS_DIR="${STATE_DIR}/patterns"
 TRENDS_DIR="${STATE_DIR}/trends"
 REPORTS_DIR="${STATE_DIR}/reports"
+DAILY_SUMMARIES_DIR="${STATE_DIR}/daily-summaries"
 
 mkdir -p "$REPORTS_DIR"
 
@@ -50,6 +52,44 @@ EOF
 ' "$TREND_FILE" >> "$OUTPUT_FILE" 2>/dev/null || echo "| Unable to parse trends |" >> "$OUTPUT_FILE"
     echo "" >> "$OUTPUT_FILE"
 fi
+
+# Add daily summary roll-up section
+cat >> "$OUTPUT_FILE" << 'EOF'
+## 📅 Daily Summary Roll-up
+
+This week's sessions and insights from daily summaries:
+
+EOF
+
+# Find daily summaries from last 7 days
+DAILY_COUNT=0
+TOTAL_SESSIONS=0
+TOTAL_CORRECTIONS=0
+
+if [[ -d "$DAILY_SUMMARIES_DIR" ]]; then
+    for i in $(seq 0 6); do
+        DAY=$(date -d "$i days ago" +%Y-%m-%d 2>/dev/null || date -v-${i}d +%Y-%m-%d 2>/dev/null || continue)
+        SUMMARY_FILE="${DAILY_SUMMARIES_DIR}/daily_summary_${DAY}.md"
+        if [[ -f "$SUMMARY_FILE" ]]; then
+            DAILY_COUNT=$((DAILY_COUNT + 1))
+            # Extract key metrics from summary
+            SESSIONS=$(grep -E "^\*\*Sessions:\*\*" "$SUMMARY_FILE" 2>/dev/null | sed 's/.*\*\* //' || echo "0")
+            ACTIVITY=$(grep -E "^\*\*Activity Level:\*\*" "$SUMMARY_FILE" 2>/dev/null | sed 's/.*\*\* //' || echo "Unknown")
+            echo "| $DAY | ${SESSIONS:-0} sessions | $ACTIVITY | [view](${SUMMARY_FILE}) |" >> "$OUTPUT_FILE"
+            TOTAL_SESSIONS=$((TOTAL_SESSIONS + ${SESSIONS:-0}))
+        fi
+    done
+fi
+
+if [[ $DAILY_COUNT -eq 0 ]]; then
+    echo "No daily summaries found for the past 7 days." >> "$OUTPUT_FILE"
+    echo "" >> "$OUTPUT_FILE"
+    echo "Run \`/insights\` to generate daily reports." >> "$OUTPUT_FILE"
+else
+    echo "" >> "$OUTPUT_FILE"
+    echo "**Week Total:** ${TOTAL_SESSIONS} sessions across ${DAILY_COUNT} days with data" >> "$OUTPUT_FILE"
+fi
+echo "" >> "$OUTPUT_FILE"
 
 # Add commit type breakdown
 cat >> "$OUTPUT_FILE" << 'EOF'

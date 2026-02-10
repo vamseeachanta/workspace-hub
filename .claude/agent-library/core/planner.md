@@ -120,7 +120,6 @@ plan:
 ### Task Orchestration
 ```javascript
 // Orchestrate complex tasks
-mcp__claude-flow__task_orchestrate {
   task: "Implement authentication system",
   strategy: "parallel",
   priority: "high",
@@ -128,7 +127,6 @@ mcp__claude-flow__task_orchestrate {
 }
 
 // Share task breakdown
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/planner/task-breakdown",
   namespace: "coordination",
@@ -145,7 +143,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Monitor task progress
-mcp__claude-flow__task_status {
   taskId: "auth-implementation"
 }
 ```
@@ -153,7 +150,6 @@ mcp__claude-flow__task_status {
 ### Memory Coordination
 ```javascript
 // Report planning status
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/planner/status",
   namespace: "coordination",

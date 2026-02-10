@@ -2,7 +2,6 @@
 # Version: 1.0.0
 #
 # This workflow template shows how to use Task tool delegation
-# instead of complex claude-flow swarm orchestration.
 
 name: standard-development
 description: Standard TDD development workflow using native Claude Code

@@ -18,9 +18,6 @@ tools:
   - Write
   - Bash
   - Task
-  - mcp__claude-flow__task_orchestrate
-  - mcp__claude-flow__memory_usage
-  - mcp__claude-flow__agent_spawn
 related_skills:
   - planning-goal
   - sparc-workflow
@@ -51,7 +48,6 @@ Phase 4 (Refinement): TDD implementation cycles
 Phase 5 (Completion): Integration, validation, deployment
 
 # Execute with SPARC commands
-npx claude-flow sparc tdd "OAuth2 authentication"
 ```
 
 ## When to Use
@@ -154,19 +150,15 @@ class SPARCGoalPlanner {
 sparc_goap_config:
   phases:
     specification:
-      command: "npx claude-flow sparc run spec-pseudocode"
       timeout_minutes: 30
 
     architecture:
-      command: "npx claude-flow sparc run architect"
       timeout_minutes: 45
 
     refinement:
-      command: "npx claude-flow sparc tdd"
       timeout_minutes: 120
 
     completion:
-      command: "npx claude-flow sparc run integration"
       timeout_minutes: 60
 
   metrics:
@@ -190,7 +182,6 @@ goal: implement_payment_processing_with_sparc
 
 sparc_phases:
   specification:
-    command: "npx claude-flow sparc run spec-pseudocode 'payment processing'"
     deliverables:
       - requirements_doc
       - acceptance_criteria
@@ -201,21 +192,18 @@ sparc_phases:
       - compliance_standards_identified
 
   pseudocode:
-    command: "npx claude-flow sparc run pseudocode 'payment flow algorithms'"
     deliverables:
       - payment_flow_logic
       - error_handling_patterns
       - state_machine_design
 
   architecture:
-    command: "npx claude-flow sparc run architect 'payment system design'"
     deliverables:
       - system_components
       - api_contracts
       - database_schema
 
   refinement:
-    command: "npx claude-flow sparc tdd 'payment feature'"
     deliverables:
       - unit_tests
       - integration_tests
@@ -225,7 +213,6 @@ sparc_phases:
       - all_tests_passing
 
   completion:
-    command: "npx claude-flow sparc run integration 'deploy payment system'"
     deliverables:
       - deployed_system
       - documentation
@@ -406,26 +393,22 @@ if (phaseResult.failed) {
 
 ```javascript
 // Initialize SPARC-enhanced swarm
-mcp__claude-flow__swarm_init({
   topology: "hierarchical",
   maxAgents: 5
 });
 
 // Spawn SPARC-specific agents
-mcp__claude-flow__agent_spawn({
   type: "sparc-coder",
   capabilities: ["specification", "pseudocode", "architecture", "refinement", "completion"]
 });
 
 // Orchestrate development tasks
-mcp__claude-flow__task_orchestrate({
   task: "implement_oauth_system",
   strategy: "adaptive",
   priority: "high"
 });
 
 // Store successful patterns
-mcp__claude-flow__memory_usage({
   action: "store",
   namespace: "code-patterns",
   key: "oauth_implementation_plan",
@@ -437,15 +420,8 @@ mcp__claude-flow__memory_usage({
 
 ```bash
 # Full SPARC-GOAP workflow
-npx claude-flow sparc run spec-pseudocode "user authentication feature"
-npx claude-flow sparc run architect "authentication system design"
-npx claude-flow sparc tdd "authentication feature" --track-goals
-npx claude-flow sparc run integration "deploy authentication" --validate-goals
-npx claude-flow sparc verify "authentication feature complete"
 
 # Batch processing
-npx claude-flow sparc batch spec,arch,refine "user management system"
-npx claude-flow sparc concurrent tdd tasks.json
 ```
 
 ### Related Skills
@@ -456,7 +432,6 @@ npx claude-flow sparc concurrent tdd tasks.json
 
 ## References
 
-- [SPARC Methodology](https://github.com/ruvnet/claude-flow)
 - [GOAP in Game AI](https://en.wikipedia.org/wiki/Goal-oriented_action_planning)
 - [TDD Best Practices](https://martinfowler.com/bliki/TestDrivenDevelopment.html)
 

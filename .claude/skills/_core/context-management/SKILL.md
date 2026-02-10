@@ -198,7 +198,6 @@ Optimizes MCP configuration across workspace repos by removing bloated servers (
 # Dry run - see what would change
 ./scripts/optimize-mcp-context.sh --dry-run
 
-# Apply lean config (claude-flow only)
 ./scripts/optimize-mcp-context.sh --lean
 
 # Apply config with swarm support
@@ -206,7 +205,6 @@ Optimizes MCP configuration across workspace repos by removing bloated servers (
 ```
 
 Templates used:
-- `templates/mcp-lean.json` - Minimal (claude-flow@alpha only)
 - `templates/mcp-with-swarm.json` - With swarm (adds ruv-swarm)
 
 ---

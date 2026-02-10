@@ -149,7 +149,6 @@ Then run:
 
 ```bash
 # After running setup_agent_links.sh
-claude-flow agent run coder --description "Create API endpoint"
 ```
 
 ## How to Add New Universal Agents
@@ -196,10 +195,8 @@ context: |
 
 examples:
   - description: "Example 1"
-    command: "claude-flow agent run new-agent --config example1.yaml"
 
   - description: "Example 2"
-    command: "claude-flow agent run new-agent --description 'task'"
 
 dependencies:
   - dependency1
@@ -227,12 +224,10 @@ vim ../.claude/agents/registry.yaml
 
 ```bash
 # Test from workspace-hub
-claude-flow agent run new-agent --test
 
 # Test from consumer repo
 cd /path/to/consumer-repo
 ls -la .claude/agents/universal/<category>/new-agent.yaml
-claude-flow agent run new-agent --description "test task"
 ```
 
 ## Agent Development Guidelines

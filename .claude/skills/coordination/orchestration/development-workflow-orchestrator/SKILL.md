@@ -548,7 +548,6 @@ echo "✓ Requirements loaded"
 # Phase 2: Generate YAML configuration
 echo ""
 echo "Phase 2: Generating YAML configuration..."
-claude-flow workflow generate-yaml \
     --input user_prompt.md \
     --output "config/input/$FEATURE_NAME-$(date +%Y%m%d).yaml"
 echo "✓ YAML configuration created"
@@ -556,7 +555,6 @@ echo "✓ YAML configuration created"
 # Phase 3: Generate pseudocode
 echo ""
 echo "Phase 3: Generating pseudocode..."
-claude-flow workflow generate-pseudocode \
     --config "config/input/$FEATURE_NAME-$(date +%Y%m%d).yaml" \
     --output "docs/pseudocode/$FEATURE_NAME.md"
 echo "✓ Pseudocode generated"

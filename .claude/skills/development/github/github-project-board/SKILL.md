@@ -198,13 +198,8 @@ mapping:
 
 ```javascript
 // Initialize project board sync swarm
-mcp__claude-flow__swarm_init { topology: "hierarchical", maxAgents: 6 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "Board Coordinator" }
-mcp__claude-flow__agent_spawn { type: "analyst", name: "Progress Analyst" }
-mcp__claude-flow__agent_spawn { type: "monitor", name: "Status Monitor" }
 
 // Store board configuration
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "board/config",
   value: {
@@ -219,7 +214,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Create sync workflow
-mcp__claude-flow__workflow_create {
   name: "Board Sync Workflow",
   steps: [
     { name: "Fetch swarm tasks", agent: "coordinator" },
@@ -235,19 +229,16 @@ mcp__claude-flow__workflow_create {
 
 ```javascript
 // Analyze repository for project setup
-mcp__claude-flow__github_repo_analyze {
   repo: "owner/repo",
   analysis_type: "code_quality"
 }
 
 // Track issues
-mcp__claude-flow__github_issue_track {
   repo: "owner/repo",
   action: "list"
 }
 
 // Get repository metrics
-mcp__claude-flow__github_metrics {
   repo: "owner/repo"
 }
 ```

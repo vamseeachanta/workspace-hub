@@ -50,13 +50,8 @@ gh pr list --state open
 
 ```javascript
 // Initialize review swarm
-mcp__claude-flow__swarm_init({ topology: "mesh", maxAgents: 4 })
-mcp__claude-flow__agent_spawn({ type: "reviewer", name: "Code Quality Reviewer" })
-mcp__claude-flow__agent_spawn({ type: "tester", name: "Testing Agent" })
-mcp__claude-flow__agent_spawn({ type: "coordinator", name: "PR Coordinator" })
 
 // Orchestrate review process
-mcp__claude-flow__task_orchestrate({
   task: "Complete PR review with testing and validation",
   strategy: "parallel",
   priority: "high"
@@ -123,10 +118,6 @@ gh pr merge 54 --rebase --delete-branch
 ```javascript
 [Single Message - Complete PR Management]:
   // Initialize coordination
-  mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 5 })
-  mcp__claude-flow__agent_spawn({ type: "reviewer", name: "Senior Reviewer" })
-  mcp__claude-flow__agent_spawn({ type: "tester", name: "QA Engineer" })
-  mcp__claude-flow__agent_spawn({ type: "coordinator", name: "Merge Coordinator" })
 
   // Create and manage PR
   Bash("gh pr create --repo owner/repo --title '...' --head '...' --base 'main'")
@@ -149,7 +140,6 @@ gh pr merge 54 --rebase --delete-branch
 ### Swarm Initialization
 
 ```javascript
-mcp__claude-flow__swarm_init({
     topology: "mesh",  // mesh, hierarchical, star, ring
     maxAgents: 4,
     strategy: "balanced"
@@ -159,7 +149,6 @@ mcp__claude-flow__swarm_init({
 ### Agent Spawning
 
 ```javascript
-mcp__claude-flow__agent_spawn({
     type: "reviewer",
     name: "PR Reviewer",
     capabilities: ["code-review", "security-audit", "performance-check"]
@@ -170,7 +159,6 @@ mcp__claude-flow__agent_spawn({
 
 ```javascript
 // Store PR state
-mcp__claude-flow__memory_usage({
     action: "store",
     key: "pr/54/status",
     value: JSON.stringify({
@@ -181,7 +169,6 @@ mcp__claude-flow__memory_usage({
 })
 
 // Retrieve PR state
-mcp__claude-flow__memory_usage({
     action: "retrieve",
     key: "pr/54/status"
 })

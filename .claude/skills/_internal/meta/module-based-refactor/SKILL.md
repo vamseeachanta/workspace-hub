@@ -78,7 +78,6 @@ git status --ignored
 ls -la agents/ .claude/agents/ .claude/agent-library/ 2>/dev/null
 
 # Find duplicate coordination/memory directories
-ls -la coordination/ memory/ .claude-flow/ 2>/dev/null
 
 # Find duplicate skill locations
 find . -type d -name "skills" 2>/dev/null
@@ -108,7 +107,6 @@ ls -la .* 2>/dev/null | grep "^d"
 # .ai/           - Legacy AI coordination
 # .drcode/       - DR Code artifacts
 # .claude/       - Claude configuration (KEEP)
-# .claude-flow/  - Runtime data (consider .gitignore)
 # .git/          - Git data (KEEP)
 # .venv/         - Virtual environment (should be ignored)
 ```
@@ -613,8 +611,6 @@ git mv docs/aqwa docs/modules/aqwa
 
 #### Directory Consolidation
 - [ ] agents/ content moved to .claude/agent-library/
-- [ ] coordination/ content moved to .claude-flow/
-- [ ] memory/ content moved to .claude-flow/
 - [ ] Duplicate skill directories merged
 - [ ] Empty directories removed
 
@@ -623,7 +619,6 @@ git mv docs/aqwa docs/modules/aqwa
 - [ ] .ai/ - reviewed and cleaned (usually remove)
 - [ ] .drcode/ - reviewed and cleaned (usually remove)
 - [ ] .claude/ - kept and organized
-- [ ] .claude-flow/ - added to .gitignore if runtime data
 - [ ] .venv/ - confirmed in .gitignore
 
 #### Test Output Relocation
@@ -676,11 +671,8 @@ rm -rf agents/
 # Pattern: Runtime data mixed with config
 coordination/                    # Untracked runtime state
 memory/                          # Untracked memory store
-.claude-flow/                    # Runtime data (should be ignored)
 
 # Resolution:
-# - Move to .claude-flow/ (single location)
-# - Add .claude-flow/ to .gitignore
 # - Delete untracked coordination/ and memory/
 ```
 
@@ -1075,14 +1067,12 @@ ls -la | grep -v "^d" | grep -v "^\."
 
 ```bash
 # Check .gitignore has all necessary patterns
-cat .gitignore | grep -E "(log|tmp|cache|pycache|claude-flow)"
 
 # Recommended patterns to add:
 # *.log
 # *.tmp
 # __pycache__/
 # .pytest_cache/
-# .claude-flow/
 # dist/
 # build/
 # *.egg-info/
@@ -1157,7 +1147,6 @@ include = ["digitalmodel*"]
 | **Root-level artifacts** | *.log, *.tmp, *.html | Delete or move to outputs/ |
 | **Build artifacts** | dist/, build/, *.egg-info | Delete (regenerated on build) |
 | **Cache files** | __pycache__/, .pytest_cache/ | Delete and .gitignore |
-| **Runtime data** | coordination/, memory/ | Move to .claude-flow/ |
 | **Duplicate dirs** | agents/, .claude/agents/ | Consolidate to .claude/agent-library/ |
 | **Legacy hidden** | .agent-os/, .ai/, .drcode/ | Review and usually delete |
 | **Test outputs** | reports/, coverage/, snapshots/ | Move under tests/ |

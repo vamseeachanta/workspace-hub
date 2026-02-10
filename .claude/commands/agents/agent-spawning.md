@@ -17,8 +17,6 @@ Task("Tester", "Create tests...", "tester")
 
 MCP tools are ONLY for coordination:
 ```javascript
-mcp__claude-flow__swarm_init { topology: "mesh" }
-mcp__claude-flow__agent_spawn { type: "researcher" }
 ```
 
 ## Best Practices

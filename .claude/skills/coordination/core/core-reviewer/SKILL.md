@@ -15,8 +15,6 @@ tools:
   - Glob
   - Grep
   - Bash
-  - mcp__claude-flow__memory_usage
-  - mcp__claude-flow__github_repo_analyze
 related_skills:
   - core-coder
   - core-tester
@@ -43,7 +41,6 @@ hooks:
 Task("Reviewer agent", "Review [code/PR] for quality, security, and performance", "reviewer")
 
 // Store review findings
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/reviewer/findings",
   namespace: "coordination",
@@ -294,7 +291,6 @@ Bash("npm run lint && npm run test && npm run security-scan")
 Task("Security Reviewer", "Audit authentication module for vulnerabilities", "reviewer")
 
 // Use analysis tools
-mcp__claude-flow__github_repo_analyze {
   repo: "current",
   analysis_type: "security"
 }
@@ -366,7 +362,6 @@ npm run complexity-check
 
 ```javascript
 // Report review status
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/reviewer/status",
   namespace: "coordination",
@@ -380,7 +375,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Share review findings
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/shared/review-findings",
   namespace: "coordination",
@@ -393,7 +387,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Check implementation details
-mcp__claude-flow__memory_usage {
   action: "retrieve",
   key: "swarm/coder/status",
   namespace: "coordination"
@@ -404,13 +397,11 @@ mcp__claude-flow__memory_usage {
 
 ```javascript
 // Analyze code quality
-mcp__claude-flow__github_repo_analyze {
   repo: "current",
   analysis_type: "code_quality"
 }
 
 // Run security scan
-mcp__claude-flow__github_repo_analyze {
   repo: "current",
   analysis_type: "security"
 }

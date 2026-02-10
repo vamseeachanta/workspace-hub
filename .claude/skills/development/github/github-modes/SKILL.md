@@ -259,20 +259,14 @@ wait
 
 ```javascript
 // Initialize GitHub workflow swarm
-mcp__claude-flow__swarm_init { topology: "hierarchical", maxAgents: 5 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "GitHub Coordinator" }
-mcp__claude-flow__agent_spawn { type: "reviewer", name: "Code Reviewer" }
-mcp__claude-flow__agent_spawn { type: "tester", name: "QA Agent" }
 
 // Execute workflow with coordination
-mcp__claude-flow__task_orchestrate {
   task: "GitHub workflow coordination",
   strategy: "parallel",
   priority: "high"
 }
 
 // Store workflow state
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "github/workflow/state",
   value: {
@@ -287,20 +281,17 @@ mcp__claude-flow__memory_usage {
 
 ```javascript
 // Repository analysis
-mcp__claude-flow__github_repo_analyze {
   repo: "owner/repo",
   analysis_type: "code_quality"
 }
 
 // PR management
-mcp__claude-flow__github_pr_manage {
   repo: "owner/repo",
   action: "review",
   pr_number: 123
 }
 
 // Issue tracking
-mcp__claude-flow__github_issue_track {
   repo: "owner/repo",
   action: "triage"
 }

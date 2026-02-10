@@ -40,7 +40,6 @@ categories:
   general_purpose:
     count: 54
     description: "Claude Flow MCP orchestration agents"
-    platform: "claude-flow@alpha"
     registry_reference: "@modules/config/ai-agents-registry.json"
     agents:
       core_development:
@@ -275,21 +274,17 @@ agent_selection:
   task_types:
     code-generation:
       primary: "claude-sonnet-4.5"
-      alternatives: ["factory-ai-droid", "claude-flow-coder"]
       complexity:
-        simple: "claude-flow-coder"
         moderate: "claude-sonnet-4.5"
         complex: "claude-sonnet-4.5"
 
     code-refactoring:
       primary: "sparc/refinement"
-      alternatives: ["claude-flow-coder", "code-analyzer"]
       tools: ["jscpd", "knip", "eslint-react-compiler", "eslint-deprecation"]
       workflow: "continuous_improvement"
       requires_approval: true
 
     test-creation:
-      primary: "claude-flow-tester"
       alternatives: ["tdd-london-swarm", "spec-kit-analyzer"]
 
     code-review:
@@ -297,7 +292,6 @@ agent_selection:
       alternatives: ["claude-sonnet-4.5", "factory-ai-droid"]
 
     architecture-design:
-      primary: "claude-flow-architect"
       alternatives: ["claude-sonnet-4.5", "system-architect"]
 
     spec-creation:
@@ -309,12 +303,10 @@ agent_selection:
       alternatives: ["claude-sonnet-4.5", "researcher"]
 
     documentation:
-      primary: "claude-flow-doc-writer"
       alternatives: ["factory-ai-droid", "api-docs"]
 
     bug-fixing:
       primary: "claude-sonnet-4.5"
-      alternatives: ["factory-ai-droid", "claude-flow-debugger"]
 
     migration:
       primary: "migration-planner"
@@ -370,7 +362,6 @@ cross_repository_integration:
       - "api-integration"
       - "data-exchange"
     protocols:
-      - "claude-flow-hooks"
       - "rest-api"
       - "file-based"
 

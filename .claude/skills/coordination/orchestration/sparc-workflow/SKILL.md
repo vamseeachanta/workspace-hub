@@ -16,17 +16,13 @@ tools:
   - Write
   - Edit
   - Task
-  - mcp__claude-flow__sparc_mode
-  - mcp__claude-flow__task_orchestrate
 related_skills:
   - agent-orchestration
   - compliance-check
   - repo-sync
 hooks:
   pre: |
-    npx claude-flow@alpha hooks pre-task --description "SPARC workflow"
   post: |
-    npx claude-flow@alpha hooks post-task --task-id "sparc-complete"
 ---
 
 # SPARC Workflow Skill
@@ -37,13 +33,10 @@ hooks:
 
 ```bash
 # Run full SPARC development cycle
-npx claude-flow sparc run dev "feature description"
 
 # Run TDD-focused workflow
-npx claude-flow sparc tdd "feature to implement"
 
 # List available SPARC modes
-npx claude-flow sparc modes
 ```
 
 ## When to Use
@@ -56,7 +49,6 @@ npx claude-flow sparc modes
 
 ## Prerequisites
 
-- Claude Flow installed (`npx claude-flow@alpha`)
 - Understanding of TDD (Test-Driven Development)
 - Project with `.agent-os/` directory structure
 - Access to testing framework (pytest, jest, etc.)
@@ -456,7 +448,6 @@ Finalize for production: documentation, cleanup, and verification.
 ### Start SPARC Workflow
 
 ```bash
-npx claude-flow sparc run dev "feature description"
 ```
 
 ### Available Modes
@@ -472,7 +463,6 @@ npx claude-flow sparc run dev "feature description"
 ### TDD Mode
 
 ```bash
-npx claude-flow sparc tdd "feature to implement"
 ```
 
 ## SPARC File Locations
@@ -591,13 +581,11 @@ npx claude-flow sparc tdd "feature to implement"
 
 ```javascript
 // Start SPARC mode
-mcp__claude-flow__sparc_mode({
     mode: "dev",
     task_description: "Implement user authentication"
 })
 
 // Orchestrate tasks
-mcp__claude-flow__task_orchestrate({
     task: "Complete SPARC refinement phase",
     strategy: "sequential",
     priority: "high"
@@ -614,7 +602,6 @@ mcp__claude-flow__task_orchestrate({
 
 - [Agent OS Create Spec](~/.agent-os/instructions/create-spec.md)
 - [Agent OS Execute Tasks](~/.agent-os/instructions/execute-tasks.md)
-- [Claude Flow Documentation](https://github.com/ruvnet/claude-flow)
 
 ---
 

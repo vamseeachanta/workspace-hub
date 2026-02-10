@@ -52,14 +52,8 @@ gh repo view owner/repo --json name,description,topics
 
 ```javascript
 // Initialize architecture analysis swarm
-mcp__claude-flow__swarm_init({ topology: "mesh", maxAgents: 4 })
-mcp__claude-flow__agent_spawn({ type: "analyst", name: "Structure Analyzer" })
-mcp__claude-flow__agent_spawn({ type: "architect", name: "Repository Architect" })
-mcp__claude-flow__agent_spawn({ type: "optimizer", name: "Structure Optimizer" })
-mcp__claude-flow__agent_spawn({ type: "coordinator", name: "Multi-Repo Coordinator" })
 
 // Orchestrate structure optimization
-mcp__claude-flow__task_orchestrate({
     task: "Analyze and optimize repository structure for scalability and maintainability",
     strategy: "adaptive",
     priority: "medium"
@@ -120,9 +114,7 @@ cat > CLAUDE.md << 'EOF'
 
 ## Quick Start
 ```bash
-npx claude-flow init --sparc
 npm install
-npx claude-flow start --ui
 ```
 
 ## Features
@@ -183,16 +175,9 @@ done
 ```javascript
 [Single Message - Repository Architecture Review]:
     // Initialize comprehensive architecture swarm
-    mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 6 })
-    mcp__claude-flow__agent_spawn({ type: "architect", name: "Senior Architect" })
-    mcp__claude-flow__agent_spawn({ type: "analyst", name: "Structure Analyst" })
-    mcp__claude-flow__agent_spawn({ type: "optimizer", name: "Performance Optimizer" })
-    mcp__claude-flow__agent_spawn({ type: "researcher", name: "Best Practices Researcher" })
 
     // Analyze current structures
-    Bash("ls -la packages/claude-flow/")
     Bash("ls -la packages/ruv-swarm/")
-    Read("packages/claude-flow/package.json")
     Read("packages/ruv-swarm/package.json")
 
     // Search for patterns
@@ -208,11 +193,9 @@ done
     ]})
 
     // Store analysis results
-    mcp__claude-flow__memory_usage({
         action: "store",
         key: "architecture/analysis/results",
         value: JSON.stringify({
-            repositories_analyzed: ["claude-flow", "ruv-swarm"],
             optimization_areas: ["structure", "workflows", "templates"],
             recommendations: ["standardize_structure", "improve_workflows"]
         })
@@ -277,7 +260,6 @@ project-root/
 ```javascript
 const integrationPattern = {
     packages: {
-        "claude-flow": {
             role: "orchestration_layer",
             dependencies: ["ruv-swarm"],
             provides: ["CLI", "workflows", "commands"]
@@ -299,13 +281,11 @@ const integrationPattern = {
 ### Swarm Coordination
 
 ```javascript
-mcp__claude-flow__swarm_init({
     topology: "mesh",
     maxAgents: 4,
     strategy: "adaptive"
 })
 
-mcp__claude-flow__agent_spawn({
     type: "architect",
     name: "Repository Architect",
     capabilities: ["structure-analysis", "pattern-recognition", "optimization"]
@@ -315,7 +295,6 @@ mcp__claude-flow__agent_spawn({
 ### Memory for Architecture State
 
 ```javascript
-mcp__claude-flow__memory_usage({
     action: "store",
     key: "architecture/structure/analysis",
     namespace: "architecture",

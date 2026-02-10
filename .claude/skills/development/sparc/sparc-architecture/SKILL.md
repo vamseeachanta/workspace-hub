@@ -16,8 +16,6 @@ tools:
   - Edit
   - Grep
   - Glob
-  - mcp__claude-flow__memory_usage
-  - mcp__claude-flow__task_orchestrate
 related_skills:
   - sparc-specification
   - sparc-pseudocode
@@ -41,7 +39,6 @@ hooks:
 
 ```bash
 # Invoke SPARC Architecture phase
-npx claude-flow sparc run architect "Design authentication service architecture"
 
 # Or directly in Claude Code
 # "Use SPARC architecture to design the system components for auth service"
@@ -570,7 +567,6 @@ scalability_patterns:
 
 ```javascript
 // Store architecture decisions
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "sparc/architecture/components",
   namespace: "coordination",
@@ -588,10 +584,8 @@ mcp__claude-flow__memory_usage {
 
 ```bash
 # Pre-architecture hook
-npx claude-flow@alpha hooks pre-task --description "SPARC Architecture phase"
 
 # Post-architecture hook
-npx claude-flow@alpha hooks post-task --task-id "arch-complete"
 ```
 
 ### Related Skills
@@ -602,7 +596,6 @@ npx claude-flow@alpha hooks post-task --task-id "arch-complete"
 
 ## References
 
-- [SPARC Methodology](https://github.com/ruvnet/claude-flow)
 - [Kubernetes Documentation](https://kubernetes.io/docs/)
 - [OpenAPI Specification](https://swagger.io/specification/)
 - [12-Factor App](https://12factor.net/)

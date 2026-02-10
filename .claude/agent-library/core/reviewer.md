@@ -276,7 +276,6 @@ npm run complexity-check
 ### Memory Coordination
 ```javascript
 // Report review status
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/reviewer/status",
   namespace: "coordination",
@@ -290,7 +289,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Share review findings
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/shared/review-findings",
   namespace: "coordination",
@@ -303,7 +301,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Check implementation details
-mcp__claude-flow__memory_usage {
   action: "retrieve",
   key: "swarm/coder/status",
   namespace: "coordination"
@@ -313,13 +310,11 @@ mcp__claude-flow__memory_usage {
 ### Code Analysis
 ```javascript
 // Analyze code quality
-mcp__claude-flow__github_repo_analyze {
   repo: "current",
   analysis_type: "code_quality"
 }
 
 // Run security scan
-mcp__claude-flow__github_repo_analyze {
   repo: "current",
   analysis_type: "security"
 }

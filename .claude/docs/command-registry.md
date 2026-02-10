@@ -128,69 +128,6 @@ Specification -> Pseudocode -> Architecture -> Refinement -> Completion
 
 ---
 
-## Swarm Coordination
-
-Commands for multi-agent swarm operations.
-
-| Command | Agent | Category | Prerequisites | Description |
-|---------|-------|----------|---------------|-------------|
-| `/swarm-queen` | swarm-queen | swarm | None | Sovereign orchestrator, hierarchical control |
-| `/swarm-collective` | swarm-collective | swarm | None | Collective intelligence coordinator |
-| `/swarm-memory` | swarm-memory | swarm | MCP tools | Distributed state management |
-| `/swarm-worker` | swarm-worker | swarm | None | Parallel task execution |
-| `/swarm-scout` | swarm-scout | swarm | None | Reconnaissance and information gathering |
-| `/swarm-hierarchical` | swarm-hierarchical | swarm | None | Hierarchical topology coordination |
-| `/swarm-mesh` | swarm-mesh | swarm | None | Mesh topology coordination |
-| `/swarm-adaptive` | swarm-adaptive | swarm | None | Self-optimizing swarm patterns |
-
-### Swarm Initialization
-
-```javascript
-// Initialize swarm
-mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 5 })
-
-// Spawn agents
-mcp__claude-flow__agent_spawn({ type: "reviewer", name: "Code Reviewer" })
-mcp__claude-flow__agent_spawn({ type: "tester", name: "QA Agent" })
-
-// Orchestrate tasks
-mcp__claude-flow__task_orchestrate({
-  task: "Implement feature with review",
-  strategy: "parallel",
-  priority: "high"
-})
-```
-
----
-
-## Optimization & Monitoring
-
-Commands for performance optimization and system monitoring.
-
-| Command | Agent | Category | Prerequisites | Description |
-|---------|-------|----------|---------------|-------------|
-| `/perf-monitor` | optimization-monitor | optimization | None | Real-time performance metrics |
-| `/benchmark` | optimization-benchmark | optimization | None | Comprehensive benchmarking |
-| `/load-balancer` | optimization-load-balancer | optimization | Swarm active | Dynamic load distribution |
-| `/resources` | optimization-resources | optimization | None | Resource allocation and scaling |
-| `/topology` | optimization-topology | optimization | None | Network topology optimization |
-| `/analyzer` | optimization-analyzer | optimization | None | Performance analysis |
-
-### Monitoring Commands
-
-```bash
-# Performance report
-npx claude-flow performance-report --format detailed --timeframe 24h
-
-# Bottleneck analysis
-npx claude-flow bottleneck-analyze --component swarm-coordination
-
-# Health check
-npx claude-flow health-check --components ["swarm", "agents", "coordination"]
-```
-
----
-
 ## Workspace Management
 
 Commands for workspace-hub operations.
@@ -372,7 +309,7 @@ Common alternative names for commands.
 ## Related Documentation
 
 - [Orchestrator Pattern](./orchestrator-pattern.md) - Delegation patterns
-- [MCP Tools](./mcp-tools.md) - MCP tool reference
+
 - [Context Limits](./CONTEXT_LIMITS.md) - Memory management
 - [Execution Patterns](./execution-patterns.md) - Best practices
 

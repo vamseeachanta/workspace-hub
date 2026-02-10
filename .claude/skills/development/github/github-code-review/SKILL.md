@@ -127,14 +127,8 @@ fi
 
 ```javascript
 // Initialize code review swarm
-mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 5 })
-mcp__claude-flow__agent_spawn({ type: "reviewer", name: "Security Reviewer" })
-mcp__claude-flow__agent_spawn({ type: "reviewer", name: "Performance Reviewer" })
-mcp__claude-flow__agent_spawn({ type: "reviewer", name: "Style Reviewer" })
-mcp__claude-flow__agent_spawn({ type: "architect", name: "Architecture Reviewer" })
 
 // Orchestrate parallel review
-mcp__claude-flow__task_orchestrate({
     task: "Comprehensive code review covering security, performance, style, and architecture",
     strategy: "parallel",
     priority: "high"
@@ -215,14 +209,12 @@ review:
 
 ```javascript
 // Initialize review swarm
-mcp__claude-flow__swarm_init({
     topology: "hierarchical",
     maxAgents: 5,
     strategy: "specialized"
 })
 
 // Spawn specialized reviewers
-mcp__claude-flow__agents_spawn_parallel({
     agents: [
         { type: "reviewer", name: "security-agent", capabilities: ["security-audit"] },
         { type: "reviewer", name: "perf-agent", capabilities: ["performance-analysis"] },
@@ -235,7 +227,6 @@ mcp__claude-flow__agents_spawn_parallel({
 
 ```javascript
 // Store review findings
-mcp__claude-flow__memory_usage({
     action: "store",
     key: "review/pr-123/findings",
     value: JSON.stringify({

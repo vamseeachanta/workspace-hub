@@ -99,7 +99,6 @@ coverage.xml
 !.claude/tools/
 !.claude/docs/
 !.claude/settings.json
-!.claude/claude-flow-config.yaml
 !.claude/agent-skills-map.yaml
 !.claude/workflows/
 !.claude/CONFIGURATION.md
@@ -123,7 +122,6 @@ coverage.xml
 .claude/plans/
 
 # Claude-flow runtime (never synced)
-.claude-flow/
 .hive-mind/
 .swarm/
 memory/
@@ -216,7 +214,6 @@ workspace-*.json
 # ==========================================
 # Claude Flow and AI memory (local only)
 # Note: .claude/ is ignored above, with exceptions for skills/ and CLAUDE.md
-.claude-flow/
 .hive-mind/
 .swarm/
 memory/

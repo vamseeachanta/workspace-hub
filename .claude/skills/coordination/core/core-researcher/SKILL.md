@@ -17,10 +17,6 @@ tools:
   - Bash
   - WebSearch
   - WebFetch
-  - mcp__claude-flow__memory_usage
-  - mcp__claude-flow__memory_search
-  - mcp__claude-flow__github_repo_analyze
-  - mcp__claude-flow__agent_metrics
 related_skills:
   - core-coder
   - core-tester
@@ -46,7 +42,6 @@ hooks:
 Task("Researcher agent", "Analyze [codebase/topic] and document findings", "researcher")
 
 // Store research findings
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/shared/research-findings",
   namespace: "coordination",
@@ -224,7 +219,6 @@ Glob("**/auth*")
 Grep("passport|jwt|session", { path: "src/" })
 
 // Document findings
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/shared/research-findings",
   namespace: "coordination",
@@ -253,7 +247,6 @@ Grep("^export", { path: "src/user-service/" })
 Grep("user-service", { path: "src/", exclude: "src/user-service/" })
 
 // Store dependency map
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/research/user-service-deps",
   namespace: "coordination",
@@ -309,7 +302,6 @@ mcp__claude-flow__memory_usage {
 
 ```javascript
 // Report research status
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/researcher/status",
   namespace: "coordination",
@@ -323,7 +315,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Share research findings
-mcp__claude-flow__memory_usage {
   action: "store",
   key: "swarm/shared/research-findings",
   namespace: "coordination",
@@ -336,7 +327,6 @@ mcp__claude-flow__memory_usage {
 }
 
 // Check prior research
-mcp__claude-flow__memory_search {
   pattern: "swarm/shared/research-*",
   namespace: "coordination",
   limit: 10
@@ -347,13 +337,11 @@ mcp__claude-flow__memory_search {
 
 ```javascript
 // Analyze codebase
-mcp__claude-flow__github_repo_analyze {
   repo: "current",
   analysis_type: "code_quality"
 }
 
 // Track research metrics
-mcp__claude-flow__agent_metrics {
   agentId: "researcher"
 }
 ```
