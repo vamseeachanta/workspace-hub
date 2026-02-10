@@ -1,24 +1,20 @@
 version: "2.1"
-last_run: 2026-02-03T05:00:01-06:00
+last_run: 2026-02-06T05:00:01-06:00
 analysis_window_days: 30
 dry_run: false
 phases_completed:
   reflect: true
-  abstract: true
-  generalize: true
-  store: true
+  abstract: false
+  generalize: false
+  store: false
 metrics:
-  repos_analyzed: 3
-  commits_found: 109
-  patterns_extracted: 10
+  repos_analyzed: 0
+  commits_found: 0
+  patterns_extracted: 0
   script_ideas_found: 8
   sessions_analyzed: 1127
-  conversations_analyzed: 244
-  corrections_detected: 38
-  correction_file_types: 9
-  correction_chains: 336
-  correction_top_extension: py
-  correction_long_chains: 18
+  conversations_analyzed: 273
+  corrections_detected: 45
 checklist:
   cross_review: pass
   pending_reviews: 0
@@ -32,21 +28,21 @@ checklist:
   orphan_docs: 0
   orphan_scripts: 1
   context_management: warn
-  avg_session_msgs: 1069
-  correction_rate: 38
+  avg_session_msgs: 1128
+  correction_rate: 45
   best_practices: warn
   repos_with_tests: 25
-  uncommitted_changes: 59
-  submodule_sync: pass
-  submodules_dirty: 0
-  submodules_unpushed: 0
-  submodules_total: 3
-  claude_md_health: pass
-  claude_md_oversized: 0
+  uncommitted_changes: 24
+  submodule_sync: warn
+  submodules_dirty: 3
+  submodules_unpushed: 1
+  submodules_total: 9
+  claude_md_health: fail
+  claude_md_oversized: 2
   claude_md_total: 20
   hook_installation: pass
-  hooks_installed: 3
-  hooks_expected: 3
+  hooks_installed: 9
+  hooks_expected: 9
   hooks_coverage: 100
   stale_branches: pass
   stale_branch_count: 0
@@ -57,9 +53,9 @@ checklist:
   structure_issues: 0
   root_files: 1
   test_coverage: fail
-  avg_coverage: 20
-  coverage_repos: 7
-  low_coverage_repos: 6
+  avg_coverage: 33
+  coverage_repos: 3
+  low_coverage_repos: 2
   test_pass_fail: pass
   test_pass_count: 0
   test_fail_count: 0
@@ -67,48 +63,20 @@ checklist:
   refactor: warn
   large_files: 12
   todo_count: 0
-  aceengineer_cron: pass
-  aceengineer_stats_date: 2026-02-02
-  aceengineer_report_date: 2026-02-02
-  session_rag: pass
-  session_rag_date: 2026-02-03
-  session_rag_sessions: 1127
-  session_rag_events: 31062
-  cc_insights: warn
-  cc_version: 1.0.61
-  cc_last_reviewed: 2.1.29
-  cc_general_count: 4
-  cc_specific_count: 5
-  work_queue: pass
-  wq_pending: 69
-  wq_working: 0
-  wq_blocked: 0
-  wq_stale: 0
-  skill_eval: none
-  skill_eval_total: 0
-  skill_eval_passed: 0
-  skill_eval_critical: 0
-  skill_eval_warnings: 0
-  capability_map: pass
-  capability_repos: 0
-  capability_domains: 0
-  capability_gaps: 0
-  capability_date: 2026-01-29
-  knowledge_base: pass
-  kb_total: 5
-  kb_active: 5
-  kb_stale: 0
-  kb_avg_confidence: 0.92
+  aceengineer_cron: fail
+  aceengineer_stats_date: 2026-02-04
+  aceengineer_report_date: 2026-02-04
+  rag_aggregation: none
+  rag_agg_last_run: none
+  rag_agg_files_today: 0
 actions_taken:
   skills_created: 0
   skills_enhanced: 0
-  learnings_stored: 10
-  knowledge_captured: 0
+  learnings_stored: 0
   stale_reviews_approved: 0
 files:
-  analysis: /mnt/github/workspace-hub/.claude/state/reflect-history/analysis_2026-02-03_05-00-01.json
-  patterns: /mnt/github/workspace-hub/.claude/state/patterns/patterns_2026-02-03_05-00-16.json
-  conversations: /mnt/github/workspace-hub/.claude/state/patterns/conversations_2026-02-03_05-00-01.json
-  trends: /mnt/github/workspace-hub/.claude/state/trends/trends_2026-02-03_05-08-43.json
+  analysis: /mnt/github/workspace-hub/.claude/state/reflect-history/analysis_2026-02-06_05-00-01.json
+  patterns: none
+  conversations: /mnt/github/workspace-hub/.claude/state/patterns/conversations_2026-02-06_05-00-01.json
+  trends: /mnt/github/workspace-hub/.claude/state/trends/trends_2026-02-06_05-15-04.json
   report: none
-  skill_eval_report: none

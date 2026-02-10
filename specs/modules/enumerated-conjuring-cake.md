@@ -1,256 +1,200 @@
-# Data Residence Strategy: worldenergydata ↔ digitalmodel
+# WRK-011: BSEE All-Lease Field Analysis with Nicknames and Geological Era Grouping
 
 ---
-title: "Data Residence Strategy"
-description: "Three-tier data governance across worldenergydata, digitalmodel, and project repos"
-version: "2.0"
-module: workspace-hub
+title: "BSEE All-Lease Field Analysis"
+description: "Expand BSEE analysis to all leases with field nickname lookup and geological era classification"
+version: "1.0"
+module: worldenergydata/bsee
 session:
   id: enumerated-conjuring-cake
   agent: claude-opus-4.6
 review:
   status: pending
-  related: [WRK-096, WRK-097]
+  related: [WRK-009, WRK-010, WRK-011]
 ---
 
 ## Context
 
-Engineering data is scattered across `worldenergydata` and `digitalmodel` with no formal governance. INVENTORY.md in worldenergydata claims hull geometry was "gathered from digitalmodel" (incorrect — worldenergydata is the collection source). SN curves are hardcoded as Python dicts in digitalmodel (37 curves across 4 standards, 799-line file). The `sn_curve_plotter.py` references a CSV at a path that doesn't exist (`data/fatigue/fatigue_curves_structured.csv` — the `data/` directory hasn't been created). Material properties sit in `src/digitalmodel/data_systems/data/steel_material.yml` buried inside the package tree. There's no single source of truth for "where does data live?"
+WRK-010 successfully ran production and financial analysis for 7 lower tertiary fields (Jack/St. Malo, Stones, Julia, Anchor, Cascade/Chinook, Shenandoah, Big Foot). WRK-011 expands this to ALL leases in the BSEE database, adding field nickname mapping and geological era grouping.
 
-**Parallel work**: WRK-096 is restructuring worldenergydata's Python module imports (code-only). Our changes to worldenergydata are data/docs-only (INVENTORY.md, CLAUDE.md), so no conflict on files — but CLAUDE.md has an existing merge conflict that must be resolved.
+**User decision**: Two-tier approach — full financial analysis for the 7 known fields (existing configs), production-only for all other fields. Field nicknames derived from BSEE data.
 
-## Decision: Three-Tier Data Model
+## Approach: Two-Tier Analysis + Field Discovery
 
-| Tier | What | Owner | Examples |
-|------|------|-------|----------|
-| **1 — Collection** | Raw data from external public sources | `worldenergydata` | BSEE, SODIR, metocean, vessel hulls, oil prices |
-| **2 — Engineering Reference** | Standard lookup tables for analysis | `digitalmodel` | SN curves, steel grades, hydro coefficients |
-| **3 — Project** | Project-specific inputs/outputs | project repos | Analysis configs, client deliverables |
+### Tier 1: All Fields — Production Analysis + Geology + Nicknames
+- Load all production data from BSEE historical OGOR files
+- Aggregate by field (via `BOTM_FLD_NAME_CD` / `FIELD_NAME_CODE`)
+- Join with Paleowells data for geological era classification
+- Derive field display names from `deepwater_field_leases.bin` and platform structure data
+- Generate per-field production summaries and grouped-by-era report
 
-**Boundary test**: "Where did this data originate?" Public source → Tier 1. Engineering standard → Tier 2. Specific project → Tier 3.
+### Tier 2: Lower Tertiary Fields — Full Financial Analysis
+- Reuse existing `config/analysis/lower_tertiary/fields/*.yml` configs
+- Run the existing WRK-010 financial pipeline (NPV, IRR, cash flow)
+- Include in the all-fields report with financial columns populated
 
-## Implementation Plan
+## Implementation Steps
 
-### Phase 0: Policy Documents (no code risk)
+### Step 1: Field Name Resolver (new module)
 
-**Create `docs/DATA_RESIDENCE_POLICY.md`** — canonical three-tier policy with boundary test and handoff contract.
+**File**: `src/worldenergydata/bsee/data/field_names.py`
 
-**Create `ADR-004-data-residence-strategy.md`** — follows ADR-003 format exactly (YAML frontmatter with id, type, title, category, tags, repos, confidence, created, status, etc.)
+Build a `FieldNameResolver` class that:
+1. Loads `data/modules/bsee/bin/deepqual/mv_deep_water_field_leases.bin` — extract `FIELD_NAME_CODE` → `FIELD_NAME` mapping
+2. Loads platform structure data — extract additional `FIELD_NAME_CODE` → name mappings
+3. Loads `data/modules/bsee/bin/lab/mv_lease_area_block.bin` — lease → area/block mapping
+4. Provides `resolve(field_code: str) -> str` returning display name or code as fallback
 
-- ADR-003 template: `.claude/knowledge/entries/decisions/ADR-003-import-knowledge-work-plugins.md`
-
-### Phase 1: Fix worldenergydata references (docs only)
-
-**1a. Edit `worldenergydata/data/modules/vessel_hull_models/INVENTORY.md`**
-- Line 4: Change `> Source: Gathered from digitalmodel repository` → `> Source: Authoritative collection — hull geometry acquired from CAD exports, OrcaWave, and 3D model repositories`
-- Lines 44-84: Rewrite "External Resources (digitalmodel)" section — remove hardcoded absolute paths (`/mnt/github/workspace-hub/digitalmodel/...`), replace with cross-references to the data_sources.yaml convention and generic tool descriptions
-- Preserve all hull model metadata and acquisition status table unchanged
-
-**1b. Resolve `worldenergydata/CLAUDE.md` merge conflict**
-- Merge HEAD version (project-specific) with origin/main (detailed rules), keeping HEAD structure as primary
-- Add one line: `Data governance: see workspace-hub docs/DATA_RESIDENCE_POLICY.md`
-- **WRK-096 coordination**: If WRK-096 resolves the conflict first, just add our line
-
-### Phase 2: Create digitalmodel data directory tree
-
-```
-digitalmodel/
-├── data/                          # NEW — Tier 2 engineering reference data
-│   ├── README.md                  # Data catalog + policy pointer
-│   ├── fatigue/
-│   │   └── sn_curves.yaml        # Externalized from sn_curves.py
-│   └── materials/
-│       └── steel_grades.yaml     # Moved from src/digitalmodel/data_systems/data/
-```
-
-- `digitalmodel/data/` does NOT exist yet — must create
-- `digitalmodel/config/` already exists with domain subdirectories
-
-### Phase 3: Externalize SN Curves (TDD — highest complexity)
-
-**Current state** (`sn_curves.py:263-342`):
-- `StandardSNCurves` class with class-level dicts: `DNV_CURVES` (14), `API_CURVES` (5), `BS_CURVES` (8), `AWS_CURVES` (8), `DNV_MULTISLOPE_CURVES` (2) = **37 curves total**
-- `get_curve()` classmethod at line 344 returns `PowerLawSNCurve` from dict lookup
-- `get_multislope_curve()` at line 391 returns `MultislopeSNCurve` (imported from `.analysis`)
-- Existing tests: `tests/structural/fatigue/test_fatigue_migration.py` imports via `digitalmodel.fatigue` (compat layer)
-
-**3a. Write pinning tests (TDD — Red then Green baseline)**
-
-Create `tests/structural/fatigue/test_sn_curves_yaml.py`:
-- Pin exact parameter values for all 37 curves (A, m, fatigue_limit)
-- Pin all 2 multislope curves (slopes, constants, transition_cycles, fatigue_limit)
-- Test `get_curve()` returns correct values for every standard/class combo
-- Test `list_curves()` counts match
-- Run against current code to confirm green baseline BEFORE any changes
-
-**3b. Create `data/fatigue/sn_curves.yaml`**
-
-```yaml
-# SN Curve Parameters — Engineering Reference Data (Tier 2)
-# Sources: DNV-RP-C203, API RP 2A, BS 7608, AWS D1.1
-metadata:
-  version: "1.0"
-  tier: 2
-  policy: "../../docs/DATA_RESIDENCE_POLICY.md"
-
-standards:
-  DNV:
-    description: "DNV-RP-C203 (in air, T=16-25mm)"
-    curves:
-      B1: {A: 4.22e15, m: 4.0, fatigue_limit: 106.97}
-      B2: {A: 1.01e15, m: 3.5, fatigue_limit: 93.59}
-      # ... all 14 DNV curves
-    multislope:
-      D_MULTISLOPE:
-        slopes: [3.0, 3.5, 5.0]
-        constants: [5.73e11, 1.08e11, 2.5e10]
-        transition_cycles: [2e6, 1e7]
-        fatigue_limit: 52.63
-      # ... F_MULTISLOPE
-  API:
-    description: "API RP 2A-WSD"
-    curves:
-      X: {A: 1.01e12, m: 3.0, fatigue_limit: 48.0}
-      # ... all 5 API curves
-  BS:
-    description: "BS 7608"
-    curves: # ... all 8 BS curves
-  AWS:
-    description: "AWS D1.1"
-    curves: # ... all 8 AWS curves
-```
-
-**3c. Modify `sn_curves.py` — add YAML loader (~40 lines added)**
-
-Key changes:
-1. Add `import yaml` (with `try/except ImportError` for graceful degradation)
-2. Add `_loaded_from_yaml: bool = False` class variable on `StandardSNCurves`
-3. Add `_find_sn_data_file()` function: checks `DIGITALMODEL_DATA_DIR` env var, then `Path(__file__).parents[4] / "data" / "fatigue" / "sn_curves.yaml"` (repo root relative)
-4. Add `_ensure_loaded()` classmethod: lazy-loads YAML on first call, overrides class dicts
-5. Call `_ensure_loaded()` at start of `get_curve()` (line 345), `get_multislope_curve()` (line 392), `list_curves()` (line 436)
-6. **Keep hardcoded dicts as fallback** — if YAML not found or yaml not installed, log warning and use existing dicts
-
-Path resolution: `__file__` is at `src/digitalmodel/structural/fatigue/sn_curves.py`, so `.parents[4]` = `digitalmodel/` repo root where `data/` lives.
-
-**3d. Run tests**
-- `uv run pytest tests/structural/fatigue/test_sn_curves_yaml.py -v` (new pinning tests)
-- `uv run pytest tests/structural/fatigue/test_fatigue_migration.py -v` (existing tests)
-
-### Phase 4: Fix SN Curve Plotter broken path
-
-**Current** (`sn_curve_plotter.py:37-39`):
+**Key functions**:
 ```python
-data_path = Path(__file__).parent.parent.parent.parent / "data" / "fatigue" / "fatigue_curves_structured.csv"
+class FieldNameResolver:
+    def __init__(self, data_dir: Path)
+    def load_field_names(self) -> Dict[str, str]  # code -> display name
+    def resolve(self, field_code: str) -> str
+    def resolve_batch(self, field_codes: List[str]) -> Dict[str, str]
 ```
 
-This resolves to `digitalmodel/data/fatigue/fatigue_curves_structured.csv` — the CSV doesn't exist.
+### Step 2: Geological Era Classifier (extend existing module)
 
-**Fix**: Add graceful error handling — if CSV not found, raise `FileNotFoundError` with message explaining where to place the legacy 221-row CSV. The plotter is a separate legacy system from the `StandardSNCurves` library; we don't need to generate the CSV as part of this work item.
+**File**: `src/worldenergydata/bsee/paleowells/era_classifier.py`
 
-### Phase 5: Create `config/data_sources.yaml`
+Extend `PaleowellsDataProcessor` to provide era classification for any well:
+1. Load `Paleowells.csv` (16K+ rows with `API Well Number` → `Paleo Age`)
+2. Parse `Paleo Age` string to extract era (Paleocene, Eocene, Oligocene, Miocene, Pliocene, Pleistocene)
+3. Map wells to fields via API number → field code join
+4. Classify each field's dominant era (most wells, or deepest penetration)
 
-Declare external data dependencies in `digitalmodel/config/data_sources.yaml`:
+**Key functions**:
+```python
+class GeologicalEraClassifier:
+    ERAS = ["Paleocene", "Eocene", "Oligocene", "Miocene", "Pliocene", "Pleistocene"]
 
+    def __init__(self, paleowells_csv: Path)
+    def classify_well(self, api_well_number: str) -> Optional[str]
+    def classify_field(self, field_wells: List[str]) -> str  # dominant era
+    def get_era_summary(self) -> Dict[str, int]  # era -> well count
+```
+
+### Step 3: All-Fields Production Runner (new module)
+
+**File**: `src/worldenergydata/bsee/analysis/all_fields_runner.py`
+
+Orchestrator that:
+1. Loads all BSEE production data (OGOR historical yearly files)
+2. Groups production by field code
+3. For each field: compute cumulative oil/gas/water, peak rate, active years, well count
+4. Joins with FieldNameResolver for display names
+5. Joins with GeologicalEraClassifier for era labels
+6. For Tier 2 fields (lower tertiary with configs): also runs the financial pipeline
+7. Outputs a unified DataFrame with all fields
+
+**Key functions**:
+```python
+class AllFieldsRunner:
+    def __init__(self, field_resolver: FieldNameResolver, era_classifier: GeologicalEraClassifier)
+    def run(self, production_data: pd.DataFrame, well_data: pd.DataFrame) -> pd.DataFrame
+    def _compute_field_production(self, field_code: str, field_df: pd.DataFrame) -> Dict
+    def _run_financial_tier(self, field_code: str) -> Optional[Dict]
+```
+
+**Output DataFrame columns**:
+```
+FIELD_CODE | FIELD_NAME | GEOLOGICAL_ERA | AREA_CODE | WATER_DEPTH_AVG |
+WELL_COUNT | ACTIVE_WELLS | FIRST_PRODUCTION | LAST_PRODUCTION |
+CUM_OIL_MMBBL | CUM_GAS_BCF | CUM_WATER_MMBBL | PEAK_OIL_BOPD |
+NPV10_MM_USD | IRR_PCT | PAYBACK_YRS  (Tier 2 only, null for Tier 1)
+```
+
+### Step 4: Report Generator
+
+**File**: `src/worldenergydata/bsee/reports/all_fields_report.py`
+
+Generate structured report:
+1. **Executive summary**: total fields, total production, era distribution
+2. **By geological era**: table grouped by era, sorted by cumulative production
+3. **By field**: sortable table with all metrics
+4. **Tier 2 financial summary**: lower tertiary fields with NPV/IRR/payback
+5. **Output formats**: Markdown report + CSV export + HTML interactive (Plotly)
+
+**Output files**:
+- `reports/bsee/all_fields_analysis.md` — structured markdown report
+- `results/bsee/all_fields_summary.csv` — machine-readable data
+- `results/bsee/all_fields_dashboard.html` — interactive Plotly dashboard
+
+### Step 5: Configuration
+
+**File**: `config/analysis/all_fields/analysis_config.yml`
+
+Minimal config for the all-fields runner:
 ```yaml
-version: "1.0"
-policy: "../docs/DATA_RESIDENCE_POLICY.md"  # Not yet present in digitalmodel; relative to workspace-hub
-tier: 2
-
-local_data:
-  fatigue:
-    sn_curves: {path: "data/fatigue/sn_curves.yaml", tier: 2}
-  materials:
-    steel_grades: {path: "data/materials/steel_grades.yaml", tier: 2}
-
-external_dependencies:
-  worldenergydata:
-    vessel_hull_models:
-      source_path: "worldenergydata/data/modules/vessel_hull_models/"
-      type: read_only
-      tier: 1
-    metocean:
-      source_path: "worldenergydata/data/metocean/"
-      type: read_only
-      tier: 1
+analysis_scope:
+  tier_1: all  # all fields get production analysis
+  tier_2:      # these fields get full financial analysis
+    config_dir: config/analysis/lower_tertiary/fields/
+    fields: [anchor, cascade_chinook, jack_st_malo, julia, shenandoah, stones, big_foot]
+data_sources:
+  production: data/modules/bsee/bin/historical_production_yearly/
+  paleowells: data/modules/bsee/paleowells/Paleowells.csv
+  field_leases: data/modules/bsee/bin/deepqual/mv_deep_water_field_leases.bin
+  platform_structures: data/modules/bsee/bin/platstruc/mv_platstruc_structures.bin
+  lease_area_block: data/modules/bsee/bin/lab/mv_lease_area_block.bin
 ```
 
-No path resolver helper needed yet — this is a declaration file. Runtime resolution can be added when actual cross-repo data access code is written.
+### Step 6: Tests (TDD)
 
-### Phase 6: Steel material move
+**Files**:
+- `tests/unit/bsee/test_field_names.py` — FieldNameResolver unit tests
+- `tests/unit/bsee/test_era_classifier.py` — GeologicalEraClassifier unit tests
+- `tests/unit/bsee/test_all_fields_runner.py` — AllFieldsRunner unit tests
+- `tests/unit/bsee/test_all_fields_report.py` — Report generator tests
 
-**Current**: `src/digitalmodel/data_systems/data/steel_material.yml` (49 lines, 9 grades)
-**Target**: `data/materials/steel_grades.yaml`
+**Key test cases**:
+- Field resolver: known deep water fields resolve correctly, unknown codes return code as fallback
+- Era classifier: wells with Paleocene/Eocene ages classified correctly, wells without paleo data return None
+- Runner: handles empty production data, single-field, multi-field; Tier 2 fields get financial columns
+- Report: markdown renders correctly, CSV has expected columns, era grouping sorts properly
 
-Steps:
-1. TDD: Write test loading steel grades, validating all 9 grades match current values
-2. Copy content to `data/materials/steel_grades.yaml` with improved metadata header
-3. Keep original file as-is (backward compat for `pipe_properties.py` line 186 which uses `assetutilities.get_library_filename`)
-4. Add deprecation comment to original file pointing to new canonical location
+## Critical Files
 
-**Note**: Updating `pipe_properties.py` to use the new path is a separate concern — it depends on `assetutilities.get_library_filename()` which resolves relative to the package root (`src/digitalmodel/`), not the repo root. Changing that path resolution is out of scope for this work item.
+### Existing (read/reuse)
+| File | Purpose |
+|------|---------|
+| `src/worldenergydata/bsee/bsee.py` | Main router — extend to support all-fields mode |
+| `src/worldenergydata/bsee/analysis/bsee_analysis.py` | Analysis orchestrator |
+| `src/worldenergydata/bsee/paleowells/data_processor.py` | Paleowells processor with era extraction regex |
+| `src/worldenergydata/bsee/analysis/financial/` | Tier 2 financial pipeline (reuse as-is) |
+| `src/worldenergydata/bsee/data/bsee_data.py` | Data loading layer |
+| `config/analysis/lower_tertiary/fields/*.yml` | 7 field configs for Tier 2 |
+| `data/modules/bsee/paleowells/Paleowells.csv` | 16K+ rows of geological well data |
+| `data/modules/bsee/bin/deepqual/mv_deep_water_field_leases.bin` | Field name mapping source |
+| `data/modules/bsee/bin/historical_production_yearly/` | OGOR production data |
 
-### Phase 7: Documentation cross-references
-
-- Add to `digitalmodel/CLAUDE.md`: `Data governance: see workspace-hub docs/DATA_RESIDENCE_POLICY.md`
-- Add to `worldenergydata/CLAUDE.md` (done in Phase 1b)
-- Create `digitalmodel/data/README.md` with tier explanation and file catalog
-
-## Execution Order
-
-```
-Phase 0 (policy docs)  ─────────┐
-Phase 1 (worldenergydata fixes) ─┤── parallel, no deps
-                                  │
-Phase 2 (create data/ dirs) ─────┤── after Phase 0
-                                  │
-Phase 3 (SN curve TDD) ──────────┤── after Phase 2
-Phase 4 (plotter fix) ───────────┤── after Phase 2, parallel with 3
-Phase 5 (data_sources.yaml) ─────┤── after Phase 0, parallel with 3
-                                  │
-Phase 6 (steel material) ────────┤── after Phase 2
-Phase 7 (doc cross-refs) ────────┘── after Phase 0+1
-```
-
-## Files to Modify
-
-| File | Action | Phase |
-|------|--------|-------|
-| `docs/DATA_RESIDENCE_POLICY.md` | **Create** | 0 |
-| `.claude/knowledge/entries/decisions/ADR-004-data-residence-strategy.md` | **Create** | 0 |
-| `worldenergydata/data/modules/vessel_hull_models/INVENTORY.md` | **Edit** — fix provenance | 1 |
-| `worldenergydata/CLAUDE.md` | **Edit** — resolve conflict, add ref | 1 |
-| `digitalmodel/data/README.md` | **Create** | 2 |
-| `digitalmodel/data/fatigue/sn_curves.yaml` | **Create** — 37 curves | 3 |
-| `digitalmodel/tests/structural/fatigue/test_sn_curves_yaml.py` | **Create** — pinning tests | 3 |
-| `digitalmodel/src/digitalmodel/structural/fatigue/sn_curves.py` | **Edit** — add YAML loader | 3 |
-| `digitalmodel/src/digitalmodel/structural/fatigue/sn_curve_plotter.py` | **Edit** — graceful error | 4 |
-| `digitalmodel/config/data_sources.yaml` | **Create** | 5 |
-| `digitalmodel/data/materials/steel_grades.yaml` | **Create** — copy from steel_material.yml | 6 |
-| `digitalmodel/CLAUDE.md` | **Edit** — add ref | 7 |
-
-## WRK-096 Coordination
-
-| Our file | WRK-096 touches? | Conflict risk |
-|----------|-------------------|---------------|
-| INVENTORY.md | No (data file) | None |
-| worldenergydata/CLAUDE.md | Possible (may resolve merge conflict) | Low — add our line after their resolve |
-| All digitalmodel files | No (WRK-096 is worldenergydata only) | None |
-
-**Strategy**: Execute Phase 1b (worldenergydata CLAUDE.md) last among worldenergydata changes. Check if WRK-096 has resolved the merge conflict. If yes, append our line. If no, resolve it ourselves.
+### New (create)
+| File | Purpose |
+|------|---------|
+| `src/worldenergydata/bsee/data/field_names.py` | Field nickname resolver |
+| `src/worldenergydata/bsee/paleowells/era_classifier.py` | Geological era classifier |
+| `src/worldenergydata/bsee/analysis/all_fields_runner.py` | All-fields orchestrator |
+| `src/worldenergydata/bsee/reports/all_fields_report.py` | Report generator |
+| `config/analysis/all_fields/analysis_config.yml` | Runner configuration |
+| `tests/unit/bsee/test_field_names.py` | Field resolver tests |
+| `tests/unit/bsee/test_era_classifier.py` | Era classifier tests |
+| `tests/unit/bsee/test_all_fields_runner.py` | Runner tests |
+| `tests/unit/bsee/test_all_fields_report.py` | Report tests |
 
 ## Verification
 
-1. **SN curve integrity**: `uv run pytest tests/structural/fatigue/` in digitalmodel — all 37 curves load from YAML with values identical to hardcoded originals
-2. **Existing tests pass**: `uv run pytest tests/structural/fatigue/test_fatigue_migration.py` — no regressions
-3. **Policy reachable**: `ls ../../docs/DATA_RESIDENCE_POLICY.md` from within both submodules
-4. **No circular refs**: `grep -r "digitalmodel" worldenergydata/data/` returns nothing after INVENTORY.md fix
-5. **Fallback works**: Delete YAML temporarily, verify `StandardSNCurves.get_curve()` still works from hardcoded dicts
-6. **Plotter graceful**: Instantiate `SNCurvePlotter()` without CSV, verify helpful `FileNotFoundError`
+1. **Unit tests**: `PYTHONPATH="src:../assetutilities/src" python3 -m pytest tests/unit/bsee/test_field_names.py tests/unit/bsee/test_era_classifier.py tests/unit/bsee/test_all_fields_runner.py -v --tb=short --noconftest`
+2. **Field name resolution**: Load deepwater field leases bin, verify known fields (Thunder Horse, Mars, etc.) resolve
+3. **Era classification**: Load Paleowells.csv, verify era extraction matches known wells
+4. **Production totals**: Cross-check a few known fields against WRK-010 lower tertiary results
+5. **Report output**: Verify markdown report has era grouping, CSV has expected columns, HTML renders
 
-## Scope Exclusions
+## Risks
 
-- **DATA_REORGANIZATION_PLAN.md full execution** (267 files) — only steel material and fatigue data. Vessels/hydrodynamic are separate WRK items
-- **Runtime path resolver** for cross-repo data — declaration only via data_sources.yaml
-- **`pipe_properties.py` path update** — depends on `assetutilities.get_library_filename` refactor
-- **Legacy CSV generation** for plotter — separate data acquisition task
-- **WRK-096 module restructure** — parallel, non-overlapping work
+| Risk | Mitigation |
+|------|------------|
+| Binary .bin files may need deserialization logic | Check existing loaders in `data/loaders/` for patterns |
+| Paleowells.csv may not cover all fields | Fields without paleo data get "Unknown" era — document in report |
+| Production data volume (29 yearly files) may be slow | Process in chunks, cache intermediate results |
+| Field code mapping may be incomplete | Fallback to raw code; document unmapped fields |

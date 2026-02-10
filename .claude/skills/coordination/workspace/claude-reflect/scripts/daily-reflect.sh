@@ -50,6 +50,27 @@ PATTERNS_FOUND=0
 STALE_REVIEWS_APPROVED=0
 
 #############################################
+# PRE-PHASE: Aggregate yesterday's daily summary
+#############################################
+log ""
+log "=== PRE-PHASE: DAILY SUMMARY AGGREGATION ==="
+YESTERDAY=$(date -d yesterday +%Y-%m-%d 2>/dev/null || date -v-1d +%Y-%m-%d 2>/dev/null || date +%Y-%m-%d)
+DAILY_SUMMARIES_DIR="${STATE_DIR}/daily-summaries"
+mkdir -p "$DAILY_SUMMARIES_DIR"
+
+if [[ -x "$SCRIPT_DIR/aggregate-daily-summary.sh" ]]; then
+    log "Aggregating daily summary for $YESTERDAY..."
+    DAILY_SUMMARY=$("$SCRIPT_DIR/aggregate-daily-summary.sh" "$YESTERDAY" 2>> "$LOG_FILE") || true
+    if [[ -f "${DAILY_SUMMARIES_DIR}/daily_summary_${YESTERDAY}.md" ]]; then
+        log "Daily summary generated: ${DAILY_SUMMARIES_DIR}/daily_summary_${YESTERDAY}.md"
+    else
+        log "No daily summary generated (possibly no session data)"
+    fi
+else
+    log "aggregate-daily-summary.sh not found, skipping daily aggregation"
+fi
+
+#############################################
 # PHASE 1: REFLECT - Collect git history
 #############################################
 log ""
