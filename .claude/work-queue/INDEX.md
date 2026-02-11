@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-11T15:05:49Z by generate-index.py -->
+<!-- Generated: 2026-02-11T16:37:36Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-11T15:05:49Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-11T16:37:36Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 118
+**Total items:** 119
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 74 |
+| pending | 75 |
 | working | 1 |
 | archived | 42 |
 
@@ -21,7 +21,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 42 |
+| high | 43 |
 | medium | 53 |
 | low | 23 |
 
@@ -31,7 +31,7 @@
 |------------|-------|
 | simple | 14 |
 | medium | 45 |
-| complex | 56 |
+| complex | 57 |
 
 ### By Repository
 
@@ -43,19 +43,19 @@
 | acma-projects | 1 |
 | assethold | 5 |
 | assetutilities | 1 |
-| digitalmodel | 46 |
+| digitalmodel | 47 |
 | hobbies | 1 |
 | investments | 1 |
 | rock-oil-field | 1 |
 | sabithaandkrishnaestates | 1 |
-| workspace-hub | 11 |
-| worldenergydata | 37 |
+| workspace-hub | 12 |
+| worldenergydata | 38 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 79 / 118 |
+| Plans exist | 79 / 119 |
 | Plans cross-reviewed | 0 |
 | Plans approved | 0 |
 | Brochure pending | 0 |
@@ -182,7 +182,8 @@
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | medium | digitalmodel | ❌ | ❌ | ❌ | - | - | - |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | medium | digitalmodel | ❌ | ❌ | ❌ | - | - | - |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | medium | complex | workspace-hub | ❌ | ❌ | ❌ | - | - | - |
-| WRK-119 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | high | complex | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | pending | high | complex | workspace-hub, worldenergydata, digitalmodel | ❌ | ❌ | ❌ | - | - | - |
+| WRK-120 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | high | complex | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -263,7 +264,8 @@
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | medium | medium | digitalmodel |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | medium | medium | digitalmodel |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub |
-| WRK-119 | Local data strategy — gitignore BSEE bins, keep repo lean | high | complex | worldenergydata |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | high | complex | workspace-hub, worldenergydata, digitalmodel |
+| WRK-120 | Local data strategy — gitignore BSEE bins, keep repo lean | high | complex | worldenergydata |
 
 ### Working
 
@@ -425,6 +427,7 @@
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | medium |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | medium |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | medium |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | pending | high | complex |
 
 ### hobbies
 
@@ -465,6 +468,7 @@
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | pending | medium | medium |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | medium | complex |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | pending | high | complex |
 
 ### worldenergydata
 
@@ -506,7 +510,8 @@
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium |
 | WRK-111 | BSEE field development interactive map and analytics | pending | medium | complex |
 | WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | high | medium |
-| WRK-119 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | high | complex |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | pending | high | complex |
+| WRK-120 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | high | complex |
 
 ## By Priority
 
@@ -555,7 +560,8 @@
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | working | medium | worldenergydata |
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | pending | simple | sabithaandkrishnaestates |
 | WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | medium | worldenergydata |
-| WRK-119 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | complex | worldenergydata |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | pending | complex | workspace-hub, worldenergydata, digitalmodel |
+| WRK-120 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | complex | worldenergydata |
 
 ### Medium
 
@@ -773,7 +779,8 @@
 | WRK-111 | BSEE field development interactive map and analytics | pending | medium | worldenergydata, aceengineer-website |
 | WRK-112 | Appliance lifecycle analytics module for assethold | pending | medium | assethold |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | medium | workspace-hub |
-| WRK-119 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | high | worldenergydata |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | pending | high | workspace-hub, worldenergydata, digitalmodel |
+| WRK-120 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | high | worldenergydata |
 
 ## Dependencies
 
