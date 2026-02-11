@@ -1,28 +1,28 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-11T12:05:51Z by generate-index.py -->
+<!-- Generated: 2026-02-11T16:15:50Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-11T12:05:51Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-11T16:15:50Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 116
+**Total items:** 118
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 72 |
+| pending | 71 |
 | working | 1 |
-| archived | 42 |
+| archived | 44 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 41 |
-| medium | 52 |
+| high | 45 |
+| medium | 50 |
 | low | 23 |
 
 ### By Complexity
@@ -30,34 +30,34 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 14 |
-| medium | 45 |
-| complex | 54 |
+| medium | 46 |
+| complex | 55 |
 
 ### By Repository
 
 | Repository | Count |
 |------------|-------|
 | aceengineer-admin | 2 |
-| aceengineer-website | 8 |
+| aceengineer-website | 7 |
 | achantas-data | 8 |
-| acma-projects | 1 |
-| assethold | 5 |
-| assetutilities | 1 |
-| digitalmodel | 46 |
+| acma-projects | 2 |
+| assethold | 4 |
+| assetutilities | 2 |
+| digitalmodel | 49 |
 | hobbies | 1 |
 | investments | 1 |
 | rock-oil-field | 1 |
 | sabithaandkrishnaestates | 1 |
 | workspace-hub | 10 |
-| worldenergydata | 36 |
+| worldenergydata | 34 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 78 / 116 |
-| Plans cross-reviewed | 0 |
-| Plans approved | 0 |
+| Plans exist | 78 / 118 |
+| Plans cross-reviewed | 1 |
+| Plans approved | 1 |
 | Brochure pending | 0 |
 | Brochure updated/synced | 5 |
 
@@ -164,7 +164,7 @@
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | high | medium | workspace-hub, worldenergydata, digitalmodel | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-098 | Clean up 7.1GB large data committed to worldenergydata git history | archived | high | high | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-099 | Run 3-way benchmark on Unit Box hull | pending | medium | medium | digitalmodel | ✅ | ❌ | ❌ | - | - | - |
-| WRK-100 | Run 3-way benchmark on Barge hull | pending | medium | medium | digitalmodel | ✅ | ❌ | ❌ | - | - | WRK-099 |
+| WRK-100 | Run 3-way benchmark on Barge hull | archived | medium | medium | digitalmodel | ✅ | ❌ | ❌ | ███ 100% | - | WRK-099 |
 | WRK-101 | Add mesh decimation/coarsening to mesh-utilities skill | pending | low | medium | digitalmodel | ✅ | ❌ | ❌ | - | - | - |
 | WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | pending | medium | medium | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | pending | medium | medium | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
@@ -174,13 +174,15 @@
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | pending | high | simple | sabithaandkrishnaestates | ✅ | ❌ | ❌ | - | - | - |
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | pending | medium | medium | workspace-hub | ✅ | ❌ | ❌ | - | - | - |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium | workspace-hub, worldenergydata, digitalmodel | ✅ | ❌ | ❌ | - | - | - |
-| WRK-110 | Case study: Fluid pound and tagging bottom dynacard diagnostics | pending | medium | medium | digitalmodel | ✅ | ❌ | ❌ | - | - | - |
-| WRK-111 | BSEE field development interactive map and analytics | pending | medium | complex | worldenergydata, aceengineer-website | ❌ | ❌ | ❌ | - | - | - |
-| WRK-112 | Appliance lifecycle analytics module for assethold | pending | medium | complex | assethold | ❌ | ❌ | ❌ | - | - | - |
-| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | high | medium | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
+| WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | pending | medium | complex | digitalmodel | ❌ | ❌ | ❌ | - | - | - |
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | medium | digitalmodel | ❌ | ❌ | ❌ | - | - | - |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | medium | digitalmodel | ❌ | ❌ | ❌ | - | - | - |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | medium | digitalmodel | ❌ | ❌ | ❌ | - | - | - |
+| WRK-118 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex | digitalmodel | ❌ | ❌ | ❌ | - | - | - |
+| WRK-119 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | pending | high | medium | digitalmodel | ❌ | ❌ | ❌ | - | - | WRK-121 |
+| WRK-120 | Map object property routing from engineering specs to OrcaFlex objects | pending | high | complex | digitalmodel | ❌ | ❌ | ❌ | - | - | - |
+| WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | in_progress | high | medium | - | ✅ | ❌ | ❌ | - | - | - |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium | acma-projects, assetutilities | ✅ | ✅ | ✅ | ███ 100% | - | - |
 
 ## By Status
 
@@ -244,7 +246,6 @@
 | WRK-094 | Plan, reassess, and improve the workspace-hub workflow | high | complex | workspace-hub |
 | WRK-095 | Engineering unit tracking system — spec to code lifecycle | high | complex | rock-oil-field |
 | WRK-099 | Run 3-way benchmark on Unit Box hull | medium | medium | digitalmodel |
-| WRK-100 | Run 3-way benchmark on Barge hull | medium | medium | digitalmodel |
 | WRK-101 | Add mesh decimation/coarsening to mesh-utilities skill | low | medium | digitalmodel |
 | WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | medium | medium | worldenergydata |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | medium | medium | worldenergydata |
@@ -253,13 +254,13 @@
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | high | simple | sabithaandkrishnaestates |
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | medium | medium | workspace-hub |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | medium | medium | workspace-hub, worldenergydata, digitalmodel |
-| WRK-110 | Case study: Fluid pound and tagging bottom dynacard diagnostics | medium | medium | digitalmodel |
-| WRK-111 | BSEE field development interactive map and analytics | medium | complex | worldenergydata, aceengineer-website |
-| WRK-112 | Appliance lifecycle analytics module for assethold | medium | complex | assethold |
-| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | high | medium | worldenergydata |
+| WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | medium | complex | digitalmodel |
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | medium | medium | digitalmodel |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | medium | medium | digitalmodel |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | medium | medium | digitalmodel |
+| WRK-118 | Benchmark all example models across time domain and frequency domain with seed equivalence | high | complex | digitalmodel |
+| WRK-119 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | high | medium | digitalmodel |
+| WRK-120 | Map object property routing from engineering specs to OrcaFlex objects | high | complex | digitalmodel |
 
 ### Working
 
@@ -313,6 +314,8 @@
 | WRK-096 | Review and improve worldenergydata module structure for discoverability | high | medium | worldenergydata |
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | high | medium | workspace-hub, worldenergydata, digitalmodel |
 | WRK-098 | Clean up 7.1GB large data committed to worldenergydata git history | high | high | worldenergydata |
+| WRK-100 | Run 3-way benchmark on Barge hull | medium | medium | digitalmodel |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | high | medium | acma-projects, assetutilities |
 
 ## By Repository
 
@@ -334,7 +337,6 @@
 | WRK-080 | Write 4 energy data blog posts for SEO | pending | low | complex |
 | WRK-081 | Build interactive NPV calculator for website lead generation | pending | low | complex |
 | WRK-085 | Create public sample data access page on website | pending | low | medium |
-| WRK-111 | BSEE field development interactive map and analytics | pending | medium | complex |
 
 ### achantas-data
 
@@ -354,6 +356,7 @@
 | ID | Title | Status | Priority | Complexity |
 |-----|-------|--------|----------|------------|
 | WRK-036 | OrcaFlex structure deployment analysis - supply boat side deployment with structural loads | pending | low | complex |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium |
 
 ### assethold
 
@@ -363,13 +366,13 @@
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | pending | medium | complex |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | pending | low | complex |
 | WRK-053 | assethold test coverage improvement | pending | medium | medium |
-| WRK-112 | Appliance lifecycle analytics module for assethold | pending | medium | complex |
 
 ### assetutilities
 
 | ID | Title | Status | Priority | Complexity |
 |-----|-------|--------|----------|------------|
 | WRK-052 | assetutilities test coverage improvement | pending | high | complex |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium |
 
 ### digitalmodel
 
@@ -413,14 +416,17 @@
 | WRK-093 | Improve dynacard AI diagnostics | archived | low | complex |
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | high | medium |
 | WRK-099 | Run 3-way benchmark on Unit Box hull | pending | medium | medium |
-| WRK-100 | Run 3-way benchmark on Barge hull | pending | medium | medium |
+| WRK-100 | Run 3-way benchmark on Barge hull | archived | medium | medium |
 | WRK-101 | Add mesh decimation/coarsening to mesh-utilities skill | pending | low | medium |
 | WRK-106 | Hull panel geometry generator from waterline, section, and profile line definitions | pending | medium | complex |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium |
-| WRK-110 | Case study: Fluid pound and tagging bottom dynacard diagnostics | pending | medium | medium |
+| WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | pending | medium | complex |
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | medium |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | medium |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | medium |
+| WRK-118 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex |
+| WRK-119 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | pending | high | medium |
+| WRK-120 | Map object property routing from engineering specs to OrcaFlex objects | pending | high | complex |
 
 ### hobbies
 
@@ -499,8 +505,6 @@
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | working | high | medium |
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | medium |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium |
-| WRK-111 | BSEE field development interactive map and analytics | pending | medium | complex |
-| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | high | medium |
 
 ## By Priority
 
@@ -548,7 +552,11 @@
 | WRK-098 | Clean up 7.1GB large data committed to worldenergydata git history | archived | high | worldenergydata |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | working | medium | worldenergydata |
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | pending | simple | sabithaandkrishnaestates |
-| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | medium | worldenergydata |
+| WRK-118 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | complex | digitalmodel |
+| WRK-119 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | pending | medium | digitalmodel |
+| WRK-120 | Map object property routing from engineering specs to OrcaFlex objects | pending | complex | digitalmodel |
+| WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | in_progress | medium | - |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | medium | acma-projects, assetutilities |
 
 ### Medium
 
@@ -593,16 +601,14 @@
 | WRK-086 | Rewrite CI workflows for Python/bash workspace | pending | medium | workspace-hub |
 | WRK-090 | Identify and refactor large files exceeding 400-line limit | pending | medium | workspace-hub |
 | WRK-099 | Run 3-way benchmark on Unit Box hull | pending | medium | digitalmodel |
-| WRK-100 | Run 3-way benchmark on Barge hull | pending | medium | digitalmodel |
+| WRK-100 | Run 3-way benchmark on Barge hull | archived | medium | digitalmodel |
 | WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | pending | medium | worldenergydata |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | pending | medium | worldenergydata |
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | worldenergydata |
 | WRK-106 | Hull panel geometry generator from waterline, section, and profile line definitions | pending | complex | digitalmodel |
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | pending | medium | workspace-hub |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | workspace-hub, worldenergydata, digitalmodel |
-| WRK-110 | Case study: Fluid pound and tagging bottom dynacard diagnostics | pending | medium | digitalmodel |
-| WRK-111 | BSEE field development interactive map and analytics | pending | complex | worldenergydata, aceengineer-website |
-| WRK-112 | Appliance lifecycle analytics module for assethold | pending | complex | assethold |
+| WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | pending | complex | digitalmodel |
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | digitalmodel |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | digitalmodel |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | digitalmodel |
@@ -692,7 +698,7 @@
 | WRK-096 | Review and improve worldenergydata module structure for discoverability | archived | high | worldenergydata |
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | high | workspace-hub, worldenergydata, digitalmodel |
 | WRK-099 | Run 3-way benchmark on Unit Box hull | pending | medium | digitalmodel |
-| WRK-100 | Run 3-way benchmark on Barge hull | pending | medium | digitalmodel |
+| WRK-100 | Run 3-way benchmark on Barge hull | archived | medium | digitalmodel |
 | WRK-101 | Add mesh decimation/coarsening to mesh-utilities skill | pending | low | digitalmodel |
 | WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | pending | medium | worldenergydata |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | pending | medium | worldenergydata |
@@ -700,11 +706,12 @@
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | worldenergydata |
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | pending | medium | workspace-hub |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | workspace-hub, worldenergydata, digitalmodel |
-| WRK-110 | Case study: Fluid pound and tagging bottom dynacard diagnostics | pending | medium | digitalmodel |
-| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | high | worldenergydata |
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | digitalmodel |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | digitalmodel |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | digitalmodel |
+| WRK-119 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | pending | high | digitalmodel |
+| WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | in_progress | high | - |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | acma-projects, assetutilities |
 
 ### Complex
 
@@ -762,8 +769,9 @@
 | WRK-094 | Plan, reassess, and improve the workspace-hub workflow | pending | high | workspace-hub |
 | WRK-095 | Engineering unit tracking system — spec to code lifecycle | pending | high | rock-oil-field |
 | WRK-106 | Hull panel geometry generator from waterline, section, and profile line definitions | pending | medium | digitalmodel |
-| WRK-111 | BSEE field development interactive map and analytics | pending | medium | worldenergydata, aceengineer-website |
-| WRK-112 | Appliance lifecycle analytics module for assethold | pending | medium | assethold |
+| WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | pending | medium | digitalmodel |
+| WRK-118 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | digitalmodel |
+| WRK-120 | Map object property routing from engineering specs to OrcaFlex objects | pending | high | digitalmodel |
 
 ## Dependencies
 
@@ -789,4 +797,5 @@
 | WRK-079 | Create marine safety case study — cross-database incident correlation | WRK-074 | - | - |
 | WRK-085 | Create public sample data access page on website | WRK-075 | - | - |
 | WRK-100 | Run 3-way benchmark on Barge hull | WRK-099 | - | - |
+| WRK-119 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | WRK-121 | - | - |
 
