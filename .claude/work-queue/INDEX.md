@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-11T16:37:36Z by generate-index.py -->
+<!-- Generated: 2026-02-11T16:38:32Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-11T16:37:36Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-11T16:38:32Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 119
+**Total items:** 120
 
 ### By Status
 
@@ -15,13 +15,13 @@
 |--------|-------|
 | pending | 75 |
 | working | 1 |
-| archived | 42 |
+| archived | 43 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 43 |
+| high | 44 |
 | medium | 53 |
 | low | 23 |
 
@@ -30,7 +30,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 14 |
-| medium | 45 |
+| medium | 46 |
 | complex | 57 |
 
 ### By Repository
@@ -40,9 +40,9 @@
 | aceengineer-admin | 2 |
 | aceengineer-website | 8 |
 | achantas-data | 8 |
-| acma-projects | 1 |
+| acma-projects | 2 |
 | assethold | 5 |
-| assetutilities | 1 |
+| assetutilities | 2 |
 | digitalmodel | 47 |
 | hobbies | 1 |
 | investments | 1 |
@@ -55,9 +55,9 @@
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 79 / 119 |
-| Plans cross-reviewed | 0 |
-| Plans approved | 0 |
+| Plans exist | 80 / 120 |
+| Plans cross-reviewed | 1 |
+| Plans approved | 1 |
 | Brochure pending | 0 |
 | Brochure updated/synced | 5 |
 
@@ -184,6 +184,7 @@
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | medium | complex | workspace-hub | ❌ | ❌ | ❌ | - | - | - |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | pending | high | complex | workspace-hub, worldenergydata, digitalmodel | ❌ | ❌ | ❌ | - | - | - |
 | WRK-120 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | high | complex | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium | acma-projects, assetutilities | ✅ | ✅ | ✅ | ███ 100% | - | - |
 
 ## By Status
 
@@ -319,6 +320,7 @@
 | WRK-096 | Review and improve worldenergydata module structure for discoverability | high | medium | worldenergydata |
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | high | medium | workspace-hub, worldenergydata, digitalmodel |
 | WRK-098 | Clean up 7.1GB large data committed to worldenergydata git history | high | high | worldenergydata |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | high | medium | acma-projects, assetutilities |
 
 ## By Repository
 
@@ -360,6 +362,7 @@
 | ID | Title | Status | Priority | Complexity |
 |-----|-------|--------|----------|------------|
 | WRK-036 | OrcaFlex structure deployment analysis - supply boat side deployment with structural loads | pending | low | complex |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium |
 
 ### assethold
 
@@ -376,6 +379,7 @@
 | ID | Title | Status | Priority | Complexity |
 |-----|-------|--------|----------|------------|
 | WRK-052 | assetutilities test coverage improvement | pending | high | complex |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium |
 
 ### digitalmodel
 
@@ -562,6 +566,7 @@
 | WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | medium | worldenergydata |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | pending | complex | workspace-hub, worldenergydata, digitalmodel |
 | WRK-120 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | complex | worldenergydata |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | medium | acma-projects, assetutilities |
 
 ### Medium
 
@@ -719,6 +724,7 @@
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | digitalmodel |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | digitalmodel |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | digitalmodel |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | acma-projects, assetutilities |
 
 ### Complex
 
