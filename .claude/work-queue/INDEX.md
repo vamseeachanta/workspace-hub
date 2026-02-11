@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-11T12:05:51Z by generate-index.py -->
+<!-- Generated: 2026-02-11T15:05:49Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-11T12:05:51Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-11T15:05:49Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 116
+**Total items:** 118
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 72 |
+| pending | 74 |
 | working | 1 |
 | archived | 42 |
 
@@ -21,8 +21,8 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 41 |
-| medium | 52 |
+| high | 42 |
+| medium | 53 |
 | low | 23 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 |------------|-------|
 | simple | 14 |
 | medium | 45 |
-| complex | 54 |
+| complex | 56 |
 
 ### By Repository
 
@@ -48,14 +48,14 @@
 | investments | 1 |
 | rock-oil-field | 1 |
 | sabithaandkrishnaestates | 1 |
-| workspace-hub | 10 |
-| worldenergydata | 36 |
+| workspace-hub | 11 |
+| worldenergydata | 37 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 78 / 116 |
+| Plans exist | 79 / 118 |
 | Plans cross-reviewed | 0 |
 | Plans approved | 0 |
 | Brochure pending | 0 |
@@ -181,6 +181,8 @@
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | medium | digitalmodel | ❌ | ❌ | ❌ | - | - | - |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | medium | digitalmodel | ❌ | ❌ | ❌ | - | - | - |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | medium | digitalmodel | ❌ | ❌ | ❌ | - | - | - |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | medium | complex | workspace-hub | ❌ | ❌ | ❌ | - | - | - |
+| WRK-119 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | high | complex | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -260,6 +262,8 @@
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | medium | medium | digitalmodel |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | medium | medium | digitalmodel |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | medium | medium | digitalmodel |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub |
+| WRK-119 | Local data strategy — gitignore BSEE bins, keep repo lean | high | complex | worldenergydata |
 
 ### Working
 
@@ -460,6 +464,7 @@
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | high | medium |
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | pending | medium | medium |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | medium | complex |
 
 ### worldenergydata
 
@@ -501,6 +506,7 @@
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium |
 | WRK-111 | BSEE field development interactive map and analytics | pending | medium | complex |
 | WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | high | medium |
+| WRK-119 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | high | complex |
 
 ## By Priority
 
@@ -549,6 +555,7 @@
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | working | medium | worldenergydata |
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | pending | simple | sabithaandkrishnaestates |
 | WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | medium | worldenergydata |
+| WRK-119 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | complex | worldenergydata |
 
 ### Medium
 
@@ -606,6 +613,7 @@
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | digitalmodel |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | digitalmodel |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | digitalmodel |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | complex | workspace-hub |
 
 ### Low
 
@@ -764,6 +772,8 @@
 | WRK-106 | Hull panel geometry generator from waterline, section, and profile line definitions | pending | medium | digitalmodel |
 | WRK-111 | BSEE field development interactive map and analytics | pending | medium | worldenergydata, aceengineer-website |
 | WRK-112 | Appliance lifecycle analytics module for assethold | pending | medium | assethold |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | medium | workspace-hub |
+| WRK-119 | Local data strategy — gitignore BSEE bins, keep repo lean | pending | high | worldenergydata |
 
 ## Dependencies
 
