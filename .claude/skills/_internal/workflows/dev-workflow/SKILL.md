@@ -1,10 +1,3 @@
----
-name: dev-workflow
-version: "1.0.0"
-category: _internal
-description: "Development Workflow Skill"
----
-
 # Development Workflow Skill
 
 > Version: 1.0.0

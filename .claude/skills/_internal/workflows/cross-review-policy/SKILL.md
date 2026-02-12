@@ -1,10 +1,3 @@
----
-name: cross-review-policy
-version: "1.0.0"
-category: _internal
-description: "Cross-Review Policy Skill"
----
-
 # Cross-Review Policy Skill
 
 > Version: 1.0.0
@@ -24,18 +17,15 @@ Claude/Gemini performs task
          ↓
     Commit changes
          ↓
-    Legal Sanity Scan ◄── MANDATORY PRE-GATE
-    ├── BLOCK → Fix violations → Re-scan
-    └── PASS  ↓
-         Codex reviews
-              ↓
-         Feedback needed?
-         ├── No → Present to user (APPROVED)
-         └── Yes → Implement fixes
-                        ↓
-                   Iteration < 3?
-                   ├── Yes → Re-commit → Legal Scan → Codex reviews
-                   └── No → Present to user (LIMIT_REACHED)
+    Codex reviews
+         ↓
+    Feedback needed?
+    ├── No → Present to user (APPROVED)
+    └── Yes → Implement fixes
+                   ↓
+              Iteration < 3?
+              ├── Yes → Re-commit → Codex reviews
+              └── No → Present to user (LIMIT_REACHED)
 ```
 
 ### Maximum Iterations: 3
@@ -89,7 +79,6 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 | Review Type | Trigger |
 |-------------|---------|
-| Legal Sanity | Every commit, plan, PR |
 | Code Reviews | Every commit |
 | SPARC Gate-Pass | Phase completion |
 | QA Reviews | Feature completion |
@@ -111,7 +100,6 @@ Review loop exits when ANY condition is met:
 2. **MAX_ITERATIONS**: 3 iterations completed
 3. **FORCE_COMPLETE**: User forces completion
 4. **NO_CHANGES**: No actionable feedback
-5. **LEGAL_BLOCK**: Legal scan found block-severity violations (must fix before re-entering loop)
 
 ## Exceptions (NOT Required)
 
