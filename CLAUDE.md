@@ -47,14 +47,23 @@ Agents on-demand: `.claude/agent-library/<category>/<agent>.md`
 
 - Submodules: handle individually, expect force-pushed refs and merge conflicts
 - Never rebase diverged branches — use merge or `reset --hard origin/<branch>` after user confirmation
+- Force-pushed refs: detect via `git rev-list --count HEAD..origin/main`; always fetch first
+- Stash before pull when uncommitted changes exist; report stash pop conflicts, don't auto-resolve
 - Windows: report path limitations (trailing spaces, long paths, symlinks) immediately, don't retry
-- Shell scripts: use `#!/usr/bin/env bash`, ensure LF line endings
+- Shell scripts: use `#!/usr/bin/env bash`, ensure LF line endings (CRLF breaks MINGW)
 
 ## Work Items & Approval Gates
 
-- Work items (WRK-*) stored at workspace-hub level: `.claude/work-queue/`
+- Work items (WRK-*) stored at workspace-hub level: `.claude/work-queue/` — NEVER in local project dirs
 - Before executing plans, running simulations, or making git commits: present plan, wait for explicit approval
 - Never autonomously execute multi-step workflows without user confirmation
+- Multi-phase work (plan/implement/test/commit): pause between phases for user confirmation
+
+## Windows Compatibility
+
+- Symlinks require admin — fall back to README cross-references or `core.symlinks false`
+- MINGW root path: `while [ "$(pwd)" != / ]` loops never terminate — use `WORKSPACE_HUB` env var
+- Test all bash scripts for Git Bash (MINGW64) + Linux compatibility
 
 ## Commands
 

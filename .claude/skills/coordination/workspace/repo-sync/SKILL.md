@@ -1,7 +1,7 @@
 ---
 name: repo-sync
 description: Manage and synchronize multiple Git repositories across workspace-hub. Use for bulk git operations, repository status checks, branch management, and coordinated commits across 26+ repositories.
-version: 1.1.0
+version: 1.2.0
 category: workspace-hub
 type: skill
 capabilities:
@@ -464,8 +464,19 @@ These are learned from 44+ sync sessions on Windows MINGW64:
 - Shell scripts must use LF, not CRLF — verify with `file script.sh`
 - Fix: `dos2unix script.sh` or `git config core.autocrlf input`
 
+### MINGW Root Path
+- `while [ "$(pwd)" != / ]` loops never terminate on MINGW (root is `/d/`, not `/`)
+- Use `WORKSPACE_HUB` env var for path resolution, not runtime `pwd` traversal
+- Project key derivation: `pwd` → `/d/workspace-hub/digitalmodel` → `D--workspace-hub-digitalmodel`
+
+### Stash Handling
+- Always stash uncommitted changes before pull: `git stash push -m "pre-sync"`
+- After pull, `git stash pop` — if conflicts occur, report to user, don't auto-resolve
+- Check stash list: `git stash list` to avoid orphaned stashes accumulating
+
 ### Force-Pushed Refs
 - When submodule remote was force-pushed: `git fetch origin && git reset --hard origin/main`
+- Detect divergence: `git rev-list --count HEAD..origin/main` (behind) and `..HEAD` (ahead)
 - Never rebase diverged branches — always merge or hard-reset after user confirmation
 
 ### Unregistered Submodules
@@ -519,5 +530,6 @@ cd repo-name && git diff origin/main
 
 ## Version History
 
+- **1.2.0** (2026-02-12): Added MINGW root path, stash handling, divergence detection from /insights analysis of 65+ sync sessions
 - **1.1.0** (2026-01-02): Upgraded to SKILL_TEMPLATE_v2 format - added Quick Start, When to Use, Execution Checklist, Error Handling consolidation, Metrics, Integration Points
 - **1.0.0** (2024-10-15): Initial release with bulk operations, branch management, workflows, error handling, workspace integration
