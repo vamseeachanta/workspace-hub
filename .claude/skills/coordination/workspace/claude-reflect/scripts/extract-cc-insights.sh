@@ -5,7 +5,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WORKSPACE_ROOT="${WORKSPACE_ROOT:-/mnt/github/workspace-hub}"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(cd "$SCRIPT_DIR" && git rev-parse --show-toplevel 2>/dev/null || echo "")}"
 STATE_DIR="${WORKSPACE_STATE_DIR:-${WORKSPACE_ROOT}/.claude/state}"
 CC_INSIGHTS_DIR="${STATE_DIR}/cc-insights"
 CC_INSIGHTS_FILE="${CC_INSIGHTS_DIR}/insights_$(date +%Y-%m-%d).json"
