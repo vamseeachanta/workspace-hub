@@ -2,14 +2,20 @@
 # archive-item.sh — Move a completed work item to the archive
 #
 # Usage:
-#   ./archive-item.sh <WRK-NNN>
+#   ./archive-item.sh <WRK-NNN> [--no-suggest]
+#
+# Options:
+#   --no-suggest    Skip future work brainstorming step (for batch/CI use)
 #
 # Behavior:
 #   1. Finds the work item in pending/, working/, or blocked/
-#   2. Updates status to archived, sets completed_at
-#   3. Moves to archive/YYYY-MM/
-#   4. Runs on-complete-hook.sh for brochure tracking
-#   5. Regenerates INDEX.md
+#   2. (Optional) Suggests future work via suggest-future-work.sh
+#      - Interactive if stdin is a TTY; quiet mode if non-TTY
+#      - Skipped if --no-suggest flag is provided
+#   3. Updates status to archived, sets completed_at
+#   4. Moves to archive/YYYY-MM/
+#   5. Runs on-complete-hook.sh for brochure tracking
+#   6. Regenerates INDEX.md
 
 set -euo pipefail
 
@@ -43,6 +49,22 @@ if [[ -z "$SOURCE_FILE" ]]; then
 fi
 
 echo "Archiving $WRK_ID from $SOURCE_FILE"
+
+# ── Suggest future work (pre-archive) ───────────────────
+if [[ "$NO_SUGGEST" == false && -x "$SCRIPT_DIR/suggest-future-work.sh" ]]; then
+    # Check if stdin is a TTY to decide whether to run interactively
+    if [[ -t 0 ]]; then
+        echo ""
+        "$SCRIPT_DIR/suggest-future-work.sh" "$WRK_ID" "$SOURCE_FILE" || {
+            echo "WARN: suggest-future-work.sh failed, continuing with archive"
+        }
+    else
+        # Non-interactive mode: run in quiet mode
+        "$SCRIPT_DIR/suggest-future-work.sh" "$WRK_ID" "$SOURCE_FILE" --quiet || {
+            echo "WARN: suggest-future-work.sh failed in quiet mode, continuing with archive"
+        }
+    fi
+fi
 
 # ── Create archive directory ─────────────────────────────
 ARCHIVE_MONTH=$(date -u +%Y-%m)

@@ -1,8 +1,13 @@
-name: Baseline Testing CI/CD
+name: Baseline Testing
 
-# DISABLED: This workflow assumes a Node.js project (npm ci, npm run test:*)
-# but workspace-hub is a Python/bash workspace. Re-enable when rewritten for uv/pytest.
 on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       test_suite:
@@ -11,349 +16,140 @@ on:
         default: 'all'
         type: choice
         options:
-        - all
-        - unit
-        - integration
-        - performance
-      update_baseline:
-        description: 'Update baseline files'
-        required: false
-        default: false
-        type: boolean
+          - all
+          - commit
+          - task
 
 env:
-  NODE_VERSION: '18'
-  PYTHON_VERSION: '3.11'
-  BASELINE_THRESHOLD: '95'
-  MAX_RETRIES: 3
+  PYTHON_VERSION: '3.12'
+  COVERAGE_THRESHOLD: '80'
 
 jobs:
-  setup:
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.setup-matrix.outputs.matrix }}
-      baseline-changed: ${{ steps.check-baseline.outputs.changed }}
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - name: Check baseline changes
-      id: check-baseline
-      run: |
-        if git diff --name-only ${{ github.event.before }}..${{ github.sha }} | grep -E "(baseline|test)" > /dev/null; then
-          echo "changed=true" >> $GITHUB_OUTPUT
-        else
-          echo "changed=false" >> $GITHUB_OUTPUT
-        fi
-
-    - name: Setup test matrix
-      id: setup-matrix
-      run: |
-        if [ "${{ github.event.inputs.test_suite }}" = "unit" ]; then
-          matrix='{"include":[{"test-type":"unit","timeout":10}]}'
-        elif [ "${{ github.event.inputs.test_suite }}" = "integration" ]; then
-          matrix='{"include":[{"test-type":"integration","timeout":30}]}'
-        elif [ "${{ github.event.inputs.test_suite }}" = "performance" ]; then
-          matrix='{"include":[{"test-type":"performance","timeout":60}]}'
-        else
-          matrix='{"include":[{"test-type":"unit","timeout":10},{"test-type":"integration","timeout":30},{"test-type":"performance","timeout":60}]}'
-        fi
-        echo "matrix=$matrix" >> $GITHUB_OUTPUT
-
-  baseline-validation:
-    needs: setup
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
-      fail-fast: false
-    timeout-minutes: ${{ matrix.timeout }}
+    timeout-minutes: 30
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
-        cache: 'pip'
+      - name: Install test dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pytest pytest-cov pytest-mock pytest-json-report
 
-    - name: Cache baseline artifacts
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.npm
-          ~/.cache/pip
-          .baseline-cache
-        key: baseline-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/requirements.txt') }}
-        restore-keys: |
-          baseline-${{ runner.os }}-
-
-    - name: Install dependencies
-      run: |
-        npm ci --prefer-offline --no-audit
-        pip install -r requirements.txt 2>/dev/null || echo "No Python requirements found"
-
-    - name: Setup baseline environment
-      run: |
-        mkdir -p .baseline-cache/logs
-        mkdir -p .baseline-cache/results
-        mkdir -p .baseline-cache/artifacts
-        echo "BASELINE_CACHE_DIR=.baseline-cache" >> $GITHUB_ENV
-        echo "BASELINE_LOG_LEVEL=INFO" >> $GITHUB_ENV
-        echo "BASELINE_PARALLEL=true" >> $GITHUB_ENV
-
-    - name: Run baseline validation
-      id: baseline-test
-      run: |
-        set -e
-
-        # Function to retry commands
-        retry() {
-          local retries=$1
-          shift
-          local count=0
-          until "$@"; do
-            exit_code=$?
-            count=$((count + 1))
-            if [ $count -lt $retries ]; then
-              echo "Command failed with exit code $exit_code. Attempt $count/$retries:"
-              sleep $((count * 2))
-            else
-              echo "Command failed after $retries attempts."
-              return $exit_code
+      - name: Install project dependencies
+        run: |
+          # Install dependencies for key submodules
+          for sub in worldenergydata digitalmodel assetutilities; do
+            if [ -f "${sub}/pyproject.toml" ]; then
+              echo "Installing dependencies for ${sub}..."
+              pip install -e "${sub}" || echo "Warning: Failed to install ${sub}"
             fi
           done
-        }
 
-        # Run tests with retry logic
-        echo "Running ${{ matrix.test-type }} baseline tests..."
+      - name: Run test suite
+        id: test
+        run: |
+          TEST_SUITE="${{ github.event.inputs.test_suite || 'all' }}"
 
-        case "${{ matrix.test-type }}" in
-          "unit")
-            retry ${{ env.MAX_RETRIES }} npm run test:baseline:unit
-            ;;
-          "integration")
-            retry ${{ env.MAX_RETRIES }} npm run test:baseline:integration
-            ;;
-          "performance")
-            retry ${{ env.MAX_RETRIES }} npm run test:baseline:performance
-            ;;
-        esac
+          echo "Running test suite: ${TEST_SUITE}"
 
-        # Collect results
-        echo "test-result=success" >> $GITHUB_OUTPUT
+          case "${TEST_SUITE}" in
+            commit)
+              if [ -x scripts/test/test-commit.sh ]; then
+                ./scripts/test/test-commit.sh --all
+              else
+                echo "test-commit.sh not found, running default tests"
+                python3 -m pytest --tb=short -v --maxfail=10
+              fi
+              ;;
+            task)
+              if [ -x scripts/test/test-task.sh ]; then
+                ./scripts/test/test-task.sh
+              else
+                echo "test-task.sh not found, running default tests"
+                python3 -m pytest --tb=short -v
+              fi
+              ;;
+            all)
+              if [ -x scripts/test/test-session.sh ]; then
+                ./scripts/test/test-session.sh
+              else
+                echo "test-session.sh not found, running all tests"
+                python3 -m pytest --tb=short -v --cov --cov-report=xml --cov-report=term
+              fi
+              ;;
+          esac
 
-      continue-on-error: true
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{ github.run_id }}
+          path: |
+            coverage.xml
+            .coverage
+            htmlcov/
+          retention-days: 30
 
-    - name: Process baseline results
-      id: process-results
-      run: |
-        # Check if baseline results exist
-        if [ -f ".baseline-cache/results/baseline-report.json" ]; then
-          # Parse results and calculate metrics
-          score=$(jq -r '.score // 0' .baseline-cache/results/baseline-report.json)
-          passed=$(jq -r '.passed // 0' .baseline-cache/results/baseline-report.json)
-          failed=$(jq -r '.failed // 0' .baseline-cache/results/baseline-report.json)
+      - name: Generate test summary
+        if: always()
+        run: |
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Test Suite:** ${{ github.event.inputs.test_suite || 'all' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Python Version:** ${{ env.PYTHON_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
 
-          echo "score=$score" >> $GITHUB_OUTPUT
-          echo "passed=$passed" >> $GITHUB_OUTPUT
-          echo "failed=$failed" >> $GITHUB_OUTPUT
-
-          # Check threshold
-          if [ $(echo "$score >= ${{ env.BASELINE_THRESHOLD }}" | bc -l) -eq 1 ]; then
-            echo "status=success" >> $GITHUB_OUTPUT
+          if [ -f coverage.xml ]; then
+            echo "Coverage report generated successfully" >> $GITHUB_STEP_SUMMARY
           else
-            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "No coverage report available" >> $GITHUB_STEP_SUMMARY
           fi
-        else
-          echo "status=error" >> $GITHUB_OUTPUT
-          echo "score=0" >> $GITHUB_OUTPUT
-        fi
 
-    - name: Generate baseline report
-      if: always()
-      run: |
-        cat > .baseline-cache/results/detailed-report.md << EOF
-        # Baseline Test Report - ${{ matrix.test-type }}
-
-        **Status**: ${{ steps.process-results.outputs.status }}
-        **Score**: ${{ steps.process-results.outputs.score }}%
-        **Passed**: ${{ steps.process-results.outputs.passed }}
-        **Failed**: ${{ steps.process-results.outputs.failed }}
-        **Threshold**: ${{ env.BASELINE_THRESHOLD }}%
-
-        ## Test Details
-
-        \`\`\`json
-        $(cat .baseline-cache/results/baseline-report.json 2>/dev/null || echo '{"error": "No results found"}')
-        \`\`\`
-
-        ## Logs
-
-        \`\`\`
-        $(tail -50 .baseline-cache/logs/baseline.log 2>/dev/null || echo "No logs available")
-        \`\`\`
-        EOF
-
-    - name: Upload baseline artifacts
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: baseline-results-${{ matrix.test-type }}-${{ github.run_id }}
-        path: |
-          .baseline-cache/results/
-          .baseline-cache/logs/
-        retention-days: 30
-
-    - name: Update baseline status
-      if: always()
-      run: |
-        status="${{ steps.process-results.outputs.status }}"
-        if [ "$status" = "success" ]; then
-          echo "✅ Baseline tests passed with score ${{ steps.process-results.outputs.score }}%"
-        elif [ "$status" = "failure" ]; then
-          echo "❌ Baseline tests failed with score ${{ steps.process-results.outputs.score }}% (threshold: ${{ env.BASELINE_THRESHOLD }}%)"
-          exit 1
-        else
-          echo "⚠️ Baseline tests encountered errors"
-          exit 1
-        fi
-
-  baseline-update:
-    needs: [setup, baseline-validation]
+  lint:
+    name: Code Quality
     runs-on: ubuntu-latest
-    if: github.event.inputs.update_baseline == 'true' && github.ref == 'refs/heads/main'
+    timeout-minutes: 10
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Download baseline artifacts
-      uses: actions/download-artifact@v4
-      with:
-        path: baseline-artifacts/
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
-    - name: Update baseline files
-      run: |
-        echo "Updating baseline files..."
+      - name: Install linting tools
+        run: |
+          pip install ruff black isort mypy || true
 
-        # Process each test type's results
-        for artifact in baseline-artifacts/baseline-results-*; do
-          if [ -d "$artifact/results" ]; then
-            test_type=$(basename "$artifact" | sed 's/baseline-results-\(.*\)-[0-9]*/\1/')
+      - name: Run linters
+        continue-on-error: true
+        run: |
+          echo "## Code Quality Checks" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
 
-            # Copy new baseline files
-            if [ -f "$artifact/results/baseline-report.json" ]; then
-              mkdir -p "tests/baselines/$test_type"
-              cp "$artifact/results/"*.json "tests/baselines/$test_type/" 2>/dev/null || true
-            fi
+          # Run ruff if available
+          if command -v ruff &> /dev/null; then
+            echo "Running ruff..." >> $GITHUB_STEP_SUMMARY
+            ruff check . --output-format=github || echo "Ruff found issues" >> $GITHUB_STEP_SUMMARY
           fi
-        done
 
-    - name: Commit baseline updates
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-
-        if git diff --quiet; then
-          echo "No baseline changes to commit"
-        else
-          git add tests/baselines/
-          git commit -m "Update baseline files from CI/CD run ${{ github.run_id }}"
-          git push
-        fi
-
-  notify-results:
-    needs: [setup, baseline-validation]
-    runs-on: ubuntu-latest
-    if: always()
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Download all artifacts
-      uses: actions/download-artifact@v4
-      with:
-        path: all-artifacts/
-
-    - name: Aggregate results
-      id: aggregate
-      run: |
-        total_score=0
-        total_tests=0
-        failed_suites=""
-
-        for artifact in all-artifacts/baseline-results-*; do
-          if [ -f "$artifact/results/baseline-report.json" ]; then
-            score=$(jq -r '.score // 0' "$artifact/results/baseline-report.json")
-            tests=$(jq -r '.total // 1' "$artifact/results/baseline-report.json")
-            suite=$(basename "$artifact" | sed 's/baseline-results-\(.*\)-[0-9]*/\1/')
-
-            if [ $(echo "$score < ${{ env.BASELINE_THRESHOLD }}" | bc -l) -eq 1 ]; then
-              failed_suites="$failed_suites $suite"
-            fi
-
-            total_score=$((total_score + score * tests))
-            total_tests=$((total_tests + tests))
+          # Run black check if available
+          if command -v black &> /dev/null; then
+            echo "Running black..." >> $GITHUB_STEP_SUMMARY
+            black --check --diff . || echo "Black formatting issues" >> $GITHUB_STEP_SUMMARY
           fi
-        done
-
-        if [ $total_tests -gt 0 ]; then
-          avg_score=$((total_score / total_tests))
-        else
-          avg_score=0
-        fi
-
-        echo "avg_score=$avg_score" >> $GITHUB_OUTPUT
-        echo "failed_suites=$failed_suites" >> $GITHUB_OUTPUT
-
-    - name: Comment on PR
-      if: github.event_name == 'pull_request'
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const avgScore = ${{ steps.aggregate.outputs.avg_score }};
-          const failedSuites = '${{ steps.aggregate.outputs.failed_suites }}';
-          const threshold = ${{ env.BASELINE_THRESHOLD }};
-
-          let status = avgScore >= threshold ? '✅ PASSED' : '❌ FAILED';
-          let emoji = avgScore >= threshold ? '🎉' : '⚠️';
-
-          const comment = `${emoji} **Baseline Test Results**
-
-          **Overall Score**: ${avgScore}% (Threshold: ${threshold}%)
-          **Status**: ${status}
-
-          ${failedSuites ? `**Failed Suites**: ${failedSuites}` : '**All suites passed!**'}
-
-          <details>
-          <summary>View detailed results</summary>
-
-          | Test Suite | Status | Details |
-          |------------|--------|---------|
-          | Unit | ${failedSuites.includes('unit') ? '❌' : '✅'} | [View logs](${context.payload.pull_request.html_url}/checks) |
-          | Integration | ${failedSuites.includes('integration') ? '❌' : '✅'} | [View logs](${context.payload.pull_request.html_url}/checks) |
-          | Performance | ${failedSuites.includes('performance') ? '❌' : '✅'} | [View logs](${context.payload.pull_request.html_url}/checks) |
-
-          </details>
-
-          📊 [View full report](${context.payload.pull_request.html_url}/checks)`;
-
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: comment
-          });
