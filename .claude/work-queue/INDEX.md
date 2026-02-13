@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-13T14:13:13Z by generate-index.py -->
+<!-- Generated: 2026-02-13T14:23:52Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-13T14:13:13Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-13T14:23:52Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,9 +13,10 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 77 |
+| pending | 72 |
 | working | 4 |
-| archived | 55 |
+| blocked | 2 |
+| archived | 58 |
 
 ### By Priority
 
@@ -70,7 +71,7 @@
 | WRK-003 | Garage clean up | archived | medium | simple | achantas-data | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-004 | Reorganize storage in upstairs bathroom at 11511 Piping Rock | archived | medium | simple | achantas-data | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-005 | Clean up email using AI (when safe) | pending | low | medium | achantas-data | ✅ | ❌ | ❌ | - | - | - |
-| WRK-006 | Upload videos from iPhone to YouTube | pending | low | simple | achantas-data | ✅ | ❌ | ❌ | - | - | - |
+| WRK-006 | Upload videos from iPhone to YouTube | blocked | low | simple | achantas-data | ✅ | ❌ | ❌ | - | - | - |
 | WRK-007 | Upload videos from Doris computer to YouTube | archived | medium | simple | achantas-data | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-008 | Upload photos from multiple devices to achantas-media | pending | low | medium | achantas-data | ✅ | ❌ | ❌ | - | - | - |
 | WRK-009 | Reproduce rev30 lower tertiary BSEE field results for repeatability | archived | high | medium | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
@@ -101,7 +102,7 @@
 | WRK-034 | Develop OrcaWave modular file prep skill for parametrised analysis input | archived | medium | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-035 | Develop AQWA modular file prep skill for parametrised analysis input | archived | medium | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-036 | OrcaFlex structure deployment analysis - supply boat side deployment with structural loads | pending | low | complex | acma-projects | ✅ | ❌ | ❌ | - | - | - |
-| WRK-037 | Get OrcaFlex framework of agreement and terms | pending | medium | simple | aceengineer-admin | ✅ | ❌ | ❌ | - | - | - |
+| WRK-037 | Get OrcaFlex framework of agreement and terms | archived | medium | simple | aceengineer-admin | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-038 | Compile global LNG terminal project dataset with comprehensive parameters | pending | medium | complex | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
 | WRK-039 | SPM project benchmarking - AQWA vs OrcaFlex | pending | medium | complex | digitalmodel | ✅ | ❌ | ❌ | - | - | - |
 | WRK-040 | Mooring benchmarking - AQWA vs OrcaFlex | archived | medium | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
@@ -119,7 +120,7 @@
 | WRK-052 | assetutilities test coverage improvement | pending | high | complex | assetutilities | ✅ | ❌ | ❌ | - | - | - |
 | WRK-053 | assethold test coverage improvement | pending | medium | medium | assethold | ✅ | ❌ | ❌ | - | - | - |
 | WRK-054 | worldenergydata test coverage improvement | pending | medium | medium | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
-| WRK-055 | aceengineer-website test coverage improvement | pending | low | simple | aceengineer-website | ✅ | ❌ | ❌ | - | - | - |
+| WRK-055 | aceengineer-website test coverage improvement | archived | low | simple | aceengineer-website | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-056 | aceengineer-admin test coverage improvement | pending | medium | medium | aceengineer-admin | ✅ | ❌ | ❌ | - | - | - |
 | WRK-057 | Define canonical spec.yml schema for diffraction analysis | archived | high | medium | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-058 | AQWA input backend — spec.yml to single .dat and modular deck files | archived | high | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | WRK-057 |
@@ -133,7 +134,7 @@
 | WRK-066 | Review and improve digitalmodel module structure for discoverability | archived | high | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-067 | Acquire OSHA enforcement and fatality data | archived | high | simple | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-068 | Acquire BSEE incident investigations and INCs data | archived | high | medium | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-069 | Acquire USCG MISLE bulk dataset | pending | high | simple | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
+| WRK-069 | Acquire USCG MISLE bulk dataset | blocked | high | simple | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
 | WRK-070 | Import PHMSA pipeline data and build pipeline_safety module | archived | high | medium | worldenergydata | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | archived | high | simple | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | high | complex | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
@@ -171,7 +172,7 @@
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | archived | high | complex | worldenergydata | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | medium | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
 | WRK-106 | Hull panel geometry generator from waterline, section, and profile line definitions | pending | medium | complex | digitalmodel | ✅ | ❌ | ❌ | - | - | - |
-| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | pending | high | simple | sabithaandkrishnaestates | ✅ | ❌ | ❌ | - | - | - |
+| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | archived | high | simple | sabithaandkrishnaestates | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | pending | medium | medium | workspace-hub | ✅ | ❌ | ❌ | - | - | - |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium | workspace-hub, worldenergydata, digitalmodel | ✅ | ❌ | ❌ | - | - | - |
 | WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | pending | medium | complex | digitalmodel | ✅ | ✅ | ✅ | - | - | - |
@@ -209,7 +210,6 @@
 | ID | Title | Priority | Complexity | Repos |
 |-----|-------|----------|------------|-------|
 | WRK-005 | Clean up email using AI (when safe) | low | medium | achantas-data |
-| WRK-006 | Upload videos from iPhone to YouTube | low | simple | achantas-data |
 | WRK-008 | Upload photos from multiple devices to achantas-media | low | medium | achantas-data |
 | WRK-014 | HSE risk index — client-facing risk insights with risk scoring | medium | complex | worldenergydata |
 | WRK-015 | Metocean data extrapolation to target locations using GIS and nearest-source modeling | medium | complex | worldenergydata |
@@ -225,7 +225,6 @@
 | WRK-031 | Benchmark OrcaWave vs AQWA for 2-3 hulls | medium | complex | digitalmodel |
 | WRK-032 | Modular OrcaFlex pipeline installation input with parametric campaign support | medium | complex | digitalmodel |
 | WRK-036 | OrcaFlex structure deployment analysis - supply boat side deployment with structural loads | low | complex | acma-projects |
-| WRK-037 | Get OrcaFlex framework of agreement and terms | medium | simple | aceengineer-admin |
 | WRK-038 | Compile global LNG terminal project dataset with comprehensive parameters | medium | complex | worldenergydata |
 | WRK-039 | SPM project benchmarking - AQWA vs OrcaFlex | medium | complex | digitalmodel |
 | WRK-041 | Develop long-term plan for Hobbies repo | low | medium | hobbies |
@@ -241,10 +240,8 @@
 | WRK-052 | assetutilities test coverage improvement | high | complex | assetutilities |
 | WRK-053 | assethold test coverage improvement | medium | medium | assethold |
 | WRK-054 | worldenergydata test coverage improvement | medium | medium | worldenergydata |
-| WRK-055 | aceengineer-website test coverage improvement | low | simple | aceengineer-website |
 | WRK-056 | aceengineer-admin test coverage improvement | medium | medium | aceengineer-admin |
 | WRK-064 | OrcaFlex format converter: license-required validation and backward-compat wrapper | medium | medium | digitalmodel |
-| WRK-069 | Acquire USCG MISLE bulk dataset | high | simple | worldenergydata |
 | WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | high | complex | worldenergydata |
 | WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | high | complex | worldenergydata |
 | WRK-075 | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | low | complex | digitalmodel |
@@ -264,7 +261,6 @@
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | medium | medium | worldenergydata |
 | WRK-105 | Add drilling riser component data to worldenergydata | medium | medium | worldenergydata |
 | WRK-106 | Hull panel geometry generator from waterline, section, and profile line definitions | medium | complex | digitalmodel |
-| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | high | simple | sabithaandkrishnaestates |
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | medium | medium | workspace-hub |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | medium | medium | workspace-hub, worldenergydata, digitalmodel |
 | WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | medium | complex | digitalmodel |
@@ -295,6 +291,13 @@
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | high | low | digitalmodel |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | high | medium | digitalmodel |
 
+### Blocked
+
+| ID | Title | Priority | Complexity | Repos |
+|-----|-------|----------|------------|-------|
+| WRK-006 | Upload videos from iPhone to YouTube | low | simple | achantas-data |
+| WRK-069 | Acquire USCG MISLE bulk dataset | high | simple | worldenergydata |
+
 ### Archived
 
 | ID | Title | Priority | Complexity | Repos |
@@ -318,8 +321,10 @@
 | WRK-033 | Develop OrcaFlex include-file modular skill for parametrised analysis input | medium | complex | digitalmodel |
 | WRK-034 | Develop OrcaWave modular file prep skill for parametrised analysis input | medium | complex | digitalmodel |
 | WRK-035 | Develop AQWA modular file prep skill for parametrised analysis input | medium | complex | digitalmodel |
+| WRK-037 | Get OrcaFlex framework of agreement and terms | medium | simple | aceengineer-admin |
 | WRK-040 | Mooring benchmarking - AQWA vs OrcaFlex | medium | complex | digitalmodel |
 | WRK-049 | Determine dynacard module way forward | medium | medium | digitalmodel |
+| WRK-055 | aceengineer-website test coverage improvement | low | simple | aceengineer-website |
 | WRK-057 | Define canonical spec.yml schema for diffraction analysis | high | medium | digitalmodel |
 | WRK-058 | AQWA input backend — spec.yml to single .dat and modular deck files | high | complex | digitalmodel |
 | WRK-059 | OrcaWave input backend — spec.yml to single .yml and modular includes | high | complex | digitalmodel |
@@ -348,6 +353,7 @@
 | WRK-100 | Run 3-way benchmark on Barge hull | medium | medium | digitalmodel |
 | WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | medium | medium | worldenergydata |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | high | complex | worldenergydata |
+| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | high | simple | sabithaandkrishnaestates |
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | medium | complex | digitalmodel, worldenergydata |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | high | complex | workspace-hub, worldenergydata, digitalmodel |
 | WRK-120 | Research and purchase a smart watch | low | simple | achantas-data |
@@ -361,7 +367,7 @@
 
 | ID | Title | Status | Priority | Complexity |
 |-----|-------|--------|----------|------------|
-| WRK-037 | Get OrcaFlex framework of agreement and terms | pending | medium | simple |
+| WRK-037 | Get OrcaFlex framework of agreement and terms | archived | medium | simple |
 | WRK-056 | aceengineer-admin test coverage improvement | pending | medium | medium |
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | pending | high | medium |
 
@@ -369,7 +375,7 @@
 
 | ID | Title | Status | Priority | Complexity |
 |-----|-------|--------|----------|------------|
-| WRK-055 | aceengineer-website test coverage improvement | pending | low | simple |
+| WRK-055 | aceengineer-website test coverage improvement | archived | low | simple |
 | WRK-073 | Market digitalmodel and worldenergydata capabilities on aceengineer website | archived | high | complex |
 | WRK-078 | Create energy data case study — BSEE field economics with NPV/IRR workflow | pending | medium | medium |
 | WRK-079 | Create marine safety case study — cross-database incident correlation | pending | medium | medium |
@@ -387,7 +393,7 @@
 | WRK-003 | Garage clean up | archived | medium | simple |
 | WRK-004 | Reorganize storage in upstairs bathroom at 11511 Piping Rock | archived | medium | simple |
 | WRK-005 | Clean up email using AI (when safe) | pending | low | medium |
-| WRK-006 | Upload videos from iPhone to YouTube | pending | low | simple |
+| WRK-006 | Upload videos from iPhone to YouTube | blocked | low | simple |
 | WRK-007 | Upload videos from Doris computer to YouTube | archived | medium | simple |
 | WRK-008 | Upload photos from multiple devices to achantas-media | pending | low | medium |
 | WRK-120 | Research and purchase a smart watch | archived | low | simple |
@@ -500,7 +506,7 @@
 
 | ID | Title | Status | Priority | Complexity |
 |-----|-------|--------|----------|------------|
-| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | pending | high | simple |
+| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | archived | high | simple |
 
 ### workspace-hub
 
@@ -540,7 +546,7 @@
 | WRK-054 | worldenergydata test coverage improvement | pending | medium | medium |
 | WRK-067 | Acquire OSHA enforcement and fatality data | archived | high | simple |
 | WRK-068 | Acquire BSEE incident investigations and INCs data | archived | high | medium |
-| WRK-069 | Acquire USCG MISLE bulk dataset | pending | high | simple |
+| WRK-069 | Acquire USCG MISLE bulk dataset | blocked | high | simple |
 | WRK-070 | Import PHMSA pipeline data and build pipeline_safety module | archived | high | medium |
 | WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | archived | high | simple |
 | WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | high | complex |
@@ -597,7 +603,7 @@
 | WRK-066 | Review and improve digitalmodel module structure for discoverability | archived | complex | digitalmodel |
 | WRK-067 | Acquire OSHA enforcement and fatality data | archived | simple | worldenergydata |
 | WRK-068 | Acquire BSEE incident investigations and INCs data | archived | medium | worldenergydata |
-| WRK-069 | Acquire USCG MISLE bulk dataset | pending | simple | worldenergydata |
+| WRK-069 | Acquire USCG MISLE bulk dataset | blocked | simple | worldenergydata |
 | WRK-070 | Import PHMSA pipeline data and build pipeline_safety module | archived | medium | worldenergydata |
 | WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | archived | simple | worldenergydata |
 | WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | complex | worldenergydata |
@@ -611,7 +617,7 @@
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | medium | workspace-hub, worldenergydata, digitalmodel |
 | WRK-098 | Clean up 7.1GB large data committed to worldenergydata git history | archived | high | worldenergydata |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | archived | complex | worldenergydata |
-| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | pending | simple | sabithaandkrishnaestates |
+| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | archived | simple | sabithaandkrishnaestates |
 | WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | medium | worldenergydata |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | complex | workspace-hub, worldenergydata, digitalmodel |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | working | medium | - |
@@ -646,7 +652,7 @@
 | WRK-033 | Develop OrcaFlex include-file modular skill for parametrised analysis input | archived | complex | digitalmodel |
 | WRK-034 | Develop OrcaWave modular file prep skill for parametrised analysis input | archived | complex | digitalmodel |
 | WRK-035 | Develop AQWA modular file prep skill for parametrised analysis input | archived | complex | digitalmodel |
-| WRK-037 | Get OrcaFlex framework of agreement and terms | pending | simple | aceengineer-admin |
+| WRK-037 | Get OrcaFlex framework of agreement and terms | archived | simple | aceengineer-admin |
 | WRK-038 | Compile global LNG terminal project dataset with comprehensive parameters | pending | complex | worldenergydata |
 | WRK-039 | SPM project benchmarking - AQWA vs OrcaFlex | pending | complex | digitalmodel |
 | WRK-040 | Mooring benchmarking - AQWA vs OrcaFlex | archived | complex | digitalmodel |
@@ -694,7 +700,7 @@
 | ID | Title | Status | Complexity | Repos |
 |-----|-------|--------|------------|-------|
 | WRK-005 | Clean up email using AI (when safe) | pending | medium | achantas-data |
-| WRK-006 | Upload videos from iPhone to YouTube | pending | simple | achantas-data |
+| WRK-006 | Upload videos from iPhone to YouTube | blocked | simple | achantas-data |
 | WRK-008 | Upload photos from multiple devices to achantas-media | pending | medium | achantas-data |
 | WRK-018 | Extend BSEE field data pipeline to other regulatory sources (RRC, Norway, Mexico, Brazil) | pending | complex | worldenergydata |
 | WRK-019 | Establish drilling, completion, and intervention cost data by region and environment | pending | complex | worldenergydata |
@@ -705,7 +711,7 @@
 | WRK-043 | Parametric hull form analysis with RAO generation and client-facing lookup graphs | pending | complex | digitalmodel |
 | WRK-047 | OpenFOAM CFD analysis capability for digitalmodel | pending | complex | digitalmodel |
 | WRK-048 | Blender working configurations for digitalmodel | pending | medium | digitalmodel |
-| WRK-055 | aceengineer-website test coverage improvement | pending | simple | aceengineer-website |
+| WRK-055 | aceengineer-website test coverage improvement | archived | simple | aceengineer-website |
 | WRK-075 | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | pending | complex | digitalmodel |
 | WRK-080 | Write 4 energy data blog posts for SEO | pending | complex | aceengineer-website |
 | WRK-081 | Build interactive NPV calculator for website lead generation | pending | complex | aceengineer-website |
@@ -729,16 +735,16 @@
 | WRK-002 | Stove repair with factory service at 11511 Piping Rock | archived | medium | achantas-data |
 | WRK-003 | Garage clean up | archived | medium | achantas-data |
 | WRK-004 | Reorganize storage in upstairs bathroom at 11511 Piping Rock | archived | medium | achantas-data |
-| WRK-006 | Upload videos from iPhone to YouTube | pending | low | achantas-data |
+| WRK-006 | Upload videos from iPhone to YouTube | blocked | low | achantas-data |
 | WRK-007 | Upload videos from Doris computer to YouTube | archived | medium | achantas-data |
-| WRK-037 | Get OrcaFlex framework of agreement and terms | pending | medium | aceengineer-admin |
-| WRK-055 | aceengineer-website test coverage improvement | pending | low | aceengineer-website |
+| WRK-037 | Get OrcaFlex framework of agreement and terms | archived | medium | aceengineer-admin |
+| WRK-055 | aceengineer-website test coverage improvement | archived | low | aceengineer-website |
 | WRK-067 | Acquire OSHA enforcement and fatality data | archived | high | worldenergydata |
-| WRK-069 | Acquire USCG MISLE bulk dataset | pending | high | worldenergydata |
+| WRK-069 | Acquire USCG MISLE bulk dataset | blocked | high | worldenergydata |
 | WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | archived | high | worldenergydata |
 | WRK-088 | Investigate and clean submodule issues (pdf-large-reader, worldenergydata, aceengineercode) | archived | low | workspace-hub |
 | WRK-089 | Review Claude Code version gap and update cc-insights | archived | low | workspace-hub |
-| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | pending | high | sabithaandkrishnaestates |
+| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | archived | high | sabithaandkrishnaestates |
 | WRK-120 | Research and purchase a smart watch | archived | low | achantas-data |
 
 ### Medium
