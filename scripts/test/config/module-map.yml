@@ -1,0 +1,120 @@
+# Module-to-test-directory mapping for tiered test runner.
+# Used by test-task.sh to find tests for a given module name.
+#
+# Format:
+#   <module_name>:
+#     repo: <repo_name>
+#     src: <source_directory_relative_to_repo_root>
+#     tests: <test_directory_relative_to_repo_root>
+
+# --- worldenergydata modules ---
+bsee:
+  repo: worldenergydata
+  src: src/worldenergydata/bsee
+  tests: tests/modules/bsee
+
+hse:
+  repo: worldenergydata
+  src: src/worldenergydata/hse
+  tests: tests/modules/hse
+
+marine_safety:
+  repo: worldenergydata
+  src: src/worldenergydata/marine_safety
+  tests: tests/modules/marine_safety
+
+metocean:
+  repo: worldenergydata
+  src: src/worldenergydata/metocean
+  tests: tests/modules/metocean
+
+lng_terminals:
+  repo: worldenergydata
+  src: src/worldenergydata/lng_terminals
+  tests: tests/modules/lng_terminals
+
+paleowells:
+  repo: worldenergydata
+  src: src/worldenergydata/paleowells
+  tests: tests/modules/paleowells
+
+safety_analysis:
+  repo: worldenergydata
+  src: src/worldenergydata/safety_analysis
+  tests: tests/modules/safety_analysis
+
+sodir:
+  repo: worldenergydata
+  src: src/worldenergydata/sodir
+  tests: tests/modules/sodir
+
+fdas:
+  repo: worldenergydata
+  src: src/worldenergydata/fdas
+  tests: tests/modules/fdas
+
+well_production_dashboard:
+  repo: worldenergydata
+  src: src/worldenergydata/well_production_dashboard
+  tests: tests/modules/well_production_dashboard
+
+pipeline_safety:
+  repo: worldenergydata
+  src: src/worldenergydata/pipeline_safety
+  tests: tests/modules/pipeline_safety
+
+# --- digitalmodel modules ---
+hydrodynamics:
+  repo: digitalmodel
+  src: src/digitalmodel/hydrodynamics
+  tests: tests/hydrodynamics
+
+orcaflex:
+  repo: digitalmodel
+  src: src/digitalmodel/solvers/orcaflex
+  tests: tests/solvers/orcaflex
+
+orcawave:
+  repo: digitalmodel
+  src: src/digitalmodel/solvers/orcawave
+  tests: tests/solvers/orcawave
+
+aqwa:
+  repo: digitalmodel
+  src: src/digitalmodel/hydrodynamics/diffraction
+  tests: tests/hydrodynamics/diffraction
+
+dynacard:
+  repo: digitalmodel
+  src: src/digitalmodel/marine_ops/artificial_lift/dynacard
+  tests: tests/marine_ops
+
+hull_library:
+  repo: digitalmodel
+  src: src/digitalmodel/hydrodynamics/hull_library
+  tests: tests/hydrodynamics/hull_library
+
+mooring:
+  repo: digitalmodel
+  src: src/digitalmodel/subsea/mooring
+  tests: tests/subsea/mooring
+
+pipeline:
+  repo: digitalmodel
+  src: src/digitalmodel/subsea/pipeline
+  tests: tests/subsea/pipeline
+
+fatigue:
+  repo: digitalmodel
+  src: src/digitalmodel/structural/fatigue_analysis
+  tests: tests/structural/fatigue_analysis
+
+signal_processing:
+  repo: digitalmodel
+  src: src/digitalmodel/signal_processing
+  tests: tests/signal_processing
+
+gis:
+  repo: digitalmodel
+  src: src/digitalmodel/specialized/gis
+  tests: tests/specialized/gis
