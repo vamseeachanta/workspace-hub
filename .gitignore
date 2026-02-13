@@ -345,3 +345,5 @@ simpledigitalmarketing/
 *.refactor-report.*
 jscpd-report/
 .claude/skills/.commit-log
+.claude/skills/session-logs/
+.claude-flow/
