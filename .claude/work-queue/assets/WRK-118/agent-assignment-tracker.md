@@ -25,16 +25,18 @@
 
 **Batch 1 Summary**: 5 agents completed, avg quality 3.8/5.0. One 5-star (research/audit), two 4-star (CI + config), two 3-star (shell scripting + integration). Haiku adequate for shell scripting but needs tighter guard rails to prevent test side effects.
 
-### Batch 2 (planned)
+### Batch 2 (2026-02-13) — COMPLETE
 
-| WRK | Title | Model | Work Type | Depends On |
-|-----|-------|-------|-----------|------------|
-| 138 | Fitness-for-service module | Sonnet | Engineering Python | - |
-| 056 | aceengineer-admin test coverage | Haiku | Test writing | - |
-| 053 | assethold test coverage | Haiku | Test writing | - |
-| 136 | Operator fleet scraping | Sonnet | Web scraping | - |
-| 103 | Heavy construction vessel data | Sonnet | Data schema + curation | - |
-| 078 | Energy data case study | Sonnet | Technical writing | - |
+| WRK | Title | Model | Work Type | Quality (1-5) | Status | Notes |
+|-----|-------|-------|-----------|---------------|--------|-------|
+| 138 | Fitness-for-service module | Sonnet | Engineering Python | **4** | done | Phase 0 audit correct scope. Fixed B31G import bug, found legal refs ("Client Asset"), 17 tests. Module needs rename before full impl. |
+| 056 | aceengineer-admin test coverage | Haiku | Test writing | **5** | done | Best Haiku result: 87%→94% coverage, 69 new tests, 356 total passing. cli.py 100%. Zero side effects. |
+| 053 | assethold test coverage | Haiku | Test writing | **4** | done | 26%→45% coverage, 60 new tests, engine.py 0→100%. Created COVERAGE_BASELINE.md (cleaned up), otherwise solid. |
+| 103 | Heavy construction vessel schema | Sonnet | Data schema + loader | **5** | done | 10 seed vessels, 60 tests, loader + schema + data catalog update. Self-committed in submodule. Clean execution. |
+| 078 | Energy data case study | Sonnet | Technical writing | **4** | done | Case study HTML + data script + nav updates. Legal scan passed. Minor artifact: coverage/ dir (cleaned up). |
+| ~~136~~ | ~~Operator fleet scraping~~ | - | - | - | dropped | File does not exist in pending/ |
+
+**Batch 2 Summary**: 5 agents completed, avg quality 4.4/5.0 (up from 3.8 in Batch 1). Two 5-star (test writing + data schema), three 4-star (engineering code + test writing + technical writing). Haiku performed significantly better with refined prompts — one 5-star result. No-doc constraint mostly effective (1 of 5 created unnecessary doc vs 3 of 5 in Batch 1).
 
 ### Batch 3 (planned — complex items)
 
@@ -65,22 +67,26 @@
 | pytest config | - | 4 (WRK-054) | - | Sonnet |
 | Research/audit | - | 5 (WRK-109) | - | Sonnet |
 | Integration testing | - | 3 (WRK-083) | - | Sonnet (refine prompts) |
-| Engineering code | - | - | - | TBD |
-| Test writing | - | - | - | TBD |
-| Data curation | - | - | - | TBD |
-| Technical writing | - | - | - | TBD |
+| Engineering code | - | 4 (WRK-138) | - | Sonnet (good at scoping, finds bugs) |
+| Test writing | 5 (WRK-056), 4 (WRK-053) | - | - | **Haiku** (excellent ROI, avg 4.5) |
+| Data schema + loader | - | 5 (WRK-103) | - | Sonnet |
+| Technical writing | - | 4 (WRK-078) | - | Sonnet |
 | Complex porting | - | - | - | TBD |
 
 > Updated after each batch review. Ratings populate the matrix to guide future assignments.
 
-## Budget Optimization Rules (derived from Batch 1)
+## Budget Optimization Rules (derived from Batches 1+2)
 
-1. **Sonnet is the workhorse**: 4 of 5 tasks ran on Sonnet with avg 4.0 quality. Use as default for Route B items.
-2. **Haiku for shell scripting needs guardrails**: Quality 3 — script worked but agent ran tests against real state (created orphan files). Add explicit "DO NOT test against real data" in prompts.
+1. **Sonnet is the workhorse**: 7 of 10 tasks ran on Sonnet with avg 4.1 quality. Use as default for Route B items.
+2. **Haiku excels at test writing**: WRK-056 scored 5/5, WRK-053 scored 4/5 — avg 4.5 for test writing at 1/5th Sonnet cost. **Best ROI discovery**: assign all test coverage tasks to Haiku.
 3. **Research/audit tasks get best ROI on Sonnet**: WRK-109 scored 5/5 — comprehensive, zero side effects, actionable findings. Research is high-value/low-risk.
-4. **Integration testing prompts need refinement**: WRK-083 scored 3/5 — agent created unnecessary documentation files (EXPORT_FORMATS.md, verbose report) violating CLAUDE.md rules. Add "no new doc files" constraint.
+4. **No-doc constraint is effective but imperfect**: Batch 2 reduced doc side effects from 60% (3/5) to 20% (1/5). Keep the constraint; accept occasional cleanup.
 5. **Config investigation is well-suited to agents**: WRK-054 correctly diagnosed root cause and fixed 3 config files. Agent investigation often faster than manual debugging.
-6. **Always specify no-create-doc constraint**: Both WRK-083 (EXPORT_FORMATS.md) and WRK-086 (quick-reference card) proactively created documentation files. Prompt should include explicit "do not create documentation files unless the task specifically requires it."
+6. **Engineering code benefits from Phase 0 scoping**: WRK-138 correctly identified module needs rename before full impl. Complex engineering tasks benefit from audit-first approach.
+7. **Data schema tasks are Sonnet sweet spot**: WRK-103 scored 5/5 — schema + loader + seed data + tests + self-committed. Perfect agent task.
+8. **Refined prompts improve Haiku significantly**: Batch 1 Haiku avg 3.0, Batch 2 Haiku avg 4.5 (after prompt refinements). Explicit constraints work.
+9. **Always specify no-create-doc constraint**: Prompt should include "do not create documentation files unless the task specifically requires it."
+10. **Batch 2 avg 4.4 vs Batch 1 avg 3.8**: Prompt refinement between batches yields measurable quality improvement.
 
 ## Batch 1 Deliverables Inventory
 
@@ -110,6 +116,42 @@
 - 2 broken git post-commit hooks in worldenergydata + digitalmodel (hardcoded `/mnt/github/` path)
 - 16MB state accumulation in `.claude/state/` without cleanup
 - 446 total skills across 3 repos (301 active in workspace-hub)
+
+## Batch 2 Deliverables Inventory
+
+### Submodule Commits
+- `aceengineer-admin` → `c4ce9d3` (WRK-056: 69 new tests, 87%→94% coverage)
+- `assethold` → `a57fe65` (WRK-053: 60 new tests, 26%→45% coverage)
+- `aceengineer-website` → `ad6741f` (WRK-078: BSEE field economics case study)
+- `digitalmodel` → `412a2393c` (WRK-138: FFS Phase 0 audit, 17 tests, B31G fix)
+- `worldenergydata` → `2810475` (WRK-103: vessel schema + 10 seed vessels + 60 tests)
+
+### Files Created (by agents)
+- `aceengineer-admin/aceengineer_admin/tests/test_cli.py` expanded (56→458 lines, WRK-056)
+- `aceengineer-admin/tests/knowledge/test_knowledge_config.py` (307 lines, WRK-056)
+- `aceengineer-admin/aceengineer_admin/tests/common/test_config_extended.py` (247 lines, WRK-056)
+- `assethold/tests/unit/test_engine.py` (420 lines, WRK-053)
+- `assethold/tests/unit/test_common_data.py` (483 lines, WRK-053)
+- `aceengineer-website/src/case-studies/bsee-field-economics.html` (499 lines, WRK-078)
+- `aceengineer-website/scripts/generate_field_economics_data.py` (WRK-078)
+- `digitalmodel/.../tests/test_api579_calculations_standalone.py` (262 lines, WRK-138)
+- `worldenergydata/.../vessel_fleet/loaders/construction_vessel_loader.py` (371 lines, WRK-103)
+- `worldenergydata/data/modules/vessel_fleet/curated/` (seed data, WRK-103)
+
+### Cleaned Up (by orchestrator)
+- `assethold/COVERAGE_BASELINE.md` (unnecessary doc from WRK-053 Haiku agent)
+- `aceengineer-website/coverage/` (spurious artifact from WRK-078 agent)
+
+## Cumulative Statistics (Batches 1+2)
+
+| Metric | Batch 1 | Batch 2 | Total |
+|--------|---------|---------|-------|
+| Agents executed | 5 | 5 | 10 |
+| Avg quality | 3.8 | 4.4 | 4.1 |
+| Side effects cleaned | 2 | 2 | 4 |
+| Perfect scores (5/5) | 1 | 2 | 3 |
+| Submodule commits | 1 | 5 | 6 |
+| New test files | 1 | 7 | 8 |
 
 ## Not AI-Executable Items (66 pending, 16 excluded)
 
