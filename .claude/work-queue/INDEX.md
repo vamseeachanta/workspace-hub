@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-13T05:03:54Z by generate-index.py -->
+<!-- Generated: 2026-02-13T13:19:48Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-13T05:03:54Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-13T13:19:48Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -14,8 +14,8 @@
 | Status | Count |
 |--------|-------|
 | pending | 80 |
-| working | 5 |
-| archived | 51 |
+| working | 4 |
+| archived | 52 |
 
 ### By Priority
 
@@ -183,7 +183,7 @@
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | medium | digitalmodel | ✅ | ✅ | ✅ | - | - | - |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | complex | digitalmodel | ✅ | ✅ | ✅ | - | - | - |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | medium | complex | workspace-hub | ❌ | ❌ | ❌ | - | - | - |
-| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | working | high | complex | workspace-hub, worldenergydata, digitalmodel | ✅ | ✅ | ✅ | ██░ 90% | - | - |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex | workspace-hub, worldenergydata, digitalmodel | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-120 | Research and purchase a smart watch | archived | low | simple | achantas-data | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | working | high | medium | - | ✅ | ❌ | ❌ | - | - | - |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium | acma-projects, assetutilities | ✅ | ✅ | ✅ | ███ 100% | - | - |
@@ -294,7 +294,6 @@
 | ID | Title | Priority | Complexity | Repos |
 |-----|-------|----------|------------|-------|
 | WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | high | simple | worldenergydata |
-| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | high | complex | workspace-hub, worldenergydata, digitalmodel |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | high | medium | - |
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | high | low | digitalmodel |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | high | medium | digitalmodel |
@@ -351,6 +350,7 @@
 | WRK-100 | Run 3-way benchmark on Barge hull | medium | medium | digitalmodel |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | high | complex | worldenergydata |
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | medium | complex | digitalmodel, worldenergydata |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | high | complex | workspace-hub, worldenergydata, digitalmodel |
 | WRK-120 | Research and purchase a smart watch | low | simple | achantas-data |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | high | medium | acma-projects, assetutilities |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | high | medium | digitalmodel |
@@ -467,7 +467,7 @@
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | medium |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | medium |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | complex |
-| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | working | high | complex |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex |
 | WRK-124 | Session 20260211_095832 — 1 file(s) created | pending | medium | low |
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | working | high | low |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex |
@@ -517,7 +517,7 @@
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | pending | medium | medium |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | medium | complex |
-| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | working | high | complex |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | pending | medium | medium |
 
 ### worldenergydata
@@ -561,7 +561,7 @@
 | WRK-111 | BSEE field development interactive map and analytics | pending | medium | complex |
 | WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | high | medium |
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | archived | medium | complex |
-| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | working | high | complex |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | pending | medium | medium |
 | WRK-136 | Scrape additional operator fleets — Transocean, Borr, Valaris sub-pages | pending | medium | medium |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex |
@@ -613,7 +613,7 @@
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | archived | complex | worldenergydata |
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | pending | simple | sabithaandkrishnaestates |
 | WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | medium | worldenergydata |
-| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | working | complex | workspace-hub, worldenergydata, digitalmodel |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | complex | workspace-hub, worldenergydata, digitalmodel |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | working | medium | - |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | medium | acma-projects, assetutilities |
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | working | low | digitalmodel |
@@ -859,7 +859,7 @@
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | archived | medium | digitalmodel, worldenergydata |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | digitalmodel |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | medium | workspace-hub |
-| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | working | high | workspace-hub, worldenergydata, digitalmodel |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | workspace-hub, worldenergydata, digitalmodel |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | digitalmodel |
 | WRK-128 | Map object property routing from engineering specs to OrcaFlex objects | pending | high | digitalmodel |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | pending | high | digitalmodel |
