@@ -45,17 +45,12 @@ fi
 
 if [[ -n "$COMMIT_SHA" ]]; then
   # Review a specific git commit
-  if [[ -n "$PROMPT" ]]; then
-    codex review --commit "$COMMIT_SHA" "$PROMPT" 2>/dev/null || {
-      echo "# Codex review --commit failed (exit $?)"
-      echo "# Commit: $COMMIT_SHA"
-    }
-  else
-    codex review --commit "$COMMIT_SHA" 2>/dev/null || {
-      echo "# Codex review --commit failed (exit $?)"
-      echo "# Commit: $COMMIT_SHA"
-    }
-  fi
+  # codex review --commit <SHA> cannot be combined with positional PROMPT.
+  # Codex writes review output to stderr, so capture both streams.
+  codex review --commit "$COMMIT_SHA" 2>&1 || {
+    echo "# Codex review --commit failed (exit $?)"
+    echo "# Commit: $COMMIT_SHA"
+  }
 else
   # Review file content via codex exec (pipe content + prompt via stdin)
   FULL_PROMPT="${PROMPT}
@@ -66,7 +61,7 @@ CONTENT TO REVIEW:
 
 $(cat "$CONTENT_FILE")"
 
-  echo "$FULL_PROMPT" | codex exec - 2>/dev/null || {
+  echo "$FULL_PROMPT" | codex exec - 2>&1 || {
     echo "# Codex exec failed (exit $?)"
     echo "# File: $CONTENT_FILE"
   }

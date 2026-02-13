@@ -124,7 +124,8 @@ submit_review() {
         "${SCRIPT_DIR}/submit-to-codex.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || codex_exit=$?
       fi
       # Check if Codex produced a real verdict (not just a failure stub)
-      if [[ $codex_exit -eq 0 ]] && ! grep -q "^# Codex.*failed\|^# Codex CLI not found" "$result_file" 2>/dev/null; then
+      # A real Codex review contains "codex" output lines (the model's response)
+      if [[ $codex_exit -eq 0 ]] && ! grep -q "^# Codex.*failed\|^# Codex CLI not found\|^# HARD GATE" "$result_file" 2>/dev/null && grep -q "^codex$" "$result_file" 2>/dev/null; then
         CODEX_PASSED=true
       else
         echo "    WARNING: Codex review FAILED (exit $codex_exit) — this is a HARD GATE" >&2
