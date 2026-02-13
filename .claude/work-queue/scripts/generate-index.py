@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, date, timezone
 from pathlib import Path
 
 try:
@@ -271,6 +271,211 @@ def brochure_str(val: str) -> str:
     return status_map.get(str(val).lower(), str(val))
 
 
+METRICS_TEMPLATE = """\
+## Metrics
+
+### Throughput
+
+| Metric | Value |
+|--------|-------|
+| Total captured | {total_captured} |
+| Total archived | {total_archived} |
+| Completion rate | {total_archived}/{total_captured} ({pct_complete}%) |
+| Monthly rate (current month) | {archived_this_month} archived |
+| Monthly rate (prior month) | {archived_prior_month} archived |
+
+### Plan Coverage
+
+| Metric | Count | Percentage |
+|--------|-------|------------|
+| Pending items with plans | {pending_with_plan} / {total_pending} | {pct_plan_coverage}% |
+| Plans cross-reviewed | {reviewed_count} | {pct_reviewed}% |
+| Plans user-approved | {approved_count} | {pct_approved}% |
+
+### Aging
+
+| Bucket | Count | Items |
+|--------|-------|-------|
+| Pending > 30 days | {aged_30} | {aged_30_ids} |
+| Pending > 14 days | {aged_14} | {aged_14_ids} |
+| Working > 7 days | {stale_working} | {stale_working_ids} |
+| Blocked > 7 days | {stale_blocked} | {stale_blocked_ids} |
+
+### Priority Distribution (active items only)
+
+| Priority | Pending | Working | Blocked |
+|----------|---------|---------|---------|
+| High     | {high_pending} | {high_working} | {high_blocked} |
+| Medium   | {med_pending}  | {med_working}  | {med_blocked}  |
+| Low      | {low_pending}  | {low_working}  | {low_blocked}  |
+"""
+
+
+def _parse_date(value) -> date | None:
+    """Parse a date, datetime, or datetime-string into a date object.
+
+    Handles: datetime objects (from PyYAML), date objects, and ISO strings.
+    """
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value.date()
+    if isinstance(value, date):
+        return value
+    if not isinstance(value, str) or not value:
+        return None
+    # Strip fractional seconds and normalize timezone offset before parsing.
+    # Handles: 2026-02-08T18:00:00Z, 2026-02-08T18:00:00+00:00,
+    #          2026-02-08T18:00:00.123Z, 2026-02-08T18:00:00.123+05:30, 2026-02-08
+    cleaned = re.sub(r"\.\d+", "", value)  # remove fractional seconds
+    cleaned = re.sub(r"[+-]\d{2}:\d{2}$", "", cleaned)  # remove +HH:MM offset
+    cleaned = cleaned.rstrip("Z")  # remove trailing Z
+    for fmt in ("%Y-%m-%dT%H:%M:%S", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(cleaned, fmt).date()
+        except ValueError:
+            continue
+    return None
+
+
+def _ids_str(items: list[dict]) -> str:
+    """Join item IDs into a comma-separated string, or '-' if empty."""
+    if not items:
+        return "-"
+    return ", ".join(str(it.get("id", "?")) for it in items)
+
+
+def _safe_pct(numerator: int, denominator: int) -> int:
+    """Calculate percentage, returning 0 when denominator is zero."""
+    if denominator == 0:
+        return 0
+    return round(numerator * 100 / denominator)
+
+
+def compute_metrics(items: list[dict]) -> dict[str, str | int]:
+    """Compute all metric values from the work queue items.
+
+    Returns a dict of template placeholder names to rendered values.
+    """
+    today = date.today()
+    current_year_month = (today.year, today.month)
+    if today.month == 1:
+        prior_year_month = (today.year - 1, 12)
+    else:
+        prior_year_month = (today.year, today.month - 1)
+
+    # Classify items by status
+    archived = [it for it in items if it["status"] == "archived"]
+    pending = [it for it in items if it["status"] == "pending"]
+    working = [it for it in items if it["status"] == "working"]
+    blocked = [it for it in items if it["status"] == "blocked"]
+    active = pending + working + blocked  # non-archived items
+
+    total_captured = len(items)
+    total_archived = len(archived)
+
+    # -- Throughput: monthly archive rates --
+    archived_this_month = 0
+    archived_prior_month = 0
+    for it in archived:
+        completed = _parse_date(it.get("completed_at"))
+        if completed is None:
+            continue
+        ym = (completed.year, completed.month)
+        if ym == current_year_month:
+            archived_this_month += 1
+        elif ym == prior_year_month:
+            archived_prior_month += 1
+
+    # -- Plan coverage (pending items only) --
+    total_pending = len(pending)
+    pending_with_plan = sum(1 for it in pending if it.get("_plan_exists"))
+
+    # Cross-reviewed and approved counts — denominator is items-with-plans
+    active_with_plan = [it for it in active if it.get("_plan_exists")]
+    reviewed_count = sum(1 for it in active_with_plan if it.get("plan_reviewed"))
+    approved_count = sum(1 for it in active_with_plan if it.get("plan_approved"))
+    total_with_plan = len(active_with_plan)
+
+    # -- Aging --
+    aged_30_items = []
+    aged_14_items = []
+    for it in pending:
+        created = _parse_date(it.get("created_at"))
+        if created is None:
+            continue
+        age_days = (today - created).days
+        if age_days > 30:
+            aged_30_items.append(it)
+        if age_days > 14:
+            aged_14_items.append(it)
+
+    stale_working_items = []
+    for it in working:
+        created = _parse_date(it.get("created_at"))
+        if created is None:
+            continue
+        if (today - created).days > 7:
+            stale_working_items.append(it)
+
+    stale_blocked_items = []
+    for it in blocked:
+        created = _parse_date(it.get("created_at"))
+        if created is None:
+            continue
+        if (today - created).days > 7:
+            stale_blocked_items.append(it)
+
+    # -- Priority distribution (active items) --
+    def _count_by_prio(subset: list[dict], priority: str) -> int:
+        return sum(
+            1 for it in subset
+            if str(it.get("priority", "")).lower() == priority
+        )
+
+    return {
+        # Throughput
+        "total_captured": total_captured,
+        "total_archived": total_archived,
+        "pct_complete": _safe_pct(total_archived, total_captured),
+        "archived_this_month": archived_this_month,
+        "archived_prior_month": archived_prior_month,
+        # Plan coverage
+        "pending_with_plan": pending_with_plan,
+        "total_pending": total_pending,
+        "pct_plan_coverage": _safe_pct(pending_with_plan, total_pending),
+        "reviewed_count": reviewed_count,
+        "pct_reviewed": _safe_pct(reviewed_count, total_with_plan),
+        "approved_count": approved_count,
+        "pct_approved": _safe_pct(approved_count, total_with_plan),
+        # Aging
+        "aged_30": len(aged_30_items),
+        "aged_30_ids": _ids_str(aged_30_items),
+        "aged_14": len(aged_14_items),
+        "aged_14_ids": _ids_str(aged_14_items),
+        "stale_working": len(stale_working_items),
+        "stale_working_ids": _ids_str(stale_working_items),
+        "stale_blocked": len(stale_blocked_items),
+        "stale_blocked_ids": _ids_str(stale_blocked_items),
+        # Priority distribution
+        "high_pending": _count_by_prio(pending, "high"),
+        "high_working": _count_by_prio(working, "high"),
+        "high_blocked": _count_by_prio(blocked, "high"),
+        "med_pending": _count_by_prio(pending, "medium"),
+        "med_working": _count_by_prio(working, "medium"),
+        "med_blocked": _count_by_prio(blocked, "medium"),
+        "low_pending": _count_by_prio(pending, "low"),
+        "low_working": _count_by_prio(working, "low"),
+        "low_blocked": _count_by_prio(blocked, "low"),
+    }
+
+
+def render_metrics(items: list[dict]) -> str:
+    """Compute metrics and render the metrics section."""
+    values = compute_metrics(items)
+    return METRICS_TEMPLATE.format(**values)
+
+
 def generate_index(items: list[dict]) -> str:
     """Build the full INDEX.md content."""
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -376,6 +581,10 @@ def generate_index(items: list[dict]) -> str:
     w(f"| Plans approved | {approved_count} |")
     w(f"| Brochure pending | {brochure_pending} |")
     w(f"| Brochure updated/synced | {brochure_updated} |")
+    w("")
+
+    # ── Metrics ──────────────────────────────────────────────
+    w(render_metrics(items).rstrip())
     w("")
 
     # ── Master Table ─────────────────────────────────────────
