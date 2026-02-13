@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-13T13:19:48Z by generate-index.py -->
+<!-- Generated: 2026-02-13T13:39:11Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-13T13:19:48Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-13T13:39:11Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,9 +13,9 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 80 |
-| working | 4 |
-| archived | 52 |
+| pending | 78 |
+| working | 5 |
+| archived | 53 |
 
 ### By Priority
 
@@ -158,7 +158,7 @@
 | WRK-091 | Add dynacard module README | archived | low | low | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-092 | Register dynacard CLI entry point | archived | low | low | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-093 | Improve dynacard AI diagnostics | archived | low | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | - |
-| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | pending | high | complex | workspace-hub | ✅ | ❌ | ❌ | - | - | - |
+| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | working | high | complex | workspace-hub | ✅ | ❌ | ❌ | - | - | - |
 | WRK-095 | Engineering unit tracking system — spec to code lifecycle | pending | high | complex | rock-oil-field | ✅ | ❌ | ❌ | - | - | - |
 | WRK-096 | Review and improve worldenergydata module structure for discoverability | archived | high | medium | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | high | medium | workspace-hub, worldenergydata, digitalmodel | ✅ | ❌ | ❌ | ███ 100% | - | - |
@@ -198,7 +198,7 @@
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | working | high | medium | digitalmodel | ✅ | ✅ | ✅ | ██░ 80% | - | - |
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | pending | high | medium | aceengineer-admin | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | pending | medium | medium | workspace-hub | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | pending | medium | medium | worldenergydata | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | medium | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-136 | Scrape additional operator fleets — Transocean, Borr, Valaris sub-pages | pending | medium | medium | worldenergydata | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex | worldenergydata | ❌ | ❌ | ❌ | - | n/a | WRK-136 |
 
@@ -258,7 +258,6 @@
 | WRK-084 | Integrate metocean data sources into unified aggregation interface | medium | complex | worldenergydata |
 | WRK-085 | Create public sample data access page on website | low | medium | aceengineer-website |
 | WRK-086 | Rewrite CI workflows for Python/bash workspace | medium | medium | workspace-hub |
-| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | high | complex | workspace-hub |
 | WRK-095 | Engineering unit tracking system — spec to code lifecycle | high | complex | rock-oil-field |
 | WRK-099 | Run 3-way benchmark on Unit Box hull | medium | medium | digitalmodel |
 | WRK-101 | Add mesh decimation/coarsening to mesh-utilities skill | low | medium | digitalmodel |
@@ -285,7 +284,6 @@
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | high | complex | digitalmodel |
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | high | medium | aceengineer-admin |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | medium | medium | workspace-hub |
-| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | medium | medium | worldenergydata |
 | WRK-136 | Scrape additional operator fleets — Transocean, Borr, Valaris sub-pages | medium | medium | worldenergydata |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | low | complex | worldenergydata |
 
@@ -294,6 +292,7 @@
 | ID | Title | Priority | Complexity | Repos |
 |-----|-------|----------|------------|-------|
 | WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | high | simple | worldenergydata |
+| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | high | complex | workspace-hub |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | high | medium | - |
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | high | low | digitalmodel |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | high | medium | digitalmodel |
@@ -354,6 +353,7 @@
 | WRK-120 | Research and purchase a smart watch | low | simple | achantas-data |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | high | medium | acma-projects, assetutilities |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | high | medium | digitalmodel |
+| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | medium | medium | worldenergydata |
 
 ## By Repository
 
@@ -512,7 +512,7 @@
 | WRK-088 | Investigate and clean submodule issues (pdf-large-reader, worldenergydata, aceengineercode) | archived | low | simple |
 | WRK-089 | Review Claude Code version gap and update cc-insights | archived | low | simple |
 | WRK-090 | Identify and refactor large files exceeding 400-line limit | archived | medium | medium |
-| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | pending | high | complex |
+| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | working | high | complex |
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | high | medium |
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | pending | medium | medium |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium |
@@ -562,7 +562,7 @@
 | WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | high | medium |
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | archived | medium | complex |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex |
-| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | pending | medium | medium |
+| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | medium |
 | WRK-136 | Scrape additional operator fleets — Transocean, Borr, Valaris sub-pages | pending | medium | medium |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex |
 
@@ -605,7 +605,7 @@
 | WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | pending | complex | worldenergydata |
 | WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | pending | medium | worldenergydata |
 | WRK-087 | Improve test coverage across workspace repos | archived | complex | workspace-hub |
-| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | pending | complex | workspace-hub |
+| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | working | complex | workspace-hub |
 | WRK-095 | Engineering unit tracking system — spec to code lifecycle | pending | complex | rock-oil-field |
 | WRK-096 | Review and improve worldenergydata module structure for discoverability | archived | medium | worldenergydata |
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | medium | workspace-hub, worldenergydata, digitalmodel |
@@ -686,7 +686,7 @@
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | complex | workspace-hub |
 | WRK-124 | Session 20260211_095832 — 1 file(s) created | pending | low | digitalmodel |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | pending | medium | workspace-hub |
-| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | pending | medium | worldenergydata |
+| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata |
 | WRK-136 | Scrape additional operator fleets — Transocean, Borr, Valaris sub-pages | pending | medium | worldenergydata |
 
 ### Low
@@ -793,7 +793,7 @@
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | working | high | digitalmodel |
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | pending | high | aceengineer-admin |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | pending | medium | workspace-hub |
-| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | pending | medium | worldenergydata |
+| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata |
 | WRK-136 | Scrape additional operator fleets — Transocean, Borr, Valaris sub-pages | pending | medium | worldenergydata |
 
 ### Complex
@@ -849,7 +849,7 @@
 | WRK-084 | Integrate metocean data sources into unified aggregation interface | pending | medium | worldenergydata |
 | WRK-087 | Improve test coverage across workspace repos | archived | high | workspace-hub |
 | WRK-093 | Improve dynacard AI diagnostics | archived | low | digitalmodel |
-| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | pending | high | workspace-hub |
+| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | working | high | workspace-hub |
 | WRK-095 | Engineering unit tracking system — spec to code lifecycle | pending | high | rock-oil-field |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | archived | high | worldenergydata |
 | WRK-106 | Hull panel geometry generator from waterline, section, and profile line definitions | pending | medium | digitalmodel |
