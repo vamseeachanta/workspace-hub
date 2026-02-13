@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-13T13:39:11Z by generate-index.py -->
+<!-- Generated: 2026-02-13T14:05:04Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-13T13:39:11Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-13T14:05:04Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,9 +13,9 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 78 |
+| pending | 77 |
 | working | 5 |
-| archived | 53 |
+| archived | 54 |
 
 ### By Priority
 
@@ -166,7 +166,7 @@
 | WRK-099 | Run 3-way benchmark on Unit Box hull | pending | medium | medium | digitalmodel | ✅ | ❌ | ❌ | - | - | - |
 | WRK-100 | Run 3-way benchmark on Barge hull | archived | medium | medium | digitalmodel | ✅ | ❌ | ❌ | ███ 100% | - | WRK-099 |
 | WRK-101 | Add mesh decimation/coarsening to mesh-utilities skill | pending | low | medium | digitalmodel | ✅ | ❌ | ❌ | - | - | - |
-| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | pending | medium | medium | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
+| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | archived | medium | medium | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | pending | medium | medium | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | archived | high | complex | worldenergydata | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | medium | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
@@ -261,7 +261,6 @@
 | WRK-095 | Engineering unit tracking system — spec to code lifecycle | high | complex | rock-oil-field |
 | WRK-099 | Run 3-way benchmark on Unit Box hull | medium | medium | digitalmodel |
 | WRK-101 | Add mesh decimation/coarsening to mesh-utilities skill | low | medium | digitalmodel |
-| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | medium | medium | worldenergydata |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | medium | medium | worldenergydata |
 | WRK-105 | Add drilling riser component data to worldenergydata | medium | medium | worldenergydata |
 | WRK-106 | Hull panel geometry generator from waterline, section, and profile line definitions | medium | complex | digitalmodel |
@@ -347,6 +346,7 @@
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | high | medium | workspace-hub, worldenergydata, digitalmodel |
 | WRK-098 | Clean up 7.1GB large data committed to worldenergydata git history | high | high | worldenergydata |
 | WRK-100 | Run 3-way benchmark on Barge hull | medium | medium | digitalmodel |
+| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | medium | medium | worldenergydata |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | high | complex | worldenergydata |
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | medium | complex | digitalmodel, worldenergydata |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | high | complex | workspace-hub, worldenergydata, digitalmodel |
@@ -553,7 +553,7 @@
 | WRK-096 | Review and improve worldenergydata module structure for discoverability | archived | high | medium |
 | WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | high | medium |
 | WRK-098 | Clean up 7.1GB large data committed to worldenergydata git history | archived | high | high |
-| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | pending | medium | medium |
+| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | archived | medium | medium |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | pending | medium | medium |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | archived | high | complex |
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | medium |
@@ -670,7 +670,7 @@
 | WRK-090 | Identify and refactor large files exceeding 400-line limit | archived | medium | workspace-hub |
 | WRK-099 | Run 3-way benchmark on Unit Box hull | pending | medium | digitalmodel |
 | WRK-100 | Run 3-way benchmark on Barge hull | archived | medium | digitalmodel |
-| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | pending | medium | worldenergydata |
+| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | archived | medium | worldenergydata |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | pending | medium | worldenergydata |
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | worldenergydata |
 | WRK-106 | Hull panel geometry generator from waterline, section, and profile line definitions | pending | complex | digitalmodel |
@@ -779,7 +779,7 @@
 | WRK-099 | Run 3-way benchmark on Unit Box hull | pending | medium | digitalmodel |
 | WRK-100 | Run 3-way benchmark on Barge hull | archived | medium | digitalmodel |
 | WRK-101 | Add mesh decimation/coarsening to mesh-utilities skill | pending | low | digitalmodel |
-| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | pending | medium | worldenergydata |
+| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | archived | medium | worldenergydata |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | pending | medium | worldenergydata |
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | worldenergydata |
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | pending | medium | workspace-hub |
