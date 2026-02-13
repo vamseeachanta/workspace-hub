@@ -1,29 +1,29 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-13T14:23:52Z by generate-index.py -->
+<!-- Generated: 2026-02-13T16:00:50Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-13T14:23:52Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-13T16:00:50Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 136
+**Total items:** 137
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 72 |
+| pending | 69 |
 | working | 4 |
 | blocked | 2 |
-| archived | 58 |
+| archived | 62 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 53 |
-| medium | 58 |
+| medium | 59 |
 | low | 25 |
 
 ### By Complexity
@@ -32,7 +32,7 @@
 |------------|-------|
 | simple | 15 |
 | medium | 50 |
-| complex | 66 |
+| complex | 67 |
 
 ### By Repository
 
@@ -44,7 +44,7 @@
 | acma-projects | 2 |
 | assethold | 5 |
 | assetutilities | 2 |
-| digitalmodel | 57 |
+| digitalmodel | 58 |
 | hobbies | 1 |
 | investments | 1 |
 | rock-oil-field | 1 |
@@ -56,7 +56,7 @@
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 93 / 136 |
+| Plans exist | 94 / 137 |
 | Plans cross-reviewed | 14 |
 | Plans approved | 14 |
 | Brochure pending | 0 |
@@ -89,7 +89,7 @@
 | WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | pending | medium | complex | assethold | ✅ | ❌ | ❌ | - | - | - |
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | pending | medium | complex | assethold | ✅ | ❌ | ❌ | - | - | - |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | pending | low | complex | assethold | ✅ | ❌ | ❌ | - | - | - |
-| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | pending | high | medium | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
+| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | archived | high | medium | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-025 | AQWA diffraction analysis runner | archived | high | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | - |
 | WRK-026 | Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta) | archived | high | complex | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-027 | AQWA batch analysis execution | archived | high | medium | digitalmodel | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | WRK-025 |
@@ -142,7 +142,7 @@
 | WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | pending | high | complex | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
 | WRK-075 | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | pending | low | complex | digitalmodel | ✅ | ❌ | ❌ | - | - | - |
 | WRK-076 | Add data collection scheduler/orchestrator for automated refresh pipelines | pending | medium | complex | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
-| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | pending | high | medium | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
+| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | archived | high | medium | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-078 | Create energy data case study — BSEE field economics with NPV/IRR workflow | pending | medium | medium | aceengineer-website | ✅ | ❌ | ❌ | - | - | - |
 | WRK-079 | Create marine safety case study — cross-database incident correlation | pending | medium | medium | aceengineer-website | ✅ | ❌ | ❌ | - | - | WRK-074 |
 | WRK-080 | Write 4 energy data blog posts for SEO | pending | low | complex | aceengineer-website | ✅ | ❌ | ❌ | - | - | - |
@@ -178,9 +178,9 @@
 | WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | pending | medium | complex | digitalmodel | ✅ | ✅ | ✅ | - | - | - |
 | WRK-111 | BSEE field development interactive map and analytics | pending | medium | complex | worldenergydata, aceengineer-website | ❌ | ❌ | ❌ | - | - | - |
 | WRK-112 | Appliance lifecycle analytics module for assethold | pending | medium | complex | assethold | ❌ | ❌ | ❌ | - | - | - |
-| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | high | medium | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
+| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | archived | high | medium | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | archived | medium | complex | digitalmodel, worldenergydata | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | medium | digitalmodel | ✅ | ✅ | ✅ | - | - | - |
+| WRK-115 | Link RAO data to hull shapes in hull library catalog | archived | medium | medium | digitalmodel | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | medium | digitalmodel | ✅ | ✅ | ✅ | - | - | - |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | complex | digitalmodel | ✅ | ✅ | ✅ | - | - | - |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | medium | complex | workspace-hub | ❌ | ❌ | ❌ | - | - | - |
@@ -202,6 +202,7 @@
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | medium | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-136 | Scrape additional operator fleets — Transocean, Borr, Valaris sub-pages | pending | medium | medium | worldenergydata | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex | worldenergydata | ❌ | ❌ | ❌ | - | n/a | WRK-136 |
+| WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | pending | medium | complex | digitalmodel | ✅ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -221,7 +222,6 @@
 | WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | medium | complex | assethold |
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | medium | complex | assethold |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | low | complex | assethold |
-| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | high | medium | worldenergydata |
 | WRK-031 | Benchmark OrcaWave vs AQWA for 2-3 hulls | medium | complex | digitalmodel |
 | WRK-032 | Modular OrcaFlex pipeline installation input with parametric campaign support | medium | complex | digitalmodel |
 | WRK-036 | OrcaFlex structure deployment analysis - supply boat side deployment with structural loads | low | complex | acma-projects |
@@ -246,7 +246,6 @@
 | WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | high | complex | worldenergydata |
 | WRK-075 | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | low | complex | digitalmodel |
 | WRK-076 | Add data collection scheduler/orchestrator for automated refresh pipelines | medium | complex | worldenergydata |
-| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | high | medium | worldenergydata |
 | WRK-078 | Create energy data case study — BSEE field economics with NPV/IRR workflow | medium | medium | aceengineer-website |
 | WRK-079 | Create marine safety case study — cross-database incident correlation | medium | medium | aceengineer-website |
 | WRK-080 | Write 4 energy data blog posts for SEO | low | complex | aceengineer-website |
@@ -266,8 +265,6 @@
 | WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | medium | complex | digitalmodel |
 | WRK-111 | BSEE field development interactive map and analytics | medium | complex | worldenergydata, aceengineer-website |
 | WRK-112 | Appliance lifecycle analytics module for assethold | medium | complex | assethold |
-| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | high | medium | worldenergydata |
-| WRK-115 | Link RAO data to hull shapes in hull library catalog | medium | medium | digitalmodel |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | medium | medium | digitalmodel |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | medium | complex | digitalmodel |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub |
@@ -281,6 +278,7 @@
 | WRK-134 | Add future-work brainstorming step before archiving completed items | medium | medium | workspace-hub |
 | WRK-136 | Scrape additional operator fleets — Transocean, Borr, Valaris sub-pages | medium | medium | worldenergydata |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | low | complex | worldenergydata |
+| WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | medium | complex | digitalmodel |
 
 ### Working
 
@@ -312,6 +310,7 @@
 | WRK-011 | Run BSEE analysis for all leases with field nicknames and geological era grouping | high | complex | worldenergydata |
 | WRK-012 | Audit HSE public data coverage and identify gaps | high | medium | worldenergydata |
 | WRK-013 | HSE data analysis to identify typical mishaps by activity and subactivity | high | complex | worldenergydata |
+| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | high | medium | worldenergydata |
 | WRK-025 | AQWA diffraction analysis runner | high | complex | digitalmodel |
 | WRK-026 | Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta) | high | complex | digitalmodel |
 | WRK-027 | AQWA batch analysis execution | high | medium | digitalmodel |
@@ -339,6 +338,7 @@
 | WRK-070 | Import PHMSA pipeline data and build pipeline_safety module | high | medium | worldenergydata |
 | WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | high | simple | worldenergydata |
 | WRK-073 | Market digitalmodel and worldenergydata capabilities on aceengineer website | high | complex | aceengineer-website |
+| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | high | medium | worldenergydata |
 | WRK-082 | Complete LNG terminal data pipeline — from config to working collection | medium | medium | worldenergydata |
 | WRK-087 | Improve test coverage across workspace repos | high | complex | workspace-hub |
 | WRK-088 | Investigate and clean submodule issues (pdf-large-reader, worldenergydata, aceengineercode) | low | simple | workspace-hub |
@@ -354,7 +354,9 @@
 | WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | medium | medium | worldenergydata |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | high | complex | worldenergydata |
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | high | simple | sabithaandkrishnaestates |
+| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | high | medium | worldenergydata |
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | medium | complex | digitalmodel, worldenergydata |
+| WRK-115 | Link RAO data to hull shapes in hull library catalog | medium | medium | digitalmodel |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | high | complex | workspace-hub, worldenergydata, digitalmodel |
 | WRK-120 | Research and purchase a smart watch | low | simple | achantas-data |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | high | medium | acma-projects, assetutilities |
@@ -470,7 +472,7 @@
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium |
 | WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | pending | medium | complex |
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | archived | medium | complex |
-| WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | medium |
+| WRK-115 | Link RAO data to hull shapes in hull library catalog | archived | medium | medium |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | medium |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | medium | complex |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex |
@@ -483,6 +485,7 @@
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | pending | high | complex |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | pending | high | complex |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | working | high | medium |
+| WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | pending | medium | complex |
 
 ### hobbies
 
@@ -541,7 +544,7 @@
 | WRK-017 | Streamline BSEE field data analysis pipeline — wellbore, casing, drilling, completions, interventions | pending | high | complex |
 | WRK-018 | Extend BSEE field data pipeline to other regulatory sources (RRC, Norway, Mexico, Brazil) | pending | low | complex |
 | WRK-019 | Establish drilling, completion, and intervention cost data by region and environment | pending | low | complex |
-| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | pending | high | medium |
+| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | archived | high | medium |
 | WRK-038 | Compile global LNG terminal project dataset with comprehensive parameters | pending | medium | complex |
 | WRK-054 | worldenergydata test coverage improvement | pending | medium | medium |
 | WRK-067 | Acquire OSHA enforcement and fatality data | archived | high | simple |
@@ -552,7 +555,7 @@
 | WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | high | complex |
 | WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | pending | high | complex |
 | WRK-076 | Add data collection scheduler/orchestrator for automated refresh pipelines | pending | medium | complex |
-| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | pending | high | medium |
+| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | archived | high | medium |
 | WRK-082 | Complete LNG terminal data pipeline — from config to working collection | archived | medium | medium |
 | WRK-083 | Validate multi-format export (Excel, PDF, Parquet) with real BSEE data | pending | medium | medium |
 | WRK-084 | Integrate metocean data sources into unified aggregation interface | pending | medium | complex |
@@ -565,7 +568,7 @@
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | medium |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | medium |
 | WRK-111 | BSEE field development interactive map and analytics | pending | medium | complex |
-| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | high | medium |
+| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | archived | high | medium |
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | archived | medium | complex |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | medium |
@@ -584,7 +587,7 @@
 | WRK-012 | Audit HSE public data coverage and identify gaps | archived | medium | worldenergydata |
 | WRK-013 | HSE data analysis to identify typical mishaps by activity and subactivity | archived | complex | worldenergydata |
 | WRK-017 | Streamline BSEE field data analysis pipeline — wellbore, casing, drilling, completions, interventions | pending | complex | worldenergydata |
-| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | pending | medium | worldenergydata |
+| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | archived | medium | worldenergydata |
 | WRK-025 | AQWA diffraction analysis runner | archived | complex | digitalmodel |
 | WRK-026 | Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta) | archived | complex | digitalmodel |
 | WRK-027 | AQWA batch analysis execution | archived | medium | digitalmodel |
@@ -609,7 +612,7 @@
 | WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | complex | worldenergydata |
 | WRK-073 | Market digitalmodel and worldenergydata capabilities on aceengineer website | archived | complex | aceengineer-website |
 | WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | pending | complex | worldenergydata |
-| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | pending | medium | worldenergydata |
+| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | archived | medium | worldenergydata |
 | WRK-087 | Improve test coverage across workspace repos | archived | complex | workspace-hub |
 | WRK-094 | Plan, reassess, and improve the workspace-hub workflow | working | complex | workspace-hub |
 | WRK-095 | Engineering unit tracking system — spec to code lifecycle | pending | complex | rock-oil-field |
@@ -618,7 +621,7 @@
 | WRK-098 | Clean up 7.1GB large data committed to worldenergydata git history | archived | high | worldenergydata |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | archived | complex | worldenergydata |
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | archived | simple | sabithaandkrishnaestates |
-| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | medium | worldenergydata |
+| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | archived | medium | worldenergydata |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | complex | workspace-hub, worldenergydata, digitalmodel |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | working | medium | - |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | medium | acma-projects, assetutilities |
@@ -686,7 +689,7 @@
 | WRK-111 | BSEE field development interactive map and analytics | pending | complex | worldenergydata, aceengineer-website |
 | WRK-112 | Appliance lifecycle analytics module for assethold | pending | complex | assethold |
 | WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | archived | complex | digitalmodel, worldenergydata |
-| WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | digitalmodel |
+| WRK-115 | Link RAO data to hull shapes in hull library catalog | archived | medium | digitalmodel |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | digitalmodel |
 | WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | pending | complex | digitalmodel |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | pending | complex | workspace-hub |
@@ -694,6 +697,7 @@
 | WRK-134 | Add future-work brainstorming step before archiving completed items | pending | medium | workspace-hub |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata |
 | WRK-136 | Scrape additional operator fleets — Transocean, Borr, Valaris sub-pages | pending | medium | worldenergydata |
+| WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | pending | complex | digitalmodel |
 
 ### Low
 
@@ -756,7 +760,7 @@
 | WRK-009 | Reproduce rev30 lower tertiary BSEE field results for repeatability | archived | high | worldenergydata |
 | WRK-010 | Rerun lower tertiary analysis with latest BSEE data and validate | archived | high | worldenergydata |
 | WRK-012 | Audit HSE public data coverage and identify gaps | archived | high | worldenergydata |
-| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | pending | high | worldenergydata |
+| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | archived | high | worldenergydata |
 | WRK-027 | AQWA batch analysis execution | archived | high | digitalmodel |
 | WRK-041 | Develop long-term plan for Hobbies repo | pending | low | hobbies |
 | WRK-042 | Develop long-term plan for Investments repo | pending | low | investments |
@@ -772,7 +776,7 @@
 | WRK-064 | OrcaFlex format converter: license-required validation and backward-compat wrapper | pending | medium | digitalmodel |
 | WRK-068 | Acquire BSEE incident investigations and INCs data | archived | high | worldenergydata |
 | WRK-070 | Import PHMSA pipeline data and build pipeline_safety module | archived | high | worldenergydata |
-| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | pending | high | worldenergydata |
+| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | archived | high | worldenergydata |
 | WRK-078 | Create energy data case study — BSEE field economics with NPV/IRR workflow | pending | medium | aceengineer-website |
 | WRK-079 | Create marine safety case study — cross-database incident correlation | pending | medium | aceengineer-website |
 | WRK-082 | Complete LNG terminal data pipeline — from config to working collection | archived | medium | worldenergydata |
@@ -790,8 +794,8 @@
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | worldenergydata |
 | WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | pending | medium | workspace-hub |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | pending | medium | workspace-hub, worldenergydata, digitalmodel |
-| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | pending | high | worldenergydata |
-| WRK-115 | Link RAO data to hull shapes in hull library catalog | pending | medium | digitalmodel |
+| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | archived | high | worldenergydata |
+| WRK-115 | Link RAO data to hull shapes in hull library catalog | archived | medium | digitalmodel |
 | WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | pending | medium | digitalmodel |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | working | high | - |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | acma-projects, assetutilities |
@@ -872,6 +876,7 @@
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | pending | high | digitalmodel |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | pending | high | digitalmodel |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | worldenergydata |
+| WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | pending | medium | digitalmodel |
 
 ## Dependencies
 
