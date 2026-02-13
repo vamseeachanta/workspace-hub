@@ -2,6 +2,7 @@
 # cross-review.sh — Unified cross-review submission script
 # Submits content to all available AI agents (Claude, Codex, Gemini) for review
 # Cross-review is MANDATORY for all plans and implementations per CLAUDE.md
+# CODEX IS A HARD GATE — script exits non-zero if Codex review fails
 # Usage: cross-review.sh <file_or_diff> <reviewer: claude|codex|gemini|all> [--type plan|implementation|commit]
 # Preferred: cross-review.sh <file_or_diff> all --type implementation
 set -euo pipefail
@@ -83,6 +84,9 @@ build_review_args() {
   echo "${args[@]}"
 }
 
+# Track Codex gate status
+CODEX_PASSED=false
+
 # Submit to reviewers
 submit_review() {
   local reviewer="$1"
@@ -113,16 +117,21 @@ submit_review() {
       } > "$result_file"
       ;;
     codex)
+      local codex_exit=0
       if [[ -n "$COMMIT_SHA" ]]; then
-        "${SCRIPT_DIR}/submit-to-codex.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || {
-          echo "# Codex review failed" > "$result_file"
-          echo "# Fallback: manual review required" >> "$result_file"
-        }
+        "${SCRIPT_DIR}/submit-to-codex.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || codex_exit=$?
       else
-        "${SCRIPT_DIR}/submit-to-codex.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || {
-          echo "# Codex review failed" > "$result_file"
-          echo "# Fallback: manual review required" >> "$result_file"
-        }
+        "${SCRIPT_DIR}/submit-to-codex.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || codex_exit=$?
+      fi
+      # Check if Codex produced a real verdict (not just a failure stub)
+      if [[ $codex_exit -eq 0 ]] && ! grep -q "^# Codex.*failed\|^# Codex CLI not found" "$result_file" 2>/dev/null; then
+        CODEX_PASSED=true
+      else
+        echo "    WARNING: Codex review FAILED (exit $codex_exit) — this is a HARD GATE" >&2
+        if [[ $codex_exit -ne 0 ]]; then
+          echo "# Codex review failed (exit $codex_exit)" > "$result_file"
+          echo "# HARD GATE: Codex review is compulsory — resolve before proceeding" >> "$result_file"
+        fi
       fi
       ;;
     gemini)
@@ -150,8 +159,23 @@ case "$REVIEWER" in
     submit_review "codex"
     submit_review "gemini"
     echo "--- All reviews submitted. Results in: ${RESULTS_DIR}/"
+    if [[ "$CODEX_PASSED" != "true" ]]; then
+      echo ""
+      echo "=== CODEX HARD GATE FAILED ===" >&2
+      echo "Codex review is compulsory per workspace policy." >&2
+      echo "Install Codex CLI (npm install -g @openai/codex) or resolve the failure before proceeding." >&2
+      echo "Review results saved to: ${RESULTS_DIR}/" >&2
+      exit 1
+    fi
     ;;
-  claude|codex|gemini)
+  codex)
+    submit_review "codex"
+    if [[ "$CODEX_PASSED" != "true" ]]; then
+      echo "=== CODEX HARD GATE FAILED ===" >&2
+      exit 1
+    fi
+    ;;
+  claude|gemini)
     submit_review "$REVIEWER"
     ;;
   *)

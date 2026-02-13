@@ -80,10 +80,10 @@ Save plans to: `specs/modules/<module>/`
 - Required metadata: `title`, `description`, `version`, `module`, `session.id`, `session.agent`, `review`
 
 **Cross-Review (MANDATORY)**: All available AI agents must review. Use `scripts/review/cross-review.sh <file> all`.
+- **Codex CLI** (REQUIRED): `codex review --commit <sha>` or `codex exec` — **must produce a verdict**. If Codex fails or is unavailable, the review is BLOCKED until resolved. Do not proceed without Codex approval.
 - **Claude** (current session): inline review by orchestrating agent
-- **Codex CLI**: `codex review --commit <sha>` or `codex exec` for content review
 - **Gemini CLI**: `gemini --prompt` for non-interactive review
-- Minimum: 3 reviewers. If a CLI produces no output, note as NO_OUTPUT and proceed with remaining verdicts.
+- Minimum: 3 reviewers. Codex is a hard gate; Claude and Gemini failures may be noted as NO_OUTPUT and proceeded with.
 
 ## SPARC Modes
 

@@ -27,6 +27,7 @@ fi
 if ! command -v codex &>/dev/null; then
   echo "# Codex CLI not found"
   echo "# Install: npm install -g @openai/codex"
+  echo "# CODEX REVIEW IS COMPULSORY — install the CLI and retry"
   echo ""
   echo "## Review Prompt"
   echo "$PROMPT"
@@ -39,7 +40,7 @@ if ! command -v codex &>/dev/null; then
     echo "Commit: $COMMIT_SHA"
   fi
   echo '```'
-  exit 0
+  exit 2
 fi
 
 if [[ -n "$COMMIT_SHA" ]]; then
