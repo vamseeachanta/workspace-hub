@@ -1,0 +1,282 @@
+scan_date: "2026-02-13"
+
+data_sources:
+  war_pickle:
+    path: "data/modules/bsee/.local/war/war_borehole_view.pkl"
+    rows: 54701
+    columns: 7
+    column_list: ["API_WELL_NUMBER", "BOTM_LEASE_NUM", "WELL_SPUD_DATE", "TOTAL_DEPTH_DATE", "BOREHOLE_STAT_DT", "BH_TOTAL_MD", "WELL_BORE_TVD"]
+    purpose: "Borehole view with basic well metrics (depth, dates)"
+    data_types: "All string (requires parsing)"
+
+  war_zip:
+    path: "data/modules/bsee/.local/war/eWellWARRawData.zip"
+    size_mb: 123
+    contents:
+      - name: "mv_war_boreholes_view.txt"
+        size_mb: 3.6
+        purpose: "Borehole dimensional data"
+      - name: "mv_war_main.txt"
+        size_mb: 75.1
+        purpose: "Primary WAR records (rig, dates, BOP tests, water depth)"
+        columns: 23
+      - name: "mv_war_main_prop.txt"
+        size_mb: 33.8
+        rows: 361506
+        purpose: "Activity properties (CRITICAL - contains WELL_ACTIVITY_CD)"
+        columns: 15
+      - name: "mv_war_main_prop_remark.txt"
+        size_mb: 282.7
+        purpose: "Free-text remarks for each SN_WAR"
+        columns: 2
+        encoding: "latin-1 (UTF-8 fails)"
+      - name: "mv_war_open_hole_runs.txt"
+        size_mb: 2.2
+        purpose: "Open hole logging runs"
+      - name: "mv_war_open_hole_tools.txt"
+        size_mb: 1.2
+        purpose: "Open hole logging tools"
+      - name: "mv_war_tubular_summaries.txt"
+        size_mb: 26.2
+        purpose: "Tubular (casing, tubing) summaries"
+      - name: "mv_war_tubular_summaries_prop.txt"
+        size_mb: 12.3
+        purpose: "Tubular properties"
+
+  csv_files:
+    path: "data/modules/bsee/current/operations/"
+    purpose: "Recent activity snapshots (2024 data)"
+    files:
+      - name: "well_activity_summary.csv"
+        rows: 100
+        columns: ["WAR_START_DT", "WAR_END_DT", "RIG_NAME", "API_WELL_NUMBER", "WELL_NAME", "WELL_ACTIVITY_CD", "DRILLING_MD", "DRILL_FLUID_WGT"]
+        date_range: "2024-01-21 to 2024-09-22"
+      - name: "well_activity_remarks.csv"
+        rows: 527
+        columns: ["API_WELL_NUMBER", "WELL_NAME", "WAR_START_DT", "SN_WAR", "TEXT_REMARK"]
+        purpose: "Free-text operational narratives"
+      - name: "well_activity_open_hole.csv"
+        rows: 100
+      - name: "well_activity_bop_tests.csv"
+        rows: 100
+      - name: "cut_casings.csv"
+        rows: 100
+      - name: "ST_BP_and_tree_height.csv"
+        rows: 100
+
+completion_type_encoding: "structured"
+
+activity_type_structure:
+  encoding: "Structured coded values in WELL_ACTIVITY_CD field"
+  source_field: "WELL_ACTIVITY_CD"
+  source_table: "mv_war_main_prop.txt"
+  total_records: 361506
+  missing_rate: 0.24%
+
+activity_types:
+  # Distribution from full WAR dataset (361,506 records)
+  TA: 102778     # Temporarily Abandoned (28.4%)
+  PA: 88763      # Permanently Abandoned (24.5%)
+  DRL: 56307     # Drilling (15.6%)
+  COM: 45994     # Completion (12.7%)
+  WO: 26144      # Workover (7.2%)
+  CHZ: 19815     # Cased Hole Zone (5.5%)
+  PND: 8800      # Pending (2.4%)
+  ST: 6413       # Sidetrack (1.8%)
+  MPF: 2212      # Multi-Phase Flow (0.6%)
+  DSI: 2179      # Drill Stem Interval (0.6%)
+  REC: 1028      # Recomplete (0.3%)
+  TBK: 191       # Temporary Block (0.05%)
+
+activity_code_mapping:
+  TA: "Temporarily Abandoned"
+  PA: "Permanently Abandoned"
+  DRL: "Drilling"
+  COM: "Completion"
+  WO: "Workover"
+  CHZ: "Cased Hole Zone"
+  PND: "Pending"
+  ST: "Sidetrack"
+  MPF: "Multi-Phase Flow"
+  DSI: "Drill Stem Interval"
+  REC: "Recomplete"
+  TBK: "Temporary Block"
+
+completion_intervention_codes:
+  completion:
+    - COM   # Initial completion
+    - REC   # Recompletion
+    - CHZ   # Cased hole zone work
+  intervention:
+    - WO    # Workover (major intervention)
+    - ST    # Sidetrack (new trajectory)
+  other:
+    - DRL   # Drilling (new well)
+    - TA    # Temporarily Abandoned
+    - PA    # Permanently Abandoned
+    - PND   # Pending
+    - MPF   # Multi-Phase Flow test
+    - DSI   # Drill Stem Interval test
+    - TBK   # Temporary Block
+
+date_range:
+  earliest: "1948-08-12"
+  latest: "2026-01-19"
+  span_years: 77.4
+
+records_by_decade:
+  1940s: 87          # 0.02% (sparse)
+  1950s: 3330        # 0.9%
+  1960s: 21269       # 5.9%
+  1970s: 53592       # 14.8%
+  1980s: 48375       # 13.4%
+  1990s: 74630       # 20.6%
+  2000s: 117851      # 32.6% (peak)
+  2010s: 33876       # 9.4%
+  2020s: 6161        # 1.7%
+  unknown: 2335      # 0.6% (missing WELL_ACTV_START_DT)
+
+data_completeness_notes:
+  - "Pre-2000 data exists but is sparse (30% of records)"
+  - "Peak data quality: 2000-2009 (33% of all records)"
+  - "Post-2010 decline likely reflects reporting lag or policy changes"
+  - "1948-1969 data represents only 6.8% of total records"
+
+missing_value_rates:
+  # From mv_war_main_prop.txt (361,506 records)
+  SN_WAR: 0.00%
+  WELL_NAME_SUFFIX: 0.00%
+  WELL_ACTV_START_DT: 0.65%
+  TOTAL_DEPTH_DATE: 16.84%
+  WELL_ACTIVITY_CD: 0.24%
+  WELL_ACTV_END_DT: 82.75%    # CRITICAL: End dates mostly missing
+  DRILLING_MD: 1.64%
+  DRILLING_TVD: 2.83%
+  DRILL_FLUID_WGT: 5.59%
+  GEOCHEM_SMPL_COLLECTED_CD: 0.00%
+  LITHO_SAMPLE_COLLECTED_CD: 0.00%
+  PALEO_SAMPLE_COLLECTED_CD: 0.00%
+  SIDEWALL_SMPL_COLLECTED_CD: 0.00%
+  CONV_CORE_COLLECTED_CD: 0.00%
+  VELOCITY_SURV_COLLECTED_CD: 0.00%
+
+data_quality_issues:
+  - field: "WELL_ACTV_END_DT"
+    issue: "83% missing - duration analysis will be limited"
+    impact: "Cannot compute intervention duration for most records"
+  - field: "TOTAL_DEPTH_DATE"
+    issue: "17% missing"
+    impact: "Some drilling timelines incomplete"
+  - field: "TEXT_REMARK"
+    issue: "Encoding issues (latin-1 required)"
+    impact: "NLP/text analysis needs encoding handling"
+
+existing_modules:
+  - path: "src/worldenergydata/bsee/analysis/intervention/"
+    total_lines: 3154
+    modules:
+      - name: "comprehensive_analyzer.py"
+        lines: 442
+        purpose: "Cross-cutting analyzer with 7 analysis modules"
+        importable: true
+        key_class: "ComprehensiveActivityAnalyzer"
+      - name: "enrichment_engine.py"
+        purpose: "Enriches WAR data with derived fields"
+        importable: true
+      - name: "activity_aggregator.py"
+        purpose: "Aggregates activity statistics"
+        importable: true
+      - name: "dashboard.py"
+        purpose: "Interactive dashboard generation"
+        importable: true
+      - name: "drilling_report.py"
+        purpose: "Drilling-specific reporting"
+        importable: true
+      - name: "field_visualization.py"
+        purpose: "Field-level visualizations"
+        importable: true
+      - name: "insight_generator.py"
+        purpose: "Automated insight generation"
+        importable: true
+      - name: "intervention_detail_report.py"
+        purpose: "Detailed intervention reporting"
+        importable: true
+      - name: "well_design_analyzer.py"
+        purpose: "Well design pattern analysis"
+        importable: true
+
+  - path: "src/worldenergydata/bsee/analysis/all_fields_runner.py"
+    purpose: "All-fields production analysis orchestrator"
+    importable: true
+    key_class: "AllFieldsRunner"
+
+  - path: "src/worldenergydata/bsee/paleowells/era_classifier.py"
+    purpose: "Geological era classification (Oligocene, Eocene, etc.)"
+    importable: true
+    key_class: "EraClassifier"
+    note: "Located in paleowells, not analysis"
+
+existing_infrastructure_assessment:
+  overall_rating: "GOOD - Solid foundation exists"
+  strengths:
+    - "ComprehensiveActivityAnalyzer already exists with 7 analysis modules"
+    - "Activity enrichment pipeline in place (enrichment_engine.py)"
+    - "Structured activity codes (12 distinct codes)"
+    - "Large dataset (361K records, 77 years)"
+    - "Multiple visualization modules available"
+  gaps:
+    - "Duration analysis limited by 83% missing end dates"
+    - "No explicit completion-vs-intervention classifier yet"
+    - "Text remarks require latin-1 encoding handling"
+    - "Pre-1970 data sparse (only 6.8% of records)"
+
+recommendations:
+  phase2_implementation:
+    - action: "Build CompletionInterventionClassifier"
+      rationale: "Need to categorize 12 activity codes into completion/intervention/other"
+      data_source: "WELL_ACTIVITY_CD from mv_war_main_prop.txt"
+
+    - action: "Extend ComprehensiveActivityAnalyzer"
+      rationale: "Add completion-intervention-specific analysis modules"
+      integration: "Leverage existing 7-module framework"
+
+    - action: "Handle missing WELL_ACTV_END_DT"
+      rationale: "83% missing - need fallback duration estimation"
+      approach: "Use heuristics from activity type and drilling_md"
+
+    - action: "Join mv_war_main + mv_war_main_prop"
+      rationale: "Need water_depth, rig_name from main table"
+      key: "SN_WAR"
+
+    - action: "Filter pre-1970 data"
+      rationale: "Only 6.8% of records, may have quality issues"
+      threshold: "Start analysis from 1970 or 1980 onwards"
+
+    - action: "Handle text encoding"
+      rationale: "Remarks table requires latin-1"
+      scope: "Only if NLP analysis planned"
+
+  data_preparation:
+    - "Sample mv_war_main_prop for prototyping (10K records)"
+    - "Create completion/intervention flag based on WELL_ACTIVITY_CD"
+    - "Join with mv_war_main on SN_WAR for rig and water depth"
+    - "Filter to 1980+ for initial analysis (quality threshold)"
+
+  analysis_priorities:
+    high:
+      - "Completion vs intervention frequency by decade"
+      - "Activity type distribution by water depth class"
+      - "Rig type usage patterns (if available in mv_war_main)"
+    medium:
+      - "Duration analysis (where WELL_ACTV_END_DT exists - 17% of records)"
+      - "Depth trends for completions vs interventions"
+      - "Geological era correlation (join with paleowells)"
+    low:
+      - "Text mining of remarks (encoding complexity)"
+      - "Pre-1970 historical analysis (sparse data)"
+
+next_steps:
+  - "Review this audit with stakeholders"
+  - "Confirm completion/intervention taxonomy"
+  - "Design Phase 2 module structure"
+  - "Create test fixtures from WAR sample data"

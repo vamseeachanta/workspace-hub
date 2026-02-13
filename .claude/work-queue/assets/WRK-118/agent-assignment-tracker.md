@@ -38,15 +38,19 @@
 
 **Batch 2 Summary**: 5 agents completed, avg quality 4.4/5.0 (up from 3.8 in Batch 1). Two 5-star (test writing + data schema), three 4-star (engineering code + test writing + technical writing). Haiku performed significantly better with refined prompts — one 5-star result. No-doc constraint mostly effective (1 of 5 created unnecessary doc vs 3 of 5 in Batch 1).
 
-### Batch 3 (planned — complex items)
+### Batch 3 (2026-02-13) — COMPLETE
 
-| WRK | Title | Model | Work Type | Depends On |
-|-----|-------|-------|-----------|------------|
-| 051 | digitalmodel test coverage | Opus | Test infrastructure | - |
-| 052 | assetutilities test coverage | Opus | Test infrastructure | - |
-| 072 | Technical safety (ENIGMA port) | Opus | ML/NLP porting | Legal scan |
-| 110 | Hull library expansion | Opus | Engineering data | - |
-| 074 | Marine safety importers | Sonnet | Data validation | External access |
+**Strategy shift**: All Sonnet (not Opus). Phase 1 audit/diagnostic tasks — Sonnet's sweet spot. WRK-110 dropped (file missing), replaced with WRK-016.
+
+| WRK | Title | Model | Work Type | Quality (1-5) | Status | Notes |
+|-----|-------|-------|-----------|---------------|--------|-------|
+| 051 | digitalmodel test infra fix | Sonnet | Test infrastructure | **4** | done | Fixed duplicate filenames + pytest config. 6,301 tests discovered. Scope creep: wrote 1,258 extra tests (15 files, 11,918 lines) beyond Phase 1 mandate — tests pass and are useful, but violated constraint. |
+| 052 | assetutilities test audit | Sonnet | Test infrastructure | **5** | done | Reconciled 2,684→75 real test files (venv contamination). Fixed conftest + pytest.ini. 467/531 passing (87.9%). Perfect scope adherence. |
+| 072 | ENIGMA safety audit | Sonnet | Research/audit | **5** | done | 95 files cataloged, 368 legal refs found, 22KB overlap mapping YAML. 80% Databricks-coupled (exclude). Unique: topic modeling, POB normalization, clustering. Zero side effects. |
+| 074 | Marine safety importer audit | Sonnet | Test writing | **5** | done | Audited 4 importers (2,620 lines). 60 fixture-based tests, all passing. IMO rated 5/5 code quality. Found EMSA is stub (needs institutional access). Clean execution. |
+| 016 | BSEE completion data audit | Sonnet | Data exploration | **5** | done | 361K WAR records, 12 structured activity codes, 77-year span. Rich existing analyzer framework discovered. 10KB audit YAML. Perfect scope. |
+
+**Batch 3 Summary**: 5 agents completed, avg quality 4.8/5.0 (up from 4.4→3.8). Four 5-star, one 4-star (scope creep). All Sonnet — confirms audit/diagnostic is Sonnet's best ROI. Zero doc side effects (constraint fully effective). One agent exceeded scope (wrote bonus tests — useful but noted).
 
 ## Quality Rating Scale
 
@@ -65,13 +69,15 @@
 | Shell scripting | 3 (WRK-134) | - | - | Sonnet (Haiku needs guardrails) |
 | GitHub Actions | - | 4 (WRK-086) | - | Sonnet |
 | pytest config | - | 4 (WRK-054) | - | Sonnet |
-| Research/audit | - | 5 (WRK-109) | - | Sonnet |
+| Research/audit | - | 5 (WRK-109), 5 (WRK-072) | - | **Sonnet** (consistent 5/5) |
 | Integration testing | - | 3 (WRK-083) | - | Sonnet (refine prompts) |
 | Engineering code | - | 4 (WRK-138) | - | Sonnet (good at scoping, finds bugs) |
-| Test writing | 5 (WRK-056), 4 (WRK-053) | - | - | **Haiku** (excellent ROI, avg 4.5) |
+| Test writing | 5 (WRK-056), 4 (WRK-053) | 5 (WRK-074) | - | Haiku (4.5) or Sonnet (5.0) |
+| Test infrastructure | - | 4 (WRK-051), 5 (WRK-052) | - | **Sonnet** (diagnostic + fix) |
 | Data schema + loader | - | 5 (WRK-103) | - | Sonnet |
+| Data exploration | - | 5 (WRK-016) | - | **Sonnet** |
 | Technical writing | - | 4 (WRK-078) | - | Sonnet |
-| Complex porting | - | - | - | TBD |
+| Complex porting | - | - | - | TBD (Opus) |
 
 > Updated after each batch review. Ratings populate the matrix to guide future assignments.
 
@@ -142,16 +148,38 @@
 - `assethold/COVERAGE_BASELINE.md` (unnecessary doc from WRK-053 Haiku agent)
 - `aceengineer-website/coverage/` (spurious artifact from WRK-078 agent)
 
-## Cumulative Statistics (Batches 1+2)
+## Batch 3 Deliverables Inventory
 
-| Metric | Batch 1 | Batch 2 | Total |
-|--------|---------|---------|-------|
-| Agents executed | 5 | 5 | 10 |
-| Avg quality | 3.8 | 4.4 | 4.1 |
-| Side effects cleaned | 2 | 2 | 4 |
-| Perfect scores (5/5) | 1 | 2 | 3 |
-| Submodule commits | 1 | 5 | 6 |
-| New test files | 1 | 7 | 8 |
+### Submodule Commits
+- `digitalmodel` → `b4630e7ca` (WRK-051: test infra fix + 1,258 bonus tests)
+- `assetutilities` → `63d0597` (WRK-052: pytest.ini + conftest fix, 467/531 passing)
+- `worldenergydata` → `555af4c` (WRK-074: 60 marine safety importer tests)
+
+### Audit Outputs (workspace-hub assets)
+- `.claude/work-queue/assets/WRK-072/enigma-overlap-mapping.yml` (22KB, 419 lines)
+- `.claude/work-queue/assets/WRK-016/war-data-audit.yml` (10KB)
+
+### Files Created (by agents)
+- `digitalmodel/tests/visualization/` (10 test files, 7,573 lines, WRK-051)
+- `digitalmodel/tests/infrastructure/common/` (2 test files, 2,007 lines, WRK-051)
+- `digitalmodel/tests/structural/fatigue/` (2 test files, 1,578 lines, WRK-051)
+- `digitalmodel/tests/signal_analysis/core/` (1 test file, 718 lines, WRK-051)
+- `worldenergydata/tests/unit/marine_safety/importers/` (4 test files + __init__, 1,325 lines, WRK-074)
+
+### Side Effects Cleaned (by orchestrator)
+- Moved `worldenergydata/.claude/work-queue/assets/WRK-016/` → workspace-hub level (wrong repo)
+
+## Cumulative Statistics (Batches 1+2+3)
+
+| Metric | Batch 1 | Batch 2 | Batch 3 | Total |
+|--------|---------|---------|---------|-------|
+| Agents executed | 5 | 5 | 5 | 15 |
+| Avg quality | 3.8 | 4.4 | 4.8 | 4.3 |
+| Side effects cleaned | 2 | 2 | 1 | 5 |
+| Perfect scores (5/5) | 1 | 2 | 4 | 7 |
+| Submodule commits | 1 | 5 | 3 | 9 |
+| New test files | 1 | 7 | 20 | 28 |
+| Audit outputs | 0 | 0 | 2 | 2 |
 
 ## Not AI-Executable Items (66 pending, 16 excluded)
 
