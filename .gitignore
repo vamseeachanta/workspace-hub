@@ -111,6 +111,8 @@ coverage.xml
 !.claude/skill-registry.yaml
 # Knowledge base - institutional memory across sessions
 !.claude/knowledge/
+# Status line - portable across machines
+!.claude/statusline-command.sh
 # Work queue - tracked for cross-machine/user portability
 !.claude/work-queue/
 

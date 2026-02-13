@@ -152,6 +152,7 @@ complexity: medium       # simple | medium | complex
 created_at: 2026-01-29T00:00:00Z
 target_repos:
   - repo-name
+target_module:           # module within repo (e.g. bsee, hse, marine_safety, hull_library)
 commit:                  # SHA after implementation
 spec_ref:                # path to spec file (Route C)
 related: []              # related WRK IDs

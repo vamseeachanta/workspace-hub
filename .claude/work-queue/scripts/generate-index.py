@@ -177,6 +177,7 @@ def normalize(item: dict) -> dict:
     item.setdefault("priority", "medium")
     item.setdefault("complexity", "medium")
     item.setdefault("target_repos", [])
+    item.setdefault("target_module", "")
     item.setdefault("blocked_by", [])
     item.setdefault("related", [])
     item.setdefault("children", [])
@@ -590,9 +591,9 @@ def generate_index(items: list[dict]) -> str:
     # ── Master Table ─────────────────────────────────────────
     w("## Master Table")
     w("")
-    w("| ID | Title | Status | Priority | Complexity | Repos | "
+    w("| ID | Title | Status | Priority | Complexity | Repos | Module | "
       "Plan? | Reviewed? | Approved? | % Done | Brochure | Blocked By |")
-    w("|-----|-------|--------|----------|------------|-------|"
+    w("|-----|-------|--------|----------|------------|-------|--------|"
       "-------|-----------|-----------|--------|----------|------------|")
     for it in items:
         bid = it.get("id", "?")
@@ -601,13 +602,14 @@ def generate_index(items: list[dict]) -> str:
         prio = it["priority"]
         comp = it["complexity"]
         repos = repos_str(it["target_repos"])
+        module = it.get("target_module") or "-"
         plan = bool_icon(it["_plan_exists"])
         reviewed = bool_icon(it["plan_reviewed"])
         approved = bool_icon(it["plan_approved"])
         pct = pct_str(it["percent_complete"])
         brochure = brochure_str(it.get("brochure_status", ""))
         blocked = list_str(it["blocked_by"])
-        w(f"| {bid} | {title} | {status} | {prio} | {comp} | {repos} | "
+        w(f"| {bid} | {title} | {status} | {prio} | {comp} | {repos} | {module} | "
           f"{plan} | {reviewed} | {approved} | {pct} | {brochure} | {blocked} |")
     w("")
 
@@ -630,11 +632,11 @@ def generate_index(items: list[dict]) -> str:
             continue
         w(f"### {heading}")
         w("")
-        w("| ID | Title | Priority | Complexity | Repos |")
-        w("|-----|-------|----------|------------|-------|")
+        w("| ID | Title | Priority | Complexity | Repos | Module |")
+        w("|-----|-------|----------|------------|-------|--------|")
         for it in group:
             w(f"| {it.get('id', '?')} | {it['title']} | {it['priority']} "
-              f"| {it['complexity']} | {repos_str(it['target_repos'])} |")
+              f"| {it['complexity']} | {repos_str(it['target_repos'])} | {it.get('target_module') or '-'} |")
         w("")
 
     # ── By Repository ────────────────────────────────────────
@@ -650,11 +652,11 @@ def generate_index(items: list[dict]) -> str:
         group = repo_items[repo]
         w(f"### {repo}")
         w("")
-        w("| ID | Title | Status | Priority | Complexity |")
-        w("|-----|-------|--------|----------|------------|")
+        w("| ID | Title | Status | Priority | Complexity | Module |")
+        w("|-----|-------|--------|----------|------------|--------|")
         for it in group:
             w(f"| {it.get('id', '?')} | {it['title']} | {it['status']} "
-              f"| {it['priority']} | {it['complexity']} |")
+              f"| {it['priority']} | {it['complexity']} | {it.get('target_module') or '-'} |")
         w("")
 
     # ── By Priority ──────────────────────────────────────────
@@ -667,11 +669,11 @@ def generate_index(items: list[dict]) -> str:
             continue
         w(f"### {prio.capitalize()}")
         w("")
-        w("| ID | Title | Status | Complexity | Repos |")
-        w("|-----|-------|--------|------------|-------|")
+        w("| ID | Title | Status | Complexity | Repos | Module |")
+        w("|-----|-------|--------|------------|-------|--------|")
         for it in group:
             w(f"| {it.get('id', '?')} | {it['title']} | {it['status']} "
-              f"| {it['complexity']} | {repos_str(it['target_repos'])} |")
+              f"| {it['complexity']} | {repos_str(it['target_repos'])} | {it.get('target_module') or '-'} |")
         w("")
 
     # ── By Complexity ────────────────────────────────────────
@@ -684,11 +686,11 @@ def generate_index(items: list[dict]) -> str:
             continue
         w(f"### {comp.capitalize()}")
         w("")
-        w("| ID | Title | Status | Priority | Repos |")
-        w("|-----|-------|--------|----------|-------|")
+        w("| ID | Title | Status | Priority | Repos | Module |")
+        w("|-----|-------|--------|----------|-------|--------|")
         for it in group:
             w(f"| {it.get('id', '?')} | {it['title']} | {it['status']} "
-              f"| {it['priority']} | {repos_str(it['target_repos'])} |")
+              f"| {it['priority']} | {repos_str(it['target_repos'])} | {it.get('target_module') or '-'} |")
         w("")
 
     # ── Dependencies ─────────────────────────────────────────
