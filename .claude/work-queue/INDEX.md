@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-13T14:05:04Z by generate-index.py -->
+<!-- Generated: 2026-02-13T14:13:13Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-13T14:05:04Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-13T14:13:13Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -14,8 +14,8 @@
 | Status | Count |
 |--------|-------|
 | pending | 77 |
-| working | 5 |
-| archived | 54 |
+| working | 4 |
+| archived | 55 |
 
 ### By Priority
 
@@ -135,7 +135,7 @@
 | WRK-068 | Acquire BSEE incident investigations and INCs data | archived | high | medium | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-069 | Acquire USCG MISLE bulk dataset | pending | high | simple | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
 | WRK-070 | Import PHMSA pipeline data and build pipeline_safety module | archived | high | medium | worldenergydata | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | working | high | simple | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
+| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | archived | high | simple | worldenergydata | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | high | complex | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
 | WRK-073 | Market digitalmodel and worldenergydata capabilities on aceengineer website | archived | high | complex | aceengineer-website | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | pending | high | complex | worldenergydata | ✅ | ❌ | ❌ | - | - | - |
@@ -290,7 +290,6 @@
 
 | ID | Title | Priority | Complexity | Repos |
 |-----|-------|----------|------------|-------|
-| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | high | simple | worldenergydata |
 | WRK-094 | Plan, reassess, and improve the workspace-hub workflow | high | complex | workspace-hub |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | high | medium | - |
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | high | low | digitalmodel |
@@ -333,6 +332,7 @@
 | WRK-067 | Acquire OSHA enforcement and fatality data | high | simple | worldenergydata |
 | WRK-068 | Acquire BSEE incident investigations and INCs data | high | medium | worldenergydata |
 | WRK-070 | Import PHMSA pipeline data and build pipeline_safety module | high | medium | worldenergydata |
+| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | high | simple | worldenergydata |
 | WRK-073 | Market digitalmodel and worldenergydata capabilities on aceengineer website | high | complex | aceengineer-website |
 | WRK-082 | Complete LNG terminal data pipeline — from config to working collection | medium | medium | worldenergydata |
 | WRK-087 | Improve test coverage across workspace repos | high | complex | workspace-hub |
@@ -542,7 +542,7 @@
 | WRK-068 | Acquire BSEE incident investigations and INCs data | archived | high | medium |
 | WRK-069 | Acquire USCG MISLE bulk dataset | pending | high | simple |
 | WRK-070 | Import PHMSA pipeline data and build pipeline_safety module | archived | high | medium |
-| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | working | high | simple |
+| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | archived | high | simple |
 | WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | high | complex |
 | WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | pending | high | complex |
 | WRK-076 | Add data collection scheduler/orchestrator for automated refresh pipelines | pending | medium | complex |
@@ -599,7 +599,7 @@
 | WRK-068 | Acquire BSEE incident investigations and INCs data | archived | medium | worldenergydata |
 | WRK-069 | Acquire USCG MISLE bulk dataset | pending | simple | worldenergydata |
 | WRK-070 | Import PHMSA pipeline data and build pipeline_safety module | archived | medium | worldenergydata |
-| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | working | simple | worldenergydata |
+| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | archived | simple | worldenergydata |
 | WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | pending | complex | worldenergydata |
 | WRK-073 | Market digitalmodel and worldenergydata capabilities on aceengineer website | archived | complex | aceengineer-website |
 | WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | pending | complex | worldenergydata |
@@ -735,7 +735,7 @@
 | WRK-055 | aceengineer-website test coverage improvement | pending | low | aceengineer-website |
 | WRK-067 | Acquire OSHA enforcement and fatality data | archived | high | worldenergydata |
 | WRK-069 | Acquire USCG MISLE bulk dataset | pending | high | worldenergydata |
-| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | working | high | worldenergydata |
+| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | archived | high | worldenergydata |
 | WRK-088 | Investigate and clean submodule issues (pdf-large-reader, worldenergydata, aceengineercode) | archived | low | workspace-hub |
 | WRK-089 | Review Claude Code version gap and update cc-insights | archived | low | workspace-hub |
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | pending | high | sabithaandkrishnaestates |
