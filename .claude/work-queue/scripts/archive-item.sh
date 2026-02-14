@@ -17,6 +17,12 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 QUEUE_ROOT="$(dirname "$SCRIPT_DIR")"
 
 WRK_ID="${1:-}"
+NO_SUGGEST=false
+
+if [[ "$#" -ge 2 && "${2:-}" == "--no-suggest" ]]; then
+    NO_SUGGEST=true
+fi
+
 if [[ -z "$WRK_ID" ]]; then
     echo "Usage: $0 <WRK-NNN>" >&2
     exit 1

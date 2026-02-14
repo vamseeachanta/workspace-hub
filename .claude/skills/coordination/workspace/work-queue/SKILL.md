@@ -101,6 +101,56 @@ Route C (Complex): Triage -> Plan+Explore -> Implement -> Test -> Review -> Arch
 
 **All routes require a plan.** The plan depth scales with complexity (see Planning Requirement below).
 
+## Cross-Review by Phase (Route B/C)
+
+**Route B and C work items must be cross-reviewed after each implementation phase.** This catches issues early and prevents compounding errors across phases.
+
+### Review Agents
+
+All available AI agents must review. Minimum 3 reviewers:
+
+| Agent | Method | Fallback |
+|-------|--------|----------|
+| Claude | Inline review by orchestrating agent | Always available |
+| Codex CLI | `codex review --commit <sha>` or `scripts/review/submit-to-codex.sh --file <path>` | NO_OUTPUT acceptable |
+| Gemini CLI | `scripts/review/submit-to-gemini.sh --file <path>` | NO_OUTPUT acceptable |
+
+### Per-Phase Review Workflow
+
+1. **Complete phase implementation** — all files created/modified, smoke tests pass
+2. **Create review input** — write implementation summary to `scripts/review/results/wrk-NNN-phase-N-review-input.md`
+3. **Submit to all agents in parallel** — Claude inline, Codex and Gemini via background Task agents
+4. **Collect findings** — each agent returns a verdict (APPROVE / MINOR / MAJOR) and findings list
+5. **Fix MAJOR findings** — address critical issues before proceeding to the next phase
+6. **Accept or defer MINOR findings** — document rationale for deferred items
+7. **Log results in spec** — update the Review Log table in the spec document with all verdicts and findings
+
+### Review Log Format (in spec document)
+
+```markdown
+| Iter | Date | Reviewer | Verdict | Findings | Fixed |
+|------|------|----------|---------|----------|-------|
+| P1   | 2026-02-12 | Claude | MINOR | 4: description... | 4/4 |
+| P1   | 2026-02-12 | Codex  | MAJOR | 6: description... | 4/6 |
+| P1   | 2026-02-12 | Gemini | MAJOR | 9: description... | 4/9 |
+```
+
+### Route A Exception
+
+Route A (simple) items do not require per-phase cross-review — a single post-implementation self-review is sufficient.
+
+## Testing Tiers
+
+When processing work items, use the appropriate test tier:
+
+| Workflow | Script | When to Use |
+|----------|--------|-------------|
+| Pre-commit | `scripts/test/test-commit.sh` | After each commit — tests only changed files |
+| Per-task | `scripts/test/test-task.sh <module>` | During implementation — tests the module being worked on |
+| Full session | `scripts/test/test-session.sh` | Before push or session end — full regression |
+
+The `--wrk WRK-NNN` flag on `test-task.sh` reads `target_repos` from the work item to auto-select modules.
+
 ## Planning Requirement
 
 **Every work item must have an approved plan before implementation begins.** This ensures sufficient alignment with the user and prevents wasted effort.
@@ -397,6 +447,11 @@ The Master Table in INDEX.md includes these tracking columns:
 
 ## Version History
 
+- **1.4.0** (2026-02-12): Cross-review by phase, testing tiers
+  - Route B/C items require per-phase cross-review by Claude, Codex, and Gemini
+  - Review log format standardized in spec documents
+  - Testing tier integration: `scripts/test/test-{commit,task,session}.sh`
+  - `test-task.sh --wrk WRK-NNN` reads target repos from work item
 - **1.3.0** (2026-02-09): Plan tracking, brochure lifecycle, completion hook
   - New INDEX.md columns: Plan?, Reviewed?, Approved?, % Done, Brochure
   - Auto-detect plan existence from `spec_ref` or `## Plan` body section

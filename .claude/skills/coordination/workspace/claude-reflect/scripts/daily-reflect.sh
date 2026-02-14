@@ -81,7 +81,24 @@ cd "$WORKSPACE_ROOT"
 
 if [[ -x "$SCRIPT_DIR/analyze-history.sh" ]]; then
     log "Running analyze-history.sh..."
-    "$SCRIPT_DIR/analyze-history.sh" "$DAYS" "all" "json" > "$ANALYSIS_FILE" 2>> "$LOG_FILE"
+    # Wrap in timeout to prevent indefinite hang on broken submodules.
+    # Allow 5 minutes total (individual repos timeout at 30s each).
+    if timeout 300 "$SCRIPT_DIR/analyze-history.sh" "$DAYS" "all" "json" > "$ANALYSIS_FILE" 2>> "$LOG_FILE"; then
+        log "Analysis completed successfully"
+    else
+        ah_exit=$?
+        if [[ $ah_exit -eq 124 ]]; then
+            log "WARNING: analyze-history.sh timed out after 300s, using partial results"
+        else
+            log "WARNING: analyze-history.sh exited with code $ah_exit, using partial results"
+        fi
+        # Ensure we have valid JSON even on partial/timeout failure.
+        # A timeout-killed process may leave truncated JSON — validate it.
+        if [[ ! -s "$ANALYSIS_FILE" ]] || ! python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$ANALYSIS_FILE" 2>/dev/null; then
+            log "WARNING: Invalid or empty JSON output, writing fallback"
+            echo '{"analysis_date":"'"$(date -Iseconds)"'","window_days":'"$DAYS"',"repos_analyzed":0,"total_commits":0,"commits":[]}' > "$ANALYSIS_FILE"
+        fi
+    fi
     log "Analysis saved to: $ANALYSIS_FILE"
 else
     log "ERROR: analyze-history.sh not found or not executable"
@@ -335,7 +352,7 @@ while IFS= read -r submod && [[ $CHECKED_SUBS -lt 15 ]]; do
         UNPUSHED=${UNPUSHED:-0}
         [[ $UNPUSHED -gt 0 ]] && SUBMODULES_UNPUSHED=$((SUBMODULES_UNPUSHED + 1))
     fi
-done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null | head -15)
+done < <(timeout 10 git -C "$WORKSPACE_ROOT" submodule status 2>/dev/null | awk '{print $2}' | head -15)
 SUBMODULE_SYNC_OK=$([[ $SUBMODULES_DIRTY -eq 0 && $SUBMODULES_UNPUSHED -eq 0 ]] && echo "pass" || echo "warn")
 log "Submodule sync: $SUBMODULES_DIRTY dirty, $SUBMODULES_UNPUSHED unpushed (of $SUBMODULES_TOTAL total)"
 
@@ -374,7 +391,7 @@ if [[ -x "$HOOK_SCRIPT" ]]; then
         if [[ -f "$settings_file" ]] && grep -q "capture-corrections" "$settings_file" 2>/dev/null; then
             HOOKS_INSTALLED=$((HOOKS_INSTALLED + 1))
         fi
-    done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null | head -15)
+    done < <(timeout 10 git -C "$WORKSPACE_ROOT" submodule status 2>/dev/null | awk '{print $2}' | head -15)
 fi
 HOOKS_COVERAGE=$([[ $HOOKS_EXPECTED -gt 0 ]] && echo "$((HOOKS_INSTALLED * 100 / HOOKS_EXPECTED))" || echo "0")
 HOOKS_OK=$([[ $HOOKS_COVERAGE -ge 80 ]] && echo "pass" || ([[ $HOOKS_COVERAGE -ge 50 ]] && echo "warn" || echo "fail"))
@@ -447,7 +464,7 @@ while IFS= read -r submod && [[ $CHECKED_REPOS -lt 20 ]]; do
         [[ ${COV_PCT:-0} -lt 80 ]] && LOW_COVERAGE_REPOS=$((LOW_COVERAGE_REPOS + 1))
         COVERAGE_PERCENT=$((COVERAGE_PERCENT + ${COV_PCT:-0}))
     fi
-done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null)
+done < <(timeout 10 git -C "$WORKSPACE_ROOT" submodule status 2>/dev/null | awk '{print $2}')
 AVG_COVERAGE=$([[ $COVERAGE_REPOS -gt 0 ]] && echo $((COVERAGE_PERCENT / COVERAGE_REPOS)) || echo "0")
 TEST_COVERAGE_OK=$([[ $AVG_COVERAGE -ge 80 ]] && echo "pass" || ([[ $AVG_COVERAGE -ge 60 ]] && echo "warn" || echo "fail"))
 log "Test coverage: ${AVG_COVERAGE}% avg across $COVERAGE_REPOS repos, $LOW_COVERAGE_REPOS below 80%"
@@ -472,7 +489,7 @@ while IFS= read -r submod && [[ $CHECKED -lt 20 ]]; do
             TEST_PASS_COUNT=$((TEST_PASS_COUNT + 1))
         fi
     fi
-done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach --recursive 'echo $sm_path' 2>/dev/null)
+done < <(timeout 10 git -C "$WORKSPACE_ROOT" submodule status 2>/dev/null | awk '{print $2}')
 TEST_PASS_OK=$([[ $TEST_FAIL_COUNT -eq 0 ]] && echo "pass" || echo "fail")
 log "Test status: $TEST_PASS_COUNT passing, $TEST_FAIL_COUNT failing (of $TESTED_REPOS with tests)"
 
