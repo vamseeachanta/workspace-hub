@@ -2,12 +2,20 @@
 # ABOUTME: Update daily/weekly to track actual usage for cost optimization
 
 # Last updated - update this when you log usage
-last_updated: "2025-12-23"
+last_updated: "2026-02-13"
 
 # Current billing period
 billing_period:
-  start_date: "2025-12-01"
-  end_date: "2025-12-31"
+  start_date: "2026-02-01"
+  end_date: "2026-02-28"
+
+# Automated quota tracking (query-quota.sh)
+quota_tracking:
+  enabled: true
+  cache_ttl_minutes: 15
+  cache_file: "~/.cache/agent-quota.json"
+  weekly_log: "~/.agent-usage/weekly-log.jsonl"
+  claude_message_ratio: 15  # raw msgs per user request (for stats-cache.json)
 
 # Usage tracking by tool
 # Update these values based on your actual usage

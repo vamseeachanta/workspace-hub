@@ -28,6 +28,20 @@ else
     p=0; w=0; b=0
 fi
 
+# AI usage remaining percentages from cached quota query
+quota_cache="${HOME}/.cache/agent-quota.json"
+ai_usage="C:-|O:-|G:-"
+if [[ -f "$quota_cache" ]]; then
+    extract_pct() {
+        jq -r --arg p "$1" '.agents[] | select(.provider == $p) | .pct_remaining // empty' \
+            "$quota_cache" 2>/dev/null
+    }
+    c_pct=$(extract_pct "claude")
+    o_pct=$(extract_pct "codex")
+    g_pct=$(extract_pct "gemini")
+    ai_usage="C:${c_pct:--}%|O:${o_pct:--}%|G:${g_pct:--}%"
+fi
+
 # Repo module name (basename of workspace root)
 repo_name=$(basename "$ws_root")
 
@@ -54,6 +68,7 @@ parts+=("\033[1;35m${model}\033[0m")
 parts+=("\033[1;37m${repo_name}\033[0m")
 parts+=("\033[33m${branch}\033[0m")
 parts+=("\033[36mWRK:${p}p/${w}w/${b}b\033[0m")
+parts+=("\033[35m${ai_usage}\033[0m")
 parts+=("${cost_fmt}")
 parts+=("ctx:${ctx}")
 
