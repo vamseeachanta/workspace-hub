@@ -26,6 +26,7 @@
 4. **YAGNI** - Only what's needed
 5. **No sycophancy** - Ask questions when unclear
 6. **Use repo uv environment** - All tasks execute in project's uv environment
+7. **Session-exit improvement** - Run `/improve` before ending every session
 
 ## Delegation Pattern
 
@@ -101,7 +102,7 @@ Global 2KB + Workspace 4KB + Project 8KB + Local 2KB = 16KB max. See `docs/CONTE
 ## Retrieval-Led Reasoning
 
 **IMPORTANT**: Prefer retrieval over training knowledge.
-Consult `.claude/docs/`, `.claude/rules/`, and project `CLAUDE.md` before relying on general knowledge.
+Consult `.claude/docs/`, `.claude/rules/`, `.claude/memory/`, and project `CLAUDE.md` before relying on general knowledge.
 
 ## Resource Index
 
