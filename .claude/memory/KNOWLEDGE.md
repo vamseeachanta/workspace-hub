@@ -42,6 +42,7 @@
 - Tests needing subprocess path: set `use_api=False` in RunConfig
 - Pre-existing test failures: AQWA runner detect tests (real exe found), CLI integration tests
 - WRK-NNN references: Always include brief description inline (never bare IDs)
+- `.gitignore` blanket rules (e.g., `memory/`) override earlier whitelists — add negation AFTER the blanket rule too
 
 ## Topic Files
 
