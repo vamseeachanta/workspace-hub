@@ -27,6 +27,20 @@ Capture and process work items (features, bugs, tasks) across workspace-hub repo
 | `archive WRK-NNN` | Manually archive an item |
 | `report` | Queue health summary |
 
+## Wrapper Integration (Processing Path)
+
+For `/work run` and `/work` processing, use orchestration wrappers:
+
+```bash
+scripts/agents/session.sh init --provider <claude|codex|gemini>
+scripts/agents/work.sh --provider <orchestrator> run
+scripts/agents/plan.sh --provider <orchestrator> WRK-NNN
+scripts/agents/execute.sh --provider <orchestrator> WRK-NNN
+scripts/agents/review.sh WRK-NNN --all-providers
+```
+
+Session rule: the provider where the session starts is orchestrator; all others are subagents.
+
 ## Smart Routing
 
 - **Action verbs** (run, go, start, next) → Process pipeline

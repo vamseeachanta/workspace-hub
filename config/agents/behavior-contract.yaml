@@ -1,0 +1,52 @@
+version: 1.0.0
+name: unified-agent-workflow-contract
+description: >-
+  Workflow-equivalence contract for Claude Code, Codex CLI, and Gemini CLI.
+  Session-started provider is orchestrator; others are subagents.
+
+session:
+  orchestrator_rule: session_started_agent_is_orchestrator
+  handoff_requires_user_approval: true
+  default_handoff_allowed: false
+  state_file: .claude/work-queue/session-state.yaml
+
+providers:
+  supported: [claude, codex, gemini]
+  roles:
+    orchestrator:
+      can_delegate: true
+      can_change_stage: true
+      can_request_cross_review: true
+    subagent:
+      can_delegate: false
+      can_change_stage: false
+      can_execute_assigned_stage_only: true
+
+workflow:
+  source_of_truth:
+    work_queue_process: .claude/work-queue/process.md
+    work_item_root: .claude/work-queue
+  stages:
+    - capture
+    - triage
+    - plan_approval_gate
+    - implement_tdd
+    - cross_review
+    - archive
+
+artifacts:
+  required:
+    - .claude/work-queue/*/WRK-*.md
+    - scripts/review/results/*.md
+  optional:
+    - specs/modules/*.md
+
+gates:
+  implementation_requires:
+    plan_approved: true
+  route_b_c_cross_review_requires:
+    attempted_reviewers: [claude, codex, gemini]
+    allow_no_output: true
+
+normalized_verdicts:
+  allowed: [APPROVE, MINOR, MAJOR, NO_OUTPUT, ERROR]

@@ -22,6 +22,11 @@ scripts:
   - queue-status.sh
   - archive-item.sh
   - queue-report.sh
+  - ../../../../scripts/agents/session.sh
+  - ../../../../scripts/agents/work.sh
+  - ../../../../scripts/agents/plan.sh
+  - ../../../../scripts/agents/execute.sh
+  - ../../../../scripts/agents/review.sh
 ---
 
 # Work Queue Skill
@@ -31,6 +36,9 @@ scripts:
 ## Quick Start
 
 ```bash
+# Initialize orchestrator for this session (session-started agent rule)
+scripts/agents/session.sh init --provider claude
+
 # Capture a work item
 /work add Fix login redirect in aceengineer-website
 
@@ -60,6 +68,34 @@ scripts:
 | `/work report` | Report | Queue health summary |
 
 Smart routing: Action verbs (run, go, start) -> Process. Descriptive content -> Capture.
+
+## Orchestration Wrappers (Required for /work run)
+
+When `/work run` (or `/work`) enters processing, enforce wrappers in this order:
+
+```bash
+# 1) Orchestrator lock (once per session)
+scripts/agents/session.sh init --provider <claude|codex|gemini>
+
+# 2) Work orchestration handoff
+scripts/agents/work.sh --provider <orchestrator> run
+
+# 3) Plan gate for selected WRK item
+scripts/agents/plan.sh --provider <orchestrator> WRK-NNN
+
+# 4) Implementation stage (orchestrator and subagents)
+scripts/agents/execute.sh --provider <orchestrator> WRK-NNN
+scripts/agents/execute.sh --provider codex WRK-NNN
+scripts/agents/execute.sh --provider gemini WRK-NNN
+
+# 5) Review stage
+scripts/agents/review.sh WRK-NNN --all-providers
+```
+
+Rules:
+- Session-started provider is orchestrator for the session.
+- Subagents cannot bypass plan gate or change orchestration state.
+- Existing `.claude/work-queue/process.md` remains source of truth.
 
 ## Two-Phase System
 
