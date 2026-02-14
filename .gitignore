@@ -114,6 +114,8 @@ coverage.xml
 !.claude/knowledge/
 # Status line - portable across machines
 !.claude/statusline-command.sh
+# Repo-level memory - shared institutional knowledge
+!.claude/memory/
 # Work queue - tracked for cross-machine/user portability
 !.claude/work-queue/
 
@@ -220,6 +222,7 @@ workspace-*.json
 .hive-mind/
 .swarm/
 memory/
+!.claude/memory/
 *.memory.json
 *.session.json
 ai-memory/

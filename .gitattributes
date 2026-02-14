@@ -1,0 +1,9 @@
+# Auto detect text files and normalize line endings
+* text=auto
+
+# Force LF for shell scripts (CRLF breaks bash on MINGW)
+*.sh text eol=lf
+scripts/* text eol=lf
+
+# Force LF for config files parsed by shell scripts
+config/*.conf text eol=lf
