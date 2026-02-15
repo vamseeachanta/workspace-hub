@@ -96,25 +96,17 @@ submit_review() {
 
   case "$reviewer" in
     claude)
-      {
-        echo "# Review by Claude"
-        echo "# Source: ${SOURCE_NAME}"
-        echo "# Type: ${REVIEW_TYPE}"
-        echo "# Date: ${TIMESTAMP}"
-        echo ""
-        echo "[Claude review requires interactive session or API call]"
-        echo "## Content to Review"
-        echo '```'
-        if [[ -n "$CONTENT_FILE" ]]; then
-          head -200 "$CONTENT_FILE"
-        else
-          echo "Commit: $COMMIT_SHA"
-          git show --stat "$COMMIT_SHA" 2>/dev/null | head -50
-        fi
-        echo '```'
-        echo "## Review Prompt"
-        echo "$PROMPT"
-      } > "$result_file"
+      if [[ -n "$COMMIT_SHA" ]]; then
+        "${SCRIPT_DIR}/submit-to-claude.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || {
+          echo "# Claude review failed" > "$result_file"
+          echo "# Fallback: manual review required" >> "$result_file"
+        }
+      else
+        "${SCRIPT_DIR}/submit-to-claude.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || {
+          echo "# Claude review failed" > "$result_file"
+          echo "# Fallback: manual review required" >> "$result_file"
+        }
+      fi
       ;;
     codex)
       local codex_exit=0

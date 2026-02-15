@@ -3,7 +3,7 @@
 # Usage: ./scripts/sync_statusline.sh [--all | --git-only]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WORKSPACE_HUB="$(dirname "$SCRIPT_DIR")"
+WORKSPACE_HUB="$(cd "$SCRIPT_DIR/../.." && pwd)"
 SOURCE_SCRIPT="$WORKSPACE_HUB/.claude/statusline-command.sh"
 
 echo "=== Syncing Statusline to All Repos ==="

@@ -63,6 +63,19 @@ State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item
 
 **Trigger**: Plan approved, item auto-claimed.
 
+**Wrapper enforcement (required)**:
+
+```bash
+scripts/agents/session.sh init --provider <claude|codex|gemini>
+scripts/agents/work.sh --provider <orchestrator> run
+scripts/agents/plan.sh --provider <orchestrator> WRK-NNN
+scripts/agents/execute.sh --provider <orchestrator> WRK-NNN
+scripts/agents/review.sh WRK-NNN --all-providers
+```
+
+- Session-started provider is orchestrator for that session.
+- Non-orchestrator providers run as subagents and cannot bypass plan gates.
+
 - Item moved from `pending/` to `working/`, frontmatter `status` updated.
 - INDEX.md regenerated.
 - Pre-check: repo-readiness on `target_repos`.

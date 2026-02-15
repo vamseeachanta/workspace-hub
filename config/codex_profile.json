@@ -1,9 +1,11 @@
-
 {
-  "name": "OpenAI Codex",
-  "specializations": ["code_generation", "code_review", "refactoring", "debugging"],
-  "strong_keywords": ["implement", "generate", "refactor", "fix", "debug", "optimize"],
-  "weak_keywords": ["reasoning", "analysis", "strategy", "planning"],
+  "name": "Codex CLI",
+  "cli_command": "codex exec",
+  "max_context_tokens": 128000,
+  "tier_affinity": ["SIMPLE", "STANDARD"],
+  "specializations": ["code_generation", "code_review", "refactoring", "debugging", "implementation", "testing"],
+  "strong_keywords": ["implement", "generate", "refactor", "fix", "debug", "optimize", "create", "add", "build", "test", "run", "execute"],
+  "weak_keywords": ["reasoning", "analysis", "strategy", "planning", "prove", "compare"],
   "rate_limits": {
     "requests_per_minute": 3000,
     "tokens_per_minute": 500000,
@@ -12,5 +14,5 @@
   },
   "hard_block_threshold": 85,
   "cost_tier": "budget",
-  "fallback_order": [1, 2]
+  "fallback_order": [2, 0]
 }

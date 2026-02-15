@@ -52,6 +52,18 @@
 
 **Batch 3 Summary**: 5 agents completed, avg quality 4.8/5.0 (up from 4.4→3.8). Four 5-star, one 4-star (scope creep). All Sonnet — confirms audit/diagnostic is Sonnet's best ROI. Zero doc side effects (constraint fully effective). One agent exceeded scope (wrote bonus tests — useful but noted).
 
+### Batch 4 (2026-02-13) — RUNNING
+
+**Strategy**: All Sonnet. Mix of website content, data curation, and new module. WRK-079 newly unblocked by WRK-074 completion.
+
+| WRK | Title | Model | Work Type | Quality (1-5) | Status | Notes |
+|-----|-------|-------|-----------|---------------|--------|-------|
+| 079 | Marine safety case study | Sonnet | Technical writing | - | running | Cross-database correlation case study HTML |
+| 081 | NPV calculator | Sonnet | Engineering code (JS) | - | running | Client-side HTML/JS calculator, follows existing pattern |
+| 021 | Stock analysis module | Sonnet | New module | - | running | Phase 1-2: data acquisition + technical indicators |
+| 038 | LNG terminal dataset | Sonnet | Data curation | - | running | Phase 1-2a: schema + 50 terminal seed data |
+| 080 | 4 energy blog posts | Sonnet | Technical writing | - | running | 4 SEO blog posts (10-14K words total) |
+
 ## Quality Rating Scale
 
 | Score | Meaning | Action |

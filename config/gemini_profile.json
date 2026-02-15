@@ -1,8 +1,10 @@
-
 {
-  "name": "Google Gemini",
-  "specializations": ["complex_reasoning", "code_generation", "system_design", "tool_use", "analysis", "refactoring"],
-  "strong_keywords": ["analyze", "refactor", "implement", "design", "debug", "optimize", "plan", "research", "explain"],
+  "name": "Gemini CLI",
+  "cli_command": "gemini -p",
+  "max_context_tokens": 1000000,
+  "tier_affinity": ["STANDARD", "COMPLEX"],
+  "specializations": ["analysis", "research", "data_processing", "summarization", "documentation", "code_generation"],
+  "strong_keywords": ["analyze", "research", "explain", "summarize", "document", "parse", "transform", "CSV", "JSON", "database", "query", "data"],
   "weak_keywords": ["simple_text_summary", "creative_writing"],
   "rate_limits": {
     "requests_per_minute": 100,
@@ -12,5 +14,5 @@
   },
   "hard_block_threshold": 80,
   "cost_tier": "balanced",
-  "fallback_order": [0, 2]
+  "fallback_order": [0, 1]
 }

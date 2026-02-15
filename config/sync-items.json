@@ -80,9 +80,22 @@
     },
     "agent_configs": {
       "enabled": true,
-      "config_files": [
-        "/mnt/github/workspace-hub/.factory/droids",
-        "/home/vamsee/.factory/droids"
+      "managed_agent_configs": [
+        {
+          "agent": "claude",
+          "template": "/mnt/github/workspace-hub/config/agents/claude/settings.json",
+          "target": "~/.claude/settings.json"
+        },
+        {
+          "agent": "codex",
+          "template": "/mnt/github/workspace-hub/config/agents/codex/config.toml",
+          "target": "~/.codex/config.toml"
+        },
+        {
+          "agent": "gemini",
+          "template": "/mnt/github/workspace-hub/config/agents/gemini/settings.json",
+          "target": "~/.gemini/settings.json"
+        }
       ]
     },
     "terminal_configs": {
