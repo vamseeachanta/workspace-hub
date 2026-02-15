@@ -1,14 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
-# Feedback Collection Tool
+# Feedback Collection Tool (DEPRECATED)
+#
+# DEPRECATED: Use 'route.sh --rate <1-5> [provider/model]' instead.
+# This script is kept for backward compatibility.
 #
 # Usage: ./feedback.sh <task_id_or_timestamp> <rating_1_to_5> [comment]
+
+echo "WARNING: feedback.sh is deprecated. Use 'route.sh --rate <1-5> [provider/model]' instead." >&2
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_FILE="$SCRIPT_DIR/logs/provider_recommendations.jsonl"
 
 if [[ $# -lt 2 ]]; then
     echo "Usage: $0 <timestamp> <rating_1_5> [comment]"
+    echo "  Preferred: route.sh --rate <1-5> [provider/model]"
     exit 1
 fi
 

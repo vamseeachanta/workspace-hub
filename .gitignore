@@ -40,6 +40,7 @@ eggs/
 .eggs/
 lib/
 !scripts/agents/lib/
+!scripts/coordination/routing/lib/
 lib64/
 parts/
 sdist/

@@ -1,0 +1,47 @@
+# Model Registry - Per-provider model variants with cost/capability tiers
+# Used by adaptive routing to select the best model for each task tier
+# Version: 1.0.0
+
+version: 1.0.0
+
+ewma:
+  alpha: 0.3          # Recent ratings weighted 30%
+  seed: 3.0            # Initial EWMA value before any ratings
+  min_ratings: 3       # Cold-start protection: need this many before trusting EWMA
+  poor_threshold: 2.5  # Below this -> try next model
+
+providers:
+  claude:
+    default_model: opus-4-6
+    models:
+      opus-4-6:
+        display_name: "Claude Opus 4.6"
+        cost_tier: premium
+        capability_tier: REASONING
+        default_priority: 100
+      sonnet-4-5:
+        display_name: "Claude Sonnet 4.5"
+        cost_tier: balanced
+        capability_tier: COMPLEX
+        default_priority: 80
+  codex:
+    default_model: codex-cli
+    models:
+      codex-cli:
+        display_name: "Codex CLI"
+        cost_tier: budget
+        capability_tier: STANDARD
+        default_priority: 90
+  gemini:
+    default_model: gemini-pro
+    models:
+      gemini-pro:
+        display_name: "Gemini Pro"
+        cost_tier: balanced
+        capability_tier: COMPLEX
+        default_priority: 90
+      gemini-flash:
+        display_name: "Gemini Flash"
+        cost_tier: budget
+        capability_tier: SIMPLE
+        default_priority: 70
