@@ -80,6 +80,12 @@ session_record_stage() {
     session_set_scalar "active_wrk" "$wrk_id"
     session_set_scalar "last_stage" "$stage"
     session_update_timestamp
+    # WRK-161: Update pipeline state if available
+    local sid
+    sid="$(session_get session_id 2>/dev/null || true)"
+    if [[ -n "$sid" ]]; then
+        pipeline_update_session "$sid" "$wrk_id" "$stage" 2>/dev/null || true
+    fi
 }
 
 # ── WRK Item Locking (WRK-157) ──────────────────────────────────────
@@ -221,4 +227,176 @@ check_stale_items() {
     done
     [[ "$stale_count" -gt 0 ]] && echo "Staleness check: $stale_count item(s) flagged." >&2
     return 0
+}
+
+# ── Batch Plan Approval (WRK-159) ────────────────────────────────────
+
+_file_has_plan_section() {
+    local file="$1"
+    grep -q '^## Plan' "$file" 2>/dev/null
+}
+
+list_approvable_items() {
+    # Returns lines: FILE_PATH|WRK_ID|TITLE|COMPLEXITY|PLAN_FIRST_LINE
+    local count=0
+    for d in pending working; do
+        local dir="${WORK_ITEM_ROOT}/$d"
+        [[ -d "$dir" ]] || continue
+        for f in "$dir"/WRK-*.md; do
+            [[ -f "$f" ]] || continue
+            local approved
+            approved="$(wrk_get_frontmatter_value "$f" "plan_approved")"
+            [[ "$approved" == "true" ]] && continue
+            _file_has_plan_section "$f" || continue
+
+            local wrk_id title complexity plan_line
+            wrk_id="$(basename "$f" .md)"
+            title="$(wrk_get_frontmatter_value "$f" "title")"
+            complexity="$(wrk_get_frontmatter_value "$f" "complexity")"
+            plan_line="$(awk '/^## Plan/{getline; while(/^[[:space:]]*$/) getline; print; exit}' "$f")"
+            [[ ${#plan_line} -gt 80 ]] && plan_line="${plan_line:0:77}..."
+
+            echo "${f}|${wrk_id}|${title}|${complexity}|${plan_line}"
+            count=$((count + 1))
+        done
+    done
+    return 0
+}
+
+approve_items() {
+    # Takes a newline-separated list of FILE_PATH|WRK_ID|... lines to approve
+    local items="$1"
+    local approved_count=0
+    while IFS='|' read -r file wrk_id title complexity plan_line; do
+        [[ -z "$file" ]] && continue
+        wrk_set_frontmatter_value "$file" "plan_approved" "true"
+        echo "  Approved: $wrk_id — $title"
+        approved_count=$((approved_count + 1))
+    done <<< "$items"
+    echo "Approved $approved_count item(s)."
+}
+
+reject_items() {
+    local items="$1"
+    local rejected_count=0
+    while IFS='|' read -r file wrk_id title complexity plan_line; do
+        [[ -z "$file" ]] && continue
+        wrk_set_frontmatter_value "$file" "plan_rejected" "true"
+        echo "  Rejected: $wrk_id — $title"
+        rejected_count=$((rejected_count + 1))
+    done <<< "$items"
+    echo "Rejected $rejected_count item(s)."
+}
+
+# ── Multi-Session Pipeline (WRK-161) ────────────────────────────────
+
+PIPELINE_STATE_FILE="${PIPELINE_STATE_FILE:-$WORK_ITEM_ROOT/pipeline-state.yaml}"
+
+ensure_pipeline_store() {
+    if [[ ! -f "$PIPELINE_STATE_FILE" ]]; then
+        cat > "$PIPELINE_STATE_FILE" <<'YAML'
+sessions: []
+YAML
+    fi
+}
+
+pipeline_register_session() {
+    local sid="$1" provider="$2" wrk_id="${3:-}" stage="${4:-}"
+    ensure_pipeline_store
+    # Remove existing entry for this session then append
+    pipeline_deregister_session "$sid" 2>/dev/null || true
+    local now
+    now="$(session_now_iso)"
+    local tmp
+    tmp="$(mktemp)"
+    # Replace empty array marker and append entry
+    awk '
+        /^sessions: \[\]/ { print "sessions:"; next }
+        { print }
+    ' "$PIPELINE_STATE_FILE" > "$tmp"
+    {
+        cat "$tmp"
+        printf '  - session_id: %s\n' "$sid"
+        printf '    provider: %s\n' "$provider"
+        printf '    active_wrk: %s\n' "$wrk_id"
+        printf '    last_stage: %s\n' "$stage"
+        printf '    registered_at: %s\n' "$now"
+    } > "${tmp}.2"
+    mv "${tmp}.2" "$PIPELINE_STATE_FILE"
+    rm -f "$tmp"
+}
+
+pipeline_deregister_session() {
+    local sid="$1"
+    ensure_pipeline_store
+    local tmp
+    tmp="$(mktemp)"
+    awk -v sid="$sid" '
+        BEGIN { skip=0 }
+        /^  - session_id:/ {
+            if (index($0, sid) > 0) { skip=1; next }
+            else { skip=0 }
+        }
+        skip && /^    [a-z]/ { next }
+        skip && /^  - / { skip=0 }
+        skip && /^[^ ]/ { skip=0 }
+        { print }
+    ' "$PIPELINE_STATE_FILE" > "$tmp"
+    mv "$tmp" "$PIPELINE_STATE_FILE"
+}
+
+pipeline_update_session() {
+    local sid="$1" wrk_id="$2" stage="$3"
+    local provider
+    provider="$(session_get orchestrator_agent)"
+    pipeline_register_session "$sid" "$provider" "$wrk_id" "$stage"
+}
+
+pipeline_list_sessions() {
+    ensure_pipeline_store
+    awk '
+        function strip(s) { sub(/^[[:space:]]*[^:]+:[[:space:]]*/, "", s); gsub(/"/, "", s); return s }
+        /session_id:/ { sid=strip($0) }
+        /provider:/ { prov=strip($0) }
+        /active_wrk:/ { wrk=strip($0) }
+        /last_stage:/ { stg=strip($0) }
+        /registered_at:/ {
+            ts=strip($0)
+            printf "%-30s %-8s %-10s %-25s %s\n", sid, prov, wrk, stg, ts
+        }
+    ' "$PIPELINE_STATE_FILE"
+}
+
+pipeline_balance() {
+    # Count items per stage from active sessions
+    ensure_pipeline_store
+    local planning=0 executing=0 reviewing=0 idle=0
+    while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+        case "$line" in
+            *plan_approval_gate*) planning=$((planning + 1)) ;;
+            *implement_tdd*) executing=$((executing + 1)) ;;
+            *cross_review*) reviewing=$((reviewing + 1)) ;;
+            *) idle=$((idle + 1)) ;;
+        esac
+    done < <(awk '/last_stage:/{sub(/^[[:space:]]*last_stage:[[:space:]]*/, ""); gsub(/"/, ""); print}' "$PIPELINE_STATE_FILE")
+    echo "planning=$planning executing=$executing reviewing=$reviewing idle=$idle"
+}
+
+pipeline_recommend_stage() {
+    # Returns the stage with fewest active sessions (for work selection)
+    local balance
+    balance="$(pipeline_balance)"
+    local planning executing reviewing
+    planning="$(echo "$balance" | grep -o 'planning=[0-9]*' | cut -d= -f2)"
+    executing="$(echo "$balance" | grep -o 'executing=[0-9]*' | cut -d= -f2)"
+    reviewing="$(echo "$balance" | grep -o 'reviewing=[0-9]*' | cut -d= -f2)"
+
+    if [[ "$planning" -le "$executing" && "$planning" -le "$reviewing" ]]; then
+        echo "plan_approval_gate"
+    elif [[ "$executing" -le "$reviewing" ]]; then
+        echo "implement_tdd"
+    else
+        echo "cross_review"
+    fi
 }

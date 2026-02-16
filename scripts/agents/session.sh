@@ -10,6 +10,8 @@ usage() {
 Usage:
   scripts/agents/session.sh init --provider <claude|codex|gemini> [--session-id <id>]
   scripts/agents/session.sh show
+  scripts/agents/session.sh status   — show all registered sessions (pipeline dashboard)
+  scripts/agents/session.sh end      — deregister current session from pipeline
 USAGE
 }
 
@@ -47,6 +49,9 @@ case "$cmd" in
 
         echo "Initialized session '$sid' with orchestrator '$provider'."
 
+        # Register in pipeline state (WRK-161)
+        pipeline_register_session "$sid" "$provider" "" ""
+
         # Check for stale working items on session startup
         check_stale_items || true
 
@@ -60,6 +65,28 @@ case "$cmd" in
     show)
         ensure_session_store
         cat "$SESSION_STATE_FILE"
+        ;;
+    status)
+        # WRK-161: Pipeline dashboard — all registered sessions
+        ensure_pipeline_store
+        echo "═══ Pipeline Dashboard ═══"
+        echo ""
+        printf "%-30s %-8s %-10s %-25s %s\n" "SESSION" "PROVIDER" "WRK" "STAGE" "REGISTERED"
+        echo "────────────────────────────── ──────── ────────── ───────────────────────── ────────────────────"
+        pipeline_list_sessions
+        echo ""
+        pipeline_balance
+        ;;
+    end)
+        # WRK-161: Deregister session from pipeline
+        ensure_session_store
+        local_sid="$(session_get session_id)"
+        if [[ -n "$local_sid" ]]; then
+            pipeline_deregister_session "$local_sid"
+            echo "Deregistered session '$local_sid' from pipeline."
+        else
+            echo "No active session to deregister." >&2
+        fi
         ;;
     *)
         usage
