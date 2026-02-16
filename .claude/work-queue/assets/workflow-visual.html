@@ -96,7 +96,7 @@
 <body>
 
 <h1>Workspace Hub — Work Item Workflow</h1>
-<p class="subtitle">Interactive workflow reference &bull; Generated 2026-02-16 12:25 UTC &bull; 145 total items &bull; 8 active sessions</p>
+<p class="subtitle">Interactive workflow reference &bull; Updated 2026-02-16 20:10 UTC &bull; v2 — with session locking, staleness, batch approval, Codex fallback, pipeline model</p>
 
 <nav>
   <a href="#lifecycle">Lifecycle</a>
@@ -144,6 +144,12 @@ flowchart LR
         G1 --> G1a
     end
 
+    subgraph LOCK["🔒 GATE 1.5"]
+        L1["wrk_claim locks item"]
+        L2["exit 4 if collision"]
+        L1 --> L2
+    end
+
     subgraph EXECUTE["4 &middot; EXECUTE"]
         E1["execute.sh dispatches"]
         E2["Provider runs TDD"]
@@ -165,12 +171,13 @@ flowchart LR
         A1 --> A2
     end
 
-    CAPTURE --> TRIAGE --> PLAN --> GATE1 --> EXECUTE --> REVIEW --> ARCHIVE
+    CAPTURE --> TRIAGE --> PLAN --> GATE1 --> LOCK --> EXECUTE --> REVIEW --> ARCHIVE
 
     style CAPTURE fill:#0d419d,stroke:#58a6ff
     style TRIAGE fill:#1a1f35,stroke:#bc8cff
     style PLAN fill:#1a1f35,stroke:#d29922
     style GATE1 fill:#3b1117,stroke:#f85149
+    style LOCK fill:#3b2a07,stroke:#d29922
     style EXECUTE fill:#0c2d1a,stroke:#3fb950
     style REVIEW fill:#1a1f35,stroke:#58a6ff
     style ARCHIVE fill:#1a1f35,stroke:#3fb950
@@ -198,14 +205,17 @@ flowchart TD
         G2b -->|No| G2d["Exit code 3 — blocked"]
     end
 
-    subgraph G3["GATE 3 — Cross-Review"]
+    subgraph G3["GATE 3 — Cross-Review (with fallback)"]
         direction LR
         G3a["review.sh → cross-review.sh"] --> G3b["Claude review"]
         G3a --> G3c["Codex review"]
         G3a --> G3d["Gemini review"]
         G3c --> G3e{"Codex\nverdict?"}
         G3e -->|APPROVE/MINOR| G3f["Pass ✓"]
-        G3e -->|NO_OUTPUT/ERROR| G3g["HARD BLOCK ✗\nExit code 1"]
+        G3e -->|REJECT/MAJOR| G3g["HARD BLOCK ✗\nExit 1"]
+        G3e -->|NO_OUTPUT| G3h{"2-of-3\nfallback?"}
+        G3h -->|"Claude+Gemini\nboth APPROVE"| G3i["CONDITIONAL\nPASS ✓"]
+        G3h -->|"No consensus"| G3g
     end
 
     G1 --> G2 --> G3
@@ -236,11 +246,18 @@ flowchart TD
       <td>Get plan approved</td>
     </tr>
     <tr>
+      <td><span class="badge badge-orange">GATE 1.5</span> Session Lock</td>
+      <td><code>locked_by</code> must be empty or own session; 2h TTL</td>
+      <td><code>execute.sh</code> &rarr; <code>wrk_claim</code></td>
+      <td>4</td>
+      <td>Wait for lock release or TTL expiry</td>
+    </tr>
+    <tr>
       <td><span class="badge badge-blue">GATE 3</span> Cross-Review</td>
-      <td>Codex must return APPROVE or MINOR</td>
+      <td>Codex APPROVE/MINOR, or 2-of-3 fallback on NO_OUTPUT</td>
       <td><code>cross-review.sh</code></td>
       <td>1</td>
-      <td>Fix issues, re-review</td>
+      <td>Fix issues, re-review; fallback if Codex empty</td>
     </tr>
   </tbody>
 </table>
@@ -352,20 +369,26 @@ flowchart TD
 <pre class="mermaid">
 %%{init: {'theme': 'dark'}}%%
 stateDiagram-v2
-    [*] --> Initialized: session.sh init
+    [*] --> Initialized: session.sh init + pipeline register
     Initialized --> Planning: plan.sh WRK-NNN
     Planning --> AwaitingApproval: ## Plan written
-    AwaitingApproval --> Approved: User sets plan_approved: true
-    Approved --> Executing: execute.sh WRK-NNN
+    AwaitingApproval --> Approved: User approves (single or batch)
+    Approved --> Locked: wrk_claim (exit 4 if collision)
+    Locked --> Executing: execute.sh dispatches
     Executing --> Reviewing: review.sh WRK-NNN
     Reviewing --> Passed: Codex APPROVE
-    Reviewing --> Blocked: Codex FAIL
-    Blocked --> Executing: Fix & re-execute
-    Passed --> Archived: Archive item
+    Reviewing --> FallbackCheck: Codex NO_OUTPUT
+    FallbackCheck --> Passed: Claude+Gemini consensus
+    FallbackCheck --> HardBlock: No consensus
+    Reviewing --> HardBlock: Codex REJECT
+    HardBlock --> Executing: Fix & re-execute
+    Passed --> Released: wrk_release
+    Released --> Archived: Archive item
     Archived --> [*]
 
-    note right of AwaitingApproval: Manual gate — user must approve
-    note right of Blocked: HARD GATE — Codex must pass
+    note right of AwaitingApproval: Manual or /work approve-batch
+    note right of Locked: 2h TTL, stale lock auto-reclaim
+    note right of FallbackCheck: WRK-160 fallback policy
 </pre>
 </div>
 
@@ -519,39 +542,53 @@ flowchart LR
 </table>
 
 <!-- ═══════════════════════════════════════════════ -->
-<h2 id="observations" class="section-anchor">7. Observations &amp; Refinement Ideas</h2>
+<h2 id="observations" class="section-anchor">7. Implemented Refinements (2026-02-16)</h2>
 
 <div class="card">
-<h3 style="color: var(--green)">Strengths</h3>
+<h3 style="color: var(--green)">Resolved Gaps &rarr; Implemented Features</h3>
 <ul class="obs-list">
-  <li><span class="tag badge badge-green">Throughput</span> 8x improvement — 3 archived in Jan → 25 in Feb</li>
-  <li><span class="tag badge badge-green">Plan Coverage</span> 77% of pending items have plans (34/44)</li>
-  <li><span class="tag badge badge-green">Gate System</span> 3 explicit checkpoints prevent premature execution</li>
-  <li><span class="tag badge badge-green">Provider Model</span> Clear role separation (orchestrator vs subagent)</li>
+  <li><span class="tag badge badge-green">WRK-157</span> <strong>Session Locking</strong> — <code>wrk_claim()</code>/<code>wrk_release()</code> with 2h TTL, exit code 4 on collision, stale lock auto-reclaim. 13 tests.</li>
+  <li><span class="tag badge badge-green">WRK-158</span> <strong>Staleness Enforcement</strong> — 7-day warning, 14-day critical auto-move to pending. Runs on <code>session.sh init</code> and <code>work.sh list</code>. 14 tests.</li>
+  <li><span class="tag badge badge-green">WRK-159</span> <strong>Batch Plan Approval</strong> — <code>work.sh approve-batch [--approve-all]</code>. Lists approvable items, bulk approve/reject. 10 tests.</li>
+  <li><span class="tag badge badge-green">WRK-160</span> <strong>Codex Fallback</strong> — 2-of-3 consensus when Codex returns NO_OUTPUT. Claude+Gemini both must APPROVE/MINOR. Explicit REJECT still hard-blocks. 11 tests.</li>
+  <li><span class="tag badge badge-green">WRK-161</span> <strong>Parallel Pipeline</strong> — <code>pipeline-state.yaml</code> tracks all sessions. <code>pipeline_balance()</code>, <code>pipeline_recommend_stage()</code>, <code>work.sh next/status</code>. 15 tests.</li>
 </ul>
 </div>
 
 <div class="card">
-<h3 style="color: var(--red)">Gaps</h3>
+<h3 style="color: var(--orange)">Remaining Gap</h3>
 <ul class="obs-list">
-  <li><span class="tag badge badge-red">Approval Bottleneck</span> Only 3/44 pending items cross-reviewed, 3 user-approved (7%). Gate works but items queue up.</li>
-  <li><span class="tag badge badge-red">Stale Working</span> WRK-094 in "working" for 13 days. No max-age enforcement or auto-escalation.</li>
-  <li><span class="tag badge badge-orange">No Session Locking</span> 8 Claude sessions but no tracking of which session owns which WRK. Risk of collision.</li>
-  <li><span class="tag badge badge-orange">Provider Unassigned</span> Most pending items lack <code>provider</code> frontmatter. execute.sh cannot route them.</li>
-  <li><span class="tag badge badge-orange">Codex Fragility</span> Codex produces empty output on large diffs (known). Blocks archival even when code is correct.</li>
-  <li><span class="tag badge badge-blue">Sequential Only</span> Workflow is strictly sequential per item. No model for items flowing through different stages in parallel.</li>
+  <li><span class="tag badge badge-orange">Provider Unassigned</span> Most pending items still lack <code>provider</code> frontmatter. Can be addressed via <code>work.sh approve-batch</code> + provider assignment pass.</li>
 </ul>
 </div>
 
 <div class="card">
-<h3 style="color: var(--purple)">Refinement Candidates</h3>
-<ul class="obs-list">
-  <li><span class="tag badge badge-purple">Session Locking</span> Add <code>locked_by: session-id</code> to WRK frontmatter. Sessions check lock before claiming items.</li>
-  <li><span class="tag badge badge-purple">Staleness Alert</span> Auto-flag working items &gt; 7 days. Move to pending after 14 days with <code>stale: true</code> tag.</li>
-  <li><span class="tag badge badge-purple">Batch Approval</span> New <code>/work approve-batch</code> command to review &amp; approve multiple plans in one pass.</li>
-  <li><span class="tag badge badge-purple">Codex Fallback</span> If Codex returns NO_OUTPUT, accept 2-of-3 consensus (Claude + Gemini) as fallback.</li>
-  <li><span class="tag badge badge-purple">Parallel Pipeline</span> Define which stages can overlap. Session A plans while Session B executes a different item.</li>
-</ul>
+<h3 style="color: var(--purple)">New Commands</h3>
+<table>
+  <thead><tr><th>Command</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>work.sh approve-batch [--approve-all]</code></td><td>List and batch-approve pending plans</td></tr>
+    <tr><td><code>work.sh next</code></td><td>Recommend next item by priority + pipeline balance</td></tr>
+    <tr><td><code>work.sh status</code></td><td>Pipeline dashboard (all sessions, stages, balance)</td></tr>
+    <tr><td><code>session.sh status</code></td><td>Same dashboard from session context</td></tr>
+    <tr><td><code>session.sh end</code></td><td>Deregister session from pipeline</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="card">
+<h3>Test Coverage</h3>
+<table>
+  <thead><tr><th>Suite</th><th>Tests</th><th>Script</th></tr></thead>
+  <tbody>
+    <tr><td>Session Locking</td><td>13</td><td><code>scripts/agents/tests/test-wrk-locking.sh</code></td></tr>
+    <tr><td>Staleness</td><td>14</td><td><code>scripts/agents/tests/test-staleness.sh</code></td></tr>
+    <tr><td>Batch Approval</td><td>10</td><td><code>scripts/agents/tests/test-batch-approval.sh</code></td></tr>
+    <tr><td>Codex Fallback</td><td>11</td><td><code>scripts/review/tests/test-codex-fallback.sh</code></td></tr>
+    <tr><td>Pipeline</td><td>15</td><td><code>scripts/agents/tests/test-pipeline.sh</code></td></tr>
+    <tr><td><strong>Total</strong></td><td><strong>63</strong></td><td></td></tr>
+  </tbody>
+</table>
 </div>
 
 <!-- ═══════════════════════════════════════════════ -->
@@ -571,7 +608,13 @@ flowchart LR
     <tr><td>Cross-review hub</td><td><code>scripts/review/cross-review.sh</code></td></tr>
     <tr><td>Provider dispatchers</td><td><code>scripts/agents/providers/{claude,codex,gemini}.sh</code></td></tr>
     <tr><td>Session state file</td><td><code>.claude/work-queue/session-state.yaml</code></td></tr>
+    <tr><td>Pipeline state file</td><td><code>.claude/work-queue/pipeline-state.yaml</code></td></tr>
     <tr><td>Queue index</td><td><code>.claude/work-queue/INDEX.md</code></td></tr>
+    <tr><td>Locking tests</td><td><code>scripts/agents/tests/test-wrk-locking.sh</code></td></tr>
+    <tr><td>Staleness tests</td><td><code>scripts/agents/tests/test-staleness.sh</code></td></tr>
+    <tr><td>Batch approval tests</td><td><code>scripts/agents/tests/test-batch-approval.sh</code></td></tr>
+    <tr><td>Codex fallback tests</td><td><code>scripts/review/tests/test-codex-fallback.sh</code></td></tr>
+    <tr><td>Pipeline tests</td><td><code>scripts/agents/tests/test-pipeline.sh</code></td></tr>
   </tbody>
 </table>
 

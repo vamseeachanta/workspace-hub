@@ -62,5 +62,65 @@ provider_assignment:
     gemini: "Research, data analysis, summarization, large documents"
     claude: "Orchestration, architecture, multi-file, sensitive data (fallback)"
 
+session_locking:
+  description: >-
+    WRK items are locked when claimed by a session via wrk_claim().
+    Only one session can hold a lock at a time. Stale locks (> TTL) are
+    auto-reclaimed. Lock is released after review or on error.
+  frontmatter_fields:
+    locked_by: "Session ID holding the lock"
+    locked_at: "ISO 8601 timestamp of lock acquisition"
+  lock_ttl_seconds: 7200
+  exit_code_collision: 4
+  enforced_by:
+    claim: execute.sh (pre-dispatch)
+    release: review.sh (post-review)
+
+staleness:
+  description: >-
+    Items in working/ are checked for age on session init and work list.
+    Warning at 7 days, critical + move to pending at 14 days.
+  thresholds:
+    warning_days: 7
+    critical_days: 14
+  frontmatter_field: "stale: warning | critical"
+  enforced_by: [session.sh init, work.sh list]
+
+codex_fallback:
+  description: >-
+    When Codex returns NO_OUTPUT (empty response on large diffs), a 2-of-3
+    consensus from Claude + Gemini can serve as fallback. Explicit REJECT or
+    MAJOR from Codex still hard-blocks (no fallback on explicit failure).
+  policy:
+    codex_approve_or_minor: PASS
+    codex_reject_or_major: FAIL (hard block, no fallback)
+    codex_no_output:
+      claude_and_gemini_both_approve_or_minor: CONDITIONAL_PASS
+      otherwise: FAIL
+  frontmatter_tag: "codex_fallback: true"
+  enforced_by: cross-review.sh
+
+batch_approval:
+  description: >-
+    Batch plan approval allows reviewing and approving multiple WRK plans
+    in a single pass. Lists items with ## Plan but no plan_approved: true.
+  commands:
+    list: "work.sh --provider <p> approve-batch"
+    approve_all: "work.sh --provider <p> approve-batch --approve-all"
+  enforced_by: work.sh
+
+pipeline:
+  description: >-
+    Multi-session pipeline tracking. Sessions register on init and
+    deregister on end. Pipeline balance counts sessions per stage
+    to recommend under-served stages for new work.
+  state_file: .claude/work-queue/pipeline-state.yaml
+  commands:
+    dashboard: "work.sh --provider <p> status"
+    recommend: "work.sh --provider <p> next"
+    session_dashboard: "session.sh status"
+    deregister: "session.sh end"
+  enforced_by: [session.sh, work.sh, workflow-guards.sh]
+
 normalized_verdicts:
-  allowed: [APPROVE, MINOR, MAJOR, NO_OUTPUT, ERROR]
+  allowed: [APPROVE, MINOR, MAJOR, NO_OUTPUT, CONDITIONAL_PASS, ERROR]
