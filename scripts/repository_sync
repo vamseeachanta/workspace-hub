@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 # Configuration
 # Since script is now in scripts/, go up one directory to get workspace root
 WORKSPACE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-GITIGNORE_FILE="$WORKSPACE_ROOT/.gitignore"
+GITMODULES_FILE="$WORKSPACE_ROOT/.gitmodules"
 REPO_CONFIG_FILE="$WORKSPACE_ROOT/config/repos.conf"
 
 # Arrays to store repo information
@@ -110,7 +110,7 @@ ${BOLD}COMMANDS:${NC}
         Edit repository configuration file
 
     ${CYAN}refresh${NC}
-        Refresh repository list from .gitignore
+        Refresh repository list from .gitmodules
 
     ${CYAN}help${NC}
         Show this help message
@@ -154,66 +154,75 @@ ${BOLD}QUICK REFERENCE:${NC}
 EOF
 }
 
-# Function to parse .gitignore and extract repo information
-parse_gitignore() {
+# Function to parse .gitmodules and extract submodule information
+parse_submodules() {
+    if [ ! -f "$GITMODULES_FILE" ]; then
+        echo -e "${RED}✗ No .gitmodules file found at: $GITMODULES_FILE${NC}"
+        return 1
+    fi
+
+    # Read submodule names and URLs from .gitmodules
     while IFS= read -r line; do
-        # Skip empty lines and comments that don't have repo info
-        if [[ -z "$line" ]] || [[ "$line" =~ ^#[^P][^e] ]]; then
-            continue
-        fi
+        if [[ "$line" =~ submodule\.(.*)\.(path|url) ]]; then
+            local name="${BASH_REMATCH[1]}"
+            local key="${BASH_REMATCH[2]}"
+            local value="${line#*=}"
 
-        # Match lines with repo directories (ending with /) and optional category comments
-        if [[ "$line" =~ ^([a-zA-Z0-9_-]+)/[[:space:]]*(#[[:space:]]*(Personal|Work|Personal,[[:space:]]*Work|Work,[[:space:]]*Personal))?$ ]]; then
-            repo_name="${BASH_REMATCH[1]}"
-            category="${BASH_REMATCH[3]}"
-
-            # Skip coordination and other non-repo directories
-            if [[ "$repo_name" == "coordination" ]]; then
-                continue
-            fi
-
-            ALL_REPOS+=("$repo_name")
-
-            # Categorize repos
-            if [[ -z "$category" ]]; then
-                REPO_CATEGORIES["$repo_name"]="Uncategorized"
-            elif [[ "$category" =~ Personal.*Work|Work.*Personal ]]; then
-                REPO_CATEGORIES["$repo_name"]="Both"
-                WORK_REPOS+=("$repo_name")
-                PERSONAL_REPOS+=("$repo_name")
-            elif [[ "$category" == "Work" ]]; then
-                REPO_CATEGORIES["$repo_name"]="Work"
-                WORK_REPOS+=("$repo_name")
-            elif [[ "$category" == "Personal" ]]; then
-                REPO_CATEGORIES["$repo_name"]="Personal"
-                PERSONAL_REPOS+=("$repo_name")
+            if [[ "$key" == "path" ]]; then
+                # Add to ALL_REPOS if not already present
+                if [[ ! " ${ALL_REPOS[*]} " =~ " ${name} " ]]; then
+                    ALL_REPOS+=("$name")
+                fi
+            elif [[ "$key" == "url" ]]; then
+                REPO_URLS["$name"]="$value"
             fi
         fi
-    done < "$GITIGNORE_FILE"
+    done < <(git config --file "$GITMODULES_FILE" --list)
+
+    # Default all repos to Uncategorized (load_repo_config assigns real categories)
+    for repo in "${ALL_REPOS[@]}"; do
+        REPO_CATEGORIES["$repo"]="Uncategorized"
+    done
 }
 
-# Function to load repo URLs from config file
+# Function to load categories from config file
 load_repo_config() {
     if [ ! -f "$REPO_CONFIG_FILE" ]; then
         echo -e "${YELLOW}⚠ Repository configuration file not found: $REPO_CONFIG_FILE${NC}"
         echo -e "${YELLOW}Creating template configuration file...${NC}"
         create_config_template
-        echo -e "${YELLOW}Please edit $REPO_CONFIG_FILE with your repository URLs${NC}"
+        echo -e "${YELLOW}Please edit $REPO_CONFIG_FILE to set repo categories${NC}"
         echo -e "${YELLOW}Run: repository_sync config${NC}"
-        return 1
+        return 0
     fi
 
-    while IFS='=' read -r repo_name repo_url; do
-        # Skip comments and empty lines
-        if [[ "$repo_name" =~ ^#.*$ ]] || [[ -z "$repo_name" ]]; then
-            continue
+    # Parse category annotations from comment lines: # repo_name (Category)
+    while IFS= read -r line; do
+        if [[ "$line" =~ ^#[[:space:]]*([a-zA-Z0-9_-]+)[[:space:]]*\((Personal|Work|Both)\) ]]; then
+            local repo_name="${BASH_REMATCH[1]}"
+            local category="${BASH_REMATCH[2]}"
+
+            # Only categorize repos that exist in .gitmodules
+            if [[ ! " ${ALL_REPOS[*]} " =~ " ${repo_name} " ]]; then
+                continue
+            fi
+
+            case "$category" in
+                Both)
+                    REPO_CATEGORIES["$repo_name"]="Both"
+                    WORK_REPOS+=("$repo_name")
+                    PERSONAL_REPOS+=("$repo_name")
+                    ;;
+                Work)
+                    REPO_CATEGORIES["$repo_name"]="Work"
+                    WORK_REPOS+=("$repo_name")
+                    ;;
+                Personal)
+                    REPO_CATEGORIES["$repo_name"]="Personal"
+                    PERSONAL_REPOS+=("$repo_name")
+                    ;;
+            esac
         fi
-
-        # Trim whitespace
-        repo_name=$(echo "$repo_name" | xargs)
-        repo_url=$(echo "$repo_url" | xargs)
-
-        REPO_URLS["$repo_name"]="$repo_url"
     done < "$REPO_CONFIG_FILE"
 }
 
@@ -222,37 +231,38 @@ create_config_template() {
     mkdir -p "$(dirname "$REPO_CONFIG_FILE")"
 
     cat > "$REPO_CONFIG_FILE" << 'EOF'
-# Repository URL Configuration
-# Format: repo_name=git_url
+# Repository Category Configuration
+# URLs are read from .gitmodules (source of truth)
+# This file assigns categories to repos for filtering
+#
+# Format: comment lines with # repo_name (Category)
+# Valid categories: Personal, Work, Both
 #
 # Example:
-# digitalmodel=git@github.com:username/digitalmodel.git
-# aceengineer-admin=git@github.com:username/aceengineer-admin.git
-#
-# Add your repository URLs below:
+# # digitalmodel (Work)
+# # hobbies (Personal)
+# # aceengineer-website (Both)
 
 EOF
 
-    # Add entries for all repos found in .gitignore
+    # Add entries for all submodules
     for repo in "${ALL_REPOS[@]}"; do
-        category="${REPO_CATEGORIES[$repo]}"
-        echo "# $repo ($category)" >> "$REPO_CONFIG_FILE"
-        echo "$repo=" >> "$REPO_CONFIG_FILE"
-        echo "" >> "$REPO_CONFIG_FILE"
+        echo "# $repo (Uncategorized)" >> "$REPO_CONFIG_FILE"
     done
 
     echo -e "${GREEN}✓ Created template: $REPO_CONFIG_FILE${NC}"
+    echo -e "${YELLOW}Edit the file to set categories (Personal, Work, Both)${NC}"
 }
 
-# Function to check if repo exists
+# Function to check if repo exists (handles both submodule .git files and standalone .git dirs)
 repo_exists() {
     local repo_name="$1"
     local repo_path="$WORKSPACE_ROOT/$repo_name"
 
-    if [ -d "$repo_path/.git" ]; then
-        return 0  # Exists
+    if [ -e "$repo_path/.git" ]; then
+        return 0  # Exists (submodule .git file or standalone .git directory)
     else
-        return 1  # Does not exist
+        return 1  # Does not exist or not initialized
     fi
 }
 
@@ -284,29 +294,24 @@ check_git_status() {
     cd "$WORKSPACE_ROOT"
 }
 
-# Function to clone a repository
+# Function to initialize a submodule
 clone_repo() {
     local repo_name="$1"
-    local repo_url="${REPO_URLS[$repo_name]}"
     local repo_path="$WORKSPACE_ROOT/$repo_name"
 
-    if [ -z "$repo_url" ]; then
-        echo -e "${RED}✗ No URL configured for $repo_name${NC}"
-        return 1
-    fi
-
     if repo_exists "$repo_name"; then
-        echo -e "${YELLOW}⊘ $repo_name already exists, skipping${NC}"
+        echo -e "${YELLOW}⊘ $repo_name already initialized, skipping${NC}"
         return 0
     fi
 
-    echo -e "${BLUE}→ Cloning $repo_name...${NC}"
+    echo -e "${BLUE}→ Initializing submodule $repo_name...${NC}"
 
-    if git clone "$repo_url" "$repo_path" 2>/dev/null; then
-        echo -e "${GREEN}✓ Successfully cloned $repo_name${NC}"
+    cd "$WORKSPACE_ROOT"
+    if git submodule update --init "$repo_name" 2>/dev/null; then
+        echo -e "${GREEN}✓ Successfully initialized $repo_name${NC}"
         return 0
     else
-        echo -e "${RED}✗ Failed to clone $repo_name${NC}"
+        echo -e "${RED}✗ Failed to initialize $repo_name${NC}"
         return 1
     fi
 }
@@ -1401,7 +1406,7 @@ show_configuration_menu() {
                 pause
                 ;;
             2)
-                parse_gitignore
+                parse_submodules
                 load_repo_config
                 echo -e "${GREEN}✓ Repository list refreshed${NC}"
                 pause
@@ -1420,13 +1425,11 @@ show_configuration_menu() {
 main() {
     cd "$WORKSPACE_ROOT"
 
-    # Parse .gitignore
-    parse_gitignore
+    # Parse submodules from .gitmodules
+    parse_submodules
 
-    # Load repo URLs
-    if ! load_repo_config; then
-        exit 1
-    fi
+    # Load categories from config
+    load_repo_config
 
     # If no arguments provided, launch interactive menu mode
     if [ $# -eq 0 ]; then
@@ -1520,7 +1523,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
             load_repo_config
             ;;
         refresh|reload)
-            parse_gitignore
+            parse_submodules
             load_repo_config
             echo -e "${GREEN}✓ Repository list refreshed${NC}"
             ;;
