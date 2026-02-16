@@ -1,29 +1,29 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-16T15:55:35Z by generate-index.py -->
+<!-- Generated: 2026-02-16T18:15:23Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-16T15:55:35Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-16T18:15:23Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 148
+**Total items:** 149
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 49 |
-| working | 7 |
+| pending | 50 |
+| working | 6 |
 | blocked | 2 |
-| archived | 89 |
+| archived | 90 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 56 |
-| medium | 67 |
+| medium | 68 |
 | low | 25 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 16 |
-| medium | 55 |
+| medium | 56 |
 | complex | 72 |
 
 ### By Repository
@@ -45,7 +45,7 @@
 | acma-projects | 2 |
 | assethold | 5 |
 | assetutilities | 2 |
-| digitalmodel | 63 |
+| digitalmodel | 64 |
 | hobbies | 1 |
 | investments | 1 |
 | sabithaandkrishnaestates | 1 |
@@ -56,7 +56,7 @@
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 100 / 148 |
+| Plans exist | 100 / 149 |
 | Plans cross-reviewed | 15 |
 | Plans approved | 15 |
 | Brochure pending | 0 |
@@ -68,9 +68,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 148 |
-| Total archived | 89 |
-| Completion rate | 89/148 (60%) |
+| Total captured | 149 |
+| Total archived | 90 |
+| Completion rate | 90/149 (60%) |
 | Monthly rate (current month) | 25 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -78,9 +78,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 39 / 49 | 80% |
-| Plans cross-reviewed | 3 | 6% |
-| Plans user-approved | 3 | 6% |
+| Pending items with plans | 39 / 50 | 78% |
+| Plans cross-reviewed | 2 | 4% |
+| Plans user-approved | 2 | 4% |
 
 ### Aging
 
@@ -96,7 +96,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 8 | 4 | 1 |
-| Medium   | 24  | 3  | 0  |
+| Medium   | 25  | 2  | 0  |
 | Low      | 17  | 0  | 1  |
 
 ## Master Table
@@ -240,7 +240,7 @@
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | medium | worldenergydata | - | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex | worldenergydata | - | ❌ | ❌ | ❌ | - | n/a | WRK-136 |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | complex | digitalmodel | asset_integrity | ✅ | ✅ | ✅ | ░░░ 40% | ✅ updated | - |
-| WRK-139 | Develop gmsh skill and documentation | working | medium | medium | workspace-hub | - | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-139 | Develop gmsh skill and documentation | archived | medium | medium | workspace-hub | - | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | complex | workspace-hub | agents | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | - | - | - |
 | WRK-142 | Review work accomplishments and draft Anthropic outreach message | pending | high | medium | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
@@ -251,8 +251,7 @@
 | WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | pending | high | complex | aceengineer-website | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-147 | Set up aceengineer-strategy private repo with business operations framework | pending | high | complex | aceengineer-strategy | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-149 | Expand validation summary with hydrostatic, matrix, and phase columns | pending | low | medium | digitalmodel | - | ❌ | ❌ | ❌ | - | - | - |
-| WRK-150 | Executive summary dashboard for diffraction analysis validation | pending | medium | medium | digitalmodel | WRK-149 | ❌ | ❌ | ❌ | - | - | - |
+| WRK-150 | Executive summary dashboard for diffraction analysis validation | pending | medium | medium | digitalmodel | - | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -309,6 +308,7 @@
 | WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | high | complex | aceengineer-website | - |
 | WRK-147 | Set up aceengineer-strategy private repo with business operations framework | high | complex | aceengineer-strategy | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - |
+| WRK-150 | Executive summary dashboard for diffraction analysis validation | medium | medium | digitalmodel | - |
 
 ### Working
 
@@ -320,7 +320,6 @@
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | high | medium | - | - |
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | high | low | digitalmodel | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | high | complex | digitalmodel | - |
-| WRK-139 | Develop gmsh skill and documentation | medium | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -418,6 +417,7 @@
 | WRK-134 | Add future-work brainstorming step before archiving completed items | medium | medium | workspace-hub | - |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | medium | medium | worldenergydata | - |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | medium | complex | digitalmodel | asset_integrity |
+| WRK-139 | Develop gmsh skill and documentation | medium | medium | workspace-hub | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | high | complex | workspace-hub | agents |
 | WRK-142 | M-T report reorganization — executive summary first, inputs last | medium | medium | digitalmodel | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | medium | simple | digitalmodel | - |
@@ -561,6 +561,7 @@
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | pending | medium | complex | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | - |
+| WRK-150 | Executive summary dashboard for diffraction analysis validation | pending | medium | medium | - |
 
 ### hobbies
 
@@ -596,7 +597,7 @@
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working | medium | complex | - |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex | - |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | medium | - |
-| WRK-139 | Develop gmsh skill and documentation | working | medium | medium | - |
+| WRK-139 | Develop gmsh skill and documentation | archived | medium | medium | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | complex | agents |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | - |
 | WRK-142 | Review work accomplishments and draft Anthropic outreach message | pending | high | medium | - |
@@ -777,12 +778,13 @@
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | workspace-hub | - |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata | - |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | complex | digitalmodel | asset_integrity |
-| WRK-139 | Develop gmsh skill and documentation | working | medium | workspace-hub | - |
+| WRK-139 | Develop gmsh skill and documentation | archived | medium | workspace-hub | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | digitalmodel | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | simple | digitalmodel | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | pending | complex | digitalmodel | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | digitalmodel | - |
+| WRK-150 | Executive summary dashboard for diffraction analysis validation | pending | medium | digitalmodel | - |
 
 ### Low
 
@@ -891,11 +893,12 @@
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | pending | high | aceengineer-admin | - |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | workspace-hub | - |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata | - |
-| WRK-139 | Develop gmsh skill and documentation | working | medium | workspace-hub | - |
+| WRK-139 | Develop gmsh skill and documentation | archived | medium | workspace-hub | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-142 | Review work accomplishments and draft Anthropic outreach message | pending | high | workspace-hub | - |
 | WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | digitalmodel | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | digitalmodel | - |
+| WRK-150 | Executive summary dashboard for diffraction analysis validation | pending | medium | digitalmodel | - |
 
 ### Complex
 

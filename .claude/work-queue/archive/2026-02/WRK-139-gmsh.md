@@ -1,7 +1,8 @@
 ---
 id: WRK-139
 title: Develop gmsh skill and documentation
-status: working
+status: archived
+archived_at: 2026-02-16T15:45:00Z
 priority: medium
 complexity: medium
 compound: false
