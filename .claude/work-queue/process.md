@@ -55,6 +55,24 @@ State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item
 4. Update item: add plan content (A/B) or link spec (C), set `plan_approved: true`.
 5. No implementation begins until plan is confirmed.
 
+### Provider Assignment (During Planning)
+
+When writing the plan, decide who executes:
+
+1. Look at what the task actually requires (code? research? architecture?)
+2. Match to provider strengths:
+   - **Codex**: Focused code tasks, single-file changes, bug fixes, refactoring
+   - **Gemini**: Research, data analysis, summarization, large documents
+   - **Claude**: Everything (but expensive); orchestration, architecture, sensitive data — use as fallback
+3. If clear fit: assign one provider
+4. If borderline or want to compare: assign two (`provider` + `provider_alt`)
+
+Write an **Execution Brief** in the WRK body with:
+- Which provider(s) and why
+- Exact task description for the executor (self-contained, no assumptions)
+- Machine-checkable acceptance criteria
+- What the user should review when they come back
+
 **Spec naming**: `wrk-NNN-<short-description>.md` (not random codenames).
 
 **Cross-review** (Route B/C): Submit to Claude (inline), Codex CLI, and Gemini CLI. Minimum 3 reviewers. Fix MAJOR findings before proceeding; document MINOR deferrals.
@@ -174,6 +192,8 @@ plan_reviewed: false     # true after cross-review
 plan_approved: false     # true after user approval
 percent_complete: 0      # 0-100
 brochure_status:         # pending | updated | synced | n/a
+provider:                # claude | codex | gemini (decided during planning)
+provider_alt:            # optional second agent for dual-agent mode
 ---
 ```
 
@@ -194,6 +214,22 @@ brochure_status:         # pending | updated | synced | n/a
 
 ## Plan
 [Added during Plan stage]
+
+## Execution Brief
+
+### Provider
+- **Executor**: <provider> — <one-line rationale>
+- **Alt**: <provider_alt or "none">
+
+### Task for Executor
+<!-- Self-contained description sent to the executing agent. Include file paths, constraints, expected output. -->
+
+### Done When
+- [ ] <specific, verifiable criterion>
+- [ ] <test command that must pass>
+
+### For User Review
+<!-- What to look at when you come back -->
 
 ---
 *Source: [verbatim original request]*

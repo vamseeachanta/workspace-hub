@@ -35,6 +35,7 @@ FRONTMATTER_FIELDS = [
     "blocked_by", "related", "children", "parent", "compound", "route",
     "created_at", "completed_at",
     "plan_reviewed", "plan_approved", "percent_complete", "brochure_status",
+    "provider", "provider_alt",
 ]
 
 
@@ -190,6 +191,10 @@ def normalize(item: dict) -> dict:
     item.setdefault("plan_approved", False)
     item.setdefault("percent_complete", 0)
     item.setdefault("brochure_status", "")
+
+    # Provider assignment fields
+    item.setdefault("provider", "")
+    item.setdefault("provider_alt", "")
 
     # Ensure lists are lists
     for field in ("target_repos", "blocked_by", "related", "children"):
@@ -591,9 +596,9 @@ def generate_index(items: list[dict]) -> str:
     # ── Master Table ─────────────────────────────────────────
     w("## Master Table")
     w("")
-    w("| ID | Title | Status | Priority | Complexity | Repos | Module | "
+    w("| ID | Title | Status | Priority | Complexity | Provider | Repos | Module | "
       "Plan? | Reviewed? | Approved? | % Done | Brochure | Blocked By |")
-    w("|-----|-------|--------|----------|------------|-------|--------|"
+    w("|-----|-------|--------|----------|------------|----------|-------|--------|"
       "-------|-----------|-----------|--------|----------|------------|")
     for it in items:
         bid = it.get("id", "?")
@@ -601,6 +606,9 @@ def generate_index(items: list[dict]) -> str:
         status = it["status"]
         prio = it["priority"]
         comp = it["complexity"]
+        prov = it.get("provider") or "-"
+        prov_alt = it.get("provider_alt") or ""
+        provider_cell = prov if not prov_alt else f"{prov}+{prov_alt}"
         repos = repos_str(it["target_repos"])
         module = it.get("target_module") or "-"
         plan = bool_icon(it["_plan_exists"])
@@ -609,7 +617,7 @@ def generate_index(items: list[dict]) -> str:
         pct = pct_str(it["percent_complete"])
         brochure = brochure_str(it.get("brochure_status", ""))
         blocked = list_str(it["blocked_by"])
-        w(f"| {bid} | {title} | {status} | {prio} | {comp} | {repos} | {module} | "
+        w(f"| {bid} | {title} | {status} | {prio} | {comp} | {provider_cell} | {repos} | {module} | "
           f"{plan} | {reviewed} | {approved} | {pct} | {brochure} | {blocked} |")
     w("")
 

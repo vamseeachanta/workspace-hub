@@ -48,5 +48,19 @@ gates:
     attempted_reviewers: [claude, codex, gemini]
     allow_no_output: true
 
+provider_assignment:
+  description: >-
+    Provider assignment is a planning-stage decision, not runtime routing.
+    During planning, the orchestrator decides which provider(s) execute each
+    task based on known strengths. The assignment is recorded in the WRK
+    frontmatter (provider, provider_alt) and dispatched at execution time.
+  fields:
+    provider: "Primary executor (claude | codex | gemini)"
+    provider_alt: "Optional second executor for dual-agent comparison"
+  strengths:
+    codex: "Focused code tasks, single-file changes, bug fixes, refactoring"
+    gemini: "Research, data analysis, summarization, large documents"
+    claude: "Orchestration, architecture, multi-file, sensitive data (fallback)"
+
 normalized_verdicts:
   allowed: [APPROVE, MINOR, MAJOR, NO_OUTPUT, ERROR]
