@@ -452,6 +452,15 @@ python3 .claude/work-queue/scripts/generate-index.py
 
 This is fast (<2s for 100+ items) and ensures INDEX.md stays current.
 
+## Archival Safety (Insights-Validated)
+
+**Never archive or mark a work item as done until the user explicitly confirms completion.** This is the #1 friction point identified across 120 sessions.
+
+- Always present a completion summary listing any remaining gaps before changing status
+- Check all acceptance criteria are met — partial completion is NOT done
+- Reports, documentation, and secondary deliverables count — don't archive when only code is done
+- If uncertain, keep the item in `working/` and ask the user
+
 ## Error Handling
 
 ### Item Processing Failures
