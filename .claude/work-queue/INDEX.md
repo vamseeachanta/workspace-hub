@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-16T15:33:51Z by generate-index.py -->
+<!-- Generated: 2026-02-16T15:55:35Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-16T15:33:51Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-16T15:55:35Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 144
+**Total items:** 148
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 45 |
+| pending | 49 |
 | working | 7 |
 | blocked | 2 |
 | archived | 89 |
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 52 |
+| high | 56 |
 | medium | 67 |
 | low | 25 |
 
@@ -31,15 +31,16 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 16 |
-| medium | 54 |
-| complex | 69 |
+| medium | 55 |
+| complex | 72 |
 
 ### By Repository
 
 | Repository | Count |
 |------------|-------|
 | aceengineer-admin | 3 |
-| aceengineer-website | 9 |
+| aceengineer-strategy | 2 |
+| aceengineer-website | 11 |
 | achantas-data | 9 |
 | acma-projects | 2 |
 | assethold | 5 |
@@ -48,14 +49,14 @@
 | hobbies | 1 |
 | investments | 1 |
 | sabithaandkrishnaestates | 1 |
-| workspace-hub | 15 |
+| workspace-hub | 17 |
 | worldenergydata | 42 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 100 / 144 |
+| Plans exist | 100 / 148 |
 | Plans cross-reviewed | 15 |
 | Plans approved | 15 |
 | Brochure pending | 0 |
@@ -67,9 +68,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 144 |
+| Total captured | 148 |
 | Total archived | 89 |
-| Completion rate | 89/144 (62%) |
+| Completion rate | 89/148 (60%) |
 | Monthly rate (current month) | 25 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -77,7 +78,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 39 / 45 | 87% |
+| Pending items with plans | 39 / 49 | 80% |
 | Plans cross-reviewed | 3 | 6% |
 | Plans user-approved | 3 | 6% |
 
@@ -94,7 +95,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 4 | 4 | 1 |
+| High     | 8 | 4 | 1 |
 | Medium   | 24  | 3  | 0  |
 | Low      | 17  | 0  | 1  |
 
@@ -242,10 +243,14 @@
 | WRK-139 | Develop gmsh skill and documentation | working | medium | medium | workspace-hub | - | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | complex | workspace-hub | agents | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | - | - | - |
+| WRK-142 | Review work accomplishments and draft Anthropic outreach message | pending | high | medium | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | medium | digitalmodel | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | digitalmodel | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | pending | medium | complex | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | digitalmodel | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | pending | high | complex | aceengineer-website | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-147 | Set up aceengineer-strategy private repo with business operations framework | pending | high | complex | aceengineer-strategy | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -297,7 +302,11 @@
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | high | medium | aceengineer-admin | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | low | complex | worldenergydata | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | medium | medium | digitalmodel, workspace-hub | - |
+| WRK-142 | Review work accomplishments and draft Anthropic outreach message | high | medium | workspace-hub | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | medium | complex | digitalmodel | - |
+| WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | high | complex | aceengineer-website | - |
+| WRK-147 | Set up aceengineer-strategy private repo with business operations framework | high | complex | aceengineer-strategy | - |
+| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - |
 
 ### Working
 
@@ -422,6 +431,13 @@
 | WRK-056 | aceengineer-admin test coverage improvement | archived | medium | medium | - |
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | pending | high | medium | - |
 
+### aceengineer-strategy
+
+| ID | Title | Status | Priority | Complexity | Module |
+|-----|-------|--------|----------|------------|--------|
+| WRK-147 | Set up aceengineer-strategy private repo with business operations framework | pending | high | complex | - |
+| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | - |
+
 ### aceengineer-website
 
 | ID | Title | Status | Priority | Complexity | Module |
@@ -435,6 +451,8 @@
 | WRK-081 | Build interactive NPV calculator for website lead generation | pending | low | complex | - |
 | WRK-085 | Create public sample data access page on website | pending | low | medium | - |
 | WRK-111 | BSEE field development interactive map and analytics | pending | medium | complex | - |
+| WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | pending | high | complex | - |
+| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | - |
 
 ### achantas-data
 
@@ -579,6 +597,8 @@
 | WRK-139 | Develop gmsh skill and documentation | working | medium | medium | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | complex | agents |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | - |
+| WRK-142 | Review work accomplishments and draft Anthropic outreach message | pending | high | medium | - |
+| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | - |
 
 ### worldenergydata
 
@@ -685,6 +705,10 @@
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | in-progress | medium | digitalmodel | - |
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | pending | medium | aceengineer-admin | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | complex | workspace-hub | agents |
+| WRK-142 | Review work accomplishments and draft Anthropic outreach message | pending | medium | workspace-hub | - |
+| WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | pending | complex | aceengineer-website | - |
+| WRK-147 | Set up aceengineer-strategy private repo with business operations framework | pending | complex | aceengineer-strategy | - |
+| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - |
 
 ### Medium
 
@@ -867,6 +891,7 @@
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata | - |
 | WRK-139 | Develop gmsh skill and documentation | working | medium | workspace-hub | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-142 | Review work accomplishments and draft Anthropic outreach message | pending | high | workspace-hub | - |
 | WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | digitalmodel | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | digitalmodel | - |
 
@@ -943,6 +968,9 @@
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | digitalmodel | asset_integrity |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | workspace-hub | agents |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | pending | medium | digitalmodel | - |
+| WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | pending | high | aceengineer-website | - |
+| WRK-147 | Set up aceengineer-strategy private repo with business operations framework | pending | high | aceengineer-strategy | - |
+| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | aceengineer-website, aceengineer-strategy, workspace-hub | - |
 
 ## Dependencies
 
