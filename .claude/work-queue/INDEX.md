@@ -1,29 +1,29 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-16T05:41:50Z by generate-index.py -->
+<!-- Generated: 2026-02-16T15:33:51Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-16T05:41:50Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-16T15:33:51Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 143
+**Total items:** 144
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 46 |
+| pending | 45 |
 | working | 7 |
 | blocked | 2 |
-| archived | 87 |
+| archived | 89 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 52 |
-| medium | 66 |
+| medium | 67 |
 | low | 25 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 16 |
-| medium | 53 |
+| medium | 54 |
 | complex | 69 |
 
 ### By Repository
@@ -49,13 +49,13 @@
 | investments | 1 |
 | sabithaandkrishnaestates | 1 |
 | workspace-hub | 15 |
-| worldenergydata | 41 |
+| worldenergydata | 42 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 99 / 143 |
+| Plans exist | 100 / 144 |
 | Plans cross-reviewed | 15 |
 | Plans approved | 15 |
 | Brochure pending | 0 |
@@ -67,17 +67,17 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 143 |
-| Total archived | 87 |
-| Completion rate | 87/143 (61%) |
-| Monthly rate (current month) | 24 archived |
+| Total captured | 144 |
+| Total archived | 89 |
+| Completion rate | 89/144 (62%) |
+| Monthly rate (current month) | 25 archived |
 | Monthly rate (prior month) | 3 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 40 / 46 | 87% |
+| Pending items with plans | 39 / 45 | 87% |
 | Plans cross-reviewed | 3 | 6% |
 | Plans user-approved | 3 | 6% |
 
@@ -95,7 +95,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 4 | 4 | 1 |
-| Medium   | 25  | 3  | 0  |
+| Medium   | 24  | 3  | 0  |
 | Low      | 17  | 0  | 1  |
 
 ## Master Table
@@ -209,6 +209,7 @@
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | archived | medium | medium | worldenergydata | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | archived | high | complex | worldenergydata | - | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | medium | worldenergydata | - | ✅ | ❌ | ❌ | - | - | - |
+| WRK-105 | Add drilling riser component data to worldenergydata | archived | medium | medium | worldenergydata | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-106 | Hull panel geometry generator from waterline, section, and profile line definitions | pending | medium | complex | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | archived | high | simple | sabithaandkrishnaestates | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | archived | medium | medium | workspace-hub, worldenergydata, digitalmodel | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
@@ -244,7 +245,7 @@
 | WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | medium | digitalmodel | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | digitalmodel | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | pending | medium | complex | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
-| WRK-145 | Design code versioning — handle changing revisions of standards | pending | medium | medium | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
+| WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | digitalmodel | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
 
 ## By Status
 
@@ -297,7 +298,6 @@
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | low | complex | worldenergydata | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | medium | medium | digitalmodel, workspace-hub | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | medium | complex | digitalmodel | - |
-| WRK-145 | Design code versioning — handle changing revisions of standards | medium | medium | digitalmodel | - |
 
 ### Working
 
@@ -390,6 +390,7 @@
 | WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | medium | medium | worldenergydata | - |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | medium | medium | worldenergydata | - |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | high | complex | worldenergydata | - |
+| WRK-105 | Add drilling riser component data to worldenergydata | medium | medium | worldenergydata | - |
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | high | simple | sabithaandkrishnaestates | - |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | medium | medium | workspace-hub, worldenergydata, digitalmodel | - |
 | WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | medium | complex | digitalmodel | - |
@@ -409,6 +410,7 @@
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | high | complex | workspace-hub | agents |
 | WRK-142 | M-T report reorganization — executive summary first, inputs last | medium | medium | digitalmodel | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | medium | simple | digitalmodel | - |
+| WRK-145 | Design code versioning — handle changing revisions of standards | medium | medium | digitalmodel | - |
 
 ## By Repository
 
@@ -538,7 +540,7 @@
 | WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | medium | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | pending | medium | complex | - |
-| WRK-145 | Design code versioning — handle changing revisions of standards | pending | medium | medium | - |
+| WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | - |
 
 ### hobbies
 
@@ -616,6 +618,7 @@
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | archived | medium | medium | - |
 | WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | archived | high | complex | - |
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | medium | - |
+| WRK-105 | Add drilling riser component data to worldenergydata | archived | medium | medium | - |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | archived | medium | medium | - |
 | WRK-111 | BSEE field development interactive map and analytics | pending | medium | complex | - |
 | WRK-113 | Maintain always-current data index with freshness tracking and source metadata | archived | high | medium | - |
@@ -733,6 +736,7 @@
 | WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | archived | medium | worldenergydata | - |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | archived | medium | worldenergydata | - |
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | worldenergydata | - |
+| WRK-105 | Add drilling riser component data to worldenergydata | archived | medium | worldenergydata | - |
 | WRK-106 | Hull panel geometry generator from waterline, section, and profile line definitions | pending | complex | digitalmodel | - |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | archived | medium | workspace-hub, worldenergydata, digitalmodel | - |
 | WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | archived | complex | digitalmodel | - |
@@ -752,7 +756,7 @@
 | WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | digitalmodel | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | simple | digitalmodel | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | pending | complex | digitalmodel | - |
-| WRK-145 | Design code versioning — handle changing revisions of standards | pending | medium | digitalmodel | - |
+| WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | digitalmodel | - |
 
 ### Low
 
@@ -849,6 +853,7 @@
 | WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | archived | medium | worldenergydata | - |
 | WRK-103 | Add heavy construction/installation vessel data to worldenergydata | archived | medium | worldenergydata | - |
 | WRK-105 | Add drilling riser component data to worldenergydata | pending | medium | worldenergydata | - |
+| WRK-105 | Add drilling riser component data to worldenergydata | archived | medium | worldenergydata | - |
 | WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | archived | medium | workspace-hub, worldenergydata, digitalmodel | - |
 | WRK-113 | Maintain always-current data index with freshness tracking and source metadata | archived | high | worldenergydata | - |
 | WRK-115 | Link RAO data to hull shapes in hull library catalog | archived | medium | digitalmodel | - |
@@ -863,7 +868,7 @@
 | WRK-139 | Develop gmsh skill and documentation | working | medium | workspace-hub | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | digitalmodel | - |
-| WRK-145 | Design code versioning — handle changing revisions of standards | pending | medium | digitalmodel | - |
+| WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | digitalmodel | - |
 
 ### Complex
 
