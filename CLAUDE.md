@@ -21,12 +21,13 @@
 ## Core Rules
 
 1. **Orchestrate, don't execute** - Always delegate via Task tool
-2. **TDD mandatory** - Tests before implementation
-3. **Batch operations** - Single messages
-4. **YAGNI** - Only what's needed
-5. **No sycophancy** - Ask questions when unclear
-6. **Use repo uv environment** - All tasks execute in project's uv environment
-7. **Session-exit improvement** - Run `/improve` before ending every session
+2. **Plan before acting** - Complex tasks: produce explicit plan, get approval, THEN execute
+3. **TDD mandatory** - Tests before implementation
+4. **Batch operations** - Single messages
+5. **YAGNI** - Only what's needed
+6. **No sycophancy** - Ask questions when unclear
+7. **Use repo uv environment** - All tasks execute in project's uv environment
+8. **Session-exit improvement** - Run `/improve` before ending every session
 
 ## Delegation Pattern
 
@@ -59,12 +60,19 @@ Agents on-demand: `.claude/agent-library/<category>/<agent>.md`
 - Before executing plans, running simulations, or making git commits: present plan, wait for explicit approval
 - Never autonomously execute multi-step workflows without user confirmation
 - Multi-phase work (plan/implement/test/commit): pause between phases for user confirmation
+- **Never close/archive WRK-* until ALL deliverables are verified** (tests pass, files committed, no regressions)
 
 ## Windows Compatibility
 
 - Symlinks require admin — fall back to README cross-references or `core.symlinks false`
 - MINGW root path: `while [ "$(pwd)" != / ]` loops never terminate — use `WORKSPACE_HUB` env var
 - Test all bash scripts for Git Bash (MINGW64) + Linux compatibility
+
+## Edit Safety
+
+- Prefer targeted single-site edits over bulk find-replace — verify each change site
+- After edits: confirm imports not mangled, no duplicate definitions, no deleted adjacent code
+- Multi-file refactors: edit one file at a time, run tests between files
 
 ## Commands
 
