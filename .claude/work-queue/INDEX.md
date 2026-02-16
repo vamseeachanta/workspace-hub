@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-16T03:19:00Z by generate-index.py -->
+<!-- Generated: 2026-02-16T03:33:31Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-16T03:19:00Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-16T03:33:31Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 137
+**Total items:** 138
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 46 |
+| pending | 47 |
 | working | 5 |
 | blocked | 2 |
 | archived | 83 |
@@ -23,7 +23,7 @@
 | Priority | Count |
 |----------|-------|
 | high | 54 |
-| medium | 58 |
+| medium | 59 |
 | low | 25 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 15 |
-| medium | 49 |
+| medium | 50 |
 | complex | 68 |
 
 ### By Repository
@@ -44,19 +44,19 @@
 | acma-projects | 2 |
 | assethold | 5 |
 | assetutilities | 2 |
-| digitalmodel | 58 |
+| digitalmodel | 59 |
 | hobbies | 1 |
 | investments | 1 |
 | rock-oil-field | 1 |
 | sabithaandkrishnaestates | 1 |
-| workspace-hub | 14 |
+| workspace-hub | 15 |
 | worldenergydata | 40 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 94 / 137 |
+| Plans exist | 94 / 138 |
 | Plans cross-reviewed | 16 |
 | Plans approved | 16 |
 | Brochure pending | 0 |
@@ -68,9 +68,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 137 |
+| Total captured | 138 |
 | Total archived | 83 |
-| Completion rate | 83/137 (61%) |
+| Completion rate | 83/138 (60%) |
 | Monthly rate (current month) | 24 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -78,7 +78,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 41 / 46 | 89% |
+| Pending items with plans | 41 / 47 | 87% |
 | Plans cross-reviewed | 4 | 9% |
 | Plans user-approved | 4 | 9% |
 
@@ -96,7 +96,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 7 | 3 | 1 |
-| Medium   | 22  | 2  | 0  |
+| Medium   | 23  | 2  | 0  |
 | Low      | 17  | 0  | 1  |
 
 ## Master Table
@@ -240,6 +240,7 @@
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | complex | digitalmodel | asset_integrity | ✅ | ✅ | ✅ | ░░░ 40% | ✅ updated | - |
 | WRK-139 | Develop gmsh skill and documentation | working | medium | medium | workspace-hub | - | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | complex | workspace-hub | agents | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -293,6 +294,7 @@
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | high | complex | digitalmodel | - |
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | high | medium | aceengineer-admin | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | low | complex | worldenergydata | - |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | medium | medium | digitalmodel, workspace-hub | - |
 
 ### Working
 
@@ -522,6 +524,7 @@
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | pending | high | complex | - |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | in-progress | high | medium | - |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | complex | asset_integrity |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | - |
 
 ### hobbies
 
@@ -565,6 +568,7 @@
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | medium | - |
 | WRK-139 | Develop gmsh skill and documentation | working | medium | medium | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | complex | agents |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | - |
 
 ### worldenergydata
 
@@ -734,6 +738,7 @@
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata | - |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | complex | digitalmodel | asset_integrity |
 | WRK-139 | Develop gmsh skill and documentation | working | medium | workspace-hub | - |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | digitalmodel, workspace-hub | - |
 
 ### Low
 
@@ -840,6 +845,7 @@
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | workspace-hub | - |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata | - |
 | WRK-139 | Develop gmsh skill and documentation | working | medium | workspace-hub | - |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | digitalmodel, workspace-hub | - |
 
 ### Complex
 
