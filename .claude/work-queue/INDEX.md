@@ -251,6 +251,8 @@
 | WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | pending | high | complex | aceengineer-website | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-147 | Set up aceengineer-strategy private repo with business operations framework | pending | high | complex | aceengineer-strategy | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-149 | Expand validation summary with hydrostatic, matrix, and phase columns | pending | low | medium | digitalmodel | - | ❌ | ❌ | ❌ | - | - | - |
+| WRK-150 | Executive summary dashboard for diffraction analysis validation | pending | medium | medium | digitalmodel | WRK-149 | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
