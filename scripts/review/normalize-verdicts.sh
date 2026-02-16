@@ -11,7 +11,9 @@ fi
 
 text="$(tr '[:upper:]' '[:lower:]' < "$infile")"
 
-if grep -q "no_output\|no output" <<< "$text"; then
+if grep -q "conditional.pass\|conditional_pass" <<< "$text"; then
+    echo "CONDITIONAL_PASS"
+elif grep -q "no_output\|no output" <<< "$text"; then
     echo "NO_OUTPUT"
 elif grep -q "\bmajor\b" <<< "$text"; then
     echo "MAJOR"

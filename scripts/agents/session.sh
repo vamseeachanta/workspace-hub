@@ -47,6 +47,9 @@ case "$cmd" in
 
         echo "Initialized session '$sid' with orchestrator '$provider'."
 
+        # Check for stale working items on session startup
+        check_stale_items || true
+
         # Display agent credits and log usage snapshot
         quota_script="$AGENTS_DIR/../ai/assessment/query-quota.sh"
         if [[ -x "$quota_script" ]]; then

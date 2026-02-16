@@ -17,6 +17,7 @@ done
 [[ -z "$provider" || -z "$wrk_id" ]] && { echo "Usage: execute.sh --provider <p> WRK-###" >&2; exit 2; }
 assert_provider "$provider"
 assert_plan_approved_or_fail "$wrk_id"
+wrk_claim "$wrk_id" || exit $?
 
 ensure_session_store
 orchestrator="$(session_get orchestrator_agent)"

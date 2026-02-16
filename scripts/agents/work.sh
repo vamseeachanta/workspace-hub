@@ -22,7 +22,31 @@ case "$subcmd" in
         echo "Workflow orchestrator '$provider' acknowledged /work run contract."
         ;;
     list)
-        ls -1 "$WS_HUB/.claude/work-queue/pending" "$WS_HUB/.claude/work-queue/working" "$WS_HUB/.claude/work-queue/blocked" 2>/dev/null || true
+        check_stale_items || true
+        echo "── pending/ ──"
+        for f in "$WS_HUB/.claude/work-queue/pending"/WRK-*.md; do
+            [[ -f "$f" ]] || continue
+            local_id="$(basename "$f" .md)"
+            local_stale="$(wrk_get_frontmatter_value "$f" "stale")"
+            local_lock="$(wrk_get_frontmatter_value "$f" "locked_by")"
+            marker=""
+            [[ -n "$local_stale" ]] && marker=" [STALE:$local_stale]"
+            [[ -n "$local_lock" ]] && marker="$marker [LOCKED:$local_lock]"
+            echo "  $local_id$marker"
+        done
+        echo "── working/ ──"
+        for f in "$WS_HUB/.claude/work-queue/working"/WRK-*.md; do
+            [[ -f "$f" ]] || continue
+            local_id="$(basename "$f" .md)"
+            local_stale="$(wrk_get_frontmatter_value "$f" "stale")"
+            local_lock="$(wrk_get_frontmatter_value "$f" "locked_by")"
+            marker=""
+            [[ -n "$local_stale" ]] && marker=" [STALE:$local_stale]"
+            [[ -n "$local_lock" ]] && marker="$marker [LOCKED:$local_lock]"
+            echo "  $local_id$marker"
+        done
+        echo "── blocked/ ──"
+        ls -1 "$WS_HUB/.claude/work-queue/blocked" 2>/dev/null || true
         ;;
     *)
         echo "Unsupported subcommand for wrapper: $subcmd" >&2

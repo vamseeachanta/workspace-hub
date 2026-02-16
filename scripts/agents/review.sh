@@ -26,4 +26,5 @@ else
     "$WS_HUB/scripts/review/cross-review.sh" "$input_file" codex --type implementation
 fi
 
+wrk_release "$wrk_id"
 echo "Review stage completed for $wrk_id"

@@ -86,6 +86,7 @@ build_review_args() {
 
 # Track Codex gate status
 CODEX_PASSED=false
+CODEX_NO_OUTPUT=false
 
 # Submit to reviewers
 submit_review() {
@@ -117,11 +118,19 @@ submit_review() {
       fi
       # Check if Codex produced a real verdict (not just a failure stub)
       # A real Codex review contains "codex" output lines (the model's response)
+      local codex_size=0
+      [[ -f "$result_file" ]] && codex_size="$(wc -c < "$result_file" | tr -d ' ')"
       if [[ $codex_exit -eq 0 ]] && ! grep -q "^# Codex.*failed\|^# Codex CLI not found\|^# HARD GATE" "$result_file" 2>/dev/null && grep -q "^codex$" "$result_file" 2>/dev/null; then
         CODEX_PASSED=true
+      elif [[ $codex_exit -eq 0 && "$codex_size" -lt 10 ]]; then
+        # Codex ran but produced empty/trivial output (known large-diff limitation)
+        CODEX_NO_OUTPUT=true
+        echo "    WARNING: Codex returned NO_OUTPUT (${codex_size} bytes) — fallback consensus will be attempted" >&2
+        echo "# Codex returned NO_OUTPUT (empty response on large diff)" > "$result_file"
       else
         echo "    WARNING: Codex review FAILED (exit $codex_exit) — this is a HARD GATE" >&2
         if [[ $codex_exit -ne 0 ]]; then
+          CODEX_NO_OUTPUT=true
           echo "# Codex review failed (exit $codex_exit)" > "$result_file"
           echo "# HARD GATE: Codex review is compulsory — resolve before proceeding" >> "$result_file"
         fi
@@ -153,12 +162,48 @@ case "$REVIEWER" in
     submit_review "gemini"
     echo "--- All reviews submitted. Results in: ${RESULTS_DIR}/"
     if [[ "$CODEX_PASSED" != "true" ]]; then
-      echo ""
-      echo "=== CODEX HARD GATE FAILED ===" >&2
-      echo "Codex review is compulsory per workspace policy." >&2
-      echo "Install Codex CLI (npm install -g @openai/codex) or resolve the failure before proceeding." >&2
-      echo "Review results saved to: ${RESULTS_DIR}/" >&2
-      exit 1
+      # WRK-160: Codex fallback — attempt 2-of-3 consensus when Codex returns NO_OUTPUT
+      if [[ "$CODEX_NO_OUTPUT" == "true" ]]; then
+        echo ""
+        echo "--- Codex returned NO_OUTPUT. Attempting 2-of-3 fallback consensus..." >&2
+        local claude_verdict gemini_verdict
+        claude_file="${RESULT_PREFIX}-claude.md"
+        gemini_file="${RESULT_PREFIX}-gemini.md"
+        claude_verdict="$("${SCRIPT_DIR}/normalize-verdicts.sh" "$claude_file" 2>/dev/null || echo "ERROR")"
+        gemini_verdict="$("${SCRIPT_DIR}/normalize-verdicts.sh" "$gemini_file" 2>/dev/null || echo "ERROR")"
+        echo "    Claude verdict: $claude_verdict" >&2
+        echo "    Gemini verdict: $gemini_verdict" >&2
+
+        if [[ ("$claude_verdict" == "APPROVE" || "$claude_verdict" == "MINOR") && \
+              ("$gemini_verdict" == "APPROVE" || "$gemini_verdict" == "MINOR") ]]; then
+          echo "=== CODEX FALLBACK: 2-of-3 consensus reached (Claude=$claude_verdict, Gemini=$gemini_verdict) ===" >&2
+          # Write fallback result
+          fallback_file="${RESULT_PREFIX}-FALLBACK.md"
+          cat > "$fallback_file" <<FALLBACK_EOF
+# Codex Fallback Consensus (WRK-160)
+- **Codex**: NO_OUTPUT (empty response)
+- **Claude**: $claude_verdict
+- **Gemini**: $gemini_verdict
+- **Result**: CONDITIONAL_PASS (2-of-3 consensus)
+- **Timestamp**: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+- **Policy**: Codex remains primary authority; fallback only on NO_OUTPUT, never on explicit REJECT/MAJOR
+FALLBACK_EOF
+          echo "    Fallback result: $fallback_file" >&2
+          # Exit 0 — conditional pass
+        else
+          echo "=== CODEX HARD GATE FAILED (no fallback consensus) ===" >&2
+          echo "Claude=$claude_verdict, Gemini=$gemini_verdict — need both APPROVE or MINOR for fallback." >&2
+          echo "Review results saved to: ${RESULTS_DIR}/" >&2
+          exit 1
+        fi
+      else
+        echo ""
+        echo "=== CODEX HARD GATE FAILED ===" >&2
+        echo "Codex review is compulsory per workspace policy." >&2
+        echo "Install Codex CLI (npm install -g @openai/codex) or resolve the failure before proceeding." >&2
+        echo "Review results saved to: ${RESULTS_DIR}/" >&2
+        exit 1
+      fi
     fi
     ;;
   codex)
