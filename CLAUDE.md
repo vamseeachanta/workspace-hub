@@ -123,9 +123,10 @@ agents/sparc/|specification|pseudocode|architecture|refinement
 agents/devops/|database|infrastructure|security-audit|observability|ci-cd
 agents/swarm/|hierarchical|mesh|adaptive|collective-intelligence|queen|worker
 skills/eng/|orcaflex-specialist|hydrodynamic-analysis|mooring-analysis|fatigue-analysis|marine-offshore
+skills/eng/cad/|gmsh-meshing|freecad-automation|cad-engineering|cad-mesh-generation
 skills/data/|polars|pandas|numpy|plotly|pdf|document-rag-pipeline
 skills/dev/|github-pr-manager|github-code-review|sparc-*|testing-tdd-london
-skills/ops/|docker|github-actions|uv-package-manager|optimization-*
+skills/ops/|docker|github-actions|uv-package-manager
 ```
 
 ---
