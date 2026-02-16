@@ -1,38 +1,38 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-16T05:16:33Z by generate-index.py -->
+<!-- Generated: 2026-02-16T05:41:50Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-16T05:16:33Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-16T05:41:50Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 139
+**Total items:** 143
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 44 |
+| pending | 46 |
 | working | 7 |
 | blocked | 2 |
-| archived | 85 |
+| archived | 87 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 53 |
-| medium | 61 |
+| high | 52 |
+| medium | 66 |
 | low | 25 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 15 |
-| medium | 51 |
-| complex | 68 |
+| simple | 16 |
+| medium | 53 |
+| complex | 69 |
 
 ### By Repository
 
@@ -44,7 +44,7 @@
 | acma-projects | 2 |
 | assethold | 5 |
 | assetutilities | 2 |
-| digitalmodel | 59 |
+| digitalmodel | 63 |
 | hobbies | 1 |
 | investments | 1 |
 | sabithaandkrishnaestates | 1 |
@@ -55,9 +55,9 @@
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 95 / 139 |
-| Plans cross-reviewed | 16 |
-| Plans approved | 16 |
+| Plans exist | 99 / 143 |
+| Plans cross-reviewed | 15 |
+| Plans approved | 15 |
 | Brochure pending | 0 |
 | Brochure updated/synced | 6 |
 
@@ -67,9 +67,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 139 |
-| Total archived | 85 |
-| Completion rate | 85/139 (61%) |
+| Total captured | 143 |
+| Total archived | 87 |
+| Completion rate | 87/143 (61%) |
 | Monthly rate (current month) | 24 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -77,9 +77,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 38 / 44 | 86% |
-| Plans cross-reviewed | 4 | 9% |
-| Plans user-approved | 4 | 9% |
+| Pending items with plans | 40 / 46 | 87% |
+| Plans cross-reviewed | 3 | 6% |
+| Plans user-approved | 3 | 6% |
 
 ### Aging
 
@@ -87,15 +87,15 @@
 |--------|-------|-------|
 | Pending > 30 days | 0 | - |
 | Pending > 14 days | 25 | WRK-005, WRK-008, WRK-014, WRK-015, WRK-018, WRK-019, WRK-020, WRK-021, WRK-022, WRK-023, WRK-031, WRK-032, WRK-036, WRK-038, WRK-039, WRK-041, WRK-042, WRK-043, WRK-044, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-064 |
-| Working > 7 days | 1 | WRK-094 |
+| Working > 7 days | 2 | WRK-044, WRK-094 |
 | Blocked > 7 days | 2 | WRK-006, WRK-069 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 4 | 5 | 1 |
-| Medium   | 23  | 2  | 0  |
+| High     | 4 | 4 | 1 |
+| Medium   | 25  | 3  | 0  |
 | Low      | 17  | 0  | 1  |
 
 ## Master Table
@@ -147,6 +147,7 @@
 | WRK-042 | Develop long-term plan for Investments repo | pending | low | medium | investments | - | ✅ | ❌ | ❌ | - | - | - |
 | WRK-043 | Parametric hull form analysis with RAO generation and client-facing lookup graphs | pending | low | complex | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
 | WRK-044 | Pipeline wall thickness calculations with parametric utilisation analysis | pending | medium | complex | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
+| WRK-044 | Pipeline wall thickness calculations with parametric utilisation analysis | working | medium | complex | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
 | WRK-045 | OrcaFlex rigid jumper analysis - stress and VIV for various configurations | pending | medium | complex | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
 | WRK-046 | OrcaFlex drilling and completion riser parametric analysis | pending | medium | complex | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
 | WRK-047 | OpenFOAM CFD analysis capability for digitalmodel | pending | low | complex | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
@@ -228,7 +229,6 @@
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | working | high | low | digitalmodel | - | ✅ | ❌ | ❌ | - 10% | - | - |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex | digitalmodel | - | ✅ | ✅ | ✅ | - | - | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | high | medium | digitalmodel | - | ✅ | ✅ | ✅ | ███ 100% | - | WRK-121 |
-| WRK-128 | Map object property routing from engineering specs to OrcaFlex objects | working | high | complex | digitalmodel | - | ✅ | ✅ | ✅ | - | - | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | pending | high | complex | digitalmodel | - | ❌ | ❌ | ❌ | - | - | - |
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | pending | high | complex | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | high | complex | digitalmodel | - | ✅ | ✅ | ✅ | ░░░ 25% | - | - |
@@ -241,6 +241,10 @@
 | WRK-139 | Develop gmsh skill and documentation | working | medium | medium | workspace-hub | - | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | complex | workspace-hub | agents | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | - | - | - |
+| WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | medium | digitalmodel | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | digitalmodel | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | pending | medium | complex | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
+| WRK-145 | Design code versioning — handle changing revisions of standards | pending | medium | medium | digitalmodel | - | ✅ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -292,16 +296,18 @@
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | high | medium | aceengineer-admin | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | low | complex | worldenergydata | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | medium | medium | digitalmodel, workspace-hub | - |
+| WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | medium | complex | digitalmodel | - |
+| WRK-145 | Design code versioning — handle changing revisions of standards | medium | medium | digitalmodel | - |
 
 ### Working
 
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
+| WRK-044 | Pipeline wall thickness calculations with parametric utilisation analysis | medium | complex | digitalmodel | - |
 | WRK-094 | Plan, reassess, and improve the workspace-hub workflow | high | complex | workspace-hub | - |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | high | medium | - | - |
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | high | low | digitalmodel | - |
-| WRK-128 | Map object property routing from engineering specs to OrcaFlex objects | high | complex | digitalmodel | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | high | complex | digitalmodel | - |
 | WRK-139 | Develop gmsh skill and documentation | medium | medium | workspace-hub | - |
 
@@ -401,6 +407,8 @@
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | medium | medium | worldenergydata | - |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | medium | complex | digitalmodel | asset_integrity |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | high | complex | workspace-hub | agents |
+| WRK-142 | M-T report reorganization — executive summary first, inputs last | medium | medium | digitalmodel | - |
+| WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | medium | simple | digitalmodel | - |
 
 ## By Repository
 
@@ -484,6 +492,7 @@
 | WRK-040 | Mooring benchmarking - AQWA vs OrcaFlex | archived | medium | complex | - |
 | WRK-043 | Parametric hull form analysis with RAO generation and client-facing lookup graphs | pending | low | complex | - |
 | WRK-044 | Pipeline wall thickness calculations with parametric utilisation analysis | pending | medium | complex | - |
+| WRK-044 | Pipeline wall thickness calculations with parametric utilisation analysis | working | medium | complex | - |
 | WRK-045 | OrcaFlex rigid jumper analysis - stress and VIV for various configurations | pending | medium | complex | - |
 | WRK-046 | OrcaFlex drilling and completion riser parametric analysis | pending | medium | complex | - |
 | WRK-047 | OpenFOAM CFD analysis capability for digitalmodel | pending | low | complex | - |
@@ -520,13 +529,16 @@
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | working | high | low | - |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | high | medium | - |
-| WRK-128 | Map object property routing from engineering specs to OrcaFlex objects | working | high | complex | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | pending | high | complex | - |
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | pending | high | complex | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | high | complex | - |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | in-progress | high | medium | - |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | complex | asset_integrity |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | - |
+| WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | medium | - |
+| WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | - |
+| WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | pending | medium | complex | - |
+| WRK-145 | Design code versioning — handle changing revisions of standards | pending | medium | medium | - |
 
 ### hobbies
 
@@ -664,7 +676,6 @@
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | working | low | digitalmodel | - |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | complex | digitalmodel | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | medium | digitalmodel | - |
-| WRK-128 | Map object property routing from engineering specs to OrcaFlex objects | working | complex | digitalmodel | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | pending | complex | digitalmodel | - |
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | pending | complex | digitalmodel | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | complex | digitalmodel | - |
@@ -698,6 +709,7 @@
 | WRK-039 | SPM project benchmarking - AQWA vs OrcaFlex | pending | complex | digitalmodel | - |
 | WRK-040 | Mooring benchmarking - AQWA vs OrcaFlex | archived | complex | digitalmodel | - |
 | WRK-044 | Pipeline wall thickness calculations with parametric utilisation analysis | pending | complex | digitalmodel | - |
+| WRK-044 | Pipeline wall thickness calculations with parametric utilisation analysis | working | complex | digitalmodel | - |
 | WRK-045 | OrcaFlex rigid jumper analysis - stress and VIV for various configurations | pending | complex | digitalmodel | - |
 | WRK-046 | OrcaFlex drilling and completion riser parametric analysis | pending | complex | digitalmodel | - |
 | WRK-049 | Determine dynacard module way forward | archived | medium | digitalmodel | - |
@@ -737,6 +749,10 @@
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | complex | digitalmodel | asset_integrity |
 | WRK-139 | Develop gmsh skill and documentation | working | medium | workspace-hub | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | digitalmodel | - |
+| WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | simple | digitalmodel | - |
+| WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | pending | complex | digitalmodel | - |
+| WRK-145 | Design code versioning — handle changing revisions of standards | pending | medium | digitalmodel | - |
 
 ### Low
 
@@ -789,6 +805,7 @@
 | WRK-089 | Review Claude Code version gap and update cc-insights | archived | low | workspace-hub | - |
 | WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | archived | high | sabithaandkrishnaestates | - |
 | WRK-120 | Research and purchase a smart watch | archived | low | achantas-data | - |
+| WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | digitalmodel | - |
 
 ### Medium
 
@@ -845,6 +862,8 @@
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata | - |
 | WRK-139 | Develop gmsh skill and documentation | working | medium | workspace-hub | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-142 | M-T report reorganization — executive summary first, inputs last | archived | medium | digitalmodel | - |
+| WRK-145 | Design code versioning — handle changing revisions of standards | pending | medium | digitalmodel | - |
 
 ### Complex
 
@@ -879,6 +898,7 @@
 | WRK-040 | Mooring benchmarking - AQWA vs OrcaFlex | archived | medium | digitalmodel | - |
 | WRK-043 | Parametric hull form analysis with RAO generation and client-facing lookup graphs | pending | low | digitalmodel | - |
 | WRK-044 | Pipeline wall thickness calculations with parametric utilisation analysis | pending | medium | digitalmodel | - |
+| WRK-044 | Pipeline wall thickness calculations with parametric utilisation analysis | working | medium | digitalmodel | - |
 | WRK-045 | OrcaFlex rigid jumper analysis - stress and VIV for various configurations | pending | medium | digitalmodel | - |
 | WRK-046 | OrcaFlex drilling and completion riser parametric analysis | pending | medium | digitalmodel | - |
 | WRK-047 | OpenFOAM CFD analysis capability for digitalmodel | pending | low | digitalmodel | - |
@@ -911,13 +931,13 @@
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working | medium | workspace-hub | - |
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | workspace-hub, worldenergydata, digitalmodel | - |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | digitalmodel | - |
-| WRK-128 | Map object property routing from engineering specs to OrcaFlex objects | working | high | digitalmodel | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | pending | high | digitalmodel | - |
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | pending | high | digitalmodel | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | high | digitalmodel | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | worldenergydata | - |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | digitalmodel | asset_integrity |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | workspace-hub | agents |
+| WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | pending | medium | digitalmodel | - |
 
 ## Dependencies
 
