@@ -1,0 +1,94 @@
+# Marine Safety Incidents Database - Terraform Variables Example
+# Purpose: Template for environment-specific configuration
+# Usage: Copy to terraform.tfvars and customize for your environment
+
+# ============================================================================
+# General Configuration
+# ============================================================================
+environment = "production"  # Options: development, staging, production
+aws_region  = "us-east-1"
+
+availability_zones = [
+  "us-east-1a",
+  "us-east-1b",
+  "us-east-1c"
+]
+
+# ============================================================================
+# Network Configuration
+# ============================================================================
+vpc_cidr           = "10.0.0.0/16"
+enable_nat_gateway = true
+
+# ============================================================================
+# RDS PostgreSQL Configuration
+# ============================================================================
+postgres_version        = "15.4"
+db_instance_class       = "db.r6g.large"      # For production
+# db_instance_class     = "db.t3.medium"      # For development/staging
+db_allocated_storage    = 100
+db_max_allocated_storage = 1000
+database_name           = "marine_safety"
+database_username       = "postgres"
+db_multi_az            = true
+db_backup_retention_days = 7
+
+# ============================================================================
+# ElastiCache Redis Configuration
+# ============================================================================
+redis_version               = "7.0"
+redis_node_type            = "cache.r6g.large"  # For production
+# redis_node_type          = "cache.t3.medium"  # For development/staging
+redis_num_cache_nodes      = 2
+redis_snapshot_retention_limit = 5
+
+# ============================================================================
+# S3 Configuration
+# ============================================================================
+backup_retention_days = 90
+
+# ============================================================================
+# ECS Fargate Configuration
+# ============================================================================
+ecs_task_cpu       = "2048"   # 2 vCPU
+ecs_task_memory    = "4096"   # 4 GB
+container_port     = 8000
+api_image_tag      = "latest"
+ecs_desired_count  = 2
+ecs_min_count      = 2
+ecs_max_count      = 10
+
+# ============================================================================
+# SSL/TLS Configuration
+# ============================================================================
+# IMPORTANT: Create ACM certificate in us-east-1 for CloudFront
+acm_certificate_arn = "arn:aws:acm:us-east-1:ACCOUNT_ID:certificate/CERTIFICATE_ID"
+
+# ============================================================================
+# CloudFront Configuration
+# ============================================================================
+cloudfront_price_class = "PriceClass_100"  # North America and Europe
+# cloudfront_price_class = "PriceClass_All"  # All edge locations
+
+# ============================================================================
+# Monitoring and Alerting
+# ============================================================================
+enable_enhanced_monitoring = true
+alarm_email               = "alerts@example.com"
+
+# ============================================================================
+# Feature Flags
+# ============================================================================
+enable_deletion_protection = true
+enable_backup_encryption   = true
+enable_access_logs        = true
+
+# ============================================================================
+# Additional Tags
+# ============================================================================
+additional_tags = {
+  Department = "Data Analytics"
+  Owner      = "Data Team"
+  CostCenter = "Engineering"
+  Compliance = "GDPR"
+}

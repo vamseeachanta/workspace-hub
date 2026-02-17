@@ -1,0 +1,5 @@
+Method,NPV_USD,Discount_Rate
+Reported,-1206976526.76,10% Annual
+Calculated_Monthly,-1195448030.6623294,0.7974% Monthly
+Calculated_Annual,-1400413877.112953,10% Annual
+NumPy_Monthly,-1195448030.6623294,0.7974% Monthly

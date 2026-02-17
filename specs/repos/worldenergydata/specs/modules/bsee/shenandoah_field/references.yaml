@@ -1,0 +1,48 @@
+# ABOUTME: Shenandoah field reference catalog placeholder
+# ABOUTME: Tracks status and access details for cited source materials
+references:
+  - title: Anadarko Petroleum Corporation Form 10-K FY 2017
+    source_type: SEC filing
+    url: "https://www.sec.gov/Archives/edgar/data/773910/000077391018000018/apc-20171231x10k.htm"
+    access_status: pending
+    notes: Requires download of PDF or HTML filing for impairment footnotes referencing Shenandoah project.
+  - title: Cobalt International Energy Form 10-Q Q1 2017
+    source_type: SEC filing
+    url: "https://www.sec.gov/Archives/edgar/data/1471266/000147126617000024/cie-20170331x10q.htm"
+    access_status: pending
+    notes: Contains disclosure of $232.8M suspended exploratory well costs tied to Shenandoah.
+  - title: Cobalt International Energy Bankruptcy Asset Sale Order (Case 17-36709)
+    source_type: court_document
+    url: "https://cases.primeclerk.com/cobalt/Home-DownloadPDF?id1=NDc4NzA3&id2=0"
+    access_status: pending
+    notes: Confirm $1.8M winning bid and working-interest distribution to LLOG, Beacon Offshore, Navitas.
+  - title: Beacon Offshore Energy Shenandoah FID Press Release
+    source_type: press_release
+    url: "https://www.beaconoffshore.com/news/beacon-offshore-energy-announces-fid-for-shenandoah"
+    access_status: url_404_not_found
+    notes: URL returns 404 error. FID details confirmed from alternative sources (Offshore Energy, NS Energy Business).
+  - title: Navitas Petroleum Shenandoah Project Update 2021
+    source_type: investor_presentation
+    url: "https://navitaspetroleum.com/wp-content/uploads/2021/09/Navitas-Shenandoah-Update.pdf"
+    access_status: pending
+    notes: Document partner working-interest breakdown and development concept depiction.
+  - title: Hyundai Heavy Industries FPS Contract Award
+    source_type: industry_news
+    url: "https://www.offshore-energy.biz/hyundai-heavy-lands-order-to-build-shenandoah-fps-for-gulf-of-mexico/"
+    access_status: accessed
+    notes: FPS fabrication contract value KRW 659.2bn ($576.44M), awarded August 2021. Scope includes design, procurement, construction, delivery.
+  - title: Subsea 7 Installation Services Contract
+    source_type: industry_news
+    url: "https://www.offshore-energy.biz/subsea-7-to-deliver-installation-services-at-shenandoah-field/"
+    access_status: accessed
+    notes: Installation contract $150-300M, awarded January 2022. Scope includes subsea EPIC, FPS wet tow, mooring installation, hook-up.
+  - title: Shenandoah FPS Transport to US
+    source_type: industry_news
+    url: "https://www.oedigital.com/news/522970-beacon-offshore-s-shenandoah-fps-reaches-us-ahead-of-deepwater-installation"
+    access_status: accessed
+    notes: COSCO/CSGS transported FPS from Ulsan, South Korea (Dec 2024) to Ingleside, Texas (Feb 2025). Confirms towing contractor.
+  - title: Shenandoah Field Development Overview
+    source_type: project_database
+    url: "https://www.nsenergybusiness.com/projects/shenandoah-field-development/"
+    access_status: accessed
+    notes: Comprehensive project overview including contracts, timeline, costs. Confirmed $1.8B total, $252M drilling contract, contractor details.
