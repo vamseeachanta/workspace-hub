@@ -72,6 +72,18 @@ assert_plan_approved_or_fail() {
         echo "ERROR: Plan gate failed for $wrk_id (plan_approved != true)." >&2
         exit 3
     fi
+
+    local complexity reviewed
+    complexity="$(wrk_get_frontmatter_value "$file" "complexity")"
+    reviewed="$(wrk_get_frontmatter_value "$file" "plan_reviewed")"
+    case "$complexity" in
+        medium|complex|high)
+            if [[ "$reviewed" != "true" ]]; then
+                echo "ERROR: Plan review gate failed for $wrk_id (complexity=$complexity requires plan_reviewed=true)." >&2
+                exit 3
+            fi
+            ;;
+    esac
 }
 
 session_record_stage() {

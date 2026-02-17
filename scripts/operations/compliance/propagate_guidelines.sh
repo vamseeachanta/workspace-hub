@@ -20,9 +20,9 @@ REPORT_FILE="propagation_report.txt"
 
 # Files to propagate
 GUIDELINE_FILES=(
-    "docs/AI_USAGE_GUIDELINES.md"
-    "docs/AI_AGENT_GUIDELINES.md"
-    "docs/DEVELOPMENT_WORKFLOW.md"
+    "docs/modules/ai/AI_USAGE_GUIDELINES.md"
+    "docs/modules/ai/AI_AGENT_GUIDELINES.md"
+    "docs/modules/workflow/DEVELOPMENT_WORKFLOW.md"
 )
 
 TEMPLATE_FILES=(
@@ -34,9 +34,16 @@ TEMPLATE_FILES=(
 )
 
 SCRIPT_FILES=(
-    "scripts/verify_compliance.sh"
-    "scripts/setup_compliance.sh"
-    "scripts/install_compliance_hooks.sh"
+    "scripts/operations/compliance/verify_compliance.sh"
+    "scripts/operations/compliance/setup_compliance.sh"
+    "scripts/operations/compliance/install_compliance_hooks.sh"
+    "scripts/operations/compliance/generate_agent_adapters.sh"
+    "scripts/operations/compliance/validate_agent_contract.sh"
+    "scripts/operations/compliance/audit_contract_drift.sh"
+    "scripts/operations/compliance/validate_work_queue_schema.sh"
+    "scripts/operations/compliance/audit_wrk_location.sh"
+    "scripts/operations/compliance/audit_skill_symlink_policy.sh"
+    "scripts/operations/compliance/check_governance.sh"
 )
 
 echo -e "${BLUE}========================================${NC}"
@@ -116,7 +123,7 @@ update_claude_md() {
 
 **IF USER OR AI DOES NOT FOLLOW THE DOCUMENTED BEST PRACTICES:**
 
-1. **IMMEDIATELY REFERENCE** `docs/AI_USAGE_GUIDELINES.md`
+1. **IMMEDIATELY REFERENCE** `docs/modules/ai/AI_USAGE_GUIDELINES.md`
 2. **GUIDE USER TO FOLLOW** the effectiveness matrix (⭐⭐⭐⭐⭐ approaches ONLY)
 3. **STOP AND REDIRECT** if user is:
    - Asking AI to describe what a script does (❌ ⭐ PRETTY BAD)
@@ -140,15 +147,15 @@ update_claude_md() {
 4. Skipping version control of configurations
 ```
 
-**See full effectiveness matrix:** `docs/AI_USAGE_GUIDELINES.md`
+**See full effectiveness matrix:** `docs/modules/ai/AI_USAGE_GUIDELINES.md`
 
 ---
 
 ## Workflow Documentation
 
-- **AI Agent Guidelines:** @docs/AI_AGENT_GUIDELINES.md
-- **AI Usage Guidelines:** @docs/AI_USAGE_GUIDELINES.md
-- **Development Workflow:** @docs/DEVELOPMENT_WORKFLOW.md
+- **AI Agent Guidelines:** @docs/modules/ai/AI_AGENT_GUIDELINES.md
+- **AI Usage Guidelines:** @docs/modules/ai/AI_USAGE_GUIDELINES.md
+- **Development Workflow:** @docs/modules/workflow/DEVELOPMENT_WORKFLOW.md
 - **User Requirements:** @user_prompt.md
 
 EOF
@@ -254,9 +261,9 @@ for repo in "${REPOSITORIES[@]}"; do
     # Install git hooks
     echo "🪝 Git hooks..."
     if [ "$DRY_RUN" = "false" ]; then
-        if [ -f "$repo/scripts/install_compliance_hooks.sh" ]; then
+        if [ -f "$repo/scripts/operations/compliance/install_compliance_hooks.sh" ]; then
             cd "$repo"
-            ./scripts/install_compliance_hooks.sh . > /dev/null 2>&1 || true
+            ./scripts/operations/compliance/install_compliance_hooks.sh . > /dev/null 2>&1 || true
             echo -e "${GREEN}  ✓ Hooks installed${NC}"
             REPO_CHANGES=$((REPO_CHANGES + 1))
         else
@@ -324,7 +331,7 @@ if [ $UPDATED_REPOS -gt 0 ]; then
     echo ""
     echo "Next steps:"
     echo "  1. Review changes in each repository"
-    echo "  2. Run compliance verification: ./scripts/verify_compliance.sh"
+    echo "  2. Run compliance verification: ./scripts/operations/compliance/verify_compliance.sh"
     echo "  3. Commit changes with: git commit -m \"Add AI usage guidelines compliance\""
     echo ""
 else
