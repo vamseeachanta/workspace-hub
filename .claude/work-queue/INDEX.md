@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-16T21:13:01Z by generate-index.py -->
+<!-- Generated: 2026-02-17T02:25:08Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-16T21:13:01Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-17T02:25:08Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 166
+**Total items:** 168
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 57 |
-| working | 4 |
+| pending | 58 |
+| working | 3 |
 | blocked | 3 |
 | archived | 102 |
 
@@ -22,16 +22,16 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 65 |
-| medium | 76 |
+| high | 66 |
+| medium | 77 |
 | low | 25 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 19 |
-| medium | 62 |
+| simple | 21 |
+| medium | 63 |
 | complex | 78 |
 
 ### By Repository
@@ -40,25 +40,25 @@
 |------------|-------|
 | aceengineer-admin | 3 |
 | aceengineer-strategy | 2 |
-| aceengineer-website | 12 |
+| aceengineer-website | 13 |
 | achantas-data | 10 |
 | acma-projects | 2 |
 | assethold | 5 |
 | assetutilities | 3 |
-| digitalmodel | 70 |
+| digitalmodel | 71 |
 | hobbies | 1 |
 | investments | 1 |
 | sabithaandkrishnaestates | 1 |
-| workspace-hub | 23 |
-| worldenergydata | 47 |
+| workspace-hub | 21 |
+| worldenergydata | 49 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 110 / 166 |
+| Plans exist | 109 / 168 |
 | Plans cross-reviewed | 29 |
-| Plans approved | 17 |
+| Plans approved | 29 |
 | Brochure pending | 0 |
 | Brochure updated/synced | 6 |
 
@@ -68,9 +68,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 166 |
+| Total captured | 168 |
 | Total archived | 102 |
-| Completion rate | 102/166 (61%) |
+| Completion rate | 102/168 (61%) |
 | Monthly rate (current month) | 31 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -78,9 +78,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 42 / 57 | 74% |
-| Plans cross-reviewed | 14 | 29% |
-| Plans user-approved | 2 | 4% |
+| Pending items with plans | 42 / 58 | 72% |
+| Plans cross-reviewed | 12 | 25% |
+| Plans user-approved | 13 | 27% |
 
 ### Aging
 
@@ -96,7 +96,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 14 | 3 | 1 |
-| Medium   | 26  | 1  | 1  |
+| Medium   | 27  | 0  | 1  |
 | Low      | 17  | 0  | 1  |
 
 ## Master Table
@@ -228,11 +228,11 @@
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | working | high | low | - | digitalmodel | - | ✅ | ❌ | ❌ | - 10% | - | - |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex | claude | digitalmodel | - | ✅ | ✅ | ✅ | - | - | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | high | medium | - | digitalmodel | - | ✅ | ✅ | ✅ | ███ 100% | - | WRK-121 |
-| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | pending | high | complex | codex | digitalmodel | - | ✅ | ✅ | ❌ | - | - | - |
-| WRK-130 | Standardize analysis reporting for each OrcaWave structure type | pending | high | complex | codex | digitalmodel | - | ✅ | ✅ | ❌ | - | - | - |
+| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | pending | high | complex | codex | digitalmodel | - | ✅ | ✅ | ✅ | - | - | - |
+| WRK-130 | Standardize analysis reporting for each OrcaWave structure type | on-hold | high | complex | codex | digitalmodel | - | ✅ | ✅ | ❌ | - | - | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | high | complex | claude | digitalmodel | - | ✅ | ✅ | ✅ | ░░░ 25% | - | - |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | archived | high | medium | codex+claude | digitalmodel | - | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | pending | high | medium | claude | aceengineer-admin | - | ❌ | ✅ | ❌ | - | n/a | - |
+| WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | on-hold | high | medium | claude | aceengineer-admin | - | ❌ | ✅ | ❌ | - | n/a | - |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | medium | - | workspace-hub | - | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | medium | - | worldenergydata | - | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex | gemini | worldenergydata | - | ❌ | ❌ | ❌ | - | n/a | WRK-136 |
@@ -245,30 +245,32 @@
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | - | digitalmodel | - | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | medium | complex | - | digitalmodel | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | - | digitalmodel | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | pending | high | complex | claude+gemini | aceengineer-website | - | ✅ | ✅ | ❌ | - | n/a | - |
-| WRK-147 | Set up aceengineer-strategy private repo with business operations framework | pending | high | complex | claude | aceengineer-strategy | - | ✅ | ✅ | ❌ | - | n/a | - |
-| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | claude | aceengineer-website, aceengineer-strategy, workspace-hub | - | ✅ | ✅ | ❌ | - | n/a | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | pending | high | complex | claude | digitalmodel | - | ✅ | ✅ | ❌ | - | n/a | - |
+| WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | pending | high | complex | claude+gemini | aceengineer-website | - | ✅ | ✅ | ✅ | - | n/a | - |
+| WRK-147 | Set up aceengineer-strategy private repo with business operations framework | pending | high | complex | claude | aceengineer-strategy | - | ✅ | ✅ | ✅ | - | n/a | - |
+| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | claude | aceengineer-website, aceengineer-strategy, workspace-hub | - | ✅ | ✅ | ✅ | - | n/a | - |
+| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | pending | high | complex | claude | digitalmodel | - | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-150 | assetutilities test coverage improvement (re-creates WRK-052) | pending | medium | medium | claude | assetutilities | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | pending | medium | medium | claude | worldenergydata | - | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | pending | high | medium | claude | worldenergydata | marine_safety | ✅ | ✅ | ❌ | - | n/a | - |
+| WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | pending | high | medium | claude | worldenergydata | marine_safety | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-153 | Energy data case study — BSEE field economics with NPV/IRR workflow | pending | medium | medium | claude | aceengineer-website | - | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-154 | CI workflow rewrite — fix 2 GitHub Actions workflows | pending | high | medium | codex | workspace-hub | - | ✅ | ✅ | ❌ | - | n/a | - |
-| WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | pending | high | complex | claude | digitalmodel | structural | ✅ | ✅ | ❌ | - | n/a | - |
-| WRK-156 | FFS Phase 1 — wall thickness grid input with Level 1/2 accept-reject workflow | pending | high | complex | claude | digitalmodel | asset_integrity | ✅ | ✅ | ❌ | - | n/a | - |
-| WRK-157 | Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps | pending | high | complex | claude | digitalmodel | fatigue | ✅ | ✅ | ❌ | - | n/a | - |
+| WRK-154 | CI workflow rewrite — fix 2 GitHub Actions workflows | pending | high | medium | codex | workspace-hub | - | ✅ | ✅ | ✅ | - | n/a | - |
+| WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | pending | high | complex | claude | digitalmodel | structural | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-156 | FFS Phase 1 — wall thickness grid input with Level 1/2 accept-reject workflow | pending | high | complex | claude | digitalmodel | asset_integrity | ✅ | ✅ | ✅ | - | n/a | - |
+| WRK-157 | Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps | pending | high | complex | claude | digitalmodel | fatigue | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-157 | Session locking — prevent WRK item collision across terminals | archived | high | moderate | claude | workspace-hub | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-158 | Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material | pending | medium | medium | claude | digitalmodel | structural | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-158 | Staleness enforcement — auto-flag aging working items | archived | medium | simple | claude | workspace-hub | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-159 | Three-way design code comparison report — API RP 1111 vs RP 2RD vs STD 2RD | archived | medium | medium | claude | digitalmodel | structural | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | working | medium | simple | claude | worldenergydata | hse | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-160 | Codex fallback — 2-of-3 consensus when Codex returns NO_OUTPUT | archived | high | moderate | claude | workspace-hub | - | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-161 | BSEE Excel statistics re-download and URL importer verification | pending | medium | simple | claude | worldenergydata | hse | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-161 | Parallel pipeline model — concurrent stage execution across sessions | archived | medium | complex | claude | workspace-hub | - | ✅ | ❌ | ❌ | ███ 100% | - | WRK-157 |
+| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | archived | medium | simple | claude | worldenergydata | hse | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-161 | BSEE Excel statistics re-download and URL importer verification | archived | medium | simple | claude | worldenergydata | hse | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-162 | HSE risk index interactive web dashboard | pending | medium | complex | claude | aceengineer-website | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-163 | Well planning risk empowerment framework | pending | medium | complex | claude | worldenergydata, digitalmodel | risk_assessment | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-164 | Well production test data quality and nodal analysis foundation | pending | high | complex | claude | worldenergydata, digitalmodel | production_engineering | ✅ | ✅ | ❌ | - | n/a | - |
+| WRK-164 | Well production test data quality and nodal analysis foundation | pending | high | complex | claude | worldenergydata, digitalmodel | production_engineering | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-165 | Research subsea intervention analysis opportunities | pending | medium | medium | claude | digitalmodel, worldenergydata | subsea_intervention | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-166 | Jabra USB dongle lost — research universal dongle compatibility | pending | medium | simple | gemini | - | - | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-167 | Calendar: Krishna ADHD evaluation — 24 Feb 2:30 PM | pending | high | simple | claude | - | - | ✅ | ❌ | ✅ | - | n/a | - |
+| WRK-168 | MPD systems knowledge module — pressure management for drillships | pending | high | complex | claude | worldenergydata, digitalmodel | drilling_pressure_management | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-169 | Drilling technology evolution — MPD adoption case study | pending | medium | medium | claude | aceengineer-website, worldenergydata | content | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -310,8 +312,6 @@
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | high | complex | digitalmodel | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
-| WRK-130 | Standardize analysis reporting for each OrcaWave structure type | high | complex | digitalmodel | - |
-| WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | high | medium | aceengineer-admin | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | low | complex | worldenergydata | - |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | medium | medium | digitalmodel, workspace-hub | - |
 | WRK-141 | Create Achantas family tree to connect all family members | medium | medium | achantas-data | - |
@@ -328,11 +328,14 @@
 | WRK-156 | FFS Phase 1 — wall thickness grid input with Level 1/2 accept-reject workflow | high | complex | digitalmodel | asset_integrity |
 | WRK-157 | Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps | high | complex | digitalmodel | fatigue |
 | WRK-158 | Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material | medium | medium | digitalmodel | structural |
-| WRK-161 | BSEE Excel statistics re-download and URL importer verification | medium | simple | worldenergydata | hse |
 | WRK-162 | HSE risk index interactive web dashboard | medium | complex | aceengineer-website | - |
 | WRK-163 | Well planning risk empowerment framework | medium | complex | worldenergydata, digitalmodel | risk_assessment |
 | WRK-164 | Well production test data quality and nodal analysis foundation | high | complex | worldenergydata, digitalmodel | production_engineering |
 | WRK-165 | Research subsea intervention analysis opportunities | medium | medium | digitalmodel, worldenergydata | subsea_intervention |
+| WRK-166 | Jabra USB dongle lost — research universal dongle compatibility | medium | simple | - | - |
+| WRK-167 | Calendar: Krishna ADHD evaluation — 24 Feb 2:30 PM | high | simple | - | - |
+| WRK-168 | MPD systems knowledge module — pressure management for drillships | high | complex | worldenergydata, digitalmodel | drilling_pressure_management |
+| WRK-169 | Drilling technology evolution — MPD adoption case study | medium | medium | aceengineer-website, worldenergydata | content |
 
 ### Working
 
@@ -341,7 +344,6 @@
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | high | medium | - | - |
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | high | low | digitalmodel | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | high | complex | digitalmodel | - |
-| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | medium | simple | worldenergydata | hse |
 
 ### Blocked
 
@@ -455,8 +457,8 @@
 | WRK-157 | Session locking — prevent WRK item collision across terminals | high | moderate | workspace-hub | - |
 | WRK-158 | Staleness enforcement — auto-flag aging working items | medium | simple | workspace-hub | - |
 | WRK-159 | Three-way design code comparison report — API RP 1111 vs RP 2RD vs STD 2RD | medium | medium | digitalmodel | structural |
-| WRK-160 | Codex fallback — 2-of-3 consensus when Codex returns NO_OUTPUT | high | moderate | workspace-hub | - |
-| WRK-161 | Parallel pipeline model — concurrent stage execution across sessions | medium | complex | workspace-hub | - |
+| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | medium | simple | worldenergydata | hse |
+| WRK-161 | BSEE Excel statistics re-download and URL importer verification | medium | simple | worldenergydata | hse |
 
 ## By Repository
 
@@ -466,7 +468,7 @@
 |-----|-------|--------|----------|------------|--------|
 | WRK-037 | Get OrcaFlex framework of agreement and terms | archived | medium | simple | - |
 | WRK-056 | aceengineer-admin test coverage improvement | archived | medium | medium | - |
-| WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | pending | high | medium | - |
+| WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | on-hold | high | medium | - |
 
 ### aceengineer-strategy
 
@@ -491,6 +493,7 @@
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | - |
 | WRK-153 | Energy data case study — BSEE field economics with NPV/IRR workflow | pending | medium | medium | - |
 | WRK-162 | HSE risk index interactive web dashboard | pending | medium | complex | - |
+| WRK-169 | Drilling technology evolution — MPD adoption case study | pending | medium | medium | content |
 
 ### achantas-data
 
@@ -589,7 +592,7 @@
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | high | medium | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | pending | high | complex | - |
-| WRK-130 | Standardize analysis reporting for each OrcaWave structure type | pending | high | complex | - |
+| WRK-130 | Standardize analysis reporting for each OrcaWave structure type | on-hold | high | complex | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | high | complex | - |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | archived | high | medium | - |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | complex | asset_integrity |
@@ -606,6 +609,7 @@
 | WRK-163 | Well planning risk empowerment framework | pending | medium | complex | risk_assessment |
 | WRK-164 | Well production test data quality and nodal analysis foundation | pending | high | complex | production_engineering |
 | WRK-165 | Research subsea intervention analysis opportunities | pending | medium | medium | subsea_intervention |
+| WRK-168 | MPD systems knowledge module — pressure management for drillships | pending | high | complex | drilling_pressure_management |
 
 ### hobbies
 
@@ -650,8 +654,6 @@
 | WRK-154 | CI workflow rewrite — fix 2 GitHub Actions workflows | pending | high | medium | - |
 | WRK-157 | Session locking — prevent WRK item collision across terminals | archived | high | moderate | - |
 | WRK-158 | Staleness enforcement — auto-flag aging working items | archived | medium | simple | - |
-| WRK-160 | Codex fallback — 2-of-3 consensus when Codex returns NO_OUTPUT | archived | high | moderate | - |
-| WRK-161 | Parallel pipeline model — concurrent stage execution across sessions | archived | medium | complex | - |
 
 ### worldenergydata
 
@@ -699,11 +701,13 @@
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex | - |
 | WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | pending | medium | medium | - |
 | WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | pending | high | medium | marine_safety |
-| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | working | medium | simple | hse |
-| WRK-161 | BSEE Excel statistics re-download and URL importer verification | pending | medium | simple | hse |
+| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | archived | medium | simple | hse |
+| WRK-161 | BSEE Excel statistics re-download and URL importer verification | archived | medium | simple | hse |
 | WRK-163 | Well planning risk empowerment framework | pending | medium | complex | risk_assessment |
 | WRK-164 | Well production test data quality and nodal analysis foundation | pending | high | complex | production_engineering |
 | WRK-165 | Research subsea intervention analysis opportunities | pending | medium | medium | subsea_intervention |
+| WRK-168 | MPD systems knowledge module — pressure management for drillships | pending | high | complex | drilling_pressure_management |
+| WRK-169 | Drilling technology evolution — MPD adoption case study | pending | medium | medium | content |
 
 ## By Priority
 
@@ -758,10 +762,10 @@
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | complex | digitalmodel | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | medium | digitalmodel | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | pending | complex | digitalmodel | - |
-| WRK-130 | Standardize analysis reporting for each OrcaWave structure type | pending | complex | digitalmodel | - |
+| WRK-130 | Standardize analysis reporting for each OrcaWave structure type | on-hold | complex | digitalmodel | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | complex | digitalmodel | - |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | archived | medium | digitalmodel | - |
-| WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | pending | medium | aceengineer-admin | - |
+| WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | on-hold | medium | aceengineer-admin | - |
 | WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | complex | workspace-hub | agents |
 | WRK-142 | Review work accomplishments and draft Anthropic outreach message | archived | medium | workspace-hub | - |
 | WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | pending | complex | aceengineer-website | - |
@@ -774,8 +778,9 @@
 | WRK-156 | FFS Phase 1 — wall thickness grid input with Level 1/2 accept-reject workflow | pending | complex | digitalmodel | asset_integrity |
 | WRK-157 | Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps | pending | complex | digitalmodel | fatigue |
 | WRK-157 | Session locking — prevent WRK item collision across terminals | archived | moderate | workspace-hub | - |
-| WRK-160 | Codex fallback — 2-of-3 consensus when Codex returns NO_OUTPUT | archived | moderate | workspace-hub | - |
 | WRK-164 | Well production test data quality and nodal analysis foundation | pending | complex | worldenergydata, digitalmodel | production_engineering |
+| WRK-167 | Calendar: Krishna ADHD evaluation — 24 Feb 2:30 PM | pending | simple | - | - |
+| WRK-168 | MPD systems knowledge module — pressure management for drillships | pending | complex | worldenergydata, digitalmodel | drilling_pressure_management |
 
 ### Medium
 
@@ -851,12 +856,13 @@
 | WRK-158 | Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material | pending | medium | digitalmodel | structural |
 | WRK-158 | Staleness enforcement — auto-flag aging working items | archived | simple | workspace-hub | - |
 | WRK-159 | Three-way design code comparison report — API RP 1111 vs RP 2RD vs STD 2RD | archived | medium | digitalmodel | structural |
-| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | working | simple | worldenergydata | hse |
-| WRK-161 | BSEE Excel statistics re-download and URL importer verification | pending | simple | worldenergydata | hse |
-| WRK-161 | Parallel pipeline model — concurrent stage execution across sessions | archived | complex | workspace-hub | - |
+| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | archived | simple | worldenergydata | hse |
+| WRK-161 | BSEE Excel statistics re-download and URL importer verification | archived | simple | worldenergydata | hse |
 | WRK-162 | HSE risk index interactive web dashboard | pending | complex | aceengineer-website | - |
 | WRK-163 | Well planning risk empowerment framework | pending | complex | worldenergydata, digitalmodel | risk_assessment |
 | WRK-165 | Research subsea intervention analysis opportunities | pending | medium | digitalmodel, worldenergydata | subsea_intervention |
+| WRK-166 | Jabra USB dongle lost — research universal dongle compatibility | pending | simple | - | - |
+| WRK-169 | Drilling technology evolution — MPD adoption case study | pending | medium | aceengineer-website, worldenergydata | content |
 
 ### Low
 
@@ -911,8 +917,10 @@
 | WRK-120 | Research and purchase a smart watch | archived | low | achantas-data | - |
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | digitalmodel | - |
 | WRK-158 | Staleness enforcement — auto-flag aging working items | archived | medium | workspace-hub | - |
-| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | working | medium | worldenergydata | hse |
-| WRK-161 | BSEE Excel statistics re-download and URL importer verification | pending | medium | worldenergydata | hse |
+| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | archived | medium | worldenergydata | hse |
+| WRK-161 | BSEE Excel statistics re-download and URL importer verification | archived | medium | worldenergydata | hse |
+| WRK-166 | Jabra USB dongle lost — research universal dongle compatibility | pending | medium | - | - |
+| WRK-167 | Calendar: Krishna ADHD evaluation — 24 Feb 2:30 PM | pending | high | - | - |
 
 ### Medium
 
@@ -964,7 +972,7 @@
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | acma-projects, assetutilities | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | high | digitalmodel | - |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | archived | high | digitalmodel | - |
-| WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | pending | high | aceengineer-admin | - |
+| WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | on-hold | high | aceengineer-admin | - |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | workspace-hub | - |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | worldenergydata | - |
 | WRK-139 | Develop gmsh skill and documentation | archived | medium | workspace-hub | - |
@@ -980,6 +988,7 @@
 | WRK-158 | Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material | pending | medium | digitalmodel | structural |
 | WRK-159 | Three-way design code comparison report — API RP 1111 vs RP 2RD vs STD 2RD | archived | medium | digitalmodel | structural |
 | WRK-165 | Research subsea intervention analysis opportunities | pending | medium | digitalmodel, worldenergydata | subsea_intervention |
+| WRK-169 | Drilling technology evolution — MPD adoption case study | pending | medium | aceengineer-website, worldenergydata | content |
 
 ### Complex
 
@@ -1046,7 +1055,7 @@
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | workspace-hub, worldenergydata, digitalmodel | - |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | digitalmodel | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | pending | high | digitalmodel | - |
-| WRK-130 | Standardize analysis reporting for each OrcaWave structure type | pending | high | digitalmodel | - |
+| WRK-130 | Standardize analysis reporting for each OrcaWave structure type | on-hold | high | digitalmodel | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | high | digitalmodel | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | worldenergydata | - |
 | WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | digitalmodel | asset_integrity |
@@ -1059,10 +1068,10 @@
 | WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | pending | high | digitalmodel | structural |
 | WRK-156 | FFS Phase 1 — wall thickness grid input with Level 1/2 accept-reject workflow | pending | high | digitalmodel | asset_integrity |
 | WRK-157 | Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps | pending | high | digitalmodel | fatigue |
-| WRK-161 | Parallel pipeline model — concurrent stage execution across sessions | archived | medium | workspace-hub | - |
 | WRK-162 | HSE risk index interactive web dashboard | pending | medium | aceengineer-website | - |
 | WRK-163 | Well planning risk empowerment framework | pending | medium | worldenergydata, digitalmodel | risk_assessment |
 | WRK-164 | Well production test data quality and nodal analysis foundation | pending | high | worldenergydata, digitalmodel | production_engineering |
+| WRK-168 | MPD systems knowledge module — pressure management for drillships | pending | high | worldenergydata, digitalmodel | drilling_pressure_management |
 
 ## Dependencies
 
@@ -1090,5 +1099,4 @@
 | WRK-100 | Run 3-way benchmark on Barge hull | WRK-099 | - | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | WRK-121 | - | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | WRK-136 | - | - |
-| WRK-161 | Parallel pipeline model — concurrent stage execution across sessions | WRK-157 | - | - |
 
