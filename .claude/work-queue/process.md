@@ -5,7 +5,7 @@
 
 ## Overview
 
-The work queue tracks features, bugs, and tasks across all workspace-hub repositories. Items flow through a five-stage pipeline: **Capture, Triage, Plan, Process, Archive**. The workspace-hub queue is the master; repo-local copies are synced mirrors.
+The work queue tracks features, bugs, and tasks across all workspace-hub repositories. Items flow through a five-stage pipeline: **Capture, Triage, Plan, Process, Archive**. The workspace-hub queue is the master; repo-local WRK copies are deprecated and should not be created.
 
 State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item detail), and `INDEX.md` (generated listing).
 
@@ -46,7 +46,7 @@ State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item
 |-------|--------------|-------|--------|
 | A | `## Plan` section in item body | 3-5 bullet points | Self-review |
 | B | `## Plan` section in item body | Numbered steps with file paths and test strategy | Cross-review (3 agents) |
-| C | Separate spec in `specs/modules/` linked via `spec_ref` | Full spec from template | Cross-review (3 agents) |
+| C | Separate spec in `specs/wrk/WRK-<id>/` linked via `spec_ref` | Full spec from template | Cross-review (3 agents) |
 
 **Plan gate workflow**:
 1. Check if plan/spec already exists (auto-detected from `spec_ref` or `## Plan` body section).
@@ -73,7 +73,7 @@ Write an **Execution Brief** in the WRK body with:
 - Machine-checkable acceptance criteria
 - What the user should review when they come back
 
-**Spec naming**: `wrk-NNN-<short-description>.md` (not random codenames).
+**Spec naming**: `specs/wrk/WRK-NNN/<short-description>.md` (not random codenames).
 
 **Cross-review** (Route B/C): Submit to Claude (inline), Codex CLI, and Gemini CLI. Minimum 3 reviewers. Fix MAJOR findings before proceeding; document MINOR deferrals.
 
@@ -168,6 +168,9 @@ This scans all directories, parses frontmatter, and produces multi-view tables (
 | `/work report` | Queue health summary |
 | `python3 scripts/generate-index.py` | Regenerate INDEX.md |
 | `scripts/archive-item.sh WRK-NNN` | Archive with hooks |
+| `scripts/operations/compliance/audit_wrk_location.sh` | Detect WRK files outside canonical queue |
+| `scripts/operations/compliance/validate_work_queue_schema.sh` | Validate WRK frontmatter schema |
+| `scripts/operations/compliance/audit_skill_symlink_policy.sh` | Enforce child-repo skills are propagated links only |
 
 ## Conventions
 
@@ -185,7 +188,7 @@ target_repos:
   - repo-name
 target_module:           # module within repo (e.g. bsee, hse, marine_safety, hull_library)
 commit:                  # SHA after implementation
-spec_ref:                # path to spec file (Route C)
+spec_ref:                # path to Route C spec (e.g. specs/wrk/WRK-123/plan.md)
 related: []              # related WRK IDs
 blocked_by: []           # WRK IDs that must complete first
 plan_reviewed: false     # true after cross-review

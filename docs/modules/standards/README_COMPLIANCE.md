@@ -1,6 +1,17 @@
 # AI Usage Guidelines Compliance System
 
 > **Quick Start Guide for Enforcement Infrastructure**
+> **Path Update (2026-02-17)**: Compliance scripts now live under `scripts/operations/compliance/`.
+
+## Current Canonical Commands
+
+```bash
+./scripts/operations/compliance/verify_compliance.sh
+./scripts/operations/compliance/check_governance.sh --mode warn --scope changed
+./scripts/operations/compliance/validate_work_queue_schema.sh --mode warn --scope changed
+./scripts/operations/compliance/audit_wrk_location.sh --mode warn --scope all
+./scripts/operations/compliance/audit_skill_symlink_policy.sh --mode warn --scope all
+```
 
 ## 🎯 Purpose
 

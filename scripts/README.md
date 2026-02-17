@@ -9,6 +9,8 @@
 | `workspace` | Main workspace CLI |
 | `repository_sync` | Repository synchronization |
 | `setup-claude-env.sh` | Claude environment setup |
+| `operations/compliance/check_governance.sh` | WRK/spec governance checks |
+| `operations/compliance/audit_skill_symlink_policy.sh` | Skills link-only governance check |
 
 ## Discipline Directories
 

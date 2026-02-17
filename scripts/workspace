@@ -127,11 +127,10 @@ show_compliance_menu() {
         echo -e "${BOLD}Compliance & Standards${NC}"
         echo ""
 
-        echo -e "  ${CYAN}1)${NC} Propagation Tools                → Submen
-
-u"
+        echo -e "  ${CYAN}1)${NC} Propagation Tools                → Submenu"
         echo -e "  ${CYAN}2)${NC} Compliance Enforcement           → Submenu"
         echo -e "  ${CYAN}3)${NC} Verification Tools               → Verify compliance status"
+        echo -e "  ${CYAN}4)${NC} Governance Checks               → WRK schema + WRK location"
         echo ""
         echo -e "  ${YELLOW}0)${NC} Back to Main Menu"
         echo ""
@@ -142,7 +141,11 @@ u"
             1) show_propagation_menu ;;
             2) show_compliance_enforcement_menu ;;
             3)
-                bash "$SCRIPTS_DIR/compliance/verify_compliance.sh"
+                bash "$SCRIPTS_DIR/operations/compliance/verify_compliance.sh"
+                pause
+                ;;
+            4)
+                bash "$SCRIPTS_DIR/operations/compliance/check_governance.sh" --mode warn --scope all
                 pause
                 ;;
             0) return ;;
@@ -158,9 +161,11 @@ show_propagation_menu() {
         echo -e "${BOLD}Propagation Tools${NC}"
         echo ""
 
-        echo -e "  ${CYAN}1)${NC} Propagate Claude Configuration   → Sync CLAUDE.md to all repos"
-        echo -e "  ${CYAN}2)${NC} Propagate Guidelines             → Sync AI usage guidelines"
-        echo -e "  ${CYAN}3)${NC} Propagate Interactive Mode       → Enable question-asking mode"
+        echo -e "  ${CYAN}1)${NC} Generate Agent Adapters         → Generate CLAUDE.md from AGENTS.md"
+        echo -e "  ${CYAN}2)${NC} Validate Agent Contract         → Validate adapter compliance"
+        echo -e "  ${CYAN}3)${NC} Audit Contract Drift            → Generate drift report JSON"
+        echo -e "  ${CYAN}4)${NC} Propagate Guidelines             → Sync AI usage guidelines"
+        echo -e "  ${CYAN}5)${NC} Propagate Interactive Mode       → Enable question-asking mode"
         echo ""
         echo -e "  ${YELLOW}0)${NC} Back"
         echo ""
@@ -169,15 +174,23 @@ show_propagation_menu() {
 
         case "$choice" in
             1)
-                python3 "$SCRIPTS_DIR/compliance/propagate_claude_config.py"
+                bash "$SCRIPTS_DIR/operations/compliance/generate_agent_adapters.sh"
                 pause
                 ;;
             2)
-                bash "$SCRIPTS_DIR/compliance/propagate_guidelines.sh"
+                bash "$SCRIPTS_DIR/operations/compliance/validate_agent_contract.sh"
                 pause
                 ;;
             3)
-                bash "$SCRIPTS_DIR/compliance/propagate_interactive_mode.sh"
+                bash "$SCRIPTS_DIR/operations/compliance/audit_contract_drift.sh"
+                pause
+                ;;
+            4)
+                bash "$SCRIPTS_DIR/operations/compliance/propagate_guidelines.sh"
+                pause
+                ;;
+            5)
+                bash "$SCRIPTS_DIR/operations/compliance/propagate_interactive_mode.sh"
                 pause
                 ;;
             0) return ;;
@@ -204,15 +217,15 @@ show_compliance_enforcement_menu() {
 
         case "$choice" in
             1)
-                bash "$SCRIPTS_DIR/compliance/setup_compliance.sh"
+                bash "$SCRIPTS_DIR/operations/compliance/setup_compliance.sh"
                 pause
                 ;;
             2)
-                bash "$SCRIPTS_DIR/compliance/install_compliance_hooks.sh"
+                bash "$SCRIPTS_DIR/operations/compliance/install_compliance_hooks.sh"
                 pause
                 ;;
             3)
-                bash "$SCRIPTS_DIR/compliance/verify_compliance.sh"
+                bash "$SCRIPTS_DIR/operations/compliance/verify_compliance.sh"
                 pause
                 ;;
             0) return ;;
@@ -490,9 +503,15 @@ show_available_commands() {
     echo "  ./repository_sync <command> <scope> → Direct command execution"
     echo ""
     echo -e "${CYAN}Compliance & Standards:${NC}"
-    echo "  ./scripts/compliance/propagate_claude_config.py → Propagate Claude config"
-    echo "  ./scripts/compliance/propagate_guidelines.sh    → Propagate AI guidelines"
-    echo "  ./scripts/compliance/verify_compliance.sh       → Verify compliance"
+    echo "  ./scripts/operations/compliance/generate_agent_adapters.sh → Generate adapters"
+    echo "  ./scripts/operations/compliance/validate_agent_contract.sh → Validate contract"
+    echo "  ./scripts/operations/compliance/audit_contract_drift.sh    → Drift audit report"
+    echo "  ./scripts/operations/compliance/check_governance.sh        → WRK/spec governance checks"
+    echo "  ./scripts/operations/compliance/validate_work_queue_schema.sh → WRK schema validation"
+    echo "  ./scripts/operations/compliance/audit_wrk_location.sh      → WRK location audit"
+    echo "  ./scripts/operations/compliance/audit_skill_symlink_policy.sh → Skills link-only audit"
+    echo "  ./scripts/operations/compliance/propagate_guidelines.sh    → Propagate AI guidelines"
+    echo "  ./scripts/operations/compliance/verify_compliance.sh       → Verify compliance"
     echo ""
     echo -e "${CYAN}Development Tools:${NC}"
     echo "  ./scripts/development/refactor-analysis.sh      → Code refactoring analysis"
@@ -518,7 +537,7 @@ show_quick_start() {
     echo "   Or:  Navigate to Repository Management → Repository Sync Manager"
     echo ""
     echo -e "${CYAN}3. Setup Compliance (Optional):${NC}"
-    echo "   Run: ./scripts/compliance/setup_compliance.sh"
+    echo "   Run: ./scripts/operations/compliance/setup_compliance.sh"
     echo "   Or:  Navigate to Compliance & Standards → Compliance Enforcement"
     echo ""
     echo -e "${CYAN}4. Start Working:${NC}"
