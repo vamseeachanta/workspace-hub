@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-17T19:35:56Z by generate-index.py -->
+<!-- Generated: 2026-02-17T19:56:48Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-17T19:35:56Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-17T19:56:48Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 184
+**Total items:** 185
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 68 |
+| pending | 69 |
 | working | 4 |
 | blocked | 5 |
 | done | 4 |
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 73 |
+| high | 74 |
 | medium | 83 |
 | low | 28 |
 
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 21 |
-| medium | 70 |
+| medium | 71 |
 | complex | 80 |
 
 ### By Repository
@@ -50,14 +50,14 @@
 | hobbies | 1 |
 | investments | 1 |
 | sabithaandkrishnaestates | 1 |
-| workspace-hub | 36 |
-| worldenergydata | 55 |
+| workspace-hub | 37 |
+| worldenergydata | 56 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 112 / 184 |
+| Plans exist | 113 / 185 |
 | Plans cross-reviewed | 31 |
 | Plans approved | 30 |
 | Brochure pending | 0 |
@@ -69,9 +69,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 184 |
+| Total captured | 185 |
 | Total archived | 103 |
-| Completion rate | 103/184 (56%) |
+| Completion rate | 103/185 (56%) |
 | Monthly rate (current month) | 31 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -79,9 +79,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 42 / 68 | 62% |
-| Plans cross-reviewed | 13 | 26% |
-| Plans user-approved | 13 | 26% |
+| Pending items with plans | 43 / 69 | 62% |
+| Plans cross-reviewed | 13 | 25% |
+| Plans user-approved | 13 | 25% |
 
 ### Aging
 
@@ -96,7 +96,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 16 | 4 | 3 |
+| High     | 17 | 4 | 3 |
 | Medium   | 33  | 0  | 1  |
 | Low      | 19  | 0  | 1  |
 
@@ -288,6 +288,7 @@
 | WRK-185 | Ecosystem Truth Review: instruction/skills/work-item centralization | archived | high | medium | codex+claude | workspace-hub, digitalmodel, worldenergydata | governance | ✅ | ✅ | ❌ | ███ 100% | n/a | - |
 | WRK-186 | Context budget: trim rules/ to under 16KB | pending | high | simple | claude | workspace-hub | - | ❌ | ❌ | ❌ | - | - | - |
 | WRK-187 | Improve /improve: configurable thresholds, classify retry, apply API content | pending | medium | medium | claude | workspace-hub | - | ❌ | ❌ | ❌ | - | - | - |
+| WRK-188 | Wave-1 spec migration: worldenergydata dry-run manifest and apply plan | pending | high | medium | codex+claude | workspace-hub, worldenergydata | governance | ✅ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -372,6 +373,7 @@
 | WRK-183 | Domain Knowledge Graph | medium | high | workspace-hub, worldenergydata, digitalmodel | - |
 | WRK-186 | Context budget: trim rules/ to under 16KB | high | simple | workspace-hub | - |
 | WRK-187 | Improve /improve: configurable thresholds, classify retry, apply API content | medium | medium | workspace-hub | - |
+| WRK-188 | Wave-1 spec migration: worldenergydata dry-run manifest and apply plan | high | medium | workspace-hub, worldenergydata | governance |
 
 ### Working
 
@@ -713,6 +715,7 @@
 | WRK-185 | Ecosystem Truth Review: instruction/skills/work-item centralization | archived | high | medium | governance |
 | WRK-186 | Context budget: trim rules/ to under 16KB | pending | high | simple | - |
 | WRK-187 | Improve /improve: configurable thresholds, classify retry, apply API content | pending | medium | medium | - |
+| WRK-188 | Wave-1 spec migration: worldenergydata dry-run manifest and apply plan | pending | high | medium | governance |
 
 ### worldenergydata
 
@@ -773,6 +776,7 @@
 | WRK-178 | Stop Hook: Data Provenance Snapshot | pending | medium | medium | - |
 | WRK-183 | Domain Knowledge Graph | pending | medium | high | - |
 | WRK-185 | Ecosystem Truth Review: instruction/skills/work-item centralization | archived | high | medium | governance |
+| WRK-188 | Wave-1 spec migration: worldenergydata dry-run manifest and apply plan | pending | high | medium | governance |
 
 ## By Priority
 
@@ -853,6 +857,7 @@
 | WRK-184 | Improve /improve — Bug fixes, recommendations output, startup readiness | done | medium | workspace-hub | - |
 | WRK-185 | Ecosystem Truth Review: instruction/skills/work-item centralization | archived | medium | workspace-hub, digitalmodel, worldenergydata | governance |
 | WRK-186 | Context budget: trim rules/ to under 16KB | pending | simple | workspace-hub | - |
+| WRK-188 | Wave-1 spec migration: worldenergydata dry-run manifest and apply plan | pending | medium | workspace-hub, worldenergydata | governance |
 
 ### Medium
 
@@ -1077,6 +1082,7 @@
 | WRK-184 | Improve /improve — Bug fixes, recommendations output, startup readiness | done | high | workspace-hub | - |
 | WRK-185 | Ecosystem Truth Review: instruction/skills/work-item centralization | archived | high | workspace-hub, digitalmodel, worldenergydata | governance |
 | WRK-187 | Improve /improve: configurable thresholds, classify retry, apply API content | pending | medium | workspace-hub | - |
+| WRK-188 | Wave-1 spec migration: worldenergydata dry-run manifest and apply plan | pending | high | workspace-hub, worldenergydata | governance |
 
 ### Complex
 
