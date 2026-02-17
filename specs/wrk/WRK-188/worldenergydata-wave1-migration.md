@@ -26,8 +26,8 @@ links:
 1. Copy files from repo-local `specs/` trees into `specs/repos/<repo>/<original-spec-path>/`.
 2. Replace original local `specs/` directory with pointer `README.md`.
 3. Leave no non-README files under migrated local `specs/` trees.
-4. Fail-fast if any mapped target file already exists before apply (no overwrite in this wave).
-5. Idempotent apply: a second `--apply` run on clean migrated state must produce no content diff.
+4. Fail-fast if any mapped target file exists before first approved apply (no overwrite of pre-wave files).
+5. Idempotent apply: once wave-1 apply is complete, a second `--apply` on the same state must be a no-op (no content diff).
 6. Dry-run summary line format is fixed:
    `repo=<repo> loc=<relative-spec-dir> files=<count> target=<absolute-target-path> dry_run=true`
 
@@ -47,7 +47,7 @@ Specs are centralized in:
 
 ```bash
 mkdir -p reports/compliance
-command -v bash find cp mv rm awk sed rg python3 sha256sum sort xargs diff git du df >/dev/null
+command -v bash find cp mv rm awk sed rg python3 sha256sum sort xargs diff git du df timeout >/dev/null
 test -x scripts/operations/compliance/migrate_specs_to_workspace.sh
 scripts/operations/compliance/migrate_specs_to_workspace.sh --help >/dev/null
 test -x scripts/operations/compliance/check_governance.sh
@@ -85,15 +85,21 @@ from pathlib import Path
 roots = set()
 src_files = []
 tgt_files = []
+bad_paths = []
 for p in Path("worldenergydata").rglob("*"):
     s = str(p).replace("\\", "/")
     if p.is_file() and "/specs/" in s:
+        if any(ord(ch) < 32 for ch in s):
+            bad_paths.append(s)
         src_files.append(s)
         tgt_files.append(s.replace("worldenergydata/", "specs/repos/worldenergydata/", 1))
         roots.add(s.split("/specs/", 1)[0] + "/specs")
 Path("reports/compliance/wrk-188-worldenergydata-source-spec-roots.txt").write_text("\n".join(sorted(roots)) + "\n")
 Path("reports/compliance/wrk-188-worldenergydata-approved-source-files.txt").write_text("\n".join(sorted(src_files)) + "\n")
 Path("reports/compliance/wrk-188-worldenergydata-approved-target-files.txt").write_text("\n".join(sorted(tgt_files)) + "\n")
+Path("reports/compliance/wrk-188-worldenergydata-invalid-paths.txt").write_text("\n".join(sorted(bad_paths)))
+if bad_paths:
+    raise SystemExit(1)
 PY
 test -s reports/compliance/wrk-188-worldenergydata-dryrun.log
 test -s reports/compliance/wrk-188-worldenergydata-source-spec-roots.txt
@@ -249,11 +255,7 @@ done < reports/compliance/wrk-188-worldenergydata-source-spec-roots.txt
 ```bash
 test -z "$(find worldenergydata -type f -path '*/specs/*' ! -name 'README.md')"
 ```
-5. Governance check passes in gate mode for changed scope (run after Step 9 staging, before Step 10 commit).
-```bash
-scripts/operations/compliance/check_governance.sh --mode gate --scope changed
-```
-6. Multi-provider plan cross-review gate (machine-checkable):
+5. Multi-provider plan cross-review gate (machine-checkable):
 - Claude, Codex, and Gemini plan reviews are recorded.
 - No unresolved `MAJOR`.
 - Claude must produce a non-`NO_OUTPUT` verdict.
@@ -282,11 +284,11 @@ elif [ "$V_GEMINI" = "NO_OUTPUT" ]; then
   echo "$V_CODEX" | rg -q '^(APPROVE|MINOR)$'
 fi
 ```
-7. Downstream path safety checks:
+6. Downstream path safety checks:
 ```bash
-test -z "$(rg -n 'worldenergydata/(.*/)?specs/' . -g '!.git/**' -g '!worldenergydata/**' -g '!specs/repos/worldenergydata/**' -g '!reports/**' | cat)"
+test -z "$(rg -n 'worldenergydata/(.*/)?specs/' . -g '!.git/**' -g '!.claude/**' -g '!worldenergydata/**' -g '!specs/**' -g '!reports/**' | cat)"
 ```
-8. Idempotency check:
+7. Idempotency check:
 ```bash
 git diff --name-status > reports/compliance/wrk-188-worldenergydata-diff-after-first-apply.txt
 git diff --name-only -- worldenergydata specs/repos/worldenergydata > reports/compliance/wrk-188-worldenergydata-scope-after-first-apply.txt
@@ -297,19 +299,23 @@ diff reports/compliance/wrk-188-worldenergydata-diff-after-first-apply.txt repor
 diff reports/compliance/wrk-188-worldenergydata-scope-after-first-apply.txt reports/compliance/wrk-188-worldenergydata-scope-after-second-apply.txt
 test -z "$(git diff --name-only | rg -v '^(worldenergydata/|specs/repos/worldenergydata/|reports/compliance/)' | cat)"
 ```
-9. Pre-commit scope gate and targeted staging:
+8. Submodule pre-commit scope gate and commit:
 ```bash
 git -C worldenergydata add -A
 test -z "$(git -C worldenergydata diff --cached --name-only | rg -v '(^|/)specs/' | cat)" 
-git add worldenergydata specs/repos/worldenergydata reports/compliance
-test -z "$(git diff --cached --name-only | rg -v '^(worldenergydata$|worldenergydata/|specs/repos/worldenergydata/|reports/compliance/)' | cat)"
-```
-10. Commit only after all verification checks pass:
-```bash
 git -C worldenergydata commit -m "chore(specs): WRK-188 wave1 pointer migration"
-git commit -m "chore(spec-migration): WRK-188 wave1 worldenergydata apply"
 SUB_SHA="$(git -C worldenergydata rev-parse HEAD)"
+```
+9. Hub pre-commit scope gate, governance gate, and commit:
+```bash
+git add worldenergydata specs/repos/worldenergydata reports/compliance
 test "$(git ls-tree HEAD worldenergydata | awk '{print $3}')" = "$SUB_SHA"
+test -z "$(git diff --cached --name-only | rg -v '^(worldenergydata$|worldenergydata/|specs/repos/worldenergydata/|reports/compliance/)' | cat)"
+scripts/operations/compliance/check_governance.sh --mode gate --scope changed
+git commit -m "chore(spec-migration): WRK-188 wave1 worldenergydata apply"
+```
+10. Publish in one release window:
+```bash
 git -C worldenergydata symbolic-ref --short HEAD
 git -C worldenergydata push
 git push
@@ -383,6 +389,7 @@ find worldenergydata -type f -path '*/specs/*' -print0 | sort -z | xargs -0 sha2
 test -z "$(git status --porcelain | awk '{print $2}' | rg -v '^(worldenergydata/|specs/repos/worldenergydata/|reports/compliance/)' | cat)"
 git restore --staged --worktree worldenergydata specs/repos/worldenergydata
 git -C worldenergydata restore --staged --worktree .
+git clean -fd -- specs/repos/worldenergydata reports/compliance/wrk-188-worldenergydata-*
 python3 - <<'PY'
 from pathlib import Path
 mf = Path("reports/compliance/wrk-188-worldenergydata-approved-target-files.txt")
