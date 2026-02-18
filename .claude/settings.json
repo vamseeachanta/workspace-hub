@@ -5,7 +5,9 @@
     "CLAUDE_FLOW_HOOKS_ENABLED": "true",
     "CLAUDE_FLOW_TELEMETRY_ENABLED": "false",
     "CLAUDE_FLOW_REMOTE_EXECUTION": "false",
-    "CLAUDE_FLOW_CHECKPOINTS_ENABLED": "true"
+    "CLAUDE_FLOW_CHECKPOINTS_ENABLED": "true",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "MAX_TEAMMATES": "3"
   },
   "permissions": {
     "allow": [
@@ -56,6 +58,11 @@
             "type": "command",
             "statusMessage": "Ecosystem link check",
             "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/propagate-ecosystem-check.sh\" 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "statusMessage": "Session readiness check",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/readiness/readiness.sh\" 2>/dev/null || true"
           }
         ]
       },
@@ -191,6 +198,15 @@
             "type": "command",
             "statusMessage": "Ecosystem health check",
             "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/ecosystem-health-check.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "statusMessage": "Ensuring next-session readiness",
+            "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/readiness/ensure-readiness.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'"
           }
         ]
       },

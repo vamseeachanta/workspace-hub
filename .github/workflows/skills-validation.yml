@@ -1,0 +1,33 @@
+name: Skills Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'digitalmodel/.claude/skills/**/SKILL.md'
+      - 'scripts/skills/*.sh'
+      - '.github/workflows/skills-validation.yml'
+      - '.gitattributes'
+  push:
+    branches:
+      - main
+    paths:
+      - 'digitalmodel/.claude/skills/**/SKILL.md'
+      - 'scripts/skills/*.sh'
+      - '.github/workflows/skills-validation.yml'
+      - '.gitattributes'
+  workflow_dispatch:
+
+jobs:
+  validate-skills:
+    name: Validate SKILL.md frontmatter
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run skill validator
+        run: bash scripts/skills/validate-skills.sh

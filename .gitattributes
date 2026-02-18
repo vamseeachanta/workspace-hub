@@ -1,6 +1,9 @@
 # Auto detect text files and normalize line endings
 * text=auto
 
+# Keep skill definitions LF-only across Linux + Git Bash on Windows
+**/SKILL.md text eol=lf
+
 # Force LF for shell scripts (CRLF breaks bash on MINGW)
 *.sh text eol=lf
 scripts/* text eol=lf

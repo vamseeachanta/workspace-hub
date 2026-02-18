@@ -380,6 +380,79 @@ Before running a benchmark, verify ALL of these:
 3. **NaN correlations**: Zero standard deviation (all-zero DOF, e.g. yaw for head seas)
 4. **Good amplitude, bad phase**: Different time convention (e^{+iwt} vs e^{-iwt})
 
+## Report Consistency Requirements (NON-NEGOTIABLE)
+
+> **Rule**: Individual benchmark reports and the master summary MUST be consistent.
+> If the master summary shows PASS / r=1.000000 for a case, the linked individual
+> `benchmark_report.html` MUST contain the supporting evidence — full RAO plots,
+> correct heading counts, hydrostatics, load RAOs, roll damping. A PASS verdict
+> backed by an empty or incomplete individual report is unacceptable.
+
+### Mandatory Checks Before Committing Reports
+
+```
+[ ] Master summary verdict matches individual report content
+[ ] "Headings: N" shows the correct count (not 0 for cases with wave headings defined)
+[ ] DOF plots contain actual data (not flat lines from empty heading arrays)
+[ ] All physics sections present: hydrostatics, load RAOs, roll damping, mesh quality
+[ ] Navigation links between combined report and per-body reports work
+```
+
+### Known Bug: `diff.headings` Returns Empty After `Calculate()`
+
+**Affected cases**: `full_qtf` analysis type, certain bi-symmetric configurations, fixed-DOF bodies.
+
+**Symptom**: Report header shows `Headings: 0 (°)` even though wave headings are
+defined in spec.yml. DOF plots appear empty because heading data is missing.
+
+**Root cause**: `OrcFxAPI.Diffraction.headings` may return an empty array after
+`Calculate()` is called in memory. The property is only reliably populated after
+`LoadResults()` from a saved `.owr` file.
+
+**Workaround**: Pass the saved `.owr` path to the report generator via:
+```python
+metadata["OrcaWave (.owd)"]["results_file"] = str(owr_path)  # triggers extract_report_data_from_owr()
+```
+`build_report_data_from_solver_results()` delegates to `extract_report_data_from_owr()`
+when `results_file`/`owr_path` key is present — this gives full physics data
+(hydrostatics, load RAOs, roll damping, correct heading list).
+
+**Current state (2026-02-18 audit)**:
+
+| Case | Headings shown | Correct count | Status |
+|------|---------------|---------------|--------|
+| 2.1  | 2             | 2             | OK |
+| 2.2  | 0             | 2             | BUG — needs regen |
+| 2.3  | 0             | 2             | BUG — needs regen |
+| 2.5c | 0             | varies        | BUG — needs regen |
+| 2.5f | 0             | varies        | BUG — needs regen |
+| 2.6 body_0/1 | 1    | 1             | OK |
+| 2.7  | 18            | 18            | OK (regenerated 2026-02-17) |
+| 2.8  | 18            | 18            | OK (regenerated 2026-02-17) |
+| 2.9  | 6             | 6             | OK (regenerated 2026-02-17) |
+| 3.1  | 0             | 1 (QTF)       | BUG — needs regen |
+| 3.2  | 0             | 1             | BUG — needs regen |
+| 3.3 body_0/1 | 0   | varies        | BUG — needs regen |
+
+**Fix required in `validate_owd_vs_spec.py`**: After `solve_owd()` saves the `.owr`,
+return `owr_path` and add it to the body metadata before calling `run_comparison()`:
+```python
+metadata["OrcaWave (.owd)"]["results_file"] = str(ground_truth_owr_path)
+```
+
+### Regenerating Stale Reports
+
+```bash
+# Regenerate a single case (re-runs OrcaWave — takes ~30-120s)
+uv run python scripts/benchmark/validate_owd_vs_spec.py --case 2.2
+
+# Regenerate master summary only (fast — reads cached JSON, no OrcaWave run)
+uv run python scripts/benchmark/validate_owd_vs_spec.py --summary-only
+
+# Regenerate all cases (slow — runs OrcaWave for each)
+uv run python scripts/benchmark/validate_owd_vs_spec.py --all
+```
+
 ## Related Skills
 
 - **mesh-utilities** - Mesh inspection and conversion (`/mesh`)
