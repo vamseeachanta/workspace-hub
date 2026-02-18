@@ -1,7 +1,7 @@
 ---
 title: "WRK-188 Worldenergydata Wave-1 Migration Plan"
 description: "Dry-run manifest and controlled apply checklist for worldenergydata spec centralization"
-version: "1.12"
+version: "1.13"
 module: governance
 status: "draft"
 progress: 0
@@ -18,18 +18,20 @@ links:
 
 ## Scope
 - In scope: `worldenergydata/**/specs/**`
-- Out of scope: all other repositories
+- In scope for blocking reference checks: governance surfaces `.claude/`, `docs/`, `specs/`, `scripts/`, `config/`, `modules/` only.
+- Out of scope: all other repositories and workspace paths (advisory-only scans).
 
 ## Canonical Execution Order
 1. `Phase-0`: run `Prerequisites` with clean trees (`git status --porcelain` empty in hub and submodule).
 2. `Phase-1`: create approval artifacts from `Approval Matrix` (`APPROVED_FOR_DRYRUN`, later `APPROVED_FOR_SIMULATION`, then `APPROVED`).
 3. `Phase-2`: run `Dry-Run Commands` and complete `Dry-run review gate`.
-4. `Phase-3`: run `Simulation Drill Phase` and produce simulation/drill PASS artifacts.
-5. `Phase-4`: run `Apply Commands`, `Verification`, commit, publish, closure gate.
-6. `Phase-5`: if any gate fails after apply starts, run `Rollback` per state model.
+4. `Phase-2.5`: run `Multi-Provider Workflow Continuity Check` and generate `review-bindings.env` + `.sha256`.
+5. `Phase-3`: run `Simulation Drill Phase` and produce simulation/drill PASS artifacts.
+6. `Phase-4`: run `Apply Commands`, `Verification`, commit, publish, closure gate.
+7. `Phase-5`: if apply has started and a gate fails, run `Rollback` per state model.
 Execution invariants:
 - `Phase-0` must run before any `reports/compliance/wrk-188-worldenergydata-*` artifact creation.
-- `Phase-4` is blocked unless phases 0-3 PASS artifacts exist and hashes validate.
+- `Phase-4` is blocked unless phases 0-3 PASS artifacts and phase-2.5 review bindings exist with valid hashes.
 
 ## Approval Matrix
 - `APPROVED_FOR_DRYRUN`: required before dry-run commands.
@@ -37,8 +39,27 @@ Execution invariants:
 - `APPROVED`: required before apply/publish.
 Phase-1 commands to create approval artifacts (run after `Phase-0`):
 ```bash
-printf "WRK=188\nSTATUS=APPROVED_FOR_DRYRUN\nAPPROVER=%s\nDATE=%s\n" "${APPROVER_ID:?}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > reports/compliance/wrk-188-worldenergydata-dryrun-approval.txt
-printf "WRK=188\nSTATUS=APPROVED_FOR_SIMULATION\nAPPROVER=%s\nDATE=%s\n" "${APPROVER_ID:?}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > reports/compliance/wrk-188-worldenergydata-simulation-approval.txt
+REGISTRY="config/governance/wrk-188-approvers.txt"
+test -f "$REGISTRY"
+# Registry format: one approver ID per line; blank/comment lines are not allowed.
+DRYRUN_APPROVER_ID="${DRYRUN_APPROVER_ID:?}"
+SIM_APPROVER_ID="${SIM_APPROVER_ID:?}"
+APPLY_APPROVER_ID="${APPLY_APPROVER_ID:?}"
+echo "$DRYRUN_APPROVER_ID" | rg -q '^[a-zA-Z0-9][a-zA-Z0-9_.@-]{2,}$'
+echo "$SIM_APPROVER_ID" | rg -q '^[a-zA-Z0-9][a-zA-Z0-9_.@-]{2,}$'
+echo "$APPLY_APPROVER_ID" | rg -q '^[a-zA-Z0-9][a-zA-Z0-9_.@-]{2,}$'
+test "$DRYRUN_APPROVER_ID" != "$SIM_APPROVER_ID"
+test "$DRYRUN_APPROVER_ID" != "$APPLY_APPROVER_ID"
+test "$SIM_APPROVER_ID" != "$APPLY_APPROVER_ID"
+rg -qx "$DRYRUN_APPROVER_ID" "$REGISTRY"
+rg -qx "$SIM_APPROVER_ID" "$REGISTRY"
+rg -qx "$APPLY_APPROVER_ID" "$REGISTRY"
+printf "WRK=188\nSTATUS=APPROVED_FOR_DRYRUN\nAPPROVER=%s\nREGISTRY_SHA=%s\nDATE=%s\n" \
+  "$DRYRUN_APPROVER_ID" "$(sha256sum "$REGISTRY" | awk '{print $1}')" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  > reports/compliance/wrk-188-worldenergydata-dryrun-approval.txt
+printf "WRK=188\nSTATUS=APPROVED_FOR_SIMULATION\nAPPROVER=%s\nREGISTRY_SHA=%s\nDATE=%s\n" \
+  "$SIM_APPROVER_ID" "$(sha256sum "$REGISTRY" | awk '{print $1}')" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  > reports/compliance/wrk-188-worldenergydata-simulation-approval.txt
 ```
 
 ## Migration State Model
@@ -47,9 +68,15 @@ printf "WRK=188\nSTATUS=APPROVED_FOR_SIMULATION\nAPPROVER=%s\nDATE=%s\n" "${APPR
 - `partial-applied`: mixed state (some targets/pointers updated); rollback must run before any retry.
 
 ## Compliance Artifact Matrix
-- `tracked-required`: `dryrun-approval.txt`, `contract-selftest.env`, `script-bindings.env`, `script-bindings.env.sha256`, `simulation-approval.txt`, `simulation-result.env`, `split-publish-drill.env`, `downstream-remediation.env`, `pre-apply-publishability.env`, `pre-apply-gate-pass.env`, `approval.txt`, `approval.txt.sha256`, `approved-heads.env`, `approved-heads.env.sha256`, `review-bindings.env`, `review-bindings.env.sha256`.
-- `tracked-optional`: `success-manifest.json`, `execution-state.env`, `rollback-blocked.log`, `semantic-restore-signoff.env`, `hard-restore-signoff.env`.
+- `tracked-required`: `dryrun-approval.txt`, `contract-selftest.env`, `script-bindings.env`, `script-bindings.env.sha256`, `simulation-approval.txt`, `simulation-result.env`, `split-publish-drill.env`, `downstream-remediation.env`, `pre-apply-publishability.env`, `pre-apply-gate-pass.env`, `approval.txt`, `approval.txt.sha256`, `approved-heads.env`, `approved-heads.env.sha256`, `review-bindings.env`, `review-bindings.env.sha256`, `success-manifest.json`.
+- `tracked-optional`: `execution-state.env`, `rollback-blocked.log`, `perf-override.env`, `review-override.env`, `protected-branch-signoff.env`, `semantic-restore-signoff.env`, `hard-restore-signoff.env`.
 - `transient-generated`: other `reports/compliance/wrk-188-worldenergydata-*` files may exist during run and must be cleaned/archived before final clean-tree gate.
+`tracked-required` is authoritative; closure gate and done checklist derive from this list. `closure-gate-pass.env` is a terminal output artifact generated by the closure gate itself.
+
+Transient artifact lifecycle policy (reruns):
+- `retain`: `tracked-required` and `tracked-optional` artifacts.
+- `overwrite`: generated checksum/manifests (`*-apply-preflight.txt`, `*-hits*.txt`, `*-diff-after-*.txt`).
+- `clean`: any `wrk-188-worldenergydata-*.tmp` and non-allowlisted `reports/compliance/wrk-188-worldenergydata-*` files before commit/closure gates.
 
 ## Migration Script Contract
 
@@ -84,8 +111,16 @@ test -x scripts/operations/compliance/migrate_specs_to_workspace.sh
 scripts/operations/compliance/migrate_specs_to_workspace.sh --help >/dev/null
 test -x scripts/operations/compliance/check_governance.sh
 scripts/operations/compliance/check_governance.sh --help >/dev/null
+scripts/operations/compliance/check_governance.sh --help | rg -q -- '--mode'
+scripts/operations/compliance/check_governance.sh --help | rg -q -- '--scope'
+scripts/operations/compliance/check_governance.sh --help | rg -q -- 'changed'
 test -x scripts/review/cross-review.sh
 test -x scripts/review/normalize-verdicts.sh
+command -v claude codex gemini >/dev/null
+test -f config/governance/wrk-188-approvers.txt
+test -s config/governance/wrk-188-approvers.txt
+test "$(rg -n '^[a-zA-Z0-9][a-zA-Z0-9_.@-]{2,}$' config/governance/wrk-188-approvers.txt | wc -l | tr -d ' ')" -ge 3
+test -z "$(rg -n -v '^[a-zA-Z0-9][a-zA-Z0-9_.@-]{2,}$' config/governance/wrk-188-approvers.txt | cat)"
 TMP_VERDICT="$(mktemp)"
 printf "### Verdict: REQUEST_CHANGES\n" > "$TMP_VERDICT"
 test "$(scripts/review/normalize-verdicts.sh "$TMP_VERDICT")" = "MAJOR"
@@ -114,6 +149,26 @@ awk --version 2>/dev/null | head -n1 | rg -q 'GNU Awk|mawk'
 sed --version 2>/dev/null | head -n1 | rg -q 'GNU sed'
 sha256sum --version | head -n1 | rg -q 'sha256sum'
 find --version | head -n1 | rg -q 'GNU findutils'
+# commit identity/auth capability preflight
+test -n "$(git config --get user.name)"
+test -n "$(git config --get user.email)"
+test -n "$(git -C worldenergydata config --get user.name)"
+test -n "$(git -C worldenergydata config --get user.email)"
+git remote get-url origin >/dev/null
+git -C worldenergydata remote get-url origin >/dev/null
+AUTH_READY=0
+for i in 1 2 3; do
+  if git ls-remote --exit-code origin >/dev/null && git -C worldenergydata ls-remote --exit-code origin >/dev/null; then
+    AUTH_READY=1
+    break
+  fi
+  sleep 5
+done
+test "$AUTH_READY" = "1"
+# explicit branch policy mode (WRK-188 execute mode is direct push only; pr_only is unsupported-auth-policy)
+BRANCH_POLICY_MODE="${BRANCH_POLICY_MODE:-direct_push}"
+echo "$BRANCH_POLICY_MODE" | rg -q '^(direct_push|pr_only)$'
+test "$BRANCH_POLICY_MODE" = "direct_push"
 # publishability preflight (branch policy/permissions)
 git -C worldenergydata push --dry-run
 git push --dry-run
@@ -122,6 +177,7 @@ Assumptions:
 - Commands target GNU/Linux shell toolchain (`bash`, GNU `find`, GNU `sed`, GNU coreutils).
 - Unicode normalization collision handling (NFC/NFD) is out of scope for wave-1.
 - Unsupported environment outcome is `UNSUPPORTED_ENV_ABORT` (non-zero exit and no apply).
+- Unsupported auth/branch-policy mode outcome is `UNSUPPORTED_AUTH_POLICY_ABORT` (non-zero exit and no apply).
 
 ## File Handling Policy
 
@@ -139,6 +195,12 @@ rg -q '^STATUS=APPROVED_FOR_DRYRUN$' reports/compliance/wrk-188-worldenergydata-
 # interface contract gate (required before dry-run approval can progress)
 scripts/operations/compliance/migrate_specs_to_workspace.sh --help | rg -q -- '--apply'
 scripts/operations/compliance/migrate_specs_to_workspace.sh --help | rg -q -- '--repos'
+# early performance guard before expensive checksum generation
+SRC_COUNT_EARLY="$(find worldenergydata -type f -path '*/specs/*' -print0 | tr -cd '\0' | wc -c)"
+if [ "$SRC_COUNT_EARLY" -ge 50000 ] && [ "${PERF_OVERRIDE:-}" != "YES" ]; then
+  echo "source file count $SRC_COUNT_EARLY exceeds guard; set PERF_OVERRIDE=YES with governance note to continue"
+  exit 1
+fi
 scripts/operations/compliance/migrate_specs_to_workspace.sh --repos worldenergydata | tee reports/compliance/wrk-188-worldenergydata-dryrun.log
 find worldenergydata -type f -path '*/specs/*' -print0 | sort -z | xargs -0 sha256sum > reports/compliance/wrk-188-worldenergydata-source-checksums.txt
 python3 - <<'PY'
@@ -247,24 +309,36 @@ if [ "$SRC_COUNT" -ge 50000 ] && [ "${PERF_OVERRIDE:-}" != "YES" ]; then
   echo "source file count $SRC_COUNT exceeds guard; set PERF_OVERRIDE=YES with governance note to continue"
   exit 1
 fi
+if [ "${PERF_OVERRIDE:-}" = "YES" ]; then
+  printf "PERF_OVERRIDE=YES\nAPPROVER=%s\nREASON=%s\nDATE=%s\n" "${APPLY_APPROVER_ID:-unknown}" "${PERF_OVERRIDE_REASON:?}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > reports/compliance/wrk-188-worldenergydata-perf-override.env
+fi
 echo "$SRC_COUNT" > reports/compliance/wrk-188-worldenergydata-source-count.txt
 git -C worldenergydata rev-parse HEAD > reports/compliance/wrk-188-worldenergydata-pre-apply-submodule-sha.txt
 # explicit approval artifact (required before apply)
-# operator identity source must be explicit (human approver handle or CI identity)
-test -n "${APPROVER_ID:-}"
-echo "$APPROVER_ID" | rg -q '^[a-zA-Z0-9_.@-]{3,}$'
-printf "WRK=188\nSPEC=worldenergydata-wave1-migration\nSTATUS=APPROVED\nAPPROVER=%s\nDRY_RUN_HASH=%s\nDATE=%s\n" \
-  "$APPROVER_ID" \
+# apply approval must come from distinct, registry-authorized approver
+REGISTRY="config/governance/wrk-188-approvers.txt"
+test -f "$REGISTRY"
+test -n "${APPLY_APPROVER_ID:-}"
+echo "$APPLY_APPROVER_ID" | rg -q '^[a-zA-Z0-9][a-zA-Z0-9_.@-]{2,}$'
+rg -qx "$APPLY_APPROVER_ID" "$REGISTRY"
+DRYRUN_APPROVER="$(awk -F= '/^APPROVER=/{print $2}' reports/compliance/wrk-188-worldenergydata-dryrun-approval.txt)"
+SIM_APPROVER="$(awk -F= '/^APPROVER=/{print $2}' reports/compliance/wrk-188-worldenergydata-simulation-approval.txt)"
+test "$APPLY_APPROVER_ID" != "$DRYRUN_APPROVER"
+test "$APPLY_APPROVER_ID" != "$SIM_APPROVER"
+printf "WRK=188\nSPEC=worldenergydata-wave1-migration\nSTATUS=APPROVED\nAPPROVER=%s\nREGISTRY_SHA=%s\nDRY_RUN_HASH=%s\nDATE=%s\n" \
+  "$APPLY_APPROVER_ID" \
+  "$(sha256sum "$REGISTRY" | awk '{print $1}')" \
   "$(cut -d' ' -f1 reports/compliance/wrk-188-worldenergydata-dryrun.log.sha256)" \
   "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
   > reports/compliance/wrk-188-worldenergydata-approval.txt
 sha256sum reports/compliance/wrk-188-worldenergydata-approval.txt > reports/compliance/wrk-188-worldenergydata-approval.txt.sha256
 # approval artifacts must be committed before apply gate
 git add reports/compliance/wrk-188-worldenergydata-approval.txt reports/compliance/wrk-188-worldenergydata-approval.txt.sha256
-git commit -m "docs(approval): WRK-188 dry-run approval artifact"
+git commit -m "docs(approval): WRK-188 apply approval artifact"
 # capture authoritative heads after approval commit
 printf "HUB_HEAD=%s\nWORLDENERGYDATA_HEAD=%s\n" "$(git rev-parse HEAD)" "$(git -C worldenergydata rev-parse HEAD)" > reports/compliance/wrk-188-worldenergydata-approved-heads.env
 sha256sum reports/compliance/wrk-188-worldenergydata-approved-heads.env > reports/compliance/wrk-188-worldenergydata-approved-heads.env.sha256
+# note: phase-2.5 regenerates approved-heads to lock apply to the reviewed head state
 # bind script immutability between approval and apply
 printf "MIGRATE_SCRIPT_SHA=%s\nGOVERNANCE_SCRIPT_SHA=%s\nCROSS_REVIEW_SCRIPT_SHA=%s\nNORMALIZE_VERDICTS_SCRIPT_SHA=%s\n" \
   "$(sha256sum scripts/operations/compliance/migrate_specs_to_workspace.sh | awk '{print $1}')" \
@@ -285,6 +359,8 @@ git clone --quiet --shared . "$TMP_CLONE"
 (
   cd "$TMP_CLONE"
   git submodule update --init --recursive >/dev/null
+  test -x scripts/operations/compliance/migrate_specs_to_workspace.sh
+  scripts/operations/compliance/migrate_specs_to_workspace.sh --repos worldenergydata >/dev/null
   SRC="$(find worldenergydata -type f -path '*/specs/*' | head -n1)"
   test -n "$SRC"
   TGT="$(python3 - <<'PY' "$SRC"
@@ -377,10 +453,17 @@ else
   cp reports/compliance/wrk-188-worldenergydata-downstream-hits.txt reports/compliance/wrk-188-worldenergydata-downstream-hits-unallowed.txt
 fi
 test ! -s reports/compliance/wrk-188-worldenergydata-downstream-hits-unallowed.txt
+REGISTRY="config/governance/wrk-188-approvers.txt"
+test -f "$REGISTRY"
+REGISTRY_SHA_NOW="$(sha256sum "$REGISTRY" | awk '{print $1}')"
 test -f reports/compliance/wrk-188-worldenergydata-simulation-approval.txt
 rg -q '^STATUS=APPROVED_FOR_SIMULATION$' reports/compliance/wrk-188-worldenergydata-simulation-approval.txt
+rg -q "^REGISTRY_SHA=$REGISTRY_SHA_NOW$" reports/compliance/wrk-188-worldenergydata-simulation-approval.txt
 test -f reports/compliance/wrk-188-worldenergydata-simulation-result.env
 rg -q '^SIMULATION_STATUS=PASS$' reports/compliance/wrk-188-worldenergydata-simulation-result.env
+test -f reports/compliance/wrk-188-worldenergydata-dryrun-approval.txt
+rg -q '^STATUS=APPROVED_FOR_DRYRUN$' reports/compliance/wrk-188-worldenergydata-dryrun-approval.txt
+rg -q "^REGISTRY_SHA=$REGISTRY_SHA_NOW$" reports/compliance/wrk-188-worldenergydata-dryrun-approval.txt
 test -f reports/compliance/wrk-188-worldenergydata-approval.txt
 test -f reports/compliance/wrk-188-worldenergydata-approval.txt.sha256
 sha256sum -c reports/compliance/wrk-188-worldenergydata-approval.txt.sha256
@@ -388,11 +471,19 @@ git ls-files --error-unmatch reports/compliance/wrk-188-worldenergydata-approval
 git ls-files --error-unmatch reports/compliance/wrk-188-worldenergydata-approval.txt.sha256 >/dev/null
 rg -q '^STATUS=APPROVED$' reports/compliance/wrk-188-worldenergydata-approval.txt
 APPROVER_APPROVAL="$(awk -F= '/^APPROVER=/{print $2}' reports/compliance/wrk-188-worldenergydata-approval.txt)"
-echo "$APPROVER_APPROVAL" | rg -q '^[a-zA-Z0-9_.@-]{3,}$'
+echo "$APPROVER_APPROVAL" | rg -q '^[a-zA-Z0-9][a-zA-Z0-9_.@-]{2,}$'
+rg -qx "$APPROVER_APPROVAL" "$REGISTRY"
+rg -q "^REGISTRY_SHA=$REGISTRY_SHA_NOW$" reports/compliance/wrk-188-worldenergydata-approval.txt
+DRYRUN_APPROVER="$(awk -F= '/^APPROVER=/{print $2}' reports/compliance/wrk-188-worldenergydata-dryrun-approval.txt)"
+SIM_APPROVER="$(awk -F= '/^APPROVER=/{print $2}' reports/compliance/wrk-188-worldenergydata-simulation-approval.txt)"
+test "$APPROVER_APPROVAL" != "$DRYRUN_APPROVER"
+test "$APPROVER_APPROVAL" != "$SIM_APPROVER"
 rg -q "^DRY_RUN_HASH=$(cut -d' ' -f1 reports/compliance/wrk-188-worldenergydata-dryrun.log.sha256)$" reports/compliance/wrk-188-worldenergydata-approval.txt
 # protected-branch explicit gate
 if echo "$(git rev-parse --abbrev-ref HEAD)" | rg -q '^(main|master)$'; then
-  test "${ALLOW_PROTECTED_BRANCH:-}" = "YES"
+  test -f reports/compliance/wrk-188-worldenergydata-protected-branch-signoff.env
+  rg -q '^PROTECTED_BRANCH=APPROVED$' reports/compliance/wrk-188-worldenergydata-protected-branch-signoff.env
+  rg -q '^APPROVER=[a-zA-Z0-9][a-zA-Z0-9_.@-]{2,}$' reports/compliance/wrk-188-worldenergydata-protected-branch-signoff.env
 fi
 # publishability gate (universal blocker before apply)
 PUBLISHABLE=0
@@ -414,9 +505,18 @@ SPEC_SHA_NOW="$(sha256sum specs/wrk/WRK-188/worldenergydata-wave1-migration.md |
 test "$REVIEW_SPEC_SHA" = "$SPEC_SHA_NOW"
 test "$REVIEW_HUB_HEAD" = "$HUB_HEAD"
 test "$REVIEW_WORLDENERGYDATA_HEAD" = "$WORLDENERGYDATA_HEAD"
-test "$REVIEW_CLAUDE_SHA" = "$(sha256sum "$REVIEW_CLAUDE_FILE" | awk '{print $1}')"
-test "$REVIEW_CODEX_SHA" = "$(sha256sum "$REVIEW_CODEX_FILE" | awk '{print $1}')"
-test "$REVIEW_GEMINI_SHA" = "$(sha256sum "$REVIEW_GEMINI_FILE" | awk '{print $1}')"
+if test -f reports/compliance/wrk-188-worldenergydata-review-override.env; then
+  source reports/compliance/wrk-188-worldenergydata-review-override.env
+  rg -q '^REVIEW_OVERRIDE=APPROVED$' reports/compliance/wrk-188-worldenergydata-review-override.env
+  echo "$MISSING_PROVIDER" | rg -q '^(claude|codex|gemini)$'
+  test "$REVIEW_CLAUDE_SHA" = "$(sha256sum "$REVIEW_CLAUDE_FILE" | awk '{print $1}')" || test "$MISSING_PROVIDER" = "claude"
+  test "$REVIEW_CODEX_SHA" = "$(sha256sum "$REVIEW_CODEX_FILE" | awk '{print $1}')" || test "$MISSING_PROVIDER" = "codex"
+  test "$REVIEW_GEMINI_SHA" = "$(sha256sum "$REVIEW_GEMINI_FILE" | awk '{print $1}')" || test "$MISSING_PROVIDER" = "gemini"
+else
+  test "$REVIEW_CLAUDE_SHA" = "$(sha256sum "$REVIEW_CLAUDE_FILE" | awk '{print $1}')"
+  test "$REVIEW_CODEX_SHA" = "$(sha256sum "$REVIEW_CODEX_FILE" | awk '{print $1}')"
+  test "$REVIEW_GEMINI_SHA" = "$(sha256sum "$REVIEW_GEMINI_FILE" | awk '{print $1}')"
+fi
 printf "PRE_APPLY_GATE=PASS\nDATE=%s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > reports/compliance/wrk-188-worldenergydata-pre-apply-gate-pass.env
 timeout 1800s scripts/operations/compliance/migrate_specs_to_workspace.sh --apply --repos worldenergydata || {
   printf "STATE=partial-applied\nDATE=%s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > reports/compliance/wrk-188-worldenergydata-rollback-state.env
@@ -537,8 +637,9 @@ test ! -s reports/compliance/wrk-188-worldenergydata-downstream-hits-unallowed.t
 ALLOWLIST_COUNT="$(test -s "$ALLOWLIST" && wc -l < "$ALLOWLIST" | tr -d ' ' || echo 0)"
 HIT_COUNT="$(wc -l < reports/compliance/wrk-188-worldenergydata-downstream-hits.txt | tr -d ' ')"
 UNALLOWED_COUNT="$(wc -l < reports/compliance/wrk-188-worldenergydata-downstream-hits-unallowed.txt | tr -d ' ')"
+APPROVER_APPROVAL="$(awk -F= '/^APPROVER=/{print $2}' reports/compliance/wrk-188-worldenergydata-approval.txt)"
 printf "DOWNSTREAM_REMEDIATION=PASS\nALLOWLIST_COUNT=%s\nHIT_COUNT=%s\nUNALLOWED_COUNT=%s\nAPPROVER=%s\nDATE=%s\n" \
-  "$ALLOWLIST_COUNT" "$HIT_COUNT" "$UNALLOWED_COUNT" "${APPROVER_ID:-unknown}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  "$ALLOWLIST_COUNT" "$HIT_COUNT" "$UNALLOWED_COUNT" "$APPROVER_APPROVAL" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
   > reports/compliance/wrk-188-worldenergydata-downstream-remediation.env
 # advisory workspace hygiene (non-blocking)
 rg -n 'worldenergydata/(.*/)?specs/' . -g '!.git/**' > reports/compliance/wrk-188-worldenergydata-downstream-hygiene.txt || true
@@ -567,7 +668,7 @@ SUB_SHA="$(git -C worldenergydata rev-parse HEAD)"
 9. Hub pre-commit scope gate, governance gate, and commit:
 ```bash
 # deterministic compliance artifact allowlist cleanup before stage
-ALLOWED_REPORTS='(dryrun-approval.txt|contract-selftest.env|script-bindings.env|script-bindings.env.sha256|simulation-approval.txt|simulation-result.env|split-publish-drill.env|downstream-remediation.env|dryrun.log|dryrun.log.sha256|source-checksums.txt|source-checksums.txt.sha256|approved-source-files.txt|approved-source-files.txt.sha256|approved-target-files.txt|source-spec-roots.txt|approved-heads.env|approved-heads.env.sha256|pre-apply-submodule-sha.txt|approval.txt|approval.txt.sha256|review-bindings.env|review-bindings.env.sha256|pre-apply-publishability.env|pre-apply-gate-pass.env|closure-gate-pass.env|semantic-restore-signoff.env|hard-restore-signoff.env|execution-state.env|success-manifest.json)'
+ALLOWED_REPORTS='(dryrun-approval.txt|contract-selftest.env|script-bindings.env|script-bindings.env.sha256|simulation-approval.txt|simulation-result.env|split-publish-drill.env|downstream-remediation.env|dryrun.log|dryrun.log.sha256|source-checksums.txt|source-checksums.txt.sha256|approved-source-files.txt|approved-source-files.txt.sha256|approved-target-files.txt|source-spec-roots.txt|approved-heads.env|approved-heads.env.sha256|pre-apply-submodule-sha.txt|approval.txt|approval.txt.sha256|review-bindings.env|review-bindings.env.sha256|pre-apply-publishability.env|pre-apply-gate-pass.env|closure-gate-pass.env|perf-override.env|review-override.env|protected-branch-signoff.env|semantic-restore-signoff.env|hard-restore-signoff.env|execution-state.env|success-manifest.json)'
 find reports/compliance -maxdepth 1 -type f -name 'wrk-188-worldenergydata-*' -print | rg -v "$ALLOWED_REPORTS" | xargs -r rm -f
 git add worldenergydata specs/repos/worldenergydata reports/compliance
 test "$(git rev-parse :worldenergydata)" = "$SUB_SHA"
@@ -636,6 +737,11 @@ manifest = {
   "spec_sha256": sh("sha256sum specs/wrk/WRK-188/worldenergydata-wave1-migration.md | awk '{print $1}'"),
   "hub_head": sh("git rev-parse HEAD"),
   "worldenergydata_head": sh("git -C worldenergydata rev-parse HEAD"),
+  "approval_sha256": sh("sha256sum reports/compliance/wrk-188-worldenergydata-approval.txt | awk '{print $1}'"),
+  "approved_heads_sha256": sh("sha256sum reports/compliance/wrk-188-worldenergydata-approved-heads.env | awk '{print $1}'"),
+  "review_bindings_sha256": sh("sha256sum reports/compliance/wrk-188-worldenergydata-review-bindings.env | awk '{print $1}'"),
+  "script_bindings_sha256": sh("sha256sum reports/compliance/wrk-188-worldenergydata-script-bindings.env | awk '{print $1}'"),
+  "simulation_result_sha256": sh("sha256sum reports/compliance/wrk-188-worldenergydata-simulation-result.env | awk '{print $1}'"),
   "dry_run_log_sha256": sh("cut -d' ' -f1 reports/compliance/wrk-188-worldenergydata-dryrun.log.sha256"),
   "source_checksums_sha256": sh("cut -d' ' -f1 reports/compliance/wrk-188-worldenergydata-source-checksums.txt.sha256"),
   "approved_source_files_sha256": sh("cut -d' ' -f1 reports/compliance/wrk-188-worldenergydata-approved-source-files.txt.sha256"),
@@ -665,6 +771,7 @@ for f in \
   reports/compliance/wrk-188-worldenergydata-approved-heads.env.sha256 \
   reports/compliance/wrk-188-worldenergydata-review-bindings.env \
   reports/compliance/wrk-188-worldenergydata-review-bindings.env.sha256 \
+  reports/compliance/wrk-188-worldenergydata-success-manifest.json \
 ; do
   test -s "$f"
 done
@@ -677,6 +784,11 @@ rg -q '^SPLIT_PUBLISH_DRILL=PASS$' reports/compliance/wrk-188-worldenergydata-sp
 rg -q '^DOWNSTREAM_REMEDIATION=PASS$' reports/compliance/wrk-188-worldenergydata-downstream-remediation.env
 rg -q '^PUBLISHABILITY=PASS$' reports/compliance/wrk-188-worldenergydata-pre-apply-publishability.env
 rg -q '^PRE_APPLY_GATE=PASS$' reports/compliance/wrk-188-worldenergydata-pre-apply-gate-pass.env
+if test -f reports/compliance/wrk-188-worldenergydata-perf-override.env; then
+  rg -q '^PERF_OVERRIDE=YES$' reports/compliance/wrk-188-worldenergydata-perf-override.env
+  rg -q '^APPROVER=[a-zA-Z0-9][a-zA-Z0-9_.@-]{2,}$' reports/compliance/wrk-188-worldenergydata-perf-override.env
+  rg -q '^REASON=.+$' reports/compliance/wrk-188-worldenergydata-perf-override.env
+fi
 printf "CLOSURE_GATE=PASS\nDATE=%s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > reports/compliance/wrk-188-worldenergydata-closure-gate-pass.env
 ```
 
@@ -692,6 +804,7 @@ Failure policy:
 - `MIGRATION_AND_PUBLISH_PASS`: migration and publish both completed.
 - `MIGRATION_PASS_PUBLISH_BLOCKED`: local migration checks pass but publish deferred by policy.
 - `UNSUPPORTED_ENV_ABORT`: prerequisites/toolchain gate failed; stop before apply.
+- `UNSUPPORTED_AUTH_POLICY_ABORT`: git identity/auth/branch-policy prerequisite failed; stop before apply.
 
 ## Done Checklist
 - Dry-run log + hash captured and attached to WRK-188.
@@ -711,7 +824,8 @@ Failure policy:
 - Publishability pre-apply gate passed and recorded in `pre-apply-publishability.env`.
 - Downstream remediation artifact recorded as PASS (`downstream-remediation.env`).
 - Consolidated closure gate passed (`closure-gate-pass.env`).
-- Rollback mode signoff artifacts required for non-default restore paths (`semantic-restore-signoff.env` / `hard-restore-signoff.env`).
+- Override artifacts (if used) include approver + reason + timestamp (`perf-override.env`, `review-override.env`).
+- Protected/rollback signoff artifacts present only when corresponding guarded paths are invoked (`protected-branch-signoff.env`, `semantic-restore-signoff.env`, `hard-restore-signoff.env`).
 - Filename edge checks passed (control-char rejection + pointer path assertion).
 - Unsupported environment/toolchain runs terminate with non-zero status in prerequisites.
 - Type-conflict gate passed (`target-type-conflicts.txt` empty).
@@ -767,7 +881,7 @@ test -z "$(find worldenergydata -path '*/specs/*' -type l)"
 ```
 
 ## Multi-Provider Workflow Continuity Check
-Run before apply:
+Run after dry-run approval commit and `approved-heads.env` generation, then before apply:
 ```bash
 timeout 900s scripts/review/cross-review.sh specs/wrk/WRK-188/worldenergydata-wave1-migration.md all --type plan || { echo "cross-review timed out/failed; rerun provider submissions before apply"; exit 1; }
 F_CLAUDE="$(ls -1t scripts/review/results/*worldenergydata-wave1-migration.md-plan-claude.md | head -n1)"
@@ -784,6 +898,9 @@ printf "REVIEW_SPEC_SHA=%s\nREVIEW_HUB_HEAD=%s\nREVIEW_WORLDENERGYDATA_HEAD=%s\n
   "$F_GEMINI" "$(sha256sum "$F_GEMINI" | awk '{print $1}')" \
   > reports/compliance/wrk-188-worldenergydata-review-bindings.env
 sha256sum reports/compliance/wrk-188-worldenergydata-review-bindings.env > reports/compliance/wrk-188-worldenergydata-review-bindings.env.sha256
+# phase-2.5 head refresh to pin apply against reviewed head state
+printf "HUB_HEAD=%s\nWORLDENERGYDATA_HEAD=%s\n" "$(git rev-parse HEAD)" "$(git -C worldenergydata rev-parse HEAD)" > reports/compliance/wrk-188-worldenergydata-approved-heads.env
+sha256sum reports/compliance/wrk-188-worldenergydata-approved-heads.env > reports/compliance/wrk-188-worldenergydata-approved-heads.env.sha256
 ```
 Pass condition:
 - Reviews confirm migration can proceed while preserving standard workflow:
@@ -794,10 +911,35 @@ Pass condition:
 - Outage handling:
   - Retry failed provider submissions up to 3 times (5-minute interval).
   - If still unavailable, log governance override in WRK-188 and attach latest available artifacts + rationale.
+  - For executable degraded mode, create:
+```bash
+printf "REVIEW_OVERRIDE=APPROVED\nMISSING_PROVIDER=%s\nAPPROVER=%s\nREASON=%s\nDATE=%s\n" \
+  "${MISSING_PROVIDER:?}" "${APPLY_APPROVER_ID:?}" "${REVIEW_OVERRIDE_REASON:?}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  > reports/compliance/wrk-188-worldenergydata-review-override.env
+```
 - Freshness rule:
   - Re-run this step after any edit to `specs/wrk/WRK-188/worldenergydata-wave1-migration.md` before apply.
 - Authoritative review gate artifact:
   - Only `reports/compliance/wrk-188-worldenergydata-review-bindings.env` is used by apply prechecks.
+
+## Signoff Artifact Creation
+Create governance signoff artifacts only when the corresponding guarded path is needed:
+```bash
+# protected branch apply (required only when hub branch is main/master)
+printf "PROTECTED_BRANCH=APPROVED\nAPPROVER=%s\nREASON=%s\nDATE=%s\n" \
+  "${APPLY_APPROVER_ID:?}" "${PROTECTED_BRANCH_REASON:?}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  > reports/compliance/wrk-188-worldenergydata-protected-branch-signoff.env
+
+# hard restore (required only for rollback step 3 destructive restore)
+printf "HARD_RESTORE=APPROVED\nAPPROVER=%s\nREASON=%s\nDATE=%s\n" \
+  "${APPLY_APPROVER_ID:?}" "${HARD_RESTORE_REASON:?}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  > reports/compliance/wrk-188-worldenergydata-hard-restore-signoff.env
+
+# semantic restore (required only when ROLLBACK_MODE=SEMANTIC_RESTORE)
+printf "SEMANTIC_RESTORE=APPROVED\nAPPROVER=%s\nREASON=%s\nDATE=%s\n" \
+  "${APPLY_APPROVER_ID:?}" "${SEMANTIC_RESTORE_REASON:?}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  > reports/compliance/wrk-188-worldenergydata-semantic-restore-signoff.env
+```
 
 ## Rollback
 Rollback state machine (deterministic):
@@ -864,7 +1006,7 @@ elif [ "$ROLLBACK_MODE" = "SEMANTIC_RESTORE" ]; then
   # Requires explicit signed governance artifact before use.
   test -f reports/compliance/wrk-188-worldenergydata-semantic-restore-signoff.env
   rg -q '^SEMANTIC_RESTORE=APPROVED$' reports/compliance/wrk-188-worldenergydata-semantic-restore-signoff.env
-  rg -q '^APPROVER=[a-zA-Z0-9_.@-]{3,}$' reports/compliance/wrk-188-worldenergydata-semantic-restore-signoff.env
+  rg -q '^APPROVER=[a-zA-Z0-9][a-zA-Z0-9_.@-]{2,}$' reports/compliance/wrk-188-worldenergydata-semantic-restore-signoff.env
   test -z "$(find worldenergydata -type f -path '*/specs/*' ! -name 'README.md' | cat)"
   test -z "$(git diff --name-only | rg -v '^(worldenergydata/|specs/repos/worldenergydata/|reports/compliance/)' | cat)"
 else
@@ -894,9 +1036,10 @@ for rec in out.split("\0"):
     if p and not p.startswith(allowed):
         raise SystemExit(1)
 PY
+# create artifact via `Signoff Artifact Creation` section before continuing
 test -f reports/compliance/wrk-188-worldenergydata-hard-restore-signoff.env
 rg -q '^HARD_RESTORE=APPROVED$' reports/compliance/wrk-188-worldenergydata-hard-restore-signoff.env
-rg -q '^APPROVER=[a-zA-Z0-9_.@-]{3,}$' reports/compliance/wrk-188-worldenergydata-hard-restore-signoff.env
+rg -q '^APPROVER=[a-zA-Z0-9][a-zA-Z0-9_.@-]{2,}$' reports/compliance/wrk-188-worldenergydata-hard-restore-signoff.env
 git restore --staged --worktree worldenergydata specs/repos/worldenergydata
 python3 - <<'PY'
 import subprocess
@@ -927,7 +1070,7 @@ for d in sorted(Path("specs/repos/worldenergydata").rglob("*"), reverse=True):
             pass
 PY
 find reports/compliance -maxdepth 1 -type f -name 'wrk-188-worldenergydata-*.tmp' -delete
-test -z "$(find reports/compliance -maxdepth 1 -type f -name 'wrk-188-worldenergydata-*' -print | rg -v '(dryrun-approval.txt|contract-selftest.env|script-bindings.env|script-bindings.env.sha256|simulation-approval.txt|simulation-result.env|split-publish-drill.env|downstream-remediation.env|dryrun.log|dryrun.log.sha256|source-checksums.txt|source-checksums.txt.sha256|approved-source-files.txt|approved-source-files.txt.sha256|approved-target-files.txt|source-spec-roots.txt|approved-heads.env|approved-heads.env.sha256|pre-apply-submodule-sha.txt|approval.txt|approval.txt.sha256|review-bindings.env|review-bindings.env.sha256|pre-apply-publishability.env|pre-apply-gate-pass.env|closure-gate-pass.env|semantic-restore-signoff.env|hard-restore-signoff.env|rollback-state.env|rollback-pass.env)$' | cat)"
+test -z "$(find reports/compliance -maxdepth 1 -type f -name 'wrk-188-worldenergydata-*' -print | rg -v '(dryrun-approval.txt|contract-selftest.env|script-bindings.env|script-bindings.env.sha256|simulation-approval.txt|simulation-result.env|split-publish-drill.env|downstream-remediation.env|dryrun.log|dryrun.log.sha256|source-checksums.txt|source-checksums.txt.sha256|approved-source-files.txt|approved-source-files.txt.sha256|approved-target-files.txt|source-spec-roots.txt|approved-heads.env|approved-heads.env.sha256|pre-apply-submodule-sha.txt|approval.txt|approval.txt.sha256|review-bindings.env|review-bindings.env.sha256|pre-apply-publishability.env|pre-apply-gate-pass.env|closure-gate-pass.env|perf-override.env|review-override.env|protected-branch-signoff.env|semantic-restore-signoff.env|hard-restore-signoff.env|rollback-state.env|rollback-pass.env)$' | cat)"
 test -f reports/compliance/wrk-188-worldenergydata-approved-heads.env.sha256
 test -f reports/compliance/wrk-188-worldenergydata-review-bindings.env.sha256
 test -f reports/compliance/wrk-188-worldenergydata-rollback-state.env || true
