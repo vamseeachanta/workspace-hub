@@ -3,8 +3,8 @@ title: "WRK-188 Worldenergydata Wave-1 Migration Plan"
 description: "Dry-run manifest and controlled apply checklist for worldenergydata spec centralization"
 version: "1.13"
 module: governance
-status: "draft"
-progress: 0
+status: "ready-for-followup"
+progress: 100
 created: "2026-02-17"
 updated: "2026-02-18"
 priority: "high"
@@ -1085,3 +1085,9 @@ PY
 - Unicode normalization collisions (NFC/NFD) remain out-of-scope and require explicit signoff before multi-platform rollout.
 - Case-insensitive reserved-name edge cases outside current collision checks require follow-up in next wave.
 - Blocking downstream checks are intentionally limited to governance surfaces; full-repo scan is advisory and tracked in `downstream-hygiene.txt`.
+
+## Handoff (2026-02-18)
+- Completed in this cycle: artifact contract canonicalization, phase/order hardening, split approver controls, review-bindings integrity contract, rollback/protected-branch signoff controls.
+- Associated documentation commits in `workspace-hub`: `1260178`, `3fb604a`, `f6f5ad1`.
+- Current stop condition: latest Codex cross-review is still `MAJOR`, primarily on policy consistency/risk acceptance wording, not missing core gates.
+- Next patch should only target remaining review deltas from `scripts/review/results/20260218T023227Z-worldenergydata-wave1-migration.md-plan-codex.md`.
