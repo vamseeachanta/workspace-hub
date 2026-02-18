@@ -7,6 +7,7 @@
     "CLAUDE_FLOW_REMOTE_EXECUTION": "false",
     "CLAUDE_FLOW_CHECKPOINTS_ENABLED": "true"
   },
+  "includeCoAuthoredBy": true,
   "permissions": {
     "allow": [
       "Bash(git status)",
@@ -43,6 +44,7 @@
       "Bash(eval:*)"
     ]
   },
+  "enabledMcpjsonServers": [],
   "hooks": {
     "PreToolUse": [
       {
@@ -54,8 +56,8 @@
           },
           {
             "type": "command",
-            "statusMessage": "Ecosystem link check",
-            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/propagate-ecosystem-check.sh\" 2>/dev/null || true"
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/propagate-ecosystem-check.sh\" 2>/dev/null || true",
+            "statusMessage": "Ecosystem link check"
           }
         ]
       },
@@ -144,8 +146,8 @@
         "hooks": [
           {
             "type": "command",
-            "statusMessage": "Post-task learning check",
-            "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/post-task-review.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'"
+            "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/post-task-review.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'",
+            "statusMessage": "Post-task learning check"
           }
         ]
       },
@@ -153,19 +155,20 @@
         "hooks": [
           {
             "type": "command",
-            "statusMessage": "Processing session signals",
-            "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/consume-signals.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'"
+            "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/consume-signals.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'",
+            "statusMessage": "Processing session signals"
           }
         ]
       }
     ]
   },
-  "plansDirectory": "specs/modules",
-  "includeCoAuthoredBy": true,
-  "enabledMcpjsonServers": [],
   "statusLine": {
     "type": "command",
     "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/statusline-command.sh\"",
     "padding": 0
+  },
+  "plansDirectory": "specs/modules",
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
   }
 }
