@@ -25,6 +25,7 @@ Note: Broad baseline still has pre-existing failures in large scope suites (seed
 ## Changed-File Regression Result
 - Result: **53 passed, 17 skipped, 0 failed**
 - Command style: `uv run python -m pytest ...`
+- Latest consolidated WRK-149 scope rerun (post `d42399cbb`): **32 passed, 8 skipped, 0 failed**
 
 ## Files Added
 - `src/digitalmodel/asset_integrity/tests/test_update_deep_additional.py`
@@ -43,9 +44,13 @@ Note: Broad baseline still has pre-existing failures in large scope suites (seed
 1. `test(asset_integrity): WRK-149 stabilize legacy pyintegrity tests for collection`
 2. `test(hydrodynamics): WRK-149 add coverage for polars exporter and hull catalog`
 3. `test(asset_integrity): WRK-149 extend unit coverage for update_deep and yml_utilities`
+4. `test(asset_integrity): WRK-149 cover yml_utilities fallback error branches`
 
 ## Cross-Review Record
 - Claude review file: `scripts/review/results/20260218T040220Z-wrk149-packaging-2026-02-18.md-implementation-claude.md`
   - Normalized verdict: `APPROVE`
 - Gemini review file: `scripts/review/results/20260218T040220Z-wrk149-packaging-2026-02-18.md-implementation-gemini.md`
   - Normalized verdict: `ERROR` (output did not contain a parseable review verdict)
+- Gemini retry on smaller payload:
+  - File: `scripts/review/results/20260218T043937Z-subagent-briefs-2026-02-18.md-implementation-gemini.md`
+  - Normalized verdict: `ERROR` (still non-parseable output)
