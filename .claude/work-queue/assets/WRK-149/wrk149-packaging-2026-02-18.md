@@ -13,7 +13,7 @@
 - `digitalmodel.hydrodynamics.diffraction.polars_exporter`: **94.83%** (latest focused rerun)
 - `digitalmodel.hydrodynamics.hull_library.catalog`: **94.70%**
 - `digitalmodel.hydrodynamics.hull_library.rao_registry`: **99.04%**
-- `digitalmodel.asset_integrity.common.yml_utilities`: **87.20%** (improved after fallback/error-path tests)
+- `digitalmodel.asset_integrity.common.yml_utilities`: **100.00%** (latest targeted run after branch-gap closure)
 
 ## Broad Priority Baseline Trend
 - Earlier broad run total: **6.05%**
@@ -28,6 +28,8 @@ Note: Broad baseline still has pre-existing failures in large scope suites (seed
 - Latest consolidated WRK-149 scope rerun (post `d42399cbb`): **32 passed, 8 skipped, 0 failed**
 - Latest focused priority rerun (with `test_rao_registry` included): **49 passed, 0 skipped, 0 failed**
 - Focused coverage artifact: `digitalmodel/coverage.wrk149.focused.xml`
+- Additional targeted run (`test_yml_utilities_additional.py`): **23 passed, 0 failed**
+- `yml_utilities.py` targeted coverage: **100.00%** (statements and branches)
 
 ## Files Added
 - `src/digitalmodel/asset_integrity/tests/test_update_deep_additional.py`
@@ -47,6 +49,7 @@ Note: Broad baseline still has pre-existing failures in large scope suites (seed
 2. `test(hydrodynamics): WRK-149 add coverage for polars exporter and hull catalog`
 3. `test(asset_integrity): WRK-149 extend unit coverage for update_deep and yml_utilities`
 4. `test(asset_integrity): WRK-149 cover yml_utilities fallback error branches`
+5. `test(asset_integrity): WRK-149 drive yml_utilities to full branch coverage`
 
 ## Cross-Review Record
 - Claude review file: `scripts/review/results/20260218T040220Z-wrk149-packaging-2026-02-18.md-implementation-claude.md`
