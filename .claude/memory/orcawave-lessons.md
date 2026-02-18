@@ -53,3 +53,65 @@ damping = np.array(diffraction.damping)[sort_idx]        # (nfreq, 6, 6)
 - Use `-mesh` mode (not `-bem`) for GDF mesh conversion
 - Command: `BEMRosetta_cl.exe -mesh -i <gdf> -cg <x> <y> <z> -c <output.dat>`
 - Must use absolute paths (`.resolve()`)
+
+## OrcFxAPI.Diffraction — Complete Property Reference
+
+### Constructor
+```python
+diff = OrcFxAPI.Diffraction(str(yml_path.resolve()), threadCount=4)  # load YAML
+diff = OrcFxAPI.Diffraction()                                         # empty object
+```
+
+### Methods
+| Method | Description |
+|--------|-------------|
+| `.Calculate()` | Run diffraction analysis |
+| `.SaveResults(path_str)` | Save .owr results file |
+| `.LoadResults(path_str)` | Load .owr results file |
+| `.SaveData(path_str)` | Save .owd input file |
+| `.LoadData(path_str)` | Load .owd input file |
+
+### Result Properties (available after Calculate/LoadResults)
+| Property | Shape / Type | Units | Notes |
+|----------|-------------|-------|-------|
+| `.frequencies` | `(nfreq,)` float | **Hz** | Descending order — sort ascending |
+| `.headings` | `(nheading,)` float | degrees | Wave directions |
+| `.displacementRAOs` | `(nheading, nfreq, 6N)` complex | m/m, rad/m | N=body count; rotational in rad/m |
+| `.addedMass` | `(nfreq, 6N, 6N)` float | tonnes, t·m² | N=body count |
+| `.damping` | `(nfreq, 6N, 6N)` float | tonnes/s | N=body count |
+| `.infiniteFrequencyAddedMass` | `(6N, 6N)` float | tonnes | |
+| `.loadRAOsDiffraction` | `(nheading, nfreq, 6N)` complex | kN/m | Excitation forces |
+| `.hydrostaticResults` | list of dicts | — | Per-body stiffness, CoB, waterplane area |
+| `.panelGeometry` | list of dicts | — | Per-panel: area (m²), centroid [x,y,z] (m), objectName |
+| `.rollDampingPercentCritical` | float | % | |
+
+### panelGeometry access pattern (list-of-dicts)
+```python
+panels = diff.panelGeometry
+areas = np.array([p["area"] for p in panels])
+centroids = np.array([p["centroid"] for p in panels])  # shape (N,3)
+names = [p["objectName"] for p in panels]
+```
+
+- **Symmetry-expanded**: shows full physical geometry, not just GDF half/quarter mesh
+- **Eliminates mesh_path resolution**: preferred over GDF loading for mesh schematics
+- **Multi-body**: all bodies returned together; `objectName` distinguishes them
+
+### Body count and indexing
+```python
+n_bodies = diff.addedMass.shape[1] // 6  # diff.bodyCount does NOT exist
+r0, r1 = bi*6, bi*6+6
+body_i_added_mass = diff.addedMass[:, r0:r1, r0:r1]     # self-coupling
+cross_ij = diff.addedMass[:, bi*6:bi*6+6, bj*6:bj*6+6]  # cross-coupling
+```
+
+### Unit conversions for comparison
+```python
+omega = 2 * np.pi * np.array(diff.frequencies)  # Hz → rad/s
+idx = np.argsort(omega)                           # sort ascending
+raos_deg = np.degrees(np.abs(raos[:, :, 3:6]))  # rad/m → deg/m
+```
+
+### OrcaFlex Python API Reference
+- Online: https://www.orcina.com/webhelp/OrcaFlex/ → Python scripting section
+- Local (if installed): `C:/Program Files/Orcina/OrcaFlex/Help/OrcaFlex.chm`

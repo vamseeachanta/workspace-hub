@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT="${1:-digitalmodel/.claude/skills}"
+ROOT="${1:-.claude/skills}"
 
 if [[ ! -d "$ROOT" ]]; then
   echo "Skills root not found: $ROOT" >&2
