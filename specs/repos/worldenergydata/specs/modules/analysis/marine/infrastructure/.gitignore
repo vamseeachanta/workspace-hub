@@ -1,0 +1,286 @@
+# Marine Safety Incidents Database - Git Ignore File
+# Purpose: Prevent sensitive and unnecessary files from being committed
+
+# ============================================================================
+# Environment and Secrets
+# ============================================================================
+.env
+.env.local
+.env.*.local
+*.env
+.envrc
+secrets.txt
+credentials.json
+
+# ============================================================================
+# Terraform
+# ============================================================================
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, which might contain sensitive data
+*.tfvars
+*.tfvars.json
+
+# Keep example files
+!terraform.tfvars.example
+
+# Ignore override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Terraform plan files
+*.tfplan
+tfplan
+
+# Terraform lock file (comment out if you want to commit it)
+# .terraform.lock.hcl
+
+# ============================================================================
+# Docker
+# ============================================================================
+# Docker Compose override files
+docker-compose.override.yml
+docker-compose.*.yml
+!docker-compose.yml
+
+# Docker volumes
+*.tar
+*.tar.gz
+
+# ============================================================================
+# Python
+# ============================================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# PEP 582
+__pypackages__/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# ============================================================================
+# IDEs and Editors
+# ============================================================================
+# VSCode
+.vscode/
+!.vscode/settings.json.example
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+.*.sw[a-z]
+*.un~
+Session.vim
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+
+# ============================================================================
+# Operating System
+# ============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+.nfs*
+
+# ============================================================================
+# Logs and Databases
+# ============================================================================
+logs/
+*.log
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+
+# ============================================================================
+# Application Specific
+# ============================================================================
+# Data files
+data/
+*.csv
+*.json
+!package.json
+!package-lock.json
+*.parquet
+*.feather
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Archives
+*.zip
+*.rar
+*.7z
+
+# ============================================================================
+# AWS
+# ============================================================================
+.aws/
+credentials
+config
+
+# ============================================================================
+# SSL/TLS Certificates
+# ============================================================================
+*.pem
+*.key
+*.crt
+*.csr
+*.cert
+ssl/
+certs/
+
+# ============================================================================
+# Kubernetes
+# ============================================================================
+*.kubeconfig
+kubeconfig
+.kube/
+
+# ============================================================================
+# Miscellaneous
+# ============================================================================
+.cache/
+*.pid
+*.seed
+*.pid.lock
+.npm
+node_modules/
+.yarn/

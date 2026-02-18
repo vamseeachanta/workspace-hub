@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-02-17T16:39:59Z",
+  "contract_version": "1.0.0",
+  "wrk_outside_queue": 2,
+  "repos": [
+    {"repo":"workspace-hub","missing_files":[],"outdated_adapter":false,"spec_location_violation":0,"severity":"low"}
+    ,{"repo":"aceengineer-admin","missing_files":[],"outdated_adapter":false,"spec_location_violation":23,"severity":"high"}
+    ,{"repo":"aceengineer-website","missing_files":[],"outdated_adapter":false,"spec_location_violation":22,"severity":"high"}
+    ,{"repo":"frontierdeepwater","missing_files":[],"outdated_adapter":false,"spec_location_violation":13,"severity":"high"}
+    ,{"repo":"digitalmodel","missing_files":[],"outdated_adapter":false,"spec_location_violation":5543,"severity":"high"}
+    ,{"repo":"rock-oil-field","missing_files":[],"outdated_adapter":false,"spec_location_violation":4,"severity":"high"}
+    ,{"repo":"sabithaandkrishnaestates","missing_files":[],"outdated_adapter":false,"spec_location_violation":0,"severity":"low"}
+    ,{"repo":"saipem","missing_files":[],"outdated_adapter":false,"spec_location_violation":4,"severity":"high"}
+    ,{"repo":"sd-work","missing_files":[],"outdated_adapter":false,"spec_location_violation":2,"severity":"high"}
+    ,{"repo":"seanation","missing_files":[],"outdated_adapter":false,"spec_location_violation":2,"severity":"high"}
+    ,{"repo":"simpledigitalmarketing","missing_files":[],"outdated_adapter":false,"spec_location_violation":0,"severity":"low"}
+    ,{"repo":"achantas-data","missing_files":[],"outdated_adapter":false,"spec_location_violation":7,"severity":"high"}
+    ,{"repo":"client_projects","missing_files":[],"outdated_adapter":false,"spec_location_violation":2,"severity":"high"}
+    ,{"repo":"doris","missing_files":[],"outdated_adapter":false,"spec_location_violation":2,"severity":"high"}
+    ,{"repo":"hobbies","missing_files":[],"outdated_adapter":false,"spec_location_violation":9,"severity":"high"}
+    ,{"repo":"teamresumes","missing_files":[],"outdated_adapter":false,"spec_location_violation":30,"severity":"high"}
+    ,{"repo":"worldenergydata","missing_files":[],"outdated_adapter":false,"spec_location_violation":293,"severity":"high"}
+    ,{"repo":"investments","missing_files":[],"outdated_adapter":false,"spec_location_violation":0,"severity":"low"}
+    ,{"repo":"OGManufacturing","missing_files":[],"outdated_adapter":false,"spec_location_violation":17,"severity":"high"}
+    ,{"repo":"pdf-large-reader","missing_files":[],"outdated_adapter":false,"spec_location_violation":1,"severity":"high"}
+    ,{"repo":"achantas-media","missing_files":[],"outdated_adapter":false,"spec_location_violation":0,"severity":"low"}
+    ,{"repo":"acma-projects","missing_files":[],"outdated_adapter":false,"spec_location_violation":13,"severity":"high"}
+    ,{"repo":"assethold","missing_files":[],"outdated_adapter":false,"spec_location_violation":25,"severity":"high"}
+    ,{"repo":"assetutilities","missing_files":[],"outdated_adapter":false,"spec_location_violation":53,"severity":"high"}
+  ]
+}

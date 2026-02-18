@@ -1,0 +1,94 @@
+{
+  "approval_status": "PENDING",
+  "approval_date": null,
+  "approved_by": null,
+  "deletions": [
+    "legacy/data_for_analysis/all_bsee_blocks.csv",
+    "legacy/data_for_analysis/completion_perforations.csv",
+    "legacy/data_for_analysis/completion_properties.csv",
+    "legacy/data_for_analysis/completion_summary.csv",
+    "legacy/data_for_analysis/cut_casings.csv",
+    "legacy/data_for_analysis/geology_markers.csv",
+    "legacy/data_for_analysis/hydrocarbon_bearing_interval.csv",
+    "legacy/data_for_analysis/production.csv",
+    "legacy/data_for_analysis/ST_BP_and_tree_height.csv",
+    "legacy/data_for_analysis/well_activity_bop_tests.csv",
+    "legacy/data_for_analysis/well_activity_open_hole.csv",
+    "legacy/data_for_analysis/well_activity_remarks.csv",
+    "legacy/data_for_analysis/well_activity_summary.csv",
+    "legacy/data_for_analysis/well_data.csv",
+    "legacy/data_for_analysis/well_directional_surveys.csv",
+    "legacy/data_for_analysis/well_tubulars.csv"
+  ],
+  "moves": [
+    {
+      "source": "analysis_data/combined_data_for_analysis/production.csv",
+      "destination": "current/production/production.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/well_data.csv",
+      "destination": "current/wells/well_data.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/well_directional_surveys.csv",
+      "destination": "current/wells/well_directional_surveys.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/completion_perforations.csv",
+      "destination": "current/completions/completion_perforations.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/completion_properties.csv",
+      "destination": "current/completions/completion_properties.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/completion_summary.csv",
+      "destination": "current/completions/completion_summary.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/well_activity_bop_tests.csv",
+      "destination": "current/operations/well_activity_bop_tests.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/well_activity_open_hole.csv",
+      "destination": "current/operations/well_activity_open_hole.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/well_activity_remarks.csv",
+      "destination": "current/operations/well_activity_remarks.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/well_activity_summary.csv",
+      "destination": "current/operations/well_activity_summary.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/geology_markers.csv",
+      "destination": "current/geology/geology_markers.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/hydrocarbon_bearing_interval.csv",
+      "destination": "current/geology/hydrocarbon_bearing_interval.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/cut_casings.csv",
+      "destination": "current/operations/cut_casings.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/ST_BP_and_tree_height.csv",
+      "destination": "current/operations/ST_BP_and_tree_height.csv"
+    },
+    {
+      "source": "analysis_data/combined_data_for_analysis/all_bsee_blocks.csv",
+      "destination": "current/reference/all_bsee_blocks.csv"
+    }
+  ],
+  "archives": [
+    {
+      "directory": "legacy",
+      "archive_name": "2025-08-21-legacy.tar.gz"
+    }
+  ],
+  "consolidations": [],
+  "excluded_files": [],
+  "notes": "This template should be renamed to cleanup-proposal-approved.json after user approval and approval_status changed to APPROVED"
+}

@@ -1,8 +1,7 @@
-session_id: "wrk-138-impl"
-orchestrator_agent: "claude"
-subagents_used:
-  - codex
-active_wrk: "WRK-138"
-last_stage: "implement_tdd"
+session_id: ""
+orchestrator_agent: ""
+subagents_used: []
+active_wrk: ""
+last_stage: ""
 handoff_allowed: false
-updated_at: "2026-02-13T22:22:53Z"
+updated_at: ""

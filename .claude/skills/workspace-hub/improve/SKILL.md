@@ -1,7 +1,7 @@
 ---
 name: improve
 description: Autonomous session-exit skill that improves all ecosystem files from session learnings
-version: 1.0.0
+version: 1.2.0
 category: workspace-hub
 author: workspace-hub
 type: skill
@@ -15,6 +15,7 @@ capabilities:
   - memory_management
   - rule_enhancement
   - doc_updates
+  - ecosystem_review
 tags: [self-improvement, ecosystem, session-exit, meta]
 platforms: [all]
 ---
@@ -42,7 +43,8 @@ Scan these data sources for improvement candidates:
 5. `.claude/state/corrections/.recent_edits` — correction patterns
 6. `.claude/state/accumulator.json` — aggregated metrics
 7. `.claude/state/patterns/` — patterns from `/reflect`
-8. Current session context — what was learned in THIS session
+8. `.claude/state/pending-reviews/ecosystem-review.jsonl` — ecosystem health signals (from stop hook)
+9. Current session context — what was learned in THIS session
 
 ### Phase 2: CLASSIFY — Route Improvements to Targets
 
@@ -57,8 +59,42 @@ Scan these data sources for improvement candidates:
 | Cross-session pattern | `CLAUDE.md` Core Rules | "Batch operations reduce errors" |
 | Resource drift | `CLAUDE.md` Resource Index | "New agent in agents/devops/" |
 | Documentation gap | `.claude/docs/` | "Orchestrator pattern needs update" |
+| Ecosystem health signal | Phase 3 review queue | "Skill sprawl: 350+ active skills" |
+| Memory bloat signal | Phase 3 review queue | "MEMORY.md exceeds 200 lines" |
 
-### Phase 3: GUARD — Safety Checks Before Writing
+### Phase 3: ECOSYSTEM REVIEW — Structural Health Assessment
+
+Assess the overall health of ecosystem files and recommend reallocation. This phase is fed by signals from the `ecosystem-health-check.sh` stop hook AND by scanning the filesystem directly.
+
+**Data sources:**
+1. `.claude/state/pending-reviews/ecosystem-review.jsonl` — automated health check signals
+2. Direct filesystem scan of `.claude/skills/`, `.claude/memory/`, `.claude/rules/`
+
+**Checks performed:**
+
+| Check | Threshold | Action |
+|---|---|---|
+| **Skill sprawl** | >350 active skills | Flag categories for consolidation |
+| **Category bloat** | >50 skills in one subcategory | Recommend merge/archive candidates |
+| **Skill overlap** | 2+ skills with >70% description similarity | Flag for consolidation |
+| **Memory bloat** | Any `.md` >200 lines | Recommend split into topic files |
+| **Memory overlap** | Same topic in repo + user memory | Recommend single source of truth |
+| **Orphan skills** | Skills with no command wrapper AND no session usage in 90 days | Flag for deprecation review |
+| **Thin categories** | Category with only 1 skill | Consider merging into parent |
+| **Stale signals** | >50 unprocessed signals in pending-reviews/ | Warn about signal backlog |
+
+**Outputs:**
+- List of consolidation recommendations (skill merges, memory splits)
+- List of new skill candidates (gaps identified from session patterns)
+- Responsibility reallocation suggestions (e.g., "move X from memory to rules")
+- Metrics: total_skills, archived_ratio, avg_category_size, memory_total_lines
+
+**Decision rules:**
+- Consolidation: Only recommend if both skills have been loaded in same session 3+ times
+- New skills: Only when pattern seen 3+ sessions AND no existing skill covers it
+- Reallocation: Only when content clearly belongs to a different target (e.g., repeated correction → rules, not memory)
+
+### Phase 4: GUARD — Safety Checks Before Writing (incl. ecosystem review outputs)
 
 1. **Size guards**:
    - CLAUDE.md: 4KB budget
@@ -75,7 +111,7 @@ Scan these data sources for improvement candidates:
    - **Deprecate**: Only when unused for 90+ days AND superseded by another skill
    - **Archive**: Move deprecated skills to `.claude/skills/_archive/` (never delete)
 
-### Phase 4: APPLY — Write Improvements
+### Phase 5: APPLY — Write Improvements
 
 **CLAUDE.md**: Resource Index scan, Core Rules for patterns confirmed 3+ sessions. Use Edit tool.
 
@@ -91,14 +127,15 @@ Scan these data sources for improvement candidates:
 
 **Docs** (`.claude/docs/`): Update stale references, add missing documentation.
 
-### Phase 5: LOG — Record Changes
+### Phase 6: LOG — Record Changes
 
 Write to `.claude/state/improve-changelog.yaml`:
 - Timestamp, changes list with file/action/diff_summary
 - Skills lifecycle metrics: created/enhanced/deprecated/archived counts
+- Ecosystem health metrics: total_skills, memory_lines, consolidation_count, reallocation_count
 - signals_processed, changes_applied, signals_skipped (with reason)
 
-### Phase 6: CLEANUP — Mark Signals Consumed
+### Phase 7: CLEANUP — Mark Signals Consumed
 
 Move processed signals from `pending-reviews/*.jsonl` to archive so they aren't reprocessed.
 
@@ -169,3 +206,21 @@ Move processed signals from `pending-reviews/*.jsonl` to archive so they aren't 
 - `/reflect` — Periodic reflection on git history
 - `/insights` — Session analysis reports
 - `/knowledge` — Knowledge capture and retrieval
+
+## Script Mode (v1.2.0)
+
+When invoked from the stop hook (session exit), `/improve` dispatches to `scripts/improve/improve.sh`:
+
+- **Full mode** (`/exit`): All 7 phases run, including 2-3 Anthropic API calls (~30-60s)
+- **Quick mode** (`--quick`): Shell-only phases (1, 3a, 4, 6, 7), skips API calls (~2-3s)
+- **Dry run** (`--dry-run`): All phases execute but no files are written
+
+The script uses the Anthropic Messages API directly (via `curl`) instead of `claude -p` to avoid nested session errors. Authentication uses OAuth token from `~/.claude/.credentials.json` with fallback to `ANTHROPIC_API_KEY` environment variable.
+
+### Manual vs Automatic Invocation
+
+| Mode | Trigger | Engine | AI Quality |
+|------|---------|--------|------------|
+| Manual | `/improve` command | Claude session (full reasoning) | Highest — full context |
+| Automatic | Stop hook at session exit | `improve.sh` + API calls | Good — structured prompts |
+| Quick | Ctrl+C or `--quick` | `improve.sh` shell-only | None — metrics + logging only |

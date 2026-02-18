@@ -1,0 +1,419 @@
+# Marine Safety Incidents Database - Local Development Stack
+# Purpose: Complete local development environment with all services
+# Usage: docker-compose up -d
+# Stop: docker-compose down
+# Rebuild: docker-compose up -d --build
+
+version: '3.9'
+
+services:
+  # ============================================================================
+  # PostgreSQL Database (Primary data store)
+  # ============================================================================
+  postgres:
+    image: postgres:15.4-alpine
+    container_name: marine-safety-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: marine_safety
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_dev_password_change_in_production
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      # Persistent data storage
+      - postgres_data:/var/lib/postgresql/data
+      # Initial schema and seed data
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+      # PostgreSQL configuration
+      - ./database/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+
+    # Custom PostgreSQL configuration for development
+    command:
+      - "postgres"
+      - "-c"
+      - "shared_buffers=256MB"
+      - "-c"
+      - "max_connections=200"
+      - "-c"
+      - "log_statement=all"
+      - "-c"
+      - "log_duration=on"
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d marine_safety"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+    networks:
+      - marine-safety-network
+
+  # ============================================================================
+  # Redis Cache (Session and query caching)
+  # ============================================================================
+  redis:
+    image: redis:7.2-alpine
+    container_name: marine-safety-redis
+    restart: unless-stopped
+
+    command: >
+      redis-server
+      --appendonly yes
+      --appendfsync everysec
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+      --requirepass redis_dev_password_change_in_production
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+    networks:
+      - marine-safety-network
+
+  # ============================================================================
+  # FastAPI Application (Main API service)
+  # ============================================================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+
+    container_name: marine-safety-api
+    restart: unless-stopped
+
+    environment:
+      # Application settings
+      ENVIRONMENT: development
+      DEBUG: "true"
+      LOG_LEVEL: debug
+
+      # Database configuration
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: marine_safety
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres_dev_password_change_in_production
+      DATABASE_POOL_SIZE: 10
+      DATABASE_MAX_OVERFLOW: 20
+
+      # Redis configuration
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis_dev_password_change_in_production
+      REDIS_DB: 0
+      REDIS_POOL_SIZE: 10
+
+      # API configuration
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+      API_WORKERS: 1
+      API_RELOAD: "true"
+
+      # CORS settings (development - permissive)
+      CORS_ORIGINS: "*"
+      CORS_ALLOW_CREDENTIALS: "true"
+
+      # AWS S3 (local development uses MinIO)
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin
+      AWS_REGION: us-east-1
+      S3_ENDPOINT_URL: http://minio:9000
+      S3_RAW_DATA_BUCKET: marine-safety-raw-data
+      S3_EXPORTS_BUCKET: marine-safety-exports
+      S3_BACKUPS_BUCKET: marine-safety-backups
+
+      # Security
+      SECRET_KEY: dev-secret-key-change-in-production
+      ACCESS_TOKEN_EXPIRE_MINUTES: 60
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      # Mount source code for hot-reload
+      - ./app:/app/app:ro
+      - ./tests:/app/tests:ro
+      # Logs
+      - ./logs:/app/logs
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+    networks:
+      - marine-safety-network
+
+  # ============================================================================
+  # Celery Worker (Background tasks)
+  # ============================================================================
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+
+    container_name: marine-safety-worker
+    restart: unless-stopped
+
+    command: >
+      celery -A app.tasks.celery_app worker
+      --loglevel=info
+      --concurrency=4
+      --max-tasks-per-child=100
+      --time-limit=3600
+      --soft-time-limit=3000
+
+    environment:
+      # Inherit same environment as API
+      ENVIRONMENT: development
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: marine_safety
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres_dev_password_change_in_production
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis_dev_password_change_in_production
+      CELERY_BROKER_URL: redis://:redis_dev_password_change_in_production@redis:6379/1
+      CELERY_RESULT_BACKEND: redis://:redis_dev_password_change_in_production@redis:6379/2
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin
+      S3_ENDPOINT_URL: http://minio:9000
+
+    volumes:
+      - ./app:/app/app:ro
+      - ./logs:/app/logs
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
+    networks:
+      - marine-safety-network
+
+  # ============================================================================
+  # MinIO (Local S3-compatible object storage)
+  # ============================================================================
+  minio:
+    image: minio/minio:latest
+    container_name: marine-safety-minio
+    restart: unless-stopped
+
+    command: server /data --console-address ":9001"
+
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+
+    ports:
+      - "9000:9000"  # S3 API
+      - "9001:9001"  # Web Console
+
+    volumes:
+      - minio_data:/data
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+    networks:
+      - marine-safety-network
+
+  # ============================================================================
+  # MinIO Client (Create buckets on startup)
+  # ============================================================================
+  minio-init:
+    image: minio/mc:latest
+    container_name: marine-safety-minio-init
+
+    depends_on:
+      minio:
+        condition: service_healthy
+
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add myminio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc mb --ignore-existing myminio/marine-safety-raw-data;
+      /usr/bin/mc mb --ignore-existing myminio/marine-safety-exports;
+      /usr/bin/mc mb --ignore-existing myminio/marine-safety-backups;
+      /usr/bin/mc anonymous set download myminio/marine-safety-exports;
+      exit 0;
+      "
+
+    networks:
+      - marine-safety-network
+
+  # ============================================================================
+  # pgAdmin (PostgreSQL management interface)
+  # ============================================================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: marine-safety-pgadmin
+    restart: unless-stopped
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@marinesafety.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+
+    ports:
+      - "5050:80"
+
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./database/pgadmin-servers.json:/pgadmin4/servers.json:ro
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    networks:
+      - marine-safety-network
+
+  # ============================================================================
+  # Redis Commander (Redis management interface)
+  # ============================================================================
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: marine-safety-redis-commander
+    restart: unless-stopped
+
+    environment:
+      REDIS_HOSTS: local:redis:6379:0:redis_dev_password_change_in_production
+
+    ports:
+      - "8081:8081"
+
+    depends_on:
+      redis:
+        condition: service_healthy
+
+    networks:
+      - marine-safety-network
+
+  # ============================================================================
+  # Nginx (Reverse proxy for local development)
+  # ============================================================================
+  nginx:
+    image: nginx:alpine
+    container_name: marine-safety-nginx
+    restart: unless-stopped
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+
+    depends_on:
+      - api
+
+    networks:
+      - marine-safety-network
+
+# ============================================================================
+# Networks
+# ============================================================================
+networks:
+  marine-safety-network:
+    driver: bridge
+    name: marine-safety-network
+
+# ============================================================================
+# Volumes (Persistent data storage)
+# ============================================================================
+volumes:
+  postgres_data:
+    name: marine-safety-postgres-data
+  redis_data:
+    name: marine-safety-redis-data
+  minio_data:
+    name: marine-safety-minio-data
+  pgadmin_data:
+    name: marine-safety-pgadmin-data
+
+# ============================================================================
+# Usage Instructions:
+# ============================================================================
+#
+# Start all services:
+#   docker-compose up -d
+#
+# Start specific services:
+#   docker-compose up -d postgres redis api
+#
+# View logs:
+#   docker-compose logs -f api
+#   docker-compose logs -f worker
+#
+# Stop all services:
+#   docker-compose down
+#
+# Stop and remove volumes (WARNING: deletes all data):
+#   docker-compose down -v
+#
+# Rebuild and restart:
+#   docker-compose up -d --build
+#
+# Execute command in container:
+#   docker-compose exec api python -m pytest
+#   docker-compose exec postgres psql -U postgres -d marine_safety
+#   docker-compose exec redis redis-cli -a redis_dev_password_change_in_production
+#
+# Access services:
+#   API: http://localhost:8000
+#   API Docs: http://localhost:8000/docs
+#   pgAdmin: http://localhost:5050
+#   Redis Commander: http://localhost:8081
+#   MinIO Console: http://localhost:9001
+#
+# Database migrations:
+#   docker-compose exec api alembic upgrade head
+#   docker-compose exec api alembic revision --autogenerate -m "description"
+#
+# Run tests:
+#   docker-compose exec api pytest
+#   docker-compose exec api pytest --cov=app --cov-report=html
+#
+# ============================================================================

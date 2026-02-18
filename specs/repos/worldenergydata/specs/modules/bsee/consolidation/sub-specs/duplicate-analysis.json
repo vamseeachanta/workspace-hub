@@ -1,0 +1,4182 @@
+{
+  "exact_duplicates": {
+    "218f366721a83d767faefe7bd99fee49": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/all_bsee_blocks.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/all_bsee_blocks.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "21a9ede6420b47c36c2092d231d4ebeb": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/completion_perforations.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/completion_perforations.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "141444d5fb5791c80b00fb85370d763b": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/completion_properties.csv",
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/data_for_analysis/completion_properties.csv",
+        "size_mb": 0.01
+      }
+    ],
+    "1c1a14fb094c2fe3fe5b1c167f766594": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/completion_summary.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/completion_summary.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "0d4840f2cde9140db62a33c61c7d0ee7": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/cut_casings.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/cut_casings.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "ccf9998393e2c313917b466758f7598e": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/geology_markers.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/geology_markers.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "966879b3be1c08222c1c957a638f86f1": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/hydrocarbon_bearing_interval.csv",
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/data_for_analysis/hydrocarbon_bearing_interval.csv",
+        "size_mb": 0.01
+      }
+    ],
+    "5fec7842f4484d92588af8bdea72e6dd": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/production.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/production.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "a05c83353fdd1ec03775ccfdcebf10b5": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/ST_BP_and_tree_height.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/ST_BP_and_tree_height.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "e1c7ede44e661415fec62853fafbf71d": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_bop_tests.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_bop_tests.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "f9ad667f7a1b118a028f19db4330941f": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_open_hole.csv",
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_open_hole.csv",
+        "size_mb": 0.01
+      }
+    ],
+    "896c936403df5a523e8028d4d84d10dd": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_remarks.csv",
+        "size_mb": 0.07
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_remarks.csv",
+        "size_mb": 0.07
+      }
+    ],
+    "368263daf4ab0a470eb4ba60109f17c6": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_summary.csv",
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_summary.csv",
+        "size_mb": 0.01
+      }
+    ],
+    "1a8ae666b7424ecdcee13a338b6a6fdd": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_data.csv",
+        "size_mb": 3.94
+      },
+      {
+        "path": "legacy/data_for_analysis/well_data.csv",
+        "size_mb": 3.94
+      }
+    ],
+    "bfccd01b46f06ba2aee88de0187a4465": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_directional_surveys.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/dsptsdelimit.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "8766626db652ddb4f61ea8af5b1c67ab": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_tubulars.csv",
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/data_for_analysis/well_tubulars.csv",
+        "size_mb": 0.01
+      }
+    ],
+    "df5a9697e8c3105c5507b5ddf4da4307": [
+      {
+        "path": "legacy/APIRawData.zip",
+        "size_mb": 2.92
+      },
+      {
+        "path": "zip/apiraw/APIRawData.zip",
+        "size_mb": 2.92
+      }
+    ],
+    "2e6a634d184985a943ed74f1f77f5cbb": [
+      {
+        "path": "legacy/BHPSRawData.zip",
+        "size_mb": 9.46
+      },
+      {
+        "path": "zip/bhps/BHPSRawData.zip",
+        "size_mb": 9.46
+      }
+    ],
+    "006bbfc15a5cb9089e1e41ccf1d5cdca": [
+      {
+        "path": "legacy/eWellAPDRawData.zip",
+        "size_mb": 8.38
+      },
+      {
+        "path": "zip/ewellapd/eWellAPDRawData.zip",
+        "size_mb": 8.38
+      }
+    ],
+    "e6aec1d7ef1d5dc462649890bbb048c7": [
+      {
+        "path": "legacy/eWellEORRawData.zip",
+        "size_mb": 3.56
+      },
+      {
+        "path": "zip/eor/eWellEORRawData.zip",
+        "size_mb": 3.56
+      }
+    ],
+    "69ba016bdec3c1deefc49d0d4b773d98": [
+      {
+        "path": "legacy/jack_by_block/WR758.csv",
+        "size_mb": 0.03
+      },
+      {
+        "path": "legacy/julia_by_block/WR758.csv",
+        "size_mb": 0.03
+      }
+    ],
+    "51afa9ee76b53b176b3bb23c11673603": [
+      {
+        "path": "legacy/jack_by_block/WR759.csv",
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/julia_by_block/WR759.csv",
+        "size_mb": 0.01
+      }
+    ],
+    "27dbf481490bfd7b7a9cb16d114f6d5a": [
+      {
+        "path": "legacy/julia_by_block/WR678.csv",
+        "size_mb": 0.03
+      },
+      {
+        "path": "legacy/stmalo_by_block/WR678.csv",
+        "size_mb": 0.03
+      }
+    ],
+    "9266bac915fff81353822d30faf56833": [
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_inst_pipe_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_pipe_columns.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "1f0fa10d5de1e1c64353f6e8a156a404": [
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_inst_plat_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_plat_columns.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "7631df2662730873098f03f880083b9a": [
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_alaska_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_gulf_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_pacific_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_alaska_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_gulf_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_pacific_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_alaska_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_gulf_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_pacific_columns.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "49daae9f2cb660daa8a0e70dfc282796": [
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_alaska_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_gulf_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_pacific_columns.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "3de8101f7ad1717236e7857c53627336": [
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_gasmonth_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_oilmonth_columns.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "22e60d19bd33e66311a96d015743b48a": [
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_oilyear_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_gasyear_columns.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "d7e0faa37b0f701dca35bf56e39cd6bc": [
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productionsumwd_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productionsum_columns.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "40c649034a864fb9bc5c3ab17f949075": [
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_active_inactive_leases_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_renleases_columns.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "6a79da2a1be6512794a7cf93863b5659": [
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_borehole_stat_codes_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_primary_op_codes_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_suboperation_codes_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_well_type_codes_columns.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "43e51ece33550f0342ed7fe528e8eff5": [
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_casingcutcodes_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_operationcodes_columns.csv",
+        "size_mb": 0.0
+      }
+    ],
+    "74982f386fa92442e1b779b3cc468c72": [
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_compstatcodes_columns.csv",
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_hydrobarbtypecodes_columns.csv",
+        "size_mb": 0.0
+      }
+    ]
+  },
+  "similar_structures": {
+    "BOTM_FLD_NAME_CD": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/all_bsee_blocks.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/all_bsee_blocks.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      }
+    ],
+    "API_WELL_NUMBER|PERF_BASE_MD|PERF_BOTM_TVD|PERF_TOP_MD|PERF_TOP_TVD|WELL_NAME": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/completion_perforations.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/completion_perforations.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      }
+    ],
+    "API_WELL_NUMBER|COMP_INTERVAL_NAME|COMP_LATITUDE|COMP_LONGITUDE|COMP_RSVR_NAME": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/completion_properties.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/data_for_analysis/completion_properties.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      }
+    ],
+    "API_WELL_NUMBER|COMP_AREA_CODE|COMP_BLOCK_NUMBER|COMP_STATUS_CD|INTERVAL|VALUE|VALUE_DESC|WELL_NAME": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/completion_summary.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/completion_summary.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      }
+    ],
+    "API_WELL_NUMBER|CASING_CUT_DATE|CASING_CUT_DEPTH|CASING_CUT_MDL_IND|CASING_CUT_METHOD_CD|CASING_SIZE|WELL_NAME": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/cut_casings.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/cut_casings.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      }
+    ],
+    "API_WELL_NUMBER|GEO_MARKER_NAME|TOP_MD|WELL_NAME": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/geology_markers.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/geology_markers.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      }
+    ],
+    "API_WELL_NUMBER|BOTTOM_MD|HYDROCARBON_TYPE_CD|INTERVAL_NAME|SN_EOR_FK|SN_HC_BEARING_INTVL|TOP_MD|WELL_NAME": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/hydrocarbon_bearing_interval.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/data_for_analysis/hydrocarbon_bearing_interval.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      }
+    ],
+    "API_WELL_NUMBER|PRODUCTION_DATE": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/production.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/production.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      }
+    ],
+    "API_WELL_NUMBER|SN_EOR|SUBSEA_TREE_HEIGHT_AML|WELL_NM_BP_SFIX|WELL_NM_ST_SFIX": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/ST_BP_and_tree_height.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/ST_BP_and_tree_height.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      }
+    ],
+    "ANNULAR_TST_PRSS|API_WELL_NUMBER|BOP_TEST_DATE|BUS_ASC_NAME|RAM_TST_PRSS": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_bop_tests.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_bop_tests.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      }
+    ],
+    "API_WELL_NUMBER|BUS_ASC_NAME|LOG_INTV_BOTM_MD|LOG_INTV_TOP_MD|LOG_TOOL_TYPE_CODE|OPERATIONS_COMPLETED_DATE|TOOL_LOGGING_METHOD_NAME|WELL_NAME": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_open_hole.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_open_hole.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      }
+    ],
+    "API_WELL_NUMBER|SN_WAR|TEXT_REMARK|WAR_START_DT|WELL_NAME": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_remarks.csv",
+        "row_count": 527,
+        "size_mb": 0.07
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_remarks.csv",
+        "row_count": 527,
+        "size_mb": 0.07
+      }
+    ],
+    "API_WELL_NUMBER|DRILLING_MD|DRILL_FLUID_WGT|RIG_NAME|WAR_END_DT|WAR_START_DT|WELL_ACTIVITY_CD|WELL_NAME": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_summary.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_summary.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      }
+    ],
+    "API_WELL_NUMBER|BH_TOTAL_MD|BOREHOLE_STAT_CD|BOREHOLE_STAT_DT|BOTM_FLD_NAME_CD|BOTM_LATITUDE|BOTM_LONGITUDE|CASING_CUT_CODE|COMPANY_NAME|SURF_LATITUDE|SURF_LONGITUDE|TOTAL_DEPTH_DATE|UNDWTR_COMP_STUB|WATER_DEPTH|WELL_BORE_TVD|WELL_BP_ST_KICKOFF_MD|WELL_NAME|WELL_NAME_SUFFIX|WELL_SPUD_DATE": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_data.csv",
+        "row_count": 57281,
+        "size_mb": 3.94
+      },
+      {
+        "path": "legacy/data_for_analysis/well_data.csv",
+        "row_count": 57281,
+        "size_mb": 3.94
+      }
+    ],
+    "version https://git-lfs.github.com/spec/v1": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_directional_surveys.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/data_for_analysis/well_directional_surveys.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/dsptsdelimit.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      }
+    ],
+    "API_WELL_NUMBER|CASING_GRADE|CASING_SIZE|CASING_WEIGHT|CSNG_CEMENT_VOL|CSNG_HOLE_SIZE|CSNG_INTV_TYPE_CD|CSNG_LINER_TEST_PRSS|CSNG_SETTING_BOTM_MD|CSNG_SETTING_TOP_MD|CSNG_SHOE_TEST_PRSS|SN_WAR_CSNG_INTV|WAR_END_DT|WAR_START_DT|WELL_NAME": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_tubulars.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/data_for_analysis/well_tubulars.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      }
+    ],
+    "BOE Reserves|CUMBOE|CUMGAS|CUMOIL|DISCYR|FCLASS|FIELD|Field 1|Field 2|Field 3|Field 4|Gas Reserves|Oil Reserves|Orig BOE Reserves|Orig Gas Reserves|Orig Oil Reserves|YEAR": [
+      {
+        "path": "legacy/2017 Hist.csv",
+        "row_count": 39378,
+        "size_mb": 3.39
+      },
+      {
+        "path": "legacy/2018 Hist.csv",
+        "row_count": 39379,
+        "size_mb": 4.36
+      }
+    ],
+    "APD Approved Date|APD Received Date|API Well Number|Bottom Area Code|Bottom Block Number|Bottom Lease Number|Company Name|Company Number|Permit Type|Region|Rig ID Number|Rig Name|Surf X Coord Loc*|Surf Y Coord Loc*|Surface Area Code|Surface Block Number|Surface EW Code|Surface EW Dist|Surface Latitude*|Surface Lease Number|Surface Longitude*|Surface NS Code|Surface NS Dist|Water Depth (feet)|Well Name|Well Name Suffix|Well Type": [
+      {
+        "path": "legacy/jack_by_block/WR758.csv",
+        "row_count": 119,
+        "size_mb": 0.03
+      },
+      {
+        "path": "legacy/jack_by_block/WR759.csv",
+        "row_count": 39,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/Jack_well_data/API_1.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/Jack_well_data/API_10.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/Jack_well_data/API_11.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/Jack_well_data/API_2.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/Jack_well_data/API_3.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/Jack_well_data/API_4.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/Jack_well_data/API_5.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/Jack_well_data/API_6.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/Jack_well_data/API_7.csv",
+        "row_count": 5,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/Jack_well_data/API_8.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/Jack_well_data/API_9.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/julia_by_block/well_data_WR540.csv",
+        "row_count": 25,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/julia_by_block/well_data_WR584.csv",
+        "row_count": 44,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/julia_by_block/WR540.csv",
+        "row_count": 25,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/julia_by_block/WR584.csv",
+        "row_count": 44,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/julia_by_block/WR678.csv",
+        "row_count": 112,
+        "size_mb": 0.03
+      },
+      {
+        "path": "legacy/julia_by_block/WR758.csv",
+        "row_count": 119,
+        "size_mb": 0.03
+      },
+      {
+        "path": "legacy/julia_by_block/WR759.csv",
+        "row_count": 39,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/stmalo_by_block/StMalo.csv",
+        "row_count": 112,
+        "size_mb": 0.03
+      },
+      {
+        "path": "legacy/stmalo_by_block/WR678.csv",
+        "row_count": 112,
+        "size_mb": 0.03
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_1.csv",
+        "row_count": 5,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_10.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_11.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_13.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_14.csv",
+        "row_count": 5,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_15.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_16.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_2.csv",
+        "row_count": 7,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_3.csv",
+        "row_count": 5,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_4.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_5.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_6.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_7.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_8.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_9.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      }
+    ],
+    "Lease Condensate Production (BBL)|Lease Gas-Well-Gas Production (MCF)|Lease Max Water Depth (meters)|Lease Number|Lease Oil Production (BBL)|Lease Oil-Well-Gas Production (MCF)|Lease Water Production (BBL)|Producing Completions|Production Month|Production Year": [
+      {
+        "path": "legacy/Julia_prod_data/production_data_G25251.csv",
+        "row_count": 60,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/lease_G05868.csv",
+        "row_count": 311,
+        "size_mb": 0.01
+      }
+    ],
+    "API_WELL_NUMBER": [
+      {
+        "path": "legacy/online_raw_well_data/APDRawData_mv_apddata_all_columns.csv",
+        "row_count": 25,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/APIChangesRawData_mv_apichanges_all_columns.csv",
+        "row_count": 14,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/APIRawData_mv_api_list_all_columns.csv",
+        "row_count": 17,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/APIRawData_mv_api_wellcomps_all_columns.csv",
+        "row_count": 8,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/BoreholeRawData_mv_boreholes_all_columns.csv",
+        "row_count": 51,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_well_columns.csv",
+        "row_count": 14,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_spud_well_columns.csv",
+        "row_count": 13,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_boreholes_view_columns.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      }
+    ],
+    "SN_APD": [
+      {
+        "path": "legacy/online_raw_well_data/APDRawData_mv_apd_main_all_columns.csv",
+        "row_count": 62,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_geologic_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_main_columns.csv",
+        "row_count": 61,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_main_prop_columns.csv",
+        "row_count": 11,
+        "size_mb": 0.0
+      }
+    ],
+    "LEASE_NUMBER": [
+      {
+        "path": "legacy/online_raw_well_data/AssignmentsRawData_mv_assignments_columns.csv",
+        "row_count": 9,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_estimates_columns.csv",
+        "row_count": 16,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/LABRawData_mv_lease_area_block_columns.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/LeaseOwnerRawData_mv_lease_owners_main_columns.csv",
+        "row_count": 12,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowluoper_columns.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/NonReqRawData_mv_nonrequired_columns.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_leases_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OSFRRawData_mv_osfr_companies_columns.csv",
+        "row_count": 11,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productiondata_columns.csv",
+        "row_count": 9,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_production_waterdepth_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_lease_owners_columns.csv",
+        "row_count": 7,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_lease_owner_groups_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_rates_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_remarks_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_leases_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      }
+    ],
+    "FIELD_NAME_CODE": [
+      {
+        "path": "legacy/online_raw_well_data/BHPSRawData_mv_bhpsurvey_all_columns.csv",
+        "row_count": 13,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/RoyaltyRefRawData_mv_preact_columns.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      }
+    ],
+    "MMS_COMPANY_NUM": [
+      {
+        "path": "legacy/online_raw_well_data/CompanyRawData_mv_companies_active_columns.csv",
+        "row_count": 19,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/CompanyRawData_mv_companies_all_columns.csv",
+        "row_count": 20,
+        "size_mb": 0.0
+      }
+    ],
+    "AUTH_TYPE_CODE": [
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_inst_pipe_columns.csv",
+        "row_count": 18,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_inst_plat_columns.csv",
+        "row_count": 15,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_pipe_columns.csv",
+        "row_count": 18,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_plat_columns.csv",
+        "row_count": 15,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_totals_columns.csv",
+        "row_count": 7,
+        "size_mb": 0.0
+      }
+    ],
+    "AREA_CODE|AUTH_NUMBER|AUTH_TYPE_CODE|BLOCK_NUMBER|COMPLEX_ID_NUM|EFFECTIVE_DATE|PLT_REMOVAL_DCOM_INDTR|PLT_REMOVAL_DCOM_P50|PLT_REMOVAL_DCOM_P70|PLT_REMOVAL_DCOM_P90|PLT_SITE_CLRNC_DCOM_INDTR|PLT_SITE_CLRNC_DCOM_P50|PLT_SITE_CLRNC_DCOM_P70|PLT_SITE_CLRNC_DCOM_P90|STRUCTURE_NAME|STRUCTURE_NUMBER": [
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_inst_plat.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_plat.csv",
+        "row_count": 5,
+        "size_mb": 0.0
+      }
+    ],
+    "AUTH_NUMBER|AUTH_TYPE_CODE|DEST_AR_CODE|DEST_BLK_NUM|DEST_ID_NAME|DEST_LSE_NUM|EFFECTIVE_DATE|ORIG_AR_CODE|ORIG_BLK_NUM|ORIG_ID_NAME|ORIG_LSE_NUM|PPL_SIZE_CODE|PROD_CODE|SEGMENT_DCOM_INDTR|SEGMENT_DCOM_P50|SEGMENT_DCOM_P70|SEGMENT_DCOM_P90|SEGMENT_NUM|STATUS_CODE": [
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_pipe.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_inst_pipe.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      }
+    ],
+    "SN_APD_FK": [
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_attachments_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_questions_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      }
+    ],
+    "BUS_ASC_NAME|INCCOUNT|INC_ISSUE_DATE|MMS_COMPANY_NUM": [
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_alaska.csv",
+        "row_count": 22,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_gulf.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_pacific.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_alaska.csv",
+        "row_count": 14,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_gulf.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_pacific.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_alaska.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_gulf.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_pacific.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      }
+    ],
+    "INCCOUNT": [
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_alaska_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_gulf_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_pacific_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_alaska_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_gulf_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_pacific_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_alaska_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_gulf_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_pacific_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      }
+    ],
+    "BUS_ASC_NAME|ID_NUMBER|INCCOUNT|INSP_END_DATE|MMS_COMPANY_NUM": [
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_alaska.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_gulf.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_pacific.csv",
+        "row_count": 100,
+        "size_mb": 0.0
+      }
+    ],
+    "INSP_END_DATE": [
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_alaska_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_gulf_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_pacific_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      }
+    ],
+    "DESCRIP|VALUE": [
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_well_type_codes.csv",
+        "row_count": 7,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_borehole_stat_codes.csv",
+        "row_count": 7,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_primary_op_codes.csv",
+        "row_count": 7,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_suboperation_codes.csv",
+        "row_count": 27,
+        "size_mb": 0.0
+      }
+    ],
+    "AREA_CODE": [
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowareablock_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_structures_columns.csv",
+        "row_count": 27,
+        "size_mb": 0.0
+      }
+    ],
+    "SN_MEAS_LOC": [
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowmeaslocations_columns.csv",
+        "row_count": 15,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/FMPRawData_mv_fmp_meas_locations_columns.csv",
+        "row_count": 10,
+        "size_mb": 0.0
+      }
+    ],
+    "UNIT_AGT_NUMBER": [
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowsubops.csv",
+        "row_count": 53,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowsubops_columns.csv",
+        "row_count": 0,
+        "size_mb": 0.0
+      }
+    ],
+    "ALASKA_PROD|GULF_PROD|PACIFIC_PROD|PROD_MONTH|PROD_YEAR|ROW_ID": [
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_gasmonth.csv",
+        "row_count": 12,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_oilmonth.csv",
+        "row_count": 12,
+        "size_mb": 0.0
+      }
+    ],
+    "ROW_ID": [
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_gasmonth_columns.csv",
+        "row_count": 5,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_oilmonth_columns.csv",
+        "row_count": 5,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_oilyear_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_gasyear_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      }
+    ],
+    "ALASKA_PROD|GULF_PROD|PACIFIC_PROD|PROD_YEAR|ROW_ID": [
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_gasyear.csv",
+        "row_count": 10,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_oilyear.csv",
+        "row_count": 10,
+        "size_mb": 0.0
+      }
+    ],
+    "WATER_DEPTH": [
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_apds_columns.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_wells_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_wells2_columns.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      }
+    ],
+    "COMPLEX_ID_NUM": [
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_platforms_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_authorityhist_columns.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_removaldisp_columns.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      }
+    ],
+    "SN_OSFR_ITEM": [
+      {
+        "path": "legacy/online_raw_well_data/OSFRRawData_mv_osfr_information_columns.csv",
+        "row_count": 13,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/OSFRRawData_mv_osfr_segments_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      }
+    ],
+    "BUS_ASC_NAME": [
+      {
+        "path": "legacy/online_raw_well_data/PermStrucRawData_mv_perm_platforms_columns.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/PermStrucRawData_mv_subsea_boreholes_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      }
+    ],
+    "SEGMENT_NUM": [
+      {
+        "path": "legacy/online_raw_well_data/PipePermRawData_mv_pipeperm_pipelines_columns.csv",
+        "row_count": 25,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/PipePermRawData_mv_pipeperm_segments_columns.csv",
+        "row_count": 28,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/PipeLocRawData_mv_pipelinelocation_columns.csv",
+        "row_count": 12,
+        "size_mb": 0.0
+      }
+    ],
+    "PLAN_CTRL_CD": [
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_planblocks_columns.csv",
+        "row_count": 9,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_plancompanies_columns.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_plansubmittals_columns.csv",
+        "row_count": 7,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_planssites_columns.csv",
+        "row_count": 23,
+        "size_mb": 0.0
+      }
+    ],
+    "ID_NUMBER": [
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_inccount_columns.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_platformincs_columns.csv",
+        "row_count": 8,
+        "size_mb": 0.0
+      }
+    ],
+    "GAS_MCF|OIL_STB|PROD_YEAR": [
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productionsum.csv",
+        "row_count": 39,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productionsumwd.csv",
+        "row_count": 39,
+        "size_mb": 0.0
+      }
+    ],
+    "PROD_YEAR": [
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productionsumwd_columns.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productionsum_columns.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      }
+    ],
+    "AREA_CODE|ASGN_APRVL_DATE|BLOCK_NUMBER|DOC_BAR_CODE|DOC_FILESIZE|DOC_ID|DOC_IMPORTED_DATE|DOC_PAGES|DOC_TYPE|LEASE_EFF_DATE|LEASE_EXPR_DATE|LEASE_NUMBER|MERG_CON_APRVL_DATE|REGION": [
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_active_inactive_leases.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_renleases.csv",
+        "row_count": 100,
+        "size_mb": 0.01
+      }
+    ],
+    "DOC_ID": [
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_active_inactive_leases_columns.csv",
+        "row_count": 13,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_adjudication_files_columns.csv",
+        "row_count": 9,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_collateral_files_columns.csv",
+        "row_count": 21,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_company_files_columns.csv",
+        "row_count": 10,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_dir_surveys_columns.csv",
+        "row_count": 10,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_gg_permits_columns.csv",
+        "row_count": 13,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_pipeline_maps_columns.csv",
+        "row_count": 14,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_plans_columns.csv",
+        "row_count": 9,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_renleases_columns.csv",
+        "row_count": 13,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_row_columns.csv",
+        "row_count": 9,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_units_columns.csv",
+        "row_count": 8,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_well_files_columns.csv",
+        "row_count": 7,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_well_potential_tests_columns.csv",
+        "row_count": 12,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_expired_leases_columns.csv",
+        "row_count": 7,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_sop_soo_columns.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/FRSWellDataRawData_mv_frs_file_inventory_columns.csv",
+        "row_count": 23,
+        "size_mb": 0.0
+      }
+    ],
+    "OWNER_ALIQUOT_CD": [
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_lease_owner_remarks_columns.csv",
+        "row_count": 8,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_portion_aliquots_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      }
+    ],
+    "SN_APM_FK": [
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_attachments_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_preventers_columns.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_resubmittals_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_suboperations_columns.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_verbals_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      }
+    ],
+    "VALUE": [
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_borehole_stat_codes_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_primary_op_codes_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_suboperation_codes_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_well_type_codes_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_casingcutcodes_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_compstatcodes_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_hydrobarbtypecodes_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_operationcodes_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      }
+    ],
+    "SN_APM": [
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_main_columns.csv",
+        "row_count": 24,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_main_prop_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_main_prop_narrative_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      }
+    ],
+    "SN_APM_QA": [
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_questions_columns.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_question_responses_columns.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      }
+    ],
+    "ABBREVIATION|VALUE": [
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_casingcutcodes.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_operationcodes.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      }
+    ],
+    "SN_EOR_FK": [
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_completionsprop_columns.csv",
+        "row_count": 5,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_completions_columns.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_cut_casings_columns.csv",
+        "row_count": 5,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_geomarkers_columns.csv",
+        "row_count": 2,
+        "size_mb": 0.0
+      }
+    ],
+    "VALUE|VALUE_DESC": [
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_compstatcodes.csv",
+        "row_count": 18,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_hydrobarbtypecodes.csv",
+        "row_count": 3,
+        "size_mb": 0.0
+      }
+    ],
+    "SN_EOR_WELL_COMP_FK": [
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_hcbearing_intvl_comps_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_perf_intervals_columns.csv",
+        "row_count": 4,
+        "size_mb": 0.0
+      }
+    ],
+    "SN_EOR": [
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_mainquery_columns.csv",
+        "row_count": 24,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_mainquery_prop_columns.csv",
+        "row_count": 5,
+        "size_mb": 0.0
+      }
+    ],
+    "SN_WAR": [
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_main_columns.csv",
+        "row_count": 22,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_main_prop_columns.csv",
+        "row_count": 14,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_main_prop_remark_columns.csv",
+        "row_count": 1,
+        "size_mb": 0.0
+      }
+    ],
+    "SN_WAR_FK": [
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_open_hole_runs_columns.csv",
+        "row_count": 6,
+        "size_mb": 0.0
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_tubular_summaries_columns.csv",
+        "row_count": 9,
+        "size_mb": 0.0
+      }
+    ]
+  },
+  "redundancy_analysis": {
+    "production_files": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/production.csv",
+        "size_mb": 0.0,
+        "directory": "analysis_data/combined_data_for_analysis"
+      },
+      {
+        "path": "bin/ocsprod/ocsprod_gasmonth.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ocsprod"
+      },
+      {
+        "path": "bin/ocsprod/ocsprod_gasyear.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ocsprod"
+      },
+      {
+        "path": "bin/ocsprod/ocsprod_oilmonth.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ocsprod"
+      },
+      {
+        "path": "bin/ocsprod/ocsprod_oilyear.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ocsprod"
+      },
+      {
+        "path": "bin/production_plan_area/mv_pbpadata.bin",
+        "size_mb": 0.0,
+        "directory": "bin/production_plan_area"
+      },
+      {
+        "path": "bin/production_raw/mv_productiondata.bin",
+        "size_mb": 0.0,
+        "directory": "bin/production_raw"
+      },
+      {
+        "path": "bin/production_raw/mv_productionsum.bin",
+        "size_mb": 0.0,
+        "directory": "bin/production_raw"
+      },
+      {
+        "path": "bin/production_raw/mv_productionsumwd.bin",
+        "size_mb": 0.0,
+        "directory": "bin/production_raw"
+      },
+      {
+        "path": "bin/production_raw/mv_production_waterdepth.bin",
+        "size_mb": 0.0,
+        "directory": "bin/production_raw"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora1996delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora1997delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora1998delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora1999delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2000delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2001delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2002delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2003delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2004delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2005delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2006delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2007delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2008delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2009delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2010delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2011delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2012delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2013delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2014delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2015delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2016delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2017delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2018delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2019delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2020delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2021delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2022delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2023delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogora2024delimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "bin/historical_production_yearly/ogoradelimit.bin",
+        "size_mb": 0.0,
+        "directory": "bin/historical_production_yearly"
+      },
+      {
+        "path": "legacy/data_for_analysis/production.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/data_for_analysis"
+      },
+      {
+        "path": "legacy/Julia_prod_data/production_data_G25251.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Julia_prod_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_gasmonth.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_gasmonth_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_gasyear.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_oilmonth.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_oilmonth_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_oilyear.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_oilyear_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProdPlanAreaRawData_mv_pbpadata.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productiondata.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productiondata_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productionsum.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productionsumwd.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productionsumwd_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_productionsum_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_production_waterdepth.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProductionRawData_mv_production_waterdepth_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OCSProdRawData_ocsprod_gasyear_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ProdPlanAreaRawData_mv_pbpadata_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora1996delimit.zip",
+        "size_mb": 4.53,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora1997delimit.zip",
+        "size_mb": 4.59,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora1998delimit.zip",
+        "size_mb": 4.63,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora1999delimit.zip",
+        "size_mb": 4.61,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2000delimit.zip",
+        "size_mb": 4.63,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2001delimit.zip",
+        "size_mb": 4.66,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2002delimit.zip",
+        "size_mb": 4.61,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2003delimit.zip",
+        "size_mb": 4.55,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2004delimit.zip",
+        "size_mb": 4.49,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2005delimit.zip",
+        "size_mb": 4.28,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2006delimit.zip",
+        "size_mb": 4.15,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2007delimit.zip",
+        "size_mb": 4.19,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2008delimit.zip",
+        "size_mb": 3.97,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2009delimit.zip",
+        "size_mb": 3.73,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2010delimit.zip",
+        "size_mb": 3.54,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2011delimit.zip",
+        "size_mb": 3.33,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2012delimit.zip",
+        "size_mb": 3.1,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2013delimit.zip",
+        "size_mb": 2.9,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2014delimit.zip",
+        "size_mb": 2.7,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2015delimit.zip",
+        "size_mb": 2.56,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2016delimit.zip",
+        "size_mb": 2.43,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2017delimit.zip",
+        "size_mb": 2.32,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2018delimit.zip",
+        "size_mb": 2.26,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2019delimit.zip",
+        "size_mb": 2.18,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2020delimit.zip",
+        "size_mb": 1.98,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2021delimit.zip",
+        "size_mb": 1.76,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2022delimit.zip",
+        "size_mb": 1.61,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2023delimit.zip",
+        "size_mb": 1.56,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogora2024delimit.zip",
+        "size_mb": 1.33,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/historical_production_yearly/ogoradelimit.zip",
+        "size_mb": 0.17,
+        "directory": "zip/historical_production_yearly"
+      },
+      {
+        "path": "zip/ocsprod/OCSProdRawData.zip",
+        "size_mb": 0.0,
+        "directory": "zip/ocsprod"
+      },
+      {
+        "path": "zip/production_plan_area/ProdPlanAreaRawData.zip",
+        "size_mb": 0.05,
+        "directory": "zip/production_plan_area"
+      },
+      {
+        "path": "zip/production_raw/ProductionRawData.zip",
+        "size_mb": 14.59,
+        "directory": "zip/production_raw"
+      }
+    ],
+    "well_files": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_bop_tests.csv",
+        "size_mb": 0.0,
+        "directory": "analysis_data/combined_data_for_analysis"
+      },
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_open_hole.csv",
+        "size_mb": 0.01,
+        "directory": "analysis_data/combined_data_for_analysis"
+      },
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_remarks.csv",
+        "size_mb": 0.07,
+        "directory": "analysis_data/combined_data_for_analysis"
+      },
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_activity_summary.csv",
+        "size_mb": 0.01,
+        "directory": "analysis_data/combined_data_for_analysis"
+      },
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_data.csv",
+        "size_mb": 3.94,
+        "directory": "analysis_data/combined_data_for_analysis"
+      },
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_directional_surveys.csv",
+        "size_mb": 0.0,
+        "directory": "analysis_data/combined_data_for_analysis"
+      },
+      {
+        "path": "analysis_data/combined_data_for_analysis/well_tubulars.csv",
+        "size_mb": 0.01,
+        "directory": "analysis_data/combined_data_for_analysis"
+      },
+      {
+        "path": "bin/apiraw/mv_api_wellcomps.bin",
+        "size_mb": 0.0,
+        "directory": "bin/apiraw"
+      },
+      {
+        "path": "bin/apm/mv_apm_well_type_codes.bin",
+        "size_mb": 0.0,
+        "directory": "bin/apm"
+      },
+      {
+        "path": "bin/decomcost/mv_decom_cost_prop_well.bin",
+        "size_mb": 0.0,
+        "directory": "bin/decomcost"
+      },
+      {
+        "path": "bin/decomcost/mv_decom_cost_spud_well.bin",
+        "size_mb": 0.0,
+        "directory": "bin/decomcost"
+      },
+      {
+        "path": "bin/ewellapd/mv_apd_attachments.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ewellapd"
+      },
+      {
+        "path": "bin/ewellapd/mv_apd_casing_intervals.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ewellapd"
+      },
+      {
+        "path": "bin/ewellapd/mv_apd_casing_sectons.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ewellapd"
+      },
+      {
+        "path": "bin/ewellapd/mv_apd_geologic.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ewellapd"
+      },
+      {
+        "path": "bin/ewellapd/mv_apd_main.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ewellapd"
+      },
+      {
+        "path": "bin/ewellapd/mv_apd_main_prop.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ewellapd"
+      },
+      {
+        "path": "bin/ewellapd/mv_apd_questions.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ewellapd"
+      },
+      {
+        "path": "bin/ewellapd/mv_apd_question_responses.bin",
+        "size_mb": 0.0,
+        "directory": "bin/ewellapd"
+      },
+      {
+        "path": "bin/offshorestats/mv_sbwd_wells.bin",
+        "size_mb": 0.0,
+        "directory": "bin/offshorestats"
+      },
+      {
+        "path": "bin/offshorestats/mv_sbwd_wells2.bin",
+        "size_mb": 0.0,
+        "directory": "bin/offshorestats"
+      },
+      {
+        "path": "bin/scanneddocs/scan_well_files.bin",
+        "size_mb": 0.0,
+        "directory": "bin/scanneddocs"
+      },
+      {
+        "path": "bin/scanneddocs/scan_well_potential_tests.bin",
+        "size_mb": 0.0,
+        "directory": "bin/scanneddocs"
+      },
+      {
+        "path": "bin/Well_APD_Default/Well_APD_Default.bin",
+        "size_mb": 0.0,
+        "directory": "bin/Well_APD_Default"
+      },
+      {
+        "path": "legacy/eWellAPDRawData.zip",
+        "size_mb": 8.38,
+        "directory": "legacy"
+      },
+      {
+        "path": "legacy/eWellEORRawData.zip",
+        "size_mb": 3.56,
+        "directory": "legacy"
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_bop_tests.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/data_for_analysis"
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_open_hole.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/data_for_analysis"
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_remarks.csv",
+        "size_mb": 0.07,
+        "directory": "legacy/data_for_analysis"
+      },
+      {
+        "path": "legacy/data_for_analysis/well_activity_summary.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/data_for_analysis"
+      },
+      {
+        "path": "legacy/data_for_analysis/well_data.csv",
+        "size_mb": 3.94,
+        "directory": "legacy/data_for_analysis"
+      },
+      {
+        "path": "legacy/data_for_analysis/well_directional_surveys.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/data_for_analysis"
+      },
+      {
+        "path": "legacy/data_for_analysis/well_tubulars.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/data_for_analysis"
+      },
+      {
+        "path": "legacy/Jack_well_data/API_1.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Jack_well_data"
+      },
+      {
+        "path": "legacy/Jack_well_data/API_10.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Jack_well_data"
+      },
+      {
+        "path": "legacy/Jack_well_data/API_11.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Jack_well_data"
+      },
+      {
+        "path": "legacy/Jack_well_data/API_2.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Jack_well_data"
+      },
+      {
+        "path": "legacy/Jack_well_data/API_3.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Jack_well_data"
+      },
+      {
+        "path": "legacy/Jack_well_data/API_4.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Jack_well_data"
+      },
+      {
+        "path": "legacy/Jack_well_data/API_5.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Jack_well_data"
+      },
+      {
+        "path": "legacy/Jack_well_data/API_6.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Jack_well_data"
+      },
+      {
+        "path": "legacy/Jack_well_data/API_7.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Jack_well_data"
+      },
+      {
+        "path": "legacy/Jack_well_data/API_8.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Jack_well_data"
+      },
+      {
+        "path": "legacy/Jack_well_data/API_9.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/Jack_well_data"
+      },
+      {
+        "path": "legacy/julia_by_block/well_data_WR540.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/julia_by_block"
+      },
+      {
+        "path": "legacy/julia_by_block/well_data_WR584.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/julia_by_block"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowmeaslocations.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/APDRawData_mv_apddata_all.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/APDRawData_mv_apddata_all_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/APDRawData_mv_apd_main_all.csv",
+        "size_mb": 0.05,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/APDRawData_mv_apd_main_all_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/APIChangesRawData_mv_apichanges_all.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/APIChangesRawData_mv_apichanges_all_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/APIRawData_mv_api_list_all.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/APIRawData_mv_api_list_all_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/APIRawData_mv_api_wellcomps_all.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/APIRawData_mv_api_wellcomps_all_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ApprovalsRawData_mv_approval_info.csv",
+        "size_mb": 0.03,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ApprovalsRawData_mv_approval_info_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/AssignmentsRawData_mv_assignments_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/BHPSRawData_mv_bhpsurvey_all.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/BHPSRawData_mv_bhpsurvey_all_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/BoreholeRawData_mv_boreholes_all.csv",
+        "size_mb": 10.62,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/BoreholeRawData_mv_boreholes_all_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/CompanyRawData_mv_companies_active.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/CompanyRawData_mv_companies_active_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/CompanyRawData_mv_companies_all.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/CompanyRawData_mv_companies_all_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_estimates.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_estimates_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_inst_pipe_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_inst_plat.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_inst_plat_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_pipe.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_pipe_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_plat.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_plat_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_well.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_prop_well_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_spud_well.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_spud_well_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_totals_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DeepQualRawData_mv_deep_water_field_leases.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DeepQualRawData_mv_deep_water_field_leases_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/dsptsdelimit.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_attachments.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_attachments_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_casing_intervals.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_casing_intervals_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_casing_sectons.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_casing_sectons_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_geologic.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_geologic_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_by_oper_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_alaska.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_alaska_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_gulf.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_gulf_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_pacific.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_fac_shutins_pacific_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_alaska.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_alaska_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_gulf.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_gulf_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_pacific_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_alaska.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_alaska_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_gulf.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_gulf_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_pacific.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_shutins_pacific_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_alaska.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_alaska_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_gulf.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_gulf_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_pacific.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/AssignmentsRawData_mv_assignments.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_inst_pipe.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/DecomCostEstRawData_mv_decom_cost_totals.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_main.csv",
+        "size_mb": 0.05,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_main.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_question_responses.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_well_type_codes.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_geomarkers.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_perf_intervals.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_open_hole_runs.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_by_oper.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_inspections_pacific.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_incs_warnings_pacific_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_insp_by_oper.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/INCSRawData_mv_insp_by_oper_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/LABRawData_mv_lease_area_block.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/LABRawData_mv_lease_area_block_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/LeaseOwnerRawData_mv_lease_owners_main.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/LeaseOwnerRawData_mv_lease_owners_main_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/lease_G05868.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowareablock.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowareablock_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowleaseunits.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowleaseunits_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowluoper.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowluoper_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowmeaslocations_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowsubops.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowsubops_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowsystems.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowsystems_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowunits.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/MCPFlowRawData_mv_mcpflowunits_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/NonReqRawData_mv_nonrequired.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/NonReqRawData_mv_nonrequired_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_apds.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_apds_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_leases.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_leases_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_platforms.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_platforms_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_wells.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_wells2.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_wells_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OSFRRawData_mv_osfr_companies.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OSFRRawData_mv_osfr_companies_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OSFRRawData_mv_osfr_information.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OSFRRawData_mv_osfr_information_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OSFRRawData_mv_osfr_segments.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OSFRRawData_mv_osfr_segments_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PermStrucRawData_mv_perm_platforms.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PermStrucRawData_mv_perm_platforms_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PermStrucRawData_mv_subsea_boreholes.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PermStrucRawData_mv_subsea_boreholes_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PipeLocRawData_mv_pipelinelocation.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PipePermRawData_mv_pipeperm_pipelines.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PipePermRawData_mv_pipeperm_pipelines_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PipePermRawData_mv_pipeperm_segments.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PipePermRawData_mv_pipeperm_segments_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PipePermRawData_mv_pipeperm_submittals.csv",
+        "size_mb": 0.03,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PipePermRawData_mv_pipeperm_submittals_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_planblocks.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_planblocks_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_plancompanies.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_plancompanies_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_planssites.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_plansubmittals.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_plansubmittalsdate.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_plansubmittalsdate_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_plansubmittals_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_authorityhist.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_authorityhist_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_cgrefcodes.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_cgrefcodes_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_inccount.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_inccount_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_leases.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_platformincs.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_platformincs_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_removaldisp.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_removaldisp_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_rightofways.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_rightofways_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_ruers.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_ruers_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_structures.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_structures_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/RowDescRawData_mv_rowdescriptions.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/RowDescRawData_mv_rowdescriptions_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/RoyaltyRefRawData_mv_preact.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_active_inactive_leases.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_active_inactive_leases_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_adjudication_files.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_adjudication_files_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_collateral_files.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_collateral_files_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_company_files.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_company_files_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_dir_surveys.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_dir_surveys_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_expired_leases.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_gg_permits.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_gg_permits_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_pipeline_maps.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_pipeline_maps_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_plans.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_plans_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_renleases.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_renleases_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_row.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_row_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_sop_soo.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_units.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_units_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_well_files.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_well_files_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_well_potential_tests.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_well_potential_tests_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_companies.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_companies_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_descriptions.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_descriptions_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_high_bids.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_leases.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_leases_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_lease_owners.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_lease_owners_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_lease_owner_assigns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_lease_owner_assigns_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_lease_owner_groups.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_lease_owner_groups_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_lease_owner_remarks.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_lease_owner_remarks_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_portion_aliquots.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_portion_aliquots_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_rates.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_rates_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_remarks.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_remarks_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_xys.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_xys_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_main_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_main_prop.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_main_prop_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_questions.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_questions_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_question_responses.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPDRawData_mv_apd_question_responses_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_attachments.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_attachments_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_borehole_stat_codes.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_borehole_stat_codes_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_main_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_main_prop.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_main_prop_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_main_prop_narrative.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_main_prop_narrative_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_preventers.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_preventers_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_primary_op_codes.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_primary_op_codes_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_questions.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_questions_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_question_responses_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_resubmittals.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_resubmittals_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_rig_view.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_rig_view_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_suboperations.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_suboperations_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_suboperation_codes.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_suboperation_codes_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_verbals.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_verbals_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellAPMRawData_mv_apm_well_type_codes_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_casingcutcodes.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_casingcutcodes_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_completions.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_completionsprop.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_completionsprop_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_completions_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_compstatcodes.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_compstatcodes_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_cut_casings.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_cut_casings_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_geomarkers_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_hcbearing_intvl_comps.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_hcbearing_intvl_comps_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_hydrobarbtypecodes.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_hydrobarbtypecodes_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_mainquery.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_mainquery_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_mainquery_prop.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_mainquery_prop_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_operationcodes.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_operationcodes_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_eor_perf_intervals_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_hcbearing_intervals.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellEORRawData_mv_hcbearing_intervals_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_boreholes_view.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_boreholes_view_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_main.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_main_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_main_prop.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_main_prop_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_main_prop_remark.csv",
+        "size_mb": 0.06,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_main_prop_remark_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/OffshoreStatsRawData_mv_sbwd_wells2_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PipeLocRawData_mv_pipelinelocation_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlansRawData_mv_planssites_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/PlatStrucRawData_mv_platstruc_leases_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/RoyaltyRefRawData_mv_preact_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_expired_leases_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/ScannedDocsRawData_scan_sop_soo_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/SerialRegRawData_mv_serreg_high_bids_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_open_hole_runs_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_open_hole_tools.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_open_hole_tools_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_tubular_summaries.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_tubular_summaries_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_tubular_summaries_prop.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/eWellWARRawData_mv_war_tubular_summaries_prop_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/FMPMetersRawData_mv_fmpmeterslist.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/FMPMetersRawData_mv_fmpmeterslist_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/FMPRawData_mv_fmplist.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/FMPRawData_mv_fmplist_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/FMPRawData_mv_fmp_meas_locations.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/FMPRawData_mv_fmp_meas_locations_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/FRSWellDataRawData_mv_frs_file_inventory.csv",
+        "size_mb": 0.02,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/FRSWellDataRawData_mv_frs_file_inventory_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/IncInvRawData_mv_acc_investigations.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/online_raw_well_data/IncInvRawData_mv_acc_investigations_columns.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/online_raw_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_1.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_10.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_11.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_13.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_14.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_15.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_16.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_2.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_3.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_4.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_5.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_6.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_7.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_8.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "legacy/stmalo_well_data/API_9.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/stmalo_well_data"
+      },
+      {
+        "path": "zip/apm/eWellAPMRawData.zip",
+        "size_mb": 31.51,
+        "directory": "zip/apm"
+      },
+      {
+        "path": "zip/eor/eWellEORRawData.zip",
+        "size_mb": 3.56,
+        "directory": "zip/eor"
+      },
+      {
+        "path": "zip/ewellapd/eWellAPDRawData.zip",
+        "size_mb": 8.38,
+        "directory": "zip/ewellapd"
+      },
+      {
+        "path": "zip/frs/FRSWellDataRawData.zip",
+        "size_mb": 0.0,
+        "directory": "zip/frs"
+      },
+      {
+        "path": "zip/war/eWellWARRawData.zip",
+        "size_mb": 0.0,
+        "directory": "zip/war"
+      }
+    ],
+    "completion_files": [
+      {
+        "path": "analysis_data/combined_data_for_analysis/completion_perforations.csv",
+        "size_mb": 0.0,
+        "directory": "analysis_data/combined_data_for_analysis"
+      },
+      {
+        "path": "analysis_data/combined_data_for_analysis/completion_properties.csv",
+        "size_mb": 0.01,
+        "directory": "analysis_data/combined_data_for_analysis"
+      },
+      {
+        "path": "analysis_data/combined_data_for_analysis/completion_summary.csv",
+        "size_mb": 0.0,
+        "directory": "analysis_data/combined_data_for_analysis"
+      },
+      {
+        "path": "bin/companydetails/mv_companies_active.bin",
+        "size_mb": 0.0,
+        "directory": "bin/companydetails"
+      },
+      {
+        "path": "bin/companydetails/mv_companies_all.bin",
+        "size_mb": 0.0,
+        "directory": "bin/companydetails"
+      },
+      {
+        "path": "bin/eor/mv_eor_completions.bin",
+        "size_mb": 0.0,
+        "directory": "bin/eor"
+      },
+      {
+        "path": "bin/eor/mv_eor_completionsprop.bin",
+        "size_mb": 0.0,
+        "directory": "bin/eor"
+      },
+      {
+        "path": "bin/eor/mv_eor_compstatcodes.bin",
+        "size_mb": 0.0,
+        "directory": "bin/eor"
+      },
+      {
+        "path": "bin/eor/mv_eor_hcbearing_intvl_comps.bin",
+        "size_mb": 0.0,
+        "directory": "bin/eor"
+      },
+      {
+        "path": "bin/osfr/mv_osfr_companies.bin",
+        "size_mb": 0.0,
+        "directory": "bin/osfr"
+      },
+      {
+        "path": "bin/plans/mv_plancompanies.bin",
+        "size_mb": 0.0,
+        "directory": "bin/plans"
+      },
+      {
+        "path": "bin/scanneddocs/scan_company_files.bin",
+        "size_mb": 0.0,
+        "directory": "bin/scanneddocs"
+      },
+      {
+        "path": "bin/serialreg/mv_serreg_companies.bin",
+        "size_mb": 0.0,
+        "directory": "bin/serialreg"
+      },
+      {
+        "path": "legacy/data_for_analysis/completion_perforations.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/data_for_analysis"
+      },
+      {
+        "path": "legacy/data_for_analysis/completion_properties.csv",
+        "size_mb": 0.01,
+        "directory": "legacy/data_for_analysis"
+      },
+      {
+        "path": "legacy/data_for_analysis/completion_summary.csv",
+        "size_mb": 0.0,
+        "directory": "legacy/data_for_analysis"
+      },
+      {
+        "path": "zip/companydetails/CompanyRawData.zip",
+        "size_mb": 0.32,
+        "directory": "zip/companydetails"
+      }
+    ],
+    "lease_files": [
+      {
+        "path": "bin/deepqual/mv_deep_water_field_leases.bin",
+        "size_mb": 0.0,
+        "directory": "bin/deepqual"
+      },
+      {
+        "path": "bin/lab/mv_lease_area_block.bin",
+        "size_mb": 0.0,
+        "directory": "bin/lab"
+      },
+      {
+        "path": "bin/leaseowner/mv_lease_owners_main.bin",
+        "size_mb": 0.0,
+        "directory": "bin/leaseowner"
+      },
+      {
+        "path": "bin/mcpflow/mv_mcpflowleaseunits.bin",
+        "size_mb": 0.0,
+        "directory": "bin/mcpflow"
+      },
+      {
+        "path": "bin/offshorestats/mv_sbwd_leases.bin",
+        "size_mb": 0.0,
+        "directory": "bin/offshorestats"
+      },
+      {
+        "path": "bin/platstruc/mv_platstruc_leases.bin",
+        "size_mb": 0.0,
+        "directory": "bin/platstruc"
+      },
+      {
+        "path": "bin/scanneddocs/scan_active_inactive_leases.bin",
+        "size_mb": 0.0,
+        "directory": "bin/scanneddocs"
+      },
+      {
+        "path": "bin/scanneddocs/scan_expired_leases.bin",
+        "size_mb": 0.0,
+        "directory": "bin/scanneddocs"
+      },
+      {
+        "path": "bin/scanneddocs/scan_renleases.bin",
+        "size_mb": 0.0,
+        "directory": "bin/scanneddocs"
+      },
+      {
+        "path": "bin/serialreg/mv_serreg_leases.bin",
+        "size_mb": 0.0,
+        "directory": "bin/serialreg"
+      },
+      {
+        "path": "bin/serialreg/mv_serreg_lease_owners.bin",
+        "size_mb": 0.0,
+        "directory": "bin/serialreg"
+      },
+      {
+        "path": "bin/serialreg/mv_serreg_lease_owner_assigns.bin",
+        "size_mb": 0.0,
+        "directory": "bin/serialreg"
+      },
+      {
+        "path": "bin/serialreg/mv_serreg_lease_owner_groups.bin",
+        "size_mb": 0.0,
+        "directory": "bin/serialreg"
+      },
+      {
+        "path": "bin/serialreg/mv_serreg_lease_owner_remarks.bin",
+        "size_mb": 0.0,
+        "directory": "bin/serialreg"
+      },
+      {
+        "path": "zip/leaseowner/LeaseOwnerRawData.zip",
+        "size_mb": 0.06,
+        "directory": "zip/leaseowner"
+      }
+    ],
+    "survey_files": [
+      {
+        "path": "bin/bhps/mv_bhpsurvey.bin",
+        "size_mb": 0.0,
+        "directory": "bin/bhps"
+      },
+      {
+        "path": "bin/scanneddocs/scan_dir_surveys.bin",
+        "size_mb": 0.0,
+        "directory": "bin/scanneddocs"
+      }
+    ]
+  },
+  "potential_savings": {
+    "duplicate_count": 44,
+    "total_duplicate_size_mb": 28.45,
+    "percentage_of_total": 7.7
+  }
+}

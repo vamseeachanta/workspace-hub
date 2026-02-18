@@ -1,0 +1,447 @@
+{
+  "version": "1.0",
+  "created": "2026-01-24",
+  "description": "Import path migration manifest for worldenergydata reorganization",
+  "status": "draft",
+  "base_package": "worldenergydata.bsee.data",
+
+  "migrations": {
+    "bsee_loaders": {
+      "description": "Reorganize BSEE data loading modules from underscore-prefixed directories to standardized structure",
+
+      "_by_api": {
+        "current_path": "worldenergydata.bsee.data._by_api",
+        "new_path": "worldenergydata.bsee.data.loaders.api",
+        "modules": {
+          "router": {
+            "current": "worldenergydata.bsee.data._by_api.router",
+            "new": "worldenergydata.bsee.data.loaders.api.router",
+            "exports": ["WellRouter"]
+          },
+          "well": {
+            "current": "worldenergydata.bsee.data._by_api.well",
+            "new": "worldenergydata.bsee.data.loaders.api.well",
+            "exports": ["WellData"]
+          }
+        }
+      },
+
+      "_by_block": {
+        "current_path": "worldenergydata.bsee.data._by_block",
+        "new_path": "worldenergydata.bsee.data.loaders.block",
+        "modules": {
+          "router": {
+            "current": "worldenergydata.bsee.data._by_block.router",
+            "new": "worldenergydata.bsee.data.loaders.block.router",
+            "exports": ["BlockRouter"]
+          },
+          "data_from_local_files": {
+            "current": "worldenergydata.bsee.data._by_block.data_from_local_files",
+            "new": "worldenergydata.bsee.data.loaders.block.local_files",
+            "exports": ["DataFromLocalFiles"]
+          },
+          "war_data": {
+            "current": "worldenergydata.bsee.data._by_block.war_data",
+            "new": "worldenergydata.bsee.data.loaders.block.war_data",
+            "exports": ["WARDataFromBin"]
+          }
+        }
+      },
+
+      "_by_lease": {
+        "current_path": "worldenergydata.bsee.data._by_lease",
+        "new_path": "worldenergydata.bsee.data.loaders.lease",
+        "modules": {
+          "router": {
+            "current": "worldenergydata.bsee.data._by_lease.router",
+            "new": "worldenergydata.bsee.data.loaders.lease.router",
+            "exports": ["LeaseRouter"]
+          },
+          "data_from_local_files": {
+            "current": "worldenergydata.bsee.data._by_lease.data_from_local_files",
+            "new": "worldenergydata.bsee.data.loaders.lease.local_files",
+            "exports": ["DataFromLocalFiles"]
+          }
+        }
+      }
+    },
+
+    "bsee_sources": {
+      "description": "Reorganize BSEE data source modules from underscore-prefixed directories",
+
+      "_from_bin": {
+        "current_path": "worldenergydata.bsee.data._from_bin",
+        "new_path": "worldenergydata.bsee.data.sources.bin",
+        "modules": {
+          "api_data": {
+            "current": "worldenergydata.bsee.data._from_bin.api_data",
+            "new": "worldenergydata.bsee.data.sources.bin.api_data",
+            "exports": ["APIData"]
+          },
+          "block_data": {
+            "current": "worldenergydata.bsee.data._from_bin.block_data",
+            "new": "worldenergydata.bsee.data.sources.bin.block_data",
+            "exports": ["BlockData"]
+          },
+          "lease_data": {
+            "current": "worldenergydata.bsee.data._from_bin.lease_data",
+            "new": "worldenergydata.bsee.data.sources.bin.lease_data",
+            "exports": ["LeaseData"]
+          }
+        }
+      },
+
+      "_from_zip": {
+        "current_path": "worldenergydata.bsee.data._from_zip",
+        "new_path": "worldenergydata.bsee.data.sources.zip",
+        "modules": {
+          "production_data": {
+            "current": "worldenergydata.bsee.data._from_zip.production_data",
+            "new": "worldenergydata.bsee.data.sources.zip.production_data",
+            "exports": ["GetProdDataFromZip"]
+          },
+          "well_data": {
+            "current": "worldenergydata.bsee.data._from_zip.well_data",
+            "new": "worldenergydata.bsee.data.sources.zip.well_data",
+            "exports": ["WellDataFromZip"]
+          }
+        }
+      }
+    }
+  },
+
+  "import_dependencies": {
+    "description": "Files that import from deprecated paths and will need updating",
+
+    "internal_bsee_imports": [
+      {
+        "file": "worldenergydata/modules/bsee/data/bsee_data.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._by_api.well import WellData",
+            "new": "from worldenergydata.bsee.data.loaders.api.well import WellData"
+          },
+          {
+            "current": "from worldenergydata.bsee.data._by_block.router import BlockRouter",
+            "new": "from worldenergydata.bsee.data.loaders.block.router import BlockRouter"
+          },
+          {
+            "current": "from worldenergydata.bsee.data._by_lease.router import LeaseRouter",
+            "new": "from worldenergydata.bsee.data.loaders.lease.router import LeaseRouter"
+          }
+        ]
+      },
+      {
+        "file": "worldenergydata/modules/bsee/data/_by_api/well.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._from_bin.api_data import APIData",
+            "new": "from worldenergydata.bsee.data.sources.bin.api_data import APIData"
+          }
+        ]
+      },
+      {
+        "file": "worldenergydata/modules/bsee/data/_by_api/router.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._by_api.well import WellData",
+            "new": "from worldenergydata.bsee.data.loaders.api.well import WellData"
+          }
+        ]
+      },
+      {
+        "file": "worldenergydata/modules/bsee/data/_by_block/router.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._by_block.data_from_local_files import DataFromLocalFiles",
+            "new": "from worldenergydata.bsee.data.loaders.block.local_files import DataFromLocalFiles"
+          },
+          {
+            "current": "from worldenergydata.bsee.data._by_block.war_data import WARDataFromBin",
+            "new": "from worldenergydata.bsee.data.loaders.block.war_data import WARDataFromBin"
+          }
+        ]
+      },
+      {
+        "file": "worldenergydata/modules/bsee/data/_by_block/data_from_local_files.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._from_bin.block_data import BlockData",
+            "new": "from worldenergydata.bsee.data.sources.bin.block_data import BlockData"
+          }
+        ]
+      },
+      {
+        "file": "worldenergydata/modules/bsee/data/_by_lease/router.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._by_lease.data_from_local_files import DataFromLocalFiles",
+            "new": "from worldenergydata.bsee.data.loaders.lease.local_files import DataFromLocalFiles"
+          }
+        ]
+      },
+      {
+        "file": "worldenergydata/modules/bsee/data/_by_lease/data_from_local_files.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._from_bin.lease_data import LeaseData",
+            "new": "from worldenergydata.bsee.data.sources.bin.lease_data import LeaseData"
+          }
+        ]
+      },
+      {
+        "file": "worldenergydata/modules/bsee/data/_from_zip/well_data.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._by_block.data_from_local_files import DataFromLocalFiles",
+            "new": "from worldenergydata.bsee.data.loaders.block.local_files import DataFromLocalFiles"
+          }
+        ]
+      },
+      {
+        "file": "worldenergydata/modules/bsee/data/production/router.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._from_zip.production_data import GetProdDataFromZip",
+            "new": "from worldenergydata.bsee.data.sources.zip.production_data import GetProdDataFromZip"
+          }
+        ]
+      },
+      {
+        "file": "worldenergydata/modules/bsee/data/production/production_data_sources.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._from_zip.production_data import GetProdDataFromZip",
+            "new": "from worldenergydata.bsee.data.sources.zip.production_data import GetProdDataFromZip"
+          }
+        ]
+      },
+      {
+        "file": "worldenergydata/modules/bsee/data/refresh/data_refresh.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._from_zip.production_data import GetProdDataFromZip",
+            "new": "from worldenergydata.bsee.data.sources.zip.production_data import GetProdDataFromZip"
+          },
+          {
+            "current": "from worldenergydata.bsee.data._from_zip.well_data import WellDataFromZip",
+            "new": "from worldenergydata.bsee.data.sources.zip.well_data import WellDataFromZip"
+          }
+        ]
+      },
+      {
+        "file": "worldenergydata/modules/bsee/data/refresh/data_refresh_enhanced.py",
+        "imports": [
+          {
+            "current": "from worldenergydata.bsee.data._from_zip.production_data import GetProdDataFromZip",
+            "new": "from worldenergydata.bsee.data.sources.zip.production_data import GetProdDataFromZip"
+          },
+          {
+            "current": "from worldenergydata.bsee.data._from_zip.well_data import WellDataFromZip",
+            "new": "from worldenergydata.bsee.data.sources.zip.well_data import WellDataFromZip"
+          }
+        ]
+      }
+    ],
+
+    "cross_module_imports": [
+      {
+        "file": "worldenergydata/modules/well_production_dashboard/query_optimizer.py",
+        "imports": [
+          {
+            "current": "from ..bsee.data._from_bin.api_data import APIData",
+            "new": "from ..bsee.data.sources.bin.api_data import APIData"
+          },
+          {
+            "current": "from ..bsee.data._from_bin.lease_data import LeaseData",
+            "new": "from ..bsee.data.sources.bin.lease_data import LeaseData"
+          },
+          {
+            "current": "from ..bsee.data._from_bin.block_data import BlockData",
+            "new": "from ..bsee.data.sources.bin.block_data import BlockData"
+          }
+        ]
+      }
+    ]
+  },
+
+  "shims_required": {
+    "description": "Backward compatibility shims to maintain existing import paths during transition",
+    "modules": [
+      {
+        "path": "worldenergydata.bsee.data._by_api",
+        "type": "loader_shim",
+        "redirects_to": "worldenergydata.bsee.data.loaders.api",
+        "deprecation_warning": true,
+        "remove_in_version": "2.0.0"
+      },
+      {
+        "path": "worldenergydata.bsee.data._by_block",
+        "type": "loader_shim",
+        "redirects_to": "worldenergydata.bsee.data.loaders.block",
+        "deprecation_warning": true,
+        "remove_in_version": "2.0.0"
+      },
+      {
+        "path": "worldenergydata.bsee.data._by_lease",
+        "type": "loader_shim",
+        "redirects_to": "worldenergydata.bsee.data.loaders.lease",
+        "deprecation_warning": true,
+        "remove_in_version": "2.0.0"
+      },
+      {
+        "path": "worldenergydata.bsee.data._from_bin",
+        "type": "source_shim",
+        "redirects_to": "worldenergydata.bsee.data.sources.bin",
+        "deprecation_warning": true,
+        "remove_in_version": "2.0.0"
+      },
+      {
+        "path": "worldenergydata.bsee.data._from_zip",
+        "type": "source_shim",
+        "redirects_to": "worldenergydata.bsee.data.sources.zip",
+        "deprecation_warning": true,
+        "remove_in_version": "2.0.0"
+      }
+    ]
+  },
+
+  "deprecated_paths": [
+    "worldenergydata.bsee.data._by_api",
+    "worldenergydata.bsee.data._by_api.router",
+    "worldenergydata.bsee.data._by_api.well",
+    "worldenergydata.bsee.data._by_block",
+    "worldenergydata.bsee.data._by_block.router",
+    "worldenergydata.bsee.data._by_block.data_from_local_files",
+    "worldenergydata.bsee.data._by_block.war_data",
+    "worldenergydata.bsee.data._by_lease",
+    "worldenergydata.bsee.data._by_lease.router",
+    "worldenergydata.bsee.data._by_lease.data_from_local_files",
+    "worldenergydata.bsee.data._from_bin",
+    "worldenergydata.bsee.data._from_bin.api_data",
+    "worldenergydata.bsee.data._from_bin.block_data",
+    "worldenergydata.bsee.data._from_bin.lease_data",
+    "worldenergydata.bsee.data._from_zip",
+    "worldenergydata.bsee.data._from_zip.production_data",
+    "worldenergydata.bsee.data._from_zip.well_data"
+  ],
+
+  "new_paths": [
+    "worldenergydata.bsee.data.loaders",
+    "worldenergydata.bsee.data.loaders.api",
+    "worldenergydata.bsee.data.loaders.api.router",
+    "worldenergydata.bsee.data.loaders.api.well",
+    "worldenergydata.bsee.data.loaders.block",
+    "worldenergydata.bsee.data.loaders.block.router",
+    "worldenergydata.bsee.data.loaders.block.local_files",
+    "worldenergydata.bsee.data.loaders.block.war_data",
+    "worldenergydata.bsee.data.loaders.lease",
+    "worldenergydata.bsee.data.loaders.lease.router",
+    "worldenergydata.bsee.data.loaders.lease.local_files",
+    "worldenergydata.bsee.data.sources",
+    "worldenergydata.bsee.data.sources.bin",
+    "worldenergydata.bsee.data.sources.bin.api_data",
+    "worldenergydata.bsee.data.sources.bin.block_data",
+    "worldenergydata.bsee.data.sources.bin.lease_data",
+    "worldenergydata.bsee.data.sources.zip",
+    "worldenergydata.bsee.data.sources.zip.production_data",
+    "worldenergydata.bsee.data.sources.zip.well_data"
+  ],
+
+  "class_exports": {
+    "description": "Classes that need to be re-exported from new locations",
+    "loaders": {
+      "api": ["WellData", "WellRouter"],
+      "block": ["BlockRouter", "DataFromLocalFiles", "WARDataFromBin"],
+      "lease": ["LeaseRouter", "DataFromLocalFiles"]
+    },
+    "sources": {
+      "bin": ["APIData", "BlockData", "LeaseData"],
+      "zip": ["GetProdDataFromZip", "WellDataFromZip"]
+    }
+  },
+
+  "migration_order": [
+    {
+      "phase": 1,
+      "description": "Create new directory structure",
+      "tasks": [
+        "Create worldenergydata/modules/bsee/data/loaders/__init__.py",
+        "Create worldenergydata/modules/bsee/data/loaders/api/__init__.py",
+        "Create worldenergydata/modules/bsee/data/loaders/block/__init__.py",
+        "Create worldenergydata/modules/bsee/data/loaders/lease/__init__.py",
+        "Create worldenergydata/modules/bsee/data/sources/__init__.py",
+        "Create worldenergydata/modules/bsee/data/sources/bin/__init__.py",
+        "Create worldenergydata/modules/bsee/data/sources/zip/__init__.py"
+      ]
+    },
+    {
+      "phase": 2,
+      "description": "Copy source files to new locations",
+      "tasks": [
+        "Copy _by_api/*.py to loaders/api/",
+        "Copy _by_block/*.py to loaders/block/",
+        "Copy _by_lease/*.py to loaders/lease/",
+        "Copy _from_bin/*.py to sources/bin/",
+        "Copy _from_zip/*.py to sources/zip/"
+      ]
+    },
+    {
+      "phase": 3,
+      "description": "Update internal imports in copied files",
+      "tasks": [
+        "Update imports in loaders/api/well.py",
+        "Update imports in loaders/block/local_files.py",
+        "Update imports in loaders/block/router.py",
+        "Update imports in loaders/lease/local_files.py",
+        "Update imports in loaders/lease/router.py",
+        "Update imports in sources/zip/well_data.py"
+      ]
+    },
+    {
+      "phase": 4,
+      "description": "Create backward compatibility shims",
+      "tasks": [
+        "Replace _by_api/__init__.py with shim",
+        "Replace _by_block/__init__.py with shim",
+        "Replace _by_lease/__init__.py with shim",
+        "Replace _from_bin/__init__.py with shim",
+        "Replace _from_zip/__init__.py with shim"
+      ]
+    },
+    {
+      "phase": 5,
+      "description": "Update external consumers",
+      "tasks": [
+        "Update bsee_data.py imports",
+        "Update production/router.py imports",
+        "Update production/production_data_sources.py imports",
+        "Update refresh/data_refresh.py imports",
+        "Update refresh/data_refresh_enhanced.py imports",
+        "Update well_production_dashboard/query_optimizer.py imports"
+      ]
+    },
+    {
+      "phase": 6,
+      "description": "Validation and testing",
+      "tasks": [
+        "Run existing tests to verify functionality",
+        "Test deprecated import paths still work with warnings",
+        "Test new import paths work correctly"
+      ]
+    }
+  ],
+
+  "shim_template": {
+    "description": "Template for backward compatibility shim __init__.py files",
+    "code": "\"\"\"Backward compatibility shim - deprecated module path.\n\nThis module is deprecated and will be removed in version 2.0.0.\nPlease update your imports to use the new paths.\n\nExample:\n    # Old (deprecated):\n    from worldenergydata.bsee.data._from_bin.api_data import APIData\n    \n    # New:\n    from worldenergydata.bsee.data.sources.bin.api_data import APIData\n\"\"\"\nimport warnings\n\nwarnings.warn(\n    \"Importing from 'worldenergydata.bsee.data._from_bin' is deprecated. \"\n    \"Please use 'worldenergydata.bsee.data.sources.bin' instead. \"\n    \"This import path will be removed in version 2.0.0.\",\n    DeprecationWarning,\n    stacklevel=2\n)\n\n# Re-export from new location\nfrom worldenergydata.bsee.data.sources.bin import *\n"
+  },
+
+  "statistics": {
+    "total_deprecated_paths": 17,
+    "total_new_paths": 19,
+    "files_requiring_updates": 13,
+    "shims_to_create": 5,
+    "classes_to_migrate": 10
+  }
+}
