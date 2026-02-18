@@ -166,6 +166,8 @@ Dry-run review gate (required before apply):
 3. Capture approved dry-run artifact hash for traceability:
 ```bash
 sha256sum reports/compliance/wrk-188-worldenergydata-dryrun.log > reports/compliance/wrk-188-worldenergydata-dryrun.log.sha256
+sha256sum reports/compliance/wrk-188-worldenergydata-source-checksums.txt > reports/compliance/wrk-188-worldenergydata-source-checksums.txt.sha256
+sha256sum reports/compliance/wrk-188-worldenergydata-approved-source-files.txt > reports/compliance/wrk-188-worldenergydata-approved-source-files.txt.sha256
 find worldenergydata -type f -path '*/specs/*' | wc -l > reports/compliance/wrk-188-worldenergydata-source-count.txt
 printf "HUB_HEAD=%s\nWORLDENERGYDATA_HEAD=%s\n" "$(git rev-parse HEAD)" "$(git -C worldenergydata rev-parse HEAD)" > reports/compliance/wrk-188-worldenergydata-approved-heads.env
 git -C worldenergydata rev-parse HEAD > reports/compliance/wrk-188-worldenergydata-pre-apply-submodule-sha.txt
@@ -185,6 +187,21 @@ printf "WRK=188\nSPEC=worldenergydata-wave1-migration\nSTATUS=APPROVED\nAPPROVER
 source reports/compliance/wrk-188-worldenergydata-approved-heads.env
 test "$(git rev-parse HEAD)" = "$HUB_HEAD"
 test "$(git -C worldenergydata rev-parse HEAD)" = "$WORLDENERGYDATA_HEAD"
+test -z "$(git status --porcelain)"
+test -z "$(git -C worldenergydata status --porcelain)"
+# revalidate source manifests/checksums against approved dry-run artifacts
+find worldenergydata -type f -path '*/specs/*' -print0 | sort -z | xargs -0 sha256sum > reports/compliance/wrk-188-worldenergydata-source-checksums-apply-preflight.txt
+diff reports/compliance/wrk-188-worldenergydata-source-checksums.txt reports/compliance/wrk-188-worldenergydata-source-checksums-apply-preflight.txt
+python3 - <<'PY'
+from pathlib import Path
+rows = []
+for p in Path("worldenergydata").rglob("*"):
+    s = str(p).replace("\\", "/")
+    if p.is_file() and "/specs/" in s:
+        rows.append(s)
+Path("reports/compliance/wrk-188-worldenergydata-approved-source-files-apply-preflight.txt").write_text("\n".join(sorted(rows)) + "\n")
+PY
+diff reports/compliance/wrk-188-worldenergydata-approved-source-files.txt reports/compliance/wrk-188-worldenergydata-approved-source-files-apply-preflight.txt
 # pre-apply downstream path safety gate
 test -z "$(rg -n 'worldenergydata/(.*/)?specs/' . -g '!.git/**' -g '!worldenergydata/**' -g '!specs/repos/worldenergydata/**' -g '!reports/**' | cat)"
 test -f reports/compliance/wrk-188-worldenergydata-approval.txt
@@ -193,6 +210,16 @@ rg -q "^APPROVER=${APPROVER_ID}$" reports/compliance/wrk-188-worldenergydata-app
 rg -q "^HUB_HEAD=${HUB_HEAD}$" reports/compliance/wrk-188-worldenergydata-approval.txt
 rg -q "^WORLDENERGYDATA_HEAD=${WORLDENERGYDATA_HEAD}$" reports/compliance/wrk-188-worldenergydata-approval.txt
 rg -q "^DRY_RUN_HASH=$(cut -d' ' -f1 reports/compliance/wrk-188-worldenergydata-dryrun.log.sha256)$" reports/compliance/wrk-188-worldenergydata-approval.txt
+# bind cross-review artifacts to current spec+heads
+test -f reports/compliance/wrk-188-worldenergydata-review-bindings.env
+source reports/compliance/wrk-188-worldenergydata-review-bindings.env
+SPEC_SHA_NOW="$(sha256sum specs/wrk/WRK-188/worldenergydata-wave1-migration.md | awk '{print $1}')"
+test "$REVIEW_SPEC_SHA" = "$SPEC_SHA_NOW"
+test "$REVIEW_HUB_HEAD" = "$HUB_HEAD"
+test "$REVIEW_WORLDENERGYDATA_HEAD" = "$WORLDENERGYDATA_HEAD"
+test "$REVIEW_CLAUDE_SHA" = "$(sha256sum "$REVIEW_CLAUDE_FILE" | awk '{print $1}')"
+test "$REVIEW_CODEX_SHA" = "$(sha256sum "$REVIEW_CODEX_FILE" | awk '{print $1}')"
+test "$REVIEW_GEMINI_SHA" = "$(sha256sum "$REVIEW_GEMINI_FILE" | awk '{print $1}')"
 scripts/operations/compliance/migrate_specs_to_workspace.sh --apply --repos worldenergydata
 find specs/repos/worldenergydata -type f -path '*/specs/*' -print0 | sort -z | xargs -0 sha256sum > reports/compliance/wrk-188-worldenergydata-target-checksums.txt
 ```
@@ -271,6 +298,15 @@ test -n "$F_CLAUDE" && test -n "$F_CODEX" && test -n "$F_GEMINI"
 V_CLAUDE="$(scripts/review/normalize-verdicts.sh "$F_CLAUDE")"
 V_CODEX="$(scripts/review/normalize-verdicts.sh "$F_CODEX")"
 V_GEMINI="$(scripts/review/normalize-verdicts.sh "$F_GEMINI")"
+SPEC_SHA="$(sha256sum specs/wrk/WRK-188/worldenergydata-wave1-migration.md | awk '{print $1}')"
+printf "REVIEW_SPEC_SHA=%s\nREVIEW_HUB_HEAD=%s\nREVIEW_WORLDENERGYDATA_HEAD=%s\nREVIEW_CLAUDE_FILE=%s\nREVIEW_CLAUDE_SHA=%s\nREVIEW_CODEX_FILE=%s\nREVIEW_CODEX_SHA=%s\nREVIEW_GEMINI_FILE=%s\nREVIEW_GEMINI_SHA=%s\n" \
+  "$SPEC_SHA" \
+  "$(git rev-parse HEAD)" \
+  "$(git -C worldenergydata rev-parse HEAD)" \
+  "$F_CLAUDE" "$(sha256sum "$F_CLAUDE" | awk '{print $1}')" \
+  "$F_CODEX" "$(sha256sum "$F_CODEX" | awk '{print $1}')" \
+  "$F_GEMINI" "$(sha256sum "$F_GEMINI" | awk '{print $1}')" \
+  > reports/compliance/wrk-188-worldenergydata-review-bindings.env
 test "$V_CLAUDE" != "NO_OUTPUT"
 echo "$V_CLAUDE $V_CODEX $V_GEMINI" | rg -q 'MAJOR|ERROR' && exit 1 || true
 # NO_OUTPUT fallback enforcement for non-Claude providers
