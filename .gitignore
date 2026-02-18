@@ -355,3 +355,4 @@ jscpd-report/
 .claude/skills/.commit-log
 .claude/skills/session-logs/
 .claude-flow/
+dryrun_debug.log

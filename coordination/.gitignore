@@ -157,4 +157,4 @@ memory_bank/cache/
 orchestration/logs/
 subtasks/temp/
 *.pid
-*.lock
+*.lockcoverage.xml
