@@ -10,10 +10,10 @@
 
 ## High-Value Module Coverage (Focused)
 - `digitalmodel.asset_integrity.common.update_deep`: **100.00%**
-- `digitalmodel.hydrodynamics.diffraction.polars_exporter`: **99.14%**
+- `digitalmodel.hydrodynamics.diffraction.polars_exporter`: **94.83%** (latest focused rerun)
 - `digitalmodel.hydrodynamics.hull_library.catalog`: **94.70%**
 - `digitalmodel.hydrodynamics.hull_library.rao_registry`: **99.04%**
-- `digitalmodel.asset_integrity.common.yml_utilities`: **84.76%**
+- `digitalmodel.asset_integrity.common.yml_utilities`: **87.20%** (improved after fallback/error-path tests)
 
 ## Broad Priority Baseline Trend
 - Earlier broad run total: **6.05%**
@@ -26,6 +26,8 @@ Note: Broad baseline still has pre-existing failures in large scope suites (seed
 - Result: **53 passed, 17 skipped, 0 failed**
 - Command style: `uv run python -m pytest ...`
 - Latest consolidated WRK-149 scope rerun (post `d42399cbb`): **32 passed, 8 skipped, 0 failed**
+- Latest focused priority rerun (with `test_rao_registry` included): **49 passed, 0 skipped, 0 failed**
+- Focused coverage artifact: `digitalmodel/coverage.wrk149.focused.xml`
 
 ## Files Added
 - `src/digitalmodel/asset_integrity/tests/test_update_deep_additional.py`
