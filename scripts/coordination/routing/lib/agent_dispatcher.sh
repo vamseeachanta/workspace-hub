@@ -76,7 +76,7 @@ get_dispatch_command() {
         "claude")
             case "$model_id" in
                 "sonnet-4-5")
-                    cmd="claude --model claude-sonnet-4-5-20250929 -p \"$task\"" ;;
+                    cmd="claude --model sonnet -p \"$task\"" ;;
                 *)
                     cmd="claude -p \"$task\"" ;;
             esac
@@ -84,7 +84,7 @@ get_dispatch_command() {
         "gemini")
             case "$model_id" in
                 "gemini-flash")
-                    cmd="echo \"$task\" | gemini --model gemini-2.0-flash -p \"Act as $agent\" -y" ;;
+                    cmd="echo \"$task\" | gemini --model gemini-2.5-flash -p \"Act as $agent\" -y" ;;
                 *)
                     cmd="echo \"$task\" | gemini -p \"Act as $agent\" -y" ;;
             esac
