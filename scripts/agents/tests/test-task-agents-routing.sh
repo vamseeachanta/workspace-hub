@@ -151,6 +151,34 @@ assert_eq "resolve: no task_agents + no provider uses fallback" "gemini" "$resul
 result="$(wrk_resolve_phase_provider "$MOCK_WQ/pending/WRK-802.md" "" "codex")"
 assert_eq "resolve: no phase + no provider uses fallback" "codex" "$result"
 
+# ── Provider health check + fallback (Tier 2 gap — WRK-198) ─────────
+DISPATCHER_LIB="$(cd "$AGENTS_DIR/../coordination/routing/lib" && pwd)/agent_dispatcher.sh"
+source "$DISPATCHER_LIB"
+
+# check_provider_available: claude should be available (running inside claude)
+result="$(check_provider_available claude && echo "OK" || echo "UNAVAILABLE")"
+assert_eq "health: claude CLI check returns OK when claude is in PATH" "OK" "$result"
+
+# check_provider_available: nonsense provider → false
+check_provider_available "__no_such_provider__" 2>/dev/null && r="OK" || r="UNAVAILABLE"
+assert_eq "health: unknown provider returns UNAVAILABLE" "UNAVAILABLE" "$r"
+
+# find_available_provider: prefers preferred when available
+result="$(find_available_provider claude)"
+assert_eq "fallback: find_available prefers claude when present" "claude" "$result"
+
+# find_available_provider: skips unavailable preferred, returns next available
+# Simulate by overriding check_provider_available for this test
+check_provider_available() {
+    local p="$1"
+    [[ "$p" == "claude" ]] && return 0   # claude always available
+    return 1                              # others unavailable
+}
+result="$(find_available_provider codex)"  # codex unavailable → falls back to claude
+assert_eq "fallback: find_available falls back to claude when codex unavailable" "claude" "$result"
+# Restore real implementation
+source "$DISPATCHER_LIB"
+
 # ── Summary ──────────────────────────────────────────────────────────
 echo ""
 echo "═══════════════════════════════════════"

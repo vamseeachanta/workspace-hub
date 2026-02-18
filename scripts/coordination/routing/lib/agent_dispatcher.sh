@@ -96,3 +96,32 @@ get_dispatch_command() {
 
     echo "$cmd"
 }
+
+# --- Function: check_provider_available ---
+# Returns 0 (success) if the provider CLI is in PATH, 1 otherwise.
+# Usage: check_provider_available <provider>
+check_provider_available() {
+    local provider="$1"
+    case "$provider" in
+        claude) command -v claude >/dev/null 2>&1 ;;
+        codex)  command -v codex  >/dev/null 2>&1 ;;
+        gemini) command -v gemini >/dev/null 2>&1 ;;
+        *) return 1 ;;
+    esac
+}
+
+# --- Function: find_available_provider ---
+# Returns the first available provider from a preference-ordered list.
+# Falls back through: preferred → claude → codex → gemini
+# Usage: find_available_provider <preferred_provider>
+find_available_provider() {
+    local preferred="$1"
+    for candidate in "$preferred" claude codex gemini; do
+        if check_provider_available "$candidate"; then
+            echo "$candidate"
+            return 0
+        fi
+    done
+    echo "ERROR: no provider CLI available" >&2
+    return 1
+}

@@ -43,8 +43,34 @@ echo "Execution contract accepted for $wrk_id as $mode ('$provider')."
 wrk_file="$(resolve_wrk_file "$wrk_id")"
 assigned="$(wrk_resolve_phase_provider "$wrk_file" "$phase" "$provider")"
 
-# Validate the resolved provider
+# Validate the resolved provider name
 assert_provider "$assigned"
+
+# Health check: verify CLI is available; fall back through preference order
+_provider_available() {
+    local p="$1"
+    local result
+    result="$("$AGENTS_DIR/providers/${p}.sh" check 2>/dev/null)"
+    [[ "$result" == "OK" ]]
+}
+
+if ! _provider_available "$assigned"; then
+    echo "WARN: provider '$assigned' CLI not available — trying fallback" >&2
+    fallback_found=false
+    for candidate in claude codex gemini; do
+        [[ "$candidate" == "$assigned" ]] && continue
+        if _provider_available "$candidate"; then
+            echo "WARN: falling back to '$candidate'" >&2
+            assigned="$candidate"
+            fallback_found=true
+            break
+        fi
+    done
+    if [[ "$fallback_found" == "false" ]]; then
+        echo "ERROR: no available provider CLI found (tried claude, codex, gemini)" >&2
+        exit 1
+    fi
+fi
 
 if [[ -n "$phase" ]]; then
     echo "Dispatching $wrk_id ($phase) to provider: $assigned"
