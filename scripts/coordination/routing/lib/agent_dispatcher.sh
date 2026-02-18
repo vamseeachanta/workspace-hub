@@ -76,7 +76,7 @@ get_dispatch_command() {
         "claude")
             case "$model_id" in
                 "sonnet-4-5")
-                    cmd="claude --model claude-sonnet-4-5-20250929 -p \"$task\"" ;;
+                    cmd="claude --model sonnet -p \"$task\"" ;;
                 *)
                     cmd="claude -p \"$task\"" ;;
             esac
@@ -84,7 +84,7 @@ get_dispatch_command() {
         "gemini")
             case "$model_id" in
                 "gemini-flash")
-                    cmd="echo \"$task\" | gemini --model gemini-2.0-flash -p \"Act as $agent\" -y" ;;
+                    cmd="echo \"$task\" | gemini --model gemini-2.5-flash -p \"Act as $agent\" -y" ;;
                 *)
                     cmd="echo \"$task\" | gemini -p \"Act as $agent\" -y" ;;
             esac
@@ -95,4 +95,33 @@ get_dispatch_command() {
     esac
 
     echo "$cmd"
+}
+
+# --- Function: check_provider_available ---
+# Returns 0 (success) if the provider CLI is in PATH, 1 otherwise.
+# Usage: check_provider_available <provider>
+check_provider_available() {
+    local provider="$1"
+    case "$provider" in
+        claude) command -v claude >/dev/null 2>&1 ;;
+        codex)  command -v codex  >/dev/null 2>&1 ;;
+        gemini) command -v gemini >/dev/null 2>&1 ;;
+        *) return 1 ;;
+    esac
+}
+
+# --- Function: find_available_provider ---
+# Returns the first available provider from a preference-ordered list.
+# Falls back through: preferred → claude → codex → gemini
+# Usage: find_available_provider <preferred_provider>
+find_available_provider() {
+    local preferred="$1"
+    for candidate in "$preferred" claude codex gemini; do
+        if check_provider_available "$candidate"; then
+            echo "$candidate"
+            return 0
+        fi
+    done
+    echo "ERROR: no provider CLI available" >&2
+    return 1
 }

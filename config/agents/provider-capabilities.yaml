@@ -1,0 +1,95 @@
+# Provider Capability Profiles
+# Structured profiles for each AI provider used in the workspace-hub ecosystem.
+# Source of truth for model IDs: config/agents/model-registry.yaml
+# Source of truth for strengths/roles: config/agents/behavior-contract.yaml
+#
+# This file aggregates capability metadata in one place so that routing
+# scripts, documentation, and assessment tools can reference it without
+# parsing multiple sources.
+
+version: 1.0.0
+last_updated: "2026-02-18"
+
+providers:
+  claude:
+    display_name: "Anthropic Claude"
+    model_ids:
+      primary: "claude-opus-4-6"
+      balanced: "claude-sonnet-4-5-20250929"
+      fast: "claude-haiku-4-5-20251001"
+    context_window:
+      primary: 200000
+      balanced: 200000
+      fast: 200000
+    strengths:
+      - multi-file architecture
+      - orchestration and planning
+      - complex integration across modules
+      - sensitive data handling
+      - long-context reasoning
+      - code review and cross-review
+    cost_tier: high
+    primary_use_cases:
+      - "Multi-module design and architecture (Route C)"
+      - "Session orchestration and task delegation"
+      - "Cross-review verdicts on complex diffs"
+      - "Sensitive or compliance-gated work"
+
+  codex:
+    display_name: "OpenAI Codex CLI"
+    model_ids:
+      primary: "codex-cli"
+    context_window:
+      primary: 200000
+    strengths:
+      - single-file focused code changes
+      - algorithm implementation
+      - test writing and TDD
+      - refactoring and cleanup
+      - configuration edits
+    cost_tier: low
+    primary_use_cases:
+      - "Focused implementation tasks (Route A/B)"
+      - "Writing and expanding test suites"
+      - "Bug fixes in isolated modules"
+      - "Code refactoring without architectural change"
+
+  gemini:
+    display_name: "Google Gemini"
+    model_ids:
+      primary: "gemini-2.5-pro"
+      fast: "gemini-2.5-flash"
+    context_window:
+      primary: 1000000
+      fast: 1000000
+    strengths:
+      - research and information gathering
+      - data analysis and summarization
+      - content writing and documentation
+      - large document processing
+      - cross-reference and synthesis
+    cost_tier: medium
+    primary_use_cases:
+      - "Research tasks and literature review"
+      - "Documentation and report generation"
+      - "Large-context analysis (specs, logs, data)"
+      - "Content creation and narrative writing"
+
+  openai:
+    display_name: "OpenAI GPT"
+    model_ids:
+      primary: "gpt-4.1"
+      fast: "gpt-4.1-mini"
+    context_window:
+      primary: 1000000
+      fast: 1000000
+    strengths:
+      - general-purpose code generation
+      - structured data extraction
+      - API integration tasks
+      - multi-language support
+    cost_tier: medium
+    primary_use_cases:
+      - "General code generation when primary providers are at capacity"
+      - "Structured data parsing and transformation"
+      - "Alternative cross-review perspective"

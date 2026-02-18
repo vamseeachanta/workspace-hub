@@ -9,7 +9,7 @@ This document provides a visual representation of the workspace-hub directory st
 graph TB
     WH[workspace-hub/]
 
-    WH --> CONF["📁 Configuration<br/>────────────<br/>.agent-os/<br/>.claude/<br/>.claude-flow/<br/>CLAUDE.md"]
+    WH --> CONF["📁 Configuration<br/>────────────<br/>.agent-os/<br/>.claude/<br/>CLAUDE.md"]
 
     WH --> PROJ["🚀 Projects<br/>────────────<br/>aceengineer-admin/<br/>aceengineercode/<br/>aceengineer-website/<br/>achantas-data/<br/>achantas-media/<br/>acma-projects/<br/>client_projects/<br/>frontierdeepwater/<br/>OGManufacturing/"]
 
@@ -105,7 +105,6 @@ graph TB
 ### 📁 Configuration Directories
 - **`.agent-os/`**: Agent OS configuration and specifications
 - **`.claude/`**: Claude Code agent definitions and helpers
-- **`.claude-flow/`**: Claude Flow orchestration settings
 - **`CLAUDE.md`**: Main Claude configuration file
 
 ### 🚀 Project Directories

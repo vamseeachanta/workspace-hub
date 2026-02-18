@@ -153,7 +153,7 @@ quick_patterns:
   explore_data:
     description: "Quick data exploration"
     command: |
-      Load skills/data-analysis/ydata-profiling
+      Load .claude/skills/data-analysis/ydata-profiling
       Generate profile report for [dataset]
     output: "HTML profiling report"
 
@@ -161,7 +161,7 @@ quick_patterns:
   create_chart:
     description: "Quick Plotly chart"
     command: |
-      Load skills/charts/plotly
+      Load .claude/skills/charts/plotly
       Create [chart_type] from [data]
     output: "Interactive Plotly chart"
 
@@ -169,7 +169,7 @@ quick_patterns:
   quick_report:
     description: "Generate HTML report"
     command: |
-      Load skills/workspace-hub/interactive-report-generator
+      Load .claude/skills/workspace-hub/interactive-report-generator
       Create report with [sections]
     output: "Interactive HTML report"
 
@@ -179,7 +179,7 @@ quick_patterns:
 
 skill_loading:
   # Load skill on-demand
-  syntax: "/load-skill skills/<category>/<skill-name>/SKILL.md"
+  syntax: "/load-skill .claude/skills/<category>/<skill-name>/SKILL.md"
 
   # Example combinations
   data_science_stack:

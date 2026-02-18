@@ -1,0 +1,1118 @@
+openapi: 3.0.0
+info:
+  title: Test Framework Integrations API
+  version: 1.0.0
+  description: |
+    Unified API for test framework integration with baseline tracking, coverage collection, and performance profiling.
+
+    ## Features
+    - Multi-framework test execution (Jest, Mocha, Pytest, Playwright, Vitest)
+    - Baseline tracking and comparison
+    - Real-time coverage collection
+    - Performance profiling and bottleneck analysis
+    - Flexible reporting (Console, JSON, HTML)
+
+  contact:
+    name: Test Framework Integrations Team
+    url: https://github.com/your-org/test-framework-integrations
+    email: support@your-org.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local development server
+  - url: https://api.test-integrations.com/v1
+    description: Production API server
+
+paths:
+  /frameworks:
+    get:
+      summary: Get detected test frameworks
+      description: Returns a list of all detected and available test frameworks
+      operationId: getFrameworks
+      tags:
+        - Frameworks
+      responses:
+        '200':
+          description: List of detected frameworks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  frameworks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Framework'
+                  total:
+                    type: integer
+                    description: Total number of detected frameworks
+              example:
+                frameworks:
+                  - name: jest
+                    version: "29.5.0"
+                    configPath: "./jest.config.js"
+                    isActive: true
+                    testPatterns: ["**/__tests__/**/*.js", "**/*.test.js"]
+                  - name: playwright
+                    version: "1.32.0"
+                    configPath: "./playwright.config.js"
+                    isActive: false
+                    testPatterns: ["tests/**/*.spec.js"]
+                total: 2
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /frameworks/{framework}/switch:
+    post:
+      summary: Switch active framework
+      description: Switch to a different test framework
+      operationId: switchFramework
+      tags:
+        - Frameworks
+      parameters:
+        - name: framework
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [jest, mocha, vitest, playwright, pytest]
+          description: Framework name to switch to
+      responses:
+        '200':
+          description: Framework switched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  framework:
+                    $ref: '#/components/schemas/Framework'
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /tests/discover:
+    get:
+      summary: Discover test files
+      description: Discover all test files based on active framework patterns
+      operationId: discoverTests
+      tags:
+        - Tests
+      parameters:
+        - name: framework
+          in: query
+          schema:
+            type: string
+          description: Specific framework to use for discovery
+        - name: pattern
+          in: query
+          schema:
+            type: string
+          description: Custom glob pattern for test discovery
+      responses:
+        '200':
+          description: List of discovered test files
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  files:
+                    type: array
+                    items:
+                      type: string
+                  count:
+                    type: integer
+                  framework:
+                    type: string
+              example:
+                files:
+                  - "src/utils.test.js"
+                  - "src/components/Button.test.js"
+                  - "tests/integration/api.test.js"
+                count: 3
+                framework: "jest"
+
+  /tests/run:
+    post:
+      summary: Run tests
+      description: Execute tests with optional coverage and profiling
+      operationId: runTests
+      tags:
+        - Tests
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestRunRequest'
+      responses:
+        '200':
+          description: Test execution results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResults'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /tests/run/all-frameworks:
+    post:
+      summary: Run tests across all frameworks
+      description: Execute tests using all detected frameworks
+      operationId: runAllFrameworks
+      tags:
+        - Tests
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiFrameworkRequest'
+      responses:
+        '200':
+          description: Multi-framework test results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MultiFrameworkResults'
+
+  /tests/stop:
+    post:
+      summary: Stop running tests
+      description: Stop currently executing tests
+      operationId: stopTests
+      tags:
+        - Tests
+      responses:
+        '200':
+          description: Tests stopped successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /baselines:
+    get:
+      summary: List saved baselines
+      description: Get a list of all saved test baselines
+      operationId: getBaselines
+      tags:
+        - Baselines
+      responses:
+        '200':
+          description: List of available baselines
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  baselines:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Baseline'
+    post:
+      summary: Save new baseline
+      description: Save current test results as a new baseline
+      operationId: saveBaseline
+      tags:
+        - Baselines
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                  description: Baseline label/name
+                  example: "v1.0.0"
+                results:
+                  $ref: '#/components/schemas/TestResults'
+              required:
+                - label
+                - results
+      responses:
+        '201':
+          description: Baseline saved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Baseline'
+
+  /baselines/{label}:
+    get:
+      summary: Get specific baseline
+      description: Retrieve a specific baseline by label
+      operationId: getBaseline
+      tags:
+        - Baselines
+      parameters:
+        - name: label
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Baseline label
+      responses:
+        '200':
+          description: Baseline data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Baseline'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /baselines/{label}/compare:
+    post:
+      summary: Compare with baseline
+      description: Compare current test results with a saved baseline
+      operationId: compareWithBaseline
+      tags:
+        - Baselines
+      parameters:
+        - name: label
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Baseline label to compare against
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                results:
+                  $ref: '#/components/schemas/TestResults'
+              required:
+                - results
+      responses:
+        '200':
+          description: Baseline comparison results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaselineComparison'
+
+  /coverage/reports:
+    get:
+      summary: List coverage reports
+      description: Get available coverage reports
+      operationId: getCoverageReports
+      tags:
+        - Coverage
+      responses:
+        '200':
+          description: List of coverage reports
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reports:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CoverageReport'
+    post:
+      summary: Generate coverage report
+      description: Generate a new coverage report
+      operationId: generateCoverageReport
+      tags:
+        - Coverage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Report name
+                format:
+                  type: array
+                  items:
+                    type: string
+                    enum: [json, html, lcov, text]
+                  description: Report formats to generate
+                coverage:
+                  $ref: '#/components/schemas/CoverageData'
+              required:
+                - name
+                - coverage
+      responses:
+        '201':
+          description: Coverage report generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoverageReport'
+
+  /profiling/metrics:
+    get:
+      summary: Get current performance metrics
+      description: Get real-time performance metrics during test execution
+      operationId: getCurrentMetrics
+      tags:
+        - Profiling
+      responses:
+        '200':
+          description: Current performance metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerformanceMetrics'
+
+  /profiling/bottlenecks:
+    get:
+      summary: Analyze performance bottlenecks
+      description: Get performance bottleneck analysis from recent test runs
+      operationId: analyzeBottlenecks
+      tags:
+        - Profiling
+      responses:
+        '200':
+          description: Bottleneck analysis results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BottleneckAnalysis'
+
+  /health:
+    get:
+      summary: Health check
+      description: Check API health and status
+      operationId: healthCheck
+      tags:
+        - System
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, degraded, down]
+                  timestamp:
+                    type: string
+                    format: date-time
+                  version:
+                    type: string
+                  uptime:
+                    type: number
+                    description: Uptime in seconds
+
+components:
+  schemas:
+    Framework:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Framework name
+          enum: [jest, mocha, vitest, playwright, pytest]
+        version:
+          type: string
+          description: Framework version
+        configPath:
+          type: string
+          description: Path to framework configuration file
+        isActive:
+          type: boolean
+          description: Whether this framework is currently active
+        testPatterns:
+          type: array
+          items:
+            type: string
+          description: Test file patterns for this framework
+      required:
+        - name
+        - version
+        - isActive
+
+    TestRunRequest:
+      type: object
+      properties:
+        framework:
+          type: string
+          description: Specific framework to use
+        coverage:
+          type: boolean
+          description: Enable coverage collection
+          default: false
+        profiling:
+          type: boolean
+          description: Enable performance profiling
+          default: false
+        baseline:
+          type: string
+          description: Baseline label to compare against
+        parallel:
+          type: boolean
+          description: Run tests in parallel
+          default: false
+        bail:
+          type: boolean
+          description: Stop on first failure
+          default: false
+        verbose:
+          type: boolean
+          description: Verbose output
+          default: false
+        timeout:
+          type: integer
+          description: Test timeout in milliseconds
+          minimum: 1000
+          maximum: 300000
+        retries:
+          type: integer
+          description: Number of retries for failed tests
+          minimum: 0
+          maximum: 5
+        testPattern:
+          type: string
+          description: Custom test pattern/filter
+
+    MultiFrameworkRequest:
+      type: object
+      properties:
+        coverage:
+          type: boolean
+          default: false
+        profiling:
+          type: boolean
+          default: false
+        parallel:
+          type: boolean
+          description: Run frameworks in parallel
+          default: false
+        frameworks:
+          type: array
+          items:
+            type: string
+          description: Specific frameworks to run (if not provided, runs all)
+
+    TestResults:
+      type: object
+      properties:
+        framework:
+          $ref: '#/components/schemas/FrameworkInfo'
+        tests:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestResult'
+        summary:
+          $ref: '#/components/schemas/TestSummary'
+        coverage:
+          $ref: '#/components/schemas/CoverageData'
+        profiling:
+          $ref: '#/components/schemas/ProfilingData'
+        baseline:
+          $ref: '#/components/schemas/BaselineComparison'
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - framework
+        - tests
+        - summary
+        - timestamp
+
+    MultiFrameworkResults:
+      type: object
+      properties:
+        results:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/TestResults'
+        errors:
+          type: object
+          additionalProperties:
+            type: string
+        summary:
+          $ref: '#/components/schemas/MultiFrameworkSummary'
+
+    FrameworkInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+        adapter:
+          type: string
+          description: Adapter class name
+      required:
+        - name
+        - version
+        - adapter
+
+    TestResult:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Test name
+        suite:
+          type: string
+          description: Test suite name
+        status:
+          type: string
+          enum: [passed, failed, skipped, pending]
+        duration:
+          type: number
+          description: Test duration in milliseconds
+        error:
+          type: string
+          description: Error message if test failed
+        file:
+          type: string
+          description: Test file path
+        line:
+          type: integer
+          description: Line number in test file
+      required:
+        - name
+        - status
+
+    TestSummary:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Total number of tests
+        passed:
+          type: integer
+          description: Number of passed tests
+        failed:
+          type: integer
+          description: Number of failed tests
+        skipped:
+          type: integer
+          description: Number of skipped tests
+        pending:
+          type: integer
+          description: Number of pending tests
+        duration:
+          type: number
+          description: Total duration in milliseconds
+        success:
+          type: boolean
+          description: Whether all tests passed
+      required:
+        - total
+        - passed
+        - failed
+        - skipped
+        - duration
+        - success
+
+    MultiFrameworkSummary:
+      type: object
+      properties:
+        frameworks:
+          type: object
+          properties:
+            total:
+              type: integer
+            successful:
+              type: integer
+            failed:
+              type: integer
+        tests:
+          $ref: '#/components/schemas/TestSummary'
+        coverage:
+          $ref: '#/components/schemas/CoverageData'
+        duration:
+          type: number
+
+    CoverageData:
+      type: object
+      properties:
+        total:
+          type: number
+          description: Total coverage percentage
+          minimum: 0
+          maximum: 100
+        statements:
+          type: number
+          description: Statement coverage percentage
+        branches:
+          type: number
+          description: Branch coverage percentage
+        functions:
+          type: number
+          description: Function coverage percentage
+        lines:
+          type: number
+          description: Line coverage percentage
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileCoverage'
+      required:
+        - total
+
+    FileCoverage:
+      type: object
+      properties:
+        path:
+          type: string
+          description: File path
+        statements:
+          type: object
+          properties:
+            total:
+              type: integer
+            covered:
+              type: integer
+            percentage:
+              type: number
+        branches:
+          type: object
+          properties:
+            total:
+              type: integer
+            covered:
+              type: integer
+            percentage:
+              type: number
+        functions:
+          type: object
+          properties:
+            total:
+              type: integer
+            covered:
+              type: integer
+            percentage:
+              type: number
+        lines:
+          type: object
+          properties:
+            total:
+              type: integer
+            covered:
+              type: integer
+            percentage:
+              type: number
+      required:
+        - path
+
+    ProfilingData:
+      type: object
+      properties:
+        duration:
+          type: number
+          description: Total profiling duration
+        memory:
+          $ref: '#/components/schemas/MemoryMetrics'
+        cpu:
+          $ref: '#/components/schemas/CpuMetrics'
+        gc:
+          $ref: '#/components/schemas/GcMetrics'
+        tests:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestProfilingData'
+
+    MemoryMetrics:
+      type: object
+      properties:
+        initial:
+          type: object
+          properties:
+            heapUsed:
+              type: number
+            heapTotal:
+              type: number
+            external:
+              type: number
+        peak:
+          type: object
+          properties:
+            heapUsed:
+              type: number
+            heapTotal:
+              type: number
+            external:
+              type: number
+        final:
+          type: object
+          properties:
+            heapUsed:
+              type: number
+            heapTotal:
+              type: number
+            external:
+              type: number
+        leaks:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              size:
+                type: number
+              location:
+                type: string
+
+    CpuMetrics:
+      type: object
+      properties:
+        samples:
+          type: integer
+          description: Number of CPU samples collected
+        topFunctions:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              selfTime:
+                type: number
+              totalTime:
+                type: number
+              percentage:
+                type: number
+
+    GcMetrics:
+      type: object
+      properties:
+        totalEvents:
+          type: integer
+          description: Total garbage collection events
+        totalTime:
+          type: number
+          description: Total GC time in milliseconds
+        averageTime:
+          type: number
+          description: Average GC time per event
+        maxTime:
+          type: number
+          description: Maximum single GC time
+
+    TestProfilingData:
+      type: object
+      properties:
+        testName:
+          type: string
+        duration:
+          type: number
+        memoryDelta:
+          type: object
+          properties:
+            heapUsed:
+              type: number
+            heapTotal:
+              type: number
+        cpuUsage:
+          type: number
+          description: CPU usage percentage during test
+
+    Baseline:
+      type: object
+      properties:
+        label:
+          type: string
+          description: Baseline label
+        timestamp:
+          type: string
+          format: date-time
+          description: When baseline was created
+        framework:
+          $ref: '#/components/schemas/FrameworkInfo'
+        results:
+          type: object
+          properties:
+            tests:
+              type: array
+              items:
+                $ref: '#/components/schemas/TestResult'
+            summary:
+              $ref: '#/components/schemas/TestSummary'
+            coverage:
+              $ref: '#/components/schemas/CoverageData'
+      required:
+        - label
+        - timestamp
+        - framework
+        - results
+
+    BaselineComparison:
+      type: object
+      properties:
+        testsAdded:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestResult'
+        testsRemoved:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestResult'
+        testsChanged:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              from:
+                type: string
+              to:
+                type: string
+        performance:
+          type: object
+          properties:
+            faster:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  improvement:
+                    type: number
+            slower:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  regression:
+                    type: number
+            avgChange:
+              type: number
+        coverage:
+          type: object
+          properties:
+            improved:
+              type: boolean
+            degraded:
+              type: boolean
+            change:
+              type: number
+
+    CoverageReport:
+      type: object
+      properties:
+        name:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        formats:
+          type: array
+          items:
+            type: string
+        paths:
+          type: object
+          additionalProperties:
+            type: string
+        summary:
+          $ref: '#/components/schemas/CoverageData'
+
+    PerformanceMetrics:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        memory:
+          type: object
+          properties:
+            process:
+              type: object
+              properties:
+                heapUsed:
+                  type: number
+                heapTotal:
+                  type: number
+                external:
+                  type: number
+                rss:
+                  type: number
+            system:
+              type: object
+              properties:
+                total:
+                  type: number
+                free:
+                  type: number
+                used:
+                  type: number
+        cpu:
+          type: object
+          properties:
+            usage:
+              type: number
+              description: CPU usage percentage
+            load:
+              type: array
+              items:
+                type: number
+              description: System load averages
+        uptime:
+          type: number
+          description: Process uptime in seconds
+        gc:
+          type: object
+          properties:
+            recentEvents:
+              type: integer
+            totalTime:
+              type: number
+
+    BottleneckAnalysis:
+      type: object
+      properties:
+        slowTests:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              duration:
+                type: number
+              memoryDelta:
+                type: object
+                properties:
+                  heapUsed:
+                    type: number
+              reasons:
+                type: array
+                items:
+                  type: string
+        memoryLeaks:
+          type: array
+          items:
+            type: object
+            properties:
+              test:
+                type: string
+              leak:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  size:
+                    type: number
+                  location:
+                    type: string
+        recommendations:
+          type: array
+          items:
+            type: object
+            properties:
+              severity:
+                type: string
+                enum: [low, medium, high, critical]
+              category:
+                type: string
+                enum: [performance, memory, cpu, testing]
+              message:
+                type: string
+              suggestion:
+                type: string
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+        details:
+          type: object
+          description: Additional error details
+      required:
+        - error
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Invalid request parameters"
+            code: "INVALID_PARAMETERS"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Resource not found"
+            code: "NOT_FOUND"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Internal server error"
+            code: "INTERNAL_ERROR"
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication
+
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token authentication
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+tags:
+  - name: Frameworks
+    description: Test framework detection and management
+  - name: Tests
+    description: Test execution and management
+  - name: Baselines
+    description: Baseline tracking and comparison
+  - name: Coverage
+    description: Coverage collection and reporting
+  - name: Profiling
+    description: Performance profiling and analysis
+  - name: System
+    description: System health and status

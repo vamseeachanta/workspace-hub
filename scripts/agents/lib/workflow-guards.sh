@@ -33,6 +33,60 @@ wrk_get_frontmatter_value() {
     ' "$file"
 }
 
+# ── Per-Phase Provider Routing (WRK-198) ──────────────────────────────
+# Extracts the provider assigned to a specific phase from the task_agents:
+# block in WRK frontmatter. Returns empty string if not found.
+# Usage: wrk_get_task_agent <wrk_file> <phase_key>
+#   e.g. wrk_get_task_agent "$file" "phase_2"  → "codex"
+wrk_get_task_agent() {
+    local file="$1"
+    local phase_key="$2"
+    awk -v phase="$phase_key" '
+        BEGIN { in_fm=0; in_ta=0 }
+        /^---$/ { in_fm=!in_fm; next }
+        in_fm && /^task_agents:/ { in_ta=1; next }
+        in_fm && in_ta && /^[^ ]/ { exit }
+        in_fm && in_ta {
+            gsub(/^[[:space:]]+/, "")
+            key=$0; sub(/:.*/, "", key)
+            if (key == phase) {
+                val=$0; sub(/^[^:]+:[[:space:]]*/, "", val)
+                gsub(/^"|"$/, "", val)
+                gsub(/[[:space:]]*#.*$/, "", val)
+                print val
+                exit
+            }
+        }
+    ' "$file"
+}
+
+# Resolves the provider for a WRK execution phase.
+# Priority: task_agents:<phase> > provider: field > --provider flag
+# Usage: wrk_resolve_phase_provider <wrk_file> <phase_key> <fallback_provider>
+wrk_resolve_phase_provider() {
+    local file="$1"
+    local phase_key="$2"
+    local fallback="$3"
+
+    # 1. Try per-phase assignment from task_agents:
+    local agent=""
+    if [[ -n "$phase_key" ]]; then
+        agent="$(wrk_get_task_agent "$file" "$phase_key")"
+    fi
+
+    # 2. Fall back to WRK-level provider: field
+    if [[ -z "$agent" ]]; then
+        agent="$(wrk_get_frontmatter_value "$file" "provider")"
+    fi
+
+    # 3. Fall back to CLI --provider flag
+    if [[ -z "$agent" ]]; then
+        agent="$fallback"
+    fi
+
+    echo "$agent"
+}
+
 assert_provider() {
     local provider="$1"
     case "$provider" in
@@ -73,13 +127,22 @@ assert_plan_approved_or_fail() {
         exit 3
     fi
 
-    local complexity reviewed
+    local complexity reviewed spec_ref
     complexity="$(wrk_get_frontmatter_value "$file" "complexity")"
     reviewed="$(wrk_get_frontmatter_value "$file" "plan_reviewed")"
+    spec_ref="$(wrk_get_frontmatter_value "$file" "spec_ref")"
     case "$complexity" in
         medium|complex|high)
             if [[ "$reviewed" != "true" ]]; then
                 echo "ERROR: Plan review gate failed for $wrk_id (complexity=$complexity requires plan_reviewed=true)." >&2
+                exit 3
+            fi
+            ;;
+    esac
+    case "$complexity" in
+        complex|high)
+            if [[ -z "$spec_ref" || "$spec_ref" == "null" ]]; then
+                echo "ERROR: Spec gate failed for $wrk_id (complexity=$complexity requires spec_ref in specs/wrk/WRK-NNN/)." >&2
                 exit 3
             fi
             ;;

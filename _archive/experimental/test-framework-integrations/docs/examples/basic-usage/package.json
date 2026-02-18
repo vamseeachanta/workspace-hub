@@ -1,0 +1,27 @@
+{
+  "name": "test-framework-integrations-basic-examples",
+  "version": "1.0.0",
+  "description": "Basic usage examples for Test Framework Integrations",
+  "main": "basic-test.js",
+  "scripts": {
+    "test": "node basic-test.js",
+    "test:coverage": "node coverage-example.js",
+    "test:baseline": "node baseline-example.js",
+    "test:performance": "node performance-example.js",
+    "test:all": "npm run test && npm run test:coverage && npm run test:baseline && npm run test:performance"
+  },
+  "dependencies": {
+    "test-framework-integrations": "../../.."
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "keywords": [
+    "testing",
+    "integration",
+    "examples",
+    "jest"
+  ],
+  "author": "Test Framework Integrations Team",
+  "license": "MIT"
+}
