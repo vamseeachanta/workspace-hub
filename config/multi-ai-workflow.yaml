@@ -15,32 +15,37 @@ triggers:
 
 # AI Model Configuration
 models:
+  # NOTE: Model IDs sourced from config/agents/model-registry.yaml (latest_models)
+  # Update model-registry.yaml when new versions release — not this file
+  # Primary provider resolved at runtime from WRK frontmatter (provider: field) or
+  # WRK_PROVIDER env var. Set WRK_PROVIDER=codex or WRK_PROVIDER=gemini to swap.
+  # Defaults to claude if unset.
   primary:
-    name: "claude"
-    provider: "anthropic"
-    model: "claude-sonnet-4-20250514"
+    name: "${WRK_PROVIDER:-claude}"
+    provider: "${WRK_PROVIDER_VENDOR:-anthropic}"
+    model: "${WRK_PROVIDER_MODEL:-claude-sonnet-4-5-20250929}"
     purpose: "Code implementation and auto-fix"
-    api_env: "ANTHROPIC_API_KEY"
-    fallback: "claude-3-haiku-20240307"
+    api_env: "${WRK_PROVIDER_API_KEY_ENV:-ANTHROPIC_API_KEY}"
+    fallback: "claude-haiku-4-5-20251001"
     max_tokens: 8192
 
   reviewer:
     name: "openai"
     provider: "openai"
-    model: "gpt-4o"
+    model: "gpt-4.1"
     purpose: "Code review (quality, security, performance)"
     api_env: "OPENAI_API_KEY"
-    fallback: "gpt-4-turbo"
+    fallback: "gpt-4.1-mini"
     max_tokens: 4096
 
   tester:
     name: "factory"
     provider: "factory.ai"
-    model: "claude-sonnet"  # Factory.ai uses Claude under the hood
+    model: "claude-sonnet-4-5"  # Factory.ai uses Claude under the hood
     purpose: "Comprehensive testing"
     command: "droid"
     fallback_provider: "gemini"
-    fallback_model: "gemini-2.0-flash"
+    fallback_model: "gemini-2.5-flash"
 
 # Stage Configuration
 stages:
@@ -92,7 +97,6 @@ patterns:
     - "src/**/*.py"
     - "src/**/*.js"
     - "src/**/*.ts"
-    - "modules/**/*.sh"
     - "scripts/**/*.sh"
   exclude:
     - "**/*.test.js"
