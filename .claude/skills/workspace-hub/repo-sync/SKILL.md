@@ -61,8 +61,21 @@ mv /tmp/fixed.md <file>
 git add <file> && git commit -m "fix(encoding): convert <file> to UTF-8"
 ```
 
-### Phase 5: Summary
-Report final status of all repos, including any encoding warnings.
+### Phase 5: Ecosystem Health + Summary
+After the encoding check, spawn an ecosystem health agent in the background:
+
+```python
+Task(
+    subagent_type="Bash",
+    description="Ecosystem health check",
+    prompt="Run the 14-check suite from /ecosystem-health skill. Report pass/fail/warn for each group.",
+    run_in_background=True
+)
+```
+
+This does not block the pull summary. Report health results alongside repo status.
+
+See `/ecosystem-health` skill for the full check suite and pass conditions.
 
 ## Implementation
 
