@@ -1,115 +1,70 @@
 #!/usr/bin/env bash
-# check-encoding.sh — pre-commit / post-merge encoding guard
+# check-encoding.sh — encoding guard (pre-commit / post-merge / post-checkout)
 #
-# Scans staged (pre-commit) or all (post-merge/post-checkout) work queue,
-# skill, spec, and config .md/.yaml/.yml files for non-UTF-8 encoding.
-# Fails the commit / emits a warning on pull so problems are caught BEFORE
-# they reach generate-index.py or any parser at runtime.
-#
-# Install:
-#   ln -sf ../../.claude/hooks/check-encoding.sh .git/hooks/pre-commit
-#   ln -sf ../../.claude/hooks/check-encoding.sh .git/hooks/post-merge
-#   ln -sf ../../.claude/hooks/check-encoding.sh .git/hooks/post-checkout
-#
-# The hook auto-detects which phase it's running in via $0.
+# Requires: uv  (https://docs.astral.sh/uv/ — install once, works everywhere)
+# Setup:    bash scripts/operations/setup-hooks.sh
 
 set -euo pipefail
 
 HOOK_NAME="$(basename "$0")"
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
-# ── Encoding check ────────────────────────────────────────────────────────────
-
-check_file() {
-    local f="$1"
-    # Read first 4 bytes to detect BOMs
-    local bom
-    bom=$(dd if="$f" bs=1 count=4 2>/dev/null | od -An -tx1 | tr -d ' \n')
-    case "$bom" in
-        fffe*|feff*)
-            echo "  UTF-16: $f"
-            return 1
-            ;;
-        efbbbf*)
-            echo "  UTF-8 BOM: $f (BOM will be stripped by .gitattributes)"
-            return 0  # warn only — UTF-8 BOM is harmless but untidy
-            ;;
-    esac
-    # Verify the file decodes as valid UTF-8
-    if ! python3 -c "open('$f', encoding='utf-8').read()" 2>/dev/null; then
-        echo "  Non-UTF-8: $f"
-        return 1
-    fi
-    return 0
+command -v uv >/dev/null 2>&1 || {
+    echo "check-encoding: uv not found. Run: curl -LsSf https://astral.sh/uv/install.sh | sh"
+    exit 1
 }
 
-# ── Collect files to check ────────────────────────────────────────────────────
+# Scan files using uv-managed Python — no system python dependency
+check_file() {
+    uv run --no-project --quiet python - "$1" <<'PYEOF'
+import sys, pathlib
+raw = pathlib.Path(sys.argv[1]).read_bytes()
+if raw[:2] in (b'\xff\xfe', b'\xfe\xff'):
+    print('utf16')
+elif raw[:3] == b'\xef\xbb\xbf':
+    print('utf8bom')
+else:
+    try:
+        raw.decode('utf-8')
+    except UnicodeDecodeError:
+        print('bad')
+PYEOF
+}
 
 BAD=()
-WARN=()
 
-if [[ "$HOOK_NAME" == "pre-commit" ]]; then
-    # Only check staged files
-    while IFS= read -r f; do
-        [[ -f "$REPO_ROOT/$f" ]] || continue
-        case "$f" in
-            *.md|*.yaml|*.yml|*.json) ;;
-            *) continue ;;
-        esac
-        result=$(check_file "$REPO_ROOT/$f" 2>&1) || BAD+=("$result")
-        [[ -n "$result" ]] && WARN+=("$result")
-    done < <(git diff --cached --name-only --diff-filter=ACM)
-else
-    # post-merge / post-checkout — scan all tracked text files in key dirs
-    while IFS= read -r f; do
-        [[ -f "$REPO_ROOT/$f" ]] || continue
-        case "$f" in
-            *.md|*.yaml|*.yml|*.json) ;;
-            *) continue ;;
-        esac
-        result=$(check_file "$REPO_ROOT/$f" 2>&1) || BAD+=("$result")
-        [[ -n "$result" ]] && WARN+=("$result")
-    done < <(git ls-files -- \
-        '.claude/work-queue/pending' \
-        '.claude/work-queue/working' \
-        '.claude/work-queue/blocked' \
-        '.claude/work-queue/archive' \
-        '.claude/skills' \
-        'specs' \
-        'config' \
-    )
-fi
-
-# ── Report ────────────────────────────────────────────────────────────────────
-
-if [[ ${#BAD[@]} -gt 0 ]]; then
-    echo ""
-    echo "╔══════════════════════════════════════════════════════════════╗"
-    echo "║  check-encoding: ENCODING ERRORS DETECTED                   ║"
-    echo "╚══════════════════════════════════════════════════════════════╝"
-    echo ""
-    echo "The following files have incompatible encodings (UTF-16 or"
-    echo "invalid UTF-8). These will crash generate-index.py and other"
-    echo "parsers on Linux/Mac."
-    echo ""
-    for msg in "${BAD[@]}"; do echo "  $msg"; done
-    echo ""
-    echo "Fix: iconv -f UTF-16 -t UTF-8 <file> | sed 's/\\r//' > <file>"
-    echo "     Or save the file as UTF-8 (no BOM) from your editor."
-    echo ""
+collect_files() {
     if [[ "$HOOK_NAME" == "pre-commit" ]]; then
-        echo "Commit blocked. Fix the encoding and re-stage the file(s)."
-        exit 1
+        git diff --cached --name-only --diff-filter=ACM
     else
-        echo "WARNING: These files are already in the repo. Convert and"
-        echo "         commit the fixed versions as soon as possible."
-        exit 0  # post-merge/checkout: warn but don't block
+        # Exclude specs/repos/ — machine-generated engineering tool outputs
+        # (OrcaFlex writes UTF-8 BOM YAML; fatigue docs contain Latin-1 notation)
+        # These are reference artifacts, not hand-authored text files.
+        git ls-files -- \
+            '.claude/work-queue' '.claude/skills' 'specs' 'config' \
+            ':!specs/repos/'
     fi
-fi
+}
 
-if [[ ${#WARN[@]} -gt 0 ]]; then
-    echo "check-encoding: UTF-8 BOM found (harmless but untidy):"
-    for msg in "${WARN[@]}"; do echo "  $msg"; done
-fi
+while IFS= read -r f; do
+    [[ -f "$REPO_ROOT/$f" ]] || continue
+    [[ "$f" =~ \.(md|yaml|yml|json)$ ]] || continue
+    result=$(check_file "$REPO_ROOT/$f")
+    [[ "$result" == "utf16" || "$result" == "bad" ]] && BAD+=("  $result: $f")
+done < <(collect_files)
 
+[[ ${#BAD[@]} -eq 0 ]] && exit 0
+
+echo ""
+echo "check-encoding: BAD ENCODING"
+for msg in "${BAD[@]}"; do echo "$msg"; done
+echo ""
+echo "Fix: save the file as UTF-8 (no BOM) from your editor, or run:"
+echo "  uv run --no-project python -c \""
+echo "    import pathlib, sys; f=pathlib.Path(sys.argv[1]);"
+echo "    f.write_text(f.read_bytes().decode('utf-16').replace(chr(13),''),encoding='utf-8')"
+echo "  \" <file>"
+echo ""
+[[ "$HOOK_NAME" == "pre-commit" ]] && { echo "Commit BLOCKED."; exit 1; }
+echo "WARNING: fix and commit these files."
 exit 0
