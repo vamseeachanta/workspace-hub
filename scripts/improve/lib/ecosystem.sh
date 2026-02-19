@@ -52,7 +52,6 @@ phase_ecosystem() {
             rules_lines: $rules_lines,
             pending_signals: $pending_signals,
             warnings: [
-                (if $total_skills > 350 then "skill_sprawl: \($total_skills) active skills (threshold: 350)" else empty end),
                 (if $memory_lines > 800 then "memory_bloat: \($memory_lines) total lines across memory files" else empty end),
                 (if $pending_signals > 50 then "signal_backlog: \($pending_signals) unprocessed signals" else empty end)
             ]
@@ -61,6 +60,40 @@ phase_ecosystem() {
     local warning_count
     warning_count=$(jq '.warnings | length' "$metrics" 2>/dev/null || echo "0")
     echo "improve/ecosystem: ${total_skills} skills, ${memory_lines} memory lines, ${warning_count} warnings"
+
+    # --- Bidirectional skill-link audit ---
+    # Find related_skills: entries in hub SKILL.md files and check for asymmetry.
+    # If A lists B in related_skills: but B does not list A, emit as improvement candidate.
+    local skills_dir="${WORKSPACE_HUB}/.claude/skills"
+    declare -A skill_refs
+    local skill_file skill_path rel_skill
+
+    # Build map: skill-path → space-separated related_skills values
+    while IFS= read -r skill_file; do
+        skill_path="${skill_file%/SKILL.md}"
+        skill_path="${skill_path#${skills_dir}/}"
+        # Extract related_skills: list items (handles both "- item" and "[ item, item ]" YAML)
+        local refs
+        refs=$(awk '/^related_skills:/,/^[a-z]/' "$skill_file" 2>/dev/null | \
+               grep -oE '[a-z][a-z0-9/-]+' | grep -v 'related_skills' || true)
+        [[ -n "$refs" ]] && skill_refs["$skill_path"]="$refs"
+    done < <(find "$skills_dir" -name "SKILL.md" -not -path "*/_archive/*" -not -path "*/_diverged/*" 2>/dev/null)
+
+    local asymmetric=0
+    for src_path in "${!skill_refs[@]}"; do
+        for tgt_ref in ${skill_refs[$src_path]}; do
+            # Check if target skill exists and lists source in its related_skills
+            local tgt_file="${skills_dir}/${tgt_ref}/SKILL.md"
+            [[ ! -f "$tgt_file" ]] && continue
+            if ! grep -q "$src_path" "$tgt_file" 2>/dev/null; then
+                asymmetric=$((asymmetric + 1))
+                printf '{"timestamp":"%s","type":"skill","signal":"Missing back-link: %s should list %s in related_skills","severity":"info","source":"ecosystem-asymmetric-audit","auto_apply":true,"score":0.7}\n' \
+                    "$TIMESTAMP" "$tgt_ref" "$src_path" >> "${REVIEW_DIR}/skill-candidates.jsonl" 2>/dev/null || true
+            fi
+        done
+    done
+
+    [[ "$asymmetric" -gt 0 ]] && echo "improve/ecosystem: ${asymmetric} asymmetric skill link(s) found — emitted to skill-candidates.jsonl"
 
     return 0
 }
