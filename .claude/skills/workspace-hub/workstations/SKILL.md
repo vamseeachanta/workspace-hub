@@ -1,7 +1,7 @@
 ---
-name: computers
+name: workstations
 description: >
-  Machine registry for multi-computer workspace-hub usage. Tracks computer nicknames,
+  Machine registry for multi-workstation workspace-hub usage. Tracks computer nicknames,
   OS, capabilities, and active work assignments. Reference when creating WRK items
   or planning which machine to use for specific tasks.
 version: 1.0.0
