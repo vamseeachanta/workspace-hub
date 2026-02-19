@@ -39,12 +39,28 @@ FRONTMATTER_FIELDS = [
 ]
 
 
+def _read_text(path: Path) -> str:
+    """Read a text file robustly across Windows and Linux.
+
+    Handles UTF-16 LE/BE (Windows Notepad default), UTF-8 BOM, plain UTF-8,
+    and CRLF line endings so the script never crashes on cross-platform files.
+    """
+    raw = path.read_bytes()
+    if raw[:2] == b"\xff\xfe" or raw[:2] == b"\xfe\xff":
+        text = raw.decode("utf-16")
+    elif raw[:3] == b"\xef\xbb\xbf":
+        text = raw[3:].decode("utf-8", errors="replace")
+    else:
+        text = raw.decode("utf-8", errors="replace")
+    return text.replace("\r\n", "\n").replace("\r", "\n")
+
+
 def parse_frontmatter(path: Path) -> dict | None:
     """Extract YAML frontmatter from a markdown file.
 
     Also auto-detects plan existence from spec_ref or ``## Plan`` section.
     """
-    text = path.read_text(encoding="utf-8")
+    text = _read_text(path)
     match = re.match(r"^---\s*\n(.*?)\n---", text, re.DOTALL)
     if not match:
         return None
