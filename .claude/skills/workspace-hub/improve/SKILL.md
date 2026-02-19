@@ -1,14 +1,14 @@
 ---
 name: improve
 description: Autonomous session-exit skill that improves all ecosystem files from session learnings
-version: 1.3.0
+version: 1.4.0
 category: workspace-hub
 author: workspace-hub
 type: skill
 trigger: session-exit
 auto_execute: false
 tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
-related_skills: [claude-reflect, insights, knowledge]
+related_skills: [claude-reflect, insights, knowledge, skill-learner, skill-creator]
 capabilities:
   - config_improvement
   - skill_lifecycle
@@ -89,10 +89,20 @@ Assess the overall health of ecosystem files and recommend reallocation. This ph
 > frontmatter) to be effectively maintained. If the index is sparse, staleness signals
 > will be noisy — assess index quality first.
 
+**Knowledge graph maintenance** (when `SKILLS_GRAPH.yaml` exists — WRK-205):
+- For any skill created or enhanced this session: verify it appears in `SKILLS_GRAPH.yaml`
+- For any new relationship surfaced (A composes B, A requires B, A is alternative to B): add edge to graph
+- For each new/enhanced skill: check that existing related skills have it in their `related_skills:` frontmatter (bidirectional linking); add missing links
+- Update `last_used` timestamp in frontmatter for any skill loaded this session
+- Flag skills missing `capabilities:`, `requires:`, or `see_also:` blocks for metadata enrichment
+
+> **Prerequisite**: Graph maintenance only runs when `SKILLS_GRAPH.yaml` exists at `.claude/skills/`. Skip silently if absent — WRK-205 implements the graph.
+
 **Outputs:**
 - List of consolidation recommendations (skill merges, memory splits)
 - List of new skill candidates (gaps identified from session patterns)
 - Responsibility reallocation suggestions (e.g., "move X from memory to rules")
+- Knowledge graph updates: edges added, `last_used` timestamps written, missing links added
 - Metrics: total_skills, archived_ratio, avg_category_size, memory_total_lines
 
 **Decision rules:**

@@ -18,7 +18,7 @@ capabilities:
   - cross_repo_sync
   - progress_tracking
 tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
-related_skills: [skill-learner, repo-sync, skill-creator]
+related_skills: [skill-learner, repo-sync, skill-creator, knowledge-manager, improve]
 scripts:
   - analyze-history.sh
   - extract-patterns.sh

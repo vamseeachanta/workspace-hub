@@ -21,6 +21,9 @@ tools:
   - Bash
 related_skills:
   - skill-creator
+  - claude-reflect
+  - knowledge-manager
+  - improve
   - session-start-routine
   - repo-readiness
 ---
