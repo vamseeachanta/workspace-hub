@@ -1,7 +1,7 @@
 ---
 name: improve
 description: Autonomous session-exit skill that improves all ecosystem files from session learnings
-version: 1.2.0
+version: 1.3.0
 category: workspace-hub
 author: workspace-hub
 type: skill
@@ -72,16 +72,22 @@ Assess the overall health of ecosystem files and recommend reallocation. This ph
 
 **Checks performed:**
 
-| Check | Threshold | Action |
+| Check | Signal | Action |
 |---|---|---|
-| **Skill sprawl** | >350 active skills | Flag categories for consolidation |
-| **Category bloat** | >50 skills in one subcategory | Recommend merge/archive candidates |
+| **Stale skills** | No session usage in 90+ days (via `last_used` in frontmatter) | Flag for deprecation review |
+| **Index quality** | Skills missing `capabilities:`, `tags:`, or `related:` frontmatter | Flag for metadata enrichment |
 | **Skill overlap** | 2+ skills with >70% description similarity | Flag for consolidation |
 | **Memory bloat** | Any `.md` >200 lines | Recommend split into topic files |
 | **Memory overlap** | Same topic in repo + user memory | Recommend single source of truth |
-| **Orphan skills** | Skills with no command wrapper AND no session usage in 90 days | Flag for deprecation review |
 | **Thin categories** | Category with only 1 skill | Consider merging into parent |
 | **Stale signals** | >50 unprocessed signals in pending-reviews/ | Warn about signal backlog |
+
+> **Note on raw count thresholds**: Total skill count and per-category count limits
+> (previously 350/50) have been removed. A large, well-indexed skill library is not
+> a problem — stale and unreferenced skills are. Staleness detection requires the
+> knowledge graph (WRK-205: `SKILLS_GRAPH.yaml` + `capabilities:`/`requires:`/`see_also:`
+> frontmatter) to be effectively maintained. If the index is sparse, staleness signals
+> will be noisy — assess index quality first.
 
 **Outputs:**
 - List of consolidation recommendations (skill merges, memory splits)
