@@ -8,6 +8,9 @@ related_skills:
   - theme-factory
   - frontend-design
   - internal-comms
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Brand Guidelines Skill

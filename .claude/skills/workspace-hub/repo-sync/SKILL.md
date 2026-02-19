@@ -6,6 +6,9 @@ category: workspace-hub
 last_updated: 2026-02-14
 source: internal
 invoke: /repo-sync
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Repo Sync

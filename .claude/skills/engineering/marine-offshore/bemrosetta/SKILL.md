@@ -15,6 +15,9 @@ triggers:
   - panel mesh
   - Kramers-Kronig
   - causality check
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # BEMRosetta Integration Skill

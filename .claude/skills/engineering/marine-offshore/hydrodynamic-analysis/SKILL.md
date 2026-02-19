@@ -6,6 +6,9 @@ author: workspace-hub
 category: subject-matter-expert
 tags: [hydrodynamics, bem, rao, added-mass, damping, wave-loads, wamit, aqwa, orcawave]
 platforms: [engineering]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Hydrodynamic Analysis SME Skill

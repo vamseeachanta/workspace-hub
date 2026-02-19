@@ -28,6 +28,7 @@ related_skills:
   - pandas-data-processing
   - plotly
   - streamlit
+canonical_ref: UNMATCHED
 ---
 
 # PandasAI Skill

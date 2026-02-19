@@ -3,6 +3,9 @@ name: production-engineering
 version: "1.0.0"
 category: engineering
 description: "Production Engineering Skill"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Production Engineering Skill

@@ -10,6 +10,9 @@ triggers:
 - spec quality score
 - categorize models
 - template catalog
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Spec Library Audit
 

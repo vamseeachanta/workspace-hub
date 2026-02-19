@@ -27,6 +27,7 @@ related_skills:
   - slack-api
   - notion-api
   - github-actions
+canonical_ref: "business/communication/miro-api"
 ---
 
 # Miro API Skill

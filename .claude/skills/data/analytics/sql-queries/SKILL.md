@@ -9,6 +9,9 @@ related_skills:
   - data-exploration
   - data-validation
   - interactive-dashboard-builder
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # SQL Queries Skill

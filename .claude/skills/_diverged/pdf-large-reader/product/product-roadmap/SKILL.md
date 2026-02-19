@@ -1,3 +1,7 @@
+---
+canonical_ref: "business/product/product-roadmap"
+---
+
 # Product Roadmap Skill
 
 > Version: 1.0.0

@@ -16,6 +16,9 @@ triggers:
 - slow drift
 - Newman approximation
 - full QTF
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # OrcaWave QTF Analysis Skill

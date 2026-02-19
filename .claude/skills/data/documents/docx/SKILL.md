@@ -8,6 +8,9 @@ related_skills:
   - pdf
   - pptx
   - document-inventory
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # DOCX Processing Skill

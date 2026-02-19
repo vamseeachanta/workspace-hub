@@ -9,6 +9,9 @@ invocation: gmsh-meshing
 depends_on:
   - cad-mesh-generation
   - mesh-utilities
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # gmsh Meshing Skill

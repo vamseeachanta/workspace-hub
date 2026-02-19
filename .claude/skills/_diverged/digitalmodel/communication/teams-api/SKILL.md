@@ -27,6 +27,7 @@ related_skills:
   - slack-api
   - github-actions
   - azure-functions
+canonical_ref: "business/communication/teams-api"
 ---
 
 # Microsoft Teams API Skill

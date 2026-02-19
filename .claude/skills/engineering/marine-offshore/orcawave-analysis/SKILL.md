@@ -18,6 +18,9 @@ triggers:
 - hydrodynamic database
 - wave-structure interaction
 - frequency domain analysis
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaWave Analysis Skill
 

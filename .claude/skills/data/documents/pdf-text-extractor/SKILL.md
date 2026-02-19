@@ -9,6 +9,9 @@ related_skills:
   - knowledge-base-builder
   - semantic-search-setup
   - document-inventory
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # PDF Text Extractor Skill

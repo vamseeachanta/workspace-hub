@@ -6,6 +6,8 @@ description: "Risk Assessment Skill"
 see_also:
   - engineering/asset-integrity/fitness-for-service  # WRK-206: FFS uses RSF as risk-based acceptance criterion
   - engineering/marine-offshore/cathodic-protection
+capabilities: []
+requires: []
 ---
 
 # Risk Assessment Skill

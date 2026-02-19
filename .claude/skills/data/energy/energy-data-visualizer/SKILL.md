@@ -1,6 +1,9 @@
 ---
 name: energy-data-visualizer
 description: Energy Data Visualizer (user)
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Energy Data Visualizer Skill

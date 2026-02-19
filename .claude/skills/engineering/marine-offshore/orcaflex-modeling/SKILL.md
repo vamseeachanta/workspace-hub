@@ -16,6 +16,9 @@ triggers:
 - .yml model files
 - .dat model files
 - .sim simulation files
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Modeling Skill
 

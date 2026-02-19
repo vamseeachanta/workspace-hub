@@ -9,6 +9,9 @@ related_skills:
   - semantic-search-setup
   - rag-system-builder
   - knowledge-base-builder
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Document RAG Pipeline Skill

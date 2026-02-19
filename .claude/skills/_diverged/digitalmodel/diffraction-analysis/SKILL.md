@@ -14,6 +14,7 @@ triggers:
   - BEM solver
   - panel method
   - frequency domain
+canonical_ref: "engineering/marine-offshore/diffraction-analysis"
 ---
 
 # Diffraction Analysis Master Skill

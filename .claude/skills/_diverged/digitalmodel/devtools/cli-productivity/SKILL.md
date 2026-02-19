@@ -27,6 +27,7 @@ related_skills:
   - docker
   - git-advanced
   - bash-cli-framework
+canonical_ref: "operations/devtools/cli-productivity"
 ---
 
 # CLI Productivity Skill

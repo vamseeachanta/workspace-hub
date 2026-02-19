@@ -11,6 +11,9 @@ related_skills:
   - nextflow-pipelines
   - clinical-trial-protocol
   - instrument-data-allotrope
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Scientific Problem Selection Skills

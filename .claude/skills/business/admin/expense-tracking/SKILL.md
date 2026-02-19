@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Expense Tracking
 
 Track, categorize, and analyze business expenses for AceEngineer Inc.

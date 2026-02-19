@@ -8,6 +8,9 @@ related_skills:
   - docx
   - pdf
   - xlsx
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # PPTX Processing Skill

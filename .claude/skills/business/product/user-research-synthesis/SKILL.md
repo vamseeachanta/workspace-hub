@@ -9,6 +9,9 @@ related_skills:
   - feature-spec
   - competitive-analysis
   - metrics-tracking
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # User Research Synthesis Skill

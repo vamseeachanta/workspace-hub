@@ -8,6 +8,9 @@ last_updated: 2026-01-18
 version: 1.0.0
 last_updated: 2025-12-30
 >>>>>>> origin/main
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Production Forecaster

@@ -17,6 +17,9 @@ triggers:
 - installation feasibility
 - heavy lift
 - payload handling
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Installation Analysis Skill
 

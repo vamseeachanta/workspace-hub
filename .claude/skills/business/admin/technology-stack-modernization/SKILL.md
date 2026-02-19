@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Technology Stack Modernization Skill
 
 > Version: 1.0.0

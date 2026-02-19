@@ -3,6 +3,9 @@ name: aceengineer-website-update
 description: Daily automated website updates with competitor analysis and content sync
 version: 1.0.0
 category: business
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # AceEngineer Website Update Skill

@@ -3,6 +3,9 @@ name: orcaflex-specialist
 version: "1.0.0"
 category: engineering
 description: "OrcaFlex Specialist Skill"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # OrcaFlex Specialist Skill

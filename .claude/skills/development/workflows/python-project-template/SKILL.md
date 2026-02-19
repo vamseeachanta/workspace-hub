@@ -20,6 +20,8 @@ related_skills:
   - pytest-fixture-generator
   - repo-readiness
   - agent-os-framework
+requires: []
+see_also: []
 ---
 
 # Python Project Template

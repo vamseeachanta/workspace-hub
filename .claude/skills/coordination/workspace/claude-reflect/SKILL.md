@@ -26,6 +26,8 @@ scripts:
   - generate-report.sh
   - create-skills.sh
   - daily-reflect.sh
+requires: []
+see_also: []
 ---
 
 # Claude Reflect Skill

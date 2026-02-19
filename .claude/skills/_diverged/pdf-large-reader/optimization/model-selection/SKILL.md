@@ -1,3 +1,7 @@
+---
+canonical_ref: "ai/optimization/model-selection"
+---
+
 # Model Selection Skill
 
 > Version: 1.0.0

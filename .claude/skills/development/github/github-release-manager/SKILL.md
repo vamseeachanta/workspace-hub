@@ -1,6 +1,9 @@
 ---
 name: github-release-manager
 description: Automated release coordination and deployment with swarm orchestration for seamless version management, testing, and deployment across multiple packages. Use for release pipelines, version coordination, deployment orchestration, and release documentation.
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # GitHub Release Manager Skill

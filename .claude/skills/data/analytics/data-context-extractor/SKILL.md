@@ -9,6 +9,9 @@ related_skills:
   - data-exploration
   - sql-queries
   - data-validation
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Data Context Extractor

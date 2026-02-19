@@ -18,6 +18,8 @@ capabilities:
   - ecosystem_review
 tags: [self-improvement, ecosystem, session-exit, meta]
 platforms: [all]
+requires: []
+see_also: []
 ---
 
 # /improve — Autonomous Ecosystem Improvement
@@ -97,6 +99,36 @@ Assess the overall health of ecosystem files and recommend reallocation. This ph
 - Flag skills missing `capabilities:`, `requires:`, or `see_also:` blocks for metadata enrichment
 
 > **Prerequisite**: Graph maintenance only runs when `SKILLS_GRAPH.yaml` exists at `.claude/skills/`. Skip silently if absent — WRK-205 implements the graph.
+
+**Proactive skill discovery** (when `SKILLS_GRAPH.yaml` exists — WRK-205 + WRK-215):
+
+Four checks are run to actively surface gaps — not just react to session signals:
+
+| Check | Trigger | What it finds |
+|-------|---------|---------------|
+| Broken `see_also:`/`requires:` refs | Every `/improve` run | Skills referenced in frontmatter but no matching SKILL.md exists = gap |
+| WRK-domain coverage | Weekly `/reflect` | Active WRK `tags:`/`module:` with no matching skill domain = under-skilled domain |
+| Enhancement priority queue | Weekly `/reflect` | Skills with empty `capabilities:` AND `last_used` within 30 days = high-priority stubs |
+| Domain saturation heatmap | `/improve --scope skills --audit` | WRK-items ÷ skills per domain ratio — low ratio = under-skilled domain |
+
+**Broken-ref scan (runs every session):**
+1. For each SKILL.md frontmatter: extract all `see_also:` and `requires:` values
+2. For each value: check that a SKILL.md exists at the referenced path
+3. Any broken reference → emit gap candidate to `.claude/state/pending-reviews/skill-candidates.jsonl`
+4. Dedup: only emit each gap once per 7 days (keyed by target path + date week)
+
+**Enhancement priority queue (weekly, via `/reflect`):**
+- Rank criteria: `see_also:` reference frequency (most-referenced-by-other-skills) as primary; `last_used` recency as tiebreaker
+- Output: top-5 enhancement candidates appended to `.claude/state/pending-reviews/skill-candidates.jsonl` with `type: enhancement`
+
+**Domain saturation heatmap (on-demand: `/improve --scope skills --audit`):**
+- For each skill domain (using WRK-205 category indexes): count skills
+- For each domain: count active WRK items with matching `module:` or `tags:`
+- Compute ratio; flag domains where ratio < 0.5 (more than 2 WRK items per skill)
+- Print summary table to stdout; do not write to state files
+
+> **Prerequisite**: All proactive discovery checks skip silently when `SKILLS_GRAPH.yaml` is absent.
+> Log: "Skill discovery deferred — WRK-205 graph not yet built."
 
 **Outputs:**
 - List of consolidation recommendations (skill merges, memory splits)

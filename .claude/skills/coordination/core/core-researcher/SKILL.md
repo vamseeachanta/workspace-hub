@@ -29,6 +29,8 @@ hooks:
   post: |
     echo "📊 Research findings documented"
     memory_search "research_*" | head -5
+requires: []
+see_also: []
 ---
 
 # Core Researcher Skill

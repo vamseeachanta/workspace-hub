@@ -27,6 +27,8 @@ related_skills:
   - python-docx
   - openpyxl
   - pypdf
+requires: []
+see_also: []
 ---
 
 # Docx-Templates Skill

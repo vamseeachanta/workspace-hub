@@ -5,6 +5,9 @@ description: Perform signal processing, rainflow cycle counting, and spectral an
   FFT/PSD, extracting fatigue cycles (ASTM E1049-85), and batch processing OrcaFlex
   signals.
 updated: '2026-01-07'
+capabilities: []
+requires: []
+see_also: []
 ---
 # Signal Analysis Skill
 

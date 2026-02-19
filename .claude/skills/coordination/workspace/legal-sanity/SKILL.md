@@ -14,6 +14,8 @@ tools:
   - Grep
 related_skills:
   - compliance-check
+requires: []
+see_also: []
 ---
 
 # Legal Sanity Skill

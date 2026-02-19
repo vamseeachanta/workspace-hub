@@ -3,6 +3,9 @@ name: units
 version: "1.0.0"
 category: engineering
 description: "Unit-safe engineering calculations with provenance tracking"
+capabilities: []
+requires: []
+see_also: []
 ---
 # /units — Engineering Unit Tracking
 

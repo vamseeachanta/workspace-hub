@@ -3,6 +3,9 @@ name: financial-analysis
 version: "1.0.0"
 category: engineering
 description: "Financial markets, investment analysis, energy economics and ESG"
+capabilities: []
+requires: []
+see_also: []
 ---
 # Financial Analysis Expert
 

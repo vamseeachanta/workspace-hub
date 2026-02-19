@@ -23,6 +23,8 @@ related_skills:
   - docx-templates
   - pypdf
   - openpyxl
+requires: []
+see_also: []
 ---
 
 # Python-docx Word Document Automation Skill

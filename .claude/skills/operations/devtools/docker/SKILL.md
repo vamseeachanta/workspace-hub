@@ -23,6 +23,8 @@ related_skills:
   - cli-productivity
   - git-advanced
   - kubernetes
+requires: []
+see_also: []
 ---
 
 # Docker Containerization Skill

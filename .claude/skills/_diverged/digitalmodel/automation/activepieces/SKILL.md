@@ -28,6 +28,7 @@ related_skills:
   - yaml-configuration
   - api-integration
   - windmill
+canonical_ref: UNMATCHED
 ---
 
 # Activepieces Workflow Automation Skill

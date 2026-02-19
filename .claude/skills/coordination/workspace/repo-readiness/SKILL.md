@@ -21,6 +21,8 @@ related_skills:
   - compliance-check
   - repo-sync
   - sparc-workflow
+requires: []
+see_also: []
 ---
 
 # Repository Readiness Skill

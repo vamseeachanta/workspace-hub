@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # md-to-pdf Skill
 
 Convert Markdown documents with YAML frontmatter into styled, print-ready PDFs using Chrome headless.

@@ -3,6 +3,9 @@ name: sync
 version: "1.0.0"
 category: workspace-hub
 description: "Fast verified multi-repo synchronization across workspace-hub submodules"
+capabilities: []
+requires: []
+see_also: []
 ---
 # /sync — Workspace Hub Repository Synchronization
 

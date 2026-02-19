@@ -3,6 +3,9 @@ name: iso
 version: "1.0.0"
 category: engineering
 description: "ISO Standards Specialist"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # ISO Standards Specialist

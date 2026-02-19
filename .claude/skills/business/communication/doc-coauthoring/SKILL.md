@@ -8,6 +8,9 @@ related_skills:
   - internal-comms
   - brand-guidelines
   - skill-creator
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Document Co-Authoring Skill

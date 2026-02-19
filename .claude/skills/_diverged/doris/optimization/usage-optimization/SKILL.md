@@ -1,3 +1,7 @@
+---
+canonical_ref: "ai/optimization/usage-optimization"
+---
+
 # Usage Optimization Skill
 
 > Version: 1.0.0

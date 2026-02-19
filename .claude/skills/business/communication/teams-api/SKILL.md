@@ -27,6 +27,8 @@ related_skills:
   - slack-api
   - github-actions
   - azure-functions
+requires: []
+see_also: []
 ---
 
 # Microsoft Teams API Skill

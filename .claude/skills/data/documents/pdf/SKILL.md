@@ -8,6 +8,9 @@ related_skills:
   - pdf-text-extractor
   - document-rag-pipeline
   - knowledge-base-builder
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # PDF Processing Skill

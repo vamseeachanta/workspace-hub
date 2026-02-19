@@ -8,6 +8,9 @@ related_skills:
   - theme-factory
   - web-artifacts-builder
   - canvas-design
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Frontend Design Skill

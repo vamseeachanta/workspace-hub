@@ -11,6 +11,9 @@ related_skills:
   - nextflow-pipelines
   - clinical-trial-protocol
   - scientific-problem-selection
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Instrument Data to Allotrope Converter

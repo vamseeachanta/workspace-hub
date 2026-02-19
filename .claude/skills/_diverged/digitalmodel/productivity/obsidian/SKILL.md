@@ -26,6 +26,7 @@ related_skills:
   - yaml-configuration
   - git-sync-manager
   - markdown-documentation
+canonical_ref: "business/productivity/obsidian"
 ---
 
 # Obsidian Knowledge Management Skill

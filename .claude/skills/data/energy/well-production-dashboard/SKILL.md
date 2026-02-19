@@ -1,6 +1,9 @@
 ---
 name: well-production-dashboard
 description: Create interactive well production dashboards with real-time monitoring, verification integration, economic metrics, and multi-format exports. Use for well performance analysis, field aggregation, production forecasting, and API-driven dashboards.
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Well Production Dashboard Skill

@@ -3,6 +3,9 @@ name: astm
 version: "1.0.0"
 category: engineering
 description: "ASTM Standards Specialist"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # ASTM Standards Specialist

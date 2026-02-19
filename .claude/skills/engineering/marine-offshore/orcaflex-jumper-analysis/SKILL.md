@@ -6,6 +6,9 @@ applies-to: [claude, codex, gemini]
 auto_generated: true
 source: incoming/digitalmodel/orcaflex-jumper-analysis
 promoted: 2026-02-18
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # OrcaFlex Jumper Analysis Skill

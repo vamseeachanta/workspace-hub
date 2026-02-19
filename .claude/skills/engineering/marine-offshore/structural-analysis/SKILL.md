@@ -3,6 +3,9 @@ name: structural-analysis
 version: "1.0.0"
 category: engineering
 description: "Structural Analysis Skill"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Structural Analysis Skill

@@ -6,6 +6,9 @@ author: workspace-hub
 category: devtools
 tags: [uv, python, package-manager, virtual-environment, dependency-management]
 platforms: [python, linux, macos, windows]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # UV Package Manager Skill

@@ -15,6 +15,9 @@ triggers:
 - animation
 - HTML report
 - interactive plot
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Visualization Skill
 

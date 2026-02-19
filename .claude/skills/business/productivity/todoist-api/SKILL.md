@@ -26,6 +26,8 @@ related_skills:
   - webhook-automation
   - obsidian
   - notion-api
+requires: []
+see_also: []
 ---
 
 # Todoist API Integration Skill

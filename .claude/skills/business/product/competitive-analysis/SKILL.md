@@ -9,6 +9,9 @@ related_skills:
   - feature-spec
   - roadmap-management
   - metrics-tracking
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Competitive Analysis Skill

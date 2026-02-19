@@ -28,6 +28,7 @@ related_skills:
   - notion-api
   - api-integration
   - github-actions
+canonical_ref: "business/productivity/trello-api"
 ---
 
 # Trello API Integration Skill

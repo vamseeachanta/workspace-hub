@@ -27,6 +27,8 @@ scripts:
   - ../../../../scripts/agents/plan.sh
   - ../../../../scripts/agents/execute.sh
   - ../../../../scripts/agents/review.sh
+requires: []
+see_also: []
 ---
 
 # Work Queue Skill

@@ -11,6 +11,9 @@ related_skills:
   - clinical-trial-protocol
   - instrument-data-allotrope
   - scientific-problem-selection
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Single-Cell RNA-seq Quality Control

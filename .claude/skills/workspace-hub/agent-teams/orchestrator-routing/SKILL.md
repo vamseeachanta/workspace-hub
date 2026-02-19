@@ -18,6 +18,9 @@ tags:
   - responsiveness
   - delegation
 platforms: [all]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Orchestrator Routing — Main Session as Lightweight Router

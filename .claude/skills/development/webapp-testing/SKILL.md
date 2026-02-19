@@ -7,6 +7,9 @@ related_skills:
   - engineering-report-generator
   - data-pipeline-processor
   - parallel-file-processor
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Web Application Testing Skill

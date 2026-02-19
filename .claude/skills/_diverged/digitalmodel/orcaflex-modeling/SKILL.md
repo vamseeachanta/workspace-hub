@@ -16,6 +16,7 @@ triggers:
 - .yml model files
 - .dat model files
 - .sim simulation files
+canonical_ref: "engineering/marine-offshore/orcaflex-modeling"
 ---
 # OrcaFlex Modeling Skill
 

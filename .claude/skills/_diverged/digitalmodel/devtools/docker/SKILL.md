@@ -23,6 +23,7 @@ related_skills:
   - cli-productivity
   - git-advanced
   - kubernetes
+canonical_ref: "operations/devtools/docker"
 ---
 
 # Docker Containerization Skill

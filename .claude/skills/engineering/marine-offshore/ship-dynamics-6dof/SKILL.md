@@ -6,6 +6,9 @@ author: workspace-hub
 category: subject-matter-expert
 tags: [6dof, ship-dynamics, seakeeping, equations-of-motion, natural-frequency, vessel-motions]
 platforms: [engineering]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Ship Dynamics (6DOF) SME Skill

@@ -9,6 +9,9 @@ related_skills:
   - semantic-search-setup
   - pdf-text-extractor
   - document-rag-pipeline
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # RAG System Builder Skill

@@ -14,6 +14,9 @@ triggers:
 - diffraction to time domain
 - added mass damping export
 - OrcaFlex vessel setup
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # OrcaWave to OrcaFlex Integration Skill

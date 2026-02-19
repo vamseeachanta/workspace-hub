@@ -5,6 +5,9 @@ description: Perform NPV analysis and economic evaluation for oil & gas assets. 
 =======
 description: Perform NPV analysis and economic evaluation for oil & gas assets. Use for cash flow modeling, price scenario analysis, working interest calculations, and financial metrics (IRR, payback, NPV) for field development projects.
 >>>>>>> origin/main
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # NPV Analyzer

@@ -7,6 +7,9 @@ related_skills:
   - yaml-workflow-executor
   - webapp-testing
   - git-worktree-workflow
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # MCP Builder Skill

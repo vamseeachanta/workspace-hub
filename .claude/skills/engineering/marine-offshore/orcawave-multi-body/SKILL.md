@@ -15,6 +15,9 @@ triggers:
 - hydrodynamic shielding
 - STS transfer
 - offloading operation
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # OrcaWave Multi-Body Analysis Skill

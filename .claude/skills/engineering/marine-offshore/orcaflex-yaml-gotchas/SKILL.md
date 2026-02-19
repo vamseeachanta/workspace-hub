@@ -13,6 +13,9 @@ triggers:
 - Pydantic OrcaFlex
 - OrcaFlex YAML gotcha
 - OrcaFlex SaveData
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex YAML Gotchas
 

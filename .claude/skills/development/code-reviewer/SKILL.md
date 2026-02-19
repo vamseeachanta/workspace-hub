@@ -9,6 +9,9 @@ related_skills:
   - tdd-obra
   - systematic-debugging
   - subagent-driven
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Code Reviewer Skill

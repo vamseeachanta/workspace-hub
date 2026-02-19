@@ -9,6 +9,9 @@ related_skills:
   - sparc-workflow
   - agent-orchestration
   - swarm-worker
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Git Worktree Workflow Skill

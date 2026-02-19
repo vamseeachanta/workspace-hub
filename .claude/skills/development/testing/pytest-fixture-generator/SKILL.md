@@ -19,6 +19,8 @@ tools:
 related_skills:
   - python-project-template
   - repo-readiness
+requires: []
+see_also: []
 ---
 
 # Pytest Fixture Generator

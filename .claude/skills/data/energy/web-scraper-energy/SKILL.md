@@ -1,6 +1,9 @@
 ---
 name: web-scraper-energy
 description: Web Scraper Energy (user)
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Web Scraper Energy Skill

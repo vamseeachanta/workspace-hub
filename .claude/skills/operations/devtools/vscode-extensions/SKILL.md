@@ -26,6 +26,8 @@ related_skills:
   - cli-productivity
   - git-advanced
   - docker
+requires: []
+see_also: []
 ---
 
 # VS Code Extensions Skill

@@ -27,6 +27,7 @@ platforms: [python, api]
 related_skills:
   - langchain
   - dspy
+canonical_ref: "ai/prompting/prompt-engineering"
 ---
 
 # Prompt Engineering Skill

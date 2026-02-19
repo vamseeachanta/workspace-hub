@@ -20,6 +20,9 @@ related_skills:
   - testing-production
   - code-reviewer
   - systematic-debugging
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Verification Loop Skill

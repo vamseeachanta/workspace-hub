@@ -32,6 +32,8 @@ hooks:
     # Run final test suite
     npm test || echo "Tests need attention"
     memory_store "refine_complete_$(date +%s)" "Code refined and tested"
+requires: []
+see_also: []
 ---
 
 # SPARC Refinement Agent

@@ -35,6 +35,8 @@ hooks:
     if [ -f "package.json" ]; then
       npm run lint --if-present
     fi
+requires: []
+see_also: []
 ---
 
 # Core Coder Skill

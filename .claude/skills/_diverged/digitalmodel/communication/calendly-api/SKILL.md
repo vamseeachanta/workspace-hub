@@ -27,6 +27,7 @@ related_skills:
   - slack-api
   - teams-api
   - github-actions
+canonical_ref: "business/communication/calendly-api"
 ---
 
 # Calendly API Skill

@@ -22,6 +22,7 @@ related_skills:
   - numpy-numerical-analysis
   - streamlit
   - dash
+canonical_ref: "data/analysis/polars"
 ---
 
 # Polars High-Performance DataFrame Skill

@@ -8,6 +8,9 @@ related_skills:
   - doc-coauthoring
   - brand-guidelines
   - slack-gif-creator
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Internal Communications Skill

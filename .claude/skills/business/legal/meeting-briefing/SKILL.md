@@ -11,6 +11,9 @@ related_skills:
   - compliance
   - canned-responses
   - legal-risk-assessment
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Meeting Briefing Skill

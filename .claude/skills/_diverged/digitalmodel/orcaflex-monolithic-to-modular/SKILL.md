@@ -12,6 +12,7 @@ triggers:
 - reverse engineer OrcaFlex YAML
 - monolithic to spec.yml
 - semantic validation OrcaFlex
+canonical_ref: "engineering/marine-offshore/orcaflex-monolithic-to-modular"
 ---
 # OrcaFlex Monolithic to Modular Converter
 

@@ -20,6 +20,7 @@ triggers:
 - .LIS files
 - .DAT files
 - .MES files
+canonical_ref: "engineering/marine-offshore/aqwa-analysis"
 ---
 # AQWA Analysis Skill
 

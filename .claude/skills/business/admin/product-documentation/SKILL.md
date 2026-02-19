@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Product Documentation Modernization Skill
 
 > Version: 1.0.0

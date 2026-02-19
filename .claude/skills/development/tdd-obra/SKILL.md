@@ -9,6 +9,9 @@ related_skills:
   - systematic-debugging
   - writing-plans
   - subagent-driven
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Test-Driven Development (TDD) Skill
