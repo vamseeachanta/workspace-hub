@@ -164,6 +164,75 @@ Stop #8 ──→ ecosystem-health-check.sh ──→ state/pending-reviews/ecos
 Stop #9 ──→ improve.sh ──→ writes to .claude/{memory,rules,skills,docs}, logs to state/improve-changelog.yaml
 ```
 
+---
+
+## Pre-Clear Workflow
+
+`/clear` is a Claude Code built-in CLI command that destroys all in-session context. It
+**cannot be intercepted** by any hook (PreToolUse, PostToolUse, PreCompact, Stop). The only
+way to preserve context before `/clear` is a user-initiated snapshot.
+
+### Pattern: `/save` → `/clear`
+
+```
+/save    ← run this FIRST — captures WRK state + Claude writes Ideas/Notes
+/clear   ← then clear safely
+```
+
+### What `/save` captures
+
+1. **File-based state** (via `save-snapshot.sh`):
+   - Active WRK items from `work-queue/working/` — id, title, percent complete, last done step, next step
+   - Recently modified WRK items (`git diff --name-only HEAD`)
+   - Current branch + timestamp
+
+2. **Conversational context** (via Claude):
+   - Ideas discussed but not yet in a WRK item
+   - Decisions made (architectural, process, tooling)
+   - Follow-up tasks mentioned conversationally
+
+### Output
+
+`.claude/state/session-snapshot.md` — gitignored, human-readable Markdown.
+
+```markdown
+# Session Snapshot — 2026-02-19T14:30:00Z
+Branch: feature/WRK-205-skills-knowledge-graph
+
+## Active WRK Items
+- WRK-205: Skills knowledge graph (60% complete)
+  - Last done: Step 3 — canonical_ref to 115 _diverged/ SKILL.md
+  - Next: Step 5 — 12 category INDEX.md files
+
+## Recently Modified
+- WRK-080: added Blog Post 5 candidate
+
+## Ideas / Notes
+- [Claude writes conversational context here]
+```
+
+### Auto-surfacing in next session
+
+`ensure-readiness.sh` (Stop hook R9) checks at session exit whether a snapshot exists and is
+<48h old. If so, it writes an info message to the readiness report:
+
+```
+R9: Session snapshot found (Xh old) — read .claude/state/session-snapshot.md to resume last session context
+```
+
+The readiness report is surfaced by `readiness.sh` (PreToolUse hook #3) at the start of the
+next session, so Claude sees the snapshot hint on the first tool call.
+
+### Implementation
+
+| File | Role |
+|------|------|
+| `.claude/hooks/session-memory/save-snapshot.sh` | Captures file-based state; writes snapshot |
+| `.claude/skills/workspace-hub/save/SKILL.md` | `/save` user-invocable skill definition |
+| `.claude/hooks/readiness/ensure-readiness.sh` | R9 check: surface snapshot if <48h old |
+
+---
+
 ## State Directories
 
 | Directory | Purpose | Persists? |
@@ -175,4 +244,5 @@ Stop #9 ──→ improve.sh ──→ writes to .claude/{memory,rules,skills,do
 | `.claude/state/session-memory/` | Context survival across compaction | Gitignored |
 | `.claude/state/patterns/` | Patterns from /reflect | Gitignored |
 | `.claude/state/improve-changelog.yaml` | /improve audit trail | Gitignored |
+| `.claude/state/session-snapshot.md` | Pre-clear session snapshot (from /save) | Gitignored |
 | `config/ai-tools/agent-quota-latest.json` | AI provider quota snapshot | Tracked |
