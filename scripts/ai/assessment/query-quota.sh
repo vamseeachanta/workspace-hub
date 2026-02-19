@@ -3,6 +3,9 @@
 # ABOUTME: Reads local data sources for Claude, Codex, and Gemini CLIs
 set -euo pipefail
 
+# Skip in subagent context — quota logging is a main-session concern only
+[[ "${CLAUDE_SUBAGENT:-0}" == "1" ]] && exit 0
+
 CACHE_FILE="${HOME}/.cache/agent-quota.json"
 CACHE_TTL_SEC=900  # 15 minutes
 USAGE_LOG_DIR="${HOME}/.agent-usage"

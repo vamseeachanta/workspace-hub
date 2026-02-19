@@ -48,6 +48,15 @@ done
 export WORKSPACE_HUB STATE_DIR REVIEW_DIR IMPROVE_WORKDIR CHANGELOG
 export TIMESTAMP DATE_TAG QUICK_MODE DRY_RUN
 
+# --- Guard: skip in subagent context ---
+# Subagents inherit Stop hooks but should not run the full improve pipeline.
+# Lighter hooks (session-review, post-task-review, consume-signals) still fire
+# and write signals to pending-reviews/ for the main session to drain at Stop.
+if [[ "${CLAUDE_SUBAGENT:-0}" == "1" ]]; then
+    echo "improve: subagent context — skipping (signals handled by main session)"
+    exit 0
+fi
+
 # --- Guard: exit if no signals ---
 has_signals=false
 for f in "${REVIEW_DIR}"/*.jsonl; do

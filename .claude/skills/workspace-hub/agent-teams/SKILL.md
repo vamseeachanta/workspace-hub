@@ -148,6 +148,41 @@ When a teammate completes a WRK deliverable:
 1. `TaskUpdate(taskId=..., status="completed")`
 2. `SendMessage` to orchestrator: "WRK-NNN deliverable done. Committed as <hash>."
 
+## Hook Inheritance & Learning Capture
+
+Subagents spawned via the Task tool are separate `claude` processes that
+inherit the same `.claude/settings.json`. Stop hooks fire automatically in
+each subagent — but the heavy hooks are suppressed via `CLAUDE_SUBAGENT=1`
+so the main orchestrator stays light and responsive.
+
+### Subagent startup convention
+
+Set this as the **first Bash call** in every non-trivial subagent session:
+
+```bash
+export CLAUDE_SUBAGENT=1
+```
+
+### Hook behaviour by context
+
+| Hook | Main session | Subagent | Reason |
+|------|-------------|----------|--------|
+| `session-review.sh` | Runs | Runs | Writes signals to `pending-reviews/` |
+| `post-task-review.sh` | Runs | Runs | Captures findings to `pending-reviews/` |
+| `consume-signals.sh` | Runs | Runs | Processes signals into session-briefing |
+| `improve.sh` | Runs | **Skipped** | Narrow context produces low-quality output |
+| `query-quota.sh` | Runs | **Skipped** | Quota tracking is main-session only |
+
+The shared `.claude/state/pending-reviews/` directory is the passive message
+bus. Subagents write signals via the lighter hooks; the main session's Stop
+drains them all via `consume-signals.sh` → `improve.sh` at session end.
+
+### Result
+
+Main orchestrator stays lean and interactive. User can inject messages and
+redirect subagents mid-flight. Learnings accumulate in the background without
+adding any overhead to the orchestrator between Task completions.
+
 ## Idle State
 
 Teammates go idle after every turn — this is normal. An idle notification

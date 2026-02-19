@@ -102,6 +102,7 @@ scripts/agents/review.sh WRK-NNN --all-providers
 - Route B/C: per-phase cross-review after each implementation phase.
 - Commits use format: `feat(scope): WRK-NNN - description`.
 - 3 attempts before marking `status: failed`.
+- **Subagent learning capture**: Set `export CLAUDE_SUBAGENT=1` as the first Bash call in each subagent session. Lighter Stop hooks (`session-review`, `post-task-review`, `consume-signals`) still fire and write to `.claude/state/pending-reviews/`. Heavy hooks (`improve`, `query-quota`) are suppressed. Main session drains all accumulated signals at its own Stop.
 - Batch mode: `/work run --batch` processes all Route A items in sequence.
 
 **Testing tiers**:
