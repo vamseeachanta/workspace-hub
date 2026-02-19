@@ -12,7 +12,10 @@ No Start hooks are configured. On session initialization:
 3. **Memory** loaded from user-level `memory/MEMORY.md` (auto-loaded, 200-line limit)
 4. **Statusline** initialized via `.claude/statusline-command.sh` (AI quota + branch info)
 
-**Gap**: No automated session-start hooks for pre-flight checks, environment validation, or context restoration.
+**Architecture**: "Fix at shutdown, verify at startup."
+- **Stop hook #9** (`ensure-readiness.sh`): Runs R1 (memory curation), R5 (context budget), R6 (submodule sync) at session exit. Writes `state/readiness-report.md` for next session.
+- **PreToolUse hook #3** (`readiness.sh`): Lightweight startup verification. Surfaces last session's readiness report + quick R4 (agent CLIs) + R8 (tools) checks.
+- R2, R3, R7 are already covered by stop hooks #5, #8, #4 respectively.
 
 ### Session Start — Readiness Recommendations
 
@@ -23,11 +26,11 @@ These are proposed Start hooks (not yet implemented) to ensure context quality a
 | R1 | **Memory Curation** | `hooks/readiness/memory-health.sh` | Verify `MEMORY.md` is under 200-line limit; flag stale entries (>30 days untouched); detect duplicate topics across repo + user memory | High |
 | R2 | **Index Freshness** | `hooks/readiness/index-freshness.sh` | Check `RESOURCE_INDEX.md` age (<24h); verify `data-catalog.yml` matches actual data files; check `model-registry.yaml` hasn't drifted from provider APIs | High |
 | R3 | **Skill Health** | `hooks/readiness/skill-health.sh` | Count active vs archived skills (flag if >350); detect orphan skills (no command wrapper, no usage 90+ days); verify no broken SKILL.md symlinks | Medium |
-| R4 | **Agent Readiness** | `hooks/readiness/agent-readiness.sh` | Verify `behavior-contract.yaml` is up to date; check provider assignments in WRK items match available agents; confirm `model-registry.yaml` has valid model IDs | Medium |
-| R5 | **Context Budget Audit** | `hooks/readiness/context-budget.sh` | Measure total bytes of auto-loaded content (CLAUDE.md + rules/ + MEMORY.md); warn if >16KB context budget exceeded; suggest trimming targets | High |
+| R4 | **Agent Readiness** | `hooks/readiness/readiness.sh` | Verify `behavior-contract.yaml` exists; check 3 provider CLIs available; confirm `model-registry.yaml` freshness (<30 days) | Medium | **IMPLEMENTED** |
+| R5 | **Context Budget Audit** | `hooks/readiness/readiness.sh` | Measure total bytes of auto-loaded content (CLAUDE.md + rules/ + MEMORY.md); warn if >16KB context budget exceeded | High | **IMPLEMENTED** |
 | R6 | **Submodule Sync** | `hooks/readiness/submodule-sync.sh` | Check all submodules are on expected branch; detect detached HEAD; warn if local is behind remote by >5 commits | Low |
 | R7 | **Pending Signal Triage** | `hooks/readiness/signal-triage.sh` | Show count of unprocessed signals from last session; display session-briefing.md highlights; prompt if >50 signals queued | Medium |
-| R8 | **Environment Validation** | `hooks/readiness/env-validate.sh` | Verify Python venv is functional; check `jq`, `yq`, `curl` available; confirm `WORKSPACE_HUB` env var set correctly | Low |
+| R8 | **Environment Validation** | `hooks/readiness/readiness.sh` | Verify python3 available; check `jq`, `curl` (required), `yq` (optional); confirm `WORKSPACE_HUB` env var set | Low | **IMPLEMENTED** |
 
 **Implementation approach**: A single `readiness.sh` dispatcher script that runs all checks in parallel (each <100ms), aggregates results, and outputs a readiness summary to the terminal. Non-blocking — warnings only, never prevents session start.
 
@@ -43,7 +46,8 @@ Runs **before** every tool call. Hooks receive tool input via stdin (JSON).
 |---|---------|--------|---------|---------|
 | 1 | `.*` | `hooks/session-logger.sh pre` | Log tool name, input preview to `state/sessions/*.jsonl` | <5ms |
 | 2 | `.*` | `hooks/propagate-ecosystem-check.sh` | Daily symlink validation across ecosystem skills | <10ms |
-| 3 | `Write\|Edit\|MultiEdit` | inline `echo` | Display "Edit: \<path\>" notification in terminal | <1ms |
+| 3 | `.*` | `hooks/readiness/readiness.sh` | Session readiness checks (R4+R5+R8), runs once per session | <200ms (first call) |
+| 4 | `Write\|Edit\|MultiEdit` | inline `echo` | Display "Edit: \<path\>" notification in terminal | <1ms |
 
 ### Details
 
@@ -109,7 +113,8 @@ Fires on **`/exit`**, **Ctrl+C**, and **timeout**. All hooks run sequentially. E
 | 6 | `scripts/ai/assessment/query-quota.sh --refresh --log` | Snapshot AI provider quotas to `config/ai-tools/agent-quota-latest.json` | ~5s |
 | 7 | `hooks/wrk-traceability-check.sh` | Warn if no WRK item was created or modified during session | <1s |
 | 8 | `hooks/ecosystem-health-check.sh` | Skill/memory health signals to pending-reviews | ~1s |
-| 9 | `scripts/improve/improve.sh` | Autonomous /improve — shell + Anthropic API hybrid | ~30-60s |
+| 9 | `hooks/readiness/ensure-readiness.sh` | Ensure next session starts clean (R1+R5+R6) | ~1s |
+| 10 | `scripts/improve/improve.sh` | Autonomous /improve — shell + Anthropic API hybrid | ~30-60s |
 
 ### Details
 
@@ -129,7 +134,7 @@ Fires on **`/exit`**, **Ctrl+C**, and **timeout**. All hooks run sequentially. E
 
 **ecosystem-health-check.sh** (#8): Counts skills, checks memory line counts, detects orphan skills. Writes health signals to `.claude/state/pending-reviews/ecosystem-review.jsonl`.
 
-**improve.sh** (#9): NEW — Hybrid shell + Anthropic API script that implements the `/improve` skill autonomously. Collects signals (shell), classifies improvements (API), reviews ecosystem health (hybrid), applies guards (shell), generates and writes improvements (API + shell), logs changes (shell), and cleans up signals (shell). See `scripts/improve/README.md` for full documentation.
+**improve.sh** (#9): Hybrid shell + Anthropic API script that implements the `/improve` skill autonomously. 8 phases: collects signals (shell), classifies improvements (API), reviews ecosystem health (shell), applies guards (shell), generates and writes improvements (API + shell), **surfaces recommendations to user** (shell — Phase 5.5), logs changes (shell), and cleans up signals (shell). Recommendations include: skill gap detection, tool/plugin suggestions, ecosystem warnings, and correction pattern analysis.
 
 ### Session Stop — Additional Recommendations
 

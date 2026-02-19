@@ -48,58 +48,17 @@
 ## Test Organization
 
 ### Naming Conventions
-```
-test_<what>_<scenario>_<expected_outcome>
-
-Examples:
-- test_user_login_with_valid_credentials_succeeds
-- test_payment_with_insufficient_funds_raises_error
-- test_search_with_empty_query_returns_all_results
-```
+Format: `test_<what>_<scenario>_<expected_outcome>`. See `.claude/docs/design-patterns-examples.md` for examples.
 
 ### Test Structure (Arrange-Act-Assert)
-```python
-def test_example():
-    # Arrange - set up test data and dependencies
-    user = create_test_user()
-
-    # Act - perform the action being tested
-    result = user.authenticate(valid_password)
-
-    # Assert - verify the outcome
-    assert result.is_authenticated
-```
+Arrange test data, Act on the subject, Assert outcomes. See `.claude/docs/design-patterns-examples.md` for examples.
 
 ## Test Types
-
-### Unit Tests
-- Fast, isolated, no external dependencies
-- One assertion per test (generally)
-- Run on every commit
-
-### Integration Tests
-- Test component interactions
-- Use real databases (test containers)
-- Run before merge
-
-### End-to-End Tests
-- Test complete user workflows
-- Slower, more brittle
-- Run nightly or before release
+- **Unit**: fast, isolated, no external deps — run every commit
+- **Integration**: real databases, test containers — run before merge
+- **E2E**: full workflows, slower — run nightly
 
 ## Test Maintenance
-
-### Keep Tests Fast
-- Unit tests: < 100ms each
-- Integration tests: < 5s each
-- Parallelize when possible
-
-### Keep Tests Independent
-- No shared state between tests
-- Each test sets up its own data
-- Order of execution should not matter
-
-### Delete Flaky Tests
-- Flaky tests erode trust
-- Fix or delete within 24 hours
-- Track flakiness metrics
+- Unit tests < 100ms, integration < 5s; parallelize when possible
+- No shared state; each test sets up its own data
+- Flaky tests: fix or delete within 24 hours

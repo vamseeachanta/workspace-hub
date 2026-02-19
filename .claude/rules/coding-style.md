@@ -5,13 +5,10 @@
 ## Naming Conventions
 
 ### Variables and Functions
-- **JavaScript/TypeScript**: `camelCase` for variables and functions
-- **Python**: `snake_case` for variables and functions
-- **Go**: `camelCase` for private, `PascalCase` for exported
+- **Python**: `snake_case`; **JS/TS**: `camelCase`
 
 ### Classes and Types
-- **All languages**: `PascalCase` for classes, interfaces, types
-- Prefix interfaces with `I` only if language convention (e.g., C#)
+- `PascalCase` for classes, interfaces, types (all languages)
 
 ### Constants
 - **SCREAMING_SNAKE_CASE** for true constants
@@ -40,32 +37,7 @@
 - Break long lines at logical points
 
 ## Import Organization
-
-### Order (top to bottom)
-1. Standard library imports
-2. Third-party package imports
-3. Internal/local imports
-
-### Rules
-- Blank line between each group
-- Alphabetize within groups
-- No unused imports
-- Prefer explicit imports over wildcards
+Order: stdlib → third-party → local. Blank line between groups. Alphabetize within groups. No unused imports or wildcards.
 
 ## Comments
-
-### When to Comment
-- Complex algorithms or business logic
-- Non-obvious performance optimizations
-- Workarounds with issue references
-- Public API documentation
-
-### When NOT to Comment
-- Obvious code (let the code speak)
-- Commented-out code (delete it)
-- TODOs without owners or ticket numbers
-
-### Comment Style
-- Use complete sentences
-- Explain "why", not "what"
-- Keep comments up-to-date with code
+Comment when: complex algorithms, non-obvious optimizations, workarounds with refs, public API docs. Explain "why" not "what". No commented-out code or ownerless TODOs.

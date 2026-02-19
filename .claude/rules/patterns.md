@@ -8,34 +8,17 @@
 - Inject dependencies through constructors
 - Enables testing and flexibility
 - Use interfaces over concrete types
-```python
-class UserService:
-    def __init__(self, repository: UserRepository, notifier: Notifier):
-        self.repository = repository
-        self.notifier = notifier
-```
+- See `.claude/docs/design-patterns-examples.md` for examples
 
 ### Factory Pattern
 - Use when object creation is complex
 - Encapsulate creation logic
 - Return interfaces, not concrete types
-```python
-def create_payment_processor(type: str) -> PaymentProcessor:
-    if type == "stripe":
-        return StripeProcessor(config.stripe_key)
-    elif type == "paypal":
-        return PayPalProcessor(config.paypal_key)
-    raise ValueError(f"Unknown processor: {type}")
-```
 
 ### Observer/Event Pattern
 - Decouple components through events
 - Use for cross-cutting concerns
 - Document event contracts clearly
-```python
-event_bus.subscribe("user.created", send_welcome_email)
-event_bus.subscribe("user.created", create_analytics_profile)
-```
 
 ### Repository Pattern
 - Abstract data access behind interfaces
@@ -82,16 +65,8 @@ event_bus.subscribe("user.created", create_analytics_profile)
 - Preserve stack traces when re-throwing
 
 ### Recovery Strategy
-```python
-try:
-    result = risky_operation()
-except RecoverableError as e:
-    logger.warning(f"Recoverable error: {e}, using fallback")
-    result = fallback_value()
-except FatalError as e:
-    logger.error(f"Fatal error: {e}")
-    raise
-```
+- Catch recoverable errors with fallback; let fatal errors propagate
+- See `.claude/docs/design-patterns-examples.md` for examples
 
 ### Never Return Null for Collections
 - Return empty list/dict instead of None
@@ -117,36 +92,13 @@ except FatalError as e:
 - Duplicate information
 
 ### Structured Logging
-```python
-logger.info(
-    "Order processed",
-    extra={
-        "order_id": order.id,
-        "user_id": user.id,
-        "amount": order.total,
-        "duration_ms": elapsed
-    }
-)
-```
+- Use key-value pairs in `extra` dict for machine-parseable logs
+- See `.claude/docs/design-patterns-examples.md` for examples
 
 ## SOLID Principles
 
-### Single Responsibility
-- One reason to change per class
-- Split when responsibilities diverge
+Apply SRP, OCP, LSP, ISP, DIP. See `.claude/docs/design-patterns-examples.md` for examples.
 
-### Open/Closed
-- Open for extension, closed for modification
-- Use interfaces and composition
+## Research Before Building
 
-### Liskov Substitution
-- Subtypes must be substitutable
-- Don't violate base class contracts
-
-### Interface Segregation
-- Many specific interfaces over one general
-- Clients shouldn't depend on unused methods
-
-### Dependency Inversion
-- Depend on abstractions, not concretions
-- High-level modules define interfaces
+Check for an official API before building scrapers or estimators. Example: Claude has `GET /api/oauth/usage`. Always find the canonical data source first.

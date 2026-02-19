@@ -98,7 +98,7 @@ results = pipeline.evaluate_batch(test_cases)
 
 ### Model Comparison
 ```python
-comparator = ModelComparator(models=["gpt-4", "gpt-3.5-turbo"])
+comparator = ModelComparator(models=["gpt-4", "gpt-4.1-mini"])
 results = comparator.run_comparison("Explain quantum computing")
 
 for model, result in results.items():
