@@ -143,3 +143,13 @@ work_queue_routing:
     review:  sonnet-4-6
   # Effort level for Sonnet 4.6 (Anthropic recommendation)
   sonnet_effort: medium
+  # Cross-review model selection — independent of authoring model
+  # Rule: use best available Claude model (claude_primary) so review always
+  # has more capability than the authoring session. When claude_primary
+  # updates in latest_models, cross-review automatically inherits it.
+  # Route A: Sonnet sufficient (low-stakes self-review)
+  # Route B/C: Opus — heavier model catches blind spots of authoring Sonnet/Opus
+  cross_review:
+    route_a: sonnet-4-6        # Self-review tier — same model acceptable
+    route_b: claude_primary    # → opus-4-6 today; tracks latest_models.claude_primary
+    route_c: claude_primary    # → opus-4-6 today; fresh session, no authoring context
