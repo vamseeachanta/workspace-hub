@@ -66,14 +66,14 @@ import openai
 from pypdf import PdfReader
 from pathlib import Path
 
-def pdf_to_markdown_codex(pdf_path, output_md_path=None, model="gpt-4"):
+def pdf_to_markdown_codex(pdf_path, output_md_path=None, model="gpt-4.1"):
     """
     Convert PDF to markdown using OpenAI Codex.
 
     Args:
         pdf_path: Path to PDF file
         output_md_path: Optional path for output .md file (auto-generated if None)
-        model: OpenAI model to use (gpt-4, gpt-3.5-turbo, etc.)
+        model: OpenAI model to use (gpt-4.1, gpt-4.1-mini, etc.)
 
     Returns:
         Path to generated markdown file
@@ -138,7 +138,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def batch_pdf_to_markdown(pdf_directory, output_directory=None, model="gpt-4"):
+def batch_pdf_to_markdown(pdf_directory, output_directory=None, model="gpt-4.1"):
     """
     Convert all PDFs in a directory to markdown.
 
@@ -175,13 +175,13 @@ def batch_pdf_to_markdown(pdf_directory, output_directory=None, model="gpt-4"):
     logger.info(f"\nConversion complete! Files in: {output_dir}")
 
 # Usage
-batch_pdf_to_markdown("/path/to/pdfs", model="gpt-4")
+batch_pdf_to_markdown("/path/to/pdfs", model="gpt-4.1")
 ```
 
 **Chunked Conversion for Large PDFs:**
 ```python
 def pdf_to_markdown_chunked(pdf_path, output_md_path=None,
-                            chunk_pages=10, model="gpt-4"):
+                            chunk_pages=10, model="gpt-4.1"):
     """
     Convert large PDF by processing in chunks.
 
@@ -291,8 +291,8 @@ with open(result['markdown_path']) as f:
 **Cost-Effective Options:**
 
 ```python
-# Use GPT-3.5 for cost savings
-md_file = pdf_to_markdown_codex("document.pdf", model="gpt-3.5-turbo")
+# Use GPT-4.1-mini for cost savings
+md_file = pdf_to_markdown_codex("document.pdf", model="gpt-4.1-mini")
 
 # Or use local extraction + Codex for formatting only
 from pypdf import PdfReader
@@ -308,7 +308,7 @@ def hybrid_conversion(pdf_path):
     # Use Codex just for markdown formatting (lower cost)
     client = openai.OpenAI()
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4.1-mini",
         messages=[
             {
                 "role": "system",
@@ -334,7 +334,7 @@ def hybrid_conversion(pdf_path):
 1. **Always convert to markdown first** - Makes downstream processing easier
 2. **Use chunking for large PDFs** - Avoids token limits and API timeouts
 3. **Cache conversions** - Store markdown files to avoid re-conversion
-4. **Choose model based on complexity** - GPT-4 for complex docs, GPT-3.5 for simple ones
+4. **Choose model based on complexity** - GPT-4.1 for complex docs, GPT-4.1-mini for simple ones
 5. **Validate output** - Check that markdown structure makes sense
 6. **Handle errors gracefully** - Log failures, continue batch processing
 
@@ -353,14 +353,14 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def pdf_to_markdown_codex(pdf_path, output_md_path=None, model="gpt-4"):
+def pdf_to_markdown_codex(pdf_path, output_md_path=None, model="gpt-4.1"):
     """
     Convert PDF to markdown using OpenAI Codex.
 
     Args:
         pdf_path: Path to PDF file
         output_md_path: Optional path for output .md file (auto-generated if None)
-        model: OpenAI model to use (gpt-4, gpt-3.5-turbo, etc.)
+        model: OpenAI model to use (gpt-4.1, gpt-4.1-mini, etc.)
 
     Returns:
         Path to generated markdown file
@@ -413,7 +413,7 @@ def pdf_to_markdown_codex(pdf_path, output_md_path=None, model="gpt-4"):
     return output_md_path
 
 
-def batch_pdf_to_markdown(pdf_directory, output_directory=None, model="gpt-4"):
+def batch_pdf_to_markdown(pdf_directory, output_directory=None, model="gpt-4.1"):
     """
     Convert all PDFs in a directory to markdown.
 
@@ -454,7 +454,7 @@ def main():
     parser = argparse.ArgumentParser(description='Convert PDF to Markdown using OpenAI')
     parser.add_argument('input', help='PDF file or directory')
     parser.add_argument('-o', '--output', help='Output directory or file')
-    parser.add_argument('-m', '--model', default='gpt-4', help='OpenAI model (gpt-4, gpt-3.5-turbo)')
+    parser.add_argument('-m', '--model', default='gpt-4.1', help='OpenAI model (gpt-4.1, gpt-4.1-mini)')
     parser.add_argument('--chunk-pages', type=int, default=10, help='Pages per chunk (unused in basic mode)')
 
     args = parser.parse_args()
@@ -483,8 +483,8 @@ python pdf2md.py document.pdf
 # Directory
 python pdf2md.py /path/to/pdfs -o /path/to/markdown
 
-# With GPT-3.5 (cheaper)
-python pdf2md.py document.pdf --model gpt-3.5-turbo
+# With GPT-4.1-mini (cheaper)
+python pdf2md.py document.pdf --model gpt-4.1-mini
 ```
 
 ## Python Libraries
@@ -716,7 +716,7 @@ process_large_pdf(
     extract_tables=False,         # Extract tables with normalization
     chunk_size=None,              # Auto-calculated if None
     fallback_api_key=None,        # OpenAI API key for complex pages
-    fallback_model="gpt-4o",      # Model for fallback extraction
+    fallback_model="gpt-4.1",      # Model for fallback extraction
     progress_callback=None,       # Progress tracking function
     auto_strategy=True            # Enable automatic strategy selection
 )

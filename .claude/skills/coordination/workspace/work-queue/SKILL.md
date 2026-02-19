@@ -197,7 +197,7 @@ The `--wrk WRK-NNN` flag on `test-task.sh` reads `target_repos` from the work it
 |-------|--------------|------------|---------------|
 | A (Simple) | Inline in work item body (`## Plan` section) | 3-5 bullet points: what files change, what the change is, how to verify | User confirms before implementation |
 | B (Medium) | Inline in work item body (`## Plan` section) | Exploration summary + numbered steps with file paths, expected changes, and test strategy | User confirms before implementation |
-| C (Complex) | Separate spec in `specs/modules/` (linked via `spec_ref`) | Full spec using `specs/templates/plan-template.md` with architecture, implementation sequence, test plan, and cross-review | User approves spec before implementation |
+| C (Complex) | Separate spec in `specs/wrk/WRK-NNN/` (linked via `spec_ref`) | Full spec using `specs/templates/plan-template.md` with architecture, implementation sequence, test plan, and cross-review | User approves spec before implementation |
 
 ### Plan Gate Workflow
 
@@ -207,6 +207,22 @@ The `--wrk WRK-NNN` flag on `test-task.sh` reads `target_repos` from the work it
 4. **User approves**: Update work item with plan content (Route A/B) or link to spec (Route C), then proceed
 5. **User requests changes**: Revise the plan and re-present
 6. **No implementation without approval**: Never begin coding until the plan is confirmed
+
+### Pre-Move-to-Working Checklist (HARD GATES — never skip)
+
+Before setting `status: working` on any Route B/C item, verify ALL of the following:
+
+| Gate | Field | Route | Rule |
+|------|-------|-------|------|
+| Plan approved | `plan_approved: true` | A/B/C | User must have explicitly said yes |
+| Plan cross-reviewed | `plan_reviewed: true` | B/C | Set ONLY after Codex + Gemini verdict received — NOT at plan creation time |
+| Spec exists | `spec_ref` non-empty | C | Spec must be in `specs/wrk/WRK-NNN/` before moving to working |
+
+**Critical distinction:**
+- `plan_approved` = user said "looks good, proceed"
+- `plan_reviewed` = Codex and/or Gemini have reviewed the plan and returned a verdict
+
+These are independent steps. Setting `plan_reviewed: true` at the same time as writing the plan is a workflow violation.
 
 ### Plan Content (Route A/B — Inline)
 
@@ -224,7 +240,7 @@ Add a `## Plan` section to the work item body:
 
 ### Plan Content (Route C — Spec File)
 
-Create spec in `specs/modules/<name>.md` using existing plan templates. Link via `spec_ref` in frontmatter.
+Create spec in `specs/wrk/WRK-NNN/plan.md` using existing plan templates. Link via `spec_ref` in frontmatter.
 
 ### Plan Naming Convention
 

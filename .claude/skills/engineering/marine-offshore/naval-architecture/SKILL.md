@@ -1,3 +1,9 @@
+---
+name: naval-architecture
+version: "1.0.0"
+category: engineering
+description: "Marine/offshore vessel analysis — hydrostatics, stability, seakeeping, RAOs"
+---
 # Naval Architecture
 
 ## Activation

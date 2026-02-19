@@ -1,3 +1,9 @@
+---
+name: mermaid-conventions
+version: "1.0.0"
+category: internal
+description: "Mermaid diagram conventions and layout rules for the workspace"
+---
 # Mermaid Diagram Conventions
 
 ## Decision Node Layout (Flowcharts)
