@@ -1,3 +1,10 @@
+---
+name: automation
+version: "1.0.0"
+category: development
+description: "Workflow automation, CI/CD pipelines, and task orchestration patterns across platforms like n8n, GitHub Actions, and Make."
+---
+
 # Automation Skills Library
 
 > Workflow automation, CI/CD pipelines, and task orchestration patterns

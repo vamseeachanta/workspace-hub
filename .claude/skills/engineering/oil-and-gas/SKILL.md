@@ -1,3 +1,10 @@
+---
+name: oil-and-gas
+version: "1.0.0"
+category: engineering
+description: "Domain expertise for petroleum engineering, reservoir analysis, production optimization, and energy industry operations across the full oil and gas value chain."
+---
+
 # Oil and Gas Expert
 
 > Domain expertise for petroleum engineering, reservoir analysis, production optimization, and energy industry operations. Use this skill when working on oil and gas technical problems spanning the full value chain from exploration through production, processing, and distribution.

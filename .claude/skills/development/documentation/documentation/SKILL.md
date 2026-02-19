@@ -1,3 +1,10 @@
+---
+name: documentation
+version: "1.0.0"
+category: development
+description: "Generate professional documentation, technical writing, and presentations from code using MkDocs, Sphinx, and related tools."
+---
+
 # Documentation Skills Library
 
 > Generate professional documentation, technical writing, and presentations from code

@@ -1,3 +1,10 @@
+---
+name: product-documentation
+version: "1.0.0"
+category: business
+description: "Review and modernize Agent OS product documentation to ensure quantifiable value propositions and workspace-hub standards compliance."
+---
+
 # Product Documentation Modernization Skill
 
 > Version: 1.0.0

@@ -1,3 +1,10 @@
+---
+name: productivity
+version: "1.0.0"
+category: archive
+description: "Streamline knowledge management, task tracking, and time optimization workflows using platforms like Obsidian and similar tools."
+---
+
 # Productivity Skills Library
 
 > Streamline knowledge management, task tracking, and time optimization workflows

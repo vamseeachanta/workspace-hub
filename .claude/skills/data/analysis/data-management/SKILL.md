@@ -1,12 +1,15 @@
-# Data Management Skill
-
 ---
-description: Comprehensive DataFrame loading, filtering, transformation, and data pipeline management from Excel, CSV, and multiple sources with YAML-driven configuration
+name: data-management
+version: "1.0.0"
+category: data
+description: "Comprehensive DataFrame loading, filtering, transformation, and data pipeline management from Excel, CSV, and multiple sources with YAML-driven configuration."
 globs:
   - src/assetutilities/common/data_management.py
   - src/assetutilities/common/data.py
 alwaysApply: false
 ---
+
+# Data Management Skill
 
 ## Overview
 

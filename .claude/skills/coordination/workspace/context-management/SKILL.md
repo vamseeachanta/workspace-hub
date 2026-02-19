@@ -1,3 +1,10 @@
+---
+name: context-management
+version: "2.0.0"
+category: workspace
+description: "Manage Claude context files, enforce size limits, and continuously improve workspace CLAUDE.md files based on work patterns."
+---
+
 # Context Management Skill
 
 > Version: 2.0.0

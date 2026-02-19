@@ -1,10 +1,9 @@
-# Economic Sensitivity Analyzer Skill
-
 ---
 name: economic-sensitivity-analyzer
-description: Perform advanced economic sensitivity analysis for oil & gas investments. Use for spider diagrams, 2D sensitivity surfaces, breakeven analysis, scenario comparison matrices, and decision tree analysis. Complements npv-analyzer with visualization-focused multi-variable sensitivity tools.
+version: "1.0.0"
+category: data
+description: "Perform advanced economic sensitivity analysis for oil & gas investments including spider diagrams, 2D surfaces, breakeven analysis, and decision tree analysis."
 command: /economic-sensitivity-analyzer
-version: 1.0.0
 author: worldenergydata
 tags:
   - economics
@@ -13,6 +12,8 @@ tags:
   - visualization
   - decision-support
 ---
+
+# Economic Sensitivity Analyzer Skill
 
 ## Overview
 

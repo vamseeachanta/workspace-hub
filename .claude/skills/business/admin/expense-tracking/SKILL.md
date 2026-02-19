@@ -1,3 +1,10 @@
+---
+name: expense-tracking
+version: "1.0.0"
+category: business
+description: "Track, categorize, and analyze business expenses including credit card statement import and monthly expense reports."
+---
+
 # Expense Tracking
 
 Track, categorize, and analyze business expenses for AceEngineer Inc.

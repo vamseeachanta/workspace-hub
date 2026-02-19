@@ -1,3 +1,10 @@
+---
+name: devtools
+version: "1.0.0"
+category: development
+description: "Optimize development environment, containers, CLI productivity, and git workflows using Docker, shell tooling, and editor customization."
+---
+
 # DevTools Skills Library
 
 > Optimize development environment, containers, CLI productivity, and git workflows

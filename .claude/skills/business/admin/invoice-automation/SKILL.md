@@ -1,3 +1,10 @@
+---
+name: invoice-automation
+version: "1.0.0"
+category: business
+description: "Automate invoice generation for engineering consulting services using YAML configuration and Word document templates."
+---
+
 # Invoice Automation
 
 Generate professional invoices for engineering consulting clients using YAML configuration.

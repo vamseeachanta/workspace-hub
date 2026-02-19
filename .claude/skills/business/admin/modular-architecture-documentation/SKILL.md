@@ -1,3 +1,10 @@
+---
+name: modular-architecture-documentation
+version: "1.0.0"
+category: business
+description: "Systematically document multi-module system architectures including module boundaries, CLI commands, and architecture decisions."
+---
+
 # Modular Architecture Documentation Skill
 
 > Version: 1.0.0

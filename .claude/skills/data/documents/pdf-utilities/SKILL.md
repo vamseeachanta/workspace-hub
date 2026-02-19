@@ -1,11 +1,14 @@
-# PDF Utilities Skill
-
 ---
-description: Read, extract, edit, and manipulate PDF documents including table extraction, page manipulation, fillable forms, and comments
+name: pdf-utilities
+version: "1.0.0"
+category: data
+description: "Read, extract, edit, and manipulate PDF documents including table extraction, page manipulation, fillable forms, and comments."
 globs:
   - src/assetutilities/modules/pdf_utilities/**
 alwaysApply: false
 ---
+
+# PDF Utilities Skill
 
 ## Overview
 
