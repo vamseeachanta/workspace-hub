@@ -63,7 +63,7 @@ create_directory_link() {
         echo "ecosystem-link" > "$(dirname "$link_name")/.$(basename "$link_name")-link-marker" 2>/dev/null || true
     else
         local link_parent; link_parent="$(dirname "$link_name")"
-        local rel; rel="$(python3 -c "import os.path; print(os.path.relpath('$target','$link_parent'))" 2>/dev/null \
+        local rel; rel="$(uv run --no-project --quiet python -c "import os.path; print(os.path.relpath('$target','$link_parent'))" 2>/dev/null \
                        || perl -e "use File::Spec; print File::Spec->abs2rel('$target','$link_parent')" 2>/dev/null \
                        || echo "$target")"
         ln -s "$rel" "$link_name"
@@ -95,15 +95,15 @@ directory_matches_template() {
     local sub_dir="$1" tmpl_dir="$2"
     [[ ! -d "$sub_dir" || ! -d "$tmpl_dir" ]] && return 1
 
-    local py_cmd; py_cmd="$(command -v python 2>/dev/null || command -v python3 2>/dev/null || echo "")"
-    if [[ -z "$py_cmd" ]]; then
+    local py_cmd="uv run --no-project --quiet python"
+    if ! command -v uv &>/dev/null; then
         # Fallback: simple diff (may false-negative on frontmatter differences)
         local issues; issues="$(diff -rq "$tmpl_dir" "$sub_dir" 2>/dev/null | grep -v "^Only in ${sub_dir}" || true)"
         [[ -z "$issues" ]]
         return $?
     fi
 
-    "$py_cmd" - "$tmpl_dir" "$sub_dir" <<'PYEOF'
+    $py_cmd - "$tmpl_dir" "$sub_dir" <<'PYEOF'
 import sys, os, glob
 
 def strip_fm(text):
@@ -329,6 +329,32 @@ main() {
     if [[ "$OPT_SKILLS" == "true" ]]; then
         printf "${C_BOLD}SKILLS:${C_RESET}\n"
         for r in "${submodules[@]}"; do propagate_skills "$r"; done
+        echo ""
+    fi
+
+    if [[ "$OPT_SKILLS" == "true" ]]; then
+        printf "${C_BOLD}PROVIDER ADAPTERS:${C_RESET}\n"
+        for provider in codex gemini; do
+            for repo_dir in "${submodules[@]}"; do
+                local repo_name; repo_name="$(basename "$repo_dir")"
+                local adapter_dir="$repo_dir/.$provider"
+                local link="$adapter_dir/skills"
+                local target="../../.claude/skills"
+                if [[ "$OPT_DRY_RUN" == "true" ]]; then
+                    [[ -L "$link" ]] \
+                        && log_ok "$repo_name/.$provider/skills (exists)" \
+                        || log_add "$repo_name/.$provider/skills -> $target (would create)"
+                    continue
+                fi
+                mkdir -p "$adapter_dir"
+                if [[ ! -L "$link" ]]; then
+                    ln -sf "$target" "$link"
+                    log_link "$repo_name/.$provider/skills -> $target"
+                else
+                    log_ok "$repo_name/.$provider/skills (exists)"
+                fi
+            done
+        done
         echo ""
     fi
 

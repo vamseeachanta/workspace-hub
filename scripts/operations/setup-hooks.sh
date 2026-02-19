@@ -58,25 +58,16 @@ HOOKEOF
 done
 echo ""
 
-# ── 4. Verify python3 ─────────────────────────────────────────────────────────
-echo "Checking python3 availability ..."
-PYTHON=""
-for cmd in python3 python; do
-    if command -v "$cmd" >/dev/null 2>&1; then
-        if "$cmd" -c "import sys; sys.exit(0 if sys.version_info[0]==3 else 1)" 2>/dev/null; then
-            PYTHON="$cmd"
-            break
-        fi
-    fi
-done
-
-if [[ -n "$PYTHON" ]]; then
-    version=$("$PYTHON" --version 2>&1)
-    echo "  OK — $PYTHON ($version)"
+# ── 4. Verify uv ─────────────────────────────────────────────────────────
+echo "Checking uv availability ..."
+if command -v uv >/dev/null 2>&1; then
+    version=$(uv --version 2>&1)
+    echo "  OK — $version"
+    echo "  uv will manage Python for encoding checks (via uv run --no-project python)"
 else
-    echo "  WARNING: python3 not found!"
-    echo "  The encoding check hook will be skipped until Python 3 is installed."
-    echo "  Install: https://www.python.org/downloads/"
+    echo "  WARNING: uv not found!"
+    echo "  The encoding check hook will be skipped until 'uv' is installed."
+    echo "  Install: https://docs.astral.sh/uv/getting-started/installation/"
 fi
 echo ""
 
