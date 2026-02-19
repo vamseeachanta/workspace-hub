@@ -383,7 +383,7 @@ if [[ ${#NEW_WRK_ITEMS[@]} -gt 0 ]]; then
     echo "Updated $STATE_FILE (last_id: $LAST_ID, total_captured: $TOTAL_CAPTURED)"
 
     echo "Regenerating INDEX.md..."
-    python3 "$SCRIPT_DIR/generate-index.py"
+    uv run --no-project --quiet python "$SCRIPT_DIR/generate-index.py"
 else
     echo "No new WRK items created, skipping state file update and index regeneration."
 fi
