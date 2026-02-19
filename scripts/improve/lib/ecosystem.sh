@@ -61,6 +61,41 @@ phase_ecosystem() {
     warning_count=$(jq '.warnings | length' "$metrics" 2>/dev/null || echo "0")
     echo "improve/ecosystem: ${total_skills} skills, ${memory_lines} memory lines, ${warning_count} warnings"
 
+    # --- Staleness scan (usage-based) ---
+    local stale_count=0
+    local cutoff_date
+    cutoff_date=$(date -d "90 days ago" +%Y-%m-%d 2>/dev/null || date -v-90d +%Y-%m-%d 2>/dev/null)
+    if [[ -n "$cutoff_date" ]]; then
+        while IFS= read -r skill_file; do
+            local last_commit
+            last_commit=$(git -C "$WORKSPACE_HUB" log -1 --format="%as" -- "${skill_file#${WORKSPACE_HUB}/}" 2>/dev/null)
+            if [[ -n "$last_commit" && "$last_commit" < "$cutoff_date" ]]; then
+                stale_count=$((stale_count + 1))
+                printf '{"timestamp":"%s","type":"skill","signal":"Stale skill (last commit %s): %s","severity":"info","source":"ecosystem-staleness","auto_apply":false,"score":0.6}\n' \
+                    "$TIMESTAMP" "$last_commit" "${skill_file#${WORKSPACE_HUB}/.claude/skills/}" \
+                    >> "${REVIEW_DIR}/skill-candidates.jsonl" 2>/dev/null || true
+            fi
+        done < <(find "$skill_dir" -name "SKILL.md" -not -path "*/_archive/*" -not -path "*/_diverged/*" 2>/dev/null)
+        [[ "$stale_count" -gt 0 ]] && echo "improve/ecosystem: ${stale_count} stale skill(s) (>90 days, no commits) — emitted to skill-candidates.jsonl"
+    fi
+
+    # --- Index quality check ---
+    local quality_issues=0
+    while IFS= read -r skill_file; do
+        local missing_fields=""
+        grep -q "^tags:" "$skill_file" 2>/dev/null || missing_fields="${missing_fields}tags "
+        grep -q "^related_skills:" "$skill_file" 2>/dev/null || missing_fields="${missing_fields}related_skills "
+        if [[ -n "$missing_fields" ]]; then
+            quality_issues=$((quality_issues + 1))
+            printf '{"timestamp":"%s","type":"skill","signal":"Index quality: missing frontmatter [%s] in %s","severity":"info","source":"ecosystem-quality","auto_apply":false,"score":0.6}\n' \
+                "$TIMESTAMP" "${missing_fields%% }" "${skill_file#${WORKSPACE_HUB}/.claude/skills/}" \
+                >> "${REVIEW_DIR}/skill-candidates.jsonl" 2>/dev/null || true
+        fi
+    done < <(find "$skill_dir" -name "SKILL.md" -not -path "*/_archive/*" -not -path "*/_diverged/*" 2>/dev/null)
+    if [[ "$quality_issues" -gt 0 ]]; then
+        echo "improve/ecosystem: ${quality_issues} skill(s) missing frontmatter fields — emitted to skill-candidates.jsonl"
+    fi
+
     # --- Bidirectional skill-link audit ---
     # Find related_skills: entries in hub SKILL.md files and check for asymmetry.
     # If A lists B in related_skills: but B does not list A, emit as improvement candidate.
