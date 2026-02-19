@@ -8,6 +8,9 @@ tags: [data-validation, plotly, reporting, quality-assurance, pandas]
 discovered: 2026-01-07
 source_commit: 47b64945
 reusability_score: 80
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Data Validation Reporter Skill

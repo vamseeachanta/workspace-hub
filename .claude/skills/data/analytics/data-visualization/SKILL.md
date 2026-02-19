@@ -9,6 +9,9 @@ related_skills:
   - data-exploration
   - statistical-analysis
   - interactive-dashboard-builder
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Data Visualization Skill

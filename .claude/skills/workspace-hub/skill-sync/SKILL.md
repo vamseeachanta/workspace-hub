@@ -8,6 +8,9 @@ source: internal
 related_skills:
   - compliance-check
   - repo-sync
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Skill Sync

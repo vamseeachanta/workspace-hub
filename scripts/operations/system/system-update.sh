@@ -178,17 +178,17 @@ check_reboot_required() {
     fi
 }
 
-# ── Read JSON Config Helper ──────────────────────────────────────────
+# Read JSON Config Helper ──────────────────────────────────────────
 # Minimal JSON value extraction — works for simple arrays and strings.
 # Falls back gracefully if python3/jq are unavailable.
 json_read_array() {
     local file="$1"
     local key="$2"
-    # Try jq first, then python3
+    # Try jq first, then uv (via uv run python)
     if command -v jq &>/dev/null; then
         jq -r "${key}[]? // empty" "$file" 2>/dev/null || true
-    elif command -v python3 &>/dev/null; then
-        python3 -c "
+    elif command -v uv &>/dev/null; then
+        uv run --no-project --quiet python -c "
 import json, sys
 try:
     data = json.load(open('${file}'))
@@ -206,7 +206,7 @@ except Exception:
     pass
 " 2>/dev/null || true
     else
-        log_warn "Neither jq nor python3 available — cannot parse config file"
+        log_warn "Neither jq nor uv available — cannot parse config file"
     fi
 }
 
@@ -215,8 +215,8 @@ json_read_object_array() {
     local key="$2"
     if command -v jq &>/dev/null; then
         jq -c "${key}[]? // empty" "$file" 2>/dev/null || true
-    elif command -v python3 &>/dev/null; then
-        python3 -c "
+    elif command -v uv &>/dev/null; then
+        uv run --no-project --quiet python -c "
 import json
 try:
     data = json.load(open('${file}'))
@@ -232,7 +232,7 @@ except Exception:
     pass
 " 2>/dev/null || true
     else
-        log_warn "Neither jq nor python3 available — cannot parse config file"
+        log_warn "Neither jq nor uv available — cannot parse config file"
     fi
 }
 
@@ -241,8 +241,8 @@ json_read_field() {
     local field="$2"
     if command -v jq &>/dev/null; then
         printf '%s' "$json_str" | jq -r ".${field} // empty" 2>/dev/null || true
-    elif command -v python3 &>/dev/null; then
-        printf '%s' "$json_str" | python3 -c "
+    elif command -v uv &>/dev/null; then
+        printf '%s' "$json_str" | uv run --no-project --quiet python -c "
 import json, sys
 try:
     data = json.load(sys.stdin)
@@ -816,14 +816,14 @@ pretty_print_json() {
             rm -f "$tmp_file"
             log_warn "jq pretty-print failed, keeping compact JSON"
         fi
-    elif command -v python3 &>/dev/null; then
+    elif command -v uv &>/dev/null; then
         local tmp_file="${file}.tmp"
-        if python3 -m json.tool "$file" > "$tmp_file" 2>/dev/null; then
+        if uv run --no-project --quiet python -m json.tool "$file" > "$tmp_file" 2>/dev/null; then
             mv "$tmp_file" "$file"
-            log_info "Pretty-printed with python3"
+            log_info "Pretty-printed with uv (python -m json.tool)"
         else
             rm -f "$tmp_file"
-            log_warn "python3 pretty-print failed, keeping compact JSON"
+            log_warn "uv python pretty-print failed, keeping compact JSON"
         fi
     fi
 }

@@ -8,6 +8,9 @@ related_skills:
   - knowledge-base-builder
   - rag-system-builder
   - pdf-text-extractor
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Semantic Search Setup Skill

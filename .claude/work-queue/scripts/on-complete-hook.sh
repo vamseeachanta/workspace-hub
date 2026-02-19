@@ -139,8 +139,8 @@ else
     elif grep -q "^blocked_by:" "$ITEM_FILE"; then
         sed -i "/^blocked_by:/a brochure_status: pending" "$ITEM_FILE"
     else
-        # Last resort: use python to insert before the closing ---
-        python3 -c "
+        # Last resort: use uv/python to insert before the closing ---
+        uv run --no-project --quiet python -c "
 import re, sys
 text = open('$ITEM_FILE').read()
 # Find the second --- (closing frontmatter)

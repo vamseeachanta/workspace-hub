@@ -21,6 +21,9 @@ tags:
   - linux
   - health-checks
 platforms: [all]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Interoperability — Cross-OS Standards

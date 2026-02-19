@@ -9,6 +9,9 @@ related_skills:
   - data-exploration
   - data-validation
   - data-visualization
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Statistical Analysis Skill

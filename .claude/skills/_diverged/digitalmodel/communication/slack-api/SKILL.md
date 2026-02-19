@@ -27,6 +27,7 @@ related_skills:
   - teams-api
   - github-actions
   - python-scientific-computing
+canonical_ref: "business/communication/slack-api"
 ---
 
 # Slack API Skill

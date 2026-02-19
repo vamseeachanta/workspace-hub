@@ -29,6 +29,7 @@ related_skills:
   - activepieces
   - airflow
   - yaml-configuration
+canonical_ref: UNMATCHED
 ---
 
 # Windmill Workflow Automation Skill

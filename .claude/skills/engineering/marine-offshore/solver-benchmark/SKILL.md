@@ -7,6 +7,9 @@ category: engineering-utilities
 tags: [benchmark, aqwa, orcawave, bemrosetta, diffraction, comparison, validation]
 platforms: [engineering]
 invocation: /benchmark-solvers
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Solver Benchmark Skill

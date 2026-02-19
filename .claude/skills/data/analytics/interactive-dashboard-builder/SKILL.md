@@ -9,6 +9,9 @@ related_skills:
   - data-visualization
   - data-exploration
   - sql-queries
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Interactive Dashboard Builder Skill

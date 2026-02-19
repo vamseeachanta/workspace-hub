@@ -21,6 +21,9 @@ tags:
   - automation
   - parallel-agent
 platforms: [all]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # /ecosystem-health — Parallel Health Check Agent

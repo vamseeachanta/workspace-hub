@@ -15,6 +15,9 @@ triggers:
 - bilge keel effect
 - damping coefficient tuning
 - model test comparison
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # OrcaWave Damping Sweep Skill

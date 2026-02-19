@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Quantification & Metrics Skill
 
 > Version: 1.0.0

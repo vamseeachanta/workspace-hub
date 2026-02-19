@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Office Docs Skills Library
 
 > Office document automation, template generation, and document processing patterns

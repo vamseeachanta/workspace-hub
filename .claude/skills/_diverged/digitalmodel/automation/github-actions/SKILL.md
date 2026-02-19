@@ -24,6 +24,7 @@ related_skills:
   - yaml-configuration
   - bash-cli-framework
   - git-sync-manager
+canonical_ref: "operations/automation/github-actions"
 ---
 
 # GitHub Actions Skill

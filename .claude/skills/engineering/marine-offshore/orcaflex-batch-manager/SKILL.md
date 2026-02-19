@@ -15,6 +15,9 @@ triggers:
 - large batch
 - parallel OrcaFlex
 - job queue
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Batch Manager Skill
 

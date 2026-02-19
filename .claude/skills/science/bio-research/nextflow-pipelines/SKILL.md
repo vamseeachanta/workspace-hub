@@ -11,6 +11,9 @@ related_skills:
   - clinical-trial-protocol
   - instrument-data-allotrope
   - scientific-problem-selection
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # nf-core Pipeline Deployment

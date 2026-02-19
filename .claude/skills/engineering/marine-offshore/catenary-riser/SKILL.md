@@ -5,6 +5,9 @@ description: Analyze catenary and lazy wave riser configurations for static shap
   catenary force calculations, lazy wave design, and generating OrcaFlex models from
   catenary parameters.
 updated: '2026-01-07'
+capabilities: []
+requires: []
+see_also: []
 ---
 # Catenary Riser Analysis Skill
 

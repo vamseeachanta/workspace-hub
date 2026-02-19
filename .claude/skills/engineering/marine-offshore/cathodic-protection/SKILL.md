@@ -29,6 +29,8 @@ triggers:
 see_also:
   - engineering/asset-integrity/fitness-for-service  # WRK-206: CP prevents corrosion; FFS assesses damage once it occurs
   - engineering/marine-offshore/risk-assessment
+capabilities: []
+requires: []
 ---
 # Cathodic Protection Skill
 

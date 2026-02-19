@@ -12,6 +12,9 @@ triggers:
 - builder registry
 - component assembly
 - parametric model generation
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Modular Model Generator
 

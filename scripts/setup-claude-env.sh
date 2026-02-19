@@ -57,12 +57,13 @@ else
     exit 1
 fi
 
-# Check Python
-if command -v python3 &> /dev/null; then
-    PYTHON_VERSION=$(python3 --version)
-    echo -e "${GREEN}  ✓ Python: $PYTHON_VERSION${NC}"
+# Check uv (required for Python management)
+if command -v uv &> /dev/null; then
+    UV_VERSION=$(uv --version)
+    echo -e "${GREEN}  ✓ uv: $UV_VERSION${NC}"
 else
-    echo -e "${YELLOW}  ⚠ Python3 not found. Some features may be limited.${NC}"
+    echo -e "${RED}  ✗ uv not found. Install uv: curl -LsSf https://astral.sh/uv/install.sh | sh${NC}"
+    exit 1
 fi
 
 # Check jq (required for hooks)

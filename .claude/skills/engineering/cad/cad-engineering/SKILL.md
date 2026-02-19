@@ -21,6 +21,9 @@ triggers:
 - STEP IGES
 - technical drawings
 - 3D modeling
+capabilities: []
+requires: []
+see_also: []
 ---
 # CAD Engineering Skill
 

@@ -15,6 +15,9 @@ triggers:
 - model not converging
 - catenary convergence
 - unstable statics
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Static Debug Skill
 

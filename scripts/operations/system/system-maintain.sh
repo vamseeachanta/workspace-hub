@@ -85,8 +85,8 @@ generate_changelog() {
 
     log_info "Generating changelog..."
 
-    if command -v python3 &>/dev/null; then
-        python3 - "$pre_file" "$post_file" "$update_file" "$changelog_file" <<'PYEOF'
+    if command -v uv &>/dev/null; then
+        uv run --no-project --quiet python - "$pre_file" "$post_file" "$update_file" "$changelog_file" <<'PYEOF'
 import json, sys
 from datetime import datetime
 
@@ -209,9 +209,9 @@ PYEOF
         hn="$(hostname 2>/dev/null || printf 'unknown')"
         local ts
         ts="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-        printf '{"schema_version":"1.0","generated":"%s","hostname":"%s","changes":{"hardware":[],"software":[],"os":[]},"summary":{"note":"python3 not available — install python3 for detailed changelog"}}' \
+        printf '{"schema_version":"1.0","generated":"%s","hostname":"%s","changes":{"hardware":[],"software":[],"os":[]},"summary":{"note":"uv not available — install uv for detailed changelog"}}' \
             "$(json_escape "$ts")" "$(json_escape "$hn")" > "$changelog_file"
-        log_warn "python3 not available — changelog generated without diff analysis"
+        log_warn "uv not available — changelog generated without diff analysis"
     fi
 }
 

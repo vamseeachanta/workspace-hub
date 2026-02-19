@@ -15,6 +15,9 @@ triggers:
 - resonance identification
 - DOF analysis
 - structural dynamics
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Modal Analysis Skill
 

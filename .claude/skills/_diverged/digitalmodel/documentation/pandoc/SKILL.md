@@ -42,6 +42,7 @@ related_skills:
   - sphinx
   - marp
   - latex
+canonical_ref: UNMATCHED
 ---
 
 # Pandoc Universal Document Converter Skill

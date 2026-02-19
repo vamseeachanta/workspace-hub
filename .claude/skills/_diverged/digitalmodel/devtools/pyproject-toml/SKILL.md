@@ -6,6 +6,7 @@ author: workspace-hub
 category: devtools
 tags: [python, pyproject, configuration, packaging, build-system]
 platforms: [python]
+canonical_ref: AMBIGUOUS  # candidates: development/devtools/pyproject-toml,operations/devtools/pyproject-toml
 ---
 
 # pyproject.toml Configuration Skill

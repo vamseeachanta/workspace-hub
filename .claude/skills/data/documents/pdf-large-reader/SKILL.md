@@ -3,6 +3,9 @@ name: pdf-large-reader
 version: "1.0.0"
 category: data
 description: "pdf-large-reader Skill"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # pdf-large-reader Skill

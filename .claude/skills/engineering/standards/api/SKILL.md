@@ -3,6 +3,9 @@ name: api
 version: "1.0.0"
 category: engineering
 description: "API Standards Specialist"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # API Standards Specialist

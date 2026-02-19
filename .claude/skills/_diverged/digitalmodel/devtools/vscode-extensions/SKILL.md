@@ -26,6 +26,7 @@ related_skills:
   - cli-productivity
   - git-advanced
   - docker
+canonical_ref: "operations/devtools/vscode-extensions"
 ---
 
 # VS Code Extensions Skill

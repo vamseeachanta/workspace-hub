@@ -12,6 +12,9 @@ triggers:
 - reverse engineer OrcaFlex YAML
 - monolithic to spec.yml
 - semantic validation OrcaFlex
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Monolithic to Modular Converter
 

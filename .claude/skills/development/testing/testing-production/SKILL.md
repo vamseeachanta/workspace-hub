@@ -33,6 +33,8 @@ hooks:
       npm run test:production --if-present
       npm run test:e2e --if-present
     fi
+requires: []
+see_also: []
 ---
 
 # Production Validation

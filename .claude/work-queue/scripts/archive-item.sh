@@ -98,6 +98,6 @@ fi
 
 # ── Regenerate index ─────────────────────────────────────
 echo ""
-python3 "$SCRIPT_DIR/generate-index.py"
+uv run --no-project --quiet python "$SCRIPT_DIR/generate-index.py"
 echo ""
 echo "Done. $WRK_ID archived to $ARCHIVE_MONTH/"

@@ -14,6 +14,7 @@ triggers:
 - parametric model generation
 - spec.yml template
 - template library
+canonical_ref: "engineering/marine-offshore/orcaflex-model-generator"
 ---
 # OrcaFlex Modular Model Generator
 

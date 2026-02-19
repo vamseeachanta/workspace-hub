@@ -1,6 +1,9 @@
 ---
 name: github-repo-architect
 description: Repository structure optimization and multi-repo management with swarm coordination for scalable project architecture and development workflows. Use for structure analysis, template management, cross-repo synchronization, and architecture recommendations.
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # GitHub Repository Architect Skill

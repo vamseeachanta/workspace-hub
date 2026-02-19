@@ -15,6 +15,9 @@ triggers:
 - panel method benchmark
 - added mass comparison
 - damping comparison
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # OrcaWave-AQWA Benchmark Skill

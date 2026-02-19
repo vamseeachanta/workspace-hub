@@ -334,5 +334,5 @@ results["user_prompt_patterns"] = [
 print(json.dumps(results, indent=2))
 PYTHON_EOF
 
-# Execute Python script
-python3 "$PYTHON_SCRIPT" "$TEMP_FILE" "$DAYS"
+# Execute Python script via uv
+uv run --no-project --quiet python "$PYTHON_SCRIPT" "$TEMP_FILE" "$DAYS"

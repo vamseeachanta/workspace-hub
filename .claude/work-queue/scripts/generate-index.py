@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --no-project python
 """Generate INDEX.md for the work queue.
 
 Scans pending/, working/, blocked/, and archive/*/ directories for WRK-*.md

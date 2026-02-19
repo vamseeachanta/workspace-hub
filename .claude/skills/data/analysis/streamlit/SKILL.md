@@ -24,6 +24,8 @@ related_skills:
   - dash
   - plotly
   - pandas-data-processing
+requires: []
+see_also: []
 ---
 
 # Streamlit Data Application Skill

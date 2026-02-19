@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Communication Skills Library
 
 > Integrate team communication, collaboration tools, and scheduling workflows

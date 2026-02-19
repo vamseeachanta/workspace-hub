@@ -27,6 +27,7 @@ related_skills:
   - prompt-engineering
   - dspy
   - pandasai
+canonical_ref: UNMATCHED
 ---
 
 # LangChain Skill

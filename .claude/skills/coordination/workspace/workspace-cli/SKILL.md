@@ -17,6 +17,8 @@ related_skills:
   - repo-sync
   - compliance-check
   - sparc-workflow
+requires: []
+see_also: []
 ---
 
 # Workspace CLI Skill

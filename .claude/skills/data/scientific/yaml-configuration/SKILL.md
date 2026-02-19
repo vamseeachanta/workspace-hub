@@ -6,6 +6,9 @@ author: workspace-hub
 category: programming
 tags: [yaml, configuration, engineering, orcaflex, automation, data-structures]
 platforms: [yaml, python]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # YAML Configuration Management Skill

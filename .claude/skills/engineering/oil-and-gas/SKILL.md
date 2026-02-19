@@ -3,6 +3,9 @@ name: oil-and-gas
 version: "1.0.0"
 category: engineering
 description: "Petroleum engineering, reservoir analysis, production optimization"
+capabilities: []
+requires: []
+see_also: []
 ---
 # Oil and Gas Expert
 

@@ -9,6 +9,9 @@ related_skills:
   - stakeholder-comms
   - metrics-tracking
   - user-research-synthesis
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Feature Spec Skill

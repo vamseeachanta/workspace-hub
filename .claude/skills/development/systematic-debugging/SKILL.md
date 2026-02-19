@@ -9,6 +9,9 @@ related_skills:
   - tdd-obra
   - writing-plans
   - code-reviewer
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Systematic Debugging Skill

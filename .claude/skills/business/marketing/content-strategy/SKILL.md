@@ -9,6 +9,9 @@ related_skills:
   - seo-optimizer
   - social-media
   - brand-guidelines
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Content Strategy Skill

@@ -11,6 +11,9 @@ related_skills:
   - competitive-intelligence
   - create-an-asset
   - daily-briefing
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Draft Outreach Skill Overview

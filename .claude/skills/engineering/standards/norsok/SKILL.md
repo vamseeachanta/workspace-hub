@@ -3,6 +3,9 @@ name: norsok
 version: "1.0.0"
 category: engineering
 description: "NORSOK Standards Specialist"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # NORSOK Standards Specialist

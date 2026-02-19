@@ -7,6 +7,9 @@ category: engineering-utilities
 tags: [mesh, gdf, dat, stl, bem, panel-mesh, quality, coarsening, aqwa, orcawave, bemrosetta]
 platforms: [engineering]
 invocation: /mesh
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Mesh Utilities Skill

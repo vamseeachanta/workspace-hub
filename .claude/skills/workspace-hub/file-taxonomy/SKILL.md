@@ -3,6 +3,9 @@ skill: workspace-hub:file-taxonomy
 version: 1.1.0
 invocation: /file-taxonomy
 applies-to: [claude, codex, gemini]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # File Taxonomy — Where Does This File Go?

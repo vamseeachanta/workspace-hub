@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Plotly Visualization Skill
 
 ---

@@ -5,6 +5,9 @@ description: Extract and process BSEE (Bureau of Safety and Environmental Enforc
 =======
 description: Extract and process BSEE (Bureau of Safety and Environmental Enforcement) production data. Use for querying oil/gas production data by API number, block, lease, or field with automatic data normalization and caching.
 >>>>>>> origin/main
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # BSEE Data Extractor

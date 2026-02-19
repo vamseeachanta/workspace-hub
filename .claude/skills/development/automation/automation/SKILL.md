@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Automation Skills Library
 
 > Workflow automation, CI/CD pipelines, and task orchestration patterns

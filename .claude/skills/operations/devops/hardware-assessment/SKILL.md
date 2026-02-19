@@ -17,6 +17,8 @@ platforms: [linux, windows]
 related_skills:
   - docker
   - cli-productivity
+requires: []
+see_also: []
 ---
 
 # Hardware Assessment & System Maintenance Skill

@@ -15,6 +15,8 @@ capabilities:
   - capability_reporting
 tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
 related_skills: [repository-health-analyzer, work-queue, claude-reflect, compliance-check]
+requires: []
+see_also: []
 ---
 
 # Repo Capability Map

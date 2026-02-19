@@ -23,6 +23,8 @@ scripts:
   - scripts/knowledge-advise.sh
   - scripts/knowledge-review.sh
   - scripts/knowledge-stats.sh
+requires: []
+see_also: []
 ---
 
 # Knowledge Manager

@@ -4,6 +4,9 @@ version: "1.1.0"
 category: business
 description: "Product Roadmap Skill"
 last_updated: 2026-02-03
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Product Roadmap Skill

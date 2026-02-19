@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # AI Prompting Skills Library
 
 > LLM applications, prompt optimization, and AI-powered data analysis patterns

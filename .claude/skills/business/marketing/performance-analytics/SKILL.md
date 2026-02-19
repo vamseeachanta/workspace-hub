@@ -9,6 +9,9 @@ related_skills:
   - campaign-planning
   - content-creation
   - competitive-analysis
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Performance Analytics Skill

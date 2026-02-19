@@ -13,6 +13,8 @@ capabilities:
   - push_confirmation
 tools: [Bash, Read]
 related_skills: [repo-sync, work-queue]
+requires: []
+see_also: []
 ---
 
 # Commit Workflow Skill

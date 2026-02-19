@@ -10,6 +10,9 @@ related_skills:
   - customer-research
   - escalation
   - knowledge-management
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Response Drafting Skill Summary

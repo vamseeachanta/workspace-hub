@@ -29,6 +29,8 @@ hooks:
   post: |
     echo "Pseudocode phase complete"
     memory_store "pseudo_complete_$(date +%s)" "Algorithms designed"
+requires: []
+see_also: []
 ---
 
 # SPARC Pseudocode Agent

@@ -6,6 +6,9 @@ author: workspace-hub
 category: subject-matter-expert
 tags: [waves, wave-theory, spectra, jonswap, pierson-moskowitz, wave-statistics, irregular-seas]
 platforms: [engineering]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Wave Theory SME Skill

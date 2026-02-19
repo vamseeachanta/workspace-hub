@@ -28,6 +28,8 @@ related_skills:
   - notion-api
   - api-integration
   - github-actions
+requires: []
+see_also: []
 ---
 
 # Trello API Integration Skill

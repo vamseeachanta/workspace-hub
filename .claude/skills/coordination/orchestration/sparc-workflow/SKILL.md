@@ -23,6 +23,8 @@ related_skills:
 hooks:
   pre: |
   post: |
+requires: []
+see_also: []
 ---
 
 # SPARC Workflow Skill

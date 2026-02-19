@@ -26,6 +26,8 @@ related_skills:
   - yaml-configuration
   - git-sync-manager
   - markdown-documentation
+requires: []
+see_also: []
 ---
 
 # Obsidian Knowledge Management Skill

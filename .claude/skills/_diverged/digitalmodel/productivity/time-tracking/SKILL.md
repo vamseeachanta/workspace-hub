@@ -28,6 +28,7 @@ related_skills:
   - trello-api
   - notion-api
   - api-integration
+canonical_ref: "business/productivity/time-tracking"
 ---
 
 # Time Tracking Integration Skill

@@ -9,6 +9,9 @@ related_skills:
   - data-exploration
   - statistical-analysis
   - sql-queries
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Data Validation Skill

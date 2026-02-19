@@ -6,6 +6,7 @@ author: workspace-hub
 category: data-analysis
 tags: [bsee, sodir, energy-data, oil-gas, offshore, web-scraping, api]
 platforms: [python]
+canonical_ref: "data/analysis/bsee-sodir-extraction"
 ---
 
 # BSEE/SODIR Data Extraction Skill

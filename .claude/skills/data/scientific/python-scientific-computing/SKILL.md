@@ -6,6 +6,9 @@ author: workspace-hub
 category: programming
 tags: [python, numpy, scipy, sympy, numerical-computing, engineering, scientific-computing]
 platforms: [python]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Python Scientific Computing Skill

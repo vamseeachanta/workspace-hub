@@ -4,6 +4,9 @@ description: Design and analyze mooring systems including CALM and SALM buoys, c
   moorings, and spread mooring configurations. Covers mooring line design, safety
   factors, environmental loading, and compliance with DNV, API, and ABS standards.
 updated: '2026-01-07'
+capabilities: []
+requires: []
+see_also: []
 ---
 # Mooring Design Skill
 

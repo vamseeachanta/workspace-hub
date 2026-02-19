@@ -8,6 +8,9 @@ source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
   - source-management
   - knowledge-synthesis
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Search Strategy

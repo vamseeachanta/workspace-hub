@@ -9,6 +9,9 @@ related_skills:
   - content-strategy
   - competitive-analysis
   - frontend-design
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # SEO Optimizer Skill

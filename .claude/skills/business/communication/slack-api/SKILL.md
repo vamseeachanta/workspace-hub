@@ -27,6 +27,8 @@ related_skills:
   - teams-api
   - github-actions
   - python-scientific-computing
+requires: []
+see_also: []
 ---
 
 # Slack API Skill

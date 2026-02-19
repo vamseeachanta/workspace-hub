@@ -94,7 +94,7 @@ if [[ -x "$SCRIPT_DIR/analyze-history.sh" ]]; then
         fi
         # Ensure we have valid JSON even on partial/timeout failure.
         # A timeout-killed process may leave truncated JSON — validate it.
-        if [[ ! -s "$ANALYSIS_FILE" ]] || ! python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$ANALYSIS_FILE" 2>/dev/null; then
+        if [[ ! -s "$ANALYSIS_FILE" ]] || ! uv run --no-project --quiet python -c "import json,sys; json.load(open(sys.argv[1]))" "$ANALYSIS_FILE" 2>/dev/null; then
             log "WARNING: Invalid or empty JSON output, writing fallback"
             echo '{"analysis_date":"'"$(date -Iseconds)"'","window_days":'"$DAYS"',"repos_analyzed":0,"total_commits":0,"commits":[]}' > "$ANALYSIS_FILE"
         fi

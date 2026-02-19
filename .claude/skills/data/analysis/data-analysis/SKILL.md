@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Data Analysis Skills Library
 
 > Data processing, visualization, EDA, and dashboard patterns

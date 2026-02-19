@@ -29,6 +29,7 @@ related_skills:
   - cli-productivity
   - vscode-extensions
   - git-advanced
+canonical_ref: "operations/devtools/raycast-alfred"
 ---
 
 # Raycast & Alfred Skill

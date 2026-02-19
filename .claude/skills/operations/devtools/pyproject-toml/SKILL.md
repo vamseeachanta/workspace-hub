@@ -6,6 +6,9 @@ author: workspace-hub
 category: devtools
 tags: [python, pyproject, configuration, packaging, build-system]
 platforms: [python]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # pyproject.toml Configuration Skill

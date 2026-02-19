@@ -15,6 +15,9 @@ triggers:
 - riser configuration
 - line properties
 - segment configuration
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Line Wizard Skill
 

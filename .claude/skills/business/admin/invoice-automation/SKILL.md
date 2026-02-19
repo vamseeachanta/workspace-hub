@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Invoice Automation
 
 Generate professional invoices for engineering consulting clients using YAML configuration.

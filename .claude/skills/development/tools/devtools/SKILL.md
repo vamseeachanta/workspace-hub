@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # DevTools Skills Library
 
 > Optimize development environment, containers, CLI productivity, and git workflows

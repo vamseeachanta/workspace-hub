@@ -15,6 +15,9 @@ triggers:
 - pretension comparison
 - stiffness comparison
 - mooring comparison
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Results Comparison Skill
 

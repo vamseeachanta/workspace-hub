@@ -7,6 +7,9 @@ last_updated: 2026-01-02
 related_skills:
   - background-service-manager
   - session-start-routine
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # AI Tool Usage Assessment

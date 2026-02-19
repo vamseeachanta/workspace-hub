@@ -11,6 +11,9 @@ related_skills:
   - create-an-asset
   - daily-briefing
   - draft-outreach
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Account Research Skill Overview

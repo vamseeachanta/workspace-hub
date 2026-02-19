@@ -7,6 +7,9 @@ related_skills:
   - yaml-workflow-executor
   - engineering-report-generator
   - parallel-file-processor
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Data Pipeline Processor

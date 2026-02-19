@@ -23,6 +23,7 @@ related_skills:
   - python-docx
   - openpyxl
   - plotly
+canonical_ref: "data/office/python-pptx"
 ---
 
 # Python-pptx PowerPoint Automation Skill

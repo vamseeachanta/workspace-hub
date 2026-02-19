@@ -19,6 +19,9 @@ tags:
   - coordination
   - parallel-agents
 platforms: [all]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Agent Teams Protocol

@@ -6,6 +6,9 @@ author: workspace-hub
 category: data-visualization
 tags: [charts, echarts, apache, interactive, typescript, mobile]
 platforms: [web, javascript, typescript]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Apache ECharts Visualization Skill

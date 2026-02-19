@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Context Management Skill
 
 > Version: 2.0.0

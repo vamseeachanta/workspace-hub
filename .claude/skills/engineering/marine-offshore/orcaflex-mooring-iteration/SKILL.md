@@ -16,6 +16,9 @@ triggers:
 - mooring optimization
 - CALM mooring
 - SALM mooring
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Mooring Tension Iteration Skill
 

@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Modular Architecture Documentation Skill
 
 > Version: 1.0.0

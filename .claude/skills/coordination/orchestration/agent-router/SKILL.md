@@ -24,6 +24,8 @@ hooks:
   pre: |
     # Ensure jq is available
     command -v jq &>/dev/null || { echo "ERROR: jq required"; exit 1; }
+requires: []
+see_also: []
 ---
 
 # Smart Agent Router

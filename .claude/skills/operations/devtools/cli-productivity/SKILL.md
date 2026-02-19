@@ -27,6 +27,8 @@ related_skills:
   - docker
   - git-advanced
   - bash-cli-framework
+requires: []
+see_also: []
 ---
 
 # CLI Productivity Skill

@@ -10,6 +10,9 @@ related_skills:
   - tdd-obra
   - code-reviewer
   - parallel-dispatch
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Subagent-Driven Development Skill

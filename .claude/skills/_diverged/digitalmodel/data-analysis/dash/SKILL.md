@@ -24,6 +24,7 @@ related_skills:
   - streamlit
   - polars
   - pandas-data-processing
+canonical_ref: "data/analysis/dash"
 ---
 
 # Dash Production Dashboard Skill

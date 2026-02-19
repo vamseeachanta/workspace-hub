@@ -1,6 +1,9 @@
 ---
 name: metocean-statistics
 description: Statistical analysis of metocean data including extreme value analysis, return periods, joint probability distributions, and directional statistics. Use for design criteria, fatigue analysis, and operational limits.
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Metocean Statistics Skill

@@ -23,6 +23,8 @@ related_skills:
   - python-docx
   - openpyxl
   - plotly
+requires: []
+see_also: []
 ---
 
 # Python-pptx PowerPoint Automation Skill

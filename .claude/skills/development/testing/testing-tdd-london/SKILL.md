@@ -31,6 +31,8 @@ hooks:
     if [ -f "package.json" ]; then
       npm test --if-present
     fi
+requires: []
+see_also: []
 ---
 
 # TDD London School (Mockist)

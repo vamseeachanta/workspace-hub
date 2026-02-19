@@ -1,3 +1,9 @@
+---
+capabilities: []
+requires: []
+see_also: []
+---
+
 # Documentation Skills Library
 
 > Generate professional documentation, technical writing, and presentations from code

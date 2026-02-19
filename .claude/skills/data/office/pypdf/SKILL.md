@@ -23,6 +23,8 @@ related_skills:
   - python-docx
   - reportlab
   - pillow
+requires: []
+see_also: []
 ---
 
 # PyPDF PDF Manipulation Skill

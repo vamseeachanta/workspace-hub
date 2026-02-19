@@ -14,6 +14,9 @@ triggers:
   - BEM solver
   - panel method
   - frequency domain
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Diffraction Analysis Master Skill

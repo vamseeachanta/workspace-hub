@@ -38,6 +38,7 @@ related_skills:
   - docusaurus
   - pandoc
   - marp
+canonical_ref: UNMATCHED
 ---
 
 # MkDocs Documentation Skill

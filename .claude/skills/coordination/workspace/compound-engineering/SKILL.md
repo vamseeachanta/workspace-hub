@@ -15,6 +15,8 @@ capabilities:
   - phase_orchestration
 tools: [Read, Write, Edit, Bash, Grep, Glob, Task, WebSearch, WebFetch]
 related_skills: [knowledge-manager, work-queue, claude-reflect, skill-learner]
+requires: []
+see_also: []
 ---
 
 # Compound Engineering Skill

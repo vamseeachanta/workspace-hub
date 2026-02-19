@@ -9,6 +9,9 @@ related_skills:
   - performance-analytics
   - content-creation
   - brand-voice
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Campaign Planning Skill

@@ -1,6 +1,9 @@
 ---
 name: github-release-swarm
 description: Orchestrate complex software releases using AI swarms that handle everything from changelog generation to multi-platform deployment. Use for release planning, automated versioning, artifact building, progressive deployment, and multi-repo releases.
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # GitHub Release Swarm Skill

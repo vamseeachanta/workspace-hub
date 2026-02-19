@@ -28,6 +28,8 @@ hooks:
   post: |
     echo "✅ Review complete"
     echo "📝 Review summary stored in memory"
+requires: []
+see_also: []
 ---
 
 # Core Reviewer Skill

@@ -28,6 +28,8 @@ hooks:
     echo "Mapping SPARC phases to GOAP milestones..."
   post: |
     echo "Code goal planning complete - milestones defined"
+requires: []
+see_also: []
 ---
 
 # Code-Centric Goal-Oriented Action Planning
