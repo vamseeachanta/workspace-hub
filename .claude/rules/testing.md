@@ -48,27 +48,10 @@
 ## Test Organization
 
 ### Naming Conventions
-```
-test_<what>_<scenario>_<expected_outcome>
-
-Examples:
-- test_user_login_with_valid_credentials_succeeds
-- test_payment_with_insufficient_funds_raises_error
-- test_search_with_empty_query_returns_all_results
-```
+Format: `test_<what>_<scenario>_<expected_outcome>`. See `.claude/docs/design-patterns-examples.md` for examples.
 
 ### Test Structure (Arrange-Act-Assert)
-```python
-def test_example():
-    # Arrange - set up test data and dependencies
-    user = create_test_user()
-
-    # Act - perform the action being tested
-    result = user.authenticate(valid_password)
-
-    # Assert - verify the outcome
-    assert result.is_authenticated
-```
+Arrange test data, Act on the subject, Assert outcomes. See `.claude/docs/design-patterns-examples.md` for examples.
 
 ## Test Types
 

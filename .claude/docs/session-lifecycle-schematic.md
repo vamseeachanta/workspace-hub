@@ -41,15 +41,15 @@ flowchart TD
 ```
 Session Start
   │
-  ├── [PROPOSED] Readiness Checks (~200ms)
+  ├── Readiness Checks (~200ms, runs on first tool call)
   │   ├── R1: Memory curation (MEMORY.md < 200 lines)
   │   ├── R2: Index freshness (RESOURCE_INDEX < 24h)
   │   ├── R3: Skill health (active < 350, no orphans)
-  │   ├── R4: Agent readiness (model-registry valid)
-  │   ├── R5: Context budget audit (auto-load < 16KB)
+  │   ├── R4: Agent readiness (model-registry valid) [IMPLEMENTED]
+  │   ├── R5: Context budget audit (auto-load < 16KB) [IMPLEMENTED]
   │   ├── R6: Submodule sync (all on main, not behind)
   │   ├── R7: Pending signal triage (< 50 queued)
-  │   └── R8: Environment validation (python, jq, yq)
+  │   └── R8: Environment validation (python, jq, yq) [IMPLEMENTED]
   │
   ├── Load: CLAUDE.md, rules/, memory/MEMORY.md
   ├── Init: statusline-command.sh
@@ -61,7 +61,8 @@ Session Start
 │  ┌── PreToolUse (before EVERY tool call) ──────┐    │
 │  │  1. session-logger.sh pre          (<5ms)   │    │
 │  │  2. propagate-ecosystem-check.sh   (<10ms)  │    │
-│  │  3. edit-notification [Write/Edit] (<1ms)   │    │
+│  │  3. readiness.sh (once/session)    (<200ms) │    │
+│  │  4. edit-notification [Write/Edit] (<1ms)   │    │
 │  └─────────────────────────────────────────────┘    │
 │                    │                                │
 │              [Tool Executes]                        │
@@ -108,7 +109,12 @@ Session Start
 │     └─→ terminal warning (if no WRK touched)        │
 │  8. ecosystem-health-check.sh      (~1s)            │
 │     └─→ pending-reviews/ecosystem-review.jsonl      │
-│  9. improve.sh                     (~30-60s)        │
+│  9. ensure-readiness.sh            (~1s)            │
+│     ├─→ R1: memory curation check                   │
+│     ├─→ R5: context budget enforcement              │
+│     ├─→ R6: submodule sync check                    │
+│     └─→ state/readiness-report.md (for next start)  │
+│  10. improve.sh                    (~30-60s)        │
 │     ├── Phase 1: COLLECT (shell)                    │
 │     │   └─→ merged signals from pending-reviews/    │
 │     ├── Phase 2: CLASSIFY (API call)                │
@@ -119,6 +125,8 @@ Session Start
 │     │   └─→ size/dedup/no-clobber validation        │
 │     ├── Phase 5: APPLY (API + write)                │
 │     │   └─→ writes to memory/, rules/, skills/      │
+│     ├── Phase 5.5: RECOMMEND (shell)                │
+│     │   └─→ terminal: skill gaps, tool suggestions  │
 │     ├── Phase 6: LOG (shell)                        │
 │     │   └─→ state/improve-changelog.yaml            │
 │     └── Phase 7: CLEANUP (shell)                    │
@@ -145,7 +153,7 @@ flowchart TD
 
     subgraph SESSION [Active Session]
         direction TB
-        PRE[PreToolUse<br/>1. session-logger pre<br/>2. ecosystem-check<br/>3. edit notification]
+        PRE[PreToolUse<br/>1. session-logger pre<br/>2. ecosystem-check<br/>3. readiness check<br/>4. edit notification]
         TOOL[Tool Executes]
         POST[PostToolUse<br/>1. session-logger post<br/>2. save notification<br/>3. capture-corrections]
         COMPACT[PreCompact<br/>1. pre-compact-save<br/>2. delegation reminder<br/>3. auto-compact tips]
@@ -165,10 +173,11 @@ flowchart TD
         S5[5. generate-resource-index ~2s]
         S6[6. query-quota ~5s]
         S7[7. wrk-traceability-check]
-        S8[8. ecosystem-health-check ~1s]
-        S9[9. improve.sh ~30-60s]
+        S8["8. ecosystem-health-check ~1s"]
+        S9["9. ensure-readiness ~1s"]
+        S10["10. improve.sh ~30-60s"]
 
-        S1 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7 --> S8 --> S9
+        S1 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7 --> S8 --> S9 --> S10
     end
 
     subgraph IMPROVE [improve.sh Phases]
@@ -178,14 +187,15 @@ flowchart TD
         P3[Phase 3: ECOSYSTEM<br/>Hybrid - health review]
         P4[Phase 4: GUARD<br/>Shell - safety checks]
         P5[Phase 5: APPLY<br/>API+Shell - write files]
+        P55[Phase 5.5: RECOMMEND<br/>Shell - user recommendations]
         P6[Phase 6: LOG<br/>Shell - changelog]
         P7[Phase 7: CLEANUP<br/>Shell - archive signals]
 
-        P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7
+        P1 --> P2 --> P3 --> P4 --> P5 --> P55 --> P6 --> P7
     end
 
-    S9 --> IMPROVE
-    STOP --> END([Session End])
+    S10 --> IMPROVE
+    STOP --> ENDNODE([Session End])
 ```
 
 ## Signal Data Flow
@@ -250,8 +260,9 @@ flowchart LR
 | generate-resource-index (#5) | ~2s | ~4s | Filesystem scan |
 | query-quota (#6) | ~5s | ~15s | Network call to Anthropic API |
 | hooks 7-8 | ~2s | ~3s | Pure shell |
-| improve.sh (#9) | ~30s | ~60s | 2-3 API calls dominate |
-| **Total** | **~45s** | **~95s** | API latency is variable |
+| ensure-readiness (#9) | ~1s | ~2s | R1+R5+R6 checks, writes report |
+| improve.sh (#10) | ~30s | ~60s | 2-3 API calls dominate |
+| **Total** | **~46s** | **~97s** | API latency is variable |
 
 ## Quick vs Full Mode
 
