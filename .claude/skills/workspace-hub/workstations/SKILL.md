@@ -68,18 +68,21 @@ Components available for assembly, upgrade, or consolidation into existing works
 | Component | Spec | Status | Notes |
 |-----------|------|--------|-------|
 | SSD | 500 GB | Available | General storage / OS drive for new build |
-| GPU | NVIDIA T400 4GB GDDR6 (RTL ENG SCB) | Available | PCIe; good for CAD display, basic ML inference, multi-monitor |
-| Motherboard | BFB06612 / 4110T50R | Available | Verify socket before pairing with RAM |
-| RAM | 4 × 8GB DDR3 ECC UDIMM — Hynix HMT41GU68FR8C-RD (2Rx8 PC3) | Available | 32GB total; DDR3 — requires DDR3-era board |
+| GPU 1 | NVIDIA T400 4GB GDDR6 (RTL ENG SCB) | Available | PCIe; CAD display, basic ML inference, multi-monitor |
+| GPU 2 | Board ID: BFB06612 / Part: 4110T50R | Available | **Model unidentified** — check chip marking or run `lspci \| grep -i vga` |
+| RAM | 4 × 8GB DDR3 ECC UDIMM — Hynix HMT41GU68FR8C (2Rx8 PC3) | Available | 32GB total; DDR3 ECC — requires DDR3 board with ECC support |
 
 ### Hardware Notes
 
-- **RAM compatibility**: HMT41GU68FR8C is DDR3 ECC UDIMM. Requires a motherboard with ECC support
-  and DDR3 slots (Intel Xeon E3/E5-era or equivalent). Confirm BFB06612 board supports ECC before pairing.
-- **GPU fit**: T400 is a low-profile PCIe card (single-slot, 70W) — fits in any ATX/mATX chassis.
-  Supports 4 × mDP outputs. Suitable for workstation CAD + display acceleration, not CUDA-heavy ML.
-- **Build potential**: SSD + GPU + board + 32GB DDR3 = a capable background compute node for
-  batch OrcaFlex runs, simulation offload, or a dedicated Linux build/test server.
+- **GPU 2 identification**: BFB06612 is a PCB board ID, not a market name. To identify:
+  - Linux: `lspci | grep -i vga` (plug in, boot, check output)
+  - Windows: Device Manager → Display Adapters
+  - Physical: look for "GeForce / Quadro / Radeon" chip marking on the card
+- **GPU 1 (T400)**: Low-profile PCIe, single-slot, 70W, 4 × mDP. Good for CAD/display, not CUDA training.
+- **RAM**: DDR3 ECC — needs a DDR3-era board with ECC support (Intel Xeon E3/E5-class or equivalent).
+  No spare motherboard in inventory — RAM requires a compatible existing workstation or future board purchase.
+- **Two GPUs, no board**: Spares = SSD + 2 GPUs + 32GB DDR3 RAM. Most useful as upgrades to
+  existing machines rather than a standalone build (no board to build around).
 
 ## Hardware Consolidation
 
@@ -97,11 +100,13 @@ Components available for assembly, upgrade, or consolidation into existing works
 
 | Use Case | Fit | Notes |
 |----------|-----|-------|
-| OrcaFlex batch simulation node | Good | CPU-bound; 32GB RAM adequate for mid-size models |
-| Linux build/test server | Good | Lightweight; SSD + RAM sufficient |
-| CUDA ML training | Poor | T400 = 320 CUDA cores, 4GB — too limited for serious training |
+| GPU upgrade to existing workstation | Good | T400 or GPU 2 (once identified) can replace older cards |
+| Extra display output | Good | T400 supports 4 × mDP — useful for multi-monitor setup |
+| SSD upgrade / extra storage | Good | 500GB SSD = fast OS drive or scratch disk for any workstation |
+| RAM upgrade | Fair | 32GB DDR3 ECC — only fits DDR3 boards; verify compatibility first |
+| CUDA ML training | Poor | T400 = 320 CUDA cores, 4GB — too limited; GPU 2 TBD |
 | Basic ML inference / LLM offload | Fair | T400 can run small GGUF models via llama.cpp |
-| CAD workstation | Fair | T400 supports Quadro drivers; adequate for FreeCAD/FEM work |
+| Standalone build | Poor | No spare motherboard — can't build without one |
 
 ## WRK Item Integration
 
