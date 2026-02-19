@@ -32,27 +32,28 @@ State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item
 - Dependencies checked: `blocked_by` items must be archived before processing.
 - Complexity determines routing:
 
-| Route | Complexity | Criteria |
-|-------|-----------|----------|
-| A | simple | Single config/value change, 1 repo, <50 words |
-| B | medium | Clear outcome, 1-2 repos, 50-200 words |
-| C | complex | Architectural, 3+ repos, >200 words |
+| Route | Name | Complexity | Criteria |
+|-------|------|-----------|----------|
+| A | quick | simple | Single config/value change, 1 repo, <50 words |
+| B | standard | medium | Clear outcome, 1-2 repos, 50-200 words |
+| C | complex | complex | Architectural, 3+ repos, >200 words |
 
 ### 3. Plan
 
 **Every item requires an approved plan before implementation.**
 
-| Route | Plan location | Depth | Review |
-|-------|--------------|-------|--------|
-| A | `## Plan` section in item body | 3-5 bullet points | Self-review |
-| B | `## Plan` section in item body | Numbered steps with file paths and test strategy | Cross-review (3 agents) |
-| C | Separate spec in `specs/wrk/WRK-<id>/` linked via `spec_ref` | Full spec from template | Cross-review (3 agents) |
+| Route | Name | Plan location | Depth | Review |
+|-------|------|--------------|-------|--------|
+| A | quick | `## Plan` section in item body | 3-5 bullet points | User approval (plan_reviewed + plan_approved required) |
+| B | standard | `## Plan` section in item body | Numbered steps with file paths and test strategy | Cross-review (3 agents) + user approval |
+| C | complex | Separate spec in `specs/wrk/WRK-<id>/` linked via `spec_ref` | Full spec from template | Cross-review (3 agents) + user approval |
 
 **Plan gate workflow**:
 1. Check if plan/spec already exists (auto-detected from `spec_ref` or `## Plan` body section).
 2. If missing, generate plan at appropriate depth.
 3. Present to user, wait for explicit approval.
-4. Update item: add plan content (A/B) or link spec (C), set `plan_approved: true`.
+4. Update item: add plan content (A/B) or link spec (C), set `plan_reviewed: true` AND `plan_approved: true`.
+   ALL routes require both flags — no exceptions.
 5. No implementation begins until plan is confirmed.
 
 ### Provider Assignment (During Planning)
@@ -113,6 +114,13 @@ scripts/agents/review.sh WRK-NNN --all-providers
 ### 5. Archive
 
 **Trigger**: All acceptance criteria met, or manual `/work archive WRK-NNN`.
+
+**Archive gate (all conditions required before archiving):**
+1. `status: done` + `percent_complete: 100`
+2. `plan_reviewed: true` + `plan_approved: true`
+3. Partial work -> follow-up WRK item created + `followup: [WRK-YYY]` in frontmatter
+4. Ecosystem scan: does completion reveal new work based on repo vision? If yes, create items first
+5. `followup:` list populated if any follow-up items exist
 
 - Script: `scripts/archive-item.sh WRK-NNN`
   1. Updates `status: archived`, sets `completed_at`.
@@ -199,6 +207,8 @@ percent_complete: 0      # 0-100
 brochure_status:         # pending | updated | synced | n/a
 provider:                # claude | codex | gemini (decided during planning)
 provider_alt:            # optional second agent for dual-agent mode
+computer:                # machine nickname (from computers skill) — blank if machine-agnostic
+followup: []             # WRK IDs of follow-up items created at archive time
 ---
 ```
 
@@ -243,9 +253,12 @@ provider_alt:            # optional second agent for dual-agent mode
 ### Commit messages for work items
 
 ```
-feat(scope): WRK-NNN - description
-fix(scope): WRK-NNN - description
-chore(work-queue): archive WRK-NNN, update submodules
+feat(scope): WRK-NNN — description    # WRK ref REQUIRED (enforced by commit-msg hook)
+fix(scope): WRK-NNN — description     # WRK ref REQUIRED
+refactor(scope): WRK-NNN — description # WRK ref REQUIRED
+docs(scope): WRK-NNN — description    # WRK ref recommended (warning only)
+chore(scope): description              # WRK ref optional (exempt)
+style(scope): description              # WRK ref optional (exempt)
 ```
 
 ### Cross-review log format (in spec or item body)

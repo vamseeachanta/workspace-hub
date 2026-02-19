@@ -130,6 +130,11 @@ skills/dev/|github-pr-manager|github-code-review|sparc-*|testing-tdd-london
 skills/ops/|docker|github-actions|uv-package-manager
 ```
 
+## Session Start Protocol
+
+At the start of every new session, run `/session-start` before responding to any work request.
+This surfaces readiness warnings, quota status, and the top 3 pending items.
+
 ---
 
 *Verbose documentation belongs in `.claude/docs/`, not here.*
