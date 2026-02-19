@@ -1,13 +1,16 @@
 name: Multi-AI Review
 
+# NOTE: Codex CLI and Gemini CLI are NOT available in GitHub Actions runners.
+# This workflow is intentionally restricted to workflow_dispatch only.
+# Cross-review must be performed locally using:
+#   scripts/review/cross-review.sh <file_or_diff> all --type implementation
+# See CLAUDE.md for cross-review gate requirements.
+
 on:
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       review_type:
-        description: 'Type of review to perform'
+        description: 'Type of review to perform (run locally; this triggers docs only)'
         required: false
         default: 'implementation'
         type: choice
@@ -16,167 +19,39 @@ on:
           - implementation
           - commit
 
-env:
-  REPORT_DIR: scripts/review/results
-
 jobs:
-  cross-review:
-    name: Cross-Review with Available AI Tools
+  cross-review-info:
+    name: Cross-Review Instructions
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 5
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+      - name: Display cross-review instructions
+        run: |
+          echo "## Multi-AI Cross-Review" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Codex CLI and Gemini CLI are not available in GitHub Actions runners." >> $GITHUB_STEP_SUMMARY
+          echo "Cross-review must be performed locally before merging." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Local cross-review commands" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo "# Review a git diff" >> $GITHUB_STEP_SUMMARY
+          echo "git diff origin/main...HEAD > pr-changes.diff" >> $GITHUB_STEP_SUMMARY
+          echo "scripts/review/cross-review.sh pr-changes.diff all --type ${{ github.event.inputs.review_type || 'implementation' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "# Review a specific commit" >> $GITHUB_STEP_SUMMARY
+          echo "scripts/review/cross-review.sh <commit-sha> all --type ${{ github.event.inputs.review_type || 'implementation' }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Results are saved to scripts/review/results/" >> $GITHUB_STEP_SUMMARY
 
-      - name: Check for review scripts
-        id: check-scripts
+      - name: Check review scripts exist
         run: |
           if [ -x scripts/review/cross-review.sh ]; then
-            echo "scripts_available=true" >> $GITHUB_OUTPUT
+            echo "cross-review.sh: present and executable"
           else
-            echo "scripts_available=false" >> $GITHUB_OUTPUT
+            echo "WARNING: scripts/review/cross-review.sh not found or not executable" >&2
           fi
-
-      - name: Install review dependencies
-        if: steps.check-scripts.outputs.scripts_available == 'true'
-        run: |
-          # Install any required dependencies
-          sudo apt-get update
-          sudo apt-get install -y jq
-
-      - name: Run cross-review on PR changes
-        if: steps.check-scripts.outputs.scripts_available == 'true' && github.event_name == 'pull_request'
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          REVIEW_TYPE="${{ github.event.inputs.review_type || 'implementation' }}"
-
-          echo "Running cross-review on PR changes..."
-          echo "Review type: ${REVIEW_TYPE}"
-
-          # Create git diff of PR changes
-          git diff origin/${{ github.base_ref }}...HEAD > pr-changes.diff
-
-          # Run cross-review script
-          # Note: This will attempt all available AI tools and gracefully skip unavailable ones
-          ./scripts/review/cross-review.sh pr-changes.diff all --type "${REVIEW_TYPE}" || {
-            echo "Cross-review completed with some tools unavailable (expected behavior)"
-          }
-
-      - name: Run cross-review on latest commit
-        if: steps.check-scripts.outputs.scripts_available == 'true' && github.event_name == 'workflow_dispatch'
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          REVIEW_TYPE="${{ github.event.inputs.review_type || 'implementation' }}"
-
-          echo "Running cross-review on latest commit..."
-          COMMIT_SHA="${{ github.sha }}"
-
-          ./scripts/review/cross-review.sh "${COMMIT_SHA}" all --type "${REVIEW_TYPE}" || {
-            echo "Cross-review completed with some tools unavailable (expected behavior)"
-          }
-
-      - name: Upload review results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cross-review-results-${{ github.run_id }}
-          path: |
-            ${{ env.REPORT_DIR }}/*.md
-            pr-changes.diff
-          retention-days: 30
-
-      - name: Generate review summary
-        if: always()
-        run: |
-          echo "## AI Cross-Review Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Review Type:** ${{ github.event.inputs.review_type || 'implementation' }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          # Count review files
-          REVIEW_COUNT=$(find ${{ env.REPORT_DIR }} -name "*.md" -type f -mmin -60 | wc -l)
-          echo "**Reviews Generated:** ${REVIEW_COUNT}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          # List available review files
-          if [ ${REVIEW_COUNT} -gt 0 ]; then
-            echo "### Available Reviews" >> $GITHUB_STEP_SUMMARY
-            find ${{ env.REPORT_DIR }} -name "*.md" -type f -mmin -60 -exec basename {} \; | while read file; do
-              echo "- ${file}" >> $GITHUB_STEP_SUMMARY
-            done
-          else
-            echo "No review results generated. This may indicate:" >> $GITHUB_STEP_SUMMARY
-            echo "- AI tools (Codex CLI, Gemini CLI) are not available" >> $GITHUB_STEP_SUMMARY
-            echo "- API keys are not configured" >> $GITHUB_STEP_SUMMARY
-            echo "- Review scripts need debugging" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "---" >> $GITHUB_STEP_SUMMARY
-          echo "*Note: This workflow attempts to use all available AI review tools.*" >> $GITHUB_STEP_SUMMARY
-          echo "*It is expected that some tools may be unavailable in CI environments.*" >> $GITHUB_STEP_SUMMARY
-
-      - name: Comment on PR with review summary
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        continue-on-error: true
-        with:
-          script: |
-            const fs = require('fs');
-            const path = require('path');
-
-            const reviewDir = '${{ env.REPORT_DIR }}';
-            const reviewFiles = [];
-
-            // Find recent review files
-            try {
-              const files = fs.readdirSync(reviewDir);
-              const now = Date.now();
-              const oneHourAgo = now - (60 * 60 * 1000);
-
-              for (const file of files) {
-                if (file.endsWith('.md')) {
-                  const filePath = path.join(reviewDir, file);
-                  const stats = fs.statSync(filePath);
-                  if (stats.mtime.getTime() > oneHourAgo) {
-                    reviewFiles.push(file);
-                  }
-                }
-              }
-            } catch (e) {
-              console.log('No review directory found or error reading:', e.message);
-            }
-
-            let body = `## 🤖 Multi-AI Cross-Review\n\n`;
-            body += `**Reviews Generated:** ${reviewFiles.length}\n\n`;
-
-            if (reviewFiles.length > 0) {
-              body += `### Available Reviews\n`;
-              for (const file of reviewFiles) {
-                body += `- ${file}\n`;
-              }
-              body += `\n📥 Download the workflow artifacts to view full review reports.\n`;
-            } else {
-              body += `ℹ️ No AI review results available. This may be expected if AI tools are not configured in CI.\n`;
-            }
-
-            body += `\n---\n*Powered by cross-review.sh with Claude, Codex, and Gemini*`;
-
-            await github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: body
-            });
