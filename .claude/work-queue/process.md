@@ -75,7 +75,8 @@ Write an **Execution Brief** in the WRK body with:
 
 **Spec naming**: `specs/wrk/WRK-NNN/<short-description>.md` (not random codenames).
 
-**Cross-review** (Route B/C): Submit to Claude (inline), Codex CLI, and Gemini CLI. Minimum 3 reviewers. Fix MAJOR findings before proceeding; document MINOR deferrals.
+**Cross-review** (Route B/C): Submit to Claude, Codex CLI, and Gemini CLI. Minimum 3 reviewers. Fix MAJOR findings before proceeding; document MINOR deferrals.
+- **Claude reviewer model**: always `claude_primary` from `model-registry.yaml` (today: Opus 4.6). Never use the authoring model (Sonnet) as its own reviewer — same model reviewing itself provides no independent signal. See `model-registry.yaml > work_queue_routing.cross_review`.
 
 ### 4. Process
 
