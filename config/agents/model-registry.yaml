@@ -1,8 +1,14 @@
 # Model Registry - Per-provider model variants with cost/capability tiers
 # Used by adaptive routing to select the best model for each task tier
-# Version: 1.0.0
+# Version: 2.0.0
+#
+# POLICY: Always use latest available models. Update this file when new
+# model versions are released. All scripts MUST read model IDs from here —
+# never hardcode model IDs in shell scripts or workflow configs.
+# See: behavior-contract.yaml > model_versioning
 
-version: 1.0.0
+version: 2.1.0
+last_updated: "2026-02-18"
 
 ewma:
   alpha: 0.3          # Recent ratings weighted 30%
@@ -10,25 +16,81 @@ ewma:
   min_ratings: 3       # Cold-start protection: need this many before trusting EWMA
   poor_threshold: 2.5  # Below this -> try next model
 
+# Latest model IDs — single source of truth for the entire ecosystem
+# Scripts should read these values, never hardcode model strings
+latest_models:
+  claude_primary: "claude-opus-4-6"
+  claude_balanced: "claude-sonnet-4-6"       # Updated 2026-02-18: Sonnet 4.6 preferred over 4.5 for efficiency
+  claude_fast: "claude-haiku-4-5"  # use latest — check anthropic.com/api/docs
+  codex_primary: "codex-cli"          # Uses o4-mini under the hood
+  gemini_primary: "gemini-2.5-pro"
+  gemini_fast: "gemini-2.5-flash"
+  openai_primary: "gpt-4.1"
+  openai_fast: "gpt-4.1-mini"
+
 providers:
   claude:
-    default_model: opus-4-6
+    default_model: sonnet-4-6   # Changed 2026-02-18: Sonnet 4.6 is default; use opus-4-6 explicitly for hardest tasks
     models:
       opus-4-6:
         display_name: "Claude Opus 4.6"
+        model_id: "claude-opus-4-6"
         cost_tier: premium
         capability_tier: REASONING
         default_priority: 100
-      sonnet-4-5:
-        display_name: "Claude Sonnet 4.5"
+        cost_usd_per_1m: {input: 5.00, output: 25.00}
+        verbosity_multiplier: 5.0   # Artificial Analysis: 58M tokens vs 11M avg (~5x)
+        recommended_use:
+          - hardest multi-step reasoning (Route C complex plans)
+          - large codebase/document analysis requiring 1M context
+          - complex multi-agent architecture decisions
+        avoid_for:
+          - iterative engineering workflows (token cost compounds quickly)
+          - documentation and technical reports
+          - Route A/B work items (overkill, will exhaust quota faster)
+        quota_risk: HIGH   # "thought for 10 min then out of quota" — one task can drain weekly budget
+      sonnet-4-6:
+        display_name: "Claude Sonnet 4.6"
+        model_id: "claude-sonnet-4-6"
         cost_tier: balanced
         capability_tier: COMPLEX
-        default_priority: 80
+        default_priority: 90
+        cost_usd_per_1m: {input: 3.00, output: 15.00}
+        verbosity_multiplier: 1.0   # Baseline — concise by default
+        effort_recommendation: medium   # Anthropic guidance for most Sonnet 4.6 use cases
+        recommended_use:
+          - Route A/B work items (planning, implementation, testing)
+          - OrcaFlex modeling documentation and technical reports
+          - iterative engineering workflows
+          - cross-review phases (quality vs cost balance)
+          - DEFAULT for all work queue phases unless task explicitly needs Opus
+        quota_risk: LOW
+      sonnet-4-5:
+        display_name: "Claude Sonnet 4.5"
+        model_id: "claude-sonnet-4-5"  # use latest
+        cost_tier: balanced
+        capability_tier: COMPLEX
+        default_priority: 75   # Demoted: Sonnet 4.6 preferred by early access users
+        cost_usd_per_1m: {input: 3.00, output: 15.00}
+        recommended_use:
+          - fallback if sonnet-4-6 unavailable
+        quota_risk: LOW
+      haiku-4-5:
+        display_name: "Claude Haiku 4.5"
+        model_id: "claude-haiku-4-5"  # use latest
+        cost_tier: budget
+        capability_tier: SIMPLE
+        default_priority: 60
+        recommended_use:
+          - simple index queries, status checks, quick lookups
+          - Route A trivial tasks
+        quota_risk: MINIMAL
   codex:
     default_model: codex-cli
     models:
       codex-cli:
         display_name: "Codex CLI"
+        model_id: "codex-cli"
         cost_tier: budget
         capability_tier: STANDARD
         default_priority: 90
@@ -36,12 +98,48 @@ providers:
     default_model: gemini-pro
     models:
       gemini-pro:
-        display_name: "Gemini Pro"
+        display_name: "Gemini 2.5 Pro"
+        model_id: "gemini-2.5-pro"
         cost_tier: balanced
         capability_tier: COMPLEX
         default_priority: 90
       gemini-flash:
-        display_name: "Gemini Flash"
+        display_name: "Gemini 2.5 Flash"
+        model_id: "gemini-2.5-flash"
         cost_tier: budget
         capability_tier: SIMPLE
         default_priority: 70
+  openai:
+    default_model: gpt-4.1
+    models:
+      gpt-4.1:
+        display_name: "GPT-4.1"
+        model_id: "gpt-4.1"
+        cost_tier: balanced
+        capability_tier: COMPLEX
+        default_priority: 85
+      gpt-4.1-mini:
+        display_name: "GPT-4.1 Mini"
+        model_id: "gpt-4.1-mini"
+        cost_tier: budget
+        capability_tier: STANDARD
+        default_priority: 70
+
+# Work Queue Phase Routing — which Claude model tier to use per phase
+# Rule: Sonnet 4.6 by default; escalate to Opus 4.6 only for Route C plan/architecture phases
+# Updated: 2026-02-18 (WRK-207)
+work_queue_routing:
+  route_a:
+    plan:    sonnet-4-6
+    execute: sonnet-4-6
+    review:  haiku-4-5
+  route_b:
+    plan:    sonnet-4-6
+    execute: sonnet-4-6
+    review:  sonnet-4-6
+  route_c:
+    plan:    opus-4-6      # Only escalation point — complex multi-repo architecture
+    execute: sonnet-4-6   # Implementation stays on Sonnet even for Route C
+    review:  sonnet-4-6
+  # Effort level for Sonnet 4.6 (Anthropic recommendation)
+  sonnet_effort: medium

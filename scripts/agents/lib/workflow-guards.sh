@@ -87,6 +87,84 @@ wrk_resolve_phase_provider() {
     echo "$agent"
 }
 
+# ── Work Queue Model Routing (WRK-207) ──────────────────────────────
+# Resolve the Claude model key for a WRK file and phase type.
+# Reads complexity → route from WRK frontmatter, then looks up
+# work_queue_routing.<route>.<phase_type> in model-registry.yaml.
+# Falls back to sonnet-4-6 if anything is unresolvable.
+# Usage: wrk_resolve_model_for_phase <wrk_file> <phase_type> [model_override]
+#   phase_type: plan|execute|review
+wrk_resolve_model_for_phase() {
+    local wrk_file="$1"
+    local phase_type="$2"
+    local model_override="${3:-}"
+
+    # Honor explicit override first
+    if [[ -n "$model_override" ]]; then
+        echo "$model_override"
+        return
+    fi
+
+    # Map complexity → route key
+    local complexity route_key
+    complexity="$(wrk_get_frontmatter_value "$wrk_file" "complexity")"
+    case "$complexity" in
+        simple)        route_key="route_a" ;;
+        medium)        route_key="route_b" ;;
+        complex|high)  route_key="route_c" ;;
+        *)             route_key="route_b" ;;  # safe default
+    esac
+
+    # Parse work_queue_routing.<route_key>.<phase_type> from registry (pure awk, no yq)
+    local registry="$WS_HUB/config/agents/model-registry.yaml"
+    local model=""
+    if [[ -f "$registry" ]]; then
+        model=$(awk -v route="$route_key" -v phase="$phase_type" '
+            BEGIN { in_routing=0; in_route=0 }
+            /^work_queue_routing:/ { in_routing=1; next }
+            in_routing && /^[[:alpha:]]/ { in_routing=0; in_route=0; next }
+            in_routing && /^  [[:alpha:]]/ {
+                key=$1; sub(/:$/, "", key)
+                in_route = (key == route) ? 1 : 0
+                next
+            }
+            in_routing && in_route && /^    [[:alpha:]]/ {
+                key=$1; sub(/:$/, "", key)
+                if (key == phase) { print $2; exit }
+            }
+        ' "$registry")
+    fi
+
+    echo "${model:-sonnet-4-6}"
+}
+
+# Map a short model key to the full Claude model_id for the claude CLI.
+# Falls back to hardcoded values if registry lookup fails.
+# Usage: wrk_get_claude_model_id <model_key>
+wrk_get_claude_model_id() {
+    local model_key="$1"
+    local registry="$WS_HUB/config/agents/model-registry.yaml"
+
+    # Try registry lookup (model_id field at 8-space indent under the model key)
+    if [[ -f "$registry" ]]; then
+        local model_id
+        model_id=$(awk -v target="$model_key" '
+            /^      [[:alpha:]].*:$/ { mdl=$1; sub(/:$/, "", mdl) }
+            mdl == target && /model_id:/ { val=$2; gsub(/"/, "", val); print val; exit }
+        ' "$registry")
+        [[ -n "$model_id" ]] && { echo "$model_id"; return; }
+    fi
+
+    # Hardcode fallback for resilience
+    case "$model_key" in
+        opus-4-6)   echo "claude-opus-4-6" ;;
+        sonnet-4-6) echo "claude-sonnet-4-6" ;;
+        sonnet-4-5) echo "claude-sonnet-4-5" ;;  # use latest
+        haiku-4-5)  echo "claude-haiku-4-5"  ;;  # use latest
+        *)          echo "claude-sonnet-4-6" ;;
+    esac
+}
+
 assert_provider() {
     local provider="$1"
     case "$provider" in

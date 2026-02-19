@@ -15,8 +15,8 @@ providers:
     display_name: "Anthropic Claude"
     model_ids:
       primary: "claude-opus-4-6"
-      balanced: "claude-sonnet-4-5-20250929"
-      fast: "claude-haiku-4-5-20251001"
+      balanced: "claude-sonnet-4-5"  # use latest
+      fast: "claude-haiku-4-5"      # use latest
     context_window:
       primary: 200000
       balanced: 200000

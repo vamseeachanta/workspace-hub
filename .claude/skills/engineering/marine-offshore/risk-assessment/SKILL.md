@@ -3,6 +3,9 @@ name: risk-assessment
 version: "1.0.0"
 category: engineering
 description: "Risk Assessment Skill"
+see_also:
+  - engineering/asset-integrity/fitness-for-service  # WRK-206: FFS uses RSF as risk-based acceptance criterion
+  - engineering/marine-offshore/cathodic-protection
 ---
 
 # Risk Assessment Skill
