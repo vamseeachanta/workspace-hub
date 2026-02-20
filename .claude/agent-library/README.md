@@ -388,3 +388,5 @@ bash modules/automation/rollback_agent_configs.sh
 **This registry is the single source of truth for all agent configurations in workspace-hub.**
 
 For questions or issues, refer to the workspace-hub documentation or contact the development team.
+
+See [ADR-001](../docs/decisions/ADR-001-agent-coordination-model.md) for the coordination model decision.
