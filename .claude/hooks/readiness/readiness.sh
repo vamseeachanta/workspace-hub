@@ -56,12 +56,16 @@ check_agent_capacity() {
     [[ ! -f "$quota_file" ]] && return
     command -v jq &>/dev/null || return
 
-    # Warn if cache is stale (>4h)
+    # Refresh cache if stale (>4h) — background, non-blocking
     local now_epoch file_epoch age_hours
     now_epoch=$(date +%s 2>/dev/null || echo "0")
     file_epoch=$(date -r "$quota_file" +%s 2>/dev/null || echo "0")
     age_hours=$(( (now_epoch - file_epoch) / 3600 ))
-    [[ "$age_hours" -gt 4 ]] && info+=("Quota: cache is ${age_hours}h old — run query-quota.sh --refresh")
+    if [[ "$age_hours" -gt 4 ]]; then
+        info+=("Quota: cache is ${age_hours}h old — refreshing in background")
+        local quota_script="${WORKSPACE_HUB}/scripts/ai/assessment/query-quota.sh"
+        [[ -x "$quota_script" ]] && ("$quota_script" --refresh 2>/dev/null &) || true
+    fi
 
     # Check each provider's weekly utilization
     local congested=""

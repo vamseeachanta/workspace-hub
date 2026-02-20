@@ -356,3 +356,9 @@ jscpd-report/
 .claude/skills/session-logs/
 .claude-flow/
 dryrun_debug.log
+
+# Repo spec mirrors — large; excluded from hub git (each repo tracks its own content)
+specs/repos/*/
+
+# Data cache files — runtime generated, not for version control
+data/modules/**/cache/
