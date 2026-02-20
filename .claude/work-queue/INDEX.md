@@ -1,39 +1,39 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-20T10:30:20Z by generate-index.py -->
+<!-- Generated: 2026-02-20T15:14:48Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-20T10:30:20Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-20T15:14:48Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 220
+**Total items:** 233
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 75 |
+| pending | 83 |
 | working | 6 |
 | blocked | 5 |
 | done | 3 |
-| archived | 131 |
+| archived | 136 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 79 |
-| medium | 109 |
+| high | 88 |
+| medium | 113 |
 | low | 32 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 26 |
-| medium | 84 |
-| complex | 85 |
+| simple | 27 |
+| medium | 94 |
+| complex | 87 |
 
 ### By Repository
 
@@ -50,16 +50,16 @@
 | hobbies | 1 |
 | investments | 1 |
 | sabithaandkrishnaestates | 1 |
-| workspace-hub | 58 |
+| workspace-hub | 71 |
 | worldenergydata | 65 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 127 / 220 |
+| Plans exist | 129 / 233 |
 | Plans cross-reviewed | 44 |
-| Plans approved | 54 |
+| Plans approved | 60 |
 | Brochure pending | 1 |
 | Brochure updated/synced | 6 |
 
@@ -69,9 +69,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 220 |
-| Total archived | 131 |
-| Completion rate | 131/220 (60%) |
+| Total captured | 233 |
+| Total archived | 136 |
+| Completion rate | 136/233 (58%) |
 | Monthly rate (current month) | 37 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -79,9 +79,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 41 / 75 | 55% |
-| Plans cross-reviewed | 10 | 20% |
-| Plans user-approved | 11 | 22% |
+| Pending items with plans | 41 / 83 | 49% |
+| Plans cross-reviewed | 9 | 18% |
+| Plans user-approved | 12 | 24% |
 
 ### Aging
 
@@ -96,8 +96,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 12 | 4 | 3 |
-| Medium   | 40  | 2  | 1  |
+| High     | 19 | 5 | 3 |
+| Medium   | 41  | 1  | 1  |
 | Low      | 23  | 0  | 1  |
 
 ## Master Table
@@ -251,7 +251,7 @@
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | claude | aceengineer-website, aceengineer-strategy, workspace-hub | - | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | high | complex | codex+claude,gemini | digitalmodel | - | ✅ | ✅ | ✅ | ░░░ 48% | n/a | - |
 | WRK-150 | assetutilities test coverage improvement (re-creates WRK-052) | pending | medium | medium | codex | assetutilities | - | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | pending | medium | medium | codex | worldenergydata | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | archived | medium | medium | codex | worldenergydata | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | archived | high | medium | codex | worldenergydata | marine_safety | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-153 | Energy data case study — BSEE field economics with NPV/IRR workflow | pending | medium | medium | claude | aceengineer-website | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-154 | CI workflow rewrite — fix 2 GitHub Actions workflows | archived | high | medium | codex | workspace-hub | - | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -287,11 +287,11 @@
 | WRK-186 | Context budget: trim rules/ to under 16KB | archived | high | simple | claude | workspace-hub | - | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-187 | Improve /improve: usage-based skill health, classify retry, apply API content | archived | medium | medium | claude | workspace-hub | - | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-188 | Wave-1 spec migration: worldenergydata dry-run manifest and apply plan | done | high | medium | codex+claude | workspace-hub, worldenergydata | governance | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-190 | NCS production data module — NPD/Sodir open data integration (worldenergydata) | pending | medium | moderate | codex | worldenergydata | ncs | ✅ | ❌ | ❌ | - | - | - |
+| WRK-190 | NCS production data module — NPD/Sodir open data integration (worldenergydata) | archived | medium | moderate | codex | worldenergydata | ncs | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-191 | Field development case study catalog — structured reference library of real projects | pending | medium | moderate | gemini | digitalmodel | field_development_references | ✅ | ❌ | ❌ | - | - | - |
 | WRK-192 | Field development schematic generator — Python SVG/PNG layout diagrams | pending | medium | complex | codex | digitalmodel | field_development_visuals | ❌ | ❌ | ❌ | - | - | - |
 | WRK-193 | UKCS production data module — NSTA/OPRED open data integration (worldenergydata) | pending | low | moderate | codex | worldenergydata | ukcs | ✅ | ❌ | ❌ | - | - | WRK-190 |
-| WRK-194 | Brazil ANP production data module — well-level monthly CSV integration (worldenergydata) | pending | high | moderate | codex | worldenergydata | brazil_anp | ❌ | ❌ | ❌ | - | - | - |
+| WRK-194 | Brazil ANP production data module — well-level monthly CSV integration (worldenergydata) | archived | high | moderate | codex | worldenergydata | brazil_anp | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-195 | EIA US production data module — non-GoM onshore + Alaska integration (worldenergydata) | pending | medium | moderate | codex | worldenergydata | eia_us | ❌ | ❌ | ❌ | - | - | - |
 | WRK-196 | Canada offshore + emerging basin watch list (C-NLOER NL data; Guyana/Suriname/Namibia/Falklands monitor) | pending | low | moderate | codex | worldenergydata, digitalmodel | canada_offshore + emerging_basins | ❌ | ❌ | ❌ | - | - | WRK-190 |
 | WRK-197 | Nigeria NUPRC + EITI data framework — West Africa deepwater and multi-country payment data | pending | low | moderate | codex | worldenergydata | west_africa | ❌ | ❌ | ❌ | - | - | - |
@@ -299,7 +299,7 @@
 | WRK-199 | AI agent usage optimizer skill — maximize Claude/Codex/Gemini allocation per task | pending | medium | medium | claude | workspace-hub | ai-tools | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-200 | Filesystem naming cleanup — eliminate duplicate/conflicting dirs across workspace-hub, digitalmodel, worldenergydata | archived | high | complex | claude | - | - | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-201 | Work queue workflow gate enforcement — plan_reviewed, Route C spec, pre-move checks | archived | high | medium | claude | workspace-hub | work-queue | ❌ | ❌ | ❌ | ███ 100% | ⏳ pending | - |
-| WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/ | working | medium | complex | claude | - | - | ✅ | ✅ | ✅ | - | - | - |
+| WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/, tests/ | archived | medium | complex | claude | - | - | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-205 | Skills knowledge graph — capability metadata and relationship layer beyond flat index | archived | medium | medium | - | workspace-hub | - | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-206 | Asset integrity / fitness-for-service (FFS) engineering skill — corrosion damage assessment and run-repair-replace decisions | archived | medium | medium | - | workspace-hub, digitalmodel | - | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-207 | Skill relationship maintenance — bidirectional linking as enforced process | archived | medium | small | claude | workspace-hub | - | ❌ | ✅ | ✅ | ███ 100% | - | - |
@@ -322,8 +322,21 @@
 | WRK-223 | Workstations registry — hardware inventory, hardware-info.sh, ace-linux-1 specs | archived | medium | low | claude | workspace-hub | - | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | pending | medium | low | claude | workspace-hub | - | ❌ | ✅ | ✅ | - | - | - |
 | WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | archived | medium | low | claude | workspace-hub | - | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | pending | medium | medium | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | archived | medium | medium | - | workspace-hub | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | pending | high | medium | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | working | high | medium | - | workspace-hub | - | ✅ | ❌ | ✅ | - | n/a | - |
+| WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | pending | medium | medium | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | WRK-225 |
+| WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | pending | high | medium | - | workspace-hub | - | ✅ | ❌ | ✅ | - | n/a | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | pending | high | medium | - | workspace-hub | - | ❌ | ❌ | ✅ | - | n/a | WRK-228, WRK-231 |
+| WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | pending | high | medium | - | workspace-hub | - | ❌ | ❌ | ✅ | - | n/a | WRK-228, WRK-229, WRK-231 |
+| WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | pending | high | medium | - | workspace-hub | - | ❌ | ❌ | ✅ | - | n/a | - |
+| WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | pending | high | simple | - | workspace-hub | - | ❌ | ❌ | ✅ | - | n/a | WRK-231 |
+| WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | pending | high | medium | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | WRK-231 |
+| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | high | complex | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | complex | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-236 | Test health trends — track test-writing pairing with code-writing sessions | pending | medium | medium | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | WRK-231 |
+| WRK-237 | Provider cost tracking — token spend per session and per WRK item | pending | medium | medium | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | WRK-231 |
+| WRK-238 | Adopt Codex 0.102.0 TOML role definitions — implement native multi-agent roles in .codex/ | pending | medium | medium | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -378,7 +391,6 @@
 | WRK-147 | Set up aceengineer-strategy private repo with business operations framework | high | complex | aceengineer-strategy | - |
 | WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - |
 | WRK-150 | assetutilities test coverage improvement (re-creates WRK-052) | medium | medium | assetutilities | - |
-| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | medium | medium | worldenergydata | - |
 | WRK-153 | Energy data case study — BSEE field economics with NPV/IRR workflow | medium | medium | aceengineer-website | - |
 | WRK-156 | FFS Phase 1 — wall thickness grid input with Level 1/2 accept-reject workflow | high | complex | digitalmodel | asset_integrity |
 | WRK-163 | Well planning risk empowerment framework | medium | complex | worldenergydata, digitalmodel | risk_assessment |
@@ -397,11 +409,9 @@
 | WRK-181 | Session Replay & Time Travel | low | high | workspace-hub | - |
 | WRK-182 | Predictive Session Planning | low | high | workspace-hub | - |
 | WRK-183 | Domain Knowledge Graph | medium | high | workspace-hub, worldenergydata, digitalmodel | - |
-| WRK-190 | NCS production data module — NPD/Sodir open data integration (worldenergydata) | medium | moderate | worldenergydata | ncs |
 | WRK-191 | Field development case study catalog — structured reference library of real projects | medium | moderate | digitalmodel | field_development_references |
 | WRK-192 | Field development schematic generator — Python SVG/PNG layout diagrams | medium | complex | digitalmodel | field_development_visuals |
 | WRK-193 | UKCS production data module — NSTA/OPRED open data integration (worldenergydata) | low | moderate | worldenergydata | ukcs |
-| WRK-194 | Brazil ANP production data module — well-level monthly CSV integration (worldenergydata) | high | moderate | worldenergydata | brazil_anp |
 | WRK-195 | EIA US production data module — non-GoM onshore + Alaska integration (worldenergydata) | medium | moderate | worldenergydata | eia_us |
 | WRK-196 | Canada offshore + emerging basin watch list (C-NLOER NL data; Guyana/Suriname/Namibia/Falklands monitor) | low | moderate | worldenergydata, digitalmodel | canada_offshore + emerging_basins |
 | WRK-197 | Nigeria NUPRC + EITI data framework — West Africa deepwater and multi-country payment data | low | moderate | worldenergydata | west_africa |
@@ -412,8 +422,19 @@
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | medium | complex | worldenergydata, digitalmodel, aceengineer-website | decommissioning_analytics |
 | WRK-221 | Offshore resilience design framework — modular platforms, lifecycle planning, structural monitoring | low | medium | digitalmodel, aceengineer-website | offshore_resilience |
 | WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | medium | low | workspace-hub | - |
-| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | medium | medium | workspace-hub | - |
 | WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | high | medium | workspace-hub | - |
+| WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | medium | medium | workspace-hub | - |
+| WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | high | medium | workspace-hub | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | high | medium | workspace-hub | - |
+| WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | high | medium | workspace-hub | - |
+| WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | high | medium | workspace-hub | - |
+| WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | high | simple | workspace-hub | - |
+| WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | high | medium | workspace-hub | - |
+| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | high | complex | workspace-hub | - |
+| WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | high | complex | workspace-hub | - |
+| WRK-236 | Test health trends — track test-writing pairing with code-writing sessions | medium | medium | workspace-hub | - |
+| WRK-237 | Provider cost tracking — token spend per session and per WRK item | medium | medium | workspace-hub | - |
+| WRK-238 | Adopt Codex 0.102.0 TOML role definitions — implement native multi-agent roles in .codex/ | medium | medium | workspace-hub | - |
 
 ### Working
 
@@ -424,7 +445,7 @@
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | high | low | digitalmodel | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | high | complex | digitalmodel | - |
 | WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | high | complex | digitalmodel | - |
-| WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/ | medium | complex | - | - |
+| WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | high | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -537,6 +558,7 @@
 | WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | medium | simple | digitalmodel | - |
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | medium | complex | digitalmodel | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | medium | medium | digitalmodel | - |
+| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | medium | medium | worldenergydata | - |
 | WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | high | medium | worldenergydata | marine_safety |
 | WRK-154 | CI workflow rewrite — fix 2 GitHub Actions workflows | high | medium | workspace-hub | - |
 | WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | high | complex | digitalmodel | structural |
@@ -552,8 +574,11 @@
 | WRK-185 | Ecosystem Truth Review: instruction/skills/work-item centralization | high | medium | workspace-hub, digitalmodel, worldenergydata | governance |
 | WRK-186 | Context budget: trim rules/ to under 16KB | high | simple | workspace-hub | - |
 | WRK-187 | Improve /improve: usage-based skill health, classify retry, apply API content | medium | medium | workspace-hub | - |
+| WRK-190 | NCS production data module — NPD/Sodir open data integration (worldenergydata) | medium | moderate | worldenergydata | ncs |
+| WRK-194 | Brazil ANP production data module — well-level monthly CSV integration (worldenergydata) | high | moderate | worldenergydata | brazil_anp |
 | WRK-200 | Filesystem naming cleanup — eliminate duplicate/conflicting dirs across workspace-hub, digitalmodel, worldenergydata | high | complex | - | - |
 | WRK-201 | Work queue workflow gate enforcement — plan_reviewed, Route C spec, pre-move checks | high | medium | workspace-hub | work-queue |
+| WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/, tests/ | medium | complex | - | - |
 | WRK-205 | Skills knowledge graph — capability metadata and relationship layer beyond flat index | medium | medium | workspace-hub | - |
 | WRK-206 | Asset integrity / fitness-for-service (FFS) engineering skill — corrosion damage assessment and run-repair-replace decisions | medium | medium | workspace-hub, digitalmodel | - |
 | WRK-207 | Skill relationship maintenance — bidirectional linking as enforced process | medium | small | workspace-hub | - |
@@ -571,6 +596,7 @@
 | WRK-222 | Pre-clear session snapshot — /save skill + save-snapshot.sh script | medium | low | workspace-hub | - |
 | WRK-223 | Workstations registry — hardware inventory, hardware-info.sh, ace-linux-1 specs | medium | low | workspace-hub | - |
 | WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | medium | low | workspace-hub | - |
+| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | medium | medium | workspace-hub | - |
 
 ## By Repository
 
@@ -815,8 +841,21 @@
 | WRK-223 | Workstations registry — hardware inventory, hardware-info.sh, ace-linux-1 specs | archived | medium | low | - |
 | WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | pending | medium | low | - |
 | WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | archived | medium | low | - |
-| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | pending | medium | medium | - |
+| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | archived | medium | medium | - |
 | WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | pending | high | medium | - |
+| WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | working | high | medium | - |
+| WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | pending | medium | medium | - |
+| WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | pending | high | medium | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | pending | high | medium | - |
+| WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | pending | high | medium | - |
+| WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | pending | high | medium | - |
+| WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | pending | high | simple | - |
+| WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | pending | high | medium | - |
+| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | high | complex | - |
+| WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | complex | - |
+| WRK-236 | Test health trends — track test-writing pairing with code-writing sessions | pending | medium | medium | - |
+| WRK-237 | Provider cost tracking — token spend per session and per WRK item | pending | medium | medium | - |
+| WRK-238 | Adopt Codex 0.102.0 TOML role definitions — implement native multi-agent roles in .codex/ | pending | medium | medium | - |
 
 ### worldenergydata
 
@@ -862,7 +901,7 @@
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex | - |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | medium | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex | - |
-| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | pending | medium | medium | - |
+| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | archived | medium | medium | - |
 | WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | archived | high | medium | marine_safety |
 | WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | archived | medium | simple | hse |
 | WRK-161 | BSEE Excel statistics re-download and URL importer verification | archived | medium | simple | hse |
@@ -878,9 +917,9 @@
 | WRK-183 | Domain Knowledge Graph | pending | medium | high | - |
 | WRK-185 | Ecosystem Truth Review: instruction/skills/work-item centralization | archived | high | medium | governance |
 | WRK-188 | Wave-1 spec migration: worldenergydata dry-run manifest and apply plan | done | high | medium | governance |
-| WRK-190 | NCS production data module — NPD/Sodir open data integration (worldenergydata) | pending | medium | moderate | ncs |
+| WRK-190 | NCS production data module — NPD/Sodir open data integration (worldenergydata) | archived | medium | moderate | ncs |
 | WRK-193 | UKCS production data module — NSTA/OPRED open data integration (worldenergydata) | pending | low | moderate | ukcs |
-| WRK-194 | Brazil ANP production data module — well-level monthly CSV integration (worldenergydata) | pending | high | moderate | brazil_anp |
+| WRK-194 | Brazil ANP production data module — well-level monthly CSV integration (worldenergydata) | archived | high | moderate | brazil_anp |
 | WRK-195 | EIA US production data module — non-GoM onshore + Alaska integration (worldenergydata) | pending | medium | moderate | eia_us |
 | WRK-196 | Canada offshore + emerging basin watch list (C-NLOER NL data; Guyana/Suriname/Namibia/Falklands monitor) | pending | low | moderate | canada_offshore + emerging_basins |
 | WRK-197 | Nigeria NUPRC + EITI data framework — West Africa deepwater and multi-country payment data | pending | low | moderate | west_africa |
@@ -967,12 +1006,21 @@
 | WRK-185 | Ecosystem Truth Review: instruction/skills/work-item centralization | archived | medium | workspace-hub, digitalmodel, worldenergydata | governance |
 | WRK-186 | Context budget: trim rules/ to under 16KB | archived | simple | workspace-hub | - |
 | WRK-188 | Wave-1 spec migration: worldenergydata dry-run manifest and apply plan | done | medium | workspace-hub, worldenergydata | governance |
-| WRK-194 | Brazil ANP production data module — well-level monthly CSV integration (worldenergydata) | pending | moderate | worldenergydata | brazil_anp |
+| WRK-194 | Brazil ANP production data module — well-level monthly CSV integration (worldenergydata) | archived | moderate | worldenergydata | brazil_anp |
 | WRK-200 | Filesystem naming cleanup — eliminate duplicate/conflicting dirs across workspace-hub, digitalmodel, worldenergydata | archived | complex | - | - |
 | WRK-201 | Work queue workflow gate enforcement — plan_reviewed, Route C spec, pre-move checks | archived | medium | workspace-hub | work-queue |
 | WRK-208 | Cross-platform encoding guard — pre-commit + post-pull encoding validation | archived | simple | workspace-hub | - |
 | WRK-214 | Session lifecycle compliance — interview-driven review of all workflow scaffolding | archived | medium | workspace-hub | - |
 | WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | pending | medium | workspace-hub | - |
+| WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | working | medium | workspace-hub | - |
+| WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | pending | medium | workspace-hub | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | pending | medium | workspace-hub | - |
+| WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | pending | medium | workspace-hub | - |
+| WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | pending | medium | workspace-hub | - |
+| WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | pending | simple | workspace-hub | - |
+| WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | pending | medium | workspace-hub | - |
+| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | complex | workspace-hub | - |
+| WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | complex | workspace-hub | - |
 
 ### Medium
 
@@ -1043,7 +1091,7 @@
 | WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | complex | digitalmodel | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | digitalmodel | - |
 | WRK-150 | assetutilities test coverage improvement (re-creates WRK-052) | pending | medium | assetutilities | - |
-| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | pending | medium | worldenergydata | - |
+| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | archived | medium | worldenergydata | - |
 | WRK-153 | Energy data case study — BSEE field economics with NPV/IRR workflow | pending | medium | aceengineer-website | - |
 | WRK-158 | Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material | archived | medium | digitalmodel | structural |
 | WRK-159 | Three-way design code comparison report — API RP 1111 vs RP 2RD vs STD 2RD | archived | medium | digitalmodel | structural |
@@ -1060,13 +1108,13 @@
 | WRK-179 | Start Hook: Agent Capacity Pre-flight | archived | low | workspace-hub | - |
 | WRK-183 | Domain Knowledge Graph | pending | high | workspace-hub, worldenergydata, digitalmodel | - |
 | WRK-187 | Improve /improve: usage-based skill health, classify retry, apply API content | archived | medium | workspace-hub | - |
-| WRK-190 | NCS production data module — NPD/Sodir open data integration (worldenergydata) | pending | moderate | worldenergydata | ncs |
+| WRK-190 | NCS production data module — NPD/Sodir open data integration (worldenergydata) | archived | moderate | worldenergydata | ncs |
 | WRK-191 | Field development case study catalog — structured reference library of real projects | pending | moderate | digitalmodel | field_development_references |
 | WRK-192 | Field development schematic generator — Python SVG/PNG layout diagrams | pending | complex | digitalmodel | field_development_visuals |
 | WRK-195 | EIA US production data module — non-GoM onshore + Alaska integration (worldenergydata) | pending | moderate | worldenergydata | eia_us |
 | WRK-198 | HSE risk index interactive web dashboard | pending | complex | aceengineer-website | - |
 | WRK-199 | AI agent usage optimizer skill — maximize Claude/Codex/Gemini allocation per task | pending | medium | workspace-hub | ai-tools |
-| WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/ | working | complex | - | - |
+| WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/, tests/ | archived | complex | - | - |
 | WRK-205 | Skills knowledge graph — capability metadata and relationship layer beyond flat index | archived | medium | workspace-hub | - |
 | WRK-206 | Asset integrity / fitness-for-service (FFS) engineering skill — corrosion damage assessment and run-repair-replace decisions | archived | medium | workspace-hub, digitalmodel | - |
 | WRK-207 | Skill relationship maintenance — bidirectional linking as enforced process | archived | small | workspace-hub | - |
@@ -1086,7 +1134,11 @@
 | WRK-223 | Workstations registry — hardware inventory, hardware-info.sh, ace-linux-1 specs | archived | low | workspace-hub | - |
 | WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | pending | low | workspace-hub | - |
 | WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | archived | low | workspace-hub | - |
-| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | pending | medium | workspace-hub | - |
+| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | archived | medium | workspace-hub | - |
+| WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | pending | medium | workspace-hub | - |
+| WRK-236 | Test health trends — track test-writing pairing with code-writing sessions | pending | medium | workspace-hub | - |
+| WRK-237 | Provider cost tracking — token spend per session and per WRK item | pending | medium | workspace-hub | - |
+| WRK-238 | Adopt Codex 0.102.0 TOML role definitions — implement native multi-agent roles in .codex/ | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -1157,6 +1209,7 @@
 | WRK-215 | Graph-aware skill discovery and enhancement — extend /improve with proactive gap analysis | archived | medium | workspace-hub | - |
 | WRK-216 | Subagent learning capture — emit signals to pending-reviews before task completion | archived | medium | workspace-hub | - |
 | WRK-217 | Update ecosystem-health-check.sh — remove stale skill count threshold | archived | medium | workspace-hub | - |
+| WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | pending | high | workspace-hub | - |
 
 ### Medium
 
@@ -1217,7 +1270,7 @@
 | WRK-142 | Review work accomplishments and draft Anthropic outreach message | archived | high | workspace-hub | - |
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | digitalmodel | - |
 | WRK-150 | assetutilities test coverage improvement (re-creates WRK-052) | pending | medium | assetutilities | - |
-| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | pending | medium | worldenergydata | - |
+| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | archived | medium | worldenergydata | - |
 | WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | archived | high | worldenergydata | marine_safety |
 | WRK-153 | Energy data case study — BSEE field economics with NPV/IRR workflow | pending | medium | aceengineer-website | - |
 | WRK-154 | CI workflow rewrite — fix 2 GitHub Actions workflows | archived | high | workspace-hub | - |
@@ -1244,8 +1297,18 @@
 | WRK-214 | Session lifecycle compliance — interview-driven review of all workflow scaffolding | archived | high | workspace-hub | - |
 | WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | worldenergydata, digitalmodel | drilling_economics |
 | WRK-221 | Offshore resilience design framework — modular platforms, lifecycle planning, structural monitoring | pending | low | digitalmodel, aceengineer-website | offshore_resilience |
-| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | pending | medium | workspace-hub | - |
+| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | archived | medium | workspace-hub | - |
 | WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | pending | high | workspace-hub | - |
+| WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | working | high | workspace-hub | - |
+| WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | pending | medium | workspace-hub | - |
+| WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | pending | high | workspace-hub | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | pending | high | workspace-hub | - |
+| WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | pending | high | workspace-hub | - |
+| WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | pending | high | workspace-hub | - |
+| WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | pending | high | workspace-hub | - |
+| WRK-236 | Test health trends — track test-writing pairing with code-writing sessions | pending | medium | workspace-hub | - |
+| WRK-237 | Provider cost tracking — token spend per session and per WRK item | pending | medium | workspace-hub | - |
+| WRK-238 | Adopt Codex 0.102.0 TOML role definitions — implement native multi-agent roles in .codex/ | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -1333,9 +1396,11 @@
 | WRK-192 | Field development schematic generator — Python SVG/PNG layout diagrams | pending | medium | digitalmodel | field_development_visuals |
 | WRK-198 | HSE risk index interactive web dashboard | pending | medium | aceengineer-website | - |
 | WRK-200 | Filesystem naming cleanup — eliminate duplicate/conflicting dirs across workspace-hub, digitalmodel, worldenergydata | archived | high | - | - |
-| WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/ | working | medium | - | - |
+| WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/, tests/ | archived | medium | - | - |
 | WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | pending | medium | digitalmodel, worldenergydata | well_design |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | pending | medium | worldenergydata, digitalmodel, aceengineer-website | decommissioning_analytics |
+| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | high | workspace-hub | - |
+| WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | workspace-hub | - |
 
 ## Dependencies
 
@@ -1366,4 +1431,11 @@
 | WRK-196 | Canada offshore + emerging basin watch list (C-NLOER NL data; Guyana/Suriname/Namibia/Falklands monitor) | WRK-190 | - | - |
 | WRK-215 | Graph-aware skill discovery and enhancement — extend /improve with proactive gap analysis | WRK-205 | - | - |
 | WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | WRK-019 | - | - |
+| WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | WRK-225 | - | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | WRK-228, WRK-231 | - | - |
+| WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | WRK-228, WRK-229, WRK-231 | - | - |
+| WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | WRK-231 | - | - |
+| WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | WRK-231 | - | - |
+| WRK-236 | Test health trends — track test-writing pairing with code-writing sessions | WRK-231 | - | - |
+| WRK-237 | Provider cost tracking — token spend per session and per WRK item | WRK-231 | - | - |
 

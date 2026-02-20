@@ -343,6 +343,12 @@ brochure_status:       # pending | updated | synced | n/a
 - [ ] Criterion 1
 - [ ] Criterion 2
 
+## Agentic AI Horizon
+
+- Does this work boost agentic AI capability in this ecosystem?
+- Will an agent handle this better in 3–4 months — if so: (a) wait, (b) invest differently now, (c) park it as a future WRK item to revisit in 1–2 months, or (d) do the groundwork now and park the rest for when capability catches up?
+- How should this work be shaped to maximise future leverage, not just complete the task?
+
 ---
 *Source: [verbatim original request]*
 ```

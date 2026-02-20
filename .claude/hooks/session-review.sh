@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
-# session-review.sh — Post-session review for skills & memory enhancement
+# session-review.sh — Raw signal extraction from session transcript
 # Trigger: Stop event
 # Output: .claude/state/pending-reviews/*.jsonl
 #
-# Reads session transcript from Claude's project directory and extracts:
+# SCOPE: Raw signal capture ONLY — no scoring, no WRK creation, no semantic analysis.
+# Heavy analysis runs at 3AM via scripts/analysis/session-analysis.sh (reads pending-reviews/).
+# Lightweight session-end metadata → .claude/hooks/session-signals.sh
+#
+# Extracts from session transcript:
 # - New files created (Write tool events)
 # - Error patterns (tool results with errors)
 # - Insight keywords from human messages (gotcha, lesson, learned, etc.)

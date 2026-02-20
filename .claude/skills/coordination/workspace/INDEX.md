@@ -1,9 +1,10 @@
 # Coordination — Workspace
 
-> 15 skills · Part of [Coordination](../INDEX.md) domain.
+> 16 skills · Part of [Coordination](../INDEX.md) domain.
 
 | Skill | Description | Tags |
 |-------|-------------|------|
+| [agentic-horizon](agentic-horizon/SKILL.md) | Weekly reassessment of all active WRK items against the current agentic AI landscape; surfaces disposition changes and archive follow-ups | `horizon_reassessment`, `disposition_change_detection`, `archive_followup_mining` |
 | [claude-reflect](claude-reflect/SKILL.md) | Periodic cross-repo reflection analyzing 30 days of git history, extracting patt | `multi_repo_git_analysis`, `pattern_extraction`, `pattern_scoring` |
 | [commit-workflow](commit-workflow/SKILL.md) | Standardized commit-and-push workflow with change summary, conventional commit m | `change_summary`, `conventional_commits`, `safety_checks` |
 | [compliance-check](compliance-check/SKILL.md) | Verify and enforce coding standards, AI guidelines, and workspace compliance acr | `standards_verification`, `compliance_propagation`, `git_hooks_management` |
