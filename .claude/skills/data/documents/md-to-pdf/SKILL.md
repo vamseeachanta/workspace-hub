@@ -1,7 +1,8 @@
 ---
-capabilities: []
-requires: []
-see_also: []
+name: md-to-pdf
+version: "1.0.0"
+category: data/documents
+description: "Convert Markdown documents with YAML frontmatter into styled, print-ready PDFs using Chrome headless."
 ---
 
 # md-to-pdf Skill

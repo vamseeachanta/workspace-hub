@@ -1,7 +1,8 @@
 ---
-capabilities: []
-requires: []
-see_also: []
+name: technology-stack-modernization
+version: "1.0.0"
+category: business
+description: "Systematically modernize technology stacks by updating dependencies, replacing deprecated packages, and ensuring workspace-hub standards compliance."
 ---
 
 # Technology Stack Modernization Skill

@@ -1,7 +1,8 @@
 ---
-capabilities: []
-requires: []
-see_also: []
+name: data-analysis
+version: "1.0.0"
+category: data
+description: "Data processing, visualization, exploratory data analysis, and dashboard patterns using Polars, Pandas, and Plotly."
 ---
 
 # Data Analysis Skills Library

@@ -1,3 +1,10 @@
+---
+name: logging-standards
+version: "1.0.0"
+category: standards
+description: "Logging Standards — guidelines and best practices."
+---
+
 # Logging Standards Skill
 
 > Version: 1.0.0

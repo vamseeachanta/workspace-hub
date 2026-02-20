@@ -1,3 +1,10 @@
+---
+name: ai-agent-guidelines
+version: "1.0.0"
+category: guidelines
+description: "AI Agent Guidelines — guidelines and best practices."
+---
+
 # AI Agent Guidelines Skill
 
 > Version: 1.0.0

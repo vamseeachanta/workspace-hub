@@ -1,6 +1,8 @@
 ---
-skill: workspace-hub:file-taxonomy
-version: 1.1.0
+name: file-taxonomy
+version: "1.1.0"
+category: workspace
+description: "Canonical decision tree for where to place output files across the workspace-hub ecosystem including reports, results, data, and cache directories."
 invocation: /file-taxonomy
 applies-to: [claude, codex, gemini]
 capabilities: []

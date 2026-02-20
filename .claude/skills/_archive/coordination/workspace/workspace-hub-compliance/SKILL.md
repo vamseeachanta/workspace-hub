@@ -1,3 +1,10 @@
+---
+name: workspace-hub-compliance
+version: "1.0.0"
+category: archive
+description: "Systematic verification checklist for ensuring repositories comply with workspace-hub standards covering UV, Plotly, file organization, and modern Python practices."
+---
+
 # Workspace-Hub Standards Compliance Skill
 
 > Version: 1.0.0

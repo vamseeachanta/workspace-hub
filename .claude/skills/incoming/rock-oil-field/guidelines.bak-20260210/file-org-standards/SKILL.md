@@ -1,3 +1,10 @@
+---
+name: file-org-standards
+version: "1.0.0"
+category: standards
+description: "File Organization Standards — guidelines and best practices."
+---
+
 # File Organization Standards Skill
 
 > Version: 1.0.0

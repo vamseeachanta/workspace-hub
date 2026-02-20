@@ -1,19 +1,16 @@
 ---
-capabilities: []
-requires: []
-see_also: []
----
-
-# Plotly Visualization Skill
-
----
-description: Generate interactive Plotly and Matplotlib visualizations from DataFrames with configurable templates and multi-format support
+name: plotly-visualization
+version: "1.0.0"
+category: data
+description: "Generate interactive Plotly and Matplotlib visualizations from DataFrames with configurable templates and multi-format support."
 globs:
   - src/assetutilities/common/visualization/**
   - src/assetutilities/common/visualizations.py
   - src/assetutilities/common/visualization.py
 alwaysApply: false
 ---
+
+# Plotly Visualization Skill
 
 ## Overview
 

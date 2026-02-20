@@ -1,5 +1,8 @@
 ---
-canonical_ref: "ai/optimization/usage-optimization"
+name: usage-optimization
+version: "1.0.0"
+category: optimization
+description: "Usage Optimization — guidelines and best practices."
 ---
 
 # Usage Optimization Skill

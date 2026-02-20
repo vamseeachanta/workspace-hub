@@ -1,5 +1,8 @@
 ---
-canonical_ref: "business/product/product-roadmap"
+name: product-roadmap
+version: "1.0.0"
+category: product
+description: "Product Roadmap — guidelines and best practices."
 ---
 
 # Product Roadmap Skill

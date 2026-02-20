@@ -2,11 +2,9 @@
 name: drilling
 version: "1.0.0"
 category: engineering
-description: "Drilling engineering domain expertise — well planning, hydraulics, well control"
-capabilities: []
-requires: []
-see_also: []
+description: "Domain expertise for drilling engineering covering well planning, hydraulics, well control, and drilling operations analysis."
 ---
+
 # Drilling Expert
 
 > Domain expertise for drilling engineering, well planning, and drilling operations. Use this skill when working on drilling analysis, well design, hydraulics, well control, or any drilling-related problems in the worldenergydata or engineering context.

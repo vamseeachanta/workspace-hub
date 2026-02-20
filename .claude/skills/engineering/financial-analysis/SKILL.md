@@ -2,11 +2,9 @@
 name: financial-analysis
 version: "1.0.0"
 category: engineering
-description: "Financial markets, investment analysis, energy economics and ESG"
-capabilities: []
-requires: []
-see_also: []
+description: "Domain expertise for financial markets, investment analysis, corporate finance, risk management, and energy finance."
 ---
+
 # Financial Analysis Expert
 
 > Domain expertise for financial markets, investment analysis, corporate finance, risk management, and energy finance. Use this skill when working on financial modeling, valuation, portfolio analysis, energy economics, or ESG analysis in the worldenergydata context.

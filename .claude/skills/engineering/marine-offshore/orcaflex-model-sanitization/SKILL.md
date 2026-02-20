@@ -1,6 +1,8 @@
 ---
-skill: engineering:marine-offshore:orcaflex-model-sanitization
-version: 1.0.0
+name: orcaflex-model-sanitization
+version: "1.0.0"
+category: engineering
+description: "Sanitize OrcaFlex models by stripping client-identifiable references, converting binary .dat to YAML .yml, and organizing into the reference model library."
 invocation: /orcaflex-model-sanitization
 applies-to: [claude, codex, gemini]
 auto_generated: true
