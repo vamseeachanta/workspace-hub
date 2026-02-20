@@ -186,12 +186,112 @@ check_session_snapshot() {
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-CODEX: CODEX.md MAX_TEAMMATES sync
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_codex_settings_sync() {
+    local settings="${WORKSPACE_HUB}/.claude/settings.json"
+    local codex="${WORKSPACE_HUB}/.codex/CODEX.md"
+    [[ ! -f "$settings" || ! -f "$codex" ]] && return
+
+    local settings_val codex_val
+    settings_val=$(grep -o '"MAX_TEAMMATES"[[:space:]]*:[[:space:]]*"[^"]*"' "$settings" 2>/dev/null | grep -o '"[^"]*"$' | tr -d '"')
+    codex_val=$(grep -o 'MAX_TEAMMATES=[0-9]*' "$codex" 2>/dev/null | head -1 | cut -d= -f2)
+
+    if [[ -n "$settings_val" && -n "$codex_val" && "$settings_val" != "$codex_val" ]]; then
+        warnings+=("R-CODEX: CODEX.md MAX_TEAMMATES=${codex_val} but settings.json has ${settings_val}")
+        fixes+=("  Action: Update CODEX.md §Default thread cap to match settings.json value")
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-MODEL: Stale model IDs in scripts/
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_stale_model_ids() {
+    local scripts_dir="${WORKSPACE_HUB}/scripts"
+    [[ ! -d "$scripts_dir" ]] && return
+
+    # Patterns constructed via concatenation so update-model-ids.sh won't auto-replace them here
+    local p_claude="claude-sonnet-4-2025""0514"
+    local p_gpt4o="gpt-4o[^.-]"
+    local p_gemini="gemini-2\.0-flash"
+    local p_claude2="claude-sonnet-4\.5[^-]"
+    local stale_pattern="${p_claude}|${p_gpt4o}|${p_gemini}|${p_claude2}"
+    local count
+    # Exclude update-model-ids.sh (intentionally contains stale patterns as replacement constants)
+    count=$(grep -rl --include="*.sh" --include="*.py" -E "$stale_pattern" "$scripts_dir" 2>/dev/null \
+        | grep -v 'update-model-ids\.sh' | wc -l | tr -d ' ')
+
+    if [[ "$count" -gt 0 ]]; then
+        warnings+=("R-MODEL: ${count} script(s) with stale model IDs — run scripts/maintenance/update-model-ids.sh")
+        fixes+=("  Action: bash scripts/maintenance/update-model-ids.sh --hub-only --dry-run (preview), then without --dry-run")
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-REGISTRY: model-registry.yaml age check
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_model_registry_age() {
+    local registry="${WORKSPACE_HUB}/config/agents/model-registry.yaml"
+    [[ ! -f "$registry" ]] && return
+
+    local last_updated
+    last_updated=$(grep -o 'last_updated:.*' "$registry" 2>/dev/null | head -1 | sed 's/last_updated:[[:space:]]*//' | tr -d "'\"")
+    [[ -z "$last_updated" ]] && return
+
+    # Convert to epoch (format: YYYY-MM-DD)
+    local reg_epoch now_epoch age_days
+    reg_epoch=$(date -d "$last_updated" +%s 2>/dev/null || date -j -f "%Y-%m-%d" "$last_updated" +%s 2>/dev/null || echo 0)
+    now_epoch=$(date +%s)
+    age_days=$(( (now_epoch - reg_epoch) / 86400 ))
+
+    if [[ "$age_days" -gt 14 ]]; then
+        warnings+=("R-REGISTRY: model-registry.yaml last updated ${age_days} days ago — review for new model releases")
+        fixes+=("  Action: Update config/agents/model-registry.yaml with latest model IDs")
+    else
+        info+=("R-REGISTRY: model-registry.yaml ${age_days} days old (within 14-day threshold)")
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-XPROV: Cross-provider rule coverage
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_cross_provider_rules() {
+    local codex="${WORKSPACE_HUB}/.codex/CODEX.md"
+    local gemini="${WORKSPACE_HUB}/.gemini/GEMINI.md"
+    local missing=()
+
+    for f in "$codex" "$gemini"; do
+        [[ ! -f "$f" ]] && continue
+        local name
+        name=$(basename "$(dirname "$f")")
+        if ! grep -qi "legal\|legal-sanity" "$f" 2>/dev/null; then
+            missing+=("$(basename "$f"): missing legal compliance gate")
+        fi
+        if ! grep -qi "tdd\|tests before\|test.*mandatory" "$f" 2>/dev/null; then
+            missing+=("$(basename "$f"): missing TDD mandate")
+        fi
+    done
+
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        warnings+=("R-XPROV: ${#missing[@]} cross-provider rule gap(s) detected")
+        for m in "${missing[@]}"; do
+            fixes+=("  Gap: $m")
+        done
+        fixes+=("  Action: Add security/legal/testing gates to CODEX.md and GEMINI.md §Required Gates")
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Run all checks
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 check_memory
 check_context_budget
 check_submodule_sync
 check_session_snapshot
+check_codex_settings_sync
+check_stale_model_ids
+check_model_registry_age
+check_cross_provider_rules
 
 # --- Terminal output ---
 if [[ ${#warnings[@]} -gt 0 ]]; then

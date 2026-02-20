@@ -118,7 +118,7 @@ Always format your response clearly with:
 Please provide a comprehensive answer based on the above context."""
 
         response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model="claude-sonnet-4-5-20250929",
             max_tokens=2000,
             system=system_prompt,
             messages=[{"role": "user", "content": user_message}]
@@ -162,7 +162,7 @@ Your role is to:
 Please provide a comprehensive answer based on the above context."""
 
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_message}

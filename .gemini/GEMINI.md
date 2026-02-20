@@ -20,6 +20,7 @@ The canonical contract is in workspace-hub/AGENTS.md.
 1. Every non-trivial task must map to a WRK-* item in .claude/work-queue/.
 2. Planning + explicit approval are required before implementation.
 3. Route B/C work requires cross-review before completion.
+4. All code must pass `scripts/legal/legal-sanity-scan.sh` before PR. Secrets via env vars only — never hardcoded. TDD mandatory (tests before implementation).
 
 ## Plan and Spec Locality
 

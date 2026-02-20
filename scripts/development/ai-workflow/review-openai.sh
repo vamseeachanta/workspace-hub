@@ -1,5 +1,5 @@
 #!/bin/bash
-# ABOUTME: Review stage using OpenAI GPT-4o for comprehensive code review
+# ABOUTME: Review stage using OpenAI GPT-4.1 for comprehensive code review
 # ABOUTME: Performs quality, security, and performance analysis on changed files
 
 set -euo pipefail
@@ -29,7 +29,7 @@ usage() {
     cat << EOF
 Usage: $(basename "$0") [OPTIONS]
 
-OpenAI GPT-4o code review stage.
+OpenAI GPT-4.1 code review stage.
 
 OPTIONS:
     -f, --files FILE_LIST   Comma-separated list of files to review
@@ -179,7 +179,7 @@ call_openai() {
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer ${OPENAI_API_KEY}" \
         -d "$(jq -n \
-            --arg model "gpt-4o" \
+            --arg model "gpt-4.1" \
             --arg prompt "$prompt" \
             --argjson max_tokens "$max_tokens" \
             '{

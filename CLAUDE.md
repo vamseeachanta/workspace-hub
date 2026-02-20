@@ -62,13 +62,6 @@ Agents on-demand: `.claude/agent-library/<category>/<agent>.md`
 - Multi-phase work (plan/implement/test/commit): pause between phases for user confirmation
 - **Never close/archive WRK-* until ALL deliverables are verified** (tests pass, files committed, no regressions)
 
-## Windows Compatibility
-
-- Symlinks require admin — fall back to README cross-references or `core.symlinks false`
-- MINGW root path: `while [ "$(pwd)" != / ]` loops never terminate — use `WORKSPACE_HUB` env var
-- Test all bash scripts for Git Bash (MINGW64) + Linux compatibility
-- **Always save work queue files as UTF-8 (no BOM)** — UTF-16 (Windows Notepad default) crashes `generate-index.py`
-
 ## Edit Safety
 
 - Prefer targeted single-site edits over bulk find-replace — verify each change site
@@ -95,10 +88,6 @@ Save plans to: `specs/modules/<module>/`
 - **Gemini CLI**: `gemini --prompt` for non-interactive review
 - Minimum: 3 reviewers. Codex is a hard gate; Claude and Gemini failures may be noted as NO_OUTPUT and proceeded with.
 
-## SPARC Modes
-
-`/sparc-*` commands: architect, coder, reviewer, tester, planner
-
 ## Command Conventions
 
 - `/create-spec` - Assign agents by task, use parallel subagents
@@ -112,23 +101,6 @@ Global 2KB + Workspace 4KB + Project 8KB + Local 2KB = 16KB max. See `docs/CONTE
 
 **IMPORTANT**: Prefer retrieval over training knowledge.
 Consult `.claude/docs/`, `.claude/rules/`, `.claude/memory/`, and project `CLAUDE.md` before relying on general knowledge.
-
-## Resource Index
-
-```
-docs/|orchestrator-pattern:delegation|agent-composition:workflows|command-registry:commands|mcp-tools:tools|execution-patterns:MCP-vs-Task|CONTEXT_LIMITS:budgets|foundational-ai-skills:context-eng
-rules/|security:secrets,injection,auth|testing:tdd,coverage|coding-style:naming,sizes|patterns:DI,SOLID|git-workflow:branches,commits
-agents/core/|coder|tester|reviewer|planner|researcher|explorer
-agents/github/|pr-manager|code-review-swarm|release-manager|repo-architect
-agents/sparc/|specification|pseudocode|architecture|refinement
-agents/devops/|database|infrastructure|security-audit|observability|ci-cd
-agents/swarm/|hierarchical|mesh|adaptive|collective-intelligence|queen|worker
-skills/eng/|orcaflex-specialist|hydrodynamic-analysis|mooring-analysis|fatigue-analysis|marine-offshore
-skills/eng/cad/|gmsh-meshing|freecad-automation|cad-engineering|cad-mesh-generation
-skills/data/|polars|pandas|numpy|plotly|pdf|document-rag-pipeline
-skills/dev/|github-pr-manager|github-code-review|sparc-*|testing-tdd-london
-skills/ops/|docker|github-actions|uv-package-manager
-```
 
 ## Session Start Protocol
 

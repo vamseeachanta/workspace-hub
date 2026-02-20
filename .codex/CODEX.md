@@ -20,6 +20,7 @@ The canonical contract is in workspace-hub/AGENTS.md.
 1. Every non-trivial task must map to a WRK-* item in .claude/work-queue/.
 2. Planning + explicit approval are required before implementation.
 3. Route B/C work requires cross-review before completion.
+4. All code must pass `scripts/legal/legal-sanity-scan.sh` before PR. Secrets via env vars only — never hardcoded. TDD mandatory (tests before implementation).
 
 ## Plan and Spec Locality
 
@@ -70,5 +71,5 @@ They are **complementary layers**, not alternatives:
 ### Default thread cap
 
 Codex default: 6 parallel agents (configurable: `max_threads = 12+`).
-workspace-hub constraint: `MAX_TEAMMATES=3` (Claude Code, git-tracked in `.claude/settings.json`).
+workspace-hub constraint: `MAX_TEAMMATES=5` (Claude Code, git-tracked in `.claude/settings.json`).
 These are independent limits — do not conflate them.
