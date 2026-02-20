@@ -22,3 +22,7 @@
 
 # Weekly AI model ID currency check (Sunday 3:30 AM) — wired by WRK-226
 30 3 * * 0 bash <workspace-hub>/scripts/maintenance/update-model-ids.sh --hub-only >> /tmp/update-model-ids.log 2>&1
+
+# Skills curation: knowledge graph review + online research (Monday 4AM) — wired by WRK-229
+# Runs after session-analysis (3AM) so fresh skill candidates are available
+0 4 * * 1 claude --dangerously-skip-permissions -p "/skills-curation" >> /tmp/skills-curation.log 2>&1

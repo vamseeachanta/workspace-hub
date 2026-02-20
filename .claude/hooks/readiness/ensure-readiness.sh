@@ -282,6 +282,69 @@ check_cross_provider_rules() {
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-SKILLS: Session-input pipeline health (WRK-229)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_skills_pipeline_health() {
+    local state_dir="${WORKSPACE_HUB}/.claude/state"
+    local now
+    now=$(date +%s)
+    local issues=()
+
+    # Check 1: skill-learner hook fired recently (any session-signals file <7 days)
+    local signals_dir="${state_dir}/session-signals"
+    if [[ -d "$signals_dir" ]]; then
+        local newest_signal
+        newest_signal=$(find "$signals_dir" -name "*.jsonl" -newer "${state_dir}/.readiness-checked" 2>/dev/null | head -1)
+        local oldest_allowed=$(( now - 7 * 86400 ))
+        local signal_found=false
+        while IFS= read -r f; do
+            local mtime
+            mtime=$(stat -c %Y "$f" 2>/dev/null || echo 0)
+            if [[ "$mtime" -gt "$oldest_allowed" ]]; then
+                signal_found=true
+                break
+            fi
+        done < <(find "$signals_dir" -name "*.jsonl" 2>/dev/null)
+        if [[ "$signal_found" == false ]]; then
+            issues+=("session-signals empty or stale (>7 days)")
+        fi
+    else
+        issues+=("session-signals dir missing — session-signals.sh hook not firing")
+    fi
+
+    # Check 2: skill candidates populated since last curation run
+    local curation_log="${state_dir}/curation-log.yaml"
+    local candidates="${state_dir}/candidates/skill-candidates.md"
+    if [[ -f "$curation_log" && -f "$candidates" ]]; then
+        local last_run
+        last_run=$(grep 'last_run:' "$curation_log" 2>/dev/null | grep -v 'null' | sed 's/.*last_run:[[:space:]]*//')
+        if [[ -z "$last_run" || "$last_run" == "null" ]]; then
+            info+=("R-SKILLS: Skills curation not yet run — invoke /skills-curation to start")
+        fi
+    fi
+
+    # Check 3: new skills committed in last 7 days
+    local skills_dir="${WORKSPACE_HUB}/.claude/skills"
+    if [[ -d "$skills_dir" ]]; then
+        local recent_skill_commits
+        recent_skill_commits=$(git -C "$WORKSPACE_HUB" log --since="7 days ago" --oneline -- ".claude/skills/" 2>/dev/null | wc -l | tr -d ' ')
+        if [[ "$recent_skill_commits" -eq 0 ]]; then
+            issues+=("no skill commits in last 7 days — pipeline may be idle")
+        else
+            info+=("R-SKILLS: ${recent_skill_commits} skill commit(s) in last 7 days")
+        fi
+    fi
+
+    if [[ ${#issues[@]} -gt 0 ]]; then
+        warnings+=("R-SKILLS: ${#issues[@]} skills pipeline issue(s)")
+        for i in "${issues[@]}"; do
+            fixes+=("  Gap: $i")
+        done
+        fixes+=("  Action: Check session-signals.sh stop hook is registered; run /skills-curation manually")
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Run all checks
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 check_memory
@@ -292,6 +355,7 @@ check_codex_settings_sync
 check_stale_model_ids
 check_model_registry_age
 check_cross_provider_rules
+check_skills_pipeline_health
 
 # --- Terminal output ---
 if [[ ${#warnings[@]} -gt 0 ]]; then
