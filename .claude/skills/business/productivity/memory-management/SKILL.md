@@ -7,6 +7,9 @@ last_updated: 2026-02-03
 source: https://github.com/anthropics/knowledge-work-plugins
 related_skills:
   - task-management
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Memory Management

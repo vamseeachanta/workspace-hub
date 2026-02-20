@@ -6,6 +6,9 @@ author: workspace-hub
 category: subject-matter-expert
 tags: [mooring, catenary, taut-mooring, offshore, fpso, station-keeping, api-rp-2sk, dnv]
 platforms: [engineering]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Mooring Analysis SME Skill

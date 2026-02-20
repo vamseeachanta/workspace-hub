@@ -11,6 +11,9 @@ related_skills:
   - canned-responses
   - legal-risk-assessment
   - meeting-briefing
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Contract Review Skill Documentation

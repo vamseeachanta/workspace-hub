@@ -24,6 +24,8 @@ related_skills:
   - docker
   - cli-productivity
   - github-actions
+requires: []
+see_also: []
 ---
 
 # Git Advanced Skill

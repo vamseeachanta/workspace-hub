@@ -9,6 +9,9 @@ related_skills:
   - content-strategy
   - lead-generation
   - seo-optimizer
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Competitive Analysis Skill

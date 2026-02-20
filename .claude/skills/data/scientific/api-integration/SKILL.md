@@ -3,6 +3,9 @@ name: api-integration
 version: "1.0.0"
 category: data
 description: "API Integration Skill"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # API Integration Skill

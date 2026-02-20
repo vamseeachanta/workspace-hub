@@ -13,6 +13,7 @@ triggers:
 - Pydantic OrcaFlex
 - OrcaFlex YAML gotcha
 - OrcaFlex SaveData
+canonical_ref: "engineering/marine-offshore/orcaflex-yaml-gotchas"
 ---
 # OrcaFlex YAML Gotchas
 

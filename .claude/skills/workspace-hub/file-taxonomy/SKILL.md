@@ -5,6 +5,9 @@ category: workspace
 description: "Canonical decision tree for where to place output files across the workspace-hub ecosystem including reports, results, data, and cache directories."
 invocation: /file-taxonomy
 applies-to: [claude, codex, gemini]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # File Taxonomy — Where Does This File Go?

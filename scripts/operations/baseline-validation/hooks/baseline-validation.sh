@@ -222,7 +222,7 @@ run_baseline_tests() {
     if [[ ${#py_files[@]} -gt 0 ]]; then
         info_msg "Testing ${#py_files[@]} Python files"
 
-        local python_test_cmd="python -m pytest --baseline-check ${py_files[*]} 2>/dev/null || python -m flake8 ${py_files[*]}"
+        local python_test_cmd="uv run --no-project --quiet python -m pytest --baseline-check ${py_files[*]} 2>/dev/null || uv run --no-project --quiet python -m flake8 ${py_files[*]}"
 
         if retry_command "$python_test_cmd" "Python baseline tests"; then
             success_msg "Python tests passed"
@@ -233,7 +233,7 @@ run_baseline_tests() {
             # Try auto-fix if enabled
             if [[ "$AUTO_FIX" == "true" ]]; then
                 info_msg "Attempting auto-fix for Python files"
-                if retry_command "python -m black ${py_files[*]}" "Auto-fix Python"; then
+                if retry_command "uv run --no-project --quiet python -m black ${py_files[*]}" "Auto-fix Python"; then
                     success_msg "Python auto-fix applied successfully"
                 else
                     warning_msg "Python auto-fix failed"

@@ -11,6 +11,9 @@ trigger: manual
 auto_execute: false
 tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
 related_skills: [orcaflex-specialist, structural-analysis, mooring-analysis, hydrodynamic-analysis]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # FE Analyst Skill — Slender Structure Analysis

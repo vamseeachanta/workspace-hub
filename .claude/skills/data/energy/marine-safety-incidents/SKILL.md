@@ -1,6 +1,9 @@
 ---
 name: marine-safety-incidents
 description: Collect, analyze, and report marine safety incident data from 7 global maritime authorities. Use for incident scraping, safety trend analysis, risk assessment, geographic hotspot identification, and marine safety reporting.
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Marine Safety Incidents Skill

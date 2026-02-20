@@ -15,6 +15,9 @@ triggers:
 - sea state
 - environmental loading
 - seabed properties
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Environment Configuration Skill
 

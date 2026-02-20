@@ -8,6 +8,9 @@ related_skills:
   - frontend-design
   - brand-guidelines
   - canvas-design
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Theme Factory Skill

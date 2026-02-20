@@ -6,6 +6,9 @@ author: workspace-hub
 category: subject-matter-expert
 tags: [fatigue, s-n-curve, rainflow-counting, miners-rule, dnv, mooring-fatigue, structural-fatigue]
 platforms: [engineering]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Fatigue Analysis SME Skill

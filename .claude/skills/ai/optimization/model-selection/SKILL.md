@@ -3,6 +3,9 @@ name: model-selection
 version: "1.0.0"
 category: ai
 description: "Model Selection Skill"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Model Selection Skill

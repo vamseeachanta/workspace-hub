@@ -28,6 +28,8 @@ hooks:
   post: |
     echo "Specification phase complete"
     memory_store "spec_complete_$(date +%s)" "Specification documented"
+requires: []
+see_also: []
 ---
 
 # SPARC Specification Agent

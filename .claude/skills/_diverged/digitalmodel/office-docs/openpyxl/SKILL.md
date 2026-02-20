@@ -23,6 +23,7 @@ related_skills:
   - pandas-data-processing
   - python-docx
   - plotly
+canonical_ref: "data/office/openpyxl"
 ---
 
 # Openpyxl Excel Automation Skill

@@ -29,6 +29,7 @@ related_skills:
   - pandas-data-processing
   - polars
   - great-tables
+canonical_ref: "data/analysis/sweetviz"
 ---
 
 # Sweetviz EDA Comparison Skill

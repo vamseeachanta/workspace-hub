@@ -20,6 +20,9 @@ triggers:
 - .LIS files
 - .DAT files
 - .MES files
+capabilities: []
+requires: []
+see_also: []
 ---
 # AQWA Analysis Skill
 

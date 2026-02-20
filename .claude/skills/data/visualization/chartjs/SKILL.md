@@ -6,6 +6,9 @@ author: workspace-hub
 category: data-visualization
 tags: [charts, chartjs, simple, quick, responsive, canvas]
 platforms: [web, javascript]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Chart.js Quick Charting Skill

@@ -11,6 +11,9 @@ related_skills:
   - competitive-intelligence
   - create-an-asset
   - draft-outreach
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Daily Sales Briefing Skill Overview

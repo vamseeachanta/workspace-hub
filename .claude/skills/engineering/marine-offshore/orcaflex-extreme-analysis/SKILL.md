@@ -15,6 +15,9 @@ triggers:
 - maximum response
 - associated values
 - peak extraction
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Extreme Analysis Skill
 

@@ -16,6 +16,9 @@ triggers:
 - critical headings
 - wave scatter
 - annual downtime
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Operability Analysis Skill
 

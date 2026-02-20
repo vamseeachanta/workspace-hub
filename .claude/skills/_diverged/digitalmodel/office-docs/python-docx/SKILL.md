@@ -23,6 +23,7 @@ related_skills:
   - docx-templates
   - pypdf
   - openpyxl
+canonical_ref: "data/office/python-docx"
 ---
 
 # Python-docx Word Document Automation Skill

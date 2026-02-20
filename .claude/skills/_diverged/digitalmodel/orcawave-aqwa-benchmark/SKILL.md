@@ -15,6 +15,7 @@ triggers:
 - panel method benchmark
 - added mass comparison
 - damping comparison
+canonical_ref: "engineering/marine-offshore/orcawave-aqwa-benchmark"
 ---
 
 # OrcaWave-AQWA Benchmark Skill

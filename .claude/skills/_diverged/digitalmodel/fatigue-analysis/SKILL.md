@@ -4,6 +4,7 @@ description: Perform fatigue analysis using S-N curves and damage accumulation m
   Supports 221 S-N curves from 17 international standards (DNV, API, BS, ABS, etc.)
   for marine and offshore structural components.
 updated: '2026-01-07'
+canonical_ref: "engineering/marine-offshore/fatigue-analysis"
 ---
 # Fatigue Analysis Skill
 

@@ -67,6 +67,7 @@ Agents on-demand: `.claude/agent-library/<category>/<agent>.md`
 - Symlinks require admin — fall back to README cross-references or `core.symlinks false`
 - MINGW root path: `while [ "$(pwd)" != / ]` loops never terminate — use `WORKSPACE_HUB` env var
 - Test all bash scripts for Git Bash (MINGW64) + Linux compatibility
+- **Always save work queue files as UTF-8 (no BOM)** — UTF-16 (Windows Notepad default) crashes `generate-index.py`
 
 ## Edit Safety
 
@@ -128,6 +129,11 @@ skills/data/|polars|pandas|numpy|plotly|pdf|document-rag-pipeline
 skills/dev/|github-pr-manager|github-code-review|sparc-*|testing-tdd-london
 skills/ops/|docker|github-actions|uv-package-manager
 ```
+
+## Session Start Protocol
+
+At the start of every new session, run `/session-start` before responding to any work request.
+This surfaces readiness warnings, quota status, and the top 3 pending items.
 
 ---
 

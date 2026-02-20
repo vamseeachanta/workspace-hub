@@ -27,6 +27,8 @@ related_skills:
   - polars
   - plotly
   - streamlit
+requires: []
+see_also: []
 ---
 
 # AutoViz Automatic EDA Skill

@@ -8,6 +8,9 @@ related_skills:
   - internal-comms
   - canvas-design
   - algorithmic-art
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Slack GIF Creator Skill

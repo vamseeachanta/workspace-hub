@@ -9,6 +9,9 @@ related_skills:
   - semantic-search-setup
   - pdf-text-extractor
   - document-rag-pipeline
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # RAG System Builder Skill
@@ -34,7 +37,7 @@ query_embedding = model.encode(query, normalize_embeddings=True)
 
 # Generate answer
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-4-6",
     max_tokens=1024,
     messages=[{"role": "user", "content": f"Context: {context}\n\nQuestion: {query}"}]
 )
@@ -214,7 +217,7 @@ ANSWER:"""
     def _query_claude(self, prompt):
         client = anthropic.Anthropic()
         response = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-4-6",
             max_tokens=1024,
             messages=[{"role": "user", "content": prompt}]
         )
@@ -501,7 +504,7 @@ def query_streaming(self, question, top_k=5):
 
     # Anthropic streaming
     with anthropic.Anthropic().messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-4-6",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:

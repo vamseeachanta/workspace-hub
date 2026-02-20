@@ -18,6 +18,9 @@ triggers:
 - marine CAD
 - .FCStd files
 - Python scripting CAD
+capabilities: []
+requires: []
+see_also: []
 ---
 # FreeCAD Automation Skill
 

@@ -32,6 +32,8 @@ hooks:
   post: |
     echo "📋 Test results summary:"
     npm test -- --reporter=json 2>/dev/null | jq '.numPassedTests, .numFailedTests' 2>/dev/null || echo "Tests completed"
+requires: []
+see_also: []
 ---
 
 # Core Tester Skill

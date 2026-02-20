@@ -7,7 +7,7 @@
     "CLAUDE_FLOW_REMOTE_EXECUTION": "false",
     "CLAUDE_FLOW_CHECKPOINTS_ENABLED": "true",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "MAX_TEAMMATES": "3"
+    "MAX_TEAMMATES": "5"
   },
   "permissions": {
     "allow": [

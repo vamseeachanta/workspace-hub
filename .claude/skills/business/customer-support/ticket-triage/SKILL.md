@@ -10,6 +10,9 @@ related_skills:
   - response-drafting
   - escalation
   - knowledge-management
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Ticket Triage Skill Summary

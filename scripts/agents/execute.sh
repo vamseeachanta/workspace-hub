@@ -7,16 +7,21 @@ source "$AGENTS_DIR/lib/workflow-guards.sh"
 provider=""
 wrk_id=""
 phase=""
+model_override=""
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --provider) provider="$2"; shift 2 ;;
-        --phase) phase="$2"; shift 2 ;;
-        WRK-*) wrk_id="$1"; shift ;;
+        --provider)       provider="$2";       shift 2 ;;
+        --phase)          phase="$2";          shift 2 ;;
+        --model-override) model_override="$2"; shift 2 ;;
+        WRK-*)            wrk_id="$1";          shift   ;;
         *) echo "Unknown arg: $1" >&2; exit 2 ;;
     esac
 done
 
-[[ -z "$provider" || -z "$wrk_id" ]] && { echo "Usage: execute.sh --provider <p> [--phase <phase_N>] WRK-###" >&2; exit 2; }
+[[ -z "$provider" || -z "$wrk_id" ]] && {
+    echo "Usage: execute.sh --provider <p> [--phase <phase_N>] [--model-override <model>] WRK-###" >&2
+    exit 2
+}
 assert_provider "$provider"
 assert_plan_approved_or_fail "$wrk_id"
 wrk_claim "$wrk_id" || exit $?
@@ -72,12 +77,22 @@ if ! _provider_available "$assigned"; then
     fi
 fi
 
+# ── Model resolution for Claude (WRK-207) ───────────────────────────
+# Resolve model and pass --model flag when dispatching to claude.sh.
+claude_model_args=()
+if [[ "$assigned" == "claude" ]]; then
+    model_key="$(wrk_resolve_model_for_phase "$wrk_file" "execute" "$model_override")"
+    model_id="$(wrk_get_claude_model_id "$model_key")"
+    claude_model_args=(--model "$model_id")
+    echo "Claude model for execute phase: $model_key ($model_id)"
+fi
+
 if [[ -n "$phase" ]]; then
     echo "Dispatching $wrk_id ($phase) to provider: $assigned"
 else
     echo "Dispatching $wrk_id to provider: $assigned"
 fi
-"$AGENTS_DIR/providers/${assigned}.sh" execute "$wrk_file"
+"$AGENTS_DIR/providers/${assigned}.sh" execute "$wrk_file" "${claude_model_args[@]}"
 
 # If dual-agent mode, also dispatch alt provider
 alt=$(wrk_get_frontmatter_value "$wrk_file" "provider_alt")

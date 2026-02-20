@@ -15,6 +15,9 @@ triggers:
 - vessel properties
 - vessel initialization
 - AQWA vessel import
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Vessel Setup Skill
 

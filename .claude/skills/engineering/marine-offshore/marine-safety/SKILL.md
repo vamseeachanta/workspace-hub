@@ -3,6 +3,9 @@ name: marine-safety
 version: "1.0.0"
 category: engineering
 description: "Marine Safety & Integrity Specialist"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Marine Safety & Integrity Specialist

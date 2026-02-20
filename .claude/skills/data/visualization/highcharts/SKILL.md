@@ -6,6 +6,9 @@ author: workspace-hub
 category: data-visualization
 tags: [charts, highcharts, enterprise, stock, maps, accessibility]
 platforms: [web, javascript, typescript]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Highcharts Enterprise Charting Skill

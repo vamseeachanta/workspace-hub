@@ -6,6 +6,9 @@ author: workspace-hub
 category: programming
 tags: [numpy, numerical-analysis, matrix-operations, fft, linear-algebra, engineering]
 platforms: [python]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # NumPy Numerical Analysis Skill

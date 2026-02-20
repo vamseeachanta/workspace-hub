@@ -19,6 +19,8 @@ tools:
 related_skills:
   - repo-readiness
   - python-project-template
+requires: []
+see_also: []
 ---
 
 # Agent OS Framework

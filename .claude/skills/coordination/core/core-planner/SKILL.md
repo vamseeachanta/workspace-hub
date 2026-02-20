@@ -27,6 +27,8 @@ hooks:
   post: |
     echo "✅ Planning complete"
     memory_store "planner_end_$(date +%s)" "Completed planning: $TASK"
+requires: []
+see_also: []
 ---
 
 # Core Planner Skill

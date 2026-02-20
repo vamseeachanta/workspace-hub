@@ -23,6 +23,7 @@ related_skills:
   - python-docx
   - reportlab
   - pillow
+canonical_ref: "data/office/pypdf"
 ---
 
 # PyPDF PDF Manipulation Skill

@@ -5,6 +5,7 @@ description: Perform structural analysis including stress calculations, buckling
   standards. Covers Von Mises stress, plate buckling, member capacity, pipeline
   wall thickness assessment, and safety factor reporting.
 updated: '2026-02-15'
+canonical_ref: "engineering/marine-offshore/structural-analysis"
 ---
 # Structural Analysis Skill
 

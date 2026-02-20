@@ -6,6 +6,9 @@ author: workspace-hub
 category: data-visualization
 tags: [charts, plotly, scientific, 3d, interactive, python, javascript]
 platforms: [web, python, r]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Plotly Interactive Visualization Skill

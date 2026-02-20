@@ -3,6 +3,9 @@ name: usage-optimization
 version: "1.0.0"
 category: ai
 description: "Usage Optimization Skill"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Usage Optimization Skill

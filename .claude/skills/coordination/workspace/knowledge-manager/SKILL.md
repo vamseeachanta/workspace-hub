@@ -15,7 +15,7 @@ capabilities:
   - confidence-decay
   - index-rebuild
 tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
-related_skills: [claude-reflect, work-queue, repo-capability-map, knowledge-base-system]
+related_skills: [claude-reflect, improve, work-queue, repo-capability-map, knowledge-base-system, skills-knowledge-graph]
 scripts:
   - scripts/knowledge-index.sh
   - scripts/knowledge-capture.sh
@@ -23,6 +23,8 @@ scripts:
   - scripts/knowledge-advise.sh
   - scripts/knowledge-review.sh
   - scripts/knowledge-stats.sh
+requires: []
+see_also: []
 ---
 
 # Knowledge Manager

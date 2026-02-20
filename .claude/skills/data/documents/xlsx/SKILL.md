@@ -8,6 +8,9 @@ related_skills:
   - docx
   - pptx
   - pdf
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # XLSX Processing Skill

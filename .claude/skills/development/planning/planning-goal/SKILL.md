@@ -28,6 +28,8 @@ hooks:
     echo "Analyzing current state and goal state..."
   post: |
     echo "GOAP planning complete - action sequence generated"
+requires: []
+see_also: []
 ---
 
 # Goal-Oriented Action Planning (GOAP)

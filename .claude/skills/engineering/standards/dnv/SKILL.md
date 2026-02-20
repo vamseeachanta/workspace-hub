@@ -3,6 +3,9 @@ name: dnv
 version: "1.0.0"
 category: engineering
 description: "DNV Standards Specialist"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # DNV Standards Specialist

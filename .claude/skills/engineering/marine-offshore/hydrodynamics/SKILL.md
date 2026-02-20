@@ -4,6 +4,9 @@ description: "Manage hydrodynamic coefficients, wave spectra, and environmental 
   \ for vessel response analysis. Use for 6\xD76 matrix management, wave spectrum\
   \ modeling, OCIMF loading calculations, and RAO interpolation."
 updated: '2026-01-07'
+capabilities: []
+requires: []
+see_also: []
 ---
 # Hydrodynamics Skill
 

@@ -11,6 +11,9 @@ related_skills:
   - financial-statements
   - variance-analysis
   - close-management
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Audit Support

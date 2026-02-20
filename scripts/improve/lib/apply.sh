@@ -4,6 +4,7 @@
 
 phase_apply() {
     local guarded="${IMPROVE_WORKDIR}/guarded.json"
+    local api_enhance="${IMPROVE_API_ENHANCE:-false}"
 
     [[ "$DRY_RUN" == "true" ]] && { echo "improve/apply: dry-run mode, skipping writes"; return 0; }
 
@@ -41,15 +42,35 @@ phase_apply() {
                 fi
                 ;;
             enhance)
-                # For enhancements, append to the file
                 if [[ -f "$full_path" ]]; then
-                    {
-                        echo ""
-                        echo "<!-- improve: ${DATE_TAG} -->"
-                        echo "$content"
-                    } >> "$full_path"
-                    applied=$((applied + 1))
-                    echo "improve/apply: enhanced ${target_file}"
+                    if [[ "$api_enhance" == "true" ]]; then
+                        # Context-aware enhancement via API
+                        local current_content
+                        current_content=$(head -100 "$full_path" 2>/dev/null || true)
+                        local enhance_prompt
+                        enhance_prompt="You are editing a markdown file. Here is the current content:\n\n${current_content}\n\nProposed improvement to integrate:\n${content}\n\nReturn ONLY the new content to append (2-4 lines max), properly integrated with the existing style. No markdown fences."
+                        local api_content
+                        # Source classify.sh for call_anthropic_api if not already loaded
+                        [[ $(type -t call_anthropic_api) != function ]] && \
+                            source "$(dirname "${BASH_SOURCE[0]}")/classify.sh" 2>/dev/null || true
+                        api_content=$(call_anthropic_api "$enhance_prompt" 500 2>/dev/null || echo "$content")
+                        [[ -z "$api_content" ]] && api_content="$content"
+                        {
+                            echo ""
+                            echo "<!-- improve: ${DATE_TAG} -->"
+                            echo "$api_content"
+                        } >> "$full_path"
+                        applied=$((applied + 1))
+                        echo "improve/apply: enhanced ${target_file} (api-enhance)"
+                    else
+                        {
+                            echo ""
+                            echo "<!-- improve: ${DATE_TAG} -->"
+                            echo "$content"
+                        } >> "$full_path"
+                        applied=$((applied + 1))
+                        echo "improve/apply: enhanced ${target_file}"
+                    fi
                 fi
                 ;;
             create)

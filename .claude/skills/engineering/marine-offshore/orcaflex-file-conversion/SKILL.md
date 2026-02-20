@@ -15,6 +15,9 @@ triggers:
 - OrcaFlex file format conversion
 - batch OrcaFlex conversion
 - digitally analyze OrcaFlex files
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex File Conversion Skill
 

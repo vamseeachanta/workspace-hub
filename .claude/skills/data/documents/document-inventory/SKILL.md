@@ -8,6 +8,9 @@ related_skills:
   - knowledge-base-builder
   - pdf-text-extractor
   - semantic-search-setup
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Document Inventory Skill

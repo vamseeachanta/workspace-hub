@@ -32,16 +32,29 @@ call_anthropic_api() {
     fi
 
     local response
-    response=$(curl -s --max-time 30 "https://api.anthropic.com/v1/messages" \
-        -H "Content-Type: application/json" \
-        -H "${auth_header}: ${auth_value}" \
-        -H "anthropic-version: 2023-06-01" \
-        -d "$(jq -n \
-            --arg model "$model" \
-            --arg prompt "$prompt" \
-            --argjson max_tokens "$max_tokens" \
-            '{model: $model, max_tokens: $max_tokens,
-              messages: [{role: "user", content: $prompt}]}')" 2>/dev/null)
+    local attempt=0
+    while [[ $attempt -lt 2 ]]; do
+        response=$(curl -s --max-time 45 "https://api.anthropic.com/v1/messages" \
+            -H "Content-Type: application/json" \
+            -H "${auth_header}: ${auth_value}" \
+            -H "anthropic-version: 2023-06-01" \
+            -d "$(jq -n \
+                --arg model "$model" \
+                --arg prompt "$prompt" \
+                --argjson max_tokens "$max_tokens" \
+                '{model: $model, max_tokens: $max_tokens,
+                  messages: [{role: "user", content: $prompt}]}')" 2>/dev/null)
+        # Check for valid content response
+        if echo "$response" | jq -e '.content[0].text' >/dev/null 2>&1; then
+            break
+        fi
+        # Log error and retry
+        local err_type
+        err_type=$(echo "$response" | jq -r '.error.type // "unknown"' 2>/dev/null)
+        echo "improve/classify: API attempt $((attempt+1)) failed (${err_type}) — retrying in 5s" >&2
+        attempt=$((attempt + 1))
+        [[ $attempt -lt 2 ]] && sleep 5
+    done
 
     # Extract text content
     echo "$response" | jq -r '.content[0].text // empty' 2>/dev/null

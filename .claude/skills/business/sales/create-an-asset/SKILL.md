@@ -11,6 +11,9 @@ related_skills:
   - competitive-intelligence
   - daily-briefing
   - draft-outreach
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Create an Asset -- Skill Documentation

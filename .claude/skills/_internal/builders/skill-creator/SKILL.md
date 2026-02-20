@@ -8,6 +8,8 @@ related_skills:
   - session-start-routine
   - sparc-workflow
   - mcp-builder
+  - skill-learner
+  - improve
 ---
 
 # Skill Creator Skill
@@ -498,7 +500,8 @@ During creation:
 After creation:
 - [ ] Skill triggers correctly when invoked
 - [ ] Code examples tested and working
-- [ ] Related skills referenced
+- [ ] Related skills referenced in new skill's frontmatter
+- [ ] **Existing related skills updated** — search for skills that overlap or compose with this one; add this skill to their `related_skills:` frontmatter (bidirectional linking is mandatory)
 - [ ] Version history added
 
 ## Skill Quality Checklist

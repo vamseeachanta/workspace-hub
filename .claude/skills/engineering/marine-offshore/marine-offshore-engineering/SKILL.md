@@ -6,6 +6,9 @@ author: workspace-hub
 category: subject-matter-expert
 tags: [marine-engineering, offshore, fpso, platforms, subsea, regulations, dnv, api]
 platforms: [engineering]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Marine and Offshore Engineering SME Skill

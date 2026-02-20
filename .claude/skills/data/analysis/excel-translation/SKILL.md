@@ -3,6 +3,9 @@ name: excel-translation
 version: "1.0.0"
 category: data
 description: "Excel Translation Skill"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Excel Translation Skill

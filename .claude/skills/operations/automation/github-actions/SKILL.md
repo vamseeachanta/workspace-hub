@@ -24,6 +24,8 @@ related_skills:
   - yaml-configuration
   - bash-cli-framework
   - git-sync-manager
+requires: []
+see_also: []
 ---
 
 # GitHub Actions Skill

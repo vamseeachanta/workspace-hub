@@ -26,6 +26,7 @@ related_skills:
   - ydata-profiling
   - streamlit
   - plotly
+canonical_ref: "data/analysis/great-tables"
 ---
 
 # Great Tables Publication-Quality Tables Skill

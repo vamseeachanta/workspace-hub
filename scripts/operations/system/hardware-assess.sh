@@ -546,17 +546,17 @@ main() {
                 rm -f "$tmp_file"
                 log_warn "jq pretty-print failed, keeping compact JSON"
             fi
-        elif command -v python3 &>/dev/null; then
+        elif command -v uv &>/dev/null; then
             local tmp_file="${OUTPUT_FILE}.tmp"
-            if python3 -m json.tool "$OUTPUT_FILE" > "$tmp_file" 2>/dev/null; then
+            if uv run --no-project --quiet python -m json.tool "$OUTPUT_FILE" > "$tmp_file" 2>/dev/null; then
                 mv "$tmp_file" "$OUTPUT_FILE"
-                log_info "Pretty-printed with python3"
+                log_info "Pretty-printed with uv (python -m json.tool)"
             else
                 rm -f "$tmp_file"
-                log_warn "python3 pretty-print failed, keeping compact JSON"
+                log_warn "uv python pretty-print failed, keeping compact JSON"
             fi
         else
-            log_warn "--pretty requested but neither jq nor python3 available"
+            log_warn "--pretty requested but neither jq nor uv available"
         fi
     fi
 

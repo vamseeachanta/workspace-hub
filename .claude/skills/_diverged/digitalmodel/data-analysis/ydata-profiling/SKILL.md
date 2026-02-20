@@ -28,6 +28,7 @@ related_skills:
   - polars
   - great-tables
   - streamlit
+canonical_ref: "data/analysis/ydata-profiling"
 ---
 
 # YData Profiling Data Quality Skill

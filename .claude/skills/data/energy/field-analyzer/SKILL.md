@@ -1,6 +1,9 @@
 ---
 name: field-analyzer
 description: Field Analyzer (user)
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Field Analyzer Skill

@@ -21,6 +21,16 @@ triggers:
 - DNV-RP-B401
 - coating breakdown
 - stray current
+- fitness for service
+- FFS assessment
+- API 579
+- corrosion damage assessment
+- remaining life
+see_also:
+  - engineering/asset-integrity/fitness-for-service  # WRK-206: CP prevents corrosion; FFS assesses damage once it occurs
+  - engineering/marine-offshore/risk-assessment
+capabilities: []
+requires: []
 ---
 # Cathodic Protection Skill
 

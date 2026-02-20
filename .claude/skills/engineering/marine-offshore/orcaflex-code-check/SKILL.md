@@ -15,6 +15,9 @@ triggers:
 - safety factor
 - capacity check
 - design verification
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex Code Check Skill
 

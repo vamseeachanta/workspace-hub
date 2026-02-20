@@ -10,6 +10,9 @@ related_skills:
   - brainstorming
   - subagent-driven
   - parallel-dispatch
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Writing Plans Skill

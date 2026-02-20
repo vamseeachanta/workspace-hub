@@ -23,6 +23,8 @@ related_skills:
   - pandas-data-processing
   - python-docx
   - plotly
+requires: []
+see_also: []
 ---
 
 # Openpyxl Excel Automation Skill

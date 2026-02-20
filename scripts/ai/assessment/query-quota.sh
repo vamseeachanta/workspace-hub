@@ -3,6 +3,9 @@
 # ABOUTME: Reads local data sources for Claude, Codex, and Gemini CLIs
 set -euo pipefail
 
+# Skip in subagent context — quota logging is a main-session concern only
+[[ "${CLAUDE_SUBAGENT:-0}" == "1" ]] && exit 0
+
 CACHE_FILE="${HOME}/.cache/agent-quota.json"
 CACHE_TTL_SEC=900  # 15 minutes
 USAGE_LOG_DIR="${HOME}/.agent-usage"
@@ -37,6 +40,57 @@ Usage:
   query-quota.sh --log        Log current snapshot to weekly log
   query-quota.sh --weekly     Show weekly summary from log
 EOF
+}
+
+# --- Portable OS helpers ---
+
+# Portable file modification time (seconds since epoch)
+file_mtime() {
+    stat -c %Y "$1" 2>/dev/null || stat -f %m "$1" 2>/dev/null || echo 0
+}
+
+# Portable ISO-8601 datetime (YYYY-MM-DDTHH:MM:SS+TZ)
+iso_now() {
+    date -Iseconds 2>/dev/null || date +%Y-%m-%dT%H:%M:%S%z
+}
+
+# Portable midnight timestamp for today (seconds since epoch)
+today_midnight_ts() {
+    local today
+    today=$(date +%Y-%m-%d)
+    # GNU date
+    date -d "${today} 00:00:00" +%s 2>/dev/null && return
+    # macOS/BSD date
+    date -j -f "%Y-%m-%d %H:%M:%S" "${today} 00:00:00" +%s 2>/dev/null && return
+    # Pure arithmetic fallback: current time minus seconds since midnight
+    local h m s
+    h=$(date +%H); m=$(date +%M); s=$(date +%S)
+    echo $(( $(date +%s) - h*3600 - m*60 - s ))
+}
+
+# Portable last-Monday date string (YYYY-MM-DD)
+last_monday_date() {
+    # %u: 1=Mon ... 7=Sun (POSIX-ish, works on GNU and macOS)
+    local dow days_back
+    dow=$(date +%u 2>/dev/null || date +%w)  # %u preferred; %w=0 on Sun
+    # Normalise: if %w gave us Sun=0, convert to 7
+    [[ "$dow" == "0" ]] && dow=7
+    days_back=$(( dow - 1 ))          # days since Monday (0 if today is Mon)
+    (( days_back == 0 )) && days_back=7  # "last" Monday, not today
+    # GNU date
+    date -d "-${days_back} days" +%Y-%m-%d 2>/dev/null && return
+    # macOS/BSD date
+    date -v-${days_back}d +%Y-%m-%d 2>/dev/null && return
+    # Fallback: 7-day window
+    date -d "-7 days" +%Y-%m-%d 2>/dev/null || date -v-7d +%Y-%m-%d
+}
+
+# Portable touch-to-midnight (for day-marker files)
+touch_midnight() {
+    local marker="$1" today="$2"
+    touch -d "${today} 00:00:00" "$marker" 2>/dev/null && return
+    # macOS: -t YYYYMMDDhhmm
+    touch -t "$(echo "${today}" | tr -d '-')0000" "$marker" 2>/dev/null || true
 }
 
 # --- Data collection functions ---
@@ -133,7 +187,7 @@ query_claude() {
 query_codex() {
     local history_file="${HOME}/.codex/history.jsonl"
     local today_ts
-    today_ts=$(date -d "today 00:00:00" +%s 2>/dev/null || date +%s)
+    today_ts=$(today_midnight_ts)
 
     local messages=0
     if [[ -f "$history_file" ]]; then
@@ -174,8 +228,7 @@ query_gemini() {
 
     # Fallback: count session files created today
     if (( messages == 0 )); then
-        [[ ! -f /tmp/.gemini-day-marker ]] && \
-            touch -d "$today 00:00:00" /tmp/.gemini-day-marker 2>/dev/null || true
+        [[ ! -f /tmp/.gemini-day-marker ]] && touch_midnight /tmp/.gemini-day-marker "$today"
         messages=$(find "${HOME}/.config/gemini/tmp" -maxdepth 1 \
             -newer /tmp/.gemini-day-marker -type f 2>/dev/null | wc -l)
     fi
@@ -199,7 +252,7 @@ query_gemini() {
 is_cache_fresh() {
     [[ -f "$CACHE_FILE" ]] || return 1
     local cache_age
-    cache_age=$(( $(date +%s) - $(stat -c %Y "$CACHE_FILE" 2>/dev/null || echo 0) ))
+    cache_age=$(( $(date +%s) - $(file_mtime "$CACHE_FILE") ))
     (( cache_age < CACHE_TTL_SEC ))
 }
 
@@ -297,7 +350,7 @@ log_snapshot() {
 
     local entry
     entry=$(jq -cn \
-        --arg ts "$(date -Iseconds)" \
+        --arg ts "$(iso_now)" \
         --argjson agents "$(echo "$data" | jq -c '.agents')" \
         '{ timestamp: $ts, agents: $agents }')
 
@@ -308,7 +361,7 @@ show_weekly_summary() {
     [[ -f "$USAGE_LOG_FILE" ]] || { echo "No usage log at $USAGE_LOG_FILE"; return 1; }
 
     local week_start
-    week_start=$(date -d "last monday" +%Y-%m-%d 2>/dev/null || date -d "-7 days" +%Y-%m-%d)
+    week_start=$(last_monday_date)
     echo "Weekly Usage Summary (since $week_start):"
     echo ""
     for provider in claude codex gemini; do

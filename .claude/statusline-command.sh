@@ -28,19 +28,35 @@ else
     p=0; w=0; b=0
 fi
 
-# AI usage remaining percentages from cached quota query
+# AI usage remaining percentages
+# Primary: agent-quota-latest.json (OAuth API, week_pct = % used → invert to remaining)
+# Fallback: ~/.cache/agent-quota.json (computed from stats-cache, may be stale)
+quota_primary="$ws_root/config/ai-tools/agent-quota-latest.json"
 quota_cache="${HOME}/.cache/agent-quota.json"
 ai_usage="C:-|O:-|G:-"
-if [[ -f "$quota_cache" ]]; then
-    extract_pct() {
-        jq -r --arg p "$1" '.agents[] | select(.provider == $p) | .pct_remaining // empty' \
+
+extract_pct() {
+    local provider="$1" val
+    if [[ -f "$quota_primary" ]]; then
+        val=$(jq -r --arg p "$provider" \
+            '.agents[] | select(.provider == $p) | .week_pct // empty' \
+            "$quota_primary" 2>/dev/null)
+        if [[ -n "$val" && "$val" != "null" ]]; then
+            awk -v w="$val" 'BEGIN { printf "%d", 100 - w }'
+            return
+        fi
+    fi
+    if [[ -f "$quota_cache" ]]; then
+        jq -r --arg p "$provider" \
+            '.agents[] | select(.provider == $p) | .pct_remaining // empty' \
             "$quota_cache" 2>/dev/null
-    }
-    c_pct=$(extract_pct "claude")
-    o_pct=$(extract_pct "codex")
-    g_pct=$(extract_pct "gemini")
-    ai_usage="C:${c_pct:--}%|O:${o_pct:--}%|G:${g_pct:--}%"
-fi
+    fi
+}
+
+c_pct=$(extract_pct "claude")
+o_pct=$(extract_pct "codex")
+g_pct=$(extract_pct "gemini")
+ai_usage="C:${c_pct:--}%|O:${o_pct:--}%|G:${g_pct:--}%"
 
 # Repo module name (basename of workspace root)
 repo_name=$(basename "$ws_root")

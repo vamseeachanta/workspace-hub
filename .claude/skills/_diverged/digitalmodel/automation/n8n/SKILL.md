@@ -29,6 +29,7 @@ related_skills:
   - github-actions
   - activepieces
   - windmill
+canonical_ref: UNMATCHED
 ---
 
 # n8n Workflow Automation Skill

@@ -10,6 +10,9 @@ related_skills:
   - customer-research
   - response-drafting
   - escalation
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Knowledge Management Skill

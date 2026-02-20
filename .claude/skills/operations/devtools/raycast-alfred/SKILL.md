@@ -29,6 +29,8 @@ related_skills:
   - cli-productivity
   - vscode-extensions
   - git-advanced
+requires: []
+see_also: []
 ---
 
 # Raycast & Alfred Skill

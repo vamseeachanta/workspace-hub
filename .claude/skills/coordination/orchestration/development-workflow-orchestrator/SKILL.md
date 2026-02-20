@@ -3,6 +3,9 @@ name: development-workflow-orchestrator
 version: "1.0.0"
 category: coordination
 description: "Development Workflow Orchestrator"
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Development Workflow Orchestrator

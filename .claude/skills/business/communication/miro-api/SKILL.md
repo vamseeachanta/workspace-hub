@@ -27,6 +27,8 @@ related_skills:
   - slack-api
   - notion-api
   - github-actions
+requires: []
+see_also: []
 ---
 
 # Miro API Skill

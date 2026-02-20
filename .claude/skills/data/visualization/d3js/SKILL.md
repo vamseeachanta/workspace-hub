@@ -6,6 +6,9 @@ author: workspace-hub
 category: data-visualization
 tags: [charts, d3, svg, interactive, custom-viz]
 platforms: [web, javascript]
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # D3.js Data Visualization Skill

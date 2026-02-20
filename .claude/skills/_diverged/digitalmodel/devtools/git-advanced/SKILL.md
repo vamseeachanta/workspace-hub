@@ -24,6 +24,7 @@ related_skills:
   - docker
   - cli-productivity
   - github-actions
+canonical_ref: "operations/devtools/git-advanced"
 ---
 
 # Git Advanced Skill

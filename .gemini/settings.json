@@ -1,0 +1,10 @@
+{
+  "provider": "gemini",
+  "model_ref": "config/agents/model-registry.yaml#gemini.default_model",
+  "focus": "research",
+  "strengths": "research, data analysis, summarization, content, documents",
+  "skills_path": ".gemini/skills",
+  "permissions": {
+    "allow": ["Bash(gemini:*)", "Read(*)", "Write(*)"]
+  }
+}

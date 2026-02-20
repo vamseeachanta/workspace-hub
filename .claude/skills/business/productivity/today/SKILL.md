@@ -7,6 +7,9 @@ last_updated: 2026-01-21
 related_skills:
   - context-management
   - planning
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Today - Daily Productivity Skill

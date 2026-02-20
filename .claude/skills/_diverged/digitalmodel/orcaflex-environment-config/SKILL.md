@@ -15,6 +15,7 @@ triggers:
 - sea state
 - environmental loading
 - seabed properties
+canonical_ref: "engineering/marine-offshore/orcaflex-environment-config"
 ---
 # OrcaFlex Environment Configuration Skill
 

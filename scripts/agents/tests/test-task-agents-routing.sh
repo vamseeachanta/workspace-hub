@@ -151,6 +151,110 @@ assert_eq "resolve: no task_agents + no provider uses fallback" "gemini" "$resul
 result="$(wrk_resolve_phase_provider "$MOCK_WQ/pending/WRK-802.md" "" "codex")"
 assert_eq "resolve: no phase + no provider uses fallback" "codex" "$result"
 
+# ── Tests: wrk_resolve_model_for_phase (WRK-207) ────────────────────
+# Create mock WRK files with different complexity levels
+cat > "$MOCK_WQ/pending/WRK-810.md" <<'EOF'
+---
+id: WRK-810
+title: Simple route A item
+status: pending
+complexity: simple
+---
+
+## Plan
+Simple plan.
+EOF
+
+cat > "$MOCK_WQ/pending/WRK-811.md" <<'EOF'
+---
+id: WRK-811
+title: Medium route B item
+status: pending
+complexity: medium
+---
+
+## Plan
+Medium plan.
+EOF
+
+cat > "$MOCK_WQ/pending/WRK-812.md" <<'EOF'
+---
+id: WRK-812
+title: Complex route C item
+status: pending
+complexity: complex
+---
+
+## Plan
+Complex plan.
+EOF
+
+cat > "$MOCK_WQ/pending/WRK-813.md" <<'EOF'
+---
+id: WRK-813
+title: Unknown complexity item
+status: pending
+complexity: unknown
+---
+
+## Plan
+Unknown plan.
+EOF
+
+echo ""
+echo "=== wrk_resolve_model_for_phase (WRK-207) ==="
+
+# Route A (simple) → sonnet-4-6 for all phases
+result="$(wrk_resolve_model_for_phase "$MOCK_WQ/pending/WRK-810.md" "plan")"
+assert_eq "route_a plan → sonnet-4-6" "sonnet-4-6" "$result"
+
+result="$(wrk_resolve_model_for_phase "$MOCK_WQ/pending/WRK-810.md" "execute")"
+assert_eq "route_a execute → sonnet-4-6" "sonnet-4-6" "$result"
+
+result="$(wrk_resolve_model_for_phase "$MOCK_WQ/pending/WRK-810.md" "review")"
+assert_eq "route_a review → haiku-4-5" "haiku-4-5" "$result"
+
+# Route B (medium) → sonnet-4-6 for all phases
+result="$(wrk_resolve_model_for_phase "$MOCK_WQ/pending/WRK-811.md" "plan")"
+assert_eq "route_b plan → sonnet-4-6" "sonnet-4-6" "$result"
+
+result="$(wrk_resolve_model_for_phase "$MOCK_WQ/pending/WRK-811.md" "execute")"
+assert_eq "route_b execute → sonnet-4-6" "sonnet-4-6" "$result"
+
+# Route C (complex) → opus-4-6 for plan, sonnet-4-6 for execute/review
+result="$(wrk_resolve_model_for_phase "$MOCK_WQ/pending/WRK-812.md" "plan")"
+assert_eq "route_c plan → opus-4-6" "opus-4-6" "$result"
+
+result="$(wrk_resolve_model_for_phase "$MOCK_WQ/pending/WRK-812.md" "execute")"
+assert_eq "route_c execute → sonnet-4-6" "sonnet-4-6" "$result"
+
+result="$(wrk_resolve_model_for_phase "$MOCK_WQ/pending/WRK-812.md" "review")"
+assert_eq "route_c review → sonnet-4-6" "sonnet-4-6" "$result"
+
+# Unknown complexity → route_b default → sonnet-4-6
+result="$(wrk_resolve_model_for_phase "$MOCK_WQ/pending/WRK-813.md" "plan")"
+assert_eq "unknown complexity → sonnet-4-6 fallback" "sonnet-4-6" "$result"
+
+# model_override bypasses routing entirely
+result="$(wrk_resolve_model_for_phase "$MOCK_WQ/pending/WRK-812.md" "plan" "sonnet-4-6")"
+assert_eq "model_override bypasses route_c plan" "sonnet-4-6" "$result"
+
+# ── Tests: wrk_get_claude_model_id (WRK-207) ─────────────────────────
+echo ""
+echo "=== wrk_get_claude_model_id (WRK-207) ==="
+
+result="$(wrk_get_claude_model_id "opus-4-6")"
+assert_eq "opus-4-6 → claude-opus-4-6" "claude-opus-4-6" "$result"
+
+result="$(wrk_get_claude_model_id "sonnet-4-6")"
+assert_eq "sonnet-4-6 → claude-sonnet-4-6" "claude-sonnet-4-6" "$result"
+
+result="$(wrk_get_claude_model_id "haiku-4-5")"
+assert_eq "haiku-4-5 → claude-haiku-4-5" "claude-haiku-4-5" "$result"
+
+result="$(wrk_get_claude_model_id "unknown-key")"
+assert_eq "unknown key → claude-sonnet-4-6 fallback" "claude-sonnet-4-6" "$result"
+
 # ── Provider health check + fallback (Tier 2 gap — WRK-198) ─────────
 DISPATCHER_LIB="$(cd "$AGENTS_DIR/../coordination/routing/lib" && pwd)/agent_dispatcher.sh"
 source "$DISPATCHER_LIB"

@@ -9,6 +9,9 @@ related_skills:
   - content-strategy
   - lead-generation
   - competitive-analysis
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Social Media Marketing Skill

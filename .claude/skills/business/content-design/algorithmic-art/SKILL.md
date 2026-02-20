@@ -8,6 +8,9 @@ related_skills:
   - canvas-design
   - frontend-design
   - web-artifacts-builder
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Algorithmic Art Skill

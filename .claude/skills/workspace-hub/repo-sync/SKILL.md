@@ -1,11 +1,14 @@
 ---
 name: repo-sync
 description: "Smart repository synchronization across workspace-hub ecosystem — diagnoses and fixes pull failures (detached HEAD, diverged branches, uncommitted changes)"
-version: 1.0.0
+version: 1.1.0
 category: workspace-hub
 last_updated: 2026-02-14
 source: internal
 invoke: /repo-sync
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Repo Sync
@@ -43,8 +46,39 @@ Apply the appropriate fix per failure type:
 | Uncommitted changes | `git stash && git pull --no-rebase && git stash pop` |
 | No upstream | Report only, no auto-fix |
 
-### Phase 4: Summary
-Report final status of all repos.
+### Phase 4: Encoding Health Check
+After pulling, run the encoding check against all work queue and skill files
+to surface any Windows-created UTF-16 / CRLF files that came in via the pull:
+
+```bash
+.claude/hooks/check-encoding.sh
+```
+
+This runs in warn-only mode (post-merge behaviour) — it reports bad files but
+does not block. Any files flagged should be converted and committed immediately:
+
+```bash
+# Convert a UTF-16 file to UTF-8
+iconv -f UTF-16 -t UTF-8 <file> | sed 's/\r//' > /tmp/fixed.md
+mv /tmp/fixed.md <file>
+git add <file> && git commit -m "fix(encoding): convert <file> to UTF-8"
+```
+
+### Phase 5: Ecosystem Health + Summary
+After the encoding check, spawn an ecosystem health agent in the background:
+
+```python
+Task(
+    subagent_type="Bash",
+    description="Ecosystem health check",
+    prompt="Run the 14-check suite from /ecosystem-health skill. Report pass/fail/warn for each group.",
+    run_in_background=True
+)
+```
+
+This does not block the pull summary. Report health results alongside repo status.
+
+See `/ecosystem-health` skill for the full check suite and pass conditions.
 
 ## Implementation
 
@@ -106,3 +140,5 @@ Format as markdown table:
 - After fixing submodules, the workspace-hub `git status` will show them as modified (new submodule pointer) — this is expected
 - If `stash pop` fails with conflicts, stop and report to user
 - Use `--no-rebase` on all pulls to avoid rebase surprises on diverged repos
+- **Encoding check runs after every pull** — UTF-16 files from Windows editors
+  crash `generate-index.py` and other parsers silently. Fix immediately on detection.

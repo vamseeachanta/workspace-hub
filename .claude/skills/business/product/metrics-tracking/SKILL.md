@@ -9,6 +9,9 @@ related_skills:
   - feature-spec
   - stakeholder-comms
   - roadmap-management
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Metrics Tracking Skill

@@ -5,6 +5,9 @@ description: Assess vortex-induced vibration (VIV) for risers and tubular member
   analysis, natural frequency calculation, vortex shedding assessment, and tubular
   member fatigue from VIV.
 updated: '2026-01-07'
+capabilities: []
+requires: []
+see_also: []
 ---
 # VIV Analysis Skill
 

@@ -8,6 +8,9 @@ related_skills:
   - algorithmic-art
   - frontend-design
   - theme-factory
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Canvas Design Skill

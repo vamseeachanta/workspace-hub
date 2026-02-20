@@ -17,6 +17,9 @@ triggers:
 - STL to GDF conversion
 - mesh aspect ratio
 - watertight mesh
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # OrcaWave Mesh Generation Skill

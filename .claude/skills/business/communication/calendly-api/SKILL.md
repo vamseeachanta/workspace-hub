@@ -27,6 +27,8 @@ related_skills:
   - slack-api
   - teams-api
   - github-actions
+requires: []
+see_also: []
 ---
 
 # Calendly API Skill

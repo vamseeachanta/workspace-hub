@@ -9,6 +9,9 @@ related_skills:
   - content-strategy
   - content-creation
   - competitive-analysis
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Brand Voice Skill

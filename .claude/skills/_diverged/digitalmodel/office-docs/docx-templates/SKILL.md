@@ -27,6 +27,7 @@ related_skills:
   - python-docx
   - openpyxl
   - pypdf
+canonical_ref: "data/office/docx-templates"
 ---
 
 # Docx-Templates Skill

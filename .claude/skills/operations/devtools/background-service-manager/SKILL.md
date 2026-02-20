@@ -8,6 +8,9 @@ related_skills:
   - pdf-text-extractor
   - semantic-search-setup
   - knowledge-base-builder
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Background Service Manager Skill

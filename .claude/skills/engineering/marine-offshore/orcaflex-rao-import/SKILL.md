@@ -15,6 +15,9 @@ triggers:
 - transfer functions
 - motion RAOs
 - RAO interpolation
+capabilities: []
+requires: []
+see_also: []
 ---
 # OrcaFlex RAO Import Skill
 

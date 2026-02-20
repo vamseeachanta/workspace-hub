@@ -11,6 +11,9 @@ related_skills:
   - nextflow-pipelines
   - instrument-data-allotrope
   - scientific-problem-selection
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # Clinical Trial Protocol Skill

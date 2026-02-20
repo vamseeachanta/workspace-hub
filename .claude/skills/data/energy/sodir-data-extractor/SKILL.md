@@ -1,6 +1,9 @@
 ---
 name: sodir-data-extractor
 description: SODIR Data Extractor (user)
+capabilities: []
+requires: []
+see_also: []
 ---
 
 # SODIR Data Extractor Skill
