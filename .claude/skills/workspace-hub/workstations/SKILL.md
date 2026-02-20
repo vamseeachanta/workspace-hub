@@ -38,8 +38,8 @@ in WRK items references a nickname from this registry.
 
 | Nickname | Hostname | OS | CPU | RAM | GPU | Primary Use |
 |----------|----------|----|-----|-----|-----|-------------|
-| (TBD) | ace-linux-1 | Ubuntu 24.04.4 LTS | Xeon E5-2630 v3 32c/16t | 32GB DDR4 | GTX 750 Ti 2GB | Primary workstation |
-| (TBD) | (unknown) | Windows | — | — | — | Windows tools |
+| (TBD) | ace-linux-1 | Ubuntu 24.04.4 LTS | Xeon E5-2630 v3 32c/16t | 32GB DDR4 | GTX 750 Ti 2GB | Primary — worldenergydata, hub orchestration |
+| (TBD) | (unknown) | Windows | — | — | — | OrcaFlex (WRK-121, WRK-131), Windows tools |
 
 ### ace-linux-1 Storage
 
@@ -57,6 +57,15 @@ at **Plan** stage:
 ```yaml
 computer: nickname   # machine where this work is intended to run
 ```
+
+### Repo-to-machine routing (current)
+
+| Repo | Machine | Rationale |
+|------|---------|-----------|
+| worldenergydata | ace-linux-1 | Data stack + Python env live here |
+| workspace-hub (orchestration) | ace-linux-1 | Primary hub machine |
+| OrcaFlex work (WRK-121, WRK-131) | orcaflex-license-machine | License-locked |
+| Windows-only tools | Windows machine | OS requirement |
 
 ### When to set computer:
 
