@@ -41,3 +41,13 @@ Order: stdlib → third-party → local. Blank line between groups. Alphabetize 
 
 ## Comments
 Comment when: complex algorithms, non-obvious optimizations, workarounds with refs, public API docs. Explain "why" not "what". No commented-out code or ownerless TODOs.
+
+## Edit Safety
+
+- Prefer targeted single-site edits over bulk find-replace — verify each change site
+- After edits: confirm imports not mangled, no duplicate definitions, no deleted adjacent code
+- Multi-file refactors: edit one file at a time, run tests between files
+
+## Agent Harness Files
+
+CLAUDE.md, MEMORY.md, AGENTS.md, CODEX.md, GEMINI.md must not exceed 20 lines. Any content exceeding this limit must be migrated to a skill or doc before the file can be committed.

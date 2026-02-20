@@ -282,6 +282,42 @@ check_cross_provider_rules() {
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-HARNESS: Agent harness file size check (WRK-263)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_harness_file_sizes() {
+    local ws="${WORKSPACE_HUB:-$(git -C "$(dirname "$0")" rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git -C "$(dirname "$0")" rev-parse --show-toplevel 2>/dev/null)}"
+    local warn_limit=25  # 5-line grace above 20-line target
+    local files=(
+        "${ws}/CLAUDE.md"
+        "${ws}/AGENTS.md"
+        "${ws}/.codex/CODEX.md"
+        "${ws}/.gemini/GEMINI.md"
+    )
+    local violations=()
+    for f in "${files[@]}"; do
+        [[ ! -f "$f" ]] && continue
+        local lines
+        lines=$(wc -l < "$f" 2>/dev/null | tr -d ' ')
+        if [[ "$lines" -gt "$warn_limit" ]]; then
+            violations+=("$(basename "$f"):${lines}L")
+        fi
+    done
+    # Also check MEMORY.md
+    local mem_file="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md"
+    if [[ -f "$mem_file" ]]; then
+        local mlines
+        mlines=$(wc -l < "$mem_file" 2>/dev/null | tr -d ' ')
+        if [[ "$mlines" -gt "$warn_limit" ]]; then
+            violations+=("MEMORY.md:${mlines}L")
+        fi
+    fi
+    if [[ "${#violations[@]}" -gt 0 ]]; then
+        echo "R-HARNESS: harness files exceed 25-line limit: ${violations[*]}"
+        echo "  → Migrate content to skills/docs. See .claude/rules/coding-style.md#agent-harness-files"
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # R-SKILLS: Session-input pipeline health (WRK-229)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 check_skills_pipeline_health() {
@@ -356,6 +392,7 @@ check_stale_model_ids
 check_model_registry_age
 check_cross_provider_rules
 check_skills_pipeline_health
+check_harness_file_sizes
 
 # --- Terminal output ---
 if [[ ${#warnings[@]} -gt 0 ]]; then
