@@ -1,3 +1,5 @@
+> See [self-learning-workflow.md](self-learning-workflow.md) for the current canonical flow. This document predates WRK-230/231 and needs updating.
+
 # Session Lifecycle — Hook Catalog
 
 > Complete inventory of all hooks in the workspace-hub Claude Code session.
