@@ -4,7 +4,7 @@ description: Expert Electrical Engineer specializing in cathodic protection (CP)
   for oil and gas industry. Use for CP system design, corrosion prevention, sacrificial
   anode calculations, impressed current systems, pipeline integrity, coating defects,
   and NACE/ISO standards compliance.
-version: 1.1.0
+version: 1.2.0
 updated: 2026-02-20
 category: offshore-engineering
 triggers:
@@ -35,6 +35,7 @@ see_also:
 capabilities:
   - ABS_gn_ships_2018: Ship hull SACP design — bracelet/flush anodes, aluminium alloy, ABS GN Ships 2017
   - DNV_RP_F103_2010: Submarine pipeline SACP design — bracelet anodes, buried conditions, DNV-RP-F103 2010
+  - DNV_RP_B401_offshore: Offshore fixed platform SACP — jacket/GBS structures, zonal design, DNV-RP-B401 2021
 requires: []
 ---
 # Cathodic Protection Skill
@@ -44,7 +45,7 @@ Expert guidance on cathodic protection (CP) systems for offshore platforms, subs
 ## Version Metadata
 
 ```yaml
-version: 1.1.0
+version: 1.2.0
 python_min_version: '3.10'
 compatibility:
   tested_python:
@@ -59,6 +60,15 @@ compatibility:
 ```
 
 ## Changelog
+
+### [1.2.0] - 2026-02-20
+
+**Added:**
+- `DNV_RP_B401_offshore` route: Offshore fixed platform SACP per DNV-RP-B401 (2021 edition)
+- Covers jacket structures, gravity-based structures, and topsides steel
+- Zones: submerged (temp-dependent), splash, atmospheric
+- Coating categories I–III and bare per B401-2021 Sec.3.4.6
+- Anode types: flush-mounted, stand-off, bracelet (Dwight formula, Sec.4.9)
 
 ### [1.1.0] - 2026-02-20
 
@@ -130,6 +140,7 @@ The `CathodicProtection` class is the entry point. All calculations use a config
 **Implemented routes:**
 - `ABS_gn_ships_2018` — ship hull SACP
 - `DNV_RP_F103_2010` — submarine pipeline SACP
+- `DNV_RP_B401_offshore` — offshore fixed platform SACP
 
 ### Example: Ship Hull (ABS GN Ships 2018)
 
@@ -227,6 +238,71 @@ print(f"Anode spacing: {r['anode_spacing_m']:.1f} m")
 print(f"Mean current:  {r['current_demand_A']['mean']:.2f} A")
 ```
 
+### Example: Offshore Fixed Platform (DNV-RP-B401 2021)
+
+```python
+from digitalmodel.infrastructure.common.cathodic_protection import CathodicProtection
+
+cfg = {
+    "inputs": {
+        "calculation_type": "DNV_RP_B401_offshore",
+        "design_data": {
+            "design_life": 25.0,           # years
+            "structure_type": "jacket",    # jacket | gravity_based | topsides
+        },
+        "structure": {
+            "zones": [
+                {"zone": "submerged",    "area_m2": 5000.0, "coating_category": "I"},
+                {"zone": "splash",       "area_m2":  300.0, "coating_category": "III"},
+                {"zone": "atmospheric",  "area_m2":  200.0, "coating_category": "I"},
+            ]
+        },
+        "environment": {
+            "seawater_temperature_C":      10.0,   # °C — drives submerged current density
+            "seawater_resistivity_ohm_m":  0.30,   # Ω·m — North Sea typical
+        },
+        "anode": {
+            "material":                  "aluminium",   # aluminium | zinc
+            "type":                      "stand_off",   # flush_mounted | stand_off | bracelet
+            "individual_anode_mass_kg":   200.0,        # kg per anode
+            "utilization_factor":          0.85,        # B401-2021 Sec.3.8 typical
+            "length_m":                    1.0,         # for Dwight resistance formula
+            "radius_m":                    0.05,        # equivalent anode radius
+        }
+    }
+}
+
+cp = CathodicProtection()
+result = cp.router(cfg)
+
+r = result["results"]
+print(f"Standard:          {r['standard']}")
+print(f"Design life:       {r['design_life_years']} years")
+print(f"Total current:     {r['current_demand_A']['total_mean_A']:.2f} A")
+print(f"Anode count:       {r['anode_requirements']['anode_count']}")
+print(f"Anode mass total:  {r['anode_requirements']['total_mass_kg']:.1f} kg")
+print(f"CP adequate:       {r['current_output_verification']['adequate']}")
+```
+
+**Key outputs:**
+| Key | Description |
+|-----|-------------|
+| `results.standard` | `"DNV-RP-B401-2021"` |
+| `results.current_demand_A.total_mean_A` | Total mean current demand (A) across all zones |
+| `results.anode_requirements.anode_count` | Number of anodes required |
+| `results.anode_requirements.total_mass_kg` | Total anode mass required (kg) |
+| `results.current_output_verification.adequate` | True if N×I_output ≥ I_design |
+
+**Coating categories (B401-2021 Sec.3.4.6):**
+| Category | Description | f_ci | k (per yr) |
+|----------|-------------|------|-----------|
+| I | High quality ≥300 μm epoxy | 0.05 | 0.020 |
+| II | Anti-friction thin film (PTFE, new 2021) | 0.10 | 0.030 |
+| III | Standard quality paint system | 0.25 | 0.050 |
+| bare | No coating | 1.00 | 0.000 |
+
+**References:** DNV-RP-B401-2021 Sections 3.3, 3.4, 4.9
+
 ### Using router() vs direct method call
 
 ```python
@@ -304,5 +380,6 @@ Note: ABS route writes to `cfg["cathodic_protection"]`; DNV route writes to `cfg
 
 ## Version History
 
+- **1.2.0** (2026-02-20): Added DNV_RP_B401_offshore route; B401-2021 coating categories I–III; zonal current demand; Dwight anode resistance
 - **1.1.0** (2026-02-20): Fixed examples to use real CathodicProtection().router(cfg) API; added DNV-RP-F103 to standards table
 - **1.0.0** (2025-01-02): Initial release from agents/cathodic-protection-engineer.md
