@@ -1,7 +1,7 @@
 ---
 id: WRK-279
 title: "Audit & govern the /mnt/ace/ Codex relocation plan"
-status: working
+status: complete
 priority: high
 complexity: medium
 compound: false

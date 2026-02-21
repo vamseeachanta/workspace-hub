@@ -1,38 +1,38 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-21T03:42:32Z by generate-index.py -->
+<!-- Generated: 2026-02-21T04:12:17Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-21T03:42:32Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-21T04:12:17Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 277
+**Total items:** 279
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 85 |
-| working | 10 |
-| blocked | 6 |
-| done | 2 |
-| archived | 173 |
+| pending | 77 |
+| working | 8 |
+| blocked | 5 |
+| done | 3 |
+| archived | 183 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 104 |
-| medium | 136 |
+| medium | 137 |
 | low | 37 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 42 |
-| medium | 119 |
+| simple | 43 |
+| medium | 120 |
 | complex | 90 |
 
 ### By Repository
@@ -43,10 +43,10 @@
 | aceengineer-strategy | 2 |
 | aceengineer-website | 21 |
 | achantas-data | 10 |
-| acma-projects | 5 |
+| acma-projects | 6 |
 | assethold | 6 |
 | assetutilities | 3 |
-| digitalmodel | 102 |
+| digitalmodel | 104 |
 | hobbies | 1 |
 | investments | 1 |
 | sabithaandkrishnaestates | 1 |
@@ -58,7 +58,7 @@
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 131 / 277 |
+| Plans exist | 131 / 279 |
 | Plans cross-reviewed | 46 |
 | Plans approved | 64 |
 | Brochure pending | 1 |
@@ -70,9 +70,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 277 |
-| Total archived | 173 |
-| Completion rate | 173/277 (62%) |
+| Total captured | 279 |
+| Total archived | 183 |
+| Completion rate | 183/279 (66%) |
 | Monthly rate (current month) | 43 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -80,7 +80,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 35 / 85 | 41% |
+| Pending items with plans | 35 / 77 | 45% |
 | Plans cross-reviewed | 9 | 20% |
 | Plans user-approved | 10 | 22% |
 
@@ -97,8 +97,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 18 | 9 | 3 |
-| Medium   | 42  | 1  | 2  |
+| High     | 11 | 7 | 3 |
+| Medium   | 40  | 1  | 1  |
 | Low      | 25  | 0  | 1  |
 
 ## Master Table
@@ -339,14 +339,14 @@
 | WRK-237 | Provider cost tracking — token spend per session and per WRK item | pending | medium | medium | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | WRK-231 |
 | WRK-238 | Adopt Codex 0.102.0 TOML role definitions — implement native multi-agent roles in .codex/ | pending | medium | medium | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | high | medium | - | worldenergydata | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | pending | high | simple | - | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | pending | high | medium | - | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | high | simple | - | digitalmodel | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | archived | high | medium | - | digitalmodel | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-242 | Multi-format export as automatic pipeline output stage | archived | high | medium | - | worldenergydata, digitalmodel | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | pending | high | medium | - | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | pending | high | simple | - | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | pending | high | medium | - | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | archived | high | medium | - | digitalmodel | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | archived | high | simple | - | digitalmodel | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | archived | high | medium | - | digitalmodel | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-246 | LNG terminal dataset — queryable module and aceengineer website data card | archived | medium | medium | - | worldenergydata, aceengineer-website | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | pending | medium | simple | - | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | archived | medium | simple | - | digitalmodel | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-248 | PHMSA pipeline safety case study — aceengineer website with data-to-assessment workflow | archived | medium | medium | - | aceengineer-website, worldenergydata | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-249 | ENIGMA safety analysis skill — register as agent-callable capability | archived | medium | medium | - | worldenergydata | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-250 | Cross-database marine safety case study — MAIB, IMO, EMSA, TSB correlation analysis | archived | medium | medium | - | worldenergydata, aceengineer-website | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -354,7 +354,7 @@
 | WRK-252 | worldenergydata module discoverability review — regenerate after new data source modules | archived | medium | simple | - | worldenergydata | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-253 | Data residence tier compliance audit and extension to assethold | pending | medium | medium | - | worldenergydata, digitalmodel, assethold | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-254 | Heavy vessel GIS integration — connect vessel dataset to GIS skill and BSEE pipeline | pending | medium | medium | - | worldenergydata, digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | WRK-020 |
-| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | pending | medium | simple | - | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | archived | medium | simple | - | digitalmodel | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | medium | complex | - | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | WRK-241, WRK-245 |
 | WRK-257 | Agent coordination model ADR — document architectural decision record | pending | low | simple | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-258 | Close WRK-153 as superseded — defer BSEE case study rebuild to after WRK-019 and WRK-171 | archived | low | simple | - | worldenergydata | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -369,19 +369,21 @@
 | WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | archived | medium | medium | claude | worldenergydata | decommissioning | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | archived | medium | medium | claude | worldenergydata | well_planning | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | archived | medium | medium | claude | worldenergydata | safety_analysis | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | pending | high | medium | gemini+claude | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | done | medium | simple | claude | workspace-hub | - | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | pending | medium | medium | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | WRK-269, WRK-276 |
-| WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | pending | medium | complex | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | WRK-269 |
+| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | done | high | medium | gemini+claude | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | archived | medium | simple | claude | workspace-hub | - | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | pending | medium | medium | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | WRK-276, WRK-279 |
+| WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | pending | medium | complex | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | WRK-279 |
 | WRK-273 | CP marketing brochure — cathodic protection capability document for aceengineer-website | pending | low | simple | gemini+claude | digitalmodel, aceengineer-website | - | ❌ | ❌ | ❌ | - | n/a | WRK-271 |
-| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | pending | medium | simple | gemini+claude | saipem | - | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | pending | medium | simple | gemini+claude | acma-projects | - | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | pending | high | medium | claude+gemini | digitalmodel, saipem, acma-projects | - | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | pending | medium | complex | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | WRK-269 |
+| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | archived | medium | simple | gemini+claude | saipem | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | archived | medium | simple | gemini+claude | acma-projects | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | done | high | medium | claude+gemini | digitalmodel, saipem, acma-projects | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | pending | medium | complex | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | high | simple | claude+codex | digitalmodel, saipem, acma-projects | - | ❌ | ❌ | ❌ | - | n/a | WRK-276 |
-| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | working | high | medium | - | workspace-hub | - | ❌ | ❌ | ✅ | ██░ 90% | n/a | - |
-| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | working | high | simple | - | workspace-hub | - | ❌ | ❌ | ✅ | █░░ 70% | n/a | - |
-| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | blocked | medium | simple | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | WRK-279 |
+| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | pending | critical | medium | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | high | medium | - | workspace-hub | - | ❌ | ❌ | ✅ | ██░ 90% | n/a | - |
+| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | pending | medium | simple | claude+gemini | digitalmodel, acma-projects | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | complete | high | simple | - | workspace-hub | - | ❌ | ❌ | ✅ | █░░ 70% | n/a | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | pending | medium | simple | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -390,7 +392,8 @@
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
 | WRK-173 | Session Management Workflow Documentation + Schematic | high | low | workspace-hub | - |
-| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | medium | simple | workspace-hub | - |
+| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | high | medium | digitalmodel | - |
+| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | high | medium | digitalmodel, saipem, acma-projects | - |
 
 ### Pending
 
@@ -456,31 +459,23 @@
 | WRK-236 | Test health trends — track test-writing pairing with code-writing sessions | medium | medium | workspace-hub | - |
 | WRK-237 | Provider cost tracking — token spend per session and per WRK item | medium | medium | workspace-hub | - |
 | WRK-238 | Adopt Codex 0.102.0 TOML role definitions — implement native multi-agent roles in .codex/ | medium | medium | workspace-hub | - |
-| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | high | simple | digitalmodel | - |
-| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | high | medium | digitalmodel | - |
-| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | high | medium | digitalmodel | - |
-| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | high | simple | digitalmodel | - |
-| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | high | medium | digitalmodel | - |
-| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | medium | simple | digitalmodel | - |
 | WRK-251 | Dynacard vision model evaluation — benchmark GPT-4V / Claude Vision vs current heuristics | medium | medium | digitalmodel | - |
 | WRK-253 | Data residence tier compliance audit and extension to assethold | medium | medium | worldenergydata, digitalmodel, assethold | - |
 | WRK-254 | Heavy vessel GIS integration — connect vessel dataset to GIS skill and BSEE pipeline | medium | medium | worldenergydata, digitalmodel | - |
-| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | medium | simple | digitalmodel | - |
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | medium | complex | digitalmodel | - |
 | WRK-257 | Agent coordination model ADR — document architectural decision record | low | simple | workspace-hub | - |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | medium | medium | aceengineer-website, worldenergydata | - |
 | WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | medium | medium | aceengineer-website | - |
 | WRK-262 | Add path-handling guidance to session preflight hook | low | simple | workspace-hub | - |
 | WRK-264 | Ensure full work-queue workflow parity between Claude and Codex CLI | low | medium | workspace-hub | - |
-| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | high | medium | digitalmodel | - |
 | WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | medium | medium | digitalmodel | - |
 | WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | medium | complex | digitalmodel | - |
 | WRK-273 | CP marketing brochure — cathodic protection capability document for aceengineer-website | low | simple | digitalmodel, aceengineer-website | - |
-| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | medium | simple | saipem | - |
-| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | medium | simple | acma-projects | - |
-| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | high | medium | digitalmodel, saipem, acma-projects | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | medium | complex | digitalmodel | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | high | simple | digitalmodel, saipem, acma-projects | - |
+| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | critical | medium | digitalmodel | - |
+| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | medium | simple | digitalmodel, acma-projects | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | medium | simple | workspace-hub | - |
 
 ### Working
 
@@ -494,8 +489,6 @@
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | high | medium | workspace-hub | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | high | complex | workspace-hub | - |
 | WRK-263 | Progressively reduce agent harness files to ~20 lines by migrating content to skills | high | medium | workspace-hub | - |
-| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | high | medium | workspace-hub | - |
-| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | high | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -506,7 +499,6 @@
 | WRK-069 | Acquire USCG MISLE bulk dataset | high | simple | worldenergydata | - |
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | high | complex | digitalmodel | - |
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | high | medium | aceengineer-admin | - |
-| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | medium | simple | workspace-hub | - |
 
 ### Archived
 
@@ -672,12 +664,19 @@
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | high | simple | workspace-hub | - |
 | WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | high | medium | workspace-hub | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | high | medium | worldenergydata | - |
+| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | high | simple | digitalmodel | - |
+| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | high | medium | digitalmodel | - |
 | WRK-242 | Multi-format export as automatic pipeline output stage | high | medium | worldenergydata, digitalmodel | - |
+| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | high | medium | digitalmodel | - |
+| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | high | simple | digitalmodel | - |
+| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | high | medium | digitalmodel | - |
 | WRK-246 | LNG terminal dataset — queryable module and aceengineer website data card | medium | medium | worldenergydata, aceengineer-website | - |
+| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | medium | simple | digitalmodel | - |
 | WRK-248 | PHMSA pipeline safety case study — aceengineer website with data-to-assessment workflow | medium | medium | aceengineer-website, worldenergydata | - |
 | WRK-249 | ENIGMA safety analysis skill — register as agent-callable capability | medium | medium | worldenergydata | - |
 | WRK-250 | Cross-database marine safety case study — MAIB, IMO, EMSA, TSB correlation analysis | medium | medium | worldenergydata, aceengineer-website | - |
 | WRK-252 | worldenergydata module discoverability review — regenerate after new data source modules | medium | simple | worldenergydata | - |
+| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | medium | simple | digitalmodel | - |
 | WRK-258 | Close WRK-153 as superseded — defer BSEE case study rebuild to after WRK-019 and WRK-171 | low | simple | worldenergydata | - |
 | WRK-259 | common.units — global unit conversion registry for cross-basin analysis | high | medium | worldenergydata | common.units |
 | WRK-260 | Cross-regional production data query interface — unified layer across all 8 basins | high | moderate | worldenergydata | production.unified |
@@ -685,6 +684,9 @@
 | WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | medium | medium | worldenergydata | decommissioning |
 | WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | medium | medium | worldenergydata | well_planning |
 | WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | medium | medium | worldenergydata | safety_analysis |
+| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | medium | simple | workspace-hub | - |
+| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | medium | simple | saipem | - |
+| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | medium | simple | acma-projects | - |
 
 ## By Repository
 
@@ -750,9 +752,10 @@
 |-----|-------|--------|----------|------------|--------|
 | WRK-036 | OrcaFlex structure deployment analysis - supply boat side deployment with structural loads | pending | low | complex | - |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium | - |
-| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | pending | medium | simple | - |
-| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | pending | high | medium | - |
+| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | archived | medium | simple | - |
+| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | done | high | medium | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | high | simple | - |
+| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | pending | medium | simple | - |
 
 ### assethold
 
@@ -860,25 +863,27 @@
 | WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | drilling_economics |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | complex | decommissioning_analytics |
 | WRK-221 | Offshore resilience design framework — modular platforms, lifecycle planning, structural monitoring | pending | low | medium | offshore_resilience |
-| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | pending | high | simple | - |
-| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | pending | high | medium | - |
+| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | high | simple | - |
+| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | archived | high | medium | - |
 | WRK-242 | Multi-format export as automatic pipeline output stage | archived | high | medium | - |
-| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | pending | high | medium | - |
-| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | pending | high | simple | - |
-| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | pending | high | medium | - |
-| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | pending | medium | simple | - |
+| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | archived | high | medium | - |
+| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | archived | high | simple | - |
+| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | archived | high | medium | - |
+| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | archived | medium | simple | - |
 | WRK-251 | Dynacard vision model evaluation — benchmark GPT-4V / Claude Vision vs current heuristics | pending | medium | medium | - |
 | WRK-253 | Data residence tier compliance audit and extension to assethold | pending | medium | medium | - |
 | WRK-254 | Heavy vessel GIS integration — connect vessel dataset to GIS skill and BSEE pipeline | pending | medium | medium | - |
-| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | pending | medium | simple | - |
+| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | archived | medium | simple | - |
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | medium | complex | - |
-| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | pending | high | medium | - |
+| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | done | high | medium | - |
 | WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | pending | medium | medium | - |
 | WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | pending | medium | complex | - |
 | WRK-273 | CP marketing brochure — cathodic protection capability document for aceengineer-website | pending | low | simple | - |
-| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | pending | high | medium | - |
+| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | done | high | medium | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | pending | medium | complex | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | high | simple | - |
+| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | pending | critical | medium | - |
+| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | pending | medium | simple | - |
 
 ### hobbies
 
@@ -902,8 +907,8 @@
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
-| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | pending | medium | simple | - |
-| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | pending | high | medium | - |
+| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | archived | medium | simple | - |
+| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | done | high | medium | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | high | simple | - |
 
 ### workspace-hub
@@ -985,10 +990,10 @@
 | WRK-262 | Add path-handling guidance to session preflight hook | pending | low | simple | - |
 | WRK-263 | Progressively reduce agent harness files to ~20 lines by migrating content to skills | working | high | medium | - |
 | WRK-264 | Ensure full work-queue workflow parity between Claude and Codex CLI | pending | low | medium | - |
-| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | done | medium | simple | - |
-| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | working | high | medium | - |
-| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | working | high | simple | - |
-| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | blocked | medium | simple | - |
+| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | archived | medium | simple | - |
+| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | high | medium | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | complete | high | simple | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | pending | medium | simple | - |
 
 ### worldenergydata
 
@@ -1172,21 +1177,21 @@
 | WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | complex | workspace-hub | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | working | complex | workspace-hub | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | medium | worldenergydata | - |
-| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | pending | simple | digitalmodel | - |
-| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | pending | medium | digitalmodel | - |
+| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | simple | digitalmodel | - |
+| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | archived | medium | digitalmodel | - |
 | WRK-242 | Multi-format export as automatic pipeline output stage | archived | medium | worldenergydata, digitalmodel | - |
-| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | pending | medium | digitalmodel | - |
-| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | pending | simple | digitalmodel | - |
-| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | pending | medium | digitalmodel | - |
+| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | archived | medium | digitalmodel | - |
+| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | archived | simple | digitalmodel | - |
+| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | archived | medium | digitalmodel | - |
 | WRK-259 | common.units — global unit conversion registry for cross-basin analysis | archived | medium | worldenergydata | common.units |
 | WRK-260 | Cross-regional production data query interface — unified layer across all 8 basins | archived | moderate | worldenergydata | production.unified |
 | WRK-263 | Progressively reduce agent harness files to ~20 lines by migrating content to skills | working | medium | workspace-hub | - |
 | WRK-265 | Wire CrossDatabaseAnalyzer to live MAIB/IMO/EMSA/TSB importers | archived | medium | worldenergydata | marine_safety |
-| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | pending | medium | digitalmodel | - |
-| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | pending | medium | digitalmodel, saipem, acma-projects | - |
+| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | done | medium | digitalmodel | - |
+| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | done | medium | digitalmodel, saipem, acma-projects | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | simple | digitalmodel, saipem, acma-projects | - |
-| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | working | medium | workspace-hub | - |
-| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | working | simple | workspace-hub | - |
+| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | medium | workspace-hub | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | complete | simple | workspace-hub | - |
 
 ### Medium
 
@@ -1306,7 +1311,7 @@
 | WRK-237 | Provider cost tracking — token spend per session and per WRK item | pending | medium | workspace-hub | - |
 | WRK-238 | Adopt Codex 0.102.0 TOML role definitions — implement native multi-agent roles in .codex/ | pending | medium | workspace-hub | - |
 | WRK-246 | LNG terminal dataset — queryable module and aceengineer website data card | archived | medium | worldenergydata, aceengineer-website | - |
-| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | pending | simple | digitalmodel | - |
+| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | archived | simple | digitalmodel | - |
 | WRK-248 | PHMSA pipeline safety case study — aceengineer website with data-to-assessment workflow | archived | medium | aceengineer-website, worldenergydata | - |
 | WRK-249 | ENIGMA safety analysis skill — register as agent-callable capability | archived | medium | worldenergydata | - |
 | WRK-250 | Cross-database marine safety case study — MAIB, IMO, EMSA, TSB correlation analysis | archived | medium | worldenergydata, aceengineer-website | - |
@@ -1314,20 +1319,21 @@
 | WRK-252 | worldenergydata module discoverability review — regenerate after new data source modules | archived | simple | worldenergydata | - |
 | WRK-253 | Data residence tier compliance audit and extension to assethold | pending | medium | worldenergydata, digitalmodel, assethold | - |
 | WRK-254 | Heavy vessel GIS integration — connect vessel dataset to GIS skill and BSEE pipeline | pending | medium | worldenergydata, digitalmodel | - |
-| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | pending | simple | digitalmodel | - |
+| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | archived | simple | digitalmodel | - |
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | complex | digitalmodel | - |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | pending | medium | aceengineer-website, worldenergydata | - |
 | WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | pending | medium | aceengineer-website | - |
 | WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | archived | medium | worldenergydata | decommissioning |
 | WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | archived | medium | worldenergydata | well_planning |
 | WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | archived | medium | worldenergydata | safety_analysis |
-| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | done | simple | workspace-hub | - |
+| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | archived | simple | workspace-hub | - |
 | WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | pending | medium | digitalmodel | - |
 | WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | pending | complex | digitalmodel | - |
-| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | pending | simple | saipem | - |
-| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | pending | simple | acma-projects | - |
+| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | archived | simple | saipem | - |
+| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | archived | simple | acma-projects | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | pending | complex | digitalmodel | - |
-| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | blocked | simple | workspace-hub | - |
+| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | pending | simple | digitalmodel, acma-projects | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | pending | simple | workspace-hub | - |
 
 ### Low
 
@@ -1404,21 +1410,22 @@
 | WRK-216 | Subagent learning capture — emit signals to pending-reviews before task completion | archived | medium | workspace-hub | - |
 | WRK-217 | Update ecosystem-health-check.sh — remove stale skill count threshold | archived | medium | workspace-hub | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | high | workspace-hub | - |
-| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | pending | high | digitalmodel | - |
-| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | pending | high | digitalmodel | - |
-| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | pending | medium | digitalmodel | - |
+| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | high | digitalmodel | - |
+| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | archived | high | digitalmodel | - |
+| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | archived | medium | digitalmodel | - |
 | WRK-252 | worldenergydata module discoverability review — regenerate after new data source modules | archived | medium | worldenergydata | - |
-| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | pending | medium | digitalmodel | - |
+| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | archived | medium | digitalmodel | - |
 | WRK-257 | Agent coordination model ADR — document architectural decision record | pending | low | workspace-hub | - |
 | WRK-258 | Close WRK-153 as superseded — defer BSEE case study rebuild to after WRK-019 and WRK-171 | archived | low | worldenergydata | - |
 | WRK-262 | Add path-handling guidance to session preflight hook | pending | low | workspace-hub | - |
-| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | done | medium | workspace-hub | - |
+| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | archived | medium | workspace-hub | - |
 | WRK-273 | CP marketing brochure — cathodic protection capability document for aceengineer-website | pending | low | digitalmodel, aceengineer-website | - |
-| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | pending | medium | saipem | - |
-| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | pending | medium | acma-projects | - |
+| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | archived | medium | saipem | - |
+| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | archived | medium | acma-projects | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | high | digitalmodel, saipem, acma-projects | - |
-| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | working | high | workspace-hub | - |
-| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | blocked | medium | workspace-hub | - |
+| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | pending | medium | digitalmodel, acma-projects | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | complete | high | workspace-hub | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -1519,10 +1526,10 @@
 | WRK-237 | Provider cost tracking — token spend per session and per WRK item | pending | medium | workspace-hub | - |
 | WRK-238 | Adopt Codex 0.102.0 TOML role definitions — implement native multi-agent roles in .codex/ | pending | medium | workspace-hub | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | high | worldenergydata | - |
-| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | pending | high | digitalmodel | - |
+| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | archived | high | digitalmodel | - |
 | WRK-242 | Multi-format export as automatic pipeline output stage | archived | high | worldenergydata, digitalmodel | - |
-| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | pending | high | digitalmodel | - |
-| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | pending | high | digitalmodel | - |
+| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | archived | high | digitalmodel | - |
+| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | archived | high | digitalmodel | - |
 | WRK-246 | LNG terminal dataset — queryable module and aceengineer website data card | archived | medium | worldenergydata, aceengineer-website | - |
 | WRK-248 | PHMSA pipeline safety case study — aceengineer website with data-to-assessment workflow | archived | medium | aceengineer-website, worldenergydata | - |
 | WRK-249 | ENIGMA safety analysis skill — register as agent-callable capability | archived | medium | worldenergydata | - |
@@ -1539,10 +1546,11 @@
 | WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | archived | medium | worldenergydata | decommissioning |
 | WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | archived | medium | worldenergydata | well_planning |
 | WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | archived | medium | worldenergydata | safety_analysis |
-| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | pending | high | digitalmodel | - |
+| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | done | high | digitalmodel | - |
 | WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | pending | medium | digitalmodel | - |
-| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | pending | high | digitalmodel, saipem, acma-projects | - |
-| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | working | high | workspace-hub | - |
+| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | done | high | digitalmodel, saipem, acma-projects | - |
+| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | pending | critical | digitalmodel | - |
+| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | high | workspace-hub | - |
 
 ### Complex
 
@@ -1676,10 +1684,8 @@
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | WRK-241, WRK-245 | - | - |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | WRK-019, WRK-171 | - | - |
 | WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | WRK-019, WRK-171 | - | - |
-| WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | WRK-269, WRK-276 | - | - |
-| WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | WRK-269 | - | - |
+| WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | WRK-276, WRK-279 | - | - |
+| WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | WRK-279 | - | - |
 | WRK-273 | CP marketing brochure — cathodic protection capability document for aceengineer-website | WRK-271 | - | - |
-| WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | WRK-269 | - | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | WRK-276 | - | - |
-| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | WRK-279 | - | - |
 
