@@ -36,7 +36,7 @@ usage:
 
   openai:
     daily:
-      limit: 160          # GPT-4o messages (~80 per 3hr window)
+      limit: 160          # GPT-4.1 messages (~80 per 3hr window)
       today_used: 12      # Update this daily
       unit: "messages"
     monthly:

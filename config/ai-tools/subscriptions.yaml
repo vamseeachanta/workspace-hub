@@ -27,7 +27,7 @@ subscriptions:
     currency: "USD"
     billing_cycle: "monthly"
     features:
-      - "GPT-4o access"
+      - "GPT-4.1 access"
       - "DALL-E image generation"
       - "Advanced voice mode"
       - "Custom GPTs"

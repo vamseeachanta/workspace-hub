@@ -62,7 +62,7 @@
       "limitations": ["complex-architecture", "multi-repo-coordination"],
       "costTier": "medium"
     },
-    "openai-gpt-4o": {
+    "openai-gpt-4.1": {
       "platform": "openai",
       "type": "primary",
       "capabilities": {
@@ -79,12 +79,12 @@
       "limitations": ["very-long-context", "specialized-domains"],
       "costTier": "medium",
       "modelDetails": {
-        "name": "gpt-4o",
+        "name": "gpt-4.1",
         "contextWindow": "128K tokens",
         "speed": "fast"
       }
     },
-    "openai-gpt-4-turbo": {
+    "openai-gpt-4.1": {
       "platform": "openai",
       "type": "specialist",
       "capabilities": {
@@ -101,7 +101,7 @@
       "limitations": ["response-speed", "cost"],
       "costTier": "high",
       "modelDetails": {
-        "name": "gpt-4-turbo",
+        "name": "gpt-4.1",
         "contextWindow": "128K tokens",
         "speed": "medium"
       }
@@ -121,7 +121,7 @@
       "limitations": ["complex-reasoning", "advanced-architecture"],
       "costTier": "low",
       "modelDetails": {
-        "name": "gpt-3.5-turbo",
+        "name": "gpt-4.1-mini",
         "contextWindow": "16K tokens",
         "speed": "very-fast"
       }
