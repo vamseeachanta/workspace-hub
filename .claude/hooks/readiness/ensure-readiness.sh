@@ -436,4 +436,8 @@ fi
 # Clear the startup readiness lock so next session re-verifies
 rm -f "${STATE_DIR}/.readiness-checked" 2>/dev/null
 
+# Clear active WRK for next session (WRK-285)
+CLEAR_SCRIPT="${WORKSPACE_HUB}/scripts/work-queue/clear-active-wrk.sh"
+[[ -f "$CLEAR_SCRIPT" ]] && bash "$CLEAR_SCRIPT" 2>/dev/null || true
+
 exit 0
