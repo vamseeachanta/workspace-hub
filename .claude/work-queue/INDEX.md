@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-21T04:12:17Z by generate-index.py -->
+<!-- Generated: 2026-02-21T04:17:49Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-21T04:12:17Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-21T04:17:49Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,11 +13,11 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 77 |
+| pending | 75 |
 | working | 8 |
 | blocked | 5 |
 | done | 3 |
-| archived | 183 |
+| archived | 184 |
 
 ### By Priority
 
@@ -71,8 +71,8 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 279 |
-| Total archived | 183 |
-| Completion rate | 183/279 (66%) |
+| Total archived | 184 |
+| Completion rate | 184/279 (66%) |
 | Monthly rate (current month) | 43 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -80,7 +80,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 35 / 77 | 45% |
+| Pending items with plans | 35 / 75 | 47% |
 | Plans cross-reviewed | 9 | 20% |
 | Plans user-approved | 10 | 22% |
 
@@ -98,7 +98,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 11 | 7 | 3 |
-| Medium   | 40  | 1  | 1  |
+| Medium   | 39  | 1  | 1  |
 | Low      | 25  | 0  | 1  |
 
 ## Master Table
@@ -379,11 +379,11 @@
 | WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | done | high | medium | claude+gemini | digitalmodel, saipem, acma-projects | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | pending | medium | complex | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | high | simple | claude+codex | digitalmodel, saipem, acma-projects | - | ❌ | ❌ | ❌ | - | n/a | WRK-276 |
-| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | pending | critical | medium | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | high | medium | - | workspace-hub | - | ❌ | ❌ | ✅ | ██░ 90% | n/a | - |
+| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | archived | critical | medium | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | pending | medium | simple | claude+gemini | digitalmodel, acma-projects | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | complete | high | simple | - | workspace-hub | - | ❌ | ❌ | ✅ | █░░ 70% | n/a | - |
-| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | pending | medium | simple | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | complete | medium | simple | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -473,9 +473,7 @@
 | WRK-273 | CP marketing brochure — cathodic protection capability document for aceengineer-website | low | simple | digitalmodel, aceengineer-website | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | medium | complex | digitalmodel | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | high | simple | digitalmodel, saipem, acma-projects | - |
-| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | critical | medium | digitalmodel | - |
 | WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | medium | simple | digitalmodel, acma-projects | - |
-| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | medium | simple | workspace-hub | - |
 
 ### Working
 
@@ -687,6 +685,7 @@
 | WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | medium | simple | workspace-hub | - |
 | WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | medium | simple | saipem | - |
 | WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | medium | simple | acma-projects | - |
+| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | critical | medium | digitalmodel | - |
 
 ## By Repository
 
@@ -882,7 +881,7 @@
 | WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | done | high | medium | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | pending | medium | complex | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | high | simple | - |
-| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | pending | critical | medium | - |
+| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | archived | critical | medium | - |
 | WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | pending | medium | simple | - |
 
 ### hobbies
@@ -993,7 +992,7 @@
 | WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | archived | medium | simple | - |
 | WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | high | medium | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | complete | high | simple | - |
-| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | pending | medium | simple | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | complete | medium | simple | - |
 
 ### worldenergydata
 
@@ -1333,7 +1332,7 @@
 | WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | archived | simple | acma-projects | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | pending | complex | digitalmodel | - |
 | WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | pending | simple | digitalmodel, acma-projects | - |
-| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | pending | simple | workspace-hub | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | complete | simple | workspace-hub | - |
 
 ### Low
 
@@ -1425,7 +1424,7 @@
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | high | digitalmodel, saipem, acma-projects | - |
 | WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | pending | medium | digitalmodel, acma-projects | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | complete | high | workspace-hub | - |
-| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | pending | medium | workspace-hub | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | complete | medium | workspace-hub | - |
 
 ### Medium
 
@@ -1549,8 +1548,8 @@
 | WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | done | high | digitalmodel | - |
 | WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | pending | medium | digitalmodel | - |
 | WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | done | high | digitalmodel, saipem, acma-projects | - |
-| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | pending | critical | digitalmodel | - |
 | WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | high | workspace-hub | - |
+| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | archived | critical | digitalmodel | - |
 
 ### Complex
 
