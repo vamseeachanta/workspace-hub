@@ -10,6 +10,11 @@ stats:
   total_edges: 4
   broken_refs: 2
 edges:
+- from: eng/diffraction-spec-converter
+  to: engineering/marine-offshore/diffraction-analysis
+  type: see_also
+  source_file: eng/diffraction-spec-converter.md
+  note: "WRK-240 — spec_converter skill; references existing diffraction-analysis master skill"
 - from: engineering/marine-offshore/cathodic-protection
   to: engineering/asset-integrity/fitness-for-service
   type: see_also

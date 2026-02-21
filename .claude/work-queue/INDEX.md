@@ -1,38 +1,38 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-21T03:34:51Z by generate-index.py -->
+<!-- Generated: 2026-02-21T03:42:32Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-21T03:34:51Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-21T03:42:32Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 274
+**Total items:** 277
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 87 |
-| working | 8 |
-| blocked | 5 |
+| pending | 85 |
+| working | 10 |
+| blocked | 6 |
 | done | 2 |
-| archived | 171 |
+| archived | 173 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 102 |
-| medium | 135 |
+| high | 104 |
+| medium | 136 |
 | low | 37 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 40 |
-| medium | 118 |
+| simple | 42 |
+| medium | 119 |
 | complex | 90 |
 
 ### By Repository
@@ -51,16 +51,16 @@
 | investments | 1 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 76 |
+| workspace-hub | 79 |
 | worldenergydata | 82 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
-| Plans exist | 131 / 274 |
+| Plans exist | 131 / 277 |
 | Plans cross-reviewed | 46 |
-| Plans approved | 62 |
+| Plans approved | 64 |
 | Brochure pending | 1 |
 | Brochure updated/synced | 6 |
 
@@ -70,9 +70,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 274 |
-| Total archived | 171 |
-| Completion rate | 171/274 (62%) |
+| Total captured | 277 |
+| Total archived | 173 |
+| Completion rate | 173/277 (62%) |
 | Monthly rate (current month) | 43 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -80,7 +80,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 35 / 87 | 40% |
+| Pending items with plans | 35 / 85 | 41% |
 | Plans cross-reviewed | 9 | 20% |
 | Plans user-approved | 10 | 22% |
 
@@ -97,8 +97,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 18 | 7 | 3 |
-| Medium   | 44  | 1  | 1  |
+| High     | 18 | 9 | 3 |
+| Medium   | 42  | 1  | 2  |
 | Low      | 25  | 0  | 1  |
 
 ## Master Table
@@ -366,8 +366,8 @@
 | WRK-263 | Progressively reduce agent harness files to ~20 lines by migrating content to skills | working | high | medium | - | workspace-hub | - | ✅ | ❌ | ❌ | ██░ 80% | n/a | - |
 | WRK-264 | Ensure full work-queue workflow parity between Claude and Codex CLI | pending | low | medium | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-265 | Wire CrossDatabaseAnalyzer to live MAIB/IMO/EMSA/TSB importers | archived | high | medium | claude | worldenergydata | marine_safety | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | pending | medium | medium | claude | worldenergydata | decommissioning | ❌ | ❌ | ❌ | - | - | - |
-| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | pending | medium | medium | claude | worldenergydata | well_planning | ❌ | ❌ | ❌ | - | - | - |
+| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | archived | medium | medium | claude | worldenergydata | decommissioning | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | archived | medium | medium | claude | worldenergydata | well_planning | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | archived | medium | medium | claude | worldenergydata | safety_analysis | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | pending | high | medium | gemini+claude | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | done | medium | simple | claude | workspace-hub | - | ✅ | ❌ | ❌ | - | n/a | - |
@@ -379,6 +379,9 @@
 | WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | pending | high | medium | claude+gemini | digitalmodel, saipem, acma-projects | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | pending | medium | complex | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | WRK-269 |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | high | simple | claude+codex | digitalmodel, saipem, acma-projects | - | ❌ | ❌ | ❌ | - | n/a | WRK-276 |
+| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | working | high | medium | - | workspace-hub | - | ❌ | ❌ | ✅ | ██░ 90% | n/a | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | working | high | simple | - | workspace-hub | - | ❌ | ❌ | ✅ | █░░ 70% | n/a | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | blocked | medium | simple | - | workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | WRK-279 |
 
 ## By Status
 
@@ -469,8 +472,6 @@
 | WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | medium | medium | aceengineer-website | - |
 | WRK-262 | Add path-handling guidance to session preflight hook | low | simple | workspace-hub | - |
 | WRK-264 | Ensure full work-queue workflow parity between Claude and Codex CLI | low | medium | workspace-hub | - |
-| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | medium | medium | worldenergydata | decommissioning |
-| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | medium | medium | worldenergydata | well_planning |
 | WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | high | medium | digitalmodel | - |
 | WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | medium | medium | digitalmodel | - |
 | WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | medium | complex | digitalmodel | - |
@@ -493,6 +494,8 @@
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | high | medium | workspace-hub | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | high | complex | workspace-hub | - |
 | WRK-263 | Progressively reduce agent harness files to ~20 lines by migrating content to skills | high | medium | workspace-hub | - |
+| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | high | medium | workspace-hub | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | high | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -503,6 +506,7 @@
 | WRK-069 | Acquire USCG MISLE bulk dataset | high | simple | worldenergydata | - |
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | high | complex | digitalmodel | - |
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | high | medium | aceengineer-admin | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | medium | simple | workspace-hub | - |
 
 ### Archived
 
@@ -678,6 +682,8 @@
 | WRK-259 | common.units — global unit conversion registry for cross-basin analysis | high | medium | worldenergydata | common.units |
 | WRK-260 | Cross-regional production data query interface — unified layer across all 8 basins | high | moderate | worldenergydata | production.unified |
 | WRK-265 | Wire CrossDatabaseAnalyzer to live MAIB/IMO/EMSA/TSB importers | high | medium | worldenergydata | marine_safety |
+| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | medium | medium | worldenergydata | decommissioning |
+| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | medium | medium | worldenergydata | well_planning |
 | WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | medium | medium | worldenergydata | safety_analysis |
 
 ## By Repository
@@ -980,6 +986,9 @@
 | WRK-263 | Progressively reduce agent harness files to ~20 lines by migrating content to skills | working | high | medium | - |
 | WRK-264 | Ensure full work-queue workflow parity between Claude and Codex CLI | pending | low | medium | - |
 | WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | done | medium | simple | - |
+| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | working | high | medium | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | working | high | simple | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | blocked | medium | simple | - |
 
 ### worldenergydata
 
@@ -1064,8 +1073,8 @@
 | WRK-259 | common.units — global unit conversion registry for cross-basin analysis | archived | high | medium | common.units |
 | WRK-260 | Cross-regional production data query interface — unified layer across all 8 basins | archived | high | moderate | production.unified |
 | WRK-265 | Wire CrossDatabaseAnalyzer to live MAIB/IMO/EMSA/TSB importers | archived | high | medium | marine_safety |
-| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | pending | medium | medium | decommissioning |
-| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | pending | medium | medium | well_planning |
+| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | archived | medium | medium | decommissioning |
+| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | archived | medium | medium | well_planning |
 | WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | archived | medium | medium | safety_analysis |
 
 ## By Priority
@@ -1176,6 +1185,8 @@
 | WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | pending | medium | digitalmodel | - |
 | WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | pending | medium | digitalmodel, saipem, acma-projects | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | simple | digitalmodel, saipem, acma-projects | - |
+| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | working | medium | workspace-hub | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | working | simple | workspace-hub | - |
 
 ### Medium
 
@@ -1307,8 +1318,8 @@
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | complex | digitalmodel | - |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | pending | medium | aceengineer-website, worldenergydata | - |
 | WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | pending | medium | aceengineer-website | - |
-| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | pending | medium | worldenergydata | decommissioning |
-| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | pending | medium | worldenergydata | well_planning |
+| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | archived | medium | worldenergydata | decommissioning |
+| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | archived | medium | worldenergydata | well_planning |
 | WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | archived | medium | worldenergydata | safety_analysis |
 | WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | done | simple | workspace-hub | - |
 | WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | pending | medium | digitalmodel | - |
@@ -1316,6 +1327,7 @@
 | WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | pending | simple | saipem | - |
 | WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | pending | simple | acma-projects | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | pending | complex | digitalmodel | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | blocked | simple | workspace-hub | - |
 
 ### Low
 
@@ -1405,6 +1417,8 @@
 | WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | pending | medium | saipem | - |
 | WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | pending | medium | acma-projects | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | pending | high | digitalmodel, saipem, acma-projects | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | working | high | workspace-hub | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | blocked | medium | workspace-hub | - |
 
 ### Medium
 
@@ -1522,12 +1536,13 @@
 | WRK-263 | Progressively reduce agent harness files to ~20 lines by migrating content to skills | working | high | workspace-hub | - |
 | WRK-264 | Ensure full work-queue workflow parity between Claude and Codex CLI | pending | low | workspace-hub | - |
 | WRK-265 | Wire CrossDatabaseAnalyzer to live MAIB/IMO/EMSA/TSB importers | archived | high | worldenergydata | marine_safety |
-| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | pending | medium | worldenergydata | decommissioning |
-| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | pending | medium | worldenergydata | well_planning |
+| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | archived | medium | worldenergydata | decommissioning |
+| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | archived | medium | worldenergydata | well_planning |
 | WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | archived | medium | worldenergydata | safety_analysis |
 | WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | pending | high | digitalmodel | - |
 | WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | pending | medium | digitalmodel | - |
 | WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | pending | high | digitalmodel, saipem, acma-projects | - |
+| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | working | high | workspace-hub | - |
 
 ### Complex
 
@@ -1666,4 +1681,5 @@
 | WRK-273 | CP marketing brochure — cathodic protection capability document for aceengineer-website | WRK-271 | - | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | WRK-269 | - | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | WRK-276 | - | - |
+| WRK-281 | Fix 2H legacy project discoverability (navigation layer) | WRK-279 | - | - |
 
