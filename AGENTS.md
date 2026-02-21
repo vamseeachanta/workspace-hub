@@ -1,23 +1,20 @@
 # Workspace Hub Agent Contract
 
-Contract-Version: 1.0.0 | Last-Updated: 2026-02-20 | Canonical source for all AI agent behavior.
+Contract-Version: 1.0.1 | Last-Updated: 2026-02-21 | Canonical source for all AI agent behavior.
 
 ## Workflow Gates
-
 1. Every task maps to WRK-* in `.claude/work-queue/`
-2. Plan before implementation for Route B/C work
-3. Explicit user approval before implementation, simulations, or commits
+2. All routes require WRK item + plan before execution
+3. Approval must name the WRK id — "go ahead"/"tackle all" = intent, not approval
 4. Cross-review mandatory before presenting significant implementation
 
+## Enforcement
+- Sequence: WRK item → plan → explicit ✓ naming WRK id → execute; no shortcuts
+- No multi-step work without WRK id in scope; casual approval does not count
+
 ## Policies
-
-- **Work items**: `.claude/work-queue/` only; no WRK-*.md in child repos; regenerate `INDEX.md` on status changes
-- **Skills**: `.claude/skills/` canonical; child repos use symlinks — no standalone SKILL.md in child repos
-- **Plans**: Route A/B plan in WRK body; Route C in `specs/wrk/WRK-<id>/`; templates in `specs/templates/`
-- **Reviews**: multi-provider; verdicts: APPROVE|MINOR|MAJOR|NO_OUTPUT|ERROR; resolve MAJOR before completion
-- **Execution**: use repo's declared tooling (`uv` for Python repos); no undocumented one-off paths
-- **Adapters**: CLAUDE.md, CODEX.md, GEMINI.md are generated adapters; AGENTS.md is canonical
-
-## Repo Overrides
-
-Repo-specific behavior under `## Repo Overrides` in each adapter. No override weakens Workflow Gates.
+- **Work items**: `.claude/work-queue/` only; no WRK-*.md in child repos; regenerate INDEX.md on changes
+- **Plans**: Route A/B in WRK body; Route C in `specs/wrk/WRK-<id>/`; templates in `specs/templates/`
+- **Reviews**: multi-provider; verdicts APPROVE|MINOR|MAJOR; resolve MAJOR before completion
+- **Adapters**: CLAUDE.md/CODEX.md/GEMINI.md are adapters; AGENTS.md canonical; no override weakens gates
+- **Dev**: repo tooling only (`uv` for Python); skills in `.claude/skills/` with child-repo symlinks
