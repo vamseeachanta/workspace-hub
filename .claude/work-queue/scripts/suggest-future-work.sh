@@ -43,7 +43,7 @@ fi
 get_frontmatter_field() {
     local field_name="$1"
     local file_path="$2"
-    grep "^$field_name:" "$file_path" | head -n 1 | sed "s/^$field_name:[[:space:]]*//" | tr -d '' || true
+    grep "^$field_name:" "$file_path" | head -n 1 | sed "s/^$field_name:[[:space:]]*//" | tr -d '' || true
 }
 
 # Function to extract list frontmatter field (e.g., target_repos, related)
@@ -307,8 +307,8 @@ echo "Creating WRK items for selected suggestions: ${SELECTED_INDICES[*]}"
 
 # 5. Create WRK items for approved suggestions
 # Get last_id from state.yaml
-LAST_ID=$(grep "last_id:" "$STATE_FILE" | sed 's/last_id:[[:space:]]*//' | tr -d '')
-TOTAL_CAPTURED=$(grep "total_captured:" "$STATE_FILE" | sed 's/total_captured:[[:space:]]*//' | tr -d '')
+LAST_ID=$(grep "last_id:" "$STATE_FILE" | sed 's/last_id:[[:space:]]*//' | tr -d '')
+TOTAL_CAPTURED=$(grep "total_captured:" "$STATE_FILE" | sed 's/total_captured:[[:space:]]*//' | tr -d '')
 
 # Get frontmatter template from process.md (Conventions section)
 # This is a bit brittle, assumes specific structure in process.md

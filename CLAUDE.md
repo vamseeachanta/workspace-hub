@@ -17,6 +17,4 @@
 - Cross-review (MANDATORY): `scripts/review/cross-review.sh <file> all` — Codex is hard gate
 - Context: Global 2KB + Workspace 4KB + Project 8KB + Local 2KB = 16KB max
 
----
-
 *Delegation: `.claude/docs/orchestrator-pattern.md` | Full docs: `.claude/docs/`*
