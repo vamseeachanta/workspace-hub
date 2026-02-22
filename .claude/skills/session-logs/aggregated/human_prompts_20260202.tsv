@@ -1,32 +1,32 @@
 
-
-# Archive completed item
-# Capture a simple work item
-# Capture multiple items at once
-# Check specific item
-# Default (no args) also processes
-# List all active items
-# Process next item in queue
-# Queue health report
-## Complexity Routing
-## Examples
-## Related Commands
-## Skill Reference
-## Smart Routing
-## Subcommands
-## Usage
-- **Action verbs** (run, go, start, next) → Process pipeline
-- **Descriptive content** → Capture pipeline
-- `/reflect` - Daily reflection includes work queue health check
-/work
-/work [subcommand] [args]
-/work add 1. Fix login redirect 2. Add dark mode 3. Update footer
-/work add Fix login redirect in aceengineer-website
-/work archive WRK-001
-/work list
-/work report
-/work run
-/work status WRK-001
+
+# Archive completed item
+# Capture a simple work item
+# Capture multiple items at once
+# Check specific item
+# Default (no args) also processes
+# List all active items
+# Process next item in queue
+# Queue health report
+## Complexity Routing
+## Examples
+## Related Commands
+## Skill Reference
+## Smart Routing
+## Subcommands
+## Usage
+- **Action verbs** (run, go, start, next) → Process pipeline
+- **Descriptive content** → Capture pipeline
+- `/reflect` - Daily reflection includes work queue health check
+/work
+/work [subcommand] [args]
+/work add 1. Fix login redirect 2. Add dark mode 3. Update footer
+/work add Fix login redirect in aceengineer-website
+/work archive WRK-001
+/work list
+/work report
+/work run
+/work status WRK-001
 2026-01-23T04:31:24.198Z	[Request interrupted by user for tool use]
 2026-01-23T05:18:49.020Z	[Request interrupted by user for tool use]
 2026-01-23T06:44:16.177Z	[Request interrupted by user for tool use]
@@ -48,31 +48,31 @@
 2026-02-03T00:16:55.781Z	[Request interrupted by user]
 2026-02-03T02:58:30.510Z	[Request interrupted by user for tool use]
 2026-02-03T03:16:47.143Z	[Request interrupted by user for tool use]
-2026-02-03T03:39:12.626Z	# Work Queue Command
-2026-02-03T03:40:18.318Z	# Work Queue Command
-2026-02-03T03:45:24.598Z	# Work Queue Command
-2026-02-03T03:46:36.879Z	# Work Queue Command
+2026-02-03T03:39:12.626Z	# Work Queue Command
+2026-02-03T03:40:18.318Z	# Work Queue Command
+2026-02-03T03:45:24.598Z	# Work Queue Command
+2026-02-03T03:46:36.879Z	# Work Queue Command
 2026-02-03T03:48:52.462Z	[Request interrupted by user for tool use]
 2026-02-03T04:09:57.869Z	[Request interrupted by user for tool use]
-@.claude/skills/coordination/workspace/work-queue/SKILL.md
+@.claude/skills/coordination/workspace/work-queue/SKILL.md
 ARGUMENTS: items in digitalmodel repo and orcawave module
 ARGUMENTS: list items in digitalmodel repo and orcaflex module
 ARGUMENTS: run WRK-029
 ARGUMENTS: run WRK-066
-Capture and process work items (features, bugs, tasks) across workspace-hub repositories. Two-phase system: rapidly log items, then triage and delegate by complexity.
-```
-```bash
-| A | Simple | Implement → Test → Archive |
-| B | Medium | Explore → Implement → Test → Archive |
-| C | Complex | Plan → Explore → Implement → Test → Review → Archive |
-| Route | Complexity | Pipeline |
-| Subcommand | Description |
-| `add <desc>` | Capture one or more work items |
-| `archive WRK-NNN` | Manually archive an item |
-| `list` | Show all pending/working/blocked items |
-| `prioritize` | Interactive priority adjustment |
-| `report` | Queue health summary |
-| `run` | Process next pending item (default if no args) |
-| `status WRK-NNN` | Show specific item details |
-|------------|-------------|
-|-------|-----------|----------|
+Capture and process work items (features, bugs, tasks) across workspace-hub repositories. Two-phase system: rapidly log items, then triage and delegate by complexity.
+```
+```bash
+| A | Simple | Implement → Test → Archive |
+| B | Medium | Explore → Implement → Test → Archive |
+| C | Complex | Plan → Explore → Implement → Test → Review → Archive |
+| Route | Complexity | Pipeline |
+| Subcommand | Description |
+| `add <desc>` | Capture one or more work items |
+| `archive WRK-NNN` | Manually archive an item |
+| `list` | Show all pending/working/blocked items |
+| `prioritize` | Interactive priority adjustment |
+| `report` | Queue health summary |
+| `run` | Process next pending item (default if no args) |
+| `status WRK-NNN` | Show specific item details |
+|------------|-------------|
+|-------|-----------|----------|

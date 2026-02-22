@@ -126,7 +126,7 @@ else
         PRIMARY_AGENT=$(jq -r ".agentSelectionRules.complexityThresholds.complex.primary" "$REGISTRY_FILE")
     else
         # Try to get task-specific agent
-        PRIMARY_AGENT=$(jq -r ".taskTypeAgentMapping.\"${TASK_TYPE}\".primary // \"claude-sonnet-4.5\"" "$REGISTRY_FILE")
+        PRIMARY_AGENT=$(jq -r ".taskTypeAgentMapping.\"${TASK_TYPE}\".primary // \"claude-sonnet-4-6\"" "$REGISTRY_FILE")
     fi
 
     echo -e "${YELLOW}Selected agent: $PRIMARY_AGENT${NC}"

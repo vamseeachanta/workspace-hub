@@ -22,10 +22,6 @@
 	path = acma-projects
 	url = https://github.com/vamseeachanta/acma-projects
 
-[submodule "ai-native-traditional-eng"]
-	path = ai-native-traditional-eng
-	url = https://github.com/vamseeachanta/ai-native-traditional-eng.git
-
 [submodule "assethold"]
 	path = assethold
 	url = https://github.com/samdansk2/assethold.git
@@ -45,10 +41,6 @@
 [submodule "doris"]
 	path = doris
 	url = https://github.com/vamseeachanta/doris
-
-[submodule "energy"]
-	path = energy
-	url = https://github.com/vamseeachanta/energy.git
 
 [submodule "frontierdeepwater"]
 	path = frontierdeepwater

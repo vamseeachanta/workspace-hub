@@ -128,6 +128,19 @@ coverage.xml
 .claude/outputs/
 .claude/plans/
 
+# State sub-directories committed for cross-machine comprehensive-learning analysis
+# Raw transcripts (sessions/, archive/, session-reports/) stay local — too large
+!.claude/state/candidates/
+!.claude/state/corrections/
+!.claude/state/patterns/
+!.claude/state/reflect-history/
+!.claude/state/trends/
+!.claude/state/session-signals/
+!.claude/state/cc-insights/
+!.claude/state/learned-patterns.json
+!.claude/state/skill-scores.yaml
+!.claude/state/cc-user-insights.yaml
+
 # Claude-flow runtime (never synced)
 .hive-mind/
 .swarm/

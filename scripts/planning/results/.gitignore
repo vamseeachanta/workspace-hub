@@ -1,0 +1,3 @@
+# Ensemble planning results are runtime artifacts — do not commit
+*
+!.gitignore

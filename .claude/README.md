@@ -80,7 +80,7 @@ workspace-hub/
 ✅ **Works with all Factory AI variants:**
 - Claude 3.5 Sonnet
 - GPT-5 Codex
-- GPT-4 Turbo
+- GPT-4.1
 - Claude 3 Opus
 - Other supported models
 

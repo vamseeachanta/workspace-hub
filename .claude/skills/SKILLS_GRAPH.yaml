@@ -3,11 +3,18 @@ generated_at: '2026-02-19T16:18:18.788269+00:00'
 generated_by: WRK-205 Step 4
 source: 'SKILL.md frontmatter (requires: and see_also: keys)'
 note: Generated artifact — do not edit manually. Edit SKILL.md frontmatter instead.
+capability_manifests:
+  digitalmodel: 'digitalmodel/.claude/capability-manifest.yaml'  # added WRK-247 2026-02-20
 stats:
   total_skills_scanned: 298
   total_edges: 4
   broken_refs: 2
 edges:
+- from: eng/diffraction-spec-converter
+  to: engineering/marine-offshore/diffraction-analysis
+  type: see_also
+  source_file: eng/diffraction-spec-converter.md
+  note: "WRK-240 — spec_converter skill; references existing diffraction-analysis master skill"
 - from: engineering/marine-offshore/cathodic-protection
   to: engineering/asset-integrity/fitness-for-service
   type: see_also

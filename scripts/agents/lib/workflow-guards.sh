@@ -233,6 +233,14 @@ session_record_stage() {
     session_set_scalar "active_wrk" "$wrk_id"
     session_set_scalar "last_stage" "$stage"
     session_update_timestamp
+    # Mirror to state file for hooks (WRK-285)
+    local _hub="${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree \
+        2>/dev/null | grep . || git rev-parse --show-toplevel 2>/dev/null || echo "")}"
+    local _set="${_hub}/scripts/work-queue/set-active-wrk.sh"
+    if [[ -f "$_set" ]]; then
+        bash "$_set" "$wrk_id" 2>/dev/null || \
+            echo "WARN: failed to mirror WRK state for $wrk_id — check .claude/state/active-wrk" >&2
+    fi
     # WRK-161: Update pipeline state if available
     local sid
     sid="$(session_get session_id 2>/dev/null || true)"

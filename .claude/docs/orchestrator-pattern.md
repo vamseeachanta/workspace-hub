@@ -144,3 +144,31 @@ Only for lightweight coordination tasks:
 - `/context-management` - Full context optimization guide
 - `~/.claude/CLAUDE.md` - Global orchestration rules
 - `.claude/agent-library/` - Available subagent types
+
+## Delegation Quick Reference
+
+Keep main context free. Use Task tool for:
+- **Explore**: codebase search, file discovery, understanding code
+- **Plan**: architecture decisions, implementation strategy
+- **Bash**: git operations, builds, tests
+- **general-purpose**: multi-step implementations
+
+Agents on-demand: `.claude/agent-library/<category>/<agent>.md`
+
+### Agent Categories
+- `core/` — coder, tester, reviewer, planner
+- `devops/` — database, infrastructure, security-audit, observability
+- `github/` — pr-manager, code-review-swarm, release-manager
+- `sparc/` — specification, pseudocode, architecture
+
+## Cross-Review Process
+
+Save plans to: `specs/modules/<module>/`
+- Templates: `specs/templates/plan-template.md` or `plan-template-minimal.md`
+- Required metadata: `title`, `description`, `version`, `module`, `session.id`, `session.agent`, `review`
+
+**Cross-Review (MANDATORY)**: All available AI agents must review. Use `scripts/review/cross-review.sh <file> all`.
+- **Codex CLI** (REQUIRED): `codex review --commit <sha>` or `codex exec` — must produce a verdict. If Codex fails or is unavailable, the review is BLOCKED until resolved.
+- **Claude** (current session): inline review by orchestrating agent
+- **Gemini CLI**: `gemini --prompt` for non-interactive review
+- Minimum: 3 reviewers. Codex is a hard gate; Claude and Gemini failures may be noted as NO_OUTPUT and proceeded with.

@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
-# session-review.sh — Post-session review for skills & memory enhancement
+# session-review.sh — Raw signal extraction from session transcript
 # Trigger: Stop event
 # Output: .claude/state/pending-reviews/*.jsonl
 #
-# Reads session transcript from Claude's project directory and extracts:
+# SCOPE: Raw signal capture ONLY — no scoring, no WRK creation, no semantic analysis.
+# Heavy analysis runs at 3AM via scripts/analysis/session-analysis.sh (reads pending-reviews/).
+# Lightweight session-end metadata → .claude/hooks/session-signals.sh
+#
+# Extracts from session transcript:
 # - New files created (Write tool events)
 # - Error patterns (tool results with errors)
 # - Insight keywords from human messages (gotcha, lesson, learned, etc.)
@@ -264,12 +268,50 @@ extract_memory_candidates() {
     ' "$TRANSCRIPT" >> "$outfile" 2>/dev/null || true
 }
 
+# 6. Gap candidates (skills exercised but agent fell short)
+extract_gap_candidates() {
+    local outfile="${REVIEW_DIR}/gap-candidates.jsonl"
+    # Detect uncertainty signals in assistant text responses
+    jq -c '
+        select(.type == "assistant")
+        | .message.content[]?
+        | select(.type == "text")
+        | select(.text | test(
+            "I am not (certain|sure|confident)|I do not have (information|data|knowledge|enough)|I cannot (find|determine|access|locate)|insufficient (data|information|context|knowledge)|I lack (knowledge|context|information|data)|not enough (data|information|context)|I do not know|I am unable to (determine|find|access)|beyond my (knowledge|training)|I have no (data|information|knowledge) (on|about|for)|I am unfamiliar with|I could not find";
+            "i"
+        ))
+        | {
+            timestamp: "'"$TIMESTAMP"'",
+            session: "'"$SESSION_TAG"'",
+            signal: "gap_candidate",
+            gap_type: "shallow",
+            context_preview: (.text | .[0:400])
+        }
+    ' "$TRANSCRIPT" >> "$outfile" 2>/dev/null || true
+
+    # Detect Skill tool invocations — flag domain for gap review
+    jq -c '
+        select(.type == "assistant")
+        | .message.content[]?
+        | select(.type == "tool_use" and .name == "Skill")
+        | {
+            timestamp: "'"$TIMESTAMP"'",
+            session: "'"$SESSION_TAG"'",
+            signal: "gap_candidate",
+            gap_type: "skill_invoked",
+            skill_name: (.input.skill // "unknown"),
+            context_preview: (.input | tostring | .[0:200])
+        }
+    ' "$TRANSCRIPT" >> "$outfile" 2>/dev/null || true
+}
+
 # --- Run all extractors ---
 extract_new_files
 extract_errors
 extract_insights
 extract_skill_candidates
 extract_memory_candidates
+extract_gap_candidates
 
 # --- Summary ---
 count_lines() {
@@ -286,6 +328,7 @@ ERRORS_COUNT=$(count_lines "${REVIEW_DIR}/errors.jsonl")
 INSIGHTS_COUNT=$(count_lines "${REVIEW_DIR}/insights.jsonl")
 SKILLS_COUNT=$(count_lines "${REVIEW_DIR}/skill-candidates.jsonl")
 MEMORY_COUNT=$(count_lines "${REVIEW_DIR}/memory-updates.jsonl")
+GAPS_COUNT=$(count_lines "${REVIEW_DIR}/gap-candidates.jsonl")
 
 # Write session summary
 jq -cn \
@@ -296,6 +339,7 @@ jq -cn \
     --argjson insights "$INSIGHTS_COUNT" \
     --argjson skills "$SKILLS_COUNT" \
     --argjson memory "$MEMORY_COUNT" \
+    --argjson gaps "$GAPS_COUNT" \
     '{
         timestamp: $ts,
         session: $sess,
@@ -304,11 +348,12 @@ jq -cn \
             errors: $errors,
             insights: $insights,
             skill_candidates: $skills,
-            memory_candidates: $memory
+            memory_candidates: $memory,
+            gap_candidates: $gaps
         }
     }' >> "${REVIEW_DIR}/session-summaries.jsonl" 2>/dev/null || true
 
-echo "session-review: ${SESSION_TAG} — files:${NEW_FILES_COUNT} errors:${ERRORS_COUNT} insights:${INSIGHTS_COUNT} skills:${SKILLS_COUNT} memory:${MEMORY_COUNT}"
+echo "session-review: ${SESSION_TAG} — files:${NEW_FILES_COUNT} errors:${ERRORS_COUNT} insights:${INSIGHTS_COUNT} skills:${SKILLS_COUNT} memory:${MEMORY_COUNT} gaps:${GAPS_COUNT}"
 
 # Cleanup temp file if we created one
 [[ "$CLEANUP_TEMP" == "true" ]] && rm -f "$TRANSCRIPT" 2>/dev/null

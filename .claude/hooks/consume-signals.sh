@@ -59,6 +59,7 @@ ERRORS_COUNT=$(count_lines "${REVIEW_DIR}/errors.jsonl")
 SKILLS_COUNT=$(count_lines "${REVIEW_DIR}/skill-candidates.jsonl")
 MEMORY_COUNT=$(count_lines "${REVIEW_DIR}/memory-updates.jsonl")
 NEW_FILES_COUNT=$(count_lines "${REVIEW_DIR}/new-files.jsonl")
+GAPS_COUNT=$(count_lines "${REVIEW_DIR}/gap-candidates.jsonl")
 
 # --- 1. Append insights to pending-insights.md ---
 PENDING_INSIGHTS="${STATE_DIR}/pending-insights.md"
@@ -93,7 +94,7 @@ if [[ ! -f "$ACCUMULATOR" ]]; then
             version: 1,
             last_processed: $ts,
             session_count: 0,
-            totals: { insights: 0, errors: 0, skill_candidates: 0, memory_updates: 0, new_files: 0 },
+            totals: { insights: 0, errors: 0, skill_candidates: 0, memory_updates: 0, new_files: 0, gap_candidates: 0 },
             skill_patterns: {}
         }' > "$ACCUMULATOR" 2>/dev/null
 fi
@@ -105,6 +106,7 @@ acc_errors=$(jq -r '.totals.errors // 0' "$ACCUMULATOR" 2>/dev/null)
 acc_skills=$(jq -r '.totals.skill_candidates // 0' "$ACCUMULATOR" 2>/dev/null)
 acc_memory=$(jq -r '.totals.memory_updates // 0' "$ACCUMULATOR" 2>/dev/null)
 acc_new_files=$(jq -r '.totals.new_files // 0' "$ACCUMULATOR" 2>/dev/null)
+acc_gaps=$(jq -r '.totals.gap_candidates // 0' "$ACCUMULATOR" 2>/dev/null)
 
 # Update skill patterns from this session
 skill_patterns_update=""
@@ -127,6 +129,7 @@ jq \
     --argjson skl "$((acc_skills + SKILLS_COUNT))" \
     --argjson mem "$((acc_memory + MEMORY_COUNT))" \
     --argjson nf "$((acc_new_files + NEW_FILES_COUNT))" \
+    --argjson gaps "$((acc_gaps + GAPS_COUNT))" \
     --argjson dt "\"${DATE_TAG}\"" \
     --argjson new_patterns "${skill_patterns_update:-"{}"}" \
     '
@@ -137,6 +140,7 @@ jq \
     .totals.skill_candidates = $skl |
     .totals.memory_updates = $mem |
     .totals.new_files = $nf |
+    .totals.gap_candidates = $gaps |
     # Merge skill patterns: add session date, increment total, check maturity
     .skill_patterns as $existing |
     reduce ($new_patterns | to_entries[]) as $entry (
@@ -230,6 +234,7 @@ cat >> "$BRIEFING" <<EOF
 | Errors | ${ERRORS_COUNT} | ${all_errors} |
 | Skill candidates | ${SKILLS_COUNT} | ${all_skills} |
 | Memory updates | ${MEMORY_COUNT} | ${all_memory} |
+| Gap candidates | ${GAPS_COUNT} | - |
 EOF
 
 # --- 4. Generate draft work item if significant work was done ---
@@ -325,12 +330,94 @@ WRKEOF
     fi
 fi
 
+# --- 4b. Create WRK items for deep knowledge gaps ---
+# Deep gap criteria: 3+ unique uncertainty signals in gap-candidates.jsonl
+# Avoids duplicates by checking for existing WRK items with "skill gap" in title
+GAP_WRK_CREATED=""
+if [[ "$GAPS_COUNT" -ge 3 && -f "${REVIEW_DIR}/gap-candidates.jsonl" && -f "$STATE_YAML" ]]; then
+    # Collect unique gap domains from skill invocations
+    gap_skills=$(jq -r 'select(.gap_type == "skill_invoked") | .skill_name // "unknown"' \
+        "${REVIEW_DIR}/gap-candidates.jsonl" 2>/dev/null | sort -u | head -5 | tr '\n' ', ' | sed 's/,$//')
+    uncertainty_count=$(jq 'select(.gap_type == "shallow")' \
+        "${REVIEW_DIR}/gap-candidates.jsonl" 2>/dev/null | wc -l | tr -d ' ')
+
+    # Only create if meaningful gap signals found (skills invoked or multiple uncertainties)
+    if [[ ( -n "$gap_skills" && "$gap_skills" != "" ) || "$uncertainty_count" -ge 3 ]]; then
+        # Check for existing gap WRK items to avoid duplicates
+        existing_gap=$(ls "${WORK_QUEUE}/pending/"WRK-*.md 2>/dev/null | xargs grep -l "skill.gap\|knowledge.gap" 2>/dev/null | head -1)
+        if [[ -z "$existing_gap" ]]; then
+            last_id=$(grep '^last_id:' "$STATE_YAML" 2>/dev/null | awk '{print $2}')
+            if [[ -n "$last_id" && "$last_id" =~ ^[0-9]+$ ]]; then
+                next_id=$((last_id + 1))
+                GAP_WRK_ID="WRK-$(printf '%03d' $next_id)"
+
+                session_tag=$(jq -r '.session // "unknown"' "${REVIEW_DIR}/gap-candidates.jsonl" 2>/dev/null | head -1)
+
+                mkdir -p "${WORK_QUEUE}/pending" 2>/dev/null
+                cat > "${WORK_QUEUE}/pending/${GAP_WRK_ID}.md" <<GAPWRKEOF
+---
+id: ${GAP_WRK_ID}
+title: "Knowledge gap surfaced — session ${session_tag}"
+status: pending
+priority: medium
+complexity: low
+compound: false
+created_at: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+source: auto-captured-gap
+session: ${session_tag}
+target_repos:
+  - workspace-hub
+tags: [auto-captured, knowledge-gap, skill-gap]
+spec_ref:
+related: [WRK-229, WRK-230]
+blocked_by: []
+synced_to: []
+---
+
+# Knowledge Gap — Session ${session_tag}
+
+## What
+Auto-surfaced from session signals: ${uncertainty_count} uncertainty signal(s) detected.${gap_skills:+
+Skills invoked: ${gap_skills}}
+
+## Gap Signals
+$(jq -r '"- [" + .gap_type + "] " + (.context_preview // "" | .[0:200])' \
+    "${REVIEW_DIR}/gap-candidates.jsonl" 2>/dev/null | head -10)
+
+## Action Required
+- [ ] Review gap signals above — identify which skill domain is thin
+- [ ] Shallow gap: extend existing skill or create new skill in \`.claude/skills/\`
+- [ ] Deep gap: escalate to WRK item with domain expert research required
+- [ ] After resolving, archive this item
+GAPWRKEOF
+
+                # Update state.yaml counters
+                sed -i "s/^last_id:.*/last_id: ${next_id}/" "$STATE_YAML" 2>/dev/null
+                total=$(grep 'total_captured:' "$STATE_YAML" 2>/dev/null | awk '{print $2}')
+                if [[ -n "$total" && "$total" =~ ^[0-9]+$ ]]; then
+                    sed -i "s/total_captured:.*/total_captured: $((total + 1))/" "$STATE_YAML" 2>/dev/null
+                fi
+                GAP_WRK_CREATED="$GAP_WRK_ID"
+            fi
+        fi
+    fi
+fi
+
 # Add work item to briefing if created
 if [[ -n "$WRK_CREATED" ]]; then
     cat >> "$BRIEFING" <<EOF
 
 ## Draft Work Item
 \`${WRK_CREATED}\` created in \`.claude/work-queue/pending/\` — review and update title.
+EOF
+fi
+
+# Add gap WRK item to briefing if created
+if [[ -n "$GAP_WRK_CREATED" ]]; then
+    cat >> "$BRIEFING" <<EOF
+
+## Knowledge Gap Work Item
+\`${GAP_WRK_CREATED}\` created in \`.claude/work-queue/pending/\` — review gap signals and resolve.
 EOF
 fi
 
@@ -353,5 +440,5 @@ for f in "${REVIEW_DIR}"/*.jsonl; do
     : > "$f"  # Truncate to empty
 done
 
-echo "consume-signals: processed — insights:${INSIGHTS_COUNT} errors:${ERRORS_COUNT} skills:${SKILLS_COUNT} memory:${MEMORY_COUNT} → archived to ${DATE_TAG}/"
+echo "consume-signals: processed — insights:${INSIGHTS_COUNT} errors:${ERRORS_COUNT} skills:${SKILLS_COUNT} memory:${MEMORY_COUNT} gaps:${GAPS_COUNT} → archived to ${DATE_TAG}/"
 exit 0

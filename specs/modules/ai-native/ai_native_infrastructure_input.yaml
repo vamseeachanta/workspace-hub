@@ -812,7 +812,7 @@ ai_agent_orchestration_rules:
     - "Use the latest Claude Sonnet model for planning, architectural coordination, and reviewer roles requiring broad reasoning."
     - "Use the latest Claude Haiku model for rapid coding, refactoring, and test authoring where speed is preferred."
     - "Use the highest-capacity Claude model available (e.g., Opus tier) for complex specs synthesis, multi-repo reasoning, or safety-critical reviews."
-    - "OpenAI equivalents: use the latest GPT-4.1 (or 4.x) model for broad reasoning/review, GPT-4o/GPT-4 Turbo for coding/test iterations, and GPT-4o Mini (or successor) for lightweight coordination."
+    - "OpenAI equivalents: use the latest GPT-4.1 (or 4.x) model for broad reasoning/review, GPT-4.1/GPT-4.1 for coding/test iterations, and GPT-4.1 Mini (or successor) for lightweight coordination."
     - "Ensure model selection is logged alongside agent role so future audits understand decision context."
 
   review_trigger:

@@ -186,12 +186,213 @@ check_session_snapshot() {
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-CODEX: CODEX.md MAX_TEAMMATES sync
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_codex_settings_sync() {
+    local settings="${WORKSPACE_HUB}/.claude/settings.json"
+    local codex="${WORKSPACE_HUB}/.codex/CODEX.md"
+    [[ ! -f "$settings" || ! -f "$codex" ]] && return
+
+    local settings_val codex_val
+    settings_val=$(grep -o '"MAX_TEAMMATES"[[:space:]]*:[[:space:]]*"[^"]*"' "$settings" 2>/dev/null | grep -o '"[^"]*"$' | tr -d '"')
+    codex_val=$(grep -o 'MAX_TEAMMATES=[0-9]*' "$codex" 2>/dev/null | head -1 | cut -d= -f2)
+
+    if [[ -n "$settings_val" && -n "$codex_val" && "$settings_val" != "$codex_val" ]]; then
+        warnings+=("R-CODEX: CODEX.md MAX_TEAMMATES=${codex_val} but settings.json has ${settings_val}")
+        fixes+=("  Action: Update CODEX.md §Default thread cap to match settings.json value")
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-MODEL: Stale model IDs in scripts/
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_stale_model_ids() {
+    local scripts_dir="${WORKSPACE_HUB}/scripts"
+    [[ ! -d "$scripts_dir" ]] && return
+
+    # Patterns constructed via concatenation so update-model-ids.sh won't auto-replace them here
+    local p_claude="claude-sonnet-4-2025""0514"
+    local p_gpt4o="gpt-4o[^.-]"
+    local p_gemini="gemini-2\.0-flash"
+    local p_claude2="claude-sonnet-4\.5[^-]"
+    local stale_pattern="${p_claude}|${p_gpt4o}|${p_gemini}|${p_claude2}"
+    local count
+    # Exclude update-model-ids.sh (intentionally contains stale patterns as replacement constants)
+    count=$(grep -rl --include="*.sh" --include="*.py" -E "$stale_pattern" "$scripts_dir" 2>/dev/null \
+        | grep -v 'update-model-ids\.sh' | wc -l | tr -d ' ')
+
+    if [[ "$count" -gt 0 ]]; then
+        warnings+=("R-MODEL: ${count} script(s) with stale model IDs — run scripts/maintenance/update-model-ids.sh")
+        fixes+=("  Action: bash scripts/maintenance/update-model-ids.sh --hub-only --dry-run (preview), then without --dry-run")
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-REGISTRY: model-registry.yaml age check
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_model_registry_age() {
+    local registry="${WORKSPACE_HUB}/config/agents/model-registry.yaml"
+    [[ ! -f "$registry" ]] && return
+
+    local last_updated
+    last_updated=$(grep -o 'last_updated:.*' "$registry" 2>/dev/null | head -1 | sed 's/last_updated:[[:space:]]*//' | tr -d "'\"")
+    [[ -z "$last_updated" ]] && return
+
+    # Convert to epoch (format: YYYY-MM-DD)
+    local reg_epoch now_epoch age_days
+    reg_epoch=$(date -d "$last_updated" +%s 2>/dev/null || date -j -f "%Y-%m-%d" "$last_updated" +%s 2>/dev/null || echo 0)
+    now_epoch=$(date +%s)
+    age_days=$(( (now_epoch - reg_epoch) / 86400 ))
+
+    if [[ "$age_days" -gt 14 ]]; then
+        warnings+=("R-REGISTRY: model-registry.yaml last updated ${age_days} days ago — review for new model releases")
+        fixes+=("  Action: Update config/agents/model-registry.yaml with latest model IDs")
+    else
+        info+=("R-REGISTRY: model-registry.yaml ${age_days} days old (within 14-day threshold)")
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-XPROV: Cross-provider rule coverage
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_cross_provider_rules() {
+    local codex="${WORKSPACE_HUB}/.codex/CODEX.md"
+    local gemini="${WORKSPACE_HUB}/.gemini/GEMINI.md"
+    local missing=()
+
+    for f in "$codex" "$gemini"; do
+        [[ ! -f "$f" ]] && continue
+        local name
+        name=$(basename "$(dirname "$f")")
+        if ! grep -qi "legal\|legal-sanity" "$f" 2>/dev/null; then
+            missing+=("$(basename "$f"): missing legal compliance gate")
+        fi
+        if ! grep -qi "tdd\|tests before\|test.*mandatory" "$f" 2>/dev/null; then
+            missing+=("$(basename "$f"): missing TDD mandate")
+        fi
+    done
+
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        warnings+=("R-XPROV: ${#missing[@]} cross-provider rule gap(s) detected")
+        for m in "${missing[@]}"; do
+            fixes+=("  Gap: $m")
+        done
+        fixes+=("  Action: Add security/legal/testing gates to CODEX.md and GEMINI.md §Required Gates")
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-HARNESS: Agent harness file size check (WRK-263)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_harness_file_sizes() {
+    local ws="${WORKSPACE_HUB:-$(git -C "$(dirname "$0")" rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git -C "$(dirname "$0")" rev-parse --show-toplevel 2>/dev/null)}"
+    local warn_limit=25  # 5-line grace above 20-line target
+    local files=(
+        "${ws}/CLAUDE.md"
+        "${ws}/AGENTS.md"
+        "${ws}/.codex/CODEX.md"
+        "${ws}/.gemini/GEMINI.md"
+    )
+    local violations=()
+    for f in "${files[@]}"; do
+        [[ ! -f "$f" ]] && continue
+        local lines
+        lines=$(wc -l < "$f" 2>/dev/null | tr -d ' ')
+        if [[ "$lines" -gt "$warn_limit" ]]; then
+            violations+=("$(basename "$f"):${lines}L")
+        fi
+    done
+    # Also check MEMORY.md
+    local mem_file="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md"
+    if [[ -f "$mem_file" ]]; then
+        local mlines
+        mlines=$(wc -l < "$mem_file" 2>/dev/null | tr -d ' ')
+        if [[ "$mlines" -gt "$warn_limit" ]]; then
+            violations+=("MEMORY.md:${mlines}L")
+        fi
+    fi
+    if [[ "${#violations[@]}" -gt 0 ]]; then
+        echo "R-HARNESS: harness files exceed 25-line limit: ${violations[*]}"
+        echo "  → Migrate content to skills/docs. See .claude/rules/coding-style.md#agent-harness-files"
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# R-SKILLS: Session-input pipeline health (WRK-229)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+check_skills_pipeline_health() {
+    local state_dir="${WORKSPACE_HUB}/.claude/state"
+    local now
+    now=$(date +%s)
+    local issues=()
+
+    # Check 1: skill-learner hook fired recently (any session-signals file <7 days)
+    local signals_dir="${state_dir}/session-signals"
+    if [[ -d "$signals_dir" ]]; then
+        local newest_signal
+        newest_signal=$(find "$signals_dir" -name "*.jsonl" -newer "${state_dir}/.readiness-checked" 2>/dev/null | head -1)
+        local oldest_allowed=$(( now - 7 * 86400 ))
+        local signal_found=false
+        while IFS= read -r f; do
+            local mtime
+            mtime=$(stat -c %Y "$f" 2>/dev/null || echo 0)
+            if [[ "$mtime" -gt "$oldest_allowed" ]]; then
+                signal_found=true
+                break
+            fi
+        done < <(find "$signals_dir" -name "*.jsonl" 2>/dev/null)
+        if [[ "$signal_found" == false ]]; then
+            issues+=("session-signals empty or stale (>7 days)")
+        fi
+    else
+        issues+=("session-signals dir missing — session-signals.sh hook not firing")
+    fi
+
+    # Check 2: skill candidates populated since last curation run
+    local curation_log="${state_dir}/curation-log.yaml"
+    local candidates="${state_dir}/candidates/skill-candidates.md"
+    if [[ -f "$curation_log" && -f "$candidates" ]]; then
+        local last_run
+        last_run=$(grep 'last_run:' "$curation_log" 2>/dev/null | grep -v 'null' | sed 's/.*last_run:[[:space:]]*//')
+        if [[ -z "$last_run" || "$last_run" == "null" ]]; then
+            info+=("R-SKILLS: Skills curation not yet run — invoke /skills-curation to start")
+        fi
+    fi
+
+    # Check 3: new skills committed in last 7 days
+    local skills_dir="${WORKSPACE_HUB}/.claude/skills"
+    if [[ -d "$skills_dir" ]]; then
+        local recent_skill_commits
+        recent_skill_commits=$(git -C "$WORKSPACE_HUB" log --since="7 days ago" --oneline -- ".claude/skills/" 2>/dev/null | wc -l | tr -d ' ')
+        if [[ "$recent_skill_commits" -eq 0 ]]; then
+            issues+=("no skill commits in last 7 days — pipeline may be idle")
+        else
+            info+=("R-SKILLS: ${recent_skill_commits} skill commit(s) in last 7 days")
+        fi
+    fi
+
+    if [[ ${#issues[@]} -gt 0 ]]; then
+        warnings+=("R-SKILLS: ${#issues[@]} skills pipeline issue(s)")
+        for i in "${issues[@]}"; do
+            fixes+=("  Gap: $i")
+        done
+        fixes+=("  Action: Check session-signals.sh stop hook is registered; run /skills-curation manually")
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Run all checks
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 check_memory
 check_context_budget
 check_submodule_sync
 check_session_snapshot
+check_codex_settings_sync
+check_stale_model_ids
+check_model_registry_age
+check_cross_provider_rules
+check_skills_pipeline_health
+check_harness_file_sizes
 
 # --- Terminal output ---
 if [[ ${#warnings[@]} -gt 0 ]]; then
@@ -234,5 +435,9 @@ fi
 
 # Clear the startup readiness lock so next session re-verifies
 rm -f "${STATE_DIR}/.readiness-checked" 2>/dev/null
+
+# Clear active WRK for next session (WRK-285)
+CLEAR_SCRIPT="${WORKSPACE_HUB}/scripts/work-queue/clear-active-wrk.sh"
+[[ -f "$CLEAR_SCRIPT" ]] && bash "$CLEAR_SCRIPT" 2>/dev/null || true
 
 exit 0

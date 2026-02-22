@@ -67,3 +67,12 @@ Fixes #234
 ## Pull Requests & Merging
 
 See `.claude/docs/pr-process.md` for PR requirements, review process, merge strategy, and branch protection.
+
+## Operational Guidelines
+
+- Submodules: commit inside submodule first, then update pointer at hub level
+- Never rebase diverged branches — use merge or `reset --hard origin/<branch>` after user confirmation
+- Force-pushed refs: detect via `git rev-list --count HEAD..origin/main`; always fetch first
+- Stash before pull when uncommitted changes exist; report stash pop conflicts, don't auto-resolve
+- Windows: report path limitations (trailing spaces, long paths, symlinks) immediately, don't retry
+- Shell scripts: use `#!/usr/bin/env bash`, ensure LF line endings (CRLF breaks MINGW)

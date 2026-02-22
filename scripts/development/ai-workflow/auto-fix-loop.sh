@@ -175,7 +175,7 @@ call_claude() {
         -H "x-api-key: ${ANTHROPIC_API_KEY}" \
         -H "anthropic-version: 2023-06-01" \
         -d "$(jq -n \
-            --arg model "claude-sonnet-4-20250514" \
+            --arg model "claude-sonnet-4-6" \
             --arg prompt "$prompt" \
             --argjson max_tokens "$max_tokens" \
             '{

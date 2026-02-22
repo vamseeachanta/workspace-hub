@@ -93,15 +93,7 @@ if [[ "$memory_count" -gt 0 ]]; then
 fi
 
 echo ""
-echo "  CHECKLIST:"
-echo "    [ ] Are all learnings rolled into appropriate skills?"
-echo "    [ ] Are gotchas/conventions saved to memory topic files?"
-echo "    [ ] Are new patterns documented (not just in code comments)?"
-echo "    [ ] Do existing skills need updates from this session?"
-echo ""
-echo "  Skill locations:  .claude/skills/<domain>/SKILL.md"
-echo "  Memory location:  ~/.claude/projects/<key>/memory/"
-echo "  Insights log:     ${INSIGHTS_FILE##*/}"
+echo "  → Run /comprehensive-learning post-session to process learnings."
 echo "================================================================"
 
 exit 0

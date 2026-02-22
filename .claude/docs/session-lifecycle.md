@@ -1,3 +1,5 @@
+> **Updated for WRK-230/231.** See also [self-learning-workflow.md](self-learning-workflow.md) for the full ecosystem loop.
+
 # Session Lifecycle — Hook Catalog
 
 > Complete inventory of all hooks in the workspace-hub Claude Code session.
@@ -136,6 +138,16 @@ Fires on **`/exit`**, **Ctrl+C**, and **timeout**. All hooks run sequentially. E
 
 **improve.sh** (#9): Hybrid shell + Anthropic API script that implements the `/improve` skill autonomously. 8 phases: collects signals (shell), classifies improvements (API), reviews ecosystem health (shell), applies guards (shell), generates and writes improvements (API + shell), **surfaces recommendations to user** (shell — Phase 5.5), logs changes (shell), and cleans up signals (shell). Recommendations include: skill gap detection, tool/plugin suggestions, ecosystem warnings, and correction pattern analysis.
 
+### Session-End Gap Surfacing (WRK-230)
+
+`session-review.sh` captures gap candidates at session end via `extract_gap_candidates()`:
+- **Shallow gaps**: 1-2 uncertainty signals → logged to `gap-candidates.jsonl` → surfaced in briefing
+- **Deep gaps**: 3+ signals → `consume-signals.sh` auto-creates a `WRK-NNN: Knowledge gap surfaced` item
+- Duplicate prevention: checks for existing gap WRK items before creating new ones
+- Feed to WRK-229: skills-curation picks up gap signals as research targets on next Monday 4AM run
+
+**WRK-229 owns periodic curation. WRK-230 owns session-end gap surfacing. Both feed the same output.**
+
 ### Session Stop — Additional Recommendations
 
 Beyond the 9 existing stop hooks, these are recommended enhancements for review:
@@ -159,7 +171,9 @@ Beyond the 9 existing stop hooks, these are recommended enhancements for review:
 PreToolUse ──→ session-logger.sh ──→ state/sessions/*.jsonl
 PostToolUse ──→ capture-corrections.sh ──→ state/corrections/, state/pending-reviews/
 Stop #1 ──→ session-end-evaluate.sh ──→ state/sessions/ (metrics)
+Stop #3 ──→ session-review.sh ──→ pending-reviews/gap-candidates.jsonl (extract_gap_candidates)
 Stop #4 ──→ consume-signals.sh ──→ accumulator.json, session-briefing.md, archive/
+Stop #4 ──→ consume-signals.sh ──→ gap-candidates.jsonl → WRK items (deep gaps, 3+ signals)
 Stop #8 ──→ ecosystem-health-check.sh ──→ state/pending-reviews/ecosystem-review.jsonl
 Stop #9 ──→ improve.sh ──→ writes to .claude/{memory,rules,skills,docs}, logs to state/improve-changelog.yaml
 ```

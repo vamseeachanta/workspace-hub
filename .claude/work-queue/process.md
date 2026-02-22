@@ -55,6 +55,7 @@ State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item
 4. Update item: add plan content (A/B) or link spec (C), set `plan_reviewed: true` AND `plan_approved: true`.
    ALL routes require both flags — no exceptions.
 5. No implementation begins until plan is confirmed.
+6. **Agentic horizon check** — before setting `plan_approved: true`, confirm the item's `## Agentic AI Horizon` section is filled with a meaningful assessment (not a placeholder). Items missing this section or with empty prompts should have it completed as part of plan creation.
 
 ### Provider Assignment (During Planning)
 

@@ -126,9 +126,10 @@ Rules:
 ## Complexity Routing
 
 ```
-Route A (Simple):  Triage -> Plan -> Implement -> Test -> Archive
-Route B (Medium):  Triage -> Plan+Explore -> Implement -> Test -> Archive
-Route C (Complex): Triage -> Plan+Explore -> Implement -> Test -> Review -> Archive
+ALL routes: Triage -> Ensemble Gate (9 agents) -> Synthesis -> Plan Gate -> ...
+Route A (Simple):  Implement -> Test -> Archive
+Route B (Medium):  Explore -> Implement -> Test -> Archive
+Route C (Complex): Explore -> Implement -> Test -> Review -> Archive
 ```
 
 | Complexity | Criteria | Route |
@@ -325,6 +326,8 @@ spec_ref:
 related: []
 blocked_by: []
 synced_to: []  # repos where this item has been mirrored
+plan_ensemble: false   # true after 9-agent ensemble planning completes
+ensemble_consensus_score: null # 0-100 score from synthesis
 plan_reviewed: false   # true when plan has been cross-reviewed
 plan_approved: false   # true when user has approved the plan
 percent_complete: 0    # 0-100, auto-set to 100 on archive
@@ -342,6 +345,12 @@ brochure_status:       # pending | updated | synced | n/a
 ## Acceptance Criteria
 - [ ] Criterion 1
 - [ ] Criterion 2
+
+## Agentic AI Horizon
+
+- Does this work boost agentic AI capability in this ecosystem?
+- Will an agent handle this better in 3–4 months — if so: (a) wait, (b) invest differently now, (c) park it as a future WRK item to revisit in 1–2 months, or (d) do the groundwork now and park the rest for when capability catches up?
+- How should this work be shaped to maximise future leverage, not just complete the task?
 
 ---
 *Source: [verbatim original request]*
@@ -502,6 +511,7 @@ The Master Table in INDEX.md includes these tracking columns:
 
 | Column | Source | Auto-detected? |
 |--------|--------|----------------|
+| Ensemble?| `plan_ensemble` frontmatter | Yes |
 | Plan? | `spec_ref` field or `## Plan` body section | Yes |
 | Reviewed? | `plan_reviewed` frontmatter | No — set manually |
 | Approved? | `plan_approved` frontmatter | No — set manually |
