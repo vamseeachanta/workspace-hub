@@ -127,12 +127,16 @@ Extract: skill/memory improvements, correction-driven updates to ecosystem files
 
 ### Phase 5 — Correction Trend Analysis  *(non-mandatory)*
 
-Read `corrections/*.jsonl` across all dates. Group by `type` and `tool` fields.
-For each group compute:
+Read `corrections/*.jsonl` for the **rolling 90-day window** (use `--since` or filter
+by file date). Group by `type` and `tool` fields. For each group compute:
 - Occurrence count this week vs last week vs 4-week average
 - Top 3 most frequent correction types (by count)
 - Any type with count **increasing** week-over-week for 2+ consecutive weeks → flag
   as structural issue, create WRK item: `"fix: recurring <type> correction pattern"`
+
+**Bounding:** Only process files modified in the last 90 days. Run a full compaction
+(all-dates scan) at most once per quarter — log the last compaction date in
+`.claude/state/correction-trend-meta.json`.
 
 This closes the feedback loop on Phase 4 — verifying improvements are actually sticking.
 
@@ -183,15 +187,24 @@ a WRK item. Reset candidate file after processing.
 **Sanitization required:** Before writing candidate-derived content into WRK YAML/MD:
 - Strip `---` sequences that would terminate YAML frontmatter
 - Truncate title to 80 chars; replace newlines with space
-- Quote YAML scalars containing `:` or `#`
+- Quote YAML scalars containing `:`, `#`, `"`, `'`, or `|`
 - Strip markdown control characters from free-text fields
+- Reject multiline values in scalar YAML fields (replace `\n` with space)
+- Validate the complete frontmatter block via
+  `python3 -c 'import yaml,sys; yaml.safe_load(sys.stdin)'` before writing;
+  discard and log if parse fails
 
-**WRK auto-creation pattern:**
+**WRK auto-creation pattern (concurrency-safe):**
 
 ```bash
-NEXT_ID=$(bash scripts/work-queue/next-id.sh)
-WRK_FILE=".claude/work-queue/pending/WRK-${NEXT_ID}.md"
-# Write frontmatter + title + description to WRK_FILE
+# Use flock to prevent duplicate IDs from parallel or manual runs
+(
+  flock -x 200
+  NEXT_ID=$(bash scripts/work-queue/next-id.sh)
+  WRK_FILE=".claude/work-queue/pending/WRK-${NEXT_ID}.md"
+  # Write frontmatter + title + description to WRK_FILE
+  # Update state.yaml last_id inside the lock
+) 200>/tmp/workspace-hub-next-id.lock
 ```
 
 WRK item template:
@@ -268,6 +281,16 @@ Run trigger: only if `$(date +%u)` == 7 (Sunday) or explicit invocation.
 
 ### Phase 10 — Report  *(always runs — registered via `trap EXIT`)*
 
+**Exit-code semantics:** At pipeline start, register the trap and capture the
+original exit status:
+```bash
+_PIPELINE_EXIT=0
+trap 'REPORT_STATUS=$?; _write_report; exit ${_PIPELINE_EXIT:-$REPORT_STATUS}' EXIT
+```
+Mandatory-phase failures set `_PIPELINE_EXIT=1` before exiting; the trap reads
+`_PIPELINE_EXIT` first so report-write errors never mask upstream failures.
+The report write itself must not call `exit` — write best-effort, then return.
+
 Write `.claude/state/learning-reports/$(date +%Y-%m-%d-%H%M).md`:
 
 ```markdown
@@ -313,8 +336,16 @@ git add .claude/state/candidates/ .claude/state/corrections/ \
         .claude/state/patterns/ .claude/state/session-signals/
 git diff --staged --quiet || \
   git commit -m "chore: session learnings from $(hostname)"
-git push origin main
+# Pull with rebase first to avoid push rejection; retry once on transient fail
+git pull --rebase origin main && git push origin main || {
+  sleep 5
+  git pull --rebase origin main && git push origin main
+}
 ```
+
+**On push conflict:** If `git pull --rebase` produces a conflict in a state file,
+prefer the incoming version (`git checkout --theirs <file> && git add <file>`)
+since ace-linux-1 is the authoritative analysis machine. Then `git rebase --continue`.
 
 This is what acma-ansys05 contributes instead of running the full pipeline locally.
 
