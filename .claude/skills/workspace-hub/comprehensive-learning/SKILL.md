@@ -466,8 +466,50 @@ Gitignore exceptions in `.gitignore` (all under `.claude/state/`):
 Not committed: `sessions/` (13 MB), `archive/` (29 MB), `session-reports/` (5.2 MB),
 `sessions-archive/` (grows unbounded) — raw data stays local on ace-linux-1 HDD.
 
+## Session Design: Lean by Default
+
+Sessions are pure **multi-agent execution engines** — all brain directed at the task at hand.
+Analysis, maintenance, and learning are deferred to the nightly `comprehensive-learning` run.
+
+### What belongs in a session
+
+| In-session | Nightly pipeline |
+|------------|-----------------|
+| WRK gate check (gate approval, active-wrk set) | All insight/reflect/knowledge/improve runs |
+| Multi-agent implementation work | Correction trend analysis |
+| Fast signal capture (hooks write raw signals) | Candidate file → WRK auto-creation |
+| /session-start context load | Memory and skill file updates |
+| Cross-review (Codex gate) | Ecosystem health checks |
+| Commit + push | Session archive rsync |
+
+### What must NOT run standalone during sessions
+
+- `/insights` — deferred to Phase 1 nightly
+- `/reflect` — deferred to Phase 2 nightly
+- `/knowledge` — deferred to Phase 3 nightly
+- `/improve` — deferred to Phase 4 nightly
+- `consume-signals.sh` heavy analysis — deferred to Phase 1 nightly
+- `ecosystem-health-check.sh` — deferred to Phase 6 nightly
+- `session-end-evaluate.sh` scoring — deferred to Phase 10 nightly
+
+### Stop hooks: signal capture only
+
+Stop-time hooks must complete in < 5 seconds and write raw data only:
+
+| Hook | Action | Allowed |
+|------|--------|---------|
+| `session-signals.sh` | Write JSONL signal entry | Yes |
+| `engineering-audit.sh` | Write raw audit entry | Yes |
+| `consume-signals.sh` | Analyse signals (444 lines of logic) | **No — move to pipeline** |
+| `session-end-evaluate.sh` | Score session quality (120 lines) | **No — move to pipeline** |
+| `ecosystem-health-check.sh` | Full health scan (321 lines) | **No — move to pipeline** |
+
+See WRK-304 for the cleanup task.
+
 ## Related
 
 - workstations skill: machine registry and `cron_variant` fields
 - WRK-299: implementation tracking
+- WRK-304: Stop hook cleanup — move analysis to pipeline
+- WRK-305: Session signal emitters — wire /clear, plan-mode, per-WRK tool-counts
 - `/insights`, `/reflect`, `/knowledge`, `/improve`: individual pipeline stages
