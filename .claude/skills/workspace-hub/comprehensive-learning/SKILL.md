@@ -153,6 +153,13 @@ WRK_FILE=".claude/work-queue/pending/WRK-${NEXT_ID}.md"
 # state.yaml last_id is updated by next-id.sh auto-correction on next call
 ```
 
+**Sanitization required:** Before writing any candidate-derived content into WRK
+frontmatter or body, sanitize to prevent YAML/Markdown corruption:
+- Escape or strip `---` sequences that would terminate YAML frontmatter
+- Truncate title to 80 chars; replace newlines with space
+- Quote YAML scalar values that contain `:` or `#`
+- Strip markdown control characters from free-text fields
+
 WRK item template for candidate actioning:
 
 ```markdown
@@ -162,7 +169,7 @@ title: "[domain]: <candidate name> — auto-actioned from candidates"
 status: pending
 priority: low
 source: comprehensive-learning/phase-5
-computer: ace-linux-1
+computer: <MACHINE>   # set to runtime hostname (ace-linux-1, ace-linux-2, etc.)
 ---
 ## Context
 Auto-created from `.claude/state/candidates/<type>-candidates.md`.
@@ -180,7 +187,7 @@ Occurrence count: N | Sessions: ...
 ```markdown
 # <Type> Candidates
 *Updated by session-analysis.sh — do not edit manually*
-*Last run: never*
+*Last run: <ISO8601 timestamp of this run>*
 
 ## Candidates
 
@@ -189,7 +196,10 @@ Occurrence count: N | Sessions: ...
 
 ---
 
-### Phase 6 — Report  *(always runs)*
+### Phase 6 — Report  *(always runs — use `trap EXIT` to guarantee execution)*
+
+Register Phase 6 as a `trap EXIT` handler at pipeline start so it runs even if a
+mandatory phase exits 1. The exit code is set *after* the report is written.
 
 Write `.claude/state/learning-reports/$(date +%Y-%m-%d-%H%M).md`:
 

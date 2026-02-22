@@ -20,7 +20,6 @@ triggers:
   - hardware inventory
 related_skills:
   - workspace-hub/session-start
-  - workspace-hub/work
   - workspace-hub/comprehensive-learning
 capabilities:
   - machine-registry
@@ -37,7 +36,7 @@ in WRK items references a nickname from this registry.
 
 ## Machine Registry
 
-Every WRK item **must** set `computer:` in frontmatter to avoid redundant work across machines.
+Every WRK item **should** set `computer:` in frontmatter. Leave blank only for machine-agnostic tasks (hub docs, skills, queue management). See **When to set computer:** below for the full rule.
 
 | Nickname | Hostname | OS | CPU | RAM | GPU | Primary Use | Assessment |
 |----------|----------|----|-----|-----|-----|-------------|------------|
@@ -84,7 +83,7 @@ computer: nickname   # machine where this work is intended to run
 | ANSYS / AQWA work | acma-ansys05 | ANSYS license on this machine |
 | Windows-only tools | acma-ws014 | Windows 11, office tools |
 | Heavy compute (CFD, FEA, batch) | gali-linux-compute-1 | 128 cores, 128 GB RAM, 64 GB VRAM |
-| Engineering CAD (SolidWorks etc.) | AceEngineer-03 (pending) | Licensed CAD software |
+| Engineering CAD (SolidWorks etc.) | acma-ws014 | Windows machine; add dedicated CAD node when provisioned |
 
 ### When to set computer:
 
