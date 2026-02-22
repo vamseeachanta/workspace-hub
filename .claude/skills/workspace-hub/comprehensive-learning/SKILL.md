@@ -5,7 +5,7 @@ description: >
   insights → reflect → knowledge → improve → action-candidates → report.
   Runs on ace-linux-1 only. Other machines contribute via git-synced state files.
   Safe for cron scheduling. Replaces running 4 skills manually.
-version: 2.0.0
+version: 2.1.0
 updated: 2026-02-22
 category: workspace-hub
 author: workspace-hub
@@ -86,6 +86,10 @@ signals, user correction events.
 | Plan mode skipped | Multi-file edit session (≥3 files, ≥1 WRK) with no plan-mode invocation recorded | Flag: "plan mode not used before implementation" |
 | Agent loop / stuck pattern | Session where same tool+file pair appears ≥5× consecutively without progress | Flag: "possible agent loop — consider ultrathink or task decomposition" |
 | Task decomposition quality | WRK item with >15 tool calls before first commit | Flag: "WRK scope too large — split or add stopping conditions" |
+| Ensemble gate skipped | Route B/C WRK processed without `plan_ensemble: true` in frontmatter | Flag: "ensemble gate bypassed — plan confidence unknown" |
+| Low consensus score | `ensemble_consensus_score` < 70 on a completed WRK item | Flag: "low-confidence plan executed — review for rework risk" |
+| SPLIT not resolved | `synthesis.md` contains `[SPLIT:` lines but item proceeded to implementation | Flag: "unresolved SPLIT proceeded — log decision and outcome" |
+| Provider NO_OUTPUT rate | ≥3 consecutive ensemble runs where same provider emits NO_OUTPUT | Flag: "provider degraded — check CLI version / auth for <provider>" |
 
 These signals require session-signals emitters to log: `/clear` invocations, plan-mode
 start/end events, and per-WRK tool-call counts. If signals are absent, skip the check
@@ -192,6 +196,7 @@ a WRK item. Reset candidate file after processing.
 | `hook-candidates.md` | Hooks | Pre/post task patterns → candidate hook |
 | `mcp-candidates.md` | MCP tools | Tool-call gaps → candidate MCP integration |
 | `agent-candidates.md` | Agents | Complex sub-tasks → candidate agent type |
+| `planning-candidates.md` | Planning | Ensemble quality signals → prompt/stance improvements |
 
 **Also scan for signal-based candidates:**
 
@@ -533,10 +538,80 @@ Stop-time hooks must complete in < 5 seconds and write raw data only:
 
 See WRK-304 for the cleanup task.
 
+## Planning Quality Loop
+
+Planning is the highest-leverage phase of the work cycle — a bad plan compounds into
+bad implementation, rework, and late corrections. The ensemble planning system (WRK-303)
+produces structured signals in `scripts/planning/results/*/synthesis.md` that the
+nightly pipeline should harvest and act on.
+
+### Signals to harvest (nightly, from synthesis.md files)
+
+```
+scripts/planning/results/*/synthesis.md
+```
+
+For each synthesis file newer than last pipeline run, extract:
+
+| Signal | Source field | Pipeline action |
+|--------|-------------|----------------|
+| `CONSENSUS_SCORE` | `CONSENSUS_SCORE: N` line | Record per WRK; alert if avg drops below 65 over rolling 7 days |
+| SPLIT decisions | Lines matching `^\[SPLIT:` | Count per WRK; high SPLIT frequency → `planning-candidates.md` entry |
+| SPLIT topic categories | First word of each SPLIT decision text | Group by category; recurring categories → stance prompt improvement candidate |
+| Provider NO_OUTPUT | Files where content starts with `NO_OUTPUT:` | Count per provider per week; ≥3 consecutive → flag in Phase 1 |
+| Stance contribution | Agent file that introduced most SOLO insights | Track which stances catch issues others miss; low-value stances → prompt redesign candidate |
+| Plan→implementation drift | Compare WRK `## Plan` with correction events in same session | High drift → "plan was incomplete" signal; feed to planning prompt improvements |
+
+### planning-candidates.md entries
+
+Write to `.claude/state/candidates/planning-candidates.md`. Each entry should be:
+
+```markdown
+## Candidate: <type>
+- Occurrence: N times in last 7 days
+- Description: <what pattern was observed>
+- Signal source: synthesis.md / corrections.jsonl / session-signals
+- Suggested action: improve prompt / adjust stance / add new stance / change threshold
+```
+
+**Candidate types to watch for:**
+
+| Type | Trigger | Action |
+|------|---------|--------|
+| `stance-ineffective` | One stance contributes 0 SOLO insights across 5+ items | Redesign that stance's prompt focus |
+| `prompt-scope-creep` | Agents consistently raise out-of-scope concerns | Tighten stance prompts with explicit scope anchors |
+| `split-category-recurring` | Same decision category SPLITS ≥3 times in a week | Add a dedicated 4th stance for that category (e.g., `claude-data-model`) |
+| `consensus-score-declining` | Rolling 7-day average drops >10 points | Review recent WRK items for scope inflation or ambiguous requests |
+| `provider-timeout-pattern` | Same provider times out on >20% of items | Investigate CLI version / prompt size; consider reducing context passed to that provider |
+| `plan-drift-high` | >3 corrections during implementation not covered by the plan | Audit synthesis prompt — merged plan may be too abstract |
+
+### Feeding learnings back to the ensemble system
+
+When a `planning-candidate` WRK item is actioned:
+
+1. **Prompt files** in `scripts/planning/prompts/` are updated or new stances added
+2. **Timeout** tuned via `ENSEMBLE_TIMEOUT` in cron environment or per-provider wrapper
+3. **synthesis.md prompt** updated if structured output is unreliable
+4. After changes: run `scripts/planning/ensemble-plan.sh --dry-run WRK-XXX` on 3 recent
+   items to validate prompt renders correctly before live run
+
+This is the self-improvement loop: **sessions produce planning signals → nightly pipeline
+analyses them → candidates surface improvements → WRK items implement them → next sessions
+run better plans**. Every improvement to the planning layer compounds across all future work.
+
+### Integration note: `unset CLAUDECODE` in synthesise.sh
+
+`synthesise.sh` calls `claude -p` as a subprocess with `unset CLAUDECODE` to prevent
+the CLI from detecting it is running inside a Claude Code session (which would alter
+behaviour or reject the call). This pattern should be preserved in any future script
+that calls `claude -p` from within a hook or pipeline context.
+
 ## Related
 
 - workstations skill: machine registry and `cron_variant` fields
 - WRK-299: implementation tracking
 - WRK-304: Stop hook cleanup — move analysis to pipeline
 - WRK-305: Session signal emitters — wire /clear, plan-mode, per-WRK tool-counts
+- WRK-303: Ensemble planning — signals feed into Planning Quality Loop above
 - `/insights`, `/reflect`, `/knowledge`, `/improve`: individual pipeline stages
+- `scripts/planning/` — ensemble planning outputs; harvested by Planning Quality Loop
