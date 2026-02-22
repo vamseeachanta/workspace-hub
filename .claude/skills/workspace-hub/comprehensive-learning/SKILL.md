@@ -78,6 +78,19 @@ Invoke `/insights`. Sources:
 Extract: skill usage frequency, repeated tool call patterns, task success/failure
 signals, user correction events.
 
+**Additional session-quality signals (flag in Phase 1 report):**
+
+| Signal | Check | Action if triggered |
+|--------|-------|---------------------|
+| Context reset discipline | Sessions with ≥3 unrelated WRK tasks but no `/clear` event in signals | Flag: "context pollution risk — multiple tasks without reset" |
+| Plan mode skipped | Multi-file edit session (≥3 files, ≥1 WRK) with no plan-mode invocation recorded | Flag: "plan mode not used before implementation" |
+| Agent loop / stuck pattern | Session where same tool+file pair appears ≥5× consecutively without progress | Flag: "possible agent loop — consider ultrathink or task decomposition" |
+| Task decomposition quality | WRK item with >15 tool calls before first commit | Flag: "WRK scope too large — split or add stopping conditions" |
+
+These signals require session-signals emitters to log: `/clear` invocations, plan-mode
+start/end events, and per-WRK tool-call counts. If signals are absent, skip the check
+and log "signal not available — emitter not configured".
+
 ---
 
 ### Phase 2 — Reflect  *(non-mandatory)*
@@ -133,6 +146,15 @@ by file date). Group by `type` and `tool` fields. For each group compute:
 - Top 3 most frequent correction types (by count)
 - Any type with count **increasing** week-over-week for 2+ consecutive weeks → flag
   as structural issue, create WRK item: `"fix: recurring <type> correction pattern"`
+
+**Escalation WRK items must include diagnosis** (not just counts):
+- Which specific tool/file combinations triggered most corrections this week?
+- Top 3 error patterns (e.g., "missing null check", "wrong import path", "YAML parse error")
+- 2–3 recent JSONL correction entries as concrete examples
+- Suggested root cause: memory/skill mismatch vs codebase drift vs prompt pattern issue
+
+Without diagnosis, escalations are noise. If diagnosis cannot be extracted, log to
+report only — do not create a WRK item.
 
 **Bounding:** Only process files modified in the last 90 days. Run a full compaction
 (all-dates scan) at most once per quarter — log the last compaction date in
