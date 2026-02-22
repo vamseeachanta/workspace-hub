@@ -167,7 +167,7 @@ machines:
     exclusive: []
     shares_hub: ace-linux-1
     isolated: false
-    cron_variant: skip-candidates
+    cron_variant: contribute
 
   acma-ansys05:
     hostname: ACMA-ANSYS05
@@ -175,7 +175,7 @@ machines:
     exclusive: [orcaflex, ansys]
     shares_hub: null
     isolated: true
-    cron_variant: lightweight
+    cron_variant: contribute-minimal
 
   acma-ws014:
     hostname: ACMA-WS014
@@ -183,7 +183,7 @@ machines:
     exclusive: []
     shares_hub: null
     isolated: false
-    cron_variant: full
+    cron_variant: contribute
 
   gali-linux-compute-1:
     hostname: TBD
@@ -239,11 +239,11 @@ computer: [acma-ansys05, ace-linux-1]
 The `cron_variant` field maps directly to `CL_MACHINE_MODE` in the comprehensive-learning
 skill. No separate config file needed — the skill reads `hostname` at runtime.
 
-| cron_variant | Phases run | Machine(s) |
-|--------------|-----------|------------|
-| `full` | 1–6 | ace-linux-1, acma-ws014, gali-linux-compute-1 |
-| `skip-candidates` | 1–4 + 6 | ace-linux-2 (avoids duplicate WRK items with ace-linux-1) |
-| `lightweight` | 1 + 6 | acma-ansys05 (isolated, minimal hub access) |
+| cron_variant | Role | Machine(s) |
+|--------------|------|------------|
+| `full` | Runs complete 10-phase pipeline | ace-linux-1 only |
+| `contribute` | Commits derived state files + pushes; no pipeline | ace-linux-2, acma-ws014 |
+| `contribute-minimal` | Commits candidates + corrections only + pushes | acma-ansys05 (isolated) |
 
 ## Update Process
 
