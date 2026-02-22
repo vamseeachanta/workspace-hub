@@ -233,6 +233,13 @@ will make this richer over time.
   fails (PyYAML not installed), log "WARNING: yaml validation skipped — install
   python3-yaml" and continue without validation rather than blocking the pipeline.
 
+**Cron preflight (ace-linux-1):** Before the first cron run, verify the dependency:
+```bash
+python3 -c "import yaml" || { echo "ERROR: install python3-yaml before scheduling cron"; exit 1; }
+```
+Add this check to `scripts/cron/comprehensive-learning-nightly.sh` as a preflight
+guard so cron failures are explicit rather than silently producing malformed WRK files.
+
 **WRK auto-creation pattern (concurrency-safe):**
 
 ```bash
@@ -361,28 +368,42 @@ Machine: ace-linux-1 | Sources: ace-linux-1 + <N other machines via git>
 
 ## Scheduling
 
+Use a wrapper script so each step is a hard gate or explicit best-effort:
+
 ```bash
-# ace-linux-1 only: nightly 22:00
-# Step 1: pull derived state files from all machines (git)
-# Step 2: pull raw session archives from reachable machines (rsync, best-effort)
+# scripts/cron/comprehensive-learning-nightly.sh
+#!/usr/bin/env bash
+set -euo pipefail
+cd /mnt/local-analysis/workspace-hub
+
+# Step 1: pull derived state — hard gate (pipeline must not run on stale state)
+git pull --no-rebase origin main
+
+# Step 2: rsync raw sessions — best-effort, each independently
+rsync -az --no-delete --timeout=30 \
+  -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
+  ace-linux-2:.claude/state/sessions/ \
+  .claude/state/sessions-archive/ace-linux-2/ 2>/dev/null || true
+
+rsync -az --no-delete --timeout=30 \
+  -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
+  ACMA-ANSYS05:.claude/state/sessions/ \
+  .claude/state/sessions-archive/acma-ansys05/ 2>/dev/null || true
+
 # Step 3: run pipeline
-0 22 * * * cd /mnt/local-analysis/workspace-hub && \
-  git pull --no-rebase origin main && \
-  rsync -az --no-delete --timeout=30 \
-    -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
-    ace-linux-2:.claude/state/sessions/ \
-    .claude/state/sessions-archive/ace-linux-2/ 2>/dev/null || true && \
-  rsync -az --no-delete --timeout=30 \
-    -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
-    ACMA-ANSYS05:.claude/state/sessions/ \
-    .claude/state/sessions-archive/acma-ansys05/ 2>/dev/null || true && \
-  claude --skill comprehensive-learning >> \
-  .claude/state/learning-reports/cron.log 2>&1
+exec claude --skill comprehensive-learning
 ```
 
-The `git pull` picks up derived state; `rsync` pulls raw sessions for back-analysis.
-Machines that are offline are skipped silently (`|| true`). SSH key auth required
-between ace-linux-1 and contributing machines (`ssh-copy-id ace-linux-1` from each).
+Crontab entry (ace-linux-1):
+```bash
+0 22 * * * bash /mnt/local-analysis/workspace-hub/scripts/cron/comprehensive-learning-nightly.sh \
+  >> .claude/state/learning-reports/cron.log 2>&1
+```
+
+`git pull` is a hard gate — if it fails, `set -euo pipefail` aborts before the
+pipeline runs, preventing analysis on stale state. Each `rsync` is independently
+`|| true` so one offline machine cannot block the others or the pipeline.
+SSH key auth required (see **Session Archive** setup below).
 
 ## Other Machines — End-of-Session Commit
 
@@ -437,10 +458,16 @@ full decision traces (tool-call sequences, abandoned paths, correction events)
 surfaces signals that derived files lose. Back-analysis on the archive unlocks this
 retroactively — data collected today becomes more valuable over time.
 
-**Setup (once per contributing machine):**
+**Setup (once, on ace-linux-1):**
+
+For ace-linux-1 to `rsync` FROM contributor machines, ace-linux-1's SSH public key
+must be authorised on each contributor:
+
 ```bash
-# On ace-linux-2 / acma-ansys05: grant ace-linux-1 SSH read access
-ssh-copy-id ace-linux-1   # or add ace-linux-1's public key to authorized_keys
+# Run on ace-linux-1 — push its public key to each contributor host
+ssh-copy-id <user>@ace-linux-2      # authorize ace-linux-1 on ace-linux-2
+ssh-copy-id <user>@ACMA-ANSYS05     # authorize ace-linux-1 on acma-ansys05
+# Test: ssh ace-linux-2 "ls ~/.claude/state/sessions/" should succeed without password
 ```
 
 **Retention:** no automated purge policy — ace-linux-1 HDD capacity governs.
