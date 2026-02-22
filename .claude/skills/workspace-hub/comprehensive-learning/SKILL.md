@@ -207,7 +207,9 @@ will make this richer over time.
 - Reject multiline values in scalar YAML fields (replace `\n` with space)
 - Validate the complete frontmatter block via
   `python3 -c 'import yaml,sys; yaml.safe_load(sys.stdin)'` before writing;
-  discard and log if parse fails
+  discard and log if parse fails. Dependency check: if `python3 -c "import yaml"`
+  fails (PyYAML not installed), log "WARNING: yaml validation skipped — install
+  python3-yaml" and continue without validation rather than blocking the pipeline.
 
 **WRK auto-creation pattern (concurrency-safe):**
 
@@ -296,15 +298,21 @@ Run trigger: only if `$(date +%u)` == 7 (Sunday) or explicit invocation.
 
 ### Phase 10 — Report  *(always runs — registered via `trap EXIT`)*
 
-**Exit-code semantics:** At pipeline start, register the trap and capture the
-original exit status:
+**Exit-code semantics:** Phase 10 is "always runs" but **not fatal** — a report-write
+failure logs a warning and returns; it does not change the pipeline exit code.
+At pipeline start, register the trap:
 ```bash
 _PIPELINE_EXIT=0
-trap 'REPORT_STATUS=$?; _write_report; exit ${_PIPELINE_EXIT:-$REPORT_STATUS}' EXIT
+trap '_write_report; exit $_PIPELINE_EXIT' EXIT
 ```
-Mandatory-phase failures set `_PIPELINE_EXIT=1` before exiting; the trap reads
-`_PIPELINE_EXIT` first so report-write errors never mask upstream failures.
-The report write itself must not call `exit` — write best-effort, then return.
+Rules:
+- Every **mandatory** phase failure MUST `_PIPELINE_EXIT=1` **before** calling `exit`
+  (or `return 1` to the caller which then sets it). No path should reach `exit` with
+  `_PIPELINE_EXIT` still 0 after a mandatory failure.
+- Non-mandatory phase failures: log FAILED + reason, do NOT touch `_PIPELINE_EXIT`.
+- `_write_report` is always best-effort: write what we have, never calls `exit`.
+- `exit $_PIPELINE_EXIT` preserves the mandatory-failure status deterministically;
+  no `:-$REPORT_STATUS` fallback to avoid masking unexpected script failures.
 
 Write `.claude/state/learning-reports/$(date +%Y-%m-%d-%H%M).md`:
 
@@ -338,9 +346,13 @@ Machine: ace-linux-1 | Sources: ace-linux-1 + <N other machines via git>
 # Step 3: run pipeline
 0 22 * * * cd /mnt/local-analysis/workspace-hub && \
   git pull --no-rebase origin main && \
-  rsync -az --no-delete ace-linux-2:.claude/state/sessions/ \
+  rsync -az --no-delete --timeout=30 \
+    -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
+    ace-linux-2:.claude/state/sessions/ \
     .claude/state/sessions-archive/ace-linux-2/ 2>/dev/null || true && \
-  rsync -az --no-delete ACMA-ANSYS05:.claude/state/sessions/ \
+  rsync -az --no-delete --timeout=30 \
+    -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
+    ACMA-ANSYS05:.claude/state/sessions/ \
     .claude/state/sessions-archive/acma-ansys05/ 2>/dev/null || true && \
   claude --skill comprehensive-learning >> \
   .claude/state/learning-reports/cron.log 2>&1
