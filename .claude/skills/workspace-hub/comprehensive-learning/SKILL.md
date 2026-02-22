@@ -179,6 +179,21 @@ a WRK item. Reset candidate file after processing.
 - Tool call sequences repeating across sessions (Read→Edit→Bash) → scriptable workflow
 - Contributions from other machines (committed by ace-linux-2, acma-ansys05, etc.)
 
+**Code quality signal scan (test · lint · architecture · refactor):**
+
+| Signal | Source | Candidate action |
+|--------|--------|-----------------|
+| Same file edited ≥3× this week, no test file touched | `corrections/*.jsonl` `tool: Edit` | WRK: "add tests for `<file>`" |
+| `type: lint` correction recurring ≥2 weeks | `corrections/*.jsonl` | WRK: "add pre-commit lint hook / fix config for `<type>`" |
+| Architectural violation recurring (circular import, God object, hardcoded literal) | `corrections/*.jsonl` | WRK: "add guardrail hook for `<pattern>`" |
+| Read→Edit→Bash(fail)→Edit loop on same function across sessions | `sessions-archive/` (if available) or `session-signals/` | WRK: "refactor `<fn>` — brittle, repeated rework" |
+| No test file exists for a module touched in ≥2 sessions this week | `session-signals/` + `glob tests/` | WRK: "add unit tests for `<module>`" |
+
+Back-analysis path: if `sessions-archive/` is populated (see **Session Archive** below),
+scan raw session JSONL for the patterns above across all machines and all historical
+dates — not just the rolling window used for derived files. Future agent improvements
+will make this richer over time.
+
 **Skip a candidate if:**
 - Name field is empty or null
 - Description is a generic placeholder only
@@ -304,7 +319,7 @@ Write `.claude/state/learning-reports/$(date +%Y-%m-%d-%H%M).md`:
 | 4 Improve | ... | ... |
 | 5 Correction Trends | ... | escalated types: N |
 | 6 WRK Feedback | ... | stale auto-WRK: N, threshold adj: yes/no |
-| 7 Candidates | ... | WRK items created: N |
+| 7 Candidates | ... | WRK items created: N (incl. code-quality: N) |
 | 8 Report Review | ... | escalated recurring issues: N |
 | 9 Coverage Audit | ... | SKIPPED (not Sunday) / gaps found: N |
 | 10 Report | DONE | <elapsed>s total |
@@ -318,13 +333,22 @@ Machine: ace-linux-1 | Sources: ace-linux-1 + <N other machines via git>
 
 ```bash
 # ace-linux-1 only: nightly 22:00
+# Step 1: pull derived state files from all machines (git)
+# Step 2: pull raw session archives from reachable machines (rsync, best-effort)
+# Step 3: run pipeline
 0 22 * * * cd /mnt/local-analysis/workspace-hub && \
   git pull --no-rebase origin main && \
+  rsync -az --no-delete ace-linux-2:.claude/state/sessions/ \
+    .claude/state/sessions-archive/ace-linux-2/ 2>/dev/null || true && \
+  rsync -az --no-delete ACMA-ANSYS05:.claude/state/sessions/ \
+    .claude/state/sessions-archive/acma-ansys05/ 2>/dev/null || true && \
   claude --skill comprehensive-learning >> \
   .claude/state/learning-reports/cron.log 2>&1
 ```
 
-The `git pull` before running ensures all machine contributions are included.
+The `git pull` picks up derived state; `rsync` pulls raw sessions for back-analysis.
+Machines that are offline are skipped silently (`|| true`). SSH key auth required
+between ace-linux-1 and contributing machines (`ssh-copy-id ace-linux-1` from each).
 
 ## Other Machines — End-of-Session Commit
 
@@ -332,6 +356,8 @@ On ace-linux-2, acma-ansys05, acma-ws014 — run at session end:
 
 ```bash
 cd /path/to/workspace-hub
+
+# 1. Commit derived state to git (fast, lightweight)
 git add .claude/state/candidates/ .claude/state/corrections/ \
         .claude/state/patterns/ .claude/state/session-signals/
 git diff --staged --quiet || \
@@ -341,6 +367,9 @@ git pull --rebase origin main && git push origin main || {
   sleep 5
   git pull --rebase origin main && git push origin main
 }
+
+# 2. Raw sessions are pulled by ace-linux-1 nightly via rsync (no action needed here)
+#    ace-linux-1 rsync: ace-linux-2:.claude/state/sessions/ → sessions-archive/ace-linux-2/
 ```
 
 **On push conflict:** If `git pull --rebase` produces a conflict in a state file,
@@ -354,6 +383,34 @@ This is what acma-ansys05 contributes instead of running the full pipeline local
 ```
 → Run /comprehensive-learning post-session to process learnings.
 ```
+
+## Session Archive (ace-linux-1 local — not git)
+
+Raw session transcripts are centralised on ace-linux-1 via rsync. They are never
+committed to git — too large and binary-noisy. The 7.3 TB HDD on ace-linux-1 is
+the long-term store.
+
+```
+.claude/state/sessions-archive/
+  ace-linux-1/      # local sessions (symlink or copy of .claude/state/sessions/)
+  ace-linux-2/      # rsync'd nightly by ace-linux-1 cron
+  acma-ansys05/     # rsync'd when reachable
+  acma-ws014/       # rsync'd when reachable
+```
+
+**Why keep raw sessions:** As agent capabilities improve, re-running analysis on
+full decision traces (tool-call sequences, abandoned paths, correction events)
+surfaces signals that derived files lose. Back-analysis on the archive unlocks this
+retroactively — data collected today becomes more valuable over time.
+
+**Setup (once per contributing machine):**
+```bash
+# On ace-linux-2 / acma-ansys05: grant ace-linux-1 SSH read access
+ssh-copy-id ace-linux-1   # or add ace-linux-1's public key to authorized_keys
+```
+
+**Retention:** no automated purge policy — ace-linux-1 HDD capacity governs.
+Review annually; oldest sessions can be compressed (`gzip *.jsonl`) if space tightens.
 
 ## State Files Committed to Git
 
@@ -372,8 +429,8 @@ Gitignore exceptions in `.gitignore` (all under `.claude/state/`):
 | `skill-scores.yaml` | ~8 KB | Feeds Phases 4+6 |
 | `cc-user-insights.yaml` | ~4 KB | Feeds Phase 4 |
 
-Not committed: `sessions/` (13 MB), `archive/` (29 MB), `session-reports/` (5.2 MB) —
-too large; `patterns/` and `corrections/` are their distilled equivalents.
+Not committed: `sessions/` (13 MB), `archive/` (29 MB), `session-reports/` (5.2 MB),
+`sessions-archive/` (grows unbounded) — raw data stays local on ace-linux-1 HDD.
 
 ## Related
 
