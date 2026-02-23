@@ -8,7 +8,8 @@ WORKSPACE_HUB="/mnt/local-analysis/workspace-hub"
 cd "$WORKSPACE_HUB"
 
 # Preflight: confirm PyYAML available (required for Phase 7 WRK frontmatter validation)
-python3 -c "import yaml" 2>/dev/null || {
+source scripts/lib/python-resolver.sh
+${PYTHON} -c "import yaml" 2>/dev/null || {
   echo "ERROR: PyYAML not installed — install python3-yaml before scheduling this cron" >&2
   echo "       Phase 7 will create malformed WRK files without it." >&2
   exit 1
@@ -28,6 +29,17 @@ rsync -az --no-delete --timeout=30 \
   -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
   ACMA-ANSYS05:.claude/state/sessions/ \
   "$WORKSPACE_HUB/.claude/state/sessions-archive/acma-ansys05/" 2>/dev/null || true
+
+# Step 4: validate skill frontmatter (best-effort — WRK-308)
+echo "--- Skill validation $(date +%Y-%m-%dT%H:%M:%S) ---"
+bash scripts/skills/validate-skills.sh .claude/skills || \
+  echo "WARNING: skill validation issues found — see above"
+
+# Step 5: readiness checks (best-effort — 9 checks, WRK-308)
+echo "--- Readiness checks $(date +%Y-%m-%dT%H:%M:%S) ---"
+READINESS_SCRIPT="scripts/readiness/nightly-readiness.sh"
+[[ -f "$READINESS_SCRIPT" ]] && bash "$READINESS_SCRIPT" || \
+  echo "INFO: nightly-readiness.sh not found at $READINESS_SCRIPT"
 
 # Step 3: run pipeline
 # Cron usage: bash scripts/cron/comprehensive-learning-nightly.sh >> /mnt/local-analysis/workspace-hub/.claude/state/learning-reports/cron.log 2>&1

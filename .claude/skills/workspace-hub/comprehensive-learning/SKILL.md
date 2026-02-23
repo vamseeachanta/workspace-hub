@@ -171,7 +171,7 @@ This closes the feedback loop on Phase 4 — verifying improvements are actually
 
 ---
 
-### Phase 6 — WRK Feedback Loop  *(non-mandatory)*
+### Phase 6 — WRK Feedback Loop + Ecosystem Health  *(non-mandatory)*
 
 Scan `.claude/work-queue/archive/` for WRK items where `source: comprehensive-learning/phase-7`
 (auto-created candidates). For each:
@@ -182,6 +182,13 @@ Scan `.claude/work-queue/archive/` for WRK items where `source: comprehensive-le
   candidate threshold (currently ≤2) may be too high
 
 Output: candidate effectiveness score per type. Adjust Phase 7 thresholds accordingly.
+
+**Ecosystem health (nightly, via nightly cron Step 5):**
+
+- Run `scripts/readiness/nightly-readiness.sh` — surfaces R1/R5/R6/R-CODEX/
+  R-MODEL/R-REGISTRY/R-XPROV/R-SKILLS/R-HARNESS issues in `.claude/state/readiness-issues.md`
+- Surface open issues from `readiness-issues.md` in the Phase 10 report under
+  "Ecosystem Health" — include count and top 3 failures if any
 
 ---
 

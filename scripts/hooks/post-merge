@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# post-merge: re-apply canonical hooks after merge-based git pull (WRK-312)
+# Fires on: git pull --no-rebase (merge), git pull --ff-only (fast-forward)
+set -euo pipefail
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+bash "$REPO_ROOT/scripts/setup/install-all-hooks.sh" --quiet
