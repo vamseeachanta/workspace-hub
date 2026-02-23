@@ -87,10 +87,11 @@ computer: nickname   # machine where this work is intended to run
 
 ### When to set computer:
 
-- Set at creation if the task is clearly machine-specific (e.g., requires local GPU,
-  Windows tool, specific data drive)
-- Leave blank if the task is machine-agnostic (hub-only docs, skills, queue management)
-- Always set for `working/` items to enable multi-machine handoff tracking
+- **Always set `computer:`** — every WRK item must have a machine assigned at Capture
+- Use `ace-linux-1` for hub-only meta work (docs, skills, queue management) where any machine would work
+- Use the specific machine for tasks that require local tools, licensed software, or hardware
+- Use a list `[machine-a, machine-b]` for tasks spanning multiple machines
+- Never leave blank on `working/` items
 
 ### Multi-machine handoff
 

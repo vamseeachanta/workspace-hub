@@ -34,8 +34,10 @@ FRONTMATTER_FIELDS = [
     "id", "title", "status", "priority", "complexity", "target_repos",
     "blocked_by", "related", "children", "parent", "compound", "route",
     "created_at", "completed_at",
+    "plan_ensemble", "ensemble_consensus_score",
     "plan_reviewed", "plan_approved", "percent_complete", "brochure_status",
     "provider", "provider_alt",
+    "computer",
 ]
 
 
@@ -203,6 +205,8 @@ def normalize(item: dict) -> dict:
     item.setdefault("route", "")
 
     # Plan tracking fields
+    item.setdefault("plan_ensemble", False)
+    item.setdefault("ensemble_consensus_score", None)
     item.setdefault("plan_reviewed", False)
     item.setdefault("plan_approved", False)
     item.setdefault("percent_complete", 0)
@@ -211,6 +215,9 @@ def normalize(item: dict) -> dict:
     # Provider assignment fields
     item.setdefault("provider", "")
     item.setdefault("provider_alt", "")
+
+    # Workstation assignment
+    item.setdefault("computer", "")
 
     # Ensure lists are lists
     for field in ("target_repos", "blocked_by", "related", "children"):
@@ -236,7 +243,7 @@ def normalize(item: dict) -> dict:
         item["percent_complete"] = 0
 
     # Normalize booleans
-    for field in ("plan_reviewed", "plan_approved"):
+    for field in ("plan_ensemble", "plan_reviewed", "plan_approved"):
         val = item[field]
         if isinstance(val, str):
             item[field] = val.lower() in ("true", "yes", "1")
@@ -586,6 +593,7 @@ def generate_index(items: list[dict]) -> str:
 
     # ── Plan & Brochure Summary ─────────────────────────────
     plan_count = sum(1 for it in items if it["_plan_exists"])
+    ensemble_count = sum(1 for it in items if it["plan_ensemble"])
     reviewed_count = sum(1 for it in items if it["plan_reviewed"])
     approved_count = sum(1 for it in items if it["plan_approved"])
     brochure_pending = sum(1 for it in items
@@ -598,6 +606,7 @@ def generate_index(items: list[dict]) -> str:
     w("")
     w(f"| Metric | Count |")
     w(f"|--------|-------|")
+    w(f"| Ensemble planning complete | {ensemble_count} |")
     w(f"| Plans exist | {plan_count} / {len(items)} |")
     w(f"| Plans cross-reviewed | {reviewed_count} |")
     w(f"| Plans approved | {approved_count} |")
@@ -612,29 +621,34 @@ def generate_index(items: list[dict]) -> str:
     # ── Master Table ─────────────────────────────────────────
     w("## Master Table")
     w("")
-    w("| ID | Title | Status | Priority | Complexity | Provider | Repos | Module | "
-      "Plan? | Reviewed? | Approved? | % Done | Brochure | Blocked By |")
-    w("|-----|-------|--------|----------|------------|----------|-------|--------|"
-      "-------|-----------|-----------|--------|----------|------------|")
+    w("| ID | Title | Status | Priority | Complexity | Computer | Provider | Repos | Module | "
+      "Ensemble? | Plan? | Reviewed? | Approved? | % Done | Brochure | Blocked By |")
+    w("|-----|-------|--------|----------|------------|----------|----------|-------|--------|"
+      "-----------|-------|-----------|-----------|--------|----------|------------|")
     for it in items:
         bid = it.get("id", "?")
         title = it["title"]
         status = it["status"]
         prio = it["priority"]
         comp = it["complexity"]
+        computer_val = it.get("computer") or "-"
+        # Shorten list values (multi-machine) for display
+        if isinstance(computer_val, list):
+            computer_val = ", ".join(str(v) for v in computer_val)
         prov = it.get("provider") or "-"
         prov_alt = it.get("provider_alt") or ""
         provider_cell = prov if not prov_alt else f"{prov}+{prov_alt}"
         repos = repos_str(it["target_repos"])
         module = it.get("target_module") or "-"
+        ensemble = bool_icon(it["plan_ensemble"])
         plan = bool_icon(it["_plan_exists"])
         reviewed = bool_icon(it["plan_reviewed"])
         approved = bool_icon(it["plan_approved"])
         pct = pct_str(it["percent_complete"])
         brochure = brochure_str(it.get("brochure_status", ""))
         blocked = list_str(it["blocked_by"])
-        w(f"| {bid} | {title} | {status} | {prio} | {comp} | {provider_cell} | {repos} | {module} | "
-          f"{plan} | {reviewed} | {approved} | {pct} | {brochure} | {blocked} |")
+        w(f"| {bid} | {title} | {status} | {prio} | {comp} | {computer_val} | {provider_cell} | {repos} | {module} | "
+          f"{ensemble} | {plan} | {reviewed} | {approved} | {pct} | {brochure} | {blocked} |")
     w("")
 
     # ── By Status ────────────────────────────────────────────
@@ -715,6 +729,39 @@ def generate_index(items: list[dict]) -> str:
         for it in group:
             w(f"| {it.get('id', '?')} | {it['title']} | {it['status']} "
               f"| {it['priority']} | {repos_str(it['target_repos'])} | {it.get('target_module') or '-'} |")
+        w("")
+
+    # ── By Computer ──────────────────────────────────────────
+    w("## By Computer")
+    w("")
+
+    computer_items: dict[str, list[dict]] = {}
+    for it in items:
+        cv = it.get("computer") or ""
+        if isinstance(cv, list):
+            cv = ", ".join(str(v) for v in cv)
+        key = cv.strip() or "(unassigned)"
+        computer_items.setdefault(key, []).append(it)
+
+    machine_order = [
+        "ace-linux-1", "ace-linux-2", "acma-ansys05", "acma-ws014",
+        "gali-linux-compute-1",
+    ]
+    # Emit in preferred order, then any remaining keys alphabetically
+    seen: set[str] = set()
+    ordered_machines = [m for m in machine_order if m in computer_items]
+    ordered_machines += sorted(k for k in computer_items if k not in machine_order)
+
+    for machine in ordered_machines:
+        group = computer_items[machine]
+        active = [it for it in group if it["status"] not in ("archived",)]
+        w(f"### {machine} ({len(active)} active / {len(group)} total)")
+        w("")
+        w("| ID | Title | Status | Priority | Complexity | Repos |")
+        w("|-----|-------|--------|----------|------------|-------|")
+        for it in group:
+            w(f"| {it.get('id', '?')} | {it['title']} | {it['status']} "
+              f"| {it['priority']} | {it['complexity']} | {repos_str(it['target_repos'])} |")
         w("")
 
     # ── Dependencies ─────────────────────────────────────────

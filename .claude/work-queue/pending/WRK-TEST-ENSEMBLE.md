@@ -9,6 +9,7 @@ target_repos:
   - workspace-hub
 plan_ensemble: false
 ensemble_consensus_score: null
+computer: ace-linux-1
 ---
 
 # Smoke Test

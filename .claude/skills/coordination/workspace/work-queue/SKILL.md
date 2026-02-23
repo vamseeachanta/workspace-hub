@@ -105,6 +105,7 @@ Rules:
 - Parse input for single vs multi-request
 - Check duplicates against pending/working/blocked
 - Classify complexity (simple <50 words; medium 50-200 words; complex >200 words or 3+ features)
+- **Assign `computer:`** from routing rules in `.claude/skills/workspace-hub/workstations/SKILL.md`; see Workstation Routing below
 - Create file in `pending/` with proper template
 - Create context document for large inputs
 - Regenerate INDEX.md: run `python3 .claude/work-queue/scripts/generate-index.py`
@@ -206,10 +207,11 @@ The `--wrk WRK-NNN` flag on `test-task.sh` reads `target_repos` from the work it
 
 1. **Check `spec_ref`**: If the work item already has an approved plan, proceed to implementation
 2. **No plan exists**: Generate a plan at the appropriate depth for the route
-3. **Present to user**: Show the plan and wait for explicit approval
-4. **User approves**: Update work item with plan content (Route A/B) or link to spec (Route C), then proceed
-5. **User requests changes**: Revise the plan and re-present
-6. **No implementation without approval**: Never begin coding until the plan is confirmed
+3. **Confirm `computer:`**: Verify workstation assignment is set and correct; update if needed
+4. **Present to user**: Show the plan (including `computer:` assignment) and wait for explicit approval
+5. **User approves**: Update work item with plan content (Route A/B) or link to spec (Route C), then proceed
+6. **User requests changes**: Revise the plan and re-present
+7. **No implementation without approval**: Never begin coding until the plan is confirmed
 
 ### Pre-Move-to-Working Checklist (HARD GATES — never skip)
 
@@ -220,6 +222,7 @@ Before setting `status: working` on any Route B/C item, verify ALL of the follow
 | Plan approved | `plan_approved: true` | A/B/C | User must have explicitly said yes |
 | Plan cross-reviewed | `plan_reviewed: true` | B/C | Set ONLY after Codex + Gemini verdict received — NOT at plan creation time |
 | Spec exists | `spec_ref` non-empty | C | Spec must be in `specs/wrk/WRK-NNN/` before moving to working |
+| Workstation assigned | `computer:` non-empty | A/B/C | Must be set at Capture; confirmed at Plan gate |
 
 **Critical distinction:**
 - `plan_approved` = user said "looks good, proceed"
@@ -332,6 +335,7 @@ plan_reviewed: false   # true when plan has been cross-reviewed
 plan_approved: false   # true when user has approved the plan
 percent_complete: 0    # 0-100, auto-set to 100 on archive
 brochure_status:       # pending | updated | synced | n/a
+computer:              # ace-linux-1 | ace-linux-2 | acma-ansys05 | acma-ws014 | gali-linux-compute-1
 ---
 
 # Title
@@ -354,6 +358,33 @@ brochure_status:       # pending | updated | synced | n/a
 
 ---
 *Source: [verbatim original request]*
+```
+
+## Workstation Routing
+
+Every WRK item **must** have a `computer:` field set at Capture time and confirmed at the Plan gate.
+Reference: `.claude/skills/workspace-hub/workstations/SKILL.md`
+
+### Quick Routing Table
+
+| Keyword / Repo pattern | Machine |
+|------------------------|---------|
+| `orcaflex`, `ansys`, `aqwa`, `orcawave` | `acma-ansys05` |
+| `openfoam`, `blender`, `gmsh`, `calculix`, `fenics`, `freecad`, `elmer` | `ace-linux-2` |
+| `heavy-compute`, `cfd-hpc`, `fea-hpc`, `large-sim` | `gali-linux-compute-1` |
+| `worldenergydata` repo | `ace-linux-1` |
+| `workspace-hub`, hub docs, skills, queue meta | `ace-linux-1` |
+| `digitalmodel`, `assetutilities`, `assethold`, `achantas-data` | `ace-linux-1` |
+| `aceengineer-website`, `aceengineer-admin`, `aceengineer-strategy` | `ace-linux-1` |
+| Windows-only tools (`solidworks`, `excel-macro`) | `acma-ws014` |
+| Everything else | `ace-linux-1` |
+
+### Bulk-assign script
+
+To assign `computer:` to all active items lacking it:
+```bash
+python3 scripts/work-queue/assign-workstations.py        # dry-run
+python3 scripts/work-queue/assign-workstations.py --apply # write
 ```
 
 ## Multi-Repo Handling
