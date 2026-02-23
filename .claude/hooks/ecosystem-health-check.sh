@@ -85,7 +85,7 @@ for provider in codex gemini; do
 done
 
 # --- Skill touch detection — prompt bidirectional link check ---
-touched_skills=$(git -C "$WORKSPACE_HUB" diff --name-only HEAD 2>/dev/null | grep "SKILL\.md" | wc -l || echo 0)
+touched_skills=$(git -C "$WORKSPACE_HUB" diff --name-only HEAD 2>/dev/null | grep -c "SKILL\.md" || true)
 if [ "$touched_skills" -gt 0 ]; then
   emit_signal "ecosystem" "Skills touched (${touched_skills} SKILL.md) — verify bidirectional links in related_skills frontmatter" "info"
 fi

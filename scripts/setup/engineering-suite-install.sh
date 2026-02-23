@@ -1,0 +1,204 @@
+#!/usr/bin/env bash
+# engineering-suite-install.sh — Repeatable engineering workstation setup
+# Target: Ubuntu 24.04 LTS (ace-linux-2 and future machines)
+# Usage: sudo bash scripts/setup/engineering-suite-install.sh [--all | --core | --fea | --python]
+#
+# History:
+#   2026-02-21  Initial creation from WRK-290 (ace-linux-2 setup)
+#
+# Tested on:
+#   ace-linux-2  Ubuntu 24.04  2026-02-21  OpenFOAM OK, FreeCAD OK (PPA)
+
+set -euo pipefail
+
+LOGFILE="/tmp/engineering-suite-install-$(date +%Y%m%d-%H%M%S).log"
+echo "Logging to $LOGFILE"
+
+log() { echo "[$(date +%H:%M:%S)] $*" | tee -a "$LOGFILE"; }
+
+# ---------------------------------------------------------------------------
+# Pre-flight
+# ---------------------------------------------------------------------------
+preflight() {
+    log "=== Pre-flight checks ==="
+    if [[ $EUID -ne 0 ]]; then
+        echo "ERROR: Run with sudo or as root."
+        echo "  sudo bash $0 $*"
+        exit 1
+    fi
+    log "OS: $(lsb_release -ds 2>/dev/null || cat /etc/os-release | head -1)"
+    log "Kernel: $(uname -r)"
+    log "User: $(logname 2>/dev/null || echo "$SUDO_USER")"
+    apt update -qq
+}
+
+# ---------------------------------------------------------------------------
+# Core suite: Blender, FreeCAD, Gmsh, ParaView, OpenFOAM
+# ---------------------------------------------------------------------------
+install_core() {
+    log "=== Installing core engineering suite ==="
+
+    # Blender (apt — version 4.x on 24.04; snap has 5.x if preferred)
+    log "Installing Blender..."
+    apt install -y blender 2>&1 | tail -1 | tee -a "$LOGFILE"
+
+    # Gmsh (mesh generation)
+    log "Installing Gmsh..."
+    apt install -y gmsh 2>&1 | tail -1 | tee -a "$LOGFILE"
+
+    # ParaView (post-processing / visualization)
+    log "Installing ParaView..."
+    apt install -y paraview 2>&1 | tail -1 | tee -a "$LOGFILE"
+
+    # FreeCAD (parametric CAD + FEM workbench)
+    log "Installing FreeCAD via PPA..."
+    add-apt-repository -y ppa:freecad-maintainers/freecad-stable 2>&1 | tail -1 | tee -a "$LOGFILE"
+    apt update -qq
+    apt install -y freecad 2>&1 | tail -1 | tee -a "$LOGFILE"
+
+    # OpenFOAM (CFD — ESI version)
+    log "Installing OpenFOAM..."
+    if ! dpkg -l | grep -q openfoam; then
+        curl -s https://dl.openfoam.com/add-debian-repo.sh | bash 2>&1 | tail -1 | tee -a "$LOGFILE"
+        apt install -y openfoam2312-default 2>&1 | tail -1 | tee -a "$LOGFILE"
+    else
+        log "OpenFOAM already installed, skipping."
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# BemRosetta (BEM hydrodynamic analysis)
+# ---------------------------------------------------------------------------
+install_bemrosetta() {
+    log "=== Installing BemRosetta ==="
+    local USER_HOME
+    USER_HOME=$(eval echo "~${SUDO_USER:-$USER}")
+    local APP_DIR="$USER_HOME/Applications"
+    mkdir -p "$APP_DIR"
+
+    # Try release tarball first, fall back to AppImage
+    local RELEASE_URL="https://github.com/BEMRosetta/BEMRosetta/releases/latest"
+    log "Checking latest BemRosetta release..."
+    local ACTUAL_URL
+    ACTUAL_URL=$(curl -sIL "$RELEASE_URL" | grep -i '^location:' | tail -1 | tr -d '\r' | awk '{print $2}')
+    log "Latest release: $ACTUAL_URL"
+
+    # Download what's available — user may need to adjust
+    log "NOTE: BemRosetta Linux packaging varies by release."
+    log "Check $RELEASE_URL/latest for the correct download."
+    log "Install manually to $APP_DIR if automated download fails."
+}
+
+# ---------------------------------------------------------------------------
+# FEA programs (from WRK-289 research — top 3 recommendations)
+# ---------------------------------------------------------------------------
+install_fea() {
+    log "=== Installing FEA programs ==="
+
+    # CalculiX (structural FEA — #1 recommendation)
+    log "Installing CalculiX..."
+    apt install -y calculix-ccx calculix-cgx 2>&1 | tail -1 | tee -a "$LOGFILE"
+
+    # Elmer FEM (multiphysics — #2 recommendation)
+    log "Installing Elmer FEM..."
+    add-apt-repository -y ppa:elmer-csc-team/elmer-csc-ppa 2>&1 | tail -1 | tee -a "$LOGFILE"
+    apt update -qq
+    apt install -y elmerfem-csc 2>&1 | tail -1 | tee -a "$LOGFILE"
+
+    # FEniCSx (Python-based FEA — #3 recommendation)
+    log "Installing FEniCSx..."
+    add-apt-repository -y ppa:fenics-packages/fenics 2>&1 | tail -1 | tee -a "$LOGFILE"
+    apt update -qq
+    apt install -y fenicsx 2>&1 | tail -1 | tee -a "$LOGFILE" || {
+        log "WARN: fenicsx PPA failed, try conda instead:"
+        log "  conda create -n fenicsx-env python=3.12 fenics-dolfinx -c conda-forge"
+    }
+}
+
+# ---------------------------------------------------------------------------
+# Python packages
+# ---------------------------------------------------------------------------
+install_python() {
+    log "=== Installing Python packages ==="
+    apt install -y python3-pip python3-venv 2>&1 | tail -1 | tee -a "$LOGFILE"
+
+    local SUDO_USER_HOME
+    SUDO_USER_HOME=$(eval echo "~${SUDO_USER:-$USER}")
+
+    # Install into user space (avoids --break-system-packages)
+    su - "${SUDO_USER:-$USER}" -c "pip3 install --user meshio PyFoam pyvista gmsh" 2>&1 | tee -a "$LOGFILE" || {
+        log "WARN: pip --user failed, trying with --break-system-packages..."
+        su - "${SUDO_USER:-$USER}" -c "pip3 install --user --break-system-packages meshio PyFoam pyvista gmsh" 2>&1 | tee -a "$LOGFILE"
+    }
+}
+
+# ---------------------------------------------------------------------------
+# Verification
+# ---------------------------------------------------------------------------
+verify() {
+    log "=== Verification ==="
+    local pass=0 fail=0
+
+    check() {
+        if eval "$2" &>/dev/null; then
+            log "  PASS: $1"
+            ((pass++))
+        else
+            log "  FAIL: $1"
+            ((fail++))
+        fi
+    }
+
+    check "Blender"    "blender --version"
+    check "FreeCAD"    "which freecad || which freecad-cmd"
+    check "Gmsh"       "gmsh --version"
+    check "ParaView"   "paraview --version"
+    check "OpenFOAM"   "which simpleFoam || ls /usr/lib/openfoam/*/bin/simpleFoam"
+    check "CalculiX"   "which ccx || which ccx_2.23"
+    check "Elmer"      "which ElmerSolver"
+    check "meshio"     "python3 -c 'import meshio'"
+    check "PyFoam"     "python3 -c 'import PyFoam'"
+
+    log ""
+    log "Results: $pass passed, $fail failed"
+    log "Full log: $LOGFILE"
+}
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+main() {
+    local mode="${1:---all}"
+    preflight
+
+    case "$mode" in
+        --all)
+            install_core
+            install_bemrosetta
+            install_fea
+            install_python
+            ;;
+        --core)
+            install_core
+            install_bemrosetta
+            ;;
+        --fea)
+            install_fea
+            ;;
+        --python)
+            install_python
+            ;;
+        --verify)
+            verify
+            return
+            ;;
+        *)
+            echo "Usage: sudo bash $0 [--all | --core | --fea | --python | --verify]"
+            exit 1
+            ;;
+    esac
+
+    verify
+}
+
+main "$@"

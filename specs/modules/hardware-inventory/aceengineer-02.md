@@ -90,7 +90,7 @@ work_item: WRK-050
 - [x] DHCP reservation at router (MAC 08:62:66:a2:a0:ce -> 192.168.1.103) — confirmed 2026-02-22
 - [x] SSHFS network mounts configured — fstab entries written for workspace-hub + ace-linux-1 drives (WRK-287, 2026-02-22)
 - [ ] **SSHFS reboot persistence** — mounts fail after reboot (`Connection reset by peer`); root cause: `/root/.ssh/known_hosts` missing for ace-linux-1; fix documented in WRK-287 session log → run `sudo bash /tmp/fix-sshfs-mounts.sh` on ace-linux-2 (or re-create from WRK-287 if /tmp cleared)
-- [ ] **KVM display loss** — NVIDIA T400 drops output on KVM switch (EDID lost); workaround: `ssh ace-linux-1 "loginctl unlock-session 5"`; fix: EDID dongle or Xorg config → WRK-307
+- [x] **KVM display loss fixed (WRK-307, 2026-02-23)** — NVIDIA T400 dropped output on KVM switch (EDID lost). Software fix applied: GDM switched to X11 (`WaylandEnable=false`), EDID captured to `/etc/X11/edid.bin`, Xorg config forces `DFP-5` with `CustomEDID` at `/etc/X11/xorg.conf.d/10-force-display.conf`. Remote desktop fallback: x11vnc on display `:1` with autostart (`~/.config/autostart/x11vnc.desktop`), accessible from ace-linux-1 via SSH tunnel + TigerVNC. Hardware EDID dongle deferred (on hold).
 - [ ] Reboot test — verify SSHFS mounts auto-recover after known_hosts fix (WRK-287)
 
 ## Cross-Machine Comparison (AE-01 vs AE-02)

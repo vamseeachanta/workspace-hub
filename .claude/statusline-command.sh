@@ -56,7 +56,21 @@ extract_pct() {
 c_pct=$(extract_pct "claude")
 o_pct=$(extract_pct "codex")
 g_pct=$(extract_pct "gemini")
-ai_usage="C:${c_pct:--}%|O:${o_pct:--}%|G:${g_pct:--}%"
+
+# Sonnet tracking: show tighter bucket with (S) indicator
+c_display="${c_pct:--}%"
+if [[ -f "$quota_primary" ]]; then
+    s_val=$(jq -r '.agents[] | select(.provider == "claude") | .sonnet_pct // empty' \
+        "$quota_primary" 2>/dev/null)
+    if [[ -n "$s_val" && "$s_val" != "null" && -n "$c_pct" ]]; then
+        s_remaining=$(awk -v s="$s_val" 'BEGIN { printf "%d", 100 - s }')
+        if (( s_remaining < c_pct )); then
+            c_display="${s_remaining}%(S)"
+        fi
+    fi
+fi
+
+ai_usage="C:${c_display}|O:${o_pct:--}%|G:${g_pct:--}%"
 
 # Repo module name (basename of workspace root)
 repo_name=$(basename "$ws_root")

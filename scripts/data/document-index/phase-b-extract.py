@@ -71,7 +71,7 @@ def extract_og_sqlite(record: Dict, cfg: Dict) -> Optional[str]:
     conn = sqlite3.connect(db_path, timeout=30)
     try:
         cursor = conn.execute(
-            "SELECT text_content FROM document_text WHERE document_id = ?",
+            "SELECT full_text FROM document_text WHERE document_id = ?",
             (og_id,),
         )
         row = cursor.fetchone()
