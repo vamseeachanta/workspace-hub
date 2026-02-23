@@ -34,12 +34,16 @@ for src in "$HOOKS_SRC"/*; do
   name="$(basename "$src")"
   dst="${HOOKS_DST}/${name}"
 
-  # Skip if already identical (avoid unnecessary mtime changes)
-  if [[ -f "$dst" ]] && cmp -s "$src" "$dst"; then
+  # Skip if already identical regular file (avoid unnecessary mtime changes).
+  # Use -L on cmp to read through symlinks for content comparison, but only
+  # skip when dst is a plain file — symlinks must always be replaced.
+  if [[ -f "$dst" ]] && [[ ! -L "$dst" ]] && cmp -s "$src" "$dst"; then
     skipped=$((skipped + 1))
     continue
   fi
 
+  # Remove dst first so symlinks are replaced with regular files, not written through.
+  rm -f "$dst"
   cp "$src" "$dst"
   chmod +x "$dst"
   installed=$((installed + 1))
