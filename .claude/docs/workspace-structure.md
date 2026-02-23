@@ -72,6 +72,23 @@ each-repo/
   reports/                       ← generated output (gitignored)
 ```
 
+## Project / Client Repos
+
+Some submodules are **project management or client portfolio repos**, not Python libraries.
+They follow client project conventions and are exempt from the `src/` Python layout standard.
+
+| Repo | Type | Convention | Notes |
+|------|------|------------|-------|
+| `frontierdeepwater` | Project coordination | Domain folders, minimal code | `src/` empty; data + coordination focus |
+| `doris` | Engineering project portfolio | Project IDs (61850_zama, 61863_lakach) | Each project: calculations/, data/, dwg/, rep/ |
+| `saipem` | Offshore engineering docs | `general/` domain folders (cp/, engg/, flexible/) | YAML modular pattern |
+| `acma-projects` | Marine engineering portfolio | Project IDs (B1512, B1516, B1535) | Embedded assetutilities copy → needs WRK to migrate to git dep |
+
+**Indexing strategy**: These repos require good navigation/indexing rather than API surface.
+Document intelligence pipeline (parallel story) owns this. Cross-reference: `docs/research/`.
+
+> These repos will NOT be refactored to the standard Python layout. Do not open WRK items for structural changes here.
+
 ## What Was Removed (WRK-200, 2026-02-18)
 
 | Removed | From | Replaced By |
@@ -82,6 +99,15 @@ each-repo/
 | `ruv-swarm/`, `flow-nexus/` (root) | workspace-hub | Deleted (were hook propagations) |
 | `hive-mind/`, `flow-nexus/`, `pair/`, `stream-chain/` etc. | `.claude/commands/` in submodules | Hub command propagation |
 | `agents/domain/` (3 agent-os agents) | worldenergydata | `.claude/skills/engineering/` SKILL.md |
+
+## What Was Changed (WRK-344/345/346/347, 2026-02-23)
+
+| Change | WRK | Detail |
+|--------|-----|--------|
+| `agent_os` removed from `assetutilities` | WRK-344 | Orchestration layer; superseded by `.claude/skills/` |
+| `validators/` consolidated into `assetutilities.common.validation` | WRK-345 | Removed from worldenergydata and assethold |
+| `aceengineer-admin` packages moved to `src/` | WRK-346 | `aceengineer_admin/`, `aceengineer_automation/` → `src/` |
+| `aceengineer-website/src/` renamed to `content/` | WRK-347 | HTML content, not Python source |
 
 ## What Was Kept (Intentional, Not Orphans)
 
