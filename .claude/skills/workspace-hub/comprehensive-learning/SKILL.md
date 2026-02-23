@@ -35,7 +35,7 @@ files to git; ace-linux-1 reads them all during its nightly run.
 ## Single-Machine Guard
 
 ```bash
-MACHINE=$(hostname | tr '[:upper:]' '[:lower:]')
+MACHINE=$(hostname -s 2>/dev/null || hostname | cut -d. -f1 | tr '[:upper:]' '[:lower:]')
 if [[ "$MACHINE" != "ace-linux-1" ]]; then
   echo "comprehensive-learning runs on ace-linux-1 only."
   echo "From this machine, commit state files and push:"
@@ -62,7 +62,9 @@ ace-linux-1 `git pull` before running pipeline picks up all contributions.
 
 Run phases sequentially. Record each result (DONE / SKIPPED / FAILED + reason) for
 the Phase 10 report. Non-mandatory phases log failure and continue; fatal failures
-in Phases 1, 4, or 10 exit 1. Register Phase 10 as `trap EXIT` at pipeline start.
+in Phases 1 or 4 set `_PIPELINE_EXIT=1`. Phase 10 always runs and is itself
+non-fatal (report-write failures log a warning only). Register Phase 10 as
+`trap EXIT` at pipeline start.
 
 ---
 
@@ -76,7 +78,8 @@ Invoke `/insights`. Sources:
 - `.claude/state/daily-summaries/*.md`
 
 Extract: skill usage frequency, repeated tool call patterns, task success/failure
-signals, user correction events.
+signals, user correction events, **engineering audit signals** (wall_thickness, 
+fatigue, etc.), and **data provenance signals**.
 
 **Additional session-quality signals (flag in Phase 1 report):**
 
@@ -170,7 +173,7 @@ This closes the feedback loop on Phase 4 — verifying improvements are actually
 
 ### Phase 6 — WRK Feedback Loop  *(non-mandatory)*
 
-Scan `work-queue/archive/` for WRK items where `source: comprehensive-learning/phase-7`
+Scan `.claude/work-queue/archive/` for WRK items where `source: comprehensive-learning/phase-7`
 (auto-created candidates). For each:
 - **Actioned** (status: done): record as positive signal for that candidate type
 - **Stale** (>30 days in pending with no activity): downgrade its candidate type's
@@ -313,7 +316,7 @@ Prevents the pipeline from surfacing the same issues indefinitely without resolu
 ### Phase 9 — Skill Coverage Audit  *(non-mandatory; run weekly, not nightly)*
 
 Cross-reference:
-1. All tasks completed this week (from `work-queue/archive/` WRK items)
+1. All tasks completed this week (from `.claude/work-queue/archive/` WRK items)
 2. Available skills in `.claude/skills/`
 3. Tool call sequences in `session-signals/`
 
@@ -401,8 +404,8 @@ exec claude --skill comprehensive-learning
 
 Crontab entry (ace-linux-1):
 ```bash
-0 22 * * * bash /mnt/local-analysis/workspace-hub/scripts/cron/comprehensive-learning-nightly.sh \
-  >> .claude/state/learning-reports/cron.log 2>&1
+0 22 * * * cd /mnt/local-analysis/workspace-hub && bash scripts/cron/comprehensive-learning-nightly.sh \
+  >> /mnt/local-analysis/workspace-hub/.claude/state/learning-reports/cron.log 2>&1
 ```
 
 `git pull` is a hard gate — if it fails, `set -euo pipefail` aborts before the
@@ -433,8 +436,10 @@ git pull --rebase origin main && git push origin main || {
 ```
 
 **On push conflict:** If `git pull --rebase` produces a conflict in a state file,
-prefer the incoming version (`git checkout --theirs <file> && git add <file>`)
-since ace-linux-1 is the authoritative analysis machine. Then `git rebase --continue`.
+prefer the incoming version from origin/main (`git checkout --ours <file> && git add <file>`)
+since ace-linux-1 is the authoritative analysis machine. Note: in `git rebase` context,
+`--ours` = the base branch (origin/main) and `--theirs` = your replayed local commits —
+the opposite of merge semantics. Then `git rebase --continue`.
 
 This is what acma-ansys05 contributes instead of running the full pipeline locally.
 
@@ -524,19 +529,22 @@ Analysis, maintenance, and learning are deferred to the nightly `comprehensive-l
 - `ecosystem-health-check.sh` — deferred to Phase 6 nightly
 - `session-end-evaluate.sh` scoring — deferred to Phase 10 nightly
 
-### Stop hooks: signal capture only
+### Stop hooks: one hook only
 
-Stop-time hooks must complete in < 5 seconds and write raw data only:
+Stop-time must complete in < 1 second. One hook, raw write only:
 
 | Hook | Action | Allowed |
 |------|--------|---------|
-| `session-signals.sh` | Write JSONL signal entry | Yes |
-| `engineering-audit.sh` | Write raw audit entry | Yes |
-| `consume-signals.sh` | Analyse signals (444 lines of logic) | **No — move to pipeline** |
-| `session-end-evaluate.sh` | Score session quality (120 lines) | **No — move to pipeline** |
-| `ecosystem-health-check.sh` | Full health scan (321 lines) | **No — move to pipeline** |
+| `consume-signals.sh` (simplified, < 30 lines) | Append one JSONL entry to `session-signals/` | **Yes — only hook** |
+| `session-signals.sh` | Superseded — removed | No |
+| `engineering-audit.sh` | Superseded — removed | No |
+| `data-provenance.sh` | Superseded — removed | No |
+| `session-end-evaluate.sh` | Deferred to Phase 10 nightly | No |
+| `ecosystem-health-check.sh` | Deferred to Phase 6 nightly | No |
+| `improve.sh` | Deferred to Phase 4 nightly | No |
+| Everything else | Deferred to nightly cron | No |
 
-See WRK-304 for the cleanup task.
+See WRK-304 for the settings.json + consume-signals.sh cleanup task.
 
 ## Planning Quality Loop
 
