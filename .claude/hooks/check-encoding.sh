@@ -14,50 +14,64 @@ command -v uv >/dev/null 2>&1 || {
     exit 1
 }
 
-# Scan files using uv-managed Python — no system python dependency
-check_file() {
-    uv run --no-project --quiet python - "$1" <<'PYEOF'
-import sys, pathlib
-raw = pathlib.Path(sys.argv[1]).read_bytes()
-if raw[:2] in (b'\xff\xfe', b'\xfe\xff'):
-    print('utf16')
-elif raw[:3] == b'\xef\xbb\xbf':
-    print('utf8bom')
-else:
-    try:
-        raw.decode('utf-8')
-    except UnicodeDecodeError:
-        print('bad')
-PYEOF
-}
-
-BAD=()
-
 collect_files() {
     if [[ "$HOOK_NAME" == "pre-commit" ]]; then
-        git diff --cached --name-only --diff-filter=ACM
+        git diff --cached --name-only -z --diff-filter=ACM
     else
         # Exclude specs/repos/ — machine-generated engineering tool outputs
         # (OrcaFlex writes UTF-8 BOM YAML; fatigue docs contain Latin-1 notation)
         # These are reference artifacts, not hand-authored text files.
-        git ls-files -- \
+        git ls-files -z -- \
             '.claude/work-queue' '.claude/skills' 'specs' 'config' \
             ':!specs/repos/'
     fi
 }
 
-while IFS= read -r f; do
+# Collect files to check (NUL-safe read from git -z output)
+FILES=$(while IFS= read -r -d '' f; do
     [[ -f "$REPO_ROOT/$f" ]] || continue
     [[ "$f" =~ \.(md|yaml|yml|json)$ ]] || continue
-    result=$(check_file "$REPO_ROOT/$f")
-    [[ "$result" == "utf16" || "$result" == "bad" ]] && BAD+=("  $result: $f")
-done < <(collect_files)
+    printf '%s\n' "$f"
+done < <(collect_files))
 
-[[ ${#BAD[@]} -eq 0 ]] && exit 0
+if [[ -z "$FILES" ]]; then
+    exit 0
+fi
+
+# Create a temporary python script (trap ensures cleanup on any exit)
+PY_SCRIPT=$(mktemp)
+trap 'rm -f "$PY_SCRIPT"' EXIT
+cat <<'PYEOF' > "$PY_SCRIPT"
+import sys, pathlib
+root = pathlib.Path(sys.argv[1])
+for line in sys.stdin:
+    f_rel = line.strip()
+    if not f_rel: continue
+    f_abs = root / f_rel
+    try:
+        if not f_abs.exists(): continue
+        raw = f_abs.read_bytes()
+        if raw[:2] in (b'\xff\xfe', b'\xfe\xff'):
+            print(f"  utf16: {f_rel}")
+        elif raw[:3] == b'\xef\xbb\xbf':
+            pass # UTF-8 BOM is currently allowed (just ignored)
+        else:
+            try:
+                raw.decode('utf-8')
+            except UnicodeDecodeError:
+                print(f"  bad: {f_rel}")
+    except Exception:
+        pass
+PYEOF
+
+# Process all files in a single python invocation to avoid uv overhead per-file
+BAD_REPORT=$(echo "$FILES" | uv run --no-project --quiet python "$PY_SCRIPT" "$REPO_ROOT")
+
+[[ -z "$BAD_REPORT" ]] && exit 0
 
 echo ""
 echo "check-encoding: BAD ENCODING"
-for msg in "${BAD[@]}"; do echo "$msg"; done
+echo "$BAD_REPORT"
 echo ""
 echo "Fix: save the file as UTF-8 (no BOM) from your editor, or run:"
 echo "  uv run --no-project python -c \""

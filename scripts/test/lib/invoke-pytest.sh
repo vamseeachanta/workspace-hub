@@ -48,7 +48,8 @@ invoke_pytest() {
             pytest_cmd="$venv_bin"
         else
             echo "WARN: Venv pytest not found at ${venv_bin}, falling back to system" >&2
-            pytest_cmd="python3 -m pytest"
+            source "$_INVOKE_PYTEST_DIR/../../lib/python-resolver.sh"
+            pytest_cmd="${PYTHON} -m pytest"
         fi
     else
         pytest_cmd="$PYTEST_BIN"

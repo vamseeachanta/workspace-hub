@@ -225,7 +225,8 @@ verify_fix() {
     # Basic syntax check based on file type
     case "$file" in
         *.py)
-            python3 -m py_compile "$file" 2>/dev/null && return 0
+            source "$REPO_ROOT/scripts/lib/python-resolver.sh"
+            ${PYTHON} -m py_compile "$file" 2>/dev/null && return 0
             ;;
         *.js|*.ts)
             # Try eslint or just check syntax

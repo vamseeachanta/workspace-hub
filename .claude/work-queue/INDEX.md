@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-23T16:35:24Z by generate-index.py -->
+<!-- Generated: 2026-02-23T17:07:09Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-23T16:35:24Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-23T17:07:09Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,8 +13,8 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 85 |
-| working | 8 |
+| pending | 84 |
+| working | 9 |
 | blocked | 5 |
 | done | 1 |
 | archived | 197 |
@@ -60,7 +60,7 @@
 |--------|-------|
 | Plans exist | 138 / 303 |
 | Plans cross-reviewed | 50 |
-| Plans approved | 67 |
+| Plans approved | 68 |
 | Brochure pending | 2 |
 | Brochure updated/synced | 6 |
 
@@ -80,9 +80,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 38 / 85 | 45% |
+| Pending items with plans | 37 / 84 | 44% |
 | Plans cross-reviewed | 9 | 19% |
-| Plans user-approved | 9 | 19% |
+| Plans user-approved | 10 | 21% |
 
 ### Aging
 
@@ -97,7 +97,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 19 | 7 | 3 |
+| High     | 18 | 8 | 3 |
 | Medium   | 41  | 1  | 1  |
 | Low      | 25  | 0  | 1  |
 
@@ -402,7 +402,7 @@
 | WRK-306 | feat: AI agent readiness check — claude/codex/gemini CLI versions + default models | pending | medium | medium | - | - | - | ❌ | ❌ | ❌ | - | - | - |
 | WRK-307 | track: lean-session hook requirement missed — accountability record | pending | high | medium | - | - | - | ❌ | ❌ | ❌ | - | - | - |
 | WRK-308 | perf: move pre-commit skill validation + readiness checks to nightly cron | pending | high | medium | - | - | - | ❌ | ❌ | ❌ | - | - | - |
-| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | pending | high | medium | - | workspace-hub | - | ✅ | ✅ | ❌ | - | n/a | - |
+| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | working | high | medium | - | workspace-hub | - | ✅ | ✅ | ✅ | ██░ 90% | n/a | - |
 | WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | medium | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | high | medium | - | digitalmodel | - | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-312 | feat: post-merge hook — auto-sync git hooks on pull for consistent cross-machine experience | pending | high | medium | - | - | - | ✅ | ❌ | ❌ | - | - | - |
@@ -501,7 +501,6 @@
 | WRK-306 | feat: AI agent readiness check — claude/codex/gemini CLI versions + default models | medium | medium | - | - |
 | WRK-307 | track: lean-session hook requirement missed — accountability record | high | medium | - | - |
 | WRK-308 | perf: move pre-commit skill validation + readiness checks to nightly cron | high | medium | - | - |
-| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | high | medium | workspace-hub | - |
 | WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | medium | medium | digitalmodel, workspace-hub | - |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | high | medium | digitalmodel | - |
 | WRK-312 | feat: post-merge hook — auto-sync git hooks on pull for consistent cross-machine experience | high | medium | - | - |
@@ -519,6 +518,7 @@
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | high | medium | workspace-hub | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | high | complex | workspace-hub | - |
 | WRK-263 | Progressively reduce agent harness files to ~20 lines by migrating content to skills | high | medium | workspace-hub | - |
+| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | high | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -1047,7 +1047,7 @@
 | WRK-285 | Write active WRK id to state file on working/ transition | archived | high | simple | - |
 | WRK-286 | Harden chore: commits — require WRK ref for multi-file changes | pending | medium | simple | - |
 | WRK-303 | Ensemble planning — 3×Claude + 3×Codex + 3×Gemini independent agents for non-deterministic plan diversity | archived | medium | medium | - |
-| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | pending | high | medium | - |
+| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | working | high | medium | - |
 | WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | medium | - |
 
 ### worldenergydata
@@ -1256,7 +1256,7 @@
 | WRK-304 | cleanup: one lean Stop hook — consume-signals.sh only, all analysis to nightly cron | pending | medium | - | - |
 | WRK-307 | track: lean-session hook requirement missed — accountability record | pending | medium | - | - |
 | WRK-308 | perf: move pre-commit skill validation + readiness checks to nightly cron | pending | medium | - | - |
-| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | pending | medium | workspace-hub | - |
+| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | working | medium | workspace-hub | - |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | medium | digitalmodel | - |
 | WRK-312 | feat: post-merge hook — auto-sync git hooks on pull for consistent cross-machine experience | pending | medium | - | - |
 | WRK-313 | feat: new-machine setup guide + bootstrap script — statusline, CLI parity, cron jobs | pending | medium | - | - |
@@ -1647,7 +1647,7 @@
 | WRK-306 | feat: AI agent readiness check — claude/codex/gemini CLI versions + default models | pending | medium | - | - |
 | WRK-307 | track: lean-session hook requirement missed — accountability record | pending | high | - | - |
 | WRK-308 | perf: move pre-commit skill validation + readiness checks to nightly cron | pending | high | - | - |
-| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | pending | high | workspace-hub | - |
+| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | working | high | workspace-hub | - |
 | WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | high | digitalmodel | - |
 | WRK-312 | feat: post-merge hook — auto-sync git hooks on pull for consistent cross-machine experience | pending | high | - | - |

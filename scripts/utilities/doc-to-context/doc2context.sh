@@ -7,6 +7,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../../lib/python-resolver.sh"
 PYTHON_SCRIPT="$SCRIPT_DIR/src/doc_to_context.py"
 REQUIREMENTS="$SCRIPT_DIR/requirements.txt"
 
@@ -57,7 +58,7 @@ setup_env() {
         print_info "Environment ready!"
     else
         print_warn "Falling back to pip..."
-        python3 -m pip install -r "$REQUIREMENTS"
+        ${PYTHON} -m pip install -r "$REQUIREMENTS"
     fi
 }
 
@@ -94,7 +95,7 @@ run_converter() {
         source "$SCRIPT_DIR/.venv/bin/activate"
     fi
 
-    python3 "$PYTHON_SCRIPT" "$@"
+    ${PYTHON} "$PYTHON_SCRIPT" "$@"
 }
 
 # Main script
@@ -131,7 +132,7 @@ main() {
             exit 0
             ;;
         --help|-h)
-            python3 "$PYTHON_SCRIPT" --help
+            ${PYTHON} "$PYTHON_SCRIPT" --help
             exit 0
             ;;
     esac

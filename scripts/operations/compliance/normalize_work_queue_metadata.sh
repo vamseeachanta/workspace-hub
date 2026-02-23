@@ -25,7 +25,8 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-python3 - "$WORKSPACE_ROOT" "$MODE" "$RELOCATE" << 'PY'
+source "$WORKSPACE_ROOT/scripts/lib/python-resolver.sh"
+${PYTHON} - "$WORKSPACE_ROOT" "$MODE" "$RELOCATE" << 'PY'
 import re
 import sys
 from pathlib import Path

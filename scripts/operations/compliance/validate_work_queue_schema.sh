@@ -42,7 +42,8 @@ if [[ "$SCOPE" != "changed" && "$SCOPE" != "all" ]]; then
   echo "Invalid --scope: $SCOPE" >&2; exit 1
 fi
 
-python3 - "$WORKSPACE_ROOT" "$MODE" "$SCOPE" "$BASE_REF" "$REPORT_FILE" << 'PY'
+source "$WORKSPACE_ROOT/scripts/lib/python-resolver.sh"
+${PYTHON} - "$WORKSPACE_ROOT" "$MODE" "$SCOPE" "$BASE_REF" "$REPORT_FILE" << 'PY'
 import json
 import os
 import re
