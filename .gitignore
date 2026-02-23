@@ -42,6 +42,7 @@ lib/
 !scripts/agents/lib/
 !scripts/coordination/routing/lib/
 !scripts/improve/lib/
+!scripts/lib/
 lib64/
 parts/
 sdist/

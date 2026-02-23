@@ -80,7 +80,7 @@ diff = OrcFxAPI.Diffraction()                                         # empty ob
 | `.addedMass` | `(nfreq, 6N, 6N)` float | tonnes, t·m² | N=body count |
 | `.damping` | `(nfreq, 6N, 6N)` float | tonnes/s | N=body count |
 | `.infiniteFrequencyAddedMass` | `(6N, 6N)` float | tonnes | |
-| `.loadRAOsDiffraction` | `(nheading, nfreq, 6N)` complex | kN/m | Excitation forces |
+| `.loadRAOsDiffraction` | `(nheading, nfreq, 6N)` complex | kN/m | **First-order** excitation forces — NOT a QTF quantity. Do not mix into QTF comparison plots. |
 | `.hydrostaticResults` | list of dicts | — | Per-body stiffness, CoB, waterplane area |
 | `.panelGeometry` | list of dicts | — | Per-panel: area (m²), centroid [x,y,z] (m), objectName |
 | `.rollDampingPercentCritical` | float | % | |

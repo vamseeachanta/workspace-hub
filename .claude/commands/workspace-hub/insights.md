@@ -69,6 +69,13 @@ Look for these key patterns in the data:
    - Missing imports
    - Path issues
 
+5. **Engineering Audit**: Scan for keywords like `wall_thickness`, `fatigue`, `metocean`, `design_code`, `sn_curve`.
+   - If detected, extract inputs (e.g., `wt=0.05`), results, and design code.
+   - Generate a YAML audit record in `.claude/state/engineering-audit/audit_<SESSION_ID>.yaml`.
+
+6. **Data Provenance**: Scan for data file operations (Read/Write to CSV, XLSX, etc.).
+   - Record data source, processing steps, and destination in `.claude/state/provenance/prov_<SESSION_ID>.yaml`.
+
 ### Step 3: Generate Report
 
 Produce a markdown report with these sections:

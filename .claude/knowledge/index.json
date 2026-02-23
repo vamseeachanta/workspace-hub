@@ -1,22 +1,23 @@
 {
   "metadata": {
-    "generated_at": "2026-02-03T12:00:00-06:00",
-    "entry_count": 6,
-    "active_count": 6,
+    "generated_at": "2026-02-22T15:01:38-06:00",
+    "entry_count": 11,
+    "active_count": 11,
     "errors": 0,
     "avg_confidence": 0.93,
     "type_counts": {
-      "decision": 3,
-      "gotcha": 1,
-      "pattern": 1,
-      "tip": 1
+      "decision": 4,
+      "gotcha": 3,
+      "pattern": 2,
+      "tip": 2
     },
     "category_counts": {
       "architecture": 2,
-      "data": 1,
+      "data": 3,
+      "data-governance": 1,
       "skills": 1,
       "testing": 1,
-      "tooling": 1
+      "tooling": 3
     }
   },
   "entries": [
@@ -71,6 +72,61 @@
       "file": ".claude/knowledge/entries/decisions/ADR-002-markdown-yaml-knowledge.md"
     },
     {
+      "id": "ADR-003",
+      "type": "decision",
+      "title": "Import anthropics/knowledge-work-plugins into workspace-hub skills",
+      "category": "skills",
+      "tags": [
+        "skills",
+        "knowledge-work-plugins",
+        "import",
+        "sync",
+        "anthropic",
+        "upstream"
+      ],
+      "repos": [
+        "workspace-hub"
+      ],
+      "confidence": 0.95,
+      "created": "2026-02-03",
+      "last_validated": "2026-02-03",
+      "source_type": "session",
+      "related": [
+        "ADR-002"
+      ],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/decisions/ADR-003-import-knowledge-work-plugins.md"
+    },
+    {
+      "id": "ADR-004",
+      "type": "decision",
+      "title": "Establish three-tier data residence strategy across workspace-hub",
+      "category": "data-governance",
+      "tags": [
+        "data-governance",
+        "data-residence",
+        "worldenergydata",
+        "digitalmodel",
+        "policy"
+      ],
+      "repos": [
+        "workspace-hub",
+        "worldenergydata",
+        "digitalmodel"
+      ],
+      "confidence": 0.90,
+      "created": "2026-02-08",
+      "last_validated": "2026-02-08",
+      "source_type": "session",
+      "related": [
+        "ADR-003"
+      ],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/decisions/ADR-004-data-residence-strategy.md"
+    },
+    {
       "id": "GOT-001",
       "type": "gotcha",
       "title": "learned-patterns.json has no useful data",
@@ -94,6 +150,57 @@
       "status": "active",
       "access_count": 0,
       "file": ".claude/knowledge/entries/gotchas/GOT-001-learned-patterns-empty.md"
+    },
+    {
+      "id": "GOT-002",
+      "type": "gotcha",
+      "title": "loadRAOsDiffraction is first-order excitation, NOT a QTF quantity",
+      "category": "data",
+      "tags": [
+        "orcawave",
+        "qtf",
+        "rao",
+        "first-order",
+        "diffraction"
+      ],
+      "repos": [
+        "digitalmodel"
+      ],
+      "confidence": 0.95,
+      "created": "2026-02-22",
+      "last_validated": "2026-02-22",
+      "source_type": "manual",
+      "related": [
+        "GOT-001"
+      ],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/gotchas/GOT-002-loadraos-not-qtf.md"
+    },
+    {
+      "id": "GOT-003",
+      "type": "gotcha",
+      "title": "CRLF line endings silently kill bash scripts on MINGW64",
+      "category": "tooling",
+      "tags": [
+        "windows",
+        "mingw64",
+        "crlf",
+        "bash",
+        "scripts",
+        "line-endings"
+      ],
+      "repos": [
+        "workspace-hub"
+      ],
+      "confidence": 1.0,
+      "created": "2026-02-22",
+      "last_validated": "2026-02-22",
+      "source_type": "manual",
+      "related": [],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/gotchas/GOT-003-crlf-breaks-bash-mingw64.md"
     },
     {
       "id": "PAT-001",
@@ -121,6 +228,31 @@
       "file": ".claude/knowledge/entries/patterns/PAT-001-tdd-before-implementation.md"
     },
     {
+      "id": "PAT-002",
+      "type": "pattern",
+      "title": "Extend OrcaWave frequency grid via *_input.yml without touching binary .owd",
+      "category": "data",
+      "tags": [
+        "orcawave",
+        "orcfxapi",
+        "frequency-grid",
+        "yaml",
+        "diffraction",
+        "benchmark"
+      ],
+      "repos": [
+        "digitalmodel"
+      ],
+      "confidence": 0.9,
+      "created": "2026-02-22",
+      "last_validated": "2026-02-22",
+      "source_type": "manual",
+      "related": [],
+      "status": "active",
+      "access_count": 0,
+      "file": ".claude/knowledge/entries/patterns/PAT-002-orcawave-input-yml-freq-extension.md"
+    },
+    {
       "id": "TIP-001",
       "type": "tip",
       "title": "Use find-based repo discovery instead of submodule foreach",
@@ -145,31 +277,29 @@
       "file": ".claude/knowledge/entries/tips/TIP-001-find-based-repo-discovery.md"
     },
     {
-      "id": "ADR-003",
-      "type": "decision",
-      "title": "Import anthropics/knowledge-work-plugins into workspace-hub skills",
-      "category": "skills",
+      "id": "TIP-002",
+      "type": "tip",
+      "title": "workspace-hub pre-commit hook takes 5+ min — use TaskOutput with 300s timeout",
+      "category": "tooling",
       "tags": [
-        "skills",
-        "knowledge-work-plugins",
-        "import",
-        "sync",
-        "anthropic",
-        "upstream"
+        "git",
+        "pre-commit",
+        "hooks",
+        "validate-skills",
+        "timeout",
+        "workspace-hub"
       ],
       "repos": [
         "workspace-hub"
       ],
       "confidence": 0.95,
-      "created": "2026-02-03",
-      "last_validated": "2026-02-03",
-      "source_type": "session",
-      "related": [
-        "ADR-002"
-      ],
+      "created": "2026-02-22",
+      "last_validated": "2026-02-22",
+      "source_type": "manual",
+      "related": [],
       "status": "active",
       "access_count": 0,
-      "file": ".claude/knowledge/entries/decisions/ADR-003-import-knowledge-work-plugins.md"
+      "file": ".claude/knowledge/entries/tips/TIP-002-precommit-hook-timeout.md"
     }
   ]
 }

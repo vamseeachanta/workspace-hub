@@ -15,6 +15,8 @@
 # Force LF for shell scripts (CRLF breaks bash on MINGW)
 *.sh text eol=lf
 scripts/* text eol=lf
+# Extensionless hook files in scripts/hooks/ (scripts/* only covers one level)
+scripts/hooks/* text eol=lf
 
 # Force LF for config files parsed by shell scripts
 config/*.conf text eol=lf

@@ -8,6 +8,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 USAGE_FILE="${REPO_ROOT}/config/ai-tools/usage-tracking.yaml"
 
+source "$REPO_ROOT/scripts/lib/python-resolver.sh"
+
 # Claude Code stats location
 CLAUDE_STATS="${HOME}/.claude/stats-cache.json"
 
@@ -112,7 +114,7 @@ update_yaml() {
             local field="${BASH_REMATCH[3]}"
 
             # Use Python for reliable YAML update
-            python3 << PYEOF
+            ${PYTHON} << PYEOF
 import re
 
 with open("$USAGE_FILE", 'r') as f:
@@ -187,7 +189,7 @@ sync_claude() {
         log_verbose "Stats last computed: $last_computed"
     else
         # Fallback to python
-        daily_messages=$(python3 -c "
+        daily_messages=$(${PYTHON} -c "
 import json
 with open('$CLAUDE_STATS') as f:
     data = json.load(f)
@@ -199,14 +201,14 @@ else:
     print(0)
 " 2>/dev/null || echo "0")
 
-        total_messages=$(python3 -c "
+        total_messages=$(${PYTHON} -c "
 import json
 with open('$CLAUDE_STATS') as f:
     data = json.load(f)
 print(data.get('totalMessages', 0))
 " 2>/dev/null || echo "0")
 
-        total_sessions=$(python3 -c "
+        total_sessions=$(${PYTHON} -c "
 import json
 with open('$CLAUDE_STATS') as f:
     data = json.load(f)
