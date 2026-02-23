@@ -30,8 +30,8 @@ review:
   codex_gate: "approved"          # pending_recheck | approved | blocked
   ready_for_next_step: true
 
-status: "approved"
-progress: 20
+status: "in_progress"
+progress: 50
 created: "2026-02-17"
 updated: "2026-02-23"
 version: "1.13"
@@ -941,7 +941,7 @@ test_report_generator.py:
 | Review Iteration 13 | ✅ Complete | Codex REQUEST_CHANGES (P2×1 function signature, P2×1 escaping enforcement, P3×1 html.parser) — all fixed in v1.13 |
 | Review Iteration 14 | ✅ **APPROVED** | Codex **APPROVE** on v1.13 — spec is ready for Phase 1 implementation |
 | Plan Approved | ✅ **APPROVED** | Codex APPROVE iter 14 (v1.13) — cleared for implementation |
-| Phase 1: Data Models | Pending | |
+| Phase 1: Data Models + Implementation | ✅ Complete | 51 tests, 82.98% coverage, legal clean — commit e0df5acc |
 | Phase 2a: Setup Section Builders | Pending | |
 | Phase 2b: Results Section Builders | Pending | |
 | Phase 3: Renderers + Report Generator | Pending | |
