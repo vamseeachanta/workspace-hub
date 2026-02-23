@@ -113,7 +113,8 @@ Document intelligence pipeline (parallel story) owns this. Cross-reference: `doc
 
 | Directory | Repo | Purpose |
 |-----------|------|---------|
-| `coordination/` | workspace-hub root | Python library: Pydantic YAML schemas |
+| `coordination/` | workspace-hub root | Standalone subproject: own `pyproject.toml`, Pydantic YAML schemas; do NOT fold into root |
+| `src/` | workspace-hub root | Hub implementation package (`config`, `solvers`, `models`, `database`, `utilities`); governed by root `pyproject.toml` |
 | `monitoring-dashboard/` | workspace-hub root | Express+React monitoring app |
 | `docs/modules/` | workspace-hub | Domain docs (AI, automation, workflow) |
 | `agent-library/` | `.claude/` | Loaded by `standard-development.yaml` + 4 devops skills — HIGH RISK to rename |

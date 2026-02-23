@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "workspace-hub"
+version = "0.1.0"
+description = "Hub implementation package: config, solvers, models, database, utilities"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = [
+    "pyyaml>=6.0",
+    "sqlalchemy>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+minversion = "8.0"
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
