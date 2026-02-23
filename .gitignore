@@ -375,3 +375,8 @@ specs/repos/*/
 
 # Data cache files — runtime generated, not for version control
 data/modules/**/cache/
+
+# Document intelligence pipeline (WRK-309)
+data/document-index/index.jsonl
+data/document-index/summaries/
+data/document-index/enhancement-plan.yaml
