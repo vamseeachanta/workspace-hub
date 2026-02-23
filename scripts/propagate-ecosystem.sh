@@ -7,7 +7,7 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WS_HUB="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-HOOK_MARKER="post-task-review.sh"
+HOOK_MARKER="consume-signals.sh"
 SHARED_SKILL_DIRS=("guidelines" "meta" "workflows")
 SKIP_DIRS=("session-logs" "_runtime" "_internal" "_core")
 EXCLUDE_DIRS=(".claude" "scripts" "specs" "docs" "node_modules" ".git"
@@ -148,28 +148,28 @@ propagate_hooks() {
     if [[ ! -f "$settings" ]]; then
         log_skip "$repo_name — no .claude/settings.json"; HOOKS_SKIPPED=$((HOOKS_SKIPPED+1)); return; fi
     if grep -q "$HOOK_MARKER" "$settings" 2>/dev/null; then
-        log_ok "$repo_name — already has post-task-review hook"; HOOKS_SKIPPED=$((HOOKS_SKIPPED+1)); return; fi
+        log_ok "$repo_name — already has consume-signals hook"; HOOKS_SKIPPED=$((HOOKS_SKIPPED+1)); return; fi
     if [[ "$OPT_DRY_RUN" == "true" ]]; then
         log_add "$repo_name — would add Stop hook (dry-run)"; HOOKS_ADDED=$((HOOKS_ADDED+1)); return; fi
     if ! command -v jq &>/dev/null; then
         log_fail "$repo_name — jq not available"; HOOKS_FAILED=$((HOOKS_FAILED+1)); return; fi
 
     local tmp_f; tmp_f="$(mktemp)"
-    local jq_op="=" jq_rc=0
-    grep -q '"Stop"' "$settings" 2>/dev/null && jq_op="+="
+    local jq_rc=0
     jq "
-        .hooks.Stop ${jq_op} [{
+        .hooks.Stop = [{
+            \"matcher\": \".*\",
             \"hooks\": [{
                 \"type\": \"command\",
-                \"statusMessage\": \"Post-task learning check\",
-                \"command\": \"bash -c 'SCRIPT=\\\"\${WORKSPACE_HUB:-\$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/post-task-review.sh\\\"; [ -f \\\"\$SCRIPT\\\" ] && bash \\\"\$SCRIPT\\\" 2>/dev/null || true'\"
+                \"statusMessage\": \"Capturing session signals\",
+                \"command\": \"bash -c 'SCRIPT=\\\"\${WORKSPACE_HUB:-\$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/consume-signals.sh\\\"; [ -f \\\"\$SCRIPT\\\" ] && bash \\\"\$SCRIPT\\\" 2>/dev/null || true'\"
             }]
         }]
     " "$settings" > "$tmp_f" 2>/dev/null || jq_rc=$?
 
     if [[ $jq_rc -eq 0 && -s "$tmp_f" ]]; then
         mv "$tmp_f" "$settings"
-        log_add "$repo_name — ${jq_op/+=/appended to existing }${jq_op/=/created }Stop hooks section"
+        log_add "$repo_name — updated Stop hooks to use consume-signals.sh"
         HOOKS_ADDED=$((HOOKS_ADDED+1))
     else
         rm -f "$tmp_f"
