@@ -1,0 +1,120 @@
+# Provider Capability Profiles
+# Structured profiles for each AI provider used in the workspace-hub ecosystem.
+# Source of truth for model IDs: config/agents/model-registry.yaml
+# Source of truth for strengths/roles: config/agents/behavior-contract.yaml
+#
+# This file aggregates capability metadata in one place so that routing
+# scripts, documentation, and assessment tools can reference it without
+# parsing multiple sources.
+
+version: 1.1.0
+last_updated: "2026-02-24"
+
+# WRK-235 Strategy Decision (2026-02-24): Maintain all three providers (Option A)
+# - Claude: orchestrator + primary executor
+# - Codex: cross-review hard gate (independent second opinion, budget cost tier)
+# - Gemini: research + large-doc processing (1M context window advantage)
+# Review trigger: if Claude reaches 1M context OR Codex cross-review quality drops
+# below Claude Sonnet level, consolidate. Evidence from WRK-237 cost tracking.
+# Next reassessment: 2026-06-06 (June first-Friday review)
+
+providers:
+  claude:
+    display_name: "Anthropic Claude"
+    model_ids:
+      primary: "claude-opus-4-6"
+      balanced: "claude-sonnet-4-6"  # Updated 2026-02-24: Sonnet 4.6 preferred
+      fast: "claude-haiku-4-5"      # use latest
+    context_window:
+      primary: 200000
+      balanced: 200000
+      fast: 200000
+    strengths:
+      - multi-file architecture
+      - orchestration and planning
+      - complex integration across modules
+      - sensitive data handling
+      - long-context reasoning
+      - code review and cross-review
+    cost_tier: high
+    primary_use_cases:
+      - "Multi-module design and architecture (Route C)"
+      - "Session orchestration and task delegation"
+      - "Cross-review verdicts on complex diffs"
+      - "Sensitive or compliance-gated work"
+    horizon_2026_h1:
+      trajectory: improving_rapidly
+      gap_to_close: "context window (200K vs 1M Gemini); closing by mid-2026 expected"
+      strategy_role: orchestrator_and_executor
+      consolidation_candidate: false  # already primary; not at risk
+
+  codex:
+    display_name: "OpenAI Codex CLI"
+    model_ids:
+      primary: "codex-cli"
+    context_window:
+      primary: 200000
+    strengths:
+      - single-file focused code changes
+      - algorithm implementation
+      - test writing and TDD
+      - refactoring and cleanup
+      - configuration edits
+    cost_tier: low
+    primary_use_cases:
+      - "Focused implementation tasks (Route A/B)"
+      - "Writing and expanding test suites"
+      - "Bug fixes in isolated modules"
+      - "Code refactoring without architectural change"
+    horizon_2026_h1:
+      trajectory: stable
+      unique_value: "Independent cross-review perspective; budget cost tier (o4-mini)"
+      strategy_role: cross_review_hard_gate
+      consolidation_candidate: true  # reassess June 2026 with WRK-237 cost data
+      consolidation_trigger: "Codex cross-review verdicts consistently match Claude Sonnet AND cost savings < overhead"
+
+  gemini:
+    display_name: "Google Gemini"
+    model_ids:
+      primary: "gemini-2.5-pro"
+      fast: "gemini-2.5-flash"
+    context_window:
+      primary: 1000000
+      fast: 1000000
+    strengths:
+      - research and information gathering
+      - data analysis and summarization
+      - content writing and documentation
+      - large document processing
+      - cross-reference and synthesis
+    cost_tier: medium
+    primary_use_cases:
+      - "Research tasks and literature review"
+      - "Documentation and report generation"
+      - "Large-context analysis (specs, logs, data)"
+      - "Content creation and narrative writing"
+    horizon_2026_h1:
+      trajectory: improving_rapidly
+      unique_value: "1M token context window — still ahead of Claude for large-doc work"
+      strategy_role: research_and_large_context
+      consolidation_candidate: true  # reassess June 2026
+      consolidation_trigger: "Claude context window reaches 1M tokens AND Gemini adds no unique capability"
+
+  openai:
+    display_name: "OpenAI GPT"
+    model_ids:
+      primary: "gpt-4.1"
+      fast: "gpt-4.1-mini"
+    context_window:
+      primary: 1000000
+      fast: 1000000
+    strengths:
+      - general-purpose code generation
+      - structured data extraction
+      - API integration tasks
+      - multi-language support
+    cost_tier: medium
+    primary_use_cases:
+      - "General code generation when primary providers are at capacity"
+      - "Structured data parsing and transformation"
+      - "Alternative cross-review perspective"
