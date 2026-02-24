@@ -1,0 +1,17 @@
+# AI agent CLI version thresholds — update manually on new releases
+# Used by ai-agent-readiness.sh to detect outdated installs.
+#
+# cli_min: minimum acceptable version (semver, compared via sort -V)
+# default_model: expected default model ID for the agent
+
+claude:
+  cli_min: "1.0.0"
+  default_model: "claude-sonnet-4-6"
+
+codex:
+  cli_min: "1.0.0"
+  default_model: "o4-mini"
+
+gemini:
+  cli_min: "1.0.0"
+  default_model: "gemini-2.5-pro"
