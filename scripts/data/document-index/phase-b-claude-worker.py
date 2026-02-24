@@ -191,7 +191,7 @@ def load_index_source(source: str, shard: int, total: int) -> list:
     """Load records from index.jsonl for a given source, sharded."""
     records = []
     idx = 0
-    valid_exts = {".pdf", ".docx", ".md", ".txt", ".yaml", ".yml"}
+    valid_exts = {"pdf", "docx", "md", "txt", "yaml", "yml"}  # index stores ext without leading dot
     with open(INDEX_PATH) as f:
         for line in f:
             line = line.strip()
