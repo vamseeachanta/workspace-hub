@@ -601,17 +601,99 @@ Environment:
 3. **Drag coefficients** - Verify vessel wind areas
 4. **Shielding** - Consider in tandem operations
 
-## Error Handling
+## Failure Diagnosis
+
+### Common Errors and Fixes
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `Change not allowed for 'WaveGamma'` | WaveGamma only valid for JONSWAP spectrum; set on wrong wave type | Set `WaveSpectrumType` to JONSWAP before setting WaveGamma |
+| `Change not allowed for 'SeabedDamping'` | SeabedDamping only valid when `SeabedModel` is set appropriately | Set `SeabedModel` before seabed damping properties |
+| `NumberOfCurrentLevels must be >= 2` | Current profile has only 1 depth point | Add at least 2 depth levels (surface + seabed) |
+| `WaveHs` vs `WaveHeight` error | Using spectral property name on deterministic wave type | Use `WaveHeight`+`WavePeriod` for Airy/Dean; `WaveHs`+`WaveTp` for JONSWAP/PM |
+| Unrealistic vessel drift in statics | Current direction is "from" vs "towards" convention mismatch | OrcaFlex current direction = direction current flows TOWARDS |
+| Simulation crashes at startup | Hs too large for water depth (wave breaking) | Check Hs/d ratio; Hs should be < 0.6 * water_depth for shallow water |
+| Wave spectrum has no energy at RAO frequencies | Tp too far from vessel natural periods | Ensure wave period range covers vessel response periods (4-25s typical) |
+
+### Mode-Setting Property Order
+
+OrcaFlex requires mode-setting properties to be set BEFORE dependent properties:
 
 ```python
-try:
-    env_props = setup_environment(config)
-except ValueError as e:
-    print(f"Configuration error: {e}")
-    print("Check wave/current/wind parameters")
+# WRONG — gamma set before spectrum type
+env.WaveGamma = 3.3
+env.WaveSpectrumType = OrcFxAPI.wsJONSWAP  # Too late
 
-except KeyError as e:
-    print(f"Missing parameter: {e}")
+# CORRECT — mode first, then dependent properties
+env.WaveType = OrcFxAPI.wtIrregular
+env.WaveSpectrumType = OrcFxAPI.wsJONSWAP
+env.WaveGamma = 3.3  # Now valid
+```
+
+### Debugging Environment Issues
+
+```python
+def diagnose_environment(model):
+    """Check environment configuration for common issues."""
+    env = model.environment
+    general = model.general
+    issues = []
+
+    # Check water depth vs wave height
+    wd = general.WaterDepth
+    if hasattr(env, 'WaveHs') and env.WaveHs > 0:
+        if env.WaveHs > 0.6 * wd:
+            issues.append(f"Hs ({env.WaveHs}m) may cause breaking in {wd}m water depth")
+
+    # Check current profile extends to seabed
+    if hasattr(env, 'NumberOfCurrentDataPoints'):
+        n = env.NumberOfCurrentDataPoints
+        if n < 2:
+            issues.append("Current profile needs at least 2 depth points")
+        else:
+            deepest = env.CurrentDepth[n-1]
+            if deepest < wd * 0.9:
+                issues.append(f"Current profile ends at {deepest}m but water depth is {wd}m")
+
+    return issues
+```
+
+## Validation
+
+### Environment Sanity Checks
+
+| Parameter | Typical Range | Warning If |
+|-----------|---------------|-----------|
+| Water depth | 10-3000m | < 0 or > 4000m |
+| Hs | 0.5-15m | > 20m or Hs > 0.6 * water_depth |
+| Tp | 4-20s | < 3s or > 25s |
+| JONSWAP gamma | 1.0-7.0 | < 1 or > 10 |
+| Current speed (surface) | 0-3 m/s | > 4 m/s |
+| Wind speed (10m ref) | 0-50 m/s | > 60 m/s |
+| Seabed stiffness | 10-1000 kN/m/m2 | < 1 or > 10000 |
+| Seabed friction | 0.1-1.0 | < 0 or > 2.0 |
+
+### Cross-Validation
+
+```python
+def validate_environment(config):
+    """Validate environment configuration against physical limits."""
+    issues = []
+
+    # Wave steepness check (DNV-RP-C205)
+    Hs = config["waves"]["significant_height"]
+    Tp = config["waves"]["peak_period"]
+    steepness = 2 * 3.14159 * Hs / (9.81 * Tp**2)
+    if steepness > 0.07:
+        issues.append(f"Wave steepness {steepness:.3f} exceeds breaking limit (~0.07)")
+
+    # Current profile monotonicity (typical: decreases with depth)
+    profile = config.get("current", {}).get("depth_profile", [])
+    for i in range(1, len(profile)):
+        if profile[i]["factor"] > profile[i-1]["factor"]:
+            issues.append(f"Current factor increases at depth {profile[i]['depth']}m — unusual")
+
+    return issues
 ```
 
 ## Related Skills

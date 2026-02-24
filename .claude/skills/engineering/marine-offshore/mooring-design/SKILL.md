@@ -710,6 +710,112 @@ generator.generate_model_yml('models/mooring_analysis.yml')
 - Provide clear load case definitions
 - Show safety factor compliance
 
+## Failure Diagnosis
+
+### Common Errors and Fixes
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| Catenary solution diverges | Horizontal tension too low for water depth and line weight | Increase pretension or add more line length |
+| Anchor capacity exceeded | Environmental loads larger than holding capacity | Upsize anchor or add anchor line length for catenary reduction |
+| Safety factor < required | Line MBL too low for design tensions | Upsize chain/rope diameter or change material grade |
+| Vessel offset exceeds limit | Mooring stiffness too low | Add more lines, shorten lines, or increase pretension |
+| Line-line interference | Mooring spread angle too narrow | Increase angular spacing between lines (min 30 deg recommended) |
+| Snap loading | Slack line becomes taut under dynamic loading | Increase pretension to avoid slack; add damping materials |
+| Polyester creep | Long-term elongation under sustained load | Use DNV creep factors; design for post-installation elongation |
+
+### Debugging Mooring Design
+
+```python
+def diagnose_mooring_system(system, environment):
+    """Check mooring system design for common issues."""
+    issues = []
+
+    # Check minimum number of lines
+    n_lines = len(system.lines)
+    if n_lines < 3:
+        issues.append(f"Only {n_lines} lines — minimum 3 for station keeping")
+
+    # Check angular spread
+    if n_lines >= 2:
+        headings = []
+        for line in system.lines:
+            dx = line.anchor.location[0] - line.fairlead_location[0]
+            dy = line.anchor.location[1] - line.fairlead_location[1]
+            heading = math.degrees(math.atan2(dy, dx))
+            headings.append(heading)
+
+        headings.sort()
+        for i in range(len(headings)):
+            gap = headings[(i+1) % len(headings)] - headings[i]
+            if gap < 0:
+                gap += 360
+            if gap > 180:
+                issues.append(f"Angular gap of {gap:.0f} deg — poor coverage in that sector")
+
+    # Check line length vs water depth
+    for line in system.lines:
+        total_length = sum(seg.length for seg in line.segments)
+        scope = total_length / system.water_depth
+        if scope < 3:
+            issues.append(f"{line.line_id}: scope ratio {scope:.1f} — minimum ~3-5 for catenary")
+        if scope > 15:
+            issues.append(f"{line.line_id}: scope ratio {scope:.1f} — excessive length")
+
+    return issues
+```
+
+## Validation
+
+### Design Check Matrix
+
+| Check | Intact (DNV) | Damaged (DNV) | Method |
+|-------|-------------|---------------|--------|
+| Line tension SF | >= 1.67 (dynamic) | >= 1.25 (dynamic) | Max tension / MBL |
+| Vessel offset | < 8% water depth | < 12% water depth | Max offset in design storm |
+| Anchor capacity | SF >= 1.5 | SF >= 1.2 | Max anchor load / holding capacity |
+| Line fatigue | Design life x3 | — | Miner's sum across sea states |
+| Collision check | No line-line contact | — | Minimum separation > 2 * line diameter |
+
+### Validation Code
+
+```python
+def validate_mooring_design(results, safety_factors):
+    """Validate mooring analysis results against design criteria."""
+    checks = []
+    all_pass = True
+
+    for result in results:
+        # Tension safety factor
+        sf = result.safety_factor
+        sf_req = safety_factors.get(result.load_case, 1.67)
+        tension_pass = sf >= sf_req
+
+        checks.append({
+            "line": result.line_id,
+            "case": result.load_case,
+            "max_tension_kN": result.max_tension,
+            "safety_factor": sf,
+            "required_sf": sf_req,
+            "utilization": result.utilization,
+            "pass": tension_pass
+        })
+
+        if not tension_pass:
+            all_pass = False
+
+    return {"all_pass": all_pass, "checks": checks}
+```
+
+### Key Standards Reference
+
+| Standard | Application | Key Requirement |
+|----------|-------------|-----------------|
+| DNV-OS-E301 | Position mooring | Safety factors, fatigue, ALS |
+| API RP 2SK | Station keeping | Environmental loads, analysis methods |
+| ABS Rules | Mooring systems | Material specs, testing, survey |
+| BV NR 493 | Mooring systems | Chain properties, proof testing |
+
 ## Related Skills
 
 - [fatigue-analysis](../fatigue-analysis/SKILL.md) - Mooring line fatigue

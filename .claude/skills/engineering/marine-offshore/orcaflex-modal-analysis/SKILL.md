@@ -365,32 +365,96 @@ is_lock_in = viv.check_lock_in(reduced_velocity, vr_min=4.0, vr_max=8.0)
 3. **Mixed DOF modes** - Coupled motions, require careful assessment
 4. **Clustering** - Multiple modes at similar frequencies indicate sensitivity
 
-## Error Handling
+## Failure Diagnosis
 
-### Static Analysis Failure
+### Common Errors and Fixes
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `Statics failed to converge` | Model not in equilibrium before modal | Fix statics first (see orcaflex-static-debug skill) |
+| `Singular stiffness matrix` | Zero-tension lines or disconnected components | Check all lines have positive tension; verify all connections |
+| `No modes found` | lastMode too low or model too simple | Increase `lastMode`; add more DOFs (finer segmentation) |
+| Modal analysis hangs | Very large model with too many modes requested | Reduce `lastMode` or simplify model (coarser segments) |
+| Unrealistic frequencies | Wrong units (mass, stiffness) or missing added mass | Verify line type properties; check hydrodynamic coefficients |
+| Mode shapes all zero for an object | Object not included in modal analysis scope | Add object to `ObjectName` list in config |
+| Duplicate frequencies | Symmetric model produces paired modes | Expected for symmetric configurations; modes are degenerate pairs |
+
+### Debugging Modal Issues
 
 ```python
-try:
-    model.CalculateStatics()
-except OrcFxAPI.OrcaFlexError as e:
-    print(f"Static analysis failed: {e}")
-    print("Check:")
-    print("  - Line connectivity")
-    print("  - Environmental conditions")
-    print("  - Initial tensions")
+def diagnose_modal_failure(model):
+    """Pre-check model before modal analysis."""
+    issues = []
+
+    # Check statics first
+    try:
+        model.CalculateStatics()
+    except OrcFxAPI.OrcaFlexError as e:
+        issues.append(f"Statics failed: {e} — fix statics before modal analysis")
+        return issues
+
+    # Check for zero-tension lines
+    for obj in model.objects:
+        if obj.typeName == "Line":
+            try:
+                t_a = obj.StaticResult("Effective Tension", OrcFxAPI.oeEndA)
+                t_b = obj.StaticResult("Effective Tension", OrcFxAPI.oeEndB)
+                if t_a <= 0 or t_b <= 0:
+                    issues.append(f"{obj.name}: tension <= 0 (EndA={t_a:.1f}, EndB={t_b:.1f})")
+            except:
+                issues.append(f"{obj.name}: cannot read static tension")
+
+    # Check segment count (too few = too few modes)
+    total_segments = 0
+    for obj in model.objects:
+        if obj.typeName == "Line":
+            for i in range(obj.NumberOfSections):
+                total_segments += int(obj.Length[i] / obj.TargetSegmentLength[i])
+    if total_segments < 10:
+        issues.append(f"Only ~{total_segments} segments — may produce very few modes")
+
+    return issues
 ```
 
-### Mode Extraction Issues
+## Validation
+
+### Expected Frequency Ranges
+
+| Structure Type | Typical Period Range | Notes |
+|---------------|---------------------|-------|
+| SCR (Steel Catenary Riser) | 2-30s | In-line and cross-flow modes |
+| Mooring line | 5-60s | Depends on length and pretension |
+| FPSO (hull) | 5-15s (heave/pitch) | Compare with RAO peaks |
+| TTR (Top Tensioned Riser) | 1-20s | Higher tension = higher frequency |
+| Jumper | 1-10s | Short span, higher frequencies |
+
+### Validation Checks
+
+| Check | Method | Pass Criteria |
+|-------|--------|---------------|
+| Fundamental mode period | Compare with analytical catenary formula | Within 20% of T = 2L/n * sqrt(m/T) |
+| Mode shape continuity | Plot mode shapes | No discontinuities or jumps |
+| VIV susceptibility | Check 4 < Vr < 8 for any mode | Flag modes with lock-in risk |
+| DOF energy sum | Sum DOF percentages per mode | Should sum to ~100% |
+| Symmetric model | Check paired modes | Degenerate pairs should have similar periods |
 
 ```python
-try:
-    modes = OrcFxAPI.Modes(model, spec)
-except OrcFxAPI.OrcaFlexError as e:
-    print(f"Modal analysis failed: {e}")
-    print("Possible causes:")
-    print("  - Singular stiffness matrix")
-    print("  - Zero-tension lines")
-    print("  - Disconnected components")
+def validate_modal_results(modes, expected_period_range=(1.0, 60.0)):
+    """Validate modal analysis results."""
+    issues = []
+
+    for i in range(modes.modeCount):
+        details = modes.modeDetails(i)
+        period = details.period
+
+        if period < expected_period_range[0]:
+            issues.append(f"Mode {i+1}: period {period:.3f}s below expected range")
+        if period > expected_period_range[1]:
+            issues.append(f"Mode {i+1}: period {period:.3f}s above expected range")
+        if period <= 0:
+            issues.append(f"Mode {i+1}: non-positive period {period}")
+
+    return issues
 ```
 
 ## Integration with Other Skills

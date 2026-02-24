@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # engineering-suite-install.sh — Repeatable engineering workstation setup
 # Target: Ubuntu 24.04 LTS (ace-linux-2 and future machines)
-# Usage: sudo bash scripts/setup/engineering-suite-install.sh [--all | --core | --fea | --python]
+# Usage: sudo bash scripts/setup/engineering-suite-install.sh [--all | --core | --gis | --fea | --python]
 #
 # History:
 #   2026-02-21  Initial creation from WRK-290 (ace-linux-2 setup)
@@ -63,6 +63,53 @@ install_core() {
         apt install -y openfoam2312-default 2>&1 | tail -1 | tee -a "$LOGFILE"
     else
         log "OpenFOAM already installed, skipping."
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# GIS suite: QGIS, Google Earth Pro
+# ---------------------------------------------------------------------------
+install_gis() {
+    log "=== Installing GIS suite ==="
+
+    # QGIS (via official ubuntu repo — qgis.org)
+    log "Installing QGIS..."
+    if ! dpkg -l qgis &>/dev/null; then
+        apt install -y gnupg software-properties-common 2>&1 | tail -1 | tee -a "$LOGFILE"
+        local CODENAME
+        CODENAME="$(lsb_release -cs)"
+        local KEYRING="/etc/apt/keyrings/qgis-archive-keyring.gpg"
+        if [[ ! -f "$KEYRING" ]]; then
+            curl -fsSL https://download.qgis.org/downloads/qgis-archive-keyring.gpg \
+                -o "$KEYRING"
+        fi
+        local SOURCES="/etc/apt/sources.list.d/qgis.sources"
+        if [[ ! -f "$SOURCES" ]]; then
+            cat > "$SOURCES" <<QGISEOF
+Types: deb
+URIs: https://qgis.org/ubuntu-ltr
+Suites: ${CODENAME}
+Architectures: amd64
+Components: main
+Signed-By: ${KEYRING}
+QGISEOF
+        fi
+        apt update -qq
+        apt install -y qgis python3-qgis 2>&1 | tail -1 | tee -a "$LOGFILE"
+    else
+        log "QGIS already installed, skipping."
+    fi
+
+    # Google Earth Pro
+    log "Installing Google Earth Pro..."
+    if ! dpkg -l google-earth-pro-stable &>/dev/null; then
+        local GEP_DEB="/tmp/google-earth-pro-stable.deb"
+        curl -fsSL -o "$GEP_DEB" \
+            "https://dl.google.com/dl/earth/client/current/google-earth-pro-stable_current_amd64.deb"
+        apt install -y "$GEP_DEB" 2>&1 | tail -1 | tee -a "$LOGFILE"
+        rm -f "$GEP_DEB"
+    else
+        log "Google Earth Pro already installed, skipping."
     fi
 }
 
@@ -149,15 +196,17 @@ verify() {
         fi
     }
 
-    check "Blender"    "blender --version"
-    check "FreeCAD"    "which freecad || which freecad-cmd"
-    check "Gmsh"       "gmsh --version"
-    check "ParaView"   "paraview --version"
-    check "OpenFOAM"   "which simpleFoam || ls /usr/lib/openfoam/*/bin/simpleFoam"
-    check "CalculiX"   "which ccx || which ccx_2.23"
-    check "Elmer"      "which ElmerSolver"
-    check "meshio"     "python3 -c 'import meshio'"
-    check "PyFoam"     "python3 -c 'import PyFoam'"
+    check "Blender"         "blender --version"
+    check "FreeCAD"         "which freecad || which freecad-cmd"
+    check "Gmsh"            "gmsh --version"
+    check "ParaView"        "paraview --version"
+    check "OpenFOAM"        "which simpleFoam || ls /usr/lib/openfoam/*/bin/simpleFoam"
+    check "QGIS"            "which qgis"
+    check "Google Earth"    "which google-earth-pro"
+    check "CalculiX"        "which ccx || which ccx_2.23"
+    check "Elmer"           "which ElmerSolver"
+    check "meshio"          "python3 -c 'import meshio'"
+    check "PyFoam"          "python3 -c 'import PyFoam'"
 
     log ""
     log "Results: $pass passed, $fail failed"
@@ -174,6 +223,7 @@ main() {
     case "$mode" in
         --all)
             install_core
+            install_gis
             install_bemrosetta
             install_fea
             install_python
@@ -181,6 +231,9 @@ main() {
         --core)
             install_core
             install_bemrosetta
+            ;;
+        --gis)
+            install_gis
             ;;
         --fea)
             install_fea
@@ -193,7 +246,7 @@ main() {
             return
             ;;
         *)
-            echo "Usage: sudo bash $0 [--all | --core | --fea | --python | --verify]"
+            echo "Usage: sudo bash $0 [--all | --core | --gis | --fea | --python | --verify]"
             exit 1
             ;;
     esac

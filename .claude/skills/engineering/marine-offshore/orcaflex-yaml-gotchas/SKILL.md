@@ -367,6 +367,88 @@ if sim.north_direction:
     general["NorthDirection"] = sim.north_direction
 ```
 
+## Input Generation Patterns
+
+### Safe YAML Builder Pattern
+
+When generating OrcaFlex YAML programmatically, use this pattern to avoid dormant property traps:
+
+```python
+def build_environment_section(spec):
+    """Build environment YAML with safe defaults first, then overlay."""
+    # Start with safe defaults that won't trigger dormant property errors
+    env = {
+        "SeabedModel": "Elastic",
+        "MultipleCurrentDataCanBeDefined": False,
+        "CurrentModel": "Variation scheme",
+        "WindType": "Constant",
+        "WaveType": "None",
+    }
+
+    # Overlay specific values from spec
+    if spec.waves:
+        env["WaveType"] = spec.waves.type
+        if spec.waves.type in ("JONSWAP", "Pierson-Moskowitz"):
+            env["WaveHs"] = spec.waves.Hs
+            env["WaveTp"] = spec.waves.Tp
+            if spec.waves.type == "JONSWAP":
+                env["WaveGamma"] = spec.waves.gamma
+
+    return {"Environment": env}
+```
+
+### Section Ordering Template
+
+```python
+# Emit sections in this order to avoid reference errors
+_SECTION_ORDER = [
+    "General", "VariableData", "ExpansionTables",
+    "RayleighDampingCoefficients", "FrictionCoefficients", "LineContactData",
+    "LineTypes", "VesselTypes", "ClumpTypes", "StiffenerTypes", "SupportTypes",
+    "Vessels", "Lines", "Shapes", "6DBuoys", "3DBuoys",
+    "Constraints", "Links", "Winches", "FlexJoints",
+    "MultibodyGroups", "BrowserGroups", "Groups",
+]
+
+def order_sections(model_dict):
+    """Reorder model dict to match OrcaFlex dependency order."""
+    ordered = {}
+    for key in _SECTION_ORDER:
+        if key in model_dict:
+            ordered[key] = model_dict[key]
+    # Append any unknown sections at the end
+    for key in model_dict:
+        if key not in ordered:
+            ordered[key] = model_dict[key]
+    return ordered
+```
+
+## Execution: Validating Generated YAML
+
+```python
+import OrcFxAPI
+
+def validate_yaml_round_trip(yaml_path):
+    """Load YAML into OrcFxAPI and check for errors."""
+    model = OrcFxAPI.Model()
+    try:
+        model.LoadData(yaml_path)
+        return {"valid": True, "errors": []}
+    except OrcFxAPI.OrcaFlexError as e:
+        error_msg = str(e)
+        errors = [error_msg]
+
+        # Diagnose common YAML gotchas
+        if "Change not allowed" in error_msg:
+            errors.append("Likely dormant property issue — check mode-setting property order")
+        if "not a valid" in error_msg and "name" in error_msg.lower():
+            errors.append("Reference to undefined object — check section ordering")
+        if "alias" in error_msg.lower():
+            errors.append("YAML aliases not supported — use NoAliasDumper")
+
+        return {"valid": False, "errors": errors}
+```
+
 ## Related Skills
 
 - [orcaflex-monolithic-to-modular](../orcaflex-monolithic-to-modular/SKILL.md) - Extraction pipeline

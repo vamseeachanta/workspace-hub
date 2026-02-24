@@ -491,6 +491,96 @@ ofx_model = OrcFxAPI.Model("initial_model.yml")
 # Configure and run wizard...
 ```
 
+## Failure Diagnosis
+
+### Common Errors and Fixes
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `Wizard did not converge` | Target tension unachievable with current line geometry | Increase `MaxDamping` (try 50, 100, 200); check target is physically possible |
+| `Line not found` | Line name in config doesn't match model | Check exact spelling and case of line names in model |
+| `Singular Jacobian` | Too many lines configured simultaneously | Reduce number of included lines; solve in batches |
+| Wizard converges but tension wrong | Wrong `LineEnd` specified (End A vs End B) | Verify which end connects to vessel (usually End A for fairlead tension) |
+| Length becomes negative | Target tension too low for line weight | Increase target tension above minimum catenary tension |
+| Wizard changes wrong section | `length_index` not targeting the adjustable section | Verify which section should change length (typically the longest segment) |
+
+### Debugging Wizard Failures
+
+```python
+def diagnose_wizard_failure(model, line_name, target_tension):
+    """Diagnose why Line Setup Wizard fails for a specific line."""
+    line = model[line_name]
+    issues = []
+
+    # Check line is properly connected
+    end_a = line.EndAConnection
+    end_b = line.EndBConnection
+    if end_a == "Free" and end_b == "Free":
+        issues.append("Both ends free — wizard needs at least one fixed connection")
+
+    # Check minimum possible tension (line hanging straight down)
+    total_length = sum(line.Length)
+    if total_length <= 0:
+        issues.append(f"Total length is {total_length}m — must be positive")
+
+    # Check target is reasonable
+    if target_tension <= 0:
+        issues.append("Target tension must be positive")
+
+    # Check span vs length
+    import math
+    try:
+        dx = line.EndBX - line.EndAX
+        dy = line.EndBY - line.EndAY
+        dz = line.EndBZ - line.EndAZ
+        span = math.sqrt(dx**2 + dy**2 + dz**2)
+        if total_length < span:
+            issues.append(f"Line length ({total_length:.1f}m) < span ({span:.1f}m) — too short")
+        if total_length > span * 3:
+            issues.append(f"Line length ({total_length:.1f}m) >> span ({span:.1f}m) — may be too slack")
+    except:
+        pass
+
+    return issues
+```
+
+## Validation
+
+### Post-Wizard Checks
+
+| Check | Method | Pass Criteria |
+|-------|--------|---------------|
+| Tension achieved | Compare actual vs target | Error < 1% of target |
+| Line length positive | All section lengths > 0 | No negative lengths |
+| Catenary shape valid | Visual check or arc length > span | Line doesn't go through seabed |
+| Static convergence | `model.CalculateStatics()` | Converges after wizard adjustment |
+| Anchor holding | Tension at anchor < holding capacity | With safety factor (SF > 1.5) |
+
+```python
+def validate_wizard_results(model, configs):
+    """Validate Line Setup Wizard achieved target tensions."""
+    model.CalculateStatics()
+    results = []
+
+    for config in configs:
+        if not config.included:
+            continue
+        line = model[config.name]
+        end = OrcFxAPI.oeEndA if config.line_end == "End A" else OrcFxAPI.oeEndB
+        actual = line.StaticResult("Effective Tension", end)
+        error_pct = abs(actual - config.target_value) / config.target_value * 100
+
+        results.append({
+            "line": config.name,
+            "target_kN": config.target_value,
+            "actual_kN": actual,
+            "error_pct": error_pct,
+            "pass": error_pct < 1.0
+        })
+
+    return results
+```
+
 ## Related Skills
 
 - [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
