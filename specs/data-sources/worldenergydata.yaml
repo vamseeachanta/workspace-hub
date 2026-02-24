@@ -1,0 +1,172 @@
+repo: worldenergydata
+generated: '2026-02-23'
+standards:
+- id: NEMA 250
+  title: NEMA_250_(2008)_Enclosures_for_Electrical_Equiptment_(1000_Volts_Maximum)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: NEMA 250 establishes requirements for the construction, testing, and performance of electrical enclosures rated
+    up to 1000 Volts to provide protection against specific environmental conditions.
+  keywords:
+  - NEMA 250
+  - electrical enclosures
+  - environmental protection
+- id: API RP 75 3rd Ed
+  title: API_RP_75_3rd_Ed_(R2008)_Development_of_a_Safety_and_Environmental_Management_Program_for_Offshore_Operations_and_Facilities
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: Recommended practice for the development and implementation of Safety and Environmental Management Programs (SEMP)
+    for offshore oil and gas operations and facilities.
+  keywords:
+  - SEMP
+  - safety management
+  - offshore
+  - environmental program
+  - API RP 75
+- id: API RP 580 2nd Ed
+  title: API_RP_580_2nd_Ed_(2009)_Risk-Based_Inspection
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: This recommended practice provides guidance for developing, implementing, and sustaining a risk-based inspection
+    (RBI) program for fixed equipment and piping in the hydrocarbon and chemical process industries.
+  keywords:
+  - risk-based inspection
+  - RBI
+  - asset integrity
+  - probability of failure
+  - consequence of failure
+  - damage mechanisms
+- id: Pub123 Riser RCN1
+  title: Pub123_Riser_RCN1
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: An ABS regulatory guide and rule change notice detailing the construction, classification, and maintenance survey
+    requirements for subsea riser systems.
+  keywords:
+  - subsea riser
+  - ABS
+  - classification
+  - offshore
+  - survey
+- id: API RP 14J 2nd Ed
+  title: API_RP_14J_2nd_Ed_(2001)_Design_and_Hazards_Analysis_for_Offshore_Production_Facilities
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: Guidance for the design and hazards analysis of offshore production facilities to minimize risk of fire, explosion,
+    and pollution.
+  keywords:
+  - API RP 14J
+  - hazard analysis
+  - offshore production
+  - safety design
+  - risk assessment
+- id: API RP 1621
+  title: API_RP_1621_(1993)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: API RP 1621 provides procedures and methods for bulk liquid inventory control and product loss identification at
+    retail outlets using underground storage tanks.
+  keywords:
+  - inventory control
+  - underground storage tanks
+  - bulk liquid stock
+  - product loss
+  - retail outlets
+- id: API RP 14C 7th Ed
+  title: API_RP_14C_7th_Ed_(2007)_Analysis,_Design,_Installation,_and_Testing_of_Basic_Surface_Safety_Systems_for_Offshore_Production_Platforms
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: Standardized procedures for the analysis, design, installation, and testing of basic surface safety systems on
+    offshore production platforms.
+  keywords:
+  - surface safety systems
+  - offshore production
+  - API RP 14C
+- id: API RP 536
+  title: API_RP_536_(1998)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: Guidelines for the selection, design, and operation of post-combustion NOx control technologies for fired equipment
+    in refinery services.
+  keywords:
+  - NOx control
+  - fired equipment
+  - refinery
+  - emissions
+  - post-combustion
+- id: ISO Standards Issued 2016
+  title: ISO_Standards_Issued_2016
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: A comprehensive list of ISO standards and technical specifications for the oil and gas industry, covering drilling,
+    offshore structures, subsea production, and materials.
+  keywords:
+  - ISO
+  - standards
+  - oil and gas
+  - offshore
+  - drilling
+- id: API RP 75 3rd Ed
+  title: API_RP_75_3rd_Ed_(2004)_Development_of_a_Safety_and_Environmental_Management_Program_for_Offshore_Operation_and_Facilities
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: Recommended practice for developing, implementing, and maintaining a Safety and Environmental Management Program
+    (SEMP) for offshore oil and gas operations and facilities.
+  keywords:
+  - SEMP
+  - safety
+  - environmental management
+  - offshore operations
+  - risk assessment
+  - regulatory compliance
+  - management system
+- id: API RP 2350
+  title: API_RP_2350_(1996)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: This recommended practice outlines procedures and hardware requirements for overfill protection systems in petroleum
+    storage tanks to prevent environmental incidents and ensure operational safety.
+  keywords:
+  - overfill protection
+  - storage tanks
+  - petroleum facilities
+  - spill prevention
+  - safety systems
+- id: API RP 1604
+  title: API_RP_1604_(1996)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: regulatory
+  summary: This recommended practice provides guidelines for the safe and environmentally sound removal, abandonment in place,
+    or temporary closure of underground petroleum storage tanks.
+  keywords:
+  - underground storage tanks
+  - UST closure
+  - decommissioning
+  - environmental safety
+  - petroleum storage
+apis: []
+gaps: []

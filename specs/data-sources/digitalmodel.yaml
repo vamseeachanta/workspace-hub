@@ -1,0 +1,2550 @@
+repo: digitalmodel
+generated: '2026-02-23'
+standards:
+- id: 1-api-rp2a-2007
+  title: 1-api-rp2a-2007_(searchable)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This recommended practice provides engineering design principles and practices for the planning, design, and construction
+    of fixed offshore platforms using working stress design.
+  keywords:
+  - fixed offshore platforms
+  - working stress design
+  - structural engineering
+  - API RP 2A-WSD
+- id: ISO 2768 Pt 1 2nd Ed
+  title: ISO_2768_Pt_1_2nd_Ed_(1993)_Tolerances_for_linear_and_angular_dimensions_without_individual_tolerance_indications
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This standard specifies general tolerances for linear and angular dimensions without individual tolerance indications,
+    intended to simplify drawings for machined components.
+  keywords:
+  - tolerances
+  - linear dimensions
+  - angular dimensions
+  - machining
+  - dimensional deviations
+- id: FAOS Commentary Guide to Color
+  title: FAOS_Commentary_Guide_to_Colors
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: A guide explaining color-coding conventions for rule changes, corrigenda, and editorial updates within the commentary
+    for offshore structure fatigue assessment.
+  keywords:
+  - fatigue
+  - offshore
+  - structural
+  - corrigenda
+  - rule-changes
+- id: API SPECIFICATION 2B, SIXTH EDITION
+  title: Specification for the Fabrication of Structural Steel Pipe
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This specification provides standards for the fabrication of structural steel pipe formed from plate steel. It
+    is specifically intended for use in the construction of welded offshore structures. The document establishes requirements
+    for materials, manufacturing processes, and quality control for these structural components.
+  keywords:
+  - structural steel pipe
+  - fabrication
+  - offshore structures
+  - welded construction
+  - API 2B
+- id: oto01006
+  title: oto01006
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: A comparative appraisal of the API RP 2FPS code against ISO, NORSOK, and Lloyds standards to determine its suitability
+    for designing floating production systems in the UK Continental Shelf.
+  keywords:
+  - FPS
+  - API RP 2FPS
+  - Offshore Structures
+  - UKCS
+  - ISO 13819-4
+- id: API RP 2A-WSD 3rd Ed
+  title: API_RP_2A-WSD_3rd_Ed_(1997)_Recommended_Practice_for_Planning,_Designing_and_Constructing_Fixed_Offshore_Platforms-Working_Stress_Design
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Recommended practice for the planning, design, and construction of fixed offshore platforms using working stress
+    design, incorporating errata and supplement updates.
+  keywords:
+  - offshore platforms
+  - structural design
+  - working stress design
+- id: append b 1
+  title: append_b_1
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This document provides an overview of stress analysis methods and acceptance criteria for Fitness-For-Service (FFS)
+    assessments, including linear, nonlinear, and fatigue evaluations.
+  keywords:
+  - Fitness-For-Service
+  - stress analysis
+  - API 579
+  - structural integrity
+  - fatigue
+- id: API RP 2A-WSD 22nd Edition Nov
+  title: API_RP_2A-WSD_22nd_Edition_Nov_2014
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This document provides recommended practices for planning, designing, and constructing fixed offshore steel platforms
+    using the working stress design method.
+  keywords:
+  - offshore
+  - platform
+  - structural
+  - steel
+  - WSD
+- id: API RP 2GEO 1st Edition Addend
+  title: API_RP_2GEO_1st_Edition_Addendum_1,_Oct_2014
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This recommended practice specifies requirements and provides recommendations for geotechnical and foundation design
+    of offshore structures in the petroleum and natural gas industries.
+  keywords:
+  - geotechnical
+  - foundation
+  - offshore
+  - ISO 19901-4
+  - structural
+- id: 2016-API579-Part2b
+  title: 2016-API579-Part2b
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: API 579 provides standardized procedures for fitness-for-service assessments to evaluate the structural integrity
+    of pressurized equipment containing flaws or damage.
+  keywords:
+  - API 579
+  - Fitness-For-Service
+  - FFS
+  - structural integrity
+  - pressure vessels
+- id: API RP 2SIM 1st Edition Nov 20
+  title: API_RP_2SIM_1st_Edition_Nov_2014
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This document provides guidelines and recommendations for the structural integrity management (SIM) of existing
+    fixed offshore structures.
+  keywords:
+  - structural integrity management
+  - fixed offshore structures
+  - SIM
+  - inspection
+  - assessment
+- id: BS 7608
+  title: Guide to fatigue design and assessment of steel products
+  org: BSI
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This document provides comprehensive guidance on the fatigue design and assessment of fabricated steel products
+    and structures. It primarily focuses on the life expectancy of welded joints, components, and details that are subjected
+    to repeated stress fluctuations. The standard details methodologies for classifying structural details and calculating
+    fatigue life based on nominal stress ranges.
+  keywords:
+  - fatigue design
+  - steel products
+  - welded joints
+  - stress range
+  - fatigue life
+- id: API Std 620
+  title: API_Std_620_(2002)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: API 620 provides requirements for the design and construction of large, welded, low-pressure carbon steel aboveground
+    storage tanks with internal pressures up to 15 psig.
+  keywords:
+  - welded
+  - storage tanks
+  - low-pressure
+- id: Corrigenda 1
+  title: Corrigenda_1
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Corrigenda and editorial updates for the ABS Guide for the Fatigue Assessment of Offshore Structures.
+  keywords:
+  - fatigue assessment
+  - offshore structures
+  - ABS
+  - spectral-based fatigue
+  - structural engineering
+- id: API Spec 12D
+  title: API_Spec_12D_(1994)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This specification covers the material, design, fabrication, and testing requirements for vertical, cylindrical,
+    aboveground, field-welded steel storage tanks for production liquids.
+  keywords:
+  - API Spec 12D
+  - Field Welded Tanks
+  - Storage Tanks
+  - Production Liquids
+  - Fabrication
+- id: sect 08
+  title: sect_08
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Assessment of weld misalignment and shell distortions in pressurized components using API 579 Fitness-For-Service
+    procedures.
+  keywords:
+  - weld misalignment
+  - shell distortion
+  - fitness-for-service
+  - API 579
+  - pressure vessels
+- id: API Spec 12J
+  title: API_Spec_12J_(1989)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Minimum requirements for the design, fabrication, and shop testing of vertical, spherical, and horizontal oil and
+    gas separators used in oilfield production.
+  keywords:
+  - API Spec 12J
+  - Oil and Gas Separators
+  - Pressure Vessels
+- id: append a
+  title: append_a
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This document provides equations and guidelines for calculating minimum required wall thickness, maximum allowable
+    working pressure (MAWP), and membrane stress for fitness-for-service assessments of pressure vessels, piping, and storage
+    tanks per API 579.
+  keywords:
+  - API 579
+  - MAWP
+  - Fitness-for-Service
+  - wall thickness
+  - stress equations
+  - ASME B&PV
+- id: API RP 2RD 1st Ed with errata
+  title: API_RP_2RD_1st_Ed_with_errata_(2009)_Design_of_Risers_for_FPSs_and_TLPs
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This recommended practice provides guidelines for the design, analysis, and material selection of risers used in
+    floating production systems and tension-leg platforms.
+  keywords:
+  - risers
+  - FPS
+  - TLP
+  - structural design
+  - offshore engineering
+- id: append c
+  title: append_c
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Compendium of stress intensity factor solutions for various crack and component geometries used in API 579 fitness-for-service
+    assessments.
+  keywords:
+  - API 579
+  - fitness-for-service
+  - stress intensity factor
+  - fracture mechanics
+  - crack assessment
+- id: API RP 2EQ 1st Edition Nov 201
+  title: API_RP_2EQ_1st_Edition_Nov_2014
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Provides procedures and criteria for the seismic design of offshore structures, including earthquake ground motion
+    and structural response analysis.
+  keywords:
+  - seismic
+  - offshore
+  - structural
+  - design
+  - earthquake
+  - API 2EQ
+- id: API RP 2T (3rd Edition)
+  title: Recommended Practice for Planning, Designing, and Constructing Tension Leg Platforms
+  org: API
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: API RP 2T provides comprehensive guidelines for the planning, design, and construction of Tension Leg Platforms
+    (TLPs) throughout their entire lifecycle. It addresses the unique hydrodynamic and structural challenges of compliant
+    offshore structures, including global motion analysis and tendon fatigue. The document establishes essential safety criteria
+    for hull, deck, and foundation systems to ensure operational integrity in deepwater environments.
+  keywords:
+  - TLP
+  - Tension Leg Platform
+  - Tendons
+  - Hydrodynamics
+  - Deepwater
+- id: sect 02
+  title: sect_02
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This document outlines a general eight-step Fitness-For-Service (FFS) engineering assessment procedure for evaluating
+    the structural integrity and remaining life of pressurized components containing flaws or damage.
+  keywords:
+  - Fitness-For-Service
+  - API 579
+  - structural integrity
+  - pressurized components
+  - damage mechanisms
+- id: API RP 2A-WSD 21st Ed Errata &
+  title: API_RP_2A-WSD_21st_Ed_Errata_&_Supplement_2&3_(2007)_Recommended_Practice_for_Planning,_Designing_and_Constructing_Fixed_Offshore_Platforms-Working_Stress_Design
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Errata and Supplement 3 for API RP 2A-WSD (21st Edition) providing updates to spatial coherence, structural equations,
+    welding specifications, and figure references for fixed offshore platform design.
+  keywords:
+  - API RP 2A
+  - WSD
+  - fixed offshore platforms
+  - structural design
+  - welding
+- id: FAOS Commentary Corrigenda
+  title: FAOS_Commentary_Corrigenda
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Corrigenda and editorial corrections for the ABS Commentary on the Guide for the Fatigue Assessment of Offshore
+    Structures.
+  keywords:
+  - fatigue assessment
+  - S-N curves
+  - offshore structures
+  - ABS guide
+- id: Corrigenda 2
+  title: Corrigenda_2
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Corrigenda and editorial updates to the ABS Guide for Spectral-Based Fatigue Analysis for FPSO Installations, including
+    updated regulatory references and fatigue life requirements.
+  keywords:
+  - fatigue analysis
+  - FPSO
+  - spectral-based
+  - ABS Rules
+  - structural integrity
+- id: Guide Colors
+  title: Guide_Colors
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Guide detailing the dynamic loading approach for the structural analysis and design of Floating Production, Storage
+    and Offloading (FPSO) installations.
+  keywords:
+  - FPSO
+  - Dynamic Loading
+  - Structural Assessment
+  - Marine Installations
+- id: RCN1 1
+  title: RCN1_1
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This notice updates the ABS Guide for Spectral-Based Fatigue Analysis for FPSO Installations with revised criteria
+    for S-N data and guidelines for applying weld-improvement techniques.
+  keywords:
+  - fatigue analysis
+  - S-N curves
+  - FPSO
+  - weld improvement
+  - spectral analysis
+- id: Jun84 Mobile Offshroe Units-Bu
+  title: Jun84_Mobile_Offshroe_Units-Buckling_Strength_Analysis
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: DNV classification note from June 1984 detailing buckling strength analysis requirements and methods for mobile
+    offshore units.
+  keywords:
+  - buckling
+  - offshore units
+  - DNV
+  - structural strength
+  - classification note
+- id: API Std 653
+  title: API_Std_653_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: API Standard 653 provides minimum requirements for the inspection, repair, alteration, and reconstruction of steel
+    storage tanks used in the petroleum and chemical industries.
+  keywords:
+  - API 653
+  - tank inspection
+  - tank repair
+  - storage tanks
+  - reconstruction
+- id: Sect 09
+  title: Sect_09
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Fitness-For-Service assessment procedures for evaluating crack-like flaws in pressurized components using the Failure
+    Assessment Diagram (FAD) method.
+  keywords:
+  - Fitness-For-Service
+  - crack-like flaws
+  - Failure Assessment Diagram
+  - fracture mechanics
+  - pressure vessels
+- id: BKCOV
+  title: BKCOV
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: API RP 579-1 provides standardized procedures for performing fitness-for-service assessments to evaluate the structural
+    integrity of pressurized equipment and piping systems.
+  keywords:
+  - fitness-for-service
+  - API 579
+  - structural integrity
+  - pressure equipment
+  - ASME FFS-1
+- id: append a 1
+  title: append_a_1
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This document provides equations and procedures for calculating minimum wall thickness, maximum allowable working
+    pressure, and membrane stress for fitness-for-service assessments of pressure equipment.
+  keywords:
+  - API 579
+  - fitness-for-service
+  - MAWP
+  - tmin
+  - stress equations
+- id: Sect 04
+  title: Sect_04
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This document provides Fitness-For-Service (FFS) assessment procedures for pressurized components subjected to
+    general metal loss from corrosion and erosion.
+  keywords:
+  - fitness-for-service
+  - metal loss
+  - corrosion
+- id: API Insp 510
+  title: API_Insp_510_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Provides requirements for the in-service inspection, repair, alteration, and rerating of pressure vessels in the
+    petroleum and chemical process industries.
+  keywords:
+  - pressure vessel
+  - inspection
+  - maintenance
+  - repair
+  - API 510
+- id: sect 09
+  title: sect_09
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Assessment procedures for evaluating crack-like flaws in industrial components using Fitness-For-Service (FFS)
+    and Failure Assessment Diagram (FAD) methodologies.
+  keywords:
+  - Fitness-For-Service
+  - crack-like flaws
+  - Failure Assessment Diagram
+  - API 579
+  - fracture mechanics
+- id: API RP 2A-WSD
+  title: "Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms\u2014Working Stress Design"
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This document provides comprehensive guidelines for the structural design, fabrication, and installation of fixed
+    offshore platforms. It establishes standardized criteria for environmental loading, foundation design, and structural
+    analysis using the working stress design methodology. The practice aims to ensure the safety and structural integrity
+    of offshore facilities throughout their operational lifecycle.
+  keywords:
+  - fixed offshore platforms
+  - working stress design
+  - structural engineering
+  - environmental loads
+  - API RP 2A
+- id: API Spec 12B
+  title: API_Spec_12B_(1995)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This specification establishes requirements for the design, materials, and fabrication of bolted steel tanks used
+    for the storage of petroleum production liquids.
+  keywords:
+  - API 12B
+  - bolted tanks
+  - storage tanks
+  - production liquids
+  - steel fabrication
+- id: Append d
+  title: Append_d
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Compendium of reference stress solutions for crack geometries in pressurized components to be used in the assessment
+    of crack-like flaws.
+  keywords:
+  - API 579
+  - reference stress
+  - fracture mechanics
+  - stress intensity factor
+  - crack assessment
+- id: API RP 572
+  title: API_RP_572_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This recommended practice describes inspection procedures for pressure vessels including towers, drums, reactors,
+    heat exchangers, and condensers in the petroleum industry.
+  keywords:
+  - pressure vessels
+  - inspection
+  - API RP 572
+  - reactors
+  - heat exchangers
+- id: API RP 572 2nd Ed
+  title: API_RP_572_2nd_Ed_(2001)_Inspection_of_Pressure_Vessels_(Towers,_Drums,_Reactors,_Heat_Exchangers,_and_Condensers)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This recommended practice provides guidelines for the inspection of pressure vessels, including towers, reactors,
+    and heat exchangers, used in the petroleum industry.
+  keywords:
+  - pressure vessels
+  - inspection
+  - API RP 572
+  - refinery equipment
+  - maintenance
+- id: ISO 129
+  title: ISO_129
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Technical drawings and representation of dimensions and tolerances.
+  keywords:
+  - technical drawings
+  - dimensioning
+  - tolerancing
+- id: API RP 2X
+  title: Recommended Practice for Ultrasonic and Magnetic Examination of Offshore Structural Fabrication and Guidelines for
+    Qualification of Technicians
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This practice provides technical guidelines for performing ultrasonic and magnetic particle examinations on offshore
+    structural fabrications. It establishes standardized procedures for the qualification and certification of nondestructive
+    testing technicians. The document also details planning requirements and the recommended scope of inspections to ensure
+    the integrity of structural welds.
+  keywords:
+  - ultrasonic testing
+  - magnetic particle testing
+  - offshore structures
+  - welding inspection
+  - technician qualification
+- id: append d
+  title: append_d
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This document provides reference stress solutions for various crack geometries in pressurized components to support
+    fitness-for-service assessments as per API 579.
+  keywords:
+  - API 579
+  - reference stress
+  - fitness-for-service
+  - crack-like flaws
+  - stress intensity factor
+- id: API Spec 12F
+  title: API_Spec_12F_(1994)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Specification covering the material, design, fabrication, and testing requirements for shop-welded vertical cylindrical
+    tanks used for the storage of production liquids.
+  keywords:
+  - API Spec 12F
+  - shop welded tanks
+  - storage tanks
+- id: Jan98 Mobile Offshore Units-St
+  title: Jan98_Mobile_Offshore_Units-Structural_Design_General
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: General requirements and principles for the structural design of mobile offshore units according to DNV standards.
+  keywords:
+  - offshore
+  - structural
+  - design
+- id: API STD 653 3rd Ed & Add
+  title: API_STD_653_3rd_Ed_&_Add_(2001_&_2003)_Tank_Inspection,_Repair,_Alteration_and_Reconstruction
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Minimum requirements and guidance for the inspection, repair, alteration, and reconstruction of steel storage tanks
+    used in the petroleum and chemical industries.
+  keywords:
+  - API 653
+  - tank inspection
+  - steel storage tanks
+  - repair
+  - reconstruction
+- id: Guide to Colors
+  title: Guide_to_Colors
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Guide for the fatigue assessment of offshore structures including a key for color-coded rule changes and corrigenda.
+  keywords:
+  - fatigue
+  - offshore
+  - structural
+  - assessment
+  - rules
+- id: GuidetoColors
+  title: GuidetoColors
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This document provides guidance on spectral-based fatigue analysis for Floating Production, Storage and Offloading
+    (FPSO) installations, including color-coding conventions for rule updates.
+  keywords:
+  - FPSO
+  - fatigue analysis
+  - spectral-based
+  - structural integrity
+  - marine engineering
+- id: 2T
+  title: Recommended Practice for Planning, Designing, and Constructing Tension Leg Platforms
+  org: API
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This recommended practice provides comprehensive guidelines for the planning, design, fabrication, and installation
+    of Tension Leg Platforms. It addresses the complex interactions between the buoyant hull, the high-tension tendon system,
+    and the seafloor foundations. The document also includes criteria for environmental force calculation, global response
+    analysis, and the assessment of existing platforms for continued operation.
+  keywords:
+  - Tension Leg Platforms
+  - TLP
+  - tendons
+  - hull design
+  - offshore engineering
+- id: Design of Large Diameter Monop
+  title: Design_of_Large_Diameter_Monopiles_under_Lateral_Loads_in_Normally_to_Lightly_Overconsolidated_Clay
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Design and analysis of large diameter monopiles subjected to lateral loading in normally to lightly overconsolidated
+    clay soils.
+  keywords:
+  - monopiles
+  - lateral loads
+  - clay
+  - offshore foundations
+  - geotechnical
+- id: append e
+  title: append_e
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Guidance for determining residual stress distributions in various welded joint configurations for use in fitness-for-service
+    crack assessments of pressure equipment.
+  keywords:
+  - residual stress
+  - fitness-for-service
+  - welded joints
+  - API 579
+  - pressure vessels
+  - crack-like flaw
+- id: append b
+  title: append_b
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Overview of stress analysis methods and criteria for Fitness-For-Service (FFS) assessments of components with flaws
+    according to API 579.
+  keywords:
+  - Fitness-For-Service
+  - stress analysis
+  - finite element analysis
+  - structural integrity
+  - API 579
+- id: RCN1
+  title: RCN1
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: ABS commentary providing technical guidance on S-N curves and weld improvement techniques for the fatigue assessment
+    of offshore tubular connections.
+  keywords:
+  - fatigue assessment
+  - S-N curves
+  - tubular connections
+  - weld improvement
+  - offshore structures
+- id: ISO 13819 Pt 2 1st Ed
+  title: ISO_13819_Pt_2_1st_Ed_(1995)_Fixed_steel_structures
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This standard specifies requirements and recommendations for the design and analysis of fixed steel offshore structures.
+  keywords:
+  - ISO 13819
+  - fixed steel structures
+  - offshore structures
+  - structural design
+- id: API 2 A SIM JIP Final Report
+  title: API_2_A_SIM_JIP_Final_Report
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: This final report provides technical guidance for the Structural Integrity Management (SIM) of fixed offshore structures,
+    focusing on reliability analysis, environmental hazard curves, and jacket collapse mechanisms.
+  keywords:
+  - structural integrity management
+  - fixed offshore structures
+  - jacket reliability
+  - hazard curves
+  - environmental load
+- id: API-RP 2A LFRD 1st Ed. Supplem
+  title: API-RP_2A_LFRD_1st_Ed._Supplement_(1993)_Recommended_Practice_for_Planning,_Designing_and_Constructing_Fixed_Offshore_Platforms_-_Load_and_Resistance_Factor_Design
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Recommended practice providing guidelines for the planning, design, and construction of fixed offshore platforms
+    using Load and Resistance Factor Design (LRFD).
+  keywords:
+  - API RP 2A-LRFD
+  - offshore platforms
+  - structural engineering
+  - fixed platforms
+- id: API-650 2003
+  title: API-650_2003
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: API 650 specifies requirements for the design, fabrication, and testing of welded steel atmospheric storage tanks
+    used in the oil and gas industry.
+  keywords:
+  - API 650
+  - storage tanks
+  - welded steel
+  - atmospheric pressure
+  - oil storage
+- id: Sect 01
+  title: Sect_01
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: structural
+  summary: Introduction and scope of Fitness-For-Service (FFS) assessment methodologies for evaluating the structural integrity
+    of in-service pressurized equipment in the refining and petrochemical industry.
+  keywords:
+  - Fitness-For-Service
+  - API 579
+  - structural integrity
+  - pressure vessels
+  - flaw assessment
+  - ASME
+- id: a1865 1 Stevens
+  title: a1865_1_Stevens
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: The document provides design procedures and geotechnical guidelines for various marine renewable energy foundations,
+    focusing on axial pile capacity and lateral soil resistance for offshore wind turbines and wave energy converters.
+  keywords:
+  - monopiles
+  - geotechnics
+  - axial pile capacity
+  - CPT-based methods
+  - offshore wind
+- id: OTC 5468
+  title: Fatigue Life Analysis of Production Risers
+  org: Offshore Technology Conference
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This paper presents a methodology for evaluating the fatigue life of production risers subjected to environmental
+    loading from waves and currents. It compares fatigue damage calculations performed in both frequency and time domains
+    to assess structural durability. The study highlights the significance of dynamic response and vortex-induced vibrations
+    in predicting the long-term service life of deepwater riser systems.
+  keywords:
+  - production risers
+  - fatigue life
+  - vortex-induced vibrations
+  - frequency domain
+  - time domain
+- id: 'Minutes of 28th WG7 meeting - '
+  title: Minutes_of_28th_WG7_meeting_-_Hamburg_October_2010
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: Minutes of the 28th ISO/TC 67/SC 7/WG 7 meeting discussing the progress and updates to the ISO 19905 standards
+    for the site assessment of jack-up rigs.
+  keywords:
+  - ISO 19905-1
+  - Jack-Ups
+  - Site Assessment
+  - MetOcean
+  - Offshore Structures
+- id: API RP 2RD 1st Ed.
+  title: API_RP_2RD_1st_Ed._(1998)_Design_of_Risers_for_FPSs_and_TLPs
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: Design guidelines for risers used in floating production systems (FPSs) and tension-leg platforms (TLPs).
+  keywords:
+  - riser
+  - FPS
+  - TLP
+  - offshore
+  - design
+- id: 095 OTC 2001
+  title: Alternative Tensioning System for Spar Top Tensioned Risers
+  org: OnePetro
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This document introduces a novel riser tensioning scheme for Spar hulls that uses a common table structure supported
+    by motion compensators instead of traditional buoyancy cans. The system aims to provide a lower-cost alternative with
+    reduced vertical stroke, simplified maintenance, and improved Spar pitch response. The paper details the concept, its
+    components, global performance analysis, and the impact of riser-spar coupling on structural strength and fatigue.
+  keywords:
+  - Spar
+  - Top Tensioned Risers
+  - Motion Compensators
+  - Buoyancy Cans
+  - Riser Tensioning
+- id: February 1994
+  title: ABS Guide for Building and Classing Floating Production Installations
+  org: API
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This guide establishes comprehensive criteria for the design, construction, and classification of floating production
+    installations such as FPSOs. It emphasizes long-term hull structural integrity and site-specific fatigue performance for
+    units remaining on-station without traditional dry-docking. The standard integrates permanent mooring system requirements
+    and stability criteria with production topside structural interfaces.
+  keywords:
+  - FPSO
+  - Floating Production
+  - Hull Integrity
+  - Mooring
+  - Classification
+- id: API RP 2T 1st Ed
+  title: API_RP_2T_1st_Ed_(1987)_Planning,_Designing,_and_Constructing_Tension_Leg_Platforms
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: Recommended practice for the planning, design, and construction of Tension Leg Platforms (TLPs) in offshore environments.
+  keywords:
+  - Tension Leg Platform
+  - TLP
+  - offshore structures
+  - marine engineering
+  - structural design
+- id: 2008 Intro to API RP 2MET
+  title: 2008_Intro_to_API_RP_2MET
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This document provides an introduction to the API RP 2MET and ISO 19901-1 standards for determining meteorological
+    and oceanographic (metocean) criteria used in the design and operation of offshore structures.
+  keywords:
+  - metocean
+  - API RP 2MET
+  - offshore structures
+  - wave height
+  - wind velocity
+  - current profile
+- id: N/A
+  title: Comparison of models for vortex induced vibrations of slender marine structures
+  org: The Norwegian Institute of Technology
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This paper presents a comparison of seven different models for predicting vortex-induced vibrations (VIV) in slender
+    marine structures such as risers and cables. It analyzes four predefined structural cases under varying current and wave
+    conditions to evaluate the consistency and performance of commonly applied prediction methods. The findings are based
+    on a 1994 workshop held in Trondheim to address the lack of direct comparisons between these varied mathematical formulations.
+  keywords:
+  - VIV
+  - risers
+  - cables
+  - vortex-induced vibrations
+  - hydroelasticity
+- id: API RP 2MET 1st Edition Nov 20
+  title: API_RP_2MET_1st_Edition_Nov_2014
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This document provides procedures for deriving meteorological and oceanographic (metocean) design and operating
+    conditions for offshore structures.
+  keywords:
+  - metocean
+  - offshore
+  - environmental loads
+  - wind
+  - waves
+  - currents
+- id: Design of Large Diameter Monop
+  title: Design_of_Large_Diameter_Monopiles_under_Lateral_Loads_in_Normally_to_Lightly_Overconsolidated_Clay1
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: Design methodology for large diameter monopiles under lateral loads in clay soil environments.
+  keywords:
+  - monopile
+  - lateral loads
+  - clay
+  - offshore foundations
+- id: API RP 2SK 2nd Ed
+  title: API_RP_2SK_2nd_Ed_(1996)_Design_and_Analysis_of_Stationkeeping_Systems_for_Floating_Structures
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: Provides guidelines for the design and analysis of stationkeeping systems for floating structures used in offshore
+    operations.
+  keywords:
+  - stationkeeping
+  - mooring
+  - floating structures
+  - offshore engineering
+  - API RP 2SK
+- id: Gudmestad, O.T., et al - Regul
+  title: Regular Water Wave Kinematics
+  org: NEMA
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This study evaluates the accuracy of various water wave theories by comparing them against experimental velocity
+    measurements obtained using Laser Doppler Velocity Meters. The investigation focuses on the kinematics of regular waves,
+    particularly in the region above the still water level which is critical for calculating forces on offshore structures.
+    It assesses classical theories such as Stokes and Deans stream function alongside engineering approximations like Wheeler's
+    method to determine the most effective predictive models.
+  keywords:
+  - regular waves
+  - wave kinematics
+  - offshore structures
+  - Stokes theory
+  - stream function
+- id: OTC 2015 COPRI MRE Special Ses
+  title: OTC_2015_COPRI_MRE_Special_Session_Rv4
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: Proceedings of the OTC 2015 COPRI special session focused on advancements and challenges in marine renewable energy
+    technologies.
+  keywords:
+  - OTC
+  - Marine Renewable Energy
+  - Offshore Technology
+- id: API RP 17A
+  title: "Design and Operation of Subsea Production Systems\u2014General Requirements and Recommendations"
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This standard provides general requirements and recommendations for the development and operation of subsea production
+    and injection systems from initial concept through decommissioning. It focuses on systems engineering to ensure consistency
+    and integration across various specialized subsystems like wellheads, manifolds, and control systems. As an umbrella document,
+    it establishes the framework for the entire API 17 series of subsea engineering standards.
+  keywords:
+  - subsea production
+  - systems engineering
+  - API 17 series
+  - offshore development
+- id: OTC 13109
+  title: Sensitivity of SCR Response and Fatigue Life to Variations in Hydrodynamic Loading at Low Keulegan-Carpenter Numbers
+  org: Offshore Technology Conference
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This document investigates hydrodynamic coefficients for bare and straked pipes in oscillatory flows at low Keulegan-Carpenter
+    and high Beta numbers. It provides experimental data from MIT tow tank tests used to accurately predict global motion
+    response and fatigue life for the Typhoon TLP steel catenary riser. The findings demonstrate significant sensitivity of
+    fatigue life calculations to drag and added mass coefficients in low-energy seastates.
+  keywords:
+  - SCR
+  - fatigue
+  - Keulegan-Carpenter
+  - Beta number
+  - hydrodynamics
+- id: OTC-26035-MS Moring Systems
+  title: OTC-26035-MS_Moring_Systems
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: Technical paper discussing the design, analysis, and implementation of mooring systems for offshore structures.
+  keywords:
+  - mooring
+  - offshore
+  - anchoring
+  - marine
+  - OTC
+- id: API RP 2T 2nd Ed
+  title: API_RP_2T_2nd_Ed_(1997)_Planning,_Designing,_and_Constructing_Tension_Leg_Platforms
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This recommended practice provides guidelines for the planning, design, analysis, and construction of tension leg
+    platforms for offshore oil and gas production.
+  keywords:
+  - tension leg platforms
+  - offshore structures
+  - deepwater engineering
+  - structural design
+  - marine operations
+- id: OTC 4587
+  title: Improved Wave Kinematics From Wave Staff Arrays
+  org: Offshore Technology Conference
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This paper presents a procedure for improved prediction of wave kinematics from wave staff array records by assigning
+    directions, amplitudes, and phases to wave components at Fourier frequencies. It validates the method by comparing predicted
+    water particle velocities with storm data measured at the Exxon Ocean Test Structure. The research evaluates modifications
+    to linear superposition algorithms, including wave stretching techniques and directional analysis, to enhance accuracy
+    in irregular sea states.
+  keywords:
+  - wave kinematics
+  - wave staff array
+  - linear superposition
+  - stretching
+  - water particle velocity
+- id: API RP 14J
+  title: API_RP_14J_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This recommended practice provides guidance for the design and hazards analysis of offshore production facilities
+    to identify and minimize the likelihood and consequences of potential accidents.
+  keywords:
+  - offshore
+  - hazards analysis
+  - production facilities
+  - safety
+  - design
+- id: Pub101 FPSO DLA
+  title: Pub101_FPSO_DLA
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: Detailed procedures for the 'Dynamic Loading Approach' to determine design loads and strength criteria for ship-type
+    Floating Production Installations (FPSOs).
+  keywords:
+  - FPSO
+  - DLA
+  - seakeeping
+  - structural analysis
+  - dynamic loads
+- id: Pierson, Jr., W.J., et al, 196
+  title: A Proposed Spectral Form for Fully Developed Wind Seas Based on the Similarity Theory of S. A. Kitaigorodskii
+  org: OnePetro
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: The paper proposes a nondimensional spectral form for fully developed wind-generated seas by applying Kitaigorodskii's
+    similarity theory to wave data. It validates that power spectra for all fully developed seas share a consistent shape
+    when plotted using dimensionless parameters involving gravity and wind speed. A recommended spectral form is provided
+    for tentative application in spectral wave forecasting techniques.
+  keywords:
+  - wave spectrum
+  - Pierson-Moskowitz
+  - similarity theory
+  - wind seas
+  - oceanography
+- id: API RP 1141 (1994)
+  title: Guidelines for Confined Space Entry On Board Tank Ships in The Petroleum Industry
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This recommended practice provides guidelines for developing safe confined space entry procedures specifically
+    for work on board petroleum tank ships. It identifies critical hazards including oxygen deficiency, fires, explosions,
+    and toxic substances unique to marine petroleum environments. The document establishes administrative controls and pre-entry
+    protocols such as permit systems, isolation, and atmospheric testing.
+  keywords:
+  - confined space
+  - tank ships
+  - petroleum safety
+  - marine operations
+  - entry permit
+- id: 15otc cfp web
+  title: 15otc_cfp_web
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: A call for technical paper proposals for the 2015 Offshore Technology Conference (OTC) highlighting innovations
+    in offshore energy exploration and development.
+  keywords:
+  - offshore
+  - subsea
+  - deepwater
+  - energy
+  - innovation
+- id: ABS GUI 00
+  title: ABS_GUI_00_(1994)_Guide_for_Thrusters_and_Dynamic_Positioning_Systems
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: Guide for the design, testing, and survey of thrusters and dynamic positioning systems for marine vessels and offshore
+    units.
+  keywords:
+  - thrusters
+  - dynamic positioning
+  - classification
+  - marine engineering
+  - vessel systems
+- id: aerial of Pelican Point[1]
+  title: aerial_of_Pelican_Point[1]
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: Aerial survey or photographic documentation of the Pelican Point site for coastal or marine infrastructure assessment.
+  keywords:
+  - aerial
+  - Pelican Point
+  - marine
+  - ISO
+- id: "Marine Renewable Energy \u2013 Ocea"
+  title: "Marine_Renewable_Energy_\u2013_Ocean_Current_Turbine_Mooring_Considerations"
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This document examines the engineering considerations and design requirements for mooring systems used to secure
+    ocean current turbines in marine renewable energy projects.
+  keywords:
+  - mooring
+  - ocean current turbine
+  - marine renewable energy
+- id: API RP 14C
+  title: API_RP_14C_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This recommended practice provides a standardized methodology for the analysis, design, installation, and testing
+    of surface safety systems on offshore production platforms.
+  keywords:
+  - offshore
+  - safety-systems
+  - production
+- id: ABS GUI 002
+  title: ABS_GUI_002_(1994)_Guide_for_Building_and_Classing_Floating_Production_Storage_Systems
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: A guide by the American Bureau of Shipping (ABS) defining the requirements for designing, building, and classing
+    floating production storage systems.
+  keywords:
+  - FPSO
+  - mooring
+  - classification
+  - offshore engineering
+  - structural design
+- id: a1895 1 VanZweiten
+  title: a1895_1_VanZweiten
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: marine
+  summary: This paper evaluates ocean current resources and seafloor geotechnical conditions off Florida, North Carolina,
+    and South Africa to guide the design of mooring and foundation systems for power production.
+  keywords:
+  - ocean current turbine
+  - mooring
+  - Gulf Stream
+  - Agulhas Current
+  - foundation
+- id: API RP 582
+  title: API_RP_582_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API RP 582 provides supplementary welding guidelines for the chemical, oil, and gas industries, specifically addressing
+    the downstream segment.
+  keywords:
+  - welding
+  - fabrication
+  - metallurgy
+  - downstream
+- id: ISO 4200 4th Ed
+  title: ISO_4200_4th_Ed_(1991)_Plain_end_steel_tubes,_welded_and_seamless_-_General_tables_of_dimensions_and_masses_per_unit_length
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This international standard specifies dimensions and masses per unit length for welded and seamless plain end steel
+    tubes for general purpose and precision applications.
+  keywords:
+  - ISO 4200
+  - steel tubes
+  - dimensions
+  - masses
+  - welded
+  - seamless
+- id: API Std 589
+  title: API_Std_589_(1998)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API 589 establishes testing requirements and performance criteria for evaluating the fire resistance of valve stem
+    packing.
+  keywords:
+  - valve stem packing
+  - fire test
+  - API 589
+  - sealing
+  - performance evaluation
+- id: API VT-2 Corrosion of Oil- and
+  title: API_VT-2_Corrosion_of_Oil-_and_Gas-Well_Equipment_
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This book provides field operating personnel with practical knowledge to recognize, report, and mitigate corrosion
+    in oil and gas well equipment.
+  keywords:
+  - corrosion
+  - well equipment
+  - petroleum
+  - maintenance
+  - API
+- id: ISO 148
+  title: ISO_148
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: ISO 148 specifies the Charpy pendulum impact test method for determining the energy absorbed in an impact test
+    of metallic materials.
+  keywords:
+  - Charpy
+  - impact test
+  - metallic materials
+  - absorbed energy
+  - V-notch
+- id: 2016-API579-Part2a
+  title: 2016-API579-Part2a
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Standardized procedures for performing Fitness-For-Service (FFS) assessments on pressurized equipment to evaluate
+    structural integrity and remaining life.
+  keywords:
+  - API 579
+  - Fitness-For-Service
+  - structural integrity
+- id: Sect 07
+  title: Sect_07
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Assessment procedures for hydrogen blisters and laminations in pressurized steel components according to API 579
+    Fitness-For-Service standards.
+  keywords:
+  - hydrogen blistering
+  - laminations
+  - fitness-for-service
+  - API 579
+  - pressure vessels
+- id: API RP 687
+  title: API_RP_687_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Recommended practices for the inspection and repair of rotors used in downstream refinery equipment including compressors,
+    turbines, and gears.
+  keywords:
+  - rotor repair
+  - centrifugal compressor
+  - steam turbine
+- id: ISO DIS 1099
+  title: ISO_DIS_1099
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies conditions for constant-amplitude axial force-controlled fatigue testing of metallic specimens
+    at ambient temperature to determine stress-life relationships.
+  keywords:
+  - fatigue testing
+  - metallic materials
+  - axial force
+  - stress cycle
+  - S-N curve
+- id: API Spec 12GDU
+  title: API_Spec_12GDU_(1990)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This specification covers the minimum requirements for the design, materials, fabrication, and testing of glycol-type
+    gas dehydration units used in the petroleum industry.
+  keywords:
+  - glycol
+  - dehydration
+  - gas
+  - absorber
+  - reboiler
+- id: ASTM E103
+  title: ASTM_E103_(2002)_Std_Test_Method_for_Rapid_Indentation_Hardness_Testing_of_Metallic_Materials
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies procedures for rapid indentation hardness testing of metallic materials as an alternative
+    to the standard Brinell hardness test, including machine verification and reference block calibration.
+  keywords:
+  - hardness testing
+  - indentation
+  - metallic materials
+  - Brinell
+  - ASTM E103
+- id: API Std 603
+  title: API_Std_603_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies requirements for corrosion-resistant bolted bonnet gate valves with flanged or butt-welding
+    ends, primarily intended for downstream applications.
+  keywords:
+  - Corrosion-Resistant
+  - Gate Valves
+  - API 603
+  - Bolted Bonnet
+  - Flanged Ends
+- id: API RP 2Z
+  title: Recommended Practice for Preproduction Qualification for Steel Plates for Offshore Structures
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This recommended practice provides guidelines for the preproduction qualification of steelmaking procedures for
+    plates used in welded offshore structures. It specifically addresses requirements for Heat Affected Zone (HAZ) toughness
+    through CTOD testing and evaluations of delayed cracking. The standard ensures that manufacturing processes consistently
+    produce steel capable of meeting stringent performance criteria for offshore environments.
+  keywords:
+  - steel plates
+  - offshore structures
+  - HAZ toughness
+  - CTOD testing
+  - weldability
+- id: ISO 11881 Corrigendum 1
+  title: ISO_11881_Corrigendum_1_(1999)_Corrosion_of_metals_and_alloys_-_Exfoliation_corrosion_testing_of_aluminum
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Technical corrigendum providing corrections to ISO 11881:1999 regarding exfoliation corrosion testing procedures
+    and rating systems for aluminium alloys.
+  keywords:
+  - corrosion
+  - aluminum alloys
+  - ISO 11881
+  - exfoliation
+  - testing
+- id: AWS A5.10
+  title: AWS A5.10 Specification for Bare Aluminum and Aluminum-Alloy Welding Electrodes and Rods
+  org: API
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This specification establishes requirements for the classification of bare aluminum and aluminum-alloy welding
+    electrodes and rods used in various arc welding processes. It mandates strict chemical composition limits for filler metals
+    and prescribes testing methods to verify usability and radiographic soundness. The document also defines manufacturing
+    standards for sizes, surface finish, and packaging to ensure consistent quality in industrial applications.
+  keywords:
+  - aluminum welding
+  - filler metals
+  - electrodes
+  - chemical composition
+  - GMAW
+  - GTAW
+- id: API RP 591
+  title: API_RP_591_(1998)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API RP 591 defines the requirements for a valve user quality assurance program, focusing on the qualification of
+    valve designs and manufacturing processes.
+  keywords:
+  - API 591
+  - valve qualification
+  - quality assurance
+  - testing procedures
+  - manufacturer qualification
+- id: API RP 578
+  title: API_RP_578_(1999)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidelines for a material verification program to ensure alloy piping system components match design specifications
+    for new and existing assets.
+  keywords:
+  - API RP 578
+  - material verification
+  - alloy piping
+  - PMI
+  - positive material identification
+- id: API Spec 12L
+  title: API_Spec_12L_(1994)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This specification establishes the minimum requirements for the design, material selection, and fabrication of
+    vertical and horizontal emulsion treaters used in oil and gas production.
+  keywords:
+  - Emulsion Treaters
+  - API Spec 12L
+  - ASME Code
+  - Firetube
+  - Heat Flux
+- id: API Std 560
+  title: API_Std_560_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies the requirements for the design, materials, fabrication, inspection, testing, and preparation
+    for shipment of fired heaters for general refinery service.
+  keywords:
+  - fired heaters
+  - refinery service
+  - tube design
+  - refractory
+  - combustion
+- id: API Spec 2H, Eighth Edition
+  title: Specification for Carbon Manganese Steel Plate for Offshore Platform Tubular Joints
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This specification provides standards for carbon manganese steel plates intended for use in welded tubular joints
+    on offshore platforms. It specifies requirements for two strength levels, Grade 42 and Grade 50, focusing on material
+    suitability for critical structural applications. The document defines essential chemical composition limits, mechanical
+    property benchmarks, and ordering guidelines for manufacturers and purchasers.
+  keywords:
+  - carbon manganese steel
+  - offshore platforms
+  - tubular joints
+  - steel plate
+  - API 2H
+- id: API Std 608
+  title: API_Std_608_(1995)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Standard specifying design and performance requirements for metal ball valves in petroleum and petrochemical process
+    applications.
+  keywords:
+  - ball valves
+  - API 608
+  - anti-static
+  - blowout-proof stem
+  - ASME B16.34
+- id: append g
+  title: append_g
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This document provides an overview of pre-service deficiencies and in-service deterioration mechanisms, such as
+    corrosion, erosion, and cracking, to support Fitness-For-Service (FFS) assessments of petrochemical equipment.
+  keywords:
+  - deterioration
+  - failure modes
+  - Fitness-For-Service
+  - corrosion
+  - metallurgy
+- id: Append i
+  title: Append_i
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Glossary of terms and definitions supporting fitness-for-service assessments for pressure vessels, piping, and
+    storage tanks per API 579.
+  keywords:
+  - API 579
+  - Fitness-For-Service
+  - glossary
+  - corrosion
+  - damage mechanisms
+- id: ISO DIS 1099 1st Ed DRAFT
+  title: ISO_DIS_1099_1st_Ed_DRAFT_(2002)_Metallic_materials-fatigue_testing-axial_force_controlled_method
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This document specifies the conditions for performing axial constant amplitude force-controlled fatigue tests on
+    metallic specimens to determine the relationship between applied stress and number of cycles to failure.
+  keywords:
+  - fatigue testing
+  - axial force
+  - metallic materials
+  - S-N curve
+  - ambient temperature
+- id: Sect 11
+  title: Sect_11
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Procedures for Fitness-For-Service assessments of pressure boundary components exposed to fire damage to evaluate
+    mechanical property degradation and structural integrity.
+  keywords:
+  - API 579
+  - fire damage
+  - Fitness-For-Service
+  - pressure vessels
+  - structural integrity
+- id: ISO 13665 1st Ed
+  title: ISO_13665_1st_Ed_(1997)_Seamless_and_Welded_Steel_Tubes_for_Pressure_Purposes
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Specifies requirements for magnetic particle inspection of seamless and welded ferromagnetic steel tubes for pressure
+    purposes to detect surface imperfections.
+  keywords:
+  - ISO 13665
+  - steel tubes
+  - magnetic particle inspection
+  - pressure purposes
+  - surface imperfections
+- id: Table of contents
+  title: Table_of_contents
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidelines for Fitness-For-Service engineering assessments to evaluate the structural integrity and remaining life
+    of industrial equipment, specifically addressing brittle fracture.
+  keywords:
+  - fitness-for-service
+  - brittle fracture
+  - remaining life evaluation
+- id: append f 1
+  title: append_f_1
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Technical guidance and data for material properties, fracture toughness, and fatigue/creep life estimation used
+    in Fitness-For-Service assessments according to API 579.
+  keywords:
+  - API 579
+  - Fitness-For-Service
+  - Fracture Toughness
+  - Creep Analysis
+  - Fatigue Crack Growth
+- id: API Std 526
+  title: API_Std_526_(2002)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API Standard 526 specifies the requirements for flanged steel pressure relief valves, including dimensions, pressure-temperature
+    ratings, and testing for direct spring-loaded and pilot-operated types.
+  keywords:
+  - pressure relief valves
+  - API 526
+  - flanged steel
+- id: sect 03
+  title: sect_03
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidelines for evaluating brittle fracture resistance in existing carbon and low alloy steel pressure equipment
+    including vessels, piping, and tanks per API 579.
+  keywords:
+  - brittle fracture
+  - API 579
+  - pressure vessels
+  - fitness-for-service
+  - critical exposure temperature
+- id: Sect 06
+  title: Sect_06
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Procedures for evaluating metal loss from pitting corrosion in pressurized components and tanks to determine fitness-for-service
+    according to API 579 standards.
+  keywords:
+  - pitting corrosion
+  - fitness-for-service
+  - API 579
+  - metal loss
+  - MAWP
+- id: API RP 652
+  title: API_RP_652_(1997)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API RP 652 provides guidance on the selection, installation, and maintenance of internal lining systems for the
+    bottoms of aboveground petroleum storage tanks to prevent corrosion.
+  keywords:
+  - tank bottom
+  - internal lining
+  - corrosion control
+  - aboveground storage tank
+  - petroleum storage
+- id: ISO 15653 1st Ed
+  title: ISO_15653_1st_Ed_(2010)_Metallic_materials_-Method_for_test_for_the_determination_of_quasistatic_fracture_toughness
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies methods for determining the quasistatic fracture toughness of welds in metallic materials.
+  keywords:
+  - fracture toughness
+  - welds
+  - metallic materials
+  - ISO 15653
+  - quasistatic
+- id: SPE-163884-MS
+  title: SPE-163884-MS
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: A new process for tracking coiled tubing fatigue life and diametrical expansion using manufacturer-provided material
+    models and cloud-based data synchronization.
+  keywords:
+  - coiled tubing
+  - fatigue life
+  - material modeling
+  - life tracking
+  - well intervention
+- id: API RP 578
+  title: API_RP_578_(1996)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API RP 578 provides guidelines for a material verification program to ensure that the nominal composition of alloy
+    components in new and existing piping systems is consistent with design specifications.
+  keywords:
+  - PMI
+  - alloy piping
+  - material verification
+  - Positive Material Identification
+  - API RP 578
+- id: append f
+  title: append_f
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidance and equations for determining material properties such as yield strength, tensile strength, and flow stress
+    for Fitness-For-Service assessments of pressure vessels and piping.
+  keywords:
+  - FFS
+  - yield strength
+  - tensile strength
+  - flow stress
+  - API 579
+- id: API Std 602
+  title: API_Std_602_(1998)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies the requirements for compact steel gate valves with flanged, threaded, welding, and extended-body
+    ends for use in petroleum and natural gas applications.
+  keywords:
+  - gate valves
+  - API 602
+  - steel valves
+- id: ISO 14921
+  title: ISO_14921
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Specifies the general procedures and requirements for the application of thermally sprayed coatings to engineering
+    components for surface modification or dimensional restoration.
+  keywords:
+  - thermal-spraying
+  - coatings
+  - surface-engineering
+- id: API Spec 12P
+  title: API_Spec_12P_(1995)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This specification covers the material, design, fabrication, and testing requirements for fiberglass reinforced
+    plastic tanks used for the storage of crude oil and other liquids in petroleum production.
+  keywords:
+  - fiberglass
+  - FRP
+  - tanks
+  - API 12P
+  - composite
+- id: ISO 14919
+  title: ISO_14919
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Specifies the classification and technical supply conditions for wires, rods, and cords used in flame and arc thermal
+    spraying.
+  keywords:
+  - thermal spraying
+  - wires
+  - rods
+- id: Sect 03
+  title: Sect_03
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidelines for assessing the resistance to brittle fracture of existing carbon and low alloy steel pressure vessels,
+    piping, and storage tanks according to API 579.
+  keywords:
+  - brittle fracture
+  - pressure vessels
+  - API 579
+  - carbon steel
+  - piping
+- id: ISO 1099 1st Ed
+  title: ISO_1099_1st_Ed_(1975)_Axial_load_fatigue_testing
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies conditions for axial load fatigue testing of metals at room temperature to determine properties
+    like S/N curves.
+  keywords:
+  - fatigue testing
+  - axial load
+  - metals
+  - S/N curve
+  - cyclic stress
+- id: API RP 571 1st Ed
+  title: API_RP_571_1st_Ed_(2003)_Damage_Mechanisms_Affecting_Fixed_Equipment_in_the_Refining_Industry
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Recommended practice providing a description of damage mechanisms affecting fixed equipment in the refining and
+    petrochemical industries to support inspection and risk management.
+  keywords:
+  - damage mechanisms
+  - refining
+  - fixed equipment
+  - API 571
+  - corrosion
+- id: API Std 530
+  title: API_Std_530_(1996)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard provides calculation procedures for determining the required wall thickness of fired-heater tubes
+    in petroleum refinery services.
+  keywords:
+  - API 530
+  - heater-tube thickness
+  - refinery service
+  - fired heaters
+  - wall thickness calculation
+- id: API RP 621
+  title: API_RP_621_(2002)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidelines for the reconditioning of metallic gate, globe, and check valves used in the downstream segment of the
+    petroleum industry.
+  keywords:
+  - gate valves
+  - globe valves
+  - check valves
+  - reconditioning
+  - API RP 621
+- id: API RP 1631
+  title: API_RP_1631_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API Standard 1631 provides recommendations for the interior lining of existing steel and fiberglass underground
+    storage tanks and the periodic inspection of lined tanks.
+  keywords:
+  - underground storage tanks
+  - interior lining
+  - inspection
+  - petroleum
+  - UST
+- id: append h
+  title: append_h
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Appendix H provides validation procedures for the API 579 Fitness-For-Service standard regarding the structural
+    integrity and assessment of pressure equipment.
+  keywords:
+  - API 579
+  - Fitness-For-Service
+  - Validation
+  - structural integrity
+  - pressure equipment
+- id: 2016-API579-Part5
+  title: 2016-API579-Part5
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Assessment procedures for local metal loss in pressure-containing equipment to evaluate fitness-for-service.
+  keywords:
+  - API 579
+  - Fitness-For-Service
+  - Local Metal Loss
+  - Corrosion
+- id: API Std 598
+  title: API_Std_598_(1996)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard covers the requirements for inspection, examination, and pressure testing of resilient-seated, nonmetallic-seated,
+    and metal-to-metal-seated valves.
+  keywords:
+  - valve
+  - inspection
+  - testing
+  - leakage
+  - pressure
+- id: ISO 11881-1999
+  title: ISO_11881-1999
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Technical corrigendum for ISO 11881:1999 specifying procedures for exfoliation corrosion testing of aluminium alloys.
+  keywords:
+  - ISO 11881
+  - corrosion
+  - aluminium alloys
+  - exfoliation
+  - testing
+- id: cover
+  title: cover
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API RP 579 provides standardized procedures for performing fitness-for-service assessments to evaluate the structural
+    integrity and remaining life of pressurized equipment containing flaws or damage.
+  keywords:
+  - fitness-for-service
+  - structural integrity
+  - API 579
+  - material degradation
+  - pressure vessels
+- id: API Insp 570
+  title: API_Insp_570_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Provides requirements for the inspection, repair, alteration, and rerating of in-service metallic and fiberglass-reinforced
+    plastic piping systems.
+  keywords:
+  - API 570
+  - piping inspection
+  - in-service piping
+  - repair
+  - rerating
+- id: API RP 17B 5th Ed
+  title: API_RP_17B_5th_Ed_(2014)_Flexible_Pipe
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Recommended practice for the design, analysis, testing, and operation of flexible pipe systems in offshore applications.
+  keywords:
+  - flexible pipe
+  - subsea
+  - riser
+  - flowline
+  - offshore
+- id: API RP 574, Second Edition
+  title: API RP 574 (1998) - Inspection Practices for Piping System Components
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This recommended practice describes inspection practices for piping system components in the petroleum and petrochemical
+    industries. It is intended to supplement the API 570 Piping Inspection Code by providing detailed guidance on component
+    assessment. The document covers the knowledge and experience required for inspectors to maintain piping integrity and
+    safety.
+  keywords:
+  - piping
+  - inspection
+  - refinery
+  - maintenance
+  - API 570
+- id: API RP 1114 (1994)
+  title: Design of Solution-Mined Underground Storage Facilities
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This recommended practice provides basic guidance on the design and development of new solution-mined underground
+    storage facilities in salt formations. It covers essential aspects including site selection, cavern development, testing,
+    and commissioning of the storage unit. The document also details requirements for infrastructure such as tubing strings,
+    wellhead equipment, and surface facilities.
+  keywords:
+  - solution-mining
+  - underground storage
+  - salt caverns
+  - cavern development
+  - wellhead
+- id: DNV-RP-F105
+  title: Free-spanning pipelines
+  org: DNV
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This recommended practice provides criteria for the structural design and assessment of pipeline free spans subjected
+    to wave and current loading. It addresses both fatigue and ultimate limit state design formats, with a primary focus on
+    predicting Vortex Induced Vibrations (VIV). The document establishes safety levels and calculation methods to ensure the
+    integrity of subsea pipelines against environmental forces.
+  keywords:
+  - free-span
+  - VIV
+  - fatigue
+  - vortex-induced vibrations
+  - hydrodynamics
+- id: '[Welding] Welding Of Pipelines'
+  title: '[Welding]_Welding_Of_Pipelines_And_Related_Facilities_-_Api_Standard_1104_(Ebook,_86_Pages)'
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: API Standard 1104 establishes the requirements for welding procedures, welder qualification, and inspection methods
+    for pipelines and related facilities used in the petroleum and gas industries.
+  keywords:
+  - welding
+  - API 1104
+  - pipeline
+  - inspection
+  - qualification
+- id: API Spec 5LC
+  title: API_Spec_5LC_(1998)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: API Spec 5LC provides requirements for the manufacture and testing of corrosion-resistant alloy (CRA) line pipe
+    used in the petroleum and natural gas industries.
+  keywords:
+  - CRA
+  - line pipe
+  - API Spec 5LC
+  - corrosion resistant alloy
+- id: API RP 1111 Draft
+  title: API_RP_1111_Draft_(1998)_Design,_Construction,_Operation,_and_Maintenance_of_Offshore_Hydrocarbon_Pipelines_(Limit_State_Design)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This API recommended practice establishes criteria for the design, construction, operation, and maintenance of
+    offshore steel pipelines using a limit state design approach.
+  keywords:
+  - API RP 1111
+  - offshore pipelines
+  - limit state design
+  - hydrocarbon
+  - burst pressure
+- id: API RP 2201
+  title: API_RP_2201_(1995)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Procedures and safety guidelines for performing welding or hot tapping on equipment and piping systems while they
+    remain in service.
+  keywords:
+  - hot tapping
+  - welding
+  - in-service
+  - safety
+  - pressure containment
+- id: API RP 1111 Errata
+  title: API_RP_1111_Errata_(2011)_Design,_Construction,_Operation,_and_Maintenance_of_Offshore_Hydrocarbon_Pipelines_(Limit_State_Design)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Errata for API RP 1111 Fourth Edition correcting pipeline collapse factors, SCR fatigue analysis requirements for
+    extreme events, and burst pressure equations.
+  keywords:
+  - Offshore Pipelines
+  - Steel Catenary Riser
+  - Fatigue
+  - Limit State Design
+  - Vortex Induced Vibration
+- id: Pub123 Guide to Colors
+  title: Pub123_Guide_to_Colors
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: A guide for the building and classing of subsea riser systems, including color-coding conventions for tracking
+    rule changes and corrigenda.
+  keywords:
+  - subsea
+  - riser
+  - classing
+  - offshore
+  - rules
+- id: Pub123 Riser RCN2
+  title: Pub123_Riser_RCN2
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Technical guide and rule changes for the classification, construction, and survey of subsea riser systems as defined
+    by ABS standards.
+  keywords:
+  - subsea riser
+  - classification
+  - ABS Guide
+  - offshore units
+  - pipeline systems
+- id: API RP 1111
+  title: API_RP_1111_(1999)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: API RP 1111 provides criteria for the design, construction, operation, and maintenance of offshore hydrocarbon
+    pipelines using limit state design.
+  keywords:
+  - offshore
+  - hydrocarbon pipeline
+  - limit state design
+  - subsea
+  - burst pressure
+- id: API RP 5UE 2nd Ed Addendum
+  title: API_RP_5UE_2nd_Ed_Addendum_(2009)_Ultrasonic_Evaluation_of_Pipe_Imperfections
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Procedure for the ultrasonic evaluation and sizing of planar non-surface breaking pipe imperfections from the outside
+    surface.
+  keywords:
+  - ultrasonic
+  - pipe
+  - imperfections
+  - sizing
+  - API 5UE
+- id: API SPEC 17J 4rd Ed
+  title: API_SPEC_17J_4rd_Ed_(2014)_Unbonded_Flexible_Pipe
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Specification for the design, material selection, manufacture, testing, and packaging of unbonded flexible pipe
+    systems for subsea and marine applications.
+  keywords:
+  - API 17J
+  - unbonded flexible pipe
+  - subsea pipeline
+  - offshore engineering
+  - material selection
+- id: API RP 17B 2nd Ed
+  title: API_RP_17B_2nd_Ed_(1998)_Flexible_Pipe
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Guidelines for the design, material selection, testing, and operation of unbonded and bonded flexible pipe systems
+    for subsea and marine applications.
+  keywords:
+  - flexible pipe
+  - unbonded
+  - subsea
+  - riser
+  - flowline
+  - API 17B
+- id: API RP 1109 Marking Liquid Pet
+  title: API_RP_1109_Marking_Liquid_Petroleum_Pipeline_Facilities_(2nd_1993_19p)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This recommended practice provides guidelines for the design, fabrication, installation, and maintenance of markers
+    and signs used to identify liquid petroleum pipeline facilities and alert the public to their presence.
+  keywords:
+  - pipeline markers
+  - warning signs
+  - liquid petroleum
+  - right-of-way
+  - public safety
+- id: API RP 1111 3rd Ed
+  title: API_RP_1111_3rd_Ed_(1999)_Design,_Construction,_Operation,_and_Maintenance_of_Offshore_Hydrocarbon_Pipelines_(Limit_State_Design)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Guidelines for the design, construction, operation, and maintenance of offshore hydrocarbon pipelines using limit
+    state design criteria.
+  keywords:
+  - offshore pipelines
+  - limit state design
+  - hydrocarbon
+  - API RP 1111
+  - pipeline engineering
+- id: API RP 1117
+  title: API_RP_1117_(1996)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: API RP 1117 provides guidelines for the design, execution, and safety of moving in-service pipelines to ensure
+    structural integrity during relocation or adjustment.
+  keywords:
+  - pipeline movement
+  - in-service
+  - relocation
+  - lowering
+  - structural integrity
+- id: Api Spec 17K, SPECIFICATION FO
+  title: Api_Spec_17K,_SPECIFICATION_FOR_BONDED_FLEXIBLE_PIPE
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This specification defines the requirements for the design, material selection, manufacture, testing, marking,
+    and packaging of bonded flexible pipes for offshore and upstream applications.
+  keywords:
+  - bonded flexible pipe
+  - API Spec 17K
+  - subsea pipelines
+  - manufacturing standards
+  - material testing
+- id: API STANDART 1102 Steel Pipeli
+  title: API_STANDART_1102_Steel_Pipelines_Crossing_Railroads_and_Highways
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Guidelines for the design, installation, and inspection of steel pipelines crossing under railroads and highways.
+  keywords:
+  - API 1102
+  - pipelines
+  - crossings
+  - railroads
+  - highways
+- id: DNV Guideline No 14 - Free Spa
+  title: DNV_Guideline_No_14_-_Free_Spanning_Pipelines
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Technical guidelines for the analysis, assessment, and management of free spanning submarine pipelines.
+  keywords:
+  - free span
+  - pipeline
+  - subsea
+  - VIV
+  - fatigue
+- id: API Spec 5L
+  title: API_Spec_5L_(2000)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This specification provides standards for seamless and welded steel line pipe used for conveying gas, water, and
+    oil in the petroleum and natural gas industries.
+  keywords:
+  - API 5L
+  - Line Pipe
+  - Steel Pipe
+  - Seamless
+  - Welded
+  - Petroleum
+  - Natural Gas
+- id: api.1104.1999
+  title: api.1104.1999
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This standard specifies requirements for welding methods, welder qualification, and inspection techniques for the
+    production of high-quality welds in pipelines and related facilities.
+  keywords:
+  - welding
+  - pipeline
+  - API 1104
+  - inspection
+  - nondestructive testing
+- id: 5L
+  title: API Specification 5L for Line Pipe
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This standard specifies requirements for the manufacture of seamless and welded steel pipe for use in pipeline
+    transportation systems within the petroleum and natural gas industries. It provides detailed tables for pipe dimensions,
+    weights, and wall thicknesses across various nominal sizes and designations. The document serves as the primary technical
+    benchmark for ensuring the structural integrity of line pipe used globally.
+  keywords:
+  - line pipe
+  - steel pipe
+  - dimensions
+  - wall thickness
+  - API 5L
+- id: 5L
+  title: Specification for Line Pipe
+  org: API
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This specification establishes requirements for the manufacture of seamless and welded steel line pipe for use
+    in pipeline transportation systems in the petroleum and natural gas industries. It defines two product specification levels,
+    PSL 1 and PSL 2, which specify different levels of technical requirements for chemical composition, mechanical properties,
+    and testing. The standard ensures the suitability of pipe for conveying gas, water, and oil in both onshore and offshore
+    environments.
+  keywords:
+  - line pipe
+  - steel pipe
+  - PSL 1
+  - PSL 2
+  - seamless
+  - welded
+- id: API RP 1110
+  title: API_RP_1110_(1991)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: Recommended practices for the pressure testing of liquid petroleum pipelines to ensure structural integrity and
+    leak-free operation.
+  keywords:
+  - pressure testing
+  - liquid petroleum
+  - pipelines
+- id: API Std 599 (1994)
+  title: "Metal Plug Valves\u2014Flanged and Welding Ends"
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This standard provides a purchase specification for metal plug valves with flanged or butt-welding ends and ductile
+    iron plug valves with flanged ends. It establishes requirements for design, materials, and testing to ensure reliability
+    in petroleum and chemical processing applications. The document serves as a guide for procurement while allowing for specific
+    purchaser modifications and technical supplements.
+  keywords:
+  - plug valves
+  - flanged ends
+  - welding ends
+  - API 599
+  - specification
+- id: API RP 1111 (Third Edition)
+  title: Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit State Design)
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This recommended practice sets forth criteria for the design, construction, operation, and maintenance of offshore
+    hydrocarbon pipelines using limit state design principles. It specifically addresses the structural integrity and safety
+    requirements for both subsea pipelines and risers throughout their lifecycle. The document serves to standardize engineering
+    and operating practices within the offshore petroleum industry.
+  keywords:
+  - offshore
+  - hydrocarbon pipeline
+  - limit state design
+  - subsea
+  - risers
+- id: API RP 1163 1st Ed
+  title: API_RP_1163_1st_Ed_(2005)_In-line_Inspection_Systems_Qualification_Standard
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: API RP 1163 provides a standard for qualifying in-line inspection (ILI) systems used to assess the integrity of
+    gas and liquid pipelines.
+  keywords:
+  - in-line inspection
+  - pipeline integrity
+  - ILI
+  - qualification
+  - standard
+- id: OTC 8494
+  title: Code Conflicts for High Pressure Flowlines and Steel Catenary Risers
+  org: OnePetro
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: This paper addresses concerns that current pipeline codes result in overly conservative designs for high-pressure
+    subsea flowlines and steel catenary risers. It highlights the limitations of the traditional Barlow formula for thick-walled
+    pipe and the resulting economic penalties in deepwater projects. It advocates for a shift toward limit state design based
+    on actual burst strength to achieve cost-effective and reliable offshore infrastructure.
+  keywords:
+  - subsea flowlines
+  - steel catenary risers
+  - burst strength
+  - limit state design
+  - Barlow formula
+- id: API Std 594
+  title: API_Std_594_(1997)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: API Standard 594 specifies the requirements for design, materials, dimensions, and testing of wafer, wafer-lug,
+    and double-flanged check valves for various flange classes.
+  keywords:
+  - check valves
+  - wafer
+  - API 594
+  - flanges
+  - piping
+- id: API Std 609
+  title: API_Std_609_(1997)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: pipeline
+  summary: API Standard 609 provides requirements for the design, materials, and testing of double-flanged, lug-type, and
+    wafer-type butterfly valves for use in piping systems.
+  keywords:
+  - butterfly valves
+  - API 609
+  - flange specifications
+  - wafer-type
+  - lug-type
+- id: API RP 12R1 (1997)
+  title: Recommended Practice for Setting, Maintenance, Inspection, Operation, and Repair of Tanks in Production Service
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: installation
+  summary: This recommended practice provides comprehensive guidelines for the setting and connection of lease tanks at new
+    battery installations and production services. It establishes standardized procedures for the safe maintenance and operation
+    of these storage systems throughout their service life. Furthermore, it details specific requirements for the inspection
+    and repair of tanks constructed under API 12 series standards.
+  keywords:
+  - API 12R1
+  - lease tanks
+  - tank maintenance
+  - tank inspection
+  - tank repair
+- id: API RP 686
+  title: API_RP_686_(1996)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: installation
+  summary: Provides recommended practices for the design and installation of machinery in the petroleum and process industries,
+    focusing on foundations, piping, and alignment.
+  keywords:
+  - machinery installation
+  - installation design
+  - piping alignment
+  - API RP 686
+  - machinery foundations
+- id: API RP 1615
+  title: API_RP_1615_(1996)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: installation
+  summary: This recommended practice provides guidelines for the safe and proper installation of underground petroleum storage
+    tanks and piping systems.
+  keywords:
+  - underground storage
+  - tanks
+  - piping
+  - petroleum
+  - installation
+- id: API RP 520 Part II
+  title: API_RP_520_Part_II_(1994)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: installation
+  summary: Recommended practices for the installation of pressure-relieving devices for refinery equipment with a maximum
+    allowable working pressure of 15 psig or greater.
+  keywords:
+  - pressure-relieving devices
+  - API RP 520
+  - refinery
+  - piping
+  - installation
+- id: API RP 14H
+  title: API_RP_14H_(1994)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: installation
+  summary: Guidelines for the installation, maintenance, and repair of surface and underwater safety valves in offshore operations.
+  keywords:
+  - SSV
+  - USV
+  - safety valves
+  - maintenance
+  - API RP 14H
+- id: API RP 651
+  title: API_RP_651_(1997)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: cathodic-protection
+  summary: API RP 651 provides guidelines for the cathodic protection of aboveground petroleum storage tanks to mitigate external
+    corrosion of tank bottoms.
+  keywords:
+  - cathodic protection
+  - storage tanks
+  - corrosion
+  - tank bottoms
+  - petroleum
+- id: API RP 1632 Cathodic Protectio
+  title: API_RP_1632_Cathodic_Protection_of_Underground_Petroleum_Storage_Tanks_and_Piping_Systems_(3rd_1996_31p)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: cathodic-protection
+  summary: Provides recommended procedures for the corrosion protection of underground steel petroleum storage tanks and associated
+    piping systems through cathodic protection.
+  keywords:
+  - cathodic protection
+  - underground storage tanks
+  - corrosion control
+  - piping systems
+  - API RP 1632
+- id: API RP 1632 (1996)
+  title: Cathodic Protection of Underground Petroleum Storage Tanks and Piping Systems
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: cathodic-protection
+  summary: This recommended practice describes the corrosion problems characteristic of underground steel storage tanks and
+    piping systems while providing a general description of the two primary cathodic protection methods. It serves as a guidance
+    document for personnel involved in the construction, replacement, or maintenance of underground petroleum storage facilities.
+    The text emphasizes compliance with local, state, and federal regulations alongside established industry standards from
+    API and NACE.
+  keywords:
+  - cathodic protection
+  - underground storage tanks
+  - corrosion mitigation
+  - petroleum piping
+  - API standards
+apis: []
+gaps: []

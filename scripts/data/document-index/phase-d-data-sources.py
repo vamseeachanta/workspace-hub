@@ -43,13 +43,64 @@ def load_config(config_path: Path) -> Dict[str, Any]:
 
 
 def load_enhancement_plan(plan_path: Path) -> Dict[str, Any]:
-    """Load enhancement plan from Phase C. Fail if absent."""
+    """Load enhancement plan from Phase C, or empty dict if absent."""
     if not plan_path.exists():
-        logger.error("Enhancement plan not found: %s", plan_path)
-        logger.error("Run phase-c-classify.py first.")
-        sys.exit(1)
+        logger.info("No enhancement plan found — will build from Gemini summaries directly.")
+        return {}
     with open(plan_path) as f:
         return yaml.safe_load(f) or {}
+
+
+def build_plan_from_summaries(summaries_dir: Path) -> Dict[str, Any]:
+    """Build enhancement plan from Gemini summaries using discipline only.
+
+    Ignores Gemini's repo suggestions — repo mapping is done via domain_map
+    in collect_repo_items, which is authoritative.
+    """
+    by_domain: Dict[str, Dict] = {}
+    count = 0
+    skipped = 0
+
+    for summary_file in summaries_dir.glob("*.json"):
+        try:
+            data = json.loads(summary_file.read_text())
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        discipline = data.get("discipline")
+        # Only include docs with a real Gemini summary (has discipline + summary text)
+        if not discipline or not data.get("summary"):
+            skipped += 1
+            continue
+
+        if discipline not in by_domain:
+            by_domain[discipline] = {"count": 0, "repos": [], "items": []}
+
+        by_domain[discipline]["count"] += 1
+
+        # Extract org + doc_number from path if not in summary
+        path = data.get("path", "")
+        stem = Path(path).stem if path else ""
+        # Try to parse "ORG_DocNum_..." pattern from filename
+        org_from_path = data.get("org") or ""
+        doc_num = data.get("doc_number") or ""
+        if not doc_num and stem:
+            # e.g. "DNV-RP-B401_2021" → "DNV-RP-B401"
+            doc_num = stem.split("_(")[0].replace("_", " ").strip()[:30]
+
+        by_domain[discipline]["items"].append({
+            "doc_number": doc_num,
+            "title": data.get("title") or stem,
+            "path": path,
+            "org": org_from_path,
+            "status": "reference",
+            "notes": data.get("summary", ""),
+            "keywords": data.get("keywords", []),
+        })
+        count += 1
+
+    logger.info("Built plan from %d Gemini summaries (%d skipped no-summary stubs)", count, skipped)
+    return {"generated": datetime.now().isoformat(), "total_classified": count, "by_domain": by_domain}
 
 
 def load_deny_list() -> List[str]:
@@ -105,18 +156,21 @@ def collect_repo_items(
     gaps: List[Dict] = []
 
     for domain_name, domain_data in plan.get("by_domain", {}).items():
-        if domain_name not in repo_domains:
+        # Match if repo is explicitly listed in domain OR domain is in repo's domain map
+        domain_repos = domain_data.get("repos", [])
+        if repo not in domain_repos and domain_name not in repo_domains:
             continue
         for item in domain_data.get("items", []):
             idx_rec = index_records.get(item.get("path", ""), {})
             entry = {
                 "id": item.get("doc_number", ""),
                 "title": item.get("title", ""),
-                "org": idx_rec.get("org", ""),
+                "org": item.get("org") or idx_rec.get("org", ""),
                 "index_ref": idx_rec.get("content_hash", ""),
                 "status": item.get("status", "reference"),
                 "domain": domain_name,
-                "notes": item.get("notes", ""),
+                "summary": item.get("notes", ""),
+                "keywords": item.get("keywords", []),
             }
 
             status = item.get("status", "reference")
@@ -192,7 +246,9 @@ def main() -> int:
     index_path = HUB_ROOT / cfg["output"]["index_path"]
     output_dir = HUB_ROOT / "specs" / "data-sources"
 
-    plan = load_enhancement_plan(plan_path)
+    raw_plan = load_enhancement_plan(plan_path)
+    summaries_dir = HUB_ROOT / cfg["output"]["summaries_dir"]
+    plan = raw_plan if raw_plan.get("by_domain") else build_plan_from_summaries(summaries_dir)
     deny_patterns = load_deny_list()
     domain_map = cfg.get("repo_domain_map", {})
     index_records = load_index(index_path)
