@@ -1,31 +1,26 @@
 #!/usr/bin/env bash
 
 # ABOUTME: Cron wrapper for repository_sync with logging
-# ABOUTME: Runs daily sync on all workspace repositories
+# ABOUTME: Runs auto-sync (no-arg) on all workspace repositories
 
-set -e
+set -euo pipefail
 
-# Configuration
-WORKSPACE_ROOT="/Users/krishna/workspace-hub"
+WORKSPACE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LOG_DIR="$WORKSPACE_ROOT/logs"
 LOG_FILE="$LOG_DIR/repository-sync-$(date +%Y-%m-%d).log"
 
-# Ensure log directory exists
 mkdir -p "$LOG_DIR"
 
-# Log start
 echo "========================================" >> "$LOG_FILE"
 echo "Repository Sync - $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
 echo "========================================" >> "$LOG_FILE"
 
-# Run repository sync with default commit message
-cd "$WORKSPACE_ROOT"
-"$WORKSPACE_ROOT/scripts/repository_sync" sync all -m "chore: daily automated sync" >> "$LOG_FILE" 2>&1
+"$WORKSPACE_ROOT/scripts/repository_sync" >> "$LOG_FILE" 2>&1
+echo "Exit code: $?" >> "$LOG_FILE"
 
-# Log completion
 echo "" >> "$LOG_FILE"
 echo "Completed at $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
 echo "" >> "$LOG_FILE"
 
-# Cleanup old logs (keep last 30 days)
+# Keep last 30 days of logs
 find "$LOG_DIR" -name "repository-sync-*.log" -mtime +30 -delete 2>/dev/null || true
