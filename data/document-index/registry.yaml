@@ -1,0 +1,40 @@
+generated: '2026-02-23T21:09:50'
+total_docs: 945178
+total_summaries: 586168
+by_source:
+  og_standards: 27980
+  ace_standards: 55442
+  ace_project: 426824
+  dde_project: 433382
+  workspace_spec: 1542
+  api_metadata: 8
+by_domain: {}
+repos:
+  acma-projects:
+    standards_count: 110
+    gaps: 0
+    implemented: 0
+  digitalmodel:
+    standards_count: 181
+    gaps: 0
+    implemented: 0
+  doris:
+    standards_count: 92
+    gaps: 0
+    implemented: 0
+  OGManufacturing:
+    standards_count: 71
+    gaps: 0
+    implemented: 0
+  rock-oil-field:
+    standards_count: 35
+    gaps: 0
+    implemented: 0
+  saipem:
+    standards_count: 35
+    gaps: 0
+    implemented: 0
+  worldenergydata:
+    standards_count: 12
+    gaps: 0
+    implemented: 0

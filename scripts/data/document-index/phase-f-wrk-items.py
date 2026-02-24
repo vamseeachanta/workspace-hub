@@ -39,11 +39,10 @@ def load_config(config_path: Path) -> Dict[str, Any]:
 
 
 def load_enhancement_plan(plan_path: Path) -> Dict[str, Any]:
-    """Load enhancement plan YAML."""
+    """Load enhancement plan YAML, or empty dict if absent (gaps not yet classified)."""
     if not plan_path.exists():
-        logger.error("Enhancement plan not found: %s", plan_path)
-        logger.error("Run phase-c-classify.py first.")
-        sys.exit(1)
+        logger.info("Enhancement plan not found — no gaps classified yet. Skipping gap WRK creation.")
+        return {}
     with open(plan_path) as f:
         return yaml.safe_load(f) or {}
 
