@@ -1,0 +1,261 @@
+# Capability Tiers — Superintelligent Engineering Agent Architecture
+# WRK-385 | Created: 2026-02-24
+# Reference: specs/architecture/agent-vision.md
+
+tiers:
+  - id: 0
+    name: Pre-Calculator
+    description: >
+      Repository has source code but no structured standards traceability, no typed
+      inputs/outputs, and no test coverage against known engineering results. Calculations
+      may exist but are not reproducible or auditable.
+    characteristics:
+      - no standard referenced in code
+      - no typed input/output schema
+      - no unit tests against known results
+      - not agent-callable
+    measurement:
+      - repo exists and has source code
+    example: workspace-hub (engineering capability), OGManufacturing (pre-scaffold)
+
+  - id: 1
+    name: Engineering Calculator
+    description: >
+      A module that accepts structured inputs, applies a deterministic algorithm derived
+      from a specific engineering standard, and returns structured outputs. Results are
+      traceable to a clause, reproducible, and validated by at least one worked example.
+    characteristics:
+      - deterministic (same inputs always produce same outputs)
+      - testable (unit tests with worked examples from standards)
+      - standard-specific (each module implements a known code or method)
+      - documented (inputs, outputs, and standard reference explicit)
+      - no natural language processing
+      - no module selection logic
+      - no report generation
+    measurement:
+      - module exists in source
+      - at least one standard referenced in code or docstring
+      - at least one test passes with a result from the standard
+      - inputs and outputs documented
+    entry_gate:
+      - standard ID in code or docstring
+      - one passing test with known result
+    exit_gate_to_tier2:
+      - all modules in module registry (WRK-384)
+      - all standards in capability map with status (WRK-383)
+
+  - id: 2
+    name: Engineering Assistant
+    description: >
+      An agent layer on top of Tier 1 modules that accepts a natural language or
+      semi-structured engineering problem, selects the correct modules and sequences
+      them, validates outputs against code limits, and produces a structured
+      calculation report. Handles missing inputs and emits WRK items for gaps.
+    characteristics:
+      - natural language or template-structured input
+      - module selection from module registry
+      - multi-module composition into calculation sequences
+      - code-limit validation with pass/fail verdict
+      - structured calculation report output (JSON + human-readable)
+      - missing-input prompting or conservative-default application
+      - gap detection: emits WRK item if required module not implemented
+    measurement:
+      - module registry complete for the repo (WRK-384)
+      - agent API endpoint wraps Tier 1 modules
+      - natural language problem mapper routes to modules
+      - calculation report template produces structured output
+      - gap detection operational
+    entry_gate:
+      - module registry >= 90% complete
+      - agent API layer deployed
+      - at least one end-to-end test: problem statement → calc report
+    exit_gate_to_tier3:
+      - repo callable from workspace-hub workflow executor
+      - cross-repo data handoff tested
+
+  - id: 3
+    name: Autonomous Engineering Agent
+    description: >
+      A project-level agent that receives a high-level project brief, autonomously
+      selects applicable standards and design methodology from the capability map,
+      iterates the design until all code checks pass, orchestrates agents across
+      multiple repos, and produces a complete stamped calculation package with
+      a gap register.
+    characteristics:
+      - project brief input (asset type, water depth, metocean, jurisdiction)
+      - autonomous standards selection from capability map
+      - iterative design loop until all code checks pass
+      - cross-repo orchestration of Tier 2 agents
+      - gap identification and automatic WRK item creation
+      - calculation package assembly (design basis, calc sheets, code check summary)
+      - gap register (what was not checked and why)
+      - configurable human review checkpoints
+    measurement:
+      - project brief → calculation package without step-by-step prompting
+      - gap register automatically populated during run
+      - WRK items generated for each unchecked standard
+      - at least two repos orchestrated in a single workflow
+    entry_gate:
+      - at least two repos at Tier 2
+      - workflow spec executor operational in workspace-hub
+      - capability map queryable at hub level
+
+
+repos:
+  digitalmodel:
+    description: >
+      Offshore, subsea, and marine engineering calculation engine.
+      700+ modules across structural, subsea, hydrodynamics, marine_ops, and
+      asset_integrity disciplines. Primary Tier 1 repo for engineering calculations.
+    current_tier: 1
+    target_tier: 2
+    target_year: 2026
+    current_state_notes: >
+      Most modules are Tier 1 for their primary standard. Standards referenced informally.
+      No machine-readable traceability. No agent API layer. No module registry. Spectral
+      fatigue partial. No cathodic protection module. No on-bottom stability module.
+    key_wrk:
+      - id: WRK-383
+        description: Standards-to-module capability map
+        blocks: WRK-384, WRK-386
+      - id: WRK-384
+        description: Module registry — structured metadata for all 40+ modules
+        blocks: WRK-386
+      - id: WRK-386
+        description: Gap-to-WRK generator — auto-creates implementation WRK items
+      - id: WRK-326
+        description: Unified ace CLI — single entry point routing to all repos
+    key_gaps:
+      - No agent API layer (ace.calc dispatcher not built)
+      - No module registry (WRK-384 pending)
+      - No standards traceability at function level
+      - Spectral fatigue incomplete (deterministic only)
+      - No cathodic protection module (DNV-RP-B401 gap)
+      - No on-bottom stability module (DNV-RP-F109 gap)
+      - No agent-native report generation
+    tier2_requirements:
+      - Module registry complete (WRK-384)
+      - Standards capability map complete (WRK-383)
+      - Agent API layer: ace.calc(module_id, inputs)
+      - Calculation report template (JSON + PDF)
+      - Natural language problem mapper
+      - Gap-to-WRK emission
+    modules_count_approx: 700
+    disciplines:
+      - structural
+      - subsea
+      - hydrodynamics
+      - marine_ops
+      - asset_integrity
+
+  worldenergydata:
+    description: >
+      Global energy market data aggregation and field development economics.
+      Covers BSEE, EIA, SODIR, metocean, production forecasting, and incident data.
+      Primary Tier 1 repo for energy data.
+    current_tier: 1
+    target_tier: 2
+    target_year: 2026
+    current_state_notes: >
+      CLI mature. BSEE, EIA, SODIR data acquisition working. No cross-source synthesis.
+      No production forecasting module. No unified query API. Dashboard not built.
+    key_wrk:
+      - id: WRK-317
+        description: Plotly Dash dashboard for BSEE and FDAS data
+      - id: WRK-318
+        description: Arps decline curve production forecasting module
+      - id: WRK-319
+        description: Real-time EIA/IEA feed ingestion — weekly automation
+      - id: WRK-321
+        description: Field development economics — MIRR/NPV with carbon cost sensitivity
+    key_gaps:
+      - No cross-source synthesis layer
+      - No unified query API across BSEE + EIA + SODIR + metocean
+      - No production forecasting module (WRK-318 pending)
+      - No field development screening capability
+      - Dashboard not built (WRK-317 pending)
+      - EIA real-time feed not wired (WRK-319 pending)
+      - Carbon cost sensitivity not implemented (WRK-321 pending)
+    tier2_requirements:
+      - Cross-source synthesis layer with unified query API
+      - Production forecasting module (Arps decline)
+      - Field development screening: multi-source correlation
+      - Structured typed output format
+      - worldenergydata callable from workspace-hub agent workflows
+    data_sources:
+      - BSEE production and platform API
+      - EIA API v2 (US energy statistics)
+      - SODIR (Norwegian petroleum directorate)
+      - ERA5 and NOAA NDBC (metocean)
+      - MAIB, NTSB, IMO GISIS (marine safety incidents)
+      - USCG MISLE (US Coast Guard)
+
+  assetutilities:
+    description: >
+      Business automation utilities and shared infrastructure for common engineering
+      workflows. Unit conversions, calculations, data IO patterns, and scaffolding.
+      Shared dependency for Tier 2+ agents across repos.
+    current_tier: 1
+    target_tier: 1
+    target_year: 2026
+    current_state_notes: >
+      Functional but not yet wired as a shared dependency by digitalmodel or
+      worldenergydata. Engineering constants duplicated across repos. WRK-327 targets
+      centralisation of material properties and unit conversions.
+    key_wrk:
+      - id: WRK-327
+        description: Shared engineering constants library — material properties, unit conversions
+    key_gaps:
+      - Not installed as a dependency by digitalmodel or worldenergydata
+      - Engineering constants duplicated across repos
+      - No shared unit conversion standard across workspace
+    tier1_requirements:
+      - Installed as ace-constants package by digitalmodel and worldenergydata
+      - Steel material properties (API 5L grades, structural steel)
+      - Seawater properties (density, viscosity vs temperature/salinity)
+      - Unit conversion utilities (SI/Imperial engineering units)
+      - Constants immutable (frozen dataclasses)
+    role: >
+      Not a domain-specific agent. Provides shared infrastructure that Tier 2+ agents
+      depend on: unit conversions, material constants, IO adapters, common patterns.
+
+  workspace-hub:
+    description: >
+      Workspace orchestration and vision layer. Coordinates the WRK queue, maintains
+      ecosystem configuration, provides skills and automation. Primary Tier 3 coordinator
+      target — does not perform calculations but orchestrates agents that do.
+    current_tier: 0
+    target_tier: 3
+    target_year: 2027
+    current_state_notes: >
+      No engineering calculation capability. No workflow composition layer. Manages
+      WRK queue and ecosystem config. Has no cross-repo dispatch capability. Has no
+      standards capability map query. Has no unified CLI.
+    key_wrk:
+      - id: WRK-383
+        description: Standards capability map at hub level (cross-repo view)
+      - id: WRK-385
+        description: Architecture blueprint (this WRK)
+      - id: WRK-386
+        description: Gap-to-WRK generator
+      - id: WRK-326
+        description: Unified ace CLI entry point
+    key_gaps:
+      - No workflow execution specs
+      - No agent composition layer
+      - No unified CLI (WRK-326 pending)
+      - No cross-repo dispatch
+      - No project brief parser
+      - No calculation package assembler
+      - No gap register
+    tier3_requirements:
+      - Four canonical workflow patterns specified and executable
+      - Cross-repo dispatch: can invoke digitalmodel + worldenergydata in sequence
+      - Project brief → calculation package without step-by-step prompting
+      - Gap register automatically populated during project run
+      - WRK items generated for each unchecked standard
+      - Unified CLI with ace command (WRK-326)
+    role: >
+      Tier 3 coordinator. Holds the capability map (WRK-383), spawns WRK items
+      (WRK-386), executes cross-repo workflows (workflow-patterns.yaml), and
+      assembles project deliverables from sub-agent results.

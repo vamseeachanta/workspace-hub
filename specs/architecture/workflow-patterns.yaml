@@ -1,0 +1,896 @@
+# Canonical Cross-Repo Workflow Patterns
+# WRK-385 | Created: 2026-02-24
+# Reference: specs/architecture/agent-vision.md Part 5
+#
+# Four workflow patterns define what a Tier 2/3 system can deliver.
+# Each pattern is a template for a class of engineering project.
+# Steps are ordered and reference the repo, module, action, inputs, and outputs.
+
+workflow_patterns:
+
+  - id: WP-001
+    name: Subsea Fatigue Assessment
+    description: >
+      Structural fatigue life assessment for an offshore steel structure (jacket node,
+      riser, tubular joint, mooring line) under stochastic wave loading. Produces a
+      fatigue calculation package with scatter matrix, stress transfer functions,
+      accumulated damage per S-N curve, and a pass/fail verdict against DNV-RP-C203.
+    tier_required: 2
+    repos_involved:
+      - digitalmodel
+    disciplines:
+      - structural/fatigue
+      - hydrodynamics/wave_spectra
+      - subsea/mooring_analysis
+    steps:
+      - step: 1
+        repo: digitalmodel
+        module: hydrodynamics/wave_spectra
+        action: build_scatter_matrix
+        description: Construct JONSWAP scatter matrix from metocean Hs/Tp data
+        inputs:
+          - name: hs_tp_data
+            description: Significant wave height and peak period time series or scatter
+            type: array[float] or scatter_matrix
+            source: user_provided or worldenergydata/metocean
+          - name: gamma
+            description: JONSWAP peak enhancement factor
+            type: float
+            default: 3.3
+          - name: spreading
+            description: Directional spreading function
+            type: str
+            default: "cos2s"
+        outputs:
+          - name: scatter_matrix
+            description: Hs-Tp scatter matrix with occurrence frequencies
+            type: matrix[float]
+          - name: wave_spectra
+            description: Discretised JONSWAP spectra per sea state
+            type: array[spectrum]
+
+      - step: 2
+        repo: digitalmodel
+        module: structural/fatigue
+        action: compute_transfer_function
+        description: Compute stress transfer function (RAO) for the structural member
+        inputs:
+          - name: geometry
+            description: Tubular joint geometry (chord/brace diameters, thickness, angle)
+            type: dict
+            source: user_provided
+          - name: scf_method
+            description: SCF parametric equation set
+            type: str
+            enum: [efthymiou, lloyds, aws]
+            default: efthymiou
+          - name: loading_direction
+            description: Wave loading direction (degrees, multiple allowed)
+            type: array[float]
+        outputs:
+          - name: scf
+            description: Stress concentration factors (axial, IPB, OPB per brace)
+            type: dict[float]
+          - name: transfer_function
+            description: Stress response per unit wave amplitude vs frequency
+            type: array[complex]
+
+      - step: 3
+        repo: digitalmodel
+        module: structural/fatigue
+        action: spectral_fatigue
+        description: >
+          Run frequency-domain spectral fatigue. Convolve wave spectra with stress
+          transfer function to get stress PSD. Apply narrow-band or Dirlik cycle
+          counting. Accumulate damage via Palmgren-Miner.
+        inputs:
+          - name: wave_spectra
+            description: From step 1
+            type: array[spectrum]
+          - name: transfer_function
+            description: From step 2
+            type: array[complex]
+          - name: scf
+            description: From step 2
+            type: dict[float]
+          - name: sn_curve
+            description: S-N curve designation per DNV-RP-C203 Table 2-1
+            type: str
+            enum: [B1, C, D, E, F, F2, G, W1, W2, W3, T]
+          - name: environment
+            description: Corrosion environment affecting S-N curve
+            type: str
+            enum: [air, seawater_free, seawater_cp]
+          - name: design_life_years
+            description: Required fatigue design life
+            type: float
+            unit: years
+        outputs:
+          - name: damage
+            description: Palmgren-Miner accumulated damage (1.0 = failure)
+            type: float
+          - name: fatigue_life_years
+            description: Predicted fatigue life at D = 1.0
+            type: float
+          - name: damage_by_seastate
+            description: Damage contribution per sea state in scatter matrix
+            type: matrix[float]
+
+      - step: 4
+        repo: digitalmodel
+        module: structural/fatigue
+        action: code_check
+        description: >
+          Validate damage against design fatigue factor (DFF) per DNV-RP-C203.
+          DFF varies by consequence of failure and inspection access.
+        inputs:
+          - name: damage
+            description: From step 3
+            type: float
+          - name: dff
+            description: Design fatigue factor (1.0 / 2.0 / 3.0 / 10.0)
+            type: float
+            default: 3.0
+        outputs:
+          - name: utilisation
+            description: D * DFF — must be < 1.0 for pass
+            type: float
+          - name: verdict
+            description: PASS or FAIL
+            type: str
+          - name: governing_clause
+            description: DNV-RP-C203 clause reference
+            type: str
+
+      - step: 5
+        repo: digitalmodel
+        module: structural/fatigue
+        action: generate_report
+        description: Assemble fatigue calculation sheet
+        inputs:
+          - name: scatter_matrix
+            description: From step 1
+          - name: scf
+            description: From step 2
+          - name: damage
+            description: From step 3
+          - name: utilisation
+            description: From step 4
+          - name: verdict
+            description: From step 4
+        outputs:
+          - name: calc_sheet
+            description: Structured fatigue calculation report
+            type: dict
+            fields:
+              - inputs_summary
+              - scatter_matrix_table
+              - scf_table
+              - sn_curve_reference
+              - damage_table_by_seastate
+              - total_damage
+              - utilisation
+              - pass_fail_verdict
+              - standard_references
+
+    standards_applied:
+      - id: DNVGL-RP-C203
+        role: S-N curves, SCF, DFF, Miner rule — primary standard
+        clauses: [Sec 2, Sec 3, Sec 4, Table 2-1]
+      - id: DNVGL-RP-C205
+        role: Wave spectra (JONSWAP), directional spreading
+        clauses: [Sec 3.5, Sec 3.6]
+      - id: ISO-19902
+        role: Structural member classification (offshore structures)
+        clauses: [Annex A]
+      - id: API-RP-2SK
+        role: Mooring line fatigue (if mooring line assessment)
+        clauses: [Sec 6]
+
+    current_gaps:
+      - Spectral fatigue partial (deterministic implemented; frequency-domain in progress)
+      - Cathodic protection correction factor not automated (DNV-RP-C203 Table 2-1 seawater_cp)
+      - worldenergydata metocean not yet wired as input source for step 1
+
+    output_deliverable:
+      name: Fatigue Calculation Package
+      contents:
+        - cover_sheet (structure ID, standard, date, author)
+        - design_basis (metocean, geometry, material, DFF)
+        - scatter_matrix (tabulated Hs-Tp with occurrence frequency)
+        - transfer_function_plot (stress RAO vs frequency)
+        - scf_table (Efthymiou results per load component)
+        - damage_table (contribution per sea state)
+        - code_check_summary (D, DFF, utilisation, verdict)
+        - standard_references (clause list with versions)
+        - gap_register (what was not checked and why)
+
+
+  - id: WP-002
+    name: Deepwater Pipeline Feasibility
+    description: >
+      Pre-FEED feasibility assessment for a deepwater rigid pipeline system. Covers
+      wall thickness selection (pressure containment and collapse), catenary riser
+      configuration, and installation weather window. Produces a pre-FEED calculation
+      package suitable for concept screening.
+    tier_required: 2
+    repos_involved:
+      - digitalmodel
+      - worldenergydata
+    disciplines:
+      - subsea/pipeline
+      - subsea/catenary_riser
+      - hydrodynamics/wave_spectra
+      - marine_ops/marine_engineering
+    steps:
+      - step: 1
+        repo: worldenergydata
+        module: metocean
+        action: fetch_site_metocean
+        description: >
+          Query metocean database for the project site. Return 100-year return period
+          Hs, Tp, and current profile for use in structural and installation calculations.
+        inputs:
+          - name: location
+            description: Latitude/longitude of pipeline route midpoint
+            type: tuple[float, float]
+          - name: return_period_years
+            description: Return period for extreme conditions
+            type: int
+            default: 100
+          - name: data_source
+            description: Metocean data source
+            type: str
+            enum: [era5, noaa_ndbc, hindcast]
+            default: era5
+        outputs:
+          - name: hs_100yr
+            description: 100-year significant wave height
+            type: float
+            unit: m
+          - name: tp_100yr
+            description: 100-year peak wave period
+            type: float
+            unit: s
+          - name: current_profile
+            description: Current speed vs depth (1-yr, 10-yr, 100-yr)
+            type: array[tuple[float, float]]
+          - name: metocean_summary
+            description: Structured metocean summary for report
+            type: dict
+
+      - step: 2
+        repo: digitalmodel
+        module: subsea/pipeline
+        action: wall_thickness_selection
+        description: >
+          Calculate minimum wall thickness for pressure containment per
+          DNV-ST-F101 Eq 5.6 (system pressure test criterion) and select
+          governing wall thickness.
+        inputs:
+          - name: od_mm
+            description: Outer diameter
+            type: float
+            unit: mm
+          - name: maop_bar
+            description: Maximum allowable operating pressure
+            type: float
+            unit: bar
+          - name: material_grade
+            description: Material grade
+            type: str
+            enum: [X42, X52, X60, X65, X70, X80]
+          - name: design_temperature_degC
+            description: Design temperature
+            type: float
+            unit: degC
+          - name: location_class
+            description: DNV-ST-F101 location class (1 or 2)
+            type: int
+            enum: [1, 2]
+        outputs:
+          - name: wt_pressure_mm
+            description: Wall thickness required for pressure containment
+            type: float
+            unit: mm
+          - name: utilisation_pressure
+            description: Pressure utilisation (must be <= 1.0)
+            type: float
+          - name: governing_criterion
+            description: Which criterion governs (pressure, collapse, or combined)
+            type: str
+
+      - step: 3
+        repo: digitalmodel
+        module: subsea/pipeline
+        action: collapse_check
+        description: >
+          Check external pressure collapse capacity per DNV-ST-F101 Sec 5.4.
+          At deepwater, external pressure often governs wall thickness selection.
+        inputs:
+          - name: od_mm
+            description: Outer diameter
+            type: float
+            unit: mm
+          - name: wt_mm
+            description: Proposed wall thickness (from step 2)
+            type: float
+            unit: mm
+          - name: water_depth_m
+            description: Maximum water depth on route
+            type: float
+            unit: m
+          - name: material_grade
+            description: Material grade
+            type: str
+          - name: ovality_fraction
+            description: Initial pipe ovality (DNV-ST-F101 default 0.005)
+            type: float
+            default: 0.005
+        outputs:
+          - name: pc_bar
+            description: Characteristic collapse pressure
+            type: float
+            unit: bar
+          - name: external_pressure_bar
+            description: External hydrostatic pressure at depth
+            type: float
+            unit: bar
+          - name: utilisation_collapse
+            description: Pe / Pc — must be <= 1.0
+            type: float
+          - name: verdict
+            description: PASS or FAIL
+            type: str
+
+      - step: 4
+        repo: digitalmodel
+        module: subsea/catenary_riser
+        action: static_catenary
+        description: >
+          Calculate static catenary riser configuration: top angle, touch-down point,
+          horizontal tension, and effective catenary length.
+        inputs:
+          - name: water_depth_m
+            type: float
+            unit: m
+          - name: od_mm
+            type: float
+            unit: mm
+          - name: wt_mm
+            type: float
+            unit: mm
+          - name: submerged_weight_n_per_m
+            description: Submerged weight per unit length (auto-calculated if not provided)
+            type: float
+            unit: N/m
+            optional: true
+          - name: horizontal_offset_m
+            description: Horizontal offset from wellhead to vessel hang-off
+            type: float
+            unit: m
+        outputs:
+          - name: top_angle_deg
+            description: Riser top angle at vessel connection
+            type: float
+            unit: degrees
+          - name: tdp_distance_m
+            description: Touch-down point horizontal distance from wellhead
+            type: float
+            unit: m
+          - name: top_tension_kn
+            description: Top tension at vessel connection
+            type: float
+            unit: kN
+          - name: catenary_length_m
+            description: Total riser length in water
+            type: float
+            unit: m
+
+      - step: 5
+        repo: digitalmodel
+        module: marine_ops/marine_engineering
+        action: installation_window_check
+        description: >
+          Determine installation weather window criteria and operability.
+          Check against metocean scatter for expected number of weather windows.
+        inputs:
+          - name: hs_limit_m
+            description: Maximum allowable Hs for pipelay
+            type: float
+            unit: m
+          - name: tp_limit_s
+            description: Maximum allowable Tp
+            type: float
+            unit: s
+          - name: metocean_summary
+            description: From step 1
+            type: dict
+        outputs:
+          - name: operability_fraction
+            description: Fraction of time sea state is below operational limit
+            type: float
+          - name: expected_window_days
+            description: Expected number of working days per year within Hs limit
+            type: float
+          - name: installation_risk_flag
+            description: Flag if operability < 0.6 (challenging installation)
+            type: bool
+
+      - step: 6
+        repo: digitalmodel
+        module: subsea/pipeline
+        action: generate_report
+        description: Assemble pre-FEED pipeline calculation package
+        inputs:
+          - name: metocean_summary
+            description: From step 1
+          - name: wall_thickness_result
+            description: From steps 2 and 3
+          - name: catenary_result
+            description: From step 4
+          - name: installation_result
+            description: From step 5
+        outputs:
+          - name: prefeed_package
+            description: Pre-FEED feasibility calculation package
+            type: dict
+
+    standards_applied:
+      - id: DNV-ST-F101
+        role: Submarine pipeline systems — wall thickness, collapse, pressure containment
+        clauses: [Sec 5.3, Sec 5.4, Sec 5.6]
+      - id: API-RP-1111
+        role: Deepwater pipeline design — collapse, buckle propagation
+        clauses: [Sec 4, Sec 5]
+      - id: DNV-OS-F201
+        role: Dynamic risers — catenary riser analysis
+        clauses: [Sec 4, Sec 5]
+      - id: DNVGL-RP-C205
+        role: Environmental conditions — metocean criteria
+        clauses: [Sec 3, Sec 4]
+      - id: BSEE-30-CFR-250
+        role: GOM regulatory requirements (if applicable)
+        clauses: [Subpart J]
+
+    current_gaps:
+      - On-bottom stability not implemented (DNV-RP-F109 gap — no soil resistance module)
+      - worldenergydata metocean module not yet wired to digitalmodel workflow
+      - API RP 1111 deepwater collapse checks not fully implemented
+      - Buckle propagation check not implemented (DNV-ST-F101 Sec 5.4.5)
+
+    output_deliverable:
+      name: Pre-FEED Pipeline Feasibility Package
+      contents:
+        - cover_sheet (pipeline ID, route, water depth range, date)
+        - design_basis (OD, MAOP, material, regulatory regime, metocean source)
+        - metocean_summary (100yr Hs/Tp, current profile, data source)
+        - wall_thickness_selection (governing criterion, utilisation, final WT)
+        - collapse_check (Pe/Pc utilisation, pass/fail)
+        - catenary_riser_summary (top angle, TDP, top tension)
+        - installation_window (operability fraction, Hs limit, risk flag)
+        - code_check_summary (all checks, governing criterion, overall verdict)
+        - gap_register (on-bottom stability not checked, buckle propagation not checked)
+
+
+  - id: WP-003
+    name: Field Development Screening
+    description: >
+      Rapid multi-source screening of candidate offshore fields for development potential
+      using public regulatory and production data. Produces a ranked candidate list with
+      reserves estimates, metocean severity, and NPV sensitivity — suitable for
+      opportunity screening without operator proprietary data.
+    tier_required: 2
+    repos_involved:
+      - worldenergydata
+    data_sources:
+      - BSEE production API
+      - EIA API v2
+      - SODIR API
+      - ERA5 / NOAA NDBC
+    steps:
+      - step: 1
+        repo: worldenergydata
+        module: bsee
+        action: query_candidate_fields
+        description: >
+          Query BSEE production database for fields matching water depth, area,
+          and production status criteria.
+        inputs:
+          - name: area
+            description: GOM protraction area or planning area code
+            type: str
+            example: "MC"  # Mississippi Canyon
+          - name: water_depth_min_m
+            type: float
+            unit: m
+          - name: water_depth_max_m
+            type: float
+            unit: m
+          - name: production_status
+            description: Filter by production status
+            type: str
+            enum: [active, inactive, undeveloped, all]
+            default: all
+          - name: operator_filter
+            description: Optional operator name filter
+            type: str
+            optional: true
+        outputs:
+          - name: candidate_fields
+            description: List of candidate fields with BSEE metadata
+            type: array[dict]
+            fields: [field_name, lease_block, water_depth_m, operator, production_status,
+                     last_production_date, cumulative_oil_bbl, cumulative_gas_mmcf]
+
+      - step: 2
+        repo: worldenergydata
+        module: eia_us
+        action: regional_production_context
+        description: >
+          Overlay regional production trends from EIA API — basin-level production
+          decline rate, recent price history, and storage levels for context.
+        inputs:
+          - name: basin
+            description: EIA basin or PAD district
+            type: str
+          - name: lookback_years
+            type: int
+            default: 5
+        outputs:
+          - name: basin_production_trend
+            description: Annual oil/gas production for the basin over lookback period
+            type: array[dict]
+          - name: recent_price_usd_per_bbl
+            description: WTI crude price — last 12 months average
+            type: float
+          - name: price_volatility
+            description: Standard deviation of monthly WTI over lookback period
+            type: float
+
+      - step: 3
+        repo: worldenergydata
+        module: metocean
+        action: attach_site_metocean
+        description: >
+          For each candidate field, attach a metocean severity index from ERA5 or NDBC.
+          Compute 100yr Hs, mean current speed, and hurricane frequency index.
+        inputs:
+          - name: candidate_fields
+            description: From step 1
+            type: array[dict]
+          - name: data_source
+            type: str
+            enum: [era5, noaa_ndbc]
+            default: era5
+        outputs:
+          - name: fields_with_metocean
+            description: Candidate fields with metocean severity attached
+            type: array[dict]
+            added_fields: [hs_100yr_m, current_100yr_ms, hurricane_frequency_index]
+
+      - step: 4
+        repo: worldenergydata
+        module: production
+        action: decline_curve_reserves
+        description: >
+          Apply Arps decline curve to each field's production history to estimate
+          remaining reserves and future production profile.
+        inputs:
+          - name: fields_with_metocean
+            description: From step 3
+            type: array[dict]
+          - name: decline_type
+            type: str
+            enum: [exponential, hyperbolic, harmonic]
+            default: hyperbolic
+          - name: economic_limit_bopd
+            description: Minimum economic production rate
+            type: float
+            default: 50.0
+        outputs:
+          - name: fields_with_reserves
+            description: Fields with decline curve results attached
+            type: array[dict]
+            added_fields: [remaining_reserves_mbbl, plateau_rate_bopd,
+                           economic_life_years, decline_rate_per_year]
+
+      - step: 5
+        repo: worldenergydata
+        module: finance
+        action: npv_screening
+        description: >
+          Run NPV screening at configurable oil price and discount rate.
+          Apply carbon cost sensitivity per WRK-321.
+        inputs:
+          - name: fields_with_reserves
+            description: From step 4
+            type: array[dict]
+          - name: oil_price_scenarios_usd
+            description: Oil price scenarios for sensitivity
+            type: array[float]
+            default: [50.0, 70.0, 90.0]
+          - name: discount_rate_fraction
+            description: Discount rate for NPV
+            type: float
+            default: 0.10
+          - name: carbon_price_usd_per_tonne
+            description: Carbon price for sensitivity (WRK-321)
+            type: float
+            default: 50.0
+          - name: capex_usd_per_bbl
+            description: Development capex estimate
+            type: float
+            default: 20.0
+        outputs:
+          - name: fields_with_economics
+            description: Fields with NPV screening attached
+            type: array[dict]
+            added_fields: [npv_base_musd, npv_low_musd, npv_high_musd,
+                           breakeven_oil_price, carbon_cost_impact_musd]
+
+      - step: 6
+        repo: worldenergydata
+        module: reporting
+        action: rank_and_report
+        description: >
+          Rank candidate fields by composite score (NPV, reserves, metocean severity).
+          Produce structured screening report.
+        inputs:
+          - name: fields_with_economics
+            description: From step 5
+            type: array[dict]
+          - name: ranking_weights
+            description: Weights for NPV, reserves, metocean severity in composite score
+            type: dict
+            default: {npv: 0.5, reserves: 0.3, metocean_inverse: 0.2}
+        outputs:
+          - name: screening_report
+            description: Ranked field screening report
+            type: dict
+
+    standards_applied:
+      - id: BSEE-30-CFR-250
+        role: GOM regulatory framework, production reporting requirements
+      - id: SPE-PRMS
+        role: Petroleum Resources Management System — reserves classification
+      - id: ARPS-DECLINE
+        role: Arps decline curve methodology for production forecasting
+      - id: EIA-API-V2
+        role: US energy statistics data source
+
+    current_gaps:
+      - Arps decline curve not yet implemented (WRK-318 pending)
+      - Cross-source synthesis layer not built (no unified field record)
+      - Carbon cost sensitivity not implemented (WRK-321 pending)
+      - SODIR integration not yet wired for North Sea screening equivalent
+
+    output_deliverable:
+      name: Field Development Screening Report
+      contents:
+        - executive_summary (top 5 candidates, key metrics)
+        - candidate_field_table (ranked by composite score)
+        - metocean_severity_map (spatial distribution of Hs-100yr)
+        - decline_curve_plots (top 3 candidates — production forecast)
+        - npv_sensitivity_table (NPV vs oil price and carbon cost)
+        - data_sources_and_vintage (BSEE, EIA, ERA5 version and access date)
+        - gap_register (what data was not available and why)
+
+
+  - id: WP-004
+    name: Portfolio Risk Analysis
+    description: >
+      Quantitative risk assessment for an energy stock portfolio. Computes value-at-risk,
+      conditional VaR, Sharpe and Sortino ratios, maximum drawdown, and sector
+      concentration risk. Produces a portfolio risk dashboard report suitable for
+      weekly review.
+    tier_required: 2
+    repos_involved:
+      - assethold
+    steps:
+      - step: 1
+        repo: assethold
+        module: data
+        action: fetch_portfolio_data
+        description: >
+          Fetch historical price data and fundamentals for all holdings.
+          Attach GICS sector classification.
+        inputs:
+          - name: holdings
+            description: Portfolio holdings — ticker, quantity, cost basis
+            type: array[dict]
+            fields: [ticker, quantity, cost_basis_usd]
+          - name: lookback_days
+            description: Historical lookback period for returns calculation
+            type: int
+            default: 252
+          - name: fundamentals
+            description: Whether to fetch P/E, P/B, EV/EBITDA
+            type: bool
+            default: true
+        outputs:
+          - name: price_history
+            description: Daily close prices for each holding
+            type: dataframe
+          - name: fundamentals
+            description: Current P/E, P/B, EV/EBITDA per ticker
+            type: dict[dict]
+          - name: sector_classification
+            description: GICS sector and sub-industry per ticker
+            type: dict[str]
+
+      - step: 2
+        repo: assethold
+        module: risk
+        action: compute_return_statistics
+        description: >
+          Calculate daily and periodic returns for each holding and the portfolio.
+          Compute covariance matrix.
+        inputs:
+          - name: price_history
+            description: From step 1
+            type: dataframe
+          - name: portfolio_weights
+            description: Current portfolio weights by market value
+            type: dict[float]
+            auto_computed: true
+        outputs:
+          - name: daily_returns
+            description: Daily returns per holding and portfolio
+            type: dataframe
+          - name: covariance_matrix
+            description: Return covariance matrix (annualised)
+            type: matrix[float]
+          - name: correlation_matrix
+            description: Pairwise return correlations
+            type: matrix[float]
+
+      - step: 3
+        repo: assethold
+        module: risk
+        action: compute_var_cvar
+        description: >
+          Compute Value at Risk and Conditional VaR (Expected Shortfall) at
+          multiple confidence levels and horizons.
+        inputs:
+          - name: daily_returns
+            description: From step 2
+            type: dataframe
+          - name: portfolio_value_usd
+            description: Current total portfolio value
+            type: float
+          - name: confidence_levels
+            description: VaR confidence levels
+            type: array[float]
+            default: [0.95, 0.99]
+          - name: horizons_days
+            description: VaR horizons
+            type: array[int]
+            default: [1, 5, 20]
+          - name: method
+            description: VaR calculation method
+            type: str
+            enum: [parametric, historical, monte_carlo]
+            default: historical
+        outputs:
+          - name: var_table
+            description: VaR by confidence level and horizon
+            type: dict[dict[float]]
+            unit: USD
+          - name: cvar_table
+            description: CVaR (Expected Shortfall) by confidence level and horizon
+            type: dict[dict[float]]
+            unit: USD
+
+      - step: 4
+        repo: assethold
+        module: risk
+        action: compute_performance_ratios
+        description: >
+          Compute Sharpe ratio, Sortino ratio, and maximum drawdown per holding
+          and for the portfolio.
+        inputs:
+          - name: daily_returns
+            description: From step 2
+            type: dataframe
+          - name: risk_free_rate_annual
+            description: Risk-free rate (e.g., 3-month T-bill yield)
+            type: float
+            default: 0.05
+        outputs:
+          - name: sharpe_by_holding
+            description: Sharpe ratio per holding (annualised)
+            type: dict[float]
+          - name: sortino_by_holding
+            description: Sortino ratio per holding (annualised)
+            type: dict[float]
+          - name: max_drawdown_by_holding
+            description: Maximum peak-to-trough drawdown per holding
+            type: dict[float]
+          - name: portfolio_sharpe
+            description: Portfolio-level Sharpe ratio
+            type: float
+          - name: portfolio_max_drawdown
+            description: Portfolio-level maximum drawdown
+            type: float
+
+      - step: 5
+        repo: assethold
+        module: sector
+        action: sector_concentration_analysis
+        description: >
+          Analyse sector concentration risk. Flag concentration above thresholds.
+          Decompose energy sub-sector exposure.
+        inputs:
+          - name: holdings
+            description: From step 1
+            type: array[dict]
+          - name: sector_classification
+            description: From step 1
+            type: dict[str]
+          - name: portfolio_weights
+            description: From step 2
+            type: dict[float]
+          - name: concentration_threshold
+            description: Maximum single-sector weight before flagging
+            type: float
+            default: 0.40
+        outputs:
+          - name: sector_weights
+            description: Portfolio weight by GICS sector
+            type: dict[float]
+          - name: concentration_flags
+            description: Sectors exceeding concentration threshold
+            type: array[str]
+          - name: energy_subsector_breakdown
+            description: Upstream/midstream/downstream/services exposure
+            type: dict[float]
+
+      - step: 6
+        repo: assethold
+        module: reporting
+        action: generate_risk_report
+        description: Assemble portfolio risk report
+        inputs:
+          - name: var_table
+            description: From step 3
+          - name: cvar_table
+            description: From step 3
+          - name: sharpe_by_holding
+            description: From step 4
+          - name: portfolio_max_drawdown
+            description: From step 4
+          - name: sector_weights
+            description: From step 5
+          - name: concentration_flags
+            description: From step 5
+        outputs:
+          - name: risk_report
+            description: Portfolio risk dashboard report
+            type: dict
+
+    standards_applied:
+      - id: MARKOWITZ-MPT
+        role: Modern Portfolio Theory — covariance, efficient frontier
+      - id: GICS
+        role: Global Industry Classification Standard — sector taxonomy
+      - id: BASEL-MARKET-RISK
+        role: VaR methodology reference (historical simulation, parametric)
+
+    current_gaps:
+      - VaR/CVaR not yet implemented (WRK-323 pending)
+      - GICS sector classification not automated (WRK-323 pending)
+      - Covered call analysis not built (WRK-325 pending)
+      - Fundamentals scoring (P/E, P/B, EV/EBITDA) not wired (WRK-322 pending)
+
+    output_deliverable:
+      name: Portfolio Risk Dashboard Report
+      contents:
+        - holdings_summary (ticker, weight, cost_basis, current_value, P&L)
+        - var_cvar_table (1-day, 1-week, 20-day at 95%/99%)
+        - performance_ratios_table (Sharpe, Sortino, max drawdown per holding)
+        - sector_concentration_chart (portfolio weight by GICS sector)
+        - energy_subsector_breakdown (upstream/midstream/downstream/services)
+        - concentration_flags (sectors above threshold with recommendation)
+        - top_5_risk_contributors (holdings by VaR contribution)
+        - gap_register (what was not computed due to missing modules)
