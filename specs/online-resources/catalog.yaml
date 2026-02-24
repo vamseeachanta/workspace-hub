@@ -1,0 +1,15 @@
+# Online Resources Catalog for Workspace-Hub Ecosystem
+# Defined in WRK-391
+
+resources:
+  - name: The Well
+    category: science/physics-ml
+    subcategory: datasets
+    url: https://polymathic-ai.org/the_well/
+    auth_required: false
+    cost_model: free
+    relevance_score: 5
+    related_module: digitalmodel/hydrodynamics
+    maturity: live
+    notes: 15TB physics simulation dataset; CC BY 4.0; Hugging Face streaming support.
+    discovery_status: new
