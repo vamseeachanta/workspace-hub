@@ -1,8 +1,8 @@
 ---
 name: blender-interface
 description: AI interface skill for Blender 3D — headless CLI execution, Python bpy API, mesh import/export, rendering, and integration with engineering analysis workflows.
-version: 1.0.0
-updated: 2026-02-23
+version: 1.1.0
+updated: 2026-02-24
 category: cad-engineering
 triggers:
 - Blender automation
@@ -62,18 +62,18 @@ cylinder.name = "Riser_Section"
 | GLTF | `bpy.ops.import_scene.gltf(filepath=path)` | Same across versions |
 | DAE | `bpy.ops.wm.collada_import(filepath=path)` | Collada |
 
-### Blender 3.x vs 4.x API Migration
+### Blender 3.x / 4.x / 5.x API Migration
 
-| Operation | Blender 3.x | Blender 4.x |
-|-----------|-------------|-------------|
-| Import STL | `bpy.ops.import_mesh.stl()` | `bpy.ops.wm.stl_import()` |
-| Import OBJ | `bpy.ops.import_scene.obj()` | `bpy.ops.wm.obj_import()` |
-| Import PLY | `bpy.ops.import_mesh.ply()` | `bpy.ops.wm.ply_import()` |
-| Export STL | `bpy.ops.export_mesh.stl()` | `bpy.ops.wm.stl_export()` |
-| Export OBJ | `bpy.ops.export_scene.obj()` | `bpy.ops.wm.obj_export()` |
-| BSDF Base Color | `node.inputs['Base Color']` | `node.inputs['Base Color']` (unchanged) |
-| BSDF Roughness | `node.inputs['Roughness']` | `node.inputs['Roughness']` (unchanged) |
-| BSDF Specular | `node.inputs['Specular']` | `node.inputs['Specular IOR Level']` |
+| Operation | Blender 3.x | Blender 4.x | Blender 5.x |
+|-----------|-------------|-------------|-------------|
+| Import STL | `bpy.ops.import_mesh.stl()` | `bpy.ops.wm.stl_import()` | same as 4.x |
+| Import OBJ | `bpy.ops.import_scene.obj()` | `bpy.ops.wm.obj_import()` | same as 4.x |
+| Import PLY | `bpy.ops.import_mesh.ply()` | `bpy.ops.wm.ply_import()` | same as 4.x |
+| Export STL | `bpy.ops.export_mesh.stl()` | `bpy.ops.wm.stl_export()` | same as 4.x |
+| Export OBJ | `bpy.ops.export_scene.obj()` | `bpy.ops.wm.obj_export()` | same as 4.x |
+| BSDF Specular | `node.inputs['Specular']` | `node.inputs['Specular IOR Level']` | same as 4.x |
+| EEVEE engine | `'BLENDER_EEVEE'` | `'BLENDER_EEVEE_NEXT'` | `'BLENDER_EEVEE'` (reverted) |
+| `use_nodes` | required | required | deprecated (always on) |
 
 ### Material Assignment (Principled BSDF)
 
@@ -81,7 +81,8 @@ cylinder.name = "Riser_Section"
 def create_material(name, color_rgba, metallic=0.0, roughness=0.5):
     """Create a Principled BSDF material."""
     mat = bpy.data.materials.new(name=name)
-    mat.use_nodes = True
+    if bpy.app.version[0] < 5:  # use_nodes deprecated in 5.x (always on)
+        mat.use_nodes = True
     bsdf = mat.node_tree.nodes["Principled BSDF"]
     bsdf.inputs['Base Color'].default_value = color_rgba  # (R, G, B, A)
     bsdf.inputs['Metallic'].default_value = metallic
@@ -148,7 +149,11 @@ def setup_lighting():
 def configure_render(engine='CYCLES', resolution=(1920, 1080), samples=128, gpu=True):
     """Configure render settings."""
     scene = bpy.context.scene
-    scene.render.engine = engine  # 'CYCLES' or 'BLENDER_EEVEE_NEXT'
+    # EEVEE enum name changed across versions:
+    #   3.x: 'BLENDER_EEVEE', 4.x: 'BLENDER_EEVEE_NEXT', 5.x: 'BLENDER_EEVEE'
+    if engine in ('EEVEE', 'BLENDER_EEVEE', 'BLENDER_EEVEE_NEXT'):
+        engine = 'BLENDER_EEVEE_NEXT' if bpy.app.version[0] == 4 else 'BLENDER_EEVEE'
+    scene.render.engine = engine  # 'CYCLES' or resolved EEVEE name
     scene.render.resolution_x = resolution[0]
     scene.render.resolution_y = resolution[1]
 
@@ -377,6 +382,8 @@ def parse_render_log(log_text):
 | `bpy.ops.render.render(): Error, no camera` | No camera in scene or not set as active | `bpy.context.scene.camera = cam_object` |
 | `Cannot read file: ...blend` | Blend file version newer than Blender | Use matching Blender version or save backward-compatible |
 | `operator returned {'CANCELLED'}` | Operation context incorrect | Ensure correct context override or use `with bpy.context.temp_override()` |
+| `enum "BLENDER_EEVEE_NEXT" not found` | Blender 5.x reverted EEVEE enum name | Use version check: `'BLENDER_EEVEE_NEXT' if bpy.app.version[0]==4 else 'BLENDER_EEVEE'` |
+| `DeprecationWarning: 'Material.use_nodes'` | Blender 5.x always enables nodes | Guard with `if bpy.app.version[0] < 5: mat.use_nodes = True` |
 
 ### Diagnostic Function
 
@@ -605,4 +612,5 @@ def vtk_to_blender(vtk_path):
 
 ## Version History
 
+- **1.1.0** (2026-02-24): Validated against Blender 5.0.1. Added 5.x migration column (EEVEE enum revert, use_nodes deprecation), version-safe render config, 2 new failure diagnosis entries.
 - **1.0.0** (2026-02-23): Initial full interface skill covering CLI execution, bpy API, 3.x/4.x migration, rendering, mesh validation, and engineering integration.
