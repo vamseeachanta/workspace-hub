@@ -1,0 +1,52 @@
+repo: assethold
+generated: '2026-02-24'
+mission: Stock portfolio management with technical and insider sentiment analysis
+tier: 3
+standards: []
+apis:
+- id: yfinance
+  title: yfinance — Yahoo Finance Python Library
+  org: Yahoo Finance / yfinance open-source
+  endpoint: https://query1.finance.yahoo.com/
+  status: implemented
+  domain: portfolio
+  summary: Public market data API providing OHLCV price history, fundamental ratios
+    (P/E, P/B, EV/EBITDA), dividend history, and options chain data for equities.
+  keywords:
+  - OHLCV
+  - price history
+  - fundamentals
+  - dividends
+  - options chain
+  - covered calls
+- id: sec-edgar-form4
+  title: SEC EDGAR Form 4 — Insider Trading Filings
+  org: U.S. Securities and Exchange Commission
+  endpoint: https://www.sec.gov/cgi-bin/browse-edgar
+  status: planned
+  domain: portfolio
+  summary: Public SEC EDGAR API providing Form 4 insider transaction filings for
+    tracking director and officer purchases and sales of company stock.
+  keywords:
+  - Form 4
+  - insider trading
+  - SEC EDGAR
+  - director transactions
+  - officer transactions
+local_data:
+- path: assethold/data/stocks/cache/
+  description: Processed OHLCV price cache (gitignored)
+  committed: false
+- path: assethold/data/raw/
+  description: Brokerage export files (gitignored)
+  committed: false
+- path: assethold/data/processed/
+  description: Portfolio analysis outputs (gitignored)
+  committed: false
+- path: assethold/config/daily_strategy.yaml
+  description: Daily strategy configuration
+  committed: true
+- path: assethold/config/stocks/watchlist.yml
+  description: Stock watchlist configuration
+  committed: true
+gaps: []

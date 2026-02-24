@@ -1,0 +1,13 @@
+repo: frontierdeepwater
+generated: '2026-02-24'
+mission: Deepwater exploration project documentation archive
+tier: 2
+standards: []
+apis: []
+local_data:
+- path: frontierdeepwater/
+  description: Submodule containing deepwater project documents
+  committed: true
+  notes: Primary document store at /mnt/ace/docs/ (not committed to git; client-sensitive
+    paths excluded per legal gate)
+gaps: []

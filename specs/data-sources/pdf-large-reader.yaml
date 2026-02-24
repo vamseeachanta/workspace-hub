@@ -1,0 +1,13 @@
+repo: pdf-large-reader
+generated: '2026-02-24'
+mission: Memory-efficient PDF processing utility for large files (100MB+, 1000+ pages)
+tier: 2
+status_note: Under review — WRK-341 assessed continued need vs native AI PDF capabilities
+standards: []
+apis: []
+local_data:
+- path: (input only)
+  description: Processes local PDF files from /mnt/ace/ and other drives on demand;
+    input files are not stored within the repo
+  committed: false
+gaps: []
