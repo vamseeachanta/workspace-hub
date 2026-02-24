@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-24T11:32:55Z by generate-index.py -->
+<!-- Generated: 2026-02-24T11:49:23Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-24T11:32:55Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-24T11:49:23Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 377
+**Total items:** 378
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 128 |
+| pending | 129 |
 | working | 9 |
 | blocked | 5 |
 | done | 8 |
@@ -23,23 +23,23 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 138 |
-| medium | 192 |
+| high | 137 |
+| medium | 194 |
 | low | 46 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 76 |
-| medium | 168 |
+| simple | 75 |
+| medium | 170 |
 | complex | 92 |
 
 ### By Repository
 
 | Repository | Count |
 |------------|-------|
-| OGManufacturing | 4 |
+| OGManufacturing | 3 |
 | aceengineer-admin | 5 |
 | aceengineer-strategy | 2 |
 | aceengineer-website | 22 |
@@ -47,7 +47,7 @@
 | acma-projects | 10 |
 | assethold | 13 |
 | assetutilities | 8 |
-| digitalmodel | 119 |
+| digitalmodel | 121 |
 | doris | 5 |
 | frontierdeepwater | 5 |
 | hobbies | 1 |
@@ -56,7 +56,7 @@
 | rock-oil-field | 2 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 6 |
-| workspace-hub | 116 |
+| workspace-hub | 117 |
 | worldenergydata | 91 |
 
 ### Plan Tracking
@@ -64,10 +64,10 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 142 / 377 |
+| Plans exist | 142 / 378 |
 | Plans cross-reviewed | 62 |
 | Plans approved | 81 |
-| Brochure pending | 4 |
+| Brochure pending | 5 |
 | Brochure updated/synced | 6 |
 
 ## Metrics
@@ -76,9 +76,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 377 |
+| Total captured | 378 |
 | Total archived | 214 |
-| Completion rate | 214/377 (57%) |
+| Completion rate | 214/378 (57%) |
 | Monthly rate (current month) | 61 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -86,7 +86,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 37 / 128 | 29% |
+| Pending items with plans | 37 / 129 | 29% |
 | Plans cross-reviewed | 8 | 17% |
 | Plans user-approved | 10 | 21% |
 
@@ -103,8 +103,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 27 | 7 | 3 |
-| Medium   | 69  | 2  | 1  |
+| High     | 26 | 7 | 3 |
+| Medium   | 71  | 2  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## Master Table
@@ -446,7 +446,6 @@
 | WRK-330 | DNV-ST-F101 pressure containment checks for subsea pipelines | pending | medium | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-331 | API RP 1111 deepwater pipeline design checks — collapse and propagating buckle | pending | medium | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-332 | On-bottom stability module — DNV-RP-F109 soil resistance calculations | pending | medium | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-333 | Establish OGManufacturing repo structure — README src specs tests scaffold | pending | high | simple | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-334 | Production surveillance module — well KPI tracking GOR WCT PI | pending | medium | medium | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-335 | Drilling engineering module — casing design checks per API TR 5C3 | pending | medium | high | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | pending | medium | high | acma-ansys05 | - | saipem, rock-oil-field | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -487,6 +486,8 @@
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | ace-linux-2 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ██░ 80% | n/a | - |
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | working | medium | complex | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 80% | n/a | - |
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | pending | high | simple | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | medium | ace-linux-1 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | pending | medium | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | ⏳ pending | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -614,7 +615,6 @@
 | WRK-330 | DNV-ST-F101 pressure containment checks for subsea pipelines | medium | medium | doris | - |
 | WRK-331 | API RP 1111 deepwater pipeline design checks — collapse and propagating buckle | medium | medium | doris | - |
 | WRK-332 | On-bottom stability module — DNV-RP-F109 soil resistance calculations | medium | medium | doris | - |
-| WRK-333 | Establish OGManufacturing repo structure — README src specs tests scaffold | high | simple | OGManufacturing | - |
 | WRK-334 | Production surveillance module — well KPI tracking GOR WCT PI | medium | medium | OGManufacturing | - |
 | WRK-335 | Drilling engineering module — casing design checks per API TR 5C3 | medium | high | OGManufacturing | - |
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | medium | high | saipem, rock-oil-field | - |
@@ -635,6 +635,8 @@
 | WRK-371 | Heriberto: powder room faucet tightening | medium | simple | achantas-data | - |
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | high | complex | workspace-hub, digitalmodel | - |
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | high | simple | - | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | medium | medium | workspace-hub, digitalmodel | - |
+| WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | medium | medium | digitalmodel | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -887,7 +889,6 @@
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
 | WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
-| WRK-333 | Establish OGManufacturing repo structure — README src specs tests scaffold | pending | high | simple | - |
 | WRK-334 | Production surveillance module — well KPI tracking GOR WCT PI | pending | medium | medium | - |
 | WRK-335 | Drilling engineering module — casing design checks per API TR 5C3 | pending | medium | high | - |
 
@@ -1122,6 +1123,8 @@
 | WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | archived | low | simple | - |
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | medium | - |
+| WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | pending | medium | medium | - |
 
 ### doris
 
@@ -1305,6 +1308,7 @@
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | simple | - |
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | - |
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | working | medium | complex | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1535,7 +1539,6 @@
 | WRK-314 | OrcaFlex Reporting Phase 4 — OrcFxAPI Integration | complete | medium | - | - |
 | WRK-322 | Fundamentals scoring — P/E P/B EV/EBITDA ranking from yfinance | pending | medium | assethold | - |
 | WRK-324 | Risk metrics — VaR CVaR Sharpe ratio max drawdown per position and portfolio | pending | medium | assethold | - |
-| WRK-333 | Establish OGManufacturing repo structure — README src specs tests scaffold | pending | simple | OGManufacturing | - |
 | WRK-342 | Multi-machine workflow clarity — SSH helper scripts, hostname in statusline, CLI consistency across ace-linux-1 and ace-linux-2 | pending | medium | workspace-hub | - |
 | WRK-344 | Remove agent_os from assetutilities | done | simple | assetutilities | - |
 | WRK-345 | Consolidate validators package into assetutilities | done | simple | assetutilities, worldenergydata, assethold | - |
@@ -1744,6 +1747,8 @@
 | WRK-370 | Heriberto: garage fence door repair | pending | simple | achantas-data | - |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | simple | achantas-data | - |
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | working | complex | workspace-hub | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | workspace-hub, digitalmodel | - |
+| WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | pending | medium | digitalmodel | - |
 
 ### Low
 
@@ -1859,7 +1864,6 @@
 | WRK-297 | SSHFS mounts on ace-linux-1 for ace-linux-2 drives — bidirectional file access | pending | high | workspace-hub | - |
 | WRK-298 | Install smartmontools on ace-linux-1 + SMART health check on all drives | completed | high | workspace-hub | - |
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | workspace-hub | - |
-| WRK-333 | Establish OGManufacturing repo structure — README src specs tests scaffold | pending | high | OGManufacturing | - |
 | WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | pending | medium | pdf-large-reader, workspace-hub | - |
 | WRK-344 | Remove agent_os from assetutilities | done | high | assetutilities | - |
 | WRK-345 | Consolidate validators package into assetutilities | done | high | assetutilities, worldenergydata, assethold | - |
@@ -2051,6 +2055,8 @@
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | archived | high | frontierdeepwater, aceengineer-admin | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | high | - | - |
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | assethold | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | workspace-hub, digitalmodel | - |
+| WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | pending | medium | digitalmodel | - |
 
 ### Complex
 
@@ -2151,7 +2157,7 @@
 
 ## By Computer
 
-### ace-linux-1 (130 active / 137 total)
+### ace-linux-1 (131 active / 138 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2260,7 +2266,6 @@
 | WRK-330 | DNV-ST-F101 pressure containment checks for subsea pipelines | pending | medium | medium | doris |
 | WRK-331 | API RP 1111 deepwater pipeline design checks — collapse and propagating buckle | pending | medium | medium | doris |
 | WRK-332 | On-bottom stability module — DNV-RP-F109 soil resistance calculations | pending | medium | medium | doris |
-| WRK-333 | Establish OGManufacturing repo structure — README src specs tests scaffold | pending | high | simple | OGManufacturing |
 | WRK-334 | Production surveillance module — well KPI tracking GOR WCT PI | pending | medium | medium | OGManufacturing |
 | WRK-335 | Drilling engineering module — casing design checks per API TR 5C3 | pending | medium | high | OGManufacturing |
 | WRK-337 | Vessel weather-window calculator — operability analysis from Hs Tp scatter | pending | medium | medium | saipem, rock-oil-field |
@@ -2291,6 +2296,8 @@
 | WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | achantas-data |
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | working | medium | complex | workspace-hub |
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | pending | high | simple | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | medium | workspace-hub, digitalmodel |
+| WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | pending | medium | medium | digitalmodel |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (12 active / 13 total)

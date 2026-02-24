@@ -119,28 +119,31 @@ def load_index(index_path: Path) -> List[Dict]:
 
 
 def load_summaries(summaries_dir: Path) -> Dict[str, Dict]:
-    """Load all summary JSON files keyed by path and by sha."""
-    summaries: Dict[str, Dict] = {}
-    if not summaries_dir.exists():
-        return summaries
-    count = 0
-    for sfile in summaries_dir.glob("*.json"):
-        try:
-            with open(sfile) as f:
-                s = json.load(f)
-            if "path" in s:
-                summaries[s["path"]] = s
-            # Also index by sha so index records can look up by content_hash
-            sha = s.get("sha") or sfile.stem
-            if sha and sha not in summaries:
-                summaries[sha] = s
-            count += 1
-            if count % 50000 == 0:
-                logger.info("Loaded %d summaries...", count)
-        except (json.JSONDecodeError, OSError):
-            continue
-    logger.info("Loaded %d summaries (%d index entries)", count, len(summaries))
-    return summaries
+    """Return summaries_dir path as sentinel — on-demand loading is used instead."""
+    # Summaries are looked up on-demand by SHA to avoid loading 600K+ files upfront.
+    # This function is kept for API compatibility; callers receive a special marker.
+    return {"__summaries_dir__": str(summaries_dir), "__on_demand__": True}
+
+
+def get_summary(summaries: Dict, summaries_dir: Path, path: str, sha: str) -> Optional[Dict]:
+    """On-demand summary lookup: check SHA file, then path cache."""
+    # Check in-memory cache first
+    cached = summaries.get(path) or summaries.get(sha)
+    if cached and not isinstance(cached, str):
+        return cached
+
+    # Try loading from SHA-based filename
+    if sha:
+        sfile = summaries_dir / f"{sha}.json"
+        if sfile.exists():
+            try:
+                with open(sfile) as f:
+                    s = json.load(f)
+                summaries[path] = s  # cache by path for reuse
+                return s
+            except (json.JSONDecodeError, OSError):
+                pass
+    return None
 
 
 def classify_heuristic(record: Dict, summary: Optional[Dict]) -> Tuple[str, str]:
@@ -242,22 +245,26 @@ def build_enhancement_plan(
     """Classify all documents and build enhancement plan."""
     repo_domain_map = cfg.get("repo_domain_map", {})
     by_domain: Dict[str, Dict] = {}
-    daily_spend = 0.0
     classified = 0
+
+    # Resolve summaries_dir for on-demand loading
+    summaries_dir_str = summaries.get("__summaries_dir__", "")
+    summaries_dir = Path(summaries_dir_str) if summaries_dir_str else None
 
     for rec in records:
         if limit and classified >= limit:
             break
 
         path = rec.get("path", "")
-        summary = summaries.get(path)
-        # Fallback: look up by content_hash (SHA) when path doesn't match
-        if not summary:
-            sha = rec.get("content_hash", "")
-            if sha:
-                summary = summaries.get(sha)
+        sha = rec.get("content_hash", "")
 
-        # Always use heuristic (which checks Phase B discipline first).
+        # On-demand lookup by SHA
+        if summaries_dir:
+            summary = get_summary(summaries, summaries_dir, path, sha)
+        else:
+            summary = summaries.get(path) or (summaries.get(sha) if sha else None)
+
+        # Always use heuristic (checks Phase B discipline first).
         # LLM re-classification skipped: Phase B already classified all docs.
         domain, status = classify_heuristic(rec, summary)
 
@@ -281,18 +288,15 @@ def build_enhancement_plan(
         })
 
         classified += 1
-        if classified % 500 == 0:
-            logger.info("Classified %d, LLM spend: $%.2f", classified, daily_spend)
+        if classified % 50000 == 0:
+            logger.info("Classified %d records...", classified)
 
     plan = {
         "generated": datetime.now().isoformat(timespec="seconds"),
         "total_classified": classified,
         "by_domain": by_domain,
     }
-    logger.info(
-        "Classification done: %d docs, %d domains, $%.2f",
-        classified, len(by_domain), daily_spend,
-    )
+    logger.info("Classification done: %d docs, %d domains", classified, len(by_domain))
     return plan
 
 
