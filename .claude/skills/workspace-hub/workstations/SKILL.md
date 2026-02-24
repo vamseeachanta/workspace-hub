@@ -43,7 +43,7 @@ Every WRK item **should** set `computer:` in frontmatter. Leave blank only for m
 | ace-linux-1 | ace-linux-1 | Ubuntu 24.04.3 LTS | 2x Xeon E5-2630 v3 (16C/32T) | 32 GB DDR4 ECC | GTX 750 Ti 2 GB | Primary — worldenergydata, hub orchestration, digitalmodel | [aceengineer-01.md](../../../specs/modules/hardware-inventory/aceengineer-01.md) |
 | ace-linux-2 | ace-linux-2 | Ubuntu 24.04.4 LTS | 2x Xeon E5-2630 v3 (16C/32T) | 32 GB DDR4 ECC | T400 4 GB | Secondary Linux — open-source CFD/FEA/animation dev (blender, gmsh, openfoam, calculix, fenics, freecad, elmer) | [aceengineer-02.md](../../../specs/modules/hardware-inventory/aceengineer-02.md) |
 | acma-ws014 | ACMA-WS014 | Windows 11 | i9 2 GHz | 16 GB | 8 GB graphics | Windows work, office tools | Pending |
-| acma-ansys05 | ACMA-ANSYS05 | Windows (TBD) | 60 cores, 2.8 GHz | TBD | TBD | OrcaFlex (license-locked), ANSYS, AI/Python | Pending |
+| acma-ansys05 | ACMA-ANSYS05 | Windows (TBD) | 60 cores, 2.8 GHz | TBD | TBD | OrcaFlex (license-locked), ANSYS + AQWA (licensed), AI/Python | Pending |
 | gali-linux-compute-1 | TBD | Linux (TBD) | 128 cores (TBD) | 128 GB | 64 GB VRAM (TBD) | Heavy compute — CFD, FEA, large sims, batch | Preliminary |
 
 ### ace-linux-1 Storage
@@ -172,8 +172,8 @@ machines:
 
   acma-ansys05:
     hostname: ACMA-ANSYS05
-    programs: [orcaflex, ansys, python, office]
-    exclusive: [orcaflex, ansys]
+    programs: [orcaflex, ansys, aqwa, python, office]
+    exclusive: [orcaflex, ansys, aqwa]   # all three are licensed programs on this machine
     shares_hub: null
     isolated: true
     cron_variant: contribute-minimal

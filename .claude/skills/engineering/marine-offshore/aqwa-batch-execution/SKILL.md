@@ -27,10 +27,13 @@ see_also:
 ---
 # AQWA Batch Execution Skill
 
-Run ANSYS AQWA analyses from the Linux command line without a GUI. On Linux,
-command-line execution is the **only** available mode — no Workbench GUI is present.
-The analysis program type (LINE / LIBR / NAUT / DRIFT) is set inside the `.DAT` file,
-not on the command line.
+**ACE Ecosystem:** AQWA is installed on `acma-ansys05` (Windows, 60 cores) as a
+licensed program. Use Windows CLI paths and the `workbench.bat` patterns on that
+machine. Linux paths in this skill apply to HPC clusters or other Linux installations.
+
+Run ANSYS AQWA analyses from the command line without a GUI. On Linux, CLI is the
+**only** available mode. The analysis program type (LINE / LIBR / NAUT / DRIFT) is
+set inside the `.DAT` file, not on the command line.
 
 ## Version Metadata
 
