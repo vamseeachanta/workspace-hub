@@ -81,16 +81,19 @@ _auto_sync_hub() {
         return 0
     fi
 
+    # Clear stale index lock that parallel Phase 1 workers may leave behind
+    rm -f "$WORKSPACE_ROOT/.git/index.lock" 2>/dev/null || true
     git add -A 2>/dev/null
 
     if [ -z "$(git status --porcelain)" ]; then
         echo -e "${YELLOW}⊘ workspace-hub: nothing to commit${NC}"; return 0
     fi
 
-    if git -c core.hooksPath=/dev/null commit -m "chore(sync): auto-sync $date_str" 2>/dev/null; then
+    local commit_err
+    if commit_err=$(git -c core.hooksPath=/dev/null commit -m "chore(sync): auto-sync $date_str" 2>&1); then
         echo -e "${GREEN}✓ workspace-hub: committed${NC}"
     else
-        echo -e "${RED}✗ workspace-hub: commit failed${NC}"; return 1
+        echo -e "${RED}✗ workspace-hub: commit failed — $commit_err${NC}"; return 1
     fi
 
     if ! git pull --ff-only 2>/dev/null; then
