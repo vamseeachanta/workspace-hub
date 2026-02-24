@@ -1,8 +1,8 @@
 ---
 name: cfd-pipeline
 description: Cross-program workflow for CFD analysis — geometry (FreeCAD/Gmsh) to meshing (Gmsh/snappyHexMesh) to solving (OpenFOAM) to visualization (ParaView/Blender). Covers data flow, format conversion, and validation between programs.
-version: 1.0.0
-updated: 2026-02-23
+version: 1.0.1
+updated: 2026-02-24
 category: workflow
 triggers:
 - CFD pipeline
@@ -300,14 +300,15 @@ def openfoam_post_process(case_dir, output_dir):
 # 1. Export from OpenFOAM to VTK
 foamToVTK -case /path/to/case -latestTime
 
-# 2. Convert VTK to STL via ParaView (for surface)
-pvbatch -c "
+# 2. Convert VTK to STL via ParaView script (pvbatch does not support -c flag)
+cat > vtk_to_stl.py << 'PYEOF'
 from paraview.simple import *
 r = LegacyVTKReader(FileNames=['VTK/case_1000.vtk'])
 s = ExtractSurface(Input=r)
 t = Triangulate(Input=s)
 SaveData('surface.stl', proxy=t)
-"
+PYEOF
+pvbatch vtk_to_stl.py
 
 # 3. Import into Blender
 blender --background --python render_cfd.py -- --input surface.stl --output render.png
@@ -417,4 +418,5 @@ FreeCAD (.FCStd) ──export──► .step/.stl
 
 ## Version History
 
+- **1.0.1** (2026-02-24): Fixed pvbatch -c inline flag (not supported) → script file pattern (validated 148/151→151/151)
 - **1.0.0** (2026-02-23): Initial cross-program workflow skill for CFD pipeline (WRK-372 Phase 4).

@@ -236,6 +236,9 @@ def map_to_repos(domain: str, repo_domain_map: Dict) -> List[str]:
     )
 
 
+MAX_ITEMS_PER_DOMAIN = 500  # Cap items list to keep YAML manageable
+
+
 def build_enhancement_plan(
     records: List[Dict],
     summaries: Dict[str, Dict],
@@ -278,14 +281,16 @@ def build_enhancement_plan(
             if r not in by_domain[domain]["repos"]:
                 by_domain[domain]["repos"].append(r)
 
-        by_domain[domain]["items"].append({
-            "doc_number": rec.get("doc_number") or "",
-            "title": (summary.get("title") if summary else None)
-                     or Path(path).name,
-            "path": path,
-            "status": status,
-            "notes": "",
-        })
+        # Only store first MAX_ITEMS_PER_DOMAIN items to keep YAML manageable
+        if len(by_domain[domain]["items"]) < MAX_ITEMS_PER_DOMAIN:
+            by_domain[domain]["items"].append({
+                "doc_number": rec.get("doc_number") or "",
+                "title": (summary.get("title") if summary else None)
+                         or Path(path).name,
+                "path": path,
+                "status": status,
+                "notes": "",
+            })
 
         classified += 1
         if classified % 50000 == 0:

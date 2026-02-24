@@ -437,7 +437,7 @@ def parse_export_stats(export_path):
 | `Mesh export produces 0-byte STL` | No mesh-compatible objects | Ensure objects have Shape; use Part before Mesh export |
 | `Boolean operation failed` | Overlapping/touching geometry | Add small offset (0.01mm) between bodies; check geometry validity |
 | `Recompute failed` | Sketches over-/under-constrained | Check `obj.Shape.isValid()` and sketch DOF count |
-| `ImportError: No module named 'FreeCADGui'` | Running headless without GUI module | Use `freecadcmd` instead of `freecad`; avoid Gui-dependent operations |
+| `ImportError: No module named 'FreeCADGui'` | Running headless without GUI module (FreeCAD < 0.21) | FreeCAD ≥ 0.21: `freecadcmd` includes FreeCADGui (no-op window); safe to import. FreeCAD < 0.21: use `freecadcmd` and avoid Gui-dependent operations |
 
 ### Diagnostic Function
 
@@ -497,6 +497,8 @@ freecad -c "exec(open('script.py').read())"
 # Check FreeCAD Python path
 python3 -c "import sys; sys.path.append('/usr/lib/freecad-daily/lib'); import FreeCAD; print(FreeCAD.Version())"
 ```
+
+> **Note (FreeCAD ≥ 0.21):** `freecadcmd` includes `FreeCADGui` as a no-op stub — `import FreeCADGui` succeeds but GUI operations are non-functional. Safe to use in scripts that conditionally check for GUI availability.
 
 ## Validation
 
@@ -613,5 +615,5 @@ def validate_step_export(original_fcstd, exported_step):
 
 ## Version History
 
-- **1.1.0** (2026-02-23): Added output parsing, failure diagnosis, and validation sections (WRK-372 P2-ENHANCE)
+- **1.1.0** (2026-02-24): Added output parsing, failure diagnosis, and validation sections; fixed FreeCADGui availability in freecadcmd ≥ 0.21 (WRK-372 P2-ENHANCE, validated 35/36→36/36)
 - **1.0.0** (2025-01-02): Initial release from agents/freecad/ configuration

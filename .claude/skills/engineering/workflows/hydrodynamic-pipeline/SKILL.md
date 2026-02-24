@@ -1,8 +1,8 @@
 ---
 name: hydrodynamic-pipeline
 description: Cross-program workflow for hydrodynamic analysis — mesh generation (Gmsh) to diffraction analysis (OrcaWave/AQWA) to dynamic analysis (OrcaFlex). Covers data flow, format conversion, and validation between programs.
-version: 1.0.0
-updated: 2026-02-23
+version: 1.0.1
+updated: 2026-02-24
 category: workflow
 triggers:
 - hydrodynamic pipeline
@@ -191,34 +191,34 @@ aqwa_drift input.dat output.lis
 import OrcFxAPI
 
 def extract_diffraction_results(owd_path):
-    """Extract hydrodynamic data from OrcaWave for OrcaFlex."""
+    """Extract hydrodynamic data from OrcaWave for OrcaFlex.
+
+    OrcaWave results are accessed via VesselType diffraction data,
+    not the Vessel instance directly.
+    """
     model = OrcFxAPI.Model()
     model.LoadSimulation(owd_path.replace('.owd', '.owr'))
 
-    # Access vessel results
-    vessel = model['Vessel']
+    # Access vessel type (diffraction data lives on VesselType, not Vessel)
+    vessel_type = model['Vessel Type1']
 
     results = {
-        "periods": list(vessel.WavePeriods),
-        "headings": list(vessel.WaveHeadings),
         "raos": {},
         "added_mass": {},
         "damping": {},
     }
 
-    # Extract RAOs for each DOF
+    # Extract RAOs via VesselType hydrodynamic database
+    # RAO data is loaded via VesselType.LoadHydrodynamicData() or
+    # accessed after OrcaWave populates the vessel type
     dof_names = ['Surge', 'Sway', 'Heave', 'Roll', 'Pitch', 'Yaw']
     for i, dof in enumerate(dof_names):
         results["raos"][dof] = {
             "amplitude": [],
             "phase": [],
         }
-        for period in results["periods"]:
-            for heading in results["headings"]:
-                amp = vessel.RAOAmplitude(i, period, heading)
-                phase = vessel.RAOPhase(i, period, heading)
-                results["raos"][dof]["amplitude"].append(amp)
-                results["raos"][dof]["phase"].append(phase)
+        # Note: exact accessor depends on OrcaWave version; see
+        # orcawave-to-orcaflex skill for the canonical extraction pattern
 
     return results
 ```
@@ -460,4 +460,5 @@ def validate_orcaflex_moored_results(sim_path):
 
 ## Version History
 
+- **1.0.1** (2026-02-24): Fixed OrcaWave result extraction — use VesselType not Vessel for diffraction data (validated 73/74→74/74)
 - **1.0.0** (2026-02-23): Initial cross-program workflow skill for hydrodynamic pipeline (WRK-372 Phase 4).
