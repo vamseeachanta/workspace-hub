@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "generated_at": "2026-02-22T15:01:38-06:00",
+    "generated_at": "2026-02-24T10:46:39-06:00",
     "entry_count": 11,
     "active_count": 11,
-    "errors": 0,
+    "errors": 3,
     "avg_confidence": 0.93,
     "type_counts": {
       "decision": 4,
