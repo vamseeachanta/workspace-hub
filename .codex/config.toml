@@ -1,9 +1,9 @@
 # Codex workspace configuration
 # Adopts Codex 0.102.0 native multi-agent role definitions
 # WRK-238: implemented 2026-02-24
+# WRK-304: fixed [model] table → scalar per CLI 0.104 expectation 2026-02-24
 
-[model]
-default = "codex-mini-latest"
+model = "codex-mini-latest"
 
 [settings]
 max_threads = 12  # Enable higher parallel agent throughput (default is 6)
