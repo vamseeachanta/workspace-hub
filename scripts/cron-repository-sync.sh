@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/bash
+#!/usr/bin/env bash
 
 # ABOUTME: Cron wrapper for repository_sync with logging
 # ABOUTME: Runs daily sync on all workspace repositories

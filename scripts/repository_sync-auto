@@ -1,0 +1,202 @@
+#!/usr/bin/env bash
+
+# ABOUTME: Auto-sync helper sourced by scripts/repository_sync
+# ABOUTME: Provides auto_sync_all() — no-arg parallel commit+sync of all repos
+#
+# Requires when sourced: WORKSPACE_ROOT, ALL_REPOS, NC, GREEN, RED, YELLOW, BLUE, CYAN, BOLD
+#                        repo_exists() — all defined in repository_sync
+
+# Bash 4+ required for associative arrays (declare -A)
+if (( BASH_VERSINFO[0] < 4 )); then
+    echo "Error: repository_sync-auto requires Bash 4+ (found ${BASH_VERSION})" >&2
+    return 1 2>/dev/null || exit 1
+fi
+
+# Portable SHA-256: prefer sha256sum (Linux coreutils), fall back to shasum (macOS)
+_sha256() {
+    if command -v sha256sum >/dev/null 2>&1; then
+        sha256sum
+    elif command -v shasum >/dev/null 2>&1; then
+        shasum -a 256
+    else
+        echo "Error: neither sha256sum nor shasum found" >&2
+        return 1 2>/dev/null || exit 1
+    fi
+}
+
+_auto_sync_one() {
+    # Runs in a subshell (&). Writes one result line to result_file.
+    local result_file="$1" repo="$2" date_str="$3" dry_run="$4"
+    # Guard: reject malformed repo names — allowlist + explicit traversal/pipe checks.
+    # ALL_REPOS is internal config, but defence-in-depth prevents accidents.
+    # Rejected: empty, bare . or .., leading /, starts with ../, contains /../, contains |
+    if [[ -z "$repo" || "$repo" == '.' || "$repo" == '..' \
+          || "$repo" == /* || "$repo" == ../* \
+          || "$repo" =~ /\.\.(/)? || "$repo" =~ \| ]]; then
+        printf 'invalid|false|false|false|invalid-repo-name\n' > "$result_file"; return 1
+    fi
+    local repo_path="$WORKSPACE_ROOT/$repo"
+    local staged=false committed=false pushed=false status="ok"
+
+    cd "$repo_path" || { echo "$repo|false|false|false|error-cd" > "$result_file"; return 1; }
+
+    if [ "$dry_run" = "true" ]; then
+        echo "$repo|dry-run|dry-run|dry-run|dry-run" > "$result_file"; return 0
+    fi
+
+    git add -A 2>/dev/null
+
+    if [ -n "$(git status --porcelain)" ]; then
+        staged=true
+        if git commit -m "chore(sync): auto-sync $date_str" 2>/dev/null; then
+            committed=true
+        else
+            # Early return: do not pull/push if commit failed
+            echo "$repo|$staged|false|false|commit-failed" > "$result_file"; return 0
+        fi
+    fi
+
+    if ! git pull --ff-only 2>/dev/null; then
+        echo "$repo|$staged|$committed|false|warn-pull-failed" > "$result_file"; return 0
+    fi
+
+    local push_out
+    if push_out=$(git push 2>&1); then
+        pushed=true
+    elif echo "$push_out" | grep -Eiq "archived|read[- ]only"; then
+        status="skipped-readonly"
+    else
+        status="push-failed"
+    fi
+
+    echo "$repo|$staged|$committed|$pushed|$status" > "$result_file"
+}
+
+_auto_sync_hub() {
+    local date_str="$1" dry_run="$2"
+    cd "$WORKSPACE_ROOT" || return 1
+
+    if [ "$dry_run" = "true" ]; then
+        echo -e "${BLUE}[dry-run] workspace-hub: would git add -A, commit, pull, push${NC}"
+        return 0
+    fi
+
+    git add -A 2>/dev/null
+
+    if [ -z "$(git status --porcelain)" ]; then
+        echo -e "${YELLOW}⊘ workspace-hub: nothing to commit${NC}"; return 0
+    fi
+
+    if git commit -m "chore(sync): auto-sync $date_str" 2>/dev/null; then
+        echo -e "${GREEN}✓ workspace-hub: committed${NC}"
+    else
+        echo -e "${RED}✗ workspace-hub: commit failed${NC}"; return 1
+    fi
+
+    if ! git pull --ff-only 2>/dev/null; then
+        echo -e "${YELLOW}⚠ workspace-hub: pull failed, skipping push${NC}"; return 1
+    fi
+
+    if git push 2>/dev/null; then
+        echo -e "${GREEN}✓ workspace-hub: pushed${NC}"
+    else
+        echo -e "${RED}✗ workspace-hub: push failed${NC}"; return 1
+    fi
+}
+
+auto_sync_all() {
+    local dry_run="false"
+    [ "${1:-}" = "--dry-run" ] && dry_run="true"
+
+    local date_str; date_str="$(date +%Y-%m-%d)"
+    local rdir; rdir="$(mktemp -d)" || { echo "Error: failed to create temp dir" >&2; return 1; }
+    # Save prior EXIT trap and restore it on cleanup; avoids clobbering caller's trap when sourced.
+    local _prior_exit_trap; _prior_exit_trap="$(trap -p EXIT 2>/dev/null || true)"
+    # Double-quote trap: $rdir expands NOW, baking the literal path into the trap string.
+    # EXIT only — do NOT trap INT/TERM; trapping them overrides bash's default abort behavior
+    # (handler runs, then execution continues). On Ctrl+C, bash exits → EXIT trap fires.
+    # shellcheck disable=SC2064
+    trap "rm -rf '$rdir'" EXIT
+
+    echo ""
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "${CYAN}Auto Sync — $(date '+%Y-%m-%d %H:%M:%S')${NC}"
+    echo -e "${CYAN}======================================${NC}"
+    echo ""
+
+    local initialized=() skipped=()
+    for repo in "${ALL_REPOS[@]}"; do
+        if repo_exists "$repo"; then initialized+=("$repo")
+        else skipped+=("$repo"); fi
+    done
+
+    echo -e "Repos: initialized=${GREEN}${#initialized[@]}${NC}  skipped=${YELLOW}${#skipped[@]}${NC}"
+    [ "${#skipped[@]}" -gt 0 ] && \
+        echo -e "${YELLOW}Skipped (not initialized): ${skipped[*]}${NC}"
+    echo ""
+
+    # Safety gate: interactive TTY gets a countdown window to abort
+    if [ -t 1 ] && [ "$dry_run" = "false" ]; then
+        echo -e "${YELLOW}About to auto-sync ${#initialized[@]} repo(s). Ctrl+C to abort.${NC}"
+        for i in 3 2 1; do printf "\r  Proceeding in %d... " "$i"; sleep 1; done
+        printf "\r  Proceeding...              \n\n"
+    fi
+
+    # Phase 1: parallel submodule sync
+    echo -e "${BLUE}Phase 1: syncing ${#initialized[@]} submodule(s) in parallel...${NC}"
+    declare -A _pids
+    for repo in "${initialized[@]}"; do
+        local safe; safe="$(printf '%s' "$repo" | _sha256 | cut -d' ' -f1)"
+        ( _auto_sync_one "$rdir/$safe" "$repo" "$date_str" "$dry_run" ) &
+        _pids["$repo"]=$!
+    done
+
+    for repo in "${!_pids[@]}"; do
+        wait "${_pids[$repo]}" || true   # errors captured in result files; don't abort
+    done
+
+    # Phase 2: hub sync (after all submodule commits land)
+    echo -e "${BLUE}Phase 2: syncing workspace-hub...${NC}"
+    local hub_result="ok"
+    _auto_sync_hub "$date_str" "$dry_run" || hub_result="failed"
+
+    # Summary table
+    echo ""
+    echo -e "${CYAN}======================================${NC}"
+    echo -e "${BOLD}Summary${NC}"
+    echo -e "${CYAN}======================================${NC}"
+    printf "%-30s %-8s %-10s %-8s %s\n" "Repo" "Staged" "Committed" "Pushed" "Result"
+    printf '%0.s-' {1..80}; echo ""
+
+    local n_ok=0 n_warn=0 n_fail=0
+    for repo in "${initialized[@]}"; do
+        local safe; safe="$(printf '%s' "$repo" | _sha256 | cut -d' ' -f1)"
+        local line; line="$(cat "$rdir/$safe" 2>/dev/null || echo "$repo|?|?|?|unknown")"
+        IFS='|' read -r _r staged committed pushed result <<< "$line"
+        printf "%-30s %-8s %-10s %-8s %s\n" "$repo" "$staged" "$committed" "$pushed" "$result"
+        case "$result" in
+            ok|dry-run|skipped-readonly) ((n_ok++)) || true ;;
+            # warn-pull-failed: local changes are committed; push skipped due to diverged branch.
+            # Intentionally a warning not a failure — the repo is not corrupted, just unsynced.
+            # The next run may succeed once the branch divergence is resolved manually.
+            warn*)  ((n_warn++)) || true ;;
+            *)      ((n_fail++)) || true ;;
+        esac
+    done
+    for repo in "${skipped[@]}"; do
+        printf "%-30s %-8s %-10s %-8s %s\n" \
+            "$repo" "-" "-" "-" "not-initialized"
+    done
+    printf "%-30s %-8s %-10s %-8s %s\n" "workspace-hub" "-" "-" "-" "$hub_result"
+    case "$hub_result" in ok|dry-run) ;; *) ((n_fail++)) || true ;; esac
+
+    echo ""
+    echo -e "  ${GREEN}OK/skipped: $n_ok${NC}  ${YELLOW}Warnings: $n_warn${NC}  ${RED}Failed: $n_fail${NC}"
+    echo ""
+
+    rm -rf "$rdir"
+    trap - EXIT
+    # Restore prior EXIT trap if caller had one
+    [ -n "$_prior_exit_trap" ] && eval "$_prior_exit_trap"
+    [ "$n_fail" -eq 0 ]
+}

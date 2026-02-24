@@ -18,6 +18,13 @@ NC='\033[0m' # No Color
 # Configuration
 # Since script is now in scripts/, go up one directory to get workspace root
 WORKSPACE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Source auto-sync helper (provides auto_sync_all)
+# shellcheck source=repository_sync-auto
+if ! source "$(dirname "${BASH_SOURCE[0]}")/repository_sync-auto"; then
+    echo "Error: failed to load repository_sync-auto helper" >&2
+    exit 1
+fi
 GITMODULES_FILE="$WORKSPACE_ROOT/.gitmodules"
 REPO_CONFIG_FILE="$WORKSPACE_ROOT/config/repos.conf"
 
@@ -34,7 +41,9 @@ show_usage() {
 ${BOLD}${BLUE}Repository Sync Manager${NC}
 
 ${BOLD}USAGE:${NC}
-    repository_sync                     # Launch interactive menu mode
+    repository_sync                     # Auto-sync all repos (non-interactive)
+    repository_sync --dry-run           # Preview auto-sync without executing
+    repository_sync menu | -i           # Launch interactive menu mode
     repository_sync <command> [scope] [options]   # Command-based mode
 
 ${BOLD}COMMANDS:${NC}
@@ -1441,10 +1450,15 @@ main() {
     # Load categories from config
     load_repo_config
 
-    # If no arguments provided, launch interactive menu mode
+    # If no arguments: run non-interactive auto-sync
     if [ $# -eq 0 ]; then
-        show_main_menu
-        exit 0
+        auto_sync_all
+        exit $?
+    fi
+    # If --dry-run is the SOLE argument: preview auto-sync (not a modifier before a command)
+    if [ $# -eq 1 ] && [ "$1" = "--dry-run" ]; then
+        auto_sync_all "--dry-run"
+        exit $?
     fi
 
     # Parse command line arguments
@@ -1453,11 +1467,16 @@ main() {
     local commit_message=""
     local use_rebase="false"
     local branch_name=""
+    local dry_run_flag=""
 
     # Parse options
     shift 2 2>/dev/null || shift $# 2>/dev/null
     while [[ $# -gt 0 ]]; do
         case "$1" in
+            --dry-run)
+                dry_run_flag="--dry-run"
+                shift
+                ;;
             -m|--message)
                 commit_message="$2
 
@@ -1536,6 +1555,17 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
             parse_submodules
             load_repo_config
             echo -e "${GREEN}✓ Repository list refreshed${NC}"
+            ;;
+        menu|-i|--interactive)
+            show_main_menu
+            ;;
+        auto|auto-sync)
+            # Collect --dry-run from scope (2nd positional) or the parsed flag
+            if [ "${scope:-}" = "--dry-run" ] || [ "${dry_run_flag:-}" = "--dry-run" ]; then
+                auto_sync_all "--dry-run"
+            else
+                auto_sync_all
+            fi
             ;;
         help|--help|-h)
             show_usage
