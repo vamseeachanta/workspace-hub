@@ -1,2 +1,0 @@
-worldenergydata/data/modules/vessel_hull_models/hulls/converted_gdf/specs
-worldenergydata/specs

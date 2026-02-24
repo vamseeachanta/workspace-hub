@@ -1,4 +1,0 @@
-{"test":"entry"}
-{"timestamp":"2026-01-22T22:44:15-06:00","epoch_ms":1769143455,"hook_type":"manual_test","tool":"TestTool","project":"digitalmodel"}
-{"timestamp":"2026-01-22T22:49:26-06:00","epoch_ms":1769143767994,"hook_type":"pre","tool":"unknown","project":"workspace-hub"}
-{"test":"from_simple_hook"}

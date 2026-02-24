@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# post-rewrite: re-apply canonical hooks after rebase-based git pull (WRK-312)
-# Fires on: git pull --rebase, git rebase
-# $1 = "rebase" or "amend" — we act on both
-set -euo pipefail
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-bash "$REPO_ROOT/scripts/setup/install-all-hooks.sh" --quiet

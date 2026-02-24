@@ -1,1 +1,0 @@
-../coordination/productivity/daily_today.sh

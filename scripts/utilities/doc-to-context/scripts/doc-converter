@@ -1,9 +1,0 @@
-#!/bin/bash
-# Unified CLI wrapper for document-to-context converter
-
-# Get script directory
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-SRC_DIR="$SCRIPT_DIR/../src"
-
-# Execute unified CLI
-python3 "$SRC_DIR/unified_cli.py" "$@"

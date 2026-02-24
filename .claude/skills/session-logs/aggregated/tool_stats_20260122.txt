@@ -1,4 +1,0 @@
-     95 [tool:Bash]
-      9 [tool:Edit]
-      3 [tool:Write]
-      2 [tool:Read]
