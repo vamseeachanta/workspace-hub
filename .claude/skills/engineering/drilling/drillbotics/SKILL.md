@@ -120,7 +120,10 @@ Managed pressure drilling: keep bottomhole pressure inside the mud-weight window
 | Annular velocity | `Q / (d_hole² − d_pipe²) × 0.408` | Cuttings transport |
 | Pump pressure | Fanning friction + acceleration components | Surface pump management |
 
-**Status in ACE Engineering**: NOT YET IMPLEMENTED.
+**Status in ACE Engineering**: PARTIAL — CT hydraulics exists at
+`digitalmodel/src/digitalmodel/marine_ops/ct_hydraulics/ct_hydraulics.py`
+(ECD, pressure drop, Reynolds/friction, pump pressure). Needs generalisation to
+arbitrary pipe/annulus diameters and multi-phase flow. Gap: ~250 lines to extend.
 
 ### 7. Well Control
 
@@ -196,7 +199,7 @@ competing teams and is available through the Open Source Drilling Community.
 | Python sim infrastructure | ✅ `digitalmodel` | — |
 | AI orchestration | ✅ workspace-hub | — |
 | ROP model | ❌ Missing | **H1** (standalone client value) |
-| Wellbore hydraulics | ❌ Missing | **H1** (standalone client value) |
+| Wellbore hydraulics | 🟡 Partial (CT-only) | **H1** — generalise `ct_hydraulics.py` |
 | Torque and drag | ❌ Missing | **H2** |
 | 3D trajectory planner | ❌ Missing | **H2** |
 | Drilling controller | ❌ Missing | **H2** |
