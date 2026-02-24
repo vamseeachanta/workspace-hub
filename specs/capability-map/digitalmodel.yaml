@@ -1,0 +1,3643 @@
+repo: digitalmodel
+generated: '2026-02-24T10:57:36'
+total_standards_mapped: 10148
+modules:
+- module: structural/fatigue
+  standards_count: 1141
+  standards:
+  - id: BS 7608 (1993) Fatigue design & assessment of steel structures
+    title: BS 7608 (1993) Fatigue design & assessment of steel structures
+    org: BSI
+    sha: sha256:eec9b67539ed2c12288b016e91b6bf69
+    discipline: structural
+    summary: BSI BS 7608 BS 7608 (1993) Fatigue design & assessment of steel structures.pdf
+    status: gap
+  - id: BS 7608 (1993 with 1995 Amend) Code of Practice for Fatigue Design and Assessment of Steel Structures
+    title: BS 7608 (1993 with 1995 Amend) Code of Practice for Fatigue Design and Assessment of Steel Structures
+    org: BSI
+    sha: sha256:98d20da353b942e6f6c2299163259487
+    discipline: structural
+    summary: BSI BS 7608 BS 7608 (1993 with 1995 Amend) Code of Practice for Fatigue Design and Assessment of Steel Structures.pdf
+    status: gap
+  - id: 19902_Clause_26_DIS
+    title: 19902 Clause 26 DIS
+    org: ISO
+    sha: sha256:9c46fc53f85fa57ee6e8e27c75b435c3
+    discipline: structural
+    summary: ISO Misc ISO 19902_Clause_26_DIS.pdf
+    status: gap
+  - id: 19902_Annex_C_DIS
+    title: 19902 Annex C DIS
+    org: ISO
+    sha: sha256:ef66cd9bdc6768fc53b4edbedd6c1ebf
+    discipline: structural
+    summary: ISO Misc ISO 19902_Annex_C_DIS.pdf
+    status: gap
+  - id: BS 7608-2014
+    title: BS 7608 2014
+    org: BSI
+    sha: sha256:2abf7cd579a28038dffda294bb5c8394
+    discipline: structural
+    summary: BSI BS 7608 BS 7608-2014.pdf
+    status: gap
+  - id: BS_7608_(1993)_Fatigue_design_&_assessment_of_steel_structures
+    title: BS 7608 (1993) Fatigue design & assessment of steel structures
+    org: ''
+    sha: sha256:4b37788ab2d4db6d0177f51d4892b8d152d9269326e13311b9b5dcab4cd04efb
+    discipline: structural
+    summary: _standards BSI BS_7608_(1993)_Fatigue_design_&_assessment_of_steel_structures.pdf
+    status: gap
+  - id: BS_7608_(1993_with_1995_Amend)_Code_of_Practice_for_Fatigue_Design_and_Assessment_of_Steel_Structures
+    title: BS 7608 (1993 with 1995 Amend) Code of Practice for Fatigue Design and Assessment of Steel Structures
+    org: ''
+    sha: sha256:76be77e027838fbf07214a1844199a4a8de1426c910aca9420923331b173bc8a
+    discipline: structural
+    summary: _standards BSI BS_7608_(1993_with_1995_Amend)_Code_of_Practice_for_Fatigue_Design_and_Assessment_of_Steel_Structures.pdf
+    status: gap
+  - id: BS7608
+    title: BS7608
+    org: BSI
+    sha: sha256:a2420bfc37bde3048092cec903e2159f
+    discipline: structural
+    summary: Oil and Gas Codes BSI Standards BS7608.pdf
+    status: gap
+  - id: BS_7608-2014
+    title: BS 7608 2014
+    org: ''
+    sha: sha256:7b80d763f79144f68d6fce6295919ff25ef265e44b608fdd1b51cdf935911576
+    discipline: other
+    summary: _standards BSI BS_7608-2014.pdf
+    status: gap
+  - id: Fatigue Strength Analysis for Mobile Offshore Units
+    title: Fatigue Strength Analysis for Mobile Offshore Units
+    org: DNV
+    sha: sha256:93ac99348669e2350ba06f484d7393d3
+    discipline: structural
+    summary: Oil and Gas Codes DNV Standards Fatigue Strength Analysis for Mobile Offshore Units.pdf
+    status: gap
+  - id: ABS GUI 115 (2010) Guide for Fatigue Assessment of Offshore Structures
+    title: ABS GUI 115 (2010) Guide for Fatigue Assessment of Offshore Structures
+    org: BSI
+    sha: sha256:5e11ddf59ebc080733345063a03c6f06
+    discipline: structural
+    summary: ABS ABS 115 ABS GUI 115 (2010) Guide for Fatigue Assessment of Offshore Structures.pdf
+    status: gap
+  - id: ABS GUI 115 (2003) Guide for Fatigue Assessment of Offshore Structures
+    title: ABS GUI 115 (2003) Guide for Fatigue Assessment of Offshore Structures
+    org: BSI
+    sha: sha256:e21cabe673c524d72579fe64e6e58d92
+    discipline: structural
+    summary: ABS ABS 115 ABS GUI 115 (2003) Guide for Fatigue Assessment of Offshore Structures.pdf
+    status: gap
+  - id: ISO DIS 1099 1st Ed DRAFT (2002) Metallic materials-fatigue testing-axial force controlled method
+    title: ISO DIS 1099 1st Ed DRAFT (2002) Metallic materials fatigue testing axial force controlled method
+    org: ISO
+    sha: sha256:40c087d6c53b41e639e34f1ccb2ca3f0
+    discipline: structural
+    summary: ISO ISO 1099 ISO DIS 1099 1st Ed DRAFT (2002) Metallic materials-fatigue testing-axial force controlled method.pdf
+    status: gap
+  - id: NatWestAug2007
+    title: NatWestAug2007
+    org: ISO
+    sha: sha256:daff163dc242303a3166494f96c7ea42
+    discipline: structural
+    summary: BVI STA DOCUMENTS NatWestAug2007.doc
+    status: gap
+  - id: Non-Belonger Land Holder Application Stewart
+    title: Non Belonger Land Holder Application Stewart
+    org: ISO
+    sha: sha256:b1747a464f557e262dd5bd923edf9c24
+    discipline: structural
+    summary: BVI HARNEYS Non-Belonger Land Holder Application Stewart.pdf
+    status: gap
+  - id: C203
+    title: DNV RP C203 (2011) Fatigue Design of Offshore Steel Structure
+    org: DNV
+    sha: sha256:585c9e857d75a4e94770b4e5c3787375
+    discipline: structural
+    summary: DNV Recommended Practices DNV RP C203 DNV RP C203 (2011) Fatigue Design of Offshore Steel Structure.pdf
+    status: gap
+  - id: '30'
+    title: DNV CN 30.2 (1984) Fatigue Strength Analysis for Mobile Offshore Units
+    org: DNV
+    sha: sha256:508d23c71bcad00727487d2673556fb9
+    discipline: structural
+    summary: DNV Classification Notes DNV CN 30.2 DNV CN 30.2 (1984) Fatigue Strength Analysis for Mobile Offshore Units.pdf
+    status: gap
+  - id: F204
+    title: DNV RP F204 (2010) Riser Fatigue
+    org: DNV
+    sha: sha256:80cce2ecea3de4fae33f1fdca8f5516b
+    discipline: structural
+    summary: DNV Recommended Practices DNV RP F204 DNV RP F204 (2010) Riser Fatigue.pdf
+    status: gap
+  - id: C206
+    title: DNV RP C206 (2010) Fatigue Methodology of Offshore Ships
+    org: DNV
+    sha: sha256:b80b7fc350d4cf85718c4eee864d1f04
+    discipline: structural
+    summary: DNV Recommended Practices DNV RP C206 DNV RP C206 (2010) Fatigue Methodology of Offshore Ships.pdf
+    status: gap
+  - id: CN30-7FATIGUE ASSESSMENT OF SHIP STRUCTURES
+    title: CN30 7FATIGUE ASSESSMENT OF SHIP STRUCTURES
+    org: DNV
+    sha: sha256:3517c785c8e5a030ac36b5c9006c2a60
+    discipline: structural
+    summary: DNV Classification Notes DNV CN 30.7 CN30-7FATIGUE ASSESSMENT OF SHIP STRUCTURES.pdf
+    status: gap
+  - id: 'Morison, J. R., et al, 1950 - The Force Exerted By Surface '
+    title: 'Morison, J. R., et al, 1950   The Force Exerted By Surface '
+    org: ISO
+    sha: sha256:3697b7f2b8c08021532a78ca886b9aad
+    discipline: structural
+    summary: Papers Reference documents Morison, J. R., et al, 1950 - The Force Exerted By Surface .pdf
+    status: gap
+  - id: Larsen, C.M., et al, 1994 - Comparison of Models for Vortex
+    title: Larsen, C.M., et al, 1994   Comparison of Models for Vortex
+    org: ISO
+    sha: sha256:fb92cc1943797c00c9a1446b09fb918f
+    discipline: structural
+    summary: Papers Reference documents Larsen, C.M., et al, 1994 - Comparison of Models for Vortex.pdf
+    status: gap
+  - id: bs4360
+    title: bs4360
+    org: BSI
+    sha: sha256:949773c62fdcc6ea17fa595ee17d60dd
+    discipline: structural
+    summary: Oil and Gas Codes BSI Standards bs4360.doc
+    status: gap
+  - id: Jun84 Mobile Offshroe Units-Buckling Strength Analysis
+    title: Jun84 Mobile Offshroe Units Buckling Strength Analysis
+    org: DNV
+    sha: sha256:f5a7cffd9f77e47441f5560ae97a9648
+    discipline: structural
+    summary: Oil and Gas Codes DNV Standards Jun84 Mobile Offshroe Units-Buckling Strength Analysis.pdf
+    status: gap
+  - id: Jan98 Mobile Offshore Units-Structural Design General
+    title: Jan98 Mobile Offshore Units Structural Design General
+    org: DNV
+    sha: sha256:7606b1866305721c710898bdd8772f42
+    discipline: structural
+    summary: Oil and Gas Codes DNV Standards Jan98 Mobile Offshore Units-Structural Design General.pdf
+    status: gap
+  - id: '14232'
+    title: ISO 14232
+    org: ISO
+    sha: sha256:33967c7c05624d6d9d35b5401abf24b6
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 14232.pdf
+    status: gap
+  - id: 2768-1
+    title: ISO 2768 1
+    org: ISO
+    sha: sha256:d76d110d85fe298ed21eaae334bdeeec
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 2768-1.pdf
+    status: gap
+  - id: '129'
+    title: ISO 129
+    org: ISO
+    sha: sha256:8bdd35ea052dd2465c63a317eab77106
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 129.pdf
+    status: gap
+  - id: '11881'
+    title: ISO 11881
+    org: ISO
+    sha: sha256:cfd1e5b92b2825d264023b2ce7adf802
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 11881.pdf
+    status: gap
+  - id: 13628-5
+    title: ISO 13628 5
+    org: ISO
+    sha: sha256:78b2c196212d5c007ab515083785a329
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 13628-5.pdf
+    status: gap
+  - id: 128-30
+    title: ISO 128 30
+    org: ISO
+    sha: sha256:9c8a5f952ded7ee0fb1deef54f1f4765
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 128-30.pdf
+    status: gap
+  - id: '5457'
+    title: ISO 5457
+    org: ISO
+    sha: sha256:53bdf0b9beebad29ad5b9aa1bd96e876
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 5457.pdf
+    status: gap
+  - id: '7573'
+    title: iso 7573
+    org: ISO
+    sha: sha256:e7c4d4d400ef2e01aa995af77b2fbede
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards iso 7573.pdf
+    status: gap
+  - id: 14922-2
+    title: ISO 14922 2
+    org: ISO
+    sha: sha256:892347a3ece4071491101ffbdd01b722
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 14922-2.pdf
+    status: gap
+  - id: '14920'
+    title: ISO 14920
+    org: ISO
+    sha: sha256:e2ab211caa3e5237d24a019c7c264d5b
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 14920.pdf
+    status: gap
+  - id: '14918'
+    title: ISO 14918
+    org: ISO
+    sha: sha256:abce968ce57d7aec0424001c42d64091
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 14918.pdf
+    status: gap
+  - id: 7539-7
+    title: ISO 7539 7
+    org: ISO
+    sha: sha256:f6cb36f2f6df280ced700c07fd52c282
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 7539-7.pdf
+    status: gap
+  - id: '1099'
+    title: ISO 1099
+    org: ISO
+    sha: sha256:5cd23dcdb08e4331c07271c34d8bfed8
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 1099.pdf
+    status: gap
+  - id: 128-24
+    title: ISO 128 24
+    org: ISO
+    sha: sha256:17b5326609c0671c8afe2269f7e99a57
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 128-24.pdf
+    status: gap
+  - id: 5456-1
+    title: ISO 5456 1
+    org: ISO
+    sha: sha256:98971d6b1b5ec1b5e28c158ad1c35651
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 5456-1.pdf
+    status: gap
+  - id: 11881-1999
+    title: ISO 11881 1999
+    org: ISO
+    sha: sha256:eee64fbf16d0588c6baf220b1b3ad384
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 11881-1999.pdf
+    status: gap
+  - id: 6410-1
+    title: ISO 6410 1
+    org: ISO
+    sha: sha256:45051cd144e561bc2a643266bf02de13
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 6410-1.pdf
+    status: gap
+  - id: 128-20
+    title: ISO 128 20
+    org: ISO
+    sha: sha256:f000e7808084639a2bea99e1f3cbee27
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 128-20.pdf
+    status: gap
+  - id: 14922-1
+    title: ISO 14922 1
+    org: ISO
+    sha: sha256:07d2aaf44328bbfefda4d476641ebc99
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 14922-1.pdf
+    status: gap
+  - id: '6892'
+    title: ISO 6892
+    org: ISO
+    sha: sha256:466cee9bdeb5117c6a2c2ca1d51e729d
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 6892.pdf
+    status: gap
+  - id: '14919'
+    title: ISO 14919
+    org: ISO
+    sha: sha256:3d9118928fc11cd66105515a766b47a3
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 14919.pdf
+    status: gap
+  - id: 3183-3
+    title: ISO 3183 3
+    org: ISO
+    sha: sha256:4270e6fd5c6e0929b02ade0e6d49ea03
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 3183-3.pdf
+    status: gap
+  - id: '14917'
+    title: ISO 14917
+    org: ISO
+    sha: sha256:8e41467f994ed0e9c94a350bf3efc912
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 14917.pdf
+    status: gap
+  - id: ISO DIS 1099
+    title: ISO DIS 1099
+    org: ISO
+    sha: sha256:c35c6466de25a2c5b8b0be6dbddd9c13
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO DIS 1099.pdf
+    status: gap
+  - id: 128-21
+    title: ISO 128 21
+    org: ISO
+    sha: sha256:0f55e29ed1183e2c6ba406d4fbd57f74
+    discipline: structural
+    summary: Oil and Gas Codes ISO Standards ISO 128-21.pdf
+    status: gap
+  unlinked_doc_count: 43
+- module: structural/structural_analysis
+  standards_count: 332
+  standards:
+  - id: 2A
+    title: API RP 2A WSD
+    org: API
+    sha: sha256:46faa43d65e49184fff11e65105d9c6a
+    discipline: structural
+    summary: API Standards API-2A API RP 2A WSD.pdf
+    status: gap
+  - id: New Microsoft Word Document
+    title: New Microsoft Word Document
+    org: API
+    sha: sha256:d41d8cd98f00b204e9800998ecf8427e
+    discipline: structural
+    summary: API Recommended Practice API RP 2A-LFRD New Microsoft Word Document.docx
+    status: gap
+  - id: 1-api-rp2a-2007 (searchable)
+    title: 1 api rp2a 2007 (searchable)
+    org: API
+    sha: sha256:edda7bbacaf9056246e20e2719e8bf6f
+    discipline: structural
+    summary: API Recommended Practice API RP 2A-WSD 1-api-rp2a-2007 (searchable).pdf
+    status: gap
+  - id: API_2_A_SIM_JIP_Final_Report
+    title: API 2 A SIM JIP Final Report
+    org: API
+    sha: sha256:fae50fd31c896bcfb9e751d2ac0041b8
+    discipline: structural
+    summary: API Recommended Practice API RP 2A-WSD API_2_A_SIM_JIP_Final_Report.pdf
+    status: gap
+  - id: API-RP 2A LFRD 1st Ed. (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms
+      - Load and Resistance Factor Design
+    title: API RP 2A LFRD 1st Ed. (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms   L
+    org: API
+    sha: sha256:496d4d4b245c279ce6fececd57869e3a
+    discipline: marine
+    summary: API Recommended Practice API RP 2A-LFRD API-RP 2A LFRD 1st Ed. (1993) Recommended Practice for Planning, Designing
+      and Constructing Fixed Offshore Platforms - Load and Resistance Factor Design.pdf
+    status: gap
+  - id: API-RP 2A LFRD 1st Ed. Supplement (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore
+      Platforms - Load and Resistance Factor Design
+    title: API RP 2A LFRD 1st Ed. Supplement (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore
+      Pl
+    org: API
+    sha: sha256:fb9517bf5f0046a59026f4025148dc63
+    discipline: marine
+    summary: API Recommended Practice API RP 2A-LFRD API-RP 2A LFRD 1st Ed. Supplement (1993) Recommended Practice for Planning,
+      Designing and Constructing Fixed Offshore Platforms - Load and Resistance Factor Des
+    status: gap
+  - id: API RP 2A WSD Offshore Platforms (21th 2000 242p)
+    title: API RP 2A WSD Offshore Platforms (21th 2000 242p)
+    org: ''
+    sha: sha256:81beca39915192ce788164d473cb8d6f16d3a264d2ce4a7e55f8b022a65c9b7b
+    discipline: marine
+    summary: API STA API RP 2A WSD Offshore Platforms (21th 2000 242p).pdf
+    status: gap
+  - id: API RP 2A-WSD 21st Ed Errata & Supplement 2&3 (2007) Recommended Practice for Planning, Designing and Constructing
+      Fixed Offshore Platforms-Working Stress Design
+    title: API RP 2A WSD 21st Ed Errata & Supplement 2&3 (2007) Recommended Practice for Planning, Designing and Constructing
+      Fixed
+    org: ''
+    sha: sha256:ce8dab060625d001ffc3962d906cb0962abfcfe69b7b13f8a57c0fe72f667c02
+    discipline: marine
+    summary: API Recommended Practice API RP 2A-WSD API RP 2A-WSD 21st Ed Errata & Supplement 2&3 (2007) Recommended Practice
+      for Planning, Designing and Constructing Fixed Offshore Platforms-Working Stress Design
+    status: gap
+  - id: API RP 2A-WSD 3rd Ed (1997) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms-Working
+      Stress Design
+    title: API RP 2A WSD 3rd Ed (1997) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms
+      Worki
+    org: ''
+    sha: sha256:fd7a838c6a31871801951e23639cfbf6295e0018b3f6122d93f6b5b9f07fc84e
+    discipline: marine
+    summary: API Recommended Practice API RP 2A-WSD API RP 2A-WSD 3rd Ed (1997) Recommended Practice for Planning, Designing
+      and Constructing Fixed Offshore Platforms-Working Stress Design.pdf
+    status: gap
+  - id: API RP 2A-WSD 21st Ed (2000) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms-Working
+      Stress Design
+    title: API RP 2A WSD 21st Ed (2000) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms
+      Work
+    org: ''
+    sha: sha256:c2e0a0395bd70e5807f307795a6e53477f124acf0ebc3ea4ae2951df4d6d8fc9
+    discipline: marine
+    summary: API Recommended Practice API RP 2A-WSD API RP 2A-WSD 21st Ed (2000) Recommended Practice for Planning, Designing
+      and Constructing Fixed Offshore Platforms-Working Stress Design.pdf
+    status: gap
+  - id: API RP 2A-LRFD - Offshore platform Loading
+    title: API RP 2A LRFD   Offshore platform Loading
+    org: ''
+    sha: sha256:c3dbb1f55f8555111913c785adc9ec0edcda1967bfe5fe392962b30a0cba46c5
+    discipline: marine
+    summary: API STA API RP 2A-LRFD - Offshore platform Loading.pdf
+    status: gap
+  - id: API RP 2A WSD
+    title: API RP 2A WSD
+    org: ''
+    sha: sha256:32aca310c3cc1ddcca748645a3226e25cf3ff4a7442bb7727579bdf9cb5bb11e
+    discipline: other
+    summary: API Standards API-2A API RP 2A WSD.pdf
+    status: gap
+  - id: API RP 2A WSD-2005
+    title: API RP 2A WSD 2005
+    org: ''
+    sha: sha256:881052535f3f5d615f6dbd76318ea932bfcb80c081fdd0cf49f954f8d863bd4c
+    discipline: other
+    summary: STA RP 2A API RP 2A WSD-2005.pdf
+    status: gap
+  - id: API RP 2A-WSD 22nd Edition Nov 2014
+    title: API RP 2A WSD 22nd Edition Nov 2014
+    org: ''
+    sha: sha256:0ab7437f5b651d69a60691f817556f9e42571ee769328a8553c2597137e200c9
+    discipline: other
+    summary: API Recommended Practice API RP 2A-WSD API RP 2A-WSD 22nd Edition Nov 2014.pdf
+    status: gap
+  - id: ISO_CD_19901-3 Topsides
+    title: ISO CD 19901 3 Topsides
+    org: ISO
+    sha: sha256:79a499370038e0503b0e54fa42cd45b8
+    discipline: structural
+    summary: ISO Misc ISO ISO_CD_19901-3 Topsides.pdf
+    status: gap
+  - id: 2H
+    title: API 2H Carbon Manganese Plate for Tubular Joints
+    org: API
+    sha: sha256:1392361322d2406acc88ef47c4e540e9
+    discipline: structural
+    summary: API STA API 2H Carbon Manganese Plate for Tubular Joints.pdf
+    status: gap
+  - id: 16R
+    title: API 16R
+    org: API
+    sha: sha256:28f77b02992cd66e6791cc47f61e2144
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API 16R.pdf
+    status: gap
+  - id: ABS001
+    title: ABS001
+    org: API
+    sha: sha256:bc192d803a78f0cdcf069d15a43a2c73
+    discipline: structural
+    summary: Oil and Gas Codes API Standards ABS001.pdf
+    status: gap
+  - id: 5CT
+    title: API 5CT
+    org: API
+    sha: sha256:6441ca807934c16888febe4410709f15
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API 5CT.PDF
+    status: gap
+  - id: AWS A5.10
+    title: AWS A5.10
+    org: API
+    sha: sha256:a976868efdee22908d12a87fb3c2df42
+    discipline: structural
+    summary: Oil and Gas Codes API Standards AWS A5.10.pdf
+    status: gap
+  - id: 2002Catalog
+    title: 2002Catalog
+    org: API
+    sha: sha256:b9360163d691eecce50341fcf4d9c7d0
+    discipline: structural
+    summary: Oil and Gas Codes API Standards 2002Catalog.pdf
+    status: gap
+  - id: 16Q
+    title: API RP 16Q
+    org: API
+    sha: sha256:1660be1155d8f4c6c9a19177ae161f2a
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API RP 16Q.pdf
+    status: gap
+  - id: API SPEC 17D SU1
+    title: API SPEC 17D SU1
+    org: API
+    sha: sha256:231bbb5773852553171fdc5157d5fdf2
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API SPEC 17D SU1.PDF
+    status: gap
+  - id: 17B
+    title: API RP 17B
+    org: API
+    sha: sha256:91ef8b718de113ce017d4983df92e461
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API RP 17B.pdf
+    status: gap
+  - id: AWS D1.2
+    title: AWS D1.2
+    org: API
+    sha: sha256:ea9e529734aad7278bd24559669fdaf9
+    discipline: structural
+    summary: Oil and Gas Codes API Standards AWS D1.2.pdf
+    status: gap
+  - id: 17A
+    title: API RP 17A
+    org: API
+    sha: sha256:bdda72803201d60617cdd518ea0291fc
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API RP 17A.pdf
+    status: gap
+  - id: 2P
+    title: API 2P
+    org: API
+    sha: sha256:a6b5767e82ca06209028120948c99c61
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API 2P.pdf
+    status: gap
+  - id: 2T
+    title: API 2T
+    org: API
+    sha: sha256:4a705d6fb31b183f7dcf6c3cb38ba056
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API 2T.pdf
+    status: gap
+  - id: 5L
+    title: API 5L
+    org: API
+    sha: sha256:eb89fa58d3341e6bd63595c492e94a8d
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API 5L.pdf
+    status: gap
+  - id: API Specification 6A
+    title: API Specification 6A
+    org: API
+    sha: sha256:3353521babbe9f80a93c32c4a6e351ec
+    discipline: structural
+    summary: API Standards API Spec 6A API Specification 6A.pdf
+    status: gap
+  - id: 2B
+    title: API 2B
+    org: API
+    sha: sha256:9071a98f526ffbca47495416c5e4c03e
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API 2B.pdf
+    status: gap
+  - id: API SPEC 17D SU2
+    title: API SPEC 17D SU2
+    org: API
+    sha: sha256:0ea89d18b3e06f0b6971a4958136fed9
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API SPEC 17D SU2.PDF
+    status: gap
+  - id: API SPEC 8C
+    title: API SPEC 8C
+    org: API
+    sha: sha256:8c9958094dbbcdca736657e758021443
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API SPEC 8C.PDF
+    status: gap
+  - id: API SPEC 17J
+    title: API SPEC 17J
+    org: API
+    sha: sha256:4325f9b87ff0ce8b91e6bacf6843283b
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API SPEC 17J.pdf
+    status: gap
+  - id: API SPEC 17D
+    title: API SPEC 17D
+    org: API
+    sha: sha256:b1c0f6e799a032a52d035b50546956ad
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API SPEC 17D.pdf
+    status: gap
+  - id: API Standards Catalogue
+    title: API Standards Catalogue
+    org: API
+    sha: sha256:1bdabbb06b2305711a265b2cc2bffb18
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API Standards Catalogue.pdf
+    status: gap
+  - id: API Specification 6A (Errata 2)
+    title: API Specification 6A (Errata 2)
+    org: API
+    sha: sha256:9270c8e84876663bfbcdc1eb2d961bc4
+    discipline: structural
+    summary: API Standards API Spec 6A API Specification 6A (Errata 2).pdf
+    status: gap
+  - id: 2X
+    title: API RP 2X
+    org: API
+    sha: sha256:00b159a629e1eb5e308a8b8829d6fd05
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API RP 2X.pdf
+    status: gap
+  - id: APISPEC5L
+    title: APISPEC5L
+    org: API
+    sha: sha256:21a88e73b4faa5cac342c366cf8354ed
+    discipline: structural
+    summary: Oil and Gas Codes API Standards APISPEC5L.pdf
+    status: gap
+  - id: 6AF
+    title: API 6AF
+    org: API
+    sha: sha256:82661354e51bacdfddf0c2e8ffbd32de
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API 6AF.pdf
+    status: gap
+  - id: 2Z
+    title: API RP 2Z
+    org: API
+    sha: sha256:bd34f1129d328e94e0e55f93f3f21a75
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API RP 2Z.pdf
+    status: gap
+  - id: 5D
+    title: API 5D
+    org: API
+    sha: sha256:d1922d13b161e9b679d014e55ac08631
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API 5D.pdf
+    status: gap
+  - id: ABS Guide Feb94
+    title: ABS Guide Feb94
+    org: API
+    sha: sha256:0328d0a0c5c336cda72bdf545db10ce3
+    discipline: structural
+    summary: Oil and Gas Codes API Standards ABS Guide Feb94.pdf
+    status: gap
+  - id: API_BULL_2V
+    title: API BULL 2V
+    org: API
+    sha: sha256:ffc7cbc4a4d1577b7a058a761097b765
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API_BULL_2V.pdf
+    status: gap
+  - id: 16A
+    title: API 16A
+    org: API
+    sha: sha256:5f3c027a5935bf67b47cfd202971b8ab
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API 16A.pdf
+    status: gap
+  - id: sect_09
+    title: sect 09
+    org: API
+    sha: sha256:958ed4d72d801287e1544cdfc21047cc
+    discipline: structural
+    summary: API Standards API RP 579 sect_09.pdf
+    status: gap
+  - id: sect_08
+    title: sect 08
+    org: API
+    sha: sha256:eefc953c49867d41321f3c8856edc1a9
+    discipline: structural
+    summary: API Standards API RP 579 sect_08.pdf
+    status: gap
+  - id: append_e
+    title: append e
+    org: API
+    sha: sha256:b1ec53ca240c47e0a152f2d17f7fc576
+    discipline: structural
+    summary: API Standards API RP 579 append_e.pdf
+    status: gap
+  - id: append_d
+    title: append d
+    org: API
+    sha: sha256:e937ef988343a9d8a89e2d2d51c47e8b
+    discipline: structural
+    summary: API Standards API RP 579 append_d.pdf
+    status: gap
+  - id: sect_03
+    title: sect 03
+    org: API
+    sha: sha256:d95bc9e74c2a7e649ded9fb71d6e73f0
+    discipline: structural
+    summary: API Standards API RP 579 sect_03.pdf
+    status: gap
+  unlinked_doc_count: 88
+- module: structural/pipe_capacity
+  standards_count: 1878
+  standards:
+  - id: 5C
+    title: API TR 5C3 (2008) Technical Report on Equations and Calculations for Casing, Tubing, and Line Pipe Used as Casing
+      or Tub
+    org: API
+    sha: sha256:179be904ac99be86d814b73993b7ef98
+    discipline: pipeline
+    summary: API API Technical Report API TR 5C3 (2008) Technical Report on Equations and Calculations for Casing, Tubing,
+      and Line Pipe Used as Casing or Tubing; and Performance Properties Tables for Casing and T
+    status: gap
+  - id: API TR 5C3 (2008) Technical Report on Equations and Calculations for Casing, Tubing, and Line Pipe Used as Casing
+      or Tubing; and Performance Properties Tables for Casing and Tubing
+    title: API TR 5C3 (2008) Technical Report on Equations and Calculations for Casing, Tubing, and Line Pipe Used as Casing
+      or Tub
+    org: ''
+    sha: sha256:adb382622fa7dca4b91480fe80c74375880198e67a3874ace72a0ad235b6342e
+    discipline: pipeline
+    summary: API API Technical Report API TR 5C3 (2008) Technical Report on Equations and Calculations for Casing, Tubing,
+      and Line Pipe Used as Casing or Tubing; and Performance Properties Tables for Casing and T
+    status: gap
+  - id: asme.b31.8.2003
+    title: asme.b31.8.2003
+    org: Unknown
+    sha: sha256:5efcf353d80b57b28acf5a8391ff4e66
+    discipline: pipeline
+    summary: ASME ASME B31.8 asme.b31.8.2003.pdf
+    status: gap
+  - id: ASME B31.8 (2007) Gas Transportation and Distribution Piping Systems
+    title: ASME B31.8 (2007) Gas Transportation and Distribution Piping Systems
+    org: Unknown
+    sha: sha256:97ec0c6f0e7e5d718bb1fd4cb9483dc8
+    discipline: pipeline
+    summary: ASME ASME B31.8 ASME B31.8 (2007) Gas Transportation and Distribution Piping Systems.pdf
+    status: gap
+  - id: ASME_B31.8_(2007)_Gas_Transportation_and_Distribution_Piping_Systems
+    title: ASME B31.8 (2007) Gas Transportation and Distribution Piping Systems
+    org: ''
+    sha: sha256:d08979197c7ba21b0982af19205213e46bffb2119483764305499b453b295ae4
+    discipline: pipeline
+    summary: _standards Unknown ASME_B31.8_(2007)_Gas_Transportation_and_Distribution_Piping_Systems.pdf
+    status: gap
+  - id: '[Welding] Welding Of Pipelines And Related Facilities - Api Standard 1104 (Ebook, 86 Pages)'
+    title: '[Welding] Welding Of Pipelines And Related Facilities   Api Standard 1104 (Ebook, 86 Pages)'
+    org: API
+    sha: sha256:30f16e5bc641a5b38acefea96a9a8f0e
+    discipline: pipeline
+    summary: API Stds API [Welding] Welding Of Pipelines And Related Facilities - Api Standard 1104 (Ebook, 86 Pages).pdf
+    status: gap
+  - id: 5L
+    title: API 5L Nominal Pipe sizes   Metric
+    org: API
+    sha: sha256:fa51f9319cad43d100e46cb65e9b7291
+    discipline: pipeline
+    summary: API 5l OCR API 5L - Metric Tables API 5L Nominal Pipe sizes - Metric.xls
+    status: gap
+  - id: API STANDART 1102 Steel Pipelines Crossing Railroads and Highways
+    title: API STANDART 1102 Steel Pipelines Crossing Railroads and Highways
+    org: API
+    sha: sha256:9a40384b62417134aeee0c9763865ddd
+    discipline: pipeline
+    summary: API Stds API API STANDART 1102 Steel Pipelines Crossing Railroads and Highways.pdf
+    status: gap
+  - id: API SPEC 17J 3rd Ed Errata 1 (2009) Unbonded Flexible Pipe
+    title: API SPEC 17J 3rd Ed Errata 1 (2009) Unbonded Flexible Pipe
+    org: API
+    sha: sha256:2e52bda1ffd16d8d2d9f16ffcef0d5c2
+    discipline: pipeline
+    summary: API Specification API Spec 17J API SPEC 17J 3rd Ed Errata 1 (2009) Unbonded Flexible Pipe.pdf
+    status: gap
+  - id: API SPEC 17J 3rd Ed Errata 2 (2010)Unbonded Flexible Pipe
+    title: API SPEC 17J 3rd Ed Errata 2 (2010)Unbonded Flexible Pipe
+    org: API
+    sha: sha256:5e722f6946be864640ed8e5c754d2982
+    discipline: pipeline
+    summary: API Specification API Spec 17J API SPEC 17J 3rd Ed Errata 2 (2010)Unbonded Flexible Pipe.pdf
+    status: gap
+  - id: API SPEC 17J 2nd Ed Addendum 1 (2002) Unbonded Flexible Pipe
+    title: API SPEC 17J 2nd Ed Addendum 1 (2002) Unbonded Flexible Pipe
+    org: API
+    sha: sha256:a064c0f7b0092f4f973f13a0e72fb035
+    discipline: pipeline
+    summary: API Specification API Spec 17J API SPEC 17J 2nd Ed Addendum 1 (2002) Unbonded Flexible Pipe.pdf
+    status: gap
+  - id: API SPEC 17J 4rd Ed (2014) Unbonded Flexible Pipe
+    title: API SPEC 17J 4rd Ed (2014) Unbonded Flexible Pipe
+    org: API
+    sha: sha256:2dffb9f4d8f18827abe279c5054ec6b1
+    discipline: pipeline
+    summary: API Specification API Spec 17J API SPEC 17J 4rd Ed (2014) Unbonded Flexible Pipe.pdf
+    status: gap
+  - id: API SPEC 17J 1st Ed (1996) Unbonded Flexible Pipe
+    title: API SPEC 17J 1st Ed (1996) Unbonded Flexible Pipe
+    org: API
+    sha: sha256:6c16edda9f1b9225ebbc874b633658db
+    discipline: pipeline
+    summary: API Specification API Spec 17J API SPEC 17J 1st Ed (1996) Unbonded Flexible Pipe.pdf
+    status: gap
+  - id: API SPEC 17J 3rd Ed (2008) Unbonded Flexible Pipe
+    title: API SPEC 17J 3rd Ed (2008) Unbonded Flexible Pipe
+    org: API
+    sha: sha256:01a569bc7771532941c8a30829d5b077
+    discipline: pipeline
+    summary: API Specification API Spec 17J API SPEC 17J 3rd Ed (2008) Unbonded Flexible Pipe.pdf
+    status: gap
+  - id: API SPEC 5L 42nd Ed (2000) Line Pipe
+    title: API SPEC 5L 42nd Ed (2000) Line Pipe
+    org: API
+    sha: sha256:9c7f246d6f3ff14a085b08f1a63bcd46
+    discipline: pipeline
+    summary: API Specification API Spec 5L API SPEC 5L 42nd Ed (2000) Line Pipe.pdf
+    status: gap
+  - id: API SPEC 5L 44th Ed (2007) Line Pipe
+    title: API SPEC 5L 44th Ed (2007) Line Pipe
+    org: API
+    sha: sha256:ad1ea6309cc131fe32405900a5b0c960
+    discipline: pipeline
+    summary: API Specification API Spec 5L API SPEC 5L 44th Ed (2007) Line Pipe.pdf
+    status: gap
+  - id: API SPEC 5L 43rd Ed (2004) Line Pipe
+    title: API SPEC 5L 43rd Ed (2004) Line Pipe
+    org: API
+    sha: sha256:e3897f90376ae6bebfeb7c1cc0828211
+    discipline: pipeline
+    summary: API Specification API Spec 5L API SPEC 5L 43rd Ed (2004) Line Pipe.pdf
+    status: gap
+  - id: API SPEC 5L 44th Ed Addendum 3 (2012) Line Pipe
+    title: API SPEC 5L 44th Ed Addendum 3 (2012) Line Pipe
+    org: API
+    sha: sha256:63a80a6081958925a71dac2c84b14505
+    discipline: pipeline
+    summary: API Specification API Spec 5L API SPEC 5L 44th Ed Addendum 3 (2012) Line Pipe.pdf
+    status: gap
+  - id: API SPEC 5L, 42nd Ed (2000) Specification for Line Pipe
+    title: API SPEC 5L, 42nd Ed (2000) Specification for Line Pipe
+    org: API
+    sha: sha256:8d204250c4ebb0b85847c708f7741a4c
+    discipline: pipeline
+    summary: API Spec 5L API 5L - Metric Tables API SPEC 5L, 42nd Ed (2000) Specification for Line Pipe.pdf
+    status: gap
+  - id: API SPEC 5L-CP, 1st Ed (1999) Specification for Coiled Line Pipe
+    title: API SPEC 5L CP, 1st Ed (1999) Specification for Coiled Line Pipe
+    org: API
+    sha: sha256:0bca20265382cc20e4edd04d98d1c7ff
+    discipline: pipeline
+    summary: API Spec 5L API 5L - Metric Tables API SPEC 5L-CP, 1st Ed (1999) Specification for Coiled Line Pipe.pdf
+    status: gap
+  - id: API SPEC 17K 2nd Ed (2005) Bonded Flexible Pipe
+    title: API SPEC 17K 2nd Ed (2005) Bonded Flexible Pipe
+    org: API
+    sha: sha256:5deaeb17bedd4e4febac7a3e6cf3b8fe
+    discipline: pipeline
+    summary: API Specification API Spec 17K API SPEC 17K 2nd Ed (2005) Bonded Flexible Pipe.pdf
+    status: gap
+  - id: API SPEC 17K 1st Ed (2001) Bonded Flexible Pipe
+    title: API SPEC 17K 1st Ed (2001) Bonded Flexible Pipe
+    org: API
+    sha: sha256:6aab6718b3fa96b801947ae0675f99a1
+    discipline: pipeline
+    summary: API Specification API Spec 17K API SPEC 17K 1st Ed (2001) Bonded Flexible Pipe.pdf
+    status: gap
+  - id: API SPEC 5D 5th Ed (2001) Drill Pipe
+    title: API SPEC 5D 5th Ed (2001) Drill Pipe
+    org: API
+    sha: sha256:cdaeb763ae1fedd01ade535c927de7ab
+    discipline: pipeline
+    summary: API Specification API Spec 5D API SPEC 5D 5th Ed (2001) Drill Pipe.pdf
+    status: gap
+  - id: 5UE
+    title: API RP 5UE 2nd Ed Addendum (2009) Ultrasonic Evaluation of Pipe Imperfections
+    org: API
+    sha: sha256:4b53f75c0a95e01445f5598ddad4a6da
+    discipline: pipeline
+    summary: API Recommended Practice API RP 5UE API RP 5UE 2nd Ed Addendum (2009) Ultrasonic Evaluation of Pipe Imperfections.pdf
+    status: gap
+  - id: 5A
+    title: API RP 5A5 7th Ed (2005) Field Inspection of New Casing, Tubing, and Plain end Drill Pipe
+    org: API
+    sha: sha256:6443ec9b8e2979f0dfef9df75ef0976b
+    discipline: pipeline
+    summary: API Recommended Practice API RP 5A5 API RP 5A5 7th Ed (2005) Field Inspection of New Casing, Tubing, and Plain-end
+      Drill Pipe.pdf
+    status: gap
+  - id: 17B
+    title: API RP 17B 2nd Ed (1998) Flexible Pipe
+    org: API
+    sha: sha256:3cdef4887c2837b1d21896babc54f2c2
+    discipline: pipeline
+    summary: API Recommended Practice API RP 17B API RP 17B 2nd Ed (1998) Flexible Pipe.pdf
+    status: gap
+  - id: '1111'
+    title: 'API 1111 Design Construction Maintenance of Offshore Pipelines LFRD '
+    org: API
+    sha: sha256:0443aa379f56fd1217dc4cd65d301884
+    discipline: pipeline
+    summary: API STA API 1111 Design Construction Maintenance of Offshore Pipelines LFRD .pdf
+    status: gap
+  - id: Api Spec 17K, SPECIFICATION FOR BONDED FLEXIBLE PIPE
+    title: Api Spec 17K, SPECIFICATION FOR BONDED FLEXIBLE PIPE
+    org: API
+    sha: sha256:ba9eeb292c6731855b9938d3e2bc1b28
+    discipline: pipeline
+    summary: API STA Api Spec 17K, SPECIFICATION FOR BONDED FLEXIBLE PIPE.pdf
+    status: gap
+  - id: MSS_SP58_Pipe_Hangers_and_Supports_-_Materials,_Design,_and_
+    title: 'MSS SP58 Pipe Hangers and Supports   Materials, Design, and '
+    org: API
+    sha: sha256:eb4597e3eb9f0fe845c441c5ba4f853a
+    discipline: pipeline
+    summary: API STA MSS_SP58_Pipe_Hangers_and_Supports_-_Materials,_Design,_and_.pdf
+    status: gap
+  - id: '1164'
+    title: API STD 1164 2nd Ed 2009 Pipeline SCADA Security
+    org: API
+    sha: sha256:04a03db35d10a4f1717272051b885710
+    discipline: pipeline
+    summary: API STA API STD 1164 2nd Ed 2009 Pipeline SCADA Security.pdf
+    status: gap
+  - id: API_5L_-_2004_-__Specification_for_Line_Pipe
+    title: API 5L   2004    Specification for Line Pipe
+    org: API
+    sha: sha256:2c3232ae6166c275cd67f44f8f8aa287
+    discipline: pipeline
+    summary: API STA API_5L_-_2004_-__Specification_for_Line_Pipe.pdf
+    status: gap
+  - id: 'API Spec 5DP Drill Pipe 2010 '
+    title: 'API Spec 5DP Drill Pipe 2010 '
+    org: API
+    sha: sha256:0432ee9559f7bfffad5233bf2caf4e8c
+    discipline: pipeline
+    summary: API STA API Spec 5DP Drill Pipe 2010 .pdf
+    status: gap
+  - id: API BULL 5C3 Formulas and Calculations for Casing, Tubing, Drill & Line Pipe
+    title: API BULL 5C3 Formulas and Calculations for Casing, Tubing, Drill & Line Pipe
+    org: API
+    sha: sha256:d6b39978766d35430a7ff579e3c44183
+    discipline: pipeline
+    summary: API STA API BULL 5C3 Formulas and Calculations for Casing, Tubing, Drill & Line Pipe.pdf
+    status: gap
+  - id: API SPEC 5L Line Pipe 2000
+    title: API SPEC 5L Line Pipe 2000
+    org: API
+    sha: sha256:c01383f34718a4cf24e9322163dc5684
+    discipline: pipeline
+    summary: API STA API SPEC 5L Line Pipe 2000.pdf
+    status: gap
+  - id: MSS_SP-69_(1969)_Pipe_Hangers_&_Supports_(Selection_&_Application)
+    title: MSS SP 69 (1969) Pipe Hangers & Supports (Selection & Application)
+    org: API
+    sha: sha256:1f48f23948a9a0e2f7f5a494cbe0d6b8
+    discipline: pipeline
+    summary: API STA MSS_SP-69_(1969)_Pipe_Hangers_&_Supports_(Selection_&_Application).pdf
+    status: gap
+  - id: '1104'
+    title: API 1104 (2005) Welding of Pipelines & Related Facil
+    org: API
+    sha: sha256:73afc807776b18e6786c50322ddea4c9
+    discipline: pipeline
+    summary: API STA API 1104 (2005) Welding of Pipelines & Related Facil.pdf
+    status: gap
+  - id: '2200'
+    title: API 2200 (1994) Repair CrudeOIL LPG pipelines
+    org: API
+    sha: sha256:1f099ffc22a620ac7548a8895683ad55
+    discipline: pipeline
+    summary: API STA API 2200 (1994) Repair CrudeOIL-LPG pipelines.pdf
+    status: gap
+  - id: 5B
+    title: API 5B Specification for Threading, Gauging and Thread Inspection of Pipe Thtreads
+    org: API
+    sha: sha256:2d009da98167e2f719568909ecc21213
+    discipline: pipeline
+    summary: API STA API 5B Specification for Threading, Gauging and Thread Inspection of Pipe Thtreads.pdf
+    status: gap
+  - id: API Spec 6D_14313_e23wErr3Ad1 Pipeline Valves
+    title: API Spec 6D 14313 e23wErr3Ad1 Pipeline Valves
+    org: API
+    sha: sha256:68698df1d52271b9f8f780351b4aa0d0
+    discipline: pipeline
+    summary: API STA API Spec 6D_14313_e23wErr3Ad1 Pipeline Valves.pdf
+    status: gap
+  - id: '1110'
+    title: API RP 1110   Pressure testing pipelines 1997
+    org: API
+    sha: sha256:11045de1fc73d405f5c9a2a88357040b
+    discipline: pipeline
+    summary: API STA API RP 1110 - Pressure testing pipelines 1997.pdf
+    status: gap
+  - id: '1102'
+    title: API RP 1102 Steel Pipelines Crossing Roads and Rails
+    org: API
+    sha: sha256:68137bc41f7887d143f8dbda424f7d87
+    discipline: pipeline
+    summary: API STA API RP 1102 Steel Pipelines Crossing Roads and Rails.pdf
+    status: gap
+  - id: 17TR
+    title: API TR 17TR2 1st Ed. (2003) The Ageing of PA 11 in Flexible Pipes
+    org: API
+    sha: sha256:c3493e8bba90b52f342afef57e12466a
+    discipline: pipeline
+    summary: API API Technical Report API TR 17TR2 1st Ed. (2003) The Ageing of PA-11 in Flexible Pipes.pdf
+    status: gap
+  - id: os-f101[1]
+    title: os f101[1]
+    org: Unknown
+    sha: sha256:e0cbf630f9836c26b2f20e8e977c34f0
+    discipline: pipeline
+    summary: 0000 O&G Oil and Gas Codes os-f101[1].pdf
+    status: gap
+  - id: J.D. Murff- 1989 - Pipe Penetration in Cohesive Soil
+    title: J.D. Murff  1989   Pipe Penetration in Cohesive Soil
+    org: Unknown
+    sha: sha256:0b2fc7af7b2b547a41eb571599b6817b
+    discipline: pipeline
+    summary: Papers Reference documents J.D. Murff- 1989 - Pipe Penetration in Cohesive Soil.pdf
+    status: gap
+  - id: Murphey, C.E., et al, 1985 - Ultimate Pipe Strength Under B
+    title: Murphey, C.E., et al, 1985   Ultimate Pipe Strength Under B
+    org: Unknown
+    sha: sha256:647a1a55204cb6c4af35cafc15709497
+    discipline: pipeline
+    summary: Papers Reference documents Murphey, C.E., et al, 1985 - Ultimate Pipe Strength Under B.pdf
+    status: gap
+  - id: Langley, R.S., 1989 - Random Dynamic Analysis of Towed Pipeli
+    title: Langley, R.S., 1989   Random Dynamic Analysis of Towed Pipeli
+    org: Unknown
+    sha: sha256:2c4bd5f1d53cd5c9c5800ea5c69727c8
+    discipline: pipeline
+    summary: Papers Reference documents Langley, R.S., 1989 - Random Dynamic Analysis of Towed Pipeli.pdf
+    status: gap
+  - id: Richards, D.M. - Stress Analysis of Heated Submarine Pipeline
+    title: Richards, D.M.   Stress Analysis of Heated Submarine Pipeline
+    org: Unknown
+    sha: sha256:c5763e10a5977c8afaebb942b33ea585
+    discipline: pipeline
+    summary: Papers Reference documents Richards, D.M. - Stress Analysis of Heated Submarine Pipeline.pdf
+    status: gap
+  - id: Guttirmsen, T.R., et al, 1990 - Buckling of Buried Pipeline
+    title: Guttirmsen, T.R., et al, 1990   Buckling of Buried Pipeline
+    org: Unknown
+    sha: sha256:683ca45c833bb5f6b160a1b8122bfe73
+    discipline: pipeline
+    summary: Papers Reference documents Guttirmsen, T.R., et al, 1990 - Buckling of Buried Pipeline.pdf
+    status: gap
+  - id: Material Damping of Free Hanging Pipes - Theoretical and Experimental Studies
+    title: Material Damping of Free Hanging Pipes   Theoretical and Experimental Studies
+    org: NEMA
+    sha: sha256:a9fa174b0ccf1fce129353e9e833c302
+    discipline: pipeline
+    summary: 0000 Codes & Standards NEMA Material Damping of Free Hanging Pipes - Theoretical and Experimental Studies.pdf
+    status: gap
+  - id: A694
+    title: ASTM A694 (2008) Std. Spec for Carbon and Alloy Steel Forgings for Pipe FLanges, Fittings, Valves, and Parts for
+      High Pr
+    org: ASTM
+    sha: sha256:99759466b7d29f99f25903a7cab3114a
+    discipline: pipeline
+    summary: ASTM ASTM A694 ASTM A694 (2008) Std. Spec for Carbon and Alloy Steel Forgings for Pipe FLanges, Fittings, Valves,
+      and Parts for High-Pressure Transmission Service.pdf
+    status: gap
+  unlinked_doc_count: 1766
+- module: asset_integrity/API579
+  standards_count: 2273
+  standards:
+  - id: '579'
+    title: API 579 1／ASME FFS 1 Fitness for Service Evaluation   2016
+    org: API
+    sha: sha256:6df73152a9d4be2dbf1c6d8a48bde71a
+    discipline: structural
+    summary: API Recommended Practice API RP 579 API 579-1／ASME FFS-1 Fitness-for-Service Evaluation - 2016.pdf
+    status: gap
+  - id: API_579-1_ASME_FFS-1_2016
+    title: API 579 1 ASME FFS 1 2016
+    org: API
+    sha: sha256:c1206deeda84f83cb33fab00904ac74f
+    discipline: structural
+    summary: API Recommended Practice API RP 579 API_579-1_ASME_FFS-1_2016.pdf
+    status: gap
+  - id: API 579-1 ASME FFS-1, Second Edition (2007) Fitness-for-Service
+    title: API 579 1 ASME FFS 1, Second Edition (2007) Fitness for Service
+    org: ''
+    sha: sha256:38efe9621efa8b94a9a1fea7e1a3c454a6293cac8f8735f91684bfa5730637d2
+    discipline: other
+    summary: API Standards API STD 579 API 579-1 ASME FFS-1, Second Edition (2007) Fitness-for-Service.pdf
+    status: gap
+  - id: API 579-1／ASME FFS-1 Fitness-for-Service Evaluation - 2016
+    title: API 579 1／ASME FFS 1 Fitness for Service Evaluation   2016
+    org: ''
+    sha: sha256:0f1f56fb3a063ab16fb1522cba585a41bb36e3b174905ea2f32ebf1350ec3a40
+    discipline: other
+    summary: API Recommended Practice API RP 579 API 579-1／ASME FFS-1 Fitness-for-Service Evaluation - 2016.pdf
+    status: gap
+  - id: API 579-1 ASME FFS-1, Errata (2009) Fitness for Service
+    title: API 579 1 ASME FFS 1, Errata (2009) Fitness for Service
+    org: ''
+    sha: sha256:686fa68bb5715e67a4316f05b0ac58c7e41204a93c2ef36dbfabaa94d307aa82
+    discipline: other
+    summary: _ocr_text API API 579-1 ASME FFS-1, Errata (2009) Fitness for Service.txt
+    status: gap
+  - id: API 579-1 ASME FFS-1, 2nd Ed & errata (2001 & 2009) Fitness for Service
+    title: API 579 1 ASME FFS 1, 2nd Ed & errata (2001 & 2009) Fitness for Service
+    org: ''
+    sha: sha256:0fe466cc186ffc902ca00c5d3178e8ad5f098bdc743988d8da64be235a03fd95
+    discipline: other
+    summary: _ocr_text API API 579-1 ASME FFS-1, 2nd Ed & errata (2001 & 2009) Fitness for Service.txt
+    status: gap
+  - id: API 579-1 ASME FFS-1, 2nd Ed (2001) Fitness for Service
+    title: API 579 1 ASME FFS 1, 2nd Ed (2001) Fitness for Service
+    org: ''
+    sha: sha256:b6bb88c7ba1cf6cca3789214fed86db8cc2abff7b42b3f2a5b83d92d866b2c93
+    discipline: other
+    summary: _ocr_text API API 579-1 ASME FFS-1, 2nd Ed (2001) Fitness for Service.txt
+    status: gap
+  - id: 2X
+    title: API RP 2X 3rd Ed (1996) Ultrasonic and Magnetic Examination of Offshore Structural Fabrication and Guidelines for
+      Qualif
+    org: API
+    sha: sha256:206298f4b0ab84ab5914a6be8bc71a12
+    discipline: structural
+    summary: API Recommended Practice API RP 2X API RP 2X 3rd Ed (1996) Ultrasonic and Magnetic Examination of Offshore Structural
+      Fabrication and Guidelines for Qualification of Technicians.pdf
+    status: gap
+  - id: API BUL 2HINS, 1st Ed (2009) Guidance for Post-hurricane Structural Inspection of Offshore Structures
+    title: API BUL 2HINS, 1st Ed (2009) Guidance for Post hurricane Structural Inspection of Offshore Structures
+    org: API
+    sha: sha256:01679d8ccb11228acf6396a9a1c648d3
+    discipline: structural
+    summary: API API Bulletin API BUL 2HINS, 1st Ed (2009) Guidance for Post-hurricane Structural Inspection of Offshore Structures.pdf
+    status: gap
+  - id: '1632'
+    title: API RP 1632 Cathodic Protection of Underground Petroleum Storage Tanks and Piping Systems (3rd 1996 31p)
+    org: API
+    sha: sha256:1664b8b8c96208bcd15be5bada3173ed
+    discipline: materials
+    summary: API Stds API API RP 1632 Cathodic Protection of Underground Petroleum Storage Tanks and Piping Systems (3rd 1996
+      31p).pdf
+    status: gap
+  - id: ASTM E103 (2002) Std Test Method for Rapid Indentation Hardness Testing of Metallic Materials
+    title: ASTM E103 (2002) Std Test Method for Rapid Indentation Hardness Testing of Metallic Materials
+    org: API
+    sha: sha256:621156b97d1edcfff7d17dcffb686079
+    discipline: materials
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E103 (2002) Std Test Method for Rapid
+      Indentation Hardness Testing of Metallic Materials.pdf
+    status: gap
+  - id: 'API VT-2 Corrosion of Oil- and Gas-Well Equipment '
+    title: 'API VT 2 Corrosion of Oil  and Gas Well Equipment '
+    org: API
+    sha: sha256:a63a057aa69b59ddb13c5b9d162425a8
+    discipline: materials
+    summary: API STA API VT-2 Corrosion of Oil- and Gas-Well Equipment .pdf
+    status: gap
+  - id: API_RP_578__1999 Material Verification for Alloy Piping
+    title: API RP 578  1999 Material Verification for Alloy Piping
+    org: API
+    sha: sha256:f64637225062e20b8777a4d4d7b266ac
+    discipline: materials
+    summary: API STA API_RP_578__1999 Material Verification for Alloy Piping.pdf
+    status: gap
+  - id: '603'
+    title: API 603 (2001) CorrosionResistBoltedBonnetGates
+    org: API
+    sha: sha256:05c7533c87f56410cb171fb709c56c7f
+    discipline: materials
+    summary: API STA API 603 (2001) CorrosionResistBoltedBonnetGates.pdf
+    status: gap
+  - id: API RP 2X 3rd Ed (1996) Ultrasonic and Magnetic Examination of Offshore Structural Fabrication and Guidelines for
+      Qualification of Technicians
+    title: API RP 2X 3rd Ed (1996) Ultrasonic and Magnetic Examination of Offshore Structural Fabrication and Guidelines for
+      Qualif
+    org: ''
+    sha: sha256:38b3ae88f9cd414512b59680dcd018d090354d0a45d09bb8f9429d5d5319a100
+    discipline: structural
+    summary: API Recommended Practice API RP 2X API RP 2X 3rd Ed (1996) Ultrasonic and Magnetic Examination of Offshore Structural
+      Fabrication and Guidelines for Qualification of Technicians.pdf
+    status: gap
+  - id: Jan98_Mobile_Offshore_Units-Structural_Design_General
+    title: Jan98 Mobile Offshore Units Structural Design General
+    org: ''
+    sha: sha256:e26808c47270a54b80fdcc67775a61b5ed3459593c76c337e614d696146528ad
+    discipline: structural
+    summary: _standards DNV Jan98_Mobile_Offshore_Units-Structural_Design_General.pdf
+    status: gap
+  - id: DNV_Chapter_1_(1998)_Mobile_Offshore_Units-Structural_Design_General
+    title: DNV Chapter 1 (1998) Mobile Offshore Units Structural Design General
+    org: ''
+    sha: sha256:3ae01827485f242ceabfd843578a196d619bef48e5d7625d49d99870a560ebca
+    discipline: structural
+    summary: _standards DNV DNV_Chapter_1_(1998)_Mobile_Offshore_Units-Structural_Design_General.pdf
+    status: gap
+  - id: Jan98 Mobile Offshore Units-Structural Design General
+    title: Jan98 Mobile Offshore Units Structural Design General
+    org: ''
+    sha: sha256:38fcb090d5c1e16512bbebb50b44be1d34c9e681a56a24f81dbf6ae1f25fdad1
+    discipline: structural
+    summary: _ocr_text DNV Jan98 Mobile Offshore Units-Structural Design General.txt
+    status: gap
+  - id: TNE002-1 Accounting for Corrosion and Wall Thickness Toleranc
+    title: TNE002 1 Accounting for Corrosion and Wall Thickness Toleranc
+    org: Unknown
+    sha: sha256:9d9ffbe992a6b8472ad956c22a5e4cec
+    discipline: materials
+    summary: Papers Guidelines TNE002-1 Accounting for Corrosion and Wall Thickness Toleranc.pdf
+    status: gap
+  - id: TNE301-1 Corrosion and Wall Thickness Variation
+    title: TNE301 1 Corrosion and Wall Thickness Variation
+    org: Unknown
+    sha: sha256:ddb2b0c13b87acca67d891b572d02783
+    discipline: materials
+    summary: Papers Guidelines TNE301-1 Corrosion and Wall Thickness Variation.pdf
+    status: gap
+  - id: MMPDS-01 (2003) Metallic Materials Properties Development and Standardization
+    title: MMPDS 01 (2003) Metallic Materials Properties Development and Standardization
+    org: Unknown
+    sha: sha256:f480f2a4aceb80c7c91d41cc67a9a9ec
+    discipline: materials
+    summary: 0000 Codes & Standards FAA MMPDS-01 (2003) Metallic Materials Properties Development and Standardization.pdf
+    status: gap
+  - id: '15156'
+    title: ISO 15156 Pt 3 1st Ed (2003) Cracking resistant CRAs (corrosion resistant alloys) and other alloys
+    org: ISO
+    sha: sha256:c459aa776d40a158ff1a8cfd9eae2afb
+    discipline: materials
+    summary: ISO ISO 15156 ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CRAs (corrosion resistant alloys) and other alloys.pdf
+    status: gap
+  - id: 11881-1
+    title: ISO 11881 1st Ed (1999) Corrosion of metals and alloys   Exfoliation corrosion testing
+    org: ISO
+    sha: sha256:6c4db0826057cbbb7a22f6095ec18523
+    discipline: materials
+    summary: ISO ISO 11881 ISO 11881 1st Ed (1999) Corrosion of metals and alloys - Exfoliation corrosion testing.pdf
+    status: gap
+  - id: '11881'
+    title: ISO 11881 Corrigendum 1 (1999) Corrosion of metals and alloys   Exfoliation corrosion testing of aluminum
+    org: ISO
+    sha: sha256:998e765a77e755fbc41f6a0025109e6d
+    discipline: materials
+    summary: ISO ISO 11881 ISO 11881 Corrigendum 1 (1999) Corrosion of metals and alloys - Exfoliation corrosion testing of
+      aluminum.pdf
+    status: gap
+  - id: 15589-2
+    title: ISO15589 2 2004forOR Cathodic Protection
+    org: ISO
+    sha: sha256:c9c7ef16ffa686eab85af2c54e2ebae5
+    discipline: materials
+    summary: ISO ISO Misc ISO15589-2-2004forOR Cathodic Protection.pdf
+    status: gap
+  - id: MIL 5G extract (1994) Metallic materials and elements for Aerospace vehicle structures
+    title: MIL 5G extract (1994) Metallic materials and elements for Aerospace vehicle structures
+    org: MIL
+    sha: sha256:44034db24bc0aebbcf93409f52ed293d
+    discipline: materials
+    summary: 0000 Codes & Standards MIL MIL 5G extract (1994) Metallic materials and elements for Aerospace vehicle structures.pdf
+    status: gap
+  - id: MIL 5J (2003) Metallic materials and elements for Aerospace vehicle structures
+    title: MIL 5J (2003) Metallic materials and elements for Aerospace vehicle structures
+    org: MIL
+    sha: sha256:ef92086296959ac1e0b6486cc04003b0
+    discipline: materials
+    summary: 0000 Codes & Standards MIL MIL 5J (2003) Metallic materials and elements for Aerospace vehicle structures.pdf
+    status: gap
+  - id: NACE MR 0175 Pt 1 2nd Ed (2009) General principles for selection of cracking-resistant materials
+    title: NACE MR 0175 Pt 1 2nd Ed (2009) General principles for selection of cracking resistant materials
+    org: Unknown
+    sha: sha256:88b21c58e7503950b0ce3ab93c4c5a78
+    discipline: materials
+    summary: NACE NACE MR 0175 NACE MR 0175 Pt 1 2nd Ed (2009) General principles for selection of cracking-resistant materials.pdf
+    status: gap
+  - id: NACE MR 0175 (1995) Sulfide Stress Cracking Resistant Metallic Materials for Oilfield Equipment
+    title: NACE MR 0175 (1995) Sulfide Stress Cracking Resistant Metallic Materials for Oilfield Equipment
+    org: Unknown
+    sha: sha256:929bbe93e946dc0bdf9d3b9bb6fdf574
+    discipline: materials
+    summary: NACE NACE MR 0175 NACE MR 0175 (1995) Sulfide Stress Cracking Resistant Metallic Materials for Oilfield Equipment.pdf
+    status: gap
+  - id: NACE MR 0175 Pt 3 2nd Ed (2009) Cracking-resistant (corrosion-resistant alloys) and other alloys
+    title: NACE MR 0175 Pt 3 2nd Ed (2009) Cracking resistant (corrosion resistant alloys) and other alloys
+    org: Unknown
+    sha: sha256:7b73c03f35363c22815a236415ba35ac
+    discipline: materials
+    summary: NACE NACE MR 0175 NACE MR 0175 Pt 3 2nd Ed (2009) Cracking-resistant (corrosion-resistant alloys) and other alloys.pdf
+    status: gap
+  - id: SAE AMS 4931D (2011) Aerospace Material Specification
+    title: SAE AMS 4931D (2011) Aerospace Material Specification
+    org: OnePetro
+    sha: sha256:660e9bdc7cd7a720e6f87ab712c43d10
+    discipline: materials
+    summary: 0000 Codes & Standards AMS SAE AMS 4931D (2011) Aerospace Material Specification.pdf
+    status: gap
+  - id: B401
+    title: DNV RP B401 with 2008 amendments (2005) Cathodic Protection Design
+    org: DNV
+    sha: sha256:f7901574a80b09c12d2cfea35c0e349b
+    discipline: materials
+    summary: DNV Recommended Practices DNV RP B401 DNV RP B401 with 2008 amendments (2005) Cathodic Protection Design.pdf
+    status: gap
+  - id: M-710 Qualification of non-metallic sealing materials and manufacturers
+    title: M 710 Qualification of non metallic sealing materials and manufacturers
+    org: Norsok
+    sha: sha256:f8d0cea589b48ef3c1472ee431bfdb71
+    discipline: materials
+    summary: Norsok NORSOK M710 M-710 Qualification of non-metallic sealing materials and manufacturers.pdf
+    status: gap
+  - id: Norsok Standard M-001 4th Ed (2004) Materials selection
+    title: Norsok Standard M 001 4th Ed (2004) Materials selection
+    org: Norsok
+    sha: sha256:c78b1e77c8bd177d78a48093f5b7304c
+    discipline: materials
+    summary: Norsok NORSOK M001 Norsok Standard M-001 4th Ed (2004) Materials selection.pdf
+    status: gap
+  - id: Norsok Standard M-501 4th Ed (1999) Surface Preparation and Protective Coating
+    title: Norsok Standard M 501 4th Ed (1999) Surface Preparation and Protective Coating
+    org: Norsok
+    sha: sha256:c2b40f38dea7687fdae351e47af63372
+    discipline: materials
+    summary: Norsok NORSOK M501 Norsok Standard M-501 4th Ed (1999) Surface Preparation and Protective Coating.pdf
+    status: gap
+  - id: Norsok Standard M-501 5th Ed (2004) Surface Preparation and Protective Coating
+    title: Norsok Standard M 501 5th Ed (2004) Surface Preparation and Protective Coating
+    org: Norsok
+    sha: sha256:069913c6413b72c4bfde914f868f3c5d
+    discipline: materials
+    summary: Norsok NORSOK M501 Norsok Standard M-501 5th Ed (2004) Surface Preparation and Protective Coating.pdf
+    status: gap
+  - id: API RP 1632 Cathodic Protection of Underground Petroleum Storage Tanks and Piping Systems (3rd 1996 31p)
+    title: API RP 1632 Cathodic Protection of Underground Petroleum Storage Tanks and Piping Systems (3rd 1996 31p)
+    org: ''
+    sha: sha256:176a4ef898b86d80ef6ea8b7f956f4bed8f401c74c5f9e18187729175fbaf919
+    discipline: materials
+    summary: API Stds API API RP 1632 Cathodic Protection of Underground Petroleum Storage Tanks and Piping Systems (3rd 1996
+      31p).pdf
+    status: gap
+  - id: API 603 (2001) CorrosionResistBoltedBonnetGates
+    title: API 603 (2001) CorrosionResistBoltedBonnetGates
+    org: ''
+    sha: sha256:bc3e544796c2e87874147364030cb9db063b2feb7ef4e49f5a99c74324b25613
+    discipline: materials
+    summary: API STA API 603 (2001) CorrosionResistBoltedBonnetGates.pdf
+    status: gap
+  - id: F 17 - 98  _RJE3LVJFRA__
+    title: 'F 17   98   RJE3LVJFRA  '
+    org: ''
+    sha: sha256:dfa2786a1dbcb06728518c622e9e8bb5f830b2e35531d1399fc171203172ba05
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.09 Paper_ Packaging_ Flexible Barrier Materials_ Business Imaging Products
+      F 17 - 98  _RJE3LVJFRA__.pdf
+    status: gap
+  - id: F 734 - 95  _RJCZNC05NQ__
+    title: 'F 734   95   RJCZNC05NQ  '
+    org: ''
+    sha: sha256:b40e1823c857c31c49ad4dbe920b4cb3623da0522c69d860ccb75f9e8c89b709
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.03 Space Simulation_ Aerospace and Aircraft_ Composite Materials F 734
+      - 95  _RJCZNC05NQ__.pdf
+    status: gap
+  - id: F 21 - 65 R96  _RJIXLTY1UJK2
+    title: F 21   65 R96   RJIXLTY1UJK2
+    org: ''
+    sha: sha256:ea10958a95392971df37e3fe8658bc500fb14b4d100dda2015462c93eb13471a
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.03 Space Simulation_ Aerospace and Aircraft_ Composite Materials F 21
+      - 65 R96  _RJIXLTY1UJK2.pdf
+    status: gap
+  - id: F 1349 - 98  _RJEZNDKTOTG_
+    title: 'F 1349   98   RJEZNDKTOTG '
+    org: ''
+    sha: sha256:00549879283c00bdf7c3cd3e19210ae23154be5f3022c5de752f1dbc8962faa4
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.09 Paper_ Packaging_ Flexible Barrier Materials_ Business Imaging Products
+      F 1349 - 98  _RJEZNDKTOTG_.pdf
+    status: gap
+  - id: F 2406 - 04  _RJI0MDY_
+    title: 'F 2406   04   RJI0MDY '
+    org: ''
+    sha: sha256:fde5b35da309aa6933b0d506b9cb904f81648eb69c0cbb0b04bdfb52d75f4cd5
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.09 Paper_ Packaging_ Flexible Barrier Materials_ Business Imaging Products
+      F 2406 - 04  _RJI0MDY_.pdf
+    status: gap
+  - id: F 2036 - 00  _RJIWMZYTMDA_
+    title: 'F 2036   00   RJIWMZYTMDA '
+    org: ''
+    sha: sha256:ca48208a8216c9491c4869801029492536cc967bfe91fb792d6e5638485ca2c0
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.09 Paper_ Packaging_ Flexible Barrier Materials_ Business Imaging Products
+      F 2036 - 00  _RJIWMZYTMDA_.pdf
+    status: gap
+  - id: F 392 - 93 R04  _RJM5MG__
+    title: 'F 392   93 R04   RJM5MG  '
+    org: ''
+    sha: sha256:f39008242ee72cbbdaa3f7ea978e3f02a8847f635cf92b45dc0ee878b0d257a2
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.09 Paper_ Packaging_ Flexible Barrier Materials_ Business Imaging Products
+      F 392 - 93 R04  _RJM5MG__.pdf
+    status: gap
+  - id: F 875 - 94 R03  _RJG3NQ__
+    title: 'F 875   94 R03   RJG3NQ  '
+    org: ''
+    sha: sha256:30845bb2acff435c7937e4c7d293b54f268b736da30ae921f8549e64f41be57c
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.09 Paper_ Packaging_ Flexible Barrier Materials_ Business Imaging Products
+      F 875 - 94 R03  _RJG3NQ__.pdf
+    status: gap
+  - id: F 1442 - 92 R98  _RJE0NDITOTJSOTG_
+    title: 'F 1442   92 R98   RJE0NDITOTJSOTG '
+    org: ''
+    sha: sha256:af7eeeb99dabd3786664dd4f9e04d642d33c1884cc63f61a28aa0f9c29436ac9
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.09 Paper_ Packaging_ Flexible Barrier Materials_ Business Imaging Products
+      F 1442 - 92 R98  _RJE0NDITOTJSOTG_.pdf
+    status: gap
+  - id: F 2029 - 00  _RJIWMJK_
+    title: 'F 2029   00   RJIWMJK '
+    org: ''
+    sha: sha256:733c9f94fb2b7eb322ec76db9102ebe5769e196d60828f984294f8c84b3eedb0
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.09 Paper_ Packaging_ Flexible Barrier Materials_ Business Imaging Products
+      F 2029 - 00  _RJIWMJK_.pdf
+    status: gap
+  - id: F 791 - 96 R02  _RJC5MQ__
+    title: 'F 791   96 R02   RJC5MQ  '
+    org: ''
+    sha: sha256:90404fb4f6e0e25c793720446e1f43986f6ec80748827adb57ea20735beac410
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.03 Space Simulation_ Aerospace and Aircraft_ Composite Materials F 791
+      - 96 R02  _RJC5MQ__.pdf
+    status: gap
+  - id: F 99 - 76 R01  _RJK5
+    title: F 99   76 R01   RJK5
+    org: ''
+    sha: sha256:03950388ab5a0eeb899645bf89610b3e31d9b0b37178d23566b31e645e8adfbf
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 15.09 Paper_ Packaging_ Flexible Barrier Materials_ Business Imaging Products
+      F 99 - 76 R01  _RJK5.pdf
+    status: gap
+  unlinked_doc_count: 19
+- module: asset_integrity/fracture_mechanics
+  standards_count: 3034
+  standards:
+  - id: BS 7910-2013
+    title: BS 7910 2013
+    org: BSI
+    sha: sha256:d7081e66d0ab452fb97b9b97de01817f
+    discipline: structural
+    summary: 0000 Codes & Standards unsorted BS 7910-2013.pdf
+    status: gap
+  - id: BS 7910 with Amendment 1 (2005) Guide to methods for assessing the acceptability of flaws in metallic structures
+    title: BS 7910 with Amendment 1 (2005) Guide to methods for assessing the acceptability of flaws in metallic structures
+    org: BSI
+    sha: sha256:4de17b51b6523dae1784d7fc97d09e86
+    discipline: structural
+    summary: BSI BS 7910 BS 7910 with Amendment 1 (2005) Guide to methods for assessing the acceptability of flaws in metallic
+      structures.pdf
+    status: gap
+  - id: BS 7910 with Amendment 1 (1999) Guide on methods for assessing the acceptability of flaws in fusion welded structures
+    title: BS 7910 with Amendment 1 (1999) Guide on methods for assessing the acceptability of flaws in fusion welded structures
+    org: BSI
+    sha: sha256:c793a19821b4757db91079e522ab4e75
+    discipline: structural
+    summary: BSI BS 7910 BS 7910 with Amendment 1 (1999) Guide on methods for assessing the acceptability of flaws in fusion
+      welded structures.pdf
+    status: gap
+  - id: BS 7910- unlocked with Amendment 1 (2005) Guide to methods for assessing the acceptability of flaws in metallic structures
+    title: BS 7910  unlocked with Amendment 1 (2005) Guide to methods for assessing the acceptability of flaws in metallic
+      structur
+    org: BSI
+    sha: sha256:f099418bfcd50160e9f7d6a50b098d3c
+    discipline: structural
+    summary: BSI BS 7910 BS 7910- unlocked with Amendment 1 (2005) Guide to methods for assessing the acceptability of flaws
+      in metallic structures.pdf
+    status: gap
+  - id: BS_7910-2013_1
+    title: BS 7910 2013 1
+    org: ''
+    sha: sha256:2750d4cacc35469edfd6cc445542e9a157b29a4e74a4065fb77518c678679f9b
+    discipline: structural
+    summary: _standards BSI BS_7910-2013_1.pdf
+    status: gap
+  - id: BS_7910_with_Amendment_1_(2005)_Guide_to_methods_for_assessing_the_acceptability_of_flaws_in_metallic_structures
+    title: BS 7910 with Amendment 1 (2005) Guide to methods for assessing the acceptability of flaws in metallic structures
+    org: ''
+    sha: sha256:3961a47cc214d302e00d674f7dc854b9d70689d186d00b804ed069a5aceed4b9
+    discipline: structural
+    summary: _standards BSI BS_7910_with_Amendment_1_(2005)_Guide_to_methods_for_assessing_the_acceptability_of_flaws_in_metallic_structures.pdf
+    status: gap
+  - id: BS_7910-2013
+    title: BS 7910 2013
+    org: ''
+    sha: sha256:79fc17c094729b9669dff752fda5bcede705a41e3ef4da5aa815e61c0fd76516
+    discipline: structural
+    summary: _standards BSI BS_7910-2013.pdf
+    status: gap
+  - id: BS_7910_with_Amendment_1_(1999)_Guide_on_methods_for_assessing_the_acceptability_of_flaws_in_fusion_welded_structures
+    title: BS 7910 with Amendment 1 (1999) Guide on methods for assessing the acceptability of flaws in fusion welded structures
+    org: ''
+    sha: sha256:a2ecb372b353faffd0ecde504f5713b5c4b076a1b501d2361310f885d5820c60
+    discipline: structural
+    summary: _standards BSI BS_7910_with_Amendment_1_(1999)_Guide_on_methods_for_assessing_the_acceptability_of_flaws_in_fusion_welded_structures.pdf
+    status: gap
+  - id: BS_7910-_unlocked_with_Amendment_1_(2005)_Guide_to_methods_for_assessing_the_acceptability_of_flaws_in_metallic_structures
+    title: BS 7910  unlocked with Amendment 1 (2005) Guide to methods for assessing the acceptability of flaws in metallic
+      structur
+    org: ''
+    sha: sha256:0686cb1648661c24c1baa2a61a1f87a1c2addf3a715ab6b3045edfe3bddf2942
+    discipline: structural
+    summary: _standards BSI BS_7910-_unlocked_with_Amendment_1_(2005)_Guide_to_methods_for_assessing_the_acceptability_of_flaws_in_metallic_structures.pdf
+    status: gap
+  - id: BS 7910-2013 (Scanned)
+    title: BS 7910 2013 (Scanned)
+    org: ''
+    sha: sha256:03539c765fea32afcb80b921bc6c27f5438e11ec2cf19fe76bd31118a4867fbd
+    discipline: structural
+    summary: _ocr_text BSI BS 7910-2013 (Scanned).txt
+    status: gap
+  - id: E1290
+    title: ASTM E1290 (2002) Standard Test Method for Crack Tip Opening Displacement (CTOD) Fracture Toughness
+    org: ASTM
+    sha: sha256:12537f9e393f4051cc3e3a777eea4bc7
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1290 (2002) Standard Test Method
+      for Crack-Tip Opening Displacement (CTOD) Fracture Toughness.pdf
+    status: gap
+  - id: E1922
+    title: ASTM E1922 (2004) Standard Test Method for Translaminar Fracture Toughness of Laminated and Pultruded Polymer Matrix
+    org: ASTM
+    sha: sha256:8699ab435dbd18b1388badf1c6504c99
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1922 (2004) Standard Test Method
+      for Translaminar Fracture Toughness of Laminated and Pultruded Polymer Matrix.pdf
+    status: gap
+  - id: E1221
+    title: ASTM E1221(2006) Standard Test Method for Determining Plane Strain Crack Arrest Fracture Toughness, K Ia, of Ferritic
+    org: ASTM
+    sha: sha256:538c9a525331d903d32e65c8e9aa427b
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1221(2006) Standard Test Method
+      for Determining Plane-Strain Crack-Arrest Fracture Toughness, K Ia, of Ferritic.pdf
+    status: gap
+  - id: E1304
+    title: ASTM E1304 97 (2002) Standard Test Method for Plane Strain (Chevron Notch) Fracture Toughness of Metallic Materials
+    org: ASTM
+    sha: sha256:0c8359566ecbdb2a0410195a96116784
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1304-97 (2002) Standard Test Method
+      for Plane-Strain (Chevron-Notch) Fracture Toughness of Metallic Materials.pdf
+    status: gap
+  - id: E1820
+    title: ASTM E1820 (2006) Standard Test Method for Measurement of Fracture Toughness
+    org: ASTM
+    sha: sha256:7750b1cf4503e4135e752dc9675c4175
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1820 (2006) Standard Test Method
+      for Measurement of Fracture Toughness.pdf
+    status: gap
+  - id: E399
+    title: ASTM E399 (2006) Std Test Method for Linear Elastic Plane Strain Fracture Toughness K of Metallic Materials
+    org: ASTM
+    sha: sha256:f8811c56eb172df4f415fb51aa883d9c
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E399 (2006) Std Test Method for Linear-Elastic
+      Plane-Strain Fracture Toughness K of Metallic Materials.pdf
+    status: gap
+  - id: E992
+    title: ASTM E992 (1989) Std Practice for Determination of a Fracture Toughness of Steels Using Equivalent Energy Methodology
+    org: ASTM
+    sha: sha256:db1253a0e9bedbb8180d4184c2977246
+    discipline: structural
+    summary: ASTM ASTM E992 ASTM E992 (1989) Std Practice for Determination of a Fracture Toughness of Steels Using Equivalent
+      Energy Methodology.pdf
+    status: gap
+  - id: BS 7448 Pt 1 with amendment 1 (1991) Fracture mechanics toughness tests
+    title: BS 7448 Pt 1 with amendment 1 (1991) Fracture mechanics toughness tests
+    org: BSI
+    sha: sha256:e2ee1300fb469f6da86d6e3b4a9176b0
+    discipline: structural
+    summary: BSI BS 7448 BS 7448 Pt 1 with amendment 1 (1991) Fracture mechanics toughness tests.pdf
+    status: gap
+  - id: BS 7448 Pt 4 with Corrigendum 1 (1997)  Fracture mechanics toughness tests
+    title: BS 7448 Pt 4 with Corrigendum 1 (1997)  Fracture mechanics toughness tests
+    org: BSI
+    sha: sha256:57edbaaaec9dc41499772af2da86501d
+    discipline: structural
+    summary: BSI BS 7448 BS 7448 Pt 4 with Corrigendum 1 (1997)  Fracture mechanics toughness tests.pdf
+    status: gap
+  - id: ASTM E1290 (2002) Standard Test Method for Crack-Tip Opening Displacement (CTOD) Fracture Toughness
+    title: ASTM E1290 (2002) Standard Test Method for Crack Tip Opening Displacement (CTOD) Fracture Toughness
+    org: ''
+    sha: sha256:ca8a3a7ac320d7363a0d27b790b6955df01ebc289879ef8f33a3a061f4fbe6f1
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1290 (2002) Standard Test Method
+      for Crack-Tip Opening Displacement (CTOD) Fracture Toughness.pdf
+    status: gap
+  - id: E1942
+    title: ASTM E1942 98 (2004) Standard Guide for Evaluating Data Acquisition Systems Used in Cyclic Fatigue and Fracture
+    org: ASTM
+    sha: sha256:376c7247057f32efab7cad976f015674
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1942-98 (2004) Standard Guide for
+      Evaluating Data Acquisition Systems Used in Cyclic Fatigue and Fracture.pdf
+    status: gap
+  - id: E647
+    title: ASTM E647 (2005) Std Test Method for Measurement of Fatigue Crack Growth Rates
+    org: ASTM
+    sha: sha256:f8dac6243c589549eb42cf90ba8d04e6
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E647 (2005) Std Test Method for Measurement
+      of Fatigue Crack Growth Rates.pdf
+    status: gap
+  - id: E740
+    title: ASTM E740 (2003) Std Practice for Fracture Testing with Surface Crack Tension Specimens
+    org: ASTM
+    sha: sha256:a9055753d9b6ad8c099f5f4171fc7565
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E740 (2003) Std Practice for Fracture
+      Testing with Surface-Crack Tension Specimens.pdf
+    status: gap
+  - id: D 3387 - 83 R96  _RDMZODCTODNSOTY_
+    title: 'D 3387   83 R96   RDMZODCTODNSOTY '
+    org: ASTM
+    sha: sha256:44f21fd01d7d48c980003792b220fef4
+    discipline: materials
+    summary: ASTM 2004 PART IB ASTM 2004 Volume 04.03 Road and Paving Materials_ Vehicle-Pavement Systems D 3387 - 83 R96  _RDMZODCTODNSOTY_.pdf
+    status: gap
+  - id: E 1157 - 87 R96  _RTEXNTCTODDSOTY_
+    title: 'E 1157   87 R96   RTEXNTCTODDSOTY '
+    org: ASTM
+    sha: sha256:280c72a27a71b7b9e95d793b0b23c5a3
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 14.04 Laboratory Apparatus_ Degradation of Materials_ SI_ Oxygen Fire Safety
+      E 1157 - 87 R96  _RTEXNTCTODDSOTY_.pdf
+    status: gap
+  - id: E 1047 - 85 R96  _RTEWNDCTODVSOTY_
+    title: 'E 1047   85 R96   RTEWNDCTODVSOTY '
+    org: ASTM
+    sha: sha256:27446580dfbb8d3c497ec15c9b472521
+    discipline: materials
+    summary: ASTM 2004 PART III ASTM 2004 Volume 14.04 Laboratory Apparatus_ Degradation of Materials_ SI_ Oxygen Fire Safety
+      E 1047 - 85 R96  _RTEWNDCTODVSOTY_.pdf
+    status: gap
+  - id: 15653-1
+    title: ISO 15653 1st Ed (2010) Metallic materials  Method for test for the determination of quasistatic fracture toughness
+    org: ISO
+    sha: sha256:b68eeb1064feea35c4e62c787fb135e2
+    discipline: structural
+    summary: ISO ISO 15653 ISO 15653 1st Ed (2010) Metallic materials -Method for test for the determination of quasistatic
+      fracture toughness.pdf
+    status: gap
+  - id: ASTM E992 (1989) Std Practice for Determination of a Fracture Toughness of Steels Using Equivalent Energy Methodology
+    title: ASTM E992 (1989) Std Practice for Determination of a Fracture Toughness of Steels Using Equivalent Energy Methodology
+    org: ''
+    sha: sha256:7ce1a331b13887b81d3c3a2613b60b67ad89143e4217114bf932a82a5781f1c3
+    discipline: structural
+    summary: ASTM ASTM E992 ASTM E992 (1989) Std Practice for Determination of a Fracture Toughness of Steels Using Equivalent
+      Energy Methodology.pdf
+    status: gap
+  - id: ASTM E1221(2006) Standard Test Method for Determining Plane-Strain Crack-Arrest Fracture Toughness, K Ia, of Ferritic
+    title: ASTM E1221(2006) Standard Test Method for Determining Plane Strain Crack Arrest Fracture Toughness, K Ia, of Ferritic
+    org: ''
+    sha: sha256:0d878040aac215d3f295392ac94e5c93521a91121aba5ce3e1607c003418d19a
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1221(2006) Standard Test Method
+      for Determining Plane-Strain Crack-Arrest Fracture Toughness, K Ia, of Ferritic.pdf
+    status: gap
+  - id: ASTM E1304-97 (2002) Standard Test Method for Plane-Strain (Chevron-Notch) Fracture Toughness of Metallic Materials
+    title: ASTM E1304 97 (2002) Standard Test Method for Plane Strain (Chevron Notch) Fracture Toughness of Metallic Materials
+    org: ''
+    sha: sha256:880d1c545c409d0c02f6c5b2c44a29fb94dc868b7ee02e91222d361fcc2466d7
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1304-97 (2002) Standard Test Method
+      for Plane-Strain (Chevron-Notch) Fracture Toughness of Metallic Materials.pdf
+    status: gap
+  - id: ASTM E1922 (2004) Standard Test Method for Translaminar Fracture Toughness of Laminated and Pultruded Polymer Matrix
+    title: ASTM E1922 (2004) Standard Test Method for Translaminar Fracture Toughness of Laminated and Pultruded Polymer Matrix
+    org: ''
+    sha: sha256:bc6197f815ee03f31b87eac6641f693cb0da8352b0a788e088e35a5f745710e3
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1922 (2004) Standard Test Method
+      for Translaminar Fracture Toughness of Laminated and Pultruded Polymer Matrix.pdf
+    status: gap
+  - id: ASTM E399 (2006) Std Test Method for Linear-Elastic Plane-Strain Fracture Toughness K of Metallic Materials
+    title: ASTM E399 (2006) Std Test Method for Linear Elastic Plane Strain Fracture Toughness K of Metallic Materials
+    org: ''
+    sha: sha256:63f8e805530a4dbc9fd669c0f0e9c867a94ef5d3fa042b590a653c316077f3f3
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E399 (2006) Std Test Method for Linear-Elastic
+      Plane-Strain Fracture Toughness K of Metallic Materials.pdf
+    status: gap
+  - id: ASTM E1820 (2006) Standard Test Method for Measurement of Fracture Toughness
+    title: ASTM E1820 (2006) Standard Test Method for Measurement of Fracture Toughness
+    org: ''
+    sha: sha256:d3439288ab01eedb320930a22f576a16e3be08a287fb10415ca39cb46d110ebe
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1820 (2006) Standard Test Method
+      for Measurement of Fracture Toughness.pdf
+    status: gap
+  - id: ISO_15653_1st_Ed_(2010)_Metallic_materials_-Method_for_test_for_the_determination_of_quasistatic_fracture_toughness
+    title: ISO 15653 1st Ed (2010) Metallic materials  Method for test for the determination of quasistatic fracture toughness
+    org: ''
+    sha: sha256:74abef80787a1900f165b6a024f12b45d5aabdf0e4397509e47af64bcbfcedde
+    discipline: structural
+    summary: ISO 15xxx ISO_15653_1st_Ed_(2010)_Metallic_materials_-Method_for_test_for_the_determination_of_quasistatic_fracture_toughness.pdf
+    status: gap
+  - id: BS_7448_Pt_1_with_amendment_1_(1991)_Fracture_mechanics_toughness_tests
+    title: BS 7448 Pt 1 with amendment 1 (1991) Fracture mechanics toughness tests
+    org: ''
+    sha: sha256:385e0761d0a1423d47206127ed9893f195677af265cbf9980ca92e0013f16f8a
+    discipline: structural
+    summary: _standards BSI BS_7448_Pt_1_with_amendment_1_(1991)_Fracture_mechanics_toughness_tests.pdf
+    status: gap
+  - id: BS_7448_Pt_4_with_Corrigendum_1_(1997)_Fracture_mechanics_toughness_tests
+    title: BS 7448 Pt 4 with Corrigendum 1 (1997) Fracture mechanics toughness tests
+    org: ''
+    sha: sha256:79ad3a63ae2cd7f2c2208d11492ffd5acfcbd9fd0872268717d47d5361c78c85
+    discipline: structural
+    summary: _standards BSI BS_7448_Pt_4_with_Corrigendum_1_(1997)_Fracture_mechanics_toughness_tests.pdf
+    status: gap
+  - id: A131
+    title: ASTM A131 (2004) Std Specification for Structural Steel for Ships
+    org: ASTM
+    sha: sha256:29c336943cf6aa1667817d4979ff5f99
+    discipline: structural
+    summary: ASTM ASTM A131 ASTM A131 (2004) Std Specification for Structural Steel for Ships.pdf
+    status: gap
+  - id: A320
+    title: ASTM A320 A320M (2008) Std. Spec Alloy Steel and Stainless Steel Bolting Materials for Low Temp Service
+    org: ASTM
+    sha: sha256:abd92d2f2d17619ae46f36cd31071dfb
+    discipline: materials
+    summary: ASTM ASTM A320 ASTM A320 A320M (2008) Std. Spec Alloy-Steel and Stainless Steel Bolting Materials for Low Temp
+      Service.pdf
+    status: gap
+  - id: A0500-A0500M-10A (2010) Standard Spec for Cold-Formed Welded and Seamless Carbon Steel Structural Tubing in Rounds
+      and Shapes
+    title: A0500 A0500M 10A (2010) Standard Spec for Cold Formed Welded and Seamless Carbon Steel Structural Tubing in Rounds
+      and S
+    org: ASTM
+    sha: sha256:23a4fb78b2ccccedf128294f5d955f2f
+    discipline: structural
+    summary: ASTM ASTM A500M A0500-A0500M-10A (2010) Standard Spec for Cold-Formed Welded and Seamless Carbon Steel Structural
+      Tubing in Rounds and Shapes.pdf
+    status: gap
+  - id: E1049
+    title: ASTM E1049 85(2005) Standard Practices for Cycle Counting in Fatigue Analysis
+    org: ASTM
+    sha: sha256:40401ce5206c21414453e923ee8831c2
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1049-85(2005) Standard Practices
+      for Cycle Counting in Fatigue Analysis.pdf
+    status: gap
+  - id: E467
+    title: ASTM E467 (2004) Std Practice for Verification of Constant Amplitude Dynamic Forces in an Axial Fatigue Testing
+      System
+    org: ASTM
+    sha: sha256:aa9e8acdc0901b39dda93ea9d5332204
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E467 (2004) Std Practice for Verification
+      of Constant Amplitude Dynamic Forces in an Axial Fatigue Testing System.pdf
+    status: gap
+  - id: E1949
+    title: ASTM E1949 (2003) Standard Test Method for Ambient Temperature Fatigue Life of Metallic Bonded Resistance
+    org: ASTM
+    sha: sha256:0e796c9d636831c3e51a2ca04b98d0b8
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1949 (2003) Standard Test Method
+      for Ambient Temperature Fatigue Life of Metallic Bonded Resistance.pdf
+    status: gap
+  - id: E1180
+    title: ASTM E1180 (2003) Standard Practice for Preparing Sulfur Prints for Macrostructural Examination
+    org: ASTM
+    sha: sha256:cf2898f7b7cf25f787a5e0c7af888694
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E1180 (2003) Standard Practice for
+      Preparing Sulfur Prints for Macrostructural Examination.pdf
+    status: gap
+  - id: E606
+    title: ASTM E606 (2004) Std Practice for Strain Controlled Fatigue Testing
+    org: ASTM
+    sha: sha256:881ba421dc0c4b5e20b2cc91daf40da9
+    discipline: structural
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E606 (2004) Std Practice for Strain-Controlled
+      Fatigue Testing.pdf
+    status: gap
+  - id: E328
+    title: ASTM E328 (2002) Std Test Methods for Stress Relaxation for Materials and Structures
+    org: ASTM
+    sha: sha256:e874d1c38c5e006bc0c25388e334a553
+    discipline: materials
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E328 (2002) Std Test Methods for
+      Stress Relaxation for Materials and Structures.pdf
+    status: gap
+  - id: E21
+    title: ASTM E21 (2005) Std Test Methods for Elevated Temperature Tension Tests of Metallic Materials
+    org: ASTM
+    sha: sha256:463f0e6123d8b66b5a5c0fe17228299a
+    discipline: materials
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E21 (2005) Std Test Methods for Elevated
+      Temperature Tension Tests of Metallic Materials.pdf
+    status: gap
+  - id: E18
+    title: ASTM E18 (2007) Std Test Methods for Rockwell Hardness of Metallic Materials
+    org: ASTM
+    sha: sha256:32bedca4ce2d4f0c4ff2cfc148bc7a26
+    discipline: materials
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E18 (2007) Std Test Methods for Rockwell
+      Hardness of Metallic Materials.pdf
+    status: gap
+  - id: E646
+    title: ASTM E646 (2000) Std Test Method for Tensile Strain Hardening Exponents (n Values) of Metallic Sheet Materials
+    org: ASTM
+    sha: sha256:2d5266cb94006f178abcce23f49450f9
+    discipline: materials
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E646 (2000) Std Test Method for Tensile
+      Strain-Hardening Exponents (n-Values) of Metallic Sheet Materials.pdf
+    status: gap
+  - id: E290
+    title: ASTM E290 (2004) Std Test Methods for Bend Testing of Material for Ductility
+    org: ASTM
+    sha: sha256:4551493791138826ef1627e828dcced6
+    discipline: materials
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E290 (2004) Std Test Methods for
+      Bend Testing of Material for Ductility.pdf
+    status: gap
+  - id: E8
+    title: ASTM E8 (2004) Std Test Methods for Tension Testing of Metallic Materials
+    org: ASTM
+    sha: sha256:d32c13651ad96399acf4a092c1fc3f58
+    discipline: materials
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E8 (2004) Std Test Methods for Tension
+      Testing of Metallic Materials.pdf
+    status: gap
+  unlinked_doc_count: 5
+- module: subsea/pipeline
+  standards_count: 19
+  standards:
+  - id: '1111'
+    title: API RP 1111 4th Ed (2009) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
+      Stat
+    org: API
+    sha: sha256:c2b1dacbb9688f034bf4347ac605d04c
+    discipline: pipeline
+    summary: API Recommended Practice API RP 1111 API RP 1111 4th Ed (2009) Design, Construction, Operation, and Maintenance
+      of Offshore Hydrocarbon Pipelines (Limit State Design).pdf
+    status: gap
+  - id: API RP 1111 Errata (2011) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
+      State Design)
+    title: API RP 1111 Errata (2011) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
+      Stat
+    org: ''
+    sha: sha256:8eca1f7f37d7a2e71a190f8ecfd95b5b59e86e4aaa81c843d1b331df3506f2a0
+    discipline: pipeline
+    summary: API Recommended Practice API RP 1111 API RP 1111 Errata (2011) Design, Construction, Operation, and Maintenance
+      of Offshore Hydrocarbon Pipelines (Limit State Design).pdf
+    status: gap
+  - id: API RP 1111 3rd Ed (1999) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
+      State Design)
+    title: API RP 1111 3rd Ed (1999) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
+      Stat
+    org: ''
+    sha: sha256:d7705d592fdff049ba1e8d42ce54de34bb5fe9ee1c482201c237c13786a27fbf
+    discipline: pipeline
+    summary: API Recommended Practice API RP 1111 API RP 1111 3rd Ed (1999) Design, Construction, Operation, and Maintenance
+      of Offshore Hydrocarbon Pipelines (Limit State Design).pdf
+    status: gap
+  - id: API RP 1111 Draft (1998) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
+      State Design)
+    title: API RP 1111 Draft (1998) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
+      State
+    org: ''
+    sha: sha256:927eda99c2727ce81ec5ba9b81cd9b5b05f5f3c9d3be785500ebd61a9dc5fc16
+    discipline: pipeline
+    summary: API Recommended Practice API RP 1111 API RP 1111 Draft (1998) Design, Construction, Operation, and Maintenance
+      of Offshore Hydrocarbon Pipelines (Limit State Design).pdf
+    status: gap
+  - id: API RP 1111 4th Ed (2009) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
+      State Design)
+    title: API RP 1111 4th Ed (2009) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
+      Stat
+    org: ''
+    sha: sha256:24659655308d3c71ad07eab8124f32bc87b44d5880bf798d85b192d13e6d4a51
+    discipline: pipeline
+    summary: API Recommended Practice API RP 1111 API RP 1111 4th Ed (2009) Design, Construction, Operation, and Maintenance
+      of Offshore Hydrocarbon Pipelines (Limit State Design).pdf
+    status: gap
+  - id: API-RP-1111
+    title: API RP 1111
+    org: API
+    sha: sha256:a3e5f8666cb054a8192721f8c8c99653
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API-RP-1111.pdf
+    status: gap
+  - id: API RP 1111
+    title: API RP 1111
+    org: ''
+    sha: sha256:7e8c80e8a21dbfa9e600ec05d829aeb2c1ba049c031ef5e31a805a47ea492323
+    discipline: other
+    summary: Oil and Gas Codes API Standards API RP 1111.PDF
+    status: gap
+  - id: API RP 1111 (1999)
+    title: API RP 1111 (1999)
+    org: ''
+    sha: sha256:533709f66abfa9eca61790a546b19c36de3a186b7a1626bd9483e113109f7d08
+    discipline: other
+    summary: API Stds API API RP 1111 (1999).pdf
+    status: gap
+  - id: F102
+    title: DNV RP F102 (2011) Pipeline Field Joint Coating and Field Repair of Linepipe Coating
+    org: DNV
+    sha: sha256:f7cfadbed593616fbb0d8b83c56d51f8
+    discipline: pipeline
+    summary: DNV Recommended Practices DNV RP F102 DNV RP F102 (2011) Pipeline Field Joint Coating and Field Repair of Linepipe
+      Coating.pdf
+    status: gap
+  - id: Yeh, M.K., et al, 1988 - Collapse of Deepwater Pipelines
+    title: Yeh, M.K., et al, 1988   Collapse of Deepwater Pipelines
+    org: Unknown
+    sha: sha256:1e7d7f8dc069e3a42e0f621f4137d942
+    discipline: pipeline
+    summary: Papers Reference documents Yeh, M.K., et al, 1988 - Collapse of Deepwater Pipelines.pdf
+    status: gap
+  - id: Yeh,_M.K.,_et_al,_1988_-_Collapse_of_Deepwater_Pipelines
+    title: Yeh, M.K., et al, 1988   Collapse of Deepwater Pipelines
+    org: ''
+    sha: sha256:c6e0fbd9bf20493c4d5676796859e3d82ca986f5207d9e69af2d22141e9788e0
+    discipline: pipeline
+    summary: _standards Unknown Yeh,_M.K.,_et_al,_1988_-_Collapse_of_Deepwater_Pipelines.pdf
+    status: gap
+  - id: F101
+    title: DNVOS F101
+    org: DNV
+    sha: sha256:aef57c4981a6f92e6ca85af7e88c669c
+    discipline: pipeline
+    summary: 0000 O&G Oil and Gas Codes DNVOS-F101.pdf
+    status: gap
+  - id: Rules for Submarine Pipeline Systems
+    title: Rules for Submarine Pipeline Systems
+    org: DNV
+    sha: sha256:870c90ce4fb7ca51d6e51227919d7df2
+    discipline: pipeline
+    summary: Oil and Gas Codes DNV Standards Rules for Submarine Pipeline Systems.PDF
+    status: gap
+  - id: '006'
+    title: DNV OSS 006 (1981) Rules for Submarine Pipeline Systems
+    org: DNV
+    sha: sha256:0a073c4363c8d5b24f6138e00125d61c
+    discipline: pipeline
+    summary: DNV Offshore Service Specifications DNV OSS 006 DNV OSS 006 (1981) Rules for Submarine Pipeline Systems.PDF
+    status: gap
+  - id: F110
+    title: DNV RP F110 (2007) Global buckling of submarine pipelines
+    org: DNV
+    sha: sha256:549422839527f487edf6d72d4d90d96b
+    discipline: pipeline
+    summary: DNV Recommended Practices DNV RP F110 DNV RP F110 (2007) Global buckling of submarine pipelines.pdf
+    status: gap
+  - id: F103
+    title: DNV RP F103 (2010) Cathodic Protection of Submarine Pipelines by Galvanic Anodes
+    org: DNV
+    sha: sha256:002218eec0c85664d1e6ab573f9c28a8
+    discipline: pipeline
+    summary: DNV Recommended Practices DNV RP F103 DNV RP F103 (2010) Cathodic Protection of Submarine Pipelines by Galvanic
+      Anodes.pdf
+    status: gap
+  - id: F106
+    title: DNV RP F106 (2003) Factory Applied External Pipeline Coating for Corrosion Control
+    org: DNV
+    sha: sha256:f0d0487817812879f95c016f186b8e7d
+    discipline: pipeline
+    summary: DNV Recommended Practices DNV RP F106 DNV RP F106 (2003) Factory Applied External Pipeline Coating for Corrosion
+      Control.pdf
+    status: gap
+  - id: F116
+    title: DNV RP F116 (2009) Integrity Management of Submarine Pipeline Systems
+    org: DNV
+    sha: sha256:9772d2a79609e5501b9eb1b37aa46b00
+    discipline: pipeline
+    summary: DNV Recommended Practices DNV RP F116 DNV RP F116 (2009) Integrity Management of Submarine Pipeline Systems.pdf
+    status: gap
+  - id: DNV_RP_F102_(2011)_Pipeline_Field_Joint_Coating_and_Field_Repair_of_Linepipe_Coating
+    title: DNV RP F102 (2011) Pipeline Field Joint Coating and Field Repair of Linepipe Coating
+    org: ''
+    sha: sha256:ffcb3a61abbd91d9da62ad57ae609311de41a85fcef5156fa802769693afeec4
+    discipline: pipeline
+    summary: _standards DNV DNV_RP_F102_(2011)_Pipeline_Field_Joint_Coating_and_Field_Repair_of_Linepipe_Coating.pdf
+    status: gap
+  unlinked_doc_count: 22
+- module: subsea/catenary_riser
+  standards_count: 800
+  standards:
+  - id: F201
+    title: DnV OS F201   Dynamic Risers
+    org: DNV
+    sha: sha256:0c3d7605cce88d097f0b520c4ca271bb
+    discipline: pipeline
+    summary: Oil and Gas Codes DNV Standards DnV-OS-F201 - Dynamic Risers.pdf
+    status: gap
+  - id: 2RD
+    title: API RP 2RD 1st Ed with errata (2009) Design of Risers for FPSs and TLPs
+    org: API
+    sha: sha256:e6cdb77c9d0abb9f8c61b4ad832c1e4f
+    discipline: pipeline
+    summary: API Recommended Practice API RP 2RD API RP 2RD 1st Ed with errata (2009) Design of Risers for FPSs and TLPs.pdf
+    status: gap
+  - id: API RP 2RD 1st Ed. (1998) Design of Risers for FPSs and TLPs
+    title: API RP 2RD 1st Ed. (1998) Design of Risers for FPSs and TLPs
+    org: ''
+    sha: sha256:0d0a8a4180c48e204952b8c5da176146f3e1fc2d6c0cac9dbe72a284b2ea6c09
+    discipline: pipeline
+    summary: API RP 2RD Extra files API RP 2RD 1st Ed. (1998) Design of Risers for FPSs and TLPs.pdf
+    status: gap
+  - id: API RP 2RD 1st Ed with errata (2009) Design of Risers for FPSs and TLPs
+    title: API RP 2RD 1st Ed with errata (2009) Design of Risers for FPSs and TLPs
+    org: ''
+    sha: sha256:28c45088878cf690155f2dcd566ea824e131bb47211535c6c1773bbf0dea1158
+    discipline: pipeline
+    summary: API Recommended Practice API RP 2RD API RP 2RD 1st Ed with errata (2009) Design of Risers for FPSs and TLPs.pdf
+    status: gap
+  - id: DnV-OS-F201_-_Dynamic_Risers
+    title: DnV OS F201   Dynamic Risers
+    org: ''
+    sha: sha256:57918837d1aaf604123b3022c051b8026dfaafabac0164a87d941cf6f1e796f7
+    discipline: pipeline
+    summary: DNV Offshore-Standards DnV-OS-F201_-_Dynamic_Risers.pdf
+    status: gap
+  - id: DnV-OS-F201_-_Dynamic_Risers_-2
+    title: DnV OS F201   Dynamic Risers  2
+    org: ''
+    sha: sha256:5d3bb62e8335a2d45a4066f68a880ef46aba544f02abf852b4f22dedb68dba30
+    discipline: pipeline
+    summary: DNV Offshore-Standards DnV-OS-F201_-_Dynamic_Risers_-2.pdf
+    status: gap
+  - id: DnV-OS-F201 - Dynamic Risers -2
+    title: DnV OS F201   Dynamic Risers  2
+    org: ''
+    sha: sha256:6d398999c3e75cc885be0f3d57e82f74c9c6c3f04abaf0cf415fa680111b2b01
+    discipline: pipeline
+    summary: _ocr_text DNV DnV-OS-F201 - Dynamic Risers -2.txt
+    status: gap
+  - id: SCR_geotechnical__input_to_API_RP_2RD_v4_
+    title: 'SCR geotechnical  input to API RP 2RD v4 '
+    org: API
+    sha: sha256:f43a5d26809a96554cf42359e1fd1efe
+    discipline: structural
+    summary: STA API-ISO SCR_geotechnical__input_to_API_RP_2RD_v4_.doc
+    status: gap
+  - id: DNV_OS_F201_(2010)_Dynamic_Risers
+    title: DNV OS F201 (2010) Dynamic Risers
+    org: ''
+    sha: sha256:9790f602f9420dc217c271fb9a9e0c51e0d88cabf5234aa6292e531d83fee184
+    discipline: pipeline
+    summary: _standards DNV DNV_OS_F201_(2010)_Dynamic_Risers.pdf
+    status: gap
+  - id: DNV_OS_F201_(2001)_Dynamic_Risers
+    title: DNV OS F201 (2001) Dynamic Risers
+    org: ''
+    sha: sha256:0b61bfc84f41321a638517fd0283882a45288b6399b7dd4394eae4d682b8bfe6
+    discipline: pipeline
+    summary: _standards DNV DNV_OS_F201_(2001)_Dynamic_Risers.pdf
+    status: gap
+  - id: ~$EC_ANN
+    title: ~$EC ANN
+    org: API
+    sha: sha256:0803460dee101160fdddf9197b2fcc1e
+    discipline: structural
+    summary: Extra files Annex ~$EC_ANN.DOC
+    status: gap
+  - id: ~$C1 rev3
+    title: ~$C1 rev3
+    org: API
+    sha: sha256:8b0ff60fbbe38a32d1e3990a4b14e096
+    discipline: structural
+    summary: Extra files Apirp2rd ~$C1 rev3.doc
+    status: gap
+  - id: ~$c5rev3
+    title: ~$c5rev3
+    org: API
+    sha: sha256:9459a3b5f062f67bc88b90c001bf8a28
+    discipline: structural
+    summary: Extra files Apirp2rd ~$c5rev3.doc
+    status: gap
+  - id: Flowline_Geotechnical_Input_to_API_RP_2RD_v8(shorter_vers)a
+    title: Flowline Geotechnical Input to API RP 2RD v8(shorter vers)a
+    org: API
+    sha: sha256:a9598212174acab220f6ce1a9d104ba9
+    discipline: structural
+    summary: API STA Flowline_Geotechnical_Input_to_API_RP_2RD_v8(shorter_vers)a.doc
+    status: gap
+  - id: Flowline_Geotechnical_Input_to_API_RP_2RD_v8(shorter_vers)_-_DW-mfr
+    title: Flowline Geotechnical Input to API RP 2RD v8(shorter vers)   DW mfr
+    org: API
+    sha: sha256:1c18a02f5e440fa04b33ccfdc5daf695
+    discipline: structural
+    summary: API STA Flowline_Geotechnical_Input_to_API_RP_2RD_v8(shorter_vers)_-_DW-mfr.doc
+    status: gap
+  - id: API_RP_2RD_Site_Characterization_Rev_3
+    title: API RP 2RD Site Characterization Rev 3
+    org: API
+    sha: sha256:9241736dd1f3e40c12eb51005de76856
+    discipline: structural
+    summary: STA API-ISO API_RP_2RD_Site_Characterization_Rev_3.doc
+    status: gap
+  - id: Flowline_Geotechnical_Input_to_API_RP_2RD_v3_(commented_by_Fugro)
+    title: Flowline Geotechnical Input to API RP 2RD v3 (commented by Fugro)
+    org: API
+    sha: sha256:a5139748f5b73301e660d467f8cf3e41
+    discipline: structural
+    summary: STA API-ISO Flowline_Geotechnical_Input_to_API_RP_2RD_v3_(commented_by_Fugro).doc
+    status: gap
+  - id: API-RP-2RD Spine
+    title: API RP 2RD Spine
+    org: API
+    sha: sha256:21f398ad60ccd7334d76759bb24d1de9
+    discipline: structural
+    summary: Oil and Gas Codes API Standards API-RP-2RD Spine.doc
+    status: gap
+  - id: Sec2 rev3
+    title: Sec2 rev3
+    org: API
+    sha: sha256:67e3651c7205ce407d28d7b16b22630e
+    discipline: structural
+    summary: API-RP-2RD(OUT-OF-DATE DRAFT) Apirp2~1 Sec2 rev3.doc
+    status: gap
+  - id: Sec5rev3
+    title: Sec5rev3
+    org: API
+    sha: sha256:8a5d5d6bd714c7e5c7eb1e499e816d5c
+    discipline: structural
+    summary: API-RP-2RD(OUT-OF-DATE DRAFT) Apirp2~1 Sec5rev3.doc
+    status: gap
+  - id: Sec6 rev3
+    title: Sec6 rev3
+    org: API
+    sha: sha256:949b64d52ff8497f45dfe2bd9cf48845
+    discipline: structural
+    summary: API-RP-2RD Apirp2~1 Sec6 rev3.doc
+    status: gap
+  - id: SEC1 rev3
+    title: SEC1 rev3
+    org: API
+    sha: sha256:35594e3008a580635a01ead825eba574
+    discipline: structural
+    summary: API-RP-2RD(OUT-OF-DATE DRAFT) Apirp2~1 SEC1 rev3.doc
+    status: gap
+  - id: Sec4 rev3
+    title: Sec4 rev3
+    org: API
+    sha: sha256:4bffd00b492bf982d5ceed6a114590a7
+    discipline: structural
+    summary: API-RP-2RD(OUT-OF-DATE DRAFT) Apirp2~1 Sec4 rev3.doc
+    status: gap
+  - id: Sec7 rev3
+    title: Sec7 rev3
+    org: API
+    sha: sha256:27b58e3ca09dfbf4cf0a1216115206ad
+    discipline: structural
+    summary: API-RP-2RD(OUT-OF-DATE DRAFT) Apirp2~1 Sec7 rev3.doc
+    status: gap
+  - id: Sec3 rev3
+    title: Sec3 rev3
+    org: API
+    sha: sha256:7fea2fc891bf0f70288d8db7c9bee7be
+    discipline: structural
+    summary: API-RP-2RD(OUT-OF-DATE DRAFT) Apirp2~1 Sec3 rev3.doc
+    status: gap
+  - id: SEC_ANN
+    title: SEC ANN
+    org: API
+    sha: sha256:f79785cf86ea9a3f0594801bbdffd77c
+    discipline: structural
+    summary: API-RP-2RD(OUT-OF-DATE DRAFT) Annex SEC_ANN.DOC
+    status: gap
+  - id: API RP 2RD
+    title: API RP 2RD
+    org: ''
+    sha: sha256:ec8e6be67bd1b2791c570cfb551627f554acf4f8de5f07902f067eb31e40b240
+    discipline: other
+    summary: Oil and Gas Codes API Standards API RP 2RD.pdf
+    status: gap
+  - id: 17G
+    title: API RP 17G 2nd Ed (2006) Design and Operation of Completion Workover Riser Systems
+    org: API
+    sha: sha256:0afdfeea29a67339c7d874ee81a304b8
+    discipline: pipeline
+    summary: API Recommended Practice API RP 17G API RP 17G 2nd Ed (2006) Design and Operation of Completion-Workover Riser
+      Systems.pdf
+    status: gap
+  - id: F203
+    title: DNV RP F203 (2009) Riser interference
+    org: DNV
+    sha: sha256:e1aa1bd91b1ef1ab3880cbe57991ca45
+    discipline: pipeline
+    summary: DNV Recommended Practices DNV RP F203 DNV RP F203 (2009) Riser interference.pdf
+    status: gap
+  - id: F202
+    title: DNV RP F202 (2010) Composite Risers
+    org: DNV
+    sha: sha256:4deb96ceb8e4641b5628caf7f0e64a95
+    discipline: pipeline
+    summary: DNV Recommended Practices DNV RP F202 DNV RP F202 (2010) Composite Risers.pdf
+    status: gap
+  - id: F206
+    title: DNV RP F206 (2008) Riser Integrity Management
+    org: DNV
+    sha: sha256:ce0b8d1ee86cee52873b7011978c6bc2
+    discipline: pipeline
+    summary: DNV Recommended Practices DNV RP F206 DNV RP F206 (2008) Riser Integrity Management.pdf
+    status: gap
+  - id: API SPEC 16F 1st Ed (2004) Marine Drilling Riser Equipment
+    title: API SPEC 16F 1st Ed (2004) Marine Drilling Riser Equipment
+    org: API
+    sha: sha256:f5a368db0b8734d4f72ff7f7647da344
+    discipline: pipeline
+    summary: API Specification API Spec 16F API SPEC 16F 1st Ed (2004) Marine Drilling Riser Equipment.pdf
+    status: gap
+  - id: API SPEC 16R 1st Ed (1997) Marine Drilling Riser Coupling
+    title: API SPEC 16R 1st Ed (1997) Marine Drilling Riser Coupling
+    org: API
+    sha: sha256:262caab9fceae6f0bbb20e0be6973e16
+    discipline: pipeline
+    summary: API Specification API Spec 16R API SPEC 16R 1st Ed (1997) Marine Drilling Riser Coupling.pdf
+    status: gap
+  - id: API SPEC 2R (1989) Marine Drilling Riser Couplings
+    title: API SPEC 2R (1989) Marine Drilling Riser Couplings
+    org: API
+    sha: sha256:7c34b9e47d120dad450f194c794250c8
+    discipline: pipeline
+    summary: API Specification API Spec 2R API SPEC 2R (1989) Marine Drilling Riser Couplings.pdf
+    status: gap
+  - id: 16Q
+    title: API RP 16Q 1st Ed (1993) Design, Selection, Operation and Maintenance of Drilling Riser Systems
+    org: API
+    sha: sha256:c40ea7beec88eb03fe029d18f6410138
+    discipline: pipeline
+    summary: API Recommended Practice API RP 16Q API RP 16Q 1st Ed (1993) Design, Selection, Operation and Maintenance of
+      Drilling Riser Systems.pdf
+    status: gap
+  - id: ISO_DTR_13624-2 - Draft Tech Report on Drilling Risers
+    title: ISO DTR 13624 2   Draft Tech Report on Drilling Risers
+    org: API
+    sha: sha256:4376017b9dde0db20d2dc2f593c6d453
+    discipline: pipeline
+    summary: API RP 16Q API-16Q ISO_DTR_13624-2 - Draft Tech Report on Drilling Risers.pdf
+    status: gap
+  - id: Ballot 3468 Comments - List of Edits_NP - Section 5 Comments Sorted- 2015-05-19_VA Printout
+    title: Ballot 3468 Comments   List of Edits NP   Section 5 Comments Sorted  2015 05 19 VA Printout
+    org: API
+    sha: sha256:a8840a8650ce73a7ca694ddd60ed2530
+    discipline: pipeline
+    summary: Riser Ballot Rev2 Ballot 3468 Comments - List of Edits_NP - Section 5 Comments Sorted- 2015-05-19_VA Printout.xls
+    status: gap
+  - id: Sexton-Comments-API-RP-16Q-2015.03.27.a
+    title: Sexton Comments API RP 16Q 2015.03.27.a
+    org: API
+    sha: sha256:c3c317deeda365597095427eaa3e138a
+    discipline: pipeline
+    summary: Riser Ballot Rev2 Sexton-Comments-API-RP-16Q-2015.03.27.a.pdf
+    status: gap
+  - id: Ballot 3468 Comments - List of Edits_NP - Section 5 Comments Sorted- 2015-05-19
+    title: Ballot 3468 Comments   List of Edits NP   Section 5 Comments Sorted  2015 05 19
+    org: API
+    sha: sha256:5ca292134f7942351db5360eb154b358
+    discipline: pipeline
+    summary: Riser Ballot Rev2 Ballot 3468 Comments - List of Edits_NP - Section 5 Comments Sorted- 2015-05-19.xls
+    status: gap
+  - id: Ballot 3468 Comments - List of Edits_NP - Section 5 Comments Sorted- 2015-05-19 VA
+    title: Ballot 3468 Comments   List of Edits NP   Section 5 Comments Sorted  2015 05 19 VA
+    org: API
+    sha: sha256:18ccf7995000bb9fd8fe85d19dcd2931
+    discipline: pipeline
+    summary: Riser Ballot Rev2 Ballot 3468 Comments - List of Edits_NP - Section 5 Comments Sorted- 2015-05-19 VA.xls
+    status: gap
+  - id: Ballot 3468 Comments - List of Edits_NP
+    title: Ballot 3468 Comments   List of Edits NP
+    org: API
+    sha: sha256:465cb56105a4f11f23b3fd3eab5d3e15
+    discipline: pipeline
+    summary: Riser Ballot Rev1 Ballot 3468 Comments - List of Edits_NP.xls
+    status: gap
+  - id: Risers BUL 2J 1977
+    title: Risers BUL 2J 1977
+    org: API
+    sha: sha256:941e53b53949b4c71d4ead45c14a34ff
+    discipline: pipeline
+    summary: API STA Risers BUL 2J 1977.pdf
+    status: gap
+  - id: Riser_Tower_Foundations_Dendani_draft_w_KHA&ECC_comments
+    title: Riser Tower Foundations Dendani draft w KHA&ECC comments
+    org: API
+    sha: sha256:7d657cb06d3404ebc7c5f950c1c29261
+    discipline: pipeline
+    summary: STA API-ISO Riser_Tower_Foundations_Dendani_draft_w_KHA&ECC_comments.doc
+    status: gap
+  - id: '101'
+    title: DNV OSS 101 (2011) Rules for classification of offshore drilling and support units
+    org: DNV
+    sha: sha256:d27a0ef306c0cc5561f49dcf0947f693
+    discipline: marine
+    summary: DNV Offshore Service Specifications DNV OSS 101 DNV OSS 101 (2011) Rules for classification of offshore drilling
+      and support units.pdf
+    status: gap
+  - id: '300'
+    title: DNV OSS 300 (2011) Risk Based Verification
+    org: DNV
+    sha: sha256:da8dfd35d1b170c2a7bb3e41522aba6b
+    discipline: marine
+    summary: DNV Offshore Service Specifications DNV OSS 300 DNV OSS 300 (2011) Risk Based Verification.pdf
+    status: gap
+  - id: J101
+    title: DNV OS J101 (2007) Design of offshore wind turbine structures
+    org: DNV
+    sha: sha256:c5d17dcc0f715b626965e3b33e43413d
+    discipline: marine
+    summary: DNV Offshore Standard DNV OS J101 DNV OS J101 (2007) Design of offshore wind turbine structures.pdf
+    status: gap
+  - id: os-c401_2010-10 (2010) Fabrication and Testing of Offshore Structures
+    title: os c401 2010 10 (2010) Fabrication and Testing of Offshore Structures
+    org: DNV
+    sha: sha256:c92e73a4fbf65f53352ef3f01642acb1
+    discipline: marine
+    summary: DNV Offshore Standard DNV OS C401 os-c401_2010-10 (2010) Fabrication and Testing of Offshore Structures.pdf
+    status: gap
+  - id: E302
+    title: DNV OS E302 (2009)
+    org: DNV
+    sha: sha256:523c61d996ee92b688e2ccd5422dc820
+    discipline: marine
+    summary: DNV Offshore Standard DNV OS E302 DNV OS E302 (2009).pdf
+    status: gap
+  - id: '304'
+    title: DNV OS 304 (2006) Risk Based Verification of Offshore Structures
+    org: DNV
+    sha: sha256:7f5fcf60f20c43496a2423a5f1eccc91
+    discipline: marine
+    summary: DNV Offshore Standard DNV OS 304 DNV OS 304 (2006) Risk Based Verification of Offshore Structures.pdf
+    status: gap
+  - id: DNV SfC No.2.7 Pt 3 (2011) Portable Offshore Units
+    title: DNV SfC No.2.7 Pt 3 (2011) Portable Offshore Units
+    org: DNV
+    sha: sha256:24e6f975d556f6b0d47aa482e003a488
+    discipline: marine
+    summary: DNV Standard for Certification DNV SfC No.2.7 DNV SfC No.2.7 Pt 3 (2011) Portable Offshore Units.pdf
+    status: gap
+  unlinked_doc_count: 415
+- module: subsea/viv_analysis
+  standards_count: 11
+  standards:
+  - id: F105
+    title: DNV RP F105 (2006) Free Spanning Pipelines
+    org: DNV
+    sha: sha256:4b59b92a84a71f306502bfb11b1bc090
+    discipline: pipeline
+    summary: DNV Recommended Practices DNV RP F105 DNV RP F105 (2006) Free Spanning Pipelines.pdf
+    status: gap
+  - id: DNV_RP_F105_(2006)_Free_Spanning_Pipelines
+    title: DNV RP F105 (2006) Free Spanning Pipelines
+    org: ''
+    sha: sha256:b341125d089eab9527611d9db6316c9583e4f273602a4bc6dbacdbe184f3e5e6
+    discipline: pipeline
+    summary: _standards DNV DNV_RP_F105_(2006)_Free_Spanning_Pipelines.pdf
+    status: gap
+  - id: DNV_RP_F105_(2002)_Free_Spanning_Pipelines
+    title: DNV RP F105 (2002) Free Spanning Pipelines
+    org: ''
+    sha: sha256:7267c6d7a2dfeb4b3c6709a723c7d80995a5cbe3473be4adf18f9df2af5da175
+    discipline: pipeline
+    summary: _standards DNV DNV_RP_F105_(2002)_Free_Spanning_Pipelines.pdf
+    status: gap
+  - id: DNV-RP-F105
+    title: DNV RP F105
+    org: ''
+    sha: sha256:ffd7f13f923009341456865a4c46b1554ec1dfe2b5bad4a2e93e9de1a4ed5d06
+    discipline: other
+    summary: DNV Recommended-Practices DNV-RP-F105.pdf
+    status: gap
+  - id: DNV Guideline No 14 - Free Spanning Pipelines
+    title: DNV Guideline No 14   Free Spanning Pipelines
+    org: DNV
+    sha: sha256:5d1c8ae4525bf2e62bdfc521a582c182
+    discipline: pipeline
+    summary: Oil and Gas Codes DNV Standards DNV Guideline No 14 - Free Spanning Pipelines.PDF
+    status: gap
+  - id: DNV GUI 14 (1998) Free Spanning Pipelines
+    title: DNV GUI 14 (1998) Free Spanning Pipelines
+    org: DNV
+    sha: sha256:81934b379fab90c96e7ffc3027a0dd84
+    discipline: pipeline
+    summary: DNV Guidelines DNV GUI 14 DNV GUI 14 (1998) Free Spanning Pipelines.PDF
+    status: gap
+  - id: Allen, D.W., 1995 - Vortex-InducedVibration Analysis of the
+    title: Allen, D.W., 1995   Vortex InducedVibration Analysis of the
+    org: Unknown
+    sha: sha256:5c6714e3429c6b23a116e22fc44ee474
+    discipline: marine
+    summary: Papers Offshore Technology Conference Allen, D.W., 1995 - Vortex-InducedVibration Analysis of the.pdf
+    status: gap
+  - id: Brooks, I.H., 1987 - A Pragmatic Approach to Vortex-Induced
+    title: Brooks, I.H., 1987   A Pragmatic Approach to Vortex Induced
+    org: Unknown
+    sha: sha256:3c6fc5a53bc0b4f88f047e8f8199d008
+    discipline: marine
+    summary: Papers Offshore Technology Conference Brooks, I.H., 1987 - A Pragmatic Approach to Vortex-Induced.pdf
+    status: gap
+  - id: Allen, D.W., 1998 - Vortex-Induced Vibration of Deepwater Ris
+    title: Allen, D.W., 1998   Vortex Induced Vibration of Deepwater Ris
+    org: Unknown
+    sha: sha256:c090fbeab76fcebe87ac05cb61af5256
+    discipline: marine
+    summary: Papers Offshore Technology Conference Allen, D.W., 1998 - Vortex-Induced Vibration of Deepwater Ris.pdf
+    status: gap
+  - id: DNV_Guideline_No_14_-_Free_Spanning_Pipelines
+    title: DNV Guideline No 14   Free Spanning Pipelines
+    org: ''
+    sha: sha256:7f683105d6fd879215197aec8b3aa2286e2cdae6e2f6919afd2b896f58d6d595
+    discipline: pipeline
+    summary: DNV Guidelines DNV_Guideline_No_14_-_Free_Spanning_Pipelines.PDF
+    status: gap
+  - id: DNV_GUI_14_(1998)_Free_Spanning_Pipelines
+    title: DNV GUI 14 (1998) Free Spanning Pipelines
+    org: ''
+    sha: sha256:0b10b3fb746d52654c411bdea131de9a58c4f51c7113544a1a3a5be2242d3c21
+    discipline: pipeline
+    summary: _standards DNV DNV_GUI_14_(1998)_Free_Spanning_Pipelines.PDF
+    status: gap
+  unlinked_doc_count: 4
+- module: subsea/mooring_analysis
+  standards_count: 38
+  standards:
+  - id: E301
+    title: DNV OS E301 (2010) Position Mooring
+    org: DNV
+    sha: sha256:440a26421ea89ffd2c44f26afb3fac9d
+    discipline: marine
+    summary: DNV Offshore Standard DNV OS E301 DNV OS E301 (2010) Position Mooring.pdf
+    status: gap
+  - id: DNV_OS_E301_(2010)_Position_Mooring
+    title: DNV OS E301 (2010) Position Mooring
+    org: ''
+    sha: sha256:bc94fe717f268dda0d666f5c7d668c31f0f1270aa441d9a45823563c167460a9
+    discipline: marine
+    summary: _standards DNV DNV_OS_E301_(2010)_Position_Mooring.pdf
+    status: gap
+  - id: DNV_OS_E301_(2008)_Position_Mooring
+    title: DNV OS E301 (2008) Position Mooring
+    org: ''
+    sha: sha256:6d96228c3a528e228131f64f596764090071ac8f8919e8d30dd04d3eedf0f54b
+    discipline: marine
+    summary: _standards DNV DNV_OS_E301_(2008)_Position_Mooring.pdf
+    status: gap
+  - id: 2SK
+    title: API RP 2SK 2nd Ed (1996) Design and Analysis of Stationkeeping Systems for Floating Structures
+    org: API
+    sha: sha256:340c870daec27ee59c53836280ae18c5
+    discipline: structural
+    summary: API Recommended Practice API RP 2SK API RP 2SK 2nd Ed (1996) Design and Analysis of Stationkeeping Systems for
+      Floating Structures.pdf
+    status: gap
+  - id: API_RP_2SK_Main_Document_Nov
+    title: API RP 2SK Main Document Nov
+    org: API
+    sha: sha256:c19a246bc7ea76bb67ceda3242f3a542
+    discipline: structural
+    summary: STA FROM ORCINA API_RP_2SK_Main_Document_Nov.pdf
+    status: gap
+  - id: API Spec 2F 6th Ed (1997) Mooring Chain
+    title: API Spec 2F 6th Ed (1997) Mooring Chain
+    org: API
+    sha: sha256:bc1004789995ccc7d32fd067ba98c7c8
+    discipline: marine
+    summary: API Specification API Spec 2F API Spec 2F 6th Ed (1997) Mooring Chain.pdf
+    status: gap
+  - id: 2P
+    title: API RP 2P 2nd Ed (1987) Analysis of Spread Mooring Systems for Floating Drilling Units
+    org: API
+    sha: sha256:88c3064a550e871ae80a3dfb34711adf
+    discipline: marine
+    summary: API Recommended Practice API RP 2P API RP 2P 2nd Ed (1987) Analysis of Spread Mooring Systems for Floating Drilling
+      Units.pdf
+    status: gap
+  - id: API RP 2SK 2nd Ed (1996) Design and Analysis of Stationkeeping Systems for Floating Structures
+    title: API RP 2SK 2nd Ed (1996) Design and Analysis of Stationkeeping Systems for Floating Structures
+    org: ''
+    sha: sha256:a1c128398b62565cfaac74020eeaadc946f7e74c57aa9ab784c3dac134a378dd
+    discipline: other
+    summary: API Recommended Practice API RP 2SK API RP 2SK 2nd Ed (1996) Design and Analysis of Stationkeeping Systems for
+      Floating Structures.pdf
+    status: gap
+  - id: API RP 2SK 3rd Ed (2005) Design and Analysis of Stationkeeping Systems for Floating Structures
+    title: API RP 2SK 3rd Ed (2005) Design and Analysis of Stationkeeping Systems for Floating Structures
+    org: ''
+    sha: sha256:f8cf7f3be2b3bdc33219b354577e0c8d45b27f876f119b9cfa001ba4ae98c56f
+    discipline: other
+    summary: API Recommended Practice API RP 2SK API RP 2SK 3rd Ed (2005) Design and Analysis of Stationkeeping Systems for
+      Floating Structures.pdf
+    status: gap
+  - id: API RP 2SK
+    title: API RP 2SK
+    org: ''
+    sha: sha256:ccd9219a5ba46d26c82b875a62609b9e98aa06024136313f89f4d5330c3420aa
+    discipline: other
+    summary: API STA API RP 2SK.pdf
+    status: gap
+  - id: 2I
+    title: API RP 2I 3rd Ed (2008) In service Inspection of Mooring Hardware for Floating Structures
+    org: API
+    sha: sha256:999bf5419f68553ccf75d6a2567e0848
+    discipline: marine
+    summary: API Recommended Practice API RP 2I API RP 2I 3rd Ed (2008) In-service Inspection of Mooring Hardware for Floating
+      Structures.pdf
+    status: gap
+  - id: 2SM
+    title: API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, Manufacture, Installation and Maintenance of Synthetic Fiber
+      Ropes fo
+    org: API
+    sha: sha256:64eefb3d69e5e74cd99d50b9f2ccd1c0
+    discipline: marine
+    summary: API Recommended Practice API RP 2SM API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, Manufacture, Installation
+      and Maintenance of Synthetic Fiber Ropes for Offshore Mooring.pdf
+    status: gap
+  - id: InterMoors%20Methodology%20For%20Hurricane%20Moorings_371689
+    title: InterMoors%20Methodology%20For%20Hurricane%20Moorings 371689
+    org: API
+    sha: sha256:4930df7fb5e194c43066047900b6c21c
+    discipline: marine
+    summary: API STA InterMoors%20Methodology%20For%20Hurricane%20Moorings_371689.pdf
+    status: gap
+  - id: Appendix H - Mooring Design for VIM and Commentary July 28
+    title: Appendix H   Mooring Design for VIM and Commentary July 28
+    org: API
+    sha: sha256:a3f494bf32f11b2766ad6036ad6d006e
+    discipline: marine
+    summary: API STA Appendix H - Mooring Design for VIM and Commentary July 28.pdf
+    status: gap
+  - id: API RP 2P 2nd Ed (1987) Analysis of Spread Mooring Systems for Floating Drilling Units
+    title: API RP 2P 2nd Ed (1987) Analysis of Spread Mooring Systems for Floating Drilling Units
+    org: ''
+    sha: sha256:cd43fba17b436421e2ca73563d88950c827be5f2178de8bf412e6f6ca45a943c
+    discipline: marine
+    summary: API Recommended Practice API RP 2P API RP 2P 2nd Ed (1987) Analysis of Spread Mooring Systems for Floating Drilling
+      Units.pdf
+    status: gap
+  - id: MOORING SYSTEMS Chapter Outline
+    title: MOORING SYSTEMS Chapter Outline
+    org: Unknown
+    sha: sha256:ba38b6e0093974f8a23479d411868dd3
+    discipline: marine
+    summary: ASCE COPRI Marine Renewable Energy Committee MOORING SYSTEMS Chapter Outline.docx
+    status: gap
+  - id: Oasis, The Online Abstract Submission System mooring
+    title: Oasis, The Online Abstract Submission System mooring
+    org: OnePetro
+    sha: sha256:9bb3efa57b1aa3722341a70b7abbdb5f
+    discipline: marine
+    summary: COPRI Marine Renewable Energy Committee OTC 2015 Oasis, The Online Abstract Submission System mooring.pdf
+    status: gap
+  - id: SS Marine Renewable Energy Mooring
+    title: SS Marine Renewable Energy Mooring
+    org: OnePetro
+    sha: sha256:70a6c88cc641826643ad575aa793554c
+    discipline: marine
+    summary: COPRI Marine Renewable Energy Committee OTC 2015 SS Marine Renewable Energy Mooring.docx
+    status: gap
+  - id: OTC-XXXX-MS Mooring MRE Structures Draft (2015-01-27)
+    title: OTC XXXX MS Mooring MRE Structures Draft (2015 01 27)
+    org: OnePetro
+    sha: sha256:376d95f96df02e99682531514625a45b
+    discipline: marine
+    summary: OTC 2015 MOORING OTC-XXXX-MS Mooring MRE Structures Draft (2015-01-27).doc
+    status: gap
+  - id: Attachment 12 - RG 2 Mooring Update
+    title: Attachment 12   RG 2 Mooring Update
+    org: OnePetro
+    sha: sha256:cb90bbe6c20cc0cbf7a87a7c50ac5011
+    discipline: marine
+    summary: OTC 2015 MOORING Attachment 12 - RG 2 Mooring Update.pdf
+    status: gap
+  - id: OTC-26035-MS
+    title: OTC 26035 MS
+    org: OnePetro
+    sha: sha256:9afaa7615a1cb7980b24fa0a3b8647de
+    discipline: marine
+    summary: OTC 2015 MOORING OTC-26035-MS.doc
+    status: gap
+  - id: OTC-XXXX-MS Mooring MRE Structures Draft (2015-01-27) 1
+    title: OTC XXXX MS Mooring MRE Structures Draft (2015 01 27) 1
+    org: OnePetro
+    sha: sha256:4aa40a0b60177a6fc6f67bd92627fb80
+    discipline: marine
+    summary: OTC 2015 MOORING OTC-XXXX-MS Mooring MRE Structures Draft (2015-01-27) 1.doc
+    status: gap
+  - id: OTC-25273-MS Mooring Failures and Pre-emptive replacement
+    title: OTC 25273 MS Mooring Failures and Pre emptive replacement
+    org: OnePetro
+    sha: sha256:a7f830e8314b7e26941343963964980c
+    discipline: marine
+    summary: OTC 2015 MOORING OTC-25273-MS Mooring Failures and Pre-emptive replacement.pdf
+    status: gap
+  - id: OTC-25134-MS Mooring Integrity Management
+    title: OTC 25134 MS Mooring Integrity Management
+    org: OnePetro
+    sha: sha256:d28fa0fceae051d4f73bf4c46e8a45ad
+    discipline: marine
+    summary: OTC 2015 MOORING OTC-25134-MS Mooring Integrity Management.pdf
+    status: gap
+  - id: OTC-25108-MS Probability Haverty
+    title: OTC 25108 MS Probability Haverty
+    org: OnePetro
+    sha: sha256:3622416e3cf6f0d08ba8cb88d5e80dca
+    discipline: marine
+    summary: OTC 2015 MOORING OTC-25108-MS Probability Haverty.pdf
+    status: gap
+  - id: 114_140e_DTS(1)
+    title: 114 140e DTS(1)
+    org: OnePetro
+    sha: sha256:56e316acfd0dd4019b0a56d940763492
+    discipline: marine
+    summary: OTC 2015 MOORING 114_140e_DTS(1).pdf
+    status: gap
+  - id: OTC-25134-MS Mooring Integrity Management - A State of the Art Review
+    title: OTC 25134 MS Mooring Integrity Management   A State of the Art Review
+    org: OnePetro
+    sha: sha256:cdfca47c8d1af9518537f3c46f7d6785
+    discipline: marine
+    summary: OTC 2015 MOORING OTC-25134-MS Mooring Integrity Management - A State of the Art Review.pdf
+    status: gap
+  - id: WhyGoodMooringSystemsGoBad
+    title: WhyGoodMooringSystemsGoBad
+    org: OnePetro
+    sha: sha256:a3429fbfa9fe973b225b4c886675a91c
+    discipline: marine
+    summary: OTC 2015 MOORING WhyGoodMooringSystemsGoBad.pdf
+    status: gap
+  - id: Lecture 77 - Floating Vessel Moorings – Vulnerability & Integrity (David Brown)
+    title: Lecture 77   Floating Vessel Moorings – Vulnerability & Integrity (David Brown)
+    org: OnePetro
+    sha: sha256:5b92d7cc4b716c19f2bc8400274dea10
+    discipline: marine
+    summary: OTC 2015 MOORING Lecture 77 - Floating Vessel Moorings – Vulnerability & Integrity (David Brown).pdf
+    status: gap
+  - id: Statement of Purpose Moorings
+    title: Statement of Purpose Moorings
+    org: Unknown
+    sha: sha256:1f4f36c6b6d4ef001479681dcb959cfe
+    discipline: marine
+    summary: COPRI Marine Renewable Energy Committee Statements of Purpose Statement of Purpose Moorings.docx
+    status: gap
+  - id: tidal turbulence spectra from a compliant mooring
+    title: tidal turbulence spectra from a compliant mooring
+    org: OnePetro
+    sha: sha256:7afef298d27a54c8ea6826387a0740f8
+    discipline: marine
+    summary: CONFERENCES METS 2013 tidal turbulence spectra from a compliant mooring.pdf
+    status: gap
+  - id: API RP2I In-Service Inspection of Mooring Hardware
+    title: API RP2I In Service Inspection of Mooring Hardware
+    org: ''
+    sha: sha256:4f25703e87e95685ed5b214f6fad920da327e7b9a5cad8ea67c20162f9058219
+    discipline: marine
+    summary: API STA API RP2I In-Service Inspection of Mooring Hardware.pdf
+    status: gap
+  - id: API RP 2I 3rd Ed (2008) In-service Inspection of Mooring Hardware for Floating Structures
+    title: API RP 2I 3rd Ed (2008) In service Inspection of Mooring Hardware for Floating Structures
+    org: ''
+    sha: sha256:1b70daba2ee14f9ecab60c85e78691b2ee8844bdce5a0127200de98458674146
+    discipline: marine
+    summary: API Recommended Practice API RP 2I API RP 2I 3rd Ed (2008) In-service Inspection of Mooring Hardware for Floating
+      Structures.pdf
+    status: gap
+  - id: API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, Manufacture, Installation and Maintenance of Synthetic Fiber Ropes
+      for Offshore Mooring
+    title: API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, Manufacture, Installation and Maintenance of Synthetic Fiber
+      Ropes fo
+    org: ''
+    sha: sha256:b6557108c1e34428389c9b988005ed863ca4f5ecdd3bfb743c71914d616ad0bf
+    discipline: marine
+    summary: API Recommended Practice API RP 2SM API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, Manufacture, Installation
+      and Maintenance of Synthetic Fiber Ropes for Offshore Mooring.pdf
+    status: gap
+  - id: MOORING_SYSTEMS_Chapter_Outline
+    title: MOORING SYSTEMS Chapter Outline
+    org: ''
+    sha: sha256:1724b715f0055472577a79074bd7f9ed3203774663c756ace3be454a4cd86580
+    discipline: marine
+    summary: _standards Unknown MOORING_SYSTEMS_Chapter_Outline.docx
+    status: gap
+  - id: Statement_of_Purpose_Moorings
+    title: Statement of Purpose Moorings
+    org: ''
+    sha: sha256:084d907db8a2271540141710120d02fe31e34662a537ebda3283d0cba9c89832
+    discipline: marine
+    summary: _standards Unknown Statement_of_Purpose_Moorings.docx
+    status: gap
+  - id: Statement_of_Purpose_Moorings_1
+    title: Statement of Purpose Moorings 1
+    org: ''
+    sha: sha256:968f31224512b94462f11571f31859035ac9fbe3d59d6378e38798f8d85a3310
+    discipline: marine
+    summary: _standards Unknown Statement_of_Purpose_Moorings_1.docx
+    status: gap
+  - id: Mooring Renewable Energy Structures
+    title: Mooring Renewable Energy Structures
+    org: ''
+    sha: sha256:baa3a189dabd4142e9a6ae5a528a53405139cb9679199c290ce75048a54e0ff2
+    discipline: marine
+    summary: COPRI Marine Renewable Energy Committee COPRI CONGRESS Mooring Renewable Energy Structures.pptx
+    status: gap
+  unlinked_doc_count: 23
+- module: subsea/catenary
+  standards_count: 0
+  standards: []
+  unlinked_doc_count: 0
+- module: subsea/analysis
+  standards_count: 3
+  standards:
+  - id: F109
+    title: DNV RP F109 (2007) On bottom stability design of submarine pipelines
+    org: DNV
+    sha: sha256:acb2ef00f6dfeef80623c5905b51f3e2
+    discipline: pipeline
+    summary: DNV Recommended Practices DNV RP F109 DNV RP F109 (2007) On-bottom stability design of submarine pipelines.pdf
+    status: gap
+  - id: DNV_RP_F109_(2007)_On-bottom_stability_design_of_submarine_pipelines
+    title: DNV RP F109 (2007) On bottom stability design of submarine pipelines
+    org: ''
+    sha: sha256:989c9f3a9020271a4e31dd21ec515bf14c0821942de4d70049e0ec12e4d3c53e
+    discipline: pipeline
+    summary: _standards DNV DNV_RP_F109_(2007)_On-bottom_stability_design_of_submarine_pipelines.pdf
+    status: gap
+  - id: DNV_RP_F109_(2011)_On_bottom_stability_of_pipelines
+    title: DNV RP F109 (2011) On bottom stability of pipelines
+    org: ''
+    sha: sha256:42c958897fcb8b529ccf182684730c481e5c59331d363adec9a8c5b022f42ba8
+    discipline: pipeline
+    summary: _standards DNV DNV_RP_F109_(2011)_On_bottom_stability_of_pipelines.pdf
+    status: gap
+  unlinked_doc_count: 1
+- module: hydrodynamics/rao_analysis
+  standards_count: 0
+  standards: []
+  unlinked_doc_count: 0
+- module: hydrodynamics/wave_spectra
+  standards_count: 0
+  standards: []
+  unlinked_doc_count: 0
+- module: hydrodynamics/diffraction
+  standards_count: 0
+  standards: []
+  unlinked_doc_count: 0
+- module: hydrodynamics/hull_library
+  standards_count: 0
+  standards: []
+  unlinked_doc_count: 0
+- module: marine_ops/marine_engineering
+  standards_count: 12
+  standards:
+  - id: DNV SfC No.2.22 (2008)  Lifting Appliances
+    title: DNV SfC No.2.22 (2008)  Lifting Appliances
+    org: DNV
+    sha: sha256:468f4affd1232353adc97c978b2b2cd6
+    discipline: installation
+    summary: DNV Standard for Certification DNV SfC No.2.22 DNV SfC No.2.22 (2008)  Lifting Appliances.pdf
+    status: gap
+  - id: DNV SfC No.2.22 (2011)  Lifting Appliances
+    title: DNV SfC No.2.22 (2011)  Lifting Appliances
+    org: DNV
+    sha: sha256:8e86bd1696771ad067ef780aafc2a10c
+    discipline: installation
+    summary: DNV Standard for Certification DNV SfC No.2.22 DNV SfC No.2.22 (2011)  Lifting Appliances.pdf
+    status: gap
+  - id: '5'
+    title: DNV RP 5 Pt2 (1985) Lifting
+    org: DNV
+    sha: sha256:2deb4aa69cbd6e60e1033c9472b7226f
+    discipline: installation
+    summary: DNV Recommended Practices DNV RP 5 DNV RP 5 Pt2 (1985) Lifting.pdf
+    status: gap
+  - id: F1417
+    title: ASTM F 1417 Standard Test Method For Installation Acceptance of Plastic Sewer Line Low Pressure Air
+    org: ASTM
+    sha: sha256:33724397b0ded39859aac6042bb9afa9
+    discipline: installation
+    summary: BS F ASTM F 1417 Standard Test Method For Installation Acceptance of Plastic Sewer Line Low Pressure Air.pdf
+    status: gap
+  - id: BS 10417 (2004) Subsurface safty valve systems, design installation operation & redress
+    title: BS 10417 (2004) Subsurface safty valve systems, design installation operation & redress
+    org: BSI
+    sha: sha256:f54a0f6b053cee56a09be0f3729cf22e
+    discipline: installation
+    summary: BSI BS 10417 BS 10417 (2004) Subsurface safty valve systems, design installation operation & redress.pdf
+    status: gap
+  - id: API-RP 520 Pressure Relieving Devices in Refineries Part II Installation
+    title: API RP 520 Pressure Relieving Devices in Refineries Part II Installation
+    org: ''
+    sha: sha256:fef95456d200405cb2bdb22761e40a3159a3b08c1cf98b5b55e054c697d14318
+    discipline: installation
+    summary: API STA API-RP 520 Pressure Relieving Devices in Refineries Part II Installation.pdf
+    status: gap
+  - id: ASTM F 1417 Standard Test Method For Installation Acceptance of Plastic Sewer Line Low Pressure Air
+    title: ASTM F 1417 Standard Test Method For Installation Acceptance of Plastic Sewer Line Low Pressure Air
+    org: ''
+    sha: sha256:d998561f66364e9a0b11f3e33a9a6ff750defc071ce4153306a8828d3c127294
+    discipline: installation
+    summary: BS F ASTM F 1417 Standard Test Method For Installation Acceptance of Plastic Sewer Line Low Pressure Air.pdf
+    status: gap
+  - id: BS_10417_(2004)_Subsurface_safty_valve_systems,_design_installation_operation_&_redress
+    title: BS 10417 (2004) Subsurface safty valve systems, design installation operation & redress
+    org: ''
+    sha: sha256:78224cce02be4982ceb134880ca2bd01869a5836400c39c0fd1b7098965cbd77
+    discipline: installation
+    summary: _standards BSI BS_10417_(2004)_Subsurface_safty_valve_systems,_design_installation_operation_&_redress.pdf
+    status: gap
+  - id: DNV_SfC_No.2.22_(2008)_Lifting_Appliances
+    title: DNV SfC No.2.22 (2008) Lifting Appliances
+    org: ''
+    sha: sha256:409f4dbf490edd9ce7f1832ae77bea64a6bc480ea08234e6659b17b34c89d81b
+    discipline: installation
+    summary: _standards DNV DNV_SfC_No.2.22_(2008)_Lifting_Appliances.pdf
+    status: gap
+  - id: DNV_SfC_No.2.22_(2011)_Lifting_Appliances
+    title: DNV SfC No.2.22 (2011) Lifting Appliances
+    org: ''
+    sha: sha256:8114ef58467769e75706662e632487e99a1ec75b2d7cb31e0149f8773294451f
+    discipline: installation
+    summary: _standards DNV DNV_SfC_No.2.22_(2011)_Lifting_Appliances.pdf
+    status: gap
+  - id: DNV_RP_5_Pt2_(1985)_Lifting
+    title: DNV RP 5 Pt2 (1985) Lifting
+    org: ''
+    sha: sha256:6648610f22fe17ee7b17472cc90ddf9dd52ec57d60ff5bfc31204dccb30064bb
+    discipline: installation
+    summary: _standards DNV DNV_RP_5_Pt2_(1985)_Lifting.pdf
+    status: gap
+  - id: DNV RP 5 Pt2 (1985) Lifting
+    title: DNV RP 5 Pt2 (1985) Lifting
+    org: ''
+    sha: sha256:257e08ef4ad9067591f1bcd184b75af0c3ee9e53b7c6164834f68e21c3f3c4ba
+    discipline: installation
+    summary: _ocr_text DNV DNV RP 5 Pt2 (1985) Lifting.txt
+    status: gap
+  unlinked_doc_count: 1
+- module: marine_ops/marine_analysis
+  standards_count: 0
+  standards: []
+  unlinked_doc_count: 0
+- module: marine_ops/artificial_lift
+  standards_count: 537
+  standards:
+  - id: 12F
+    title: API 12F Specification for Shop Welded Tanks for Storage of Production Liquids
+    org: API
+    sha: sha256:32012148fc51f522bcac15b98a3b7b32
+    discipline: production
+    summary: API STA API 12F Specification for Shop Welded Tanks for Storage of Production Liquids.pdf
+    status: gap
+  - id: 2FPS
+    title: API RP 2FPS Planning Designing and Constructing Floating Production Systems
+    org: API
+    sha: sha256:867e67b5356fce7175ca300547e72ace
+    discipline: production
+    summary: API STA API RP 2FPS Planning Designing and Constructing Floating Production Systems.pdf
+    status: gap
+  - id: API_Introduction_to_Oil_and_Gas_Production
+    title: API Introduction to Oil and Gas Production
+    org: API
+    sha: sha256:cba65fde1546ce632d72ab6201b323f7
+    discipline: production
+    summary: API STA API_Introduction_to_Oil_and_Gas_Production.pdf
+    status: gap
+  - id: Rajabi, F., et al - Vortex Shedding Induced Dynamic Respons
+    title: Rajabi, F., et al   Vortex Shedding Induced Dynamic Respons
+    org: Unknown
+    sha: sha256:05b6486f19a43a3683d4f031cd2332d8
+    discipline: production
+    summary: Papers Reference documents Rajabi, F., et al - Vortex Shedding Induced Dynamic Respons.pdf
+    status: gap
+  - id: F 138 - 00  _RJEZOC0WMA__
+    title: 'F 138   00   RJEZOC0WMA  '
+    org: ASTM
+    sha: sha256:c75833657f01b67e1a893bd12a17e92b
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 138 - 00  _RJEZOC0WMA__.pdf
+    status: gap
+  - id: F 1350 - 01  _RJEZNTATMDE_
+    title: 'F 1350   01   RJEZNTATMDE '
+    org: ASTM
+    sha: sha256:973957861f64f23fa9d8744e6f84d8ea
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1350 - 01  _RJEZNTATMDE_.pdf
+    status: gap
+  - id: F 755 - 99  _RJC1NS05OQ__
+    title: 'F 755   99   RJC1NS05OQ  '
+    org: ASTM
+    sha: sha256:3e1670f57ac56eef2a5e35b7f0efacab
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 755 - 99  _RJC1NS05OQ__.pdf
+    status: gap
+  - id: F 1441 - 92 R02  _RJE0NDETOTJSMDI_
+    title: 'F 1441   92 R02   RJE0NDETOTJSMDI '
+    org: ASTM
+    sha: sha256:f821808019db56dea0a071f44de10272
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1441 - 92 R02  _RJE0NDETOTJSMDI_.pdf
+    status: gap
+  - id: F 622 - 79 R98  _RJYYMI03OVI5OA__
+    title: 'F 622   79 R98   RJYYMI03OVI5OA  '
+    org: ASTM
+    sha: sha256:742142014e9ad08b7d502c9566ecac61
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 622 - 79 R98  _RJYYMI03OVI5OA__.pdf
+    status: gap
+  - id: F 1378 - 00  _RJEZNZGTUKVE
+    title: F 1378   00   RJEZNZGTUKVE
+    org: ASTM
+    sha: sha256:a23a3501373ffa2623824a9b77439d90
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1378 - 00  _RJEZNZGTUKVE.pdf
+    status: gap
+  - id: F 1441 - 03  _RJE0NDE_
+    title: 'F 1441   03   RJE0NDE '
+    org: ASTM
+    sha: sha256:3ff30b906cf231f5e8e862488553fb39
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1441 - 03  _RJE0NDE_.pdf
+    status: gap
+  - id: F 748 - 04  _RJC0OA__
+    title: 'F 748   04   RJC0OA  '
+    org: ASTM
+    sha: sha256:8822897c190d99ec68a10c09bca86ef7
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 748 - 04  _RJC0OA__.pdf
+    status: gap
+  - id: F 1452 - 92  _RJE0NTITUKVE
+    title: F 1452   92   RJE0NTITUKVE
+    org: ASTM
+    sha: sha256:7eee279881c1ea89b8399acfbb56131e
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1452 - 92  _RJE0NTITUKVE.pdf
+    status: gap
+  - id: F 622 - 79 R02  _RJYYMG__
+    title: 'F 622   79 R02   RJYYMG  '
+    org: ASTM
+    sha: sha256:1e4e1cabed5b545af104fa3e2ba6fa62
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 622 - 79 R02  _RJYYMG__.pdf
+    status: gap
+  - id: F 746 - 87 R99  _RJC0NG__
+    title: 'F 746   87 R99   RJC0NG  '
+    org: ASTM
+    sha: sha256:0fcc9cd26a9db014c4236371d8b3d819
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 746 - 87 R99  _RJC0NG__.pdf
+    status: gap
+  - id: F 629 - 97  _RJYYOS05NW__
+    title: 'F 629   97   RJYYOS05NW  '
+    org: ASTM
+    sha: sha256:04d9c5e406345c75090def401d79c4af
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 629 - 97  _RJYYOS05NW__.pdf
+    status: gap
+  - id: F 1295 - 97  _RJEYOTUTUKVE
+    title: F 1295   97   RJEYOTUTUKVE
+    org: ASTM
+    sha: sha256:8b44a312bd0f3d8c510ff083bef9d7b5
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1295 - 97  _RJEYOTUTUKVE.pdf
+    status: gap
+  - id: F 2382 - 04  _RJIZODI_
+    title: 'F 2382   04   RJIZODI '
+    org: ASTM
+    sha: sha256:ce116bd7f90bbaf29e8fbc7bcd23ec06
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 2382 - 04  _RJIZODI_.pdf
+    status: gap
+  - id: F 1185 - 03  _RJEXODU_
+    title: 'F 1185   03   RJEXODU '
+    org: ASTM
+    sha: sha256:4123afc6eff3a74c6eca779e4cd646d6
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1185 - 03  _RJEXODU_.pdf
+    status: gap
+  - id: F 1208 - 89 R00  _RJEYMDG_
+    title: 'F 1208   89 R00   RJEYMDG '
+    org: ASTM
+    sha: sha256:7f8799d7e59e152942146f8c02be4203
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1208 - 89 R00  _RJEYMDG_.pdf
+    status: gap
+  - id: F 619 - 79 R97  _RJYXOS03OVI5N0UX
+    title: F 619   79 R97   RJYXOS03OVI5N0UX
+    org: ASTM
+    sha: sha256:aa70f512ee4163cdd5e4bb46351b2ccb
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 619 - 79 R97  _RJYXOS03OVI5N0UX.pdf
+    status: gap
+  - id: F 1472 - 02  _RJE0NZI_
+    title: 'F 1472   02   RJE0NZI '
+    org: ASTM
+    sha: sha256:6e98bd6ab2e16d74dc2ab2932d3bada3
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1472 - 02  _RJE0NZI_.pdf
+    status: gap
+  - id: F 1613 - 95 R02  _RJE2MTM_
+    title: 'F 1613   95 R02   RJE2MTM '
+    org: ASTM
+    sha: sha256:1851852c364869a3b51f80b30a553b1f
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1613 - 95 R02  _RJE2MTM_.pdf
+    status: gap
+  - id: F 1026 - 86 R96  _RJEWMJYTODZSOTY_
+    title: 'F 1026   86 R96   RJEWMJYTODZSOTY '
+    org: ASTM
+    sha: sha256:534d99e5825865abc1c30958bcc35772
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1026 - 86 R96  _RJEWMJYTODZSOTY_.pdf
+    status: gap
+  - id: F 2213 - 02  _RJIYMTMTMDI_
+    title: 'F 2213   02   RJIYMTMTMDI '
+    org: ASTM
+    sha: sha256:cbfbfe2c74f93ccb82e839b31275d963
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 2213 - 02  _RJIYMTMTMDI_.pdf
+    status: gap
+  - id: F 1981 - 99  _RJE5ODE_
+    title: 'F 1981   99   RJE5ODE '
+    org: ASTM
+    sha: sha256:745cfd1a1e84965d8c50aaaaec7fd17a
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1981 - 99  _RJE5ODE_.pdf
+    status: gap
+  - id: F 2024 - 00  _RJIWMJQ_
+    title: 'F 2024   00   RJIWMJQ '
+    org: ASTM
+    sha: sha256:a3fb2b298b93d7c5fcd8c45555522d07
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 2024 - 00  _RJIWMJQ_.pdf
+    status: gap
+  - id: F 1357 - 99 R04  _RJEZNTC_
+    title: 'F 1357   99 R04   RJEZNTC '
+    org: ASTM
+    sha: sha256:c7610b70a6041efbd0b7d9a3072fe126
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1357 - 99 R04  _RJEZNTC_.pdf
+    status: gap
+  - id: F 86 - XX  _RJG2LTAW
+    title: F 86   XX   RJG2LTAW
+    org: ASTM
+    sha: sha256:22fbefa425492cd512749f1cd842fab3
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 86 - XX  _RJG2LTAW.pdf
+    status: gap
+  - id: F 2082 - 01  _RJIWODITUKVE
+    title: F 2082   01   RJIWODITUKVE
+    org: ASTM
+    sha: sha256:c9a49750abedb9f303e2382ac36bbdda
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 2082 - 01  _RJIWODITUKVE.pdf
+    status: gap
+  - id: E 1397 - 91 R98  _RTEZOTCTOTFSOTG_
+    title: 'E 1397   91 R98   RTEZOTCTOTFSOTG '
+    org: ASTM
+    sha: sha256:233780e809cb1c69a2e13ca742133504
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme E 1397 - 91 R98  _RTEZOTCTOTFSOTG_.pdf
+    status: gap
+  - id: F 2042 - 00  _RJIWNDI_
+    title: 'F 2042   00   RJIWNDI '
+    org: ASTM
+    sha: sha256:c25619ea207cefcd1431a7df754f1759
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 2042 - 00  _RJIWNDI_.pdf
+    status: gap
+  - id: F 1058 - 02  _RJEWNTG_
+    title: 'F 1058   02   RJEWNTG '
+    org: ASTM
+    sha: sha256:35a6138878f5936f736960294fa93319
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1058 - 02  _RJEWNTG_.pdf
+    status: gap
+  - id: F 451 - 99  _RJQ1MS05OUE_
+    title: 'F 451   99   RJQ1MS05OUE '
+    org: ASTM
+    sha: sha256:2947d6226da5362757fb1cae0d3593cf
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 451 - 99  _RJQ1MS05OUE_.pdf
+    status: gap
+  - id: F 895 - 84 R01  _RJG5NS04NFIWMQ__
+    title: 'F 895   84 R01   RJG5NS04NFIWMQ  '
+    org: ASTM
+    sha: sha256:2c9ef18ddddbc1046354032d306d4b10
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 895 - 84 R01  _RJG5NS04NFIWMQ__.pdf
+    status: gap
+  - id: F 1472 - 99  _RJE0NZITOTK_
+    title: 'F 1472   99   RJE0NZITOTK '
+    org: ASTM
+    sha: sha256:6addcbaa9aaf7ff6a4e4ee251938caba
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1472 - 99  _RJE0NZITOTK_.pdf
+    status: gap
+  - id: F 1089 - 02  _RJEWODK_
+    title: 'F 1089   02   RJEWODK '
+    org: ASTM
+    sha: sha256:f5773d5920acbb66f14dcc689359d11b
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1089 - 02  _RJEWODK_.pdf
+    status: gap
+  - id: F 2257 - 03  _RJIYNTC_
+    title: 'F 2257   03   RJIYNTC '
+    org: ASTM
+    sha: sha256:2ea6d43230528b36130e1cf65bfeeadb
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 2257 - 03  _RJIYNTC_.pdf
+    status: gap
+  - id: F 1264 - 00  _RJEYNJQTMDA_
+    title: 'F 1264   00   RJEYNJQTMDA '
+    org: ASTM
+    sha: sha256:bce95a4d2745bc438ef4ad7acabff45c
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1264 - 00  _RJEYNJQTMDA_.pdf
+    status: gap
+  - id: F 2213 - 02  _RJIYMTMTUKVE
+    title: F 2213   02   RJIYMTMTUKVE
+    org: ASTM
+    sha: sha256:ee5ea6a509145529cf2fca2a8a805ed6
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 2213 - 02  _RJIYMTMTUKVE.pdf
+    status: gap
+  - id: F 1439 - 92 R96  _RJE0MZKTOTJSOTY_
+    title: 'F 1439   92 R96   RJE0MZKTOTJSOTY '
+    org: ASTM
+    sha: sha256:eab0170bae7222b18f483184faf3e1fb
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1439 - 92 R96  _RJE0MZKTOTJSOTY_.pdf
+    status: gap
+  - id: F 639 - 98  _RJYZOS05OEE_
+    title: 'F 639   98   RJYZOS05OEE '
+    org: ASTM
+    sha: sha256:1e106f4fac370be45c1ed7ba80a2f0e7
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 639 - 98  _RJYZOS05OEE_.pdf
+    status: gap
+  - id: F 136 - 02  _RJEZNI0WMG__
+    title: 'F 136   02   RJEZNI0WMG  '
+    org: ASTM
+    sha: sha256:0032988dba96aa8b0f57250ff8c2d319
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 136 - 02  _RJEZNI0WMG__.pdf
+    status: gap
+  - id: F 2345 - 03  _RJIZNDU_
+    title: 'F 2345   03   RJIZNDU '
+    org: ASTM
+    sha: sha256:56fe505d941b1f2dffc1799f432f063b
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 2345 - 03  _RJIZNDU_.pdf
+    status: gap
+  - id: F 1439 - 02  _RJE0MZKTUKVE
+    title: F 1439   02   RJE0MZKTUKVE
+    org: ASTM
+    sha: sha256:4a6e8c02b2c39e37073bd3ed5d0ae0f6
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1439 - 02  _RJE0MZKTUKVE.pdf
+    status: gap
+  - id: F 2079 - 01  _RJIWNZKTUKVE
+    title: F 2079   01   RJIWNZKTUKVE
+    org: ASTM
+    sha: sha256:a0bf0f04202d7b6b381fa4e6687d64d2
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 2079 - 01  _RJIWNZKTUKVE.pdf
+    status: gap
+  - id: F 619 - 02  _RJYXOS1SRUQ_
+    title: 'F 619   02   RJYXOS1SRUQ '
+    org: ASTM
+    sha: sha256:0ce8fa06b48d7dd208c17b0dfdbb76e2
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 619 - 02  _RJYXOS1SRUQ_.pdf
+    status: gap
+  - id: F 1840 - 98a R04  _RJE4NDA_
+    title: 'F 1840   98a R04   RJE4NDA '
+    org: ASTM
+    sha: sha256:e895b7e13bc0d56adeed2ee66bf0e213
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 1840 - 98a R04  _RJE4NDA_.pdf
+    status: gap
+  - id: E 1202 - 87 R98  _RTEYMDITODDSOTG_
+    title: 'E 1202   87 R98   RTEYMDITODDSOTG '
+    org: ASTM
+    sha: sha256:d897df19edca0fb04904c981d8a4b434
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme E 1202 - 87 R98  _RTEYMDITODDSOTG_.pdf
+    status: gap
+  - id: F 982 - 86 R02  _RJK4MG__
+    title: 'F 982   86 R02   RJK4MG  '
+    org: ASTM
+    sha: sha256:fb0d86d9b66df9e135875538fc6fc779
+    discipline: production
+    summary: ASTM 2004 PART III ASTM 2004 Volume 13.01 Medical and Surgical Materials and Devices_ Anesthetic and Respiratory
+      Equipme F 982 - 86 R02  _RJK4MG__.pdf
+    status: gap
+  unlinked_doc_count: 514
+- module: marine_ops/reservoir
+  standards_count: 0
+  standards: []
+  unlinked_doc_count: 0
+- module: specialized/rigging
+  standards_count: 1
+  standards:
+  - id: API-RP 520 Pressure Relieving Devices in Refineries Part II Installation
+    title: API RP 520 Pressure Relieving Devices in Refineries Part II Installation
+    org: API
+    sha: sha256:14f10d567c68c123eb4995da1ce05632
+    discipline: installation
+    summary: API STA API-RP 520 Pressure Relieving Devices in Refineries Part II Installation.pdf
+    status: gap
+  unlinked_doc_count: 0
+- module: specialized/api_analysis
+  standards_count: 69
+  standards:
+  - id: 5C
+    title: API RP 5C5 3rd Ed (2003) Procedures for Testing Casing and Tubing Connection
+    org: API
+    sha: sha256:221f88a2be1a37fcaa1aace3bde9d073
+    discipline: drilling
+    summary: API Recommended Practice API RP 5C5 API RP 5C5 3rd Ed (2003) Procedures for Testing Casing and Tubing Connection.pdf
+    status: gap
+  - id: API SPEC 5CT 8th Ed (2005) Casing and Tubing (U.S. Customary Units)
+    title: API SPEC 5CT 8th Ed (2005) Casing and Tubing (U.S. Customary Units)
+    org: API
+    sha: sha256:160af4b49bff311aec97163e1f250dc7
+    discipline: drilling
+    summary: API Specification API Spec 5CT API SPEC 5CT 8th Ed (2005) Casing and Tubing (U.S. Customary Units).pdf
+    status: gap
+  - id: API SPEC 5CT 8th Ed Errata (2005) Casing and Tubing (U.S. Customary Units)
+    title: API SPEC 5CT 8th Ed Errata (2005) Casing and Tubing (U.S. Customary Units)
+    org: API
+    sha: sha256:872e354f99b90e66ce0a083e98070b2a
+    discipline: drilling
+    summary: API Specification API Spec 5CT API SPEC 5CT 8th Ed Errata (2005) Casing and Tubing (U.S. Customary Units).pdf
+    status: gap
+  - id: API SPEC 5CT 9th Ed (2011) Casing and Tubing (U.S. Customary Units)
+    title: API SPEC 5CT 9th Ed (2011) Casing and Tubing (U.S. Customary Units)
+    org: API
+    sha: sha256:f5ac08ae3eeb7115d639ab7181fcf7d6
+    discipline: drilling
+    summary: API Specification API Spec 5CT API SPEC 5CT 9th Ed (2011) Casing and Tubing (U.S. Customary Units).pdf
+    status: gap
+  - id: API RP 5C5 3rd Ed (2003) Procedures for Testing Casing and Tubing Connection
+    title: API RP 5C5 3rd Ed (2003) Procedures for Testing Casing and Tubing Connection
+    org: ''
+    sha: sha256:8696d14f78f03c00bffd1801b0ffe3cacb0d2f4febe0cf55865e5c3aeb471708
+    discipline: drilling
+    summary: API Recommended Practice API RP 5C5 API RP 5C5 3rd Ed (2003) Procedures for Testing Casing and Tubing Connection.pdf
+    status: gap
+  - id: API SPEC 4F 3rd Ed (2008) Drilling and Well Servicing Structures
+    title: API SPEC 4F 3rd Ed (2008) Drilling and Well Servicing Structures
+    org: API
+    sha: sha256:20098fa493291c659091255d9f683d5f
+    discipline: drilling
+    summary: API Specification API Spec 4F API SPEC 4F 3rd Ed (2008) Drilling and Well Servicing Structures.pdf
+    status: gap
+  - id: API SPEC 7-1 1st Ed (2006) Rotary Drill Stem Elements
+    title: API SPEC 7 1 1st Ed (2006) Rotary Drill Stem Elements
+    org: API
+    sha: sha256:ea6c5f55f909632565bb237cd890b86f
+    discipline: drilling
+    summary: API Specification API Spec 7-1 API SPEC 7-1 1st Ed (2006) Rotary Drill Stem Elements.pdf
+    status: gap
+  - id: API SPEC 7-1 1st Ed Addendum 2 (2009) Rotary Drill Stem Elements
+    title: API SPEC 7 1 1st Ed Addendum 2 (2009) Rotary Drill Stem Elements
+    org: API
+    sha: sha256:180342ac129f9e8e5c9d8f7a6309961a
+    discipline: drilling
+    summary: API Specification API Spec 7-1 API SPEC 7-1 1st Ed Addendum 2 (2009) Rotary Drill Stem Elements.pdf
+    status: gap
+  - id: API SPEC 7-1 1st Ed Addendum 1 (2006) Rotary Drill Stem Elements
+    title: API SPEC 7 1 1st Ed Addendum 1 (2006) Rotary Drill Stem Elements
+    org: API
+    sha: sha256:4aa05480caed77627e48a3b464da99c1
+    discipline: drilling
+    summary: API Specification API Spec 7-1 API SPEC 7-1 1st Ed Addendum 1 (2006) Rotary Drill Stem Elements.pdf
+    status: gap
+  - id: API SPEC 7-1 1st Ed Addendum 3 (2011) Rotary Drill Stem Elements
+    title: API SPEC 7 1 1st Ed Addendum 3 (2011) Rotary Drill Stem Elements
+    org: API
+    sha: sha256:bdb9127f950c5c57fc4773687cb160a2
+    discipline: drilling
+    summary: API Specification API Spec 7-1 API SPEC 7-1 1st Ed Addendum 3 (2011) Rotary Drill Stem Elements.pdf
+    status: gap
+  - id: API SPEC 7 40th Ed (2001) Rotary Drill Stem Elements
+    title: API SPEC 7 40th Ed (2001) Rotary Drill Stem Elements
+    org: API
+    sha: sha256:134bd72bcd96ef0c50077ed530b9b9c1
+    discipline: drilling
+    summary: API Specification API Spec 7 API SPEC 7 40th Ed (2001) Rotary Drill Stem Elements.pdf
+    status: gap
+  - id: API SPEC 8C 4th Ed (2003) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
+    title: API SPEC 8C 4th Ed (2003) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
+    org: API
+    sha: sha256:2dca992cb0b3204384ccfedaf6e58fc3
+    discipline: drilling
+    summary: API Specification API Spec 8C API SPEC 8C 4th Ed (2003) Drilling and Production Hoisting Equipment (PSL 1 and
+      PSL 2).pdf
+    status: gap
+  - id: API SPEC 8C 4th Ed Addendum 1 (2003) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
+    title: API SPEC 8C 4th Ed Addendum 1 (2003) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
+    org: API
+    sha: sha256:b0f484c4269a4a4291b11c224b72d168
+    discipline: drilling
+    summary: API Specification API Spec 8C API SPEC 8C 4th Ed Addendum 1 (2003) Drilling and Production Hoisting Equipment
+      (PSL 1 and PSL 2).pdf
+    status: gap
+  - id: API SPEC 8C 3rd Ed (1997) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
+    title: API SPEC 8C 3rd Ed (1997) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
+    org: API
+    sha: sha256:d47f1e7bf918611a690db8fc1ff1114f
+    discipline: drilling
+    summary: API Specification API Spec 8C API SPEC 8C 3rd Ed (1997) Drilling and Production Hoisting Equipment (PSL 1 and
+      PSL 2).pdf
+    status: gap
+  - id: API SPEC 16A 2nd Ed (1997) Drill Through Equipment
+    title: API SPEC 16A 2nd Ed (1997) Drill Through Equipment
+    org: API
+    sha: sha256:b5c79d4868aa6e62d17dcb6c2b9c3e52
+    discipline: drilling
+    summary: API Specification API Spec 16A API SPEC 16A 2nd Ed (1997) Drill Through Equipment.pdf
+    status: gap
+  - id: API SPECIFICATION 7K Drilling and Well Servicing Equip 2016
+    title: API SPECIFICATION 7K Drilling and Well Servicing Equip 2016
+    org: API
+    sha: sha256:41b799837286206b91a5b2da20d2588f
+    discipline: drilling
+    summary: API Specification API Spec 7K API SPECIFICATION 7K Drilling and Well Servicing Equip 2016.pdf
+    status: gap
+  - id: 7G
+    title: API RP 7G 16th Ed Addendum 1 (2000) Drill Stem Design and Operating Limits
+    org: API
+    sha: sha256:3d6080bf960027ad43673056dd57dc96
+    discipline: drilling
+    summary: API Recommended Practice API RP 7G API RP 7G 16th Ed Addendum 1 (2000) Drill Stem Design and Operating Limits.pdf
+    status: gap
+  - id: 16A
+    title: API 16a Drill Through Equipment 2nd Ed
+    org: API
+    sha: sha256:f0449f62803e5933b2901d381d891b4f
+    discipline: drilling
+    summary: API STA API 16a Drill Through Equipment 2nd Ed.pdf
+    status: gap
+  - id: '10407'
+    title: API 10407 RP7g  Inspection and Classification of Used Drill Stem Elements1st Ed vote
+    org: API
+    sha: sha256:904791e3f612a599216dc16682b42a11
+    discipline: drilling
+    summary: API STA API 10407 RP7g  Inspection and Classification of Used Drill Stem Elements1st Ed vote.pdf
+    status: gap
+  - id: 8A
+    title: API 8A 13th Edition Drilling Production and Hoisting Equipment
+    org: API
+    sha: sha256:edf8d967e4b8068cd2eb2bf043a25ed2
+    discipline: drilling
+    summary: API STA API 8A 13th Edition Drilling Production and Hoisting Equipment.pdf
+    status: gap
+  - id: BS 10405 (2000) Care and use of casing & tubing
+    title: BS 10405 (2000) Care and use of casing & tubing
+    org: BSI
+    sha: sha256:e602c5b2262bd27ba08c39a6cb5ad337
+    discipline: drilling
+    summary: BSI BS 10405 BS 10405 (2000) Care and use of casing & tubing.pdf
+    status: gap
+  - id: BS_10405_(2000)_Care_and_use_of_casing_&_tubing
+    title: BS 10405 (2000) Care and use of casing & tubing
+    org: ''
+    sha: sha256:1f2e730b80e5d9d3418a3254d95ac01d90157afbb1b9c35ba48aa02d567de6c5
+    discipline: drilling
+    summary: _standards BSI BS_10405_(2000)_Care_and_use_of_casing_&_tubing.pdf
+    status: gap
+  - id: drill-ris-Appendices Extract - Oct 1998
+    title: drill ris Appendices Extract   Oct 1998
+    org: Unknown
+    sha: sha256:107e682a6da74bdaa7a5f932e7c638eb
+    discipline: drilling
+    summary: AMJIG Previous Revisions drill-ris-Appendices Extract - Oct 1998.doc
+    status: gap
+  - id: Dual Activity Drilling Ops
+    title: Dual Activity Drilling Ops
+    org: Unknown
+    sha: sha256:36e4957f24081bec7a283f1b0f430bb5
+    discipline: drilling
+    summary: Papers Guidelines Dual Activity Drilling Ops.doc
+    status: gap
+  - id: Titanium Alloys in Drilling and Production Systems
+    title: Titanium Alloys in Drilling and Production Systems
+    org: Unknown
+    sha: sha256:9c23aedaebf88d1802c7f897245a12c2
+    discipline: drilling
+    summary: Papers Reference documents Titanium Alloys in Drilling and Production Systems.pdf
+    status: gap
+  - id: E837
+    title: ASTM E837 (2001) Std Test Method for Determining Residual Stresses by the Hole Drilling Strain Gage Method
+    org: ASTM
+    sha: sha256:4919ae852a0230d4a482cdc192da1054
+    discipline: drilling
+    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E837 (2001) Std Test Method for Determining
+      Residual Stresses by the Hole-Drilling Strain-Gage Method.pdf
+    status: gap
+  - id: Drilled Core for Beams (C42C42M)
+    title: Drilled Core for Beams (C42C42M)
+    org: ASTM
+    sha: sha256:3048734892d254c6fd5a549b367648d6
+    discipline: drilling
+    summary: BS C Drilled Core for Beams (C42C42M).PDF
+    status: gap
+  - id: Drilled Concrete Cores (C174C174)
+    title: Drilled Concrete Cores (C174C174)
+    org: ASTM
+    sha: sha256:ebb14d6b7244ac28e06f4539c473061a
+    discipline: drilling
+    summary: BS C Drilled Concrete Cores (C174C174).PDF
+    status: gap
+  - id: Drillship_Guide_e-Jan12
+    title: Drillship Guide e Jan12
+    org: Unknown
+    sha: sha256:0d0ef6620088bc9957e98c74f5ba8270
+    discipline: drilling
+    summary: ABS Guide for Drillships Drillship_Guide_e-Jan12.pdf
+    status: gap
+  - id: RCN1
+    title: RCN1
+    org: BSI
+    sha: sha256:a973b07b7ffe16fb9725d6cb89fbea96
+    discipline: drilling
+    summary: ABS ABS 057 - Drilling Systems RCN1.pdf
+    status: gap
+  - id: Corrigenda
+    title: Corrigenda
+    org: BSI
+    sha: sha256:4a4e02fe59f3852643da7be451ed2f2a
+    discipline: drilling
+    summary: ABS ABS 057 - Drilling Systems Corrigenda.pdf
+    status: gap
+  - id: Guide
+    title: Guide
+    org: BSI
+    sha: sha256:d6eeb9120b0e94b3daa8aed3fd19b993
+    discipline: drilling
+    summary: ABS ABS 057 - Drilling Systems Guide.pdf
+    status: gap
+  - id: Guide_Colors
+    title: Guide Colors
+    org: BSI
+    sha: sha256:baaff304620cbaaa9d3c2b59a089da0f
+    discipline: drilling
+    summary: ABS ABS 057 - Drilling Systems Guide_Colors.pdf
+    status: gap
+  - id: 13679-1
+    title: ISO 13679 1st Ed (2002) Procedures for testing casing
+    org: ISO
+    sha: sha256:9f9f3cf705a966e51d935397a49e8f3a
+    discipline: drilling
+    summary: ISO ISO 13679 ISO 13679 1st Ed (2002) Procedures for testing casing.pdf
+    status: gap
+  - id: 13625-1
+    title: ISO 13625 1st Ed (2002) Drilling and production equipment
+    org: ISO
+    sha: sha256:c494ff94152a4be8ac8424865262f533
+    discipline: drilling
+    summary: ISO ISO 13625 ISO 13625 1st Ed (2002) Drilling and production equipment.pdf
+    status: gap
+  - id: BS 10424 (2004) Rotary drilling equipment
+    title: BS 10424 (2004) Rotary drilling equipment
+    org: BSI
+    sha: sha256:f1edae4c2cb3cc11b0abb4163a20e4f1
+    discipline: drilling
+    summary: BSI BS 10424 BS 10424 (2004) Rotary drilling equipment.pdf
+    status: gap
+  - id: BS 13626 (2004) Drilling and production equipment - drilling and well servicing structures
+    title: BS 13626 (2004) Drilling and production equipment   drilling and well servicing structures
+    org: BSI
+    sha: sha256:7ad61add184aafe3f99fa5e1128ed40b
+    discipline: drilling
+    summary: BSI BS 13626 BS 13626 (2004) Drilling and production equipment - drilling and well servicing structures.pdf
+    status: gap
+  - id: BS 17078 Pt 1 (2004) Drilling and production equipment - Side-pocket mandrels
+    title: BS 17078 Pt 1 (2004) Drilling and production equipment   Side pocket mandrels
+    org: BSI
+    sha: sha256:14da2550ddd467e9879330c6c69a0703
+    discipline: drilling
+    summary: BSI BS 17078 BS 17078 Pt 1 (2004) Drilling and production equipment - Side-pocket mandrels.pdf
+    status: gap
+  - id: BS 10414 Pt 1 (2001) Petroleum and Natural Gas Industries, Field testing of drilling fluids
+    title: BS 10414 Pt 1 (2001) Petroleum and Natural Gas Industries, Field testing of drilling fluids
+    org: BSI
+    sha: sha256:0313e77ae57747bdaae82e7e8ba5fee5
+    discipline: drilling
+    summary: BSI BS 10414 BS 10414 Pt 1 (2001) Petroleum and Natural Gas Industries, Field testing of drilling fluids.pdf
+    status: gap
+  - id: BS 10423 (2001) Drilling & production equipment - wellhead & christmas tree equipment
+    title: BS 10423 (2001) Drilling & production equipment   wellhead & christmas tree equipment
+    org: BSI
+    sha: sha256:81f4c4bb9b3ce745d2471279de93b113
+    discipline: drilling
+    summary: BSI BS 10423 BS 10423 (2001) Drilling & production equipment - wellhead & christmas tree equipment.pdf
+    status: gap
+  - id: BS 10423 (2004) Drilling & production equipment - wellhead & christmas tree equipment
+    title: BS 10423 (2004) Drilling & production equipment   wellhead & christmas tree equipment
+    org: BSI
+    sha: sha256:1a4e89d5aa4df4cf2362121dd3e0111e
+    discipline: drilling
+    summary: BSI BS 10423 BS 10423 (2004) Drilling & production equipment - wellhead & christmas tree equipment.PDF
+    status: gap
+  - id: BS 14693 (2003) Drilling & well servicing equipment
+    title: BS 14693 (2003) Drilling & well servicing equipment
+    org: BSI
+    sha: sha256:d9916823318a0f5f73f99de28b5b918c
+    discipline: drilling
+    summary: BSI BS 14693 BS 14693 (2003) Drilling & well servicing equipment.pdf
+    status: gap
+  - id: BS 13533 (2002) Drill through equipment
+    title: BS 13533 (2002) Drill through equipment
+    org: BSI
+    sha: sha256:7d151e5aa016030536fc560f25df12f0
+    discipline: drilling
+    summary: BSI BS 13533 BS 13533 (2002) Drill through equipment.pdf
+    status: gap
+  - id: E102
+    title: DNV RP E102 (2010) Recertification of blowout preventers and well control equipment
+    org: DNV
+    sha: sha256:e4e0757549476a5a6a15bf32b2cc80be
+    discipline: drilling
+    summary: DNV Recommended Practices DNV RP E102 DNV RP E102 (2010) Recertification of blowout preventers and well control
+      equipment.pdf
+    status: gap
+  - id: Drilling Fluid Processing
+    title: Drilling Fluid Processing
+    org: Unknown
+    sha: sha256:0460152fea0485db254912df05d26103
+    discipline: drilling
+    summary: 0000 Codes & Standards IADC-TPC Drilling Fluid Processing.pdf
+    status: gap
+  - id: API 10407 RP7g  Inspection and Classification of Used Drill Stem Elements1st Ed vote
+    title: API 10407 RP7g  Inspection and Classification of Used Drill Stem Elements1st Ed vote
+    org: ''
+    sha: sha256:60970c3176b248d82905111197674b0acbd7be4f851c7679fc5c56b813bc75d3
+    discipline: drilling
+    summary: API STA API 10407 RP7g  Inspection and Classification of Used Drill Stem Elements1st Ed vote.pdf
+    status: gap
+  - id: API RP 7G 16th Ed Addendum 2 (2009) Drill Stem Design and Operating Limits
+    title: API RP 7G 16th Ed Addendum 2 (2009) Drill Stem Design and Operating Limits
+    org: ''
+    sha: sha256:4a2fb11d4ca3b8cd6f44905c267f3f14f64602dd64b46899f9983ba141aaf677
+    discipline: drilling
+    summary: API Recommended Practice API RP 7G API RP 7G 16th Ed Addendum 2 (2009) Drill Stem Design and Operating Limits.pdf
+    status: gap
+  - id: API RP 7G 16th Ed (1998) Drill Stem Design and Operating Limits
+    title: API RP 7G 16th Ed (1998) Drill Stem Design and Operating Limits
+    org: ''
+    sha: sha256:37f2dc4dc796c41aa41fd5a5c818f8371374b50491dc7a9cb98a9ba4c2989da6
+    discipline: drilling
+    summary: API Recommended Practice API RP 7G API RP 7G 16th Ed (1998) Drill Stem Design and Operating Limits.pdf
+    status: gap
+  - id: API RP 7G 16th Ed Addendum 1 (2000) Drill Stem Design and Operating Limits
+    title: API RP 7G 16th Ed Addendum 1 (2000) Drill Stem Design and Operating Limits
+    org: ''
+    sha: sha256:a955396751eb46ff0047e8e19a563bb2b3b1ae19959462a7b8c9e06d21ec7dd9
+    discipline: drilling
+    summary: API Recommended Practice API RP 7G API RP 7G 16th Ed Addendum 1 (2000) Drill Stem Design and Operating Limits.pdf
+    status: gap
+  - id: API 8A 13th Edition Drilling Production and Hoisting Equipment
+    title: API 8A 13th Edition Drilling Production and Hoisting Equipment
+    org: ''
+    sha: sha256:63d74c27d2cf8a02f0447e8a06291114cbed32c9115af13bb0180b88072408c3
+    discipline: drilling
+    summary: API STA API 8A 13th Edition Drilling Production and Hoisting Equipment.pdf
+    status: gap
+  unlinked_doc_count: 23

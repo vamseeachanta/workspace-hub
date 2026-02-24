@@ -1,0 +1,722 @@
+repo: assetutilities
+generated: '2026-02-24T10:57:42'
+total_standards_mapped: 23829
+modules:
+- module: calculations
+  standards_count: 4240
+  standards:
+  - id: ISO-TR 10400, 1st Ed (2007) Equations and calculations for the properties of casing, tubing, drill pipe and line pipe
+      used as casing or tubing
+    title: ISO TR 10400, 1st Ed (2007) Equations and calculations for the properties of casing, tubing, drill pipe and line
+      pipe us
+    org: ISO
+    sha: sha256:f572be13fe3c534f389dff4220098adf
+    discipline: pipeline
+    summary: ISO ISO 10400 ISO-TR 10400, 1st Ed (2007) Equations and calculations for the properties of casing, tubing, drill
+      pipe and line pipe used as casing or tubing.pdf
+    status: gap
+  - id: API BULL 5C3 Formulas and Calculations for Casing, Tubing, Drill & Line Pipe
+    title: API BULL 5C3 Formulas and Calculations for Casing, Tubing, Drill & Line Pipe
+    org: API
+    sha: sha256:d6b39978766d35430a7ff579e3c44183
+    discipline: pipeline
+    summary: API STA API BULL 5C3 Formulas and Calculations for Casing, Tubing, Drill & Line Pipe.pdf
+    status: gap
+  - id: 5C
+    title: API TR 5C3 (2008) Technical Report on Equations and Calculations for Casing, Tubing, and Line Pipe Used as Casing
+      or Tub
+    org: API
+    sha: sha256:179be904ac99be86d814b73993b7ef98
+    discipline: pipeline
+    summary: API API Technical Report API TR 5C3 (2008) Technical Report on Equations and Calculations for Casing, Tubing,
+      and Line Pipe Used as Casing or Tubing; and Performance Properties Tables for Casing and T
+    status: gap
+  - id: API TR 5C3 (2008) Technical Report on Equations and Calculations for Casing, Tubing, and Line Pipe Used as Casing
+      or Tubing; and Performance Properties Tables for Casing and Tubing
+    title: API TR 5C3 (2008) Technical Report on Equations and Calculations for Casing, Tubing, and Line Pipe Used as Casing
+      or Tub
+    org: ''
+    sha: sha256:adb382622fa7dca4b91480fe80c74375880198e67a3874ace72a0ad235b6342e
+    discipline: pipeline
+    summary: API API Technical Report API TR 5C3 (2008) Technical Report on Equations and Calculations for Casing, Tubing,
+      and Line Pipe Used as Casing or Tubing; and Performance Properties Tables for Casing and T
+    status: gap
+  - id: ISO-TR_10400,_1st_Ed_(2007)_Equations_and_calculations_for_the_properties_of_casing,_tubing,_drill_pipe_and_line_pipe_used_as_casing_or_tubing
+    title: ISO TR 10400, 1st Ed (2007) Equations and calculations for the properties of casing, tubing, drill pipe and line
+      pipe us
+    org: ''
+    sha: sha256:7e5feee9a990246253a390a535fd743eb396d08c87fbd429e0018719392db974
+    discipline: pipeline
+    summary: _standards ISO ISO-TR_10400,_1st_Ed_(2007)_Equations_and_calculations_for_the_properties_of_casing,_tubing,_drill_pipe_and_line_pipe_used_as_casing_or_tubing.pdf
+    status: gap
+  - id: BS15663 Pt 2 (2001) Life cycle costing - Guidance on application of Methodology and calculation methods
+    title: BS15663 Pt 2 (2001) Life cycle costing   Guidance on application of Methodology and calculation methods
+    org: BSI
+    sha: sha256:eae8b09ae6c5c322b587feecccfadccb
+    discipline: structural
+    summary: BSI BS 15663 BS15663 Pt 2 (2001) Life cycle costing - Guidance on application of Methodology and calculation
+      methods.pdf
+    status: gap
+  - id: Marine Trasportations_0030-4
+    title: Marine Trasportations 0030 4
+    org: Unknown
+    sha: sha256:2e77bff697a93df6c9f2e2b58dd00306
+    discipline: marine
+    summary: 0000 O&G 0000 Codes & Standards Marine Trasportations_0030-4.pdf
+    status: gap
+  - id: AMJIG, Rev 2 (2000) Deep Water Drilling Riser Integrity Management Guideline
+    title: AMJIG, Rev 2 (2000) Deep Water Drilling Riser Integrity Management Guideline
+    org: Unknown
+    sha: sha256:a3d97a451b93d07e159f16b543294823
+    discipline: pipeline
+    summary: 0000 Codes & Standards AMJIG AMJIG, Rev 2 (2000) Deep Water Drilling Riser Integrity Management Guideline.PDF
+    status: gap
+  - id: AMJIG, Rev2 (1999) Deep Water Drilling Riser Integrity Management Guidelines
+    title: AMJIG, Rev2 (1999) Deep Water Drilling Riser Integrity Management Guidelines
+    org: Unknown
+    sha: sha256:959f1a2bd52bae60bf809c6863864ca4
+    discipline: pipeline
+    summary: AMJIG Previous Revisions AMJIG, Rev2 (1999) Deep Water Drilling Riser Integrity Management Guidelines.PDF
+    status: gap
+  - id: rpt001-3 Deep Water Drilling Riser Integ Manag - Part 1 Inspection - Nov 1997
+    title: rpt001 3 Deep Water Drilling Riser Integ Manag   Part 1 Inspection   Nov 1997
+    org: OnePetro
+    sha: sha256:7302aa0664a279dbe46c541ac1a22f9a
+    discipline: pipeline
+    summary: AMJIG Previous Revisions rpt001-3 Deep Water Drilling Riser Integ Manag - Part 1 Inspection - Nov 1997.doc
+    status: gap
+  - id: AMJIG, Rev1 (1998) Deep Water Drilling Riser Integrity Management Guidelines
+    title: AMJIG, Rev1 (1998) Deep Water Drilling Riser Integrity Management Guidelines
+    org: Unknown
+    sha: sha256:12c6fcbbb882b7ddf0d0d650957a00d5
+    discipline: pipeline
+    summary: AMJIG Previous Revisions AMJIG, Rev1 (1998) Deep Water Drilling Riser Integrity Management Guidelines.PDF
+    status: gap
+  - id: os-f101[1]
+    title: os f101[1]
+    org: Unknown
+    sha: sha256:e0cbf630f9836c26b2f20e8e977c34f0
+    discipline: pipeline
+    summary: 0000 O&G Oil and Gas Codes os-f101[1].pdf
+    status: gap
+  - id: F101
+    title: DNVOS F101
+    org: DNV
+    sha: sha256:aef57c4981a6f92e6ca85af7e88c669c
+    discipline: pipeline
+    summary: 0000 O&G Oil and Gas Codes DNVOS-F101.pdf
+    status: gap
+  - id: BP - Riser drag dat
+    title: BP   Riser drag dat
+    org: Unknown
+    sha: sha256:0edd7eb67a0da73c6d7b87e9ec2e0e47
+    discipline: pipeline
+    summary: Papers Guidelines BP - Riser drag dat.doc
+    status: gap
+  - id: Buoyant Riser_Shear7_Model
+    title: Buoyant Riser Shear7 Model
+    org: Unknown
+    sha: sha256:2b14ef7352926b662e90a083b733d1f5
+    discipline: pipeline
+    summary: Papers Guidelines Buoyant Riser_Shear7_Model.doc
+    status: gap
+  - id: TNE011-1 Overestimation of VIV Fatigue Damage for Single M
+    title: TNE011 1 Overestimation of VIV Fatigue Damage for Single M
+    org: Unknown
+    sha: sha256:a687dc979b483b1521e0d706964c9ed4
+    discipline: structural
+    summary: Papers Guidelines TNE011-1 Overestimation of VIV Fatigue Damage for Single M.pdf
+    status: gap
+  - id: TNE012-1 Internal Pressure Effects on Riser Extension
+    title: TNE012 1 Internal Pressure Effects on Riser Extension
+    org: Unknown
+    sha: sha256:cddd4b07e9f41889d57d0af99505fcca
+    discipline: pipeline
+    summary: Papers Guidelines TNE012-1 Internal Pressure Effects on Riser Extension.doc
+    status: gap
+  - id: BP Riser Array Design Guidelines v2
+    title: BP Riser Array Design Guidelines v2
+    org: Unknown
+    sha: sha256:d5126b1d11b3a73656f63922a51b4dab
+    discipline: pipeline
+    summary: Papers Guidelines BP Riser Array Design Guidelines v2.doc
+    status: gap
+  - id: Riser Equivalencing & De-equivalencing
+    title: Riser Equivalencing & De equivalencing
+    org: Unknown
+    sha: sha256:4d30898b0affc51a452ba611d201d8ab
+    discipline: pipeline
+    summary: Papers Guidelines Riser Equivalencing & De-equivalencing.doc
+    status: gap
+  - id: TNE011-1 Overestimation of VIV Fatigue Damage for Single Mo
+    title: TNE011 1 Overestimation of VIV Fatigue Damage for Single Mo
+    org: Unknown
+    sha: sha256:2ef8d94c53cb062a2ebc022231a09edb
+    discipline: structural
+    summary: Papers Guidelines TNE011-1 Overestimation of VIV Fatigue Damage for Single Mo.doc
+    status: gap
+  - id: Overestimation of VIV Fatigue Damage for Single Mode Response
+    title: Overestimation of VIV Fatigue Damage for Single Mode Response
+    org: Unknown
+    sha: sha256:a3e310794d0df03115d777d3b12cfd94
+    discipline: structural
+    summary: Papers Guidelines Overestimation of VIV Fatigue Damage for Single Mode Response.doc
+    status: gap
+  - id: TNE004-1 Riser Tow Out Analysis Methodology
+    title: TNE004 1 Riser Tow Out Analysis Methodology
+    org: Unknown
+    sha: sha256:2ce04ebd6c4b83aa95593e8d803c1636
+    discipline: pipeline
+    summary: Papers Guidelines TNE004-1 Riser Tow Out Analysis Methodology.doc
+    status: gap
+  - id: Huse, E., Experimental Investigation of Deep Sea Riser Intera
+    title: Huse, E., Experimental Investigation of Deep Sea Riser Intera
+    org: Unknown
+    sha: sha256:f86f92a5e3413dfe9ca28d35ab4a2ad4
+    discipline: pipeline
+    summary: Papers Offshore Technology Conference Huse, E., Experimental Investigation of Deep Sea Riser Intera.pdf
+    status: gap
+  - id: Norton, D.J., et al, 1981 - Wind Tunnel Tests of Inclined C
+    title: Norton, D.J., et al, 1981   Wind Tunnel Tests of Inclined C
+    org: Unknown
+    sha: sha256:d68e68ddf6b1ea9abb402ad7134b2d69
+    discipline: marine
+    summary: Papers Offshore Technology Conference Norton, D.J., et al, 1981 - Wind Tunnel Tests of Inclined C.pdf
+    status: gap
+  - id: Vandiver, J.K., et al, 1987 - Hydrodynamic Damping on Flexi
+    title: Vandiver, J.K., et al, 1987   Hydrodynamic Damping on Flexi
+    org: Unknown
+    sha: sha256:371659c6cc98aaffb40fbd8ed92afe58
+    discipline: marine
+    summary: Papers Offshore Technology Conference Vandiver, J.K., et al, 1987 - Hydrodynamic Damping on Flexi.pdf
+    status: gap
+  - id: 'Smith, C.S., et al, 1981 - Residual Strength and Stiffness '
+    title: 'Smith, C.S., et al, 1981   Residual Strength and Stiffness '
+    org: Unknown
+    sha: sha256:57dcfb9793e921dcb2a86680302ff198
+    discipline: marine
+    summary: Papers Offshore Technology Conference Smith, C.S., et al, 1981 - Residual Strength and Stiffness .pdf
+    status: gap
+  - id: Javanmardi, K., et al, 1995 - Auger TLP Well System Challen
+    title: Javanmardi, K., et al, 1995   Auger TLP Well System Challen
+    org: Unknown
+    sha: sha256:d664ae54614923b0c057b3e0ed1bcaa1
+    discipline: marine
+    summary: Papers Offshore Technology Conference Javanmardi, K., et al, 1995 - Auger TLP Well System Challen.pdf
+    status: gap
+  - id: Fox, S.A., et al, 1995 - Design Analysis and Full Scale Pro
+    title: Fox, S.A., et al, 1995   Design Analysis and Full Scale Pro
+    org: Unknown
+    sha: sha256:1624a42f6fb8688443029b0ff918d72d
+    discipline: marine
+    summary: Papers Offshore Technology Conference Fox, S.A., et al, 1995 - Design Analysis and Full Scale Pro.pdf
+    status: gap
+  - id: 'Larimore, D., et al, 1998 - Case History - First Diverless '
+    title: 'Larimore, D., et al, 1998   Case History   First Diverless '
+    org: Unknown
+    sha: sha256:c79bfea25b7dd5fa74e0135f055d7095
+    discipline: marine
+    summary: Papers Offshore Technology Conference Larimore, D., et al, 1998 - Case History - First Diverless .pdf
+    status: gap
+  - id: Allen, D.W., 1995 - Vortex-InducedVibration Analysis of the
+    title: Allen, D.W., 1995   Vortex InducedVibration Analysis of the
+    org: Unknown
+    sha: sha256:5c6714e3429c6b23a116e22fc44ee474
+    discipline: marine
+    summary: Papers Offshore Technology Conference Allen, D.W., 1995 - Vortex-InducedVibration Analysis of the.pdf
+    status: gap
+  - id: Brooks, I.H., 1987 - A Pragmatic Approach to Vortex-Induced
+    title: Brooks, I.H., 1987   A Pragmatic Approach to Vortex Induced
+    org: Unknown
+    sha: sha256:3c6fc5a53bc0b4f88f047e8f8199d008
+    discipline: marine
+    summary: Papers Offshore Technology Conference Brooks, I.H., 1987 - A Pragmatic Approach to Vortex-Induced.pdf
+    status: gap
+  - id: Carminati, J.R., et al, 1999 - Ursa TLP Well System
+    title: Carminati, J.R., et al, 1999   Ursa TLP Well System
+    org: Unknown
+    sha: sha256:f406cb7a0706a7351cc83134664461d5
+    discipline: marine
+    summary: Papers Offshore Technology Conference Carminati, J.R., et al, 1999 - Ursa TLP Well System.pdf
+    status: gap
+  - id: Barton, D.R., et al, 1999 - Genesis Project - Development W
+    title: Barton, D.R., et al, 1999   Genesis Project   Development W
+    org: Unknown
+    sha: sha256:6c85f6850043818618581f23d02623fb
+    discipline: marine
+    summary: Papers Offshore Technology Conference Barton, D.R., et al, 1999 - Genesis Project - Development W.pdf
+    status: gap
+  - id: OTC1997-8494 Code Conflicts
+    title: OTC1997 8494 Code Conflicts
+    org: OnePetro
+    sha: sha256:999c55e1e7ad138ebafedfdb5c4b19d4
+    discipline: marine
+    summary: Papers Offshore Technology Conference OTC1997-8494 Code Conflicts.pdf
+    status: gap
+  - id: OTC2001-13109 SCR Fatigue at Low KC
+    title: OTC2001 13109 SCR Fatigue at Low KC
+    org: OnePetro
+    sha: sha256:a0d1e612b7b715fbbcfcf3fa3d1c88af
+    discipline: structural
+    summary: Papers Offshore Technology Conference OTC2001-13109 SCR Fatigue at Low KC.pdf
+    status: gap
+  - id: 'Chen, W.C. 1989, Fatigue - Life Predictions for Threaded TLP '
+    title: 'Chen, W.C. 1989, Fatigue   Life Predictions for Threaded TLP '
+    org: Unknown
+    sha: sha256:4be43208295bac6fe1ffc21322c4293c
+    discipline: structural
+    summary: Papers Offshore Technology Conference Chen, W.C. 1989, Fatigue - Life Predictions for Threaded TLP .pdf
+    status: gap
+  - id: Sweeney, T., et al, 1991 - Behaviour of 15ksi Subsea Wellhe
+    title: Sweeney, T., et al, 1991   Behaviour of 15ksi Subsea Wellhe
+    org: Unknown
+    sha: sha256:6774c6501ca730c75bd85fd890c9e9ef
+    discipline: marine
+    summary: Papers Offshore Technology Conference Sweeney, T., et al, 1991 - Behaviour of 15ksi Subsea Wellhe.pdf
+    status: gap
+  - id: Berner, P., et al, 1997 - Neptune Project - Production Rise
+    title: Berner, P., et al, 1997   Neptune Project   Production Rise
+    org: Unknown
+    sha: sha256:21361dec9f8a29d1b9b6b94a991de488
+    discipline: marine
+    summary: Papers Offshore Technology Conference Berner, P., et al, 1997 - Neptune Project - Production Rise.pdf
+    status: gap
+  - id: Stahl, OTC 3902, Design Methodology for Offshore Platform C
+    title: Stahl, OTC 3902, Design Methodology for Offshore Platform C
+    org: OnePetro
+    sha: sha256:e3da5d6c36d078d6ab75ce97968556ae
+    discipline: marine
+    summary: Papers Offshore Technology Conference Stahl, OTC 3902, Design Methodology for Offshore Platform C.pdf
+    status: gap
+  - id: Gardner, T.N., et al, 1982 - Deepwater Drilling in High Cur
+    title: Gardner, T.N., et al, 1982   Deepwater Drilling in High Cur
+    org: Unknown
+    sha: sha256:423dc902cf91ffba0332d1064c7438ca
+    discipline: marine
+    summary: Papers Offshore Technology Conference Gardner, T.N., et al, 1982 - Deepwater Drilling in High Cur.pdf
+    status: gap
+  - id: Allen, D.W., 1998 - Vortex-Induced Vibration of Deepwater Ris
+    title: Allen, D.W., 1998   Vortex Induced Vibration of Deepwater Ris
+    org: Unknown
+    sha: sha256:c090fbeab76fcebe87ac05cb61af5256
+    discipline: marine
+    summary: Papers Offshore Technology Conference Allen, D.W., 1998 - Vortex-Induced Vibration of Deepwater Ris.pdf
+    status: gap
+  - id: Kim, Y.Y., et al, 1975 - Analysis of Simultaneous Wave Forc
+    title: Kim, Y.Y., et al, 1975   Analysis of Simultaneous Wave Forc
+    org: Unknown
+    sha: sha256:cb35632faa24d6eca6f773160f8c6d9f
+    discipline: marine
+    summary: Papers Offshore Technology Conference Kim, Y.Y., et al, 1975 - Analysis of Simultaneous Wave Forc.pdf
+    status: gap
+  - id: Grant, R., 1977 - Riser Fairing for Reduced Drag and Vortex
+    title: Grant, R., 1977   Riser Fairing for Reduced Drag and Vortex
+    org: Unknown
+    sha: sha256:96527c8516f1d3e2ac4a4585abb99fde
+    discipline: pipeline
+    summary: Papers Offshore Technology Conference Grant, R., 1977 - Riser Fairing for Reduced Drag and Vortex.pdf
+    status: gap
+  - id: Jacobsen, V., et al, 1996 - Vibration Suppression Devices f
+    title: Jacobsen, V., et al, 1996   Vibration Suppression Devices f
+    org: Unknown
+    sha: sha256:cac8640d9b44adc6a3c929baff776e47
+    discipline: marine
+    summary: Papers Offshore Technology Conference Jacobsen, V., et al, 1996 - Vibration Suppression Devices f.pdf
+    status: gap
+  - id: D'Souza, R., et al, 2002 - The Next Generation Production D
+    title: D'Souza, R., et al, 2002   The Next Generation Production D
+    org: Unknown
+    sha: sha256:7183fef2d2f836b0cf0b72f1399bdb7c
+    discipline: marine
+    summary: Papers Offshore Technology Conference D'Souza, R., et al, 2002 - The Next Generation Production D.pdf
+    status: gap
+  - id: Vandiver, J.K., 1985 - The Prediction of Lockin Vibration o
+    title: Vandiver, J.K., 1985   The Prediction of Lockin Vibration o
+    org: Unknown
+    sha: sha256:2051388dc999aed26e797522aaae4b92
+    discipline: marine
+    summary: Papers Offshore Technology Conference Vandiver, J.K., 1985 - The Prediction of Lockin Vibration o.pdf
+    status: gap
+  - id: Denison, E.B., et al, 1997 - Mars TLP Drilling and Producti
+    title: Denison, E.B., et al, 1997   Mars TLP Drilling and Producti
+    org: ISO
+    sha: sha256:66016e1e78f525dd904ba1448d306791
+    discipline: marine
+    summary: Papers Offshore Technology Conference Denison, E.B., et al, 1997 - Mars TLP Drilling and Producti.pdf
+    status: gap
+  - id: Britton, J.S., et al, 1987 - Improving Wellhead Performance
+    title: Britton, J.S., et al, 1987   Improving Wellhead Performance
+    org: Unknown
+    sha: sha256:730dfe29990888da18057cb9eab4433b
+    discipline: marine
+    summary: Papers Offshore Technology Conference Britton, J.S., et al, 1987 - Improving Wellhead Performance.pdf
+    status: gap
+  - id: Miller, J.E., et al, 1985 - Influence of Mud Column dynamic
+    title: Miller, J.E., et al, 1985   Influence of Mud Column dynamic
+    org: MIL
+    sha: sha256:8b07d80c473ffb6ae86dc5f504957546
+    discipline: marine
+    summary: Papers Offshore Technology Conference Miller, J.E., et al, 1985 - Influence of Mud Column dynamic.pdf
+    status: gap
+  - id: Imas, L., et al - Sensitivity of SCR Response and Fatigue L
+    title: Imas, L., et al   Sensitivity of SCR Response and Fatigue L
+    org: Unknown
+    sha: sha256:bb00b6afa91f3e722fe76355f873e269
+    discipline: structural
+    summary: Papers Offshore Technology Conference Imas, L., et al - Sensitivity of SCR Response and Fatigue L.pdf
+    status: gap
+  unlinked_doc_count: 3124
+- module: units
+  standards_count: 19589
+  standards:
+  - id: Codes & Standards Database
+    title: Codes & Standards Database
+    org: Unknown
+    sha: sha256:0d75d96f237eb621b360267e00a0f0de
+    discipline: other
+    summary: 0000 O&G 0000 Codes & Standards Codes & Standards Database.xls
+    status: gap
+  - id: Houston Codes and Standards Priority List
+    title: Houston Codes and Standards Priority List
+    org: Unknown
+    sha: sha256:db0662928811380829cb87c72c119128
+    discipline: other
+    summary: 0000 O&G 0000 Codes & Standards Houston Codes and Standards Priority List.xlsx
+    status: gap
+  - id: Ocean Currents
+    title: Ocean Currents
+    org: Unknown
+    sha: sha256:88afc82e57f86bd339784435821bf193
+    discipline: other
+    summary: 0000 O&G Oil and Gas Codes Ocean Currents.pdf
+    status: gap
+  - id: ORD 5700 Parker_O-Ring_Handbook
+    title: ORD 5700 Parker O Ring Handbook
+    org: Unknown
+    sha: sha256:1401591c645472292f84d0361e1bb87a
+    discipline: other
+    summary: 0000 O&G Oil and Gas Codes ORD 5700 Parker_O-Ring_Handbook.pdf
+    status: gap
+  - id: OS-C101
+    title: OS C101
+    org: Unknown
+    sha: sha256:18b4d4c4fd2ed05eb779cf7ae2743ac2
+    discipline: other
+    summary: 0000 O&G Oil and Gas Codes OS-C101.pdf
+    status: gap
+  - id: rp-f108
+    title: rp f108
+    org: Unknown
+    sha: sha256:13c5646f3963e1606a68939aef25ce39
+    discipline: other
+    summary: 0000 O&G Oil and Gas Codes rp-f108.pdf
+    status: gap
+  - id: MIL-S-23009C-81
+    title: MIL S 23009C 81
+    org: MIL
+    sha: sha256:1f1b5bb955ee1468c104d7580b5d42f6
+    discipline: other
+    summary: Oil and Gas Codes MIL Standards MIL-S-23009C-81.pdf
+    status: gap
+  - id: List of Reference (2H Library) Books
+    title: List of Reference (2H Library) Books
+    org: Unknown
+    sha: sha256:346c75b2803e601a1b558d61335322a7
+    discipline: other
+    summary: Oil and Gas Codes Papers List of Reference (2H Library) Books.xls
+    status: gap
+  - id: Pascal Help
+    title: Pascal Help
+    org: Unknown
+    sha: sha256:44a36c2e821ba93896d22e61450e5a3b
+    discipline: other
+    summary: Papers Guidelines Pascal Help.doc
+    status: gap
+  - id: BP SCR Design Guidelines Rev 2
+    title: BP SCR Design Guidelines Rev 2
+    org: Unknown
+    sha: sha256:f3f608b601153d9ab1fc6494eee3ce4f
+    discipline: other
+    summary: Papers Guidelines BP SCR Design Guidelines Rev 2.pdf
+    status: gap
+  - id: BP - PIP SCR Analysis Proc
+    title: BP   PIP SCR Analysis Proc
+    org: Unknown
+    sha: sha256:69362f5a129bf8482045fa3bbe58a5dd
+    discipline: other
+    summary: Papers Guidelines BP - PIP SCR Analysis Proc.pdf
+    status: gap
+  - id: TNE001-1 SCR Analysis Guidelines
+    title: TNE001 1 SCR Analysis Guidelines
+    org: Unknown
+    sha: sha256:100da424181bfa84a7ef2ee34518357d
+    discipline: other
+    summary: Papers Guidelines TNE001-1 SCR Analysis Guidelines.doc
+    status: gap
+  - id: rpt004-2 SCR Recomended Practice
+    title: rpt004 2 SCR Recomended Practice
+    org: Unknown
+    sha: sha256:a3bc3e466e3d8b95aa03e9f21c5c8870
+    discipline: other
+    summary: Papers Guidelines rpt004-2 SCR Recomended Practice.doc
+    status: gap
+  - id: CDST_Analysis_Method
+    title: CDST Analysis Method
+    org: Unknown
+    sha: sha256:8b54cb3741c465c178727dc89dc2e46e
+    discipline: other
+    summary: Papers Guidelines CDST_Analysis_Method.doc
+    status: gap
+  - id: TNE009-1 RAOs and Phases
+    title: TNE009 1 RAOs and Phases
+    org: Unknown
+    sha: sha256:93276c70649d9a610e6c721608434f29
+    discipline: other
+    summary: Papers Guidelines TNE009-1 RAOs and Phases.doc
+    status: gap
+  - id: BP - FSF_Final_Report
+    title: BP   FSF Final Report
+    org: Unknown
+    sha: sha256:0160737360a23270f567aa862dbfbc6d
+    discipline: other
+    summary: Papers Guidelines BP - FSF_Final_Report.doc
+    status: gap
+  - id: Refinement at TDP1
+    title: Refinement at TDP1
+    org: Unknown
+    sha: sha256:91931d43c6073331d923399323925d92
+    discipline: other
+    summary: Papers Guidelines Refinement at TDP1.doc
+    status: gap
+  - id: SN Curve for SHEAR7
+    title: SN Curve for SHEAR7
+    org: Unknown
+    sha: sha256:f0d19f94ca6cc4544a8d77d5017e5ad3
+    discipline: other
+    summary: Papers Guidelines SN Curve for SHEAR7.xls
+    status: gap
+  - id: TNE003-1 VIV Analysis of Near Neutrally Buoyant Hybrid Rise
+    title: TNE003 1 VIV Analysis of Near Neutrally Buoyant Hybrid Rise
+    org: Unknown
+    sha: sha256:55b94f15b82563701d432d4cd2b6925a
+    discipline: other
+    summary: Papers Guidelines TNE003-1 VIV Analysis of Near Neutrally Buoyant Hybrid Rise.doc
+    status: gap
+  - id: List of Reference Documents
+    title: List of Reference Documents
+    org: Unknown
+    sha: sha256:72aa8e20048d6504c74f981de84f49dc
+    discipline: other
+    summary: Papers Guidelines List of Reference Documents.xls
+    status: gap
+  - id: TNE302-1 Bending and Tension Factors in INF
+    title: TNE302 1 Bending and Tension Factors in INF
+    org: Unknown
+    sha: sha256:7ec941259bf7a532b5cfc28cb565f68b
+    discipline: other
+    summary: Papers Guidelines TNE302-1 Bending and Tension Factors in INF.doc
+    status: gap
+  - id: 'TNE008-1 RAOs - Converting ISAAC-MOSES RAO Phase Angles to '
+    title: 'TNE008 1 RAOs   Converting ISAAC MOSES RAO Phase Angles to '
+    org: Unknown
+    sha: sha256:51a8aa1c003ec16f007caff25a4900c0
+    discipline: other
+    summary: Papers Guidelines TNE008-1 RAOs - Converting ISAAC-MOSES RAO Phase Angles to .doc
+    status: gap
+  - id: 'TNE005-1 Keel Guide-Heave Plate Gap Modelling in Flexcom '
+    title: 'TNE005 1 Keel Guide Heave Plate Gap Modelling in Flexcom '
+    org: Unknown
+    sha: sha256:bf9573d1dd0b1b019a5fd847c832ec3f
+    discipline: other
+    summary: Papers Guidelines TNE005-1 Keel Guide-Heave Plate Gap Modelling in Flexcom .doc
+    status: gap
+  - id: 'John Hancock Final Year Proj '
+    title: 'John Hancock Final Year Proj '
+    org: Unknown
+    sha: sha256:0a0ff052c19dcf39000900139d17063a
+    discipline: other
+    summary: Papers Guidelines John Hancock Final Year Proj .doc
+    status: gap
+  - id: Stroke Limit Equations
+    title: Stroke Limit Equations
+    org: Unknown
+    sha: sha256:d4b1e396b7703a723f621dc0213bd8f2
+    discipline: other
+    summary: Papers Guidelines Stroke Limit Equations.doc
+    status: gap
+  - id: VIV Monitoring Guide
+    title: VIV Monitoring Guide
+    org: Unknown
+    sha: sha256:76a7576975e6557ce6b29e849844f37c
+    discipline: other
+    summary: Papers Guidelines VIV Monitoring Guide.doc
+    status: gap
+  - id: BP SCR Design Guidelines_rev3
+    title: BP SCR Design Guidelines rev3
+    org: Unknown
+    sha: sha256:5a305f57086d1f9f7015d2c0a3816121
+    discipline: other
+    summary: Papers Guidelines BP SCR Design Guidelines_rev3.pdf
+    status: gap
+  - id: TNE007-1 Pascal Programming Help File
+    title: TNE007 1 Pascal Programming Help File
+    org: Unknown
+    sha: sha256:771bee39c1d0fa0b6c2a9a02138c246b
+    discipline: other
+    summary: Papers Guidelines TNE007-1 Pascal Programming Help File.doc
+    status: gap
+  - id: BP TH 3470-BRI-RA-0042 Low KC Drag & Inertia Coefficient
+    title: BP TH 3470 BRI RA 0042 Low KC Drag & Inertia Coefficient
+    org: Unknown
+    sha: sha256:31582c2302ba77682973009786bce128
+    discipline: other
+    summary: Papers Guidelines BP TH 3470-BRI-RA-0042 Low KC Drag & Inertia Coefficient.pdf
+    status: gap
+  - id: TNE010-1 SHEAR 7 SCR Refinement at TDP
+    title: TNE010 1 SHEAR 7 SCR Refinement at TDP
+    org: Unknown
+    sha: sha256:5a57f07a421a2d80e52f1481f00c54b7
+    discipline: other
+    summary: Papers Guidelines TNE010-1 SHEAR 7 SCR Refinement at TDP.doc
+    status: gap
+  - id: BP Exploration - Shell License Data on VIV-Suppression - Pr
+    title: BP Exploration   Shell License Data on VIV Suppression   Pr
+    org: Unknown
+    sha: sha256:5d53b01146868ced81af0a9ad9bbf739
+    discipline: other
+    summary: Papers Guidelines BP Exploration - Shell License Data on VIV-Suppression - Pr.pdf
+    status: gap
+  - id: Hydrodynamic Forces
+    title: Hydrodynamic Forces
+    org: Unknown
+    sha: sha256:8989ee8c5a4f76c0f9b5f2902dcd578d
+    discipline: other
+    summary: Papers Guidelines Hydrodynamic Forces.doc
+    status: gap
+  - id: BP-BOREAS -  Insulation Systems for Angola Block 18 Rev C (
+    title: BP BOREAS    Insulation Systems for Angola Block 18 Rev C (
+    org: Unknown
+    sha: sha256:7b61c6f0699700524df1b7eb4374d1be
+    discipline: other
+    summary: Papers Guidelines BP-BOREAS -  Insulation Systems for Angola Block 18 Rev C (.pdf
+    status: gap
+  - id: Wave_Height_Period_Gradient
+    title: Wave Height Period Gradient
+    org: Unknown
+    sha: sha256:fd4bb482bc0ae5c35c9b237320d88ebd
+    discipline: other
+    summary: Papers Guidelines Wave_Height_Period_Gradient.doc
+    status: gap
+  - id: TNE006-1 Scaling of Hydrodynamic Parameters for Model Testi
+    title: TNE006 1 Scaling of Hydrodynamic Parameters for Model Testi
+    org: Unknown
+    sha: sha256:d9a1e0e2ee61fde45856ef5c6bef07ef
+    discipline: other
+    summary: Papers Guidelines TNE006-1 Scaling of Hydrodynamic Parameters for Model Testi.doc
+    status: gap
+  - id: RAOs and Phases
+    title: RAOs and Phases
+    org: Unknown
+    sha: sha256:db1717eb2f1ed2b474ae270041a56923
+    discipline: other
+    summary: Papers Guidelines RAOs and Phases.doc
+    status: gap
+  - id: 'Jeanjean, P. 2002 - Innovative Design Method for Deepwater '
+    title: 'Jeanjean, P. 2002   Innovative Design Method for Deepwater '
+    org: Unknown
+    sha: sha256:639bab00314c3275c9a89ebaf7a8d7d3
+    discipline: other
+    summary: Papers Reference documents Jeanjean, P. 2002 - Innovative Design Method for Deepwater .pdf
+    status: gap
+  - id: Yeh, M.K., et al, 1986 - On the Collapse on Inelastic Thick
+    title: Yeh, M.K., et al, 1986   On the Collapse on Inelastic Thick
+    org: Unknown
+    sha: sha256:c266e0843c87156cad77f9e7f5116b01
+    discipline: other
+    summary: Papers Reference documents Yeh, M.K., et al, 1986 - On the Collapse on Inelastic Thick.pdf
+    status: gap
+  - id: Ochi, M.K., 1973 - On Prediction of Extreme Values
+    title: Ochi, M.K., 1973   On Prediction of Extreme Values
+    org: Unknown
+    sha: sha256:8da11e328a5e0300a6e93f9e1c464287
+    discipline: other
+    summary: Papers Reference documents Ochi, M.K., 1973 - On Prediction of Extreme Values.pdf
+    status: gap
+  - id: Abbassian, F., et al, 1996 - The Use of Air-Bubble Spoilers
+    title: Abbassian, F., et al, 1996   The Use of Air Bubble Spoilers
+    org: Unknown
+    sha: sha256:1c07ac16fd28a5dce0a265e3d6cd79bd
+    discipline: other
+    summary: Papers Reference documents Abbassian, F., et al, 1996 - The Use of Air-Bubble Spoilers.pdf
+    status: gap
+  - id: Bernetti, R., et al, 1990 - Theoretical and Experimental An
+    title: Bernetti, R., et al, 1990   Theoretical and Experimental An
+    org: Unknown
+    sha: sha256:1666dfa12b65497ecdfccd6efa7b0d70
+    discipline: other
+    summary: Papers Reference documents Bernetti, R., et al, 1990 - Theoretical and Experimental An.pdf
+    status: gap
+  - id: Simantiras, P., et al, 1999 - Investigation on Vortex Induc
+    title: Simantiras, P., et al, 1999   Investigation on Vortex Induc
+    org: Unknown
+    sha: sha256:d1c899cef50b2ba5e24c8770f3250630
+    discipline: other
+    summary: Papers Reference documents Simantiras, P., et al, 1999 - Investigation on Vortex Induc.pdf
+    status: gap
+  - id: Urband, B.E., et al, 1999 - High Strength Sour Service C110
+    title: Urband, B.E., et al, 1999   High Strength Sour Service C110
+    org: Unknown
+    sha: sha256:4042dc04353c6bdc9768555b0d551b47
+    discipline: other
+    summary: Papers Reference documents Urband, B.E., et al, 1999 - High Strength Sour Service C110.pdf
+    status: gap
+  - id: Sablok, A.K., et al - An Experimental Investigation of Plat
+    title: Sablok, A.K., et al   An Experimental Investigation of Plat
+    org: Unknown
+    sha: sha256:5e31c38267d48d4094b44b6da5f44a65
+    discipline: other
+    summary: Papers Reference documents Sablok, A.K., et al - An Experimental Investigation of Plat.pdf
+    status: gap
+  - id: Lambrakos, K. - ASME1
+    title: Lambrakos, K.   ASME1
+    org: Unknown
+    sha: sha256:ae0fdde8e4dff3b04922feafb93e0e88
+    discipline: other
+    summary: Papers Reference documents Lambrakos, K. - ASME1.doc
+    status: gap
+  - id: Reddy, V., et al, 1985 - A Numerical Study of Pulsed Turbul
+    title: Reddy, V., et al, 1985   A Numerical Study of Pulsed Turbul
+    org: Unknown
+    sha: sha256:bb988f0ae33cd5b0e14193448415abd2
+    discipline: other
+    summary: Papers Reference documents Reddy, V., et al, 1985 - A Numerical Study of Pulsed Turbul.pdf
+    status: gap
+  - id: 'Laura, P.A.A., et al, 1973 - A note on the vibrations of a '
+    title: 'Laura, P.A.A., et al, 1973   A note on the vibrations of a '
+    org: Unknown
+    sha: sha256:cd738c0673b9a1091d07aecfd9a66417
+    discipline: other
+    summary: Papers Reference documents Laura, P.A.A., et al, 1973 - A note on the vibrations of a .pdf
+    status: gap
+  - id: Iwan, W.D., et al, 1987 - On the Vortex-Induced Oscillation
+    title: Iwan, W.D., et al, 1987   On the Vortex Induced Oscillation
+    org: Unknown
+    sha: sha256:7ceef4fa3b0a28c17bfd910af55aeb12
+    discipline: other
+    summary: Papers Reference documents Iwan, W.D., et al, 1987 - On the Vortex-Induced Oscillation.pdf
+    status: gap
+  - id: McNamara, J.F., et al, 1988 - Nonlinear Analysis of Flexibl
+    title: McNamara, J.F., et al, 1988   Nonlinear Analysis of Flexibl
+    org: Unknown
+    sha: sha256:c9f67f908bafc1b3f286285bc70a2573
+    discipline: other
+    summary: Papers Reference documents McNamara, J.F., et al, 1988 - Nonlinear Analysis of Flexibl.pdf
+    status: gap
+  - id: Triantafyllou, M.S., 1982 - Linear Dynamics of Cables and Cha
+    title: Triantafyllou, M.S., 1982   Linear Dynamics of Cables and Cha
+    org: Unknown
+    sha: sha256:75a7af5a147cafd3dbb8c6a3f964649b
+    discipline: other
+    summary: Papers Reference documents Triantafyllou, M.S., 1982 - Linear Dynamics of Cables and Cha.pdf
+    status: gap
+  unlinked_doc_count: 18385
