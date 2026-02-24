@@ -139,6 +139,11 @@ submit_review() {
           CODEX_NO_OUTPUT=true
           echo "# Codex review failed (exit $codex_exit)" > "$result_file"
           echo "# HARD GATE: Codex review is compulsory — resolve before proceeding" >> "$result_file"
+        elif grep -q "^# Codex exec failed\|^# Codex review failed\|^ERROR:" "$result_file" 2>/dev/null; then
+          # submit-to-codex.sh caught the error and exited 0, but the result
+          # file contains an error stub — treat as NO_OUTPUT for fallback consensus.
+          CODEX_NO_OUTPUT=true
+          echo "    (Codex API/model error detected in result — treating as NO_OUTPUT for fallback)" >&2
         fi
       fi
       ;;

@@ -3,11 +3,11 @@
 # WRK-238: implemented 2026-02-24
 # WRK-304: fixed [model] table → scalar per CLI 0.104 expectation 2026-02-24
 
-model = "codex-mini-latest"
+model = "gpt-4.1"
 
 [settings]
 max_threads = 12  # Enable higher parallel agent throughput (default is 6)
-approval = "suggest"  # Suggest changes, don't auto-apply
+approval = "never"  # Non-interactive: never prompt for approvals
 
 # Role registry — each role maps to agents/<role>/config.toml
 # Routing decision: Claude skills = semantic/intent routing (single agent)
@@ -16,30 +16,30 @@ approval = "suggest"  # Suggest changes, don't auto-apply
 
 [roles.default]
 description = "Primary Codex assistant for workspace-hub"
-model = "codex-mini-latest"
+model = "gpt-4.1"
 system_prompt = "You are a specialized code generation assistant for workspace-hub. Follow TDD: write tests first. Use Python snake_case and bash conventions. Respect .claude/rules/ for style, security, and git workflow."
 
 [roles.explorer]
 description = "Codebase exploration and architecture analysis"
-model = "codex-mini-latest"
+model = "gpt-4.1"
 system_prompt = "You are a code exploration agent. Search, analyze, and document but do not modify files. Focus on understanding architecture and finding relevant code. Max 20 files per search; return summaries, not raw dumps."
 
 [roles.worker]
 description = "Focused code generation, unit tests, debugging"
-model = "codex-mini-latest"
+model = "gpt-4.1"
 system_prompt = "You are a focused implementation agent. Write clean, tested, minimal code. Always write tests first (TDD). Do not expand scope beyond what was asked. Python: snake_case; JS/TS: camelCase."
 
 [roles.batch]
 description = "High-volume data processing and bulk operations"
-model = "codex-mini-latest"
+model = "gpt-4.1"
 system_prompt = "You are a batch processing agent for high-volume operations. Optimize for throughput. Use streaming and chunking for large datasets. Report progress at regular intervals."
 
 [roles.coder]
 description = "Senior implementation engineer — clean, SOLID, well-tested code"
-model = "codex-mini-latest"
+model = "gpt-4.1"
 system_prompt = "You are a senior software engineer implementing production-quality code. Apply SOLID principles, dependency injection, and explicit error handling. TDD mandatory: write the failing test before any implementation line. Keep functions under 50 lines and files under 400 lines."
 
 [roles.tester]
 description = "QA specialist — unit, integration, and security test design"
-model = "codex-mini-latest"
+model = "gpt-4.1"
 system_prompt = "You are a QA specialist. Design and implement comprehensive test suites: unit (<100ms each), integration (real containers), and security (injection, XSS). Maintain >80% coverage. Use Arrange-Act-Assert. Never share state between tests."
