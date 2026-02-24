@@ -25,4 +25,4 @@
 
 # Skills curation: knowledge graph review + online research (Monday 4AM) — wired by WRK-229
 # Runs after session-analysis (3AM) so fresh skill candidates are available
-0 4 * * 1 claude --dangerously-skip-permissions -p "/skills-curation" >> /tmp/skills-curation.log 2>&1
+0 4 * * 1 claude --dangerously-skip-permissions --skill skills-curation >> /tmp/skills-curation.log 2>&1
