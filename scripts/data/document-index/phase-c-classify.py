@@ -37,6 +37,25 @@ VALID_DOMAINS = [
 
 VALID_STATUSES = ["implemented", "gap", "data_source", "reference"]
 
+# Mapping from Phase B discipline labels to Phase C domain taxonomy
+PHASE_B_TO_PHASE_C = {
+    "structural": "structural",
+    "pipeline": "pipeline",
+    "cathodic-protection": "cathodic-protection",
+    "marine": "marine",
+    "installation": "installation",
+    "drilling": "regulatory",
+    "production": "energy-economics",
+    "materials": "materials",
+    "regulatory": "regulatory",
+    "energy-economics": "energy-economics",
+    "geotechnical": "structural",
+    "fire-safety": "regulatory",
+    "electrical": "regulatory",
+    "document-processing": "other",
+    "other": "other",
+}
+
 DOMAIN_KEYWORDS = {
     "structural": [
         "fatigue", "s-n curve", "stress", "structural", "jacket",
@@ -100,19 +119,27 @@ def load_index(index_path: Path) -> List[Dict]:
 
 
 def load_summaries(summaries_dir: Path) -> Dict[str, Dict]:
-    """Load all summary JSON files keyed by path."""
+    """Load all summary JSON files keyed by path and by sha."""
     summaries: Dict[str, Dict] = {}
     if not summaries_dir.exists():
         return summaries
+    count = 0
     for sfile in summaries_dir.glob("*.json"):
         try:
             with open(sfile) as f:
                 s = json.load(f)
-                if "path" in s:
-                    summaries[s["path"]] = s
+            if "path" in s:
+                summaries[s["path"]] = s
+            # Also index by sha so index records can look up by content_hash
+            sha = s.get("sha") or sfile.stem
+            if sha and sha not in summaries:
+                summaries[sha] = s
+            count += 1
+            if count % 50000 == 0:
+                logger.info("Loaded %d summaries...", count)
         except (json.JSONDecodeError, OSError):
             continue
-    logger.info("Loaded %d summaries", len(summaries))
+    logger.info("Loaded %d summaries (%d index entries)", count, len(summaries))
     return summaries
 
 
@@ -125,6 +152,12 @@ def classify_heuristic(record: Dict, summary: Optional[Dict]) -> Tuple[str, str]
         return "workspace-spec", "reference"
     if record.get("is_cad"):
         return "cad", "reference"
+
+    # Use Phase B discipline label if available (fastest and most accurate path)
+    if summary and summary.get("discipline"):
+        phase_b_disc = summary["discipline"]
+        domain = PHASE_B_TO_PHASE_C.get(phase_b_disc, "other")
+        return domain, "gap"
 
     searchable = " ".join([
         str(record.get("path", "")),
@@ -218,13 +251,15 @@ def build_enhancement_plan(
 
         path = rec.get("path", "")
         summary = summaries.get(path)
-        has_llm_summary = summary and summary.get("summary")
+        # Fallback: look up by content_hash (SHA) when path doesn't match
+        if not summary:
+            sha = rec.get("content_hash", "")
+            if sha:
+                summary = summaries.get(sha)
 
-        if has_llm_summary:
-            domain, status, cost = classify_llm(summary, cfg, daily_spend)
-            daily_spend += cost
-        else:
-            domain, status = classify_heuristic(rec, summary)
+        # Always use heuristic (which checks Phase B discipline first).
+        # LLM re-classification skipped: Phase B already classified all docs.
+        domain, status = classify_heuristic(rec, summary)
 
         repos = map_to_repos(domain, repo_domain_map)
 

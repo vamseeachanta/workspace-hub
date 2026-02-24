@@ -1,8 +1,8 @@
 ---
 name: paraview-interface
 description: AI interface skill for ParaView scientific visualization — pvpython/pvbatch CLI execution, paraview.simple API, filter pipelines, OpenFOAM integration, and automated image/data export.
-version: 1.0.0
-updated: 2026-02-23
+version: 1.1.0
+updated: 2026-02-24
 category: cfd-engineering
 triggers:
 - ParaView automation
@@ -322,6 +322,7 @@ def build_standard_cfd_pipeline(reader):
 | `ERROR: no mesh regions selected` | Reader has no regions enabled | Set `reader.MeshRegions = ['internalMesh']` |
 | `Cannot render: display not available` | No X display on headless server | Use `pvbatch` or `--force-offscreen-rendering` |
 | `Segfault in pvbatch` | Mesa/GPU driver conflict | Try `--mesa` flag or update drivers |
+| `SIGSEGV in vtkSMParaViewPipelineControllerWithRendering::New()` | ParaView 5.11 on Ubuntu 24.04 + NVIDIA 580 | Use Snap/conda ParaView install, or upgrade to ParaView >= 5.12. VTK layer (pip) works as fallback for data operations |
 | `SaveScreenshot: view size 0x0` | ViewSize not set | Set `view.ViewSize = [1920, 1080]` before save |
 | `KeyError: 'U'` | Array not loaded by reader | Check `reader.CellArrays` or `reader.PointArrays` |
 | `Empty output from PlotOverLine` | Line doesn't intersect data | Verify Point1/Point2 are within data bounds |
@@ -577,4 +578,5 @@ def load_orcaflex_vtk(vtk_dir):
 
 ## Version History
 
+- **1.1.0** (2026-02-24): Validated against VTK 9.6.0 (35/35 checks). Added ParaView 5.11 crash diagnosis for Ubuntu 24.04 + NVIDIA 580. All filter operations, CSV parsing, and data flow verified.
 - **1.0.0** (2026-02-23): Initial full interface skill covering pvpython/pvbatch execution, paraview.simple API, filter pipelines, OpenFOAM integration, and validation.

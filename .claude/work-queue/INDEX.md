@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-24T11:24:05Z by generate-index.py -->
+<!-- Generated: 2026-02-24T11:32:55Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-24T11:24:05Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-24T11:32:55Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 376
+**Total items:** 377
 
 ### By Status
 
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 137 |
+| high | 138 |
 | medium | 192 |
 | low | 46 |
 
@@ -31,7 +31,7 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 75 |
+| simple | 76 |
 | medium | 168 |
 | complex | 92 |
 
@@ -64,7 +64,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 142 / 376 |
+| Plans exist | 142 / 377 |
 | Plans cross-reviewed | 62 |
 | Plans approved | 81 |
 | Brochure pending | 4 |
@@ -76,9 +76,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 376 |
+| Total captured | 377 |
 | Total archived | 214 |
-| Completion rate | 214/376 (57%) |
+| Completion rate | 214/377 (57%) |
 | Monthly rate (current month) | 61 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -103,8 +103,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 26 | 7 | 3 |
-| Medium   | 70  | 2  | 1  |
+| High     | 27 | 7 | 3 |
+| Medium   | 69  | 2  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## Master Table
@@ -416,13 +416,13 @@
 | WRK-301 | fix: recurring Write correction pattern — not responding to improve | pending | medium | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-302 | fix: recurring Edit correction pattern — not responding to improve | pending | medium | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-303 | Ensemble planning — 3×Claude + 3×Codex + 3×Gemini independent agents for non-deterministic plan diversity | archived | medium | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | ⏳ pending | - |
-| WRK-304 | cleanup: one lean Stop hook — consume-signals.sh only, all analysis to nightly cron | pending | high | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-304 | cleanup: one lean Stop hook — consume-signals.sh only, all analysis to nightly cron | pending | high | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | ██░ 90% | - | - |
 | WRK-305 | feat: session signal emitters — wire /clear, plan-mode, per-WRK tool-counts | pending | medium | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-306 | feat: AI agent readiness check — claude/codex/gemini CLI versions + default models | pending | medium | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-307 | track: lean-session hook requirement missed — accountability record | pending | high | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-308 | perf: move pre-commit skill validation + readiness checks to nightly cron | pending | high | medium | any | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata, assetutilities, assethold, doris, OGManufacturing, frontierdeepwater, saipem, acma-projects, pdf-large-reader | - | ❌ | ❌ | ✅ | ✅ | ██░ 95% | n/a | - |
+| WRK-308 | perf: move pre-commit skill validation + readiness checks to nightly cron | pending | high | medium | any | - | - | - | ❌ | ❌ | ❌ | ❌ | ██░ 90% | - | - |
+| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata, assetutilities, assethold, doris, OGManufacturing, frontierdeepwater, saipem, acma-projects, pdf-large-reader | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | archived | high | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | ⏳ pending | - |
 | WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | medium | - | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | archived | high | low | - | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -474,7 +474,7 @@
 | WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | archived | medium | high | ace-linux-1 | - | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-357 |
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | archived | medium | high | ace-linux-1 | - | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-358 |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | archived | high | medium | ace-linux-1 | - | frontierdeepwater, aceengineer-admin | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-361 | Heriberto: powder room sink caulk for water drainage | in_progress | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | high | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-313 |
 | WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | - | - | digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | medium | simple | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -486,6 +486,7 @@
 | WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | ace-linux-2 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ██░ 80% | n/a | - |
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | working | medium | complex | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 80% | n/a | - |
+| WRK-374 | Personal habit — get to the point immediately when asking leaders questions | pending | high | simple | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -629,11 +630,11 @@
 | WRK-354 | Structural module — implement jacket and topside analysis | high | high | digitalmodel | - |
 | WRK-355 | Pipeline and flexibles module — pressure containment checks | medium | high | digitalmodel | - |
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | medium | medium | digitalmodel | - |
-| WRK-361 | Heriberto: powder room sink caulk for water drainage | medium | simple | achantas-data | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | high | medium | - | - |
 | WRK-370 | Heriberto: garage fence door repair | medium | simple | achantas-data | - |
 | WRK-371 | Heriberto: powder room faucet tightening | medium | simple | achantas-data | - |
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | high | complex | workspace-hub, digitalmodel | - |
+| WRK-374 | Personal habit — get to the point immediately when asking leaders questions | high | simple | - | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -948,7 +949,7 @@
 | WRK-008 | Upload photos from multiple devices to achantas-media | pending | low | medium | - |
 | WRK-120 | Research and purchase a smart watch | archived | low | simple | - |
 | WRK-141 | Create Achantas family tree to connect all family members | pending | medium | medium | - |
-| WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | simple | - |
+| WRK-361 | Heriberto: powder room sink caulk for water drainage | in_progress | medium | simple | - |
 | WRK-370 | Heriberto: garage fence door repair | pending | medium | simple | - |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | - |
 
@@ -1545,6 +1546,7 @@
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | medium | - | - |
 | WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | simple | digitalmodel, worldenergydata | - |
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | complex | workspace-hub, digitalmodel | - |
+| WRK-374 | Personal habit — get to the point immediately when asking leaders questions | pending | simple | - | - |
 
 ### Medium
 
@@ -1734,7 +1736,7 @@
 | WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | archived | medium | frontierdeepwater | - |
 | WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | archived | high | frontierdeepwater | - |
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | archived | high | frontierdeepwater | - |
-| WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | simple | achantas-data | - |
+| WRK-361 | Heriberto: powder room sink caulk for water drainage | in_progress | simple | achantas-data | - |
 | WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | simple | worldenergydata | - |
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | assethold | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | simple | assetutilities | - |
@@ -1866,7 +1868,7 @@
 | WRK-348 | Add root pyproject.toml to workspace-hub src/ | done | medium | workspace-hub | - |
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | low | workspace-hub | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | workspace-hub | - |
-| WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | achantas-data | - |
+| WRK-361 | Heriberto: powder room sink caulk for water drainage | in_progress | medium | achantas-data | - |
 | WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | digitalmodel, worldenergydata | - |
 | WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | medium | worldenergydata | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | assetutilities | - |
@@ -1874,6 +1876,7 @@
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | archived | low | digitalmodel | - |
 | WRK-370 | Heriberto: garage fence door repair | pending | medium | achantas-data | - |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | medium | achantas-data | - |
+| WRK-374 | Personal habit — get to the point immediately when asking leaders questions | pending | high | - | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
 
 ### Medium
@@ -2148,7 +2151,7 @@
 
 ## By Computer
 
-### ace-linux-1 (129 active / 136 total)
+### ace-linux-1 (130 active / 137 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2282,11 +2285,12 @@
 | WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | archived | medium | high | frontierdeepwater |
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | archived | medium | high | frontierdeepwater |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | archived | high | medium | frontierdeepwater, aceengineer-admin |
-| WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | simple | achantas-data |
+| WRK-361 | Heriberto: powder room sink caulk for water drainage | in_progress | medium | simple | achantas-data |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | high | medium | - |
 | WRK-370 | Heriberto: garage fence door repair | pending | medium | simple | achantas-data |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | achantas-data |
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | working | medium | complex | workspace-hub |
+| WRK-374 | Personal habit — get to the point immediately when asking leaders questions | pending | high | simple | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (12 active / 13 total)
