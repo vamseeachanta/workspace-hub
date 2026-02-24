@@ -48,7 +48,7 @@ _auto_sync_one() {
 
     if [ -n "$(git status --porcelain)" ]; then
         staged=true
-        if git commit -m "chore(sync): auto-sync $date_str" 2>/dev/null; then
+        if git -c core.hooksPath=/dev/null commit -m "chore(sync): auto-sync $date_str" 2>/dev/null; then
             committed=true
         else
             # Early return: do not pull/push if commit failed
@@ -87,7 +87,7 @@ _auto_sync_hub() {
         echo -e "${YELLOW}⊘ workspace-hub: nothing to commit${NC}"; return 0
     fi
 
-    if git commit -m "chore(sync): auto-sync $date_str" 2>/dev/null; then
+    if git -c core.hooksPath=/dev/null commit -m "chore(sync): auto-sync $date_str" 2>/dev/null; then
         echo -e "${GREEN}✓ workspace-hub: committed${NC}"
     else
         echo -e "${RED}✗ workspace-hub: commit failed${NC}"; return 1
