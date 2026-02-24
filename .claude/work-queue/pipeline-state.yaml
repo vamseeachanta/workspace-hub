@@ -1,6 +1,11 @@
-sessions: []
+sessions:
   - session_id: "session-20260216135601"
     provider: "claude"
     active_wrk: "WRK-TEST"
     last_stage: "implement_tdd"
     registered_at: "2026-02-16T19:56:02Z"
+  - session_id: session-20260224051003
+    provider: claude
+    active_wrk: 
+    last_stage: 
+    registered_at: 2026-02-24T11:10:03Z

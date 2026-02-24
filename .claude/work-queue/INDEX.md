@@ -1,29 +1,29 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-24T03:14:26Z by generate-index.py -->
+<!-- Generated: 2026-02-24T11:07:17Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-24T03:14:26Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-24T11:07:17Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 376
+**Total items:** 377
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 134 |
-| working | 9 |
+| pending | 132 |
+| working | 8 |
 | blocked | 5 |
-| done | 13 |
-| archived | 203 |
+| done | 8 |
+| archived | 212 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 136 |
+| high | 137 |
 | medium | 193 |
 | low | 46 |
 
@@ -32,8 +32,8 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 75 |
-| medium | 170 |
-| complex | 90 |
+| medium | 169 |
+| complex | 92 |
 
 ### By Repository
 
@@ -47,7 +47,7 @@
 | acma-projects | 10 |
 | assethold | 13 |
 | assetutilities | 8 |
-| digitalmodel | 118 |
+| digitalmodel | 119 |
 | doris | 5 |
 | frontierdeepwater | 5 |
 | hobbies | 1 |
@@ -56,7 +56,7 @@
 | rock-oil-field | 2 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 6 |
-| workspace-hub | 115 |
+| workspace-hub | 116 |
 | worldenergydata | 92 |
 
 ### Plan Tracking
@@ -64,7 +64,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 141 / 376 |
+| Plans exist | 141 / 377 |
 | Plans cross-reviewed | 62 |
 | Plans approved | 80 |
 | Brochure pending | 4 |
@@ -76,17 +76,17 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 376 |
-| Total archived | 203 |
-| Completion rate | 203/376 (54%) |
-| Monthly rate (current month) | 54 archived |
+| Total captured | 377 |
+| Total archived | 212 |
+| Completion rate | 212/377 (56%) |
+| Monthly rate (current month) | 60 archived |
 | Monthly rate (prior month) | 3 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 37 / 134 | 28% |
+| Pending items with plans | 37 / 132 | 28% |
 | Plans cross-reviewed | 8 | 17% |
 | Plans user-approved | 9 | 19% |
 
@@ -96,15 +96,15 @@
 |--------|-------|-------|
 | Pending > 30 days | 0 | - |
 | Pending > 14 days | 25 | WRK-005, WRK-008, WRK-019, WRK-020, WRK-021, WRK-022, WRK-023, WRK-032, WRK-036, WRK-039, WRK-041, WRK-042, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-080, WRK-081, WRK-085, WRK-099, WRK-101, WRK-106 |
-| Working > 7 days | 4 | WRK-118, WRK-121, WRK-125, WRK-131 |
+| Working > 7 days | 5 | WRK-118, WRK-121, WRK-125, WRK-131, WRK-149 |
 | Blocked > 7 days | 5 | WRK-006, WRK-064, WRK-069, WRK-130, WRK-133 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 26 | 7 | 3 |
-| Medium   | 75  | 2  | 1  |
+| High     | 27 | 7 | 3 |
+| Medium   | 72  | 1  | 1  |
 | Low      | 33  | 0  | 1  |
 
 ## Master Table
@@ -402,7 +402,7 @@
 | WRK-287 | Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2 | archived | medium | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-288 | Finish ace-linux-2 setup — install open source engineering programs and map capabilities | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-289, WRK-290, WRK-291, WRK-292 |
 | WRK-289 | Research open source FEA programs for engineering assignments | pending | low | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 90% | n/a | - |
-| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | working | medium | medium | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ░░░ 30% | n/a | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | done | medium | medium | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-291 | Install recommended FEA programs on ace-linux-2 | pending | low | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-289 |
 | WRK-292 | Create capability map — file formats, workflow pipelines, interoperability matrix | pending | low | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-290, WRK-291 |
 | WRK-293 | SMART health check on ace-linux-2 drives — install smartmontools + run diagnostics | completed | high | simple | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -422,7 +422,7 @@
 | WRK-307 | track: lean-session hook requirement missed — accountability record | pending | high | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-308 | perf: move pre-commit skill validation + readiness checks to nightly cron | pending | high | medium | any | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata, assetutilities, assethold, doris, OGManufacturing, frontierdeepwater, saipem, acma-projects, pdf-large-reader | - | ❌ | ❌ | ✅ | ✅ | ██░ 85% | n/a | - |
+| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata, assetutilities, assethold, doris, OGManufacturing, frontierdeepwater, saipem, acma-projects, pdf-large-reader | - | ❌ | ❌ | ✅ | ✅ | ██░ 95% | n/a | - |
 | WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | archived | high | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | ⏳ pending | - |
 | WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | medium | - | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | archived | high | low | - | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -432,7 +432,7 @@
 | WRK-315 | CALM buoy mooring fatigue — spectral fatigue from OrcaFlex time-domain output | pending | medium | high | acma-ansys05 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-316 | NDBC buoy data ingestion for metocean wave scatter matrices | pending | medium | medium | ace-linux-1 | - | worldenergydata, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-317 | Integrated web dashboard — Plotly Dash for BSEE and FDAS data | pending | medium | high | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-318 | Production forecasting module — Arps decline curve | pending | medium | medium | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-318 | Production forecasting module — Arps decline curve | done | medium | medium | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-319 | Real-time EIA and IEA feed ingestion — weekly crude and gas production | pending | medium | medium | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-320 | MAIB and NTSB incident correlation with USCG MISLE for root-cause taxonomy | pending | low | high | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-321 | Field development economics — MIRR NPV with carbon cost sensitivity | pending | medium | medium | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -464,7 +464,7 @@
 | WRK-347 | Rename aceengineer-website/src/ to content/ | done | medium | simple | ace-linux-1 | - | aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-348 | Add root pyproject.toml to workspace-hub src/ | done | medium | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-350 | Fix pre-existing test failures in assetutilities | done | medium | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ██░ 85% | n/a | - |
+| WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | ⏳ pending | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-353 | Expand S-N curve library from 17 to 20 standards | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -476,16 +476,17 @@
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | archived | medium | high | ace-linux-1 | - | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-358 |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | pending | high | medium | ace-linux-1 | - | frontierdeepwater, aceengineer-admin | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | pending | medium | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | high | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-313 |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | high | simple | - | - | digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | pending | medium | simple | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | pending | medium | medium | - | - | assethold | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | pending | medium | simple | - | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-351 |
-| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | done | medium | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | - | - | digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | medium | simple | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | medium | - | - | assethold | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | - | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-351 |
+| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | pending | low | simple | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-370 | Heriberto: garage fence door repair | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | ace-linux-2 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ██░ 80% | n/a | - |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | pending | medium | complex | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -495,18 +496,13 @@
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
 | WRK-173 | Session Management Workflow Documentation + Schematic | high | low | workspace-hub | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | medium | medium | workspace-hub | - |
 | WRK-344 | Remove agent_os from assetutilities | high | simple | assetutilities | - |
 | WRK-345 | Consolidate validators package into assetutilities | high | simple | assetutilities, worldenergydata, assethold | - |
 | WRK-346 | Fix aceengineer-admin to standard src/ layout | medium | simple | aceengineer-admin | - |
 | WRK-347 | Rename aceengineer-website/src/ to content/ | medium | simple | aceengineer-website | - |
 | WRK-348 | Add root pyproject.toml to workspace-hub src/ | medium | simple | workspace-hub | - |
 | WRK-349 | Document client/portfolio repos in ecosystem docs | low | simple | workspace-hub | - |
-| WRK-350 | Fix pre-existing test failures in assetutilities | medium | medium | assetutilities | - |
-| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | medium | medium | frontierdeepwater | - |
-| WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | medium | high | frontierdeepwater | - |
-| WRK-359 | Design and build vessel marine-parameters database for engineering analysis | medium | high | frontierdeepwater | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | high | simple | digitalmodel, worldenergydata | - |
-| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | medium | simple | workspace-hub | - |
 
 ### Pending
 
@@ -637,14 +633,12 @@
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | medium | medium | digitalmodel | - |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | high | medium | frontierdeepwater, aceengineer-admin | - |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | medium | simple | achantas-data | - |
-| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | medium | medium | workspace-hub | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | high | medium | - | - |
-| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | medium | simple | worldenergydata | - |
-| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | medium | medium | assethold | - |
-| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | medium | simple | assetutilities | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | low | simple | digitalmodel | - |
 | WRK-370 | Heriberto: garage fence door repair | medium | simple | achantas-data | - |
 | WRK-371 | Heriberto: powder room faucet tightening | medium | simple | achantas-data | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | high | complex | workspace-hub, digitalmodel | - |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | medium | complex | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -659,7 +653,6 @@
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | high | medium | workspace-hub | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | high | complex | workspace-hub | - |
 | WRK-263 | Progressively reduce agent harness files to ~20 lines by migrating content to skills | high | medium | workspace-hub | - |
-| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | medium | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -877,7 +870,16 @@
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | medium | simple | workspace-hub | - |
 | WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | high | medium | workspace-hub | - |
 | WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | high | low | workspace-hub | - |
+| WRK-350 | Fix pre-existing test failures in assetutilities | medium | medium | assetutilities | - |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | high | medium | workspace-hub | - |
+| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | medium | medium | frontierdeepwater | - |
+| WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | medium | high | frontierdeepwater | - |
+| WRK-359 | Design and build vessel marine-parameters database for engineering analysis | medium | high | frontierdeepwater | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | high | simple | digitalmodel, worldenergydata | - |
+| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | medium | simple | worldenergydata | - |
+| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | medium | medium | assethold | - |
+| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | medium | simple | assetutilities | - |
+| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | medium | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -983,7 +985,7 @@
 | WRK-324 | Risk metrics — VaR CVaR Sharpe ratio max drawdown per position and portfolio | pending | high | medium | - |
 | WRK-325 | Sector exposure tracker — auto-classify holdings by GICS sector and flag concentration | pending | medium | medium | - |
 | WRK-345 | Consolidate validators package into assetutilities | done | high | simple | - |
-| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | pending | medium | medium | - |
+| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | medium | - |
 
 ### assetutilities
 
@@ -995,8 +997,8 @@
 | WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-344 | Remove agent_os from assetutilities | done | high | simple | - |
 | WRK-345 | Consolidate validators package into assetutilities | done | high | simple | - |
-| WRK-350 | Fix pre-existing test failures in assetutilities | done | medium | medium | - |
-| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | pending | medium | simple | - |
+| WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | - |
+| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | - |
 
 ### digitalmodel
 
@@ -1118,8 +1120,9 @@
 | WRK-354 | Structural module — implement jacket and topside analysis | pending | high | high | - |
 | WRK-355 | Pipeline and flexibles module — pressure containment checks | pending | medium | high | - |
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | pending | medium | medium | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | high | simple | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | pending | low | simple | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | - |
 
 ### doris
 
@@ -1136,9 +1139,9 @@
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
 | WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
-| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | done | medium | medium | - |
-| WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | done | medium | high | - |
-| WRK-359 | Design and build vessel marine-parameters database for engineering analysis | done | medium | high | - |
+| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | archived | medium | medium | - |
+| WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | archived | medium | high | - |
+| WRK-359 | Design and build vessel marine-parameters database for engineering analysis | archived | medium | high | - |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | pending | high | medium | - |
 
 ### hobbies
@@ -1275,7 +1278,7 @@
 | WRK-287 | Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2 | archived | medium | medium | - |
 | WRK-288 | Finish ace-linux-2 setup — install open source engineering programs and map capabilities | pending | low | simple | - |
 | WRK-289 | Research open source FEA programs for engineering assignments | pending | low | medium | - |
-| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | working | medium | medium | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | done | medium | medium | - |
 | WRK-291 | Install recommended FEA programs on ace-linux-2 | pending | low | medium | - |
 | WRK-292 | Create capability map — file formats, workflow pipelines, interoperability matrix | pending | low | medium | - |
 | WRK-293 | SMART health check on ace-linux-2 drives — install smartmontools + run diagnostics | completed | high | simple | - |
@@ -1300,8 +1303,9 @@
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | low | simple | - |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | simple | - |
-| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | pending | medium | medium | - |
-| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | done | medium | simple | - |
+| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | simple | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | - |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | pending | medium | complex | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1393,13 +1397,13 @@
 | WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-316 | NDBC buoy data ingestion for metocean wave scatter matrices | pending | medium | medium | - |
 | WRK-317 | Integrated web dashboard — Plotly Dash for BSEE and FDAS data | pending | medium | high | - |
-| WRK-318 | Production forecasting module — Arps decline curve | pending | medium | medium | - |
+| WRK-318 | Production forecasting module — Arps decline curve | done | medium | medium | - |
 | WRK-319 | Real-time EIA and IEA feed ingestion — weekly crude and gas production | pending | medium | medium | - |
 | WRK-320 | MAIB and NTSB incident correlation with USCG MISLE for root-cause taxonomy | pending | low | high | - |
 | WRK-321 | Field development economics — MIRR NPV with carbon cost sensitivity | pending | medium | medium | - |
 | WRK-345 | Consolidate validators package into assetutilities | done | high | simple | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | high | simple | - |
-| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | pending | medium | simple | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | - |
+| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | medium | simple | - |
 
 ## By Priority
 
@@ -1542,7 +1546,8 @@
 | WRK-354 | Structural module — implement jacket and topside analysis | pending | high | digitalmodel | - |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | pending | medium | frontierdeepwater, aceengineer-admin | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | medium | - | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | simple | digitalmodel, worldenergydata | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | simple | digitalmodel, worldenergydata | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | complex | workspace-hub, digitalmodel | - |
 
 ### Medium
 
@@ -1689,7 +1694,7 @@
 | WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | archived | simple | workspace-hub | - |
 | WRK-286 | Harden chore: commits — require WRK ref for multi-file changes | pending | simple | workspace-hub | - |
 | WRK-287 | Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2 | archived | medium | workspace-hub | - |
-| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | working | medium | workspace-hub | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | done | medium | workspace-hub | - |
 | WRK-296 | Install Tailscale VPN on ace-linux-2 — match ace-linux-1 remote access | completed | simple | workspace-hub | - |
 | WRK-300 | workstations skill — evolve from registry to multi-machine work distribution | archived | medium | - | - |
 | WRK-301 | fix: recurring Write correction pattern — not responding to improve | pending | medium | - | - |
@@ -1703,7 +1708,7 @@
 | WRK-315 | CALM buoy mooring fatigue — spectral fatigue from OrcaFlex time-domain output | pending | high | digitalmodel | - |
 | WRK-316 | NDBC buoy data ingestion for metocean wave scatter matrices | pending | medium | worldenergydata, digitalmodel | - |
 | WRK-317 | Integrated web dashboard — Plotly Dash for BSEE and FDAS data | pending | high | worldenergydata | - |
-| WRK-318 | Production forecasting module — Arps decline curve | pending | medium | worldenergydata | - |
+| WRK-318 | Production forecasting module — Arps decline curve | done | medium | worldenergydata | - |
 | WRK-319 | Real-time EIA and IEA feed ingestion — weekly crude and gas production | pending | medium | worldenergydata | - |
 | WRK-321 | Field development economics — MIRR NPV with carbon cost sensitivity | pending | medium | worldenergydata | - |
 | WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | pending | medium | assethold | - |
@@ -1727,20 +1732,20 @@
 | WRK-346 | Fix aceengineer-admin to standard src/ layout | done | simple | aceengineer-admin | - |
 | WRK-347 | Rename aceengineer-website/src/ to content/ | done | simple | aceengineer-website | - |
 | WRK-348 | Add root pyproject.toml to workspace-hub src/ | done | simple | workspace-hub | - |
-| WRK-350 | Fix pre-existing test failures in assetutilities | done | medium | assetutilities | - |
+| WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | assetutilities | - |
 | WRK-355 | Pipeline and flexibles module — pressure containment checks | pending | high | digitalmodel | - |
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | pending | medium | digitalmodel | - |
-| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | done | medium | frontierdeepwater | - |
-| WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | done | high | frontierdeepwater | - |
-| WRK-359 | Design and build vessel marine-parameters database for engineering analysis | done | high | frontierdeepwater | - |
+| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | archived | medium | frontierdeepwater | - |
+| WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | archived | high | frontierdeepwater | - |
+| WRK-359 | Design and build vessel marine-parameters database for engineering analysis | archived | high | frontierdeepwater | - |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | simple | achantas-data | - |
-| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | pending | medium | workspace-hub | - |
-| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | pending | simple | worldenergydata | - |
-| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | pending | medium | assethold | - |
-| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | pending | simple | assetutilities | - |
-| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | done | simple | workspace-hub | - |
+| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | simple | worldenergydata | - |
+| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | assethold | - |
+| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | simple | assetutilities | - |
+| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | simple | workspace-hub | - |
 | WRK-370 | Heriberto: garage fence door repair | pending | simple | achantas-data | - |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | simple | achantas-data | - |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | pending | complex | workspace-hub | - |
 
 ### Low
 
@@ -1866,10 +1871,10 @@
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | low | workspace-hub | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | workspace-hub | - |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | achantas-data | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | high | digitalmodel, worldenergydata | - |
-| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | pending | medium | worldenergydata | - |
-| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | pending | medium | assetutilities | - |
-| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | done | medium | workspace-hub | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | digitalmodel, worldenergydata | - |
+| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | medium | worldenergydata | - |
+| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | assetutilities | - |
+| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | workspace-hub | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | pending | low | digitalmodel | - |
 | WRK-370 | Heriberto: garage fence door repair | pending | medium | achantas-data | - |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | medium | achantas-data | - |
@@ -2003,7 +2008,7 @@
 | WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | archived | critical | digitalmodel | - |
 | WRK-287 | Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2 | archived | medium | workspace-hub | - |
 | WRK-289 | Research open source FEA programs for engineering assignments | pending | low | workspace-hub | - |
-| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | working | medium | workspace-hub | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | done | medium | workspace-hub | - |
 | WRK-291 | Install recommended FEA programs on ace-linux-2 | pending | low | workspace-hub | - |
 | WRK-292 | Create capability map — file formats, workflow pipelines, interoperability matrix | pending | low | workspace-hub | - |
 | WRK-299 | comprehensive-learning skill — single batch command for all session learning + ecosystem improvement | archived | high | - | - |
@@ -2022,7 +2027,7 @@
 | WRK-313 | feat: new-machine setup guide + bootstrap script — statusline, CLI parity, cron jobs | pending | high | - | - |
 | WRK-314 | OrcaFlex Reporting Phase 4 — OrcFxAPI Integration | complete | high | - | - |
 | WRK-316 | NDBC buoy data ingestion for metocean wave scatter matrices | pending | medium | worldenergydata, digitalmodel | - |
-| WRK-318 | Production forecasting module — Arps decline curve | pending | medium | worldenergydata | - |
+| WRK-318 | Production forecasting module — Arps decline curve | done | medium | worldenergydata | - |
 | WRK-319 | Real-time EIA and IEA feed ingestion — weekly crude and gas production | pending | medium | worldenergydata | - |
 | WRK-321 | Field development economics — MIRR NPV with carbon cost sensitivity | pending | medium | worldenergydata | - |
 | WRK-322 | Fundamentals scoring — P/E P/B EV/EBITDA ranking from yfinance | pending | high | assethold | - |
@@ -2040,15 +2045,14 @@
 | WRK-339 | Aluminium structural module — Eurocode 9 and AA ADM member capacity checks | pending | medium | acma-projects | - |
 | WRK-342 | Multi-machine workflow clarity — SSH helper scripts, hostname in statusline, CLI consistency across ace-linux-1 and ace-linux-2 | pending | high | workspace-hub | - |
 | WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | workspace-hub, digitalmodel | - |
-| WRK-350 | Fix pre-existing test failures in assetutilities | done | medium | assetutilities | - |
+| WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | assetutilities | - |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | workspace-hub | - |
 | WRK-353 | Expand S-N curve library from 17 to 20 standards | pending | high | digitalmodel | - |
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | pending | medium | digitalmodel | - |
-| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | done | medium | frontierdeepwater | - |
+| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | archived | medium | frontierdeepwater | - |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | pending | high | frontierdeepwater, aceengineer-admin | - |
-| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | pending | medium | workspace-hub | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | high | - | - |
-| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | pending | medium | assethold | - |
+| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | assethold | - |
 
 ### Complex
 
@@ -2144,10 +2148,12 @@
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | medium | digitalmodel | - |
 | WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | archived | medium | digitalmodel | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | archived | medium | digitalmodel | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | workspace-hub, digitalmodel | - |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | pending | medium | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (135 active / 137 total)
+### ace-linux-1 (131 active / 137 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2242,7 +2248,7 @@
 | WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | workspace-hub, digitalmodel, worldenergydata, assetutilities, assethold, doris, OGManufacturing, frontierdeepwater, saipem, acma-projects, pdf-large-reader |
 | WRK-316 | NDBC buoy data ingestion for metocean wave scatter matrices | pending | medium | medium | worldenergydata, digitalmodel |
 | WRK-317 | Integrated web dashboard — Plotly Dash for BSEE and FDAS data | pending | medium | high | worldenergydata |
-| WRK-318 | Production forecasting module — Arps decline curve | pending | medium | medium | worldenergydata |
+| WRK-318 | Production forecasting module — Arps decline curve | done | medium | medium | worldenergydata |
 | WRK-319 | Real-time EIA and IEA feed ingestion — weekly crude and gas production | pending | medium | medium | worldenergydata |
 | WRK-320 | MAIB and NTSB incident correlation with USCG MISLE for root-cause taxonomy | pending | low | high | worldenergydata |
 | WRK-321 | Field development economics — MIRR NPV with carbon cost sensitivity | pending | medium | medium | worldenergydata |
@@ -2271,25 +2277,25 @@
 | WRK-347 | Rename aceengineer-website/src/ to content/ | done | medium | simple | aceengineer-website |
 | WRK-348 | Add root pyproject.toml to workspace-hub src/ | done | medium | simple | workspace-hub |
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | low | simple | workspace-hub |
-| WRK-350 | Fix pre-existing test failures in assetutilities | done | medium | medium | assetutilities |
+| WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | assetutilities |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | workspace-hub |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | simple | workspace-hub |
 | WRK-353 | Expand S-N curve library from 17 to 20 standards | pending | high | medium | digitalmodel |
 | WRK-354 | Structural module — implement jacket and topside analysis | pending | high | high | digitalmodel |
 | WRK-355 | Pipeline and flexibles module — pressure containment checks | pending | medium | high | digitalmodel |
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | pending | medium | medium | digitalmodel |
-| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | done | medium | medium | frontierdeepwater |
-| WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | done | medium | high | frontierdeepwater |
-| WRK-359 | Design and build vessel marine-parameters database for engineering analysis | done | medium | high | frontierdeepwater |
+| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | archived | medium | medium | frontierdeepwater |
+| WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | archived | medium | high | frontierdeepwater |
+| WRK-359 | Design and build vessel marine-parameters database for engineering analysis | archived | medium | high | frontierdeepwater |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | pending | high | medium | frontierdeepwater, aceengineer-admin |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | simple | achantas-data |
-| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | pending | medium | medium | workspace-hub |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | high | medium | - |
 | WRK-370 | Heriberto: garage fence door repair | pending | medium | simple | achantas-data |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | achantas-data |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | pending | medium | complex | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
-### ace-linux-2 (11 active / 12 total)
+### ace-linux-2 (12 active / 13 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2297,7 +2303,7 @@
 | WRK-047 | OpenFOAM CFD analysis capability for digitalmodel | pending | low | complex | digitalmodel |
 | WRK-048 | Blender working configurations for digitalmodel | pending | low | medium | digitalmodel |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | digitalmodel, workspace-hub |
-| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | working | medium | medium | workspace-hub |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | done | medium | medium | workspace-hub |
 | WRK-293 | SMART health check on ace-linux-2 drives — install smartmontools + run diagnostics | completed | high | simple | workspace-hub |
 | WRK-294 | Standardize ace-linux-2 mount paths — fstab entries for HDDs with clean paths | in-progress | high | simple | workspace-hub |
 | WRK-295 | Bidirectional SSH key auth between ace-linux-1 and ace-linux-2 | completed | high | simple | workspace-hub |
@@ -2305,6 +2311,7 @@
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | workspace-hub |
 | WRK-342 | Multi-machine workflow clarity — SSH helper scripts, hostname in statusline, CLI consistency across ace-linux-1 and ace-linux-2 | pending | high | medium | workspace-hub |
 | WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | medium | workspace-hub, digitalmodel |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | workspace-hub, digitalmodel |
 
 ### acma-ansys05 (13 active / 13 total)
 
@@ -2324,7 +2331,7 @@
 | WRK-315 | CALM buoy mooring fatigue — spectral fatigue from OrcaFlex time-domain output | pending | medium | high | digitalmodel |
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | pending | medium | high | saipem, rock-oil-field |
 
-### (unassigned) (10 active / 210 total)
+### (unassigned) (5 active / 210 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2532,11 +2539,11 @@
 | WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | archived | high | low | workspace-hub |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | high | medium | digitalmodel |
 | WRK-314 | OrcaFlex Reporting Phase 4 — OrcFxAPI Integration | complete | high | medium | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | high | simple | digitalmodel, worldenergydata |
-| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | pending | medium | simple | worldenergydata |
-| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | pending | medium | medium | assethold |
-| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | pending | medium | simple | assetutilities |
-| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | done | medium | simple | workspace-hub |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | digitalmodel, worldenergydata |
+| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | medium | simple | worldenergydata |
+| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | medium | assethold |
+| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | assetutilities |
+| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | simple | workspace-hub |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | pending | low | simple | digitalmodel |
 
 ### any (2 active / 2 total)
