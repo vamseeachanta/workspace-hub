@@ -53,6 +53,10 @@ WRK archival trail, acceptance criteria enforcement, and the "never archive unti
 confirms" rule — is the foundation for crossing this chasm. The work is to formalise it,
 extend it to agent-initiated actions, and make its audit trail legible to any stakeholder.
 
+The canonical governance model is documented in `docs/governance/TRUST-ARCHITECTURE.md`
+(WRK-381): action classification (A/B/C), plan gate rules by route, audit trail format,
+rollback rules, and escalation triggers.
+
 ### The Operating Pattern: Sense → Plan → Act
 
 The loop that Level 4 and 5 systems run continuously:

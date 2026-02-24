@@ -1,38 +1,38 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-24T13:10:13Z by generate-index.py -->
+<!-- Generated: 2026-02-24T13:48:22Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-24T13:10:13Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-24T13:48:22Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 389
+**Total items:** 392
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 137 |
+| pending | 138 |
 | working | 8 |
 | blocked | 5 |
-| done | 8 |
-| archived | 217 |
+| done | 9 |
+| archived | 218 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 142 |
-| medium | 199 |
-| low | 47 |
+| medium | 201 |
+| low | 48 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
 | simple | 78 |
-| medium | 175 |
+| medium | 178 |
 | complex | 95 |
 
 ### By Repository
@@ -56,7 +56,7 @@
 | rock-oil-field | 2 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 6 |
-| workspace-hub | 123 |
+| workspace-hub | 124 |
 | worldenergydata | 92 |
 
 ### Plan Tracking
@@ -64,9 +64,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 141 / 389 |
-| Plans cross-reviewed | 62 |
-| Plans approved | 82 |
+| Plans exist | 142 / 392 |
+| Plans cross-reviewed | 63 |
+| Plans approved | 83 |
 | Brochure pending | 10 |
 | Brochure updated/synced | 6 |
 
@@ -76,9 +76,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 389 |
-| Total archived | 217 |
-| Completion rate | 217/389 (56%) |
+| Total captured | 392 |
+| Total archived | 218 |
+| Completion rate | 218/392 (56%) |
 | Monthly rate (current month) | 64 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -86,7 +86,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 36 / 137 | 26% |
+| Pending items with plans | 36 / 138 | 26% |
 | Plans cross-reviewed | 8 | 17% |
 | Plans user-approved | 9 | 20% |
 
@@ -105,7 +105,7 @@
 |----------|---------|---------|---------|
 | High     | 29 | 7 | 3 |
 | Medium   | 75  | 1  | 1  |
-| Low      | 33  | 0  | 1  |
+| Low      | 34  | 0  | 1  |
 
 ## Master Table
 
@@ -435,7 +435,7 @@
 | WRK-320 | MAIB and NTSB incident correlation with USCG MISLE for root-cause taxonomy | pending | low | high | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-321 | Field development economics — MIRR NPV with carbon cost sensitivity | pending | medium | medium | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-322 | Fundamentals scoring — P/E P/B EV/EBITDA ranking from yfinance | pending | high | medium | ace-linux-1 | - | assethold | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | pending | medium | medium | ace-linux-1 | - | assethold | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | done | medium | medium | ace-linux-1 | - | assethold | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-324 | Risk metrics — VaR CVaR Sharpe ratio max drawdown per position and portfolio | pending | high | medium | ace-linux-1 | - | assethold | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-325 | Sector exposure tracker — auto-classify holdings by GICS sector and flag concentration | pending | medium | medium | ace-linux-1 | - | assethold | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-326 | Unified CLI — single ace command routing to all repo tools | pending | medium | high | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -452,7 +452,7 @@
 | WRK-338 | LNG tank structural checks — API 620 and EN 14620 thin-shell hoop stress | pending | medium | medium | ace-linux-1 | - | acma-projects | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-339 | Aluminium structural module — Eurocode 9 and AA ADM member capacity checks | pending | medium | medium | ace-linux-1 | - | acma-projects | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-340 | Composite panel design tool — Classical Laminate Theory CLT strength checks | pending | medium | high | ace-linux-1 | - | acma-projects | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | pending | medium | simple | ace-linux-1 | - | pdf-large-reader, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | complete | medium | simple | ace-linux-1 | - | pdf-large-reader, workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-342 | Multi-machine workflow clarity — SSH helper scripts, hostname in statusline, CLI consistency across ace-linux-1 and ace-linux-2 | pending | high | medium | ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | medium | ace-linux-2 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ❌ | - | n/a | - |
 | WRK-344 | Remove agent_os from assetutilities | done | high | simple | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -499,6 +499,9 @@
 | WRK-386 | Automated Gap-to-WRK Generator — doc → module gaps spawn new work items | pending | medium | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-383, WRK-384 |
 | WRK-387 | Claude Code session auto-refresh with WRK context persistence | pending | high | complex | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-388 | GIS skills — QGIS, Google Earth Engine, Python GIS ecosystem | pending | medium | complex | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending | medium | medium | ace-linux-2 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-390 | enhance(work-queue): richer WRK item presentation in work skill | pending | low | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-391 | Online Resources Research — skills, data APIs and reference catalogs for workspace-hub | pending | medium | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -509,6 +512,7 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-173 | Session Management Workflow Documentation + Schematic | high | low | workspace-hub | - |
 | WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | medium | medium | workspace-hub | - |
+| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | medium | medium | assethold | - |
 | WRK-344 | Remove agent_os from assetutilities | high | simple | assetutilities | - |
 | WRK-345 | Consolidate validators package into assetutilities | high | simple | assetutilities, worldenergydata, assethold | - |
 | WRK-346 | Fix aceengineer-admin to standard src/ layout | medium | simple | aceengineer-admin | - |
@@ -615,7 +619,6 @@
 | WRK-320 | MAIB and NTSB incident correlation with USCG MISLE for root-cause taxonomy | low | high | worldenergydata | - |
 | WRK-321 | Field development economics — MIRR NPV with carbon cost sensitivity | medium | medium | worldenergydata | - |
 | WRK-322 | Fundamentals scoring — P/E P/B EV/EBITDA ranking from yfinance | high | medium | assethold | - |
-| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | medium | medium | assethold | - |
 | WRK-324 | Risk metrics — VaR CVaR Sharpe ratio max drawdown per position and portfolio | high | medium | assethold | - |
 | WRK-325 | Sector exposure tracker — auto-classify holdings by GICS sector and flag concentration | medium | medium | assethold | - |
 | WRK-326 | Unified CLI — single ace command routing to all repo tools | medium | high | workspace-hub | - |
@@ -632,7 +635,6 @@
 | WRK-338 | LNG tank structural checks — API 620 and EN 14620 thin-shell hoop stress | medium | medium | acma-projects | - |
 | WRK-339 | Aluminium structural module — Eurocode 9 and AA ADM member capacity checks | medium | medium | acma-projects | - |
 | WRK-340 | Composite panel design tool — Classical Laminate Theory CLT strength checks | medium | high | acma-projects | - |
-| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | medium | simple | pdf-large-reader, workspace-hub | - |
 | WRK-342 | Multi-machine workflow clarity — SSH helper scripts, hostname in statusline, CLI consistency across ace-linux-1 and ace-linux-2 | high | medium | workspace-hub | - |
 | WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | medium | medium | workspace-hub, digitalmodel | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | low | simple | workspace-hub | - |
@@ -656,6 +658,9 @@
 | WRK-386 | Automated Gap-to-WRK Generator — doc → module gaps spawn new work items | medium | medium | workspace-hub | - |
 | WRK-387 | Claude Code session auto-refresh with WRK context persistence | high | complex | workspace-hub | - |
 | WRK-388 | GIS skills — QGIS, Google Earth Engine, Python GIS ecosystem | medium | complex | workspace-hub | - |
+| WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | medium | medium | - | - |
+| WRK-390 | enhance(work-queue): richer WRK item presentation in work skill | low | medium | - | - |
+| WRK-391 | Online Resources Research — skills, data APIs and reference catalogs for workspace-hub | medium | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -899,6 +904,7 @@
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | medium | simple | assetutilities | - |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | medium | simple | workspace-hub | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | low | simple | digitalmodel | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | high | complex | workspace-hub, digitalmodel | - |
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | medium | complex | workspace-hub | - |
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | high | simple | - | - |
 | WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | medium | medium | workspace-hub, digitalmodel | - |
@@ -1003,7 +1009,7 @@
 | WRK-253 | Data residence tier compliance audit and extension to assethold | pending | medium | medium | - |
 | WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-322 | Fundamentals scoring — P/E P/B EV/EBITDA ranking from yfinance | pending | high | medium | - |
-| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | pending | medium | medium | - |
+| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | done | medium | medium | - |
 | WRK-324 | Risk metrics — VaR CVaR Sharpe ratio max drawdown per position and portfolio | pending | high | medium | - |
 | WRK-325 | Sector exposure tracker — auto-classify holdings by GICS sector and flag concentration | pending | medium | medium | - |
 | WRK-345 | Consolidate validators package into assetutilities | done | high | simple | - |
@@ -1145,7 +1151,7 @@
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | pending | medium | medium | - |
 | WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | archived | low | simple | - |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | in_progress | high | complex | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | high | complex | - |
 | WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | archived | medium | medium | - |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | pending | medium | medium | - |
 | WRK-377 | ROP prediction model — Bourgoyne-Young and Warren in digitalmodel | pending | high | medium | - |
@@ -1193,7 +1199,7 @@
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
 | WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
-| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | pending | medium | simple | - |
+| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | complete | medium | simple | - |
 
 ### rock-oil-field
 
@@ -1327,7 +1333,7 @@
 | WRK-326 | Unified CLI — single ace command routing to all repo tools | pending | medium | high | - |
 | WRK-327 | Shared engineering constants library — material properties unit conversions seawater properties | pending | medium | medium | - |
 | WRK-328 | Agent-readable specs index — YAML index of all specs consumable by AI agents | pending | medium | medium | - |
-| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | pending | medium | simple | - |
+| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | complete | medium | simple | - |
 | WRK-342 | Multi-machine workflow clarity — SSH helper scripts, hostname in statusline, CLI consistency across ace-linux-1 and ace-linux-2 | pending | high | medium | - |
 | WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | medium | - |
 | WRK-348 | Add root pyproject.toml to workspace-hub src/ | done | medium | simple | - |
@@ -1335,7 +1341,7 @@
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | simple | - |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | simple | - |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | in_progress | high | complex | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | high | complex | - |
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | medium | complex | - |
 | WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | archived | medium | medium | - |
 | WRK-380 | Multi-physics simulation chain — Gmsh → OpenFOAM → OrcaFlex as agent-executable pipeline | pending | medium | complex | - |
@@ -1345,6 +1351,7 @@
 | WRK-386 | Automated Gap-to-WRK Generator — doc → module gaps spawn new work items | pending | medium | medium | - |
 | WRK-387 | Claude Code session auto-refresh with WRK context persistence | pending | high | complex | - |
 | WRK-388 | GIS skills — QGIS, Google Earth Engine, Python GIS ecosystem | pending | medium | complex | - |
+| WRK-391 | Online Resources Research — skills, data APIs and reference catalogs for workspace-hub | pending | medium | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1584,7 +1591,7 @@
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | archived | medium | frontierdeepwater, aceengineer-admin | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | medium | - | - |
 | WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | simple | digitalmodel, worldenergydata | - |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | in_progress | complex | workspace-hub, digitalmodel | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | complex | workspace-hub, digitalmodel | - |
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | archived | simple | - | - |
 | WRK-377 | ROP prediction model — Bourgoyne-Young and Warren in digitalmodel | pending | medium | digitalmodel | - |
 | WRK-378 | Generalise CT hydraulics to full wellbore hydraulics module in digitalmodel | pending | simple | digitalmodel | - |
@@ -1754,7 +1761,7 @@
 | WRK-317 | Integrated web dashboard — Plotly Dash for BSEE and FDAS data | pending | high | worldenergydata | - |
 | WRK-319 | Real-time EIA and IEA feed ingestion — weekly crude and gas production | pending | medium | worldenergydata | - |
 | WRK-321 | Field development economics — MIRR NPV with carbon cost sensitivity | pending | medium | worldenergydata | - |
-| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | pending | medium | assethold | - |
+| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | done | medium | assethold | - |
 | WRK-325 | Sector exposure tracker — auto-classify holdings by GICS sector and flag concentration | pending | medium | assethold | - |
 | WRK-326 | Unified CLI — single ace command routing to all repo tools | pending | high | workspace-hub | - |
 | WRK-327 | Shared engineering constants library — material properties unit conversions seawater properties | pending | medium | workspace-hub, digitalmodel | - |
@@ -1770,7 +1777,7 @@
 | WRK-338 | LNG tank structural checks — API 620 and EN 14620 thin-shell hoop stress | pending | medium | acma-projects | - |
 | WRK-339 | Aluminium structural module — Eurocode 9 and AA ADM member capacity checks | pending | medium | acma-projects | - |
 | WRK-340 | Composite panel design tool — Classical Laminate Theory CLT strength checks | pending | high | acma-projects | - |
-| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | pending | simple | pdf-large-reader, workspace-hub | - |
+| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | complete | simple | pdf-large-reader, workspace-hub | - |
 | WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | workspace-hub, digitalmodel | - |
 | WRK-346 | Fix aceengineer-admin to standard src/ layout | done | simple | aceengineer-admin | - |
 | WRK-347 | Rename aceengineer-website/src/ to content/ | done | simple | aceengineer-website | - |
@@ -1796,6 +1803,8 @@
 | WRK-381 | Trust architecture document — formalise plan gate governance for agent-executed actions | pending | simple | workspace-hub | - |
 | WRK-386 | Automated Gap-to-WRK Generator — doc → module gaps spawn new work items | pending | medium | workspace-hub | - |
 | WRK-388 | GIS skills — QGIS, Google Earth Engine, Python GIS ecosystem | pending | complex | workspace-hub | - |
+| WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending | medium | - | - |
+| WRK-391 | Online Resources Research — skills, data APIs and reference catalogs for workspace-hub | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -1847,6 +1856,7 @@
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | simple | workspace-hub | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | archived | simple | digitalmodel | - |
 | WRK-382 | Marketing follow-up — update digitalmodel brochure and aceengineer-website for WRK-373/375 outputs | pending | simple | digitalmodel, aceengineer-website | - |
+| WRK-390 | enhance(work-queue): richer WRK item presentation in work skill | pending | medium | - | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | simple | workspace-hub | - |
 
 ## By Complexity
@@ -1911,7 +1921,7 @@
 | WRK-297 | SSHFS mounts on ace-linux-1 for ace-linux-2 drives — bidirectional file access | pending | high | workspace-hub | - |
 | WRK-298 | Install smartmontools on ace-linux-1 + SMART health check on all drives | completed | high | workspace-hub | - |
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | workspace-hub | - |
-| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | pending | medium | pdf-large-reader, workspace-hub | - |
+| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | complete | medium | pdf-large-reader, workspace-hub | - |
 | WRK-344 | Remove agent_os from assetutilities | done | high | assetutilities | - |
 | WRK-345 | Consolidate validators package into assetutilities | done | high | assetutilities, worldenergydata, assethold | - |
 | WRK-346 | Fix aceengineer-admin to standard src/ layout | done | medium | aceengineer-admin | - |
@@ -2084,7 +2094,7 @@
 | WRK-319 | Real-time EIA and IEA feed ingestion — weekly crude and gas production | pending | medium | worldenergydata | - |
 | WRK-321 | Field development economics — MIRR NPV with carbon cost sensitivity | pending | medium | worldenergydata | - |
 | WRK-322 | Fundamentals scoring — P/E P/B EV/EBITDA ranking from yfinance | pending | high | assethold | - |
-| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | pending | medium | assethold | - |
+| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | done | medium | assethold | - |
 | WRK-324 | Risk metrics — VaR CVaR Sharpe ratio max drawdown per position and portfolio | pending | high | assethold | - |
 | WRK-325 | Sector exposure tracker — auto-classify holdings by GICS sector and flag concentration | pending | medium | assethold | - |
 | WRK-327 | Shared engineering constants library — material properties unit conversions seawater properties | pending | medium | workspace-hub, digitalmodel | - |
@@ -2113,6 +2123,9 @@
 | WRK-384 | digitalmodel Module Registry — structured metadata for agent-callable modules | pending | high | digitalmodel | - |
 | WRK-385 | Superintelligent Engineering Agent Architecture — canonical vision and blueprint | pending | high | workspace-hub | - |
 | WRK-386 | Automated Gap-to-WRK Generator — doc → module gaps spawn new work items | pending | medium | workspace-hub | - |
+| WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending | medium | - | - |
+| WRK-390 | enhance(work-queue): richer WRK item presentation in work skill | pending | low | - | - |
+| WRK-391 | Online Resources Research — skills, data APIs and reference catalogs for workspace-hub | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -2208,7 +2221,7 @@
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | medium | digitalmodel | - |
 | WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | archived | medium | digitalmodel | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | archived | medium | digitalmodel | - |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | in_progress | high | workspace-hub, digitalmodel | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | high | workspace-hub, digitalmodel | - |
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | medium | workspace-hub | - |
 | WRK-380 | Multi-physics simulation chain — Gmsh → OpenFOAM → OrcaFlex as agent-executable pipeline | pending | medium | workspace-hub, digitalmodel | - |
 | WRK-387 | Claude Code session auto-refresh with WRK context persistence | pending | high | workspace-hub | - |
@@ -2216,7 +2229,7 @@
 
 ## By Computer
 
-### ace-linux-1 (137 active / 147 total)
+### ace-linux-1 (139 active / 149 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2314,7 +2327,7 @@
 | WRK-320 | MAIB and NTSB incident correlation with USCG MISLE for root-cause taxonomy | pending | low | high | worldenergydata |
 | WRK-321 | Field development economics — MIRR NPV with carbon cost sensitivity | pending | medium | medium | worldenergydata |
 | WRK-322 | Fundamentals scoring — P/E P/B EV/EBITDA ranking from yfinance | pending | high | medium | assethold |
-| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | pending | medium | medium | assethold |
+| WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | done | medium | medium | assethold |
 | WRK-324 | Risk metrics — VaR CVaR Sharpe ratio max drawdown per position and portfolio | pending | high | medium | assethold |
 | WRK-325 | Sector exposure tracker — auto-classify holdings by GICS sector and flag concentration | pending | medium | medium | assethold |
 | WRK-326 | Unified CLI — single ace command routing to all repo tools | pending | medium | high | workspace-hub |
@@ -2330,7 +2343,7 @@
 | WRK-338 | LNG tank structural checks — API 620 and EN 14620 thin-shell hoop stress | pending | medium | medium | acma-projects |
 | WRK-339 | Aluminium structural module — Eurocode 9 and AA ADM member capacity checks | pending | medium | medium | acma-projects |
 | WRK-340 | Composite panel design tool — Classical Laminate Theory CLT strength checks | pending | medium | high | acma-projects |
-| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | pending | medium | simple | pdf-large-reader, workspace-hub |
+| WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | complete | medium | simple | pdf-large-reader, workspace-hub |
 | WRK-344 | Remove agent_os from assetutilities | done | high | simple | assetutilities |
 | WRK-345 | Consolidate validators package into assetutilities | done | high | simple | assetutilities, worldenergydata, assethold |
 | WRK-346 | Fix aceengineer-admin to standard src/ layout | done | medium | simple | aceengineer-admin |
@@ -2366,9 +2379,11 @@
 | WRK-385 | Superintelligent Engineering Agent Architecture — canonical vision and blueprint | pending | high | medium | workspace-hub |
 | WRK-386 | Automated Gap-to-WRK Generator — doc → module gaps spawn new work items | pending | medium | medium | workspace-hub |
 | WRK-387 | Claude Code session auto-refresh with WRK context persistence | pending | high | complex | workspace-hub |
+| WRK-390 | enhance(work-queue): richer WRK item presentation in work skill | pending | low | medium | - |
+| WRK-391 | Online Resources Research — skills, data APIs and reference catalogs for workspace-hub | pending | medium | medium | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
-### ace-linux-2 (14 active / 15 total)
+### ace-linux-2 (14 active / 16 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2384,9 +2399,10 @@
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | workspace-hub |
 | WRK-342 | Multi-machine workflow clarity — SSH helper scripts, hostname in statusline, CLI consistency across ace-linux-1 and ace-linux-2 | pending | high | medium | workspace-hub |
 | WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | medium | workspace-hub, digitalmodel |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | in_progress | high | complex | workspace-hub, digitalmodel |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | high | complex | workspace-hub, digitalmodel |
 | WRK-380 | Multi-physics simulation chain — Gmsh → OpenFOAM → OrcaFlex as agent-executable pipeline | pending | medium | complex | workspace-hub, digitalmodel |
 | WRK-388 | GIS skills — QGIS, Google Earth Engine, Python GIS ecosystem | pending | medium | complex | workspace-hub |
+| WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending | medium | medium | - |
 
 ### acma-ansys05 (13 active / 13 total)
 
