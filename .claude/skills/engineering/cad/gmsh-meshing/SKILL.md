@@ -1035,6 +1035,8 @@ See `skills/engineering/marine-offshore/mesh-utilities/SKILL.md` for mesh inspec
 | Transfinite fails | Incompatible topology | Surface must be 3 or 4-sided, curves must have matching node counts |
 | Size fields ignored | Other size sources active | Disable `MeshSizeExtendFromBoundary`, `MeshSizeFromPoints`, `MeshSizeFromCurvature` |
 | Crash on large models | Memory | Use `-nt` for parallel meshing, increase verbosity to find bottleneck |
+| `gmsh` CLI: `/usr/bin/env: 'python': No such file or directory` | pip-installed gmsh wrapper uses `#!/usr/bin/env python` shebang | Fix shebang: `sed -i 's\|python$\|python3\|' ~/.local/bin/gmsh`; or use `/usr/bin/gmsh` (system binary) |
+| pip gmsh shadows system gmsh | `~/.local/bin/gmsh` (pip wrapper) takes precedence over `/usr/bin/gmsh` (native) | Check `type -a gmsh`; pip version is Python-only (no GUI), system version has FLTK GUI |
 
 ### Debugging Tips
 
