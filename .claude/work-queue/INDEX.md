@@ -1,29 +1,29 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-24T11:49:23Z by generate-index.py -->
+<!-- Generated: 2026-02-24T12:07:42Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-24T11:49:23Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-24T12:07:42Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 378
+**Total items:** 377
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 129 |
+| pending | 126 |
 | working | 9 |
 | blocked | 5 |
 | done | 8 |
-| archived | 214 |
+| archived | 215 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 137 |
+| high | 136 |
 | medium | 194 |
 | low | 46 |
 
@@ -31,7 +31,7 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 75 |
+| simple | 74 |
 | medium | 170 |
 | complex | 92 |
 
@@ -56,7 +56,7 @@
 | rock-oil-field | 2 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 6 |
-| workspace-hub | 117 |
+| workspace-hub | 116 |
 | worldenergydata | 91 |
 
 ### Plan Tracking
@@ -64,10 +64,10 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 142 / 378 |
+| Plans exist | 141 / 377 |
 | Plans cross-reviewed | 62 |
-| Plans approved | 81 |
-| Brochure pending | 5 |
+| Plans approved | 82 |
+| Brochure pending | 6 |
 | Brochure updated/synced | 6 |
 
 ## Metrics
@@ -76,19 +76,19 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 378 |
-| Total archived | 214 |
-| Completion rate | 214/378 (57%) |
-| Monthly rate (current month) | 61 archived |
+| Total captured | 377 |
+| Total archived | 215 |
+| Completion rate | 215/377 (57%) |
+| Monthly rate (current month) | 62 archived |
 | Monthly rate (prior month) | 3 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 37 / 129 | 29% |
+| Pending items with plans | 36 / 126 | 29% |
 | Plans cross-reviewed | 8 | 17% |
-| Plans user-approved | 10 | 21% |
+| Plans user-approved | 9 | 20% |
 
 ### Aging
 
@@ -103,8 +103,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 26 | 7 | 3 |
-| Medium   | 71  | 2  | 1  |
+| High     | 24 | 7 | 3 |
+| Medium   | 70  | 2  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## Master Table
@@ -396,7 +396,6 @@
 | WRK-281 | Fix 2H legacy project discoverability (navigation layer) | complete | medium | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | archived | high | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | archived | medium | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-284 | Add WRK scope check to readiness.sh | pending | high | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | WRK-285 |
 | WRK-285 | Write active WRK id to state file on working/ transition | archived | high | simple | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-286 | Harden chore: commits — require WRK ref for multi-file changes | pending | medium | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-287 | Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2 | archived | medium | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -483,10 +482,10 @@
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | archived | low | simple | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-370 | Heriberto: garage fence door repair | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | ace-linux-2 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ██░ 80% | n/a | - |
-| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | working | medium | complex | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 80% | n/a | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | in_progress | high | complex | ace-linux-2 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ██░ 90% | n/a | - |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | medium | complex | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 80% | ⏳ pending | - |
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | pending | high | simple | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | medium | ace-linux-1 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | working | medium | medium | ace-linux-1 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | pending | medium | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | ⏳ pending | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
@@ -580,7 +579,6 @@
 | WRK-262 | Add path-handling guidance to session preflight hook | low | simple | workspace-hub | - |
 | WRK-264 | Ensure full work-queue workflow parity between Claude and Codex CLI | low | medium | workspace-hub | - |
 | WRK-273 | CP marketing brochure — cathodic protection capability document for aceengineer-website | low | simple | digitalmodel, aceengineer-website | - |
-| WRK-284 | Add WRK scope check to readiness.sh | high | simple | workspace-hub | - |
 | WRK-286 | Harden chore: commits — require WRK ref for multi-file changes | medium | simple | workspace-hub | - |
 | WRK-288 | Finish ace-linux-2 setup — install open source engineering programs and map capabilities | low | simple | workspace-hub | - |
 | WRK-289 | Research open source FEA programs for engineering assignments | low | medium | workspace-hub | - |
@@ -633,9 +631,7 @@
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | high | medium | - | - |
 | WRK-370 | Heriberto: garage fence door repair | medium | simple | achantas-data | - |
 | WRK-371 | Heriberto: powder room faucet tightening | medium | simple | achantas-data | - |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | high | complex | workspace-hub, digitalmodel | - |
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | high | simple | - | - |
-| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | medium | medium | workspace-hub, digitalmodel | - |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | medium | medium | digitalmodel | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
@@ -651,7 +647,7 @@
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | high | medium | workspace-hub | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | high | complex | workspace-hub | - |
 | WRK-263 | Progressively reduce agent harness files to ~20 lines by migrating content to skills | high | medium | workspace-hub | - |
-| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | medium | complex | workspace-hub | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | medium | medium | workspace-hub, digitalmodel | - |
 
 ### Blocked
 
@@ -881,6 +877,7 @@
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | medium | simple | assetutilities | - |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | medium | simple | workspace-hub | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | low | simple | digitalmodel | - |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | medium | complex | workspace-hub | - |
 
 ## By Repository
 
@@ -1122,8 +1119,8 @@
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | pending | medium | medium | - |
 | WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | archived | low | simple | - |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | - |
-| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | medium | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | in_progress | high | complex | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | working | medium | medium | - |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | pending | medium | medium | - |
 
 ### doris
@@ -1274,7 +1271,6 @@
 | WRK-281 | Fix 2H legacy project discoverability (navigation layer) | complete | medium | simple | - |
 | WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | archived | high | simple | - |
 | WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | archived | medium | simple | - |
-| WRK-284 | Add WRK scope check to readiness.sh | pending | high | simple | - |
 | WRK-285 | Write active WRK id to state file on working/ transition | archived | high | simple | - |
 | WRK-286 | Harden chore: commits — require WRK ref for multi-file changes | pending | medium | simple | - |
 | WRK-287 | Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2 | archived | medium | medium | - |
@@ -1306,9 +1302,9 @@
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | simple | - |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | simple | - |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | - |
-| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | working | medium | complex | - |
-| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | medium | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | in_progress | high | complex | - |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | medium | complex | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | working | medium | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1521,7 +1517,6 @@
 | WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | medium | workspace-hub | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | complete | simple | workspace-hub | - |
 | WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | archived | simple | workspace-hub | - |
-| WRK-284 | Add WRK scope check to readiness.sh | pending | simple | workspace-hub | - |
 | WRK-285 | Write active WRK id to state file on working/ transition | archived | simple | workspace-hub | - |
 | WRK-293 | SMART health check on ace-linux-2 drives — install smartmontools + run diagnostics | completed | simple | workspace-hub | - |
 | WRK-294 | Standardize ace-linux-2 mount paths — fstab entries for HDDs with clean paths | in-progress | simple | workspace-hub | - |
@@ -1548,7 +1543,7 @@
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | archived | medium | frontierdeepwater, aceengineer-admin | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | medium | - | - |
 | WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | simple | digitalmodel, worldenergydata | - |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | complex | workspace-hub, digitalmodel | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | in_progress | complex | workspace-hub, digitalmodel | - |
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | pending | simple | - | - |
 
 ### Medium
@@ -1746,8 +1741,8 @@
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | simple | workspace-hub | - |
 | WRK-370 | Heriberto: garage fence door repair | pending | simple | achantas-data | - |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | simple | achantas-data | - |
-| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | working | complex | workspace-hub | - |
-| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | workspace-hub, digitalmodel | - |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | complex | workspace-hub | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | working | medium | workspace-hub, digitalmodel | - |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | pending | medium | digitalmodel | - |
 
 ### Low
@@ -1853,7 +1848,6 @@
 | WRK-281 | Fix 2H legacy project discoverability (navigation layer) | complete | medium | workspace-hub | - |
 | WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | archived | high | workspace-hub | - |
 | WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | archived | medium | workspace-hub | - |
-| WRK-284 | Add WRK scope check to readiness.sh | pending | high | workspace-hub | - |
 | WRK-285 | Write active WRK id to state file on working/ transition | archived | high | workspace-hub | - |
 | WRK-286 | Harden chore: commits — require WRK ref for multi-file changes | pending | medium | workspace-hub | - |
 | WRK-288 | Finish ace-linux-2 setup — install open source engineering programs and map capabilities | pending | low | workspace-hub | - |
@@ -2055,7 +2049,7 @@
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | archived | high | frontierdeepwater, aceengineer-admin | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | high | - | - |
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | assethold | - |
-| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | workspace-hub, digitalmodel | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | working | medium | workspace-hub, digitalmodel | - |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | pending | medium | digitalmodel | - |
 
 ### Complex
@@ -2152,12 +2146,12 @@
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | medium | digitalmodel | - |
 | WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | archived | medium | digitalmodel | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | archived | medium | digitalmodel | - |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | workspace-hub, digitalmodel | - |
-| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | working | medium | workspace-hub | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | in_progress | high | workspace-hub, digitalmodel | - |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | medium | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (131 active / 138 total)
+### ace-linux-1 (129 active / 137 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2235,7 +2229,6 @@
 | WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | high | medium | workspace-hub |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | complete | high | simple | workspace-hub |
 | WRK-281 | Fix 2H legacy project discoverability (navigation layer) | complete | medium | simple | workspace-hub |
-| WRK-284 | Add WRK scope check to readiness.sh | pending | high | simple | workspace-hub |
 | WRK-286 | Harden chore: commits — require WRK ref for multi-file changes | pending | medium | simple | workspace-hub |
 | WRK-288 | Finish ace-linux-2 setup — install open source engineering programs and map capabilities | pending | low | simple | workspace-hub |
 | WRK-289 | Research open source FEA programs for engineering assignments | pending | low | medium | workspace-hub |
@@ -2294,9 +2287,9 @@
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | high | medium | - |
 | WRK-370 | Heriberto: garage fence door repair | pending | medium | simple | achantas-data |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | achantas-data |
-| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | working | medium | complex | workspace-hub |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | medium | complex | workspace-hub |
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | pending | high | simple | - |
-| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | pending | medium | medium | workspace-hub, digitalmodel |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | working | medium | medium | workspace-hub, digitalmodel |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | pending | medium | medium | digitalmodel |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
@@ -2316,7 +2309,7 @@
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | workspace-hub |
 | WRK-342 | Multi-machine workflow clarity — SSH helper scripts, hostname in statusline, CLI consistency across ace-linux-1 and ace-linux-2 | pending | high | medium | workspace-hub |
 | WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | medium | workspace-hub, digitalmodel |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | pending | high | complex | workspace-hub, digitalmodel |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | in_progress | high | complex | workspace-hub, digitalmodel |
 
 ### acma-ansys05 (13 active / 13 total)
 
@@ -2605,7 +2598,6 @@
 | WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | WRK-276, WRK-279 | - | - |
 | WRK-273 | CP marketing brochure — cathodic protection capability document for aceengineer-website | WRK-271 | - | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | WRK-276 | - | - |
-| WRK-284 | Add WRK scope check to readiness.sh | WRK-285 | - | - |
 | WRK-288 | Finish ace-linux-2 setup — install open source engineering programs and map capabilities | WRK-289, WRK-290, WRK-291, WRK-292 | - | - |
 | WRK-291 | Install recommended FEA programs on ace-linux-2 | WRK-289 | - | - |
 | WRK-292 | Create capability map — file formats, workflow pipelines, interoperability matrix | WRK-290, WRK-291 | - | - |

@@ -153,10 +153,29 @@ For computational engineering, the equivalent benchmark is **Ansys Engineering C
 ecosystem operates — is *cross-solver, cross-discipline workflow orchestration*. Ansys
 helps engineers inside one tool; the opportunity is autonomous orchestration *across* tools.
 
+### Drillbotics as an External Validation Benchmark
+
+**SPE Drillbotics Mode V** (virtual track) is the most concrete external benchmark for
+the Sense-Plan-Act loop applied to drilling engineering. Competing teams must build a
+Python-based multi-module simulator that autonomously drills a 3D directional well to
+targets revealed only on competition day — within three hours, no human initiation of
+any intermediate step. Modules required: trajectory planner, ROP optimiser (WOB/RPM),
+torque and drag, wellbore hydraulics/ECD, kick detection, formation classification (ML),
+and a D-WIS semantic interoperability layer.
+
+This is a **H2 milestone made tangible**: a working ACE Engineering Drillbotics-capable
+agent would be the first fully autonomous engineering workflow in the ecosystem, validated
+against published external scoring criteria. The H1 gap-closers (ROP model, hydraulics)
+have standalone client project value and build directly toward this target.
+
+Engagement strategy and gap analysis: `docs/strategy/drillbotics-engagement.md`
+Skill reference: `.claude/skills/engineering/drilling/drillbotics/SKILL.md`
+
 ---
 
 *Sources: Zvi Feuer — "Beyond Automation" (LinkedIn, 2024–2025); Deloitte Technology
 Predictions 2026; IDC AI-Driven Manufacturing 2025; Siemens CES 2026 press releases;
-Ansys 2025 R2 release notes; WEF Lighthouse Factory programme.*
+Ansys 2025 R2 release notes; WEF Lighthouse Factory programme; SPE Drillbotics guidelines
+2025-2026 (drillbotics.com).*
 
-*Last updated: 2026-02-24 | WRK-373 | Maintained in workspace-hub/docs/vision/*
+*Last updated: 2026-02-24 | WRK-373, WRK-375 | Maintained in workspace-hub/docs/vision/*
