@@ -1,22 +1,22 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-24T03:07:51Z by generate-index.py -->
+<!-- Generated: 2026-02-24T03:14:26Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-24T03:07:51Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-24T03:14:26Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 373
+**Total items:** 376
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 132 |
+| pending | 134 |
 | working | 9 |
 | blocked | 5 |
-| done | 12 |
+| done | 13 |
 | archived | 203 |
 
 ### By Priority
@@ -24,15 +24,15 @@
 | Priority | Count |
 |----------|-------|
 | high | 136 |
-| medium | 190 |
+| medium | 193 |
 | low | 46 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 73 |
-| medium | 169 |
+| simple | 75 |
+| medium | 170 |
 | complex | 90 |
 
 ### By Repository
@@ -43,7 +43,7 @@
 | aceengineer-admin | 5 |
 | aceengineer-strategy | 2 |
 | aceengineer-website | 22 |
-| achantas-data | 11 |
+| achantas-data | 13 |
 | acma-projects | 10 |
 | assethold | 13 |
 | assetutilities | 8 |
@@ -56,7 +56,7 @@
 | rock-oil-field | 2 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 6 |
-| workspace-hub | 114 |
+| workspace-hub | 115 |
 | worldenergydata | 92 |
 
 ### Plan Tracking
@@ -64,7 +64,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 141 / 373 |
+| Plans exist | 141 / 376 |
 | Plans cross-reviewed | 62 |
 | Plans approved | 80 |
 | Brochure pending | 4 |
@@ -76,9 +76,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 373 |
+| Total captured | 376 |
 | Total archived | 203 |
-| Completion rate | 203/373 (54%) |
+| Completion rate | 203/376 (54%) |
 | Monthly rate (current month) | 54 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -86,7 +86,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 37 / 132 | 28% |
+| Pending items with plans | 37 / 134 | 28% |
 | Plans cross-reviewed | 8 | 17% |
 | Plans user-approved | 9 | 19% |
 
@@ -103,8 +103,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 27 | 7 | 3 |
-| Medium   | 72  | 2  | 1  |
+| High     | 26 | 7 | 3 |
+| Medium   | 75  | 2  | 1  |
 | Low      | 33  | 0  | 1  |
 
 ## Master Table
@@ -422,7 +422,7 @@
 | WRK-307 | track: lean-session hook requirement missed — accountability record | pending | high | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-308 | perf: move pre-commit skill validation + readiness checks to nightly cron | pending | high | medium | any | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata, assetutilities, assethold, doris, OGManufacturing, frontierdeepwater, saipem, acma-projects, pdf-large-reader | - | ❌ | ❌ | ✅ | ✅ | - 20% | n/a | - |
+| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata, assetutilities, assethold, doris, OGManufacturing, frontierdeepwater, saipem, acma-projects, pdf-large-reader | - | ❌ | ❌ | ✅ | ✅ | ██░ 85% | n/a | - |
 | WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | archived | high | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | ⏳ pending | - |
 | WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | medium | - | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | archived | high | low | - | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -476,13 +476,16 @@
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | done | medium | high | ace-linux-1 | - | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-358 |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | pending | high | medium | ace-linux-1 | - | frontierdeepwater, aceengineer-admin | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | pending | medium | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | high | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-313 |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | pending | high | simple | - | - | digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | high | simple | - | - | digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | pending | medium | simple | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | pending | medium | medium | - | - | assethold | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | pending | medium | simple | - | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-351 |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | done | medium | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | pending | low | simple | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-370 | Heriberto: garage fence door repair | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -502,6 +505,7 @@
 | WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | medium | medium | frontierdeepwater | - |
 | WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | medium | high | frontierdeepwater | - |
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | medium | high | frontierdeepwater | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | high | simple | digitalmodel, worldenergydata | - |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | medium | simple | workspace-hub | - |
 
 ### Pending
@@ -633,12 +637,14 @@
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | medium | medium | digitalmodel | - |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | high | medium | frontierdeepwater, aceengineer-admin | - |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | medium | simple | achantas-data | - |
+| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | medium | medium | workspace-hub | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | high | medium | - | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | high | simple | digitalmodel, worldenergydata | - |
 | WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | medium | simple | worldenergydata | - |
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | medium | medium | assethold | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | medium | simple | assetutilities | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | low | simple | digitalmodel | - |
+| WRK-370 | Heriberto: garage fence door repair | medium | simple | achantas-data | - |
+| WRK-371 | Heriberto: powder room faucet tightening | medium | simple | achantas-data | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -943,6 +949,8 @@
 | WRK-120 | Research and purchase a smart watch | archived | low | simple | - |
 | WRK-141 | Create Achantas family tree to connect all family members | pending | medium | medium | - |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | simple | - |
+| WRK-370 | Heriberto: garage fence door repair | pending | medium | simple | - |
+| WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | - |
 
 ### acma-projects
 
@@ -1110,7 +1118,7 @@
 | WRK-354 | Structural module — implement jacket and topside analysis | pending | high | high | - |
 | WRK-355 | Pipeline and flexibles module — pressure containment checks | pending | medium | high | - |
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | pending | medium | medium | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | pending | high | simple | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | high | simple | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | pending | low | simple | - |
 
 ### doris
@@ -1292,6 +1300,7 @@
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | low | simple | - |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | simple | - |
+| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | pending | medium | medium | - |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | done | medium | simple | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
@@ -1389,7 +1398,7 @@
 | WRK-320 | MAIB and NTSB incident correlation with USCG MISLE for root-cause taxonomy | pending | low | high | - |
 | WRK-321 | Field development economics — MIRR NPV with carbon cost sensitivity | pending | medium | medium | - |
 | WRK-345 | Consolidate validators package into assetutilities | done | high | simple | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | pending | high | simple | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | high | simple | - |
 | WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | pending | medium | simple | - |
 
 ## By Priority
@@ -1533,7 +1542,7 @@
 | WRK-354 | Structural module — implement jacket and topside analysis | pending | high | digitalmodel | - |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | pending | medium | frontierdeepwater, aceengineer-admin | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | medium | - | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | pending | simple | digitalmodel, worldenergydata | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | simple | digitalmodel, worldenergydata | - |
 
 ### Medium
 
@@ -1725,10 +1734,13 @@
 | WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | done | high | frontierdeepwater | - |
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | done | high | frontierdeepwater | - |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | simple | achantas-data | - |
+| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | pending | medium | workspace-hub | - |
 | WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | pending | simple | worldenergydata | - |
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | pending | medium | assethold | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | pending | simple | assetutilities | - |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | done | simple | workspace-hub | - |
+| WRK-370 | Heriberto: garage fence door repair | pending | simple | achantas-data | - |
+| WRK-371 | Heriberto: powder room faucet tightening | pending | simple | achantas-data | - |
 
 ### Low
 
@@ -1854,11 +1866,13 @@
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | low | workspace-hub | - |
 | WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | workspace-hub | - |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | achantas-data | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | pending | high | digitalmodel, worldenergydata | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | high | digitalmodel, worldenergydata | - |
 | WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | pending | medium | worldenergydata | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | pending | medium | assetutilities | - |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | done | medium | workspace-hub | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | pending | low | digitalmodel | - |
+| WRK-370 | Heriberto: garage fence door repair | pending | medium | achantas-data | - |
+| WRK-371 | Heriberto: powder room faucet tightening | pending | medium | achantas-data | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
 
 ### Medium
@@ -2032,6 +2046,7 @@
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | pending | medium | digitalmodel | - |
 | WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | done | medium | frontierdeepwater | - |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | pending | high | frontierdeepwater, aceengineer-admin | - |
+| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | pending | medium | workspace-hub | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | high | - | - |
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | pending | medium | assethold | - |
 
@@ -2132,7 +2147,7 @@
 
 ## By Computer
 
-### ace-linux-1 (132 active / 134 total)
+### ace-linux-1 (135 active / 137 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2268,7 +2283,10 @@
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | done | medium | high | frontierdeepwater |
 | WRK-360 | Extract contractor contact data + build offshore contractor BD call list | pending | high | medium | frontierdeepwater, aceengineer-admin |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | simple | achantas-data |
+| WRK-362 | Fix repository_sync no-arg behavior — auto-track, commit, and parallel sync all repos | pending | medium | medium | workspace-hub |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | pending | high | medium | - |
+| WRK-370 | Heriberto: garage fence door repair | pending | medium | simple | achantas-data |
+| WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | achantas-data |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (11 active / 12 total)
@@ -2514,7 +2532,7 @@
 | WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | archived | high | low | workspace-hub |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | high | medium | digitalmodel |
 | WRK-314 | OrcaFlex Reporting Phase 4 — OrcFxAPI Integration | complete | high | medium | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | pending | high | simple | digitalmodel, worldenergydata |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | done | high | simple | digitalmodel, worldenergydata |
 | WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | pending | medium | simple | worldenergydata |
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | pending | medium | medium | assethold |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | pending | medium | simple | assetutilities |
