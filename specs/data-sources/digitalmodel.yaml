@@ -2864,3 +2864,72 @@ orcaflex_models:
   file_count: 1
   portability: direct
   notes: OrcaFlexAPIStressCheck.dat — minimal model for API testing.
+# ── API 579-1 / ASME FFS-1 (added 2026-02-25, WRK-606/607) ──────────────────
+- id: API-579-PART4-GML
+  title: API 579-1/ASME FFS-1 Part 4 — General Metal Loss (GML)
+  org: API
+  index_ref: ''
+  status: implemented
+  domain: structural
+  summary: >
+    Implemented in digitalmodel.asset_integrity — GML Level 1+2 assessment,
+    RSF (Remaining Strength Factor), MAWP re-rating, B31G / modified B31G.
+    Modules: asset_integrity.common.API579_components, assessment.level2_engine,
+    rsf_calculations. Grid-based UT data ingestion + contour plots.
+  keywords: [API 579, GML, general metal loss, RSF, MAWP, fitness-for-service, Part 4]
+- id: API-579-PART5-LML
+  title: API 579-1/ASME FFS-1 Part 5 — Local Metal Loss (LML)
+  org: API
+  index_ref: ''
+  status: implemented
+  domain: structural
+  summary: >
+    Implemented in digitalmodel.asset_integrity — LML Level 1+2 assessment
+    with Folias factor. RSF for localised thin areas, MAWP re-rating.
+    Modules: asset_integrity.common.API579_components (API579LML),
+    assessment.level2_engine (_evaluate_lml).
+  keywords: [API 579, LML, local metal loss, Folias factor, RSF, Part 5]
+- id: API-579-PART6-PITTING
+  title: API 579-1/ASME FFS-1 Part 6 — Pitting Corrosion
+  org: API
+  index_ref: ''
+  status: gap
+  domain: structural
+  summary: >
+    Not yet implemented. Part 6 covers assessment of pitting damage using pit
+    coupling ratios and equivalent thickness methods. No Python module exists.
+  keywords: [API 579, pitting corrosion, pit coupling, Part 6, FFS]
+- id: API-579-PART7-HIC
+  title: API 579-1/ASME FFS-1 Part 7 — HIC/SOHIC/SSC Damage
+  org: API
+  index_ref: ''
+  status: gap
+  domain: structural
+  summary: >
+    Not yet implemented. Part 7 covers hydrogen-induced cracking, step-oriented
+    HIC, and stress-oriented SOHIC for wet H2S environments. Critical for
+    sour service pipelines and pressure vessels.
+  keywords: [API 579, HIC, SOHIC, SSC, hydrogen damage, sour service, Part 7]
+- id: API-579-PART8-DENTS
+  title: API 579-1/ASME FFS-1 Part 8 — Shell Distortions (Dents, Gouges, Arc Burns)
+  org: API
+  index_ref: ''
+  status: gap
+  domain: structural
+  summary: >
+    Not yet implemented. Part 8 covers assessment of dents, gouges, arc burns,
+    and misalignment in pressure-containing components. Relevant for pipeline
+    mechanical damage assessment.
+  keywords: [API 579, dents, gouges, shell distortion, mechanical damage, Part 8]
+# ── DNV RP F105 (added 2026-02-25, WRK-607) ─────────────────────────────────
+- id: DNV-RP-F105
+  title: DNV RP F105 — Free-Spanning Pipelines
+  org: DNV
+  index_ref: ''
+  status: gap
+  domain: pipeline
+  summary: >
+    Not yet implemented. Covers VIV onset, in-line and cross-flow VIV response,
+    stability parameter (Ks), allowable span length, and fatigue damage.
+    WRK-607 created.
+  keywords: [DNV RP F105, free span, VIV, pipeline, fatigue, onset of motion]

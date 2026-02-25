@@ -210,8 +210,10 @@ def merge_data_sources(entries: dict[str, dict]) -> None:
             if norm in entries:
                 entry = entries[norm]
                 # Upgrade status: implemented > reference > wrk_captured > gap
-                STATUS_RANK = {"gap": 0, "wrk_captured": 1, "in_progress": 2,
-                               "reference": 2, "done": 3, "deferred": 1}
+                # reference < gap < wrk_captured < in_progress < done
+                # (a WRK item targeting a reference doc upgrades it to wrk_captured)
+                STATUS_RANK = {"reference": 0, "gap": 1, "wrk_captured": 2,
+                               "in_progress": 3, "done": 4, "deferred": 1}
                 cur_rank = STATUS_RANK.get(entry.get("status", "gap"), 0)
                 new_rank = STATUS_RANK.get(ds_status, 0)
                 if new_rank > cur_rank:

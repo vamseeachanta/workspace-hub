@@ -1,30 +1,30 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-25T20:11:18Z by generate-index.py -->
+<!-- Generated: 2026-02-25T20:23:38Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-25T20:11:18Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-25T20:23:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 572
+**Total items:** 575
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 148 |
+| pending | 150 |
 | working | 8 |
 | blocked | 5 |
-| done | 174 |
+| done | 175 |
 | archived | 223 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 273 |
-| medium | 232 |
+| high | 274 |
+| medium | 234 |
 | low | 66 |
 
 ### By Complexity
@@ -32,14 +32,14 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 94 |
-| medium | 251 |
+| medium | 254 |
 | complex | 97 |
 
 ### By Repository
 
 | Repository | Count |
 |------------|-------|
-| OGManufacturing | 9 |
+| OGManufacturing | 11 |
 | aceengineer-admin | 5 |
 | aceengineer-strategy | 2 |
 | aceengineer-website | 23 |
@@ -48,7 +48,7 @@
 | assethold | 12 |
 | assetutilities | 58 |
 | client_projects | 1 |
-| digitalmodel | 199 |
+| digitalmodel | 202 |
 | doris | 26 |
 | frontierdeepwater | 4 |
 | hobbies | 1 |
@@ -65,9 +65,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 183 / 572 |
-| Plans cross-reviewed | 93 |
-| Plans approved | 116 |
+| Plans exist | 183 / 575 |
+| Plans cross-reviewed | 94 |
+| Plans approved | 117 |
 | Brochure pending | 10 |
 | Brochure updated/synced | 8 |
 
@@ -77,9 +77,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 572 |
+| Total captured | 575 |
 | Total archived | 223 |
-| Completion rate | 223/572 (39%) |
+| Completion rate | 223/575 (39%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -87,7 +87,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 45 / 148 | 30% |
+| Pending items with plans | 45 / 150 | 30% |
 | Plans cross-reviewed | 6 | 11% |
 | Plans user-approved | 6 | 11% |
 
@@ -104,9 +104,9 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 83 | 5 | 3 |
-| Medium   | 46  | 2  | 1  |
-| Low      | 19  | 1  | 1  |
+| High     | 84 | 5 | 3 |
+| Medium   | 48  | 2  | 1  |
+| Low      | 18  | 1  | 1  |
 
 ## Master Table
 
@@ -678,11 +678,14 @@
 | WRK-599 | docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules | pending | medium | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-600 | chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming | done | low | simple | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | done | low | simple | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | pending | low | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | done | low | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | ace-linux-1 | - | digitalmodel, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | ace-linux-1 | - | digitalmodel, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -865,6 +868,7 @@
 | WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | high | low | assetutilities | - |
 | WRK-600 | chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming | low | simple | worldenergydata | - |
 | WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | low | simple | digitalmodel | - |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | low | medium | digitalmodel | - |
 
 ### Pending
 
@@ -1012,11 +1016,13 @@
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | high | medium | workspace-hub, digitalmodel | - |
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | high | complex | workspace-hub | - |
 | WRK-599 | docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules | medium | simple | workspace-hub | - |
-| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | low | medium | digitalmodel | - |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | low | low | workspace-hub | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | low | low | workspace-hub | - |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | medium | low | workspace-hub | - |
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | high | medium | workspace-hub | - |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | high | medium | digitalmodel | - |
+| WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | medium | medium | digitalmodel, OGManufacturing | - |
+| WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | medium | medium | digitalmodel, OGManufacturing | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -1285,6 +1291,8 @@
 | WRK-550 | feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | medium | low | - |
 | WRK-552 | feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | medium | low | - |
 | WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | - |
+| WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | - |
+| WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | - |
 
 ### aceengineer-admin
 
@@ -1650,7 +1658,10 @@
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | - |
 | WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | done | low | simple | - |
-| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | pending | low | medium | - |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | done | low | medium | - |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | pending | high | medium | - |
+| WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | - |
+| WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | - |
 
 ### doris
 
@@ -2279,6 +2290,7 @@
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | medium | workspace-hub, digitalmodel | - |
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | pending | complex | workspace-hub | - |
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | medium | workspace-hub | - |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | pending | medium | digitalmodel | - |
 
 ### Medium
 
@@ -2516,6 +2528,8 @@
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | simple | workspace-hub | - |
 | WRK-599 | docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules | pending | simple | workspace-hub | - |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | low | workspace-hub | - |
+| WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | digitalmodel, OGManufacturing | - |
+| WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | digitalmodel, OGManufacturing | - |
 
 ### Low
 
@@ -2583,7 +2597,7 @@
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | medium | digitalmodel | - |
 | WRK-600 | chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming | done | simple | worldenergydata | - |
 | WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | done | simple | digitalmodel | - |
-| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | pending | medium | digitalmodel | - |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | done | medium | digitalmodel | - |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | workspace-hub | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | simple | workspace-hub | - |
@@ -2942,8 +2956,11 @@
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | digitalmodel | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | workspace-hub, client_projects, digitalmodel | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | workspace-hub, digitalmodel | - |
-| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | pending | low | digitalmodel | - |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | done | low | digitalmodel | - |
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | workspace-hub | - |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | pending | high | digitalmodel | - |
+| WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | digitalmodel, OGManufacturing | - |
+| WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | digitalmodel, OGManufacturing | - |
 
 ### Complex
 
@@ -3049,7 +3066,7 @@
 
 ## By Computer
 
-### ace-linux-1 (292 active / 305 total)
+### ace-linux-1 (295 active / 308 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3352,11 +3369,14 @@
 | WRK-599 | docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules | pending | medium | simple | workspace-hub |
 | WRK-600 | chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming | done | low | simple | worldenergydata |
 | WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | done | low | simple | digitalmodel |
-| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | pending | low | medium | digitalmodel |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | done | low | medium | digitalmodel |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | low | workspace-hub |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | workspace-hub |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | workspace-hub |
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | medium | workspace-hub |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | pending | high | medium | digitalmodel |
+| WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | digitalmodel, OGManufacturing |
+| WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | digitalmodel, OGManufacturing |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (13 active / 17 total)
