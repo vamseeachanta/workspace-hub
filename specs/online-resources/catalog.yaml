@@ -34,11 +34,7 @@ resources:
     dataset_count: 23
     total_size_tb: 15
     relevance_score: 5
-    related_modules:
-      - worldenergydata/metocean
-      - digitalmodel/hydrodynamics
-      - digitalmodel/subsea
-      - digitalmodel/structural
+    related_module: worldenergydata/metocean, digitalmodel/hydrodynamics, digitalmodel/subsea, digitalmodel/structural
     top_integration_candidates:
       - dataset: planetswe
         module: worldenergydata/metocean
@@ -121,7 +117,7 @@ resources:
     auth_required: false
     cost_model: free download
     relevance_score: 4
-    related_module: digitalmodel/structural, marine_ops
+    related_module: digitalmodel/structural, digitalmodel/marine_ops
     maturity: live
     notes: >
       All IACS Unified Requirements (URs) and Unified Interpretations (UIs) are
@@ -173,7 +169,7 @@ resources:
     auth_required: false
     cost_model: free
     relevance_score: 3
-    related_module: worldenergydata/production
+    related_module: worldenergydata/brazil_anp
     maturity: live
     notes: >
       ANP BDEP holds geophysical, geological, and geochemical data for Brazilian
@@ -298,7 +294,7 @@ resources:
     auth_required: false
     cost_model: free (non-commercial, no key); commercial plans available
     relevance_score: 4
-    related_module: worldenergydata/metocean, marine_ops
+    related_module: worldenergydata/metocean, digitalmodel/marine_ops
     maturity: live
     notes: >
       No API key or registration for non-commercial use. Marine API: wave height,
@@ -333,7 +329,7 @@ resources:
     auth_required: false
     cost_model: free
     relevance_score: 4
-    related_module: worldenergydata/metocean, marine_ops
+    related_module: worldenergydata/metocean, digitalmodel/marine_ops
     maturity: live
     notes: >
       REST API for water levels, tide predictions, currents, salinity, winds at
@@ -869,7 +865,7 @@ resources:
       IJME: subscription-based; members get 4 papers/year free.
       Conference proceedings: purchase.
     relevance_score: 3
-    related_module: digitalmodel/structural, marine_ops
+    related_module: digitalmodel/structural, digitalmodel/marine_ops
     maturity: live
     notes: >
       5000+ peer-reviewed papers since 1860. IJME published 4x/year via T&F.
@@ -889,7 +885,7 @@ resources:
       whitepaper. Historical Transactions on Internet Archive (archive.org).
       T&R bulletins and current Transactions: member pricing.
     relevance_score: 3
-    related_module: digitalmodel/structural, marine_ops
+    related_module: digitalmodel/structural, digitalmodel/marine_ops
     maturity: live
     notes: >
       T&R Bulletins cover structural FEA, hydrodynamics, materials, marine ops.
@@ -963,7 +959,7 @@ resources:
       Free: Digital Archive (papers to 1889). Current journals (J. Marine
       Engineering & Technology; J. Operational Oceanography) via T&F subscription.
     relevance_score: 3
-    related_module: digitalmodel/structural, marine_ops
+    related_module: digitalmodel/structural, digitalmodel/marine_ops
     maturity: live
     notes: >
       Digital Archive: free access to historical IMarEST proceedings, magazines,
@@ -982,7 +978,7 @@ resources:
     auth_required: true
     cost_model: free (requires contributing live AIS data)
     relevance_score: 3
-    related_module: worldenergydata/marine_safety, marine_ops
+    related_module: worldenergydata/marine_safety, digitalmodel/marine_ops
     maturity: live
     notes: >
       Free AIS data sharing service. JSON/XML/CSV API for real-time vessel
@@ -1016,7 +1012,7 @@ resources:
     auth_required: false
     cost_model: free (non-commercial, no key)
     relevance_score: 5
-    related_module: marine_ops, worldenergydata/metocean
+    related_module: digitalmodel/marine_ops, worldenergydata/metocean
     maturity: live
     notes: >
       Real-time and forecast ocean wave parameters (Hs, Tp, direction, swell
@@ -1049,7 +1045,7 @@ resources:
     auth_required: false
     cost_model: free
     relevance_score: 4
-    related_module: marine_ops, worldenergydata/metocean
+    related_module: digitalmodel/marine_ops, worldenergydata/metocean
     maturity: live
     notes: >
       Real-time water levels, tide predictions, currents at NOAA gauge stations.

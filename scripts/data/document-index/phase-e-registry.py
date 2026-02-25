@@ -97,9 +97,12 @@ def build_registry(
     for rec in records:
         by_source[rec.get("source", "unknown")] += 1
 
-    by_domain: Dict[str, int] = {}
-    for domain, data in plan.get("by_domain", {}).items():
-        by_domain[domain] = data.get("count", len(data.get("items", [])))
+    # Count domains directly from index (authoritative — back-populated by phase-e-backpopulate.py)
+    _by_domain: Dict[str, int] = defaultdict(int)
+    for rec in records:
+        d = rec.get("domain") or "other"
+        _by_domain[d] += 1
+    by_domain = dict(sorted(_by_domain.items(), key=lambda x: -x[1]))
 
     repos_summary: Dict[str, Dict] = {}
     for repo, spec in repo_specs.items():

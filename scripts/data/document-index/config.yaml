@@ -36,9 +36,13 @@ sources:
       - /mnt/remote/ace-linux-2/dde/Literature
       - /mnt/remote/ace-linux-2/dde/Orcaflex
       - /mnt/remote/ace-linux-2/dde/ABSG
+      - /mnt/remote/ace-linux-2/dde/g-drive
+      - /mnt/remote/ace-linux-2/dde/o-drive
+      - /mnt/remote/ace-linux-2/dde/dropbox_contents
+      - "/mnt/remote/ace-linux-2/dde/Temp - Oil&Gas"
     host: ace-linux-2
     source_type: dde_project
-    extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf]
+    extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf, .doc, .xls]
 
   workspace_spec:
     enabled: true
@@ -70,6 +74,8 @@ exclude_patterns:
   - "*/Personal/*"
   - "*/Information_Important/*"
   - "*/lost+found/*"
+  - "*/TECH Animation Fundaes/*"
+  - "*/TECH Writing/*"
   - "*.pyc"
   - "*.tmp"
 

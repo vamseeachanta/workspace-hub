@@ -65,7 +65,7 @@ provides real-time GeoJSON feeds and historical parametric queries (magnitude, d
 region, time). A thin module in `worldenergydata/safety_analysis/geohazard` could
 provide seismic hazard lookups by geographic bounding box for any offshore location.
 Effort: low (thin API wrapper + radius queries around offshore asset coordinates).
-**Related resources:** `usgs_earthquake_feed`, `usgs_eq_geojson`, `usgs_sciencebase`
+**Related resources:** `usgs_eq_geojson` (realtime feed), `usgs_earthquake_feed` (API), `usgs_sciencebase`
 
 ### WRK-CP-1: Create Cathodic Protection Module — gap identified in WRK-383
 **Resources:** AMPP/NACE Knowledge Hub (SP0169, SP0176), TWI Job Knowledge Series,
@@ -101,8 +101,8 @@ to cover new dataset types; add scheduled update pipeline.
 **Rationale:** The CMEMS wave multi-year product now extends back to 1967 — a 58-year
 hindcast covering the offshore industry's full operational history. The June 2025
 release cycle extended the IBI area product with monthly batch updates. This provides
-a longer wave climate baseline than ERA5 (1940) in the sense of having dedicated
-ocean-wave physics. Integration into the metocean module would improve extreme wave
+a more wave-physics-specific product than ERA5 reanalysis (which starts from 1940
+but uses atmospheric-coupled wave models rather than dedicated ocean-wave physics). Integration into the metocean module would improve extreme wave
 statistics and return period calculations.
 **Related resources:** `cmems_marine_service`
 

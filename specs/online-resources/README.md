@@ -2,7 +2,7 @@
 
 **Generated:** 2026-02-24
 **Catalog file:** `specs/online-resources/catalog.yaml`
-**Total entries:** 81 resources across 8 categories
+**Total entries:** 83 resources across 9 categories
 
 This catalog is a horizon-expanding discovery exercise — not an inventory of
 familiar sources. It surfaces resources that fill capability gaps, enable agents
@@ -19,7 +19,7 @@ to reach beyond the local library, and identify unexplored adjacent domains.
 | Professional Body Sources | 10 | Standards and engineering literature |
 | Academic Repositories | 9 | Open-access research and datasets |
 | Real-Time Operational Feeds | 8 | Live operational data for agents |
-| AI / Agent Resources | 8 | MCP ecosystem and agent tooling |
+| AI / Agent Resources | 10 | MCP ecosystem and agent tooling |
 | Sustainability / ESG / Carbon | 7 | Emerging adjacent domain |
 | Engineering Standards Portals | 7 | Standards and regulatory portals |
 | Physics / ML Datasets | 1 | The Well (WRK-393 evaluated) |
@@ -216,7 +216,7 @@ integration candidate requiring no new code — just `pip install wavespectra`.
 
 ### 2. MoorDyn + MoorPy (open mooring dynamics and quasi-statics)
 URLs: github.com/FloatingArrayDesign/MoorDyn, github.com/NREL/MoorPy
-Both address the WRK-383-identified cathodic-protection and mooring gap. MoorPy
+Both address the WRK-383-identified mooring gap. MoorPy
 (NREL) is published on OSTI and is part of the Wind Energy Technology Office software
 stack — meaning it is actively maintained with US DOE backing. MoorDyn covers dynamics;
 MoorPy covers quasi-statics. Together they provide a complete open-source mooring
@@ -263,7 +263,9 @@ no subscription. The DOAJ API at doaj.org/api/ enables programmatic article sear
 URL: https://lobehub.com/mcp/fujishigetemma-semantic-scholar-mcp
 An MCP server wrapping the Semantic Scholar Academic Graph API for 200M+ papers.
 This means Claude Code agents can search engineering literature directly from within
-the workspace-hub agent workflow with no additional integration code.
+the workspace-hub agent workflow. **Supply-chain note:** third-party MCP servers
+should be reviewed for trust, version-pinned, and run with least-privilege
+permissions before installation into production workflows.
 
 ### 9. MCP Official Registry (registry.modelcontextprotocol.io)
 URL: https://registry.modelcontextprotocol.io
@@ -284,10 +286,10 @@ critical to wellbore integrity and CO2 storage simulation.
 
 | Access Tier | Count | Examples |
 |---|---|---|
-| Completely free, no auth | 38 | Open-Meteo, GEBCO, USGS, EDGAR, wavespectra, Gmsh |
-| Free with registration/key | 28 | EIA, CDS, CMEMS, NDBC, Climate TRACE |
-| Member/subscription (abstract free) | 10 | SPE, ASME, RINA, SNAME |
-| Contribution-based free | 2 | AISHub |
+| Completely free, no auth | 62 | Open-Meteo, GEBCO, USGS, EDGAR, wavespectra, Gmsh, MoorDyn |
+| Free with registration/key | 9 | EIA, CDS, CMEMS, NDBC, Earthdata, aisstream |
+| Member/subscription (abstract free) | 10 | SPE, ASME, RINA, SNAME, DNV Explorer+, AMPP |
+| Contribution-based free | 1 | AISHub |
 | Consortium membership | 1 | OSDU |
 
 ---
@@ -299,8 +301,8 @@ no subscription, relevant API or pip package exists):
 
 1. `open_meteo_realtime` — zero-auth real-time marine weather JSON API
 2. `wavespectra` — `pip install wavespectra`, fills wave_spectra module gap
-3. `usgs_earthquake_feed` — real-time geohazard GeoJSON, no auth
-4. `noaa_coops_api` — tides and currents REST API, no auth
+3. `usgs_eq_geojson` — real-time geohazard GeoJSON feed, no auth
+4. `noaa_coops_realtime` — real-time tides and currents REST API, no auth
 5. `semantic_scholar_mcp` — MCP server for 200M+ paper search
 6. `mcp_official_registry` — discover new MCP servers programmatically
 7. `climate_trace_api` — beta REST API for O&G facility emissions

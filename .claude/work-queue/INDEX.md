@@ -1,73 +1,73 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-25T00:04:34Z by generate-index.py -->
+<!-- Generated: 2026-02-25T04:14:28Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-25T00:04:34Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-25T04:14:28Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 447
+**Total items:** 538
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 77 |
-| working | 6 |
+| pending | 115 |
+| working | 9 |
 | blocked | 5 |
-| done | 129 |
-| archived | 219 |
+| done | 174 |
+| archived | 223 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 192 |
-| medium | 204 |
-| low | 50 |
+| high | 263 |
+| medium | 223 |
+| low | 51 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 79 |
-| medium | 186 |
+| simple | 84 |
+| medium | 233 |
 | complex | 97 |
 
 ### By Repository
 
 | Repository | Count |
 |------------|-------|
-| OGManufacturing | 2 |
+| OGManufacturing | 9 |
 | aceengineer-admin | 5 |
 | aceengineer-strategy | 2 |
 | aceengineer-website | 23 |
 | achantas-data | 13 |
-| acma-projects | 10 |
-| assethold | 13 |
-| assetutilities | 59 |
-| digitalmodel | 132 |
-| doris | 5 |
-| frontierdeepwater | 5 |
+| acma-projects | 8 |
+| assethold | 12 |
+| assetutilities | 58 |
+| digitalmodel | 185 |
+| doris | 25 |
+| frontierdeepwater | 4 |
 | hobbies | 1 |
 | investments | 1 |
-| pdf-large-reader | 2 |
+| pdf-large-reader | 1 |
 | rock-oil-field | 2 |
 | sabithaandkrishnaestates | 1 |
-| saipem | 6 |
-| workspace-hub | 125 |
-| worldenergydata | 93 |
+| saipem | 5 |
+| workspace-hub | 128 |
+| worldenergydata | 97 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 153 / 447 |
-| Plans cross-reviewed | 91 |
-| Plans approved | 113 |
-| Brochure pending | 9 |
+| Plans exist | 162 / 538 |
+| Plans cross-reviewed | 92 |
+| Plans approved | 115 |
+| Brochure pending | 11 |
 | Brochure updated/synced | 8 |
 
 ## Metrics
@@ -76,19 +76,19 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 447 |
-| Total archived | 219 |
-| Completion rate | 219/447 (49%) |
-| Monthly rate (current month) | 65 archived |
+| Total captured | 538 |
+| Total archived | 223 |
+| Completion rate | 223/538 (41%) |
+| Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 14 / 77 | 18% |
-| Plans cross-reviewed | 5 | 22% |
-| Plans user-approved | 5 | 22% |
+| Pending items with plans | 23 / 115 | 20% |
+| Plans cross-reviewed | 7 | 21% |
+| Plans user-approved | 7 | 21% |
 
 ### Aging
 
@@ -96,16 +96,16 @@
 |--------|-------|-------|
 | Pending > 30 days | 0 | - |
 | Pending > 14 days | 11 | WRK-005, WRK-008, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-048, WRK-050, WRK-075 |
-| Working > 7 days | 5 | WRK-118, WRK-121, WRK-125, WRK-131, WRK-149 |
+| Working > 7 days | 7 | WRK-020, WRK-021, WRK-118, WRK-121, WRK-125, WRK-131, WRK-149 |
 | Blocked > 7 days | 5 | WRK-006, WRK-064, WRK-069, WRK-130, WRK-133 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 55 | 5 | 3 |
-| Medium   | 15  | 1  | 1  |
-| Low      | 7  | 0  | 1  |
+| High     | 72 | 5 | 3 |
+| Medium   | 36  | 3  | 1  |
+| Low      | 7  | 1  | 1  |
 
 ## Master Table
 
@@ -130,8 +130,8 @@
 | WRK-017 | Streamline BSEE field data analysis pipeline — wellbore, casing, drilling, completions, interventions | archived | high | complex | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-018 | Extend BSEE field data pipeline to other regulatory sources (RRC, Norway, Mexico, Brazil) | archived | low | complex | - | claude+gemini | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-019 | Establish drilling, completion, and intervention cost data by region and environment | done | low | complex | ace-linux-1 | claude+gemini | worldenergydata | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | done | medium | complex | ace-linux-2 | claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | done | medium | complex | ace-linux-1 | gemini | assethold | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | working | medium | complex | ace-linux-2 | claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ██░ 95% | - | - |
+| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | working | medium | complex | ace-linux-1 | gemini | assethold | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | - | - |
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | done | medium | complex | ace-linux-1 | gemini | assethold | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | - | - |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | in_progress | low | complex | ace-linux-1 | claude | assethold | - | ❌ | ✅ | ❌ | ❌ | ██░ 85% | - | - |
 | WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | archived | high | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
@@ -237,6 +237,7 @@
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex | ace-linux-1 | claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ██░ 75% | - | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | high | medium | - | - | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | WRK-121 |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | done | high | complex | - | codex | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | archived | high | complex | - | codex | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | blocked | high | complex | acma-ansys05 | codex | digitalmodel | - | ❌ | ✅ | ✅ | ❌ | - | - | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | high | complex | orcaflex-license-machine | claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | █░░ 60% | - | - |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | archived | high | medium | - | codex+claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
@@ -255,7 +256,7 @@
 | WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | - | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-146 | Overhaul aceengineer-website: fix positioning, narrative, and social proof | done | high | complex | ace-linux-1 | claude+gemini | aceengineer-website | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-147 | Set up aceengineer-strategy private repo with business operations framework | done | high | complex | ace-linux-1 | claude | aceengineer-strategy | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | ace-linux-1 | claude | aceengineer-website, aceengineer-strategy, workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
+| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | ace-linux-1 | claude | aceengineer-website, aceengineer-strategy, workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ░░░ 35% | n/a | - |
 | WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | working | high | complex | ace-linux-1 | codex+claude,gemini | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | █░░ 70% | n/a | - |
 | WRK-150 | assetutilities test coverage improvement (re-creates WRK-052) | done | medium | medium | ace-linux-1 | codex | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | archived | medium | medium | - | codex | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -324,7 +325,7 @@
 | WRK-216 | Subagent learning capture — emit signals to pending-reviews before task completion | archived | medium | simple | - | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
 | WRK-217 | Update ecosystem-health-check.sh — remove stale skill count threshold | archived | medium | simple | - | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
 | WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | medium | complex | - | claude+gemini | digitalmodel, worldenergydata | well_design | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | done | medium | medium | ace-linux-1 | gemini+claude | worldenergydata, digitalmodel | drilling_economics | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | ace-linux-1 | gemini+claude | worldenergydata, digitalmodel | drilling_economics | ❌ | ❌ | ❌ | ❌ | ██░ 90% | n/a | - |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | complex | - | claude+gemini | worldenergydata, digitalmodel, aceengineer-website | decommissioning_analytics | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-221 | Offshore resilience design framework — modular platforms, lifecycle planning, structural monitoring | done | low | medium | ace-linux-1 | gemini+claude | digitalmodel, aceengineer-website | offshore_resilience | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-222 | Pre-clear session snapshot — /save skill + save-snapshot.sh script | archived | medium | low | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | - | - |
@@ -339,6 +340,7 @@
 | WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | archived | high | medium | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
 | WRK-229 | AI agent QA closure — HTML output + SME verification loop per work item | done | high | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | done | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | archived | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
 | WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | archived | high | medium | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | high | medium | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | high | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | WRK-231 |
@@ -365,7 +367,7 @@
 | WRK-253 | Data residence tier compliance audit and extension to assethold | done | medium | medium | ace-linux-1 | - | worldenergydata, digitalmodel, assethold | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-254 | Heavy vessel GIS integration — connect vessel dataset to GIS skill and BSEE pipeline | done | medium | medium | ace-linux-1 | - | worldenergydata, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | archived | medium | simple | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | done | medium | complex | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | in-progress | medium | complex | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ██░ 95% | n/a | - |
 | WRK-257 | Agent coordination model ADR — document architectural decision record | done | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-258 | Close WRK-153 as superseded — defer BSEE case study rebuild to after WRK-019 and WRK-171 | archived | low | simple | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | pending | medium | medium | ace-linux-1 | claude | aceengineer-website, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-019, WRK-171 |
@@ -392,7 +394,7 @@
 | WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ██░ 90% | n/a | - |
 | WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | archived | critical | medium | - | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | done | high | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | █░░ 70% | n/a | - |
-| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | archived | medium | simple | - | claude+gemini | digitalmodel, acma-projects | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | archived | high | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | █░░ 70% | n/a | - |
 | WRK-281 | Fix 2H legacy project discoverability (navigation layer) | done | medium | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | archived | high | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | archived | medium | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
@@ -402,6 +404,7 @@
 | WRK-288 | Finish ace-linux-2 setup — install open source engineering programs and map capabilities | done | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-289, WRK-290, WRK-291, WRK-292 |
 | WRK-289 | Research open source FEA programs for engineering assignments | done | low | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | done | medium | medium | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | archived | medium | medium | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-291 | Install recommended FEA programs on ace-linux-2 | done | low | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-292 | Create capability map — file formats, workflow pipelines, interoperability matrix | done | low | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-290, WRK-291 |
 | WRK-293 | SMART health check on ace-linux-2 drives — install smartmontools + run diagnostics | done | high | simple | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -421,9 +424,8 @@
 | WRK-307 | track: lean-session hook requirement missed — accountability record | done | high | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-308 | perf: move pre-commit skill validation + readiness checks to nightly cron | done | high | medium | any | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata, assetutilities, assethold, doris, OGManufacturing, frontierdeepwater, saipem, acma-projects, pdf-large-reader | - | ❌ | ❌ | ✅ | ✅ | ██░ 85% | n/a | - |
 | WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | archived | high | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | ⏳ pending | - |
-| WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | medium | - | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | medium | - | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | █░░ 60% | n/a | - |
 | WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | archived | high | low | - | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | high | medium | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-313 | feat: new-machine setup guide + bootstrap script — statusline, CLI parity, cron jobs | done | high | medium | any | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
@@ -462,7 +464,7 @@
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | ⏳ pending | - |
-| WRK-352 | Set up remote desktop access on ace-linux-2 | done | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-352 | Set up remote desktop access on ace-linux-2 | working | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 95% | n/a | - |
 | WRK-353 | Expand S-N curve library from 17 to 20 standards | done | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-354 | Structural module — implement jacket and topside analysis | done | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-355 | Pipeline and flexibles module — pressure containment checks | done | medium | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -500,63 +502,152 @@
 | WRK-388 | GIS skills — QGIS, Google Earth Engine, Python GIS ecosystem | done | medium | complex | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending | medium | medium | ace-linux-2 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-390 | enhance(work-queue): richer WRK item presentation in work skill | done | low | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-391 | Online Resources Research — expanded discovery of skills, data APIs and references for workspace-hub | done | medium | complex | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-392 | feat(skills): add work-document-and-exit skill — capture WRK state + session handoff | done | low | simple | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-393 | Evaluate Polymathic AI — The Well for ecosystem integration | done | medium | medium | ace-linux-2, ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-394 | Planing hull motion model — nonlinear 2D+t strip theory for high-speed vessels | done | low | complex | ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-402 | worldenergydata test structure consolidation | done | low | simple | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-417 | The Well — planetswe dataset integration with worldenergydata/metocean | done | medium | medium | ace-linux-1 | - | worldenergydata, digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-418 | The Well — acoustic_scattering datasets for subsea NDE validation | done | medium | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-419 | The Well — shear_flow dataset for hydrodynamics ML baseline | done | medium | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-420 | feat(assetutilities/calculations): implement ISO-TR 10400, 1st Ed (2007) Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-421 | feat(assetutilities/calculations): implement API BULL 5C3 Formulas and Calculation... — API BULL 5C3 Formulas and Calculations for Casi... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-422 | feat(assetutilities/calculations): implement 5C — API TR 5C3 (2008) Technical Report on Equations... | pending | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-423 | feat(assetutilities/calculations): implement API TR 5C3 (2008) Technical Report on... — API TR 5C3 (2008) Technical Report on Equations... | pending | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-424 | feat(assetutilities/calculations): implement ISO-TR_10400,_1st_Ed_(2007)_Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-425 | feat(assetutilities/calculations): implement BS15663 Pt 2 (2001) Life cycle costin... — BS15663 Pt 2 (2001) Life cycle costing   Guidan... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-426 | feat(assetutilities/calculations): implement Marine Trasportations_0030-4 — Marine Trasportations 0030 4 | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-427 | feat(assetutilities/calculations): implement AMJIG, Rev 2 (2000) Deep Water Drilli... — AMJIG, Rev 2 (2000) Deep Water Drilling Riser I... | pending | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-428 | feat(assetutilities/calculations): implement AMJIG, Rev2 (1999) Deep Water Drillin... — AMJIG, Rev2 (1999) Deep Water Drilling Riser In... | pending | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-429 | feat(assetutilities/calculations): implement rpt001-3 Deep Water Drilling Riser In... — rpt001 3 Deep Water Drilling Riser Integ Manag ... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-430 | feat(assetutilities/calculations): implement AMJIG, Rev1 (1998) Deep Water Drillin... — AMJIG, Rev1 (1998) Deep Water Drilling Riser In... | pending | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-431 | feat(assetutilities/calculations): implement os-f101[1] — os f101[1] | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-432 | feat(assetutilities/calculations): implement F101 — DNVOS F101 | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-433 | feat(assetutilities/calculations): implement BP - Riser drag dat — BP   Riser drag dat | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-434 | feat(assetutilities/calculations): implement Buoyant Riser_Shear7_Model — Buoyant Riser Shear7 Model | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-435 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-436 | feat(assetutilities/calculations): implement TNE012-1 Internal Pressure Effects on... — TNE012 1 Internal Pressure Effects on Riser Ext... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-437 | feat(assetutilities/calculations): implement BP Riser Array Design Guidelines v2 — BP Riser Array Design Guidelines v2 | pending | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-438 | feat(assetutilities/calculations): implement Riser Equivalencing & De-equivalencing — Riser Equivalencing & De equivalencing | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-439 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-440 | feat(assetutilities/calculations): implement Overestimation of VIV Fatigue Damage ... — Overestimation of VIV Fatigue Damage for Single... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-441 | feat(assetutilities/calculations): implement TNE004-1 Riser Tow Out Analysis Metho... — TNE004 1 Riser Tow Out Analysis Methodology | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-442 | feat(assetutilities/calculations): implement Huse, E., Experimental Investigation ... — Huse, E., Experimental Investigation of Deep Se... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-443 | feat(assetutilities/calculations): implement Norton, D.J., et al, 1981 - Wind Tunn... — Norton, D.J., et al, 1981   Wind Tunnel Tests o... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-444 | feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-445 | feat(assetutilities/calculations): implement Smith, C.S., et al, 1981 - Residual S... — Smith, C.S., et al, 1981   Residual Strength an... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-446 | feat(assetutilities/calculations): implement Javanmardi, K., et al, 1995 - Auger T... — Javanmardi, K., et al, 1995   Auger TLP Well Sy... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-447 | feat(assetutilities/calculations): implement Fox, S.A., et al, 1995 - Design Analy... — Fox, S.A., et al, 1995   Design Analysis and Fu... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-448 | feat(assetutilities/calculations): implement Larimore, D., et al, 1998 - Case Hist... — Larimore, D., et al, 1998   Case History   Firs... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-449 | feat(assetutilities/calculations): implement Allen, D.W., 1995 - Vortex-InducedVib... — Allen, D.W., 1995   Vortex InducedVibration Ana... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-450 | feat(assetutilities/calculations): implement Brooks, I.H., 1987 - A Pragmatic Appr... — Brooks, I.H., 1987   A Pragmatic Approach to Vo... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-451 | feat(assetutilities/calculations): implement Carminati, J.R., et al, 1999 - Ursa T... — Carminati, J.R., et al, 1999   Ursa TLP Well Sy... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-452 | feat(assetutilities/calculations): implement Barton, D.R., et al, 1999 - Genesis P... — Barton, D.R., et al, 1999   Genesis Project   D... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-453 | feat(assetutilities/calculations): implement OTC1997-8494 Code Conflicts — OTC1997 8494 Code Conflicts | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-454 | feat(assetutilities/calculations): implement OTC2001-13109 SCR Fatigue at Low KC — OTC2001 13109 SCR Fatigue at Low KC | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-455 | feat(assetutilities/calculations): implement Chen, W.C. 1989, Fatigue - Life Predi... — Chen, W.C. 1989, Fatigue   Life Predictions for... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-456 | feat(assetutilities/calculations): implement Sweeney, T., et al, 1991 - Behaviour ... — Sweeney, T., et al, 1991   Behaviour of 15ksi S... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-457 | feat(assetutilities/calculations): implement Berner, P., et al, 1997 - Neptune Pro... — Berner, P., et al, 1997   Neptune Project   Pro... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-458 | feat(assetutilities/calculations): implement Stahl, OTC 3902, Design Methodology f... — Stahl, OTC 3902, Design Methodology for Offshor... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-459 | feat(assetutilities/calculations): implement Gardner, T.N., et al, 1982 - Deepwate... — Gardner, T.N., et al, 1982   Deepwater Drilling... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-460 | feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-461 | feat(assetutilities/calculations): implement Kim, Y.Y., et al, 1975 - Analysis of ... — Kim, Y.Y., et al, 1975   Analysis of Simultaneo... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-462 | feat(assetutilities/calculations): implement Grant, R., 1977 - Riser Fairing for R... — Grant, R., 1977   Riser Fairing for Reduced Dra... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-463 | feat(assetutilities/calculations): implement Jacobsen, V., et al, 1996 - Vibration... — Jacobsen, V., et al, 1996   Vibration Suppressi... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-464 | feat(assetutilities/calculations): implement D'Souza, R., et al, 2002 - The Next G... — D'Souza, R., et al, 2002   The Next Generation ... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-465 | feat(assetutilities/calculations): implement Vandiver, J.K., 1985 - The Prediction... — Vandiver, J.K., 1985   The Prediction of Lockin... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-466 | feat(assetutilities/calculations): implement Denison, E.B., et al, 1997 - Mars TLP... — Denison, E.B., et al, 1997   Mars TLP Drilling ... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-467 | feat(assetutilities/calculations): implement Britton, J.S., et al, 1987 - Improvin... — Britton, J.S., et al, 1987   Improving Wellhead... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-468 | feat(assetutilities/calculations): implement Miller, J.E., et al, 1985 - Influence... — Miller, J.E., et al, 1985   Influence of Mud Co... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | pending | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-419 | The Well — shear_flow dataset for hydrodynamics ML baseline | done | medium | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-420 | feat(assetutilities/calculations): implement ISO-TR 10400, 1st Ed (2007) Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-421 | feat(assetutilities/calculations): implement API BULL 5C3 Formulas and Calculation... — API BULL 5C3 Formulas and Calculations for Casi... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-422 | feat(assetutilities/calculations): implement 5C — API TR 5C3 (2008) Technical Report on Equations... | done | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-423 | feat(assetutilities/calculations): implement API TR 5C3 (2008) Technical Report on... — API TR 5C3 (2008) Technical Report on Equations... | done | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-424 | feat(assetutilities/calculations): implement ISO-TR_10400,_1st_Ed_(2007)_Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-425 | feat(assetutilities/calculations): implement BS15663 Pt 2 (2001) Life cycle costin... — BS15663 Pt 2 (2001) Life cycle costing   Guidan... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-426 | feat(assetutilities/calculations): implement Marine Trasportations_0030-4 — Marine Trasportations 0030 4 | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-427 | feat(assetutilities/calculations): implement AMJIG, Rev 2 (2000) Deep Water Drilli... — AMJIG, Rev 2 (2000) Deep Water Drilling Riser I... | done | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-428 | feat(assetutilities/calculations): implement AMJIG, Rev2 (1999) Deep Water Drillin... — AMJIG, Rev2 (1999) Deep Water Drilling Riser In... | done | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-429 | feat(assetutilities/calculations): implement rpt001-3 Deep Water Drilling Riser In... — rpt001 3 Deep Water Drilling Riser Integ Manag ... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-430 | feat(assetutilities/calculations): implement AMJIG, Rev1 (1998) Deep Water Drillin... — AMJIG, Rev1 (1998) Deep Water Drilling Riser In... | done | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-431 | feat(assetutilities/calculations): implement os-f101[1] — os f101[1] | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-432 | feat(assetutilities/calculations): implement F101 — DNVOS F101 | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-433 | feat(assetutilities/calculations): implement BP - Riser drag dat — BP   Riser drag dat | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-434 | feat(assetutilities/calculations): implement Buoyant Riser_Shear7_Model — Buoyant Riser Shear7 Model | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-435 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-436 | feat(assetutilities/calculations): implement TNE012-1 Internal Pressure Effects on... — TNE012 1 Internal Pressure Effects on Riser Ext... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-437 | feat(assetutilities/calculations): implement BP Riser Array Design Guidelines v2 — BP Riser Array Design Guidelines v2 | done | high | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-438 | feat(assetutilities/calculations): implement Riser Equivalencing & De-equivalencing — Riser Equivalencing & De equivalencing | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-439 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-440 | feat(assetutilities/calculations): implement Overestimation of VIV Fatigue Damage ... — Overestimation of VIV Fatigue Damage for Single... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-441 | feat(assetutilities/calculations): implement TNE004-1 Riser Tow Out Analysis Metho... — TNE004 1 Riser Tow Out Analysis Methodology | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-442 | feat(assetutilities/calculations): implement Huse, E., Experimental Investigation ... — Huse, E., Experimental Investigation of Deep Se... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-443 | feat(assetutilities/calculations): implement Norton, D.J., et al, 1981 - Wind Tunn... — Norton, D.J., et al, 1981   Wind Tunnel Tests o... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-444 | feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-445 | feat(assetutilities/calculations): implement Smith, C.S., et al, 1981 - Residual S... — Smith, C.S., et al, 1981   Residual Strength an... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-446 | feat(assetutilities/calculations): implement Javanmardi, K., et al, 1995 - Auger T... — Javanmardi, K., et al, 1995   Auger TLP Well Sy... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-447 | feat(assetutilities/calculations): implement Fox, S.A., et al, 1995 - Design Analy... — Fox, S.A., et al, 1995   Design Analysis and Fu... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-448 | feat(assetutilities/calculations): implement Larimore, D., et al, 1998 - Case Hist... — Larimore, D., et al, 1998   Case History   Firs... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-449 | feat(assetutilities/calculations): implement Allen, D.W., 1995 - Vortex-InducedVib... — Allen, D.W., 1995   Vortex InducedVibration Ana... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-450 | feat(assetutilities/calculations): implement Brooks, I.H., 1987 - A Pragmatic Appr... — Brooks, I.H., 1987   A Pragmatic Approach to Vo... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-451 | feat(assetutilities/calculations): implement Carminati, J.R., et al, 1999 - Ursa T... — Carminati, J.R., et al, 1999   Ursa TLP Well Sy... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-452 | feat(assetutilities/calculations): implement Barton, D.R., et al, 1999 - Genesis P... — Barton, D.R., et al, 1999   Genesis Project   D... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-453 | feat(assetutilities/calculations): implement OTC1997-8494 Code Conflicts — OTC1997 8494 Code Conflicts | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-454 | feat(assetutilities/calculations): implement OTC2001-13109 SCR Fatigue at Low KC — OTC2001 13109 SCR Fatigue at Low KC | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-455 | feat(assetutilities/calculations): implement Chen, W.C. 1989, Fatigue - Life Predi... — Chen, W.C. 1989, Fatigue   Life Predictions for... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-456 | feat(assetutilities/calculations): implement Sweeney, T., et al, 1991 - Behaviour ... — Sweeney, T., et al, 1991   Behaviour of 15ksi S... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-457 | feat(assetutilities/calculations): implement Berner, P., et al, 1997 - Neptune Pro... — Berner, P., et al, 1997   Neptune Project   Pro... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-458 | feat(assetutilities/calculations): implement Stahl, OTC 3902, Design Methodology f... — Stahl, OTC 3902, Design Methodology for Offshor... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-459 | feat(assetutilities/calculations): implement Gardner, T.N., et al, 1982 - Deepwate... — Gardner, T.N., et al, 1982   Deepwater Drilling... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-460 | feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-461 | feat(assetutilities/calculations): implement Kim, Y.Y., et al, 1975 - Analysis of ... — Kim, Y.Y., et al, 1975   Analysis of Simultaneo... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-462 | feat(assetutilities/calculations): implement Grant, R., 1977 - Riser Fairing for R... — Grant, R., 1977   Riser Fairing for Reduced Dra... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-463 | feat(assetutilities/calculations): implement Jacobsen, V., et al, 1996 - Vibration... — Jacobsen, V., et al, 1996   Vibration Suppressi... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-464 | feat(assetutilities/calculations): implement D'Souza, R., et al, 2002 - The Next G... — D'Souza, R., et al, 2002   The Next Generation ... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-465 | feat(assetutilities/calculations): implement Vandiver, J.K., 1985 - The Prediction... — Vandiver, J.K., 1985   The Prediction of Lockin... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-466 | feat(assetutilities/calculations): implement Denison, E.B., et al, 1997 - Mars TLP... — Denison, E.B., et al, 1997   Mars TLP Drilling ... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-467 | feat(assetutilities/calculations): implement Britton, J.S., et al, 1987 - Improvin... — Britton, J.S., et al, 1987   Improving Wellhead... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-468 | feat(assetutilities/calculations): implement Miller, J.E., et al, 1985 - Influence... — Miller, J.E., et al, 1985   Influence of Mud Co... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | done | high | low | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | ⏳ pending | - |
+| WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ✅ | ❌ | ███ 100% | ⏳ pending | - |
+| WRK-473 | feat(hydrodynamics): integrate wavespectra library for spectral processing | pending | medium | simple | - | - | digitalmodel | hydrodynamics/wave_spectra | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-474 | feat(subsea): integrate MoorDyn + MoorPy for mooring analysis | pending | medium | moderate | - | - | digitalmodel | subsea/mooring_analysis | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending | medium | simple | - | - | digitalmodel | marine_ops/marine_analysis | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-476 | feat(worldenergydata): create ESG/Carbon Emissions module | pending | high | moderate | - | - | worldenergydata | esg_carbon | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | medium | simple | - | - | worldenergydata | safety_analysis/geohazard | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending | high | moderate | - | - | digitalmodel | subsea/cp_analysis | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | pending | medium | moderate | - | - | worldenergydata | sodir | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | medium | moderate | - | - | worldenergydata | metocean | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | - | - | digitalmodel | subsea | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-482 | feat(digitalmodel/cathodic_protection): Implement API RP 1632 — API RP 1632 Cathodic Protection of Underground Pet | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-488 | feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-489 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-497 | feat(digitalmodel/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-498 | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-499 | feat(digitalmodel/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-500 | feat(doris/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | high | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-501 | feat(digitalmodel/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-502 | feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-503 | feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-504 | feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-505 | feat(digitalmodel/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-506 | feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-507 | feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-508 | feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-509 | feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-510 | feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-511 | feat(digitalmodel/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-512 | feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | high | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-513 | feat(digitalmodel/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-514 | feat(doris/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-515 | feat(digitalmodel/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-516 | feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | high | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-517 | feat(digitalmodel/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-518 | feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-519 | feat(digitalmodel/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-520 | feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-521 | feat(digitalmodel/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-522 | feat(doris/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-523 | feat(digitalmodel/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-524 | feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-525 | feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-526 | feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-527 | feat(digitalmodel/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-528 | feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-529 | feat(digitalmodel/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-530 | feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-531 | feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-532 | feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-533 | feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-534 | feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-535 | feat(digitalmodel/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-536 | feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-537 | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-539 | feat(digitalmodel/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-540 | feat(OGManufacturing/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-541 | feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-542 | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-543 | feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-544 | feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-545 | feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-546 | feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | medium | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-547 | feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | high | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-548 | feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | high | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-549 | feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-550 | feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | medium | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-551 | feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-552 | feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | medium | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-553 | feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-555 | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-556 | feat(digitalmodel/marine): Implement API RP 2I — API RP 2I 3rd Ed (2008) In-service Inspection of M | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -566,8 +657,6 @@
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
 | WRK-019 | Establish drilling, completion, and intervention cost data by region and environment | low | complex | worldenergydata | - |
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | medium | complex | digitalmodel | - |
-| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | medium | complex | assethold | - |
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | medium | complex | assethold | - |
 | WRK-041 | Develop long-term plan for Hobbies repo | low | medium | hobbies | - |
 | WRK-042 | Develop long-term plan for Investments repo | low | medium | investments | - |
@@ -597,7 +686,6 @@
 | WRK-198 | HSE risk index interactive web dashboard | medium | complex | aceengineer-website | demos/hse-risk-dashboard.html |
 | WRK-199 | AI agent usage optimizer skill — maximize Claude/Codex/Gemini allocation per task | medium | medium | workspace-hub | ai-tools |
 | WRK-209 | Add unit validator to EnvironmentSpec.water_density — catch physically implausible values | medium | small | digitalmodel | - |
-| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | medium | medium | worldenergydata, digitalmodel | drilling_economics |
 | WRK-221 | Offshore resilience design framework — modular platforms, lifecycle planning, structural monitoring | low | medium | digitalmodel, aceengineer-website | offshore_resilience |
 | WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | medium | low | workspace-hub | - |
 | WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | high | medium | workspace-hub | - |
@@ -610,7 +698,6 @@
 | WRK-251 | Dynacard vision model evaluation — benchmark GPT-4V / Claude Vision vs current heuristics | medium | medium | digitalmodel | - |
 | WRK-253 | Data residence tier compliance audit and extension to assethold | medium | medium | worldenergydata, digitalmodel, assethold | - |
 | WRK-254 | Heavy vessel GIS integration — connect vessel dataset to GIS skill and BSEE pipeline | medium | medium | worldenergydata, digitalmodel | - |
-| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | medium | complex | digitalmodel | - |
 | WRK-257 | Agent coordination model ADR — document architectural decision record | low | simple | workspace-hub | - |
 | WRK-262 | Add path-handling guidance to session preflight hook | low | simple | workspace-hub | - |
 | WRK-263 | Progressively reduce agent harness files to ~20 lines by migrating content to skills | high | medium | workspace-hub | - |
@@ -668,7 +755,6 @@
 | WRK-347 | Rename aceengineer-website/src/ to content/ | medium | simple | aceengineer-website | - |
 | WRK-348 | Add root pyproject.toml to workspace-hub src/ | medium | simple | workspace-hub | - |
 | WRK-349 | Document client/portfolio repos in ecosystem docs | low | simple | workspace-hub | - |
-| WRK-352 | Set up remote desktop access on ace-linux-2 | low | simple | workspace-hub | - |
 | WRK-353 | Expand S-N curve library from 17 to 20 standards | high | medium | digitalmodel | - |
 | WRK-354 | Structural module — implement jacket and topside analysis | high | high | digitalmodel | - |
 | WRK-355 | Pipeline and flexibles module — pressure containment checks | medium | high | digitalmodel | - |
@@ -687,44 +773,13 @@
 | WRK-387 | Claude Code session auto-refresh with WRK context persistence | high | complex | workspace-hub | - |
 | WRK-388 | GIS skills — QGIS, Google Earth Engine, Python GIS ecosystem | medium | complex | workspace-hub | - |
 | WRK-390 | enhance(work-queue): richer WRK item presentation in work skill | low | medium | - | - |
-| WRK-391 | Online Resources Research — expanded discovery of skills, data APIs and references for workspace-hub | medium | complex | workspace-hub | - |
 | WRK-392 | feat(skills): add work-document-and-exit skill — capture WRK state + session handoff | low | simple | - | - |
 | WRK-393 | Evaluate Polymathic AI — The Well for ecosystem integration | medium | medium | workspace-hub | - |
 | WRK-394 | Planing hull motion model — nonlinear 2D+t strip theory for high-speed vessels | low | complex | digitalmodel | - |
+| WRK-402 | worldenergydata test structure consolidation | low | simple | worldenergydata | - |
 | WRK-417 | The Well — planetswe dataset integration with worldenergydata/metocean | medium | medium | worldenergydata, digitalmodel | - |
 | WRK-418 | The Well — acoustic_scattering datasets for subsea NDE validation | medium | medium | digitalmodel | - |
 | WRK-419 | The Well — shear_flow dataset for hydrodynamics ML baseline | medium | medium | digitalmodel | - |
-
-### Pending
-
-| ID | Title | Priority | Complexity | Repos | Module |
-|-----|-------|----------|------------|-------|--------|
-| WRK-005 | Clean up email using AI (when safe) | low | medium | achantas-data | - |
-| WRK-008 | Upload photos from multiple devices to achantas-media | low | medium | achantas-data | - |
-| WRK-032 | Modular OrcaFlex pipeline installation input with parametric campaign support | medium | complex | digitalmodel | - |
-| WRK-036 | OrcaFlex structure deployment analysis - supply boat side deployment with structural loads | low | complex | acma-projects | - |
-| WRK-039 | SPM project benchmarking - AQWA vs OrcaFlex | medium | complex | digitalmodel | - |
-| WRK-043 | Parametric hull form analysis with RAO generation and client-facing lookup graphs | low | complex | digitalmodel | - |
-| WRK-045 | OrcaFlex rigid jumper analysis - stress and VIV for various configurations | medium | complex | digitalmodel | - |
-| WRK-046 | OrcaFlex drilling and completion riser parametric analysis | medium | complex | digitalmodel | - |
-| WRK-048 | Blender working configurations for digitalmodel | low | medium | digitalmodel | - |
-| WRK-050 | Hardware consolidation — inventory, assess, repurpose devices + dev environment readiness | medium | complex | workspace-hub | - |
-| WRK-075 | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | low | complex | digitalmodel | - |
-| WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | high | complex | digitalmodel | - |
-| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | medium | medium | digitalmodel, workspace-hub | - |
-| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - |
-| WRK-171 | Cost data calibration — sanctioned project benchmarking & multivariate cost prediction | medium | complex | worldenergydata | cost |
-| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | high | complex | workspace-hub | - |
-| WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | medium | medium | aceengineer-website, worldenergydata | - |
-| WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | medium | medium | aceengineer-website | - |
-| WRK-297 | SSHFS mounts on ace-linux-1 for ace-linux-2 drives — bidirectional file access | high | simple | workspace-hub | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | medium | high | workspace-hub, digitalmodel, worldenergydata, assetutilities, assethold, doris, OGManufacturing, frontierdeepwater, saipem, acma-projects, pdf-large-reader | - |
-| WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | medium | medium | digitalmodel, workspace-hub | - |
-| WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | high | medium | digitalmodel | - |
-| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | medium | medium | workspace-hub, digitalmodel | - |
-| WRK-370 | Heriberto: garage fence door repair | medium | simple | achantas-data | - |
-| WRK-371 | Heriberto: powder room faucet tightening | medium | simple | achantas-data | - |
-| WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | medium | medium | - | - |
 | WRK-420 | feat(assetutilities/calculations): implement ISO-TR 10400, 1st Ed (2007) Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | high | low | assetutilities | - |
 | WRK-421 | feat(assetutilities/calculations): implement API BULL 5C3 Formulas and Calculation... — API BULL 5C3 Formulas and Calculations for Casi... | high | low | assetutilities | - |
 | WRK-422 | feat(assetutilities/calculations): implement 5C — API TR 5C3 (2008) Technical Report on Equations... | high | medium | assetutilities | - |
@@ -775,18 +830,140 @@
 | WRK-467 | feat(assetutilities/calculations): implement Britton, J.S., et al, 1987 - Improvin... — Britton, J.S., et al, 1987   Improving Wellhead... | high | low | assetutilities | - |
 | WRK-468 | feat(assetutilities/calculations): implement Miller, J.E., et al, 1985 - Influence... — Miller, J.E., et al, 1985   Influence of Mud Co... | high | low | assetutilities | - |
 | WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | high | low | assetutilities | - |
+
+### Pending
+
+| ID | Title | Priority | Complexity | Repos | Module |
+|-----|-------|----------|------------|-------|--------|
+| WRK-005 | Clean up email using AI (when safe) | low | medium | achantas-data | - |
+| WRK-008 | Upload photos from multiple devices to achantas-media | low | medium | achantas-data | - |
+| WRK-032 | Modular OrcaFlex pipeline installation input with parametric campaign support | medium | complex | digitalmodel | - |
+| WRK-036 | OrcaFlex structure deployment analysis - supply boat side deployment with structural loads | low | complex | acma-projects | - |
+| WRK-039 | SPM project benchmarking - AQWA vs OrcaFlex | medium | complex | digitalmodel | - |
+| WRK-043 | Parametric hull form analysis with RAO generation and client-facing lookup graphs | low | complex | digitalmodel | - |
+| WRK-045 | OrcaFlex rigid jumper analysis - stress and VIV for various configurations | medium | complex | digitalmodel | - |
+| WRK-046 | OrcaFlex drilling and completion riser parametric analysis | medium | complex | digitalmodel | - |
+| WRK-048 | Blender working configurations for digitalmodel | low | medium | digitalmodel | - |
+| WRK-050 | Hardware consolidation — inventory, assess, repurpose devices + dev environment readiness | medium | complex | workspace-hub | - |
+| WRK-075 | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | low | complex | digitalmodel | - |
+| WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | high | complex | digitalmodel | - |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | medium | medium | digitalmodel, workspace-hub | - |
+| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | high | complex | aceengineer-website, aceengineer-strategy, workspace-hub | - |
+| WRK-171 | Cost data calibration — sanctioned project benchmarking & multivariate cost prediction | medium | complex | worldenergydata | cost |
+| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | medium | medium | worldenergydata, digitalmodel | drilling_economics |
+| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | high | complex | workspace-hub | - |
+| WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | medium | medium | aceengineer-website, worldenergydata | - |
+| WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | medium | medium | aceengineer-website | - |
+| WRK-297 | SSHFS mounts on ace-linux-1 for ace-linux-2 drives — bidirectional file access | high | simple | workspace-hub | - |
+| WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | medium | medium | digitalmodel, workspace-hub | - |
+| WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | high | medium | digitalmodel | - |
+| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | medium | medium | workspace-hub, digitalmodel | - |
+| WRK-370 | Heriberto: garage fence door repair | medium | simple | achantas-data | - |
+| WRK-371 | Heriberto: powder room faucet tightening | medium | simple | achantas-data | - |
+| WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | medium | medium | - | - |
+| WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | high | medium | workspace-hub | - |
+| WRK-473 | feat(hydrodynamics): integrate wavespectra library for spectral processing | medium | simple | digitalmodel | hydrodynamics/wave_spectra |
+| WRK-474 | feat(subsea): integrate MoorDyn + MoorPy for mooring analysis | medium | moderate | digitalmodel | subsea/mooring_analysis |
+| WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | medium | simple | digitalmodel | marine_ops/marine_analysis |
+| WRK-476 | feat(worldenergydata): create ESG/Carbon Emissions module | high | moderate | worldenergydata | esg_carbon |
+| WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | medium | simple | worldenergydata | safety_analysis/geohazard |
+| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | high | moderate | digitalmodel | subsea/cp_analysis |
+| WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | medium | moderate | worldenergydata | sodir |
+| WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | medium | moderate | worldenergydata | metocean |
+| WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | high | moderate | digitalmodel | subsea |
+| WRK-482 | feat(digitalmodel/cathodic_protection): Implement API RP 1632 — API RP 1632 Cathodic Protection of Underground Pet | high | high | digitalmodel | - |
+| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | medium | low | digitalmodel | - |
+| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | medium | low | digitalmodel | - |
+| WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | medium | low | digitalmodel | - |
+| WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | medium | low | digitalmodel | - |
+| WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | medium | low | digitalmodel | - |
+| WRK-488 | feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR | high | medium | digitalmodel | - |
+| WRK-489 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al | high | medium | digitalmodel | - |
+| WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | high | medium | digitalmodel | - |
+| WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | high | medium | digitalmodel | - |
+| WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | high | medium | digitalmodel | - |
+| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | high | medium | digitalmodel | - |
+| WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | high | medium | digitalmodel | - |
+| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | high | medium | digitalmodel | - |
+| WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | high | medium | digitalmodel | - |
+| WRK-497 | feat(digitalmodel/pipeline): Implement API RP 1111 — API RP 1111 | high | high | digitalmodel | - |
+| WRK-498 | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | high | high | doris | - |
+| WRK-499 | feat(digitalmodel/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | high | high | digitalmodel | - |
+| WRK-500 | feat(doris/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | high | high | doris | - |
+| WRK-501 | feat(digitalmodel/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | high | medium | digitalmodel | - |
+| WRK-502 | feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | high | medium | doris | - |
+| WRK-503 | feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | high | medium | digitalmodel | - |
+| WRK-504 | feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | high | medium | doris | - |
+| WRK-505 | feat(digitalmodel/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | high | medium | digitalmodel | - |
+| WRK-506 | feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | high | medium | doris | - |
+| WRK-507 | feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | high | medium | digitalmodel | - |
+| WRK-508 | feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | high | medium | doris | - |
+| WRK-509 | feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | high | medium | digitalmodel | - |
+| WRK-510 | feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | high | medium | doris | - |
+| WRK-511 | feat(digitalmodel/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | high | high | digitalmodel | - |
+| WRK-512 | feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | high | high | doris | - |
+| WRK-513 | feat(digitalmodel/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | high | medium | digitalmodel | - |
+| WRK-514 | feat(doris/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | high | medium | doris | - |
+| WRK-515 | feat(digitalmodel/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | high | high | digitalmodel | - |
+| WRK-516 | feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | high | high | doris | - |
+| WRK-517 | feat(digitalmodel/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | high | medium | digitalmodel | - |
+| WRK-518 | feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | high | medium | doris | - |
+| WRK-519 | feat(digitalmodel/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | high | medium | digitalmodel | - |
+| WRK-520 | feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | high | medium | doris | - |
+| WRK-521 | feat(digitalmodel/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | high | medium | digitalmodel | - |
+| WRK-522 | feat(doris/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | high | medium | doris | - |
+| WRK-523 | feat(digitalmodel/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | high | medium | digitalmodel | - |
+| WRK-524 | feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | high | medium | doris | - |
+| WRK-525 | feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | high | medium | digitalmodel | - |
+| WRK-526 | feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | high | medium | doris | - |
+| WRK-527 | feat(digitalmodel/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | high | medium | digitalmodel | - |
+| WRK-528 | feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | high | medium | doris | - |
+| WRK-529 | feat(digitalmodel/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | high | medium | digitalmodel | - |
+| WRK-530 | feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | high | medium | doris | - |
+| WRK-531 | feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | high | medium | digitalmodel | - |
+| WRK-532 | feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | high | medium | doris | - |
+| WRK-533 | feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | high | medium | digitalmodel | - |
+| WRK-534 | feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | high | medium | doris | - |
+| WRK-535 | feat(digitalmodel/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | high | medium | digitalmodel | - |
+| WRK-536 | feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | high | medium | doris | - |
+| WRK-537 | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | high | medium | digitalmodel | - |
+| WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | high | medium | doris | - |
+| WRK-539 | feat(digitalmodel/structural): Implement API RP 2A — API RP 2A WSD | high | high | digitalmodel | - |
+| WRK-540 | feat(OGManufacturing/structural): Implement API RP 2A — API RP 2A WSD | high | high | OGManufacturing | - |
+| WRK-541 | feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | medium | low | digitalmodel | - |
+| WRK-542 | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | medium | low | OGManufacturing | - |
+| WRK-543 | feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | high | low | digitalmodel | - |
+| WRK-544 | feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | high | low | OGManufacturing | - |
+| WRK-545 | feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | medium | low | digitalmodel | - |
+| WRK-546 | feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | medium | low | OGManufacturing | - |
+| WRK-547 | feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | high | low | digitalmodel | - |
+| WRK-548 | feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | high | low | OGManufacturing | - |
+| WRK-549 | feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | medium | low | digitalmodel | - |
+| WRK-550 | feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | medium | low | OGManufacturing | - |
+| WRK-551 | feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | medium | low | digitalmodel | - |
+| WRK-552 | feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | medium | low | OGManufacturing | - |
+| WRK-553 | feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | medium | low | digitalmodel | - |
+| WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | medium | low | OGManufacturing | - |
+| WRK-555 | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | high | medium | digitalmodel | - |
+| WRK-556 | feat(digitalmodel/marine): Implement API RP 2I — API RP 2I 3rd Ed (2008) In-service Inspection of M | high | high | digitalmodel | - |
+| WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | high | high | digitalmodel | - |
+| WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | high | high | digitalmodel | - |
+| WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | high | high | digitalmodel | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
 
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
+| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | medium | complex | digitalmodel | - |
+| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | medium | complex | assethold | - |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | high | medium | workspace-hub | - |
 | WRK-125 | OrcaFlex module roadmap — evolving coordination and progress tracking | high | low | digitalmodel | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | high | complex | digitalmodel | - |
 | WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | high | complex | digitalmodel | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | high | complex | workspace-hub | - |
+| WRK-352 | Set up remote desktop access on ace-linux-2 | low | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -894,6 +1071,7 @@
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | high | medium | acma-projects, assetutilities | - |
 | WRK-124 | Session 20260211_095832 — 1 file(s) created | medium | low | digitalmodel | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | high | medium | digitalmodel | - |
+| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | high | medium | digitalmodel | - |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | medium | medium | workspace-hub | - |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | medium | medium | worldenergydata | - |
@@ -958,6 +1136,7 @@
 | WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | medium | medium | workspace-hub | - |
 | WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | high | medium | workspace-hub | - |
 | WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | high | medium | workspace-hub | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | high | medium | workspace-hub | - |
 | WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | high | medium | workspace-hub | - |
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | high | medium | workspace-hub | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | high | simple | workspace-hub | - |
@@ -993,11 +1172,12 @@
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | medium | complex | digitalmodel | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | high | simple | digitalmodel, saipem, acma-projects | - |
 | WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | critical | medium | digitalmodel | - |
-| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | medium | simple | digitalmodel, acma-projects | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | high | simple | workspace-hub | - |
 | WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | high | simple | workspace-hub | - |
 | WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | medium | simple | workspace-hub | - |
 | WRK-285 | Write active WRK id to state file on working/ transition | high | simple | workspace-hub | - |
 | WRK-287 | Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2 | medium | medium | workspace-hub | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | medium | medium | workspace-hub | - |
 | WRK-299 | comprehensive-learning skill — single batch command for all session learning + ecosystem improvement | high | medium | - | - |
 | WRK-300 | workstations skill — evolve from registry to multi-machine work distribution | medium | medium | - | - |
 | WRK-303 | Ensemble planning — 3×Claude + 3×Codex + 3×Gemini independent agents for non-deterministic plan diversity | medium | medium | workspace-hub | - |
@@ -1021,6 +1201,7 @@
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | high | simple | - | - |
 | WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | medium | medium | workspace-hub, digitalmodel | - |
 | WRK-377 | ROP prediction model — Bourgoyne-Young and Warren in digitalmodel | high | medium | digitalmodel | - |
+| WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | high | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -1028,8 +1209,15 @@
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-335 | Drilling engineering module — casing design checks per API TR 5C3 | done | medium | high | - |
+| WRK-540 | feat(OGManufacturing/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | - |
+| WRK-542 | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | - |
+| WRK-544 | feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | - |
+| WRK-546 | feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | medium | low | - |
+| WRK-548 | feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | high | low | - |
+| WRK-550 | feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | medium | low | - |
+| WRK-552 | feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | medium | low | - |
+| WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | - |
 
 ### aceengineer-admin
 
@@ -1103,8 +1291,6 @@
 | WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | archived | medium | simple | - |
 | WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | archived | high | medium | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | high | simple | - |
-| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | archived | medium | simple | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-338 | LNG tank structural checks — API 620 and EN 14620 thin-shell hoop stress | done | medium | medium | - |
 | WRK-339 | Aluminium structural module — Eurocode 9 and AA ADM member capacity checks | done | medium | medium | - |
 | WRK-340 | Composite panel design tool — Classical Laminate Theory CLT strength checks | done | medium | high | - |
@@ -1113,13 +1299,12 @@
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
-| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | done | medium | complex | - |
+| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | working | medium | complex | - |
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | done | medium | complex | - |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | in_progress | low | complex | - |
 | WRK-053 | assethold test coverage improvement | archived | medium | medium | - |
 | WRK-112 | Appliance lifecycle analytics module for assethold | done | medium | complex | - |
 | WRK-253 | Data residence tier compliance audit and extension to assethold | done | medium | medium | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-322 | Fundamentals scoring — P/E P/B EV/EBITDA ranking from yfinance | done | high | medium | - |
 | WRK-323 | Covered call analyser — option chain ingestion and premium yield calculator | done | medium | medium | - |
 | WRK-324 | Risk metrics — VaR CVaR Sharpe ratio max drawdown per position and portfolio | done | high | medium | - |
@@ -1134,68 +1319,67 @@
 | WRK-052 | assetutilities test coverage improvement | archived | high | complex | - |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium | - |
 | WRK-150 | assetutilities test coverage improvement (re-creates WRK-052) | done | medium | medium | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-344 | Remove agent_os from assetutilities | done | high | simple | - |
 | WRK-345 | Consolidate validators package into assetutilities | done | high | simple | - |
 | WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | - |
 | WRK-383 | Standards-to-Module Capability Map — doc → repo → module linkage | done | high | medium | - |
-| WRK-420 | feat(assetutilities/calculations): implement ISO-TR 10400, 1st Ed (2007) Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | pending | high | low | - |
-| WRK-421 | feat(assetutilities/calculations): implement API BULL 5C3 Formulas and Calculation... — API BULL 5C3 Formulas and Calculations for Casi... | pending | high | low | - |
-| WRK-422 | feat(assetutilities/calculations): implement 5C — API TR 5C3 (2008) Technical Report on Equations... | pending | high | medium | - |
-| WRK-423 | feat(assetutilities/calculations): implement API TR 5C3 (2008) Technical Report on... — API TR 5C3 (2008) Technical Report on Equations... | pending | high | medium | - |
-| WRK-424 | feat(assetutilities/calculations): implement ISO-TR_10400,_1st_Ed_(2007)_Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | pending | high | low | - |
-| WRK-425 | feat(assetutilities/calculations): implement BS15663 Pt 2 (2001) Life cycle costin... — BS15663 Pt 2 (2001) Life cycle costing   Guidan... | pending | high | low | - |
-| WRK-426 | feat(assetutilities/calculations): implement Marine Trasportations_0030-4 — Marine Trasportations 0030 4 | pending | high | low | - |
-| WRK-427 | feat(assetutilities/calculations): implement AMJIG, Rev 2 (2000) Deep Water Drilli... — AMJIG, Rev 2 (2000) Deep Water Drilling Riser I... | pending | high | medium | - |
-| WRK-428 | feat(assetutilities/calculations): implement AMJIG, Rev2 (1999) Deep Water Drillin... — AMJIG, Rev2 (1999) Deep Water Drilling Riser In... | pending | high | medium | - |
-| WRK-429 | feat(assetutilities/calculations): implement rpt001-3 Deep Water Drilling Riser In... — rpt001 3 Deep Water Drilling Riser Integ Manag ... | pending | high | low | - |
-| WRK-430 | feat(assetutilities/calculations): implement AMJIG, Rev1 (1998) Deep Water Drillin... — AMJIG, Rev1 (1998) Deep Water Drilling Riser In... | pending | high | medium | - |
-| WRK-431 | feat(assetutilities/calculations): implement os-f101[1] — os f101[1] | pending | high | low | - |
-| WRK-432 | feat(assetutilities/calculations): implement F101 — DNVOS F101 | pending | high | low | - |
-| WRK-433 | feat(assetutilities/calculations): implement BP - Riser drag dat — BP   Riser drag dat | pending | high | low | - |
-| WRK-434 | feat(assetutilities/calculations): implement Buoyant Riser_Shear7_Model — Buoyant Riser Shear7 Model | pending | high | low | - |
-| WRK-435 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | pending | high | low | - |
-| WRK-436 | feat(assetutilities/calculations): implement TNE012-1 Internal Pressure Effects on... — TNE012 1 Internal Pressure Effects on Riser Ext... | pending | high | low | - |
-| WRK-437 | feat(assetutilities/calculations): implement BP Riser Array Design Guidelines v2 — BP Riser Array Design Guidelines v2 | pending | high | medium | - |
-| WRK-438 | feat(assetutilities/calculations): implement Riser Equivalencing & De-equivalencing — Riser Equivalencing & De equivalencing | pending | high | low | - |
-| WRK-439 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | pending | high | low | - |
-| WRK-440 | feat(assetutilities/calculations): implement Overestimation of VIV Fatigue Damage ... — Overestimation of VIV Fatigue Damage for Single... | pending | high | low | - |
-| WRK-441 | feat(assetutilities/calculations): implement TNE004-1 Riser Tow Out Analysis Metho... — TNE004 1 Riser Tow Out Analysis Methodology | pending | high | low | - |
-| WRK-442 | feat(assetutilities/calculations): implement Huse, E., Experimental Investigation ... — Huse, E., Experimental Investigation of Deep Se... | pending | high | low | - |
-| WRK-443 | feat(assetutilities/calculations): implement Norton, D.J., et al, 1981 - Wind Tunn... — Norton, D.J., et al, 1981   Wind Tunnel Tests o... | pending | high | low | - |
-| WRK-444 | feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp... | pending | high | low | - |
-| WRK-445 | feat(assetutilities/calculations): implement Smith, C.S., et al, 1981 - Residual S... — Smith, C.S., et al, 1981   Residual Strength an... | pending | high | low | - |
-| WRK-446 | feat(assetutilities/calculations): implement Javanmardi, K., et al, 1995 - Auger T... — Javanmardi, K., et al, 1995   Auger TLP Well Sy... | pending | high | low | - |
-| WRK-447 | feat(assetutilities/calculations): implement Fox, S.A., et al, 1995 - Design Analy... — Fox, S.A., et al, 1995   Design Analysis and Fu... | pending | high | low | - |
-| WRK-448 | feat(assetutilities/calculations): implement Larimore, D., et al, 1998 - Case Hist... — Larimore, D., et al, 1998   Case History   Firs... | pending | high | low | - |
-| WRK-449 | feat(assetutilities/calculations): implement Allen, D.W., 1995 - Vortex-InducedVib... — Allen, D.W., 1995   Vortex InducedVibration Ana... | pending | high | low | - |
-| WRK-450 | feat(assetutilities/calculations): implement Brooks, I.H., 1987 - A Pragmatic Appr... — Brooks, I.H., 1987   A Pragmatic Approach to Vo... | pending | high | low | - |
-| WRK-451 | feat(assetutilities/calculations): implement Carminati, J.R., et al, 1999 - Ursa T... — Carminati, J.R., et al, 1999   Ursa TLP Well Sy... | pending | high | low | - |
-| WRK-452 | feat(assetutilities/calculations): implement Barton, D.R., et al, 1999 - Genesis P... — Barton, D.R., et al, 1999   Genesis Project   D... | pending | high | low | - |
-| WRK-453 | feat(assetutilities/calculations): implement OTC1997-8494 Code Conflicts — OTC1997 8494 Code Conflicts | pending | high | low | - |
-| WRK-454 | feat(assetutilities/calculations): implement OTC2001-13109 SCR Fatigue at Low KC — OTC2001 13109 SCR Fatigue at Low KC | pending | high | low | - |
-| WRK-455 | feat(assetutilities/calculations): implement Chen, W.C. 1989, Fatigue - Life Predi... — Chen, W.C. 1989, Fatigue   Life Predictions for... | pending | high | low | - |
-| WRK-456 | feat(assetutilities/calculations): implement Sweeney, T., et al, 1991 - Behaviour ... — Sweeney, T., et al, 1991   Behaviour of 15ksi S... | pending | high | low | - |
-| WRK-457 | feat(assetutilities/calculations): implement Berner, P., et al, 1997 - Neptune Pro... — Berner, P., et al, 1997   Neptune Project   Pro... | pending | high | low | - |
-| WRK-458 | feat(assetutilities/calculations): implement Stahl, OTC 3902, Design Methodology f... — Stahl, OTC 3902, Design Methodology for Offshor... | pending | high | low | - |
-| WRK-459 | feat(assetutilities/calculations): implement Gardner, T.N., et al, 1982 - Deepwate... — Gardner, T.N., et al, 1982   Deepwater Drilling... | pending | high | low | - |
-| WRK-460 | feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of... | pending | high | low | - |
-| WRK-461 | feat(assetutilities/calculations): implement Kim, Y.Y., et al, 1975 - Analysis of ... — Kim, Y.Y., et al, 1975   Analysis of Simultaneo... | pending | high | low | - |
-| WRK-462 | feat(assetutilities/calculations): implement Grant, R., 1977 - Riser Fairing for R... — Grant, R., 1977   Riser Fairing for Reduced Dra... | pending | high | low | - |
-| WRK-463 | feat(assetutilities/calculations): implement Jacobsen, V., et al, 1996 - Vibration... — Jacobsen, V., et al, 1996   Vibration Suppressi... | pending | high | low | - |
-| WRK-464 | feat(assetutilities/calculations): implement D'Souza, R., et al, 2002 - The Next G... — D'Souza, R., et al, 2002   The Next Generation ... | pending | high | low | - |
-| WRK-465 | feat(assetutilities/calculations): implement Vandiver, J.K., 1985 - The Prediction... — Vandiver, J.K., 1985   The Prediction of Lockin... | pending | high | low | - |
-| WRK-466 | feat(assetutilities/calculations): implement Denison, E.B., et al, 1997 - Mars TLP... — Denison, E.B., et al, 1997   Mars TLP Drilling ... | pending | high | low | - |
-| WRK-467 | feat(assetutilities/calculations): implement Britton, J.S., et al, 1987 - Improvin... — Britton, J.S., et al, 1987   Improving Wellhead... | pending | high | low | - |
-| WRK-468 | feat(assetutilities/calculations): implement Miller, J.E., et al, 1985 - Influence... — Miller, J.E., et al, 1985   Influence of Mud Co... | pending | high | low | - |
-| WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | pending | high | low | - |
+| WRK-420 | feat(assetutilities/calculations): implement ISO-TR 10400, 1st Ed (2007) Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | done | high | low | - |
+| WRK-421 | feat(assetutilities/calculations): implement API BULL 5C3 Formulas and Calculation... — API BULL 5C3 Formulas and Calculations for Casi... | done | high | low | - |
+| WRK-422 | feat(assetutilities/calculations): implement 5C — API TR 5C3 (2008) Technical Report on Equations... | done | high | medium | - |
+| WRK-423 | feat(assetutilities/calculations): implement API TR 5C3 (2008) Technical Report on... — API TR 5C3 (2008) Technical Report on Equations... | done | high | medium | - |
+| WRK-424 | feat(assetutilities/calculations): implement ISO-TR_10400,_1st_Ed_(2007)_Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | done | high | low | - |
+| WRK-425 | feat(assetutilities/calculations): implement BS15663 Pt 2 (2001) Life cycle costin... — BS15663 Pt 2 (2001) Life cycle costing   Guidan... | done | high | low | - |
+| WRK-426 | feat(assetutilities/calculations): implement Marine Trasportations_0030-4 — Marine Trasportations 0030 4 | done | high | low | - |
+| WRK-427 | feat(assetutilities/calculations): implement AMJIG, Rev 2 (2000) Deep Water Drilli... — AMJIG, Rev 2 (2000) Deep Water Drilling Riser I... | done | high | medium | - |
+| WRK-428 | feat(assetutilities/calculations): implement AMJIG, Rev2 (1999) Deep Water Drillin... — AMJIG, Rev2 (1999) Deep Water Drilling Riser In... | done | high | medium | - |
+| WRK-429 | feat(assetutilities/calculations): implement rpt001-3 Deep Water Drilling Riser In... — rpt001 3 Deep Water Drilling Riser Integ Manag ... | done | high | low | - |
+| WRK-430 | feat(assetutilities/calculations): implement AMJIG, Rev1 (1998) Deep Water Drillin... — AMJIG, Rev1 (1998) Deep Water Drilling Riser In... | done | high | medium | - |
+| WRK-431 | feat(assetutilities/calculations): implement os-f101[1] — os f101[1] | done | high | low | - |
+| WRK-432 | feat(assetutilities/calculations): implement F101 — DNVOS F101 | done | high | low | - |
+| WRK-433 | feat(assetutilities/calculations): implement BP - Riser drag dat — BP   Riser drag dat | done | high | low | - |
+| WRK-434 | feat(assetutilities/calculations): implement Buoyant Riser_Shear7_Model — Buoyant Riser Shear7 Model | done | high | low | - |
+| WRK-435 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | done | high | low | - |
+| WRK-436 | feat(assetutilities/calculations): implement TNE012-1 Internal Pressure Effects on... — TNE012 1 Internal Pressure Effects on Riser Ext... | done | high | low | - |
+| WRK-437 | feat(assetutilities/calculations): implement BP Riser Array Design Guidelines v2 — BP Riser Array Design Guidelines v2 | done | high | medium | - |
+| WRK-438 | feat(assetutilities/calculations): implement Riser Equivalencing & De-equivalencing — Riser Equivalencing & De equivalencing | done | high | low | - |
+| WRK-439 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | done | high | low | - |
+| WRK-440 | feat(assetutilities/calculations): implement Overestimation of VIV Fatigue Damage ... — Overestimation of VIV Fatigue Damage for Single... | done | high | low | - |
+| WRK-441 | feat(assetutilities/calculations): implement TNE004-1 Riser Tow Out Analysis Metho... — TNE004 1 Riser Tow Out Analysis Methodology | done | high | low | - |
+| WRK-442 | feat(assetutilities/calculations): implement Huse, E., Experimental Investigation ... — Huse, E., Experimental Investigation of Deep Se... | done | high | low | - |
+| WRK-443 | feat(assetutilities/calculations): implement Norton, D.J., et al, 1981 - Wind Tunn... — Norton, D.J., et al, 1981   Wind Tunnel Tests o... | done | high | low | - |
+| WRK-444 | feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp... | done | high | low | - |
+| WRK-445 | feat(assetutilities/calculations): implement Smith, C.S., et al, 1981 - Residual S... — Smith, C.S., et al, 1981   Residual Strength an... | done | high | low | - |
+| WRK-446 | feat(assetutilities/calculations): implement Javanmardi, K., et al, 1995 - Auger T... — Javanmardi, K., et al, 1995   Auger TLP Well Sy... | done | high | low | - |
+| WRK-447 | feat(assetutilities/calculations): implement Fox, S.A., et al, 1995 - Design Analy... — Fox, S.A., et al, 1995   Design Analysis and Fu... | done | high | low | - |
+| WRK-448 | feat(assetutilities/calculations): implement Larimore, D., et al, 1998 - Case Hist... — Larimore, D., et al, 1998   Case History   Firs... | done | high | low | - |
+| WRK-449 | feat(assetutilities/calculations): implement Allen, D.W., 1995 - Vortex-InducedVib... — Allen, D.W., 1995   Vortex InducedVibration Ana... | done | high | low | - |
+| WRK-450 | feat(assetutilities/calculations): implement Brooks, I.H., 1987 - A Pragmatic Appr... — Brooks, I.H., 1987   A Pragmatic Approach to Vo... | done | high | low | - |
+| WRK-451 | feat(assetutilities/calculations): implement Carminati, J.R., et al, 1999 - Ursa T... — Carminati, J.R., et al, 1999   Ursa TLP Well Sy... | done | high | low | - |
+| WRK-452 | feat(assetutilities/calculations): implement Barton, D.R., et al, 1999 - Genesis P... — Barton, D.R., et al, 1999   Genesis Project   D... | done | high | low | - |
+| WRK-453 | feat(assetutilities/calculations): implement OTC1997-8494 Code Conflicts — OTC1997 8494 Code Conflicts | done | high | low | - |
+| WRK-454 | feat(assetutilities/calculations): implement OTC2001-13109 SCR Fatigue at Low KC — OTC2001 13109 SCR Fatigue at Low KC | done | high | low | - |
+| WRK-455 | feat(assetutilities/calculations): implement Chen, W.C. 1989, Fatigue - Life Predi... — Chen, W.C. 1989, Fatigue   Life Predictions for... | done | high | low | - |
+| WRK-456 | feat(assetutilities/calculations): implement Sweeney, T., et al, 1991 - Behaviour ... — Sweeney, T., et al, 1991   Behaviour of 15ksi S... | done | high | low | - |
+| WRK-457 | feat(assetutilities/calculations): implement Berner, P., et al, 1997 - Neptune Pro... — Berner, P., et al, 1997   Neptune Project   Pro... | done | high | low | - |
+| WRK-458 | feat(assetutilities/calculations): implement Stahl, OTC 3902, Design Methodology f... — Stahl, OTC 3902, Design Methodology for Offshor... | done | high | low | - |
+| WRK-459 | feat(assetutilities/calculations): implement Gardner, T.N., et al, 1982 - Deepwate... — Gardner, T.N., et al, 1982   Deepwater Drilling... | done | high | low | - |
+| WRK-460 | feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of... | done | high | low | - |
+| WRK-461 | feat(assetutilities/calculations): implement Kim, Y.Y., et al, 1975 - Analysis of ... — Kim, Y.Y., et al, 1975   Analysis of Simultaneo... | done | high | low | - |
+| WRK-462 | feat(assetutilities/calculations): implement Grant, R., 1977 - Riser Fairing for R... — Grant, R., 1977   Riser Fairing for Reduced Dra... | done | high | low | - |
+| WRK-463 | feat(assetutilities/calculations): implement Jacobsen, V., et al, 1996 - Vibration... — Jacobsen, V., et al, 1996   Vibration Suppressi... | done | high | low | - |
+| WRK-464 | feat(assetutilities/calculations): implement D'Souza, R., et al, 2002 - The Next G... — D'Souza, R., et al, 2002   The Next Generation ... | done | high | low | - |
+| WRK-465 | feat(assetutilities/calculations): implement Vandiver, J.K., 1985 - The Prediction... — Vandiver, J.K., 1985   The Prediction of Lockin... | done | high | low | - |
+| WRK-466 | feat(assetutilities/calculations): implement Denison, E.B., et al, 1997 - Mars TLP... — Denison, E.B., et al, 1997   Mars TLP Drilling ... | done | high | low | - |
+| WRK-467 | feat(assetutilities/calculations): implement Britton, J.S., et al, 1987 - Improvin... — Britton, J.S., et al, 1987   Improving Wellhead... | done | high | low | - |
+| WRK-468 | feat(assetutilities/calculations): implement Miller, J.E., et al, 1985 - Influence... — Miller, J.E., et al, 1985   Influence of Mud Co... | done | high | low | - |
+| WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | done | high | low | - |
 
 ### digitalmodel
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | done | medium | complex | - |
+| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | working | medium | complex | - |
 | WRK-025 | AQWA diffraction analysis runner | archived | high | complex | - |
 | WRK-026 | Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta) | archived | high | complex | - |
 | WRK-027 | AQWA batch analysis execution | archived | high | medium | - |
@@ -1248,6 +1432,7 @@
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | high | medium | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | done | high | complex | - |
+| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | archived | high | complex | - |
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | blocked | high | complex | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | high | complex | - |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | archived | high | medium | - |
@@ -1276,7 +1461,7 @@
 | WRK-206 | Asset integrity / fitness-for-service (FFS) engineering skill — corrosion damage assessment and run-repair-replace decisions | archived | medium | medium | - |
 | WRK-209 | Add unit validator to EnvironmentSpec.water_density — catch physically implausible values | done | medium | small | - |
 | WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | medium | complex | well_design |
-| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | done | medium | medium | drilling_economics |
+| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | drilling_economics |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | complex | decommissioning_analytics |
 | WRK-221 | Offshore resilience design framework — modular platforms, lifecycle planning, structural monitoring | done | low | medium | offshore_resilience |
 | WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | high | simple | - |
@@ -1290,7 +1475,7 @@
 | WRK-253 | Data residence tier compliance audit and extension to assethold | done | medium | medium | - |
 | WRK-254 | Heavy vessel GIS integration — connect vessel dataset to GIS skill and BSEE pipeline | done | medium | medium | - |
 | WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | archived | medium | simple | - |
-| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | done | medium | complex | - |
+| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | in-progress | medium | complex | - |
 | WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | archived | high | medium | - |
 | WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | archived | medium | medium | - |
 | WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | archived | medium | complex | - |
@@ -1299,8 +1484,6 @@
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | archived | medium | complex | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | high | simple | - |
 | WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | archived | critical | medium | - |
-| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | archived | medium | simple | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | medium | - |
 | WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | high | medium | - |
 | WRK-315 | CALM buoy mooring fatigue — spectral fatigue from OrcaFlex time-domain output | done | medium | high | - |
@@ -1327,22 +1510,95 @@
 | WRK-417 | The Well — planetswe dataset integration with worldenergydata/metocean | done | medium | medium | - |
 | WRK-418 | The Well — acoustic_scattering datasets for subsea NDE validation | done | medium | medium | - |
 | WRK-419 | The Well — shear_flow dataset for hydrodynamics ML baseline | done | medium | medium | - |
+| WRK-473 | feat(hydrodynamics): integrate wavespectra library for spectral processing | pending | medium | simple | hydrodynamics/wave_spectra |
+| WRK-474 | feat(subsea): integrate MoorDyn + MoorPy for mooring analysis | pending | medium | moderate | subsea/mooring_analysis |
+| WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending | medium | simple | marine_ops/marine_analysis |
+| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending | high | moderate | subsea/cp_analysis |
+| WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | subsea |
+| WRK-482 | feat(digitalmodel/cathodic_protection): Implement API RP 1632 — API RP 1632 Cathodic Protection of Underground Pet | pending | high | high | - |
+| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending | medium | low | - |
+| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending | medium | low | - |
+| WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | pending | medium | low | - |
+| WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | pending | medium | low | - |
+| WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending | medium | low | - |
+| WRK-488 | feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR | pending | high | medium | - |
+| WRK-489 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al | pending | high | medium | - |
+| WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | high | medium | - |
+| WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | pending | high | medium | - |
+| WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | high | medium | - |
+| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | pending | high | medium | - |
+| WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | high | medium | - |
+| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | pending | high | medium | - |
+| WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | high | medium | - |
+| WRK-497 | feat(digitalmodel/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | - |
+| WRK-499 | feat(digitalmodel/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | high | - |
+| WRK-501 | feat(digitalmodel/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | medium | - |
+| WRK-503 | feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | medium | - |
+| WRK-505 | feat(digitalmodel/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | medium | - |
+| WRK-507 | feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | medium | - |
+| WRK-509 | feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | medium | - |
+| WRK-511 | feat(digitalmodel/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | high | - |
+| WRK-513 | feat(digitalmodel/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | medium | - |
+| WRK-515 | feat(digitalmodel/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | high | - |
+| WRK-517 | feat(digitalmodel/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | medium | - |
+| WRK-519 | feat(digitalmodel/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | medium | - |
+| WRK-521 | feat(digitalmodel/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | medium | - |
+| WRK-523 | feat(digitalmodel/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | medium | - |
+| WRK-525 | feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | medium | - |
+| WRK-527 | feat(digitalmodel/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | medium | - |
+| WRK-529 | feat(digitalmodel/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | medium | - |
+| WRK-531 | feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | medium | - |
+| WRK-533 | feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | - |
+| WRK-535 | feat(digitalmodel/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | - |
+| WRK-537 | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | - |
+| WRK-539 | feat(digitalmodel/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | - |
+| WRK-541 | feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | - |
+| WRK-543 | feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | - |
+| WRK-545 | feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | medium | low | - |
+| WRK-547 | feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | high | low | - |
+| WRK-549 | feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | medium | low | - |
+| WRK-551 | feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | medium | low | - |
+| WRK-553 | feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | - |
+| WRK-555 | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | pending | high | medium | - |
+| WRK-556 | feat(digitalmodel/marine): Implement API RP 2I — API RP 2I 3rd Ed (2008) In-service Inspection of M | pending | high | high | - |
+| WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | - |
+| WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | - |
+| WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | - |
 
 ### doris
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-329 | Formalise doris calculation workflow — migrate ad-hoc calcs to Python modules | done | medium | high | - |
 | WRK-330 | DNV-ST-F101 pressure containment checks for subsea pipelines | done | medium | medium | - |
 | WRK-331 | API RP 1111 deepwater pipeline design checks — collapse and propagating buckle | done | medium | medium | - |
 | WRK-332 | On-bottom stability module — DNV-RP-F109 soil resistance calculations | done | medium | medium | - |
+| WRK-498 | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | - |
+| WRK-500 | feat(doris/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | high | - |
+| WRK-502 | feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | medium | - |
+| WRK-504 | feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | medium | - |
+| WRK-506 | feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | medium | - |
+| WRK-508 | feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | medium | - |
+| WRK-510 | feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | medium | - |
+| WRK-512 | feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | high | - |
+| WRK-514 | feat(doris/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | medium | - |
+| WRK-516 | feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | high | - |
+| WRK-518 | feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | medium | - |
+| WRK-520 | feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | medium | - |
+| WRK-522 | feat(doris/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | medium | - |
+| WRK-524 | feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | medium | - |
+| WRK-526 | feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | medium | - |
+| WRK-528 | feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | medium | - |
+| WRK-530 | feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | medium | - |
+| WRK-532 | feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | medium | - |
+| WRK-534 | feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | - |
+| WRK-536 | feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | - |
+| WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | - |
 
 ### frontierdeepwater
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | archived | medium | medium | - |
 | WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | archived | medium | high | - |
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | archived | medium | high | - |
@@ -1364,7 +1620,6 @@
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-341 | Review pdf-large-reader vs native AI agent PDF capabilities — assess continuation or deprecation | done | medium | simple | - |
 
 ### rock-oil-field
@@ -1387,7 +1642,6 @@
 | WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | archived | medium | simple | - |
 | WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | archived | high | medium | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | high | simple | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | done | medium | high | - |
 | WRK-337 | Vessel weather-window calculator — operability analysis from Hs Tp scatter | done | medium | medium | - |
 
@@ -1457,6 +1711,7 @@
 | WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | parked | medium | medium | - |
 | WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | archived | high | medium | - |
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | done | high | medium | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | archived | high | medium | - |
 | WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | archived | high | medium | - |
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | high | medium | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | high | simple | - |
@@ -1473,6 +1728,7 @@
 | WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | archived | medium | simple | - |
 | WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | high | medium | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | done | high | simple | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | archived | high | simple | - |
 | WRK-281 | Fix 2H legacy project discoverability (navigation layer) | done | medium | simple | - |
 | WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | archived | high | simple | - |
 | WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | archived | medium | simple | - |
@@ -1482,6 +1738,7 @@
 | WRK-288 | Finish ace-linux-2 setup — install open source engineering programs and map capabilities | done | low | simple | - |
 | WRK-289 | Research open source FEA programs for engineering assignments | done | low | medium | - |
 | WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | done | medium | medium | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | archived | medium | medium | - |
 | WRK-291 | Install recommended FEA programs on ace-linux-2 | done | low | medium | - |
 | WRK-292 | Create capability map — file formats, workflow pipelines, interoperability matrix | done | low | medium | - |
 | WRK-293 | SMART health check on ace-linux-2 drives — install smartmontools + run diagnostics | done | high | simple | - |
@@ -1492,7 +1749,6 @@
 | WRK-298 | Install smartmontools on ace-linux-1 + SMART health check on all drives | done | high | simple | - |
 | WRK-303 | Ensemble planning — 3×Claude + 3×Codex + 3×Gemini independent agents for non-deterministic plan diversity | archived | medium | medium | - |
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | archived | high | medium | - |
 | WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | medium | - |
 | WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | archived | high | low | - |
@@ -1505,7 +1761,7 @@
 | WRK-348 | Add root pyproject.toml to workspace-hub src/ | done | medium | simple | - |
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | low | simple | - |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | - |
-| WRK-352 | Set up remote desktop access on ace-linux-2 | done | low | simple | - |
+| WRK-352 | Set up remote desktop access on ace-linux-2 | working | low | simple | - |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | simple | - |
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | high | complex | - |
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | medium | complex | - |
@@ -1517,8 +1773,9 @@
 | WRK-386 | Automated Gap-to-WRK Generator — doc → module gaps spawn new work items | done | medium | medium | - |
 | WRK-387 | Claude Code session auto-refresh with WRK context persistence | done | high | complex | - |
 | WRK-388 | GIS skills — QGIS, Google Earth Engine, Python GIS ecosystem | done | medium | complex | - |
-| WRK-391 | Online Resources Research — expanded discovery of skills, data APIs and references for workspace-hub | done | medium | complex | - |
 | WRK-393 | Evaluate Polymathic AI — The Well for ecosystem integration | done | medium | medium | - |
+| WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | high | medium | - |
+| WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1588,7 +1845,7 @@
 | WRK-196 | Canada offshore + emerging basin watch list (C-NLOER NL data; Guyana/Suriname/Namibia/Falklands monitor) | archived | low | moderate | canada_offshore + emerging_basins |
 | WRK-197 | Nigeria NUPRC + EITI data framework — West Africa deepwater and multi-country payment data | done | low | moderate | west_africa |
 | WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | medium | complex | well_design |
-| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | done | medium | medium | drilling_economics |
+| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | drilling_economics |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | complex | decommissioning_analytics |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | high | medium | - |
 | WRK-242 | Multi-format export as automatic pipeline output stage | archived | high | medium | - |
@@ -1607,7 +1864,6 @@
 | WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | archived | medium | medium | decommissioning |
 | WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | archived | medium | medium | well_planning |
 | WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | archived | medium | medium | safety_analysis |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | - |
 | WRK-316 | NDBC buoy data ingestion for metocean wave scatter matrices | done | medium | medium | - |
 | WRK-317 | Integrated web dashboard — Plotly Dash for BSEE and FDAS data | done | medium | high | - |
 | WRK-319 | Real-time EIA and IEA feed ingestion — weekly crude and gas production | done | medium | medium | - |
@@ -1617,7 +1873,12 @@
 | WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | - |
 | WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | medium | simple | - |
 | WRK-383 | Standards-to-Module Capability Map — doc → repo → module linkage | done | high | medium | - |
+| WRK-402 | worldenergydata test structure consolidation | done | low | simple | - |
 | WRK-417 | The Well — planetswe dataset integration with worldenergydata/metocean | done | medium | medium | - |
+| WRK-476 | feat(worldenergydata): create ESG/Carbon Emissions module | pending | high | moderate | esg_carbon |
+| WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | medium | simple | safety_analysis/geohazard |
+| WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | pending | medium | moderate | sodir |
+| WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | medium | moderate | metocean |
 
 ## By Priority
 
@@ -1672,6 +1933,7 @@
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | complex | digitalmodel | - |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | medium | digitalmodel | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | done | complex | digitalmodel | - |
+| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | archived | complex | digitalmodel | - |
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | blocked | complex | digitalmodel | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | complex | digitalmodel | - |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | archived | medium | digitalmodel | - |
@@ -1710,6 +1972,7 @@
 | WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | archived | medium | workspace-hub | - |
 | WRK-229 | AI agent QA closure — HTML output + SME verification loop per work item | done | medium | - | - |
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | done | medium | workspace-hub | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | archived | medium | workspace-hub | - |
 | WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | archived | medium | workspace-hub | - |
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | medium | workspace-hub | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | simple | workspace-hub | - |
@@ -1732,6 +1995,7 @@
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | simple | digitalmodel, saipem, acma-projects | - |
 | WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | medium | workspace-hub | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | done | simple | workspace-hub | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | archived | simple | workspace-hub | - |
 | WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | archived | simple | workspace-hub | - |
 | WRK-285 | Write active WRK id to state file on working/ transition | archived | simple | workspace-hub | - |
 | WRK-293 | SMART health check on ace-linux-2 drives — install smartmontools + run diagnostics | done | simple | workspace-hub | - |
@@ -1767,56 +2031,124 @@
 | WRK-384 | digitalmodel Module Registry — structured metadata for agent-callable modules | done | medium | digitalmodel | - |
 | WRK-385 | Superintelligent Engineering Agent Architecture — canonical vision and blueprint | done | medium | workspace-hub | - |
 | WRK-387 | Claude Code session auto-refresh with WRK context persistence | done | complex | workspace-hub | - |
-| WRK-420 | feat(assetutilities/calculations): implement ISO-TR 10400, 1st Ed (2007) Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | pending | low | assetutilities | - |
-| WRK-421 | feat(assetutilities/calculations): implement API BULL 5C3 Formulas and Calculation... — API BULL 5C3 Formulas and Calculations for Casi... | pending | low | assetutilities | - |
-| WRK-422 | feat(assetutilities/calculations): implement 5C — API TR 5C3 (2008) Technical Report on Equations... | pending | medium | assetutilities | - |
-| WRK-423 | feat(assetutilities/calculations): implement API TR 5C3 (2008) Technical Report on... — API TR 5C3 (2008) Technical Report on Equations... | pending | medium | assetutilities | - |
-| WRK-424 | feat(assetutilities/calculations): implement ISO-TR_10400,_1st_Ed_(2007)_Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | pending | low | assetutilities | - |
-| WRK-425 | feat(assetutilities/calculations): implement BS15663 Pt 2 (2001) Life cycle costin... — BS15663 Pt 2 (2001) Life cycle costing   Guidan... | pending | low | assetutilities | - |
-| WRK-426 | feat(assetutilities/calculations): implement Marine Trasportations_0030-4 — Marine Trasportations 0030 4 | pending | low | assetutilities | - |
-| WRK-427 | feat(assetutilities/calculations): implement AMJIG, Rev 2 (2000) Deep Water Drilli... — AMJIG, Rev 2 (2000) Deep Water Drilling Riser I... | pending | medium | assetutilities | - |
-| WRK-428 | feat(assetutilities/calculations): implement AMJIG, Rev2 (1999) Deep Water Drillin... — AMJIG, Rev2 (1999) Deep Water Drilling Riser In... | pending | medium | assetutilities | - |
-| WRK-429 | feat(assetutilities/calculations): implement rpt001-3 Deep Water Drilling Riser In... — rpt001 3 Deep Water Drilling Riser Integ Manag ... | pending | low | assetutilities | - |
-| WRK-430 | feat(assetutilities/calculations): implement AMJIG, Rev1 (1998) Deep Water Drillin... — AMJIG, Rev1 (1998) Deep Water Drilling Riser In... | pending | medium | assetutilities | - |
-| WRK-431 | feat(assetutilities/calculations): implement os-f101[1] — os f101[1] | pending | low | assetutilities | - |
-| WRK-432 | feat(assetutilities/calculations): implement F101 — DNVOS F101 | pending | low | assetutilities | - |
-| WRK-433 | feat(assetutilities/calculations): implement BP - Riser drag dat — BP   Riser drag dat | pending | low | assetutilities | - |
-| WRK-434 | feat(assetutilities/calculations): implement Buoyant Riser_Shear7_Model — Buoyant Riser Shear7 Model | pending | low | assetutilities | - |
-| WRK-435 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | pending | low | assetutilities | - |
-| WRK-436 | feat(assetutilities/calculations): implement TNE012-1 Internal Pressure Effects on... — TNE012 1 Internal Pressure Effects on Riser Ext... | pending | low | assetutilities | - |
-| WRK-437 | feat(assetutilities/calculations): implement BP Riser Array Design Guidelines v2 — BP Riser Array Design Guidelines v2 | pending | medium | assetutilities | - |
-| WRK-438 | feat(assetutilities/calculations): implement Riser Equivalencing & De-equivalencing — Riser Equivalencing & De equivalencing | pending | low | assetutilities | - |
-| WRK-439 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | pending | low | assetutilities | - |
-| WRK-440 | feat(assetutilities/calculations): implement Overestimation of VIV Fatigue Damage ... — Overestimation of VIV Fatigue Damage for Single... | pending | low | assetutilities | - |
-| WRK-441 | feat(assetutilities/calculations): implement TNE004-1 Riser Tow Out Analysis Metho... — TNE004 1 Riser Tow Out Analysis Methodology | pending | low | assetutilities | - |
-| WRK-442 | feat(assetutilities/calculations): implement Huse, E., Experimental Investigation ... — Huse, E., Experimental Investigation of Deep Se... | pending | low | assetutilities | - |
-| WRK-443 | feat(assetutilities/calculations): implement Norton, D.J., et al, 1981 - Wind Tunn... — Norton, D.J., et al, 1981   Wind Tunnel Tests o... | pending | low | assetutilities | - |
-| WRK-444 | feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp... | pending | low | assetutilities | - |
-| WRK-445 | feat(assetutilities/calculations): implement Smith, C.S., et al, 1981 - Residual S... — Smith, C.S., et al, 1981   Residual Strength an... | pending | low | assetutilities | - |
-| WRK-446 | feat(assetutilities/calculations): implement Javanmardi, K., et al, 1995 - Auger T... — Javanmardi, K., et al, 1995   Auger TLP Well Sy... | pending | low | assetutilities | - |
-| WRK-447 | feat(assetutilities/calculations): implement Fox, S.A., et al, 1995 - Design Analy... — Fox, S.A., et al, 1995   Design Analysis and Fu... | pending | low | assetutilities | - |
-| WRK-448 | feat(assetutilities/calculations): implement Larimore, D., et al, 1998 - Case Hist... — Larimore, D., et al, 1998   Case History   Firs... | pending | low | assetutilities | - |
-| WRK-449 | feat(assetutilities/calculations): implement Allen, D.W., 1995 - Vortex-InducedVib... — Allen, D.W., 1995   Vortex InducedVibration Ana... | pending | low | assetutilities | - |
-| WRK-450 | feat(assetutilities/calculations): implement Brooks, I.H., 1987 - A Pragmatic Appr... — Brooks, I.H., 1987   A Pragmatic Approach to Vo... | pending | low | assetutilities | - |
-| WRK-451 | feat(assetutilities/calculations): implement Carminati, J.R., et al, 1999 - Ursa T... — Carminati, J.R., et al, 1999   Ursa TLP Well Sy... | pending | low | assetutilities | - |
-| WRK-452 | feat(assetutilities/calculations): implement Barton, D.R., et al, 1999 - Genesis P... — Barton, D.R., et al, 1999   Genesis Project   D... | pending | low | assetutilities | - |
-| WRK-453 | feat(assetutilities/calculations): implement OTC1997-8494 Code Conflicts — OTC1997 8494 Code Conflicts | pending | low | assetutilities | - |
-| WRK-454 | feat(assetutilities/calculations): implement OTC2001-13109 SCR Fatigue at Low KC — OTC2001 13109 SCR Fatigue at Low KC | pending | low | assetutilities | - |
-| WRK-455 | feat(assetutilities/calculations): implement Chen, W.C. 1989, Fatigue - Life Predi... — Chen, W.C. 1989, Fatigue   Life Predictions for... | pending | low | assetutilities | - |
-| WRK-456 | feat(assetutilities/calculations): implement Sweeney, T., et al, 1991 - Behaviour ... — Sweeney, T., et al, 1991   Behaviour of 15ksi S... | pending | low | assetutilities | - |
-| WRK-457 | feat(assetutilities/calculations): implement Berner, P., et al, 1997 - Neptune Pro... — Berner, P., et al, 1997   Neptune Project   Pro... | pending | low | assetutilities | - |
-| WRK-458 | feat(assetutilities/calculations): implement Stahl, OTC 3902, Design Methodology f... — Stahl, OTC 3902, Design Methodology for Offshor... | pending | low | assetutilities | - |
-| WRK-459 | feat(assetutilities/calculations): implement Gardner, T.N., et al, 1982 - Deepwate... — Gardner, T.N., et al, 1982   Deepwater Drilling... | pending | low | assetutilities | - |
-| WRK-460 | feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of... | pending | low | assetutilities | - |
-| WRK-461 | feat(assetutilities/calculations): implement Kim, Y.Y., et al, 1975 - Analysis of ... — Kim, Y.Y., et al, 1975   Analysis of Simultaneo... | pending | low | assetutilities | - |
-| WRK-462 | feat(assetutilities/calculations): implement Grant, R., 1977 - Riser Fairing for R... — Grant, R., 1977   Riser Fairing for Reduced Dra... | pending | low | assetutilities | - |
-| WRK-463 | feat(assetutilities/calculations): implement Jacobsen, V., et al, 1996 - Vibration... — Jacobsen, V., et al, 1996   Vibration Suppressi... | pending | low | assetutilities | - |
-| WRK-464 | feat(assetutilities/calculations): implement D'Souza, R., et al, 2002 - The Next G... — D'Souza, R., et al, 2002   The Next Generation ... | pending | low | assetutilities | - |
-| WRK-465 | feat(assetutilities/calculations): implement Vandiver, J.K., 1985 - The Prediction... — Vandiver, J.K., 1985   The Prediction of Lockin... | pending | low | assetutilities | - |
-| WRK-466 | feat(assetutilities/calculations): implement Denison, E.B., et al, 1997 - Mars TLP... — Denison, E.B., et al, 1997   Mars TLP Drilling ... | pending | low | assetutilities | - |
-| WRK-467 | feat(assetutilities/calculations): implement Britton, J.S., et al, 1987 - Improvin... — Britton, J.S., et al, 1987   Improving Wellhead... | pending | low | assetutilities | - |
-| WRK-468 | feat(assetutilities/calculations): implement Miller, J.E., et al, 1985 - Influence... — Miller, J.E., et al, 1985   Influence of Mud Co... | pending | low | assetutilities | - |
-| WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | pending | low | assetutilities | - |
+| WRK-420 | feat(assetutilities/calculations): implement ISO-TR 10400, 1st Ed (2007) Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | done | low | assetutilities | - |
+| WRK-421 | feat(assetutilities/calculations): implement API BULL 5C3 Formulas and Calculation... — API BULL 5C3 Formulas and Calculations for Casi... | done | low | assetutilities | - |
+| WRK-422 | feat(assetutilities/calculations): implement 5C — API TR 5C3 (2008) Technical Report on Equations... | done | medium | assetutilities | - |
+| WRK-423 | feat(assetutilities/calculations): implement API TR 5C3 (2008) Technical Report on... — API TR 5C3 (2008) Technical Report on Equations... | done | medium | assetutilities | - |
+| WRK-424 | feat(assetutilities/calculations): implement ISO-TR_10400,_1st_Ed_(2007)_Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | done | low | assetutilities | - |
+| WRK-425 | feat(assetutilities/calculations): implement BS15663 Pt 2 (2001) Life cycle costin... — BS15663 Pt 2 (2001) Life cycle costing   Guidan... | done | low | assetutilities | - |
+| WRK-426 | feat(assetutilities/calculations): implement Marine Trasportations_0030-4 — Marine Trasportations 0030 4 | done | low | assetutilities | - |
+| WRK-427 | feat(assetutilities/calculations): implement AMJIG, Rev 2 (2000) Deep Water Drilli... — AMJIG, Rev 2 (2000) Deep Water Drilling Riser I... | done | medium | assetutilities | - |
+| WRK-428 | feat(assetutilities/calculations): implement AMJIG, Rev2 (1999) Deep Water Drillin... — AMJIG, Rev2 (1999) Deep Water Drilling Riser In... | done | medium | assetutilities | - |
+| WRK-429 | feat(assetutilities/calculations): implement rpt001-3 Deep Water Drilling Riser In... — rpt001 3 Deep Water Drilling Riser Integ Manag ... | done | low | assetutilities | - |
+| WRK-430 | feat(assetutilities/calculations): implement AMJIG, Rev1 (1998) Deep Water Drillin... — AMJIG, Rev1 (1998) Deep Water Drilling Riser In... | done | medium | assetutilities | - |
+| WRK-431 | feat(assetutilities/calculations): implement os-f101[1] — os f101[1] | done | low | assetutilities | - |
+| WRK-432 | feat(assetutilities/calculations): implement F101 — DNVOS F101 | done | low | assetutilities | - |
+| WRK-433 | feat(assetutilities/calculations): implement BP - Riser drag dat — BP   Riser drag dat | done | low | assetutilities | - |
+| WRK-434 | feat(assetutilities/calculations): implement Buoyant Riser_Shear7_Model — Buoyant Riser Shear7 Model | done | low | assetutilities | - |
+| WRK-435 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | done | low | assetutilities | - |
+| WRK-436 | feat(assetutilities/calculations): implement TNE012-1 Internal Pressure Effects on... — TNE012 1 Internal Pressure Effects on Riser Ext... | done | low | assetutilities | - |
+| WRK-437 | feat(assetutilities/calculations): implement BP Riser Array Design Guidelines v2 — BP Riser Array Design Guidelines v2 | done | medium | assetutilities | - |
+| WRK-438 | feat(assetutilities/calculations): implement Riser Equivalencing & De-equivalencing — Riser Equivalencing & De equivalencing | done | low | assetutilities | - |
+| WRK-439 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | done | low | assetutilities | - |
+| WRK-440 | feat(assetutilities/calculations): implement Overestimation of VIV Fatigue Damage ... — Overestimation of VIV Fatigue Damage for Single... | done | low | assetutilities | - |
+| WRK-441 | feat(assetutilities/calculations): implement TNE004-1 Riser Tow Out Analysis Metho... — TNE004 1 Riser Tow Out Analysis Methodology | done | low | assetutilities | - |
+| WRK-442 | feat(assetutilities/calculations): implement Huse, E., Experimental Investigation ... — Huse, E., Experimental Investigation of Deep Se... | done | low | assetutilities | - |
+| WRK-443 | feat(assetutilities/calculations): implement Norton, D.J., et al, 1981 - Wind Tunn... — Norton, D.J., et al, 1981   Wind Tunnel Tests o... | done | low | assetutilities | - |
+| WRK-444 | feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp... | done | low | assetutilities | - |
+| WRK-445 | feat(assetutilities/calculations): implement Smith, C.S., et al, 1981 - Residual S... — Smith, C.S., et al, 1981   Residual Strength an... | done | low | assetutilities | - |
+| WRK-446 | feat(assetutilities/calculations): implement Javanmardi, K., et al, 1995 - Auger T... — Javanmardi, K., et al, 1995   Auger TLP Well Sy... | done | low | assetutilities | - |
+| WRK-447 | feat(assetutilities/calculations): implement Fox, S.A., et al, 1995 - Design Analy... — Fox, S.A., et al, 1995   Design Analysis and Fu... | done | low | assetutilities | - |
+| WRK-448 | feat(assetutilities/calculations): implement Larimore, D., et al, 1998 - Case Hist... — Larimore, D., et al, 1998   Case History   Firs... | done | low | assetutilities | - |
+| WRK-449 | feat(assetutilities/calculations): implement Allen, D.W., 1995 - Vortex-InducedVib... — Allen, D.W., 1995   Vortex InducedVibration Ana... | done | low | assetutilities | - |
+| WRK-450 | feat(assetutilities/calculations): implement Brooks, I.H., 1987 - A Pragmatic Appr... — Brooks, I.H., 1987   A Pragmatic Approach to Vo... | done | low | assetutilities | - |
+| WRK-451 | feat(assetutilities/calculations): implement Carminati, J.R., et al, 1999 - Ursa T... — Carminati, J.R., et al, 1999   Ursa TLP Well Sy... | done | low | assetutilities | - |
+| WRK-452 | feat(assetutilities/calculations): implement Barton, D.R., et al, 1999 - Genesis P... — Barton, D.R., et al, 1999   Genesis Project   D... | done | low | assetutilities | - |
+| WRK-453 | feat(assetutilities/calculations): implement OTC1997-8494 Code Conflicts — OTC1997 8494 Code Conflicts | done | low | assetutilities | - |
+| WRK-454 | feat(assetutilities/calculations): implement OTC2001-13109 SCR Fatigue at Low KC — OTC2001 13109 SCR Fatigue at Low KC | done | low | assetutilities | - |
+| WRK-455 | feat(assetutilities/calculations): implement Chen, W.C. 1989, Fatigue - Life Predi... — Chen, W.C. 1989, Fatigue   Life Predictions for... | done | low | assetutilities | - |
+| WRK-456 | feat(assetutilities/calculations): implement Sweeney, T., et al, 1991 - Behaviour ... — Sweeney, T., et al, 1991   Behaviour of 15ksi S... | done | low | assetutilities | - |
+| WRK-457 | feat(assetutilities/calculations): implement Berner, P., et al, 1997 - Neptune Pro... — Berner, P., et al, 1997   Neptune Project   Pro... | done | low | assetutilities | - |
+| WRK-458 | feat(assetutilities/calculations): implement Stahl, OTC 3902, Design Methodology f... — Stahl, OTC 3902, Design Methodology for Offshor... | done | low | assetutilities | - |
+| WRK-459 | feat(assetutilities/calculations): implement Gardner, T.N., et al, 1982 - Deepwate... — Gardner, T.N., et al, 1982   Deepwater Drilling... | done | low | assetutilities | - |
+| WRK-460 | feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of... | done | low | assetutilities | - |
+| WRK-461 | feat(assetutilities/calculations): implement Kim, Y.Y., et al, 1975 - Analysis of ... — Kim, Y.Y., et al, 1975   Analysis of Simultaneo... | done | low | assetutilities | - |
+| WRK-462 | feat(assetutilities/calculations): implement Grant, R., 1977 - Riser Fairing for R... — Grant, R., 1977   Riser Fairing for Reduced Dra... | done | low | assetutilities | - |
+| WRK-463 | feat(assetutilities/calculations): implement Jacobsen, V., et al, 1996 - Vibration... — Jacobsen, V., et al, 1996   Vibration Suppressi... | done | low | assetutilities | - |
+| WRK-464 | feat(assetutilities/calculations): implement D'Souza, R., et al, 2002 - The Next G... — D'Souza, R., et al, 2002   The Next Generation ... | done | low | assetutilities | - |
+| WRK-465 | feat(assetutilities/calculations): implement Vandiver, J.K., 1985 - The Prediction... — Vandiver, J.K., 1985   The Prediction of Lockin... | done | low | assetutilities | - |
+| WRK-466 | feat(assetutilities/calculations): implement Denison, E.B., et al, 1997 - Mars TLP... — Denison, E.B., et al, 1997   Mars TLP Drilling ... | done | low | assetutilities | - |
+| WRK-467 | feat(assetutilities/calculations): implement Britton, J.S., et al, 1987 - Improvin... — Britton, J.S., et al, 1987   Improving Wellhead... | done | low | assetutilities | - |
+| WRK-468 | feat(assetutilities/calculations): implement Miller, J.E., et al, 1985 - Influence... — Miller, J.E., et al, 1985   Influence of Mud Co... | done | low | assetutilities | - |
+| WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | done | low | assetutilities | - |
+| WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | medium | workspace-hub | - |
+| WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | simple | workspace-hub | - |
+| WRK-476 | feat(worldenergydata): create ESG/Carbon Emissions module | pending | moderate | worldenergydata | esg_carbon |
+| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending | moderate | digitalmodel | subsea/cp_analysis |
+| WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | moderate | digitalmodel | subsea |
+| WRK-482 | feat(digitalmodel/cathodic_protection): Implement API RP 1632 — API RP 1632 Cathodic Protection of Underground Pet | pending | high | digitalmodel | - |
+| WRK-488 | feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR | pending | medium | digitalmodel | - |
+| WRK-489 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al | pending | medium | digitalmodel | - |
+| WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | medium | digitalmodel | - |
+| WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | pending | medium | digitalmodel | - |
+| WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | medium | digitalmodel | - |
+| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | pending | medium | digitalmodel | - |
+| WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | medium | digitalmodel | - |
+| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | pending | medium | digitalmodel | - |
+| WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | medium | digitalmodel | - |
+| WRK-497 | feat(digitalmodel/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | digitalmodel | - |
+| WRK-498 | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | doris | - |
+| WRK-499 | feat(digitalmodel/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | digitalmodel | - |
+| WRK-500 | feat(doris/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | doris | - |
+| WRK-501 | feat(digitalmodel/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | medium | digitalmodel | - |
+| WRK-502 | feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | medium | doris | - |
+| WRK-503 | feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | medium | digitalmodel | - |
+| WRK-504 | feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | medium | doris | - |
+| WRK-505 | feat(digitalmodel/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | medium | digitalmodel | - |
+| WRK-506 | feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | medium | doris | - |
+| WRK-507 | feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | medium | digitalmodel | - |
+| WRK-508 | feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | medium | doris | - |
+| WRK-509 | feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | medium | digitalmodel | - |
+| WRK-510 | feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | medium | doris | - |
+| WRK-511 | feat(digitalmodel/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | digitalmodel | - |
+| WRK-512 | feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | doris | - |
+| WRK-513 | feat(digitalmodel/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | medium | digitalmodel | - |
+| WRK-514 | feat(doris/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | medium | doris | - |
+| WRK-515 | feat(digitalmodel/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | digitalmodel | - |
+| WRK-516 | feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | doris | - |
+| WRK-517 | feat(digitalmodel/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | medium | digitalmodel | - |
+| WRK-518 | feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | medium | doris | - |
+| WRK-519 | feat(digitalmodel/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | medium | digitalmodel | - |
+| WRK-520 | feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | medium | doris | - |
+| WRK-521 | feat(digitalmodel/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | medium | digitalmodel | - |
+| WRK-522 | feat(doris/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | medium | doris | - |
+| WRK-523 | feat(digitalmodel/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | medium | digitalmodel | - |
+| WRK-524 | feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | medium | doris | - |
+| WRK-525 | feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | medium | digitalmodel | - |
+| WRK-526 | feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | medium | doris | - |
+| WRK-527 | feat(digitalmodel/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | medium | digitalmodel | - |
+| WRK-528 | feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | medium | doris | - |
+| WRK-529 | feat(digitalmodel/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | medium | digitalmodel | - |
+| WRK-530 | feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | medium | doris | - |
+| WRK-531 | feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | medium | digitalmodel | - |
+| WRK-532 | feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | medium | doris | - |
+| WRK-533 | feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | medium | digitalmodel | - |
+| WRK-534 | feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | medium | doris | - |
+| WRK-535 | feat(digitalmodel/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | medium | digitalmodel | - |
+| WRK-536 | feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | medium | doris | - |
+| WRK-537 | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | medium | digitalmodel | - |
+| WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | medium | doris | - |
+| WRK-539 | feat(digitalmodel/structural): Implement API RP 2A — API RP 2A WSD | pending | high | digitalmodel | - |
+| WRK-540 | feat(OGManufacturing/structural): Implement API RP 2A — API RP 2A WSD | pending | high | OGManufacturing | - |
+| WRK-543 | feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | low | digitalmodel | - |
+| WRK-544 | feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | low | OGManufacturing | - |
+| WRK-547 | feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | low | digitalmodel | - |
+| WRK-548 | feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | low | OGManufacturing | - |
+| WRK-555 | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | pending | medium | digitalmodel | - |
+| WRK-556 | feat(digitalmodel/marine): Implement API RP 2I — API RP 2I 3rd Ed (2008) In-service Inspection of M | pending | high | digitalmodel | - |
+| WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | digitalmodel | - |
+| WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | digitalmodel | - |
+| WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | digitalmodel | - |
 
 ### Medium
 
@@ -1830,8 +2162,8 @@
 | WRK-014 | HSE risk index — client-facing risk insights with risk scoring | archived | complex | worldenergydata | - |
 | WRK-015 | Metocean data extrapolation to target locations using GIS and nearest-source modeling | archived | complex | worldenergydata | - |
 | WRK-016 | BSEE completion and intervention activity analysis for insights | archived | complex | worldenergydata | - |
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | done | complex | digitalmodel | - |
-| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | done | complex | assethold | - |
+| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | working | complex | digitalmodel | - |
+| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | working | complex | assethold | - |
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | done | complex | assethold | - |
 | WRK-031 | Benchmark OrcaWave vs AQWA for 2-3 hulls | archived | complex | digitalmodel | - |
 | WRK-032 | Modular OrcaFlex pipeline installation input with parametric campaign support | pending | complex | digitalmodel | - |
@@ -1925,7 +2257,7 @@
 | WRK-216 | Subagent learning capture — emit signals to pending-reviews before task completion | archived | simple | workspace-hub | - |
 | WRK-217 | Update ecosystem-health-check.sh — remove stale skill count threshold | archived | simple | workspace-hub | - |
 | WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | complex | digitalmodel, worldenergydata | well_design |
-| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | done | medium | worldenergydata, digitalmodel | drilling_economics |
+| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | worldenergydata, digitalmodel | drilling_economics |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | complex | worldenergydata, digitalmodel, aceengineer-website | decommissioning_analytics |
 | WRK-222 | Pre-clear session snapshot — /save skill + save-snapshot.sh script | archived | low | workspace-hub | - |
 | WRK-223 | Workstations registry — hardware inventory, hardware-info.sh, ace-linux-1 specs | archived | low | workspace-hub | - |
@@ -1946,7 +2278,7 @@
 | WRK-253 | Data residence tier compliance audit and extension to assethold | done | medium | worldenergydata, digitalmodel, assethold | - |
 | WRK-254 | Heavy vessel GIS integration — connect vessel dataset to GIS skill and BSEE pipeline | done | medium | worldenergydata, digitalmodel | - |
 | WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | archived | simple | digitalmodel | - |
-| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | done | complex | digitalmodel | - |
+| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | in-progress | complex | digitalmodel | - |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | pending | medium | aceengineer-website, worldenergydata | - |
 | WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | pending | medium | aceengineer-website | - |
 | WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | archived | medium | worldenergydata | decommissioning |
@@ -1958,12 +2290,12 @@
 | WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | archived | simple | saipem | - |
 | WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | archived | simple | acma-projects | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | archived | complex | digitalmodel | - |
-| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | archived | simple | digitalmodel, acma-projects | - |
 | WRK-281 | Fix 2H legacy project discoverability (navigation layer) | done | simple | workspace-hub | - |
 | WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | archived | simple | workspace-hub | - |
 | WRK-286 | Harden chore: commits — require WRK ref for multi-file changes | done | simple | workspace-hub | - |
 | WRK-287 | Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2 | archived | medium | workspace-hub | - |
 | WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | done | medium | workspace-hub | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | archived | medium | workspace-hub | - |
 | WRK-296 | Install Tailscale VPN on ace-linux-2 — match ace-linux-1 remote access | done | simple | workspace-hub | - |
 | WRK-300 | workstations skill — evolve from registry to multi-machine work distribution | archived | medium | - | - |
 | WRK-301 | fix: recurring Write correction pattern — not responding to improve | done | medium | - | - |
@@ -1972,7 +2304,6 @@
 | WRK-305 | feat: session signal emitters — wire /clear, plan-mode, per-WRK tool-counts | done | medium | - | - |
 | WRK-306 | feat: AI agent readiness check — claude/codex/gemini CLI versions + default models | done | medium | - | - |
 | WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | simple | workspace-hub | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | high | workspace-hub, digitalmodel, worldenergydata, assetutilities, assethold, doris, OGManufacturing, frontierdeepwater, saipem, acma-projects, pdf-large-reader | - |
 | WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-315 | CALM buoy mooring fatigue — spectral fatigue from OrcaFlex time-domain output | done | high | digitalmodel | - |
 | WRK-316 | NDBC buoy data ingestion for metocean wave scatter matrices | done | medium | worldenergydata, digitalmodel | - |
@@ -2021,11 +2352,31 @@
 | WRK-386 | Automated Gap-to-WRK Generator — doc → module gaps spawn new work items | done | medium | workspace-hub | - |
 | WRK-388 | GIS skills — QGIS, Google Earth Engine, Python GIS ecosystem | done | complex | workspace-hub | - |
 | WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending | medium | - | - |
-| WRK-391 | Online Resources Research — expanded discovery of skills, data APIs and references for workspace-hub | done | complex | workspace-hub | - |
 | WRK-393 | Evaluate Polymathic AI — The Well for ecosystem integration | done | medium | workspace-hub | - |
 | WRK-417 | The Well — planetswe dataset integration with worldenergydata/metocean | done | medium | worldenergydata, digitalmodel | - |
 | WRK-418 | The Well — acoustic_scattering datasets for subsea NDE validation | done | medium | digitalmodel | - |
 | WRK-419 | The Well — shear_flow dataset for hydrodynamics ML baseline | done | medium | digitalmodel | - |
+| WRK-473 | feat(hydrodynamics): integrate wavespectra library for spectral processing | pending | simple | digitalmodel | hydrodynamics/wave_spectra |
+| WRK-474 | feat(subsea): integrate MoorDyn + MoorPy for mooring analysis | pending | moderate | digitalmodel | subsea/mooring_analysis |
+| WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending | simple | digitalmodel | marine_ops/marine_analysis |
+| WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | simple | worldenergydata | safety_analysis/geohazard |
+| WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | pending | moderate | worldenergydata | sodir |
+| WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | moderate | worldenergydata | metocean |
+| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending | low | digitalmodel | - |
+| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending | low | digitalmodel | - |
+| WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | pending | low | digitalmodel | - |
+| WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | pending | low | digitalmodel | - |
+| WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending | low | digitalmodel | - |
+| WRK-541 | feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | low | digitalmodel | - |
+| WRK-542 | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | low | OGManufacturing | - |
+| WRK-545 | feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | low | digitalmodel | - |
+| WRK-546 | feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | low | OGManufacturing | - |
+| WRK-549 | feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | low | digitalmodel | - |
+| WRK-550 | feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | low | OGManufacturing | - |
+| WRK-551 | feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | low | digitalmodel | - |
+| WRK-552 | feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | low | OGManufacturing | - |
+| WRK-553 | feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | low | digitalmodel | - |
+| WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | low | OGManufacturing | - |
 
 ### Low
 
@@ -2074,12 +2425,13 @@
 | WRK-292 | Create capability map — file formats, workflow pipelines, interoperability matrix | done | medium | workspace-hub | - |
 | WRK-320 | MAIB and NTSB incident correlation with USCG MISLE for root-cause taxonomy | done | high | worldenergydata | - |
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | simple | workspace-hub | - |
-| WRK-352 | Set up remote desktop access on ace-linux-2 | done | simple | workspace-hub | - |
+| WRK-352 | Set up remote desktop access on ace-linux-2 | working | simple | workspace-hub | - |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | archived | simple | digitalmodel | - |
 | WRK-382 | Marketing follow-up — update digitalmodel brochure and aceengineer-website for WRK-373/375 outputs | done | simple | digitalmodel, aceengineer-website | - |
 | WRK-390 | enhance(work-queue): richer WRK item presentation in work skill | done | medium | - | - |
 | WRK-392 | feat(skills): add work-document-and-exit skill — capture WRK state + session handoff | done | simple | - | - |
 | WRK-394 | Planing hull motion model — nonlinear 2D+t strip theory for high-speed vessels | done | complex | digitalmodel | - |
+| WRK-402 | worldenergydata test structure consolidation | done | simple | worldenergydata | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | simple | workspace-hub | - |
 
 ## By Complexity
@@ -2130,7 +2482,7 @@
 | WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | archived | medium | acma-projects | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | high | digitalmodel, saipem, acma-projects | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | done | high | workspace-hub | - |
-| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | archived | medium | digitalmodel, acma-projects | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | archived | high | workspace-hub | - |
 | WRK-281 | Fix 2H legacy project discoverability (navigation layer) | done | medium | workspace-hub | - |
 | WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | archived | high | workspace-hub | - |
 | WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | archived | medium | workspace-hub | - |
@@ -2151,7 +2503,7 @@
 | WRK-347 | Rename aceengineer-website/src/ to content/ | done | medium | aceengineer-website | - |
 | WRK-348 | Add root pyproject.toml to workspace-hub src/ | done | medium | workspace-hub | - |
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | low | workspace-hub | - |
-| WRK-352 | Set up remote desktop access on ace-linux-2 | done | low | workspace-hub | - |
+| WRK-352 | Set up remote desktop access on ace-linux-2 | working | low | workspace-hub | - |
 | WRK-361 | Heriberto: powder room sink caulk for water drainage | in_progress | medium | achantas-data | - |
 | WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | digitalmodel, worldenergydata | - |
 | WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | medium | worldenergydata | - |
@@ -2166,6 +2518,11 @@
 | WRK-381 | Trust architecture document — formalise plan gate governance for agent-executed actions | done | medium | workspace-hub | - |
 | WRK-382 | Marketing follow-up — update digitalmodel brochure and aceengineer-website for WRK-373/375 outputs | done | low | digitalmodel, aceengineer-website | - |
 | WRK-392 | feat(skills): add work-document-and-exit skill — capture WRK state + session handoff | done | low | - | - |
+| WRK-402 | worldenergydata test structure consolidation | done | low | worldenergydata | - |
+| WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | workspace-hub | - |
+| WRK-473 | feat(hydrodynamics): integrate wavespectra library for spectral processing | pending | medium | digitalmodel | hydrodynamics/wave_spectra |
+| WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending | medium | digitalmodel | marine_ops/marine_analysis |
+| WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | medium | worldenergydata | safety_analysis/geohazard |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
 
 ### Medium
@@ -2252,7 +2609,7 @@
 | WRK-212 | Agent teams protocol skill — orchestrator routing, subagent patterns, team lifecycle | archived | medium | workspace-hub | - |
 | WRK-213 | Codex multi-agent roles — assess native role system vs workspace-hub agent skill approach | archived | medium | workspace-hub | - |
 | WRK-214 | Session lifecycle compliance — interview-driven review of all workflow scaffolding | archived | high | workspace-hub | - |
-| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | done | medium | worldenergydata, digitalmodel | drilling_economics |
+| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | worldenergydata, digitalmodel | drilling_economics |
 | WRK-221 | Offshore resilience design framework — modular platforms, lifecycle planning, structural monitoring | done | low | digitalmodel, aceengineer-website | offshore_resilience |
 | WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | archived | medium | workspace-hub | - |
 | WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | done | high | workspace-hub | - |
@@ -2262,6 +2619,7 @@
 | WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | archived | high | workspace-hub | - |
 | WRK-229 | AI agent QA closure — HTML output + SME verification loop per work item | done | high | - | - |
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | done | high | workspace-hub | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | archived | high | workspace-hub | - |
 | WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | archived | high | workspace-hub | - |
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | high | workspace-hub | - |
 | WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | archived | high | workspace-hub | - |
@@ -2297,6 +2655,7 @@
 | WRK-287 | Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2 | archived | medium | workspace-hub | - |
 | WRK-289 | Research open source FEA programs for engineering assignments | done | low | workspace-hub | - |
 | WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | done | medium | workspace-hub | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | archived | medium | workspace-hub | - |
 | WRK-291 | Install recommended FEA programs on ace-linux-2 | done | low | workspace-hub | - |
 | WRK-292 | Create capability map — file formats, workflow pipelines, interoperability matrix | done | low | workspace-hub | - |
 | WRK-299 | comprehensive-learning skill — single batch command for all session learning + ecosystem improvement | archived | high | - | - |
@@ -2352,12 +2711,57 @@
 | WRK-417 | The Well — planetswe dataset integration with worldenergydata/metocean | done | medium | worldenergydata, digitalmodel | - |
 | WRK-418 | The Well — acoustic_scattering datasets for subsea NDE validation | done | medium | digitalmodel | - |
 | WRK-419 | The Well — shear_flow dataset for hydrodynamics ML baseline | done | medium | digitalmodel | - |
-| WRK-422 | feat(assetutilities/calculations): implement 5C — API TR 5C3 (2008) Technical Report on Equations... | pending | high | assetutilities | - |
-| WRK-423 | feat(assetutilities/calculations): implement API TR 5C3 (2008) Technical Report on... — API TR 5C3 (2008) Technical Report on Equations... | pending | high | assetutilities | - |
-| WRK-427 | feat(assetutilities/calculations): implement AMJIG, Rev 2 (2000) Deep Water Drilli... — AMJIG, Rev 2 (2000) Deep Water Drilling Riser I... | pending | high | assetutilities | - |
-| WRK-428 | feat(assetutilities/calculations): implement AMJIG, Rev2 (1999) Deep Water Drillin... — AMJIG, Rev2 (1999) Deep Water Drilling Riser In... | pending | high | assetutilities | - |
-| WRK-430 | feat(assetutilities/calculations): implement AMJIG, Rev1 (1998) Deep Water Drillin... — AMJIG, Rev1 (1998) Deep Water Drilling Riser In... | pending | high | assetutilities | - |
-| WRK-437 | feat(assetutilities/calculations): implement BP Riser Array Design Guidelines v2 — BP Riser Array Design Guidelines v2 | pending | high | assetutilities | - |
+| WRK-422 | feat(assetutilities/calculations): implement 5C — API TR 5C3 (2008) Technical Report on Equations... | done | high | assetutilities | - |
+| WRK-423 | feat(assetutilities/calculations): implement API TR 5C3 (2008) Technical Report on... — API TR 5C3 (2008) Technical Report on Equations... | done | high | assetutilities | - |
+| WRK-427 | feat(assetutilities/calculations): implement AMJIG, Rev 2 (2000) Deep Water Drilli... — AMJIG, Rev 2 (2000) Deep Water Drilling Riser I... | done | high | assetutilities | - |
+| WRK-428 | feat(assetutilities/calculations): implement AMJIG, Rev2 (1999) Deep Water Drillin... — AMJIG, Rev2 (1999) Deep Water Drilling Riser In... | done | high | assetutilities | - |
+| WRK-430 | feat(assetutilities/calculations): implement AMJIG, Rev1 (1998) Deep Water Drillin... — AMJIG, Rev1 (1998) Deep Water Drilling Riser In... | done | high | assetutilities | - |
+| WRK-437 | feat(assetutilities/calculations): implement BP Riser Array Design Guidelines v2 — BP Riser Array Design Guidelines v2 | done | high | assetutilities | - |
+| WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | high | workspace-hub | - |
+| WRK-488 | feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR | pending | high | digitalmodel | - |
+| WRK-489 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al | pending | high | digitalmodel | - |
+| WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | high | digitalmodel | - |
+| WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | pending | high | digitalmodel | - |
+| WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | high | digitalmodel | - |
+| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | pending | high | digitalmodel | - |
+| WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | high | digitalmodel | - |
+| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | pending | high | digitalmodel | - |
+| WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | high | digitalmodel | - |
+| WRK-501 | feat(digitalmodel/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | digitalmodel | - |
+| WRK-502 | feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | doris | - |
+| WRK-503 | feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | digitalmodel | - |
+| WRK-504 | feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | doris | - |
+| WRK-505 | feat(digitalmodel/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | digitalmodel | - |
+| WRK-506 | feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | doris | - |
+| WRK-507 | feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | digitalmodel | - |
+| WRK-508 | feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | doris | - |
+| WRK-509 | feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | digitalmodel | - |
+| WRK-510 | feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | doris | - |
+| WRK-513 | feat(digitalmodel/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | digitalmodel | - |
+| WRK-514 | feat(doris/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | doris | - |
+| WRK-517 | feat(digitalmodel/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | digitalmodel | - |
+| WRK-518 | feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | doris | - |
+| WRK-519 | feat(digitalmodel/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | digitalmodel | - |
+| WRK-520 | feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | doris | - |
+| WRK-521 | feat(digitalmodel/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | digitalmodel | - |
+| WRK-522 | feat(doris/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | doris | - |
+| WRK-523 | feat(digitalmodel/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | digitalmodel | - |
+| WRK-524 | feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | doris | - |
+| WRK-525 | feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | digitalmodel | - |
+| WRK-526 | feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | doris | - |
+| WRK-527 | feat(digitalmodel/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | digitalmodel | - |
+| WRK-528 | feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | doris | - |
+| WRK-529 | feat(digitalmodel/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | digitalmodel | - |
+| WRK-530 | feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | doris | - |
+| WRK-531 | feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | digitalmodel | - |
+| WRK-532 | feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | doris | - |
+| WRK-533 | feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | digitalmodel | - |
+| WRK-534 | feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | doris | - |
+| WRK-535 | feat(digitalmodel/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | digitalmodel | - |
+| WRK-536 | feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | doris | - |
+| WRK-537 | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | digitalmodel | - |
+| WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | doris | - |
+| WRK-555 | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | pending | high | digitalmodel | - |
 
 ### Complex
 
@@ -2371,8 +2775,8 @@
 | WRK-017 | Streamline BSEE field data analysis pipeline — wellbore, casing, drilling, completions, interventions | archived | high | worldenergydata | - |
 | WRK-018 | Extend BSEE field data pipeline to other regulatory sources (RRC, Norway, Mexico, Brazil) | archived | low | worldenergydata | - |
 | WRK-019 | Establish drilling, completion, and intervention cost data by region and environment | done | low | worldenergydata | - |
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | done | medium | digitalmodel | - |
-| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | done | medium | assethold | - |
+| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | working | medium | digitalmodel | - |
+| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | working | medium | assethold | - |
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | done | medium | assethold | - |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | in_progress | low | assethold | - |
 | WRK-025 | AQWA diffraction analysis runner | archived | high | digitalmodel | - |
@@ -2424,6 +2828,7 @@
 | WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | workspace-hub, worldenergydata, digitalmodel | - |
 | WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | digitalmodel | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | done | high | digitalmodel | - |
+| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | archived | high | digitalmodel | - |
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | blocked | high | digitalmodel | - |
 | WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | high | digitalmodel | - |
 | WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | parked | low | worldenergydata | - |
@@ -2450,7 +2855,7 @@
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | worldenergydata, digitalmodel, aceengineer-website | decommissioning_analytics |
 | WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | high | workspace-hub | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | working | high | workspace-hub | - |
-| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | done | medium | digitalmodel | - |
+| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | in-progress | medium | digitalmodel | - |
 | WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | archived | medium | digitalmodel | - |
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | archived | medium | digitalmodel | - |
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | high | workspace-hub, digitalmodel | - |
@@ -2458,12 +2863,11 @@
 | WRK-380 | Multi-physics simulation chain — Gmsh → OpenFOAM → OrcaFlex as agent-executable pipeline | done | medium | workspace-hub, digitalmodel | - |
 | WRK-387 | Claude Code session auto-refresh with WRK context persistence | done | high | workspace-hub | - |
 | WRK-388 | GIS skills — QGIS, Google Earth Engine, Python GIS ecosystem | done | medium | workspace-hub | - |
-| WRK-391 | Online Resources Research — expanded discovery of skills, data APIs and references for workspace-hub | done | medium | workspace-hub | - |
 | WRK-394 | Planing hull motion model — nonlinear 2D+t strip theory for high-speed vessels | done | low | digitalmodel | - |
 
 ## By Computer
 
-### ace-linux-1 (192 active / 203 total)
+### ace-linux-1 (271 active / 284 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2471,7 +2875,7 @@
 | WRK-006 | Upload videos from iPhone to YouTube | blocked | low | simple | achantas-data |
 | WRK-008 | Upload photos from multiple devices to achantas-media | pending | low | medium | achantas-data |
 | WRK-019 | Establish drilling, completion, and intervention cost data by region and environment | done | low | complex | worldenergydata |
-| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | done | medium | complex | assethold |
+| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | working | medium | complex | assethold |
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | done | medium | complex | assethold |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | in_progress | low | complex | assethold |
 | WRK-041 | Develop long-term plan for Hobbies repo | done | low | medium | hobbies |
@@ -2515,7 +2919,7 @@
 | WRK-198 | HSE risk index interactive web dashboard | done | medium | complex | aceengineer-website |
 | WRK-199 | AI agent usage optimizer skill — maximize Claude/Codex/Gemini allocation per task | done | medium | medium | workspace-hub |
 | WRK-209 | Add unit validator to EnvironmentSpec.water_density — catch physically implausible values | done | medium | small | digitalmodel |
-| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | done | medium | medium | worldenergydata, digitalmodel |
+| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | worldenergydata, digitalmodel |
 | WRK-221 | Offshore resilience design framework — modular platforms, lifecycle planning, structural monitoring | done | low | medium | digitalmodel, aceengineer-website |
 | WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | done | medium | low | workspace-hub |
 | WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | done | high | medium | workspace-hub |
@@ -2523,6 +2927,7 @@
 | WRK-228 | Cross-machine terminal UX consistency — Windows Git Bash vs Linux terminal | done | high | medium | - |
 | WRK-229 | AI agent QA closure — HTML output + SME verification loop per work item | done | high | medium | - |
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | done | high | medium | workspace-hub |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | archived | high | medium | workspace-hub |
 | WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | high | complex | workspace-hub |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | working | high | complex | workspace-hub |
 | WRK-236 | Test health trends — track test-writing pairing with code-writing sessions | done | medium | medium | workspace-hub |
@@ -2531,7 +2936,7 @@
 | WRK-251 | Dynacard vision model evaluation — benchmark GPT-4V / Claude Vision vs current heuristics | done | medium | medium | digitalmodel |
 | WRK-253 | Data residence tier compliance audit and extension to assethold | done | medium | medium | worldenergydata, digitalmodel, assethold |
 | WRK-254 | Heavy vessel GIS integration — connect vessel dataset to GIS skill and BSEE pipeline | done | medium | medium | worldenergydata, digitalmodel |
-| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | done | medium | complex | digitalmodel |
+| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | in-progress | medium | complex | digitalmodel |
 | WRK-257 | Agent coordination model ADR — document architectural decision record | done | low | simple | workspace-hub |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | pending | medium | medium | aceengineer-website, worldenergydata |
 | WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | pending | medium | medium | aceengineer-website |
@@ -2541,6 +2946,7 @@
 | WRK-273 | CP marketing brochure — cathodic protection capability document for aceengineer-website | done | low | simple | digitalmodel, aceengineer-website |
 | WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | complete | high | medium | workspace-hub |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | done | high | simple | workspace-hub |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | archived | high | simple | workspace-hub |
 | WRK-281 | Fix 2H legacy project discoverability (navigation layer) | done | medium | simple | workspace-hub |
 | WRK-286 | Harden chore: commits — require WRK ref for multi-file changes | done | medium | simple | workspace-hub |
 | WRK-288 | Finish ace-linux-2 setup — install open source engineering programs and map capabilities | done | low | simple | workspace-hub |
@@ -2555,7 +2961,6 @@
 | WRK-305 | feat: session signal emitters — wire /clear, plan-mode, per-WRK tool-counts | done | medium | medium | - |
 | WRK-306 | feat: AI agent readiness check — claude/codex/gemini CLI versions + default models | done | medium | medium | - |
 | WRK-307 | track: lean-session hook requirement missed — accountability record | done | high | medium | - |
-| WRK-309 | Document intelligence — index, understand, link and plan use of all stored documents | pending | medium | high | workspace-hub, digitalmodel, worldenergydata, assetutilities, assethold, doris, OGManufacturing, frontierdeepwater, saipem, acma-projects, pdf-large-reader |
 | WRK-316 | NDBC buoy data ingestion for metocean wave scatter matrices | done | medium | medium | worldenergydata, digitalmodel |
 | WRK-317 | Integrated web dashboard — Plotly Dash for BSEE and FDAS data | done | medium | high | worldenergydata |
 | WRK-319 | Real-time EIA and IEA feed ingestion — weekly crude and gas production | done | medium | medium | worldenergydata |
@@ -2586,7 +2991,7 @@
 | WRK-349 | Document client/portfolio repos in ecosystem docs | done | low | simple | workspace-hub |
 | WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | assetutilities |
 | WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | workspace-hub |
-| WRK-352 | Set up remote desktop access on ace-linux-2 | done | low | simple | workspace-hub |
+| WRK-352 | Set up remote desktop access on ace-linux-2 | working | low | simple | workspace-hub |
 | WRK-353 | Expand S-N curve library from 17 to 20 standards | done | high | medium | digitalmodel |
 | WRK-354 | Structural module — implement jacket and topside analysis | done | high | high | digitalmodel |
 | WRK-355 | Pipeline and flexibles module — pressure containment checks | done | medium | high | digitalmodel |
@@ -2616,70 +3021,151 @@
 | WRK-387 | Claude Code session auto-refresh with WRK context persistence | done | high | complex | workspace-hub |
 | WRK-390 | enhance(work-queue): richer WRK item presentation in work skill | done | low | medium | - |
 | WRK-392 | feat(skills): add work-document-and-exit skill — capture WRK state + session handoff | done | low | simple | - |
+| WRK-402 | worldenergydata test structure consolidation | done | low | simple | worldenergydata |
 | WRK-417 | The Well — planetswe dataset integration with worldenergydata/metocean | done | medium | medium | worldenergydata, digitalmodel |
 | WRK-418 | The Well — acoustic_scattering datasets for subsea NDE validation | done | medium | medium | digitalmodel |
 | WRK-419 | The Well — shear_flow dataset for hydrodynamics ML baseline | done | medium | medium | digitalmodel |
-| WRK-420 | feat(assetutilities/calculations): implement ISO-TR 10400, 1st Ed (2007) Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | pending | high | low | assetutilities |
-| WRK-421 | feat(assetutilities/calculations): implement API BULL 5C3 Formulas and Calculation... — API BULL 5C3 Formulas and Calculations for Casi... | pending | high | low | assetutilities |
-| WRK-422 | feat(assetutilities/calculations): implement 5C — API TR 5C3 (2008) Technical Report on Equations... | pending | high | medium | assetutilities |
-| WRK-423 | feat(assetutilities/calculations): implement API TR 5C3 (2008) Technical Report on... — API TR 5C3 (2008) Technical Report on Equations... | pending | high | medium | assetutilities |
-| WRK-424 | feat(assetutilities/calculations): implement ISO-TR_10400,_1st_Ed_(2007)_Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | pending | high | low | assetutilities |
-| WRK-425 | feat(assetutilities/calculations): implement BS15663 Pt 2 (2001) Life cycle costin... — BS15663 Pt 2 (2001) Life cycle costing   Guidan... | pending | high | low | assetutilities |
-| WRK-426 | feat(assetutilities/calculations): implement Marine Trasportations_0030-4 — Marine Trasportations 0030 4 | pending | high | low | assetutilities |
-| WRK-427 | feat(assetutilities/calculations): implement AMJIG, Rev 2 (2000) Deep Water Drilli... — AMJIG, Rev 2 (2000) Deep Water Drilling Riser I... | pending | high | medium | assetutilities |
-| WRK-428 | feat(assetutilities/calculations): implement AMJIG, Rev2 (1999) Deep Water Drillin... — AMJIG, Rev2 (1999) Deep Water Drilling Riser In... | pending | high | medium | assetutilities |
-| WRK-429 | feat(assetutilities/calculations): implement rpt001-3 Deep Water Drilling Riser In... — rpt001 3 Deep Water Drilling Riser Integ Manag ... | pending | high | low | assetutilities |
-| WRK-430 | feat(assetutilities/calculations): implement AMJIG, Rev1 (1998) Deep Water Drillin... — AMJIG, Rev1 (1998) Deep Water Drilling Riser In... | pending | high | medium | assetutilities |
-| WRK-431 | feat(assetutilities/calculations): implement os-f101[1] — os f101[1] | pending | high | low | assetutilities |
-| WRK-432 | feat(assetutilities/calculations): implement F101 — DNVOS F101 | pending | high | low | assetutilities |
-| WRK-433 | feat(assetutilities/calculations): implement BP - Riser drag dat — BP   Riser drag dat | pending | high | low | assetutilities |
-| WRK-434 | feat(assetutilities/calculations): implement Buoyant Riser_Shear7_Model — Buoyant Riser Shear7 Model | pending | high | low | assetutilities |
-| WRK-435 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | pending | high | low | assetutilities |
-| WRK-436 | feat(assetutilities/calculations): implement TNE012-1 Internal Pressure Effects on... — TNE012 1 Internal Pressure Effects on Riser Ext... | pending | high | low | assetutilities |
-| WRK-437 | feat(assetutilities/calculations): implement BP Riser Array Design Guidelines v2 — BP Riser Array Design Guidelines v2 | pending | high | medium | assetutilities |
-| WRK-438 | feat(assetutilities/calculations): implement Riser Equivalencing & De-equivalencing — Riser Equivalencing & De equivalencing | pending | high | low | assetutilities |
-| WRK-439 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | pending | high | low | assetutilities |
-| WRK-440 | feat(assetutilities/calculations): implement Overestimation of VIV Fatigue Damage ... — Overestimation of VIV Fatigue Damage for Single... | pending | high | low | assetutilities |
-| WRK-441 | feat(assetutilities/calculations): implement TNE004-1 Riser Tow Out Analysis Metho... — TNE004 1 Riser Tow Out Analysis Methodology | pending | high | low | assetutilities |
-| WRK-442 | feat(assetutilities/calculations): implement Huse, E., Experimental Investigation ... — Huse, E., Experimental Investigation of Deep Se... | pending | high | low | assetutilities |
-| WRK-443 | feat(assetutilities/calculations): implement Norton, D.J., et al, 1981 - Wind Tunn... — Norton, D.J., et al, 1981   Wind Tunnel Tests o... | pending | high | low | assetutilities |
-| WRK-444 | feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp... | pending | high | low | assetutilities |
-| WRK-445 | feat(assetutilities/calculations): implement Smith, C.S., et al, 1981 - Residual S... — Smith, C.S., et al, 1981   Residual Strength an... | pending | high | low | assetutilities |
-| WRK-446 | feat(assetutilities/calculations): implement Javanmardi, K., et al, 1995 - Auger T... — Javanmardi, K., et al, 1995   Auger TLP Well Sy... | pending | high | low | assetutilities |
-| WRK-447 | feat(assetutilities/calculations): implement Fox, S.A., et al, 1995 - Design Analy... — Fox, S.A., et al, 1995   Design Analysis and Fu... | pending | high | low | assetutilities |
-| WRK-448 | feat(assetutilities/calculations): implement Larimore, D., et al, 1998 - Case Hist... — Larimore, D., et al, 1998   Case History   Firs... | pending | high | low | assetutilities |
-| WRK-449 | feat(assetutilities/calculations): implement Allen, D.W., 1995 - Vortex-InducedVib... — Allen, D.W., 1995   Vortex InducedVibration Ana... | pending | high | low | assetutilities |
-| WRK-450 | feat(assetutilities/calculations): implement Brooks, I.H., 1987 - A Pragmatic Appr... — Brooks, I.H., 1987   A Pragmatic Approach to Vo... | pending | high | low | assetutilities |
-| WRK-451 | feat(assetutilities/calculations): implement Carminati, J.R., et al, 1999 - Ursa T... — Carminati, J.R., et al, 1999   Ursa TLP Well Sy... | pending | high | low | assetutilities |
-| WRK-452 | feat(assetutilities/calculations): implement Barton, D.R., et al, 1999 - Genesis P... — Barton, D.R., et al, 1999   Genesis Project   D... | pending | high | low | assetutilities |
-| WRK-453 | feat(assetutilities/calculations): implement OTC1997-8494 Code Conflicts — OTC1997 8494 Code Conflicts | pending | high | low | assetutilities |
-| WRK-454 | feat(assetutilities/calculations): implement OTC2001-13109 SCR Fatigue at Low KC — OTC2001 13109 SCR Fatigue at Low KC | pending | high | low | assetutilities |
-| WRK-455 | feat(assetutilities/calculations): implement Chen, W.C. 1989, Fatigue - Life Predi... — Chen, W.C. 1989, Fatigue   Life Predictions for... | pending | high | low | assetutilities |
-| WRK-456 | feat(assetutilities/calculations): implement Sweeney, T., et al, 1991 - Behaviour ... — Sweeney, T., et al, 1991   Behaviour of 15ksi S... | pending | high | low | assetutilities |
-| WRK-457 | feat(assetutilities/calculations): implement Berner, P., et al, 1997 - Neptune Pro... — Berner, P., et al, 1997   Neptune Project   Pro... | pending | high | low | assetutilities |
-| WRK-458 | feat(assetutilities/calculations): implement Stahl, OTC 3902, Design Methodology f... — Stahl, OTC 3902, Design Methodology for Offshor... | pending | high | low | assetutilities |
-| WRK-459 | feat(assetutilities/calculations): implement Gardner, T.N., et al, 1982 - Deepwate... — Gardner, T.N., et al, 1982   Deepwater Drilling... | pending | high | low | assetutilities |
-| WRK-460 | feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of... | pending | high | low | assetutilities |
-| WRK-461 | feat(assetutilities/calculations): implement Kim, Y.Y., et al, 1975 - Analysis of ... — Kim, Y.Y., et al, 1975   Analysis of Simultaneo... | pending | high | low | assetutilities |
-| WRK-462 | feat(assetutilities/calculations): implement Grant, R., 1977 - Riser Fairing for R... — Grant, R., 1977   Riser Fairing for Reduced Dra... | pending | high | low | assetutilities |
-| WRK-463 | feat(assetutilities/calculations): implement Jacobsen, V., et al, 1996 - Vibration... — Jacobsen, V., et al, 1996   Vibration Suppressi... | pending | high | low | assetutilities |
-| WRK-464 | feat(assetutilities/calculations): implement D'Souza, R., et al, 2002 - The Next G... — D'Souza, R., et al, 2002   The Next Generation ... | pending | high | low | assetutilities |
-| WRK-465 | feat(assetutilities/calculations): implement Vandiver, J.K., 1985 - The Prediction... — Vandiver, J.K., 1985   The Prediction of Lockin... | pending | high | low | assetutilities |
-| WRK-466 | feat(assetutilities/calculations): implement Denison, E.B., et al, 1997 - Mars TLP... — Denison, E.B., et al, 1997   Mars TLP Drilling ... | pending | high | low | assetutilities |
-| WRK-467 | feat(assetutilities/calculations): implement Britton, J.S., et al, 1987 - Improvin... — Britton, J.S., et al, 1987   Improving Wellhead... | pending | high | low | assetutilities |
-| WRK-468 | feat(assetutilities/calculations): implement Miller, J.E., et al, 1985 - Influence... — Miller, J.E., et al, 1985   Influence of Mud Co... | pending | high | low | assetutilities |
-| WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | pending | high | low | assetutilities |
+| WRK-420 | feat(assetutilities/calculations): implement ISO-TR 10400, 1st Ed (2007) Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | done | high | low | assetutilities |
+| WRK-421 | feat(assetutilities/calculations): implement API BULL 5C3 Formulas and Calculation... — API BULL 5C3 Formulas and Calculations for Casi... | done | high | low | assetutilities |
+| WRK-422 | feat(assetutilities/calculations): implement 5C — API TR 5C3 (2008) Technical Report on Equations... | done | high | medium | assetutilities |
+| WRK-423 | feat(assetutilities/calculations): implement API TR 5C3 (2008) Technical Report on... — API TR 5C3 (2008) Technical Report on Equations... | done | high | medium | assetutilities |
+| WRK-424 | feat(assetutilities/calculations): implement ISO-TR_10400,_1st_Ed_(2007)_Equations... — ISO TR 10400, 1st Ed (2007) Equations and calcu... | done | high | low | assetutilities |
+| WRK-425 | feat(assetutilities/calculations): implement BS15663 Pt 2 (2001) Life cycle costin... — BS15663 Pt 2 (2001) Life cycle costing   Guidan... | done | high | low | assetutilities |
+| WRK-426 | feat(assetutilities/calculations): implement Marine Trasportations_0030-4 — Marine Trasportations 0030 4 | done | high | low | assetutilities |
+| WRK-427 | feat(assetutilities/calculations): implement AMJIG, Rev 2 (2000) Deep Water Drilli... — AMJIG, Rev 2 (2000) Deep Water Drilling Riser I... | done | high | medium | assetutilities |
+| WRK-428 | feat(assetutilities/calculations): implement AMJIG, Rev2 (1999) Deep Water Drillin... — AMJIG, Rev2 (1999) Deep Water Drilling Riser In... | done | high | medium | assetutilities |
+| WRK-429 | feat(assetutilities/calculations): implement rpt001-3 Deep Water Drilling Riser In... — rpt001 3 Deep Water Drilling Riser Integ Manag ... | done | high | low | assetutilities |
+| WRK-430 | feat(assetutilities/calculations): implement AMJIG, Rev1 (1998) Deep Water Drillin... — AMJIG, Rev1 (1998) Deep Water Drilling Riser In... | done | high | medium | assetutilities |
+| WRK-431 | feat(assetutilities/calculations): implement os-f101[1] — os f101[1] | done | high | low | assetutilities |
+| WRK-432 | feat(assetutilities/calculations): implement F101 — DNVOS F101 | done | high | low | assetutilities |
+| WRK-433 | feat(assetutilities/calculations): implement BP - Riser drag dat — BP   Riser drag dat | done | high | low | assetutilities |
+| WRK-434 | feat(assetutilities/calculations): implement Buoyant Riser_Shear7_Model — Buoyant Riser Shear7 Model | done | high | low | assetutilities |
+| WRK-435 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | done | high | low | assetutilities |
+| WRK-436 | feat(assetutilities/calculations): implement TNE012-1 Internal Pressure Effects on... — TNE012 1 Internal Pressure Effects on Riser Ext... | done | high | low | assetutilities |
+| WRK-437 | feat(assetutilities/calculations): implement BP Riser Array Design Guidelines v2 — BP Riser Array Design Guidelines v2 | done | high | medium | assetutilities |
+| WRK-438 | feat(assetutilities/calculations): implement Riser Equivalencing & De-equivalencing — Riser Equivalencing & De equivalencing | done | high | low | assetutilities |
+| WRK-439 | feat(assetutilities/calculations): implement TNE011-1 Overestimation of VIV Fatigu... — TNE011 1 Overestimation of VIV Fatigue Damage f... | done | high | low | assetutilities |
+| WRK-440 | feat(assetutilities/calculations): implement Overestimation of VIV Fatigue Damage ... — Overestimation of VIV Fatigue Damage for Single... | done | high | low | assetutilities |
+| WRK-441 | feat(assetutilities/calculations): implement TNE004-1 Riser Tow Out Analysis Metho... — TNE004 1 Riser Tow Out Analysis Methodology | done | high | low | assetutilities |
+| WRK-442 | feat(assetutilities/calculations): implement Huse, E., Experimental Investigation ... — Huse, E., Experimental Investigation of Deep Se... | done | high | low | assetutilities |
+| WRK-443 | feat(assetutilities/calculations): implement Norton, D.J., et al, 1981 - Wind Tunn... — Norton, D.J., et al, 1981   Wind Tunnel Tests o... | done | high | low | assetutilities |
+| WRK-444 | feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp... | done | high | low | assetutilities |
+| WRK-445 | feat(assetutilities/calculations): implement Smith, C.S., et al, 1981 - Residual S... — Smith, C.S., et al, 1981   Residual Strength an... | done | high | low | assetutilities |
+| WRK-446 | feat(assetutilities/calculations): implement Javanmardi, K., et al, 1995 - Auger T... — Javanmardi, K., et al, 1995   Auger TLP Well Sy... | done | high | low | assetutilities |
+| WRK-447 | feat(assetutilities/calculations): implement Fox, S.A., et al, 1995 - Design Analy... — Fox, S.A., et al, 1995   Design Analysis and Fu... | done | high | low | assetutilities |
+| WRK-448 | feat(assetutilities/calculations): implement Larimore, D., et al, 1998 - Case Hist... — Larimore, D., et al, 1998   Case History   Firs... | done | high | low | assetutilities |
+| WRK-449 | feat(assetutilities/calculations): implement Allen, D.W., 1995 - Vortex-InducedVib... — Allen, D.W., 1995   Vortex InducedVibration Ana... | done | high | low | assetutilities |
+| WRK-450 | feat(assetutilities/calculations): implement Brooks, I.H., 1987 - A Pragmatic Appr... — Brooks, I.H., 1987   A Pragmatic Approach to Vo... | done | high | low | assetutilities |
+| WRK-451 | feat(assetutilities/calculations): implement Carminati, J.R., et al, 1999 - Ursa T... — Carminati, J.R., et al, 1999   Ursa TLP Well Sy... | done | high | low | assetutilities |
+| WRK-452 | feat(assetutilities/calculations): implement Barton, D.R., et al, 1999 - Genesis P... — Barton, D.R., et al, 1999   Genesis Project   D... | done | high | low | assetutilities |
+| WRK-453 | feat(assetutilities/calculations): implement OTC1997-8494 Code Conflicts — OTC1997 8494 Code Conflicts | done | high | low | assetutilities |
+| WRK-454 | feat(assetutilities/calculations): implement OTC2001-13109 SCR Fatigue at Low KC — OTC2001 13109 SCR Fatigue at Low KC | done | high | low | assetutilities |
+| WRK-455 | feat(assetutilities/calculations): implement Chen, W.C. 1989, Fatigue - Life Predi... — Chen, W.C. 1989, Fatigue   Life Predictions for... | done | high | low | assetutilities |
+| WRK-456 | feat(assetutilities/calculations): implement Sweeney, T., et al, 1991 - Behaviour ... — Sweeney, T., et al, 1991   Behaviour of 15ksi S... | done | high | low | assetutilities |
+| WRK-457 | feat(assetutilities/calculations): implement Berner, P., et al, 1997 - Neptune Pro... — Berner, P., et al, 1997   Neptune Project   Pro... | done | high | low | assetutilities |
+| WRK-458 | feat(assetutilities/calculations): implement Stahl, OTC 3902, Design Methodology f... — Stahl, OTC 3902, Design Methodology for Offshor... | done | high | low | assetutilities |
+| WRK-459 | feat(assetutilities/calculations): implement Gardner, T.N., et al, 1982 - Deepwate... — Gardner, T.N., et al, 1982   Deepwater Drilling... | done | high | low | assetutilities |
+| WRK-460 | feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of... | done | high | low | assetutilities |
+| WRK-461 | feat(assetutilities/calculations): implement Kim, Y.Y., et al, 1975 - Analysis of ... — Kim, Y.Y., et al, 1975   Analysis of Simultaneo... | done | high | low | assetutilities |
+| WRK-462 | feat(assetutilities/calculations): implement Grant, R., 1977 - Riser Fairing for R... — Grant, R., 1977   Riser Fairing for Reduced Dra... | done | high | low | assetutilities |
+| WRK-463 | feat(assetutilities/calculations): implement Jacobsen, V., et al, 1996 - Vibration... — Jacobsen, V., et al, 1996   Vibration Suppressi... | done | high | low | assetutilities |
+| WRK-464 | feat(assetutilities/calculations): implement D'Souza, R., et al, 2002 - The Next G... — D'Souza, R., et al, 2002   The Next Generation ... | done | high | low | assetutilities |
+| WRK-465 | feat(assetutilities/calculations): implement Vandiver, J.K., 1985 - The Prediction... — Vandiver, J.K., 1985   The Prediction of Lockin... | done | high | low | assetutilities |
+| WRK-466 | feat(assetutilities/calculations): implement Denison, E.B., et al, 1997 - Mars TLP... — Denison, E.B., et al, 1997   Mars TLP Drilling ... | done | high | low | assetutilities |
+| WRK-467 | feat(assetutilities/calculations): implement Britton, J.S., et al, 1987 - Improvin... — Britton, J.S., et al, 1987   Improving Wellhead... | done | high | low | assetutilities |
+| WRK-468 | feat(assetutilities/calculations): implement Miller, J.E., et al, 1985 - Influence... — Miller, J.E., et al, 1985   Influence of Mud Co... | done | high | low | assetutilities |
+| WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | done | high | low | assetutilities |
+| WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | high | medium | workspace-hub |
+| WRK-482 | feat(digitalmodel/cathodic_protection): Implement API RP 1632 — API RP 1632 Cathodic Protection of Underground Pet | pending | high | high | digitalmodel |
+| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending | medium | low | digitalmodel |
+| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending | medium | low | digitalmodel |
+| WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | pending | medium | low | digitalmodel |
+| WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | pending | medium | low | digitalmodel |
+| WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending | medium | low | digitalmodel |
+| WRK-488 | feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR | pending | high | medium | digitalmodel |
+| WRK-489 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al | pending | high | medium | digitalmodel |
+| WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | high | medium | digitalmodel |
+| WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | pending | high | medium | digitalmodel |
+| WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | high | medium | digitalmodel |
+| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | pending | high | medium | digitalmodel |
+| WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | high | medium | digitalmodel |
+| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | pending | high | medium | digitalmodel |
+| WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | high | medium | digitalmodel |
+| WRK-497 | feat(digitalmodel/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | digitalmodel |
+| WRK-498 | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | doris |
+| WRK-499 | feat(digitalmodel/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | high | digitalmodel |
+| WRK-500 | feat(doris/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | high | doris |
+| WRK-501 | feat(digitalmodel/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | medium | digitalmodel |
+| WRK-502 | feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | medium | doris |
+| WRK-503 | feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | medium | digitalmodel |
+| WRK-504 | feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | medium | doris |
+| WRK-505 | feat(digitalmodel/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | medium | digitalmodel |
+| WRK-506 | feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | medium | doris |
+| WRK-507 | feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | medium | digitalmodel |
+| WRK-508 | feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | medium | doris |
+| WRK-509 | feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | medium | digitalmodel |
+| WRK-510 | feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | medium | doris |
+| WRK-511 | feat(digitalmodel/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | high | digitalmodel |
+| WRK-512 | feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | high | doris |
+| WRK-513 | feat(digitalmodel/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | medium | digitalmodel |
+| WRK-514 | feat(doris/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | medium | doris |
+| WRK-515 | feat(digitalmodel/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | high | digitalmodel |
+| WRK-516 | feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | high | doris |
+| WRK-517 | feat(digitalmodel/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | medium | digitalmodel |
+| WRK-518 | feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | medium | doris |
+| WRK-519 | feat(digitalmodel/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | medium | digitalmodel |
+| WRK-520 | feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | medium | doris |
+| WRK-521 | feat(digitalmodel/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | medium | digitalmodel |
+| WRK-522 | feat(doris/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | medium | doris |
+| WRK-523 | feat(digitalmodel/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | medium | digitalmodel |
+| WRK-524 | feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | medium | doris |
+| WRK-525 | feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | medium | digitalmodel |
+| WRK-526 | feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | medium | doris |
+| WRK-527 | feat(digitalmodel/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | medium | digitalmodel |
+| WRK-528 | feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | medium | doris |
+| WRK-529 | feat(digitalmodel/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | medium | digitalmodel |
+| WRK-530 | feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | medium | doris |
+| WRK-531 | feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | medium | digitalmodel |
+| WRK-532 | feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | medium | doris |
+| WRK-533 | feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | digitalmodel |
+| WRK-534 | feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | doris |
+| WRK-535 | feat(digitalmodel/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | digitalmodel |
+| WRK-536 | feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | doris |
+| WRK-537 | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | digitalmodel |
+| WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | doris |
+| WRK-539 | feat(digitalmodel/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | digitalmodel |
+| WRK-540 | feat(OGManufacturing/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | OGManufacturing |
+| WRK-541 | feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | digitalmodel |
+| WRK-542 | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | OGManufacturing |
+| WRK-543 | feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | digitalmodel |
+| WRK-544 | feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | OGManufacturing |
+| WRK-545 | feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | medium | low | digitalmodel |
+| WRK-546 | feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | medium | low | OGManufacturing |
+| WRK-547 | feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | high | low | digitalmodel |
+| WRK-548 | feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | high | low | OGManufacturing |
+| WRK-549 | feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | medium | low | digitalmodel |
+| WRK-550 | feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | medium | low | OGManufacturing |
+| WRK-551 | feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | medium | low | digitalmodel |
+| WRK-552 | feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | medium | low | OGManufacturing |
+| WRK-553 | feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | digitalmodel |
+| WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | OGManufacturing |
+| WRK-555 | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | pending | high | medium | digitalmodel |
+| WRK-556 | feat(digitalmodel/marine): Implement API RP 2I — API RP 2I 3rd Ed (2008) In-service Inspection of M | pending | high | high | digitalmodel |
+| WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | digitalmodel |
+| WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | digitalmodel |
+| WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | digitalmodel |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
-### ace-linux-2 (14 active / 16 total)
+### ace-linux-2 (14 active / 18 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | done | medium | complex | digitalmodel |
+| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | working | medium | complex | digitalmodel |
 | WRK-047 | OpenFOAM CFD analysis capability for digitalmodel | in_progress | low | complex | digitalmodel |
 | WRK-048 | Blender working configurations for digitalmodel | pending | low | medium | digitalmodel |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | digitalmodel, workspace-hub |
 | WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | done | medium | medium | workspace-hub |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | archived | medium | medium | workspace-hub |
 | WRK-293 | SMART health check on ace-linux-2 drives — install smartmontools + run diagnostics | done | high | simple | workspace-hub |
 | WRK-294 | Standardize ace-linux-2 mount paths — fstab entries for HDDs with clean paths | in-progress | high | simple | workspace-hub |
 | WRK-295 | Bidirectional SSH key auth between ace-linux-1 and ace-linux-2 | done | high | simple | workspace-hub |
@@ -2691,6 +3177,7 @@
 | WRK-388 | GIS skills — QGIS, Google Earth Engine, Python GIS ecosystem | done | medium | complex | workspace-hub |
 | WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending | medium | medium | - |
 | WRK-394 | Planing hull motion model — nonlinear 2D+t strip theory for high-speed vessels | done | low | complex | digitalmodel |
+| WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | workspace-hub |
 
 ### acma-ansys05 (12 active / 12 total)
 
@@ -2709,7 +3196,7 @@
 | WRK-315 | CALM buoy mooring fatigue — spectral fatigue from OrcaFlex time-domain output | done | medium | high | digitalmodel |
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | done | medium | high | saipem, rock-oil-field |
 
-### (unassigned) (4 active / 210 total)
+### (unassigned) (13 active / 219 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2806,6 +3293,7 @@
 | WRK-124 | Session 20260211_095832 — 1 file(s) created | archived | medium | low | digitalmodel |
 | WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | high | medium | digitalmodel |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | done | high | complex | digitalmodel |
+| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | archived | high | complex | digitalmodel |
 | WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | archived | high | medium | digitalmodel |
 | WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | medium | workspace-hub |
 | WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | medium | worldenergydata |
@@ -2904,7 +3392,6 @@
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | archived | medium | complex | digitalmodel |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | high | simple | digitalmodel, saipem, acma-projects |
 | WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | archived | critical | medium | digitalmodel |
-| WRK-280 | Abstract E4/E5 FST CP documents to .md — DNV-RP-B401 2021 + ABS Ships 2017 FST hull calcs | archived | medium | simple | digitalmodel, acma-projects |
 | WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | archived | high | simple | workspace-hub |
 | WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | archived | medium | simple | workspace-hub |
 | WRK-285 | Write active WRK id to state file on working/ transition | archived | high | simple | workspace-hub |
@@ -2923,12 +3410,15 @@
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | assetutilities |
 | WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | simple | workspace-hub |
 | WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | archived | low | simple | digitalmodel |
-
-### ace-linux-1, ace-linux-2 (1 active / 1 total)
-
-| ID | Title | Status | Priority | Complexity | Repos |
-|-----|-------|--------|----------|------------|-------|
-| WRK-391 | Online Resources Research — expanded discovery of skills, data APIs and references for workspace-hub | done | medium | complex | workspace-hub |
+| WRK-473 | feat(hydrodynamics): integrate wavespectra library for spectral processing | pending | medium | simple | digitalmodel |
+| WRK-474 | feat(subsea): integrate MoorDyn + MoorPy for mooring analysis | pending | medium | moderate | digitalmodel |
+| WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending | medium | simple | digitalmodel |
+| WRK-476 | feat(worldenergydata): create ESG/Carbon Emissions module | pending | high | moderate | worldenergydata |
+| WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | medium | simple | worldenergydata |
+| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending | high | moderate | digitalmodel |
+| WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | pending | medium | moderate | worldenergydata |
+| WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | medium | moderate | worldenergydata |
+| WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | digitalmodel |
 
 ### ace-linux-2, ace-linux-1 (1 active / 1 total)
 
