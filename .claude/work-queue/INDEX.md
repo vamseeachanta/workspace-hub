@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-25T11:54:52Z by generate-index.py -->
+<!-- Generated: 2026-02-25T12:04:02Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-25T11:54:52Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-25T12:04:02Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 558
+**Total items:** 559
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 138 |
+| pending | 139 |
 | working | 8 |
 | blocked | 5 |
 | done | 172 |
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 270 |
+| high | 271 |
 | medium | 227 |
 | low | 60 |
 
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 90 |
-| medium | 247 |
+| medium | 248 |
 | complex | 96 |
 
 ### By Repository
@@ -47,7 +47,8 @@
 | acma-projects | 8 |
 | assethold | 12 |
 | assetutilities | 58 |
-| digitalmodel | 191 |
+| client_projects | 1 |
+| digitalmodel | 192 |
 | doris | 26 |
 | frontierdeepwater | 4 |
 | hobbies | 1 |
@@ -56,7 +57,7 @@
 | rock-oil-field | 3 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 7 |
-| workspace-hub | 143 |
+| workspace-hub | 144 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -64,7 +65,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 180 / 558 |
+| Plans exist | 181 / 559 |
 | Plans cross-reviewed | 91 |
 | Plans approved | 114 |
 | Brochure pending | 10 |
@@ -76,9 +77,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 558 |
+| Total captured | 559 |
 | Total archived | 223 |
-| Completion rate | 223/558 (40%) |
+| Completion rate | 223/559 (40%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -86,9 +87,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 42 / 138 | 30% |
-| Plans cross-reviewed | 6 | 12% |
-| Plans user-approved | 6 | 12% |
+| Pending items with plans | 43 / 139 | 31% |
+| Plans cross-reviewed | 6 | 11% |
+| Plans user-approved | 6 | 11% |
 
 ### Aging
 
@@ -103,7 +104,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 80 | 5 | 3 |
+| High     | 81 | 5 | 3 |
 | Medium   | 42  | 2  | 1  |
 | Low      | 16  | 1  | 1  |
 
@@ -668,6 +669,7 @@
 | WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | simple | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | acma-ansys05 | - | workspace-hub, client_projects, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -990,6 +992,7 @@
 | WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | low | simple | workspace-hub | - |
 | WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | low | medium | digitalmodel | - |
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | low | medium | digitalmodel | - |
+| WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | high | medium | workspace-hub, client_projects, digitalmodel | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -1415,6 +1418,12 @@
 | WRK-468 | feat(assetutilities/calculations): implement Miller, J.E., et al, 1985 - Influence... — Miller, J.E., et al, 1985   Influence of Mud Co... | done | high | low | - |
 | WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | done | high | low | - |
 
+### client_projects
+
+| ID | Title | Status | Priority | Complexity | Module |
+|-----|-------|--------|----------|------------|--------|
+| WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | - |
+
 ### digitalmodel
 
 | ID | Title | Status | Priority | Complexity | Module |
@@ -1610,6 +1619,7 @@
 | WRK-582 | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | pending | low | medium | - |
 | WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | medium | - |
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | - |
+| WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | - |
 
 ### doris
 
@@ -1841,6 +1851,7 @@
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | simple | - |
 | WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | simple | - |
 | WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | simple | - |
+| WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -2226,6 +2237,7 @@
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | large | digitalmodel | - |
 | WRK-576 | chore(ai-tools): install gh on ace-linux-2 + full AI tools audit on acma-ansys05 | pending | simple | - | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | medium | workspace-hub | - |
+| WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | medium | workspace-hub, client_projects, digitalmodel | - |
 
 ### Medium
 
@@ -2872,6 +2884,7 @@
 | WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending | low | worldenergydata | - |
 | WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | digitalmodel | - |
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | digitalmodel | - |
+| WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | workspace-hub, client_projects, digitalmodel | - |
 
 ### Complex
 
@@ -3296,7 +3309,7 @@
 | WRK-394 | Planing hull motion model — nonlinear 2D+t strip theory for high-speed vessels | done | low | complex | digitalmodel |
 | WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | workspace-hub |
 
-### acma-ansys05 (12 active / 12 total)
+### acma-ansys05 (13 active / 13 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3312,6 +3325,7 @@
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | blocked | high | medium | aceengineer-admin |
 | WRK-315 | CALM buoy mooring fatigue — spectral fatigue from OrcaFlex time-domain output | done | medium | high | digitalmodel |
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | done | medium | high | saipem, rock-oil-field |
+| WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | workspace-hub, client_projects, digitalmodel |
 
 ### (unassigned) (13 active / 219 total)
 
