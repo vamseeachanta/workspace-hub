@@ -1,11 +1,11 @@
-generated: '2026-02-24'
-total_specs: 1480
+generated: '2026-02-25'
+total_specs: 1502
 by_category:
   archive: 10
-  data-sources: 8
-  modules: 95
-  other: 14
-  repos: 1343
+  data-sources: 12
+  modules: 111
+  other: 15
+  repos: 1344
   templates: 2
   wrk: 8
 by_repo:
@@ -17,16 +17,17 @@ by_repo:
   assethold: 24
   assetutilities: 52
   client_projects: 7
-  digitalmodel: 898
+  digitalmodel: 904
   doris: 9
   frontierdeepwater: 11
   hobbies: 7
+  investments: 1
   pdf-large-reader: 1
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 131
-  worldenergydata: 211
+  workspace-hub: 141
+  worldenergydata: 216
 by_wrk:
   WRK-9: 1
   WRK-10: 1
@@ -39,8 +40,8 @@ by_wrk:
   WRK-17: 1
   WRK-19: 3
   WRK-20: 2
-  WRK-21: 1
-  WRK-22: 1
+  WRK-21: 2
+  WRK-22: 2
   WRK-23: 1
   WRK-24: 1
   WRK-26: 1
@@ -50,12 +51,14 @@ by_wrk:
   WRK-36: 1
   WRK-37: 1
   WRK-38: 1
+  WRK-41: 1
+  WRK-42: 1
   WRK-43: 1
   WRK-44: 2
   WRK-45: 2
   WRK-46: 3
   WRK-49: 1
-  WRK-50: 6
+  WRK-50: 7
   WRK-51: 1
   WRK-55: 1
   WRK-57: 1
@@ -72,7 +75,6 @@ by_wrk:
   WRK-73: 1
   WRK-75: 1
   WRK-80: 1
-  WRK-83: 1
   WRK-93: 1
   WRK-94: 2
   WRK-95: 3
@@ -153,24 +155,37 @@ by_wrk:
   WRK-304: 1
   WRK-306: 1
   WRK-308: 1
-  WRK-309: 2
+  WRK-309: 3
   WRK-310: 1
   WRK-313: 1
+  WRK-316: 1
   WRK-318: 1
   WRK-329: 2
-  WRK-341: 1
-  WRK-344: 1
-  WRK-345: 1
+  WRK-341: 2
   WRK-357: 1
-  WRK-368: 1
+  WRK-372: 1
   WRK-373: 1
   WRK-377: 1
+  WRK-378: 1
+  WRK-379: 1
   WRK-380: 1
-  WRK-383: 3
+  WRK-383: 5
   WRK-384: 2
   WRK-385: 3
   WRK-386: 1
-  WRK-391: 2
+  WRK-391: 4
+  WRK-393: 2
+  WRK-394: 1
+  WRK-415: 5
+  WRK-416: 4
+  WRK-417: 1
+  WRK-418: 1
+  WRK-419: 1
+  WRK-473: 1
+  WRK-474: 1
+  WRK-475: 1
+  WRK-476: 1
+  WRK-477: 1
 specs:
 - path: specs/architecture/agent-vision.md
   title: Superintelligent Engineering Agent Architecture Blueprint
@@ -372,7 +387,7 @@ specs:
   - assetutilities
   - capability-map
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-02-25'
 - path: specs/capability-map/digitalmodel.yaml
   title: digitalmodel
   description: ''
@@ -382,7 +397,7 @@ specs:
   - capability-map
   - digitalmodel
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-02-25'
 - path: specs/capability-map/worldenergydata.yaml
   title: worldenergydata
   description: ''
@@ -392,7 +407,7 @@ specs:
   - capability-map
   - worldenergydata
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-02-25'
 - path: specs/data-sources/OGManufacturing.yaml
   title: OGManufacturing
   description: Data-source index with 71 standard entries for OGManufacturing
@@ -411,15 +426,33 @@ specs:
   - acma-projects
   wrk_refs: []
   mtime: '2026-02-24'
+- path: specs/data-sources/assethold.yaml
+  title: assethold
+  description: Data-source index with 0 standard entries for assethold
+  category: data-sources
+  repo: workspace-hub
+  tags:
+  - assethold
+  wrk_refs: []
+  mtime: '2026-02-25'
+- path: specs/data-sources/assetutilities.yaml
+  title: assetutilities
+  description: Data-source index with 0 standard entries for assetutilities
+  category: data-sources
+  repo: workspace-hub
+  tags:
+  - assetutilities
+  wrk_refs: []
+  mtime: '2026-02-24'
 - path: specs/data-sources/digitalmodel.yaml
   title: digitalmodel
-  description: Data-source index with 181 standard entries for digitalmodel
+  description: Data-source index with 183 standard entries for digitalmodel
   category: data-sources
   repo: workspace-hub
   tags:
   - digitalmodel
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-02-25'
 - path: specs/data-sources/doris.yaml
   title: doris
   description: Data-source index with 92 standard entries for doris
@@ -429,6 +462,25 @@ specs:
   - doris
   wrk_refs: []
   mtime: '2026-02-24'
+- path: specs/data-sources/frontierdeepwater.yaml
+  title: frontierdeepwater
+  description: Data-source index with 0 standard entries for frontierdeepwater
+  category: data-sources
+  repo: workspace-hub
+  tags:
+  - frontierdeepwater
+  wrk_refs: []
+  mtime: '2026-02-24'
+- path: specs/data-sources/pdf-large-reader.yaml
+  title: pdf-large-reader
+  description: Data-source index with 0 standard entries for pdf-large-reader
+  category: data-sources
+  repo: workspace-hub
+  tags:
+  - pdf-large-reader
+  wrk_refs:
+  - WRK-341
+  mtime: '2026-02-24'
 - path: specs/data-sources/rock-oil-field.yaml
   title: rock-oil-field
   description: Data-source index with 35 standard entries for rock-oil-field
@@ -437,7 +489,7 @@ specs:
   tags:
   - rock-oil-field
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-02-25'
 - path: specs/data-sources/saipem.yaml
   title: saipem
   description: Data-source index with 35 standard entries for saipem
@@ -446,7 +498,7 @@ specs:
   tags:
   - saipem
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-02-25'
 - path: specs/data-sources/tier-compliance-report.md
   title: Data Residence Tier Compliance Report
   description: Post-WRK-200 audit of worldenergydata and digitalmodel. First-time Tier 3 classification of assethold. Machine-readable
@@ -468,7 +520,7 @@ specs:
   tags:
   - worldenergydata
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-02-25'
 - path: specs/modules/ace-gtm-group-tagging.md
   title: ACE-GTM Group Tagging
   description: 'Created WRK-148 as the parent strategy stream item for the ACE-GTM group. Need to tag existing child items
@@ -683,6 +735,22 @@ specs:
   wrk_refs:
   - WRK-357
   mtime: '2026-02-23'
+- path: specs/modules/hobbies-long-term-plan.md
+  title: Hobbies Repo Long-Term Plan
+  description: Define the purpose, structure, and content roadmap for the Hobbies personal knowledge-management repository,
+    and remove scaffolding bloat that drowns actual content.
+  category: modules
+  repo: workspace-hub
+  tags:
+  - cleanup
+  - documentation
+  - hobbies
+  - hobbies-long-term-plan
+  - pkm
+  - roadmap
+  wrk_refs:
+  - WRK-41
+  mtime: '2026-02-24'
 - path: specs/modules/import-anthropic-knowledge-work-plugins.md
   title: Import Anthropic Knowledge-Work-Plugins into Workspace-Hub
   description: Import 55+ skills and 40+ commands from [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins)
@@ -756,7 +824,7 @@ specs:
   - WRK-129
   - WRK-310
   - WRK-313
-  mtime: '2026-02-23'
+  mtime: '2026-02-25'
 - path: specs/modules/optimized-gathering-tome.md
   title: 'WRK-391: Online Resources Research — Implementation Plan'
   description: Phased web research across 8 categories to discover and catalog online resources for workspace-hub
@@ -998,20 +1066,15 @@ specs:
   - WRK-286
   mtime: '2026-02-22'
 - path: specs/modules/snappy-hopping-sifakis.md
-  title: 'Plan: File-Structure Skill Hardening + Repo Structural Remediation'
-  description: '**WRK scope**: New WRK items to be captured (no duplicates — WRK-368 done, file-taxonomy v1.1.0 exists) **Repos
-    in scope**: `digitalmodel`, `worldenergydata` **Skills in scope**: `file-taxonomy` (v...'
+  title: 'Plan: God Object Splits — Domain-by-Domain (Parallel)'
+  description: '**Strategy**: Domain-by-domain, both repos in parallel (user confirmed) **Repos in scope**: `digitalmodel`
+    (hydrodynamics/diffraction), `worldenergydata` (safety_analysis/taxonomy) **Evidence basis...'
   category: modules
   repo: workspace-hub
   tags:
   - snappy-hopping-sifakis
-  wrk_refs:
-  - WRK-83
-  - WRK-344
-  - WRK-345
-  - WRK-368
-  - WRK-377
-  mtime: '2026-02-24'
+  wrk_refs: []
+  mtime: '2026-02-25'
 - path: specs/modules/staged-floating-gray.md
   title: 'Plan: WRK-308 — Move pre-commit skill validation + readiness checks to nightly cron'
   description: 'Two sets of checks were running synchronously in the commit/session path and causing slowness on Windows/MINGW:'
@@ -1510,7 +1573,7 @@ specs:
   wrk_refs:
   - WRK-50
   - WRK-293
-  mtime: '2026-02-23'
+  mtime: '2026-02-24'
 - path: specs/modules/hardware-inventory/acma-ansys05.md
   title: ACMA-ANSYS05 Hardware Assessment
   description: '| Component | Specification | |-----------|---------------| | CPU | 2× Intel Xeon Platinum 8562Y+ (Sapphire
@@ -1535,6 +1598,17 @@ specs:
   wrk_refs:
   - WRK-50
   mtime: '2026-02-22'
+- path: specs/modules/hardware-inventory/dev-env-setup.md
+  title: Dev Environment Setup Guide
+  description: 'Source: WRK-050 Phase 4 — Dev Environment Readiness'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - dev-env-setup
+  - hardware-inventory
+  wrk_refs:
+  - WRK-50
+  mtime: '2026-02-24'
 - path: specs/modules/hardware-inventory/gali-linux-compute-1.md
   title: gali-linux-compute-1 Hardware Assessment
   description: '| Component | Specification | |-----------|---------------| | CPU | AMD Ryzen Threadripper PRO 3955WX — 16
@@ -1547,6 +1621,39 @@ specs:
   wrk_refs:
   - WRK-50
   mtime: '2026-02-22'
+- path: specs/modules/hardware-inventory/manifests/ace-linux-1.yml
+  title: Ace Linux 1
+  description: ''
+  category: modules
+  repo: workspace-hub
+  tags:
+  - ace-linux-1
+  - hardware-inventory
+  - manifests
+  wrk_refs: []
+  mtime: '2026-02-24'
+- path: specs/modules/hardware-inventory/manifests/ace-linux-2.yml
+  title: Ace Linux 2
+  description: ''
+  category: modules
+  repo: workspace-hub
+  tags:
+  - ace-linux-2
+  - hardware-inventory
+  - manifests
+  wrk_refs: []
+  mtime: '2026-02-24'
+- path: specs/modules/hardware-inventory/manifests/vamsee-linux1.yml
+  title: Vamsee Linux1
+  description: ''
+  category: modules
+  repo: workspace-hub
+  tags:
+  - hardware-inventory
+  - manifests
+  - vamsee-linux1
+  wrk_refs: []
+  mtime: '2026-02-24'
 - path: specs/modules/skill-eval/plan.md
   title: Skill Eval - Test/Evaluate All Skills
   description: Add a /skill-eval command that validates all 230+ SKILL.md files for structural correctness, content quality,
@@ -1584,17 +1691,42 @@ specs:
   - online-resources
   wrk_refs:
   - WRK-391
-  mtime: '2026-02-24'
+  - WRK-393
+  - WRK-417
+  - WRK-418
+  - WRK-419
+  mtime: '2026-02-25'
+- path: specs/online-resources/follow-on-candidates.md
+  title: Follow-On WRK Candidates — WRK-391 Research Outputs
+  description: '**Generated:** 2026-02-24 **Source:** WRK-391 Online Resources Research'
+  category: other
+  repo: workspace-hub
+  tags:
+  - follow-on-candidates
+  - online-resources
+  wrk_refs:
+  - WRK-383
+  - WRK-391
+  - WRK-473
+  - WRK-474
+  - WRK-475
+  - WRK-476
+  - WRK-477
+  mtime: '2026-02-25'
 - path: specs/online-resources/the-well-evaluation.md
-  title: 'Evaluation: The Well (Polymathic AI)'
-  description: The Well is a 15 TB collection of 16 diverse physics simulation datasets, curated for training machine learning
-    surrogate models. It is highly permissive (CC BY 4.0) and offers high-fidelity data a...
+  title: 'Evaluation: The Well (Polymathic AI) — WRK-393'
+  description: '**Evaluated:** 2026-02-24 **Evaluator:** Claude (WRK-393) **Source:** https://polymathic-ai.org/the_well/
+    **GitHub:** https://github.com/PolymathicAI/the_well **Paper:** NeurIPS 2024 Datasets & Ben...'
   category: other
   repo: workspace-hub
   tags:
   - online-resources
   - the-well-evaluation
-  wrk_refs: []
+  wrk_refs:
+  - WRK-309
+  - WRK-383
+  - WRK-391
+  - WRK-393
   mtime: '2026-02-24'
 - path: specs/repos/aceengineer-admin/automation-implementation-plan.md
   title: Financial Automation Implementation Plan
@@ -16070,6 +16202,25 @@ specs:
   - spec
   wrk_refs: []
   mtime: '2026-02-17'
+- path: specs/repos/investments/long-term-plan.md
+  title: Investments Repo Long-Term Plan
+  description: A pragmatic 12-month roadmap for the investments repository, grounding it in its actual current state (sparse
+    CRE data, one PDF, scaffold-only code), and defining a path toward real CRE analysis tooli
+  category: repos
+  repo: investments
+  tags:
+  - assethold
+  - cre
+  - investments
+  - long-term-plan
+  - nnn
+  - real-estate
+  - roadmap
+  wrk_refs:
+  - WRK-21
+  - WRK-22
+  - WRK-42
+  mtime: '2026-02-24'
 - path: specs/repos/OGManufacturing/2025-07-30-agent-os-integration/spec.md
   title: Spec Requirements Document
   description: Integrate buildermethods Agent OS (https://github.com/buildermethods/agent-os) into the OG Manufacturing Repository
@@ -19476,6 +19627,66 @@ specs:
   - module-registry
   wrk_refs: []
   mtime: '2026-02-24'
+- path: digitalmodel/specs/modules/hydrodynamics.md
+  title: 'Module: hydrodynamics'
+  description: '**Path**: `src/digitalmodel/hydrodynamics/` **Status**: active **Last updated**: 2026-02-24'
+  category: modules
+  repo: digitalmodel
+  tags:
+  - digitalmodel
+  - hydrodynamics
+  wrk_refs:
+  - WRK-372
+  - WRK-394
+  - WRK-416
+  mtime: '2026-02-24'
+- path: digitalmodel/specs/modules/infrastructure-refactor.md
+  title: Infrastructure Refactor Architecture Spec
+  description: '**WRK-415** | Phase 1: Audit and Design **Date**: 2026-02-24 **Status**: Phase 1 complete — audit and target
+    structure defined; migration pending'
+  category: modules
+  repo: digitalmodel
+  tags:
+  - digitalmodel
+  - infrastructure-refactor
+  wrk_refs:
+  - WRK-415
+  mtime: '2026-02-24'
+- path: digitalmodel/specs/modules/infrastructure.md
+  title: 'Module: infrastructure'
+  description: '**Path**: `src/digitalmodel/infrastructure/` **Status**: refactoring **Last updated**: 2026-02-24'
+  category: modules
+  repo: digitalmodel
+  tags:
+  - digitalmodel
+  - infrastructure
+  wrk_refs:
+  - WRK-415
+  - WRK-416
+  mtime: '2026-02-24'
+- path: digitalmodel/specs/modules/structural.md
+  title: 'Module: structural'
+  description: '**Path**: `src/digitalmodel/structural/` **Status**: active **Last updated**: 2026-02-24'
+  category: modules
+  repo: digitalmodel
+  tags:
+  - digitalmodel
+  - structural
+  wrk_refs:
+  - WRK-415
+  mtime: '2026-02-24'
+- path: digitalmodel/specs/modules/subsea.md
+  title: 'Module: subsea'
+  description: '**Path**: `src/digitalmodel/subsea/` **Status**: active **Last updated**: 2026-02-24'
+  category: modules
+  repo: digitalmodel
+  tags:
+  - digitalmodel
+  - subsea
+  wrk_refs:
+  - WRK-415
+  - WRK-416
+  mtime: '2026-02-24'
 - path: digitalmodel/specs/modules/synchronous-swinging-cat.md
   title: 'Plan: Provider Adapters + Ecosystem Folder Structure'
   description: 'Three planning streams converged in the 2026-02-18 session:'
@@ -19488,6 +19699,77 @@ specs:
   - WRK-198
   - WRK-200
   mtime: '2026-02-20'
+- path: digitalmodel/specs/modules/well.md
+  title: 'Module: well'
+  description: '**Path**: `src/digitalmodel/well/` **Status**: in-development **Last updated**: 2026-02-24'
+  category: modules
+  repo: digitalmodel
+  tags:
+  - digitalmodel
+  - well
+  wrk_refs:
+  - WRK-377
+  - WRK-378
+  - WRK-379
+  - WRK-415
+  - WRK-416
+  mtime: '2026-02-24'
+- path: worldenergydata/specs/modules/bsee.md
+  title: 'Module: bsee'
+  description: Provides comprehensive access to BSEE (Bureau of Safety and Environmental Enforcement) data for US Gulf of
+    Mexico offshore operations, covering well and production data retrieval by API10/API12 num...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - bsee
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-02-24'
+- path: worldenergydata/specs/modules/eia_us.md
+  title: 'Module: eia_us'
+  description: Provides US domestic energy production analytics using EIA data sources, covering state-level crude and NGL
+    production, DPR basin drilling productivity, Alaska field-level breakdowns, shale decline...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - eia_us
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-02-24'
+- path: worldenergydata/specs/modules/metocean.md
+  title: 'Module: metocean'
+  description: Provides retrieval, storage, and analysis of meteorological and oceanographic data from public APIs including
+    NOAA NDBC buoys, CO-OPS tides and currents, Open-Meteo weather forecasts, ERDDAP server...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - metocean
+  - worldenergydata
+  wrk_refs:
+  - WRK-316
+  mtime: '2026-02-24'
+- path: worldenergydata/specs/modules/sodir.md
+  title: 'Module: sodir'
+  description: Provides integration with the Norwegian Offshore Directorate (SODIR, formerly NPD) REST API to collect and
+    analyse Norwegian Continental Shelf petroleum data including wellbores, fields, discoverie...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - sodir
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-02-24'
+- path: worldenergydata/specs/modules/vessel_fleet.md
+  title: 'Module: vessel_fleet'
+  description: Provides global offshore vessel fleet data collection, enrichment, and storage, covering construction vessels
+    (lay barges, crane vessels, pipe-lay ships) and drilling equipment (risers, BOPs, flex ...
+  category: modules
+  repo: worldenergydata
+  tags:
+  - vessel_fleet
+  - worldenergydata
+  wrk_refs: []
+  mtime: '2026-02-24'
 - path: assethold/specs/modules/hidden-sprouting-stream.md
   title: 'WRK-189-ext: HTML Report, UV Environment, Sectioned Data, Stock Comparison Design'
   description: 'The daily strategy tool works end-to-end (live run confirmed, 170 tests passing). Three enhancements are needed:'
