@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-25T17:03:47Z by generate-index.py -->
+<!-- Generated: 2026-02-25T17:05:04Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-25T17:03:47Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-25T17:05:04Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 570
+**Total items:** 571
 
 ### By Status
 
@@ -16,7 +16,7 @@
 | pending | 147 |
 | working | 8 |
 | blocked | 5 |
-| done | 173 |
+| done | 174 |
 | archived | 223 |
 
 ### By Priority
@@ -25,14 +25,14 @@
 |----------|-------|
 | high | 272 |
 | medium | 232 |
-| low | 65 |
+| low | 66 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
 | simple | 94 |
-| medium | 249 |
+| medium | 250 |
 | complex | 97 |
 
 ### By Repository
@@ -48,7 +48,7 @@
 | assethold | 12 |
 | assetutilities | 58 |
 | client_projects | 1 |
-| digitalmodel | 198 |
+| digitalmodel | 199 |
 | doris | 26 |
 | frontierdeepwater | 4 |
 | hobbies | 1 |
@@ -65,9 +65,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 183 / 570 |
-| Plans cross-reviewed | 92 |
-| Plans approved | 115 |
+| Plans exist | 183 / 571 |
+| Plans cross-reviewed | 93 |
+| Plans approved | 116 |
 | Brochure pending | 10 |
 | Brochure updated/synced | 8 |
 
@@ -77,9 +77,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 570 |
+| Total captured | 571 |
 | Total archived | 223 |
-| Completion rate | 223/570 (39%) |
+| Completion rate | 223/571 (39%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -677,10 +677,11 @@
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | pending | high | complex | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-599 | docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules | pending | medium | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-600 | chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming | done | low | simple | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | pending | low | simple | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-599 |
-| WRK-602 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | done | low | simple | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | pending | low | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -862,6 +863,7 @@
 | WRK-468 | feat(assetutilities/calculations): implement Miller, J.E., et al, 1985 - Influence... — Miller, J.E., et al, 1985   Influence of Mud Co... | high | low | assetutilities | - |
 | WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | high | low | assetutilities | - |
 | WRK-600 | chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming | low | simple | worldenergydata | - |
+| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | low | simple | digitalmodel | - |
 
 ### Pending
 
@@ -1009,10 +1011,10 @@
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | high | medium | workspace-hub, digitalmodel | - |
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | high | complex | workspace-hub | - |
 | WRK-599 | docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules | medium | simple | workspace-hub | - |
-| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | low | simple | digitalmodel | - |
-| WRK-602 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | medium | low | workspace-hub | - |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | low | medium | digitalmodel | - |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | low | low | workspace-hub | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | low | low | workspace-hub | - |
+| WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | medium | low | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -1645,7 +1647,8 @@
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | - |
-| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | pending | low | simple | - |
+| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | done | low | simple | - |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | pending | low | medium | - |
 
 ### doris
 
@@ -1881,9 +1884,9 @@
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | - |
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | pending | high | complex | - |
 | WRK-599 | docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules | pending | medium | simple | - |
-| WRK-602 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | - |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | low | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | - |
+| WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -2508,7 +2511,7 @@
 | WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | simple | workspace-hub | - |
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | simple | workspace-hub | - |
 | WRK-599 | docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules | pending | simple | workspace-hub | - |
-| WRK-602 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | low | workspace-hub | - |
+| WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | low | workspace-hub | - |
 
 ### Low
 
@@ -2575,7 +2578,8 @@
 | WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | medium | digitalmodel | - |
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | medium | digitalmodel | - |
 | WRK-600 | chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming | done | simple | worldenergydata | - |
-| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | pending | simple | digitalmodel | - |
+| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | done | simple | digitalmodel | - |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | pending | medium | digitalmodel | - |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | workspace-hub | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | simple | workspace-hub | - |
@@ -2678,7 +2682,7 @@
 | WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | workspace-hub | - |
 | WRK-599 | docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules | pending | medium | workspace-hub | - |
 | WRK-600 | chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming | done | low | worldenergydata | - |
-| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | pending | low | digitalmodel | - |
+| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | done | low | digitalmodel | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
 
 ### Medium
@@ -2934,6 +2938,7 @@
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | digitalmodel | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | workspace-hub, client_projects, digitalmodel | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | workspace-hub, digitalmodel | - |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | pending | low | digitalmodel | - |
 
 ### Complex
 
@@ -3039,7 +3044,7 @@
 
 ## By Computer
 
-### ace-linux-1 (290 active / 303 total)
+### ace-linux-1 (291 active / 304 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3341,10 +3346,11 @@
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | medium | workspace-hub |
 | WRK-599 | docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules | pending | medium | simple | workspace-hub |
 | WRK-600 | chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming | done | low | simple | worldenergydata |
-| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | pending | low | simple | digitalmodel |
-| WRK-602 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | workspace-hub |
+| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | done | low | simple | digitalmodel |
+| WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | pending | low | medium | digitalmodel |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | low | workspace-hub |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | workspace-hub |
+| WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (13 active / 17 total)
@@ -3694,5 +3700,4 @@
 | WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | WRK-568 | - | - |
 | WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | WRK-568 | - | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | WRK-593, WRK-594 | - | - |
-| WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | WRK-599 | - | - |
 
