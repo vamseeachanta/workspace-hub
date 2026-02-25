@@ -463,6 +463,68 @@ except ConvergenceError as e:
     results = qtf.compute(method="control_surface")
 ```
 
+## L06 Restart Workflow (Full QTF via .owd)
+
+Full QTF computation is split into two stages in OrcaWave:
+
+**Stage 1** — Standard first-order solve → produces parent `.owd` binary.
+
+**Stage 2** — QTF restart: the YAML contains `RestartingFrom:` pointing to the stage-1 `.owd`.
+
+### Stage 2 YAML pattern
+
+```yaml
+RestartingFrom: L06 Parent model.owd   # path to stage-1 result
+SolveType: Full QTF calculation
+QTFMinPeriodOrFrequency: 0
+QTFMaxPeriodOrFrequency: 12             # s (period-based if WavesReferredToBy=period)
+QTFFrequencyTypes: Sum frequencies      # or "Difference frequencies"
+IncludeMeanDriftFullQTFs: No            # Yes to include mean drift in QTF matrix
+QTFCalculationMethod: Both              # Direct + Indirect methods
+PreferredQTFCalculationMethod: Direct method
+# Free surface — inner panelled zone
+FreeSurfacePanelledZoneType: Automatically generated
+FreeSurfacePanelledZonePanelSize: 1.25
+FreeSurfacePanelledZoneInnerRadius: 85
+# Free surface — outer quadrature zone
+FreeSurfaceQuadratureZoneNumberOfAnnuli: 9
+FreeSurfaceQuadratureZoneRadiusStep: 48.67
+FreeSurfaceQuadratureZoneNumberOfRadialNodes: 12
+FreeSurfaceQuadratureZoneNumberOfAzimuthalNodes: 32
+FreeSurfaceOuterCircleNumberOfSegments: 197
+FreeSurfaceAsymptoticZoneExpansionOrder: 24
+```
+
+### Python restart pattern
+
+```python
+import OrcFxAPI
+
+diff = OrcFxAPI.Diffraction(threadCount=12)
+diff.LoadData("L06_qtf_restart.yml")   # yml contains RestartingFrom:
+if diff.ValidationErrorText:
+    raise RuntimeError(diff.ValidationErrorText)
+diff.Calculate()
+diff.SaveResults("L06_full_qtf.owr")
+```
+
+### Critical rules
+
+- **Never set QTF keys in a non-restart YAML** — solver errors if `QTFMinPeriodOrFrequency`
+  or `FreeSurface*` keys appear when `SolveType` is `Potential and source formulations`.
+- The parent `.owd` must exist before the restart script runs.
+- `QTFMaxPeriodOrFrequency: Infinity` is valid (computes full frequency range).
+
+### Key parameter differences
+
+| Aspect | First-order | Full QTF restart |
+|--------|-------------|-----------------|
+| `SolveType` | `Potential and source formulations` | `Full QTF calculation` |
+| `RestartingFrom` | not present | path to `.owd` |
+| `QTFMin/MaxPeriodOrFrequency` | **DO NOT SET** | set explicitly |
+| Free surface discretisation | not applicable | panelled + quadrature zones |
+| Typical runtime | minutes | hours |
+
 ## Related Skills
 
 - [orcawave-analysis](../orcawave-analysis/SKILL.md) - First-order diffraction analysis

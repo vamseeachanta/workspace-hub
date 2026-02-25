@@ -53,6 +53,74 @@ compatibility:
 - Coupled vessel response analysis
 - Multi-body mooring system design
 
+## L03 OC4 Semi-sub Multibody — Concrete Patterns
+
+**L03** is the reference 4-body example (3 offset columns + 1 centre column, OC4 semi-sub).
+
+### Body connection hierarchy (L03 pattern)
+
+In OrcaWave multi-body, bodies are linked via `BodyConnectionParent`:
+
+```yaml
+Bodies:
+  - BodyName: Aft offset column
+    BodyConnectionParent: Centre column   # connected to parent
+    BodyMeshSymmetry: None                # no symmetry for offset bodies
+    ...
+  - BodyName: Port offset column
+    BodyConnectionParent: Centre column
+    ...
+  - BodyName: Stbd offset column
+    BodyConnectionParent: Centre column
+    ...
+  - BodyName: Centre column
+    BodyConnectionParent: Free            # root body is Free
+    ...
+```
+
+### Extracting multi-body results (L03 API pattern)
+
+```python
+import OrcFxAPI
+import numpy as np
+
+diff = OrcFxAPI.Diffraction("L03 Semi-sub multibody analysis.owr")
+
+# Infer body count — diff.bodyCount does NOT exist
+am = diff.addedMass           # shape (nfreq, 6N, 6N)
+n_bodies = am.shape[1] // 6  # N=4 for L03
+
+# Extract self-influence block for body 0 (Centre column)
+body0_am = am[:, 0:6, 0:6]   # (nfreq, 6, 6)
+
+# Extract cross-coupling block A[0→1]
+a01 = am[:, 0:6, 6:12]       # (nfreq, 6, 6)
+
+# RAO shape for 4 bodies: (nheading, nfreq, 24)
+# DOF indices: body_i DOF_j → index = i*6 + j
+raos = diff.displacementRAOs
+centre_heave = np.abs(raos[:, :, 2])   # body 0 heave (DOF index 2)
+aft_heave = np.abs(raos[:, :, 8])      # body 1 heave (DOF index 8 = 1*6+2)
+
+# Frequencies: Hz, descending — always sort
+freqs_hz = np.array(diff.frequencies)
+sort_idx = np.argsort(freqs_hz)
+periods = 1.0 / freqs_hz[sort_idx]
+```
+
+### Coupling symmetry check
+
+For multi-body systems, cross-body added mass should satisfy reciprocity:
+`A[body_i → body_j] ≈ A[body_j → body_i]ᵀ`
+
+```python
+# Check coupling symmetry between bodies 0 and 1
+a01 = am[:, 0:6, 6:12]
+a10 = am[:, 6:12, 0:6]
+sym_error = np.max(np.abs(a01 - a10.transpose(0, 2, 1)))
+print(f"Max coupling symmetry error: {sym_error:.4g}")  # should be < 1.0
+```
+
 ## Multi-Body Configurations
 
 ### Common Scenarios
@@ -62,7 +130,8 @@ compatibility:
 | Side-by-Side | 2 | STS transfer, offloading |
 | Tandem | 2 | Towing, CALM buoy |
 | Spread | 3+ | Offshore construction |
-| Nested | 2 | Dock/vessel, barge/cargo |
+| Sectional (L04) | 7 | Articulated structure analysis |
+| Connected columns (L03) | 4 | Semi-sub with body hierarchy |
 
 ### Gap Resonance
 

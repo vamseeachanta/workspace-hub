@@ -4,7 +4,7 @@ description: Generate visualizations from OrcaFlex and OrcaWave simulations usin
   the shared OrcFxAPI — model views (SaveModelView), time series plots, range graphs,
   and interactive HTML reports. Covers both .dat/.sim (OrcaFlex) and .owd (OrcaWave)
   files via the same API surface.
-version: 1.1.0
+version: 1.2.0
 updated: 2026-02-23
 category: offshore-engineering
 triggers:
@@ -33,7 +33,7 @@ Generate comprehensive visualizations from OrcaFlex simulations including model 
 ## Version Metadata
 
 ```yaml
-version: 1.0.0
+version: 1.2.0
 python_min_version: '3.10'
 dependencies:
   orcaflex-modeling: '>=2.0.0,<3.0.0'
@@ -52,6 +52,15 @@ compatibility:
 ```
 
 ## Changelog
+
+### [1.2.0] - 2026-02-23
+
+**Added:**
+- `save_orcawave_views(owd_path, out_dir)` — primary public helper in `mesh_capture.py`
+- `BenchmarkPlotter.save_mesh_views(fig, out_dir)` — exports 3 PNG views via Plotly Kaleido
+- `BenchmarkPlotter._build_panel_mesh3d_fig()` — returns `go.Figure` (refactored from HTML wrapper)
+- Static PNG images now embedded base64 above Plotly widget in mesh schematic section
+- OrcaWave Schematic Capture section documenting 3-tier approach (see below)
 
 ### [1.1.0] - 2026-02-23
 
@@ -98,6 +107,51 @@ Both OrcaFlex and OrcaWave are Orcina products sharing the same `OrcFxAPI` modul
 > `.owr` (results) via `LoadData()`/`LoadResults()`. It has no `SaveModelView`.
 > OrcaWave files have the binary header `\x08OrcaWave` — they are NOT loadable by
 > `OrcFxAPI.Model()`. Direct UI screenshots must be taken manually from OrcaWave GUI.
+
+### OrcaWave Schematic Capture (Static PNG)
+
+Three approaches exist, ranked by reliability. The Plotly+Kaleido path is the
+**primary** method — it is headless, cross-platform, and requires no OrcaWave GUI.
+
+| Tier | Method | Reliability | Notes |
+|------|--------|-------------|-------|
+| 1 (primary) | **Plotly + Kaleido** | High | Headless; uses `panelGeometry`; no OrcaWave open |
+| 2 (secondary) | `OrcaWaveScreenCapture` (win32gui/pyautogui) | Low | Fragile; Windows-only; OrcaWave must be open |
+| 3 (tertiary) | GDF → `OrcFxAPI.Model.SaveModelView()` | Medium | Loses free-surface zone; requires OrcaFlex |
+
+**Primary path — Plotly + Kaleido:**
+
+```python
+from digitalmodel.hydrodynamics.diffraction.mesh_capture import save_orcawave_views
+from pathlib import Path
+
+paths = save_orcawave_views(
+    owd_path=Path("model.owr"),
+    out_dir=Path("output/mesh_views"),
+)
+# → output/mesh_views/mesh_perspective.png
+# → output/mesh_views/mesh_plan.png
+# → output/mesh_views/mesh_elevation.png
+```
+
+`save_orcawave_views()` internally calls:
+1. `OrcFxAPI.Diffraction(str(owd_path))` → reads `.panelGeometry`
+2. `BenchmarkPlotter._build_panel_mesh3d_fig()` → builds `go.Figure`
+3. `BenchmarkPlotter.save_mesh_views(fig, out_dir)` → writes 3 PNGs via kaleido
+
+Kaleido must be installed: `uv add kaleido` (already in `pyproject.toml`).
+
+**Secondary path — OrcaWaveScreenCapture (fragile):**
+
+Located at `src/.../orcawave/vision/screen_capture.py`. Requires OrcaWave GUI
+open and the correct window in focus. Use only as last resort on Windows where
+kaleido is unavailable.
+
+**Tertiary path — GDF → OrcaFlex SaveModelView():**
+
+Export GDF via `Diffraction.SaveSymmetrisedBodyMesh()`, load into an OrcaFlex
+`Model()`, call `model.SaveModelView(filepath, vp)`. Limitation: the free-surface
+panel zone is not part of the OrcaFlex model and will not appear in the view.
 
 ### OrcaWave Mesh Export via Diffraction
 

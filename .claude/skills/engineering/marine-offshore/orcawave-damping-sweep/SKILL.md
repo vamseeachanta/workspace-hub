@@ -55,6 +55,65 @@ compatibility:
 - Sensitivity analysis for motion predictions
 - Roll resonance mitigation studies
 
+## L02 Drag Linearisation — Concrete Pattern
+
+**L02** is the reference example for Morison drag linearisation with a JONSWAP spectrum.
+This is the standard approach for semi-submersibles with slender tubular members.
+
+### YAML keys for drag linearisation (L02 pattern)
+
+```yaml
+# Enable drag linearisation
+HasWaveSpectrumForDragLinearisation: Yes
+DragLinearisationMaxNumberOfIterations: 50
+DragLinearisationTolerance: 1e-6
+
+# JONSWAP wave spectrum
+WaveType: JONSWAP
+WaveJONSWAPParametersMode: Partially specified
+WaveHs: 7           # significant wave height [m]
+WaveTz: 8           # zero-crossing period [s]
+WaveGamma: 1        # peak enhancement factor (1 = Bretschneider)
+SpectrumDiscretisationMethod: Equal energy
+WaveNumberOfSpectralDirections: 1
+WaveNumberOfComponents: 200
+WaveSpectrumMinRelFrequency: 0.5
+WaveSpectrumMaxRelFrequency: 10.0
+WaveSpectrumMaxComponentFrequencyRange: 0.05
+
+# Recommended solver for large panel counts with drag linearisation
+LinearSolverMethod: Iterative AGS
+LinearSolverMaxIterations: 30
+LinearSolverTolerance: 1e-6
+
+# Per-type Morison coefficients (one entry per element type)
+MorisonElementTypes:
+  - MorisonElementTypeName: UC morison
+    MorisonElementTypeNormalDragDiameter: 12
+    MorisonElementTypeAxialDragDiameter: ~      # null = not applicable
+    MorisonElementTypeDragCoefficients: [0.61, ~, 0]
+    MorisonElementTypeNormalHydrodynamicDiameter: 12
+    MorisonElementTypeAxialHydrodynamicDiameter: ~
+    MorisonElementTypeCaCoefficients: [0, ~, 0]
+    MorisonElementTypeCmCoefficients: [0, 0, 0]
+```
+
+### When to use drag linearisation
+
+- Structure has slender Morison members (columns, braces, tendons)
+- Drag forces are significant relative to diffraction forces
+- Analysis targets a specific sea state (specific Hs, Tz)
+- The iterative procedure converges (check `DragLinearisationTolerance`)
+
+### Key: `QuadraticLoadControlSurface` interaction
+
+With drag linearisation, mean drift is usually computed via pressure integration:
+```yaml
+QuadraticLoadControlSurface: No
+PreferredQuadraticLoadCalculationMethod: Pressure integration
+```
+(L01 uses control surface; L02 uses pressure integration — both are valid)
+
 ## Damping Components
 
 ### Total Damping Composition

@@ -52,6 +52,24 @@ This skill provides guidance on hydrodynamic diffraction/radiation analysis usin
 | Convert mesh formats | `bemrosetta` | GDF/DAT/STL conversion |
 | Store/retrieve coefficients | `hydrodynamics` | Coefficient database |
 
+### Tool Selection
+
+Both OrcaWave and OrcaFlex share the same Python package (`OrcFxAPI`) but are completely separate analysis modes with different API classes and file formats.
+
+- Use OrcaWave (`OrcFxAPI.Diffraction`) for all frequency-domain diffraction work
+- Use OrcaFlex (`OrcFxAPI.Model`) only for time-domain structural dynamics
+- Both share the same Python package (`OrcFxAPI`) but are completely separate analysis modes
+
+| Aspect | OrcaWave | OrcaFlex |
+|--------|----------|---------|
+| Domain | Frequency-domain diffraction | Time-domain FEM/dynamics |
+| API class | `OrcFxAPI.Diffraction` | `OrcFxAPI.Model` |
+| Input file | `.owd` (binary) / `.yml` (config) | `.dat` (binary) |
+| Results | `.owr` (RAOs, added mass, QTF) | `.sim` (time histories) |
+| SaveModelView | NOT available | Available |
+| Primary output | Hydrodynamic coefficients | Structural responses |
+| When to use | Wave loads, RAOs, added mass, QTF | Riser dynamics, mooring, installation |
+
 ### Feature Matrix
 
 | Feature | aqwa | orcawave | bemrosetta | diffraction |

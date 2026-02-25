@@ -70,6 +70,20 @@ compatibility:
 - OrcaFlex hydrodynamic database generation
 - Frequency domain marine analysis
 
+## OrcaWave vs OrcaFlex
+
+Both OrcaWave and OrcaFlex are accessed via `import OrcFxAPI`, but they use different API classes and serve different purposes. OrcaWave (`OrcFxAPI.Diffraction`) is a frequency-domain diffraction/radiation solver. OrcaFlex (`OrcFxAPI.Model`) is a time-domain dynamics solver. `SaveModelView` is available in OrcaFlex but NOT in OrcaWave.
+
+| Aspect | OrcaWave | OrcaFlex |
+|--------|----------|---------|
+| Domain | Frequency-domain diffraction | Time-domain FEM/dynamics |
+| API class | `OrcFxAPI.Diffraction` | `OrcFxAPI.Model` |
+| Input file | `.owd` (binary) / `.yml` (config) | `.dat` (binary) |
+| Results | `.owr` (RAOs, added mass, QTF) | `.sim` (time histories) |
+| SaveModelView | NOT available | Available |
+| Primary output | Hydrodynamic coefficients | Structural responses |
+| When to use | Wave loads, RAOs, added mass, QTF | Riser dynamics, mooring, installation |
+
 ## Agent Capabilities
 
 This skill integrates agent capabilities from `/agents/orcawave/`:
@@ -566,3 +580,53 @@ These properties return the same data as shown on the validation page in the Orc
 **Roll Damping:**
 - `extraRollDamping` - Additional roll damping
 - `rollDampingPercentCritical` - Roll damping as % of critical
+
+---
+
+## Input Parameter Reference (YAML Keys)
+
+> Full reference: `digitalmodel/docs/domains/orcawave/examples/PARAMETER_REFERENCE.md`
+> Examples quick-map: see `EXAMPLES.md` in this skill folder.
+
+### Key parameters by category (summary)
+
+| Category | Key Parameters |
+|----------|---------------|
+| Solver | `SolveType`, `LinearSolverMethod`, `DivideNonPlanarPanels` |
+| Load RAO | `LoadRAOCalculationMethod`, `PreferredLoadRAOCalculationMethod` |
+| Mean drift | `QuadraticLoadControlSurface`, `QuadraticLoadPressureIntegration` |
+| Environment | `WaterDepth`, `WaterDensity`, `WavesReferredToBy` |
+| Wave grid | `PeriodOrFrequency`, `WaveHeading` |
+| Drag lin. | `HasWaveSpectrumForDragLinearisation`, `WaveType`, `WaveHs`, `WaveTz` |
+| QTF | `SolveType: Full QTF calculation`, `RestartingFrom`, `QTFFrequencyTypes` |
+| Body | `BodyConnectionParent`, `BodyHydrostaticStiffnessMethod`, `BodyMeshSymmetry` |
+| Output | `OutputPanelPressures`, `OutputIntermediateResults` |
+
+### SolveType options
+
+| Value | Description | Examples |
+|-------|-------------|---------|
+| `Potential and source formulations` | Full first-order solve | L01, L02, L03 |
+| `Potential formulation only` | No source formulation | L04, L05 |
+| `Full QTF calculation` | Second-order QTF restart | L06 |
+
+### LinearSolverMethod options
+
+| Value | When to use |
+|-------|------------|
+| `Direct LU` | Default; robust for small/medium meshes |
+| `Iterative AGS` | Large panel counts (L02 semi-sub style); add `LinearSolverMaxIterations: 30` |
+
+### BodyHydrostaticStiffnessMethod options
+
+| Value | Description |
+|-------|-------------|
+| `Displacement` | Standard — stiffness from displaced volume (L01, L02, L03) |
+| `Sectional` | Sectional bodies — stiffness from cross-sectional properties (L04, L05) |
+
+### BodyInteriorSurfacePanelMethod options
+
+| Value | Description |
+|-------|-------------|
+| `Triangulation method` | Default for enclosed bodies (L01, L02, L03) |
+| `Radial method` | Better for cylindrical bodies (L04, L05 columns/pontoons) |
