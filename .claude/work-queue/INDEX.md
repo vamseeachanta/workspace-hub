@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-25T12:04:02Z by generate-index.py -->
+<!-- Generated: 2026-02-25T13:55:13Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-25T12:04:02Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-25T13:55:13Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 559
+**Total items:** 565
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 139 |
+| pending | 145 |
 | working | 8 |
 | blocked | 5 |
 | done | 172 |
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 271 |
+| high | 274 |
 | medium | 227 |
 | low | 60 |
 
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 90 |
-| medium | 248 |
+| medium | 253 |
 | complex | 96 |
 
 ### By Repository
@@ -48,7 +48,7 @@
 | assethold | 12 |
 | assetutilities | 58 |
 | client_projects | 1 |
-| digitalmodel | 192 |
+| digitalmodel | 193 |
 | doris | 26 |
 | frontierdeepwater | 4 |
 | hobbies | 1 |
@@ -57,15 +57,15 @@
 | rock-oil-field | 3 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 7 |
-| workspace-hub | 144 |
-| worldenergydata | 102 |
+| workspace-hub | 145 |
+| worldenergydata | 104 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 181 / 559 |
+| Plans exist | 184 / 565 |
 | Plans cross-reviewed | 91 |
 | Plans approved | 114 |
 | Brochure pending | 10 |
@@ -77,9 +77,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 559 |
+| Total captured | 565 |
 | Total archived | 223 |
-| Completion rate | 223/559 (40%) |
+| Completion rate | 223/565 (39%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -87,7 +87,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 43 / 139 | 31% |
+| Pending items with plans | 46 / 145 | 32% |
 | Plans cross-reviewed | 6 | 11% |
 | Plans user-approved | 6 | 11% |
 
@@ -104,7 +104,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 81 | 5 | 3 |
+| High     | 84 | 5 | 3 |
 | Medium   | 42  | 2  | 1  |
 | Low      | 16  | 1  | 1  |
 
@@ -670,6 +670,12 @@
 | WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | acma-ansys05 | - | workspace-hub, client_projects, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-590 | Split activity_taxonomy.py into 2 focused modules | pending | P1 | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-591 | Split report_generator.py into 4 focused modules | pending | P1 | medium | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-592 | Split benchmark_plotter.py into 4 focused modules | pending | P1 | high | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-593 | data(vessel_fleet): expand curated drilling riser dataset + add construction vessels from public sources | pending | high | medium | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-594 | data(worldenergydata): populate pipeline geometry lookup from BSEE + API 5L standard table | pending | high | medium | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | acma-ansys05 | - | workspace-hub, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-593, WRK-594 |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -993,6 +999,12 @@
 | WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | low | medium | digitalmodel | - |
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | low | medium | digitalmodel | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | high | medium | workspace-hub, client_projects, digitalmodel | - |
+| WRK-590 | Split activity_taxonomy.py into 2 focused modules | P1 | medium | - | - |
+| WRK-591 | Split report_generator.py into 4 focused modules | P1 | medium | - | - |
+| WRK-592 | Split benchmark_plotter.py into 4 focused modules | P1 | high | - | - |
+| WRK-593 | data(vessel_fleet): expand curated drilling riser dataset + add construction vessels from public sources | high | medium | worldenergydata | - |
+| WRK-594 | data(worldenergydata): populate pipeline geometry lookup from BSEE + API 5L standard table | high | medium | worldenergydata | - |
+| WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | high | medium | workspace-hub, digitalmodel | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -1620,6 +1632,7 @@
 | WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | medium | - |
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | - |
+| WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | - |
 
 ### doris
 
@@ -1852,6 +1865,7 @@
 | WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | simple | - |
 | WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | simple | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | - |
+| WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1960,6 +1974,8 @@
 | WRK-583 | research: verify ANP Brazil production data REST API availability | pending | low | simple | - |
 | WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending | low | medium | - |
 | WRK-585 | feat(worldenergydata): add IRENA offshore wind capacity data | pending | low | simple | - |
+| WRK-593 | data(vessel_fleet): expand curated drilling riser dataset + add construction vessels from public sources | pending | high | medium | - |
+| WRK-594 | data(worldenergydata): populate pipeline geometry lookup from BSEE + API 5L standard table | pending | high | medium | - |
 
 ## By Priority
 
@@ -2238,6 +2254,9 @@
 | WRK-576 | chore(ai-tools): install gh on ace-linux-2 + full AI tools audit on acma-ansys05 | pending | simple | - | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | medium | workspace-hub | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | medium | workspace-hub, client_projects, digitalmodel | - |
+| WRK-593 | data(vessel_fleet): expand curated drilling riser dataset + add construction vessels from public sources | pending | medium | worldenergydata | - |
+| WRK-594 | data(worldenergydata): populate pipeline geometry lookup from BSEE + API 5L standard table | pending | medium | worldenergydata | - |
+| WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | medium | workspace-hub, digitalmodel | - |
 
 ### Medium
 
@@ -2885,6 +2904,11 @@
 | WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | digitalmodel | - |
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | digitalmodel | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | workspace-hub, client_projects, digitalmodel | - |
+| WRK-590 | Split activity_taxonomy.py into 2 focused modules | pending | P1 | - | - |
+| WRK-591 | Split report_generator.py into 4 focused modules | pending | P1 | - | - |
+| WRK-593 | data(vessel_fleet): expand curated drilling riser dataset + add construction vessels from public sources | pending | high | worldenergydata | - |
+| WRK-594 | data(worldenergydata): populate pipeline geometry lookup from BSEE + API 5L standard table | pending | high | worldenergydata | - |
+| WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | workspace-hub, digitalmodel | - |
 
 ### Complex
 
@@ -2989,7 +3013,7 @@
 
 ## By Computer
 
-### ace-linux-1 (280 active / 293 total)
+### ace-linux-1 (285 active / 298 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3285,6 +3309,11 @@
 | WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | medium | digitalmodel, workspace-hub |
 | WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | digitalmodel, saipem, workspace-hub |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | medium | workspace-hub |
+| WRK-590 | Split activity_taxonomy.py into 2 focused modules | pending | P1 | medium | - |
+| WRK-591 | Split report_generator.py into 4 focused modules | pending | P1 | medium | - |
+| WRK-592 | Split benchmark_plotter.py into 4 focused modules | pending | P1 | high | - |
+| WRK-593 | data(vessel_fleet): expand curated drilling riser dataset + add construction vessels from public sources | pending | high | medium | worldenergydata |
+| WRK-594 | data(worldenergydata): populate pipeline geometry lookup from BSEE + API 5L standard table | pending | high | medium | worldenergydata |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (13 active / 17 total)
@@ -3309,7 +3338,7 @@
 | WRK-394 | Planing hull motion model — nonlinear 2D+t strip theory for high-speed vessels | done | low | complex | digitalmodel |
 | WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | workspace-hub |
 
-### acma-ansys05 (13 active / 13 total)
+### acma-ansys05 (14 active / 14 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3326,6 +3355,7 @@
 | WRK-315 | CALM buoy mooring fatigue — spectral fatigue from OrcaFlex time-domain output | done | medium | high | digitalmodel |
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | done | medium | high | saipem, rock-oil-field |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | workspace-hub, client_projects, digitalmodel |
+| WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | workspace-hub, digitalmodel |
 
 ### (unassigned) (13 active / 219 total)
 
@@ -3637,4 +3667,5 @@
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | WRK-568 | - | - |
 | WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | WRK-568 | - | - |
 | WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | WRK-568 | - | - |
+| WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | WRK-593, WRK-594 | - | - |
 
