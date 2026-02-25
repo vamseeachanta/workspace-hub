@@ -1,0 +1,305 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .dashboard-card {
+    @apply bg-card rounded-lg border p-6 shadow-sm transition-all duration-200 hover:shadow-md;
+  }
+
+  .metric-card {
+    @apply bg-card rounded-lg border p-4 flex flex-col justify-between min-h-[120px] transition-all duration-200 hover:shadow-md;
+  }
+
+  .status-badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .status-passed {
+    @apply bg-success/10 text-success border border-success/20;
+  }
+
+  .status-failed {
+    @apply bg-error/10 text-error border border-error/20;
+  }
+
+  .status-skipped {
+    @apply bg-warning/10 text-warning border border-warning/20;
+  }
+
+  .status-running {
+    @apply bg-info/10 text-info border border-info/20 animate-pulse;
+  }
+
+  .status-pending {
+    @apply bg-muted text-muted-foreground border border-muted;
+  }
+
+  .alert-critical {
+    @apply bg-error/10 text-error border border-error/20;
+  }
+
+  .alert-high {
+    @apply bg-destructive/10 text-destructive border border-destructive/20;
+  }
+
+  .alert-medium {
+    @apply bg-warning/10 text-warning border border-warning/20;
+  }
+
+  .alert-low {
+    @apply bg-info/10 text-info border border-info/20;
+  }
+
+  .chart-container {
+    @apply w-full h-full min-h-[300px] p-4;
+  }
+
+  .tooltip {
+    @apply absolute z-50 bg-popover text-popover-foreground border rounded-md px-3 py-1.5 text-sm shadow-md;
+  }
+
+  .loading-spinner {
+    @apply inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent;
+  }
+
+  .coverage-excellent {
+    @apply bg-success/20 text-success;
+  }
+
+  .coverage-good {
+    @apply bg-info/20 text-info;
+  }
+
+  .coverage-fair {
+    @apply bg-warning/20 text-warning;
+  }
+
+  .coverage-poor {
+    @apply bg-error/20 text-error;
+  }
+
+  .trend-improving {
+    @apply text-success;
+  }
+
+  .trend-degrading {
+    @apply text-error;
+  }
+
+  .trend-stable {
+    @apply text-muted-foreground;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent;
+  }
+
+  .bg-gradient-dashboard {
+    @apply bg-gradient-to-br from-background via-muted/50 to-background;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--border));
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--muted-foreground));
+  }
+}
+
+/* Custom animations for charts */
+@keyframes draw-line {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chart-line {
+  stroke-dasharray: 1000;
+  animation: draw-line 1.5s ease-in-out forwards;
+}
+
+.chart-element {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* D3 chart styles */
+.d3-chart {
+  @apply w-full h-full;
+}
+
+.d3-chart .axis {
+  @apply text-muted-foreground;
+}
+
+.d3-chart .axis path,
+.d3-chart .axis line {
+  @apply stroke-border;
+}
+
+.d3-chart .axis text {
+  @apply fill-muted-foreground text-xs;
+}
+
+.d3-chart .grid line {
+  @apply stroke-border opacity-30;
+}
+
+.d3-chart .grid path {
+  @apply stroke-none;
+}
+
+.d3-chart .line {
+  @apply fill-none stroke-2;
+}
+
+.d3-chart .area {
+  @apply opacity-20;
+}
+
+.d3-chart .dot {
+  @apply stroke-2 fill-background;
+}
+
+.d3-chart .bar {
+  @apply transition-all duration-200;
+}
+
+.d3-chart .bar:hover {
+  @apply opacity-80;
+}
+
+/* Heatmap styles */
+.heatmap-cell {
+  @apply transition-all duration-200 stroke-1 stroke-border/20;
+}
+
+.heatmap-cell:hover {
+  @apply stroke-border stroke-2;
+}
+
+/* Real-time indicators */
+.pulse-dot {
+  @apply w-2 h-2 bg-success rounded-full animate-ping;
+}
+
+.pulse-dot::after {
+  @apply absolute w-2 h-2 bg-success rounded-full;
+  content: '';
+}
+
+/* Connection status indicators */
+.status-connected {
+  @apply text-success;
+}
+
+.status-disconnected {
+  @apply text-error;
+}
+
+.status-reconnecting {
+  @apply text-warning animate-pulse;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .dashboard-card {
+    @apply p-4;
+  }
+
+  .metric-card {
+    @apply p-3 min-h-[100px];
+  }
+
+  .chart-container {
+    @apply min-h-[250px] p-2;
+  }
+}

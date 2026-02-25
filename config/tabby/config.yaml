@@ -1,0 +1,82 @@
+version: 7
+profiles:
+  - name: Linux Workspace (Local Network)
+    type: ssh
+    id: workspace-linux-local
+    options:
+      host: 192.168.1.100
+      user: vamsee
+      port: 22
+    group: Workspace Machines
+    color: '#00ff00'
+    icon: 'fas fa-desktop'
+  - name: Linux Workspace (Tailscale - Internet)
+    type: ssh
+    id: workspace-linux-tailscale
+    options:
+      host: 100.107.64.76
+      user: vamsee
+      port: 22
+    group: Workspace Machines
+    color: '#00aaff'
+    icon: 'fas fa-globe'
+groups:
+  - name: Workspace Machines
+    color: '#00ff00'
+configSync:
+  parts: {}
+hotkeys:
+  toggle-window:
+    - Ctrl-Space
+  new-tab:
+    - Ctrl-Shift-T
+  close-tab:
+    - Ctrl-Shift-W
+  switch-tab-1:
+    - Alt-1
+  switch-tab-2:
+    - Alt-2
+  switch-tab-3:
+    - Alt-3
+  switch-tab-4:
+    - Alt-4
+  switch-tab-5:
+    - Alt-5
+terminal:
+  searchOptions: {}
+  colorScheme:
+    name: Tabby Default
+    foreground: '#cacaca'
+    background: '#171717'
+    cursor: '#bbbbbb'
+    colors:
+      - '#000000'
+      - '#ff615a'
+      - '#b1e969'
+      - '#ebd99c'
+      - '#5da9f6'
+      - '#e86aff'
+      - '#82fff7'
+      - '#dedacf'
+      - '#313131'
+      - '#f58c80'
+      - '#ddf88f'
+      - '#eee5b2'
+      - '#a5c7ff'
+      - '#ddaaff'
+      - '#b7fff9'
+      - '#ffffff'
+  fontSize: 12
+  fontFamily: 'monospace'
+  copyOnSelect: true
+  rightClick: 'paste'
+ssh: {}
+clickableLinks: {}
+accessibility: {}
+appearance:
+  theme: 'Standard'
+  opacity: 1.0
+hacks: {}
+providerBlacklist: []
+commandBlacklist: []
+enableWelcomeTab: false

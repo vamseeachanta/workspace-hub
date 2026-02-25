@@ -1,0 +1,114 @@
+# ABOUTME: Multi-AI Workflow Configuration
+# ABOUTME: Defines AI models, stages, and automation settings for the commit workflow
+
+version: "1.0"
+name: "Multi-AI Commit Workflow"
+
+# Trigger configuration
+triggers:
+  on_commit: true
+  on_pr: true
+  branches:
+    - main
+    - develop
+    - "feature/*"
+
+# AI Model Configuration
+models:
+  # NOTE: Model IDs sourced from config/agents/model-registry.yaml (latest_models)
+  # Update model-registry.yaml when new versions release — not this file
+  # Primary provider resolved at runtime from WRK frontmatter (provider: field) or
+  # WRK_PROVIDER env var. Set WRK_PROVIDER=codex or WRK_PROVIDER=gemini to swap.
+  # Defaults to claude if unset.
+  primary:
+    name: "${WRK_PROVIDER:-claude}"
+    provider: "${WRK_PROVIDER_VENDOR:-anthropic}"
+    model: "${WRK_PROVIDER_MODEL:-claude-sonnet-4-5-20250929}"
+    purpose: "Code implementation and auto-fix"
+    api_env: "${WRK_PROVIDER_API_KEY_ENV:-ANTHROPIC_API_KEY}"
+    fallback: "claude-haiku-4-5-20251001"
+    max_tokens: 8192
+
+  reviewer:
+    name: "openai"
+    provider: "openai"
+    model: "gpt-4.1"
+    purpose: "Code review (quality, security, performance)"
+    api_env: "OPENAI_API_KEY"
+    fallback: "gpt-4.1-mini"
+    max_tokens: 4096
+
+  tester:
+    name: "factory"
+    provider: "factory.ai"
+    model: "claude-sonnet-4-5"  # Factory.ai uses Claude under the hood
+    purpose: "Comprehensive testing"
+    command: "droid"
+    fallback_provider: "gemini"
+    fallback_model: "gemini-2.5-flash"
+
+# Stage Configuration
+stages:
+  implementation:
+    enabled: true
+    timeout_seconds: 300
+    retry_count: 2
+
+  review:
+    enabled: true
+    timeout_seconds: 180
+    checks:
+      - code_quality
+      - security
+      - performance
+      - best_practices
+    severity_threshold: "warning"  # error, warning, info
+
+  testing:
+    enabled: true
+    timeout_seconds: 600
+    levels:
+      - unit
+      - integration
+      - e2e
+    coverage_threshold: 80
+    fail_on_coverage_drop: true
+
+# Auto-fix Configuration
+auto_fix:
+  enabled: true
+  max_iterations: 3
+  re_review_after_fix: true
+  commit_fixes: true
+  commit_message_prefix: "[auto-fix]"
+
+# Reporting
+reporting:
+  format: "markdown"  # markdown, json, html
+  output_dir: "reports/ai-workflow"
+  include_metrics: true
+  post_to_pr: true
+  slack_webhook_env: "SLACK_WEBHOOK_URL"
+  notify_on_failure: true
+
+# File Patterns
+patterns:
+  include:
+    - "src/**/*.py"
+    - "src/**/*.js"
+    - "src/**/*.ts"
+    - "scripts/**/*.sh"
+  exclude:
+    - "**/*.test.js"
+    - "**/*.spec.ts"
+    - "**/node_modules/**"
+    - "**/.git/**"
+    - "**/dist/**"
+    - "**/build/**"
+
+# Performance Limits
+limits:
+  max_files_per_run: 50
+  max_file_size_kb: 500
+  concurrent_reviews: 3
+  rate_limit_delay_ms: 1000

@@ -1,0 +1,492 @@
+{
+  "timestamp": "2025-08-12T22:13:46.163111",
+  "summary": {
+    "total": 25,
+    "success": 25,
+    "partial": 0,
+    "error": 0,
+    "stashed": 25,
+    "pulled": 0,
+    "pushed": 23,
+    "conflicts": 0,
+    "total_ahead": 50,
+    "total_behind": 0
+  },
+  "details": [
+    {
+      "repo": "aceengineer-admin",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "aceengineercode",
+      "status": "success",
+      "branch": "master",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "aceengineer-website",
+      "status": "success",
+      "branch": "master",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "OGManufacturing",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "achantas-data",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "achantas-media",
+      "status": "success",
+      "branch": "jun-jul-aug",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "ai-native-traditional-eng",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "assethold",
+      "status": "success",
+      "branch": "master",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "acma-projects",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 4,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "assetutilities",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M .agent-os/instructions/enhanced-create-spec.md",
+        " M CLAUDE.md",
+        " M agents/test-interactive/agent.yaml",
+        " M slash_commands.py",
+        "?? .agent-os/commands/git_sync.py"
+      ]
+    },
+    {
+      "repo": "doris",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "hobbies",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "frontierdeepwater",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "digitalmodel",
+      "status": "success",
+      "branch": "master",
+      "stashed": true,
+      "pulled": false,
+      "pushed": false,
+      "conflicts": false,
+      "ahead": 0,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M .claude/settings.local.json",
+        "?? .agent-os/commands/test-automation-enhanced.py",
+        "?? .agent-os/commands/test-automation-propagation.yml",
+        "?? .agent-os/commands/test-automation.py",
+        "?? tests/generated/"
+      ]
+    },
+    {
+      "repo": "energy",
+      "status": "success",
+      "branch": "master",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "sabithaandkrishnaestates",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 3,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "pyproject-starter",
+      "status": "success",
+      "branch": "master",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "rock-oil-field",
+      "status": "success",
+      "branch": "master",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "client_projects",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "teamresumes",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "saipem",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "seanation",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "sd-work",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 2,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "investments",
+      "status": "success",
+      "branch": "main",
+      "stashed": true,
+      "pulled": false,
+      "pushed": false,
+      "conflicts": false,
+      "ahead": 0,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    },
+    {
+      "repo": "worldenergydata",
+      "status": "success",
+      "branch": "master",
+      "stashed": true,
+      "pulled": false,
+      "pushed": true,
+      "conflicts": false,
+      "ahead": 3,
+      "behind": 0,
+      "errors": [],
+      "changes": [
+        "M CLAUDE.md",
+        "?? .agent-os/commands/",
+        "?? .command-registry.json",
+        "?? COMMANDS.md",
+        "?? MANDATORY_SLASH_COMMAND_ECOSYSTEM.md"
+      ]
+    }
+  ]
+}

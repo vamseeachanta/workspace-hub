@@ -1,0 +1,27 @@
+{
+  "extraction_date": "2026-01-28T10:00:00Z",
+  "days_analyzed": 7,
+  "total_corrections": 5,
+  "correction_patterns": [
+    {
+      "file": "/mnt/github/workspace-hub/src/main.py",
+      "basename": "main.py",
+      "correction_count": 3,
+      "avg_gap_seconds": 45,
+      "pattern_type": "quick_fix"
+    }
+  ],
+  "file_type_patterns": [
+    {"extension": "py", "correction_count": 3, "avg_gap_seconds": 45, "rank": 1},
+    {"extension": "sh", "correction_count": 1, "avg_gap_seconds": 120, "rank": 2},
+    {"extension": "md", "correction_count": 1, "avg_gap_seconds": 300, "rank": 3}
+  ],
+  "chain_patterns": [
+    {"chain_id": "20260128_a1b2c3d4", "chain_type": "single_file_iteration", "length": 2, "files": ["/mnt/github/workspace-hub/src/main.py"]},
+    {"chain_id": "20260128_e5f6g7h8", "chain_type": "ping_pong", "length": 2, "files": ["/mnt/github/workspace-hub/src/utils.sh", "/mnt/github/workspace-hub/src/main.py"]}
+  ],
+  "context_patterns": [
+    {"file": "/mnt/github/workspace-hub/src/main.py", "sample_edits": [{"old": "def process_data(input):", "new": "def process_data(input: str):"}]}
+  ],
+  "learnings": []
+}

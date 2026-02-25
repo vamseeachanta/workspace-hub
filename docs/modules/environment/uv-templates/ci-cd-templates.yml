@@ -1,0 +1,544 @@
+# CI/CD Templates for UV Projects
+# Version: 1.0.0
+# Templates for common CI/CD platforms
+
+# ===== GITHUB ACTIONS =====
+
+# GitHub Actions workflow for UV projects
+name: CI/CD with UV
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+jobs:
+  # Test job with multiple Python versions
+  test:
+    name: Test Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up UV
+      uses: astral-sh/setup-uv@v1
+      with:
+        version: "latest"
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
+    - name: Set up Python ${{ matrix.python-version }}
+      run: uv python install ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: uv sync --all-extras --dev
+
+    - name: Run linting
+      run: |
+        uv run ruff check .
+        uv run ruff format --check .
+
+    - name: Run type checking
+      run: uv run mypy .
+
+    - name: Run tests
+      run: uv run pytest --cov=src --cov-report=xml --cov-report=term-missing
+
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.11' && matrix.os == 'ubuntu-latest'
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: true
+
+  # Security scanning
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up UV
+      uses: astral-sh/setup-uv@v1
+
+    - name: Install dependencies
+      run: uv sync --dev
+
+    - name: Run bandit security scan
+      run: uv run bandit -r src/
+
+    - name: Run safety vulnerability check
+      run: uv run safety check
+
+  # Build and publish
+  build:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    needs: [test, security]
+    if: github.event_name == 'release'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up UV
+      uses: astral-sh/setup-uv@v1
+
+    - name: Install dependencies
+      run: uv sync --dev
+
+    - name: Build package
+      run: uv build
+
+    - name: Publish to PyPI
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: uv run twine upload dist/*
+
+# ===== GITLAB CI =====
+
+# .gitlab-ci.yml for UV projects
+stages:
+  - test
+  - security
+  - build
+  - deploy
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  UV_CACHE_DIR: "$CI_PROJECT_DIR/.cache/uv"
+
+cache:
+  paths:
+    - .cache/uv/
+    - .venv/
+
+# Test stage
+test:
+  stage: test
+  image: python:3.11
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["3.9", "3.10", "3.11", "3.12"]
+  before_script:
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    - export PATH="$HOME/.cargo/bin:$PATH"
+    - uv python install $PYTHON_VERSION
+  script:
+    - uv sync --all-extras --dev
+    - uv run pytest --cov=src --cov-report=xml --cov-report=term
+    - uv run ruff check .
+    - uv run mypy .
+  coverage: '/TOTAL.*\s+(\d+%)$/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+
+# Security scanning
+security_scan:
+  stage: security
+  image: python:3.11
+  before_script:
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    - export PATH="$HOME/.cargo/bin:$PATH"
+  script:
+    - uv sync --dev
+    - uv run bandit -r src/
+    - uv run safety check
+
+# Build stage
+build:
+  stage: build
+  image: python:3.11
+  before_script:
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    - export PATH="$HOME/.cargo/bin:$PATH"
+  script:
+    - uv sync --dev
+    - uv build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+# Deploy to PyPI
+deploy_pypi:
+  stage: deploy
+  image: python:3.11
+  needs: [build]
+  only:
+    - tags
+  before_script:
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    - export PATH="$HOME/.cargo/bin:$PATH"
+  script:
+    - uv sync --dev
+    - uv run twine upload dist/*
+  variables:
+    TWINE_USERNAME: __token__
+    TWINE_PASSWORD: $CI_PYPI_TOKEN
+
+# ===== AZURE DEVOPS =====
+
+# azure-pipelines.yml for UV projects
+trigger:
+  branches:
+    include:
+    - main
+    - develop
+  tags:
+    include:
+    - v*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  pythonVersion: '3.11'
+
+stages:
+- stage: Test
+  jobs:
+  - job: TestMultiplePythonVersions
+    strategy:
+      matrix:
+        Python39:
+          python.version: '3.9'
+        Python310:
+          python.version: '3.10'
+        Python311:
+          python.version: '3.11'
+        Python312:
+          python.version: '3.12'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+      displayName: 'Use Python $(python.version)'
+
+    - script: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "##vso[task.prependpath]$HOME/.cargo/bin"
+      displayName: 'Install UV'
+
+    - script: |
+        uv python install $(python.version)
+        uv sync --all-extras --dev
+      displayName: 'Install dependencies'
+
+    - script: |
+        uv run pytest --cov=src --cov-report=xml --junitxml=pytest.xml
+      displayName: 'Run tests'
+
+    - script: |
+        uv run ruff check .
+        uv run mypy .
+      displayName: 'Run linting and type checking'
+
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFiles: 'pytest.xml'
+        testRunTitle: 'Publish test results for Python $(python.version)'
+
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: 'coverage.xml'
+
+- stage: Build
+  dependsOn: Test
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  jobs:
+  - job: BuildAndPublish
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+
+    - script: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "##vso[task.prependpath]$HOME/.cargo/bin"
+      displayName: 'Install UV'
+
+    - script: |
+        uv sync --dev
+        uv build
+      displayName: 'Build package'
+
+    - task: TwineAuthenticate@1
+      inputs:
+        pythonUploadServiceConnection: 'PyPI'
+
+    - script: |
+        uv run twine upload -r PyPI --config-file $(PYPIRC_PATH) dist/*
+      displayName: 'Upload to PyPI'
+
+# ===== DOCKER =====
+
+# Dockerfile for UV projects
+FROM python:3.11-slim as base
+
+# Install UV
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+
+# Set working directory
+WORKDIR /app
+
+# Copy dependency files
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies
+RUN uv sync --frozen --no-cache --no-dev
+
+# Development stage
+FROM base as development
+
+# Install development dependencies
+RUN uv sync --frozen --no-cache
+
+# Copy source code
+COPY . .
+
+# Production stage
+FROM base as production
+
+# Copy source code
+COPY . .
+
+# Create non-root user
+RUN useradd --create-home --shell /bin/bash app \
+    && chown -R app:app /app
+USER app
+
+# Run application
+CMD ["uv", "run", "python", "-m", "your_package"]
+
+# ===== DOCKER COMPOSE =====
+
+# docker-compose.yml for development
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - uv-cache:/root/.cache/uv
+    environment:
+      - PYTHONPATH=/app/src
+    ports:
+      - "8000:8000"
+    command: uv run python -m your_package
+
+  test:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - uv-cache:/root/.cache/uv
+    command: uv run pytest
+
+volumes:
+  uv-cache:
+
+# ===== MAKEFILE =====
+
+# Makefile for UV projects
+.PHONY: install test lint format type-check build clean dev docs
+
+# Default Python version
+PYTHON_VERSION ?= 3.11
+
+# Install dependencies
+install:
+	uv sync --all-extras
+
+# Install development dependencies
+dev:
+	uv sync --all-extras --dev
+
+# Run tests
+test:
+	uv run pytest
+
+# Run tests with coverage
+test-cov:
+	uv run pytest --cov=src --cov-report=html --cov-report=term-missing
+
+# Run linting
+lint:
+	uv run ruff check .
+	uv run bandit -r src/
+
+# Format code
+format:
+	uv run ruff format .
+	uv run ruff check --fix .
+
+# Type checking
+type-check:
+	uv run mypy .
+
+# Build package
+build:
+	uv build
+
+# Clean build artifacts
+clean:
+	rm -rf dist/
+	rm -rf build/
+	rm -rf *.egg-info/
+	rm -rf .coverage
+	rm -rf htmlcov/
+	rm -rf .pytest_cache/
+	rm -rf .mypy_cache/
+	rm -rf .ruff_cache/
+
+# Generate documentation
+docs:
+	uv run sphinx-build -b html docs/ docs/_build/
+
+# Run development server (adjust for your project)
+serve:
+	uv run python -m your_package
+
+# Security scan
+security:
+	uv run bandit -r src/
+	uv run safety check
+
+# Full CI pipeline locally
+ci: lint type-check test-cov security build
+
+# Update dependencies
+update:
+	uv lock --upgrade
+
+# Check for outdated dependencies
+outdated:
+	uv tree --outdated
+
+# ===== PRE-COMMIT HOOKS =====
+
+# .pre-commit-config.yaml for UV projects
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: debug-statements
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.6
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.7.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-all]
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args: ['-x', 'tests/']
+
+# ===== JUSTFILE =====
+
+# justfile for UV projects (alternative to Makefile)
+set shell := ["bash", "-c"]
+
+# Default recipe
+default:
+    @just --list
+
+# Install dependencies
+install:
+    uv sync --all-extras --dev
+
+# Run tests
+test:
+    uv run pytest
+
+# Run tests with coverage
+test-cov:
+    uv run pytest --cov=src --cov-report=html --cov-report=term-missing
+
+# Format and lint code
+format:
+    uv run ruff format .
+    uv run ruff check --fix .
+
+# Type check
+typecheck:
+    uv run mypy .
+
+# Build package
+build:
+    uv build
+
+# Run full CI pipeline
+ci: format typecheck test-cov build
+
+# Clean build artifacts
+clean:
+    rm -rf dist/ build/ *.egg-info/ .coverage htmlcov/ .pytest_cache/ .mypy_cache/ .ruff_cache/
+
+# Update dependencies
+update:
+    uv lock --upgrade
+
+# Security scan
+security:
+    uv run bandit -r src/
+    uv run safety check
+
+# ===== VS CODE SETTINGS =====
+
+# .vscode/settings.json for UV projects
+{
+    "python.defaultInterpreterPath": "./.venv/bin/python",
+    "python.terminal.activateEnvironment": false,
+    "python.linting.enabled": true,
+    "python.linting.ruffEnabled": true,
+    "python.formatting.provider": "none",
+    "python.linting.mypyEnabled": true,
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": true,
+            "source.organizeImports.ruff": true
+        },
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    }
+}

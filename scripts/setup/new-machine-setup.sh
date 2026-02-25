@@ -111,6 +111,27 @@ PYSCRIPT
   fi
 fi
 
+# ── Step 3b: Keybindings — Ctrl+Enter to submit (WRK-228) ───────────────────
+step "3b. Claude keybindings (submit = Ctrl+Enter)"
+CLAUDE_KB_SRC="${WORKSPACE_HUB}/config/claude/keybindings.json"
+CLAUDE_KB_DST="${HOME}/.claude/keybindings.json"
+if [[ "$DRY_RUN" == "true" ]]; then
+  dry "cp ${CLAUDE_KB_SRC} ${CLAUDE_KB_DST}"
+elif [[ ! -f "$CLAUDE_KB_SRC" ]]; then
+  log "WARN: config/claude/keybindings.json not found — skipping keybindings install"
+elif [[ -f "$CLAUDE_KB_DST" ]]; then
+  if cmp -s "$CLAUDE_KB_SRC" "$CLAUDE_KB_DST"; then
+    log "keybindings.json already current — no change."
+  else
+    cp "$CLAUDE_KB_SRC" "$CLAUDE_KB_DST"
+    log "keybindings.json updated (submitPrompt=ctrl+enter)"
+  fi
+else
+  mkdir -p "${HOME}/.claude"
+  cp "$CLAUDE_KB_SRC" "$CLAUDE_KB_DST"
+  log "keybindings.json installed: ${CLAUDE_KB_DST}"
+fi
+
 # ── Step 4: Shell aliases + prompt ────────────────────────────────────────────
 step "4. Shell aliases"
 SNIPPET="${WORKSPACE_HUB}/config/shell/bashrc-snippets.sh"

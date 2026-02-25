@@ -1,0 +1,201 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: gmsh
+Source: http://gmsh.info
+Comment:
+ The following files were excluded because:
+ *: third-party source packaged in Debian
+Files-Excluded:
+ contrib/ANN
+ contrib/gmm
+ contrib/metis
+ contrib/voro++
+ contrib/ALGLIB
+ contrib/eigen
+ contrib/Netgen
+
+Files: *
+Copyright: 1997-2019 Christophe Geuzaine <geuzaine@acm.caltech.edu>
+                     Jean-Francois Remacle <remacle@gce.ucl.ac.be>
+License: GPL-2+ with Gmsh exception
+ GPL-2 license is applied here with the following exception.
+ .
+ The copyright holders of Gmsh give you permission to combine Gmsh
+ with code included in the standard release of TetGen (from Hang Si),
+ Netgen (from Joachim Sch"oberl), Chaco (from Bruce Hendrickson and
+ Robert Leland at Sandia National Laboratories), METIS (from
+ George Karypis at the University of Minnesota) and OpenCASCADE (from
+ Open CASCADE S.A.S) under their respective licenses. You may copy
+ and distribute such a system following the terms of the GNU GPL
+ for Gmsh and the licenses of the other code concerned, provided
+ that you include the source code of that other code when and as the
+ GNU GPL requires distribution of source code.
+ .
+ Note that people who make modified versions of Gmsh are not
+ obligated to grant this special exception for their modified
+ versions; it is their choice whether to do so. The GNU General
+ Public License gives permission to release a modified version
+ without this exception; this exception also makes it possible to
+ release a modified version which carries forward this exception.
+ .
+ End of exception.
+ .
+ This program is free software; you can redistribute it
+ and/or modify it under the terms of the GNU General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or any later version.
+ .
+ This program is distributed in the hope that it will be
+ useful, but WITHOUT ANY WARRANTY; without even the implied
+ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ PURPOSE.  See the GNU General Public License for more
+ details.
+ .
+ You should have received a copy of the GNU General Public
+ License along with this package; if not, write to the Free
+ Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ Boston, MA  02110-1301 USA
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ `/usr/share/common-licenses/GPL-2'.
+
+Files: contrib/bamg/*
+Copyright: Frederic Hecht <frederic.hecht@ann.jussieu.fr>
+License: LGPL-2.1
+
+Files: contrib/blossom/*
+Copyright: 1997-2011 Prof. Cook <bico@isye.gatech.edu>
+License: other
+ Free to use for both academic and non-academic work.
+ Concorde license is granted only for use within the Gmsh system.
+ .
+ For more informatoin, please, refer contrib/blossom/README.txt
+
+Files: contrib/DiscreteIntegration/*
+Copyright: 2015 UCL
+License: Expat
+
+Files: contrib/HighOrderMeshOptimizer/*
+Copyright: 2015 UCL-ULg
+License: Expat
+
+Files: contrib/kbipack/*
+Copyright: 2005 Saku Suuriniemi
+License: GPL-2+
+
+Files: contrib/MathEx/*
+Copyright: 2000-2003 Sadao Massago
+License: LGPL-2.1
+
+Files: contrib/MeshOptimizer/*
+Copyright: 2013 ULg-UCL
+License: Expat
+
+Files: contrib/MeshQualityOptimizer/*
+Copyright: 2015 UCL
+License: Expat
+
+Files: contrib/mmg3d/*
+Copyright: 2004-2011 IPB-UPMC-INRIA
+License: GPL-3
+
+Files: contrib/mobile/*
+Copyright: 2014-2017 Christophe Geuzaine and Maxime Graulich, University of Liege
+License: GPL-2
+
+Files: contrib/mpeg_encode/*
+Copyright: 1995 The Regents of the University of California
+License: Expat
+
+Files: contrib/Netgen/*
+Copyright: 1997-2011 Dr. Joachim Schöberl <js@jku.at>
+License: LGPL-2.1
+
+Files: contrib/onelab/*
+Copyright: 2014-2015 ULg-UCL
+License: Expat
+
+Files: contrib/Revoropt/*
+Copyright: (C) 2013 Vincent Nivoliers <vincent.nivoliers@univ-lyon1.fr>
+License: MPL-2.0
+ This Source Code Form is subject to the terms of the Mozilla
+ Public License v. 2.0. If a copy of the MPL was not distributed
+ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Files: contrib/hxt/*
+Copyright: (C) 2017-2018 Universite catholique de Louvain
+License: GPL-2+
+
+Files: contrib/zipper/*
+Copyright: (c) 1998-2010 - Gilles Vollant
+                           Mathias Svensson
+License: zlib
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+ .
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+ .
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+
+License: Expat
+ Permission to use, copy, modify, and distribute this software and its
+ documentation for any purpose, without fee, and without written agreement is
+ hereby granted, provided that the above copyright notice and the following two
+ paragraphs appear in all copies of this software.
+ .
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF
+ THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ .
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING,
+ BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS,
+ AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE,
+ SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+License: GPL-2
+ On Debian systems, the full text of the GNU GENERAL PUBLIC
+ LICENSE version 2 can be found in the file
+ `/usr/share/common-licenses/GPL-2'.
+
+License: GPL-2+
+ This program is free software; you can redistribute it
+ and/or modify it under the terms of the GNU General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later
+ version.
+ .
+ This program is distributed in the hope that it will be
+ useful, but WITHOUT ANY WARRANTY; without even the implied
+ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ PURPOSE.  See the GNU General Public License for more
+ details.
+ .
+ You should have received a copy of the GNU General Public
+ License along with this package; if not, write to the Free
+ Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ Boston, MA  02110-1301 USA
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ `/usr/share/common-licenses/GPL-2'.
+
+License: GPL-3
+ On Debian systems, the full text of the GNU GENERAL PUBLIC
+ LICENSE version 3 can be found in the file
+ `/usr/share/common-licenses/GPL-3'.
+
+License: LGPL-2.1
+ On Debian systems, the full text of the GNU LESSER GENERAL PUBLIC
+ LICENSE version 2.1 can be found in the file
+ `/usr/share/common-licenses/LGPL-2.1'.

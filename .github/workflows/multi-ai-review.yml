@@ -1,0 +1,57 @@
+name: Multi-AI Review
+
+# NOTE: Codex CLI and Gemini CLI are NOT available in GitHub Actions runners.
+# This workflow is intentionally restricted to workflow_dispatch only.
+# Cross-review must be performed locally using:
+#   scripts/review/cross-review.sh <file_or_diff> all --type implementation
+# See CLAUDE.md for cross-review gate requirements.
+
+on:
+  workflow_dispatch:
+    inputs:
+      review_type:
+        description: 'Type of review to perform (run locally; this triggers docs only)'
+        required: false
+        default: 'implementation'
+        type: choice
+        options:
+          - plan
+          - implementation
+          - commit
+
+jobs:
+  cross-review-info:
+    name: Cross-Review Instructions
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Display cross-review instructions
+        run: |
+          echo "## Multi-AI Cross-Review" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Codex CLI and Gemini CLI are not available in GitHub Actions runners." >> $GITHUB_STEP_SUMMARY
+          echo "Cross-review must be performed locally before merging." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Local cross-review commands" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo "# Review a git diff" >> $GITHUB_STEP_SUMMARY
+          echo "git diff origin/main...HEAD > pr-changes.diff" >> $GITHUB_STEP_SUMMARY
+          echo "scripts/review/cross-review.sh pr-changes.diff all --type ${{ github.event.inputs.review_type || 'implementation' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "# Review a specific commit" >> $GITHUB_STEP_SUMMARY
+          echo "scripts/review/cross-review.sh <commit-sha> all --type ${{ github.event.inputs.review_type || 'implementation' }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Results are saved to scripts/review/results/" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check review scripts exist
+        run: |
+          if [ -x scripts/review/cross-review.sh ]; then
+            echo "cross-review.sh: present and executable"
+          else
+            echo "WARNING: scripts/review/cross-review.sh not found or not executable" >&2
+          fi

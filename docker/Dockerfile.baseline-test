@@ -1,0 +1,151 @@
+# Multi-stage Dockerfile for Baseline Testing Environment
+# Optimized for CI/CD with caching and security
+
+# Stage 1: Base environment setup
+FROM node:18-alpine AS base
+
+# Install system dependencies and security updates
+RUN apk update && apk upgrade && \
+    apk add --no-cache \
+    python3 \
+    py3-pip \
+    git \
+    bash \
+    curl \
+    jq \
+    bc \
+    openssl \
+    ca-certificates \
+    && rm -rf /var/cache/apk/*
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S baseline && \
+    adduser -S baseline -u 1001 -G baseline
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files for dependency caching
+COPY package*.json ./
+COPY requirements.txt* ./
+
+# Stage 2: Dependencies installation
+FROM base AS dependencies
+
+# Install Node.js dependencies with cache optimization
+RUN npm ci --only=production --no-audit --prefer-offline && \
+    npm cache clean --force
+
+# Install Python dependencies if requirements.txt exists
+RUN if [ -f requirements.txt ]; then \
+        pip3 install --no-cache-dir -r requirements.txt; \
+    fi
+
+# Install additional testing tools
+RUN npm install -g \
+    eslint@8.56.0 \
+    prettier@3.1.1 \
+    typescript@5.3.3 \
+    @typescript-eslint/parser@6.17.0 \
+    @typescript-eslint/eslint-plugin@6.17.0
+
+# Stage 3: Development tools
+FROM dependencies AS development
+
+# Install development dependencies
+COPY package*.json ./
+RUN npm ci --include=dev --no-audit --prefer-offline
+
+# Install pre-commit and additional tools
+RUN pip3 install --no-cache-dir \
+    pre-commit \
+    black \
+    flake8 \
+    pytest \
+    coverage
+
+# Stage 4: Testing environment
+FROM development AS testing
+
+# Create necessary directories
+RUN mkdir -p /app/{.baseline-cache,tests,scripts,logs} && \
+    chown -R baseline:baseline /app
+
+# Switch to non-root user
+USER baseline
+
+# Copy application code
+COPY --chown=baseline:baseline . .
+
+# Create baseline configuration
+RUN cat > .baseline-config.json << EOF
+{
+  "baseline_threshold": 85,
+  "quick_mode": false,
+  "auto_fix": true,
+  "skip_performance": false,
+  "max_file_size": 1000000,
+  "excluded_patterns": [
+    "node_modules/",
+    ".git/",
+    "*.min.js",
+    "*.bundle.js",
+    "dist/",
+    "build/"
+  ],
+  "test_suites": {
+    "unit": {
+      "timeout": 300,
+      "parallel": true,
+      "coverage": true
+    },
+    "integration": {
+      "timeout": 600,
+      "parallel": false,
+      "coverage": false
+    },
+    "performance": {
+      "timeout": 900,
+      "parallel": false,
+      "coverage": false
+    }
+  }
+}
+EOF
+
+# Set environment variables
+ENV NODE_ENV=test
+ENV BASELINE_ENV=docker
+ENV BASELINE_LOG_LEVEL=INFO
+ENV BASELINE_CACHE_DIR=/app/.baseline-cache
+ENV BASELINE_CONFIG_FILE=/app/.baseline-config.json
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD node --version && python3 --version || exit 1
+
+# Default command
+CMD ["npm", "run", "test:baseline"]
+
+# Stage 5: Production testing image
+FROM base AS production
+
+# Copy only production dependencies
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY --from=dependencies /usr/local/lib/python3.*/site-packages /usr/local/lib/python3.11/site-packages
+
+# Copy application code
+COPY --chown=baseline:baseline . .
+
+# Switch to non-root user
+USER baseline
+
+# Set production environment
+ENV NODE_ENV=production
+ENV BASELINE_ENV=production
+
+# Expose port for potential web interface
+EXPOSE 3000
+
+# Production command
+CMD ["npm", "start"]

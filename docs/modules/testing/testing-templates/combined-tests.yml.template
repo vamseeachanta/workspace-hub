@@ -1,0 +1,384 @@
+# Combined Tests GitHub Actions Workflow Template
+#
+# For multi-language projects (Python + JavaScript/Node.js)
+# Copy this file to .github/workflows/combined-tests.yml
+
+name: Combined Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+  schedule:
+    # Run tests every Sunday at 4 AM UTC
+    - cron: '0 4 * * 0'
+
+env:
+  PYTHONUNBUFFERED: 1
+  NODE_ENV: test
+  FORCE_COLOR: 3
+  CI: true
+
+jobs:
+  detect-changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.changes.outputs.backend }}
+      frontend: ${{ steps.changes.outputs.frontend }}
+      docs: ${{ steps.changes.outputs.docs }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Detect file changes
+      uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          backend:
+            - 'backend/**'
+            - 'api/**'
+            - '**/*.py'
+            - 'requirements*.txt'
+            - 'pyproject.toml'
+          frontend:
+            - 'frontend/**'
+            - 'web/**'
+            - '**/*.js'
+            - '**/*.jsx'
+            - '**/*.ts'
+            - '**/*.tsx'
+            - 'package*.json'
+            - 'yarn.lock'
+          docs:
+            - 'docs/**'
+            - '**/*.md'
+
+  backend-tests:
+    name: Backend Tests (Python)
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.backend == 'true'
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install Python dependencies
+      working-directory: ./backend
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-test.txt
+        pip install -e .
+
+    - name: Run Python tests
+      working-directory: ./backend
+      run: |
+        pytest \
+          --cov=src \
+          --cov-report=xml:../coverage-backend.xml \
+          --cov-report=html:../htmlcov-backend \
+          --cov-report=term-missing \
+          --cov-fail-under=80 \
+          --junitxml=../pytest-backend.xml \
+          --verbose
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+        REDIS_URL: redis://localhost:6379/0
+        TESTING: true
+
+  frontend-tests:
+    name: Frontend Tests (Node.js)
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.frontend == 'true'
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        node-version: ['18.x', '20.x', '21.x']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+
+    - name: Install Node.js dependencies
+      working-directory: ./frontend
+      run: npm ci
+
+    - name: Lint frontend code
+      working-directory: ./frontend
+      run: npm run lint
+      continue-on-error: true
+
+    - name: Type checking
+      working-directory: ./frontend
+      run: npm run typecheck
+      if: hashFiles('frontend/tsconfig.json') != ''
+      continue-on-error: true
+
+    - name: Run frontend tests
+      working-directory: ./frontend
+      run: npm run test:ci
+      env:
+        NODE_ENV: test
+        API_URL: http://localhost:8000
+
+    - name: Build frontend
+      working-directory: ./frontend
+      run: npm run build
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests]
+    if: always() && (needs.backend-tests.result == 'success' || needs.frontend-tests.result == 'success')
+    timeout-minutes: 45
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+        cache: 'pip'
+
+    - name: Setup Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-test.txt
+        pip install -e .
+
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm ci
+
+    - name: Build frontend
+      working-directory: ./frontend
+      run: npm run build
+
+    - name: Start backend server
+      working-directory: ./backend
+      run: |
+        python -m uvicorn main:app --host 0.0.0.0 --port 8000 &
+        sleep 10
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+        REDIS_URL: redis://localhost:6379/0
+
+    - name: Start frontend server
+      working-directory: ./frontend
+      run: |
+        npm start &
+        sleep 20
+      env:
+        API_URL: http://localhost:8000
+
+    - name: Wait for services
+      run: |
+        timeout 60 bash -c 'until curl -f http://localhost:8000/health; do sleep 2; done'
+        timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 2; done'
+
+    - name: Run integration tests
+      run: |
+        # Run backend integration tests
+        cd backend && pytest tests/integration/ --verbose
+
+        # Run frontend integration tests
+        cd frontend && npm run test:integration
+
+        # Run full system tests
+        cd tests && npm run test:system
+      env:
+        API_URL: http://localhost:8000
+        APP_URL: http://localhost:3000
+
+  coverage-report:
+    name: Combined Coverage Report
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests]
+    if: always()
+    timeout-minutes: 15
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download backend coverage
+      uses: actions/download-artifact@v3
+      if: needs.backend-tests.result == 'success'
+      with:
+        name: test-results-3.11-ubuntu-latest
+        path: ./backend-coverage/
+
+    - name: Download frontend coverage
+      uses: actions/download-artifact@v3
+      if: needs.frontend-tests.result == 'success'
+      with:
+        name: test-results-20.x-ubuntu-latest
+        path: ./frontend-coverage/
+
+    - name: Upload combined coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./backend-coverage/coverage.xml,./frontend-coverage/coverage/lcov.info
+        flags: combined
+        name: codecov-combined
+        fail_ci_if_error: false
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+    - name: Run CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        languages: javascript, python
+
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests, integration-tests, security-scan]
+    if: always()
+
+    steps:
+    - name: Evaluate results
+      run: |
+        echo "🔍 Evaluating test results..."
+
+        # Check backend tests
+        if [[ "${{ needs.backend-tests.result }}" == "success" || "${{ needs.backend-tests.result }}" == "skipped" ]]; then
+          echo "✅ Backend tests: PASSED"
+        else
+          echo "❌ Backend tests: FAILED"
+          exit 1
+        fi
+
+        # Check frontend tests
+        if [[ "${{ needs.frontend-tests.result }}" == "success" || "${{ needs.frontend-tests.result }}" == "skipped" ]]; then
+          echo "✅ Frontend tests: PASSED"
+        else
+          echo "❌ Frontend tests: FAILED"
+          exit 1
+        fi
+
+        # Check integration tests
+        if [[ "${{ needs.integration-tests.result }}" == "success" || "${{ needs.integration-tests.result }}" == "skipped" ]]; then
+          echo "✅ Integration tests: PASSED"
+        else
+          echo "❌ Integration tests: FAILED"
+          exit 1
+        fi
+
+        echo "🎉 All quality checks passed!"
+
+    - name: Post success comment
+      uses: actions/github-script@v6
+      if: github.event_name == 'pull_request' && success()
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '🎉 All tests passed! Quality gate approved for merge.'
+          })

@@ -1,0 +1,46 @@
+name: Skills Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.claude/skills/**/SKILL.md'
+      - 'scripts/skills/*.sh'
+      - '.github/workflows/skills-validation.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - '.claude/skills/**/SKILL.md'
+      - 'scripts/skills/*.sh'
+      - '.github/workflows/skills-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-skills:
+    name: Validate SKILL.md frontmatter
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run skill validator
+        # NOTE: Many SKILL.md files under _diverged/ and _internal/ do not yet have
+        # YAML frontmatter. Validation runs in soft-fail mode until those are updated.
+        # Tracked in the work queue for remediation.
+        continue-on-error: true
+        run: bash scripts/skills/validate-skills.sh
+
+      - name: Generate skills summary
+        if: always()
+        run: |
+          echo "## Skills Validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          TOTAL=$(find .claude/skills -name 'SKILL.md' | wc -l)
+          echo "**Total SKILL.md files:** ${TOTAL}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Note: Validation runs in soft-fail mode." >> $GITHUB_STEP_SUMMARY
+          echo "Files under \`_diverged/\` and \`_internal/\` may lack frontmatter." >> $GITHUB_STEP_SUMMARY

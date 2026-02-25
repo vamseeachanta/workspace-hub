@@ -1,0 +1,961 @@
+# AI-Native Repository Infrastructure Input
+# Purpose: Establish fundamental requirements and development steps for AI-native software development
+# Organization: Workspace Hub (26 repositories)
+# Date: 2025-10-13
+
+## METADATA
+project_name: "AI-Native Repository Standardization"
+organization: "Workspace Hub"
+total_repositories: 26
+objective: "Create AI-native and consistent repositories for all repositories in the organization"
+methodology: "SPARC (Specification, Pseudocode, Architecture, Refinement, Completion)"
+last_updated: "2025-10-15"
+
+## FUNDAMENTAL REQUIREMENTS
+
+### 1. FILE STRUCTURE / ARCHITECTURE
+file_structure:
+  root_level:
+    description: "Standardized top-level directory structure for AI discoverability"
+    required_directories:
+      - name: ".agent-os"
+        purpose: "Agent OS configuration and product documentation"
+        subdirectories:
+          - "product/"          # mission.md, tech-stack.md, roadmap.md, decisions.md
+          - "instructions/"     # Custom workflow instructions (optional)
+
+      - name: "specs"
+        purpose: "Feature specifications and technical requirements (at root, not in .agent-os)"
+        subdirectories:
+          - "spec-name/"
+          - "modules/"          # Module-specific specs
+        reasoning:
+          - "Specs keep an explicit modules/ layer to separate module requirements from future additions (templates, archives), while execution directories (src/, tests/, reports/, scripts/) already sit within their functional namespace and can expose module directories directly."
+        module_alignment:
+          - "Within specs/modules/, name subdirectories after the module (e.g., specs/modules/git-management/), matching the names used under src/<repo_namespace>/, tests/, reports/, and scripts/ to maintain consistent module taxonomy."
+
+      - name: "src"
+        purpose: "Source code with clear package structure"
+        subdirectories:
+          - "<package_name>/"   # Main package
+          - "<module_name>/"    # Additional modules
+        reasoning:
+          - "Follow the pattern src/<repo_namespace>/... (e.g., src/workspace_hub/), mirroring standalone repositories like digitalmodel for predictable imports and distribution."
+
+      - name: "tests"
+        purpose: "Comprehensive test suite"
+        subdirectories:
+          - "unit/"             # Unit tests
+          - "integration/"      # Integration tests
+          - "fixtures/"         # Test data/fixtures
+        conventions:
+          - "Module-specific tests live under tests/<type>/modules/<module>/ (e.g., tests/unit/modules/auth/test_core.py)"
+          - "Shared fixtures stay in tests/fixtures/ with optional module-scoped subdirectories"
+
+      - name: "docs"
+        purpose: "Documentation for users and developers"
+        subdirectories:
+          - "guides/"           # User guides
+          - "api/"              # API documentation
+          - "modules/"          # Module-specific docs
+        reasoning:
+          - "docs/ captures curated, versioned documentation—guides, references, architectural notes—that developers maintain deliberately."
+        module_alignment:
+          - "Keep module docs under docs/modules/<module>/ so they don’t collide with broader categories (guides/, architecture/, environment/), echoing the reserved layer used in specs/."
+
+      - name: "modules"
+        purpose: "Modular functionality (preferred home for shared automation, orchestration, tooling)"
+        guidance:
+          standard_examples:
+            - "automation/"        # Scripts, CLI tooling, command propagation
+            - "documentation/"     # Docs engines, site generators
+            - "orchestration/"     # Agent runtimes, coordination logic, memory adapters
+            - "monitoring/"        # Metrics pipelines and dashboards
+            - "config/"            # Shared configuration loaders
+            - "development/"       # Hooks, scaffolding, dev utilities
+            - "git-management/"    # Multi-repo Git tooling
+            - "utilities/"         # General-purpose helpers
+          custom_modules:
+            naming_rules:
+              - "Use descriptive, domain-focused names (e.g., marine-engineering/, analytics/, vessel-tracking/)"
+              - "Document purpose and API in modules/<module>/README.md"
+              - "Register new module boundaries in specs/modules/<module>/module-index.md"
+          consolidation_rules:
+            - "Relocate helper packages such as agents/, coordination/, memory/ into modules/orchestration/"
+            - "Keep module layout aligned with template in Module Agent Folder Structure section"
+          reasoning:
+            - "Packaged projects like coordination/ rely on module-relative imports, pyproject metadata, and coverage outputs; keeping them under modules/ preserves those contracts."
+            - "Archives of standalone automation assets (formerly in _organized_non_repo_files/) should be consolidated into modules/automation/ to maintain a module-first structure."
+          review_reference_points:
+            - path: ".agent-runtime/agents/"
+              purpose: "Root-level entry point (symlink) exposing reusable agent templates, prompt contexts, and workflow scaffolds from modules/automation/_organized_non_repo_files/agents."
+            - path: ".agent-runtime/commands/"
+              purpose: "Symlinked access to agent command handlers (.agent-os/commands) so reviewers locate dispatch logic beside runtime assets."
+            - path: ".agent-runtime/resources/"
+              purpose: "Shortcut to .agent-os/resources for agent catalogs and capability metadata referenced during orchestration."
+            - path: ".agent-runtime/mcp/.mcp.json"
+              purpose: "Canonical MCP server registry (symlinked from modules/config/.mcp.json) used by automation hooks."
+            - path: ".agent-runtime/mcp/setup_mcp_servers.sh"
+              purpose: "Symlinked provisioning script coordinating MCP server setup sourced from modules/automation/setup_mcp_servers.sh."
+          summary:
+            - "modules/ is the canonical home for shared functionality—automation, analytics, orchestration—allowing other repositories or agents to import consistent building blocks."
+          contrasted_with_scripts:
+            - "modules/ stores importable packages with their own configs and APIs; scripts/ holds lightweight entrypoints (e.g., shell or batch files) that invoke module capabilities."
+
+      - name: "scripts"
+        purpose: "Automation scripts (user-facing)"
+        subdirectories:
+          - "bash/"             # Shell automation (Unix/macOS)
+          - "powershell/"       # Windows automation
+          - "python/"           # Python entrypoints
+          - "cli/"              # Cross-platform command wrappers
+        notes:
+          - "Mirror script runtimes with directory names for clarity"
+          - "Expose reusable automation through modules/automation/cli/ whenever possible"
+        reasoning:
+          - "scripts/ holds lightweight execution wrappers; placing packaged code here blurs runtime wrappers with importable modules and complicates testing pipelines."
+        implementation_notes:
+          - "Large shell programs that function as terminal UIs (often 500+ lines) should be treated like mini-applications: create clear problem specifications first, then use Codex to generate the structured TUI so developers operate at a higher abstraction level."
+        module_alignment:
+          - "Script entrypoints should mirror the module structure they trigger (e.g., scripts/bash/git-management/check_status.sh) so that tests/, reports/, and scripts/ share consistent module naming."
+
+      - name: "data"
+        purpose: "Data files organized by processing stage"
+        subdirectories:
+          - "raw/"              # Raw/input data
+          - "processed/"        # Processed data
+          - "results/"          # Analysis results
+
+      - name: "config"
+        purpose: "Configuration files"
+        examples:
+          - "development.yml"
+          - "production.yml"
+          - "test.yml"
+
+      - name: "reports"
+        purpose: "Generated reports (HTML, PDF)"
+        note: "AI-friendly for understanding project outputs"
+        reasoning:
+          - "Centralizing generated artifacts such as branch cleanup JSON keeps the repository root readable and groups reviewable outputs."
+          - "reports/ aggregates automation outputs (test summaries, run artifacts) distinct from authored docs, making generated insights easy to review."
+        required_contents:
+          - path: "test-summary/"
+            description: "Directory dedicated to machine-readable summaries of repository testing capabilities"
+          - path: "test-summary/baseline-summary.json"
+            description: "Autogenerated snapshot produced by scripts/cli/generate-test-baseline-summary.js capturing test directories, frameworks, and execution commands for all repos (excluding active exceptions such as digitalmodel and assetutilities)"
+
+    naming_alignment:
+      summary:
+        - "Keep module names consistent across src/<repo_namespace>/, tests/, reports/, scripts/, and specs/modules/ to ensure AI agents and humans can traverse implementations, tests, outputs, and requirements predictably."
+        - "Directories that serve broader purposes (docs/, modules/, memory/) may house their own substructures but should still document how their internal modules correspond to the shared taxonomy when relevant."
+        - "Only specs/ retains a modules/ wrapper to leave room for non-module spec assets; execution-focused directories expose module folders directly within their namespace."
+      example:
+        |- "Example layout for module 'git-management':"
+          |- "specs/modules/git-management/"
+          |- "src/workspace_hub/git-management/"
+          |- "tests/unit/modules/git-management/"
+          |- "reports/git-management/"
+          |- "scripts/bash/git-management/"
+      remediation:
+        - "For legacy directories lacking the repo namespace, introduce src/<repo_namespace>/ and relocate modules incrementally, updating imports/tests with each move."
+        - "Track migration tasks in specs/legacy-remediation.md (or equivalent) to avoid partial transitions."
+        - "If immediate relocation is unsafe, document divergence in CLAUDE.md with rationale and plan." 
+
+    optional_directories:
+      - name: ".github"
+        purpose: "Repository workflows, issue templates, shared automation"
+        when_to_include:
+          - "CI/CD or automation is managed from this repository"
+          - "Shared configuration files (CODEOWNERS, dependabot.yml) are required"
+
+      - name: ".git"
+        purpose: "Self-managed submodules or nested repositories (rare)"
+        when_to_include:
+          - "Repository intentionally vendors other Git repositories"
+
+      - name: ".claude"
+        purpose: "Extended AI agent configuration beyond CLAUDE.md"
+        when_to_include:
+          - "Repository defines multiple Claude personas or CLI profiles"
+          - "Rulesets or prompts need to be versioned alongside code"
+
+      - name: ".claude-flow"
+        purpose: "Claude Flow runtime state and conversation history"
+        when_to_include:
+          - "Claude Flow orchestration is enabled for this repository"
+          - "Long-running agent sessions require persisted transcripts"
+
+      - name: ".vscode"
+        purpose: "Shared VS Code workspace settings"
+        when_to_include:
+          - "Team standardizes formatter/linter/test tasks through VS Code"
+
+      - name: ".idea"
+        purpose: "JetBrains IDE project configuration"
+        when_to_include:
+          - "JetBrains-based workflows are shared among contributors"
+
+      - name: ".agent-runtime"
+        purpose: "Runtime state for orchestrated agents (replaces scattered agents/, coordination/, memory/)"
+        when_to_include:
+          - "Repository runs agent swarms locally and needs persistent state between sessions"
+        contents:
+          - "agents/"
+          - "commands/"
+          - "resources/"
+          - "mcp/"
+          - "coordination/"
+          - "memory/"
+        notes:
+          - "Expose runtime state via symlinks or mirrored folders so agents, command handlers, and MCP connectors are discoverable without cross-repo searches."
+          - "If runtime assets need deeper categorization, mirror module-based subfolders (e.g., orchestration/, security/, testing/) beneath each .agent-runtime section while keeping the top-level namespace consistent across repositories."
+
+      - name: "memory"
+        purpose: "Standalone runtime memory service shipped as its own package"
+        when_to_include:
+          - "Repository exposes a dedicated memory component with separate pyproject, tests, and coverage."
+        reasoning:
+          - "Keep memory/ at the top level so orchestration tooling retains its module imports; relocating it into scripts/ or other bins would break packaging."
+
+      - name: "artifacts"
+        purpose: "Generated outputs (coverage, sync reports, exports) kept under version control when required"
+        when_to_include:
+          - "Teams need to review generated output alongside code"
+        recommended_subdirectories:
+          - "coverage/"
+          - "git-management/"
+          - "reports/"
+
+      - name: "test-framework-integrations"
+        purpose: "Standalone package providing multi-framework testing adapters and unified runners"
+        when_to_include:
+          - "Repository distributes reusable integration code (not just test suites) spanning Jest, Mocha, Vitest, Playwright, Pytest, etc."
+        reasoning:
+          - "Keep this package at the root so it can be consumed as an installable module; moving it under tests/ would mix authored source with test suites and break publishing pipelines."
+
+    required_root_files:
+      - name: "CLAUDE.md"
+        purpose: "AI agent configuration and project instructions"
+        location: "Root or .claude/CLAUDE.md"
+        content:
+          - "Agent OS documentation references"
+          - "Development standards"
+          - "Workflow instructions"
+          - "MCP tool configurations"
+          - "Repository-specific instructions"
+
+      - name: "README.md"
+        purpose: "Human-readable project overview"
+        ai_sections:
+          - "Clear project purpose and scope"
+          - "Installation instructions"
+          - "Quick start guide"
+          - "Project structure overview"
+          - "Contributing guidelines"
+
+      - name: "LICENSE"
+        purpose: "Legal and licensing terms for reuse"
+        notes:
+          - "Use organization-standard template unless project requires alternative licensing"
+
+      - name: "CONTRIBUTING.md"
+        purpose: "Contribution process, coding standards, review expectations"
+        notes:
+          - "Link to shared organization guidelines when applicable"
+          - "Include AI-assisted contribution policies if relevant"
+
+      - name: "SECURITY.md"
+        purpose: "Security reporting process and supported versions"
+        notes:
+          - "Reference organization security contacts and response SLAs"
+          - "Document dependency update cadence or tooling (e.g., Dependabot)"
+
+      - name: "CODE_OF_CONDUCT.md"
+        purpose: "Community standards for collaboration"
+        optional: true
+        notes:
+          - "Include when repository is public-facing or accepts external contributors"
+
+      - name: ".gitignore"
+        purpose: "Version control exclusions"
+        ai_considerations:
+          - "Exclude build artifacts"
+          - "Exclude environment files"
+          - "Keep data structure visible (exclude data content)"
+
+      - name: "pyproject.toml" # or package.json, Cargo.toml
+        purpose: "Project configuration and dependencies"
+        ai_sections:
+          - "Clear project metadata"
+          - "Explicit dependencies with versions"
+          - "Tool configurations (black, pytest, mypy)"
+
+### 2. FILE NAMING CONVENTIONS
+naming_conventions:
+  python_files:
+    modules: "lowercase_with_underscores.py"
+    classes: "PascalCase in files"
+    tests: "test_*.py or *_test.py"
+    examples: "example_feature.py or feature_example.py"
+
+  documentation:
+    specs: "descriptive-kebab-case.md"
+    guides: "clear-descriptive-names.md"
+    api_docs: "module_name.md or ClassName.md"
+
+  configuration:
+    yaml: "lowercase_with_underscores.yml or .yaml"
+    json: "camelCase.json or kebab-case.json"
+    environment: ".env.example (tracked), .env (not tracked)"
+
+  directories:
+    general_rule: "lowercase-with-hyphens or lowercase_with_underscores"
+    consistency: "Choose one style per repository and maintain it"
+    ai_friendly: "Descriptive names that indicate purpose"
+
+  quick_reference:
+    table: |
+      | Artifact            | Pattern / Example                                |
+      |--------------------|--------------------------------------------------|
+      | Python module file | `src/workspace_hub/git-management/core.py`        |
+      | Test file          | `tests/unit/modules/git-management/test_core.py` |
+      | Spec doc           | `specs/modules/git-management/overview.md`       |
+      | Report output      | `reports/git-management/coverage/index.html`     |
+      | Script entrypoint  | `scripts/bash/git-management/check_status.sh`    |
+      | Config file        | `config/development.yml`                         |
+
+  data_files:
+    raw: "descriptive_name.csv"
+    processed: "processed_name.csv"
+    results: "results_analysis_name.csv"
+
+  scripts:
+    automation: "verb_object.sh (e.g., sync_repos.sh)"
+    utilities: "noun_purpose.py (e.g., file_processor.py)"
+
+### 3. MODULE-BASED DEVELOPMENT
+module_architecture:
+  principles:
+    - name: "Single Responsibility"
+      description: "Each module handles one clear area of functionality"
+      ai_benefit: "Clear boundaries for AI to understand and modify"
+
+    - name: "Loose Coupling"
+      description: "Modules interact through well-defined interfaces"
+      ai_benefit: "AI can modify modules without breaking dependencies"
+
+    - name: "High Cohesion"
+      description: "Related functionality grouped together"
+      ai_benefit: "AI finds all related code in predictable locations"
+
+    - name: "Explicit Dependencies"
+      description: "Clear dependency declarations and imports"
+      ai_benefit: "AI understands module relationships and can trace code flow"
+
+  module_structure:
+    template: |
+      modules/
+      └── module_name/
+          ├── __init__.py           # Public API exports
+          ├── core.py               # Core functionality
+          ├── config.py             # Module configuration
+          ├── utils.py              # Module-specific utilities
+          ├── exceptions.py         # Module-specific exceptions
+          └── README.md             # Module documentation (tests live under central tests/ tree)
+
+  testing_conventions:
+    location: "tests/<type>/modules/<module>/ (e.g., tests/unit/modules/auth/test_core.py)"
+    discovery: "Pytest and other runners target the top-level tests/ directory; no test files remain under modules/"
+    fixtures: "Module fixtures live in tests/fixtures/<module>/ to keep reusable data centralized"
+
+  cross_module_communication:
+    pattern: "Event-driven or dependency injection"
+    avoid: "Direct cross-module imports of implementation details"
+    use: "Public APIs defined in __init__.py"
+
+  module_discovery:
+    mechanism: "Automatic via __init__.py or explicit registration"
+    documentation: "Each module has README.md explaining purpose and API"
+
+### 4. SOFTWARE ARCHITECTURE
+architecture_patterns:
+  layered_architecture:
+    layers:
+      - name: "Presentation Layer"
+        purpose: "User interfaces (CLI, web, API)"
+        location: "src/<package>/cli/, src/<package>/web/, src/<package>/api/"
+
+      - name: "Business Logic Layer"
+        purpose: "Core domain logic and rules"
+        location: "src/<package>/domain/, src/<package>/services/"
+
+      - name: "Data Access Layer"
+        purpose: "Database and external service interactions"
+        location: "src/<package>/repositories/, src/<package>/adapters/"
+
+      - name: "Infrastructure Layer"
+        purpose: "Cross-cutting concerns (logging, config, caching)"
+        location: "src/<package>/infrastructure/"
+
+  ai_native_patterns:
+    - name: "Configuration as Code"
+      description: "YAML/JSON configuration files for AI to read and modify"
+      examples: [".agent-os/product/*.md", "config/*.yml", "specs/*.md"]
+
+    - name: "Self-Documenting Code"
+      description: "Clear function/class names, docstrings, type hints"
+      benefit: "AI understands intent without running code"
+
+    - name: "Testable Design"
+      description: "Dependency injection, pure functions, isolated components"
+      benefit: "AI can validate changes through automated tests"
+
+    - name: "Convention over Configuration"
+      description: "Predictable patterns reduce cognitive load"
+      benefit: "AI learns patterns quickly and applies consistently"
+
+  dependency_management:
+    strategy: "Centralized dependency declarations"
+    python: "pyproject.toml with [tool.poetry.dependencies] or [project.dependencies]"
+    node: "package.json with explicit versions or ranges"
+    enforcement: "Lock files (poetry.lock, package-lock.json, uv.lock)"
+
+## AI-NATIVE DEVELOPMENT STEPS
+
+### STEP 1: INPUT FILE SPECIFICATION
+input_file_structure:
+  format: "YAML (human and AI readable)"
+  location: "specs/modules/<module-name>/<feature-name>/input.yaml"
+
+  required_sections:
+    metadata:
+      fields:
+        - "feature_name: str"
+        - "module: str"
+        - "priority: [high|medium|low]"
+        - "estimated_effort: str"
+        - "dependencies: list[str]"
+
+    requirements:
+      fields:
+        - "description: str - Clear problem statement"
+        - "user_stories: list[str] - Who, what, why"
+        - "acceptance_criteria: list[str] - Testable outcomes"
+        - "out_of_scope: list[str] - Explicit exclusions"
+
+    technical_specifications:
+      fields:
+        - "architecture: str - Design approach"
+        - "data_models: list[object] - Data structures"
+        - "apis: list[object] - API endpoints or interfaces"
+        - "dependencies: list[str] - External libraries"
+
+    test_specifications:
+      fields:
+        - "unit_tests: list[str] - What to unit test"
+        - "integration_tests: list[str] - Integration scenarios"
+        - "edge_cases: list[str] - Boundary conditions"
+
+  example_template: |
+    # Input Specification: Feature Name
+
+    ## Metadata
+    feature_name: "multi_repo_sync"
+    module: "git-management"
+    priority: "high"
+    estimated_effort: "2 weeks"
+    dependencies: ["git", "yaml_config"]
+
+    ## Requirements
+    description: "Synchronize git operations across multiple repositories"
+    user_stories:
+      - "As a developer, I want to pull all repos with one command"
+      - "As a team lead, I want to see sync status across repos"
+
+    acceptance_criteria:
+      - "Single command pulls all repositories"
+      - "Status report shows sync state"
+      - "Conflicts are detected and reported"
+
+    out_of_scope:
+      - "Automatic conflict resolution"
+      - "Git LFS support in phase 1"
+
+    ## Technical Specifications
+    architecture: "Command pattern with parallel execution"
+    data_models:
+      - name: "RepoStatus"
+        fields: ["name", "branch", "status", "conflicts"]
+
+    apis:
+      - endpoint: "sync_all_repos()"
+        params: ["repo_list", "parallel"]
+        returns: "list[RepoStatus]"
+
+    dependencies:
+      - "gitpython>=3.1.0"
+      - "pyyaml>=6.0"
+
+    ## Test Specifications
+    unit_tests:
+      - "test_single_repo_sync()"
+      - "test_conflict_detection()"
+
+    integration_tests:
+      - "test_multi_repo_parallel_sync()"
+      - "test_status_report_generation()"
+
+    edge_cases:
+      - "Handle repos with uncommitted changes"
+      - "Handle network failures during sync"
+
+### STEP 2: PSEUDOCODE GENERATION
+pseudocode_structure:
+  format: "Markdown with code blocks"
+  location: "specs/modules/<feature-name>/pseudocode.md"
+
+  principles:
+    - "High-level algorithm without implementation details"
+    - "Focus on logic flow and decision points"
+    - "Include error handling paths"
+    - "Document assumptions and constraints"
+
+  template: |
+    # Pseudocode: Feature Name
+
+    ## Main Algorithm
+
+    ```
+    FUNCTION sync_all_repos(repo_list, parallel=True):
+        # Initialize
+        results = empty list
+
+        # Validate inputs
+        IF repo_list is empty:
+            RAISE error "No repositories specified"
+
+        # Execute sync
+        IF parallel is True:
+            results = execute_parallel_sync(repo_list)
+        ELSE:
+            results = execute_sequential_sync(repo_list)
+
+        # Generate report
+        status_report = generate_status_report(results)
+
+        RETURN status_report
+    END FUNCTION
+
+    FUNCTION execute_parallel_sync(repo_list):
+        # Create thread pool
+        thread_pool = create_pool(size=min(len(repo_list), MAX_THREADS))
+
+        # Submit sync tasks
+        FOR EACH repo IN repo_list:
+            future = thread_pool.submit(sync_single_repo, repo)
+            futures.append(future)
+
+        # Collect results
+        results = []
+        FOR EACH future IN futures:
+            TRY:
+                result = future.get(timeout=SYNC_TIMEOUT)
+                results.append(result)
+            CATCH TimeoutError:
+                results.append(RepoStatus(repo, status="timeout"))
+            CATCH Exception as e:
+                results.append(RepoStatus(repo, status="error", error=e))
+
+        RETURN results
+    END FUNCTION
+
+    FUNCTION sync_single_repo(repo):
+        # Get current state
+        current_branch = get_current_branch(repo)
+        has_changes = check_uncommitted_changes(repo)
+
+        # Check for blockers
+        IF has_changes:
+            RETURN RepoStatus(repo, status="uncommitted_changes")
+
+        # Execute pull
+        TRY:
+            pull_result = git_pull(repo)
+
+            IF pull_result.conflicts:
+                RETURN RepoStatus(repo, status="conflicts",
+                                conflicts=pull_result.conflicts)
+            ELSE:
+                RETURN RepoStatus(repo, status="success",
+                                commits_pulled=pull_result.count)
+        CATCH NetworkError:
+            RETURN RepoStatus(repo, status="network_error")
+    END FUNCTION
+    ```
+
+    ## Data Structures
+
+    ```
+    CLASS RepoStatus:
+        PROPERTIES:
+            name: string
+            branch: string
+            status: enum [success, conflicts, error, timeout, uncommitted_changes]
+            commits_pulled: integer (optional)
+            conflicts: list[string] (optional)
+            error: string (optional)
+    END CLASS
+    ```
+
+    ## Error Handling
+
+    - Network failures: Catch and report, allow retry
+    - Timeout: Configurable timeout per repo
+    - Conflicts: Detect and report, do not auto-resolve
+    - Uncommitted changes: Skip pull, report to user
+
+### STEP 3: CODE GENERATION
+code_generation_guidelines:
+  strategy: "AI-assisted generation from pseudocode and input spec"
+
+  generation_steps:
+    1_setup:
+      description: "Set up file structure and imports"
+      actions:
+        - "Create module directory if needed"
+        - "Create __init__.py with public API"
+        - "Set up imports from input spec dependencies"
+        - "Add module docstring with purpose"
+
+    2_data_models:
+      description: "Implement data models from specification"
+      actions:
+        - "Create dataclasses or Pydantic models"
+        - "Add type hints for all fields"
+        - "Include validation logic"
+        - "Add __repr__ and __str__ methods"
+
+    3_core_logic:
+      description: "Implement algorithms from pseudocode"
+      actions:
+        - "Translate pseudocode to Python/TypeScript/etc"
+        - "Add comprehensive error handling"
+        - "Include logging at appropriate levels"
+        - "Add docstrings with examples"
+
+    4_api_layer:
+      description: "Create public API from specifications"
+      actions:
+        - "Define functions/classes for public API"
+        - "Add parameter validation"
+        - "Include usage examples in docstrings"
+        - "Export from __init__.py"
+
+    5_tests:
+      description: "Generate tests from test specifications"
+      actions:
+        - "Create test file structure"
+        - "Implement unit tests for each function"
+        - "Implement integration tests for workflows"
+        - "Add edge case tests"
+        - "Ensure >80% code coverage"
+        - "Track historical coverage metrics (reports/coverage/) so regressions are visible when adding new modules or maintaining backward compatibility."
+
+    6_documentation:
+      description: "Generate documentation"
+      actions:
+        - "Create module README.md"
+        - "Add API documentation"
+        - "Include usage examples"
+        - "Document configuration options"
+
+  code_quality_standards:
+    formatting:
+      python: "black, isort"
+      javascript: "prettier"
+      rust: "rustfmt"
+
+    linting:
+      python: "ruff, mypy"
+      javascript: "eslint"
+      rust: "clippy"
+
+    type_checking:
+      python: "mypy with strict mode"
+      typescript: "tsc with strict"
+      rust: "built-in type system"
+
+    documentation:
+      python: "Google-style docstrings"
+      javascript: "JSDoc comments"
+      rust: "rustdoc comments"
+
+  ai_code_generation_prompts:
+    initial_generation: |
+      Generate {language} code implementing the following:
+
+      Input Specification: {input_file_path}
+      Pseudocode: {pseudocode_file_path}
+
+      Requirements:
+      - Follow the exact structure from pseudocode
+      - Use type hints (or equivalent) for all public interfaces
+      - Add comprehensive error handling
+      - Include docstrings with examples
+      - Apply formatter/linter configuration for the target language
+      - Use idiomatic data models (dataclasses, interfaces, structs)
+      - Add logging at INFO and DEBUG levels
+
+      Output structure (Python):
+      - src/{package}/modules/{module_name}/core.py
+      - src/{package}/modules/{module_name}/models.py
+      - src/{package}/modules/{module_name}/__init__.py
+      - tests/unit/test_{module_name}.py
+      - tests/integration/test_{module_name}_integration.py
+
+      Output structure (TypeScript / Node):
+      - src/modules/{module_name}/core.ts
+      - src/modules/{module_name}/models.ts
+      - src/modules/{module_name}/index.ts
+      - tests/unit/{module_name}.spec.ts
+      - tests/integration/{module_name}.integration.spec.ts
+
+      Output structure (Rust):
+      - src/modules/{module_name}/mod.rs
+      - src/modules/{module_name}/core.rs
+      - src/modules/{module_name}/models.rs
+      - tests/{module_name}_unit.rs
+      - tests/{module_name}_integration.rs
+
+    test_generation: |
+      Generate comprehensive pytest tests for:
+
+      Module: {module_path}
+      Test Specification: {test_spec_path}
+
+      Requirements:
+      - Test all public functions
+      - Cover all edge cases from specification
+      - Use pytest fixtures for common setup
+      - Include integration tests
+      - Mock external dependencies
+      - Aim for >80% coverage
+      - Use descriptive test names
+
+      Test categories:
+      - Unit tests (test individual functions)
+      - Integration tests (test module workflows)
+      - Edge case tests (test boundary conditions)
+      - Error handling tests (test failure modes)
+
+    documentation_generation: |
+      Generate documentation for:
+
+      Module: {module_path}
+      Input Spec: {input_spec_path}
+
+      Requirements:
+      - Module overview (purpose, scope)
+      - Installation instructions
+      - Quick start guide with examples
+      - API reference from docstrings
+      - Configuration options
+      - Troubleshooting section
+
+      Format: Markdown
+      Audience: Developers using this module
+      Style: Clear, concise, example-driven
+
+### STEP 4: CROSS-MODEL REVIEW & VALIDATION
+review_workflow:
+  objectives:
+    - "Ensure every change receives scrutiny from a different model family (Claude-authored work reviewed by OpenAI models and vice versa)."
+    - "Verify module alignment across specs/, src/, tests/, reports/, and scripts/ before approval."
+  required_actions:
+    - "Execute lint, typecheck, and required tests before handing artifacts to reviewer agents."
+    - "Provide reviewers with relevant specs, test outputs, and generated reports to inform critique."
+    - "Log reviewer findings, rationale, and follow-up items in coordination memory."
+    - "Gather additional evidence when disagreements arise and escalate to the user if consensus cannot be reached."
+
+### STEP 5: INTEGRATION & RELEASE PREPARATION
+integration_guidelines:
+  objectives:
+    - "Prepare deliverables for user presentation and eventual commit once reviews pass."
+    - "Confirm generated artifacts (reports/, coverage/, dashboards) are updated or referenced in summaries."
+  required_actions:
+    - "Summarize objectives, affected modules, verification steps, and residual risks prior to reporting results."
+    - "Verify git status is clean aside from intentional changes; stage only module-aligned files."
+    - "Inspect git diff for secrets or unintended artifacts and confirm the TDD cadence (fail → implement → pass) was honored."
+    - "Regenerate coverage reports and sync outputs under reports/coverage/ so historical trends remain current."
+    - "Document model selections, reviewer assignments, and outcomes for auditability before committing."
+
+ai_agent_orchestration_rules:
+  development_cycle:
+    - "Follow SPARC phases (Specification → Pseudocode → Architecture → Refinement → Completion) with required hooks before implementation."
+    - "Define module targets and update todos prior to spawning coder/tester/reviewer agents."
+    - "Capture coordination notes in memory or logs so subsequent agents retain context."
+  review_cycle:
+    - "Run lint, typecheck, and all relevant tests before invoking reviewer agents."
+    - "Reviewers validate module alignment across specs/, src/, tests/, reports/, and scripts/ and confirm naming conventions."
+    - "Record review outcomes and follow-up actions in coordination logs."
+    - "Pair different model families for review: work authored by Claude-class models must be reviewed by an OpenAI-class model (and vice versa) to ensure diverse reasoning paths."
+    - "When reviewer and author disagree, gather clarifying evidence (tests, logs, specs) and escalate to user judgment if consensus cannot be reached."
+  pre_user_presentation:
+    - "Summarize objectives, affected modules, verification steps, and any risks before reporting results to the user."
+    - "Reference updated artifacts (coverage reports, generated HTML, etc.) when applicable."
+  pre_commit:
+    - "Ensure git status is clean aside from intentional changes; stage only module-aligned files."
+    - "Inspect git diff for secrets or unintended artifacts prior to commit."
+    - "Adhere to TDD cadence: failing test first, minimal implementation, tests green, reviewer approval, then commit with documented summary."
+  model_assignments:
+    - "Use the latest Claude Sonnet model for planning, architectural coordination, and reviewer roles requiring broad reasoning."
+    - "Use the latest Claude Haiku model for rapid coding, refactoring, and test authoring where speed is preferred."
+    - "Use the highest-capacity Claude model available (e.g., Opus tier) for complex specs synthesis, multi-repo reasoning, or safety-critical reviews."
+    - "OpenAI equivalents: use the latest GPT-4.1 (or 4.x) model for broad reasoning/review, GPT-4.1/GPT-4.1 for coding/test iterations, and GPT-4.1 Mini (or successor) for lightweight coordination."
+    - "Ensure model selection is logged alongside agent role so future audits understand decision context."
+
+  review_trigger:
+    - "Cross-model review is invoked immediately after lint/type/test checks pass and before any user summary or pre-commit action."
+    - "Automation hooks (e.g., `npx claude-flow sparc review`) should dispatch the alternate-model reviewer; manual triggers must follow the same order if automation is unavailable."
+    - "Pre-commit tasks cannot proceed until the reviewer status is logged as approved or escalated."
+
+  command_sequence:
+    - "`uv sync --all-extras`"
+    - "`uv run npm run lint && uv run npm run typecheck`"
+    - "`uv run npm test -- --coverage`"
+    - "`npx claude-flow sparc review` (dispatch alternate-model reviewer)"
+    - "`uv run npm run build` (if module publishes artifacts)"
+    - "`git status` / `git diff` (verify staged changes)"
+
+  workflow_diagram: |
+    ```mermaid
+    flowchart TD
+      A[Task assigned] --> B[Define module scope & update todos]
+      B --> C[Implement within uv environment]
+      C --> D[Run lint, typecheck, full tests]
+      D --> E{Checks pass?}
+      E -- No --> C
+      E -- Yes --> F[Spawn reviewer from alternate model family]
+      F --> G{Reviewer approves?}
+      G -- No --> H[Gather evidence, fix issues]
+      H --> C
+      G -- Escalate --> I[Escalate to user for decision]
+      G -- Yes --> J[Summarize results & reference reports]
+      J --> K[Pre-commit checks]
+      K --> L[Commit & document model selections]
+    ```
+
+environment_management:
+  uv_workflow:
+    - "Always operate inside the repository's managed uv environment; prefer `uv run <command>` or `.venv/bin/python` generated by uv over system interpreters."
+    - "Synchronize dependencies at the start of each work session with `uv sync --all-extras` to guarantee deterministic installs from `uv.lock`."
+    - "Commit both `uv.lock` and `uv.toml` changes together; never hand-edit resolved dependency versions."
+    - "If uv is not yet installed, bootstrap via `pip install uv` (or the official installer) before running project scripts."
+  upgrades:
+    - "Perform routine dependency upkeep by running `uv lock --upgrade` (targeted modules or full refresh) followed by `uv sync`; validate with full test and lint suites before merging."
+    - "Capture upgrade intent in coordination notes, including packages touched and compatibility considerations."
+    - "If upgrades introduce breaking changes, coordinate with reviewers and propose mitigation (pinning, shims, or phased rollout)."
+  quality_checks:
+    - "Use `uv pip check` and `uv tree` to inspect resolution health when dependency issues are suspected."
+    - "Cache directory (`$UV_CACHE_DIR`) should remain within repo tooling defaults unless the project dictates centralized caching; document deviations in CLAUDE.md."
+    - "Ensure environment-sensitive artifacts (compiled extensions, caches) are ignored via `.gitignore` to keep commits clean."
+    - "Provide OS-specific command notes when automation differs (e.g., PowerShell vs Bash) so contributors on Windows/Linux/macOS can execute the uv workflow consistently."
+
+## VALIDATION CHECKLIST
+validation:
+  file_structure:
+    - "All required directories exist"
+    - "CLAUDE.md present at root or .claude/"
+    - "specs/ directory at repository root (not in .agent-os/)"
+    - ".agent-os/product/ contains mission, roadmap, tech-stack, decisions"
+    - "src/ directory follows package structure"
+    - "tests/ has unit/, integration/, fixtures/ subdirectories"
+    - "data/ has raw/, processed/, results/ subdirectories"
+    - "Optional directories (.github/, .claude/, .claude-flow/, .vscode/, .idea/, .agent-runtime/, artifacts/) are documented when present"
+    - "Agent runtime state stored under .agent-runtime/ rather than root-level agents/, coordination/, memory/"
+    - ".gitignore excludes generated artifacts (dist/, htmlcov/, coverage reports, sync reports) unless retained under artifacts/"
+    - "artifacts/ directory (if present) mirrors documented structure and excludes transient build outputs"
+    - "reports/test-summary/baseline-summary.json exists (or is generated in automation) and reflects the current workspace-wide baseline"
+
+  naming_conventions:
+    - "File names follow language conventions"
+    - "Directory names are descriptive and consistent"
+    - "Test files follow test_*.py pattern"
+    - "Configuration files use appropriate format"
+
+  module_architecture:
+    - "Each module has __init__.py with public API"
+    - "Modules have clear single responsibility"
+    - "Cross-module dependencies are explicit"
+    - "Module README.md documents purpose and usage"
+
+  ai_native_features:
+    - "CLAUDE.md provides clear project instructions"
+    - "Input specifications are in YAML format"
+    - "Pseudocode documents algorithms clearly"
+    - "Code includes comprehensive docstrings"
+    - "Type hints present for all functions"
+    - "Tests cover >80% of code"
+
+  development_workflow:
+    - "Input → Pseudocode → Code generation flow documented"
+    - "SPARC methodology integrated in specs/"
+    - "Agent OS product documentation complete"
+    - "Git hooks configured for code quality"
+    - "Cross-model review logs stored with reviewer model, verdict, and follow-up actions"
+    - "Latest coverage artifacts exported under reports/coverage/"
+
+## IMPLEMENTATION PRIORITY
+rollout_strategy:
+  phase_1_pilot:
+    repositories: ["workspace-hub", "assetutilities"]
+    focus: "Establish AI-native patterns"
+    duration: "2 weeks"
+    exit_criteria:
+      - "Directory compliance score ≥ 0.9 across pilot repos"
+      - "Optional directory usage documented and approved"
+      - "Updated .gitignore rules merged and validated"
+
+  phase_2_python_repos:
+    repositories:
+      - "aceengineercode"
+      - "worldenergydata"
+      - "digitalmodel"
+      - "assethold"
+      - "pyproject-starter"
+    focus: "Python-specific AI-native patterns"
+    duration: "3 weeks"
+    exit_criteria:
+      - "All Python repos adopt module guidance with no drift in audits"
+      - "Unit/integration test coverage ≥ baseline thresholds"
+      - "Code generation prompts validated for Python + TypeScript use cases"
+
+  phase_3_remaining_repos:
+    repositories: "All other 19 repositories"
+    focus: "Apply learned patterns across all repos"
+    duration: "4 weeks"
+    exit_criteria:
+      - "Organization-wide audit pass rate ≥ 95%"
+      - "Artifacts and runtime directories standardized in every repo"
+      - "Success metrics in previous phases sustained for ≥ 1 month"
+  ongoing_maintenance:
+    - "After uv dependency upgrades or tooling changes, rerun structural audits to confirm compliance scores remain ≥ 0.9."
+    - "Schedule quarterly reviews of this spec to incorporate cross-repo learnings."
+
+  success_metrics:
+    - "AI can navigate 100% of repositories without guidance"
+    - "Specs generate working pseudocode 90%+ of the time"
+    - "Code generation from pseudocode requires <20% manual adjustment"
+    - "New developers onboard 50% faster with AI assistance"
+    - "Documentation completeness >90% across all repos"
+
+## NOTES
+notes:
+  - "This input file serves as the specification for AI-native infrastructure"
+  - "Use this as input to SPARC methodology for systematic implementation"
+  - "Each repository may have domain-specific variations while maintaining core AI-native principles"
+  - "Regular audits ensure AI-native standards are maintained across all repositories"
+  - "AI agents should reference this file when working across multiple repositories"
+  - "Treat this specification as living guidance; incorporate lessons learned from each repository rollout and update the file (with last_updated) to reflect improvements."
+  - "When this file guides work in another repository, log observed improvements or gaps in that repository's coordination notes and feed them back here to sustain cross-repo learning."

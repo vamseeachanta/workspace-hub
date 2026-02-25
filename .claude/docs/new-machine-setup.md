@@ -84,9 +84,41 @@ The bootstrap script appends this line automatically.
 | `wh-verify` | `bash $WORKSPACE_HUB/scripts/setup/verify-setup.sh` |
 | `wh-legal` | `bash $WORKSPACE_HUB/scripts/legal/legal-sanity-scan.sh --diff-only` |
 | `wh-ready` | `bash $WORKSPACE_HUB/scripts/readiness/nightly-readiness.sh` |
+| `wh-ux` | `bash $WORKSPACE_HUB/scripts/readiness/check-ux-consistency.sh` |
 
 **Shell prompt** (PS1) shows `branch|WRK-NNN` from the last commit message.
 Disabled automatically when Starship or oh-my-bash is detected.
+
+---
+
+### 3b. Keybindings (WRK-228)
+
+Canonical keybindings file: `config/claude/keybindings.json`
+
+Deploys `~/.claude/keybindings.json` with:
+```json
+{ "submitPrompt": "ctrl+enter" }
+```
+
+This aligns Linux and Windows Git Bash — both use `Ctrl+Enter` to submit a Claude Code prompt.
+The bootstrap script handles this automatically (Step 3b).
+
+**Verify:**
+```bash
+cat ~/.claude/keybindings.json
+# expected: {"submitPrompt": "ctrl+enter"}
+```
+
+**Screenshot directory** (`CLAUDE_SCREENSHOT_DIR`) is set automatically by `bashrc-snippets.sh`:
+- Linux: `~/Pictures/Screenshots`
+- Windows Git Bash: `%USERPROFILE%\Pictures\Screenshots`
+
+**Check all UX consistency items:**
+```bash
+wh-ux           # or: bash scripts/readiness/check-ux-consistency.sh
+```
+
+See `admin/it/chrome-claude-setup.md` for Chrome Claude extension install steps.
 
 ---
 

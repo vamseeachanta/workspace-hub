@@ -1,0 +1,13 @@
+
+{
+  "timestamp": "2025-01-11T00:00:00Z",
+  "requests_used": 0,
+  "requests_limit": 100,
+  "requests_percent": 0,
+  "tokens_used": 0,
+  "tokens_limit": 100000,
+  "tokens_percent": 0,
+  "cost_today": 0.00,
+  "daily_budget": 50.00,
+  "session_started": "2025-01-11T00:00:00Z"
+}

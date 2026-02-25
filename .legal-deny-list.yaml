@@ -1,0 +1,41 @@
+# =============================================================================
+# Global Legal Deny List — applies to ALL submodules
+# =============================================================================
+# Add patterns here that should be blocked workspace-wide.
+# Per-project deny lists in each submodule extend (not replace) this file.
+#
+# Severity levels:
+#   block  — fail the scan, PR cannot proceed
+#   warn   — flag but allow to proceed
+# =============================================================================
+
+version: "1.0"
+updated: "2026-02-02"
+
+# Client project names and codenames
+client_references: []
+  # - pattern: "ACME_PROJECT"
+  #   case_sensitive: true
+  #   description: "Example client codename"
+
+# Proprietary platform/tool references
+proprietary_tools: []
+  # - pattern: "SomeProprietaryTool"
+  #   case_sensitive: false
+  #   description: "Example proprietary tool"
+
+# Client-specific infrastructure
+client_infrastructure: []
+  # - pattern: "client-vpc-123"
+  #   case_sensitive: false
+  #   description: "Example client infra"
+
+# Files/paths excluded from scanning (glob patterns)
+exclusions:
+  - ".legal-deny-list.yaml"
+  - ".git/"
+  - "*.lock"
+  - "node_modules/"
+  - "__pycache__/"
+
+default_severity: "block"

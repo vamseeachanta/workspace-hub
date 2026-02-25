@@ -165,6 +165,43 @@ else
   _warn ".env.example not found — expected at workspace root"
 fi
 
+# ── 9b. Terminal UX consistency (WRK-228) ────────────────────────────────────
+echo ""
+echo "--- Terminal UX"
+KEYBINDINGS_FILE="${HOME}/.claude/keybindings.json"
+if [[ ! -f "$KEYBINDINGS_FILE" ]]; then
+  _warn "~/.claude/keybindings.json absent — submitPrompt not standardised"
+  echo "       Fix: bash ${WORKSPACE_HUB}/scripts/setup/new-machine-setup.sh"
+else
+  if command -v python3 &>/dev/null; then
+    _submit=$(python3 -c "
+import json, pathlib
+try:
+    d=json.loads(pathlib.Path('${KEYBINDINGS_FILE}').read_text())
+    print(d.get('submitPrompt',''))
+except Exception:
+    print('')
+" 2>/dev/null || echo "")
+    if [[ "$_submit" == "ctrl+enter" ]]; then
+      _pass "keybindings.json: submitPrompt=ctrl+enter"
+    else
+      _warn "keybindings.json: submitPrompt=${_submit:-unset} (expected ctrl+enter)"
+    fi
+  else
+    _pass "keybindings.json present (python3 absent — cannot parse)"
+  fi
+fi
+
+if [[ -n "${CLAUDE_SCREENSHOT_DIR:-}" ]]; then
+  if [[ -d "$CLAUDE_SCREENSHOT_DIR" ]]; then
+    _pass "CLAUDE_SCREENSHOT_DIR=${CLAUDE_SCREENSHOT_DIR}"
+  else
+    _warn "CLAUDE_SCREENSHOT_DIR set but directory missing: ${CLAUDE_SCREENSHOT_DIR}"
+  fi
+else
+  _warn "CLAUDE_SCREENSHOT_DIR not set — source bashrc-snippets.sh or re-open shell"
+fi
+
 # ── 10. Python ────────────────────────────────────────────────────────────────
 echo ""
 echo "--- Python"

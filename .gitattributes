@@ -1,0 +1,22 @@
+# Auto detect text files and normalize line endings
+* text=auto
+
+# Force LF for ALL markdown — work queue files, skills, docs, specs.
+# Prevents UTF-16 / CRLF files created on Windows from breaking
+# generate-index.py and other parsers on Linux (and vice versa).
+*.md text eol=lf working-tree-encoding=UTF-8
+*.yaml text eol=lf working-tree-encoding=UTF-8
+*.yml text eol=lf working-tree-encoding=UTF-8
+*.json text eol=lf working-tree-encoding=UTF-8
+
+# Keep skill definitions LF-only across Linux + Git Bash on Windows
+**/SKILL.md text eol=lf working-tree-encoding=UTF-8
+
+# Force LF for shell scripts (CRLF breaks bash on MINGW)
+*.sh text eol=lf
+scripts/* text eol=lf
+# Extensionless hook files in scripts/hooks/ (scripts/* only covers one level)
+scripts/hooks/* text eol=lf
+
+# Force LF for config files parsed by shell scripts
+config/*.conf text eol=lf

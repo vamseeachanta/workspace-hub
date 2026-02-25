@@ -1,0 +1,18 @@
+hostname: ace-linux-2
+alias: eng-secondary
+os: ubuntu
+workspace_root: /mnt/workspace-hub
+repos:
+  - digitalmodel
+  - worldenergydata
+agent_clis:
+  claude: ">=1.0"
+domain_tools:
+  blender: ">=4.0"
+  openfoam: ">=12"
+  freecad: ">=1.0"
+  gmsh: ">=4.10"
+  paraview: ">=5.10"
+  calculix: ">=2.21"
+  meshio: ">=5.0"
+notes: "Secondary workstation. Open-source FEA/CFD simulation (Blender, OpenFOAM, FreeCAD, Gmsh, ParaView, CalculiX)."

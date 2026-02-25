@@ -1,361 +1,395 @@
 repo: worldenergydata
-generated: '2026-02-24T10:57:40'
-total_standards_mapped: 2879
+generated: '2026-02-24T20:06:44'
+total_standards_mapped: 7834
 modules:
 - module: bsee
-  standards_count: 514
+  standards_count: 6813
   standards:
-  - id: C 1379 - 97  _QZEZNZKTUKVE
-    title: C 1379   97   QZEZNZKTUKVE
-    org: ''
-    sha: sha256:7adb0d1057f0c459d4d918cc356c36c4c60ce3cd62e748eb18988f9aa0a41366
+  - id: Bil_Stewart_Revised_Proposed_ASCE_COPRI_statement_on_the_Gulf_of_Mexico_Oil_Spill
+    title: Bil Stewart Revised   Proposed ASCE COPRI statement on the Gulf of Mexico Oil Spill
+    org: ASCE
+    sha: sha256:a503bff2ed3705f12e01b78615d0a9680b93c20ee58304f3340e988a98842b46
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1379 - 97  _QZEZNZKTUKVE.pdf
+    summary: ''
     status: gap
-  - id: C 698 - 98  _QZY5OC05OA__
-    title: 'C 698   98   QZY5OC05OA  '
+  - id: API_17D 2003
+    title: API_17D 2003.pdf
     org: ''
-    sha: sha256:2587bceeb0cc184acf35550204e11d80b5b6321671527a0331097ef13ff0c558
+    sha: sha256:1e20a5ec6eb477dbbdec12c86d4af5a693a604c641c247901fc90ed7fbacd9ad
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 698 - 98  _QZY5OC05OA__.pdf
+    summary: COPYRIGHT 2000 American Petroleum Institute Febuary 17, 2000 23:39:16 Information Handling Services, 2 COPYRIGHT
+      2000 American Petroleum Institute Febuary 17, 2000 23:39:16 Information Handling Servic
     status: gap
-  - id: C 888 - 97  _QZG4OC05NW__
-    title: 'C 888   97   QZG4OC05NW  '
+  - id: 6A_e20_Addendum_1
+    title: 'Date of Issue: November 2011'
+    org: raw
+    sha: sha256:a3bb68e4faec659577debaf62f4879e6629b890e96a9759488d55d001b2490b2
+    discipline: regulatory
+    summary: 'Date of Issue: November 2011 Affected Publication: API Specification 6A, Specification for Wellhead and Christmas
+      Tree Equipment, Twentieth Edition, October 2010 ADDENDUM 1 Replace Annex O in its enti'
+    status: gap
+  - id: New Microsoft Word Document
+    title: New Microsoft Word Document.docx
     org: ''
-    sha: sha256:1219f74a127d782b0bb0f5814d8658f55a067b68d1bded2eb08154e0b5e70abe
+    sha: sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 888 - 97  _QZG4OC05NW__.pdf
+    summary: Document 'New_Microsoft_Word_Document' classified as regulatory. Full text extraction was not available for detailed
+      summarization.
     status: gap
-  - id: C 1284 - 00  _QZEYODQ_
-    title: 'C 1284   00   QZEYODQ '
+  - id: sect_03
+    title: SECTION 3 ASSESSMENT OF EXISTING EQUIPMENT FOR
     org: ''
-    sha: sha256:c7f4cac4ea51507e653a828fadc5b187241ed742b089d39d2aef77fc8ba7607d
+    sha: sha256:a78bb0a5143a761ed3e7129091a1b04825b5dbbc98b53d48a9e57d2cf203c526
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1284 - 00  _QZEYODQ_.pdf
+    summary: SECTION 3 ASSESSMENT OF EXISTING EQUIPMENT FOR 3.0 Table of Contents.................................................................................................................
+      3-1
     status: gap
-  - id: F 1885 - 98  _RJE4ODUTOTG_
-    title: 'F 1885   98   RJE4ODUTOTG '
+  - id: api.1104.1999
+    title: api.1104.1999.pdf
     org: ''
-    sha: sha256:c27c555038bf6e378c5dd5653582709729f2238937128d646ec58d5d4898392e
+    sha: sha256:ebdfe75243e87945a12d5600b6af8eb80380d2bc4633c67a9b8513e0c47f0353
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.02 Nuclear Energy (II), Solar, and Geothermal Energy F 1885 - 98  _RJE4ODUTOTG_.pdf
+    summary: By Authority Of THE UNITED STATES OF AMERICA Legally Binding Document By the Authority Vested By Part 5 of the
+      United States Code § 552(a) and Part 1 of the Code of Regulations § 51 the attached docum
     status: gap
-  - id: C 1128 - 95  _QZEXMJGTOTVFMQ__
-    title: 'C 1128   95   QZEXMJGTOTVFMQ  '
+  - id: API Insp 510 (2001)
+    title: 'Pressure Vessel Inspection Code:'
+    org: raw
+    sha: sha256:2fc3ba7b9c8965035db246cd8e65961fbbfa653818200e6b9c872c0498c106bf
+    discipline: regulatory
+    summary: 'Pressure Vessel Inspection Code: Maintenance Inspection, Rating, Repair, and Alteration API 510 EIGHTH EDITION,
+      JUNE 1997 ADDENDUM 1, DECEMBER 1998 ADDENDUM 2, DECEMBER 2000 ADDENDUM 3, DECEMBER 2001 '
+    status: gap
+  - id: API_579-1_ASME_FFS-1_2016
+    title: API_579-1_ASME_FFS-1_2016.pdf
     org: ''
-    sha: sha256:66075d2da18bb48ba14b1f580cafb013a912c24e40d48867c934e699fedc4aef
+    sha: sha256:6f6ae3ec972c462eba5604d751cc515007d9ca91cf4e7cf57da4c5553ff698cf
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1128 - 95  _QZEXMJGTOTVFMQ__.pdf
+    summary: Document 'API_579-1_ASME_FFS-1_2016' classified as regulatory. Full text extraction was not available for detailed
+      summarization.
     status: gap
-  - id: C 1255 - 93 R99  _QZEYNTU_
-    title: 'C 1255   93 R99   QZEYNTU '
+  - id: oto01006
+    title: (Recommended practice for planning,
     org: ''
-    sha: sha256:52161202adaf0eb568c38fcc0625e8dc817b1a83f90d5150d5f31f329c91da78
+    sha: sha256:9a1b3655f081d92569ade6d93e82d4722bf31890a95594e2d8d44c6d9eb576ac
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1255 - 93 R99  _QZEYNTU_.pdf
+    summary: Appraisal of API RP 2FPS (Recommended practice for planning,
     status: gap
-  - id: C 1411 - 01  _QZE0MTE_
-    title: 'C 1411   01   QZE0MTE '
+  - id: G2AWSDS
+    title: G2AWSDS.pdf
     org: ''
-    sha: sha256:c4f775689a54f1eacc441f929fca6e065a1015a7c16531b870fadd3d41eb60ea
+    sha: sha256:80f97c4d4b7c766cab2ba01bc979d99397d30c94cc320f50fa58b58e8e886114
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1411 - 01  _QZE0MTE_.pdf
+    summary: Document 'G2AWSDS' classified as regulatory. Full text extraction was not available for detailed summarization.
     status: gap
-  - id: C 982 - 88 R97  _QZK4MI1SRUQ_
-    title: 'C 982   88 R97   QZK4MI1SRUQ '
+  - id: 6D errata 1547Ed01
+    title: 'Date of Issue: June 2008'
+    org: raw
+    sha: sha256:eaa913811416912267411d284f973db04e1e0fdb532866de39b833d4882b2edf
+    discipline: regulatory
+    summary: 'Date of Issue: June 2008 Affected Publication: API Specification 6D/ISO 14313, Specification for Pipeline Valves,
+      Twenty-third Edition, April 2008 ERRATA Page 34, Table 4, PN 50 (class 300), DN 150 (N'
+    status: gap
+  - id: API HURRICANE WRKSHP FLYR  3 of 3
+    title: API HURRICANE WRKSHP FLYR  3 of 3.pdf
     org: ''
-    sha: sha256:5abe939445c75338b0d1fbd48de96186240ed1de75c7cf8c9f6684c7cd363b96
+    sha: sha256:8f76dc92977fc2913e9427248ac0ee081e714de2d39b90f56d5746820dbe0314
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 982 - 88 R97  _QZK4MI1SRUQ_.pdf
+    summary: Document 'API_HURRICANE_WRKSHP_FLYR_3_of_3' classified as regulatory. Full text extraction was not available
+      for detailed summarization.
     status: gap
-  - id: C 1476 - 00  _QZE0NZY_
-    title: 'C 1476   00   QZE0NZY '
+  - id: API Spec 12GDU (1990)
+    title: API Spec 12GDU (1990).pdf
     org: ''
-    sha: sha256:86d5459abb8059a8817a65f93a225871edfeeace33ce53cd206c5276923c1598
+    sha: sha256:715b41cbc29e9966c36a6a4ca7350794ad227780b9d9137eee0725bd5c5a0d82
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1476 - 00  _QZE0NZY_.pdf
+    summary: 'Specification for Glycol-Type Gas Dehydration Units API SPECIFICATION 12GDU (SPEC 12GDU) FIRST EDITION, DECEMBER
+      15,1990 American Petroleum Institute 1220 L Street, Northwest Washington, DC 20005 11’ '
     status: gap
-  - id: C 1316 - 95  _QZEZMTYTUKVE
-    title: C 1316   95   QZEZMTYTUKVE
+  - id: API SPEC 7-1 1st Ed (2006) Rotary Drill Stem Elements
+    title: Specification for Rotary Drill Stem
+    org: raw
+    sha: sha256:998ce815177f0fe8adcc63c4a4d8bf5298a222657d864da7973fd98d92511f53
+    discipline: regulatory
+    summary: ~toleum Institute API S".., 1_1 I ISO 10<2'_1 Special Notes API publicalion. Wilh respeel to panicul.r cireumSlances.
+    status: gap
+  - id: API RP 580 1st Ed (2002) Risk-Based Inspection
+    title: API RP 580 1st Ed (2002) Risk-Based Inspection.pdf
     org: ''
-    sha: sha256:f68f12e91d3e8241f5da4b1c322f7bd9cca16fe44bdf8db412ebcb65da165db9
+    sha: sha256:a9be0e523273cd823f2836ae63390bf835e8625ba439e5a7ad0c0321e900a22c
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1316 - 95  _QZEZMTYTUKVE.pdf
+    summary: 'Risk-based Inspection API RECOMMENDED PRACTICE 580 FIRST EDITION, MAY 2002 •. !P- ~ican NatiOlJi// ~ American
+      Petroleum Institute Helping You Get The Job Done Right~M Risk-based Inspection Downstream '
     status: gap
-  - id: C 1296 - 95  _QZEYOTYTOTU_
-    title: 'C 1296   95   QZEYOTYTOTU '
+  - id: API Specification 6A
+    title: January 2003
+    org: raw
+    sha: sha256:028bca74792782896f7f4d06d3c56d66cdb5e0bd6404666a30cd28fb631b022f
+    discipline: regulatory
+    summary: 'January 2003 Attention: Users of API Specification 6A, 17th Edition This edition of API Specification 6A contains
+      material from the Errata issued December 1996 and balloted and approved changes throug'
+    status: gap
+  - id: API 574 RP Inspection Practices for Piping System Components (1998)
+    title: API 574 RP Inspection Practices for Piping System Components (1998).pdf
     org: ''
-    sha: sha256:b4cebf999c73143d5f84b87245824da6901be80320c7efe88762d860ae2c8475
+    sha: sha256:f24c1da2ff350e7e86c02b0b2d9169a6dd313ea5fe1f24f91815e87736cd9af8
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1296 - 95  _QZEYOTYTOTU_.pdf
+    summary: Inspection Practices for Piping System Components API RECOMMENDED PRACTICE 574 SECOND EDITION, JUNE 1998 --``,,`,``,``,,,``,```,``,,,,`,-`-`,,`,,`,`,,`---
+      Document provided by IHS Licensee=Aramco HQ/9
     status: gap
-  - id: C 1217 - 92  _QZEYMTCTUKVE
-    title: C 1217   92   QZEYMTCTUKVE
+  - id: API 598 (2004) ValveInspection&Testing
+    title: API 598 (2004) ValveInspection&Testing.pdf
     org: ''
-    sha: sha256:14431a6dc4b0b81783f625d39bed358ef7c85350ceb7bad5947c5303e2708219
+    sha: sha256:83b31a61a726cb30915b10c0efe07cecdbce5f09ee614e72372fc9631fd10223
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1217 - 92  _QZEYMTCTUKVE.pdf
+    summary: Valve Inspection and Testing --`,,``,`,,,`,``,,`,,`,,`,```,`-`-`,,`,,`,`,,`--- API STANDARD 598 EIGHTH EDITION,
+      MAY 2004 Copyright American Petroleum Institute Reproduced by IHS under license with API
     status: gap
-  - id: C 750 - 89 R97  _QZC1MC1SRUQ_
-    title: 'C 750   89 R97   QZC1MC1SRUQ '
+  - id: API SPEC 17J 3rd Ed Errata 1 (2009) Unbonded Flexible Pipe
+    title: 'Date of Issue: February 2009'
+    org: raw
+    sha: sha256:3ca96971f0bf6120905e73d1e1dc781e6599591830aba2e801d40352a88fa4fe
+    discipline: regulatory
+    summary: 'Date of Issue: February 2009 Affected Publication: ANSI/API Specification 17J/ISO 13628-2, Specification for
+      Unbonded Flexible Pipe, Third Edition, July 2008 ERRATA This errata corrects editorial erro'
+    status: gap
+  - id: API SPECIFICATION 7K Drilling and Well Servicing Equip 2016
+    title: API SPECIFICATION 7K Drilling and Well Servicing Equip 2016
     org: ''
-    sha: sha256:ec447024c28af6829b3fa8ccc90c9934cf1166badb472e5f1d0b5a6934b173b5
+    sha: sha256:aadeea097d8f110a5ac015b95405a71dd89eea37580b17a930532bab9018b9c0
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 750 - 89 R97  _QZC1MC1SRUQ_.pdf
+    summary: 'Date of Issue: May 2016 Affected Publication: API Specification 7K, Drilling and Well Servicing Equipment, Sixth
+      Edition, Page 10, Section 4.1, the second sentence shall be amended:'
     status: gap
-  - id: C 1348 - 96  _QZEZNDGTOTY_
-    title: 'C 1348   96   QZEZNDGTOTY '
+  - id: API SPEC 17D 1st Ed Supplement 2 (1996) Design and Operation of Subsea Wellhead and Tree Equipment
+    title: Supplement 2
+    org: raw
+    sha: sha256:4145756708d68d1f49f241091a92b79c01f6b17f9b125a901380554ab150bf09
+    discipline: regulatory
+    summary: 'In equipment list headed by "Equipment which is beyond the scope of this specification ", add as the first item:
+      Horizontal Tree Assemblies (individual components are covered as listed above). In the '
+    status: gap
+  - id: API SPEC 6A 19th Ed Errata 1 (2004) Wellhead and Christmas Tree Equipment
+    title: 'Date of Issue: September 1, 2004'
+    org: raw
+    sha: sha256:b9fd7ae8a19420260714c4aebf47cf743313ffe004f6a3a481f975480713a21f
+    discipline: regulatory
+    summary: 'Date of Issue: September 1, 2004 Affected Publication: API Specification 6A, Specification for Wellhead and
+      Christmas Tree Equipment, Nineteenth Edition, July 2004 ERRATA 1 Changes are shown in bold t'
+    status: gap
+  - id: API STD 653 3rd Ed & Add (2001 & 2003) Tank Inspection, Repair, Alteration and Reconstruction
+    title: Tank Inspection, Repair, Alteration,
+    org: raw
+    sha: sha256:24d00faadd7d7274376631ec09ec86f1a61a5586c5923bcdef866fc0819583d0
+    discipline: regulatory
+    summary: Tank Inspection, Repair, Alteration, - regulatory document.
+    status: gap
+  - id: API RP 14C 7th Ed (2007) Analysis, Design, Installation, and Testing of Basic Surface Safety Systems for Offshore
+      Production Platforms
+    title: API RP 14C 7th Ed (2007) Analysis, Design, Installation, and Testing of Basic Surface Safety Systems
     org: ''
-    sha: sha256:6fd5f8d49b92c2eb0d76e5188a0c9324f3a03bc952a3027d8e473240e786ab0b
+    sha: sha256:0296655d3262f9fd2f42f3067d64f1784ef2afdc43e0d27d4841f6e22f2dfdbe
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1348 - 96  _QZEZNDGTOTY_.pdf
+    summary: Recommended Practice for Analysis, Design, Installation, and Testing of Basic Surface Safety
     status: gap
-  - id: C 1189 - 95 R01  _QZEXODKTUKVE
-    title: C 1189   95 R01   QZEXODKTUKVE
+  - id: API_RP_2SK_Main_Document_Nov
+    title: API_RP_2SK_Main_Document_Nov.pdf
     org: ''
-    sha: sha256:45166ac6128b60fdbab3e36eb322308dd766bb5cf19292bd94c3b130fa613429
+    sha: sha256:341b3ce209889afe26ee6a259acc09f959e6b84af8d2a2c3f71182a5ccac7ced
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1189 - 95 R01  _QZEXODKTUKVE.pdf
+    summary: Regulatory document.
     status: gap
-  - id: C 1554 - 03  _QZE1NTQ_
-    title: 'C 1554   03   QZE1NTQ '
+  - id: API RP 578 (1999)
+    title: API RECOMMENDED PRACTICE 578
     org: ''
-    sha: sha256:b546bdcfcad6e3b67980218e3ec1a37df7ddfda169c34852d82445862fe6b7a0
+    sha: sha256:43ab3bb243d2c65936138d398008ef54bd2c6c2a75a76831643566d0971f293b
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1554 - 03  _QZE1NTQ_.pdf
+    summary: Material Verification Program for New and Existing Alloy Piping
     status: gap
-  - id: C 1066 - 97 R04  _QZEWNJY_
-    title: 'C 1066   97 R04   QZEWNJY '
+  - id: API RP 1117 (1996)
+    title: COPYRIGHT 2002; American Petroleum Institute
+    org: raw
+    sha: sha256:fbf090c0cbdc1542d3b74e9a16ca100f2f50f69744ec7eb3da39aabb58caeab3
+    discipline: regulatory
+    summary: 'COPYRIGHT 2002; American Petroleum Institute Document provided by IHS Licensee=Sincor Venezuela/5934214100,
+      User=, 08/15/2002 11:10:45 MDT Questions or comments about this message: please call the Doc'
+    status: gap
+  - id: API RP 14J 2nd Ed (2001) Design and Hazards Analysis for Offshore Production Facilities
+    title: API RP 14J 2nd Ed (2001) Design and Hazards Analysis for Offshore Production Facilities
     org: ''
-    sha: sha256:29f0fa986574ca623aa60ae3bab75d2c15f0c611c1f6340e9a15d7317e97f99a
+    sha: sha256:7b52892537bb822b48eb8cf1ae9aceb52edbbcf90a02808f8c6dd6cf8fb0f502
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1066 - 97 R04  _QZEWNJY_.pdf
+    summary: This document was reproduced from an authorized download of an API standard on 2S-May-2011. The authorized user
+      is permitted to print one single copy for personal reference use only. No further reprod
     status: gap
-  - id: C 982 - 88 R97  _QZK4MI04OFI5N0UX
-    title: C 982   88 R97   QZK4MI04OFI5N0UX
+  - id: API RP 1111
+    title: API RP 1111.PDF
+    org: raw
+    sha: sha256:7e8c80e8a21dbfa9e600ec05d829aeb2c1ba049c031ef5e31a805a47ea492323
+    discipline: regulatory
+    summary: ''
+    status: gap
+  - id: API RP 5A3 Thread Sealing Compounds
+    title: Recommended Practice on
+    org: raw
+    sha: sha256:d73347fe4ea2a2145b90e4edf009b5bd44fe01aa634c74cc6f471f9dd34adadf
+    discipline: regulatory
+    summary: 'Recognizing this trend, API member companies have developed a positive, forward looking strategy called STEP:
+      Strategies for TodayÕs Environmental Partnership. This program aims to address public conc'
+    status: gap
+  - id: API RP 1631 (2001)
+    title: API RP 1631 (2001).pdf
     org: ''
-    sha: sha256:a1ab2f0ecbcbd5e0fd0634317c17c7b7e88fe4325c9b3b8b8521e601e99e8123
+    sha: sha256:f9b25689fe00d908f3e9d45d058de8e1763e2a6343622e8903bcda1d3fa79103
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 982 - 88 R97  _QZK4MI04OFI5N0UX.pdf
+    summary: Interior Lining and Periodic Inspection of Underground Storage Tanks API STANDARD 1631 FIFTH EDITION, JUNE 2001
+      COPYRIGHT 2002; American Petroleum Institute Document provided by IHS Licensee=Sincor Ve
     status: gap
-  - id: C 1205 - 97 R02  _QZEYMDU_
-    title: 'C 1205   97 R02   QZEYMDU '
+  - id: API RP 556 (1997)
+    title: COPYRIGHT 2002; American Petroleum Institute
+    org: raw
+    sha: sha256:1996a616708f93df7480c53897d944f2427e578baf7c2702e571b5a90ed7c108
+    discipline: regulatory
+    summary: 'COPYRIGHT 2002; American Petroleum Institute Document provided by IHS Licensee=Sincor Venezuela/5934214100,
+      User=, 08/13/2002 12:24:11 MDT Questions or comments about this message: please call the Doc'
+    status: gap
+  - id: API RP 2SK 2nd Ed (1996) Design and Analysis of Stationkeeping Systems for Floating Structures
+    title: Design and Analysis of
     org: ''
-    sha: sha256:6ba73cc275b9be021c273c8e8b74a599d2f3459c953bc819f9478901b3bdea08
+    sha: sha256:a1c128398b62565cfaac74020eeaadc946f7e74c57aa9ab784c3dac134a378dd
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1205 - 97 R02  _QZEYMDU_.pdf
+    summary: II 0732290 0561683 317 II Recommended Practice for
     status: gap
-  - id: C 1285 - 97  _QZEYODUTUKVE
-    title: C 1285   97   QZEYODUTUKVE
+  - id: API RP 2RD
+    title: API RP 2RD.pdf
     org: ''
-    sha: sha256:23ee79235f0487025216adc306e7c5df32d2f32ad79c6a08949479b0478cbb10
+    sha: sha256:ec8e6be67bd1b2791c570cfb551627f554acf4f8de5f07902f067eb31e40b240
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1285 - 97  _QZEYODUTUKVE.pdf
+    summary: Document 'API_RP_2RD' classified as regulatory. Full text extraction was not available for detailed summarization.
     status: gap
-  - id: C 833 - 95  _QZGZMY1SRUQ_
-    title: 'C 833   95   QZGZMY1SRUQ '
+  - id: API_RP_2SM
+    title: API RP 2SM
+    org: raw
+    sha: sha256:2d62a3d9d1f7da2dbdc18b8f366e6af6c5fc29640e638b645b15fa367353b168
+    discipline: regulatory
+    summary: ''
+    status: gap
+  - id: API RP 687 (2001)
+    title: API RECOMMENDED PRACTICE 687
     org: ''
-    sha: sha256:6be1c2e1c596a9b411b324fd8c761f15411f67dfab2e188e24021a23678f1411
+    sha: sha256:b485a567409afd267af1d79448c7e3320d8b79603b4800cf3b2a3a06855d2b3a
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 833 - 95  _QZGZMY1SRUQ_.pdf
+    summary: API RECOMMENDED PRACTICE 687 FIRST EDITION, SEPTEMBER 2001
     status: gap
-  - id: C 1075 - 93 R97  _QZEWNZUTOTNSOTC_
-    title: 'C 1075   93 R97   QZEWNZUTOTNSOTC '
+  - id: API RP2I
+    title: API RP2I.pdf
     org: ''
-    sha: sha256:c30c3ff7609418997ae662856d8be4d11dc7a3f04a52612aa93a47b5a78416dd
+    sha: sha256:52bf8a7926a78a75dac947aca6efde134a345ea4b34b95ca5ee46adb7d59de30
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1075 - 93 R97  _QZEWNZUTOTNSOTC_.pdf
+    summary: Document 'API_RP2I' classified as regulatory. Full text extraction was not available for detailed summarization.
     status: gap
-  - id: C 1490 - 01  _QZE0OTATMDE_
-    title: 'C 1490   01   QZE0OTATMDE '
+  - id: API RP 683 (1993)
+    title: A P I RPxbö3 93 W 0732290 05LbL75 79%
+    org: raw
+    sha: sha256:734387a10d91f3e3be873fde11150ddfc686b82180781523075382cc35241c0c
+    discipline: regulatory
+    summary: A P I RPxbö3 93 W 0732290 05LbL75 79% Quality Improvement Manual for Mechanical Equipment in Petroleum, Chemical,
+      and Gas Industries API RECOMMENDED PRACTICE 683 FIRST EDITION, SEPTEMBER 1993 American
+    status: gap
+  - id: API RP 5UE 2nd Ed (2005) Ultrasonic Evaluation of Pipe Imperfections
+    title: API RP 5UE 2nd Ed (2005) Ultrasonic Evaluation of Pipe Imperfections
     org: ''
-    sha: sha256:ef9106685c345b4495ca9eae731b8afe6b842f7ee5f7fe4a297644ada3d7fe2a
+    sha: sha256:c4ef9d64ab9ba5827cfa5cf90adb62da7c9e7d832b531b462a9aba2bf0770809
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1490 - 01  _QZE0OTATMDE_.pdf
+    summary: Ultrasonic Evaluation of Pipe API RECOMMENDED PRACTICE 5UE AMERICAN PETROLEUM INSTITUTE
     status: gap
-  - id: C 1062 - 00  _QZEWNJI_
-    title: 'C 1062   00   QZEWNJI '
+  - id: API RP 2X
+    title: API RP 2X
     org: ''
-    sha: sha256:27c638f2370d192b14e833b6959a09245bbbd14824937b71d546fda187dc9f5e
+    sha: sha256:e36332c3f0a69636d25eb76d2964baccb5d9b3986d384cb8e799300efaa734bb
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1062 - 00  _QZEWNJI_.pdf
+    summary: Recommended Practice for Ultrasonic and Magnetic Examination of Offshore Structural Fabrication and Guidelines
     status: gap
-  - id: C 1022 - 93  _QZEWMJITUKVE
-    title: C 1022   93   QZEWMJITUKVE
+  - id: API RP 1114 (1994)
+    title: API RP 1114 (1994).pdf
     org: ''
-    sha: sha256:99e749570ab3f8c945da6c8703afaff443d9742eb8bd4101193d2ca3a83e27f7
+    sha: sha256:8c990208201d113cbc0a7c09b7b9dd02c9bea6bc9a1f8e454665ac99247325b9
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1022 - 93  _QZEWMJITUKVE.pdf
+    summary: A P I R P * 3 3 3 4 9 4 m 0732290 0533262 264 m Design of Solution-Mined Underground Storage Facilities API RECOMMENDED
+      PRACTICE FIRST EDITION, JUNE 1994 1114 American Petroleum Institute 1220 L Stree
     status: gap
-  - id: C 1215 - 92 R97  _QZEYMTU_
-    title: 'C 1215   92 R97   QZEYMTU '
+  - id: API RP 574 (1998)
+    title: S T D - A P I / P E T R O RP 574-ENGL L778 m 0 7 3 2 2 9 0 0 b 0 9 5 5 7 O22
+    org: raw
+    sha: sha256:1c34d00b75ebd0684350706f0e1b087aea66df398499cf771e9d690fa1af0b95
+    discipline: regulatory
+    summary: Information Concerning safety and health risks and proper precautions with respect to particular materialsand
+      conditions shouldbe obtained from the employer, the manufactureror supplier of that materi
+    status: gap
+  - id: API RP 552 (1994)
+    title: API RP 552 (1994).pdf
     org: ''
-    sha: sha256:8a303dd5739aff51ad667e0eb39a177d80d9f0bc8138ab1323b4dd28d5c392e7
+    sha: sha256:431a5dd533089ab2c05f074a8d246909466c0f397392017621973b1d012b1c8b
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1215 - 92 R97  _QZEYMTU_.pdf
+    summary: API RP*552 9 4 0732290 0541562 905 Transmission Systems API RECOMMENDED PRACTICE 552 FIRST EDITION, OCTOBER 1994
+      American Petroleum Institute 1220 L Street, Northwest Washington, D.C. 20005 11’ COPYRI
     status: gap
-  - id: C 1287 - 95  _QZEYODCTOTU_
-    title: 'C 1287   95   QZEYODCTOTU '
+  - id: API RP 2SIM 1st Edition Nov 2014
+    title: API RP 2SIM 1st Edition Nov 2014.pdf
     org: ''
-    sha: sha256:dbaf5122d298eac1db0fba0ac75d289a08c66789a716dea088acb05756a8463b
+    sha: sha256:f813f3564416a94d6efe96eae5620ea0b50adde572edc77340c6613df42f7932
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1287 - 95  _QZEYODCTOTU_.pdf
+    summary: Document 'API_RP_2SIM_1st_Edition_Nov_2014' classified as regulatory. Full text extraction was not available
+      for detailed summarization.
     status: gap
-  - id: C 1493 - 01  _QZE0OTM_
-    title: 'C 1493   01   QZE0OTM '
+  - id: API RP 7G 16th Ed (1998) Drill Stem Design and Operating Limits
+    title: Recommended Practice for Drill
+    org: raw
+    sha: sha256:37f2dc4dc796c41aa41fd5a5c818f8371374b50491dc7a9cb98a9ba4c2989da6
+    discipline: regulatory
+    summary: 'Recommended Practice for Drill Stem Design and Operating Limits API RECOMMENDED PRACTICE 7G SIXTEENTH EDITION,
+      AUGUST 1998 EFFECTIVE DATE: DECEMBER 1, 1998 -..- gEltStrategzes for Today" Environmental'
+    status: gap
+  - id: API RP 555 (2001)
+    title: API RP 555 (2001).pdf
     org: ''
-    sha: sha256:126eddca18b08c5c30877facb1014e974856142ac63fa57877d43577760b4543
+    sha: sha256:dac97214cda173e110c0c070198100b4b18caac8fed833bf5e94677e8e238edf
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1493 - 01  _QZE0OTM_.pdf
+    summary: Process Analyzers API RECOMMENDED PRACTICE 555 SECOND EDITION, NOVEMBER 2001 ANSI/API RP 555-2001 COPYRIGHT American
+      Petroleum Institute Licensed by Information Handling Services COPYRIGHT American Pe
     status: gap
-  - id: C 1441 - 99  _QZE0NDETOTK_
-    title: 'C 1441   99   QZE0NDETOTK '
+  - id: API RP 16Q (Searchable)
+    title: Recommended Practice for
+    org: raw
+    sha: sha256:01899e7d8176dd63ef6fac8c6b01b89ff67b9c927f844dcb998c3e49556acd2e
+    discipline: regulatory
+    summary: 'Recommended Practice for Design, Selection, Operation and Maintenance of Marine Drilling Riser Systems API RECOMMENDED
+      PRACTICE 160 (RP 160) FIRST EDITION, NOVEMBER 1, 1993 (FORMERLY RP 20 AND RP 2K) '
+    status: gap
+  - id: API RP 1632 (1996)
+    title: Cathodic Protection of
+    org: raw
+    sha: sha256:c0e4903610dc876482df169466de06cc781cb3f16e41029899fdfd186bfdae90
+    discipline: regulatory
+    summary: SPECIAL NOTES API publications necessarily address problems of a general nature. Withrespect to particular circumstances,
+      local, state, and federal laws and regulations should be reviewed.
+    status: gap
+  - id: API BULL 5C3 Formulas and Calculations for Casing, Tubing, Drill & Line Pipe
+    title: A P I BULL*SC3
+    org: raw
+    sha: sha256:e3c2b6fe36f65b7ecd3390cee6b5073746ff31edeb77bf0f29e887ab29709998
+    discipline: regulatory
+    summary: API publicationsnecessarily address problemsof a generalnature. With respect to particular circumstances, local,
+      state, and federal laws andregulations should be reviewed.
+    status: gap
+  - id: AOI BULL 2INTEX
+    title: AOI BULL 2INTEX.pdf
     org: ''
-    sha: sha256:0fdd86665481f5cb8f2525f432348d98468d1348ddb33bcfe9b8d63c850ef933
+    sha: sha256:ddd731351ec99f17245cffe2f49c7c9c06ce8c55679413c2ffabc85ac45e9886
     discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1441 - 99  _QZE0NDETOTK_.pdf
+    summary: Document 'AOI_BULL_2INTEX' classified as regulatory. Full text extraction was not available for detailed summarization.
     status: gap
-  - id: C 1428 - 99  _QZE0MJG_
-    title: 'C 1428   99   QZE0MJG '
-    org: ''
-    sha: sha256:2bee440822035c49fe83618088e11bd2e894355fee8bc9b8bf9e0e0f2738653d
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1428 - 99  _QZE0MJG_.pdf
-    status: gap
-  - id: C 750 - 03  _QZC1MA__
-    title: 'C 750   03   QZC1MA  '
-    org: ''
-    sha: sha256:f6d20bfd0aae0f8155835be7c0aeaf98a8342990aae5c0f045f538774b895558
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 750 - 03  _QZC1MA__.pdf
-    status: gap
-  - id: C 1000 - 00  _QZEWMDA_
-    title: 'C 1000   00   QZEWMDA '
-    org: ''
-    sha: sha256:c8e31a9a3c47044ba73ca334b7bdd588a325e3e3e6ccf9ef5d5a2716283d83ea
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1000 - 00  _QZEWMDA_.pdf
-    status: gap
-  - id: C 967 - 02  _QZK2NW__
-    title: 'C 967   02   QZK2NW  '
-    org: ''
-    sha: sha256:68efb9b45f86f04cd9ee4291b01c1e06a551fd915e11083e479b3c695ee7bd37
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 967 - 02  _QZK2NW__.pdf
-    status: gap
-  - id: C 1571 - 03  _QZE1NZE_
-    title: 'C 1571   03   QZE1NZE '
-    org: ''
-    sha: sha256:5a8600028b3133d6f83cb291a7781b120a42380dd7f38ef2c858a79c9b089820
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1571 - 03  _QZE1NZE_.pdf
-    status: gap
-  - id: C 1414 - 99  _QZE0MTQTOTK_
-    title: 'C 1414   99   QZE0MTQTOTK '
-    org: ''
-    sha: sha256:b1e28a31d6c7892c2fad912286e9b5311384e528eddd658d4dc5a2a5a707598e
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1414 - 99  _QZE0MTQTOTK_.pdf
-    status: gap
-  - id: C 1502 - 01  _QZE1MDI_
-    title: 'C 1502   01   QZE1MDI '
-    org: ''
-    sha: sha256:8031e6a4fb28e09914385726656b3994090f5e2346b85dd4fb9126d4b5429458
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1502 - 01  _QZE1MDI_.pdf
-    status: gap
-  - id: C 1415 - 99  _QZE0MTUTOTK_
-    title: 'C 1415   99   QZE0MTUTOTK '
-    org: ''
-    sha: sha256:6a63738429d0808e9e48c510b829e38ed613c207f75fdd6f77650a7021e34532
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1415 - 99  _QZE0MTUTOTK_.pdf
-    status: gap
-  - id: C 1169 - 97  _QZEXNJKTOTC_
-    title: 'C 1169   97   QZEXNJKTOTC '
-    org: ''
-    sha: sha256:a86d3c19eae99d815283dc341d3ba9344de7573a057f464deeecd68341d83a4a
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1169 - 97  _QZEXNJKTOTC_.pdf
-    status: gap
-  - id: C 1297 - 03  _QZEYOTC_
-    title: 'C 1297   03   QZEYOTC '
-    org: ''
-    sha: sha256:a18ba162a2438d4f50b08b856b63552bab12f9a3ab3e9a0251de53d0b17ddeaf
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1297 - 03  _QZEYOTC_.pdf
-    status: gap
-  - id: C 776 - 00  _QZC3NG__
-    title: 'C 776   00   QZC3NG  '
-    org: ''
-    sha: sha256:3855580d37a04e01e1da4c652a154f1836c200442b8a5abbf9bd77516f4efa32
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 776 - 00  _QZC3NG__.pdf
-    status: gap
-  - id: C 1204 - 02  _QZEYMDQ_
-    title: 'C 1204   02   QZEYMDQ '
-    org: ''
-    sha: sha256:395ed1394a0c7cfa39022a081ffb578a46eb9d731b36b4d6ec15ae4f8a4e8865
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1204 - 02  _QZEYMDQ_.pdf
-    status: gap
-  - id: C 1189 - 95  _QZEXODKTOTU_
-    title: 'C 1189   95   QZEXODKTOTU '
-    org: ''
-    sha: sha256:19f2286de31b57c71e3e9f318fbe16304df5bdb5e46c80f4bd70a0f201bb2d9e
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1189 - 95  _QZEXODKTOTU_.pdf
-    status: gap
-  - id: C 1163 - 98  _QZEXNJMTOTG_
-    title: 'C 1163   98   QZEXNJMTOTG '
-    org: ''
-    sha: sha256:898155c79ec6244ff70046cfa015d3fe097b08a5688ee6b7156d02d03b43cc2e
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1163 - 98  _QZEXNJMTOTG_.pdf
-    status: gap
-  - id: C 1463 - 00  _QZE0NJM_
-    title: 'C 1463   00   QZE0NJM '
-    org: ''
-    sha: sha256:d7aae11883b53516d1d7ba556c297db8ab3955134c632b7a1017d23d619c6e0c
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1463 - 00  _QZE0NJM_.pdf
-    status: gap
-  - id: C 1076 - 97  _QZEWNZYTOTC_
-    title: 'C 1076   97   QZEWNZYTOTC '
-    org: ''
-    sha: sha256:fe5daf20988dd4a30b3614af389875802ad9e035dcd3b296b52c7ee1f4e7ba24
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 1076 - 97  _QZEWNZYTOTC_.pdf
-    status: gap
-  - id: C 982 - 03  _QZK4MG__
-    title: 'C 982   03   QZK4MG  '
-    org: ''
-    sha: sha256:2d6a256da26aeef5cbf556deab7b7786b2cc59dd5ba11e43770eda104280f30f
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 982 - 03  _QZK4MG__.pdf
-    status: gap
-  - id: C 697 - 04  _QZY5NW__
-    title: 'C 697   04   QZY5NW  '
-    org: ''
-    sha: sha256:60a85d6ce50742352d1a9437811ff414da37b67b1616e754e947abfe59ecb073
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 697 - 04  _QZY5NW__.pdf
-    status: gap
-  - id: F 1640 - 03  _RJE2NDA_
-    title: 'F 1640   03   RJE2NDA '
-    org: ''
-    sha: sha256:a1aae601377c38f595e3ada67b7db247a16aba0cae63f1e3fb97cb7d5f2d34cd
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.02 Nuclear Energy (II), Solar, and Geothermal Energy F 1640 - 03  _RJE2NDA_.pdf
-    status: gap
-  - id: C 799 - 99  _QZC5OQ__
-    title: 'C 799   99   QZC5OQ  '
-    org: ''
-    sha: sha256:de6d6a76378bd7d69f28bdf3b2250d9889bad543247cfd8c7c029c78d0878e6b
-    discipline: regulatory
-    summary: ASTM 2004 PART III ASTM 2004 Volume 12.01 Nuclear Energy (I) C 799 - 99  _QZC5OQ__.pdf
-    status: gap
-  unlinked_doc_count: 508
+  unlinked_doc_count: 1
 - module: eia_us
   standards_count: 0
   standards: []
@@ -369,1234 +403,1310 @@ modules:
   standards: []
   unlinked_doc_count: 0
 - module: marine_safety
-  standards_count: 716
+  standards_count: 205
   standards:
-  - id: Marine Trasportations_0030-4
-    title: Marine Trasportations 0030 4
-    org: Unknown
-    sha: sha256:2e77bff697a93df6c9f2e2b58dd00306
+  - id: 2SM OTC12178
+    title: 2SM OTC12178
+    org: ''
+    sha: sha256:ad1fe110f4d5ee30cb3b900daedc417dc7d54d75c1e7e41db65ffedc27d20f2b
     discipline: marine
-    summary: 0000 O&G 0000 Codes & Standards Marine Trasportations_0030-4.pdf
+    summary: 'Contents of the paper, as
+
+      presented, have not been reviewed by the Offshore Technology Conference and are subject to
+
+      correction by the author(s). The material, as presented, does not necessarily refle'
     status: gap
-  - id: Norton, D.J., et al, 1981 - Wind Tunnel Tests of Inclined C
-    title: Norton, D.J., et al, 1981   Wind Tunnel Tests of Inclined C
-    org: Unknown
-    sha: sha256:d68e68ddf6b1ea9abb402ad7134b2d69
+  - id: API BUL 2INT-MET (2007) Interim Guidance on Hurricane Conditions in the Gulf of Mexico
+    title: this document was reproduced from an authorized download of an API standard on 06-Mar-200B. The authorized user
+      is permitted to print one single copy
+    org: API
+    sha: sha256:6c1102cec98a9ef011bcd759cf2d6f42ef22ca0df2aef0d136fc92c580a201d0
     discipline: marine
-    summary: Papers Offshore Technology Conference Norton, D.J., et al, 1981 - Wind Tunnel Tests of Inclined C.pdf
+    summary: this document was reproduced from an authorized download of an API standard on 06-Mar-200B. The authorized user
+      is permitted to print one single copy for personal reference use only.
     status: gap
-  - id: Vandiver, J.K., et al, 1987 - Hydrodynamic Damping on Flexi
-    title: Vandiver, J.K., et al, 1987   Hydrodynamic Damping on Flexi
-    org: Unknown
-    sha: sha256:371659c6cc98aaffb40fbd8ed92afe58
+  - id: API HURRICANE WRKSHP FLYR  2 of 3
+    title: API HURRICANE WRKSHP FLYR 2 of 3
+    org: ''
+    sha: sha256:69c0b6b333f7c64e28b7366d8edb42fc87c745a33c2c616e86109b0daf2d5d2e
     discipline: marine
-    summary: Papers Offshore Technology Conference Vandiver, J.K., et al, 1987 - Hydrodynamic Damping on Flexi.pdf
+    summary: ''
     status: gap
-  - id: 'Smith, C.S., et al, 1981 - Residual Strength and Stiffness '
-    title: 'Smith, C.S., et al, 1981   Residual Strength and Stiffness '
-    org: Unknown
-    sha: sha256:57dcfb9793e921dcb2a86680302ff198
+  - id: Appendix H - Mooring Design for VIM and Commentary July 28
+    title: Appendix H   Mooring Design for VIM and Commentary July 28
+    org: API
+    sha: sha256:6d905100af295f7eb247cfdf77a3da323703eb25557f9a7970a8664dd341c896
     discipline: marine
-    summary: Papers Offshore Technology Conference Smith, C.S., et al, 1981 - Residual Strength and Stiffness .pdf
+    summary: 'Document: Appendix_H_-_Mooring_Design_for_VIM_and_Commentary_July_28.pdf'
     status: gap
-  - id: Javanmardi, K., et al, 1995 - Auger TLP Well System Challen
-    title: Javanmardi, K., et al, 1995   Auger TLP Well System Challen
-    org: Unknown
-    sha: sha256:d664ae54614923b0c057b3e0ed1bcaa1
+  - id: 2SK_Commentary_25Jan07_RevA
+    title: API RP2SK Commentary - MODU Mooring Practice for Gulf of Mexico
+    org: API
+    sha: sha256:d15c95ce0dfd104dca7810d28922fa25f18bc2e3b2f879337c83ce288fea40ba
     discipline: marine
-    summary: Papers Offshore Technology Conference Javanmardi, K., et al, 1995 - Auger TLP Well System Challen.pdf
+    summary: API RP2SK Commentary - MODU Mooring Practice for Gulf of Mexico - marine document.
     status: gap
-  - id: Fox, S.A., et al, 1995 - Design Analysis and Full Scale Pro
-    title: Fox, S.A., et al, 1995   Design Analysis and Full Scale Pro
-    org: Unknown
-    sha: sha256:1624a42f6fb8688443029b0ff918d72d
+  - id: 30cfr250.901
+    title: 30 CFR Ch. II (7–1–06 Edition)
+    org: API
+    sha: sha256:bf92a3a8e442ce822e1666ab6f37df125bb741d20a60fd6c4a811ffb4d6a93d2
     discipline: marine
-    summary: Papers Offshore Technology Conference Fox, S.A., et al, 1995 - Design Analysis and Full Scale Pro.pdf
+    summary: 30 CFR Ch. II (7–1–06 Edition) Activity requiring application and approval Conditions for conducting the activity
     status: gap
-  - id: 'Larimore, D., et al, 1998 - Case History - First Diverless '
-    title: 'Larimore, D., et al, 1998   Case History   First Diverless '
-    org: Unknown
-    sha: sha256:c79bfea25b7dd5fa74e0135f055d7095
+  - id: OTC%202001 ABS FPSO Papers
+    title: OTC 2001 ABS FPSO Papers
+    org: API
+    sha: sha256:5f3982374971b182f3357bc59cdd90c2520f0d6ce87f4d067b082bb5d7d79bd3
     discipline: marine
-    summary: Papers Offshore Technology Conference Larimore, D., et al, 1998 - Case History - First Diverless .pdf
+    summary: Offshore marine standard covering floating structures, mooring systems, or offshore platform design. Addresses
+      environmental loading, station-keeping, and offshore structural response.
     status: gap
-  - id: Allen, D.W., 1995 - Vortex-InducedVibration Analysis of the
-    title: Allen, D.W., 1995   Vortex InducedVibration Analysis of the
-    org: Unknown
-    sha: sha256:5c6714e3429c6b23a116e22fc44ee474
+  - id: Risers BUL 2J 1977
+    title: Risers BUL 2J 1977
+    org: ''
+    sha: sha256:f56b9f4b9a69dcef4fe0850ccd4756a1dd9143fb67b38760a314f3926ffe0269
     discipline: marine
-    summary: Papers Offshore Technology Conference Allen, D.W., 1995 - Vortex-InducedVibration Analysis of the.pdf
+    summary: ''
     status: gap
-  - id: Brooks, I.H., 1987 - A Pragmatic Approach to Vortex-Induced
-    title: Brooks, I.H., 1987   A Pragmatic Approach to Vortex Induced
-    org: Unknown
-    sha: sha256:3c6fc5a53bc0b4f88f047e8f8199d008
+  - id: 2SK_Add 2008
+    title: 'Date of Issue: May 2008'
+    org: API
+    sha: sha256:d6026ab0e38ebb6eeedd0231cc60ce34310281a7ca41b5936de54d503f679a17
     discipline: marine
-    summary: Papers Offshore Technology Conference Brooks, I.H., 1987 - A Pragmatic Approach to Vortex-Induced.pdf
+    summary: 'Date of Issue: May 2008 Affected Publication: API Recommended Practice 2SK, Design and Analysis of Stationkeeping
+      Systems for Floating Structures, Third Edition, October 2005'
     status: gap
-  - id: Carminati, J.R., et al, 1999 - Ursa TLP Well System
-    title: Carminati, J.R., et al, 1999   Ursa TLP Well System
-    org: Unknown
-    sha: sha256:f406cb7a0706a7351cc83134664461d5
+  - id: ABS Guide Feb94
+    title: ABS Guide Feb94
+    org: ''
+    sha: sha256:7a2319d31f14d5d4b6e05fa61a2ce583009ffe60a13769a88b56a71ecdb73b57
     discipline: marine
-    summary: Papers Offshore Technology Conference Carminati, J.R., et al, 1999 - Ursa TLP Well System.pdf
+    summary: ''
     status: gap
-  - id: Barton, D.R., et al, 1999 - Genesis Project - Development W
-    title: Barton, D.R., et al, 1999   Genesis Project   Development W
-    org: Unknown
-    sha: sha256:6c85f6850043818618581f23d02623fb
+  - id: 82412394-AD-API-Standards-Review-Kwan-DTCEL
+    title: MODU Mooring Design and
+    org: API
+    sha: sha256:05949b60bc96b99f6753fd7c56bb86d8c55e945e7f1d2fcccfc6250e4c0d58b6
     discipline: marine
-    summary: Papers Offshore Technology Conference Barton, D.R., et al, 1999 - Genesis Project - Development W.pdf
+    summary: MODU Mooring Design and - marine document.
     status: gap
-  - id: OTC1997-8494 Code Conflicts
-    title: OTC1997 8494 Code Conflicts
-    org: OnePetro
-    sha: sha256:999c55e1e7ad138ebafedfdb5c4b19d4
+  - id: API SPEC 2H 8th Ed (1999) Carbon Manganese Steel Plate for Offshore Tubular Joints
+    title: API SPEC 2H 8th Ed (1999) Carbon Manganese Steel Plate for Offshore Tubular Joints
+    org: API
+    sha: sha256:d63023754dc31793d75264d0899451376c1156da80cb8976e9207b5c83bfdb40
     discipline: marine
-    summary: Papers Offshore Technology Conference OTC1997-8494 Code Conflicts.pdf
+    summary: Carbon Manganese Steel Plate for Offshore Platform Tubular Joints
     status: gap
-  - id: Sweeney, T., et al, 1991 - Behaviour of 15ksi Subsea Wellhe
-    title: Sweeney, T., et al, 1991   Behaviour of 15ksi Subsea Wellhe
-    org: Unknown
-    sha: sha256:6774c6501ca730c75bd85fd890c9e9ef
+  - id: API RP2I In-Service Inspection of Mooring Hardware
+    title: API RP2I In Service Inspection of Mooring Hardware
+    org: API
+    sha: sha256:4f25703e87e95685ed5b214f6fad920da327e7b9a5cad8ea67c20162f9058219
     discipline: marine
-    summary: Papers Offshore Technology Conference Sweeney, T., et al, 1991 - Behaviour of 15ksi Subsea Wellhe.pdf
+    summary: ''
     status: gap
-  - id: Berner, P., et al, 1997 - Neptune Project - Production Rise
-    title: Berner, P., et al, 1997   Neptune Project   Production Rise
-    org: Unknown
-    sha: sha256:21361dec9f8a29d1b9b6b94a991de488
+  - id: API Spec 12D (1994)
+    title: Specification for Field Welded
+    org: API
+    sha: sha256:0418e63288a302359777a061f9d725194a6cd8f1d2ae45162065677185e43989
     discipline: marine
-    summary: Papers Offshore Technology Conference Berner, P., et al, 1997 - Neptune Project - Production Rise.pdf
+    summary: API document covering offshore structures, mooring systems, or hydrodynamic loading. Specification for Field
+      Welded.
     status: gap
-  - id: Stahl, OTC 3902, Design Methodology for Offshore Platform C
-    title: Stahl, OTC 3902, Design Methodology for Offshore Platform C
-    org: OnePetro
-    sha: sha256:e3da5d6c36d078d6ab75ce97968556ae
+  - id: API SPEC 16F 1st Ed (2004) Marine Drilling Riser Equipment
+    title: API SPEC 16F 1st Ed (2004) Marine Drilling Riser Equipment.pdf
+    org: ''
+    sha: sha256:1848988f48786e74e7f90891c3d49e00ee40dd6d1ddbefabdb04cca48a7faae2
     discipline: marine
-    summary: Papers Offshore Technology Conference Stahl, OTC 3902, Design Methodology for Offshore Platform C.pdf
+    summary: Specification for Marine Drilling Riser Equipment API SPECIFICATION 16F FIRST EDITION, AUGUST 2004 American Petroleum
+      Institute Helping You Get 11Ie Job Done Right~ ~rlgh l AmIIrtcan Polmklum ~.tituta
     status: gap
-  - id: Gardner, T.N., et al, 1982 - Deepwater Drilling in High Cur
-    title: Gardner, T.N., et al, 1982   Deepwater Drilling in High Cur
-    org: Unknown
-    sha: sha256:423dc902cf91ffba0332d1064c7438ca
+  - id: API RP 2I 3rd Ed (2008) In-service Inspection of Mooring Hardware for Floating Structures
+    title: API RP 2I 3rd Ed (2008) In service Inspection of Mooring Hardware for Floating Structures
+    org: ''
+    sha: sha256:1b70daba2ee14f9ecab60c85e78691b2ee8844bdce5a0127200de98458674146
     discipline: marine
-    summary: Papers Offshore Technology Conference Gardner, T.N., et al, 1982 - Deepwater Drilling in High Cur.pdf
+    summary: In-service Inspection of Mooring Hardware for Floating Structures API RECOMMENDED PRACTICE 21
     status: gap
-  - id: Allen, D.W., 1998 - Vortex-Induced Vibration of Deepwater Ris
-    title: Allen, D.W., 1998   Vortex Induced Vibration of Deepwater Ris
-    org: Unknown
-    sha: sha256:c090fbeab76fcebe87ac05cb61af5256
+  - id: API SPEC 17D 2nd Ed (2011) Design and Operation of Subsea Wellhead and Tree Equipment
+    title: API SPEC 17D 2nd Ed (2011) Design and Operation of Subsea Wellhead and Tree Equipment.pdf
+    org: ''
+    sha: sha256:a63444a2845ec0ca8c535f108d2bc10558279550c3a51cd565892fbf207a979b
     discipline: marine
-    summary: Papers Offshore Technology Conference Allen, D.W., 1998 - Vortex-Induced Vibration of Deepwater Ris.pdf
+    summary: 'Design and Operation of Subsea Production Systems-Subsea Wellhead and Tree Equipment ANSI/API SPECIFICATION
+      170 SECOND EDITION, MAY 2011 EFFECTIVE DATE: NOVEMBER 1, 2011 ERRATA, SEPTEMBER 2011 ISO 136'
     status: gap
-  - id: Kim, Y.Y., et al, 1975 - Analysis of Simultaneous Wave Forc
-    title: Kim, Y.Y., et al, 1975   Analysis of Simultaneous Wave Forc
-    org: Unknown
-    sha: sha256:cb35632faa24d6eca6f773160f8c6d9f
+  - id: API BUL 2HINS, 1st Ed (2009) Guidance for Post-hurricane Structural Inspection of Offshore Structures
+    title: API BUL 2HINS, 1st Ed (2009) Guidance for Post hurricane Structural Inspection of Offshore Structure
+    org: ''
+    sha: sha256:c08c3ba218c92ea7d1fe7db47bb33c3b59e53ff2de7b7612f044ffb991566fe8
     discipline: marine
-    summary: Papers Offshore Technology Conference Kim, Y.Y., et al, 1975 - Analysis of Simultaneous Wave Forc.pdf
+    summary: Guidance for Post-hurricane Structural Inspection of FIRST EDITION, MAY 2009
     status: gap
-  - id: Jacobsen, V., et al, 1996 - Vibration Suppression Devices f
-    title: Jacobsen, V., et al, 1996   Vibration Suppression Devices f
-    org: Unknown
-    sha: sha256:cac8640d9b44adc6a3c929baff776e47
+  - id: API RP 2Z 3rd Ed (1998) Preproduction Qualification for Steel Plates for Offshore Structures
+    title: API RP 2Z 3rd Ed (1998) Preproduction Qualification for Steel Plates for Offshore Structures.pdf
+    org: ''
+    sha: sha256:a0745c1408d5b80743abeb5abfea4d6e5b831dd8e7839fdf5e191e354ec3fe28
     discipline: marine
-    summary: Papers Offshore Technology Conference Jacobsen, V., et al, 1996 - Vibration Suppression Devices f.pdf
+    summary: Recommended Practice for Preproduction Qualification for Steel Plates for Offshore Structures API RECOMMENDED
+      PRACTICE 2Z THIRD EDITION, AUGUST 1998 Recommended Practice for Preproduction Qualificatio
     status: gap
-  - id: D'Souza, R., et al, 2002 - The Next Generation Production D
-    title: D'Souza, R., et al, 2002   The Next Generation Production D
-    org: Unknown
-    sha: sha256:7183fef2d2f836b0cf0b72f1399bdb7c
+  - id: 2SK_Add
+    title: API RP 2SK 3rd Ed Addendum 1 (2007) Design and Analysis of Stationkeeping Systems for Floating Structures
+    org: ''
+    sha: sha256:63ce67c3267a7d043c7b758f13f6a66d7e0db81b9329568f532ed67fc248b799
     discipline: marine
-    summary: Papers Offshore Technology Conference D'Souza, R., et al, 2002 - The Next Generation Production D.pdf
+    summary: 'Affected Publication: API Recommended Practice 2SK, Design and Analysis of Stationkeeping Systems for Floating
+      Structures, Third Edition, October 2005 Replace the Foreword and Contents with the attach'
     status: gap
-  - id: Vandiver, J.K., 1985 - The Prediction of Lockin Vibration o
-    title: Vandiver, J.K., 1985   The Prediction of Lockin Vibration o
-    org: Unknown
-    sha: sha256:2051388dc999aed26e797522aaae4b92
+  - id: API RP 1111 Errata (2011) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
+      State Design)
+    title: API RP 1111 Errata (2011) Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit
+      State Design).pdf
+    org: ''
+    sha: sha256:8eca1f7f37d7a2e71a190f8ecfd95b5b59e86e4aaa81c843d1b331df3506f2a0
     discipline: marine
-    summary: Papers Offshore Technology Conference Vandiver, J.K., 1985 - The Prediction of Lockin Vibration o.pdf
+    summary: 'Date of Issue: May 2011 Affected Publication: API Recommended Practice 1111, Recommended Practice for the Design,
+      Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limited St'
     status: gap
-  - id: Denison, E.B., et al, 1997 - Mars TLP Drilling and Producti
-    title: Denison, E.B., et al, 1997   Mars TLP Drilling and Producti
-    org: ISO
-    sha: sha256:66016e1e78f525dd904ba1448d306791
+  - id: API RP 2T
+    title: API RP 2T 1st Ed (1987) Planning, Designing, and Constructing Tension Leg Platforms
+    org: API
+    sha: sha256:7bb761bf3ecf457fd26f46beedbf79f1891693baa53ecabb72d23c355f053aef
     discipline: marine
-    summary: Papers Offshore Technology Conference Denison, E.B., et al, 1997 - Mars TLP Drilling and Producti.pdf
+    summary: ''
     status: gap
-  - id: Britton, J.S., et al, 1987 - Improving Wellhead Performance
-    title: Britton, J.S., et al, 1987   Improving Wellhead Performance
-    org: Unknown
-    sha: sha256:730dfe29990888da18057cb9eab4433b
+  - id: API RP 2A WSD Offshore Platforms (21th 2000 242p)
+    title: API RP 2A WSD Offshore Platforms (21th 2000 242p)
+    org: API
+    sha: sha256:81beca39915192ce788164d473cb8d6f16d3a264d2ce4a7e55f8b022a65c9b7b
     discipline: marine
-    summary: Papers Offshore Technology Conference Britton, J.S., et al, 1987 - Improving Wellhead Performance.pdf
+    summary: Planning, Designing and Constructing Fixed Offshore Platforms-Working
     status: gap
-  - id: Miller, J.E., et al, 1985 - Influence of Mud Column dynamic
-    title: Miller, J.E., et al, 1985   Influence of Mud Column dynamic
-    org: MIL
-    sha: sha256:8b07d80c473ffb6ae86dc5f504957546
+  - id: API RP 2A-WSD 21st Ed Errata & Supplement 2&3 (2007) Recommended Practice for Planning, Designing and Constructing
+      Fixed Offshore Platforms-Working Stress Design
+    title: API RP 2A-WSD 21st Ed Errata & Supplement 2&3 (2007) Recommended Practice for Planning, Designing and Constructing
+      Fixed Offshore Platforms-Working Stress Design.pdf
+    org: ''
+    sha: sha256:ce8dab060625d001ffc3962d906cb0962abfcfe69b7b13f8a57c0fe72f667c02
     discipline: marine
-    summary: Papers Offshore Technology Conference Miller, J.E., et al, 1985 - Influence of Mud Column dynamic.pdf
+    summary: 'Date of Issue: October 2007 Affected Publication: API Recommended Practice 2A-WSD, Recommended Practice for
+      Planning, Designing and Constructing Fixed Offshore Platforms—Working Stress Design, Twenty-'
+    status: gap
+  - id: API RP 2T 3rd Ed (2010) Planning Designing and Constructing Tension Leg Platforms
+    title: Planning, Designing, and
+    org: API
+    sha: sha256:bc2f3131092cb40ee68d12a08b5fb5ef6aa6168343ef44c440a6e28dce0d1764
+    discipline: marine
+    summary: API document covering offshore structures, mooring systems, or hydrodynamic loading. Planning, Designing, and.
+    status: gap
+  - id: API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, Manufacture, Installation and Maintenance of Synthetic Fiber Ropes
+      for Offshore Mooring
+    title: Recommended Practice for Design,
+    org: API
+    sha: sha256:b6557108c1e34428389c9b988005ed863ca4f5ecdd3bfb743c71914d616ad0bf
+    discipline: marine
+    summary: Recommended Practice for Design, Manufacture, Installation, and Maintenance of Synthetic Fiber Ropes for Offshore
+      Mooring API RECOMMENDED PRACTICE 2SM FIRST EDITION, MARCH 2001 ADDENDUM, MAY 2007 1]?
+    status: gap
+  - id: API RP 2T 2nd Ed (1997) Planning, Designing, and Constructing Tension Leg Platforms
+    title: API RP 2T 2nd Ed (1997) Planning, Designing, and Constructing Tension Leg Platforms
+    org: API
+    sha: sha256:38670fa3c4fe934a4bb37defa4f64366d328964e8ad39a199bef62afe78dba0c
+    discipline: marine
+    summary: Offshore marine standard covering floating structures, mooring systems, or offshore platform design. Addresses
+      environmental loading, station-keeping, and offshore structural response.
+    status: gap
+  - id: API RP 2RD 1st Ed. (1998) Design of Risers for FPSs and TLPs
+    title: Reproduced By GLOBAL
+    org: API
+    sha: sha256:0d0a8a4180c48e204952b8c5da176146f3e1fc2d6c0cac9dbe72a284b2ea6c09
+    discipline: marine
+    summary: With respect to particular circumstances, local, state, and federal laws and regulations should be reviewed.
+      API is not undertaking to meet the duties of employers, manufacturers, or suppliers to warn
+    status: gap
+  - id: API RP 575 (1995)
+    title: Pressure-Relieving Devices
+    org: API
+    sha: sha256:18ddf8d69a16ef215d0bab78dc51d86ed81de98c84375789fa3d26aab65ac4d0
+    discipline: marine
+    summary: API document covering offshore structures, mooring systems, or hydrodynamic loading. Pressure-Relieving Devices.
+    status: gap
+  - id: API RP 2A-WSD 3rd Ed (1997) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms-Working
+      Stress Design
+    title: Recommended Practice for
+    org: API
+    sha: sha256:fd7a838c6a31871801951e23639cfbf6295e0018b3f6122d93f6b5b9f07fc84e
+    discipline: marine
+    summary: API document covering offshore structures, mooring systems, or hydrodynamic loading. Recommended Practice for.
+    status: gap
+  - id: API RP 2A-WSD 21st Ed (2000) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms-Working
+      Stress Design
+    title: API RP 2A-WSD 21st Ed (2000) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms-Working
+      Stress Design.pdf
+    org: ''
+    sha: sha256:c2e0a0395bd70e5807f307795a6e53477f124acf0ebc3ea4ae2951df4d6d8fc9
+    discipline: marine
+    summary: 'Document ''API_RP_2A-WSD_21st_Ed_(2000)_Recommended_Practice_for_Planning,_Designing_and_Constructing_Fixed_Offshore_Platforms-Working_Stress_Design''
+      classified as marine. Full text extraction was not '
+    status: gap
+  - id: API RP 2SM-2001
+    title: API RP 2SM 2001
+    org: ''
+    sha: sha256:5a8efea47a04e640b7992829631962ded6bc691c2a95e4b5260afc01d24b37d2
+    discipline: marine
+    summary: Recommended Practice for Design, Manufacture, Installation, and Maintenance of Synthetic Fiber
+    status: gap
+  - id: API RP 14H (1994)
+    title: API RP 14H (1994).pdf
+    org: ''
+    sha: sha256:3847a747057fbb083465b0202ea5b60506c933d44a8a64d81fd0a59caa8beccb
+    discipline: marine
+    summary: 'Date of Issue: September 23,1996 Affected Publication: API Recommended Practice 14H,Recommended Practicefor
+      Installation, Maintenance, and Repair of Surface Safety Valves and Undenvater Safety Valves,'
+    status: gap
+  - id: API RP 571 1st Ed (2003) Damage Mechanisms Affecting Fixed Equipment in the Refining Industry
+    title: API RP 571 1st Ed (2003) Damage Mechanisms Affecting Fixed Equipment in the Refining Industry.pdf
+    org: ''
+    sha: sha256:4d6185ead7279213f8e72eb15accfb697ee162683e89893d5839a03e765e0e75
+    discipline: marine
+    summary: Damage Mechanisms Affecting Fixed Equipment in the Refining Industry RECOMMENDED PRACTICE 571 FIRST EDITION,
+      DECEMBER 2003 lJ? American Petroleum Institute Helping You Get The Job Done Riglrt~M Copyri
+    status: gap
+  - id: Api Std 611 General-Purpose Steam Turbines For Petroleum, Chemical, And Gas Industry Services
+    title: General-Purpose Steam Turbines
+    org: API
+    sha: sha256:d0aaa93d25fa1707360cd663f158a60cc08122d0edb14e356ddfcd589827f6ee
+    discipline: marine
+    summary: API document covering offshore structures, mooring systems, or hydrodynamic loading. General-Purpose Steam Turbines.
+    status: gap
+  - id: API RP 14J (2001)
+    title: Recommended Practice for
+    org: API
+    sha: sha256:b56a3411e7a245d82b5d49d443bd355e8f2446b3a2da3209772bd388c0777fda
+    discipline: marine
+    summary: Recommended Practice for Design and Hazards Analysis for Offshore Production Facilities
+    status: gap
+  - id: API-RP 2A LFRD 1st Ed. Supplement (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore
+      Platforms - Load and Resistance Factor Design
+    title: API-RP 2A LFRD 1st Ed. Supplement (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore
+      Platforms - Load and Resistance Factor Design.pdf
+    org: ''
+    sha: sha256:751dc2571c38e94c2a9fec2cd681a4671c5d0917016edec434ab8aa099143c21
+    discipline: marine
+    summary: '3 * Supplement 1 February 1997 ~ o· CD :::J U> CD n. o EFFECTIVE DATE: April 1, 1997 <CD :::J ~ (f) :T o ~ o
+      :::J o-...j Recommended Practice for Planning, Designing, and Constructing Fixed Offshore P'
+    status: gap
+  - id: API RP 520 Part II (1994)
+    title: Sizing, Selection, and Installation
+    org: API
+    sha: sha256:22ba0ec9cb7138b00b229827e4c8601817e787b2f794ab614f5902cae6f81d71
+    discipline: marine
+    summary: API document covering offshore structures, mooring systems, or hydrodynamic loading. Sizing, Selection, and Installation.
+    status: gap
+  - id: API RP 2RD 1st Ed with errata (2009) Design of Risers for FPSs and TLPs
+    title: RECOMMENDED PRACTICE 2RD
+    org: API
+    sha: sha256:28c45088878cf690155f2dcd566ea824e131bb47211535c6c1773bbf0dea1158
+    discipline: marine
+    summary: RECOMMENDED PRACTICE 2RD FIRST EDITION, JUNE 1998 Copyright American Petroleum Institute
+    status: gap
+  - id: API RP 2SK
+    title: Design and Analysis of
+    org: API
+    sha: sha256:ccd9219a5ba46d26c82b875a62609b9e98aa06024136313f89f4d5330c3420aa
+    discipline: marine
+    summary: Offshore marine standard covering floating structures, mooring systems, or offshore platform design. Addresses
+      environmental loading, station-keeping, and offshore structural response.
+    status: gap
+  - id: API RP 14C-March 2001 Basic Surface Safety Systems for Offshore Platforms
+    title: Recommended Practice for
+    org: API
+    sha: sha256:f1f9f546da7c54fa165cc8b91b9974e3363bd5635ebbd25ee00d15f1bcf55b0e
+    discipline: marine
+    summary: Recommended Practice for Analysis, Design, Installation, and Testing of Basic Surface Safety
+    status: gap
+  - id: API RP16Q Risers
+    title: API RP16Q Risers
+    org: API
+    sha: sha256:f371c5979e7841236189c6e528ffa9133ee0e116aebe8dc4a495fcc1af382986
+    discipline: marine
+    summary: ''
+    status: gap
+  - id: API-RP 2A LFRD 1st Ed. (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms
+      - Load and Resistance Factor Design
+    title: API-RP 2A LFRD 1st Ed. (1993) Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms
+      - Load and Resistance Factor Design.pdf
+    org: ''
+    sha: sha256:75de31e8d6c64aab69cbe20409dafdb508fe421ff7932493e1b2060d5144c9b7
+    discipline: marine
+    summary: 'o ''<D ::> Recommended Practice for Planning, Designing and Constructing Fixed Offshore Platforms - Load and
+      Resistance Factor Design ~ (j) :::r o ;::l. o ::> o --l 6<D \'' IV o ~ IV Q ~;r ::> ''"<D<D ~ '
+    status: gap
+  - id: API BULL 2INT-MET
+    title: API BULL 2INT MET
+    org: ''
+    sha: sha256:3ae4440dafd1df79936ca3fecfc5c5f271c5b236485d934069ba1850d75121c6
+    discipline: marine
+    summary: ''
+    status: gap
+  - id: API STD 2RD 2nd Ed (2013) Dynamic Risers for Floating Production Systems
+    title: API STD 2RD 2nd Ed (2013) Dynamic Risers for Floating Production Systems
+    org: API
+    sha: sha256:1f2bb902db985095378d2fcaac2782c6efb3e081dbd06ab568ab3d02f901c417
+    discipline: marine
+    summary: Nothing contained in any API publication is to be construed as granting any right, by implication or otherwise,
+      for the
+    status: gap
+  - id: API 14E Design and Installation of Offshore Production Platform Piping
+    title: API 14E Design and Installation of Offshore Production Platform Piping
+    org: API
+    sha: sha256:c4a9bcc1dadfe1e35102ae6e6700625bce04a50fef38904593b1d8ab706fbd66
+    discipline: marine
+    summary: Design and Installationof Offshore Production Platform Piping Systems
+    status: gap
+  - id: API 2T - Recom Pract for Plng_Dsgn_etc 3
+    title: API 2T   Recom Pract for Plng Dsgn etc 3
+    org: ''
+    sha: sha256:7d5398af7b6f91730148131e4639c09629f384db942716c2ce522311b1ad90d4
+    discipline: marine
+    summary: ''
+    status: gap
+  - id: 'API 2C Offshore Cranes 1995 '
+    title: COPYRIGHT American Petroleum Institute
+    org: API
+    sha: sha256:53cb6e38fd4d193317769813ed8875814d8a1bdd56391dea5481d7fe38907dfa
+    discipline: marine
+    summary: API document covering offshore structures, mooring systems, or hydrodynamic loading. COPYRIGHT American Petroleum
+      Institute.
+    status: gap
+  - id: API BUL2V, 2nd Ed (2000) Design of Flat Plate Structures
+    title: Design of Flat Plate Structures API BULLETIN 2V (BULL 2V)
+    org: API
+    sha: sha256:d827f88b6ea3cb97ce3a81f5c47325ab04e251c210c3bf7194b9f5358534cab2
+    discipline: marine
+    summary: Design of Flat Plate Structures. Technical document covering offshore marine structures and hydrodynamics.
     status: gap
   - id: Pawsey, S.F., et al, 1983 - Improved Wave Kinematics From W
     title: Pawsey, S.F., et al, 1983   Improved Wave Kinematics From W
     org: NEMA
-    sha: sha256:31b82546f9aa07e62bebf6ceec038da4
+    sha: sha256:c2da0581088c95089e8676e8bb876f91ec4263112d12424c05a1d29ba6ad542b
     discipline: marine
-    summary: Papers Offshore Technology Conference Pawsey, S.F., et al, 1983 - Improved Wave Kinematics From W.pdf
+    summary: improved Wave Kinematics From Wave Staff Arrays by SF. Pawsey, PMB Systems Engineering Inc., and F.J. Della Stritto,
+      Mobil Research
     status: gap
-  - id: Delgado, J.H., et al, 1990 - Jolliet TLWP Well Systems
-    title: Delgado, J.H., et al, 1990   Jolliet TLWP Well Systems
-    org: Unknown
-    sha: sha256:e93d16d69fb8585e3b63ff4573d4cd33
-    discipline: marine
-    summary: Papers Offshore Technology Conference Delgado, J.H., et al, 1990 - Jolliet TLWP Well Systems.pdf
-    status: gap
-  - id: Peterson, W.H., et al, 1994 - Auger TLP Well System
-    title: Peterson, W.H., et al, 1994   Auger TLP Well System
-    org: Unknown
-    sha: sha256:d90fa37d3750a920c285a16d32919289
-    discipline: marine
-    summary: Papers Offshore Technology Conference Peterson, W.H., et al, 1994 - Auger TLP Well System.pdf
-    status: gap
-  - id: Rogers, A.C., 1983 - An Assessment of Vortex Suppression De
-    title: Rogers, A.C., 1983   An Assessment of Vortex Suppression De
-    org: Unknown
-    sha: sha256:4fbdf645d9d6bd7c4d695bb54992d645
-    discipline: marine
-    summary: Papers Offshore Technology Conference Rogers, A.C., 1983 - An Assessment of Vortex Suppression De.pdf
-    status: gap
-  - id: Vandiver, J.K., 1998 - Research Challenges in the Vortex-In
-    title: Vandiver, J.K., 1998   Research Challenges in the Vortex In
-    org: Unknown
-    sha: sha256:6bd1acb2751b7262914195be253df420
-    discipline: marine
-    summary: Papers Offshore Technology Conference Vandiver, J.K., 1998 - Research Challenges in the Vortex-In.pdf
-    status: gap
-  - id: Godfrey, D.G., et al, 1997 - The Mars Project Overview
-    title: Godfrey, D.G., et al, 1997   The Mars Project Overview
-    org: Unknown
-    sha: sha256:eaeb3d2b852e45aef848468448b156e7
-    discipline: marine
-    summary: Papers Offshore Technology Conference Godfrey, D.G., et al, 1997 - The Mars Project Overview.pdf
-    status: gap
-  - id: OTC 5468
-    title: OTC 5468
-    org: OnePetro
-    sha: sha256:6e4841e3da574e3f653f416fb9c0d5b3
-    discipline: marine
-    summary: Papers Offshore Technology Conference OTC 5468.pdf
-    status: gap
-  - id: otc1
-    title: otc1
-    org: OnePetro
-    sha: sha256:1f81fa8b57805fe5634c4a4359360cac
-    discipline: marine
-    summary: Papers Offshore Technology Conference otc1.PDF
-    status: gap
-  - id: Ezraty, R., et al, 1977 - Comparison with Observation at Se
-    title: Ezraty, R., et al, 1977   Comparison with Observation at Se
-    org: ISO
-    sha: sha256:3875e8b6646f5a8b482937d9529ddfc7
-    discipline: marine
-    summary: Papers Offshore Technology Conference Ezraty, R., et al, 1977 - Comparison with Observation at Se.pdf
-    status: gap
-  - id: Edwards, R.Y., et al, 1999 - Load Monitoring at the Touchdo
-    title: Edwards, R.Y., et al, 1999   Load Monitoring at the Touchdo
-    org: Unknown
-    sha: sha256:59e47191420297b517644f997b0707d5
-    discipline: marine
-    summary: Papers Offshore Technology Conference Edwards, R.Y., et al, 1999 - Load Monitoring at the Touchdo.pdf
-    status: gap
-  - id: 'Ellinas, C.P., et al, 1983 - Effects of Damage on Offshore '
-    title: 'Ellinas, C.P., et al, 1983   Effects of Damage on Offshore '
-    org: Unknown
-    sha: sha256:afc34cdb5af4d8843fc5112525f283f4
-    discipline: marine
-    summary: Papers Reference documents Ellinas, C.P., et al, 1983 - Effects of Damage on Offshore .pdf
-    status: gap
-  - id: A508
-    title: ASTM A508 (1999) Std Spec for Quenched and Tempered Vacumn Treated Carbon and Alloy Steel Forgings for Pressure
-      Vessels
-    org: ASTM
-    sha: sha256:def8058990ba94f333f178bf53e86f93
-    discipline: marine
-    summary: ASTM ASTM A508 ASTM A508 (1999) Std Spec for Quenched and Tempered Vacumn-Treated Carbon and Alloy Steel Forgings
-      for Pressure Vessels.pdf
-    status: gap
-  - id: A859
-    title: ASTM A859 (1999) Std Spec for Age Hardening Alloy Steel Forgings for Pressure Vessel Components
-    org: ASTM
-    sha: sha256:6ac0d2f1cdbffd40835f7f6f1385aaf3
-    discipline: marine
-    summary: ASTM ASTM A859 ASTM A859 (1999) Std Spec for Age-Hardening Alloy Steel Forgings for Pressure Vessel Components.pdf
-    status: gap
-  - id: F 1322 - 90 R04  _RJEZMJI_
-    title: 'F 1322   90 R04   RJEZMJI '
-    org: ASTM
-    sha: sha256:fb92b4b8d3faf313c31b360e0a952617
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 1322 - 90 R04  _RJEZMJI_.pdf
-    status: gap
-  - id: F 824 - 93 R99  _RJGYNA__
-    title: 'F 824   93 R99   RJGYNA  '
-    org: ASTM
-    sha: sha256:eb25f8e03e0a90ff314016e7739dff97
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 824 - 93 R99  _RJGYNA__.pdf
-    status: gap
-  - id: F 2017 - 00  _RJIWMTC_
-    title: 'F 2017   00   RJIWMTC '
-    org: ASTM
-    sha: sha256:b2d0a39977e14392a953b9be5653ac52
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 2017 - 00  _RJIWMTC_.pdf
-    status: gap
-  - id: F 1338 - 91 R02  _RJEZMZG_
-    title: 'F 1338   91 R02   RJEZMZG '
-    org: ASTM
-    sha: sha256:3877ad5bb222fa51b04cf9459d7216ca
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 1338 - 91 R02  _RJEZMZG_.pdf
-    status: gap
-  - id: F 1085 - 03  _RJEWODU_
-    title: 'F 1085   03   RJEWODU '
-    org: ASTM
-    sha: sha256:5c5b8ca2518122241ad3c6d135f28867
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 1085 - 03  _RJEWODU_.pdf
-    status: gap
-  - id: F 956 - 91 R01  _RJK1NG__
-    title: 'F 956   91 R01   RJK1NG  '
-    org: ASTM
-    sha: sha256:f9e4cf7673fb9f0d8da6633601e9ca51
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 956 - 91 R01  _RJK1NG__.pdf
-    status: gap
-  - id: F 1201 - 88 R98  _RJEYMDE_
-    title: 'F 1201   88 R98   RJEYMDE '
-    org: ASTM
-    sha: sha256:c620fb75b8220fd62a004795b1332bc1
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 1201 - 88 R98  _RJEYMDE_.pdf
-    status: gap
-  - id: F 2016 - 00  _RJIWMTY_
-    title: 'F 2016   00   RJIWMTY '
-    org: ASTM
-    sha: sha256:6c03fa864cbc4205ae395f2e5714123c
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 2016 - 00  _RJIWMTY_.pdf
-    status: gap
-  - id: F 683 - 99  _RJY4MY05OQ__
-    title: 'F 683   99   RJY4MY05OQ  '
-    org: ASTM
-    sha: sha256:2d7f8a438b93a9151d37e959106f73b7
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 683 - 99  _RJY4MY05OQ__.pdf
-    status: gap
-  - id: F 1173 - 01  _RJEXNZM_
-    title: 'F 1173   01   RJEXNZM '
-    org: ASTM
-    sha: sha256:b4ec5cdcbd66b085e0f17032b740e3e5
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 1173 - 01  _RJEXNZM_.pdf
-    status: gap
-  - id: F 1455 - 92  _RJE0NTUTOTI_
-    title: 'F 1455   92   RJE0NTUTOTI '
-    org: ASTM
-    sha: sha256:7ab13cc6fdac45a47331d121f9c06578
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 1455 - 92  _RJE0NTUTOTI_.pdf
-    status: gap
-  - id: F 1020 - 86 R01  _RJEWMJA_
-    title: 'F 1020   86 R01   RJEWMJA '
-    org: ASTM
-    sha: sha256:7ef1cd904cdea9c833bb03571b04caf5
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 1020 - 86 R01  _RJEWMJA_.pdf
-    status: gap
-  - id: F 1071 - 94 R99  _RJEWNZE_
-    title: 'F 1071   94 R99   RJEWNZE '
-    org: ASTM
-    sha: sha256:713a28b986ec26ff89f532e4d5f0e479
-    discipline: marine
-    summary: ASTM 2004 PART IA ASTM 2004 Volume 01.07 Ships and Marine Technology F 1071 - 94 R99  _RJEWNZE_.pdf
-    status: gap
-  unlinked_doc_count: 394
+  unlinked_doc_count: 0
 - module: hse
-  standards_count: 1565
+  standards_count: 705
   standards:
-  - id: '75'
-    title: API RP 75 3rd Ed (R2008) Development of a Safety and Environmental Management Program for Offshore Operations and
-      Facili
+  - id: API RP 75 1999 Implementation Status Report
+    title: API RP 75 1999 Implementation Status Report
     org: API
-    sha: sha256:0e6840644c61b9cb637917ae12e38703
-    discipline: marine
-    summary: API Recommended Practice API RP 75 API RP 75 3rd Ed (R2008) Development of a Safety and Environmental Management
-      Program for Offshore Operations and Facilities.pdf
-    status: gap
-  - id: API_RP_750 1990 Management of Process Hazards
-    title: API RP 750 1990 Management of Process Hazards
-    org: API
-    sha: sha256:36bfe145eb24c4a57349626469d3fa65
-    discipline: structural
-    summary: API STA API_RP_750 1990 Management of Process Hazards.pdf
-    status: gap
-  - id: API RP 75 2nd Ed 1998 Safetey and Environmental Management Plan
-    title: API RP 75 2nd Ed 1998 Safetey and Environmental Management Plan
-    org: ''
-    sha: sha256:6086b40aa0da54834bba0c466234d7a48e182769b706efcae0fc8156e100cffa
-    discipline: other
-    summary: API STA API RP 75 2nd Ed 1998 Safetey and Environmental Management Plan.pdf
+    sha: sha256:87a30dfd7770c919092720b4e0e92be975199f2ff0fb0089c5d379d954ce4f2d
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
   - id: API RP 75 3rd Ed (R2008) Development of a Safety and Environmental Management Program for Offshore Operations and
       Facilities
     title: API RP 75 3rd Ed (R2008) Development of a Safety and Environmental Management Program for Offshore Operations and
-      Facili
-    org: ''
+      Facilities
+    org: API
     sha: sha256:79f81643e3f6fd85f18725a52cbb7283ca3e7ead719e5e82e5e6e93d8774144c
     discipline: marine
-    summary: API Recommended Practice API RP 75 API RP 75 3rd Ed (R2008) Development of a Safety and Environmental Management
-      Program for Offshore Operations and Facilities.pdf
+    summary: Program for Offshore Operations
     status: gap
   - id: API RP 75 3rd Ed (2004) Development of a Safety and Environmental Management Program for Offshore Operation and Facilities
-    title: API RP 75 3rd Ed (2004) Development of a Safety and Environmental Management Program for Offshore Operation and
-      Faciliti
-    org: ''
+    title: Recommended Practice for
+    org: API
     sha: sha256:16d125e6866605a5a1b3cf75baa5110f1a621104377d8c84f566f6b78a42476a
     discipline: marine
-    summary: API Recommended Practice API RP 75 API RP 75 3rd Ed (2004) Development of a Safety and Environmental Management
-      Program for Offshore Operation and Facilities.pdf
+    summary: API document covering offshore structures, mooring systems, or hydrodynamic loading. Recommended Practice for.
     status: gap
-  - id: API RP 75 1999 Implementation Status Report
-    title: API RP 75 1999 Implementation Status Report
-    org: ''
-    sha: sha256:87a30dfd7770c919092720b4e0e92be975199f2ff0fb0089c5d379d954ce4f2d
-    discipline: other
-    summary: API STA API RP 75 1999 Implementation Status Report.pdf
-    status: gap
-  - id: '607'
-    title: API STD 607 Fire Test for Soft Seated Quarter Turn Valves
+  - id: api.650.2007
+    title: THE UNITED STATES OF AMERICA
     org: API
-    sha: sha256:94caa41e6e912b21f2ca4a3a9321b620
-    discipline: fire-safety
-    summary: API STA API STD 607 Fire Test for Soft Seated Quarter Turn Valves.pdf
+    sha: sha256:e8d8ad4996adc5797b0c998e533c1e6696f304c590118180b62fa7adaccb1e8b
+    discipline: regulatory
+    summary: THE UNITED STATES OF AMERICA. Engineering document covering codes, standards, and regulatory requirements.
     status: gap
-  - id: '2218'
-    title: API 2218 (1999) Fireproofing Practices
+  - id: TITLPAGE
+    title: Fitness-for-Service
     org: API
-    sha: sha256:c05fab8df9f269e789fa62f14afa1bbc
-    discipline: fire-safety
-    summary: API STA API 2218 (1999) Fireproofing Practices.pdf
+    sha: sha256:7cf2705367f385b1831adf1aba039f00e5ed285ba19f427952e6eecae49ad9fc
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: 14H
-    title: API 14H Surface Safety Valves and Underwater Safety Valves
+  - id: sect_09
+    title: sect 09
     org: API
-    sha: sha256:17a085defa1d3b33797286453ef42e8f
-    discipline: fire-safety
-    summary: API STA API 14H Surface Safety Valves and Underwater Safety Valves.pdf
+    sha: sha256:45a4d500884522e9b5854f2da8118d27fbbdb1b9dbebef66671f227f8e471211
+    discipline: regulatory
+    summary: SECTION 9 ASSESSMENT OF CRACK-LIKE FLAWS 9.0 Table of Contents.................................................................................................................
+      9-1
     status: gap
-  - id: HSE OTH 01015 (2001) Steel
-    title: HSE OTH 01015 (2001) Steel
-    org: Unknown
-    sha: sha256:689f04533bc14098a5fff17bccc0cd87
-    discipline: fire-safety
-    summary: 0000 Codes & Standards HSE HSE OTH 01015 (2001) Steel.pdf
+  - id: otc189001
+    title: otc189001
+    org: API
+    sha: sha256:6d83a207f9d49163755f8e60eae45608e28859b4481dafe2b9091a2e8f04db72
+    discipline: regulatory
+    summary: Improved Moored MODU Design Codes for Hurricane Season David Petruska, BP America Production Co.; Barbara Stone,
+      WorleyParsons Sea; Tom Kwan, DTCEL; Evan Zimmerman,
     status: gap
-  - id: HSE_OTH_01015_(2001)_Steel
-    title: HSE OTH 01015 (2001) Steel
-    org: ''
-    sha: sha256:78cb32c0a6bf6e2761c5bb6a1346bfa94e6f0b28ff6ba868e99c946d5e9b8010
-    discipline: fire-safety
-    summary: _standards Unknown HSE_OTH_01015_(2001)_Steel.pdf
+  - id: append_e
+    title: APPENDIX E RESIDUAL STRESSES IN A FITNESS-FORSERVICE EVALUATION
+    org: API
+    sha: sha256:b6f1ffc873c6dd3e67bcaffd52c20f7bb4676effe836600875c6274d184cf2d4
+    discipline: regulatory
+    summary: API document covering codes, standards, or regulatory compliance requirements. APPENDIX E RESIDUAL STRESSES IN
+      A FITNESS-FORSERVICE EVALUATION.
     status: gap
-  - id: E2014
-    title: ASTM E2014 99 (2005) Standard guide on Metallographic Laboratory Safety
-    org: ASTM
-    sha: sha256:7a56fc8faec1f2677ce8dc99e9bf89d9
-    discipline: fire-safety
-    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E2014-99 (2005) Standard guide on
-      Metallographic Laboratory Safety.pdf
+  - id: 2TD
+    title: 2TD
+    org: API
+    sha: sha256:68fe6c18e13aa44ebd8297539fb9e4db8be9cb62e2b8b0ddb0333e3c5e6e731e
+    discipline: regulatory
+    summary: Offshore Production Facilities for Offshore Production Facilities for
     status: gap
-  - id: D 5085 - 02  _RDUWODU_
-    title: 'D 5085   02   RDUWODU '
-    org: ASTM
-    sha: sha256:4d6fe83dc82cd04feb2ca966e30a51b9
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 5085 - 02  _RDUWODU_.pdf
+  - id: Sect_06
+    title: SECTION 6 – Assessment Of Pitting Corrosion
+    org: API
+    sha: sha256:5be993c966010daa5ec850ad5c3f5abdd14e0ec139303dd9282fdb8741e5cb06
+    discipline: regulatory
+    summary: SECTION 6 – Assessment Of Pitting Corrosion. Engineering document covering codes, standards, and regulatory requirements.
     status: gap
-  - id: D 6552 - 00  _RDY1NTI_
-    title: 'D 6552   00   RDY1NTI '
-    org: ASTM
-    sha: sha256:c37e12fd57d04c96285ee4858e4d1bfa
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 6552 - 00  _RDY1NTI_.pdf
+  - id: Sect_11
+    title: Pressure vessels, piping and tanks subject to the extreme heat of a fire can experience visual
+    org: API
+    sha: sha256:27ff72414070378ea7ecf31c688c728fd6865cf0e7702a5a4ea89d45773208d2
+    discipline: regulatory
+    summary: API document covering codes, standards, or regulatory compliance requirements. Pressure vessels, piping and tanks
+      subject to the extreme heat of a fire can experience visual.
     status: gap
-  - id: D 6246 - 02  _RDYYNDY_
-    title: 'D 6246   02   RDYYNDY '
-    org: ASTM
-    sha: sha256:2d3e4087b3080bdac16e931ee6faffaa
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 6246 - 02  _RDYYNDY_.pdf
+  - id: BKCOV
+    title: BKCOV
+    org: API
+    sha: sha256:ed809ef33508b8ef0e64d0c5f5d7399078539b5245c82d97a0d32196b7cbfe96
+    discipline: regulatory
+    summary: 'Additional copies available from API Publications and Distribution: Information about API Publications, Programs
+      and Services is'
     status: gap
-  - id: F 1494 - 01  _RJE0OTQTMDE_
-    title: 'F 1494   01   RJE0OTQTMDE '
-    org: ASTM
-    sha: sha256:034aefb8ffcba5d0f2aad9a0e9d0a592
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      F 1494 - 01  _RJE0OTQTMDE_.pdf
+  - id: Table_of_contents
+    title: TABLE OF CONTENTS
+    org: API
+    sha: sha256:b15cafe29e01b4b5dec3a85c760bc8eb9edaf7a6e5834f3a9eeef3ea6ad6b09d
+    discipline: regulatory
+    summary: Table of Contents .....................................................................................................................1-1.
+      Technical document covering engineering codes, standards, an
     status: gap
-  - id: D 5086 - 01  _RDUWODY_
-    title: 'D 5086   01   RDUWODY '
-    org: ASTM
-    sha: sha256:532df613d49ff76bd5bae930e21d2c3d
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 5086 - 01  _RDUWODY_.pdf
+  - id: 6A_e20_Errata_5
+    title: 6A e20 Errata 5
+    org: API
+    sha: sha256:368f7bb79d8bd9d0e1692fd23d9b072c926e3722863906a2823e6b568f51e726
+    discipline: regulatory
+    summary: API document covering codes, standards, or regulatory compliance requirements. 6A e20 Errata 5.
     status: gap
-  - id: D 5955 - 02  _RDU5NTU_
-    title: 'D 5955   02   RDU5NTU '
-    org: ASTM
-    sha: sha256:beca35296f2ddc5eb5c64cfaf9a10a54
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 5955 - 02  _RDU5NTU_.pdf
+  - id: sect_02
+    title: SECTION 2 – Fitness-For-Service Engineering Assessment Procedure
+    org: API
+    sha: sha256:5fd02502c044228b7ea6ddc60e5b631544a6586bc53e883cdab0e2fb19d84c1e
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: D 4413 - 98  _RDQ0MTMTOTHFMQ__
-    title: 'D 4413   98   RDQ0MTMTOTHFMQ  '
-    org: ASTM
-    sha: sha256:59a21a8b133b2c3fb9b0ddc3337fbbd3
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 4413 - 98  _RDQ0MTMTOTHFMQ__.pdf
+  - id: API Q1 - Quality
+    title: API Q1   Quality
+    org: API
+    sha: sha256:921793fec6a3217f8bd4329b26c0bdbc95a17346601b3ef4024d4aac3a82da07
+    discipline: regulatory
+    summary: ''
     status: gap
-  - id: D 6589 - 00  _RDY1ODK_
-    title: 'D 6589   00   RDY1ODK '
-    org: ASTM
-    sha: sha256:fc09a953ddc6a8a5d0cf1ed43440b859
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 6589 - 00  _RDY1ODK_.pdf
+  - id: Hall-Rudy_IECHurricaneClassesAndAPIHazardCurves
+    title: IEC Hurricane Classes and API Hazard Curves
+    org: API
+    sha: sha256:58f562cd592ec5a5370941d946550ae0ac6650002eeae801fe9b32a686463a83
+    discipline: regulatory
+    summary: Hurricane Design in the Standards. Technical document covering engineering codes, standards, and regulatory compliance.
     status: gap
-  - id: D 6327 - 98  _RDYZMJCTOTG_
-    title: 'D 6327   98   RDYZMJCTOTG '
-    org: ASTM
-    sha: sha256:d7d43fe755ef7d153790280fbbe49d07
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 6327 - 98  _RDYZMJCTOTG_.pdf
+  - id: 05sc2febmtgminutes
+    title: George Rodenbusch, Chairman
+    org: API
+    sha: sha256:df480fe72cb5933ebc3cb28b86728687855101c554c226ddbf9e09b1eb67a44f
+    discipline: regulatory
+    summary: API document covering codes, standards, or regulatory compliance requirements. George Rodenbusch, Chairman.
     status: gap
-  - id: D 6281 - 98  _RDYYODETOTG_
-    title: 'D 6281   98   RDYYODETOTG '
-    org: ASTM
-    sha: sha256:b0a08d65beca04d3d032537379f8a01d
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 6281 - 98  _RDYYODETOTG_.pdf
+  - id: API Standards Catalogue
+    title: Oil and natural gas. We find it.
+    org: API
+    sha: sha256:3b3a782cb6fc52992adaf11ebcf366cd5fd480510927d2fadeb360bda725a045
+    discipline: regulatory
+    summary: We furnish the materials We refine it. that go into products the world uses every day.
     status: gap
-  - id: D 3249 - 95 R00  _RDMYNDK_
-    title: 'D 3249   95 R00   RDMYNDK '
-    org: ASTM
-    sha: sha256:3abd69d98b06a8d3a63f425cc20f6b2c
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 3249 - 95 R00  _RDMYNDK_.pdf
+  - id: API HURRICANE WRKSHP FLYR  1 of 3
+    title: API HURRICANE WRKSHP FLYR  1 of 3
+    org: API
+    sha: sha256:3c7227cb35325e31344c2ea25ddbbcf74e494fcdfe4794fd2e9b992bdd1a193c
+    discipline: regulatory
+    summary: ''
     status: gap
-  - id: D 2914 - 95  _RDI5MTQTOTU_
-    title: 'D 2914   95   RDI5MTQTOTU '
-    org: ASTM
-    sha: sha256:0c235991b91ecbe1172b51f3392d8e73
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 2914 - 95  _RDI5MTQTOTU_.pdf
+  - id: 2007CatalogWEB-3
+    title: The future of energy starts here.
+    org: API
+    sha: sha256:c051c6cf16d8f1609d41408fb431c4720c0bd8b7129bc0a2b92adfe5bf8b9919
+    discipline: regulatory
+    summary: The future of energy starts here. Since 1924, API has been a cornerstone in establishing, maintaining and publishing
+      standards for the worldwide oil and natural gas industry. Our work helps the indust
     status: gap
-  - id: D 5755 - 02  _RDU3NTUTMDI_
-    title: 'D 5755   02   RDU3NTUTMDI '
-    org: ASTM
-    sha: sha256:2df3eeaa7dcbeced443857fc4129a276
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 5755 - 02  _RDU3NTUTMDI_.pdf
+  - id: API Insp 570 (2001)
+    title: Piping Inspection Code
+    org: API
+    sha: sha256:fd45b298edee37173159d84930a9caf44344e63cf863c354cbe2c004b8a48ae2
+    discipline: regulatory
+    summary: API document covering codes, standards, or regulatory compliance requirements. Piping Inspection Code.
     status: gap
-  - id: D 6216 - 98  _RDYYMTYTUKVE
-    title: D 6216   98   RDYYMTYTUKVE
-    org: ASTM
-    sha: sha256:abbed726d62df81b33b79a80b9759585
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 6216 - 98  _RDYYMTYTUKVE.pdf
+  - id: Append_c
+    title: APPENDIX C – Compendium of Stress Intensity Factor Solutions
+    org: API
+    sha: sha256:1b0290a06ad51eb156cf496daf38314e123c8e8adb8ecca53512c248eea148eb
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: F 1897 - 98  _RJE4OTC_
-    title: 'F 1897   98   RJE4OTC '
-    org: ASTM
-    sha: sha256:8821889d232de5a00d7aa66e620dc4f8
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      F 1897 - 98  _RJE4OTC_.pdf
+  - id: 2002Catalog
+    title: P U B L I C A T I O N S
+    org: API
+    sha: sha256:56a1a589809f120c1c2c4ae9739411dcb28830a12417fdf304f58d2cd5d4ad21
+    discipline: regulatory
+    summary: API document covering codes, standards, or regulatory compliance requirements. P U B L I C A T I O N S.
     status: gap
-  - id: D 1608 - 98 R03  _RDE2MDG_
-    title: 'D 1608   98 R03   RDE2MDG '
-    org: ASTM
-    sha: sha256:f852245386b4e3cd35be6459cee9b4ce
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 1608 - 98 R03  _RDE2MDG_.pdf
+  - id: http___download.globalihs.com_Download.php3_filepath=imgs_28_17_861728
+    title: http download.globalihs.com Download.php3 filepath=imgs 28 17 861728
+    org: API
+    sha: sha256:391292cdc9803723a6faafc7ddcb475862b8aebd46a2abb798a24e47ffacced4
+    discipline: regulatory
+    summary: ''
     status: gap
-  - id: E 337 - 84 R96  _RTMZNY1SRUQ_
-    title: 'E 337   84 R96   RTMZNY1SRUQ '
-    org: ASTM
-    sha: sha256:8df8bcfd7f1a7c36561f13fca13401fa
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      E 337 - 84 R96  _RTMZNY1SRUQ_.pdf
+  - id: Sect_04
+    title: SECTION 4 – Assessment Of General Metal Loss
+    org: API
+    sha: sha256:ea7981f17316937774053b76a70689e8b23489fbf194835e094aa0c7361addec
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: E 1435 - 98  _RTE0MZU_
-    title: 'E 1435   98   RTE0MZU '
-    org: ASTM
-    sha: sha256:96952d32bdb5a7f5e0ea9d9997bc638e
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      E 1435 - 98  _RTE0MZU_.pdf
+  - id: API Spec 12B (1995)
+    title: API Spec 12B (1995)
+    org: API
+    sha: sha256:eeaa2ff24d5b9129e49e7c3822a208005957eefe8452b56df1899bf234370d8f
+    discipline: regulatory
+    summary: for Storage of Production Liquids FOURTEENTH EDITION, FEBRUARY 1,1995
     status: gap
-  - id: D 4096 - 91 R03  _RDQWOTY_
-    title: 'D 4096   91 R03   RDQWOTY '
-    org: ASTM
-    sha: sha256:4df57d0ad2472f7ae08e4194268ebaa4
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 4096 - 91 R03  _RDQWOTY_.pdf
+  - id: API SPEC 5L 44th Ed Addendum 3 (2012) Line Pipe
+    title: API SPEC 5L 44th Ed Addendum 3 (2012) Line Pipe
+    org: API
+    sha: sha256:9252d3677ed2a0c59d2eec764e2399343d0a7d13a76cc2b10a682a08850164bd
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: E 1972 - 98  _RTE5NZITOTG_
-    title: 'E 1972   98   RTE5NZITOTG '
-    org: ASTM
-    sha: sha256:65d9ec2bff369980f085062c7ba83358
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      E 1972 - 98  _RTE5NZITOTG_.pdf
+  - id: API 570 Piping Inspection Code ad 2006
+    title: API 570 Piping Inspection Code ad 2006
+    org: API
+    sha: sha256:2081627c50732e6aab9178cf6d140e9c0e61b36e1692c2ef7d2f6197a32a519c
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: E 104 - 85 R96  _RTEWNC1SRUQ_
-    title: 'E 104   85 R96   RTEWNC1SRUQ '
-    org: ASTM
-    sha: sha256:24f8ed7d1d42411e5b7a57e298bf2d1a
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      E 104 - 85 R96  _RTEWNC1SRUQ_.pdf
+  - id: 2B-2001 specification for the fabrication of structural steel pipe_百度文库
+    title: 2B-2001 specification for the fabrication of structural steel pipe 百度文库
+    org: API
+    sha: sha256:1f4066ac60730cf03155d1f66123ddfd92073a4ca0a81296fbe44d187f8c16dd
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: D 6178 - 97 R03  _RDYXNZG_
-    title: 'D 6178   97 R03   RDYXNZG '
-    org: ASTM
-    sha: sha256:399fb2090e4bf98205203a4a5200ad59
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 6178 - 97 R03  _RDYXNZG_.pdf
+  - id: API Spec 12F (1994)
+    title: API Spec 12F (1994)
+    org: API
+    sha: sha256:29ec681b07620405a2bb0a77e8dab2ff4a0c5e3ce9fb145e9237be9acf0b0fe9
+    discipline: regulatory
+    summary: Tanks for Storage of Production ELEVENTH EDITION, NOVEMBER 1,1994
     status: gap
-  - id: E 2148 - 01  _RTIXNDGTMDE_
-    title: 'E 2148   01   RTIXNDGTMDE '
-    org: ASTM
-    sha: sha256:d107459a8243d073c17c76772cebd236
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      E 2148 - 01  _RTIXNDGTMDE_.pdf
+  - id: API-570 Piping Inspection Code
+    title: Piping Inspection Code
+    org: API
+    sha: sha256:bf40c5955d894c385825c8b436fb72029325fed3c152310576631965f834310c
+    discipline: regulatory
+    summary: Piping Inspection Code Inspection, Repair, Alteration, and Rerating of In-service Piping Systems
     status: gap
-  - id: F 1001 - 99  _RJEWMDE_
-    title: 'F 1001   99   RJEWMDE '
-    org: ASTM
-    sha: sha256:59682e9049d0135fe681b394b4198469
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      F 1001 - 99  _RJEWMDE_.pdf
+  - id: API SPEC 7-1 1st Ed Addendum 2 (2009) Rotary Drill Stem Elements
+    title: API SPEC 7-1 1st Ed Addendum 2 (2009) Rotary Drill Stem Elements
+    org: API
+    sha: sha256:2a295ead75f2acd3772db0d6ea112c86478ae0b8fbb04d9a8a65cf20f1db71f9
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: D 6620 - 00  _RDY2MJA_
-    title: 'D 6620   00   RDY2MJA '
-    org: ASTM
-    sha: sha256:46b9d5b1e28a1e7f9201038e40714e34
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 6620 - 00  _RDY2MJA_.pdf
+  - id: API Spec 12K (1989)
+    title: API Spec 12K (1989)
+    org: API
+    sha: sha256:466905b5090545e2fa8bd0b805e36630d8df4ac16931417da6236fcbb974233b
+    discipline: regulatory
+    summary: API document covering codes, standards, or regulatory compliance requirements. API Spec 12K (1989).
     status: gap
-  - id: D 5110 - 98  _RDUXMTA_
-    title: 'D 5110   98   RDUXMTA '
-    org: ASTM
-    sha: sha256:148c7b1bb2fcfad2f29c00f437438c8f
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 5110 - 98  _RDUXMTA_.pdf
+  - id: API RP 580 2nd Ed (2009) Risk-Based Inspection
+    title: This document was reproduced from an authorized download of an API standard on 14-0ct-2010. The authorized user
+      is permitted to print one single copy
+    org: API
+    sha: sha256:185f81faceeacc389fd7d1e68b77930a260e9c263d0194d14ca63bd57095d791
+    discipline: regulatory
+    summary: This document was reproduced from an authorized download of an API standard on 14-0ct-2010. The authorized user
+      is permitted to print one single copy. Technical document covering engineering codes, st
     status: gap
-  - id: D 6345 - 98  _RDYZNDUTOTG_
-    title: 'D 6345   98   RDYZNDUTOTG '
-    org: ASTM
-    sha: sha256:434e79ce0287873e0aa2fb8c23fd22df
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 6345 - 98  _RDYZNDUTOTG_.pdf
+  - id: API SPEC 17K 2nd Ed (2005) Bonded Flexible Pipe
+    title: Specification for Bonded Flexible Pipe
+    org: API
+    sha: sha256:c4a660b1348d10adf2f8cdafaf62cfb885aae3eda4172f44574f42938137ed62
+    discipline: regulatory
+    summary: API document covering codes, standards, or regulatory compliance requirements. Specification for Bonded Flexible
+      Pipe.
     status: gap
-  - id: D 6059 - 96  _RDYWNTKTOTY_
-    title: 'D 6059   96   RDYWNTKTOTY '
-    org: ASTM
-    sha: sha256:e305987d97d1ca411fd1abf2fb8679db
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 6059 - 96  _RDYWNTKTOTY_.pdf
+  - id: API Spec 8A
+    title: Specification for Drilling and
+    org: API
+    sha: sha256:96cbfb73e537dc5dc5e8a8fa1b0154e47718b1cce371350fd4a0ef3ead55c743
+    discipline: regulatory
+    summary: API document covering codes, standards, or regulatory compliance requirements. Specification for Drilling and.
     status: gap
-  - id: F 1414 - 99  _RJE0MTQ_
-    title: 'F 1414   99   RJE0MTQ '
-    org: ASTM
-    sha: sha256:33ae617dcd53cf37d89b3887279d2f1f
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      F 1414 - 99  _RJE0MTQ_.pdf
+  - id: API_581-RBI(_Risk-Based_Inspection)_Technology-2008
+    title: API RECOMMENDED PRACTICE 581
+    org: API
+    sha: sha256:01b7144765780c72c7d7c56acc518b9772504a53768b1b4cd459372c6d1b85e8
+    discipline: regulatory
+    summary: Risk-Based Inspection Technology. Technical document covering engineering codes, standards, and regulatory compliance.
     status: gap
-  - id: D 5197 - 03  _RDUXOTC_
-    title: 'D 5197   03   RDUXOTC '
-    org: ASTM
-    sha: sha256:092bae223d9447b9eaf4338491301f3d
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 5197 - 03  _RDUXOTC_.pdf
+  - id: Appendix B - Recommended Wind Spectrum April 04
+    title: Appendix B - Recommended Wind Spectrum April 04
+    org: API
+    sha: sha256:f34cdf8c763a55e2e6ad9b54c76a6cebc1145d35a1a61e374ffa5d9f392fd6b9
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: D 4765 - 98  _RDQ3NJUTUKVE
-    title: D 4765   98   RDQ3NJUTUKVE
-    org: ASTM
-    sha: sha256:b8e9f28be65470b9b00b42d4cf3ebf35
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 4765 - 98  _RDQ3NJUTUKVE.pdf
+  - id: API 677 (1997 R 2000) SpecialPurposeGearUnits
+    title: General Purpose Gear Units for
+    org: API
+    sha: sha256:29b36e79537337e383bc71d8d6f3cbb2e01ae269cac476ce27d8b85a036a1f4f
+    discipline: regulatory
+    summary: API document covering codes, standards, or regulatory compliance requirements. General Purpose Gear Units for.
     status: gap
-  - id: F 1494 - 03  _RJE0OTQ_
-    title: 'F 1494   03   RJE0OTQ '
-    org: ASTM
-    sha: sha256:3aee657036b51b695796de59b59e5753
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      F 1494 - 03  _RJE0OTQ_.pdf
+  - id: API Spec 12P (1995)
+    title: API Spec 12P (1995)
+    org: API
+    sha: sha256:11c48ea46dbbcd417fb5a283aa16189d015d236546836e3e247b07bd6d226300
+    discipline: regulatory
+    summary: SECOND EDITION, JANUARY 1, 1995
     status: gap
-  - id: D 6330 - 98  _RDYZMZATOTG_
-    title: 'D 6330   98   RDYZMZATOTG '
-    org: ASTM
-    sha: sha256:83c6042abd7214b9aaae079b321b6fa9
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 6330 - 98  _RDYZMZATOTG_.pdf
+  - id: API SPEC 17J 4rd Ed (2014) Unbonded Flexible Pipe
+    title: API SPEC 17J 4rd Ed (2014) Unbonded Flexible Pipe
+    org: API
+    sha: sha256:368da2c24d5cfbb93452ad6de637e5ac5df4a9fab75fd788f08836ca89eb6228
+    discipline: regulatory
+    summary: ''
     status: gap
-  - id: F 1471 - 93 R01  _RJE0NZE_
-    title: 'F 1471   93 R01   RJE0NZE '
-    org: ASTM
-    sha: sha256:29b399b3abb8752c832b77181224dc52
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      F 1471 - 93 R01  _RJE0NZE_.pdf
+  - id: Special_Notes
+    title: SPECIAL NOTES
+    org: API
+    sha: sha256:806db4466162d61f5bd52bbf22419858b1745ebea4f49483760801861845181b
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: D 5086 - 95  _RDUWODYTOTU_
-    title: 'D 5086   95   RDUWODYTOTU '
-    org: ASTM
-    sha: sha256:a5c18da9a4af85bc34b0148435f8f986
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 5086 - 95  _RDUWODYTOTU_.pdf
+  - id: API SPEC 7-2 1st Ed (2008) Threading and Gauging of Rotary Shouldered Thread Connections
+    title: Specification for Threading and
+    org: API
+    sha: sha256:69b8669ec0a9e30a5222ae53e8c17f391cb2bc400e6e4f9277c1d75702eb1546
+    discipline: regulatory
+    summary: -~ _0'_.._-.-_ - ''''',,'''''' Special Notes API publicaUons necessarily address problems 01 a general nature.
+      With respect to particular circumstances, loca l, state , and redefallaws and regulalions
     status: gap
-  - id: D 5953M - 96  _RDU5NTNNLTK2
-    title: D 5953M   96   RDU5NTNNLTK2
-    org: ASTM
-    sha: sha256:8bcb4f5109ab479ba706f5f9fded1541
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      D 5953M - 96  _RDU5NTNNLTK2.pdf
+  - id: API RP 576 2nd Ed (2000) Inspection of Pressure-Relieving Devices
+    title: API RP 576 2nd Ed (2000) Inspection of Pressure-Relieving Devices
+    org: API
+    sha: sha256:74e6b98d996ba40fa52c2d8da49f4646912655cc0808fae81d7058a5174d30fd
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: F 1194 - 99  _RJEXOTQ_
-    title: 'F 1194   99   RJEXOTQ '
-    org: ASTM
-    sha: sha256:a669b8e935b9bf9e788e0ffd6042a75e
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      F 1194 - 99  _RJEXOTQ_.pdf
+  - id: API ICO 570 with Addenda 1-3 (1998) Inspection, repair, alteration and rerating of In-service Piping Systems
+    title: API ICO 570 with Addenda 1-3 (1998) Inspection, repair, alteration and rerating of In-service Piping Systems
+    org: API
+    sha: sha256:99d42865c79f20f14ecad024b94d23fff6e66195c2bd72bf79bb49fe23b5fb9d
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
     status: gap
-  - id: F 1790 - 04  _RJE3OTA_
-    title: 'F 1790   04   RJE3OTA '
-    org: ASTM
-    sha: sha256:3ff644b2c45e0c8d07274cfbe71b61e9
-    discipline: fire-safety
-    summary: ASTM 2004 PART IIB ASTM 2004 Volume 11.03 Atmospheric Analysis_ Occupational Health and Safety_ Protective Clothing
-      F 1790 - 04  _RJE3OTA_.pdf
+  - id: 1-api-rp2a-2007 (searchable)
+    title: Recommended Practice for
+    org: API
+    sha: sha256:0de2189c73f870f97d6f9dbda2be10e253a492a7078657e952b85b7df34e6424
+    discipline: regulatory
+    summary: Recommended Practice for - regulatory document.
     status: gap
-  unlinked_doc_count: 1544
+  - id: API-RP-1111
+    title: Design, Construction, Operation,
+    org: API
+    sha: sha256:94df1460bd7c04afad2d6e7dfbac622a6796b83f19beca3428e36655f84e702a
+    discipline: regulatory
+    summary: API standard or recommended practice covering regulatory requirements, safety management, or inspection codes
+      for oil and gas facilities.
+    status: gap
+  - id: API RP 1141 (1994)
+    title: A P I R P * 1 1 4 1 94
+    org: API
+    sha: sha256:4f1a6d16b18a914227fab90708600dd187f23ed3c1e5f05e6f0707744a7b4c4e
+    discipline: regulatory
+    summary: A P I R P * 1 1 4 1 94 = 0 7 3 2 2 9 0 05117200 449 Guidelines for Confined Space
+    status: gap
+  - id: RP 2MET 1st Ed Draft 2
+    title: RP 2MET 1st Ed Draft 2
+    org: API
+    sha: sha256:3096efb218841bfc9224b5b512eb25348e13357eb79006e0c1490f19523aff55
+    discipline: regulatory
+    summary: ''
+    status: gap
+  unlinked_doc_count: 0
 - module: metocean
-  standards_count: 2
+  standards_count: 3
   standards:
-  - id: WEC Buoy
-    title: WEC Buoy
-    org: Unknown
-    sha: sha256:872acbe83fd41ec1d9e428dff8a041b6
+  - id: Couprie,_S.,_et_al,_2001_-_Deep_Water_Top_Tensioned_Riser_S
+    title: 6th annual conference on ‘Advances in Risers, Moorings & Anchorings’
+    org: raw
+    sha: sha256:26adcc8002ac1ec397236e3977648b628f1f52d18081432434ddb95a090bb30c
     discipline: marine
-    summary: ASCE COPRI Marine Renewable Energy Committee WEC Buoy.pdf
+    summary: In the WHB@ design, self standing risers tensioned by buoyancy cans allow to reduce interfaces with the floating
+      unit. Those limited interfaces brings operational advantages and reduces the riser fati
     status: gap
-  - id: BUOY CALCS
-    title: BUOY CALCS
-    org: Unknown
-    sha: sha256:1bbc393a7faf51094a366b60fdcee76e
+  - id: ISO-DIS-19901-1_(1)_Metocean
+    title: ISO-DIS-19901-1_(1)_Metocean.pdf
+    org: ''
+    sha: sha256:e0e340b5511c93068f605c6733ec669154077654158c1bce56c3d7c198f48a25
     discipline: marine
-    summary: COPRI Marine Renewable Energy Committee OrcaFlex BUOY CALCS.xlsx
+    summary: 'DRAFT INTERNATIONAL STANDARD ISO/DIS 19901-1 ISO/TC 67/SC 7 Voting begins on: 2013-08-22 Secretariat: BSI Voting
+      terminates on: 2014-01-22 Petroleum and natural gas industries — Specific requirements '
+    status: gap
+  - id: N322_Post_accidental_and_abnormal
+    title: ISO TC 67 SC 7 N 332
+    org: ''
+    sha: sha256:026a1fb5c3748e33aaea921746f7ea2ef1e496ea4763bad618c78befc1fe267b
+    discipline: marine
+    summary: DRAFT FOR PRESENTATION TO ISO TC 67 – SC 7 Resistance requirements following accidental, abnormal and seismic
+      events
     status: gap
   unlinked_doc_count: 0
 - module: well_bore_design
-  standards_count: 69
+  standards_count: 92
   standards:
-  - id: API SPEC 4F 3rd Ed (2008) Drilling and Well Servicing Structures
-    title: API SPEC 4F 3rd Ed (2008) Drilling and Well Servicing Structures
+  - id: API SPEC 8C 3rd Ed (1997) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
+    title: API SPEC 8C 3rd Ed (1997) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
     org: API
-    sha: sha256:20098fa493291c659091255d9f683d5f
+    sha: sha256:cd6b517c743f601fc6ca5ef8b32366d4568e2329c8266979ffe9e16ccf0d8f1d
     discipline: drilling
-    summary: API Specification API Spec 4F API SPEC 4F 3rd Ed (2008) Drilling and Well Servicing Structures.pdf
+    summary: 'Document: API_SPEC_8C_3rd_Ed_(1997)_Drilling_and_Production_Hoisting_Equipment_(PSL_1_and_PSL_2).pdf'
     status: gap
-  - id: API SPEC 7-1 1st Ed (2006) Rotary Drill Stem Elements
-    title: API SPEC 7 1 1st Ed (2006) Rotary Drill Stem Elements
+  - id: API RP 2P 2nd Ed (1987) Analysis of Spread Mooring Systems for Floating Drilling Units
+    title: API RP 2P 2nd Ed (1987) Analysis of Spread Mooring Systems for Floating Drilling Units
     org: API
-    sha: sha256:ea6c5f55f909632565bb237cd890b86f
+    sha: sha256:cd43fba17b436421e2ca73563d88950c827be5f2178de8bf412e6f6ca45a943c
     discipline: drilling
-    summary: API Specification API Spec 7-1 API SPEC 7-1 1st Ed (2006) Rotary Drill Stem Elements.pdf
+    summary: Analysis of Spread Mooring Systems API RECOMMENDED PRACTICE 2P (RP 2P)
     status: gap
-  - id: API SPEC 7-1 1st Ed Addendum 2 (2009) Rotary Drill Stem Elements
-    title: API SPEC 7 1 1st Ed Addendum 2 (2009) Rotary Drill Stem Elements
+  - id: API RP 17G 1st Ed (1995) Design and Operation of Completion-Workover Riser Systems
+    title: API RP 17G 1st Ed (1995) Design and Operation of Completion Workover Riser Systems
     org: API
-    sha: sha256:180342ac129f9e8e5c9d8f7a6309961a
+    sha: sha256:154686f253b2768eb7e076c9796b935b41198d7c82da61bd53d92ee3f69002be
     discipline: drilling
-    summary: API Specification API Spec 7-1 API SPEC 7-1 1st Ed Addendum 2 (2009) Rotary Drill Stem Elements.pdf
+    summary: 'Document: API RP 17G 1st Ed (1995) Design and Operation of Completion-Workover Riser Systems.pdf'
     status: gap
-  - id: API SPEC 7-1 1st Ed Addendum 1 (2006) Rotary Drill Stem Elements
-    title: API SPEC 7 1 1st Ed Addendum 1 (2006) Rotary Drill Stem Elements
+  - id: API RP 57 1st Ed (1986) Offshore Well Completion, Servicing, Workover, and Plug and Abandonment Operations
+    title: API RP 57 1st Ed (1986) Offshore Well Completion, Servicing, Workover, and Plug and Abandonment Operations
     org: API
-    sha: sha256:4aa05480caed77627e48a3b464da99c1
+    sha: sha256:4f1c1a71afafedbfa9678f76b9a7d4225f20a43a76e86a6bf1dea0ffdcb45042
     discipline: drilling
-    summary: API Specification API Spec 7-1 API SPEC 7-1 1st Ed Addendum 1 (2006) Rotary Drill Stem Elements.pdf
+    summary: 111111111111111111111111111111111111111111111111111111111111111111111111111111111I111I11II1I1I11II1II11I1111I11~11111II1111111II111I1I111111I1I11I""II"'"
+      .................... .
     status: gap
-  - id: API SPEC 7-1 1st Ed Addendum 3 (2011) Rotary Drill Stem Elements
-    title: API SPEC 7 1 1st Ed Addendum 3 (2011) Rotary Drill Stem Elements
+  - id: API 8A 13th Edition Drilling Production and Hoisting Equipment
+    title: API 8A 13th Edition Drilling Production and Hoisting Equipment
     org: API
-    sha: sha256:bdb9127f950c5c57fc4773687cb160a2
+    sha: sha256:63d74c27d2cf8a02f0447e8a06291114cbed32c9115af13bb0180b88072408c3
     discipline: drilling
-    summary: API Specification API Spec 7-1 API SPEC 7-1 1st Ed Addendum 3 (2011) Rotary Drill Stem Elements.pdf
+    summary: ''
     status: gap
-  - id: API SPEC 7 40th Ed (2001) Rotary Drill Stem Elements
-    title: API SPEC 7 40th Ed (2001) Rotary Drill Stem Elements
+  - id: 8A_addendum1
+    title: 'EFFECTIVE DATE: NOVEMBER 2001'
     org: API
-    sha: sha256:134bd72bcd96ef0c50077ed530b9b9c1
+    sha: sha256:dcefa7dbfbe1113bec4a979c6b4eedbe4cfc11aed79fb23408c0f6883ac636aa
     discipline: drilling
-    summary: API Specification API Spec 7 API SPEC 7 40th Ed (2001) Rotary Drill Stem Elements.pdf
-    status: gap
-  - id: API SPEC 5CT 8th Ed (2005) Casing and Tubing (U.S. Customary Units)
-    title: API SPEC 5CT 8th Ed (2005) Casing and Tubing (U.S. Customary Units)
-    org: API
-    sha: sha256:160af4b49bff311aec97163e1f250dc7
-    discipline: drilling
-    summary: API Specification API Spec 5CT API SPEC 5CT 8th Ed (2005) Casing and Tubing (U.S. Customary Units).pdf
-    status: gap
-  - id: API SPEC 5CT 8th Ed Errata (2005) Casing and Tubing (U.S. Customary Units)
-    title: API SPEC 5CT 8th Ed Errata (2005) Casing and Tubing (U.S. Customary Units)
-    org: API
-    sha: sha256:872e354f99b90e66ce0a083e98070b2a
-    discipline: drilling
-    summary: API Specification API Spec 5CT API SPEC 5CT 8th Ed Errata (2005) Casing and Tubing (U.S. Customary Units).pdf
+    summary: API document covering drilling and production equipment specifications. Provides technical requirements for wellbore
+      equipment, hoisting systems, and related drilling operations.
     status: gap
   - id: API SPEC 5CT 9th Ed (2011) Casing and Tubing (U.S. Customary Units)
     title: API SPEC 5CT 9th Ed (2011) Casing and Tubing (U.S. Customary Units)
     org: API
-    sha: sha256:f5ac08ae3eeb7115d639ab7181fcf7d6
+    sha: sha256:d3b97147175b7f4abb3816c741540b739ef01fb5780ff5a151dc5f93a3609f4b
     discipline: drilling
-    summary: API Specification API Spec 5CT API SPEC 5CT 9th Ed (2011) Casing and Tubing (U.S. Customary Units).pdf
+    summary: API document covering drilling and production equipment specifications. Provides technical requirements for wellbore
+      equipment, hoisting systems, and related drilling operations.
     status: gap
-  - id: API SPEC 8C 4th Ed (2003) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
-    title: API SPEC 8C 4th Ed (2003) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
+  - id: API SPEC 16C 1st Ed (1993) Choke and Kill Systems
+    title: Choke and Kill Systems
     org: API
-    sha: sha256:2dca992cb0b3204384ccfedaf6e58fc3
+    sha: sha256:51769da56eb64df270bd221975e2e161c0c5103b79edd457a43b6da92e6ff57c
     discipline: drilling
-    summary: API Specification API Spec 8C API SPEC 8C 4th Ed (2003) Drilling and Production Hoisting Equipment (PSL 1 and
-      PSL 2).pdf
+    summary: API document covering drilling operations, wellbore design, or well control. Choke and Kill Systems.
+    status: gap
+  - id: API SPEC 5ST 1st Ed. (2010) Coiled Tubing
+    title: Specification for Coiled Tubing
+    org: API
+    sha: sha256:8a9ac2dff7183be8c6e5d8c7a6f0267c548a8f227591c7fcb12a12dbd67e919a
+    discipline: drilling
+    summary: API document covering drilling operations, wellbore design, or well control. Specification for Coiled Tubing.
     status: gap
   - id: API SPEC 8C 4th Ed Addendum 1 (2003) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
     title: API SPEC 8C 4th Ed Addendum 1 (2003) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
     org: API
-    sha: sha256:b0f484c4269a4a4291b11c224b72d168
+    sha: sha256:b13e7da780ac312a19d6c00eb67adf0d768bdd8c5cc8fd0af8d08a91c17106d6
     discipline: drilling
-    summary: API Specification API Spec 8C API SPEC 8C 4th Ed Addendum 1 (2003) Drilling and Production Hoisting Equipment
-      (PSL 1 and PSL 2).pdf
+    summary: API document covering drilling and production equipment specifications. Provides technical requirements for wellbore
+      equipment, hoisting systems, and related drilling operations.
     status: gap
-  - id: API SPEC 8C 3rd Ed (1997) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
-    title: API SPEC 8C 3rd Ed (1997) Drilling and Production Hoisting Equipment (PSL 1 and PSL 2)
+  - id: API SPEC 7-1 1st Ed Addendum 3 (2011) Rotary Drill Stem Elements
+    title: Specification for Rotary Drill Stem
     org: API
-    sha: sha256:d47f1e7bf918611a690db8fc1ff1114f
+    sha: sha256:5505ebc9472ca8cbae3dc87fc7e3ca3bb34054560ac4014893e3d00e546234fd
     discipline: drilling
-    summary: API Specification API Spec 8C API SPEC 8C 3rd Ed (1997) Drilling and Production Hoisting Equipment (PSL 1 and
-      PSL 2).pdf
+    summary: API document covering drilling operations, wellbore design, or well control. Specification for Rotary Drill Stem.
     status: gap
-  - id: API SPEC 16A 2nd Ed (1997) Drill Through Equipment
-    title: API SPEC 16A 2nd Ed (1997) Drill Through Equipment
+  - id: API SPEC 6A- 2011 ED-20
+    title: Specification for Wellhead and
     org: API
-    sha: sha256:b5c79d4868aa6e62d17dcb6c2b9c3e52
+    sha: sha256:8b396f20bfd051ab6a69d16066ae51d0d44f57154f1ac86d0720c41971edb2e3
     discipline: drilling
-    summary: API Specification API Spec 16A API SPEC 16A 2nd Ed (1997) Drill Through Equipment.pdf
+    summary: API document covering drilling and production equipment specifications. Provides technical requirements for wellbore
+      equipment, hoisting systems, and related drilling operations.
     status: gap
-  - id: API SPECIFICATION 7K Drilling and Well Servicing Equip 2016
-    title: API SPECIFICATION 7K Drilling and Well Servicing Equip 2016
+  - id: API SPEC 6A 17th Ed + Errata 1 & Supplement 1 (1999) Wellhead and Christmas Tree Equipment
+    title: API SPEC 6A 17th Ed + Errata 1 & Supplement 1 (1999) Wellhead and Christmas Tree Equipment
     org: API
-    sha: sha256:41b799837286206b91a5b2da20d2588f
+    sha: sha256:e59e9afafb4d65f0280cb4077c4f0d9414930adef94146c0af41e1717cb5b7a6
     discipline: drilling
-    summary: API Specification API Spec 7K API SPECIFICATION 7K Drilling and Well Servicing Equip 2016.pdf
-    status: gap
-  - id: 7G
-    title: API RP 7G 16th Ed Addendum 1 (2000) Drill Stem Design and Operating Limits
-    org: API
-    sha: sha256:3d6080bf960027ad43673056dd57dc96
-    discipline: drilling
-    summary: API Recommended Practice API RP 7G API RP 7G 16th Ed Addendum 1 (2000) Drill Stem Design and Operating Limits.pdf
-    status: gap
-  - id: 5C
-    title: API RP 5C5 3rd Ed (2003) Procedures for Testing Casing and Tubing Connection
-    org: API
-    sha: sha256:221f88a2be1a37fcaa1aace3bde9d073
-    discipline: drilling
-    summary: API Recommended Practice API RP 5C5 API RP 5C5 3rd Ed (2003) Procedures for Testing Casing and Tubing Connection.pdf
-    status: gap
-  - id: 16A
-    title: API 16a Drill Through Equipment 2nd Ed
-    org: API
-    sha: sha256:f0449f62803e5933b2901d381d891b4f
-    discipline: drilling
-    summary: API STA API 16a Drill Through Equipment 2nd Ed.pdf
-    status: gap
-  - id: '10407'
-    title: API 10407 RP7g  Inspection and Classification of Used Drill Stem Elements1st Ed vote
-    org: API
-    sha: sha256:904791e3f612a599216dc16682b42a11
-    discipline: drilling
-    summary: API STA API 10407 RP7g  Inspection and Classification of Used Drill Stem Elements1st Ed vote.pdf
-    status: gap
-  - id: 8A
-    title: API 8A 13th Edition Drilling Production and Hoisting Equipment
-    org: API
-    sha: sha256:edf8d967e4b8068cd2eb2bf043a25ed2
-    discipline: drilling
-    summary: API STA API 8A 13th Edition Drilling Production and Hoisting Equipment.pdf
-    status: gap
-  - id: E102
-    title: DNV RP E102 (2010) Recertification of blowout preventers and well control equipment
-    org: DNV
-    sha: sha256:e4e0757549476a5a6a15bf32b2cc80be
-    discipline: drilling
-    summary: DNV Recommended Practices DNV RP E102 DNV RP E102 (2010) Recertification of blowout preventers and well control
-      equipment.pdf
-    status: gap
-  - id: DNV_RP_E102_(2010)_Recertification_of_blowout_preventers_and_well_control_equipment
-    title: DNV RP E102 (2010) Recertification of blowout preventers and well control equipment
-    org: ''
-    sha: sha256:6bb72e310e7ca10fa8d54e7d6da0b848e90ec46ec93ebe87d1f541f97c146b6f
-    discipline: drilling
-    summary: _standards DNV DNV_RP_E102_(2010)_Recertification_of_blowout_preventers_and_well_control_equipment.pdf
-    status: gap
-  - id: drill-ris-Appendices Extract - Oct 1998
-    title: drill ris Appendices Extract   Oct 1998
-    org: Unknown
-    sha: sha256:107e682a6da74bdaa7a5f932e7c638eb
-    discipline: drilling
-    summary: AMJIG Previous Revisions drill-ris-Appendices Extract - Oct 1998.doc
-    status: gap
-  - id: Dual Activity Drilling Ops
-    title: Dual Activity Drilling Ops
-    org: Unknown
-    sha: sha256:36e4957f24081bec7a283f1b0f430bb5
-    discipline: drilling
-    summary: Papers Guidelines Dual Activity Drilling Ops.doc
-    status: gap
-  - id: Titanium Alloys in Drilling and Production Systems
-    title: Titanium Alloys in Drilling and Production Systems
-    org: Unknown
-    sha: sha256:9c23aedaebf88d1802c7f897245a12c2
-    discipline: drilling
-    summary: Papers Reference documents Titanium Alloys in Drilling and Production Systems.pdf
-    status: gap
-  - id: E837
-    title: ASTM E837 (2001) Std Test Method for Determining Residual Stresses by the Hole Drilling Strain Gage Method
-    org: ASTM
-    sha: sha256:4919ae852a0230d4a482cdc192da1054
-    discipline: drilling
-    summary: ASTM ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures ASTM E837 (2001) Std Test Method for Determining
-      Residual Stresses by the Hole-Drilling Strain-Gage Method.pdf
-    status: gap
-  - id: Drilled Core for Beams (C42C42M)
-    title: Drilled Core for Beams (C42C42M)
-    org: ASTM
-    sha: sha256:3048734892d254c6fd5a549b367648d6
-    discipline: drilling
-    summary: BS C Drilled Core for Beams (C42C42M).PDF
-    status: gap
-  - id: Drilled Concrete Cores (C174C174)
-    title: Drilled Concrete Cores (C174C174)
-    org: ASTM
-    sha: sha256:ebb14d6b7244ac28e06f4539c473061a
-    discipline: drilling
-    summary: BS C Drilled Concrete Cores (C174C174).PDF
-    status: gap
-  - id: Drillship_Guide_e-Jan12
-    title: Drillship Guide e Jan12
-    org: Unknown
-    sha: sha256:0d0ef6620088bc9957e98c74f5ba8270
-    discipline: drilling
-    summary: ABS Guide for Drillships Drillship_Guide_e-Jan12.pdf
-    status: gap
-  - id: RCN1
-    title: RCN1
-    org: BSI
-    sha: sha256:a973b07b7ffe16fb9725d6cb89fbea96
-    discipline: drilling
-    summary: ABS ABS 057 - Drilling Systems RCN1.pdf
-    status: gap
-  - id: Corrigenda
-    title: Corrigenda
-    org: BSI
-    sha: sha256:4a4e02fe59f3852643da7be451ed2f2a
-    discipline: drilling
-    summary: ABS ABS 057 - Drilling Systems Corrigenda.pdf
-    status: gap
-  - id: Guide
-    title: Guide
-    org: BSI
-    sha: sha256:d6eeb9120b0e94b3daa8aed3fd19b993
-    discipline: drilling
-    summary: ABS ABS 057 - Drilling Systems Guide.pdf
-    status: gap
-  - id: Guide_Colors
-    title: Guide Colors
-    org: BSI
-    sha: sha256:baaff304620cbaaa9d3c2b59a089da0f
-    discipline: drilling
-    summary: ABS ABS 057 - Drilling Systems Guide_Colors.pdf
-    status: gap
-  - id: 13679-1
-    title: ISO 13679 1st Ed (2002) Procedures for testing casing
-    org: ISO
-    sha: sha256:9f9f3cf705a966e51d935397a49e8f3a
-    discipline: drilling
-    summary: ISO ISO 13679 ISO 13679 1st Ed (2002) Procedures for testing casing.pdf
-    status: gap
-  - id: 13625-1
-    title: ISO 13625 1st Ed (2002) Drilling and production equipment
-    org: ISO
-    sha: sha256:c494ff94152a4be8ac8424865262f533
-    discipline: drilling
-    summary: ISO ISO 13625 ISO 13625 1st Ed (2002) Drilling and production equipment.pdf
-    status: gap
-  - id: BS 10405 (2000) Care and use of casing & tubing
-    title: BS 10405 (2000) Care and use of casing & tubing
-    org: BSI
-    sha: sha256:e602c5b2262bd27ba08c39a6cb5ad337
-    discipline: drilling
-    summary: BSI BS 10405 BS 10405 (2000) Care and use of casing & tubing.pdf
-    status: gap
-  - id: BS 10424 (2004) Rotary drilling equipment
-    title: BS 10424 (2004) Rotary drilling equipment
-    org: BSI
-    sha: sha256:f1edae4c2cb3cc11b0abb4163a20e4f1
-    discipline: drilling
-    summary: BSI BS 10424 BS 10424 (2004) Rotary drilling equipment.pdf
-    status: gap
-  - id: BS 13626 (2004) Drilling and production equipment - drilling and well servicing structures
-    title: BS 13626 (2004) Drilling and production equipment   drilling and well servicing structures
-    org: BSI
-    sha: sha256:7ad61add184aafe3f99fa5e1128ed40b
-    discipline: drilling
-    summary: BSI BS 13626 BS 13626 (2004) Drilling and production equipment - drilling and well servicing structures.pdf
-    status: gap
-  - id: BS 17078 Pt 1 (2004) Drilling and production equipment - Side-pocket mandrels
-    title: BS 17078 Pt 1 (2004) Drilling and production equipment   Side pocket mandrels
-    org: BSI
-    sha: sha256:14da2550ddd467e9879330c6c69a0703
-    discipline: drilling
-    summary: BSI BS 17078 BS 17078 Pt 1 (2004) Drilling and production equipment - Side-pocket mandrels.pdf
-    status: gap
-  - id: BS 10414 Pt 1 (2001) Petroleum and Natural Gas Industries, Field testing of drilling fluids
-    title: BS 10414 Pt 1 (2001) Petroleum and Natural Gas Industries, Field testing of drilling fluids
-    org: BSI
-    sha: sha256:0313e77ae57747bdaae82e7e8ba5fee5
-    discipline: drilling
-    summary: BSI BS 10414 BS 10414 Pt 1 (2001) Petroleum and Natural Gas Industries, Field testing of drilling fluids.pdf
-    status: gap
-  - id: BS 10423 (2001) Drilling & production equipment - wellhead & christmas tree equipment
-    title: BS 10423 (2001) Drilling & production equipment   wellhead & christmas tree equipment
-    org: BSI
-    sha: sha256:81f4c4bb9b3ce745d2471279de93b113
-    discipline: drilling
-    summary: BSI BS 10423 BS 10423 (2001) Drilling & production equipment - wellhead & christmas tree equipment.pdf
-    status: gap
-  - id: BS 10423 (2004) Drilling & production equipment - wellhead & christmas tree equipment
-    title: BS 10423 (2004) Drilling & production equipment   wellhead & christmas tree equipment
-    org: BSI
-    sha: sha256:1a4e89d5aa4df4cf2362121dd3e0111e
-    discipline: drilling
-    summary: BSI BS 10423 BS 10423 (2004) Drilling & production equipment - wellhead & christmas tree equipment.PDF
-    status: gap
-  - id: BS 14693 (2003) Drilling & well servicing equipment
-    title: BS 14693 (2003) Drilling & well servicing equipment
-    org: BSI
-    sha: sha256:d9916823318a0f5f73f99de28b5b918c
-    discipline: drilling
-    summary: BSI BS 14693 BS 14693 (2003) Drilling & well servicing equipment.pdf
-    status: gap
-  - id: BS 13533 (2002) Drill through equipment
-    title: BS 13533 (2002) Drill through equipment
-    org: BSI
-    sha: sha256:7d151e5aa016030536fc560f25df12f0
-    discipline: drilling
-    summary: BSI BS 13533 BS 13533 (2002) Drill through equipment.pdf
-    status: gap
-  - id: Drilling Fluid Processing
-    title: Drilling Fluid Processing
-    org: Unknown
-    sha: sha256:0460152fea0485db254912df05d26103
-    discipline: drilling
-    summary: 0000 Codes & Standards IADC-TPC Drilling Fluid Processing.pdf
-    status: gap
-  - id: API 10407 RP7g  Inspection and Classification of Used Drill Stem Elements1st Ed vote
-    title: API 10407 RP7g  Inspection and Classification of Used Drill Stem Elements1st Ed vote
-    org: ''
-    sha: sha256:60970c3176b248d82905111197674b0acbd7be4f851c7679fc5c56b813bc75d3
-    discipline: drilling
-    summary: API STA API 10407 RP7g  Inspection and Classification of Used Drill Stem Elements1st Ed vote.pdf
-    status: gap
-  - id: API RP 5C5 3rd Ed (2003) Procedures for Testing Casing and Tubing Connection
-    title: API RP 5C5 3rd Ed (2003) Procedures for Testing Casing and Tubing Connection
-    org: ''
-    sha: sha256:8696d14f78f03c00bffd1801b0ffe3cacb0d2f4febe0cf55865e5c3aeb471708
-    discipline: drilling
-    summary: API Recommended Practice API RP 5C5 API RP 5C5 3rd Ed (2003) Procedures for Testing Casing and Tubing Connection.pdf
+    summary: API document covering drilling and production equipment specifications. Provides technical requirements for wellbore
+      equipment, hoisting systems, and related drilling operations.
     status: gap
   - id: API RP 7G 16th Ed Addendum 2 (2009) Drill Stem Design and Operating Limits
     title: API RP 7G 16th Ed Addendum 2 (2009) Drill Stem Design and Operating Limits
-    org: ''
+    org: API
     sha: sha256:4a2fb11d4ca3b8cd6f44905c267f3f14f64602dd64b46899f9983ba141aaf677
     discipline: drilling
-    summary: API Recommended Practice API RP 7G API RP 7G 16th Ed Addendum 2 (2009) Drill Stem Design and Operating Limits.pdf
+    summary: Drilling engineering standard covering wellbore equipment, drill stem design, casing specifications, BOP systems,
+      and hoisting equipment requirements.
     status: gap
-  - id: API RP 7G 16th Ed (1998) Drill Stem Design and Operating Limits
-    title: API RP 7G 16th Ed (1998) Drill Stem Design and Operating Limits
-    org: ''
-    sha: sha256:37f2dc4dc796c41aa41fd5a5c818f8371374b50491dc7a9cb98a9ba4c2989da6
-    discipline: drilling
-    summary: API Recommended Practice API RP 7G API RP 7G 16th Ed (1998) Drill Stem Design and Operating Limits.pdf
-    status: gap
-  - id: API RP 7G 16th Ed Addendum 1 (2000) Drill Stem Design and Operating Limits
-    title: API RP 7G 16th Ed Addendum 1 (2000) Drill Stem Design and Operating Limits
-    org: ''
-    sha: sha256:a955396751eb46ff0047e8e19a563bb2b3b1ae19959462a7b8c9e06d21ec7dd9
-    discipline: drilling
-    summary: API Recommended Practice API RP 7G API RP 7G 16th Ed Addendum 1 (2000) Drill Stem Design and Operating Limits.pdf
-    status: gap
-  - id: API 8A 13th Edition Drilling Production and Hoisting Equipment
-    title: API 8A 13th Edition Drilling Production and Hoisting Equipment
-    org: ''
-    sha: sha256:63d74c27d2cf8a02f0447e8a06291114cbed32c9115af13bb0180b88072408c3
-    discipline: drilling
-    summary: API STA API 8A 13th Edition Drilling Production and Hoisting Equipment.pdf
-    status: gap
-  unlinked_doc_count: 23
-- module: decommissioning
-  standards_count: 13
-  standards:
-  - id: API-RP 520 Pressure Relieving Devices in Refineries Part II Installation
-    title: API RP 520 Pressure Relieving Devices in Refineries Part II Installation
+  - id: API 16A
+    title: Specification for Drill Through
     org: API
-    sha: sha256:14f10d567c68c123eb4995da1ce05632
-    discipline: installation
-    summary: API STA API-RP 520 Pressure Relieving Devices in Refineries Part II Installation.pdf
+    sha: sha256:944d8ef6c0d80c3347e1a39e379100bbb365be812d7687682395bb4e8dceca44
+    discipline: drilling
+    summary: Drilling engineering standard covering wellbore equipment, drill stem design, casing specifications, BOP systems,
+      and hoisting equipment requirements.
     status: gap
-  - id: '57'
-    title: API RP 57 1st Ed (1986) Offshore Well Completion, Servicing, Workover, and Plug and Abandonment Operations
-    org: API
-    sha: sha256:8139e0bbf015b2b1fd1cc1381b910d9d
-    discipline: marine
-    summary: API Recommended Practice API RP 57 API RP 57 1st Ed (1986) Offshore Well Completion, Servicing, Workover, and
-      Plug and Abandonment Operations.pdf
+  - id: API SPEC 5D 5th Ed (2001) Drill Pipe
+    title: API SPEC 5D 5th Ed (2001) Drill Pipe.pdf
+    org: ''
+    sha: sha256:91fa77cae99f141b2334397f9683f059ae025dba0bf94fd51dc4b618e7abb148
+    discipline: drilling
+    summary: 'Specification for Drill Pipe API SPECIFICATION 5D FIFTH EDITION, OCTOBER 2001 EFFECTIVE DATE: APRIL 30, 2002
+      COPYRIGHT American Petroleum Institute Licensed by Information Handling Services COPYRIGHT '
     status: gap
-  - id: F1417
-    title: ASTM F 1417 Standard Test Method For Installation Acceptance of Plastic Sewer Line Low Pressure Air
+  - id: 'API Spec 5DP Drill Pipe 2010 '
+    title: API Spec 5DP Drill Pipe 2010 .pdf
+    org: ''
+    sha: sha256:98f075387fb6250efabaeb99cbd0bd764e6d60eb30b090ef538e6ced6fad6a99
+    discipline: drilling
+    summary: 'Specification for Drill Pipe ANSI/API SPECIFICATION 5DP FIRST EDITION, AUGUST 2009 EFFECTIVE DATE: AUGUST 1,2010
+      CONTAINS API MONOGRAM ANNEX AS PART OF U.S. NATIONAL ADOPTION ISO 11961 :2008 (Identica'
+    status: gap
+  - id: API SPEC 7-1 1st Ed Addendum 1 (2006) Rotary Drill Stem Elements
+    title: API SPEC 7-1 1st Ed Addendum 1 (2006) Rotary Drill Stem Elements.pdf
+    org: ''
+    sha: sha256:5786eafcd7c05d1896b79b008c3ae550535feb1d581d74a41f418019851c3a96
+    discipline: drilling
+    summary: 'Specification for Rotary Drill Stem Elements ANSI/API SPECIFICATION 7-1 FIRST EDITION, MARCH 2006 EFFECTIVE
+      DATE: SEPTEMBER 2006 Chapter 10 Heavy Weight Drill Pipe ISO 10424-1:2004 (Modified), Petrole'
+    status: gap
+  - id: F 1962 - 99  _RJE5NJI_
+    title: F 1962   99 RJE5NJI
     org: ASTM
-    sha: sha256:33724397b0ded39859aac6042bb9afa9
-    discipline: installation
-    summary: BS F ASTM F 1417 Standard Test Method For Installation Acceptance of Plastic Sewer Line Low Pressure Air.pdf
+    sha: sha256:6b3b20a32cc5f173375db5307768c9471fc8d19c6b660affdbe8aaa48b58f254
+    discipline: drilling
+    summary: Use of Maxi-Horizontal Directional Drilling for Placement of Polyethylene Pipe or Conduit Under Obstacles, Including
     status: gap
-  - id: BS 10417 (2004) Subsurface safty valve systems, design installation operation & redress
-    title: BS 10417 (2004) Subsurface safty valve systems, design installation operation & redress
+  - id: D 6273 - 98 R03  _RDYYNZM_
+    title: D 6273   98 R03   RDYYNZM
+    org: ASTM
+    sha: sha256:3a95416469c67a0960c788a8d48fa33b3691722d860232249d5b98e367f42574
+    discipline: drilling
+    summary: 'Designation: D 6273 – 98 (Reapproved 2003) This standard is issued under the fixed designation D 6273; the number
+      immediately following the designation indicates the year of'
+    status: gap
+  - id: D 5781 - 95 R00  _RDU3ODE_
+    title: D 5781   95 R00   RDU3ODE
+    org: ASTM
+    sha: sha256:2fccdfbe08c3a82a32dadf5c097d91a9d733e96f5f959138d7cdb8907a3cf4ba
+    discipline: drilling
+    summary: 'Designation: D 5781 – 95 (Reapproved 2000) Use of Dual-Wall Reverse-Circulation Drilling for'
+    status: gap
+  - id: Stassen,_Y.,_et_al,_2001_-_Deep_Water_Top_Tensioned_Riser_S
+    title: Stassen, Y., et al, 2001   Deep Water Top Tensioned Riser S
+    org: ''
+    sha: sha256:b40bb04ee9b11460e6a6ee1eb3081ead6dc5cce3aa8be1617f77457f820dc289
+    discipline: drilling
+    summary: DEEP WATER TOP TENSIONED RISER SYSTEM Yves Stassen, BOUYGUES OFFSHORE, France
+    status: gap
+  - id: Stassen,_Y,_et_al,_2001_-_Risers,_Mooring_and_Anchorings_fo
+    title: Stassen, Y, et al, 2001   Risers, Mooring and Anchorings fo
+    org: ''
+    sha: sha256:af749f131a4e50f56388bd99d87e63971418b5ac589bd454957f9a6c443fb305
+    discipline: drilling
+    summary: RISERS, MOORINGS AND ANCHORINGS FOR DEEP WATERS SEPTEMBER l&19 & 20,200l.LONDON
+    status: gap
+  - id: Guide_Colors_1
+    title: Guide_Colors_1.pdf
+    org: ''
+    sha: sha256:d9964d507802cdcc2e5139061211cabf390daa33406150ae201e0c8091549fb6
+    discipline: drilling
+    summary: GUIDE FOR CLASSIFICATION OF DRILLING SYSTEMS SEPTEMBER 2012 Guide to Color Coding Used in Online Version of the
+      Guide The following summarizes the colors corresponding to Rule Changes, Corrigenda item
+    status: gap
+  - id: BS_13678_(2000)_Evaluation_&_testing_of_threat_compounds_for_use_with_casing_tubing_&_line_pipe
+    title: BS 13678 (2000) Evaluation & testing of threat compounds for use with casing tubing & line pipe
     org: BSI
-    sha: sha256:f54a0f6b053cee56a09be0f3729cf22e
-    discipline: installation
-    summary: BSI BS 10417 BS 10417 (2004) Subsurface safty valve systems, design installation operation & redress.pdf
+    sha: sha256:4759f44a523c8e7e4d1b669a5d90ff4dcde7fcc1b5401941ed48dd89ba71d2f2
+    discipline: drilling
+    summary: ''
     status: gap
-  - id: DNV SfC No.2.22 (2008)  Lifting Appliances
-    title: DNV SfC No.2.22 (2008)  Lifting Appliances
-    org: DNV
-    sha: sha256:468f4affd1232353adc97c978b2b2cd6
-    discipline: installation
-    summary: DNV Standard for Certification DNV SfC No.2.22 DNV SfC No.2.22 (2008)  Lifting Appliances.pdf
-    status: gap
-  - id: DNV SfC No.2.22 (2011)  Lifting Appliances
-    title: DNV SfC No.2.22 (2011)  Lifting Appliances
-    org: DNV
-    sha: sha256:8e86bd1696771ad067ef780aafc2a10c
-    discipline: installation
-    summary: DNV Standard for Certification DNV SfC No.2.22 DNV SfC No.2.22 (2011)  Lifting Appliances.pdf
-    status: gap
-  - id: '5'
-    title: DNV RP 5 Pt2 (1985) Lifting
-    org: DNV
-    sha: sha256:2deb4aa69cbd6e60e1033c9472b7226f
-    discipline: installation
-    summary: DNV Recommended Practices DNV RP 5 DNV RP 5 Pt2 (1985) Lifting.pdf
-    status: gap
-  - id: ASTM F 1417 Standard Test Method For Installation Acceptance of Plastic Sewer Line Low Pressure Air
-    title: ASTM F 1417 Standard Test Method For Installation Acceptance of Plastic Sewer Line Low Pressure Air
+  - id: BS_13626_(2004)_Drilling_and_production_equipment_-_drilling_and_well_servicing_structures
+    title: BS_13626_(2004)_Drilling_and_production_equipment_-_drilling_and_well_servicing_structures.pdf
     org: ''
-    sha: sha256:d998561f66364e9a0b11f3e33a9a6ff750defc071ce4153306a8828d3c127294
-    discipline: installation
-    summary: BS F ASTM F 1417 Standard Test Method For Installation Acceptance of Plastic Sewer Line Low Pressure Air.pdf
+    sha: sha256:20a1e72d7974b071fbfe86bf1b2782b263c51f28d99f80d1822d3f0fb22b185b
+    discipline: drilling
+    summary: '- - BRITISH STANDARD BSENISO 13626:2004 Petroleum and natural gas industriesDrilling and production equipment
+      - Drilling and well-servicing structures The European Standard EN ISO 13626:2004 has the s'
     status: gap
-  - id: BS_10417_(2004)_Subsurface_safty_valve_systems,_design_installation_operation_&_redress
-    title: BS 10417 (2004) Subsurface safty valve systems, design installation operation & redress
-    org: ''
-    sha: sha256:78224cce02be4982ceb134880ca2bd01869a5836400c39c0fd1b7098965cbd77
-    discipline: installation
-    summary: _standards BSI BS_10417_(2004)_Subsurface_safty_valve_systems,_design_installation_operation_&_redress.pdf
+  - id: Norsok_Standard_M-001_4th_Ed_(2004)_Materials_selection
+    title: Norsok Standard M 001 4th Ed (2004) Materials selection
+    org: Norsok
+    sha: sha256:36111500f853e51f9ea70d353ad3ae57b4f4b67c120deabda7d72982b6cb31b1
+    discipline: drilling
+    summary: This NORSOK standard is developed with broad petroleum industry participation by interested parties in the
     status: gap
-  - id: DNV_SfC_No.2.22_(2008)_Lifting_Appliances
-    title: DNV SfC No.2.22 (2008) Lifting Appliances
+  - id: Drilling_Fluid_Processing
+    title: Drilling Fluid Processing
     org: ''
-    sha: sha256:409f4dbf490edd9ce7f1832ae77bea64a6bc480ea08234e6659b17b34c89d81b
-    discipline: installation
-    summary: _standards DNV DNV_SfC_No.2.22_(2008)_Lifting_Appliances.pdf
+    sha: sha256:d6d920178239d446c3bd85d9f8fd500b456e00c28aba11c681c7a2b88f20dd42
+    discipline: drilling
+    summary: ''
     status: gap
-  - id: DNV_SfC_No.2.22_(2011)_Lifting_Appliances
-    title: DNV SfC No.2.22 (2011) Lifting Appliances
+  - id: Drillship_Guide_e-Jan12
+    title: Guide for Building and Classing Drillships
+    org: ABS
+    sha: sha256:95e43e33211c1266775f763bb73b659a81386c539d84da95640eb843af45cb1b
+    discipline: drilling
+    summary: Standard document covering drilling operations, wellbore design, or well control. Guide for Building and Classing
+      Drillships.
+    status: gap
+  - id: Titanium_Alloys_in_Drilling_and_Production_Systems
+    title: Applying Titanium Alloys in Drilling
     org: ''
-    sha: sha256:8114ef58467769e75706662e632487e99a1ec75b2d7cb31e0149f8773294451f
+    sha: sha256:bf88337e8d1918c82bd6c51f47acab33afbc3614ff3f2dee7ec077efa613cab0
+    discipline: drilling
+    summary: Standard document covering drilling operations, wellbore design, or well control. Applying Titanium Alloys in
+      Drilling.
+    status: gap
+  - id: ISO-TR_10400,_1st_Ed_(2007)_Equations_and_calculations_for_the_properties_of_casing,_tubing,_drill_pipe_and_line_pipe_used_as_casing_or_tubing
+    title: Equations and calculations for the
+    org: ISO
+    sha: sha256:7e5feee9a990246253a390a535fd743eb396d08c87fbd429e0018719392db974
+    discipline: drilling
+    summary: ISO document covering drilling operations, wellbore design, or well control. Equations and calculations for the.
+    status: gap
+  - id: BS_10405_(2000)_Care_and_use_of_casing_&_tubing
+    title: Petroleum and natural
+    org: BSI
+    sha: sha256:1f2e730b80e5d9d3418a3254d95ac01d90157afbb1b9c35ba48aa02d567de6c5
+    discipline: drilling
+    summary: Standard document covering drilling operations, wellbore design, or well control. Petroleum and natural.
+    status: gap
+  - id: BS_13533_(2002)_Drill_through_equipment
+    title: Petroleum and natural
+    org: BSI
+    sha: sha256:e2754483dfac0c787791f76c5d66820fb55a9e372379af18fc116f3837dc9fa8
+    discipline: drilling
+    summary: Standard document covering drilling operations, wellbore design, or well control. Petroleum and natural.
+    status: gap
+  - id: 6A_e20_Addendum_3
+    title: 'Affected Publication: API Specification 6A, Specification for Wellhead and Christmas Tree Equipment,'
+    org: API
+    sha: sha256:cd108bce3675eab74f363d94397168f460f9faa12eec1ad27906a822c2665252
+    discipline: drilling
+    summary: 'Affected Publication: API Specification 6A, Specification for Wellhead and Christmas Tree Equipment,. Technical
+      document covering drilling engineering and well design.'
+    status: gap
+  - id: API-2201 Procedures for Welding or Hot Tapping
+    title: COPYRIGHT 2000 American Petroleum Institute
+    org: API
+    sha: sha256:cbe055ced7fb2535e27c31ad01bbdf810ae8f3fb7c59b4ead7cb9258815ab39c
+    discipline: drilling
+    summary: COPYRIGHT 2000 American Petroleum Institute Information Handling Services, 2000 COPYRIGHT 2000 American Petroleum
+      Institute
+    status: gap
+  - id: 6A_e20_Errata_6
+    title: 6A e20 Errata 6
+    org: API
+    sha: sha256:99c3d383ddfe6e801304aa5a94d00816e069206be279903facb65a4d061c6628
+    discipline: drilling
+    summary: 'Affected Publication: API Specification 6A, Specification for Wellhead and Christmas Tree Equipment, Twentieth
+      Edition, October 2010'
+    status: gap
+  - id: Front_Matter_Combined
+    title: American Petroleum Institute
+    org: API
+    sha: sha256:13f8974e8370c8e2d3715071f48b34f15609a46e9d9bbb52dc8f9c2222431a74
+    discipline: drilling
+    summary: American Petroleum Institute Handbook Revision 10.01.09 Purchase API Specs online at www.global.ihs.com Purchasing
+      Guidelines Handbook API® Monogram® Equipment Copyright 2009 - American Petroleum Inst
+    status: gap
+  - id: append_h
+    title: APPENDIX H - Validation
+    org: API
+    sha: sha256:aec90d9dd0c65818a6fbcb627888bc8ffad65ee417481a254f171c8c2428dc23
+    discipline: drilling
+    summary: APPENDIX H - Validation This appendix is currently being developed by the API CRE Task Group on Fitness-For-Service.
+      When this appendix is complete, it will be sent to all registered purchasers of API
+    status: gap
+  - id: API SPEC 4F 3rd Ed (2008) Drilling and Well Servicing Structures
+    title: Specification for Drilling and
+    org: API
+    sha: sha256:78bdce6868a1dd04d664622352082a367b3da81765f2ea8737664eaef31b93d1
+    discipline: drilling
+    summary: 'Specification for Drilling and Well Servicing Structures API SPECIFICATION 4F THIRD EDITION, JANUARY 2008 EFFECTIVE
+      DATE: JULY 1, 2008 CopyriglllAmoriQln PGuoIeum Inslil1lLa Provided by IHS uncle! Iic'
+    status: gap
+  - id: API SPEC 17D 1st Ed Supplement 1 (1993) Design and Operation of Subsea Wellhead and Tree Equipment
+    title: Specification for Subsea
+    org: API
+    sha: sha256:88ca63955aafc2c9d82e3a02f90d6cec48ef595889a910d71256cd1bea953494
+    discipline: drilling
+    summary: Specification for Subsea Wellhead and Christmas API SPECIFICATION 170 (SPEC 170)
+    status: gap
+  - id: API SPEC 2R (1989) Marine Drilling Riser Couplings
+    title: API SPEC 2R (1989) Marine Drilling Riser Couplings
+    org: API
+    sha: sha256:28b670ef0b38f82a33411660d6572c84661240ddb372eafaec5b78ade0f70cf7
+    discipline: drilling
+    summary: API document covering offshore marine structures, floating systems, or mooring design. Addresses environmental
+      loading, vessel motions, and offshore installation design.
+    status: gap
+  - id: API Spec 6A - Addendum 3
+    title: API Spec 6A   Addendum 3
+    org: API
+    sha: sha256:9a3171bafbdc1daf8728fa6d81e221b2736b852a74c7509f09892e97ac0a1064
+    discipline: drilling
+    summary: 'Affected Publication: API Specification 6A, Specification for Wellhead and Christmas Tree Equipment, Twentieth
+      Edition, October 2010'
+    status: gap
+  - id: API 5B Specification for Threading, Gauging and Thread Inspection of Pipe Thtreads
+    title: Specification for Threading, Gauging, and Thread Inspection
+    org: API
+    sha: sha256:f24f25d13cc6be48d7fdb5448bee6f63ad7048c551f8136400645b7c74a6afa7
+    discipline: drilling
+    summary: of Casing, Tubing, and Line Pipe. Technical document covering drilling engineering and well design.
+    status: gap
+  - id: API SPEC 5CT 8th Ed (2005) Casing and Tubing (U.S. Customary Units)
+    title: Specification for Casing and Tubing
+    org: API
+    sha: sha256:18eabc2e7e3ebc5211637dc60fb1a5e3f2f4d7280b67b7b450c3f6d72dd06d74
+    discipline: drilling
+    summary: This errata includes all known items in the eighth edition, including the errata dated March 31, 2006. The change
+      bar indicates the correction from the March 31 st errata.
+    status: gap
+  - id: API SPEC 6A 19th Ed Errata 2 (2004) Wellhead and Christmas Tree Equipment
+    title: API SPEC 6A 19th Ed Errata 2 (2004) Wellhead and Christmas Tree Equipment
+    org: API
+    sha: sha256:d5fd6fb98c1e979af2f9a215914f2b5c13748d5e86954b564ea8c5ec742cf59d
+    discipline: drilling
+    summary: 'Affected Publication: API Specification 6A, Specification for Wellhead and Christmas Tree Equipment, Nineteenth
+      Edition, July 2004'
+    status: gap
+  - id: API RP 941 Steels for Hydrogen Service at Elevated Temperatures
+    title: STD.API/PETRO RF 742-ENGL 2 9 7 7 m U732270 G b 0 7 8 5 7 T 9 U m
+    org: API
+    sha: sha256:71682acff21661e8eb213e2b517b209d53e8d26b73a94b96218ec29833c6c6b1
+    discipline: drilling
+    summary: STD.API/PETRO RF 742-ENGL 2 9 7 7 m U732270 G b 0 7 8 5 7 T 9 U m 1220 L Street, Northwest Washington, D.C. 20005-4070
+    status: gap
+  - id: API  RP 16Q - Working Section 5 - June 4 Mtg - Combined Document
+    title: API RP 16Q - Working Section 5 - June 4 Mtg - Combined Document
+    org: API
+    sha: sha256:3a4d4030ee59f4f09484f25855fa71bac4f9e704e5b0d41ef1520338a5549af3
+    discipline: drilling
+    summary: ''
+    status: gap
+  - id: Catalog API RP2SM 2001
+    title: Catalog API RP2SM 2001
+    org: API
+    sha: sha256:3187c6bb39525b7b2a34e73819a54b1c4fb92bfcef5c67e6d201627d978b1b6a
+    discipline: drilling
+    summary: The future of energy starts here. Since 1924, API has been a cornerstone in establishing, maintaining and publishing
+      standards for the worldwide oil and natural gas
+    status: gap
+  - id: API RP 621 (2002)
+    title: Reconditioning of Metallic Gate,
+    org: API
+    sha: sha256:65e9958270c781c6f8c413a2fe2a4299230bd1a1c15684dc100a8a11038300b4
+    discipline: drilling
+    summary: Reconditioning of Metallic Gate, Globe, and Check Valves API RECOMMENDED PRACTICE 621
+    status: gap
+  - id: Api Std 677 General Purpose Gear Units For Petroleum, Chemical, And Gas Industry Services
+    title: General Purpose Gear Units for
+    org: API
+    sha: sha256:2e5c184d35386288d597a48558978e1106e6d1918c0d5d45c9029bd41cfc69a3
+    discipline: drilling
+    summary: General Purpose Gear Units for Petroleum, Chemical, and Gas SECOND EDITION, JULY 1997
+    status: gap
+  unlinked_doc_count: 0
+- module: decommissioning
+  standards_count: 16
+  standards:
+  - id: API_602_Compact Steel Gate Valves-_1998
+    title: API 602 Compact Steel Gate Valves  1998
+    org: API
+    sha: sha256:fca9981ba0f5064046fdb52c94a3450807efdce2f0460c5b7f7dd97fdc065c6f
     discipline: installation
-    summary: _standards DNV DNV_SfC_No.2.22_(2011)_Lifting_Appliances.pdf
+    summary: Flanged, Threaded, Welding, and --```````````,,,,``,,``,,,,,,-`-`,,`,,`,`,,`---
+    status: gap
+  - id: API RP 520 Part I (2000)
+    title: API RP 520 Part I (2000)
+    org: API
+    sha: sha256:29837fccf7d32751655dd75132c06833476c95d47dbee42835f47e2866431b06
+    discipline: installation
+    summary: Sizing, Selection, and Installation of Pressure-Relieving Devices in
+    status: gap
+  - id: API RP 652 (1997)
+    title: Lining of Aboveground Petroleum
+    org: API
+    sha: sha256:75f04fefb0dcdeae84a45b8fbee16071001f48414f7ef3ae9ae63b8d68e680ae
+    discipline: installation
+    summary: Lining of Aboveground Petroleum API RECOMMENDED PRACTICE 652 SECOND EDITION, DECEMBER 1997
+    status: gap
+  - id: API Std 616 (1998)
+    title: Gas Turbines for the Petroleum,
+    org: API
+    sha: sha256:07697ec7e45ea584cbdf3daf6f48a2063de7a1fcfc9738d5bba03c05690cfa9b
+    discipline: installation
+    summary: We recognize our responsibility to work with the public, the government, and others to develop and to use natural
+      resources in an environmentally sound manner while protecting the health and safety of
+    status: gap
+  - id: API Std 614 (1994)
+    title: Lubrication, Shaft-Sealing, and
+    org: API
+    sha: sha256:8f7def896f26b909c879ef5d20188f699bdcf4e65640aff695e0454897a3fd5a
+    discipline: installation
+    summary: Lubrication, Shaft-Sealing, and Control-Oil Systems and Auxiliaries for Petroleum, Chemical
+    status: gap
+  - id: API Std 671 (1998)
+    title: API Std 671 (1998).pdf
+    org: ''
+    sha: sha256:ad5855240434eb6384ced798687c5bb1651ce5c172fb5da5767e2eee2f6aae1f
+    discipline: installation
+    summary: Special-Purpose Couplings for Petroleum, Chemical, and Gas Industry Services API STANDARD 671 THIRD EDITION,
+      OCTOBER 1998 COPYRIGHT 2000 American Petroleum Institute Information Handling Services, 200
+    status: gap
+  - id: F 1154 - 99a R04  _RJEXNTQ_
+    title: F 1154   99a R04   RJEXNTQ
+    org: ASTM
+    sha: sha256:0a82bb90897d4d5856e265affb7ca0c7762b572b24f144a10bf5d5df78381a41
+    discipline: installation
+    summary: 'Designation: F 1154 – 99a (Reapproved 2004) Qualitatively Evaluating the Comfort, Fit, Function, and'
+    status: gap
+  - id: D 3878 - 04  _RDM4NZGTUKVE
+    title: of the standard as published by ASTM is to be considered the official document.
+    org: ASTM
+    sha: sha256:9db13479d3b48ebe016229dca99582b735109497902e748bd1b2bf64972227f4
+    discipline: installation
+    summary: This document is not an ASTM standard and is intended only to provide the user of an ASTM standard an indication
+      of what changes have been made to the previous version. Because it may not be technical
+    status: gap
+  - id: Part7Corrigenda-Feb14
+    title: SURVEY AFTER CONSTRUCTION
+    org: Unknown
+    sha: sha256:e2c97d41b3767e3fab4d313b10519897421088d6dd41b4bb4bc1cc02a4fe667b
+    discipline: installation
+    summary: RULES FOR SURVEY AFTER CONSTRUCTION 2014 CORRIGENDA/EDITORIALS – 1 February 2014 Page No. Part Chapter Section
+      7 1 1 3 Part Chapter Section Paragraph Rules for Survey After Construction Conditions for
+    status: gap
+  - id: Ellinas,_C.P.,_et_al,_1983_-_Effects_of_Damage_on_Offshore_
+    title: Ellinas, C.P., et al, 1983   Effects of Damage on Offshore
+    org: ''
+    sha: sha256:8121e91f9a0d2eee30420e12d7efff84db457ded9b0f2f104b785fb4d7698abf
+    discipline: installation
+    summary: EFFECTS OF DAMAGE ON OFFSHORE TUBULAR C P Ellinas and A C Walker, J P KENNY & PARTNERS LTD
+    status: gap
+  - id: ISO_16708_1st_Ed_(2006)_Pipeline_transportation_service
+    title: ISO 16708 1st Ed (2006) Pipeline transportation service
+    org: ISO
+    sha: sha256:bdd20b89805f56f79c46e231e27dec52bfaa994379f8b2071d6304c71007e359
+    discipline: installation
+    summary: Petroleum and natural gas industries Pipeline transportation systems Reliability-based limit state methods
+    status: gap
+  - id: ISO_13628_Pt_12_DRAFT_Rev24_(2011)_Dynamic_Risers_for_Floating_Production_Installations
+    title: ISO 13628 Pt 12 DRAFT Rev24 (2011) Dynamic Risers for Floating Production Installations.docx
+    org: raw
+    sha: sha256:0941d67e95e383ec8cb2efe2a58189ff75a6415e453d0dc74ad9a4918ff5b2b5
+    discipline: installation
+    summary: ''
+    status: gap
+  - id: BS_13703_(2001)_Design_&_installation_of_piping_systems_on_offshore_production_platforms
+    title: Petroleum and natural
+    org: BSI
+    sha: sha256:0bf7c4e4d0ebc45851fb8c334778425423d6a3eb8d8896187c39c4d3841d04d1
+    discipline: installation
+    summary: Standard document covering marine installation, lifting, or transportation operations. Petroleum and natural.
+    status: gap
+  - id: ASME_B31.4_(2002)_Transportation_Systems_for_Liquid_Hydrocarbons_and_Other_Liquids
+    title: ASME B31.4 (2002) Transportation Systems for Liquid Hydrocarbons and Other Liquids
+    org: ''
+    sha: sha256:22eeec5c0ba38d63671b80d6a0cec844a4e2c47d3808c49e6360ffe2c811e765
+    discipline: installation
+    summary: Standard document covering marine installation, lifting, or transportation operations. ASME B31.4 (2002) Transportation
+      Systems for Liquid Hydrocarbons and Other Liquids.
+    status: gap
+  - id: General_Guidelines_for_Marine_Transportations
+    title: GENERAL GUIDELINES FOR MARINE
+    org: ''
+    sha: sha256:abcec7546a7e43e59d71a6262b589799cc14cdc6b052e52e79fdb59fab89bcb7
+    discipline: installation
+    summary: Standard document covering marine installation, lifting, or transportation operations. GENERAL GUIDELINES FOR
+      MARINE.
     status: gap
   - id: DNV_RP_5_Pt2_(1985)_Lifting
     title: DNV RP 5 Pt2 (1985) Lifting
-    org: ''
+    org: DNV
     sha: sha256:6648610f22fe17ee7b17472cc90ddf9dd52ec57d60ff5bfc31204dccb30064bb
     discipline: installation
-    summary: _standards DNV DNV_RP_5_Pt2_(1985)_Lifting.pdf
+    summary: ''
     status: gap
-  - id: DNV RP 5 Pt2 (1985) Lifting
-    title: DNV RP 5 Pt2 (1985) Lifting
-    org: ''
-    sha: sha256:257e08ef4ad9067591f1bcd184b75af0c3ee9e53b7c6164834f68e21c3f3c4ba
-    discipline: installation
-    summary: _ocr_text DNV DNV RP 5 Pt2 (1985) Lifting.txt
-    status: gap
-  unlinked_doc_count: 2
+  unlinked_doc_count: 0
 - module: fdas
   standards_count: 0
   standards: []

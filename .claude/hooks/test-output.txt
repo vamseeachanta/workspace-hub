@@ -1,0 +1,1 @@
+Hook test: Seventh edit - testing global hooks

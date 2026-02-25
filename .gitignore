@@ -1,0 +1,383 @@
+# Individual Git Repositories - Exclude all subdirectory repos
+aceengineer-admin/   # Personal
+aceengineer-website/ # Personal, Work
+achantas-data/ # Personal
+achantas-media/ # Personal
+acma-projects/ # Work
+ai-native-traditional-eng/ # Work
+assethold/ # Work
+assetutilities/ # Work
+client_projects/ # Work
+digitalmodel/ # Work
+doris/ # Work
+energy/ # Work
+frontierdeepwater/ # Work
+hobbies/ # Personal
+investments/ # Personal
+OGManufacturing/ # Work
+pyproject-starter/ # Work
+rock-oil-field/ # Work
+sabithaandkrishnaestates/ # Personal
+saipem/ # Work
+sd-work/ # Personal
+seanation/ # Work
+teamresumes/ # Work
+worldenergydata/
+
+# Build and dependency directories
+node_modules/
+dist/
+coverage/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+!scripts/agents/lib/
+!scripts/coordination/routing/lib/
+!scripts/improve/lib/
+!scripts/lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary and cache files
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+venv/
+env/
+ENV/
+
+# Log files
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test reports
+test-results/
+junit.xml
+coverage.xml
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Agent OS and swarm directories (already initialized)
+.agent-os/
+
+# .claude/ - ignore internals, keep transferable configs
+.claude/*
+!.claude/skills/
+!.claude/agent-library/
+!.claude/tools/
+!.claude/docs/
+!.claude/settings.json
+!.claude/agent-skills-map.yaml
+!.claude/workflows/
+!.claude/CONFIGURATION.md
+!.claude/COORDINATION.md
+!.claude/README.md
+!.claude/global/
+!.claude/commands/
+!.claude/hooks/
+!.claude/rules/
+!.claude/skill-registry.yaml
+# Knowledge base - institutional memory across sessions
+!.claude/knowledge/
+# Status line - portable across machines
+!.claude/statusline-command.sh
+# Repo-level memory - shared institutional knowledge
+!.claude/memory/
+# Work queue - tracked for cross-machine/user portability
+!.claude/work-queue/
+
+# Machine-local Claude directories (never synced)
+.claude/settings.local.json
+.claude/state/
+.claude/checkpoints/
+.claude/outputs/
+.claude/plans/
+
+# State sub-directories committed for cross-machine comprehensive-learning analysis
+# Raw transcripts (sessions/, archive/, session-reports/) stay local — too large
+!.claude/state/candidates/
+!.claude/state/corrections/
+!.claude/state/patterns/
+!.claude/state/reflect-history/
+!.claude/state/trends/
+!.claude/state/session-signals/
+!.claude/state/cc-insights/
+!.claude/state/learned-patterns.json
+!.claude/state/skill-scores.yaml
+!.claude/state/cc-user-insights.yaml
+
+# Claude-flow runtime (never synced)
+.hive-mind/
+.swarm/
+memory/
+
+# Other working directories
+reports/*
+!reports/.gitkeep
+!reports/test-summary/
+!reports/test-summary/.gitkeep
+!reports/test-summary/baseline-summary.json
+src/workspace_hub/reports/
+test-framework-integrations/
+_organized_non_repo_files/
+_temp/
+
+# Note: docker/, examples/, and monitoring-dashboard/ are now tracked
+# as they contain important development resources for teams
+
+# GitHub workflows and configurations
+# .github/ is now tracked for CI/CD workflows
+
+# Sync reports
+.sync-reports/
+.SLASH_COMMAND_ECOSYSTEM/
+
+# ==========================================
+# TEAM DEVELOPMENT REPOSITORY
+# Shared across multiple teams
+# ==========================================
+
+# Security & Credentials - CRITICAL
+# ==========================================
+# API Keys and Secrets
+*.key
+*.pem
+*.cert
+*.crt
+*.p12
+*.pfx
+.env
+.env.*
+.env.local
+.env.*.local
+secrets/
+credentials/
+*_secret*
+*_token*
+*_api_key*
+
+# Authentication & SSH
+id_rsa*
+id_dsa*
+*.ppk
+.ssh/
+known_hosts
+authorized_keys
+
+# Cloud Provider Credentials
+.aws/
+.gcloud/
+.azure/
+*.json.keyfile
+service-account-*.json
+
+# Database credentials
+*.sql.password
+database.yml
+database.json
+db-config.json
+
+# Personal & Private Data
+# ==========================================
+# Personal workspace configurations
+.personal/
+personal-*
+private/
+private-*
+*-personal.*
+*-private.*
+my-*
+local-*
+
+# Team member specific settings
+.user-settings/
+user-config/
+developer-notes/
+workspace-*.json
+
+# AI Assistant Memory & State
+# ==========================================
+# Claude Flow and AI memory (local only)
+# Note: .claude/ is ignored above, with exceptions for skills/ and CLAUDE.md
+.hive-mind/
+.swarm/
+memory/
+!.claude/memory/
+*.memory.json
+*.session.json
+ai-memory/
+agent-state/
+
+# Database Files
+# ==========================================
+*.db
+*.sqlite
+*.sqlite3
+*.db3
+*.s3db
+*.sl3
+database.db
+
+# Team Collaboration
+# ==========================================
+# Temporary collaboration files
+*.tmp
+*.temp
+temp/
+tmp/
+scratch/
+sandbox/
+experiments/
+
+# Meeting notes and recordings
+meeting-notes/
+recordings/
+*.mp4
+*.mov
+*.avi
+*.webm
+
+# Large binary files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.dmg
+*.iso
+*.exe
+*.msi
+*.deb
+*.rpm
+
+# Generated documentation
+generated-docs/
+api-docs-generated/
+*.generated.md
+
+# Team-specific configurations
+team-*/
+teams/*/local/
+*-team-config.json
+
+# Development Machine Specific
+# ==========================================
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/*
+!.vscode/settings.json.template
+!.vscode/extensions.json.template
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+*.iml
+*.ipr
+*.iws
+
+# Debugging
+*.map
+*.debug
+debug/
+debugging/
+.gdb_history
+core.*
+core.[0-9]*
+
+# Testing & Coverage
+# ==========================================
+test-results/
+test-reports/
+coverage/
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+.phpunit.result.cache
+junit.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Shared Configuration Templates
+# ==========================================
+# Allow templates for team setup
+!*.template
+!*.example
+!example-*
+!template-*
+!docs/examples/
+
+# Keep only management files at root level
+# Modules directory is tracked for management tools
+# Claude Code project memory - ignore local settings and checkpoints
+.claude/settings.local.json
+.claude/checkpoints/
+simpledigitalmarketing/
+
+# Refactor Analysis Reports
+.refactor-reports/
+*.refactor-report.*
+jscpd-report/
+.claude/skills/.commit-log
+.claude/skills/session-logs/
+.claude-flow/
+dryrun_debug.log
+
+# Repo spec mirrors — large; excluded from hub git (each repo tracks its own content)
+specs/repos/*/
+
+# Data cache files — runtime generated, not for version control
+data/modules/**/cache/
+
+# Document intelligence pipeline (WRK-309)
+data/document-index/index.jsonl
+data/document-index/summaries/
+data/document-index/enhancement-plan.yaml

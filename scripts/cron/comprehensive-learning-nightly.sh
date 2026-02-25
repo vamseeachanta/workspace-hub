@@ -54,6 +54,12 @@ bash scripts/readiness/test-health-check.sh || true
 echo "--- Provider cost tracking $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/readiness/provider-cost-tracker.sh || true
 
+# Step 8: rebuild agent-readable specs index (best-effort — WRK-328)
+echo "--- Specs index rebuild $(date +%Y-%m-%dT%H:%M:%S) ---"
+source scripts/lib/python-resolver.sh
+${PYTHON} scripts/readiness/build-specs-index.py || \
+  echo "WARNING: specs index rebuild failed — see above"
+
 # Step 3: run pipeline
 # Cron usage: bash scripts/cron/comprehensive-learning-nightly.sh >> /mnt/local-analysis/workspace-hub/.claude/state/learning-reports/cron.log 2>&1
 exec claude --skill comprehensive-learning

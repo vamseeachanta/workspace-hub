@@ -23,6 +23,22 @@ _WH_SNIPPET_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd)"
 WORKSPACE_HUB="$(cd "${_WH_SNIPPET_DIR}/../.." 2>/dev/null && pwd)"
 export WORKSPACE_HUB
 
+# ── Screenshot directory (WRK-228) ───────────────────────────────────────────
+# Set CLAUDE_SCREENSHOT_DIR so Claude Code can locate screenshots without
+# manual navigation. Override by setting the var before sourcing this file.
+if [[ -z "${CLAUDE_SCREENSHOT_DIR:-}" ]]; then
+  if [[ "$_WH_OS" == "windows" ]]; then
+    # Windows Git Bash: USERPROFILE is the Windows home dir
+    _WH_WIN_PICS="${USERPROFILE:-$HOME}/Pictures/Screenshots"
+    # Normalise Windows path to POSIX form for bash
+    _WH_WIN_PICS_POSIX=$(cygpath -u "$_WH_WIN_PICS" 2>/dev/null || echo "$_WH_WIN_PICS")
+    export CLAUDE_SCREENSHOT_DIR="$_WH_WIN_PICS_POSIX"
+  else
+    # Linux: GNOME default screenshot location
+    export CLAUDE_SCREENSHOT_DIR="${HOME}/Pictures/Screenshots"
+  fi
+fi
+
 # ── PATH entries ──────────────────────────────────────────────────────────────
 # Node/npm global bin (claude, codex CLIs installed here)
 if [[ "$_WH_OS" == "linux" ]]; then
@@ -51,6 +67,9 @@ alias wh-legal='bash "${WORKSPACE_HUB}/scripts/legal/legal-sanity-scan.sh" --dif
 
 # Open nightly readiness check
 alias wh-ready='bash "${WORKSPACE_HUB}/scripts/readiness/nightly-readiness.sh"'
+
+# UX consistency check (keybindings, screenshot dir, Chrome extension)
+alias wh-ux='bash "${WORKSPACE_HUB}/scripts/readiness/check-ux-consistency.sh"'
 
 # ── Shell prompt: branch + active WRK item ────────────────────────────────────
 # Appended to PS1; only activates inside a git repo.

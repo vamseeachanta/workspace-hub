@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workspace Hub — Work Item Workflow</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --orange: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem;
+  }
+  h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1.4rem; color: var(--accent); margin: 2.5rem 0 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  h3 { font-size: 1.1rem; color: var(--purple); margin: 1.5rem 0 0.75rem; }
+  .subtitle { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem; }
+  .mermaid-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+  }
+  .mermaid { display: flex; justify-content: center; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border);
+  }
+  th { background: var(--surface); color: var(--accent); font-weight: 600; }
+  td { background: var(--bg); }
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .badge-green { background: rgba(63,185,80,0.15); color: var(--green); }
+  .badge-orange { background: rgba(210,153,34,0.15); color: var(--orange); }
+  .badge-red { background: rgba(248,81,73,0.15); color: var(--red); }
+  .badge-blue { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .badge-purple { background: rgba(188,140,255,0.15); color: var(--purple); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+  .stat { text-align: center; padding: 1.5rem; }
+  .stat-value { font-size: 2.5rem; font-weight: 700; color: var(--accent); }
+  .stat-label { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem; }
+  .obs-list { list-style: none; }
+  .obs-list li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+  .obs-list li:last-child { border-bottom: none; }
+  .obs-list .tag { font-weight: 600; margin-right: 0.5rem; }
+  code {
+    background: var(--surface);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--orange);
+  }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem; text-align: center; }
+  .section-anchor { scroll-margin-top: 1rem; }
+  nav { margin-bottom: 2rem; }
+  nav a { color: var(--accent); text-decoration: none; margin-right: 1.5rem; font-size: 0.9rem; }
+  nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<h1>Workspace Hub — Work Item Workflow</h1>
+<p class="subtitle">Interactive workflow reference &bull; Updated 2026-02-16 20:10 UTC &bull; v2 — with session locking, staleness, batch approval, Codex fallback, pipeline model</p>
+
+<nav>
+  <a href="#lifecycle">Lifecycle</a>
+  <a href="#gates">Gates</a>
+  <a href="#routing">Routing</a>
+  <a href="#providers">Providers</a>
+  <a href="#parallel">Parallel Pipeline</a>
+  <a href="#state">Current State</a>
+  <a href="#observations">Observations</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2 id="lifecycle" class="section-anchor">1. Work Item Lifecycle</h2>
+
+<div class="mermaid-wrap">
+<pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': {'primaryColor': '#1f6feb', 'primaryTextColor': '#e6edf3', 'lineColor': '#58a6ff', 'secondaryColor': '#161b22', 'tertiaryColor': '#21262d'}}}%%
+flowchart LR
+    subgraph CAPTURE["1 &middot; CAPTURE"]
+        C1["/work add &lt;desc&gt;"]
+        C2["Assign WRK-NNN"]
+        C3["→ pending/"]
+        C1 --> C2 --> C3
+    end
+
+    subgraph TRIAGE["2 &middot; TRIAGE"]
+        T1["Classify complexity"]
+        T2{"Route?"}
+        T1 --> T2
+        T2 -->|Simple| RA["Route A"]
+        T2 -->|Medium| RB["Route B"]
+        T2 -->|Complex| RC["Route C"]
+    end
+
+    subgraph PLAN["3 &middot; PLAN"]
+        P1["Write ## Plan in WRK"]
+        P2["plan.sh validates"]
+        P3["Assign provider"]
+        P1 --> P2 --> P3
+    end
+
+    subgraph GATE1["⛔ GATE 1"]
+        G1["User approves plan"]
+        G1a["plan_approved: true"]
+        G1 --> G1a
+    end
+
+    subgraph LOCK["🔒 GATE 1.5"]
+        L1["wrk_claim locks item"]
+        L2["exit 4 if collision"]
+        L1 --> L2
+    end
+
+    subgraph EXECUTE["4 &middot; EXECUTE"]
+        E1["execute.sh dispatches"]
+        E2["Provider runs TDD"]
+        E3["→ working/"]
+        E1 --> E2 --> E3
+    end
+
+    subgraph REVIEW["5 &middot; REVIEW"]
+        R1["review.sh triggers"]
+        R2["Claude ✓"]
+        R3["Codex ✓ HARD GATE"]
+        R4["Gemini ✓"]
+        R1 --> R2 & R3 & R4
+    end
+
+    subgraph ARCHIVE["6 &middot; ARCHIVE"]
+        A1["All criteria met"]
+        A2["→ archive/YYYY-MM/"]
+        A1 --> A2
+    end
+
+    CAPTURE --> TRIAGE --> PLAN --> GATE1 --> LOCK --> EXECUTE --> REVIEW --> ARCHIVE
+
+    style CAPTURE fill:#0d419d,stroke:#58a6ff
+    style TRIAGE fill:#1a1f35,stroke:#bc8cff
+    style PLAN fill:#1a1f35,stroke:#d29922
+    style GATE1 fill:#3b1117,stroke:#f85149
+    style LOCK fill:#3b2a07,stroke:#d29922
+    style EXECUTE fill:#0c2d1a,stroke:#3fb950
+    style REVIEW fill:#1a1f35,stroke:#58a6ff
+    style ARCHIVE fill:#1a1f35,stroke:#3fb950
+</pre>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2 id="gates" class="section-anchor">2. Gate System</h2>
+
+<div class="mermaid-wrap">
+<pre class="mermaid">
+%%{init: {'theme': 'dark'}}%%
+flowchart TD
+    subgraph G1["GATE 1 — Plan Approval"]
+        direction LR
+        G1a["plan.sh checks ## Plan exists"] --> G1b{"User approves?"}
+        G1b -->|Yes| G1c["plan_approved: true in frontmatter"]
+        G1b -->|No| G1d["Return to planning"]
+    end
+
+    subgraph G2["GATE 2 — Execution Guard"]
+        direction LR
+        G2a["execute.sh reads frontmatter"] --> G2b{"plan_approved\n== true?"}
+        G2b -->|Yes| G2c["Dispatch to provider"]
+        G2b -->|No| G2d["Exit code 3 — blocked"]
+    end
+
+    subgraph G3["GATE 3 — Cross-Review (with fallback)"]
+        direction LR
+        G3a["review.sh → cross-review.sh"] --> G3b["Claude review"]
+        G3a --> G3c["Codex review"]
+        G3a --> G3d["Gemini review"]
+        G3c --> G3e{"Codex\nverdict?"}
+        G3e -->|APPROVE/MINOR| G3f["Pass ✓"]
+        G3e -->|REJECT/MAJOR| G3g["HARD BLOCK ✗\nExit 1"]
+        G3e -->|NO_OUTPUT| G3h{"2-of-3\nfallback?"}
+        G3h -->|"Claude+Gemini\nboth APPROVE"| G3i["CONDITIONAL\nPASS ✓"]
+        G3h -->|"No consensus"| G3g
+    end
+
+    G1 --> G2 --> G3
+
+    style G1 fill:#3b1117,stroke:#f85149
+    style G2 fill:#3b2a07,stroke:#d29922
+    style G3 fill:#0d419d,stroke:#58a6ff
+</pre>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Gate</th><th>Check</th><th>Enforced By</th><th>Failure Exit</th><th>Recovery</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="badge badge-red">GATE 1</span> Plan Approval</td>
+      <td><code>## Plan</code> section exists + user says yes</td>
+      <td><code>plan.sh</code> + manual</td>
+      <td>3</td>
+      <td>Write plan, re-run</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">GATE 2</span> Execution Guard</td>
+      <td><code>plan_approved: true</code> in frontmatter</td>
+      <td><code>execute.sh</code> → <code>assert_plan_approved_or_fail</code></td>
+      <td>3</td>
+      <td>Get plan approved</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">GATE 1.5</span> Session Lock</td>
+      <td><code>locked_by</code> must be empty or own session; 2h TTL</td>
+      <td><code>execute.sh</code> &rarr; <code>wrk_claim</code></td>
+      <td>4</td>
+      <td>Wait for lock release or TTL expiry</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-blue">GATE 3</span> Cross-Review</td>
+      <td>Codex APPROVE/MINOR, or 2-of-3 fallback on NO_OUTPUT</td>
+      <td><code>cross-review.sh</code></td>
+      <td>1</td>
+      <td>Fix issues, re-review; fallback if Codex empty</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2 id="routing" class="section-anchor">3. Complexity Routing</h2>
+
+<div class="mermaid-wrap">
+<pre class="mermaid">
+%%{init: {'theme': 'dark'}}%%
+flowchart TD
+    START["New WRK item"] --> CLASS{"Classify\ncomplexity"}
+
+    CLASS -->|"&lt;50 words\n1 repo\nsingle config"| A["ROUTE A\nSimple"]
+    CLASS -->|"50-200 words\n1-2 repos\nclear outcome"| B["ROUTE B\nMedium"]
+    CLASS -->|"&gt;200 words\n3+ repos\narchitectural"| C["ROUTE C\nComplex"]
+
+    A --> AP["Inline plan\nin WRK file"]
+    B --> BP["Numbered plan\n+ test strategy"]
+    C --> CP["Full spec in\nspecs/modules/"]
+
+    AP --> AR["Self-review"]
+    BP --> BR["Cross-review\n3 agents"]
+    CP --> CR["Full cross-review\n+ spec review"]
+
+    AR --> EXEC["Execute"]
+    BR --> EXEC
+    CR --> EXEC
+
+    style A fill:#0c2d1a,stroke:#3fb950
+    style B fill:#3b2a07,stroke:#d29922
+    style C fill:#3b1117,stroke:#f85149
+</pre>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Route</th><th>Criteria</th><th>Plan Depth</th><th>Reviewers</th><th>Example</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="badge badge-green">A — Simple</span></td>
+      <td>&lt;50 words, 1 repo, single file/config</td>
+      <td>Inline in WRK</td>
+      <td>Self-review</td>
+      <td>Fix typo, update config</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">B — Medium</span></td>
+      <td>50-200 words, 1-2 repos, clear outcome</td>
+      <td>Numbered steps + test strategy</td>
+      <td>3-agent cross-review</td>
+      <td>Add loader, new test suite</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-red">C — Complex</span></td>
+      <td>&gt;200 words, 3+ repos, architectural</td>
+      <td>Full spec in <code>specs/modules/</code></td>
+      <td>Full cross-review + spec review</td>
+      <td>New module, multi-repo refactor</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2 id="providers" class="section-anchor">4. Provider Model</h2>
+
+<div class="mermaid-wrap">
+<pre class="mermaid">
+%%{init: {'theme': 'dark'}}%%
+flowchart TD
+    subgraph SESSION["Session Initialization"]
+        S1["session.sh init\n--provider claude"] --> S2["Orchestrator = claude\n(immutable for session)"]
+    end
+
+    subgraph ORCH["Orchestrator Capabilities"]
+        O1["✓ Delegate to subagents"]
+        O2["✓ Change stages"]
+        O3["✓ Request cross-review"]
+        O4["✓ Route decisions"]
+    end
+
+    subgraph SUB["Subagent Constraints"]
+        SU1["✗ Cannot delegate"]
+        SU2["✗ Cannot change stages"]
+        SU3["✓ Execute assigned stage only"]
+    end
+
+    S2 --> ORCH
+    S2 --> DISPATCH
+
+    subgraph DISPATCH["Provider Assignment"]
+        D1["Claude\nOrchestration\nMulti-file\nArchitecture"]
+        D2["Codex\nFocused code\nSingle-file\nBug fixes"]
+        D3["Gemini\nResearch\nData analysis\nLarge docs"]
+    end
+
+    DISPATCH --> SUB
+
+    style SESSION fill:#0d419d,stroke:#58a6ff
+    style ORCH fill:#0c2d1a,stroke:#3fb950
+    style SUB fill:#3b1117,stroke:#f85149
+    style DISPATCH fill:#1a1f35,stroke:#bc8cff
+</pre>
+</div>
+
+<h3>Session State Machine</h3>
+<div class="mermaid-wrap">
+<pre class="mermaid">
+%%{init: {'theme': 'dark'}}%%
+stateDiagram-v2
+    [*] --> Initialized: session.sh init + pipeline register
+    Initialized --> Planning: plan.sh WRK-NNN
+    Planning --> AwaitingApproval: ## Plan written
+    AwaitingApproval --> Approved: User approves (single or batch)
+    Approved --> Locked: wrk_claim (exit 4 if collision)
+    Locked --> Executing: execute.sh dispatches
+    Executing --> Reviewing: review.sh WRK-NNN
+    Reviewing --> Passed: Codex APPROVE
+    Reviewing --> FallbackCheck: Codex NO_OUTPUT
+    FallbackCheck --> Passed: Claude+Gemini consensus
+    FallbackCheck --> HardBlock: No consensus
+    Reviewing --> HardBlock: Codex REJECT
+    HardBlock --> Executing: Fix & re-execute
+    Passed --> Released: wrk_release
+    Released --> Archived: Archive item
+    Archived --> [*]
+
+    note right of AwaitingApproval: Manual or /work approve-batch
+    note right of Locked: 2h TTL, stale lock auto-reclaim
+    note right of FallbackCheck: WRK-160 fallback policy
+</pre>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2 id="parallel" class="section-anchor">5. Parallel Pipeline Model (Current)</h2>
+
+<div class="mermaid-wrap">
+<pre class="mermaid">
+%%{init: {'theme': 'dark'}}%%
+gantt
+    title Active Sessions &amp; Work Items — 2026-02-16
+    dateFormat HH:mm
+    axisFormat %H:%M
+
+    section pts/4
+    Long-running session (20h)           :active, s4, 00:00, 12:25
+
+    section pts/0
+    Long-running session (15h)           :active, s0, 00:00, 12:25
+
+    section pts/2
+    Morning session                      :active, s2, 09:41, 12:25
+
+    section pts/3
+    Morning session                      :active, s3, 09:47, 12:25
+
+    section pts/1
+    Recent session                       :active, s1, 12:03, 12:25
+
+    section pts/5
+    Recent session                       :active, s5, 12:08, 12:25
+
+    section pts/6
+    Just started                         :active, s6, 12:22, 12:25
+
+    section pts/7
+    Current session (this)               :crit, s7, 12:23, 12:25
+</pre>
+</div>
+
+<h3>Ideal Pipeline (items flowing through stages concurrently)</h3>
+<div class="mermaid-wrap">
+<pre class="mermaid">
+%%{init: {'theme': 'dark'}}%%
+flowchart LR
+    subgraph PIPE["Parallel Pipeline across Sessions"]
+        direction TB
+        subgraph S_A["Session A"]
+            SA1["📝 PLANNING\nWRK-126"]
+        end
+        subgraph S_B["Session B"]
+            SB1["⚙️ EXECUTING\nWRK-121"]
+        end
+        subgraph S_C["Session C"]
+            SC1["🔍 REVIEWING\nWRK-105"]
+        end
+        subgraph S_D["Session D"]
+            SD1["📦 ARCHIVING\nWRK-044"]
+        end
+    end
+
+    SA1 -.->|"next"| SB1 -.->|"next"| SC1 -.->|"next"| SD1
+
+    style S_A fill:#3b2a07,stroke:#d29922
+    style S_B fill:#0c2d1a,stroke:#3fb950
+    style S_C fill:#0d419d,stroke:#58a6ff
+    style S_D fill:#1a1f35,stroke:#bc8cff
+</pre>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2 id="state" class="section-anchor">6. Current Queue State</h2>
+
+<div class="grid">
+  <div class="card stat">
+    <div class="stat-value">145</div>
+    <div class="stat-label">Total Items</div>
+  </div>
+  <div class="card stat">
+    <div class="stat-value" style="color: var(--orange)">44</div>
+    <div class="stat-label">Pending</div>
+  </div>
+  <div class="card stat">
+    <div class="stat-value" style="color: var(--green)">4</div>
+    <div class="stat-label">Working</div>
+  </div>
+  <div class="card stat">
+    <div class="stat-value" style="color: var(--red)">2</div>
+    <div class="stat-label">Blocked</div>
+  </div>
+  <div class="card stat">
+    <div class="stat-value" style="color: var(--purple)">91</div>
+    <div class="stat-label">Archived (63%)</div>
+  </div>
+  <div class="card stat">
+    <div class="stat-value">8</div>
+    <div class="stat-label">Active Sessions</div>
+  </div>
+</div>
+
+<h3>Working Items</h3>
+<table>
+  <thead>
+    <tr><th>ID</th><th>Title</th><th>Priority</th><th>Complexity</th><th>Age</th><th>Repos</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="badge badge-red">WRK-094</span></td>
+      <td>Plan, reassess &amp; improve workspace-hub workflow</td>
+      <td>high</td><td>complex</td><td>13 days</td>
+      <td>workspace-hub</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">WRK-118</span></td>
+      <td>AI agent utilization strategy (Claude, Codex, Gemini)</td>
+      <td>medium</td><td>complex</td><td>5 days</td>
+      <td>workspace-hub</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-blue">WRK-121</span></td>
+      <td>Extract &amp; catalog OrcaFlex models from rock-oil-field</td>
+      <td>high</td><td>complex</td><td>5 days</td>
+      <td>digitalmodel, rock-oil-field</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-blue">WRK-125</span></td>
+      <td>OrcaFlex module roadmap — coordination</td>
+      <td>high</td><td>low</td><td>5 days</td>
+      <td>digitalmodel</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Blocked Items</h3>
+<table>
+  <thead>
+    <tr><th>ID</th><th>Title</th><th>Reason</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="badge badge-red">WRK-006</span></td>
+      <td>Upload videos from iPhone to YouTube</td>
+      <td>Requires physical iPhone access</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-red">WRK-069</span></td>
+      <td>Acquire USCG MISLE bulk dataset</td>
+      <td>Manual browser download (HTTP 403)</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2 id="observations" class="section-anchor">7. Implemented Refinements (2026-02-16)</h2>
+
+<div class="card">
+<h3 style="color: var(--green)">Resolved Gaps &rarr; Implemented Features</h3>
+<ul class="obs-list">
+  <li><span class="tag badge badge-green">WRK-157</span> <strong>Session Locking</strong> — <code>wrk_claim()</code>/<code>wrk_release()</code> with 2h TTL, exit code 4 on collision, stale lock auto-reclaim. 13 tests.</li>
+  <li><span class="tag badge badge-green">WRK-158</span> <strong>Staleness Enforcement</strong> — 7-day warning, 14-day critical auto-move to pending. Runs on <code>session.sh init</code> and <code>work.sh list</code>. 14 tests.</li>
+  <li><span class="tag badge badge-green">WRK-159</span> <strong>Batch Plan Approval</strong> — <code>work.sh approve-batch [--approve-all]</code>. Lists approvable items, bulk approve/reject. 10 tests.</li>
+  <li><span class="tag badge badge-green">WRK-160</span> <strong>Codex Fallback</strong> — 2-of-3 consensus when Codex returns NO_OUTPUT. Claude+Gemini both must APPROVE/MINOR. Explicit REJECT still hard-blocks. 11 tests.</li>
+  <li><span class="tag badge badge-green">WRK-161</span> <strong>Parallel Pipeline</strong> — <code>pipeline-state.yaml</code> tracks all sessions. <code>pipeline_balance()</code>, <code>pipeline_recommend_stage()</code>, <code>work.sh next/status</code>. 15 tests.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 style="color: var(--orange)">Remaining Gap</h3>
+<ul class="obs-list">
+  <li><span class="tag badge badge-orange">Provider Unassigned</span> Most pending items still lack <code>provider</code> frontmatter. Can be addressed via <code>work.sh approve-batch</code> + provider assignment pass.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 style="color: var(--purple)">New Commands</h3>
+<table>
+  <thead><tr><th>Command</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>work.sh approve-batch [--approve-all]</code></td><td>List and batch-approve pending plans</td></tr>
+    <tr><td><code>work.sh next</code></td><td>Recommend next item by priority + pipeline balance</td></tr>
+    <tr><td><code>work.sh status</code></td><td>Pipeline dashboard (all sessions, stages, balance)</td></tr>
+    <tr><td><code>session.sh status</code></td><td>Same dashboard from session context</td></tr>
+    <tr><td><code>session.sh end</code></td><td>Deregister session from pipeline</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="card">
+<h3>Test Coverage</h3>
+<table>
+  <thead><tr><th>Suite</th><th>Tests</th><th>Script</th></tr></thead>
+  <tbody>
+    <tr><td>Session Locking</td><td>13</td><td><code>scripts/agents/tests/test-wrk-locking.sh</code></td></tr>
+    <tr><td>Staleness</td><td>14</td><td><code>scripts/agents/tests/test-staleness.sh</code></td></tr>
+    <tr><td>Batch Approval</td><td>10</td><td><code>scripts/agents/tests/test-batch-approval.sh</code></td></tr>
+    <tr><td>Codex Fallback</td><td>11</td><td><code>scripts/review/tests/test-codex-fallback.sh</code></td></tr>
+    <tr><td>Pipeline</td><td>15</td><td><code>scripts/agents/tests/test-pipeline.sh</code></td></tr>
+    <tr><td><strong>Total</strong></td><td><strong>63</strong></td><td></td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>8. File Reference</h2>
+<table>
+  <thead><tr><th>Component</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Pipeline definition</td><td><code>.claude/work-queue/process.md</code></td></tr>
+    <tr><td>Behavior contract</td><td><code>config/agents/behavior-contract.yaml</code></td></tr>
+    <tr><td>Session init</td><td><code>scripts/agents/session.sh</code></td></tr>
+    <tr><td>Queue manager</td><td><code>scripts/agents/work.sh</code></td></tr>
+    <tr><td>Plan gate</td><td><code>scripts/agents/plan.sh</code></td></tr>
+    <tr><td>Execution gate</td><td><code>scripts/agents/execute.sh</code></td></tr>
+    <tr><td>Review gate</td><td><code>scripts/agents/review.sh</code></td></tr>
+    <tr><td>Session state CRUD</td><td><code>scripts/agents/lib/session-store.sh</code></td></tr>
+    <tr><td>Workflow guards</td><td><code>scripts/agents/lib/workflow-guards.sh</code></td></tr>
+    <tr><td>Cross-review hub</td><td><code>scripts/review/cross-review.sh</code></td></tr>
+    <tr><td>Provider dispatchers</td><td><code>scripts/agents/providers/{claude,codex,gemini}.sh</code></td></tr>
+    <tr><td>Session state file</td><td><code>.claude/work-queue/session-state.yaml</code></td></tr>
+    <tr><td>Pipeline state file</td><td><code>.claude/work-queue/pipeline-state.yaml</code></td></tr>
+    <tr><td>Queue index</td><td><code>.claude/work-queue/INDEX.md</code></td></tr>
+    <tr><td>Locking tests</td><td><code>scripts/agents/tests/test-wrk-locking.sh</code></td></tr>
+    <tr><td>Staleness tests</td><td><code>scripts/agents/tests/test-staleness.sh</code></td></tr>
+    <tr><td>Batch approval tests</td><td><code>scripts/agents/tests/test-batch-approval.sh</code></td></tr>
+    <tr><td>Codex fallback tests</td><td><code>scripts/review/tests/test-codex-fallback.sh</code></td></tr>
+    <tr><td>Pipeline tests</td><td><code>scripts/agents/tests/test-pipeline.sh</code></td></tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  Workspace Hub Workflow Visual &bull; Auto-generated 2026-02-16 &bull; Review &amp; tweak at <code>.claude/work-queue/assets/workflow-visual.html</code>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    flowchart: { curve: 'basis', padding: 15 },
+    gantt: { fontSize: 12 }
+  });
+</script>
+</body>
+</html>

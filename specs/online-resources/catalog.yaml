@@ -1,15 +1,1518 @@
 # Online Resources Catalog for Workspace-Hub Ecosystem
-# Defined in WRK-391
+# Defined in WRK-391 | Seeded by WRK-393 (The Well evaluation)
+# Format: resources list; each entry is a discoverable online resource.
+# Schema: id, name, category, subcategory, url, auth_required, cost_model,
+#         relevance_score (1-5), related_module, maturity, notes,
+#         discovery_status (known/new/investigate/evaluated)
+# Last updated: 2026-02-24 (WRK-391 population)
 
 resources:
-  - name: The Well
+
+  # ─── EXISTING (evaluated by WRK-393) ───────────────────────────────────────
+
+  - id: the_well
+    name: "The Well"
     category: science/physics-ml
     subcategory: datasets
     url: https://polymathic-ai.org/the_well/
+    github: https://github.com/PolymathicAI/the_well
+    huggingface: https://huggingface.co/collections/polymathic-ai/the-well-67e129f4ca23e0447395d74c
+    huggingface_models: https://huggingface.co/collections/polymathic-ai/the-well-benchmark-models-67e69bd7cd8e60229b5cd43e
+    paper: https://arxiv.org/abs/2412.00568
+    auth_required: false
+    cost_model: free
+    data_license: CC-BY-4.0
+    code_license: BSD-3-Clause
+    commercial_use_permitted: true
+    attribution_required: true
+    citation: "Ohana et al. (2024), NeurIPS, arXiv:2412.00568"
+    pip_install: "pip install the_well"
+    pip_package: the-well
+    pip_version_tested: "1.2.0"
+    python_min: "3.11"
+    maturity: live
+    dataset_count: 23
+    total_size_tb: 15
+    relevance_score: 5
+    related_modules:
+      - worldenergydata/metocean
+      - digitalmodel/hydrodynamics
+      - digitalmodel/subsea
+      - digitalmodel/structural
+    top_integration_candidates:
+      - dataset: planetswe
+        module: worldenergydata/metocean
+        wrk: WRK-417
+      - dataset: acoustic_scattering_maze,acoustic_scattering_inclusions,acoustic_scattering_discontinuous
+        module: digitalmodel/subsea (new acoustic NDE sub-module)
+        wrk: WRK-418
+      - dataset: shear_flow
+        module: digitalmodel/hydrodynamics
+        wrk: WRK-419
+    notes: >
+      15 TB physics simulation dataset covering fluid dynamics, acoustics, MHD,
+      reaction-diffusion, and astrophysics. CC BY 4.0 data license permits commercial
+      use with attribution. HF streaming via WellDataset avoids bulk download.
+      Pretrained FNO/TFNO/UNet baselines available per dataset on Hugging Face
+      (updated March 2025). Smoke test passed on ace-linux-2 (uv, Python 3.11).
+    discovery_status: evaluated
+    evaluated_by: WRK-393
+    evaluated_at: "2026-02-24"
+    evaluation_doc: specs/online-resources/the-well-evaluation.md
+
+  # ─── CATEGORY 1 — Engineering Standards and Codes Portals ──────────────────
+
+  - id: dnv_standards_explorer
+    name: DNV Rules and Standards Explorer
+    category: engineering_standards
+    subcategory: classification_society
+    url: https://standards.dnv.com/explorer/
+    auth_required: false
+    cost_model: free (viewer); subscription for Explorer+
+    relevance_score: 5
+    related_module: digitalmodel/structural, digitalmodel/subsea
+    maturity: live
+    notes: >
+      Free full-text search across 650+ DNV rules and standards. July 2025 edition
+      (119 documents) entered into force 2026-01-01. Active amendment/errata
+      notifications via the explorer. Industry hearing documents published here
+      for comment (78 documents, March-April 2025 hearing period). Replaces
+      legacy Veracity portal. No API but structured document URLs.
+    discovery_status: known
+
+  - id: api_addenda_errata
+    name: API Standards Addenda and Errata Portal
+    category: engineering_standards
+    subcategory: industry_body
+    url: https://www.api.org/products-and-services/standards/addenda-and-errata
+    auth_required: false
+    cost_model: free (addenda/errata); standards purchase required
+    relevance_score: 5
+    related_module: digitalmodel/asset_integrity, digitalmodel/subsea
+    maturity: live
+    notes: >
+      Free addenda and errata for all API standards. API STD 620 12th ed received
+      Addenda 1-4 and Errata 1 through February 2025. API Spec Q1 10th ed Addendum
+      2 June 2025. Companion: MyCommittees platform tracks in-progress revisions.
+      2025 publications catalog PDF available. Essential for currency checks.
+    discovery_status: known
+
+  - id: api_mycommittees
+    name: API MyCommittees Standards Tracking
+    category: engineering_standards
+    subcategory: industry_body
+    url: https://mycommittees.api.org/myc-standards
+    auth_required: true
+    cost_model: free (registration required)
+    relevance_score: 4
+    related_module: digitalmodel/asset_integrity
+    maturity: live
+    notes: >
+      Tracks API committee activities, new editions in development, ballot status,
+      and forthcoming changes before publication. Registration free. Useful for
+      anticipating standard revisions that affect module acceptance criteria.
+    discovery_status: new
+
+  - id: iacs_unified_requirements
+    name: IACS Unified Requirements and Blue Book
+    category: engineering_standards
+    subcategory: classification_society
+    url: https://iacs.org.uk/publications/unified-requirements/
+    auth_required: false
+    cost_model: free download
+    relevance_score: 4
+    related_module: digitalmodel/structural, marine_ops
+    maturity: live
+    notes: >
+      All IACS Unified Requirements (URs) and Unified Interpretations (UIs) are
+      freely downloadable. Blue Book (complete UR/UI) free at iacs.org.uk/publications.
+      UR E26/27 cybersecurity requirements (2024) notable recent addition. Provides
+      minimum classification standards; each member society (LR, BV, DNV, ABS,
+      ClassNK) may exceed these.
+    discovery_status: new
+
+  - id: nsta_uk_ndr
+    name: NSTA UK National Data Repository
+    category: engineering_standards
+    subcategory: regulatory_portal
+    url: https://www.nstauthority.co.uk/data-and-insights/data/
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: worldenergydata/hse, worldenergydata/well_bore_design
+    maturity: live
+    notes: >
+      North Sea Transition Authority (UK) has released 400+ GB of freely available
+      exploration data. PEARS system administers licences. December 2025 carbon
+      storage licensing round opened 14 locations. Portal provides open well, seismic,
+      and geological data from the UK North Sea.
+    discovery_status: new
+
+  - id: imo_gisis
+    name: IMO GISIS Public Portal
+    category: engineering_standards
+    subcategory: regulatory_portal
+    url: https://gisis.imo.org/Public/Default.aspx
+    auth_required: false
+    cost_model: free (public modules); registered account extends access
+    relevance_score: 4
+    related_module: worldenergydata/marine_safety
+    maturity: live
+    notes: >
+      Marine Casualties and Incidents (MCI) module: 4000+ records 2008-2024,
+      exportable to Excel/CSV. Marine Safety Investigation Reports searchable
+      and downloadable. No REST API documented; web portal export only. Free
+      account registration expands available modules.
+    discovery_status: known
+
+  - id: anp_brazil_portal
+    name: ANP Brazil — National Petroleum Agency Portal
+    category: engineering_standards
+    subcategory: regulatory_portal
+    url: https://www.gov.br/anp/en
+    auth_required: false
+    cost_model: free
+    relevance_score: 3
+    related_module: worldenergydata/production
+    maturity: live
+    notes: >
+      ANP BDEP holds geophysical, geological, and geochemical data for Brazilian
+      sedimentary basins. Monthly Oil and Gas Production Bulletins (August 2025:
+      5.084 million boe/d). Pre-salt blocks data increasingly public. No documented
+      REST API; structured CSV/Excel downloads. Repository at re3data r3d100010989.
+    discovery_status: new
+
+  # ─── CATEGORY 2 — Open Data APIs (energy, metocean, regulatory) ────────────
+
+  - id: bsee_data_center
+    name: BSEE Data Center
+    category: open_data_api
+    subcategory: regulatory_energy
+    url: https://www.data.bsee.gov/
     auth_required: false
     cost_model: free
     relevance_score: 5
+    related_module: worldenergydata/bsee
+    maturity: live
+    notes: >
+      US BSEE offshore production, well, platform, and pipeline data. Production
+      data updated 2025-11-15; OCS multiregional data 2025-09-29. Well API query
+      at data.bsee.gov/Well/API/Default.aspx. Bulk CSV/Excel download; contact
+      TDM@bsee.gov for custom requests. No formal REST API but structured
+      URL-addressable endpoints. Essential for worldenergydata/bsee module.
+    discovery_status: known
+
+  - id: eia_api_v2
+    name: EIA Open Data API v2
+    category: open_data_api
+    subcategory: regulatory_energy
+    url: https://www.eia.gov/opendata/
+    auth_required: true
+    cost_model: free (API key registration required)
+    relevance_score: 5
+    related_module: worldenergydata/eia_us
+    maturity: live
+    notes: >
+      Full RESTful API v2 (v2.1.10, October 2025). Datasets: coal, crude-oil-imports,
+      electricity, international, natural-gas, nuclear-outages, petroleum, SEDS,
+      STEO, densified-biomass, total-energy, AEO, IEO, state CO2. Hierarchical
+      dataset discovery via parent-node enumeration. API browser at
+      eia.gov/opendata/browser/. Free key at eia.gov/opendata/.
+    discovery_status: known
+
+  - id: sodir_factpages
+    name: SODIR / NPD FactPages REST API
+    category: open_data_api
+    subcategory: regulatory_energy
+    url: https://factpages.sodir.no/
+    auth_required: false
+    cost_model: free
+    relevance_score: 5
+    related_module: worldenergydata/sodir
+    maturity: live
+    notes: >
+      Norwegian Offshore Directorate FactPages: Norwegian Continental Shelf data
+      synchronised daily. REST API and OData endpoints. Diskos NDR (cloud, Landmark)
+      has open API. 30,000+ datasets publicly accessible (2023). 6000 additional
+      datasets from relinquished areas. FactMaps GIS also available.
+    discovery_status: known
+
+  - id: copernicus_cds
+    name: Copernicus Climate Data Store (CDS) API
+    category: open_data_api
+    subcategory: metocean
+    url: https://cds.climate.copernicus.eu/
+    auth_required: true
+    cost_model: free (registration required)
+    relevance_score: 5
+    related_module: worldenergydata/metocean
+    maturity: live
+    notes: >
+      ERA5 reanalysis 1940-present (hourly, global, 31 km). New ecmwf-datastores-client
+      Python package (async, metadata, REST). CMIP6 projections in CDS. Seven ERA5
+      catalogue entries plus ERA5-Land. CDS API uses dataset IDs for programmatic
+      access. Key for offshore metocean hindcasts.
+    discovery_status: known
+
+  - id: noaa_ndbc
+    name: NOAA NDBC Buoy Data (THREDDS/OPeNDAP)
+    category: open_data_api
+    subcategory: metocean
+    url: https://www.ndbc.noaa.gov/
+    auth_required: false
+    cost_model: free
+    relevance_score: 5
+    related_module: worldenergydata/metocean
+    maturity: live
+    notes: >
+      THREDDS/OPeNDAP and HTTP data services. Python library ndbc-api on PyPI for
+      structured access. NOAA Open Data Dissemination (NODD) program publishes
+      petabyte-scale data in Zarr and Cloud-Optimized GeoTIFF via STAC APIs.
+      DODS server at dods.ndbc.noaa.gov. Real-time + historical to 1970s.
+      Station data: waves, met, ADCP.
+    discovery_status: known
+
+  - id: cmems_marine_service
+    name: Copernicus Marine Service (CMEMS) Data Store
+    category: open_data_api
+    subcategory: metocean
+    url: https://data.marine.copernicus.eu/products
+    auth_required: true
+    cost_model: free (registration required)
+    relevance_score: 5
+    related_module: worldenergydata/metocean
+    maturity: live
+    notes: >
+      Free and open marine data: hindcasts, nowcasts, forecasts. Products include
+      global ocean physics reanalysis (1/12 degree, T/S/U/V/SSH/ice), wave
+      multi-year (first extension to 1967, 2025), IBI wave interim (monthly batch),
+      sea surface salinity (SMAP/SMOS, 1/8 degree). June 2025 update cycle.
+      Python copernicus-marine-client for download. Essential for metocean module.
+    discovery_status: known
+
+  - id: open_meteo_marine
+    name: Open-Meteo Marine Weather API
+    category: open_data_api
+    subcategory: metocean
+    url: https://open-meteo.com/en/docs/marine-weather-api
+    auth_required: false
+    cost_model: free (non-commercial, no key); commercial plans available
+    relevance_score: 4
+    related_module: worldenergydata/metocean, marine_ops
+    maturity: live
+    notes: >
+      No API key or registration for non-commercial use. Marine API: wave height,
+      peak period, wave direction, swell separation. 16-day forecast, global,
+      1-11 km. JSON API. AGPLv3 open source on GitHub. Ideal for agent real-time
+      weather-window queries with zero auth overhead.
+    discovery_status: new
+
+  - id: worldbank_indicators_api
+    name: World Bank Open Data Indicators API
+    category: open_data_api
+    subcategory: energy_economics
+    url: https://datahelpdesk.worldbank.org/knowledgebase/articles/898599
+    auth_required: false
+    cost_model: free
+    relevance_score: 3
+    related_module: worldenergydata/eia_us
+    maturity: live
+    notes: >
+      1400 time-series indicators for 217 economies, 50+ years. REST API at
+      api.worldbank.org/v2/. Key energy indicators: energy use per capita,
+      electricity access, renewable energy share, CO2/GDP. October 2025 update
+      includes new poverty, food security, financial inclusion data.
+      No auth required. JSON/XML/CSV output.
+    discovery_status: new
+
+  - id: noaa_coops_api
+    name: NOAA CO-OPS Tides and Currents API
+    category: open_data_api
+    subcategory: metocean
+    url: https://api.tidesandcurrents.noaa.gov/api/prod/
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: worldenergydata/metocean, marine_ops
+    maturity: live
+    notes: >
+      REST API for water levels, tide predictions, currents, salinity, winds at
+      NOAA gauge stations. Metadata API at mdapi endpoint. Derived Product API:
+      extreme water level probabilities, SLR projections, high-tide flooding
+      forecasts. Output: CSV, XML, JSON, NetCDF. Python py_noaa on GitHub.
+      Moved to cloud 2024. Free, no auth.
+    discovery_status: known
+
+  - id: psmsl_sea_level
+    name: PSMSL Sea Level Data
+    category: open_data_api
+    subcategory: metocean
+    url: https://psmsl.org/data/obtaining/
+    auth_required: false
+    cost_model: free
+    relevance_score: 3
+    related_module: worldenergydata/metocean
+    maturity: live
+    notes: >
+      Global monthly and annual mean sea level records from tide gauges since 1933.
+      Data updated within 30 days (confirmed Feb 2026). R and Python libraries
+      for download. Works with BODC, UHSLC, VLIZ for high-frequency (<= hourly)
+      data. No formal REST API but structured station-ID download URLs.
+    discovery_status: new
+
+  - id: usgs_sciencebase
+    name: USGS ScienceBase Catalog API
+    category: open_data_api
+    subcategory: geoscience
+    url: https://www.usgs.gov/tools/sciencebase
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: worldenergydata/metocean
+    maturity: live
+    notes: >
+      REST API (JSON) for USGS scientific data catalog. Covers geospatial,
+      geological, seismic, environmental datasets. Cloud-based OGC/ESRI update
+      summer 2025. Python and R modules on GitHub. Earthquake catalog FDSN API
+      at earthquake.usgs.gov/fdsnws/event/1/. Geoscience catalog at
+      geo-nsdi.er.usgs.gov.
+    discovery_status: new
+
+  - id: usgs_earthquake_feed
+    name: USGS Earthquake Hazards Real-Time Feed
+    category: open_data_api
+    subcategory: geoscience
+    url: https://earthquake.usgs.gov/earthquakes/feed/
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: worldenergydata/safety_analysis
+    maturity: live
+    notes: >
+      Real-time GeoJSON, ATOM, CSV feeds (past hour/day/week/month, by magnitude).
+      FDSN REST API for historical queries by magnitude, depth, region, time.
+      No auth. Relevant to offshore geohazard assessment, seabed instability,
+      and subsea infrastructure risk. ENS provides email/SMS alerts.
+    discovery_status: new
+
+  - id: gebco_2025_bathymetry
+    name: GEBCO_2025 Global Bathymetry Grid
+    category: open_data_api
+    subcategory: metocean
+    url: https://www.gebco.net/data-products/gridded-bathymetry-data
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: worldenergydata/metocean, digitalmodel/subsea
+    maturity: live
+    notes: >
+      GEBCO_2025 Grid published August 2025 (7th Seabed 2030 release). Global
+      terrain model at 15 arc-second resolution. NetCDF or GeoTIFF tile download
+      at download.gebco.net. OPeNDAP subset access. Maintained by BODC. Beta
+      portal replacing current app early 2026. Critical for subsea routing,
+      pipeline design, installation planning.
+    discovery_status: known
+
+  - id: ntsb_carol
+    name: NTSB CAROL Marine Accident Database
+    category: open_data_api
+    subcategory: regulatory_safety
+    url: https://data.ntsb.gov/carol-main-public/basic-search
+    auth_required: false
+    cost_model: free
+    relevance_score: 3
+    related_module: worldenergydata/marine_safety
+    maturity: live
+    notes: >
+      CAROL system: marine investigations 2010-present. Keyword, basic, and query-
+      builder search. NTSB 2025-2026 Open Data Plan commits to formal API for
+      marine, rail, pipeline, and highway datasets. Currently bulk CSV via web
+      interface; formal API in development.
+    discovery_status: known
+
+  # ─── CATEGORY 3 — Open-Source Engineering Tool Ecosystems ──────────────────
+
+  - id: openfoam_esi
+    name: OpenFOAM (OpenCFD / ESI fork)
+    category: open_source_tools
+    subcategory: CFD
+    url: https://www.openfoam.com/
+    auth_required: false
+    cost_model: free (GPL)
+    relevance_score: 4
     related_module: digitalmodel/hydrodynamics
     maturity: live
-    notes: 15TB physics simulation dataset; CC BY 4.0; Hugging Face streaming support.
+    notes: >
+      Primary industry fork of OpenFOAM. Version v2506 (Keysight-OpenCFD, 2025).
+      Turbulence, heat transfer, multiphase, acoustics solvers. Couples with
+      CalculiX via preCICE for FSI. CastNet GUI by DHCAE for pre/post processing.
+      Offshore hydrodynamics and diffuser/riser flow applications.
+    discovery_status: known
+
+  - id: opensees
+    name: OpenSees (Seismic Structural/Geotechnical FEM)
+    category: open_source_tools
+    subcategory: FEA_structural
+    url: https://opensees.github.io/
+    auth_required: false
+    cost_model: free (BSD)
+    relevance_score: 3
+    related_module: digitalmodel/structural
+    maturity: live
+    notes: >
+      FEM framework for seismic response of structural and geotechnical systems.
+      Strong Python API (OpenSeesPy). Relevant to jacket structure dynamic analysis
+      and geotechnical pile modelling. Offshore community extensions exist.
+    discovery_status: known
+
+  - id: fenics_dolfinx
+    name: FEniCS / DOLFINx
+    category: open_source_tools
+    subcategory: FEA_structural
+    url: https://fenicsproject.org/
+    auth_required: false
+    cost_model: free (LGPL)
+    relevance_score: 3
+    related_module: digitalmodel/structural
+    maturity: live
+    notes: >
+      FEniCSx v0.10 released October 2025. DOLFINx provides C++ and Python API
+      for PDE-based FEM. Complex number support, wide cell types, parallel MPI.
+      Suited to custom constitutive models and coupled physics such as cathodic
+      protection modelling.
     discovery_status: new
+
+  - id: moose_inl
+    name: MOOSE Multiphysics FEM Framework
+    category: open_source_tools
+    subcategory: FEA_multiphysics
+    url: https://mooseframework.inl.gov/
+    auth_required: false
+    cost_model: free (LGPL)
+    relevance_score: 3
+    related_module: digitalmodel/structural
+    maturity: live
+    notes: >
+      Idaho National Laboratory multiphysics FEM. Primary domain: nuclear, but
+      strong geomechanics and thermal-structural modules. Python-controllable.
+      Suited to coupled thermo-hydro-mechanical problems in wellbore and reservoir
+      contexts.
+    discovery_status: new
+
+  - id: gmsh
+    name: Gmsh 3D Mesh Generator
+    category: open_source_tools
+    subcategory: meshing
+    url: https://gmsh.info/
+    auth_required: false
+    cost_model: free (GPL)
+    relevance_score: 4
+    related_module: digitalmodel/structural, digitalmodel/hydrodynamics
+    maturity: live
+    notes: >
+      3D FEM mesh generator with built-in pre/post processing. Latest v4.15.1
+      (February 2026). Python, C++, C, Julia, Fortran API. Parametric geometry,
+      structured/unstructured/hybrid meshes, high-order elements, STL remeshing.
+      pip install gmsh. Integrates with FEniCS, OpenFOAM, scikit-gmsh wrapper.
+    discovery_status: known
+
+  - id: moordyn
+    name: MoorDyn Lumped-Mass Mooring Model
+    category: open_source_tools
+    subcategory: marine_mooring
+    url: https://github.com/FloatingArrayDesign/MoorDyn
+    auth_required: false
+    cost_model: free (BSD-3)
+    relevance_score: 4
+    related_module: digitalmodel/subsea/mooring_analysis
+    maturity: live
+    notes: >
+      Lumped-mass dynamic mooring line model. Python package (moordyn on PyPI),
+      2025 updates. Shared library for coupling with structural codes. Used for
+      floating wind and FPSO mooring dynamics. Addresses gap in mooring_analysis
+      module (WRK-383 gap item).
+    discovery_status: new
+
+  - id: moorpy_nrel
+    name: MoorPy (NREL Quasi-Static Mooring)
+    category: open_source_tools
+    subcategory: marine_mooring
+    url: https://github.com/NREL/MoorPy
+    auth_required: false
+    cost_model: free (BSD)
+    relevance_score: 4
+    related_module: digitalmodel/subsea/mooring_analysis
+    maturity: live
+    notes: >
+      NREL Python library for quasi-static mooring design. Line tension, catenary
+      shape, system stiffness matrices. Part of WETO software stack. OSTI biblio
+      1810090. Pairs with MoorDyn for dynamic analysis. Both fill the mooring_analysis
+      module gap identified in WRK-383.
+    discovery_status: new
+
+  - id: opengeosys
+    name: OpenGeoSys (THM/C Geomechanics)
+    category: open_source_tools
+    subcategory: geomechanics
+    url: https://www.opengeosys.org/
+    auth_required: false
+    cost_model: free (BSD)
+    relevance_score: 3
+    related_module: worldenergydata/well_bore_design
+    maturity: live
+    notes: >
+      THMC simulation for porous and fractured media. Helmholtz RSE-listed. OGS-6
+      on GitHub with CI/CD. Applications: CO2 storage, geothermal, nuclear waste,
+      wellbore integrity. 2025 publication: Python-based FEFLOW-to-OGS converter.
+      Relevant to subsurface wellbore integrity and cement seal modelling.
+    discovery_status: new
+
+  - id: lasio
+    name: lasio (LAS File I/O for Well Logs)
+    category: open_source_tools
+    subcategory: well_engineering
+    url: https://github.com/kinverarity1/lasio
+    auth_required: false
+    cost_model: free (MIT)
+    relevance_score: 4
+    related_module: worldenergydata/well_bore_design
+    maturity: live
+    notes: >
+      Python 3.7+ library for reading/writing LAS 1.2 and 2.0 files (borehole
+      logs). Pandas DataFrame integration. Active releases (v0.32). Companion
+      library welly adds curve/well/project management. Critical for well log
+      data ingestion in worldenergydata.
+    discovery_status: known
+
+  - id: wavespectra
+    name: wavespectra (Ocean Wave Spectra Library)
+    category: open_source_tools
+    subcategory: metocean
+    url: https://github.com/wavespectra/wavespectra
+    auth_required: false
+    cost_model: free (MIT)
+    relevance_score: 5
+    related_module: worldenergydata/metocean, digitalmodel/hydrodynamics
+    maturity: live
+    notes: >
+      xarray-based Python library for ocean wave spectral data. v4.4.2 (March 2025).
+      15+ format readers: WW3, SWAN, ERA5, NDBC. 60+ spectral parameter methods.
+      Partitioning: PTM1-5, watershed, wave age. Directly fills wave_spectra gap in
+      digitalmodel/hydrodynamics and metocean module (see WRK-383). MIT, 20 contributors.
+    discovery_status: new
+
+  - id: salib
+    name: SALib (Sensitivity Analysis Library)
+    category: open_source_tools
+    subcategory: uncertainty_analysis
+    url: https://github.com/SALib/SALib
+    auth_required: false
+    cost_model: free (MIT)
+    relevance_score: 3
+    related_module: digitalmodel/structural/fatigue
+    maturity: live
+    notes: >
+      Sobol, Morris, FAST, DGSM, PAWN, HDMR, fractional factorial sensitivity
+      analysis. Active PyPI. Useful for UQ in fatigue, riser, mooring simulations.
+      JOSS paper 10.21105/joss.00097.
+    discovery_status: new
+
+  - id: openturns
+    name: OpenTURNS (Uncertainty and Reliability)
+    category: open_source_tools
+    subcategory: uncertainty_analysis
+    url: https://openturns.github.io/
+    auth_required: false
+    cost_model: free (LGPL)
+    relevance_score: 3
+    related_module: digitalmodel/structural
+    maturity: live
+    notes: >
+      Python/C++ platform for uncertainty analysis and reliability. Monte Carlo,
+      FORM/SORM, Kriging, polynomial chaos expansion. Relevant to structural
+      reliability and fatigue life UQ in offshore structures.
+    discovery_status: new
+
+  # ─── CATEGORY 4 — Academic and Research Paper Repositories ─────────────────
+
+  - id: arxiv_cs_ce
+    name: arXiv cs.CE (Computational Engineering)
+    category: academic_repos
+    subcategory: preprint_server
+    url: https://arxiv.org/list/cs.CE/recent
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: digitalmodel/structural, digitalmodel/hydrodynamics
+    maturity: live
+    notes: >
+      Active preprint feed for computational engineering. 2025 content: physics-
+      informed neural operators, ML-based ROM for structural mechanics, SPH
+      mesh-order reduction. arXiv API (arxiv.org/help/api) provides Atom/JSON
+      feeds by category. physics.geo-ph and eess.SP are adjacent categories.
+    discovery_status: known
+
+  - id: osti_gov
+    name: OSTI.gov (DOE Scientific and Technical Information)
+    category: academic_repos
+    subcategory: institutional_repository
+    url: https://www.osti.gov/
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: worldenergydata/metocean, digitalmodel/structural
+    maturity: live
+    notes: >
+      4M+ records: DOE R&D reports, journal articles, datasets, software. OAI-PMH
+      harvesting for full-text DOE reports. DOE 2024 public access plan mandates
+      immediate open access to publications and underlying data. Covers offshore,
+      energy, materials, environmental sciences. MoorPy and other NREL tools here.
+    discovery_status: known
+
+  - id: semantic_scholar_api
+    name: Semantic Scholar Academic Graph API
+    category: academic_repos
+    subcategory: literature_search
+    url: https://api.semanticscholar.org/api-docs/
+    auth_required: false
+    cost_model: free (1000 req/s unauthenticated; API key for higher limits)
+    relevance_score: 4
+    related_module: all
+    maturity: live
+    notes: >
+      200M+ papers all disciplines. RESTful API for paper search (year, field-of-
+      study, OA filter), author queries, citation graphs. S2AG dataset downloadable
+      monthly. Semantic Scholar MCP server available on lobehub for direct LLM
+      integration. No auth for basic queries.
+    discovery_status: new
+
+  - id: zenodo
+    name: Zenodo Research Repository
+    category: academic_repos
+    subcategory: data_repository
+    url: https://zenodo.org/
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: all
+    maturity: live
+    notes: >
+      CERN/OpenAIRE repository. DOI-minted papers, datasets, software. REST API
+      at zenodo.org/api/records. Hosts MoorPy, wavespectra, and many engineering
+      datasets. Search by keyword: "offshore", "fatigue", "corrosion", "mooring".
+      CC licences. Good for published datasets accompanying journal papers.
+    discovery_status: known
+
+  - id: openaire_explore
+    name: OpenAIRE EXPLORE
+    category: academic_repos
+    subcategory: aggregator
+    url: https://explore.openaire.eu/
+    auth_required: false
+    cost_model: free
+    relevance_score: 3
+    related_module: all
+    maturity: live
+    notes: >
+      EU open science infrastructure. Aggregates publications, datasets, software
+      from Horizon Europe-funded projects including offshore wind, green hydrogen,
+      and subsea projects. API at api.openaire.eu. Links publications to datasets
+      (ScholeXplorer). FAIR-compliant metadata. Key for EU-funded offshore
+      engineering research discovery.
+    discovery_status: new
+
+  - id: core_ac_uk
+    name: CORE.ac.uk Open Research Aggregator
+    category: academic_repos
+    subcategory: aggregator
+    url: https://core.ac.uk/
+    auth_required: false
+    cost_model: free (API key for full-text; basic free)
+    relevance_score: 3
+    related_module: all
+    maturity: live
+    notes: >
+      402M open access articles from 14,000+ repositories. Strong UK coverage
+      (Cranfield, Imperial, Strathclyde offshore engineering). REST API with
+      real-time metadata and full-text access. Unique for institutional repositories
+      not indexed in commercial databases.
+    discovery_status: new
+
+  - id: base_bielefeld
+    name: BASE (Bielefeld Academic Search Engine)
+    category: academic_repos
+    subcategory: aggregator
+    url: https://api.base-search.net/
+    auth_required: false
+    cost_model: free (non-commercial API)
+    relevance_score: 3
+    related_module: all
+    maturity: live
+    notes: >
+      12,000+ content providers, 400M+ documents. OAI-PMH harvesting. HTTP API
+      for non-commercial use. Covers grey literature, theses, and repositories
+      not in commercial databases. Useful for offshore engineering theses and
+      institutional preprints.
+    discovery_status: new
+
+  - id: nasa_pcoe_data
+    name: NASA Prognostics Center of Excellence Data Repository
+    category: academic_repos
+    subcategory: engineering_datasets
+    url: https://www.nasa.gov/intelligent-systems-division/discovery-and-systems-health/pcoe/pcoe-data-set-repository/
+    auth_required: false
+    cost_model: free
+    relevance_score: 3
+    related_module: worldenergydata/safety_analysis
+    maturity: live
+    notes: >
+      IMS bearing run-to-failure dataset (3 tests, 20 kHz, 4 bearings) and
+      FEMTO/PRONOSTIA bearing dataset. Reference benchmarks for RUL prediction
+      ML models. Also: battery, turbofan engine, electronics degradation. Relevant
+      to predictive maintenance for rotating offshore equipment. Data at
+      data.nasa.gov and Kaggle mirror.
+    discovery_status: new
+
+  # ─── CATEGORY 5 — Professional Body and Conference Paper Sources ────────────
+
+  - id: spe_onepetro
+    name: SPE OnePetro — Society of Petroleum Engineers
+    category: professional_body
+    subcategory: SPE
+    url: https://onepetro.org/
+    auth_required: true
+    cost_model: >
+      Free: abstracts, some featured papers, Distinguished Lecturer slides (dl.spe.org).
+      SPE members: 10 free downloads/year + member discount. Gold OA articles:
+      author-funded, freely available. SPE-ATW workshop proceedings sometimes open.
+      Conference papers (OTC, ATCE, IPTC): purchase or membership allocation.
+    relevance_score: 5
+    related_module: worldenergydata/well_bore_design, worldenergydata/bsee
+    maturity: live
+    notes: >
+      80,000+ documents. SPE Journal has gold OA tier. SPE Distinguished Lecturer
+      slides free at dl.spe.org. OTC, IPTC, ATCE papers generally require purchase.
+      Abstract-level search free to all. Author preprints may appear on OSTI or
+      institutional repos. No documented public search API.
+    discovery_status: known
+
+  - id: asme_jomae_omae
+    name: ASME Digital Collection — JOMAE and OMAE Proceedings
+    category: professional_body
+    subcategory: ASME
+    url: https://asmedigitalcollection.asme.org/offshoremechanics
+    auth_required: true
+    cost_model: >
+      Free: abstracts; gold OA articles (author-funded, individually flagged).
+      OMAE proceedings: abstracts free; full papers purchase or subscription.
+      No confirmed post-conference embargo free-access window.
+    relevance_score: 5
+    related_module: digitalmodel/structural, digitalmodel/subsea
+    maturity: live
+    notes: >
+      JOMAE: premier ASME offshore journal, 6x/year since 1987. OMAE 2025 in
+      Vancouver (44th conference); 2026 Japan, 2027 Netherlands. Also relevant:
+      J. Pressure Vessel Technology, J. Energy Resources Technology. ASME has
+      explicit OA program; JOMAE articles individually OA-flagged. Historical
+      pre-ASME OMAE papers may be on OnePetro or institutional repos.
+    discovery_status: known
+
+  - id: isope
+    name: ISOPE (International Ocean and Polar Engineering Conference)
+    category: professional_body
+    subcategory: ISOPE
+    url: https://www.isope.org/proceedings/
+    auth_required: false
+    cost_model: >
+      Free: abstracts downloadable from isope.org/publications.
+      Full papers: purchase via OnePetro (onepetro.org/ISOPE) or USB from ISOPE.
+      Individual PDFs per paper available. Historically one of the most open
+      offshore conferences.
+    relevance_score: 4
+    related_module: digitalmodel/structural, digitalmodel/hydrodynamics
+    maturity: live
+    notes: >
+      35th ISOPE 2025: Seoul/Goyang, Korea (June 1-6, 2025). Abstract pages free.
+      Indexed in Web of Science, SCOPUS, Compendex. IJOPE (journal) published by
+      ISOPE. Content spans offshore structures, mooring, ocean energy, ice, polar.
+      Largest open offshore conference paper pool in terms of accessibility.
+    discovery_status: known
+
+  - id: otc_onepetro
+    name: OTC / OTC Brasil / OTC Asia — OnePetro
+    category: professional_body
+    subcategory: OTC
+    url: https://onepetro.org/OTC
+    auth_required: true
+    cost_model: >
+      Free: abstracts. Full papers: purchase or SPE membership allocation.
+      No confirmed post-embargo free-access window.
+      OTC Brasil and OTC Asia are separate paper pools, same access model.
+    relevance_score: 4
+    related_module: worldenergydata/bsee, digitalmodel/subsea
+    maturity: live
+    notes: >
+      OTC Houston largest offshore industry conference globally. OTC 2025 papers
+      DOI-cited on OnePetro from May 2025. OTC Brasil (Rio) and OTC Asia (KL)
+      separate tracks. Author preprints sometimes on OSTI or ResearchGate.
+    discovery_status: known
+
+  - id: rina_publications
+    name: RINA — Royal Institution of Naval Architects
+    category: professional_body
+    subcategory: RINA
+    url: https://rina.org.uk/publications/rina-transactions/
+    auth_required: true
+    cost_model: >
+      Free: Journal of Sailing Technology (fully OA, no fees). Historical
+      Transactions on JSTOR (jstor.org/publisher/rina).
+      IJME: subscription-based; members get 4 papers/year free.
+      Conference proceedings: purchase.
+    relevance_score: 3
+    related_module: digitalmodel/structural, marine_ops
+    maturity: live
+    notes: >
+      5000+ peer-reviewed papers since 1860. IJME published 4x/year via T&F.
+      From 2025 RINA consolidates Ship & Boat International, Warship Technology,
+      Shiprepair & Maintenance into a single publication. Journal of Sailing
+      Technology: fully open access, peer-reviewed, no author/reader fees.
+    discovery_status: known
+
+  - id: sname_publications
+    name: SNAME — Society of Naval Architects and Marine Engineers
+    category: professional_body
+    subcategory: SNAME
+    url: https://sname.org/publications
+    auth_required: true
+    cost_model: >
+      Free: Journal of Sailing Technology (SNAME-funded OA); sustainability
+      whitepaper. Historical Transactions on Internet Archive (archive.org).
+      T&R bulletins and current Transactions: member pricing.
+    relevance_score: 3
+    related_module: digitalmodel/structural, marine_ops
+    maturity: live
+    notes: >
+      T&R Bulletins cover structural FEA, hydrodynamics, materials, marine ops.
+      2025 new T&R Bulletin 2-36: Guidelines for Structural Finite Element Analysis
+      of Marine Structures. Journal of Ship Research and Marine Technology are
+      subscription-based. SNAME ICCAS proceedings via member access.
+    discovery_status: known
+
+  - id: iogp_publications
+    name: IOGP Publications Library
+    category: professional_body
+    subcategory: IOGP
+    url: https://www.iogp.org/bookstore/
+    auth_required: false
+    cost_model: free download (most publications)
+    relevance_score: 5
+    related_module: worldenergydata/hse, worldenergydata/safety_analysis
+    maturity: live
+    notes: >
+      200+ freely downloadable publications. Annual Safety Performance Indicators
+      (2025 data scope published), Tier 1/2 PSE reports, well control incident
+      sharing portal, occupational safety statistics since 1985. HSE statistics
+      cover the largest O&G industry incident database globally. No API but
+      structured PDF/Excel downloads. Essential for safety KPI benchmarking.
+    discovery_status: known
+
+  - id: twi_job_knowledge
+    name: TWI Job Knowledge Series
+    category: professional_body
+    subcategory: TWI
+    url: https://www.twi-global.com/technical-knowledge/job-knowledge
+    auth_required: false
+    cost_model: free (registered users and Professional/Industrial Members)
+    relevance_score: 3
+    related_module: digitalmodel/asset_integrity
+    maturity: live
+    notes: >
+      Welding processes, inspection, materials, and joining technology knowledge
+      base. Free for registered users. Technical Knowledge library includes FAQs,
+      best practice guides on weld integrity, corrosion, and inspection. No API.
+      Relevant to weld quality and fracture mechanics modules.
+    discovery_status: known
+
+  - id: ampp_knowledge_hub
+    name: AMPP / NACE Knowledge Hub
+    category: professional_body
+    subcategory: AMPP
+    url: https://www.ampp.org/technical-research/impact/corrosion-basics
+    auth_required: false
+    cost_model: >
+      Free: Corrosion Basics; non-member limited access to Knowledge Hub.
+      Member: full library including CORROSION journal (since 1945), standards,
+      MP magazine, CoatingsPro. No public API confirmed.
+    relevance_score: 3
+    related_module: digitalmodel/asset_integrity
+    maturity: live
+    notes: >
+      AMPP Knowledge Hub (2025) unifies NACE and AMPP content. Non-members access
+      Corrosion Basics and some open articles. CORROSION journal has selective OA.
+      Standards (SP0169 pipeline CP, SP0176 offshore CP) require purchase. Relevant
+      to cathodic protection and corrosion modules.
+    discovery_status: known
+
+  - id: imarest_archive
+    name: IMarEST Digital Archive and Journals
+    category: professional_body
+    subcategory: IMarEST
+    url: https://archive.imarest.org/
+    auth_required: false
+    cost_model: >
+      Free: Digital Archive (papers to 1889). Current journals (J. Marine
+      Engineering & Technology; J. Operational Oceanography) via T&F subscription.
+    relevance_score: 3
+    related_module: digitalmodel/structural, marine_ops
+    maturity: live
+    notes: >
+      Digital Archive: free access to historical IMarEST proceedings, magazines,
+      and journals. Current journals via Taylor & Francis subscription. IMO
+      submissions by IMarEST sometimes free. Relevant to marine engineering and
+      offshore operations. Watch: INEC, WMTC proceedings.
+    discovery_status: new
+
+  # ─── CATEGORY 6 — Real-Time Operational Data Feeds ─────────────────────────
+
+  - id: aishub_api
+    name: AISHub Free Vessel Tracking API
+    category: realtime_feeds
+    subcategory: vessel_tracking
+    url: https://www.aishub.net/api
+    auth_required: true
+    cost_model: free (requires contributing live AIS data)
+    relevance_score: 3
+    related_module: worldenergydata/marine_safety, marine_ops
+    maturity: live
+    notes: >
+      Free AIS data sharing service. JSON/XML/CSV API for real-time vessel
+      positions globally. Access requires user to stream live AIS data to AISHub.
+      Relevant to marine operations planning, vessel tracking near offshore
+      installations, and incident proximity analysis.
+    discovery_status: new
+
+  - id: aisstream_websocket
+    name: aisstream.io WebSocket AIS Feed
+    category: realtime_feeds
+    subcategory: vessel_tracking
+    url: https://aisstream.io/
+    auth_required: true
+    cost_model: free (API key required, no cost)
+    relevance_score: 3
+    related_module: worldenergydata/marine_safety
+    maturity: live
+    notes: >
+      Free WebSocket API for global real-time AIS data streaming. Vessel positions,
+      identity, port calls. Open-source GitHub codebase. Low-latency streaming
+      format suits event-driven agent architectures. No data contribution required
+      unlike AISHub.
+    discovery_status: new
+
+  - id: open_meteo_realtime
+    name: Open-Meteo Real-Time Marine Weather (no key)
+    category: realtime_feeds
+    subcategory: metocean
+    url: https://open-meteo.com/en/docs/marine-weather-api
+    auth_required: false
+    cost_model: free (non-commercial, no key)
+    relevance_score: 5
+    related_module: marine_ops, worldenergydata/metocean
+    maturity: live
+    notes: >
+      Real-time and forecast ocean wave parameters (Hs, Tp, direction, swell
+      separation). No API key or registration. 16-day forecast, global, 1-11 km.
+      JSON API. Perfect for agent weather-window queries with zero auth overhead.
+      AGPLv3 open source.
+    discovery_status: new
+
+  - id: usgs_eq_geojson
+    name: USGS Earthquake Real-Time GeoJSON Feed
+    category: realtime_feeds
+    subcategory: geohazard
+    url: https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
+    auth_required: false
+    cost_model: free
+    relevance_score: 3
+    related_module: worldenergydata/safety_analysis
+    maturity: live
+    notes: >
+      Real-time GeoJSON feeds by time window and magnitude threshold. FDSN event
+      API for historical queries. No auth. Relevant to offshore geohazard
+      monitoring, seabed instability, and subsea infrastructure risk assessment.
+    discovery_status: new
+
+  - id: noaa_coops_realtime
+    name: NOAA CO-OPS Real-Time Water Levels
+    category: realtime_feeds
+    subcategory: metocean
+    url: https://tidesandcurrents.noaa.gov/
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: marine_ops, worldenergydata/metocean
+    maturity: live
+    notes: >
+      Real-time water levels, tide predictions, currents at NOAA gauge stations.
+      Derived Product API: extreme water level probabilities, SLR projections.
+      JSON, CSV, XML, NetCDF output. Python py_noaa on GitHub. Critical for
+      marine operations and tidal window planning.
+    discovery_status: known
+
+  - id: climate_trace_api
+    name: Climate TRACE Facility-Level Emissions (Beta API)
+    category: realtime_feeds
+    subcategory: emissions
+    url: https://climatetrace.org/data
+    auth_required: false
+    cost_model: free (CC BY 4.0)
+    relevance_score: 4
+    related_module: worldenergydata/hse
+    maturity: live
+    notes: >
+      352M+ asset-level emissions (release v5.3.0, Jan 2025, through Nov 2025).
+      Monthly source-level emissions for O&G sectors 2021-2025. Beta REST API:
+      sector/owner/location search and aggregated country queries. CSV regional
+      download available. Low volume recommended for API use.
+    discovery_status: new
+
+  - id: carbon_monitor
+    name: Carbon Monitor Near-Real-Time CO2 Emissions
+    category: realtime_feeds
+    subcategory: emissions
+    url: https://carbonmonitor.org/
+    auth_required: false
+    cost_model: free (fair use open data)
+    relevance_score: 3
+    related_module: worldenergydata/hse
+    maturity: live
+    notes: >
+      Daily CO2 emission estimates since Jan 2019. Power generation (31 countries,
+      hourly), industry, ground transport (416 cities), aviation, buildings (206
+      countries). Published in Nature Scientific Data. Carbon Monitor Cities:
+      1500-city dataset. 2025 preliminary: +0.6% YoY. No formal API; CSV download.
+    discovery_status: new
+
+  # ─── CATEGORY 7 — Sustainability, ESG, and Carbon Data ─────────────────────
+
+  - id: edgar_2025
+    name: EDGAR 2025 Greenhouse Gas Emissions Database
+    category: sustainability_esg
+    subcategory: emissions_data
+    url: https://edgar.jrc.ec.europa.eu/
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: worldenergydata/hse
+    maturity: live
+    notes: >
+      EU JRC EDGAR_2025_GHG: 1970-2024 data (published 2025). CO2, CH4, N2O,
+      F-gases per sector/country. IPCC methodology Tier 1/2. Available via JRC
+      Data Catalogue and World Bank Data 360. Structured NetCDF/CSV download.
+      Reference dataset for national inventory cross-checking.
+    discovery_status: known
+
+  - id: iea_methane_tracker
+    name: IEA Global Methane Tracker 2025
+    category: sustainability_esg
+    subcategory: emissions_data
+    url: https://www.iea.org/data-and-statistics/data-tools/methane-tracker-data-explorer
+    auth_required: false
+    cost_model: free (CC BY 4.0)
+    relevance_score: 4
+    related_module: worldenergydata/hse
+    maturity: live
+    notes: >
+      Country and regional energy sector methane emissions, updated annually.
+      2025 update: country-level historical data, open-access abatement model,
+      satellite + measurement-campaign data. Downloadable dataset CSV/Excel. No
+      API documented. Critical for upstream O&G ESG reporting modules.
+    discovery_status: new
+
+  - id: climate_trace_registry
+    name: Climate TRACE Open Emissions Registry
+    category: sustainability_esg
+    subcategory: emissions_data
+    url: https://climatetrace.org/
+    auth_required: false
+    cost_model: free (CC BY 4.0)
+    relevance_score: 4
+    related_module: worldenergydata/hse
+    maturity: live
+    notes: >
+      352M+ assets, sector and facility-level emissions. O&G refining, upstream,
+      transport. Beta REST API. Monthly data 2021-2025. Regional CSV download.
+      Unique asset-level granularity for attribution and ESG benchmarking.
+    discovery_status: new
+
+  - id: fossil_fuel_registry
+    name: Global Registry of Fossil Fuels (Carbon Tracker)
+    category: sustainability_esg
+    subcategory: asset_emissions
+    url: https://fossilfuelregistry.org/
+    auth_required: false
+    cost_model: free (CC BY-SA)
+    relevance_score: 4
+    related_module: worldenergydata/production
+    maturity: live
+    notes: >
+      First open-source global database of oil, gas, coal production and reserves
+      in CO2-equivalent. 50,000+ fields, 89 countries, 75% global production.
+      Registry Emissions Model (38 MB): full scope 1/2/3 lifecycle. O&G Supply
+      Chain Carbon Intensity Model (13 MB): 2200 oil + 1140 gas projects ranked
+      by carbon intensity. CC BY-SA.
+    discovery_status: new
+
+  - id: ipcc_interactive_atlas
+    name: IPCC WG1 Interactive Atlas (CMIP6 Projections)
+    category: sustainability_esg
+    subcategory: climate_projections
+    url: https://interactive-atlas.ipcc.ch/
+    auth_required: false
+    cost_model: free
+    relevance_score: 3
+    related_module: worldenergydata/metocean
+    maturity: live
+    notes: >
+      AR6 WG1 Interactive Atlas: CMIP5, CMIP6, CORDEX projections. 22 climate
+      variables and indices. DataLab (Python/R) for programmatic analysis.
+      IPCC-WGI/Atlas GitHub repo provides code and reference grids. Copernicus
+      Interactive Climate Atlas (updated May 2025) is an alternative interface.
+      CMIP6 projections also in Copernicus CDS.
+    discovery_status: new
+
+  - id: nsidc_sea_ice
+    name: NSIDC Sea Ice Data (NOAA/NASA)
+    category: sustainability_esg
+    subcategory: environmental_monitoring
+    url: https://nsidc.org/data/
+    auth_required: true
+    cost_model: free (Earthdata registration)
+    relevance_score: 2
+    related_module: worldenergydata/metocean
+    maturity: live
+    notes: >
+      Arctic and Antarctic sea ice extent, concentration, thickness. Earthdata
+      login (free). NSIDC-0051 passive microwave sea ice concentration is the
+      reference dataset. Relevant to arctic offshore operations and icebreaker
+      routing.
+    discovery_status: new
+
+  - id: carbon_intensity_uk
+    name: Carbon Intensity API (UK National Grid)
+    category: sustainability_esg
+    subcategory: energy_transition
+    url: https://www.carbonintensity.org.uk/
+    auth_required: false
+    cost_model: free
+    relevance_score: 2
+    related_module: worldenergydata/eia_us
+    maturity: live
+    notes: >
+      UK National Grid ESO real-time and forecast carbon intensity (gCO2/kWh).
+      REST API, no auth. Useful for Scope 2 emissions calculations for UK
+      grid-connected onshore processing and LNG facilities.
+    discovery_status: new
+
+  # ─── CATEGORY 8 — AI / Agent Skill Resources and MCP Ecosystem ─────────────
+
+  - id: mcp_official_registry
+    name: MCP Official Registry (modelcontextprotocol.io)
+    category: ai_agent_resources
+    subcategory: MCP_registry
+    url: https://registry.modelcontextprotocol.io
+    auth_required: false
+    cost_model: free
+    relevance_score: 5
+    related_module: all (workspace-hub agent infrastructure)
+    maturity: live
+    notes: >
+      Official community-driven MCP server registry launched September 2025.
+      ~2000 servers; 407% growth since launch. Backed by Anthropic, GitHub,
+      PulseMCP, Microsoft. API at registry endpoint for programmatic server
+      discovery. MCP donated to Agentic AI Foundation (AAIF/Linux Foundation)
+      December 2025. MCP spec 2025-11-25 is current. Essential reference for
+      discovering engineering and data-science MCP servers.
+    discovery_status: new
+
+  - id: awesome_mcp_servers
+    name: Awesome MCP Servers (Community GitHub Catalog)
+    category: ai_agent_resources
+    subcategory: MCP_registry
+    url: https://github.com/punkpeye/awesome-mcp-servers
+    auth_required: false
+    cost_model: free
+    relevance_score: 5
+    related_module: all
+    maturity: live
+    notes: >
+      Curated community list of MCP servers covering data science, databases,
+      web search, file systems, and API-access servers. Companion: mcpservers.org
+      (270+ remote servers). Regular PRs add new domain-specific servers.
+      Cross-reference with official registry for completeness.
+    discovery_status: new
+
+  - id: mcpmarket_catalog
+    name: MCPMarket.com Data Science and ML Catalog
+    category: ai_agent_resources
+    subcategory: MCP_registry
+    url: https://mcpmarket.com/categories/data-science-ml
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: all
+    maturity: live
+    notes: >
+      5804+ MCP server listings. Data Science & ML category well-populated. Browse
+      by use case. Useful for discovering domain-specific MCP servers (weather,
+      geospatial, scientific data APIs). Regular community contributor updates.
+    discovery_status: new
+
+  - id: semantic_scholar_mcp
+    name: Semantic Scholar MCP Server
+    category: ai_agent_resources
+    subcategory: MCP_engineering_tools
+    url: https://lobehub.com/mcp/fujishigetemma-semantic-scholar-mcp
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: all
+    maturity: live
+    notes: >
+      MCP server wrapping Semantic Scholar Academic Graph API. Enables LLM agents
+      to search 200M+ engineering papers from Claude Code or other MCP clients.
+      Listed at mcpservers.org. Direct integration for engineering literature
+      retrieval in agent workflows.
+    discovery_status: new
+
+  - id: iso_15926_osdu
+    name: ISO 15926 Ontology and OSDU Data Platform
+    category: ai_agent_resources
+    subcategory: knowledge_graph
+    url: https://15926.org/
+    auth_required: false
+    cost_model: free (documentation); OSDU: consortium membership
+    relevance_score: 3
+    related_module: worldenergydata/well_bore_design, digitalmodel
+    maturity: live
+    notes: >
+      ISO 15926: OWL ontology for oil and gas plant lifecycle data integration.
+      ISO/TS 15926-12 (OWL implementation). OSDU (Open Subsurface Data Universe
+      Forum) builds on 15926 + Energistics (PRODML, RESQML, WITSML) for subsurface
+      data exchange. PPDM glossaries complement. Relevant for standardised data
+      exchange between modules.
+    discovery_status: new
+
+  - id: wavespectra_agent
+    name: wavespectra Python Library (Agent Integration)
+    category: ai_agent_resources
+    subcategory: scientific_computing
+    url: https://wavespectra.readthedocs.io/
+    auth_required: false
+    cost_model: free (MIT)
+    relevance_score: 5
+    related_module: worldenergydata/metocean, digitalmodel/hydrodynamics
+    maturity: live
+    notes: >
+      xarray-based wave spectra I/O and analysis (v4.4.2, 2025). Reads ERA5,
+      WW3, SWAN, NDBC. 60+ spectral parameter methods. Fills the wave_spectra
+      module gap in hydrodynamics. pip install wavespectra. 20 contributors,
+      MIT licence. Canonical tool for JONSWAP/PM spectra and parametric fitting.
+    discovery_status: new
+
+  - id: moorpy_agent
+    name: MoorPy NREL Quasi-Static Mooring Library
+    category: ai_agent_resources
+    subcategory: scientific_computing
+    url: https://github.com/NREL/MoorPy
+    auth_required: false
+    cost_model: free (BSD)
+    relevance_score: 4
+    related_module: digitalmodel/subsea/mooring_analysis
+    maturity: live
+    notes: >
+      NREL Python library for quasi-static mooring design. Stiffness matrices,
+      catenary profiles, line tension. Part of WETO stack. OSTI biblio 1810090.
+      Pairs with MoorDyn for dynamic analysis. Both fill the mooring_analysis
+      module gap (WRK-383).
+    discovery_status: new
+
+  - id: moordyn_pypi
+    name: MoorDyn Python Package (PyPI moordyn)
+    category: ai_agent_resources
+    subcategory: scientific_computing
+    url: https://pypi.org/project/moordyn/
+    auth_required: false
+    cost_model: free (BSD-3)
+    relevance_score: 4
+    related_module: digitalmodel/subsea/mooring_analysis
+    maturity: live
+    notes: >
+      pip install moordyn. Python bindings to the MoorDyn C++ lumped-mass mooring
+      dynamics library. 2025 updates on PyPI. Used for floating offshore wind and
+      FPSO mooring dynamic analysis. Direct agent integration: agents can invoke
+      moordyn simulations from Python scripts in digitalmodel workflows.
+    discovery_status: new
+
+  - id: arXiv_api
+    name: arXiv API (Metadata and Feed Access)
+    category: ai_agent_resources
+    subcategory: literature_discovery
+    url: https://arxiv.org/help/api
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: all
+    maturity: live
+    notes: >
+      arXiv API provides structured metadata (title, abstract, authors, DOI links)
+      for all preprints via Atom/JSON feeds. No auth required. Query by category
+      (cs.CE, physics.geo-ph, eess.SP), author, keyword, date range. Enables agents
+      to retrieve cutting-edge research preprints directly during planning and
+      module implementation tasks. Rate limit: 3 req/s per IP.
+    discovery_status: known
+
+  - id: openaire_api_agent
+    name: OpenAIRE Research Graph API (EU Open Research)
+    category: ai_agent_resources
+    subcategory: literature_discovery
+    url: https://api.openaire.eu/
+    auth_required: false
+    cost_model: free
+    relevance_score: 3
+    related_module: all
+    maturity: live
+    notes: >
+      REST API for EU Horizon Europe-funded research outputs. Covers offshore wind,
+      hydrogen, subsea cable, and carbon capture. Links publications to datasets
+      (ScholeXplorer). Metadata and full-text links. Useful for EU-funded offshore
+      engineering preprints not in commercial databases.
+    discovery_status: new
+
+  # ─── ADDITIONAL ENTRIES (WRK-391 coverage extension) ───────────────────────
+
+  - id: irena_stat
+    name: IRENA Renewable Energy Statistics (IRENASTAT)
+    category: open_data_api
+    subcategory: energy_economics
+    url: https://www.irena.org/Data/Downloads/IRENASTAT
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: worldenergydata/eia_us
+    maturity: live
+    notes: >
+      International Renewable Energy Agency IRENASTAT: power-generation capacity
+      (2015-2024) and actual generation (2015-2023) for 150+ countries. Published
+      annually in March (capacity) and July (generation + balances). Off-grid
+      renewable statistics (December 2025) cover solar, hydro, bioenergy, wind
+      capacity 2015-2024. IRENASTAT Online Data Query Tool for interactive access.
+      CSV/Excel download; no documented REST API.
+    discovery_status: new
+
+  - id: boem_gis_data
+    name: BOEM / BSEE Offshore GIS and Mapping Data
+    category: open_data_api
+    subcategory: regulatory_energy
+    url: https://www.data.boem.gov/
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: worldenergydata/bsee
+    maturity: live
+    notes: >
+      BOEM and BSEE GIS data: OCS lease blocks, platforms, pipelines, wells,
+      bathymetry layers. ArcGIS REST services (gis.boem.gov/arcgis/rest/) and
+      shapefile downloads. Gulf of Mexico topographic features updated February
+      2025. Lease Area Block query at data.bsee.gov. Official Protraction Diagrams
+      (OPDs) and leasing maps downloadable. Key for spatial analysis of offshore
+      infrastructure.
+    discovery_status: known
+
+  - id: su2_cfd
+    name: SU2 Open-Source CFD and Shape Optimization Suite
+    category: open_source_tools
+    subcategory: CFD
+    url: https://su2code.github.io/
+    auth_required: false
+    cost_model: free (LGPL)
+    relevance_score: 3
+    related_module: digitalmodel/hydrodynamics
+    maturity: live
+    notes: >
+      Open-source multiphysics PDE solver and design optimization on unstructured
+      meshes. Aerodynamic shape optimization, compressible/incompressible flows,
+      electrodynamics, chemically reacting flows. C++ and Python. SU2 Foundation
+      is a registered non-profit. Active GitHub development. Complements OpenFOAM
+      for adjoint-based shape optimization tasks.
+    discovery_status: new
+
+  - id: doaj_offshore_journals
+    name: DOAJ — Open Access Offshore/Marine Engineering Journals
+    category: academic_repos
+    subcategory: open_access_journals
+    url: https://doaj.org/
+    auth_required: false
+    cost_model: free
+    relevance_score: 4
+    related_module: digitalmodel/structural, digitalmodel/hydrodynamics
+    maturity: live
+    notes: >
+      Directory of Open Access Journals (21,000+ journals). Key fully-OA offshore
+      and marine engineering titles: International Journal of Naval Architecture
+      and Ocean Engineering; International Journal of Coastal and Offshore
+      Engineering; Journal of Marine Science and Engineering (MDPI); Journal of
+      Ocean Engineering and Science; Journal of Naval Architecture and Marine
+      Engineering. All peer-reviewed, no subscription required, full-text free.
+      DOAJ API at doaj.org/api/ for programmatic journal and article search.
+    discovery_status: new
+
+  - id: openei_energy_data
+    name: OpenEI (Open Energy Information — NREL/DOE)
+    category: open_data_api
+    subcategory: energy_economics
+    url: https://openei.org/
+    auth_required: false
+    cost_model: free
+    relevance_score: 3
+    related_module: worldenergydata/eia_us
+    maturity: live
+    notes: >
+      NREL/DOE open energy data portal. Datasets: utility rates, building energy,
+      offshore wind, solar, geothermal. PRIMRE (Primary Reference Materials Repository
+      for Energy) hosts MoorDyn, MoorPy, and other offshore renewable energy tools.
+      MediaWiki API available. Complementary to EIA for offshore renewable context.
+    discovery_status: new
+
+  - id: code_aster
+    name: Code_Aster — Open-Source Structural FEM (EDF)
+    category: open_source_tools
+    subcategory: FEA_structural
+    url: https://code-aster.org/
+    auth_required: false
+    cost_model: free (GPL)
+    relevance_score: 3
+    related_module: digitalmodel/structural
+    maturity: live
+    notes: >
+      EDF (France) open-source FEM code. Large-scale structural, thermal, and
+      seismic analysis. Strong nuclear/offshore heritage. Python scripting interface.
+      Salome-Meca bundle provides pre/post processing. Mature industrial code with
+      extensive verification. Relevant to topside structural and thermal fatigue.
+    discovery_status: new
+
+  - id: eia_petroleum_weekly
+    name: EIA Weekly Petroleum Status Report Feed
+    category: realtime_feeds
+    subcategory: regulatory_energy
+    url: https://www.eia.gov/petroleum/supply/weekly/
+    auth_required: false
+    cost_model: free
+    relevance_score: 3
+    related_module: worldenergydata/eia_us
+    maturity: live
+    notes: >
+      Weekly US crude oil and petroleum product inventories, imports, exports,
+      production. Published every Wednesday (delayed by one day if federal holiday).
+      Data available via EIA API v2 under petroleum/supply series. RSS feed
+      available. Relevant for production forecasting and market context modules.
+    discovery_status: known

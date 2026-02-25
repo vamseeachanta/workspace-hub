@@ -1,0 +1,26 @@
+Repository Name,Has uv.toml,Has pyproject.toml,Python Version,Dependency Manager,UV Migration Status,Modernization Priority,Notes
+aceengineer-admin,yes,yes,>=3.8,uv,ready,low,Already using UV with full pyproject.toml configuration
+aceengineercode,yes,yes,>=3.8,uv,ready,low,Already using UV; has old legacy dependencies that need updating
+aceengineer-website,yes,yes,>=3.8,uv,ready,medium,Using UV; has simple Flask dependencies
+achantas-data,no,yes,>=3.8,pip,partial,medium,Clean pyproject.toml but no UV config yet
+achantas-media,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+acma-projects,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+ai-native-traditional-eng,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+assethold,yes,yes,>=3.8,poetry,partial,high,Uses Poetry but has UV config; complex dependencies
+assetutilities,no,yes,>=3.8,pip,partial,high,Complex dependencies; pip-style requirements but has pyproject.toml
+client_projects,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+digitalmodel,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+doris,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+energy,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+frontierdeepwater,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+hobbies,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+investments,no,yes,>=3.8,pip,partial,medium,Clean pyproject.toml but no UV config yet
+OGManufacturing,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+pyproject-starter,yes,yes,>=3.8,uv,ready,low,Template project already using UV
+rock-oil-field,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+sabithaandkrishnaestates,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+saipem,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+sd-work,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+seanation,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+teamresumes,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml
+worldenergydata,yes,yes,>=3.8,uv,ready,low,Already using UV with pyproject.toml

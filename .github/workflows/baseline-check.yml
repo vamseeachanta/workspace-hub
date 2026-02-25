@@ -1,0 +1,124 @@
+name: Baseline Testing
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: 'Test suite to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - commit
+          - task
+
+env:
+  PYTHON_VERSION: '3.12'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install test dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pytest pytest-cov
+
+      - name: Run shell tests (task-agents routing)
+        run: |
+          echo "Running shell-based routing tests..."
+          bash scripts/agents/tests/test-task-agents-routing.sh
+
+      - name: Run Python tests
+        run: |
+          # Hub-level Python tests (no PYTHONPATH manipulation needed)
+          python3 -m pytest tests/test_deduplication_fix.py \
+            -v --tb=short --noconftest
+
+      - name: Generate test summary
+        if: always()
+        run: |
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Python Version:** ${{ env.PYTHON_VERSION }}" >> $GITHUB_STEP_SUMMARY
+
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install linting tools
+        run: |
+          pip install ruff || true
+
+      - name: Run linters
+        continue-on-error: true
+        run: |
+          echo "## Code Quality Checks" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if command -v ruff &> /dev/null; then
+            echo "Running ruff..." >> $GITHUB_STEP_SUMMARY
+            ruff check . --output-format=github || echo "Ruff found issues" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  governance:
+    name: Governance Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run governance checks (warn mode)
+        # Always run in warn mode in CI — gate mode is enforced at commit time via hooks
+        continue-on-error: true
+        run: |
+          chmod +x scripts/operations/compliance/*.sh
+          ./scripts/operations/compliance/check_governance.sh \
+            --mode warn \
+            --scope changed \
+            --base-ref origin/main
+
+      - name: Generate governance summary
+        if: always()
+        run: |
+          echo "## Governance Checks" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Governance checks run in warn mode in CI." >> $GITHUB_STEP_SUMMARY
+          echo "Gate enforcement happens via pre-commit hooks." >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,28 @@
+Repository,Category,Type,Pytest_Installed,Pytest_Ini_Status,Test_Collection,Test_Count,Coverage_Available,Execution_Time_Sec,Status,Notes
+aceengineer-admin,TIER2,Python,YES,NONE,FAILED,0,YES,2,COLLECTION_FAILED,Test collection failed
+aceengineer-website,TIER2,Python,YES,NONE,FAILED,0,YES,3,COLLECTION_FAILED,Test collection failed
+achantas-data,OTHER,Python,YES,NONE,FAILED,0,YES,3,COLLECTION_FAILED,Test collection failed
+achantas-media,OTHER,Python,YES,NONE,SUCCESS,16,YES,3,READY,
+acma-projects,TIER3,Python,YES,NONE,SUCCESS,22,YES,4,READY,
+ai-native-traditional-eng,TIER2,Python,YES,NONE,SUCCESS,16,YES,3,READY,
+assethold,OTHER,Python,YES,NONE,FAILED,0,YES,7,COLLECTION_FAILED,Test collection failed
+assetutilities,TIER1,Python,YES,PRESENT,FAILED,0,YES,2,COLLECTION_FAILED,Test collection failed
+client_projects,TIER2,Python,YES,NONE,FAILED,0,YES,4,COLLECTION_FAILED,Test collection failed
+coordination,OTHER,Python,YES,NONE,SUCCESS,14,YES,3,READY,
+digitalmodel,TIER1,Python,YES,PRESENT,FAILED,0,YES,9,COLLECTION_FAILED,Test collection failed
+doris,TIER2,Python,YES,NONE,SUCCESS,16,YES,3,READY,
+energy,TIER2,Python,YES,NONE,SUCCESS,18,YES,3,READY,
+frontierdeepwater,TIER2,Python,YES,NONE,SUCCESS,14,YES,3,READY,
+hobbies,TIER3,Python,YES,NONE,SUCCESS,17,YES,3,READY,
+investments,TIER3,Python,YES,NONE,SUCCESS,24,YES,3,READY,
+memory,OTHER,Python,YES,NONE,SUCCESS,12,YES,3,READY,
+OGManufacturing,TIER2,Python,YES,NONE,FAILED,0,YES,3,COLLECTION_FAILED,Test collection failed
+pdf-large-reader,OTHER,Python,YES,PRESENT,SUCCESS,225,YES,4,READY,
+pyproject-starter,TIER2,Python,YES,NONE,SUCCESS,42,YES,3,READY,
+rock-oil-field,TIER2,Python,YES,NONE,FAILED,0,YES,3,COLLECTION_FAILED,Test collection failed
+sabithaandkrishnaestates,TIER3,Python,YES,NONE,SUCCESS,22,YES,3,READY,
+saipem,TIER2,Python,YES,NONE,FAILED,0,YES,3,COLLECTION_FAILED,Test collection failed
+sd-work,TIER3,Python,YES,NONE,SUCCESS,17,YES,3,READY,
+seanation,TIER2,Python,YES,NONE,SUCCESS,16,YES,3,READY,
+teamresumes,TIER1,Python,YES,PRESENT,FAILED,0,YES,3,COLLECTION_FAILED,Test collection failed
+worldenergydata,TIER1,Python,YES,PRESENT,FAILED,0,YES,6,COLLECTION_FAILED,Test collection failed
