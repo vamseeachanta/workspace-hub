@@ -1,13 +1,13 @@
 ---
 name: file-taxonomy
-version: "1.3.0"
+version: "1.4.0"
 category: workspace
-description: "Canonical decision tree for where to place output files across the workspace-hub ecosystem including reports, results, data, and cache directories."
+description: "Canonical decision tree for where to place output files, repo manifests, and all generated artifacts across the workspace-hub ecosystem."
 invocation: /file-taxonomy
 applies-to: [claude, codex, gemini]
 capabilities: []
 requires: []
-see_also: []
+see_also: [repo-structure, clean-code]
 ---
 
 # File Taxonomy — Where Does This File Go?
@@ -101,6 +101,31 @@ without checking the canonical map below.
 | `dist/`, `build/` | Yes | Never |
 | `.venv/`, `venv/` | Yes | Never |
 | `reports/` | If fully generated | If curated/reference |
+
+## Repo Manifest Files
+
+Some files describe the structure and capabilities of the repo itself — these are "repo manifests." They have a canonical home:
+
+| Manifest Type | Canonical Location | Notes |
+|--------------|-------------------|-------|
+| Module/capability index | `specs/index.yaml` | Machine-readable index of all modules |
+| Human-readable index | `README.md` (repo root) or `docs/README.md` | One-page orientation |
+| Module manifest YAML | `specs/modules/<domain>.yaml` | Per-module architecture spec |
+| Data source descriptions | `specs/data-sources/<name>.yaml` | Structured, version-controlled |
+| Provider capability map | `config/agents/` | `model-registry.yaml`, `ai-agents-registry.json` |
+
+**Do NOT** place manifest files at repo root (e.g., `MODULE_INDEX.md`, `module-manifest.yaml`). They become stale, undiscoverable, and inconsistently named. Use `specs/` instead.
+
+### Migration Path
+
+```bash
+# If MODULE_INDEX.md or module-manifest.yaml exist at root:
+git mv MODULE_INDEX.md specs/modules/INDEX.md        # or specs/index.md
+git mv module-manifest.yaml specs/modules/manifest.yaml
+# Update any references in README.md
+```
+
+---
 
 ## Architectural Decisions (Resolved 2026-02-18)
 

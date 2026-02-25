@@ -5,13 +5,14 @@
 ## Subcategories
 
 - [Agent Teams](agent-teams/INDEX.md) — 2 skills
+- [Clean Code](clean-code/SKILL.md) — 1 skill ← **NEW**
 - [Ecosystem Health](ecosystem-health/INDEX.md) — 1 skills
-- [File Taxonomy](file-taxonomy/INDEX.md) — 1 skills
+- [File Taxonomy](file-taxonomy/SKILL.md) — 1 skill (v1.4.0)
 - [Improve](improve/INDEX.md) — 1 skills
-- [Infrastructure Layout](infrastructure-layout/SKILL.md) — 1 skill ← **NEW**
+- [Infrastructure Layout](infrastructure-layout/SKILL.md) — 1 skill
 - [Interoperability](interoperability/INDEX.md) — 1 skills
 - [Repo Sync](repo-sync/INDEX.md) — 1 skills
-- [Repo Structure](repo-structure/SKILL.md) — 1 skill
+- [Repo Structure](repo-structure/SKILL.md) — 1 skill (v1.3.0)
 - [Skill Sync](skill-sync/INDEX.md) — 1 skills
 - [Sync](sync/INDEX.md) — 1 skills
 - [Tool Readiness](tool-readiness/SKILL.md) — 1 skills

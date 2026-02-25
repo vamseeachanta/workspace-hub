@@ -4,7 +4,7 @@
 # Usage: scripts/operations/validate-file-placement.sh [<repo-path>...]
 #        Defaults to digitalmodel and worldenergydata submodules if no args given.
 #
-# WRK-414
+# WRK-414, WRK-576 (B5 enhancement)
 
 set -euo pipefail
 
@@ -127,6 +127,57 @@ for REPO in "${REPOS[@]}"; do
                 warn "Catch-all modules/ at package level (assign to domain packages): ${pkg_dir}modules/"
             fi
         done
+    fi
+
+    # ── CHECK 10 (FAIL): test files inside src/ ───────────────────────────────
+    # maxdepth 6 covers all nested src layouts; grep filters __pycache__
+    TESTS_IN_SRC_FILES=$(find "$REPO/src" -maxdepth 6 \
+        \( -name "test_*.py" -o -name "*_test.py" \) \
+        ! -path "*/__pycache__/*" 2>/dev/null || true)
+    if [ -n "$TESTS_IN_SRC_FILES" ]; then
+        while IFS= read -r f; do
+            fail "Test file inside src/ (move to tests/): $f"
+        done <<< "$TESTS_IN_SRC_FILES"
+    else
+        ok "No test files inside src/"
+    fi
+
+    # ── CHECK 11 (FAIL): committed output artifacts at root ───────────────────
+    if [ -d "$REPO/.git" ] || git -C "$REPO" rev-parse --git-dir &>/dev/null; then
+        COMMITTED_ARTIFACTS=$(git -C "$REPO" ls-files 2>/dev/null | \
+            grep -E '^(report_.*\.(xlsx|csv|json)|test_export.*\.json|COVERAGE_ANALYSIS\.txt|verdict\.txt|coverage\.wrk.*\.xml)$' || true)
+        if [ -n "$COMMITTED_ARTIFACTS" ]; then
+            while IFS= read -r f; do
+                fail "Committed output artifact at root (git rm --cached, then gitignore): $REPO_NAME/$f"
+            done <<< "$COMMITTED_ARTIFACTS"
+        else
+            ok "No committed output artifacts at root"
+        fi
+    fi
+
+    # ── CHECK 12 (WARN): agent harness files in docs/ ────────────────────────
+    if [ -d "$REPO/docs" ]; then
+        HARNESS_IN_DOCS=$(find "$REPO/docs" -maxdepth 1 \
+            \( -name "AGENT_OS_COMMANDS*" -o -name "MANDATORY_SLASH*" \
+               -o -name "AI_AGENT_ORCHESTRATION*" \) 2>/dev/null || true)
+        if [ -n "$HARNESS_IN_DOCS" ]; then
+            while IFS= read -r f; do
+                warn "Agent harness file in docs/ (move to .claude/docs/ or delete): $f"
+            done <<< "$HARNESS_IN_DOCS"
+        fi
+    fi
+
+    # ── CHECK 13 (WARN): loose .py files at repo root ────────────────────────
+    LOOSE_PY=$(find "$REPO" -maxdepth 1 -name "*.py" ! -name "setup.py" 2>/dev/null || true)
+    if [ -n "$LOOSE_PY" ]; then
+        while IFS= read -r f; do
+            warn "Loose .py at root (move to scripts/ or src/<pkg>/tools/): $f"
+        done <<< "$LOOSE_PY"
+    fi
+
+    # ── CHECK 14 (WARN): setup.py alongside pyproject.toml ───────────────────
+    if [ -f "$REPO/setup.py" ] && [ -f "$REPO/pyproject.toml" ]; then
+        warn "setup.py alongside pyproject.toml (setup.py is superseded — remove it): $REPO_NAME"
     fi
 
     echo ""

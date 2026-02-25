@@ -1,13 +1,13 @@
 ---
 name: repo-structure
-version: "1.1.0"
+version: "1.3.0"
 category: workspace
-description: "Canonical source layout, test mirroring, root cleanliness, and gitignore rules for all workspace-hub tier-1 repos. Consult before creating directories or files in any submodule."
+description: "Canonical source layout, test mirroring, root cleanliness, gitignore, docs classification, and committed artifact rules for all workspace-hub tier-1 repos. Consult before creating directories or files in any submodule."
 invocation: /repo-structure
 applies-to: [claude, codex, gemini]
 capabilities: []
 requires: []
-see_also: [file-taxonomy, infrastructure-layout]
+see_also: [file-taxonomy, infrastructure-layout, clean-code]
 ---
 
 # Repo Structure — Canonical Source Layout
@@ -97,6 +97,14 @@ CLAUDE.md        AGENTS.md        Makefile         LICENSE
 | `bin/` (empty) | DELETE |
 | `_coding_agents/` | DELETE |
 | `examples/` | `docs/examples/` or leave at root only if README documents it |
+| `setup.py` (when pyproject.toml exists) | DELETE — pyproject.toml supersedes it |
+| `archive/`, `backups/` | `_archive/` (single, underscore-prefixed) |
+| `*.xlsx`, `*.csv` output files | `results/<domain>/` and gitignored |
+| `test_export*.json` | `tests/<domain>/fixtures/` or gitignored |
+| `COVERAGE_ANALYSIS.txt` | gitignored (session artifact) |
+| `verdict.txt`, `test_output_ss` | gitignored (session artifacts) |
+| `coverage.wrk*.xml` | gitignored (session artifacts) |
+| Windows path dirs (`D:\...`) | DELETE — filesystem artifact, never track |
 
 ### Root-Level `src/` Must Contain Only the Package
 
@@ -112,39 +120,118 @@ src/              ← OK
 
 ## Gitignore Compliance
 
-These must be in `.gitignore` for every Python package repo:
+These must be in `.gitignore` for every Python package repo. Copy this block as a starting point — every repo MUST have all sections.
 
-```
-# Build artifacts — NEVER commit
+```gitignore
+# ── Build artifacts — NEVER commit ──────────────────────────────────────────
 dist/
 build/
 *.egg-info/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+setup.py.bak
 
-# Virtual environments
+# ── Virtual environments ─────────────────────────────────────────────────────
 .venv/
 venv/
+.env
 
-# Coverage artifacts
+# ── Coverage artifacts ───────────────────────────────────────────────────────
 htmlcov/
 .coverage
 coverage.json
 coverage.xml
+coverage*.xml
 .coverage_report.json
 
-# Runtime artifacts
+# ── Runtime output — NEVER commit ───────────────────────────────────────────
 logs/
 cache/
 results/
 reports/
+output/
+outputs/
+benchmark_output/
 
-# Legacy framework dirs (delete if present, gitignore as safety net)
+# ── Test artifacts ────────────────────────────────────────────────────────────
+tests/output/
+tests/outputs/
+test_output/
+test_output_ss
+
+# ── Session artifacts — NEVER commit ─────────────────────────────────────────
+verdict.txt
+coverage.wrk*.xml
+COVERAGE_ANALYSIS.txt
+memory/
+
+# ── Generated output files at root — NEVER commit ────────────────────────────
+report_*.xlsx
+report_*.csv
+test_export*.json
+analyze_coverage.py   # move to scripts/analysis/ if needed
+
+# ── Legacy framework dirs (delete if present, gitignore as safety net) ───────
 .agent-os/
 .hive-mind/
 .swarm/
 .claude-flow/
+
+# ── IDE / OS ─────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
 ```
+
+### Gitignore Enforcement: Root-Level Output Artifacts
+
+**NEVER commit output files to repo root.** These patterns must be gitignored, not tracked:
+
+| Pattern | Wrong location | Correct location |
+|---------|---------------|-----------------|
+| `report_*.xlsx` | repo root | `results/<domain>/` (and gitignored) |
+| `test_export*.json` | repo root | `tests/<domain>/fixtures/` or gitignored |
+| `COVERAGE_ANALYSIS.txt` | repo root | `reports/coverage/` (gitignored) |
+| `analyze_coverage.py` | repo root | `scripts/analysis/analyze_coverage.py` |
+| `*.wrk*.xml` | repo root | gitignored (session artifacts) |
+| `verdict.txt` | repo root | gitignored (session artifact) |
+
+If a file of this type is already committed: `git rm --cached <file>` then add to `.gitignore`.
+
+---
+
+## docs/ Content Classification
+
+`docs/` is for **user-facing reference documentation only**. It is NOT an agent configuration directory.
+
+### Allowed in docs/
+
+| Content Type | Location |
+|-------------|----------|
+| Reference docs — explains how a module works | `docs/modules/<domain>/` or `docs/domains/<domain>/` |
+| How-to guides for humans | `docs/guides/` |
+| API documentation | `docs/api/` |
+| Data source descriptions | `docs/data-sources/` |
+| Migration guides | `docs/guides/migration-*.md` |
+| Domain-specific references | `docs/<domain>/` (e.g., `docs/hse/`, `docs/petrophysics/`) |
+
+### NOT Allowed in docs/
+
+| Misplaced File | Correct Location |
+|----------------|-----------------|
+| `AGENT_OS_COMMANDS.md` | DELETE (agent_os is archived) |
+| `MANDATORY_SLASH_COMMAND_ECOSYSTEM.md` | `.claude/docs/` or DELETE |
+| `AI_AGENT_ORCHESTRATION.md` | `.claude/docs/ai-orchestration.md` |
+| `AI_USAGE_GUIDELINES.md` | `.claude/docs/` if agent-facing, else `docs/guides/` |
+| `sub_ai/` directory | `.claude/docs/` |
+| `raw_data/` | `data/<domain>/` |
+| `prompt-review/` | `.claude/docs/` or delete |
+| WRK deliverable reports | `workspace-hub/.claude/work-queue/done/` |
+| Session notes | `.claude/docs/` or delete |
+
+**Rule**: If a file in `docs/` contains slash commands, agent protocols, or provider instructions, it belongs in `.claude/docs/`, not `docs/`.
 
 ---
 
@@ -169,7 +256,7 @@ superseded patterns.
 
 ## Compliance Quick-Check
 
-Run against any repo before and after structural changes:
+Run against any repo before and after structural changes. For automated enforcement, use `scripts/operations/validate-file-placement.sh`.
 
 ```bash
 # 1. No orphaned dirs at src/ root (non-package dirs)
@@ -191,6 +278,18 @@ ls | grep '\\' && echo "WARNING: Windows-path directory artifacts found"
 
 # 6. agent-os still present
 [ -d ".agent-os" ] && echo "WARNING: .agent-os/ vestigial — delete"
+
+# 7. Tests inside src/ (FAIL)
+find src/ -name "test_*.py" -o -name "*_test.py" | grep -v __pycache__
+
+# 8. Committed output artifacts at root (FAIL)
+git ls-files | grep -E '^(report_.*\.(xlsx|csv)|test_export.*\.json|COVERAGE_ANALYSIS\.txt|verdict\.txt)$'
+
+# 9. Agent harness files in docs/ (WARN)
+ls docs/ | grep -iE '^(AGENT_OS|MANDATORY_SLASH|AI_AGENT_ORCHESTRATION)' 2>/dev/null
+
+# 10. Legacy setup.py alongside pyproject.toml (WARN)
+[ -f setup.py ] && [ -f pyproject.toml ] && echo "WARNING: setup.py is superseded by pyproject.toml — remove it"
 ```
 
 ---
