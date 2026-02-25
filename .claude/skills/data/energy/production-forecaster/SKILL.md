@@ -1,8 +1,13 @@
 ---
 name: production-forecaster
 description: Forecast oil & gas well production using decline curve analysis. Use for EUR estimation, type curve generation, production modeling, and reserve calculations with Arps decline models (exponential, hyperbolic, harmonic).
+<<<<<<< HEAD
 version: 2.0.0
 last_updated: 2026-01-18
+=======
+version: 1.0.0
+last_updated: 2025-12-30
+>>>>>>> origin/main
 capabilities: []
 requires: []
 see_also: []
@@ -54,6 +59,7 @@ Where:
 - `b` = Decline exponent (b-factor)
 - `t` = Time
 
+<<<<<<< HEAD
 ### Modified Hyperbolic Decline
 
 For long-term forecasts, use terminal decline rate to prevent over-optimistic recoveries:
@@ -124,6 +130,8 @@ Group wells for representative type curves:
 | P50 | 50% probability (median) | Most likely case |
 | P90 | 10% probability of exceedance | Conservative / Downside |
 
+=======
+>>>>>>> origin/main
 ## Implementation
 
 ### Data Models
@@ -137,6 +145,7 @@ import numpy as np
 import pandas as pd
 
 class DeclineType(Enum):
+<<<<<<< HEAD
     """Decline curve types."""
     EXPONENTIAL = "exponential"       # b = 0
     HYPERBOLIC = "hyperbolic"         # 0 < b < 1
@@ -162,6 +171,12 @@ class TypeCurveBinType(Enum):
     LATERAL_LENGTH = "lateral_length"
     PROPPANT = "proppant"
     VINTAGE = "vintage"
+=======
+    """Arps decline curve types."""
+    EXPONENTIAL = "exponential"  # b = 0
+    HYPERBOLIC = "hyperbolic"    # 0 < b < 1
+    HARMONIC = "harmonic"        # b = 1
+>>>>>>> origin/main
 
 class ProductionPhase(Enum):
     """Well production phases."""
@@ -183,6 +198,7 @@ class DeclineParameters:
     max_time: float = 50.0  # Years
     d_min: Optional[float] = None  # Terminal decline rate
 
+<<<<<<< HEAD
     # Duong model parameters (unconventional)
     a: Optional[float] = None  # Duong intercept
     m: Optional[float] = None  # Duong slope
@@ -200,6 +216,11 @@ class DeclineParameters:
         elif self.d_min is not None and self.b > 0:
             self.decline_type = DeclineType.MODIFIED_HYPERBOLIC
         elif self.b == 0:
+=======
+    def __post_init__(self):
+        """Validate parameters and set decline type."""
+        if self.b == 0:
+>>>>>>> origin/main
             self.decline_type = DeclineType.EXPONENTIAL
         elif self.b == 1:
             self.decline_type = DeclineType.HARMONIC
@@ -207,6 +228,7 @@ class DeclineParameters:
             self.decline_type = DeclineType.HYPERBOLIC
 
 @dataclass
+<<<<<<< HEAD
 class TypeCurveBin:
     """Type curve bin definition for well grouping."""
     bin_type: TypeCurveBinType
@@ -271,6 +293,8 @@ class TypeCurveResult:
         })
 
 @dataclass
+=======
+>>>>>>> origin/main
 class ProductionRecord:
     """Single production record."""
     date: date
@@ -422,6 +446,7 @@ class DeclineCurveAnalyzer:
         except:
             return DeclineParameters(qi=qi_guess, di=di_guess, b=b_guess)
 
+<<<<<<< HEAD
     @staticmethod
     def duong_decline(t: np.ndarray, q1: float, a: float,
                      m: float) -> np.ndarray:
@@ -568,6 +593,12 @@ class DeclineCurveAnalyzer:
         Args:
             include_unconventional: Include Duong and stretched exp models
 
+=======
+    def fit_best_model(self) -> Tuple[DeclineParameters, str]:
+        """
+        Fit all models and return best fit.
+
+>>>>>>> origin/main
         Returns:
             Tuple of (best parameters, model name)
         """
@@ -576,10 +607,13 @@ class DeclineCurveAnalyzer:
             'hyperbolic': self.fit_hyperbolic(),
         }
 
+<<<<<<< HEAD
         if include_unconventional:
             models['duong'] = self.fit_duong()
             models['stretched'] = self.fit_stretched_exponential()
 
+=======
+>>>>>>> origin/main
         t = self.data['time_years'].values
         q = self.data['rate'].values
 
@@ -590,10 +624,13 @@ class DeclineCurveAnalyzer:
         for name, params in models.items():
             if name == 'exponential':
                 predicted = self.exponential_decline(t, params.qi, params.di)
+<<<<<<< HEAD
             elif name == 'duong':
                 predicted = self.duong_decline(t * 365.25 + 1, params.qi, params.a, params.m)
             elif name == 'stretched':
                 predicted = self.stretched_exponential(t, params.qi, params.tau, params.n)
+=======
+>>>>>>> origin/main
             else:
                 predicted = self.hyperbolic_decline(
                     t, params.qi, params.di, params.b
@@ -608,6 +645,7 @@ class DeclineCurveAnalyzer:
 
         return best_params, best_model
 
+<<<<<<< HEAD
     def calculate_validation_metrics(self, params: DeclineParameters
                                     ) -> Dict[str, float]:
         """
@@ -653,6 +691,8 @@ class DeclineCurveAnalyzer:
             'mape': mape
         }
 
+=======
+>>>>>>> origin/main
     def calculate_eur(self, params: DeclineParameters,
                      economic_limit: float = 10.0,
                      max_years: float = 50.0) -> float:
@@ -826,15 +866,22 @@ class ProductionForecaster:
 ### Type Curve Generator
 
 ```python
+<<<<<<< HEAD
 from typing import List, Dict, Optional, Tuple, Callable
 import numpy as np
 import pandas as pd
 from scipy import stats
 from dataclasses import dataclass
+=======
+from typing import List, Dict, Optional
+import numpy as np
+import pandas as pd
+>>>>>>> origin/main
 
 class TypeCurveGenerator:
     """
     Generate type curves from multiple well production histories.
+<<<<<<< HEAD
     Supports multiple normalization methods, binning, and probabilistic analysis.
     """
 
@@ -847,11 +894,17 @@ class TypeCurveGenerator:
 
     def __init__(self, wells: List[pd.DataFrame],
                  metadata: Optional[List[Dict]] = None):
+=======
+    """
+
+    def __init__(self, wells: List[pd.DataFrame]):
+>>>>>>> origin/main
         """
         Initialize with list of well production DataFrames.
 
         Args:
             wells: List of DataFrames with 'date' and 'rate' columns
+<<<<<<< HEAD
             metadata: Optional list of metadata dicts per well
         """
         self.wells = wells
@@ -862,21 +915,35 @@ class TypeCurveGenerator:
 
     def normalize_wells(self, method: NormalizationMethod = NormalizationMethod.PEAK,
                        time_reference: int = 30) -> List[pd.DataFrame]:
+=======
+        """
+        self.wells = wells
+        self.normalized_wells = []
+
+    def normalize_wells(self, normalize_to: str = 'peak') -> List[pd.DataFrame]:
+>>>>>>> origin/main
         """
         Normalize wells for type curve generation.
 
         Args:
+<<<<<<< HEAD
             method: Normalization method to use
             time_reference: Days for IP calculation or cumulative reference
         """
         normalized = []
         self.normalization_factors = []
+=======
+            normalize_to: 'peak' or 'first_month'
+        """
+        normalized = []
+>>>>>>> origin/main
 
         for well in self.wells:
             df = well.copy()
             df['date'] = pd.to_datetime(df['date'])
             df = df.sort_values('date')
 
+<<<<<<< HEAD
             # Calculate days and months from start
             first_date = df['date'].min()
             df['days'] = (df['date'] - first_date).dt.days
@@ -908,12 +975,26 @@ class TypeCurveGenerator:
 
             df['normalized_rate'] = df['rate'] / norm_factor
             self.normalization_factors.append(norm_factor)
+=======
+            # Calculate months from start
+            first_date = df['date'].min()
+            df['month'] = ((df['date'] - first_date).dt.days / 30.44).astype(int)
+
+            # Normalize rate
+            if normalize_to == 'peak':
+                peak_rate = df['rate'].max()
+            else:
+                peak_rate = df['rate'].iloc[0]
+
+            df['normalized_rate'] = df['rate'] / peak_rate
+>>>>>>> origin/main
 
             normalized.append(df)
 
         self.normalized_wells = normalized
         return normalized
 
+<<<<<<< HEAD
     def create_bins(self, bin_type: TypeCurveBinType,
                    custom_bins: Optional[Dict[str, Any]] = None) -> Dict[str, TypeCurveBin]:
         """
@@ -975,20 +1056,32 @@ class TypeCurveGenerator:
                            min_wells: int = 3,
                            well_indices: Optional[List[int]] = None
                            ) -> TypeCurveResult:
+=======
+    def generate_type_curve(self,
+                           percentiles: List[float] = [10, 50, 90]
+                           ) -> pd.DataFrame:
+>>>>>>> origin/main
         """
         Generate type curve with percentile ranges.
 
         Args:
             percentiles: Percentiles to calculate (P10, P50, P90)
+<<<<<<< HEAD
             min_wells: Minimum wells required per month
             well_indices: Optional subset of well indices to use
 
         Returns:
             TypeCurveResult with percentile curves
+=======
+
+        Returns:
+            DataFrame with type curves
+>>>>>>> origin/main
         """
         if not self.normalized_wells:
             self.normalize_wells()
 
+<<<<<<< HEAD
         # Select wells
         if well_indices:
             wells_to_use = [self.normalized_wells[i] for i in well_indices]
@@ -997,16 +1090,25 @@ class TypeCurveGenerator:
 
         # Find maximum months
         max_months = max(df['month'].max() for df in wells_to_use)
+=======
+        # Find maximum months across all wells
+        max_months = max(df['month'].max() for df in self.normalized_wells)
+>>>>>>> origin/main
 
         # Collect rates by month
         monthly_rates = {m: [] for m in range(int(max_months) + 1)}
 
+<<<<<<< HEAD
         for df in wells_to_use:
+=======
+        for df in self.normalized_wells:
+>>>>>>> origin/main
             for _, row in df.iterrows():
                 month = int(row['month'])
                 if month in monthly_rates:
                     monthly_rates[month].append(row['normalized_rate'])
 
+<<<<<<< HEAD
         # Calculate percentiles and statistics
         months = []
         p10_rates, p50_rates, p90_rates = [], [], []
@@ -1036,10 +1138,28 @@ class TypeCurveGenerator:
                       model: DeclineType = DeclineType.HYPERBOLIC,
                       well_indices: Optional[List[int]] = None
                       ) -> Tuple[DeclineParameters, Dict[str, float]]:
+=======
+        # Calculate percentiles
+        type_curve_data = []
+        for month in sorted(monthly_rates.keys()):
+            rates = monthly_rates[month]
+            if len(rates) >= 3:  # Need minimum wells
+                row = {'month': month}
+                for p in percentiles:
+                    row[f'P{p}'] = np.percentile(rates, 100 - p)
+                row['mean'] = np.mean(rates)
+                row['well_count'] = len(rates)
+                type_curve_data.append(row)
+
+        return pd.DataFrame(type_curve_data)
+
+    def fit_type_curve(self, percentile: float = 50) -> DeclineParameters:
+>>>>>>> origin/main
         """
         Fit decline curve to type curve percentile.
 
         Args:
+<<<<<<< HEAD
             percentile: Percentile to fit (10, 50, or 90)
             model: Decline model type to fit
             well_indices: Optional subset of wells
@@ -1192,6 +1312,22 @@ class TypeCurveGenerator:
             'mean': np.mean(eur_values),
             'std': np.std(eur_values)
         }
+=======
+            percentile: Percentile to fit (e.g., 50 for P50)
+        """
+        type_curve = self.generate_type_curve([percentile])
+
+        # Create analyzer with type curve data
+        tc_df = pd.DataFrame({
+            'date': pd.date_range(start='2020-01-01', periods=len(type_curve), freq='MS'),
+            'rate': type_curve[f'P{percentile}'].values
+        })
+
+        analyzer = DeclineCurveAnalyzer(tc_df)
+        params, _ = analyzer.fit_best_model()
+
+        return params
+>>>>>>> origin/main
 ```
 
 ### Report Generator
@@ -1414,17 +1550,23 @@ wells:
   #   - "well_1.csv"
   #   - "well_2.csv"
 
+<<<<<<< HEAD
   # Well metadata for binning
   metadata_file: "data/production/well_metadata.csv"
 
 normalization:
   method: "30_day_ip"  # peak, first_month, 30_day_ip, 90_day_ip, moving_average
   time_reference: 30   # Days for IP or cumulative reference
+=======
+normalization:
+  method: "peak"  # or "first_month", "30_day_ip"
+>>>>>>> origin/main
 
 type_curve:
   percentiles: [10, 50, 90]
   min_wells_per_month: 5
 
+<<<<<<< HEAD
   # Binning configuration
   binning:
     enabled: true
@@ -1444,10 +1586,16 @@ eur:
   economic_limit: 25  # bbl/day
   max_years: 40
   calculate_distribution: true
+=======
+fit:
+  model: "hyperbolic"
+  b_range: [0.5, 1.5]
+>>>>>>> origin/main
 
 output:
   type_curve_csv: "data/results/lower_tertiary_type_curve.csv"
   report_path: "reports/lower_tertiary_type_curves.html"
+<<<<<<< HEAD
   export_fits: true
 ```
 
@@ -1495,6 +1643,8 @@ benchmarking:
 output:
   report_path: "reports/field_type_curve_comparison.html"
   csv_export: "data/results/type_curve_comparison.csv"
+=======
+>>>>>>> origin/main
 ```
 
 ## CLI Usage
@@ -1505,17 +1655,21 @@ python -m production_forecaster fit \
     --data data/production/well_history.csv \
     --model hyperbolic
 
+<<<<<<< HEAD
 # Fit unconventional decline models
 python -m production_forecaster fit \
     --data data/production/shale_well.csv \
     --model duong \
     --output reports/duong_fit.html
 
+=======
+>>>>>>> origin/main
 # Generate forecast
 python -m production_forecaster forecast \
     --config config/production_forecast.yaml \
     --output reports/forecast.html
 
+<<<<<<< HEAD
 # Generate type curves with binning
 python -m production_forecaster type-curve \
     --wells data/production/*.csv \
@@ -1557,6 +1711,24 @@ python -m production_forecaster validate \
     --data data/production/well_history.csv \
     --model hyperbolic \
     --holdout 0.2  # Hold out 20% for validation
+=======
+# Generate type curves
+python -m production_forecaster type-curve \
+    --wells data/production/*.csv \
+    --percentiles 10 50 90 \
+    --output reports/type_curves.html
+
+# Calculate EUR
+python -m production_forecaster eur \
+    --qi 5000 --di 0.35 --b 0.8 \
+    --limit 25
+
+# Compare wells
+python -m production_forecaster compare \
+    --wells well1.csv well2.csv well3.csv \
+    --normalize peak \
+    --output reports/comparison.html
+>>>>>>> origin/main
 ```
 
 ## Usage Examples
@@ -1601,6 +1773,7 @@ reporter.generate_report(
 )
 ```
 
+<<<<<<< HEAD
 ### Example 2: Generate Type Curves with Binning
 
 ```python
@@ -1635,10 +1808,33 @@ for bin_name, result in bin_results.items():
 
 # Fit P50 with validation metrics
 p50_params, metrics = generator.fit_type_curve(percentile=50)
+=======
+### Example 2: Generate Type Curves
+
+```python
+from production_forecaster import TypeCurveGenerator
+import glob
+import pandas as pd
+
+# Load all well data
+well_files = glob.glob('data/production/field_x/*.csv')
+wells = [pd.read_csv(f) for f in well_files]
+
+# Generate type curves
+generator = TypeCurveGenerator(wells)
+type_curve = generator.generate_type_curve(percentiles=[10, 50, 90])
+
+print("Type Curve (first 12 months):")
+print(type_curve.head(12))
+
+# Fit P50 type curve
+p50_params = generator.fit_type_curve(percentile=50)
+>>>>>>> origin/main
 print(f"\nP50 Type Curve Parameters:")
 print(f"qi = {p50_params.qi:.3f} (normalized)")
 print(f"Di = {p50_params.di*100:.1f} %/year")
 print(f"b = {p50_params.b:.3f}")
+<<<<<<< HEAD
 print(f"R² = {metrics['r_squared']:.4f}")
 print(f"RMSE = {metrics['rmse']:.4f}")
 
@@ -1754,6 +1950,17 @@ generator.normalize_wells(method=NormalizationMethod.IP_30)
 type_curve = generator.generate_type_curve()
 
 # Wells to compare
+=======
+```
+
+### Example 3: Multi-Well Comparison
+
+```python
+from production_forecaster import DeclineCurveAnalyzer, ProductionForecaster
+import pandas as pd
+import plotly.graph_objects as go
+
+>>>>>>> origin/main
 wells = ['well_a.csv', 'well_b.csv', 'well_c.csv']
 results = []
 
@@ -1761,6 +1968,7 @@ for well_file in wells:
     df = pd.read_csv(f'data/production/{well_file}')
 
     analyzer = DeclineCurveAnalyzer(df)
+<<<<<<< HEAD
     params, model = analyzer.fit_best_model()
     metrics = analyzer.calculate_validation_metrics(params)
 
@@ -1779,10 +1987,24 @@ for well_file in wells:
         'model': model,
         'r_squared': metrics['r_squared'],
         'eur_mmbbl': analyzer.calculate_eur(params, 25, 30) / 1e6
+=======
+    params, _ = analyzer.fit_best_model()
+
+    forecaster = ProductionForecaster(params)
+    forecast = forecaster.forecast(years=20)
+
+    results.append({
+        'well': well_file,
+        'qi': params.qi,
+        'di': params.di,
+        'b': params.b,
+        'eur': forecast.eur_oil
+>>>>>>> origin/main
     })
 
 # Create comparison table
 comparison = pd.DataFrame(results)
+<<<<<<< HEAD
 print(comparison.to_string(index=False))
 
 # Plot wells against type curve
@@ -1913,6 +2135,9 @@ fig.update_xaxes(title_text='Field', row=1, col=2)
 fig.update_yaxes(title_text='EUR (MMbbl)', row=1, col=2)
 
 fig.write_html('reports/field_type_curve_comparison.html')
+=======
+print(comparison)
+>>>>>>> origin/main
 ```
 
 ## Best Practices
@@ -1939,12 +2164,19 @@ fig.write_html('reports/field_type_curve_comparison.html')
 
 ## Related Skills
 
+<<<<<<< HEAD
 - [npv-analyzer](../npv-analyzer/SKILL.md) - Economic evaluation with Monte Carlo simulation
 - [bsee-data-extractor](../bsee-data-extractor/SKILL.md) - Extract production, WAR, and APD data
 - [field-analyzer](../field-analyzer/SKILL.md) - Field-level production analysis
 - [well-production-dashboard](../well-production-dashboard/SKILL.md) - Production visualization
 - [api12-drilling-analyzer](../api12-drilling-analyzer/SKILL.md) - Drilling performance analysis
 - [hse-risk-analyzer](../hse-risk-analyzer/SKILL.md) - Safety-informed economic analysis
+=======
+- [npv-analyzer](../npv-analyzer/SKILL.md) - Economic evaluation using production forecasts
+- [bsee-data-extractor](../bsee-data-extractor/SKILL.md) - Extract historical production data
+- [field-analyzer](../field-analyzer/SKILL.md) - Field-level production analysis
+- [well-production-dashboard](../well-production-dashboard/SKILL.md) - Production visualization
+>>>>>>> origin/main
 
 ---
 
