@@ -23,8 +23,14 @@ if [[ -z "$COMMIT_SHA" && -z "$CONTENT_FILE" ]]; then
   exit 1
 fi
 
-# Check if codex CLI is available
+# Check if codex CLI is available (also check npm global bin)
+CODEX_BIN="codex"
 if ! command -v codex &>/dev/null; then
+  if [[ -x "${HOME}/.npm-global/bin/codex" ]]; then
+    CODEX_BIN="${HOME}/.npm-global/bin/codex"
+  fi
+fi
+if ! command -v "$CODEX_BIN" &>/dev/null && [[ ! -x "$CODEX_BIN" ]]; then
   echo "# Codex CLI not found"
   echo "# Install: npm install -g @openai/codex"
   echo "# CODEX REVIEW IS COMPULSORY — install the CLI and retry"
@@ -47,7 +53,7 @@ if [[ -n "$COMMIT_SHA" ]]; then
   # Review a specific git commit
   # codex review --commit <SHA> cannot be combined with positional PROMPT.
   # Codex writes review output to stderr, so capture both streams.
-  codex review --commit "$COMMIT_SHA" 2>&1 || {
+  "$CODEX_BIN" review --commit "$COMMIT_SHA" 2>&1 || {
     echo "# Codex review --commit failed (exit $?)"
     echo "# Commit: $COMMIT_SHA"
   }
@@ -61,7 +67,7 @@ CONTENT TO REVIEW:
 
 $(cat "$CONTENT_FILE")"
 
-  echo "$FULL_PROMPT" | codex exec - 2>&1 || {
+  echo "$FULL_PROMPT" | "$CODEX_BIN" exec - 2>&1 || {
     echo "# Codex exec failed (exit $?)"
     echo "# File: $CONTENT_FILE"
   }
