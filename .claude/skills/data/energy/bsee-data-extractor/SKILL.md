@@ -1,6 +1,10 @@
 ---
 name: bsee-data-extractor
+<<<<<<< HEAD
 description: Extract and process BSEE (Bureau of Safety and Environmental Enforcement) data including production, WAR (Well Activity Reports), and APD (Application for Permit to Drill) data. Use for querying production data, well activities, drilling permits, completions, and workovers by API number, block, lease, or field with automatic data normalization and caching.
+=======
+description: Extract and process BSEE (Bureau of Safety and Environmental Enforcement) production data. Use for querying oil/gas production data by API number, block, lease, or field with automatic data normalization and caching.
+>>>>>>> origin/main
 capabilities: []
 requires: []
 see_also: []
@@ -18,11 +22,14 @@ Extract and process production data from BSEE (Bureau of Safety and Environmenta
 - Building production timelines for specific wells or fields
 - Tracking well status changes over time
 - Preparing data for economic analysis (NPV, decline curves)
+<<<<<<< HEAD
 - Analyzing Well Activity Reports (WAR) for drilling and completion history
 - Tracking drilling operations, workovers, and sidetracks
 - Reviewing APD (Application for Permit to Drill) records
 - Calculating drilling and completion durations
 - Building drilling timelines for rig scheduling analysis
+=======
+>>>>>>> origin/main
 
 ## Core Pattern
 
@@ -30,6 +37,7 @@ Extract and process production data from BSEE (Bureau of Safety and Environmenta
 Query Parameters → BSEE API/Files → Parse → Normalize → Cache → Output
 ```
 
+<<<<<<< HEAD
 ### Data Types Supported
 
 | Data Type | Source | Size | Update Frequency |
@@ -38,6 +46,8 @@ Query Parameters → BSEE API/Files → Parse → Normalize → Cache → Output
 | WAR | eWellWARRawData.zip | ~120+ MB | Weekly |
 | APD | APDRawData.zip | ~5-10 MB | Weekly |
 
+=======
+>>>>>>> origin/main
 ## Implementation
 
 ### Data Models
@@ -124,6 +134,7 @@ class WellProduction:
     last_production: Optional[date] = None
 
     def to_dataframe(self) -> pd.DataFrame:
+<<<<<<< HEAD
 
 
 class ActivityType(Enum):
@@ -250,6 +261,8 @@ class WellActivity:
 
 ```python
     def to_dataframe(self) -> pd.DataFrame:
+=======
+>>>>>>> origin/main
         """Convert production records to DataFrame."""
         data = []
         for rec in self.records:
@@ -319,6 +332,7 @@ class BSEEDataClient:
         'WELL_STAT_CD': 'status_code'
     }
 
+<<<<<<< HEAD
     # WAR (Well Activity Report) column mappings
     WAR_COLUMNS = {
         'API_WELL_NUMBER': 'api_number',
@@ -354,6 +368,8 @@ class BSEEDataClient:
     WAR_URL = f"{BASE_URL}/Well/Files/eWellWARRawData.zip"
     APD_URL = f"{BASE_URL}/Well/Files/APDRawData.zip"
 
+=======
+>>>>>>> origin/main
     def __init__(self, cache_dir: Path = None):
         """
         Initialize BSEE data client.
@@ -563,6 +579,7 @@ class BSEEDataClient:
             'CO': WellStatus.COMPLETING
         }
         return status_map.get(code, WellStatus.PRODUCING)
+<<<<<<< HEAD
 
     # ==================== WAR Data Methods ====================
 
@@ -872,6 +889,8 @@ class BSEEDataClient:
             surface_location=row.get('surface_location'),
             bottom_hole_location=row.get('bottom_hole_location')
         )
+=======
+>>>>>>> origin/main
 ```
 
 ### Production Aggregator
@@ -991,6 +1010,7 @@ class ProductionAggregator:
         }
 ```
 
+<<<<<<< HEAD
 ### Activity Aggregator
 
 ```python
@@ -1114,6 +1134,8 @@ class ActivityAggregator:
         }
 ```
 
+=======
+>>>>>>> origin/main
 ### Report Generator
 
 ```python
@@ -1334,6 +1356,7 @@ output:
     title: "BSEE Production Analysis"
 ```
 
+<<<<<<< HEAD
 ### WAR Query Configuration
 
 ```yaml
@@ -1414,6 +1437,8 @@ output:
   path: "data/results/apd_extract.csv"
 ```
 
+=======
+>>>>>>> origin/main
 ### Multi-Well Configuration
 
 ```yaml
@@ -1477,6 +1502,7 @@ python -m bsee_extractor report --api 1771049130 --output reports/well_report.ht
 python -m bsee_extractor report --config config/field_analysis.yaml
 ```
 
+<<<<<<< HEAD
 ### WAR Queries
 
 ```bash
@@ -1510,13 +1536,22 @@ python -m bsee_extractor apd --area GC --since 2023-01-01 --output data/recent_a
 
 ```bash
 # Export production to CSV
+=======
+### Data Export
+
+```bash
+# Export to CSV
+>>>>>>> origin/main
 python -m bsee_extractor export --api 1771049130 --format csv --output data/export.csv
 
 # Export to Parquet (for large datasets)
 python -m bsee_extractor export --area GC --block 640 --format parquet --output data/block_production.parquet
+<<<<<<< HEAD
 
 # Export combined production + WAR data
 python -m bsee_extractor export --api 1771049130 --include-war --format csv --output data/combined.csv
+=======
+>>>>>>> origin/main
 ```
 
 ## Usage Examples
@@ -1602,6 +1637,7 @@ decline_df = pd.DataFrame({
 decline_df.to_csv("data/decline_input.csv", index=False)
 ```
 
+<<<<<<< HEAD
 ### Example 4: WAR Activity Analysis
 
 ```python
@@ -1707,6 +1743,8 @@ if not drilling_records.empty and well_production.first_production:
         print(f"\nDays from Spud to First Production: {days_to_production}")
 ```
 
+=======
+>>>>>>> origin/main
 ## Best Practices
 
 ### Data Caching
@@ -1748,7 +1786,13 @@ project/
 
 ## Related Skills
 
+<<<<<<< HEAD
 - [npv-analyzer](../npv-analyzer/SKILL.md) - Economic analysis using BSEE production data
 - [hse-risk-analyzer](../hse-risk-analyzer/SKILL.md) - HSE incident analysis and safety scoring
 - [production-forecaster](../production-forecaster/SKILL.md) - Decline curve analysis using BSEE production
 - [economic-sensitivity-analyzer](../economic-sensitivity-analyzer/SKILL.md) - Sensitivity and scenario analysis
+=======
+- [npv-analyzer](../npv-analyzer/SKILL.md) - Economic analysis using BSEE data
+- [data-pipeline-processor](../../.claude/skills/development/data-pipeline-processor/SKILL.md) - General data processing
+- [engineering-report-generator](../../.claude/skills/development/engineering-report-generator/SKILL.md) - Report generation
+>>>>>>> origin/main

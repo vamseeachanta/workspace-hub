@@ -1,13 +1,3 @@
----
-name: document-batch
-description: Manage overnight LLM batch summarization of engineering documents for the document index pipeline.
-version: 1.0.0
-category: workspace-hub
-capabilities: []
-requires: []
-see_also: []
----
-
 # document-batch
 
 Manage overnight LLM batch summarisation of engineering documents (WRK-309).
