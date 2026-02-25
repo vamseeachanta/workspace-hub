@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-25T17:05:04Z by generate-index.py -->
+<!-- Generated: 2026-02-25T20:11:18Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-25T17:05:04Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-25T20:11:18Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 571
+**Total items:** 572
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 147 |
+| pending | 148 |
 | working | 8 |
 | blocked | 5 |
 | done | 174 |
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 272 |
+| high | 273 |
 | medium | 232 |
 | low | 66 |
 
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 94 |
-| medium | 250 |
+| medium | 251 |
 | complex | 97 |
 
 ### By Repository
@@ -57,7 +57,7 @@
 | rock-oil-field | 3 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 7 |
-| workspace-hub | 150 |
+| workspace-hub | 151 |
 | worldenergydata | 103 |
 
 ### Plan Tracking
@@ -65,7 +65,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 183 / 571 |
+| Plans exist | 183 / 572 |
 | Plans cross-reviewed | 93 |
 | Plans approved | 116 |
 | Brochure pending | 10 |
@@ -77,9 +77,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 571 |
+| Total captured | 572 |
 | Total archived | 223 |
-| Completion rate | 223/571 (39%) |
+| Completion rate | 223/572 (39%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -87,7 +87,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 45 / 147 | 31% |
+| Pending items with plans | 45 / 148 | 30% |
 | Plans cross-reviewed | 6 | 11% |
 | Plans user-approved | 6 | 11% |
 
@@ -104,7 +104,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 82 | 5 | 3 |
+| High     | 83 | 5 | 3 |
 | Medium   | 46  | 2  | 1  |
 | Low      | 19  | 1  | 1  |
 
@@ -682,6 +682,7 @@
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -1015,6 +1016,7 @@
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | low | low | workspace-hub | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | low | low | workspace-hub | - |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | medium | low | workspace-hub | - |
+| WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | high | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -1887,6 +1889,7 @@
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | low | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | - |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | - |
+| WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -2275,6 +2278,7 @@
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | medium | workspace-hub, client_projects, digitalmodel | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | medium | workspace-hub, digitalmodel | - |
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | pending | complex | workspace-hub | - |
+| WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2939,6 +2943,7 @@
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | workspace-hub, client_projects, digitalmodel | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | workspace-hub, digitalmodel | - |
 | WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | pending | low | digitalmodel | - |
+| WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | workspace-hub | - |
 
 ### Complex
 
@@ -3044,7 +3049,7 @@
 
 ## By Computer
 
-### ace-linux-1 (291 active / 304 total)
+### ace-linux-1 (292 active / 305 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3351,6 +3356,7 @@
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | low | workspace-hub |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | workspace-hub |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | workspace-hub |
+| WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | medium | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (13 active / 17 total)
