@@ -1,6 +1,6 @@
 ---
 name: file-taxonomy
-version: "1.4.0"
+version: "1.5.0"
 category: workspace
 description: "Canonical decision tree for where to place output files, repo manifests, and all generated artifacts across the workspace-hub ecosystem."
 invocation: /file-taxonomy
@@ -24,14 +24,16 @@ without checking the canonical map below.
 5. Is it only used by tests? → `tests/<domain>/fixtures/`
 6. Is it ephemeral / reproducible from source? → `cache/` (gitignored, never committed)
 7. Is it a design spec (pre-build)? → `specs/wrk/WRK-NNN/` or `specs/repos/<repo>/`
-8. Is it documentation of how something works? → `docs/modules/<domain>/`
+8. Is it documentation of how something works? → `docs/modules/<domain>/` or `docs/domains/<domain>/`
 9. Is it a how-to guide? → `docs/guides/`
 10. Is it runtime config (YAML/JSON consumed by the app)? → `config/<domain>/`
 11. Is it an exploratory analysis script? → `scripts/analysis/<domain>/`
-12. Is it a Jupyter notebook? → `notebooks/<domain>/`
+12. Is it a Jupyter notebook? → `notebooks/<domain>/` (NEVER in `src/`)
 13. Is it benchmark data / input files for runtime? → `data/inputs/<domain>/`
 14. Is it a provider prompt template (Codex/Gemini)? → `.codex/prompts/` or `.gemini/prompts/`
 15. Is it a shell test harness for agent/orchestration scripts? → `scripts/agents/tests/`
+16. Is it a SQL query or HTML template loaded at runtime by a Python package? → keep in `src/<pkg>/<domain>/` as a **package resource**; declare in `pyproject.toml` `[tool.setuptools.package-data]`; do NOT put at `config/`
+17. Is it a markdown doc found inside `src/`? → move to `docs/domains/<domain>/` — markdown is NEVER a package resource
 
 ## Format Guide
 

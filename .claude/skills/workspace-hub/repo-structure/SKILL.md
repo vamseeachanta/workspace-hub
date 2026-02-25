@@ -1,6 +1,6 @@
 ---
 name: repo-structure
-version: "1.3.0"
+version: "1.4.0"
 category: workspace
 description: "Canonical source layout, test mirroring, root cleanliness, gitignore, docs classification, and committed artifact rules for all workspace-hub tier-1 repos. Consult before creating directories or files in any submodule."
 invocation: /repo-structure
@@ -368,6 +368,36 @@ tests/_archived/          ← consolidate
 tests/_archived_tests/    ← consolidate
 tests/legacy_tests/       ← consolidate
 tests/_archive/           ← CORRECT (single archive dir)
+```
+
+### NEVER: Non-Python files loose in src/ package tree
+
+Non-Python files in `src/` create invisible coupling between package code and static assets.
+They cannot be tested as Python modules and confuse linters and type-checkers.
+
+| File type | Wrong location | Correct location |
+|-----------|---------------|-----------------|
+| `.md` documentation | `src/<pkg>/bsee/docs/` | `docs/domains/bsee/` |
+| `.ipynb` notebooks | `src/<pkg>/specialized/gis/` | `notebooks/gis/` |
+| `.yml` config | `src/<pkg>/specialized/gis/arcgis.yml` | `config/gis/arcgis.yml` |
+| Empty `__init__.py`-only dirs | anywhere in src/ | DELETE |
+
+**Exception — package resources**: `.sql` query files and `.html` Jinja templates that are
+loaded at runtime via `importlib.resources` MAY remain inside `src/<pkg>/<domain>/sql/` or
+`src/<pkg>/<domain>/templates/`. **Required**: they MUST be declared in `pyproject.toml`:
+
+```toml
+[tool.setuptools.package-data]
+"worldenergydata.bsee" = ["sql/*.sql", "templates/*.html"]
+```
+
+Without this declaration, pip install will silently omit them.
+
+**Quick scan for violations:**
+```bash
+# Non-Python files in src/
+find src/ -not -name "*.py" -not -name "*.pyc" -not -path "*/__pycache__/*" \
+  -not -path "*/.git/*" -not -name "__init__.py" | grep -v ".egg-info"
 ```
 
 ---

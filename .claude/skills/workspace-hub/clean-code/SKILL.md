@@ -1,6 +1,6 @@
 ---
 name: clean-code
-version: "1.0.0"
+version: "2.0.0"
 category: workspace
 description: "Clean code enforcement for workspace-hub Python repos: file/function size limits, God Object detection, naming rules, dead code removal, and refactor decision guidance. Consult before writing new modules or accepting large files."
 invocation: /clean-code
@@ -8,6 +8,8 @@ applies-to: [claude, codex, gemini]
 capabilities: []
 requires: []
 see_also: [repo-structure, file-taxonomy, infrastructure-layout]
+updated: 2026-02-25
+changelog: "v2.0.0 — lessons from WRK-590/591/592/593 God Object splits; data-only exemption; shim patterns; horizontal-split; parallel team pattern; git-plumbing note; P1 table updated"
 ---
 
 # Clean Code — Enforcement Rules for Python Repos
@@ -27,9 +29,15 @@ candidacy. For file placement rules see `/repo-structure`. For output file paths
 | Nesting depth | **4 levels** | 2 levels | Extract guard clauses or sub-functions |
 | Import count per file | **20 imports** | 10–12 imports | Sign of a God Object — split the file |
 
-**Exception**: Legacy solver files (e.g., `wellpath3D.py`, `cathodic_protection.py`) that are
-low-churn and have full test coverage may remain until a dedicated refactor WRK is approved.
-Document the exception with a `# noqa: clean-code` comment at the top of the file.
+**Exception 1 — Legacy solver**: Low-churn files with full test coverage may remain until a
+dedicated refactor WRK is approved. Document with `# noqa: clean-code` at the top of the file.
+
+**Exception 2 — Pure declarative data**: Files whose content is ≥95% frozen dataclass/dict
+literals with zero logic (no conditionals, no I/O, no imports from sibling modules) are exempt
+from the 400L limit. The logic module that consumes them must still be ≤400L.
+Example: `activity_definitions.py` (1,419L) — 14 `return Activity(...)` builder functions.
+Test: if every function body is a single `return SomeDataclass(...)`, it is a data file, not a
+God Object.
 
 ---
 
@@ -152,6 +160,65 @@ src/digitalmodel/structural/pipe_capacity/
   dnv_st_f101.py       ← DNV-ST-F101 specific rules
 ```
 
+### Pattern 5: Horizontal Split with Shared Shim
+
+When a single file has many functions of the same *type* (e.g., 14 HTML builder functions),
+split horizontally by sub-domain, keep the original as a pure re-export shim.
+
+```
+# BEFORE: report_builders.py (954 lines) — 14 _build_*_html() functions
+#   mixed: header/TOC + hydrostatics + responses + appendices
+
+# AFTER: three focused files + shim
+report_builders_header.py      (352L) ← header, TOC, executive summary, hull description
+report_builders_hydrostatics.py(390L) ← stability, natural periods, added mass, damping, coupling
+report_builders_responses.py   (272L) ← load RAOs, roll damping, phase guide, appendices
+report_builders.py              (25L) ← shim: re-exports all three sub-modules
+```
+
+```python
+# report_builders.py (shim)
+"""Split into report_builders_header/hydrostatics/responses. Re-exported for compat."""
+from .report_builders_header import *        # noqa: F401,F403
+from .report_builders_hydrostatics import *  # noqa: F401,F403
+from .report_builders_responses import *     # noqa: F401,F403
+```
+
+Key rule: each sub-file imports only from upstream data/model modules — never from sibling
+builder sub-files. The shim is the only file that imports from all three.
+
+### Pattern 6: Re-export Chain for Layered Helpers
+
+When a large file has callers that import helpers *through* it, preserve that import path
+using a re-export chain. Callers need not be updated.
+
+```
+# benchmark_rao_plots.py was 699L:
+#   5 plot functions + 15 helper functions (get_x_values, add_solver_traces, etc.)
+
+# AFTER split:
+benchmark_rao_helpers.py  (237L) ← helper functions (leaf module)
+benchmark_rao_summary.py  (218L) ← summary/table functions
+benchmark_rao_plots.py    (291L) ← 5 plot functions + re-exports helpers/summary
+
+# benchmark_correlation.py imports from benchmark_rao_plots — no change needed:
+from .benchmark_rao_plots import add_solver_traces, get_heading_indices  # still works
+```
+
+```python
+# benchmark_rao_plots.py (reduced + re-exports)
+from .benchmark_rao_helpers import (  # noqa: F401
+    add_solver_traces, apply_layout, get_heading_indices,
+    get_significant_heading_indices, get_solver_style,
+    get_x_values, save_figure, x_axis_label,
+)
+from .benchmark_rao_summary import (  # noqa: F401
+    build_summary_table, compute_amplitude_summary,
+    compute_phase_summary, render_html_with_table,
+)
+# ... 5 plot functions remain here
+```
+
 ---
 
 ## Naming Rules (Enforcement)
@@ -250,21 +317,21 @@ When 300+ files exceed limits (as in digitalmodel/worldenergydata), use this tri
 
 **digitalmodel** (active development + oversized):
 
-| File | Lines | Domain | Split Strategy |
-|------|-------|--------|----------------|
-| `hydrodynamics/diffraction/benchmark_plotter.py` | 2700 | Hydro | Extract: data-fetcher, plot-generator, report-writer |
-| `hydrodynamics/diffraction/report_generator.py` | 2034 | Hydro | Extract: section renderers (one file per report section) |
-| `solvers/orcaflex/orcaflex_model_components.py` | 1905 | Solvers | Extract: line-types, vessel, environment, post-process |
-| `marine_ops/marine_analysis/visualization/integration_charts.py` | 1439 | Marine | Extract by chart type |
+| File | Lines | Domain | Status | Split Strategy |
+|------|-------|--------|--------|----------------|
+| `hydrodynamics/diffraction/benchmark_plotter.py` | 2700 | Hydro | ✅ DONE (WRK-592/593) | Horizontal split: helpers, rao_plots, correlation, input_reports + shims |
+| `hydrodynamics/diffraction/report_generator.py` | 2034 | Hydro | ✅ DONE (WRK-591/593) | data_models, computations, extractors, builders_header/hydrostatics/responses |
+| `solvers/orcaflex/orcaflex_model_components.py` | 1905 | Solvers | Open | Extract: line-types, vessel, environment, post-process |
+| `marine_ops/marine_analysis/visualization/integration_charts.py` | 1439 | Marine | Open | Extract by chart type |
 
 **worldenergydata** (active development + oversized):
 
-| File | Lines | Domain | Split Strategy |
-|------|-------|--------|----------------|
-| `cost/data_collection/public_dataset.py` | 1643 | Cost | Extract: fetcher, parser, normalizer, schema |
-| `safety_analysis/taxonomy/activity_taxonomy.py` | 1550 | Safety | Extract: taxonomy definitions, lookup, classifier |
-| `well_production_dashboard/field_aggregation.py` | 1131 | Dashboard | Extract: query, aggregate, format |
-| `well_production_dashboard/well_production.py` | 1090 | Dashboard | Extract: models, fetcher, renderer |
+| File | Lines | Domain | Status | Split Strategy |
+|------|-------|--------|--------|----------------|
+| `cost/data_collection/public_dataset.py` | 1643 | Cost | Open | Extract: fetcher, parser, normalizer, schema |
+| `safety_analysis/taxonomy/activity_taxonomy.py` | 1550 | Safety | ✅ DONE (WRK-590) | activity_definitions (data, exempt) + activity_registry (logic) |
+| `well_production_dashboard/field_aggregation.py` | 1131 | Dashboard | Open | Extract: query, aggregate, format |
+| `well_production_dashboard/well_production.py` | 1090 | Dashboard | Open | Extract: models, fetcher, renderer |
 
 ---
 
@@ -300,7 +367,8 @@ Before splitting any file:
 2. **Check all callers** — `grep -r "from digitalmodel.<module> import" src/ tests/`
 3. **Create backward-compat re-export** in the old location for one release cycle
 4. **Update one caller at a time** — don't batch all imports in one commit
-5. **Run full test suite after each file move**
+5. **Purge `__pycache__`** before running tests after a split — stale `.pyc` files serve old bytecode and mask import errors: `find src/ tests/ -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null; true`
+6. **Run full test suite after each file move**
 
 ```python
 # backward-compat shim (old_module.py) — remove after 1 release
@@ -311,6 +379,46 @@ warnings.warn(
     DeprecationWarning, stacklevel=2
 )
 from .new_location.new_module import *  # noqa: F401,F403
+```
+
+### Git Plumbing for Repos with Large Pack Files
+
+`git commit` hangs indefinitely on repos with pack files ≥4GB (e.g., digitalmodel). Use
+plumbing commands instead:
+
+```bash
+# Standard commit — HANGS on repos with large pack files
+git commit -m "message"   # ← do NOT use
+
+# Plumbing workflow — always safe regardless of repo size
+TREE=$(git write-tree)
+PARENT=$(git rev-parse HEAD)
+COMMIT=$(git commit-tree "$TREE" -p "$PARENT" -m "your message here")
+git update-ref HEAD "$COMMIT"
+```
+
+After this, update the hub-level submodule pointer:
+
+```bash
+# From workspace-hub root
+git add <submodule-dir>
+git commit -m "chore: update <submodule> pointer"
+```
+
+### Parallel Execution for Multi-Repo God Object Sprints
+
+When splitting files across multiple repos simultaneously:
+
+```
+TeamCreate → spawn agent-repo-A + agent-repo-B in parallel
+  agent-repo-A: handles one repo (worldenergydata)
+  agent-repo-B: handles other repo (digitalmodel)
+
+Rules:
+  - Never run two agents on the SAME repo concurrently (index.lock contention)
+  - Update hub submodule pointer AFTER each repo agent completes
+  - agent-repo-B should not start WRK-592 until WRK-591 is committed
+    (same __init__.py in same repo — sequential within a repo, parallel across repos)
 ```
 
 ---
