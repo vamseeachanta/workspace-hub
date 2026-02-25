@@ -111,8 +111,11 @@ for name, path in repos.items():
 print("| | |")
 print("|---|---|")
 print(f"| **Work Queue** | {done_n} done · {in_prog_n} in progress · {ready_n} ready · {blocked_n} blocked · {total_n} total |")
-print(f"| **Machine Load** | " +
-      "  ".join(f"{m}: {c}" for m, c in sorted(machine_counts.items(), key=lambda x: -x[1])) + " |")
+all_machines = ['ace-linux-1', 'ace-linux-2', 'acma-ansys05', 'any']
+ml_parts = [f"{m}: {machine_counts.get(m, 0)}" for m in all_machines]
+extra = [f"{m}: {c}" for m, c in sorted(machine_counts.items(), key=lambda x: -x[1])
+         if m not in all_machines]
+print(f"| **Machine Load** | " + "  ".join(ml_parts + extra) + " |")
 print(f"| **AI Usage** | claude {fmt_pct(c_rem)} remaining · codex {fmt_pct(o_rem)} · gemini {fmt_pct(g_rem)} |")
 if dirty_repos:
     print(f"| **Dirty Repos** | {', '.join(dirty_repos)} — uncommitted changes |")

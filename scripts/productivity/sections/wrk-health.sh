@@ -83,8 +83,12 @@ print("### Machine Load")
 print("")
 print("| Machine | Assigned Items |")
 print("|---------|---------------|")
+all_machines = ['ace-linux-1', 'ace-linux-2', 'acma-ansys05', 'any']
+for m in all_machines:
+    print(f"| {m} | {merged.get(m, 0)} |")
 for m, c in sorted(merged.items(), key=lambda x: -x[1]):
-    print(f"| {m} | {c} |")
+    if m not in all_machines:
+        print(f"| {m} | {c} |")
 print("")
 
 # ── In Progress ───────────────────────────────────────────────────────────────
