@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-25T09:55:46Z by generate-index.py -->
+<!-- Generated: 2026-02-25T11:46:56Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-25T09:55:46Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-25T11:46:56Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 543
+**Total items:** 559
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 123 |
+| pending | 139 |
 | working | 8 |
 | blocked | 5 |
 | done | 172 |
@@ -23,16 +23,16 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 267 |
-| medium | 224 |
-| low | 51 |
+| high | 271 |
+| medium | 227 |
+| low | 60 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 82 |
-| medium | 240 |
+| simple | 90 |
+| medium | 248 |
 | complex | 96 |
 
 ### By Repository
@@ -47,24 +47,24 @@
 | acma-projects | 8 |
 | assethold | 12 |
 | assetutilities | 58 |
-| digitalmodel | 186 |
+| digitalmodel | 192 |
 | doris | 26 |
 | frontierdeepwater | 4 |
 | hobbies | 1 |
 | investments | 1 |
 | pdf-large-reader | 1 |
-| rock-oil-field | 3 |
+| rock-oil-field | 4 |
 | sabithaandkrishnaestates | 1 |
-| saipem | 6 |
-| workspace-hub | 136 |
-| worldenergydata | 97 |
+| saipem | 8 |
+| workspace-hub | 144 |
+| worldenergydata | 102 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 167 / 543 |
+| Plans exist | 181 / 559 |
 | Plans cross-reviewed | 91 |
 | Plans approved | 114 |
 | Brochure pending | 10 |
@@ -76,9 +76,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 543 |
+| Total captured | 559 |
 | Total archived | 223 |
-| Completion rate | 223/543 (41%) |
+| Completion rate | 223/559 (40%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -86,9 +86,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 29 / 123 | 24% |
-| Plans cross-reviewed | 6 | 15% |
-| Plans user-approved | 6 | 15% |
+| Pending items with plans | 43 / 139 | 31% |
+| Plans cross-reviewed | 6 | 11% |
+| Plans user-approved | 6 | 11% |
 
 ### Aging
 
@@ -103,9 +103,9 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 77 | 5 | 3 |
-| Medium   | 39  | 2  | 1  |
-| Low      | 7  | 1  | 1  |
+| High     | 81 | 5 | 3 |
+| Medium   | 42  | 2  | 1  |
+| Low      | 16  | 1  | 1  |
 
 ## Master Table
 
@@ -568,8 +568,6 @@
 | WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | medium | moderate | - | - | worldenergydata | metocean | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | - | - | digitalmodel | subsea | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-482 | feat(digitalmodel/cathodic_protection): Implement API RP 1632 — API RP 1632 Cathodic Protection of Underground Pet | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -653,6 +651,24 @@
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | ace-linux-1 | - | saipem, rock-oil-field, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-560, WRK-561, WRK-562, WRK-563 |
+| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | ace-linux-1 | - | digitalmodel, saipem, rock-oil-field, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-568 |
+| WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
+| WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | medium | large | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
+| WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | medium | ace-linux-1 | - | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-568 |
+| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | ace-linux-1 | - | digitalmodel, saipem, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
+| WRK-576 | chore(ai-tools): install gh on ace-linux-2 + full AI tools audit on acma-ansys05 | pending | high | simple | ace-linux-2, acma-ansys05 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | medium | simple | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | simple | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | simple | ace-linux-1, ace-linux-2 | - | worldenergydata, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending | low | simple | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-582 | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-583 | research: verify ANP Brazil production data REST API availability | pending | low | simple | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending | low | medium | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-585 | feat(worldenergydata): add IRENA offshore wind capacity data | pending | low | simple | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | simple | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -875,8 +891,6 @@
 | WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | medium | moderate | worldenergydata | metocean |
 | WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | high | moderate | digitalmodel | subsea |
 | WRK-482 | feat(digitalmodel/cathodic_protection): Implement API RP 1632 — API RP 1632 Cathodic Protection of Underground Pet | high | high | digitalmodel | - |
-| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | medium | low | digitalmodel | - |
-| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | medium | low | digitalmodel | - |
 | WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | medium | low | digitalmodel | - |
 | WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | medium | low | digitalmodel | - |
 | WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | medium | low | digitalmodel | - |
@@ -960,6 +974,24 @@
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | medium | medium | saipem, rock-oil-field, workspace-hub | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | high | medium | workspace-hub | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | medium | medium | workspace-hub | - |
+| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | high | medium | digitalmodel, saipem, rock-oil-field, workspace-hub | - |
+| WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | high | large | digitalmodel | - |
+| WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | medium | large | digitalmodel | - |
+| WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | medium | medium | digitalmodel, workspace-hub | - |
+| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | medium | medium | digitalmodel, saipem, workspace-hub | - |
+| WRK-576 | chore(ai-tools): install gh on ace-linux-2 + full AI tools audit on acma-ansys05 | high | simple | - | - |
+| WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | high | medium | workspace-hub | - |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | medium | simple | workspace-hub | - |
+| WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | medium | simple | workspace-hub | - |
+| WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | low | simple | worldenergydata, workspace-hub | - |
+| WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | low | simple | worldenergydata | - |
+| WRK-582 | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | low | medium | digitalmodel | - |
+| WRK-583 | research: verify ANP Brazil production data REST API availability | low | simple | worldenergydata | - |
+| WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | low | medium | worldenergydata | - |
+| WRK-585 | feat(worldenergydata): add IRENA offshore wind capacity data | low | simple | worldenergydata | - |
+| WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | low | simple | workspace-hub | - |
+| WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | low | medium | digitalmodel | - |
+| WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | low | medium | digitalmodel | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -1523,8 +1555,6 @@
 | WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending | high | moderate | subsea/cp_analysis |
 | WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | subsea |
 | WRK-482 | feat(digitalmodel/cathodic_protection): Implement API RP 1632 — API RP 1632 Cathodic Protection of Underground Pet | pending | high | high | - |
-| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending | medium | low | - |
-| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending | medium | low | - |
 | WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | pending | medium | low | - |
 | WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | pending | medium | low | - |
 | WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending | medium | low | - |
@@ -1575,6 +1605,14 @@
 | WRK-561 | docs(digitalmodel): add calc_examples mapping — structural domain | pending | high | medium | - |
 | WRK-562 | docs(digitalmodel): add calc_examples mapping — marine domain | pending | high | medium | - |
 | WRK-563 | docs(digitalmodel): add calc_examples mapping — cathodic-protection domain | pending | medium | small | - |
+| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | - |
+| WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | - |
+| WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | medium | large | - |
+| WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | medium | - |
+| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | - |
+| WRK-582 | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | pending | low | medium | - |
+| WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | medium | - |
+| WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | - |
 
 ### doris
 
@@ -1641,6 +1679,7 @@
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | done | medium | high | - |
 | WRK-337 | Vessel weather-window calculator — operability analysis from Hs Tp scatter | done | medium | medium | - |
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
+| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | - |
 
 ### sabithaandkrishnaestates
 
@@ -1658,6 +1697,8 @@
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | done | medium | high | - |
 | WRK-337 | Vessel weather-window calculator — operability analysis from Hs Tp scatter | done | medium | medium | - |
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
+| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | - |
+| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | - |
 
 ### workspace-hub
 
@@ -1798,6 +1839,14 @@
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | - |
+| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | - |
+| WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | medium | - |
+| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | - |
+| WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | medium | - |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | medium | simple | - |
+| WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | simple | - |
+| WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | simple | - |
+| WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | simple | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1901,6 +1950,11 @@
 | WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | medium | simple | safety_analysis/geohazard |
 | WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | pending | medium | moderate | sodir |
 | WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | medium | moderate | metocean |
+| WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | simple | - |
+| WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending | low | simple | - |
+| WRK-583 | research: verify ANP Brazil production data REST API availability | pending | low | simple | - |
+| WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending | low | medium | - |
+| WRK-585 | feat(worldenergydata): add IRENA offshore wind capacity data | pending | low | simple | - |
 
 ## By Priority
 
@@ -2175,6 +2229,10 @@
 | WRK-562 | docs(digitalmodel): add calc_examples mapping — marine domain | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | medium | doris, workspace-hub | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | medium | workspace-hub | - |
+| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | medium | digitalmodel, saipem, rock-oil-field, workspace-hub | - |
+| WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | large | digitalmodel | - |
+| WRK-576 | chore(ai-tools): install gh on ace-linux-2 + full AI tools audit on acma-ansys05 | pending | simple | - | - |
+| WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2386,8 +2444,6 @@
 | WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | simple | worldenergydata | safety_analysis/geohazard |
 | WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | pending | moderate | worldenergydata | sodir |
 | WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | moderate | worldenergydata | metocean |
-| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending | low | digitalmodel | - |
-| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending | low | digitalmodel | - |
 | WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | pending | low | digitalmodel | - |
 | WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | pending | low | digitalmodel | - |
 | WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending | low | digitalmodel | - |
@@ -2404,6 +2460,11 @@
 | WRK-563 | docs(digitalmodel): add calc_examples mapping — cathodic-protection domain | pending | small | digitalmodel, workspace-hub | - |
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | saipem, rock-oil-field, workspace-hub | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | workspace-hub | - |
+| WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | large | digitalmodel | - |
+| WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | digitalmodel, saipem, workspace-hub | - |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | simple | workspace-hub | - |
+| WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | simple | workspace-hub | - |
 
 ### Low
 
@@ -2459,6 +2520,15 @@
 | WRK-392 | feat(skills): add work-document-and-exit skill — capture WRK state + session handoff | done | simple | - | - |
 | WRK-394 | Planing hull motion model — nonlinear 2D+t strip theory for high-speed vessels | done | complex | digitalmodel | - |
 | WRK-402 | worldenergydata test structure consolidation | done | simple | worldenergydata | - |
+| WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | simple | worldenergydata, workspace-hub | - |
+| WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending | simple | worldenergydata | - |
+| WRK-582 | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | pending | medium | digitalmodel | - |
+| WRK-583 | research: verify ANP Brazil production data REST API availability | pending | simple | worldenergydata | - |
+| WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending | medium | worldenergydata | - |
+| WRK-585 | feat(worldenergydata): add IRENA offshore wind capacity data | pending | simple | worldenergydata | - |
+| WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | simple | workspace-hub | - |
+| WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | medium | digitalmodel | - |
+| WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | medium | digitalmodel | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | simple | workspace-hub | - |
 
 ## By Complexity
@@ -2548,6 +2618,14 @@
 | WRK-473 | feat(hydrodynamics): integrate wavespectra library for spectral processing | pending | medium | digitalmodel | hydrodynamics/wave_spectra |
 | WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending | medium | digitalmodel | marine_ops/marine_analysis |
 | WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | medium | worldenergydata | safety_analysis/geohazard |
+| WRK-576 | chore(ai-tools): install gh on ace-linux-2 + full AI tools audit on acma-ansys05 | pending | high | - | - |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | medium | workspace-hub | - |
+| WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | workspace-hub | - |
+| WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | worldenergydata, workspace-hub | - |
+| WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending | low | worldenergydata | - |
+| WRK-583 | research: verify ANP Brazil production data REST API availability | pending | low | worldenergydata | - |
+| WRK-585 | feat(worldenergydata): add IRENA offshore wind capacity data | pending | low | worldenergydata | - |
+| WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
 
 ### Medium
@@ -2794,6 +2872,14 @@
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | saipem, rock-oil-field, workspace-hub | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | workspace-hub | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | workspace-hub | - |
+| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | digitalmodel, saipem, rock-oil-field, workspace-hub | - |
+| WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | digitalmodel, saipem, workspace-hub | - |
+| WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | workspace-hub | - |
+| WRK-582 | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | pending | low | digitalmodel | - |
+| WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending | low | worldenergydata | - |
+| WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | digitalmodel | - |
+| WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | digitalmodel | - |
 
 ### Complex
 
@@ -2898,7 +2984,7 @@
 
 ## By Computer
 
-### ace-linux-1 (277 active / 290 total)
+### ace-linux-1 (281 active / 294 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3106,8 +3192,6 @@
 | WRK-469 | feat(assetutilities/calculations): implement Imas, L., et al - Sensitivity of SCR ... — Imas, L., et al   Sensitivity of SCR Response a... | done | high | low | assetutilities |
 | WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | high | medium | workspace-hub |
 | WRK-482 | feat(digitalmodel/cathodic_protection): Implement API RP 1632 — API RP 1632 Cathodic Protection of Underground Pet | pending | high | high | digitalmodel |
-| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending | medium | low | digitalmodel |
-| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending | medium | low | digitalmodel |
 | WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | pending | medium | low | digitalmodel |
 | WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | pending | medium | low | digitalmodel |
 | WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending | medium | low | digitalmodel |
@@ -3191,6 +3275,12 @@
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | saipem, rock-oil-field, workspace-hub |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | workspace-hub |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | workspace-hub |
+| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | digitalmodel, saipem, rock-oil-field, workspace-hub |
+| WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | digitalmodel |
+| WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | medium | large | digitalmodel |
+| WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | medium | digitalmodel, workspace-hub |
+| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | digitalmodel, saipem, workspace-hub |
+| WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | medium | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (13 active / 17 total)
@@ -3456,11 +3546,33 @@
 | WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | medium | moderate | worldenergydata |
 | WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | digitalmodel |
 
+### ace-linux-1, ace-linux-2 (11 active / 11 total)
+
+| ID | Title | Status | Priority | Complexity | Repos |
+|-----|-------|--------|----------|------------|-------|
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | medium | simple | workspace-hub |
+| WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | simple | workspace-hub |
+| WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | simple | worldenergydata, workspace-hub |
+| WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending | low | simple | worldenergydata |
+| WRK-582 | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | pending | low | medium | digitalmodel |
+| WRK-583 | research: verify ANP Brazil production data REST API availability | pending | low | simple | worldenergydata |
+| WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending | low | medium | worldenergydata |
+| WRK-585 | feat(worldenergydata): add IRENA offshore wind capacity data | pending | low | simple | worldenergydata |
+| WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | simple | workspace-hub |
+| WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | medium | digitalmodel |
+| WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | digitalmodel |
+
 ### ace-linux-2, ace-linux-1 (1 active / 1 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
 | WRK-393 | Evaluate Polymathic AI — The Well for ecosystem integration | done | medium | medium | workspace-hub |
+
+### ace-linux-2, acma-ansys05 (1 active / 1 total)
+
+| ID | Title | Status | Priority | Complexity | Repos |
+|-----|-------|--------|----------|------------|-------|
+| WRK-576 | chore(ai-tools): install gh on ace-linux-2 + full AI tools audit on acma-ansys05 | pending | high | simple | - |
 
 ### any (2 active / 2 total)
 
@@ -3516,4 +3628,9 @@
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | WRK-358 | - | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | WRK-351 | - | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | WRK-560, WRK-561, WRK-562, WRK-563 | - | - |
+| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | WRK-568 | - | - |
+| WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | WRK-568 | - | - |
+| WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | WRK-568 | - | - |
+| WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | WRK-568 | - | - |
+| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | WRK-568 | - | - |
 

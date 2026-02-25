@@ -26,7 +26,8 @@ sources:
       - /mnt/ace/umbilical
     host: ace-linux-1
     source_type: ace_project
-    extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf]
+    extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf,
+                 .py, .m, .inp, .dat, .mac, .f, .for, .bas]
 
   dde_project:
     enabled: true
@@ -42,7 +43,8 @@ sources:
       - "/mnt/remote/ace-linux-2/dde/Temp - Oil&Gas"
     host: ace-linux-2
     source_type: dde_project
-    extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf, .doc, .xls]
+    extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf, .doc, .xls,
+                 .py, .m, .inp, .dat, .mac, .f, .for, .bas]
 
   workspace_spec:
     enabled: true
@@ -78,6 +80,46 @@ exclude_patterns:
   - "*/TECH Writing/*"
   - "*.pyc"
   - "*.tmp"
+  # ANSYS Workbench internal/scratch files (binary, not useful for indexing)
+  - "*/dp0/*/MECH/*.dat"
+  - "*/_ProjectScratch/*"
+  - "*/_system_coupl/*"
+  - "*/SYS-*/MECH/*"
+
+# Script file types — classified separately for domain assignment and portability scoring
+script_extensions:
+  - ext: .py
+    language: python
+    portability: direct   # can be run/imported as-is after legal scan
+    domain_hints: [Orcaflex→pipeline, ANSYS→structural, production→pipeline]
+  - ext: .m
+    language: matlab
+    portability: port     # algorithm can be ported to Python
+    domain_hints: [VIV→structural, API579→structural, Shear7→pipeline]
+  - ext: .inp
+    language: ansys-apdl
+    portability: reference  # model params usable as test data
+    domain_hints: [VIV→structural, WF→structural, SCF→structural]
+  - ext: .dat
+    language: orcaflex
+    portability: direct   # usable via OrcaFlex Python API
+    domain_hints: [Orcaflex/→marine, drilling→pipeline]
+  - ext: .mac
+    language: ansys-apdl
+    portability: port
+    domain_hints: [→structural]
+  - ext: .f
+    language: fortran
+    portability: low
+    domain_hints: []
+  - ext: .for
+    language: fortran
+    portability: low
+    domain_hints: []
+  - ext: .bas
+    language: vba
+    portability: low
+    domain_hints: []
 
 cad_extensions:
   - .dwg

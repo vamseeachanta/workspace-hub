@@ -1,26 +1,26 @@
-generated: '2026-02-25T03:46:20'
-total_docs: 978578
+generated: '2026-02-25T05:45:14'
+total_docs: 1033789
 total_summaries: 639585
 by_source:
   og_standards: 27980
   ace_standards: 55442
-  ace_project: 426824
-  dde_project: 466782
-  workspace_spec: 1542
+  ace_project: 453285
+  dde_project: 495487
+  workspace_spec: 1587
   api_metadata: 8
 by_domain:
-  cad: 474641
-  other: 243254
-  pipeline: 165861
-  portfolio: 55684
-  structural: 19343
-  marine: 7952
-  installation: 6255
+  cad: 474677
+  other: 249066
+  pipeline: 185598
+  portfolio: 55942
+  marine: 31326
+  structural: 22582
+  installation: 8937
   cathodic-protection: 1703
-  workspace-spec: 1542
-  energy-economics: 1261
+  workspace-spec: 1587
+  energy-economics: 1281
   materials: 1025
-  regulatory: 57
+  regulatory: 65
 repos:
   acma-projects:
     standards_count: 110
