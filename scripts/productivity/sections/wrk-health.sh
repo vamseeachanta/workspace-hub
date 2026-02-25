@@ -71,6 +71,22 @@ print(f"| Parked            | {parked:>5} | —          |")
 print(f"| **Total**         | **{total}** |            |")
 print("")
 
+# ── Machine Load ──────────────────────────────────────────────────────────────
+# Normalise aliases: orcaflex-license-machine = acma-ansys05
+aliases = {'orcaflex-license-machine': 'acma-ansys05'}
+merged = {}
+for m, c in machine_counts.items():
+    canonical = aliases.get(m, m)
+    merged[canonical] = merged.get(canonical, 0) + c
+
+print("### Machine Load")
+print("")
+print("| Machine | Assigned Items |")
+print("|---------|---------------|")
+for m, c in sorted(merged.items(), key=lambda x: -x[1]):
+    print(f"| {m} | {c} |")
+print("")
+
 # ── In Progress ───────────────────────────────────────────────────────────────
 print("### In Progress")
 print("")
@@ -92,21 +108,5 @@ simp = sum(complexity_counts.get(k,0) for k in ('simple','low','small'))
 comp = sum(complexity_counts.get(k,0) for k in ('complex','high','large'))
 medi = sum(complexity_counts.get(k,0) for k in ('medium','moderate'))
 print(f"**Complexity (pending):** simple={simp}  medium={medi}  complex={comp}")
-print("")
-
-# ── Machine Load ──────────────────────────────────────────────────────────────
-# Normalise aliases: orcaflex-license-machine = acma-ansys05
-aliases = {'orcaflex-license-machine': 'acma-ansys05'}
-merged = {}
-for m, c in machine_counts.items():
-    canonical = aliases.get(m, m)
-    merged[canonical] = merged.get(canonical, 0) + c
-
-print("### Machine Load")
-print("")
-print("| Machine | Assigned Items |")
-print("|---------|---------------|")
-for m, c in sorted(merged.items(), key=lambda x: -x[1]):
-    print(f"| {m} | {c} |")
 print("")
 PYEOF
