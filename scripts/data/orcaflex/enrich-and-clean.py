@@ -126,6 +126,8 @@ def enrich_line(line: dict, riser_loader, pipeline_lookup) -> dict:
                 result["component_type"] = "marine_drilling_riser_joint"
                 result["nps_in"] = float(row.get("OD_IN", od_in))
                 result["public_match"] = {
+                    # component_id links back to worldenergydata drilling_riser_components.csv
+                    "component_id": row.get("COMPONENT_ID") or None,
                     "grade_range": _parse_grade(row.get("GRADE", "")),
                     "connection_type": row.get("CONNECTION_TYPE") or None,
                     "pressure_rating_psi": row.get("PRESSURE_RATING_PSI") or None,
@@ -134,7 +136,8 @@ def enrich_line(line: dict, riser_loader, pipeline_lookup) -> dict:
                     "source": "worldenergydata.vessel_fleet.DrillingRiserLoader",
                 }
                 matched = True
-                logger.debug("Riser match: OD=%.4fm (%.2f\") → %s", od_m, od_in, row.get("MANUFACTURER"))
+                logger.debug("Riser match: OD=%.4fm (%.2f\") → %s (id=%s)",
+                             od_m, od_in, row.get("MANUFACTURER"), row.get("COMPONENT_ID"))
         except Exception as exc:
             logger.debug("Riser lookup failed: %s", exc)
 
