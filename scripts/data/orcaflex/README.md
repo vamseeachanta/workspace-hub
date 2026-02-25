@@ -97,11 +97,11 @@ vessels:
 
 | Dataset | Status | WRK |
 |---------|--------|-----|
-| `drilling_riser_components.csv` | 24 rows (9 joints, 6 BOPs, 3 LMRPs, 4 flex, 2 telescopic) | WRK-593: expand |
-| `rig_fleet_full.bin` | 2,320 rigs (99 drillships) from BSEE — Feb 2026 | ready |
-| `construction_vessels.csv` | missing | WRK-593: create |
-| `api_5l_pipe_schedule.csv` | missing | WRK-594: create |
-| `PipelineSpecLookup` class | missing | WRK-594: implement |
+| `drilling_riser_components.csv` | 38 rows (NOV/Cameron/Hydril/bare joints; 18.75"/21"/21.5"/24" OD) | WRK-593 ✓ |
+| `drilling_rigs.csv` | 2,210 offshore rigs (134 drillships, 309 semisubs, 1,009 jack-ups) | WRK-593 ✓ |
+| `construction_vessels.csv` | 17 vessels (Subsea7/McDermott/TechnipFMC) | WRK-593 ✓ |
+| `api_5l_pipe_schedule.csv` | 43 rows NPS 4"–36" + 21" RISER_BORE entries | WRK-594 ✓ |
+| `PipelineSpecLookup` class | `worldenergydata.bsee.pipeline.PipelineSpecLookup` | WRK-594 ✓ |
 
 ## Priority Extraction Order
 

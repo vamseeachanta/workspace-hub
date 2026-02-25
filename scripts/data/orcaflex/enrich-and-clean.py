@@ -31,6 +31,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import pandas as pd
 import yaml
 
 logging.basicConfig(
@@ -125,13 +126,16 @@ def enrich_line(line: dict, riser_loader, pipeline_lookup) -> dict:
                 row = df.iloc[0]
                 result["component_type"] = "marine_drilling_riser_joint"
                 result["nps_in"] = float(row.get("OD_IN", od_in))
+                _psi = row.get("PRESSURE_RATING_PSI")
+                _mfr = row.get("MANUFACTURER")
+                _conn = row.get("CONNECTION_TYPE")
                 result["public_match"] = {
                     # component_id links back to worldenergydata drilling_riser_components.csv
                     "component_id": row.get("COMPONENT_ID") or None,
                     "grade_range": _parse_grade(row.get("GRADE", "")),
-                    "connection_type": row.get("CONNECTION_TYPE") or None,
-                    "pressure_rating_psi": row.get("PRESSURE_RATING_PSI") or None,
-                    "manufacturer": row.get("MANUFACTURER") or None,
+                    "connection_type": (str(_conn) if _conn is not None and pd.notna(_conn) else None),
+                    "pressure_rating_psi": (float(_psi) if _psi is not None and pd.notna(_psi) else None),
+                    "manufacturer": (str(_mfr) if _mfr is not None and pd.notna(_mfr) else None),
                     "api_standard": "API-STD-16F",
                     "source": "worldenergydata.vessel_fleet.DrillingRiserLoader",
                 }
@@ -151,7 +155,8 @@ def enrich_line(line: dict, riser_loader, pipeline_lookup) -> dict:
                 result["public_match"] = {
                     "schedule": spec.get("schedule"),
                     "grade_range": spec.get("grade_range", []),
-                    "standards": spec.get("standards", []),
+                    "standard": spec.get("standard"),
+                    "domain_hint": spec.get("domain_hint"),
                     "source": "worldenergydata.bsee.pipeline.PipelineSpecLookup",
                 }
                 matched = True
