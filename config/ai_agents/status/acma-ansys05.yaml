@@ -1,5 +1,0 @@
-host: acma-ansys05
-platform: windows
-status: manual-check-required
-note: "No SSH access. Check manually via RDP. Use Windows Task Scheduler for automation."
-checked_at: "2026-02-25T05:19:49-06:00"
