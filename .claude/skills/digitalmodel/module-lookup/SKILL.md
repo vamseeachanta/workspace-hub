@@ -1,3 +1,13 @@
+---
+name: module-lookup
+description: Query the digitalmodel module registry to discover modules by capability, standard, or maturity without reading source code.
+version: 1.0.0
+category: digitalmodel
+capabilities: []
+requires: []
+see_also: []
+---
+
 # digitalmodel Module Lookup Skill
 
 Query the digitalmodel module registry (`specs/module-registry.yaml`) to discover
