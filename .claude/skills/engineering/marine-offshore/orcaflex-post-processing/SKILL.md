@@ -4,9 +4,21 @@ description: Post-process OrcaFlex simulation results using OPP (OrcaFlex Post-P
   Use for extracting summary statistics, linked statistics, range graphs, time series,
   histograms, and generating interactive HTML reports from .sim files.
 updated: '2026-01-07'
-capabilities: []
-requires: []
-see_also: []
+capabilities:
+- extract summary statistics (min/max/mean/std) from .sim files
+- compute linked statistics and variable correlations
+- generate range graph envelopes (arclength vs min/max)
+- extract time series for lines, vessels, buoys
+- build histogram probability distributions
+- produce interactive Plotly HTML dashboards
+- batch post-process multiple .sim files in parallel
+requires:
+- orcaflex-modeling >=2.0.0,<3.0.0
+- signal-analysis >=1.0.0,<2.0.0
+see_also:
+- orcaflex-batch-manager
+- orcaflex-results-comparison
+- orcaflex-visualization
 ---
 # OrcaFlex Post-Processing Skill
 

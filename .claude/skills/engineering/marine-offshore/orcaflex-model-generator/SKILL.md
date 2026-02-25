@@ -1,8 +1,8 @@
 ---
 name: orcaflex-model-generator
 description: Generate OrcaFlex modular models from spec.yml using builder registry pattern with conditional generation and cross-builder context sharing.
-version: 2.0.0
-updated: 2026-02-10
+version: 2.2.0
+updated: 2026-02-11
 category: offshore-engineering
 triggers:
 - generate OrcaFlex model
@@ -12,9 +12,20 @@ triggers:
 - builder registry
 - component assembly
 - parametric model generation
-capabilities: []
-requires: []
-see_also: []
+- spec.yml template
+- template library
+capabilities:
+- generate modular OrcaFlex YAML from spec.yml
+- builder registry pattern with ordered execution
+- riser / pipeline / generic structure types
+- cross-builder entity sharing via BuilderContext
+- template library with 6 curated spec.yml templates
+requires:
+- orcaflex-modeling >=2.0.0,<3.0.0
+see_also:
+- orcaflex-monolithic-to-modular
+- orcaflex-yaml-gotchas
+- orcaflex-environment-config
 ---
 # OrcaFlex Modular Model Generator
 
@@ -234,16 +245,32 @@ def _merge_object(obj: GenericObject) -> dict[str, Any]:
     return ordered
 ```
 
+### Singleton Data (list vs dict)
+
+Some singleton sections store data as a LIST of named dicts (e.g., `RayleighDampingCoefficients`), not a flat dict. The builder handles both:
+
+```python
+if singleton.data:
+    if isinstance(singleton.data, list):
+        result[section_key] = list(singleton.data)
+    else:
+        result[section_key] = dict(singleton.data)
+```
+
 ### Section Ordering (_SECTION_ORDER)
 
 Critical: OrcaFlex validates references sequentially. Sections must appear in dependency order:
 
 ```
 General → VariableData → ExpansionTables
-→ RayleighDampingCoefficients, FrictionCoefficients, LineContactData
-→ LineTypes, VesselTypes, ClumpTypes, StiffenerTypes, SupportTypes
-→ Vessels, Lines, Shapes, 6DBuoys, 3DBuoys, Constraints, Links, Winches
-→ MultibodyGroups, BrowserGroups, Groups
+→ RayleighDampingCoefficients (named damping sets — must precede LineTypes)
+→ LineTypes → VesselTypes → ClumpTypes → StiffenerTypes → SupportTypes
+→ MorisonElementTypes → PyModels → WakeModels
+→ Vessels → Lines → Shapes → 6DBuoys → 3DBuoys
+→ Constraints → Links → Winches → FlexJoints → MultibodyGroups
+→ FrictionCoefficients (refs LineType+Shape names — must follow instances)
+→ LineContactData → CodeChecks → Shear7Data → VIVAData
+→ BrowserGroups → Groups
 ```
 
 ### Priority Keys (_PRIORITY_KEYS)
@@ -272,7 +299,34 @@ The benchmark validates three paths produce equivalent results:
 uv run python scripts/benchmark_model_library.py --library-only --three-way --skip-mesh
 ```
 
-Results (2026-02-10): All 5 library models converge on all 3 paths with 0.00% tension difference.
+Results (2026-02-11): 51 models (4 risers + 47 generic across 11 batches). Path A: 49/51 converge. Path B and C: 47/49 pass (only B01=PyModel and K02=external wind.bts remain). 39/44 passing models at 0.00% tension AND bending difference.
+
+## Template Library
+
+Curated `spec.yml` templates for common structure types live in `docs/modules/orcaflex/library/templates/`. Each template is schema-validated, commented, and ready to copy-modify-generate.
+
+| Template | Schema | Structure | Water Depth | Complexity |
+|----------|--------|-----------|-------------|------------|
+| `riser_catenary/` | riser | riser | 100m | minimal |
+| `riser_lazy_wave/` | riser | riser | 100m | moderate |
+| `pipeline_installation/` | pipeline | pipeline | 8m | moderate |
+| `mooring_buoy/` | generic | mooring | 500m | moderate |
+| `installation_subsea/` | generic | installation | 100m | minimal |
+| `installation_pull_in/` | generic | installation | 137m | complex |
+
+**Catalog**: `templates/catalog.yaml` — machine-readable index with source, tags, benchmark status.
+
+**Audit**: `scripts/audit_spec_library.py` classifies all 81 specs across 13 categories with quality scores.
+
+### Quick Start
+
+```bash
+# Copy template and customize
+cp -r docs/modules/orcaflex/library/templates/riser_catenary/ my_model/
+# Edit my_model/spec.yml with project-specific values
+uv run python -m digitalmodel.solvers.orcaflex.modular_generator generate \
+    --input my_model/spec.yml --output my_model/modular/
+```
 
 ## Related Skills
 
@@ -289,10 +343,14 @@ Results (2026-02-10): All 5 library models converge on all 3 paths with 0.00% te
 - Schema: `src/digitalmodel/solvers/orcaflex/modular_generator/schema/`
 - Spec library: `docs/modules/orcaflex/library/tier2_fast/`
 - Benchmark: `scripts/benchmark_model_library.py`
+- Template catalog: `templates/catalog.yaml`
+- Audit script: `scripts/audit_spec_library.py`
 
 ---
 
 ## Version History
 
+- **2.2.0** (2026-02-11): Added template library section (6 curated templates, catalog.yaml, audit script).
+- **2.1.0** (2026-02-11): Corrected section ordering (RayleighDamping before LineTypes, FrictionCoefficients after instances). Added MorisonElementTypes, PyModels, WakeModels, FlexJoints, CodeChecks, Shear7Data, VIVAData. Added singleton list vs dict handling. Updated benchmark to 51 models, 47/49.
 - **2.0.0** (2026-02-10): Complete rewrite. Documents actual ModularModelGenerator, builder registry, generic builder internals, _merge_object() with model_fields_set, section ordering, 3-way benchmark.
 - **1.0.0** (2026-01-07): Initial release describing theoretical component lookup approach.

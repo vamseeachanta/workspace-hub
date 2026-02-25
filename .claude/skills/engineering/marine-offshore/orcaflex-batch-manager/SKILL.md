@@ -15,9 +15,20 @@ triggers:
 - large batch
 - parallel OrcaFlex
 - job queue
-capabilities: []
-requires: []
-see_also: []
+capabilities:
+- parallel batch execution via ThreadPoolExecutor
+- adaptive worker scaling based on CPU/memory utilisation
+- chunk-based processing for 100+ case campaigns
+- progress tracking with per-file metrics and timing
+- checkpoint/resume for interrupted batches
+- file-size-based worker allocation
+- YAML-driven batch config (E08 lay-table and C10 multi-static patterns)
+requires:
+- orcaflex-modeling >=2.0.0,<3.0.0
+see_also:
+- orcaflex-post-processing
+- orcaflex-operability
+- orcaflex-results-comparison
 ---
 # OrcaFlex Batch Manager Skill
 
