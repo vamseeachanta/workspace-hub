@@ -11,7 +11,7 @@ unlock or module gap closure.
 
 ## Priority 1 — Immediate Module Gap Closures (high value, low effort)
 
-### WRK-WAVE-1: Integrate wavespectra into digitalmodel/hydrodynamics
+### WRK-WAVE-1: Integrate wavespectra into digitalmodel/hydrodynamics → **WRK-473**
 **Resource:** `wavespectra` v4.4.2 (MIT, pip-installable)
 **Rationale:** WRK-383 identified `hydrodynamics/wave_spectra` as a gap module.
 wavespectra provides the complete solution: 15+ format readers (ERA5, WW3, SWAN,
@@ -20,7 +20,7 @@ algorithm code needed — the library already implements JONSWAP/PM fitting and
 spectral partitioning. Effort: low (dependency addition + thin module wrapper).
 **Related resources:** `wavespectra`, `wavespectra_agent`
 
-### WRK-MOOR-1: Integrate MoorDyn + MoorPy into digitalmodel/subsea/mooring_analysis
+### WRK-MOOR-1: Integrate MoorDyn + MoorPy into digitalmodel/subsea/mooring_analysis → **WRK-474**
 **Resource:** MoorDyn (BSD-3, PyPI), MoorPy (BSD, NREL/OSTI)
 **Rationale:** WRK-383 identified no mooring dynamics module. MoorDyn provides
 lumped-mass mooring line dynamics; MoorPy provides quasi-static design. Together
@@ -29,7 +29,7 @@ verification (MoorDyn). NREL DOE backing gives long-term maintenance confidence.
 Effort: medium (module wrapper + test cases against API RP 2SK scenarios).
 **Related resources:** `moordyn`, `moorpy_nrel`, `moorpy_agent`
 
-### WRK-METEO-1: Wire Open-Meteo Marine API into marine_ops weather-window module
+### WRK-METEO-1: Wire Open-Meteo Marine API into marine_ops weather-window module → **WRK-475**
 **Resource:** Open-Meteo Marine Weather API (free, no key, JSON REST)
 **Rationale:** No authentication, no registration, no cost. Returns Hs, Tp, wave
 direction, swell separation for any global coordinate as JSON. Ideal drop-in for
@@ -42,7 +42,7 @@ call, JSON parsing, unit conversion).
 
 ## Priority 2 — New Module Creation (medium effort, high strategic value)
 
-### WRK-ESG-1: Create ESG/Carbon Emissions Module using Climate TRACE + EDGAR + GRFF
+### WRK-ESG-1: Create ESG/Carbon Emissions Module using Climate TRACE + EDGAR + GRFF → **WRK-476**
 **Resources:** Climate TRACE (beta API), EDGAR 2025 (structured download), Global
 Registry of Fossil Fuels (CC BY-SA model), IEA Methane Tracker (CC BY 4.0)
 **Rationale:** No ESG/carbon module currently exists in the workspace-hub ecosystem.
@@ -57,7 +57,7 @@ emission lookup via Climate TRACE API, (b) national inventory comparison via EDG
 **Related resources:** `climate_trace_api`, `climate_trace_registry`, `edgar_2025`,
 `iea_methane_tracker`, `fossil_fuel_registry`
 
-### WRK-GEOHAZ-1: Create Offshore Geohazard Feed Module using USGS Earthquake API
+### WRK-GEOHAZ-1: Create Offshore Geohazard Feed Module using USGS Earthquake API → **WRK-477**
 **Resource:** USGS Earthquake Hazards FDSN API (free, no auth, real-time + historical)
 **Rationale:** No geohazard module exists. Offshore seismic risk is relevant to
 subsea infrastructure design, site assessment, and insurance. The USGS FDSN API
@@ -67,7 +67,7 @@ provide seismic hazard lookups by geographic bounding box for any offshore locat
 Effort: low (thin API wrapper + radius queries around offshore asset coordinates).
 **Related resources:** `usgs_eq_geojson` (realtime feed), `usgs_earthquake_feed` (API), `usgs_sciencebase`
 
-### WRK-CP-1: Create Cathodic Protection Module — gap identified in WRK-383
+### WRK-CP-1: Create Cathodic Protection Module — gap identified in WRK-383 → **WRK-478**
 **Resources:** AMPP/NACE Knowledge Hub (SP0169, SP0176), TWI Job Knowledge Series,
 DNV-RP-B401 (free viewer), FEniCSx (custom CP field modelling)
 **Rationale:** WRK-383 explicitly flagged `subsea/` cathodic protection as a gap
@@ -84,7 +84,7 @@ demand calculations per DNV-RP-B401, (b) anode design (bracelet/flush/stand-off)
 
 ## Priority 3 — Data Source Wiring (straightforward, significant data value)
 
-### WRK-NORWAY-1: Wire SODIR FactPages OData API into worldenergydata/sodir
+### WRK-NORWAY-1: Wire SODIR FactPages OData API into worldenergydata/sodir → **WRK-479**
 **Resource:** SODIR / NPD FactPages REST/OData API (free, 30,000+ datasets)
 **Rationale:** The worldenergydata/sodir module exists but the scope of the SODIR
 open data is substantially larger than what the module currently ingests. The Diskos
@@ -96,7 +96,7 @@ datasets are now public.
 to cover new dataset types; add scheduled update pipeline.
 **Related resources:** `sodir_factpages`
 
-### WRK-CMEMS-1: Integrate CMEMS Wave Multi-Year Product into worldenergydata/metocean
+### WRK-CMEMS-1: Integrate CMEMS Wave Multi-Year Product into worldenergydata/metocean → **WRK-480**
 **Resource:** CMEMS Wave Multi-Year (1967-2025, first backward extension released 2025)
 **Rationale:** The CMEMS wave multi-year product now extends back to 1967 — a 58-year
 hindcast covering the offshore industry's full operational history. The June 2025
@@ -106,7 +106,7 @@ but uses atmospheric-coupled wave models rather than dedicated ocean-wave physic
 statistics and return period calculations.
 **Related resources:** `cmems_marine_service`
 
-### WRK-BATHYM-1: Integrate GEBCO_2025 Bathymetry into subsea pipeline routing
+### WRK-BATHYM-1: Integrate GEBCO_2025 Bathymetry into subsea pipeline routing → **WRK-481**
 **Resource:** GEBCO_2025 Grid (15 arc-second, published August 2025, OPeNDAP access)
 **Rationale:** GEBCO_2025 is the 7th Seabed 2030 grid and the most current global
 bathymetric dataset. OPeNDAP subset access at download.gebco.net enables programmatic
@@ -118,7 +118,7 @@ installation planning would enable agents to query water depths automatically.
 
 ## Priority 4 — MCP Ecosystem Expansion (agent capability, self-referential)
 
-### WRK-MCP-1: Audit Official MCP Registry for Engineering-Domain Servers
+### WRK-MCP-1: Audit Official MCP Registry for Engineering-Domain Servers → **WRK-578**
 **Resource:** registry.modelcontextprotocol.io (programmatic API, ~2000 servers)
 **Rationale:** The official MCP registry launched September 2025 and now holds ~2000
 servers, with the programmatic API enabling automated scanning. A systematic audit
@@ -131,7 +131,7 @@ relevant keywords, and produces a priority-ranked install list.
 **Related resources:** `mcp_official_registry`, `awesome_mcp_servers`,
 `mcpmarket_catalog`, `semantic_scholar_mcp`
 
-### WRK-LIT-1: Install Semantic Scholar MCP Server for Agent Literature Search
+### WRK-LIT-1: Install Semantic Scholar MCP Server for Agent Literature Search → **WRK-579**
 **Resource:** Semantic Scholar MCP Server (free, no auth, 200M+ papers, OA filter)
 **Rationale:** Currently agents have no direct path to engineering literature from
 within a task. The Semantic Scholar MCP server enables direct paper search (by
@@ -144,7 +144,7 @@ Immediate benefit for WRK items requiring literature-backed design decisions.
 
 ## Priority 5 — Academic and Reference Expansion
 
-### WRK-OA-1: Map Open-Access Journal Portfolio for Engineering Domains
+### WRK-OA-1: Map Open-Access Journal Portfolio for Engineering Domains → **WRK-580**
 **Resource:** DOAJ API (doaj.org/api/), CORE.ac.uk API, OpenAIRE API
 **Rationale:** Multiple fully open-access offshore/marine engineering journals
 were discovered that are not currently in scope: IJNAOE, IJCOE, JMSE, JOES,
@@ -156,7 +156,7 @@ references without subscription barriers.
 with module list from WRK-383; produce a per-module OA journal registry.
 **Related resources:** `doaj_offshore_journals`, `core_ac_uk`, `openaire_explore`
 
-### WRK-ESG-2: Evaluate IEA Methane Tracker for Upstream O&G ESG Module
+### WRK-ESG-2: Evaluate IEA Methane Tracker for Upstream O&G ESG Module → **WRK-581**
 **Resource:** IEA Global Methane Tracker 2025 (CC BY 4.0, country-level, downloadable)
 **Rationale:** The 2025 update of the IEA Methane Tracker adds country-level historical
 emissions data and an open-access abatement model. The data provides a critical
@@ -170,15 +170,15 @@ module.
 
 ## Additional Candidates (to investigate further)
 
-| Candidate | Resource | Action |
-|---|---|---|
-| Geomechanics module | OpenGeoSys, MOOSE INL | Feasibility assessment for wellbore integrity |
-| ANP Brazil production | ANP BDEP, re3data r3d100010989 | Verify REST API availability |
-| NSTA UK exploration data | NSTA NDR (400+ GB) | Index available datasets; add to worldenergydata |
-| IRENA offshore wind data | IRENASTAT | Add offshore wind capacity to energy mix module |
-| IACS Blue Book automation | iacs.org.uk/publications | Auto-fetch UR updates for standards currency |
-| Code_Aster structural | code-aster.org | Evaluate for large-scale topside structural FEA |
-| OpenTURNS reliability | openturns.github.io | Integrate with fatigue reliability module |
+| Candidate | Resource | Action | WRK |
+|---|---|---|---|
+| Geomechanics module | OpenGeoSys, MOOSE INL | Feasibility assessment for wellbore integrity | WRK-582 |
+| ANP Brazil production | ANP BDEP, re3data r3d100010989 | Verify REST API availability | WRK-583 |
+| NSTA UK exploration data | NSTA NDR (400+ GB) | Index available datasets; add to worldenergydata | WRK-584 |
+| IRENA offshore wind data | IRENASTAT | Add offshore wind capacity to energy mix module | WRK-585 |
+| IACS Blue Book automation | iacs.org.uk/publications | Auto-fetch UR updates for standards currency | WRK-586 |
+| Code_Aster structural | code-aster.org | Evaluate for large-scale topside structural FEA | WRK-587 |
+| OpenTURNS reliability | openturns.github.io | Integrate with fatigue reliability module | WRK-588 |
 
 ---
 
