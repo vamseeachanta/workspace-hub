@@ -2798,3 +2798,69 @@ calc_examples:
     description: 2D FE corrosion simulation workbook — Zn/Fe anode model
     type: xlsx
     host: ace-linux-1
+
+# =============================================================================
+# OrcaFlex Model Library
+# Binary OrcaFlex .dat models — accessible via OrcaFlex Python API (ofx.Model)
+# All paths on host: ace-linux-2 under /mnt/remote/ace-linux-2/dde/Orcaflex/
+# =============================================================================
+orcaflex_models:
+
+- project: drilling-riser-development
+  path: /mnt/remote/ace-linux-2/dde/Orcaflex/0000 Drilling Riser Development/Latest
+  description: >
+    Drilling riser model library — vessel offset sensitivity, current profiles,
+    wave loading cases (Rev8: 2,282 load cases). Includes Atwood Condor vessel
+    specific models and parametric load case sweeps. Key inputs for DNV-OS-F201
+    drilling riser design checks (effective tension, bending, VIV screening).
+  domain: pipeline
+  standards: [DNV-OS-F201, ISO-13624-1]
+  host: ace-linux-2
+  file_count: 3358
+  portability: direct
+  notes: >
+    Rev8/ contains the bulk of load cases (2,282 files). Latest/ has the
+    current canonical model (31 files). Vessel Offset* folders are dedicated
+    sensitivity runs. Use Latest/ as the base model for porting.
+
+- project: wellhead-bop-fatigue
+  path: /mnt/remote/ace-linux-2/dde/Orcaflex/31290 Shell WellHead Fatigue Assement
+  description: >
+    BOP-on-wellhead/tree/THS (Tubing Hanger System) fatigue assessment models.
+    594 load cases across three BOP configurations. Provides fatigue damage
+    accumulation inputs for API-RP-2A and DNV-OS-E301 wellhead fatigue checks.
+    Includes VIV subfolder for vortex-induced vibration screening.
+  domain: structural
+  standards: [API-RP-2A-WSD-22nd, DNV-OS-E301, DNV-RP-F105]
+  host: ace-linux-2
+  file_count: 594
+  portability: direct
+  notes: >
+    Three BOP configuration folders: BOP on Wellhead (240), BOP on THS (172),
+    BOP on Tree (174). For Verification/ has 6 spot-check models.
+
+- project: riserless-completion-analysis
+  path: /mnt/remote/ace-linux-2/dde/Orcaflex/31242
+  description: >
+    Riserless completion analysis — inner string model for deepwater well
+    completion operations without a marine riser. Reference model for
+    DNV-OS-E301 mooring and completion equipment fatigue checks.
+  domain: marine
+  standards: [DNV-OS-E301]
+  host: ace-linux-2
+  file_count: 1
+  portability: direct
+  notes: Single model file InnerString.dat — lightweight reference.
+
+- project: orcaflex-api-stress-check
+  path: /mnt/remote/ace-linux-2/dde/Orcaflex/5 - OrcaFlex API Check
+  description: >
+    OrcaFlex API stress verification model. Single .dat file used to verify
+    the OrcaFlex Python API stress result extraction. Useful as a minimal
+    test fixture for the OrcaFlex Python interface.
+  domain: marine
+  standards: []
+  host: ace-linux-2
+  file_count: 1
+  portability: direct
+  notes: OrcaFlexAPIStressCheck.dat — minimal model for API testing.

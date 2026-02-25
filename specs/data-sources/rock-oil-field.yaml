@@ -504,3 +504,26 @@ standards:
   - API RP 14H
 apis: []
 gaps: []
+
+# =============================================================================
+# OrcaFlex Model Library
+# Binary OrcaFlex .dat models — accessible via OrcaFlex Python API (ofx.Model)
+# All paths on host: ace-linux-2 under /mnt/remote/ace-linux-2/dde/Orcaflex/
+# =============================================================================
+orcaflex_models:
+
+- project: pipelay-davit-lift-verification
+  path: /mnt/remote/ace-linux-2/dde/Orcaflex/Karthik Models verification
+  description: >
+    Pipelay davit lift verification models — two OrcaFlex models for davit
+    lift operations with and without load (empty condition). Used for
+    verifying pipelay lift rigging and sling load calculations.
+    Reference models for lift analysis module validation.
+  domain: marine
+  standards: [DNV-OS-H205, DNV-RP-H103]
+  host: ace-linux-2
+  file_count: 2
+  portability: direct
+  notes: >
+    PL_Davit Lift1_empty.dat and PL_Davit Lift1_empty_Rev1.dat.
+    Minimal models — good for unit test fixtures.

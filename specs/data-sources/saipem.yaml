@@ -504,3 +504,50 @@ standards:
   - API RP 14H
 apis: []
 gaps: []
+
+# =============================================================================
+# OrcaFlex Model Library
+# Binary OrcaFlex .dat models — accessible via OrcaFlex Python API (ofx.Model)
+# All paths on host: ace-linux-2 under /mnt/remote/ace-linux-2/dde/Orcaflex/
+# =============================================================================
+orcaflex_models:
+
+- project: s-lay-pipeline-installation
+  path: /mnt/remote/ace-linux-2/dde/Orcaflex/611 Mecor S Lay Installation
+  description: >
+    S-lay pipelay installation analysis model library for two pipeline projects.
+    BigFoot1 (170 files) and Quetzal (436 files) contain vessel-specific S-lay
+    configurations including abandonment & recovery, pull-in, and weight-matching
+    load cases. Reference/ (3 files) provides a clean base model.
+    Key inputs for DNV-OS-F101 pipelay stress and buckle initiation checks.
+  domain: installation
+  standards: [DNV-OS-F101, DNV-RP-F110]
+  host: ace-linux-2
+  file_count: 1514
+  portability: direct
+  subprojects:
+    - name: BigFoot1
+      path: /mnt/remote/ace-linux-2/dde/Orcaflex/611 Mecor S Lay Installation/BigFoot1/Latest
+      description: S-lay configuration — Abandonment & Recovery, Pull-in, weight matching
+    - name: Quetzal
+      path: /mnt/remote/ace-linux-2/dde/Orcaflex/611 Mecor S Lay Installation/Quetzal
+      description: Quetzal pipeline S-lay — multiple water depths and load cases
+    - name: Reference
+      path: /mnt/remote/ace-linux-2/dde/Orcaflex/611 Mecor S Lay Installation/Reference
+      description: Reference base model — 3 files, clean starting point
+
+- project: sewol-salvage-marine-ops
+  path: /mnt/remote/ace-linux-2/dde/Orcaflex/614 Sewol
+  description: >
+    Marine salvage operation OrcaFlex models for the Sewol vessel.
+    Includes side-lift, detailed hull modelling, and iterative revisions
+    (Rev003 through Rev014). Provides reference for heavy-lift marine
+    operations analysis and crane/sling load calculations.
+  domain: marine
+  standards: [DNV-OS-H205]
+  host: ace-linux-2
+  file_count: 25
+  portability: direct
+  notes: >
+    Rev013/Rev014 are the most recent revisions. Side Lift Korea WD1 Case 2-2
+    provides waterway/shallow-water side-lift reference.

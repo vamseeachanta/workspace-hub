@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-25T11:46:56Z by generate-index.py -->
+<!-- Generated: 2026-02-25T11:54:52Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-25T11:46:56Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-25T11:54:52Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 559
+**Total items:** 558
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 139 |
+| pending | 138 |
 | working | 8 |
 | blocked | 5 |
 | done | 172 |
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 271 |
+| high | 270 |
 | medium | 227 |
 | low | 60 |
 
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 90 |
-| medium | 248 |
+| medium | 247 |
 | complex | 96 |
 
 ### By Repository
@@ -47,16 +47,16 @@
 | acma-projects | 8 |
 | assethold | 12 |
 | assetutilities | 58 |
-| digitalmodel | 192 |
+| digitalmodel | 191 |
 | doris | 26 |
 | frontierdeepwater | 4 |
 | hobbies | 1 |
 | investments | 1 |
 | pdf-large-reader | 1 |
-| rock-oil-field | 4 |
+| rock-oil-field | 3 |
 | sabithaandkrishnaestates | 1 |
-| saipem | 8 |
-| workspace-hub | 144 |
+| saipem | 7 |
+| workspace-hub | 143 |
 | worldenergydata | 102 |
 
 ### Plan Tracking
@@ -64,7 +64,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 181 / 559 |
+| Plans exist | 180 / 558 |
 | Plans cross-reviewed | 91 |
 | Plans approved | 114 |
 | Brochure pending | 10 |
@@ -76,9 +76,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 559 |
+| Total captured | 558 |
 | Total archived | 223 |
-| Completion rate | 223/559 (40%) |
+| Completion rate | 223/558 (40%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -86,9 +86,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 43 / 139 | 31% |
-| Plans cross-reviewed | 6 | 11% |
-| Plans user-approved | 6 | 11% |
+| Pending items with plans | 42 / 138 | 30% |
+| Plans cross-reviewed | 6 | 12% |
+| Plans user-approved | 6 | 12% |
 
 ### Aging
 
@@ -103,7 +103,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 81 | 5 | 3 |
+| High     | 80 | 5 | 3 |
 | Medium   | 42  | 2  | 1  |
 | Low      | 16  | 1  | 1  |
 
@@ -651,7 +651,6 @@
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | ace-linux-1 | - | saipem, rock-oil-field, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-560, WRK-561, WRK-562, WRK-563 |
-| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | ace-linux-1 | - | digitalmodel, saipem, rock-oil-field, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-568 |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | medium | large | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
 | WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | medium | ace-linux-1 | - | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-568 |
@@ -974,7 +973,6 @@
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | medium | medium | saipem, rock-oil-field, workspace-hub | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | high | medium | workspace-hub | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | medium | medium | workspace-hub | - |
-| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | high | medium | digitalmodel, saipem, rock-oil-field, workspace-hub | - |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | high | large | digitalmodel | - |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | medium | large | digitalmodel | - |
 | WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | medium | medium | digitalmodel, workspace-hub | - |
@@ -1605,7 +1603,6 @@
 | WRK-561 | docs(digitalmodel): add calc_examples mapping — structural domain | pending | high | medium | - |
 | WRK-562 | docs(digitalmodel): add calc_examples mapping — marine domain | pending | high | medium | - |
 | WRK-563 | docs(digitalmodel): add calc_examples mapping — cathodic-protection domain | pending | medium | small | - |
-| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | - |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | - |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | medium | large | - |
 | WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | medium | - |
@@ -1679,7 +1676,6 @@
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | done | medium | high | - |
 | WRK-337 | Vessel weather-window calculator — operability analysis from Hs Tp scatter | done | medium | medium | - |
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
-| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | - |
 
 ### sabithaandkrishnaestates
 
@@ -1697,7 +1693,6 @@
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | done | medium | high | - |
 | WRK-337 | Vessel weather-window calculator — operability analysis from Hs Tp scatter | done | medium | medium | - |
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
-| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | - |
 | WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | - |
 
 ### workspace-hub
@@ -1839,7 +1834,6 @@
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | - |
-| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | - |
 | WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | medium | - |
 | WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | medium | - |
@@ -2229,7 +2223,6 @@
 | WRK-562 | docs(digitalmodel): add calc_examples mapping — marine domain | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | medium | doris, workspace-hub | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | medium | workspace-hub | - |
-| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | medium | digitalmodel, saipem, rock-oil-field, workspace-hub | - |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | large | digitalmodel | - |
 | WRK-576 | chore(ai-tools): install gh on ace-linux-2 + full AI tools audit on acma-ansys05 | pending | simple | - | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | medium | workspace-hub | - |
@@ -2872,7 +2865,6 @@
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | saipem, rock-oil-field, workspace-hub | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | workspace-hub | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | workspace-hub | - |
-| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | digitalmodel, saipem, rock-oil-field, workspace-hub | - |
 | WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | digitalmodel, workspace-hub | - |
 | WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | digitalmodel, saipem, workspace-hub | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | workspace-hub | - |
@@ -2984,7 +2976,7 @@
 
 ## By Computer
 
-### ace-linux-1 (281 active / 294 total)
+### ace-linux-1 (280 active / 293 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3275,7 +3267,6 @@
 | WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | saipem, rock-oil-field, workspace-hub |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | workspace-hub |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | workspace-hub |
-| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | pending | high | medium | digitalmodel, saipem, rock-oil-field, workspace-hub |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | digitalmodel |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | medium | large | digitalmodel |
 | WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | pending | medium | medium | digitalmodel, workspace-hub |
@@ -3628,7 +3619,6 @@
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | WRK-358 | - | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | WRK-351 | - | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | WRK-560, WRK-561, WRK-562, WRK-563 | - | - |
-| WRK-569 | docs: map OrcaFlex .dat model library to data-source YAMLs | WRK-568 | - | - |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | WRK-568 | - | - |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | WRK-568 | - | - |
 | WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | WRK-568 | - | - |
