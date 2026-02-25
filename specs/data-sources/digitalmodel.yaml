@@ -2676,31 +2676,109 @@ calc_examples:
 - standard: DNV-OS-F101
   domain: pipeline
   description: >
-    Wall thickness and pressure containment checks per DNV OS F101.
-    Thinwall FEA project (0116) contains list-of-pipelines workbooks with
-    SMYS/SMTS inputs, nominal wall thickness, and design pressure columns.
+    Wall thickness, pressure containment, and installation load checks per DNV OS F101.
+    Thinwall FEA project (0116) has list-of-pipelines workbooks with SMYS/SMTS, nominal WT,
+    and design pressure. Mecor project (611) has dedicated DNV WT sizing and pipe-check
+    workbooks explicitly labelled DNV-OS-F101 covering burst, collapse, and propagation.
   files:
   - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-01 List of Pipelines Installed.xlsx
     description: Pipeline inventory with OD, WT, grade, MAOP — DNV OS F101 Sec 5 wall thickness basis
     type: xlsx
     host: ace-linux-1
   - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-05 List of Pipelines Installed.xlsx
-    description: Updated pipeline list with revised wall thicknesses
+    description: Updated pipeline list with revised wall thicknesses after FEA
     type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0003-01 Mecor Pipeline Installation DNV WT Sizing.xlsm
+    description: DNV OS F101 wall thickness sizing — burst (SC-High) and collapse (SC-Low) checks
+    type: xlsm
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0004-01 Mecor Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
+    description: Full DNV-OS-F101 pipe checks — combined loading, installation, operational cases
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0005-01 Mecor Pipeline Propagation Checks (Dnv and API).xlsx
+    description: Propagation buckle check per DNV OS F101 and API RP 1111 — transition water depth
+    type: xlsx
+    host: ace-linux-1
+
+- standard: DNV-OS-F201
+  domain: pipeline
+  description: >
+    Dynamic riser analysis per DNV OS F201 — extreme and fatigue limit states, combined loading.
+    Paleogene 6000ft project (0127) has production riser analysis workbooks for a deepwater SCR
+    in GOM. Drilling riser project (0099) has Atwood Condor drilling riser checks with
+    von Mises stress envelopes per DNV OS F201 / API RP 16Q criteria.
+  files:
+  - path: /mnt/ace/docs/disciplines/misc/projects/0127_paleogene_6000ft/00_inbox/0127 Paleogene 6000ft/CAL/2000 Riser/0127-CAL-0013-07 Riser Analysis (RELEASED).xlsm
+    description: Released riser analysis workbook — deepwater production riser, combined load envelopes
+    type: xlsm
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/misc/projects/0127_paleogene_6000ft/00_inbox/0127 Paleogene 6000ft/CAL/2000 Riser/0127-CAL-0004-01 Production Riser Analysis.xlsx
+    description: Production riser analysis — tensioner stroke, hang-off angle, stress checks
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/0000 Drilling Riser Development/Atwood Condor/0099-CAL-001-01 Drilling Riser Analysis (MP Update10).xlsx
+    description: Drilling riser analysis for Atwood Condor — vessel offset, current, combined loading
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/5 - OrcaFlex API Check/31347-CAL-0001-1 Von Mises Stress in Pipe Check.xlsx
+    description: Von Mises stress check for riser pipe — OrcaFlex API verification against hand calc
+    type: xlsx
+    host: ace-linux-1
+
+- standard: DNV-RP-F109
+  domain: pipeline
+  description: >
+    On-bottom stability design inputs per DNV RP F109 — hydrodynamic loads, submerged weight,
+    and environmental data. Mecor project (611) provides metocean data (current/wave) and
+    pipeline weight matching workbooks. Weight verification and submerged weight data are
+    required inputs to F109 generalised stability calculations (Sec 4/5).
+    Note: a dedicated F109 stability spreadsheet does not exist in the archive;
+    these files provide the input data layer for building one.
+  files:
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0007-01 Metaocean information.xlsx
+    description: Metocean data workbook — design current profiles, wave heights, and return periods
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Pipeline Weights/Weight Matching.xlsx
+    description: Pipeline weight matching — submerged weight per unit length, coating breakdown
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/06_review/611 Mecor Pipeline Installation Analysis/Weight Verification/0611-Cal-0001-01 (Weight Verification).xlsx
+    description: Weight verification workbook — cross-check of submerged weight against vendor data
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0003-01 Mecor Pipeline Installation DNV WT Sizing.xlsm
+    description: DNV WT sizing — pipe OD/WT/grade inputs needed for F109 hydrodynamic diameter
+    type: xlsm
     host: ace-linux-1
 
 - standard: API-RP-1111
   domain: pipeline
   description: >
-    Propagation buckle and wall thickness checks per API RP 1111 (deepwater pipelines).
-    Mecor pipeline installation analysis project (611) contains S-lay propagation calcs.
+    Propagation buckle, wall thickness, and installation checks per API RP 1111 (deepwater pipelines).
+    Mecor project (611) has explicitly labelled API-1111 WT sizing workbooks covering S-lay
+    sagbend, stinger, and propagation buckle transition depth.
   files:
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0002-01 API-1111 Mecor Pipeline Installation API WT Sizing.xlsm
+    description: API RP 1111 wall thickness sizing — explicit API-1111 burst and collapse checks
+    type: xlsm
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0005-01 Mecor Pipeline Propagation Checks (Dnv and API).xlsx
+    description: Propagation buckle checks per API RP 1111 and DNV OS F101 — transition water depth
+    type: xlsx
+    host: ace-linux-1
   - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0006-03 (Non Linear Stress Strain Curve).xlsx
-    description: Non-linear stress-strain curve for buckle propagation analysis
+    description: Non-linear stress-strain curve — material input for buckle propagation analysis
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0007-01 API-1111 Mecor Pipeline Installation ASME b31.4 WT Sizing.xlsx
+    description: ASME B31.4 pipeline WT sizing alongside API-1111 — combined design standard check
     type: xlsx
     host: ace-linux-1
   - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx
-    description: TJG pipelay analysis workbook — S-lay tension and bending checks
+    description: TJG pipelay analysis — S-lay tension, sagbend bending strain, stinger loads
     type: xlsx
     host: ace-linux-1
 
