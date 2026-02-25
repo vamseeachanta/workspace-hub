@@ -1,6 +1,6 @@
 ---
 name: clean-code
-version: "2.0.0"
+version: "2.1.0"
 category: workspace
 description: "Clean code enforcement for workspace-hub Python repos: file/function size limits, God Object detection, naming rules, dead code removal, and refactor decision guidance. Consult before writing new modules or accepting large files."
 invocation: /clean-code
@@ -9,7 +9,7 @@ capabilities: []
 requires: []
 see_also: [repo-structure, file-taxonomy, infrastructure-layout]
 updated: 2026-02-25
-changelog: "v2.0.0 — lessons from WRK-590/591/592/593 God Object splits; data-only exemption; shim patterns; horizontal-split; parallel team pattern; git-plumbing note; P1 table updated"
+changelog: "v2.1.0 — Module Migration Shim Protocol (WRK-602): API compat check, diverged-API handling, patch.object scope for shim modules; v2.0.0 — God Object splits, horizontal-split, parallel team"
 ---
 
 # Clean Code — Enforcement Rules for Python Repos
@@ -423,10 +423,69 @@ Rules:
 
 ---
 
+## Module Migration Shim Protocol
+
+When replacing an old module with a shim that re-exports from a canonical module (e.g.,
+migrating `specialized/gis/core/` → canonical `gis/core/`), follow these steps to avoid
+breaking subclasses and mock-patch targets.
+
+### Step 1: API Compatibility Check (MANDATORY before writing shims)
+
+```bash
+# Compare __init__ signatures: old vs canonical
+python3 -c "
+import inspect
+from old.module import OldClass
+from canonical.module import CanonicalClass
+print('OLD:', inspect.signature(OldClass.__init__))
+print('NEW:', inspect.signature(CanonicalClass.__init__))
+"
+```
+
+Checklist before shimming any class:
+- [ ] `__init__` kwarg signatures match (no removed/renamed parameters)
+- [ ] Factory classmethods match (`from_geojson(path)` vs `from_geojson(path, name)`)
+- [ ] All module-level attributes that tests patch exist on canonical (`HAS_RASTERIO`, `HAS_FOLIUM`)
+
+### Step 2: Diverged API — Use Relative Imports, Do NOT Shim
+
+If `__init__` signatures differ between old and canonical:
+- **Do NOT shim the base class** — any subclass calling `super().__init__(crs=crs)` with the
+  old kwarg will crash at runtime with `TypeError: unexpected keyword argument`
+- **Fix the subclass**: change its import to use a local relative import pointing to the
+  compatible (old) class; shim only the unaffected modules (core/, io/, integrations/)
+
+```python
+# WRONG: shim breaks subclass calling super().__init__(crs=crs)
+# specialized/gis/layers/feature_layer.py (shim)
+from digitalmodel.gis.layers.feature_layer import FeatureLayer  # canonical dropped crs kwarg
+
+# CORRECT: keep old feature_layer.py as-is; fix the subclass import
+# specialized/gis/layers/well_layer.py
+from .feature_layer import FeatureLayer   # relative → uses local compatible class
+```
+
+### Step 3: Re-export Patch-Target Attributes
+
+Tests that use `unittest.mock.patch.object(module, "HAS_X", ...)` require `HAS_X` to exist
+as a module-level attribute on the shim module. Shims must re-export these flags:
+
+```python
+# WRONG: shim omits the flag
+from digitalmodel.gis.io.geotiff_handler import GeoTIFFHandler  # noqa: F401
+# → patch.object(geotiff_handler, "HAS_RASTERIO", False) raises AttributeError
+
+# CORRECT: re-export flag alongside the class
+from digitalmodel.gis.io.geotiff_handler import GeoTIFFHandler, HAS_RASTERIO  # noqa: F401
+__all__ = ['GeoTIFFHandler', 'HAS_RASTERIO']
+```
+
+---
+
 ## See Also
 
 - `/repo-structure` — file locations, tests/ layout, .gitignore
-- `/file-taxonomy` — where to put reports, results, data
+- `/file-taxonomy` — where to put reports, results, data (including `config/` vs `configs/` naming)
 - `/infrastructure-layout` — canonical 5-domain layout for the infrastructure/ package
 - `.claude/rules/coding-style.md` — naming conventions (canonical source)
 - `scripts/operations/validate-file-placement.sh` — automated structural checks

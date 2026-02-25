@@ -1,6 +1,6 @@
 ---
 name: file-taxonomy
-version: "1.5.0"
+version: "1.6.0"
 category: workspace
 description: "Canonical decision tree for where to place output files, repo manifests, and all generated artifacts across the workspace-hub ecosystem."
 invocation: /file-taxonomy
@@ -87,6 +87,7 @@ without checking the canonical map below.
 | Analysis scripts | `scripts/analysis/production/decline_study.py` | Not in src/ |
 | Notebooks | `notebooks/bsee/well_production_eda.ipynb` | Domain subdir required |
 | Input data | `data/inputs/metocean/jonswap_params.yaml` | Runtime inputs; separate from test fixtures |
+| Internal config dir | `src/<pkg>/<domain>/config/` | **Singular** `config/` — NEVER `configs/` (plural) |
 
 ## Gitignore Policy
 
