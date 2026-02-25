@@ -7,7 +7,7 @@ invocation: /repo-structure
 applies-to: [claude, codex, gemini]
 capabilities: []
 requires: []
-see_also: [file-taxonomy]
+see_also: [file-taxonomy, infrastructure-layout]
 ---
 
 # Repo Structure — Canonical Source Layout
@@ -276,6 +276,7 @@ tests/_archive/           ← CORRECT (single archive dir)
 ## See Also
 
 - `/file-taxonomy` — where to place reports, results, data, and cache files
+- `/infrastructure-layout` — canonical 5-domain layout for the infrastructure/ package (config, persistence, validation, utils, solvers)
 - `scripts/operations/validate-file-placement.sh` — automated enforcement checks
 - `.claude/docs/workspace-structure.md` — full ecosystem canonical layout
 - `.claude/rules/coding-style.md` — naming conventions (snake_case, kebab-case)
