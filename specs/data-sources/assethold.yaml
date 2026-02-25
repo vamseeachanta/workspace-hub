@@ -49,4 +49,29 @@ local_data:
 - path: assethold/config/stocks/watchlist.yml
   description: Stock watchlist configuration
   committed: true
-gaps: []
+gaps:
+- id: sec-edgar-form4-loader
+  title: SEC EDGAR Form 4 insider transaction loader
+  domain: portfolio
+  priority: P1
+  notes: API endpoint identified; loader + parser module not started (api entry above is planned)
+- id: covered-call-analyser
+  title: Option chain ingestion + covered call premium/yield calculator
+  domain: portfolio
+  priority: P1
+  notes: yfinance options chain available; covered call screener not started
+- id: risk-metrics
+  title: Portfolio risk metrics — VaR, CVaR, Sharpe ratio, max drawdown
+  domain: portfolio
+  priority: P1
+  notes: Position data available via yfinance; risk module not started
+- id: sector-exposure-tracker
+  title: Sector exposure tracker — GICS classification + concentration alerts
+  domain: portfolio
+  priority: P2
+  notes: Holdings data available; GICS sector mapping not started
+- id: fundamentals-scoring
+  title: Fundamentals scoring — P/E, P/B, EV/EBITDA ranking
+  domain: portfolio
+  priority: P2
+  notes: yfinance provides fundamentals; scoring/ranking module not started

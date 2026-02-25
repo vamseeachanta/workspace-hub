@@ -1,4 +1,4 @@
-generated: '2026-02-24T22:58:18'
+generated: '2026-02-25T03:46:20'
 total_docs: 978578
 total_summaries: 639585
 by_source:
@@ -28,16 +28,16 @@ repos:
     implemented: 0
   assethold:
     standards_count: 0
-    gaps: 0
+    gaps: 5
     implemented: 0
   assetutilities:
     standards_count: 0
     gaps: 0
     implemented: 0
   digitalmodel:
-    standards_count: 181
-    gaps: 0
-    implemented: 0
+    standards_count: 183
+    gaps: 14
+    implemented: 2
   doris:
     standards_count: 92
     gaps: 0
@@ -64,5 +64,5 @@ repos:
     implemented: 0
   worldenergydata:
     standards_count: 12
-    gaps: 0
+    gaps: 4
     implemented: 0

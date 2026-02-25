@@ -168,5 +168,60 @@ standards:
   - decommissioning
   - environmental safety
   - petroleum storage
-apis: []
-gaps: []
+apis:
+- id: eia-api
+  title: EIA Open Data API — US Energy Information Administration
+  org: U.S. EIA
+  endpoint: https://api.eia.gov/v2/
+  status: implemented
+  domain: energy-economics
+  summary: US crude oil/gas production, DPR shale decline data, state-level production
+    (EIA-914), refinery throughput. Rate-limited client with caching implemented.
+  keywords: [EIA, crude oil, natural gas, production, shale, decline curve]
+- id: bsee-data
+  title: BSEE Gulf of Mexico Production Data
+  org: U.S. Bureau of Safety and Environmental Enforcement
+  endpoint: https://www.data.bsee.gov/
+  status: implemented
+  domain: energy-economics
+  summary: Offshore GOM production/well data, MISLE incident records, MAIB/NTSB
+    marine accident cross-reference. MAIBLoader + NTSBMarineLoader implemented.
+  keywords: [BSEE, MISLE, MAIB, NTSB, offshore, GOM, incident]
+- id: sodir-api
+  title: SODIR Norwegian Petroleum Directorate Open Data
+  org: Norwegian Petroleum Directorate
+  endpoint: https://fact.no/
+  status: planned
+  domain: energy-economics
+  summary: Norwegian continental shelf production, well, and field data.
+  keywords: [SODIR, NPD, Norway, NCS, production, field development]
+- id: noaa-ndbc
+  title: NOAA National Data Buoy Center
+  org: NOAA
+  endpoint: https://www.ndbc.noaa.gov/
+  status: planned
+  domain: energy-economics
+  summary: Real-time and historical wave/wind/metocean data from offshore buoys.
+    Required for field development weather-window and operability analysis.
+  keywords: [NDBC, wave, wind, metocean, buoy, offshore]
+gaps:
+- id: eia-weekly-feed
+  title: EIA weekly crude/gas production update ingestion
+  domain: energy-economics
+  priority: P1
+  notes: EIA API client exists; weekly scheduled pull + cache refresh not implemented
+- id: sodir-integration
+  title: SODIR Norwegian production data loader
+  domain: energy-economics
+  priority: P2
+  notes: API endpoint identified; loader module not started
+- id: noaa-ndbc-integration
+  title: NOAA NDBC buoy data ingestion for wave scatter
+  domain: energy-economics
+  priority: P2
+  notes: Endpoint identified; wave scatter matrix builder not started
+- id: field-development-economics
+  title: Field development economics — NPV/MIRR with carbon cost sensitivity
+  domain: energy-economics
+  priority: P2
+  notes: Arps decline curve done (WRK-318); economics wrapper not started

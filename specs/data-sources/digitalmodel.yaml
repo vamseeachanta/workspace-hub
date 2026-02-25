@@ -1,6 +1,24 @@
 repo: digitalmodel
-generated: '2026-02-23'
+generated: '2026-02-25'
 standards:
+- id: DNV-RP-F103-2010
+  title: Cathodic Protection of Submarine Pipelines by Galvanic Anodes
+  org: DNV
+  index_ref: ''
+  status: implemented
+  domain: cathodic-protection
+  summary: Implemented in digitalmodel.cp_module — routes DNV_RP_F103_2010 and ABS_gn_offshore_2018.
+    128 tests pass.
+  keywords: [cathodic protection, galvanic anodes, submarine pipelines, DNV RP F103]
+- id: DNV-RP-B401-2011
+  title: Cathodic Protection Design
+  org: DNV
+  index_ref: ''
+  status: implemented
+  domain: cathodic-protection
+  summary: Implemented in digitalmodel.cp_module — routes DNV_RP_B401_offshore and ABS_gn_ships_2018.
+    128 tests pass.
+  keywords: [cathodic protection, anode design, offshore, DNV RP B401]
 - id: 1-api-rp2a-2007
   title: 1-api-rp2a-2007_(searchable)
   org: ''
@@ -75,7 +93,7 @@ standards:
   title: API_RP_2A-WSD_3rd_Ed_(1997)_Recommended_Practice_for_Planning,_Designing_and_Constructing_Fixed_Offshore_Platforms-Working_Stress_Design
   org: ''
   index_ref: ''
-  status: reference
+  status: gap
   domain: structural
   summary: Recommended practice for the planning, design, and construction of fixed offshore platforms using working stress
     design, incorporating errata and supplement updates.
@@ -101,7 +119,7 @@ standards:
   title: API_RP_2A-WSD_22nd_Edition_Nov_2014
   org: ''
   index_ref: ''
-  status: reference
+  status: gap
   domain: structural
   summary: This document provides recommended practices for planning, designing, and constructing fixed offshore steel platforms
     using the working stress design method.
@@ -254,8 +272,8 @@ standards:
   title: API_RP_2RD_1st_Ed_with_errata_(2009)_Design_of_Risers_for_FPSs_and_TLPs
   org: ''
   index_ref: ''
-  status: reference
-  domain: structural
+  status: gap
+  domain: pipeline
   summary: This recommended practice provides guidelines for the design, analysis, and material selection of risers used in
     floating production systems and tension-leg platforms.
   keywords:
@@ -2016,7 +2034,7 @@ standards:
   title: Free-spanning pipelines
   org: DNV
   index_ref: ''
-  status: reference
+  status: gap
   domain: pipeline
   summary: This recommended practice provides criteria for the structural design and assessment of pipeline free spans subjected
     to wave and current loading. It addresses both fatigue and ultimate limit state design formats, with a primary focus on
@@ -2059,7 +2077,7 @@ standards:
   title: API_RP_1111_Draft_(1998)_Design,_Construction,_Operation,_and_Maintenance_of_Offshore_Hydrocarbon_Pipelines_(Limit_State_Design)
   org: ''
   index_ref: ''
-  status: reference
+  status: gap
   domain: pipeline
   summary: This API recommended practice establishes criteria for the design, construction, operation, and maintenance of
     offshore steel pipelines using a limit state design approach.
@@ -2087,7 +2105,7 @@ standards:
   title: API_RP_1111_Errata_(2011)_Design,_Construction,_Operation,_and_Maintenance_of_Offshore_Hydrocarbon_Pipelines_(Limit_State_Design)
   org: ''
   index_ref: ''
-  status: reference
+  status: gap
   domain: pipeline
   summary: Errata for API RP 1111 Fourth Edition correcting pipeline collapse factors, SCR fatigue analysis requirements for
     extreme events, and burst pressure equations.
@@ -2547,4 +2565,236 @@ standards:
   - petroleum piping
   - API standards
 apis: []
-gaps: []
+implemented:
+- id: DNV-RP-F103-2010
+  title: Cathodic Protection of Submarine Pipelines by Galvanic Anodes
+  org: DNV
+  domain: cathodic-protection
+  notes: Implemented in digitalmodel.cp_module; routes ABS_gn_offshore_2018, DNV_RP_F103_2010; 128 tests pass
+- id: DNV-RP-B401-2011
+  title: Cathodic Protection Design
+  org: DNV
+  domain: cathodic-protection
+  notes: Implemented in digitalmodel.cp_module; routes ABS_gn_ships_2018, DNV_RP_B401_offshore; 128 tests pass
+gaps:
+# Pipeline — foundational calculation modules not yet built
+- id: DNV-OS-F101
+  title: Submarine Pipeline Systems
+  org: DNV
+  domain: pipeline
+  priority: P1
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV OS F101 (2010) Submarine Pipeline Systems.pdf
+- id: DNV-OS-F201
+  title: Dynamic Risers
+  org: DNV
+  domain: pipeline
+  priority: P1
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV OS F201 (2010) Dynamic Risers.pdf
+- id: DNV-RP-F109
+  title: On-Bottom Stability Design of Submarine Pipelines
+  org: DNV
+  domain: pipeline
+  priority: P1
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV RP F109 (2011).pdf
+- id: DNV-RP-F110
+  title: Global Buckling of Submarine Pipelines
+  org: DNV
+  domain: pipeline
+  priority: P2
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV RP F110 (2007).pdf
+- id: DNV-RP-F116
+  title: Integrity Management of Submarine Pipeline Systems
+  org: DNV
+  domain: pipeline
+  priority: P2
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV RP F116 (2009).pdf
+- id: ISO-13624-1
+  title: Design and Operation of Marine Drilling Riser Equipment
+  org: ISO
+  domain: pipeline
+  priority: P2
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO 13624-1 (2009).pdf
+- id: ISO-13628-7
+  title: Completion/Workover Riser Systems
+  org: ISO
+  domain: pipeline
+  priority: P2
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO 13628-7 2005.pdf
+# Structural — jacket/topside not yet implemented
+- id: API-RP-2A-WSD-22nd
+  title: Planning, Designing and Constructing Fixed Offshore Platforms — WSD
+  org: API
+  domain: structural
+  priority: P1
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/API/API RP 2A WSD.pdf
+# Marine — mooring analysis not yet implemented
+- id: DNV-OS-E301
+  title: Position Mooring
+  org: DNV
+  domain: marine
+  priority: P1
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV OS E301 (2010) Position Mooring.pdf
+- id: API-RP-2P
+  title: Analysis of Spread Mooring Systems for Floating Drilling Units
+  org: API
+  domain: marine
+  priority: P1
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/API/API RP 2P 2nd Ed (1987).pdf
+- id: API-RP-2SM
+  title: Design, Manufacture, Installation, and Maintenance of Synthetic Mooring Lines
+  org: API
+  domain: marine
+  priority: P2
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/API/API RP 2SM 1st Ed (2001).pdf
+# Cathodic-protection — extending existing CP module
+- id: DNV-RP-F106
+  title: Factory Applied External Pipeline Coating for Submarines
+  org: DNV
+  domain: cathodic-protection
+  priority: P2
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV RP F106 (2011).pdf
+- id: DNV-RP-F112
+  title: Design of Duplex Stainless Steel Subsea Equipment Exposed to Cathodic Protection
+  org: DNV
+  domain: cathodic-protection
+  priority: P2
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV RP F112 (2008).pdf
+- id: ISO-15589-2
+  title: Cathodic Protection of Pipeline Transportation Systems — Offshore Pipelines
+  org: ISO
+  domain: cathodic-protection
+  priority: P2
+  file_on_disk: /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO15589-2-2004.pdf
+
+# =============================================================================
+# CALCULATION EXAMPLES — project workbooks and reports that demonstrate each
+# standard in practice. These files are used as reference test data when
+# implementing gap modules (see gaps list above).
+# =============================================================================
+calc_examples:
+# --- Pipeline domain ---
+- standard: DNV-OS-F101
+  domain: pipeline
+  description: >
+    Wall thickness and pressure containment checks per DNV OS F101.
+    Thinwall FEA project (0116) contains list-of-pipelines workbooks with
+    SMYS/SMTS inputs, nominal wall thickness, and design pressure columns.
+  files:
+  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-01 List of Pipelines Installed.xlsx
+    description: Pipeline inventory with OD, WT, grade, MAOP — DNV OS F101 Sec 5 wall thickness basis
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-05 List of Pipelines Installed.xlsx
+    description: Updated pipeline list with revised wall thicknesses
+    type: xlsx
+    host: ace-linux-1
+
+- standard: API-RP-1111
+  domain: pipeline
+  description: >
+    Propagation buckle and wall thickness checks per API RP 1111 (deepwater pipelines).
+    Mecor pipeline installation analysis project (611) contains S-lay propagation calcs.
+  files:
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0006-03 (Non Linear Stress Strain Curve).xlsx
+    description: Non-linear stress-strain curve for buckle propagation analysis
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx
+    description: TJG pipelay analysis workbook — S-lay tension and bending checks
+    type: xlsx
+    host: ace-linux-1
+
+# --- Structural domain ---
+- standard: API-RP-2A-WSD-22nd
+  domain: structural
+  description: >
+    Jacket/conductor fatigue analysis using API RP 2A-WSD structural checks.
+    Shell West Boreas wellhead conductor fatigue report is a complete structural
+    fatigue assessment following API/DNV methodology.
+  files:
+  - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/05_reports/31245 - Shell West Boreas BOP on Tree Assessment/RPT/Released/31245-RPT-0001-02 Shell West Boreas Wellhead Conductor System Fatigue Analysis.pdf
+    description: Conductor system fatigue analysis report — full structural calc with S-N curves
+    type: pdf
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/0098_mecor_pipeline_installation_analysis/00_inbox/0098 Mecor Pipeline Installation Analysis/Reference/31279-CAL-0008-01 ASME Stress Strain Curve Generation.xlsx
+    description: ASME stress-strain curve generation workbook — material non-linearity inputs
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/00_inbox/31245 - Shell West Boreas BOP on Tree Assessment/CAL/31245-CAL-0018-01 SN Curve Definitions for Riser Analysis (BaseMetal- Free Corrosion).xlsx
+    description: S-N curve definitions for riser analysis — base metal in free corrosion environment
+    type: xlsx
+    host: ace-linux-1
+
+# --- Marine domain ---
+- standard: DNV-OS-E301
+  domain: marine
+  description: >
+    Long-term wave scatter diagrams and mooring fatigue analyses.
+    Shell West Boreas and Prelude projects contain wave scatter data and RAO tables
+    directly applicable to mooring line fatigue (DNV OS E301 Sec 3).
+  files:
+  - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/00_inbox/31245 - Shell West Boreas BOP on Tree Assessment/CAL/31245-CAL-0003-01 Long Term Wave Scatter Diagram.xlsx
+    description: Long-term wave scatter diagram — Hs/Tp joint probability for North Sea location
+    type: xlsx
+    host: ace-linux-1
+
+- standard: API-RP-2P
+  domain: marine
+  description: >
+    RAO data and spread mooring fatigue calculations.
+    Shell Prelude RAO tables and BOP wellhead fatigue calcs provide
+    reference inputs/outputs for mooring dynamics modules.
+  files:
+  - path: /mnt/ace/docs/disciplines/completion/projects/31242_shell_prelude_riserless_completion_analysis/00_inbox/31242 - Shell Prelude Riserless Completion Analysis/CAL/31242-CAL-0007-1 RAO Data For OrcaFlex.xlsx
+    description: RAO data for OrcaFlex — heave/pitch/roll transfer functions
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/completion/projects/31242_shell_prelude_riserless_completion_analysis/00_inbox/31242 - Shell Prelude Riserless Completion Analysis/CAL/31242-CAL-0007-2 RAO Data For OrcaFlex.xlsx
+    description: RAO data set 2 — alternative heading
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/31290 Shell WellHead Fatigue Assement/BOP on Wellhead/Wave Analysis/Rev2/31290-CAL-001-01 (Fatigue for BOP on Wellhead Configuration).xlsx
+    description: Fatigue for BOP on wellhead — wave loading fatigue damage accumulation
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/0000 O&G/0000 Codes & Standards/ASCE/COPRI Marine Renewable Energy Committee/OrcaFlex/BUOY CALCS.xlsx
+    description: Buoy calculation workbook — mooring and motion analysis template
+    type: xlsx
+    host: ace-linux-1
+
+# --- Cathodic-protection domain ---
+- standard: DNV-RP-B401
+  domain: cathodic-protection
+  description: >
+    Complete sacrificial anode CP design reports following DNV RP B401 methodology.
+    BLK31 SLOR design project contains approved (IFA) CP design reports with
+    anode quantities, design current densities, and coating breakdown factors.
+  files:
+  - path: /mnt/ace/docs/disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/Documents/RPT/2100-RPT-4005 SLHR Cathodic Protection with Sacrificial Anodes/Rev 06 (IFA)/2100-RPT-4005-06 Cathodic Protection Design Report _Approved_.pdf
+    description: CP design report Rev 06 IFA — sacrificial anode design per DNV RP B401; full worked example
+    type: pdf
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/Documents/RPT/2100-RPT-4005 SLHR Cathodic Protection with Sacrificial Anodes/Rev 05 (CR)/2100-RPT-4005-05 Cathodic Protection Design Report _Approved_.pdf
+    description: CP design report Rev 05 CR — earlier revision for comparison
+    type: pdf
+    host: ace-linux-1
+
+- standard: DNV-RP-F103
+  domain: cathodic-protection
+  description: >
+    Corrosion FE analysis workbooks for pipeline cathodic protection.
+    HENECO corrosion FE project contains 2D corrosion simulation workbooks and
+    Tefals equation calculations.
+  files:
+  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0002-02 (Analysis Parameters).xlsx
+    description: Corrosion FE analysis parameters — inputs for DNV RP F103 current density calcs
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0005-01 (Tefals Equation).xlsx
+    description: Tefals equation workbook — anode current output calculation
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0007-01 (2D Fe Corrosion V8) Draft1.xlsx
+    description: 2D FE corrosion simulation workbook — Zn/Fe anode model
+    type: xlsx
+    host: ace-linux-1

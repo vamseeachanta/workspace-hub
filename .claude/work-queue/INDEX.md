@@ -1,39 +1,39 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-25T04:14:28Z by generate-index.py -->
+<!-- Generated: 2026-02-25T09:55:46Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-25T04:14:28Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-25T09:55:46Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 538
+**Total items:** 543
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 115 |
-| working | 9 |
+| pending | 123 |
+| working | 8 |
 | blocked | 5 |
-| done | 174 |
+| done | 172 |
 | archived | 223 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 263 |
-| medium | 223 |
+| high | 267 |
+| medium | 224 |
 | low | 51 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 84 |
-| medium | 233 |
-| complex | 97 |
+| simple | 82 |
+| medium | 240 |
+| complex | 96 |
 
 ### By Repository
 
@@ -47,16 +47,16 @@
 | acma-projects | 8 |
 | assethold | 12 |
 | assetutilities | 58 |
-| digitalmodel | 185 |
-| doris | 25 |
+| digitalmodel | 186 |
+| doris | 26 |
 | frontierdeepwater | 4 |
 | hobbies | 1 |
 | investments | 1 |
 | pdf-large-reader | 1 |
-| rock-oil-field | 2 |
+| rock-oil-field | 3 |
 | sabithaandkrishnaestates | 1 |
-| saipem | 5 |
-| workspace-hub | 128 |
+| saipem | 6 |
+| workspace-hub | 136 |
 | worldenergydata | 97 |
 
 ### Plan Tracking
@@ -64,10 +64,10 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 162 / 538 |
-| Plans cross-reviewed | 92 |
-| Plans approved | 115 |
-| Brochure pending | 11 |
+| Plans exist | 167 / 543 |
+| Plans cross-reviewed | 91 |
+| Plans approved | 114 |
+| Brochure pending | 10 |
 | Brochure updated/synced | 8 |
 
 ## Metrics
@@ -76,9 +76,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 538 |
+| Total captured | 543 |
 | Total archived | 223 |
-| Completion rate | 223/538 (41%) |
+| Completion rate | 223/543 (41%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -86,9 +86,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 23 / 115 | 20% |
-| Plans cross-reviewed | 7 | 21% |
-| Plans user-approved | 7 | 21% |
+| Pending items with plans | 29 / 123 | 24% |
+| Plans cross-reviewed | 6 | 15% |
+| Plans user-approved | 6 | 15% |
 
 ### Aging
 
@@ -96,15 +96,15 @@
 |--------|-------|-------|
 | Pending > 30 days | 0 | - |
 | Pending > 14 days | 11 | WRK-005, WRK-008, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-048, WRK-050, WRK-075 |
-| Working > 7 days | 7 | WRK-020, WRK-021, WRK-118, WRK-121, WRK-125, WRK-131, WRK-149 |
+| Working > 7 days | 6 | WRK-021, WRK-118, WRK-121, WRK-125, WRK-131, WRK-149 |
 | Blocked > 7 days | 5 | WRK-006, WRK-064, WRK-069, WRK-130, WRK-133 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 72 | 5 | 3 |
-| Medium   | 36  | 3  | 1  |
+| High     | 77 | 5 | 3 |
+| Medium   | 39  | 2  | 1  |
 | Low      | 7  | 1  | 1  |
 
 ## Master Table
@@ -130,7 +130,6 @@
 | WRK-017 | Streamline BSEE field data analysis pipeline — wellbore, casing, drilling, completions, interventions | archived | high | complex | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-018 | Extend BSEE field data pipeline to other regulatory sources (RRC, Norway, Mexico, Brazil) | archived | low | complex | - | claude+gemini | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-019 | Establish drilling, completion, and intervention cost data by region and environment | done | low | complex | ace-linux-1 | claude+gemini | worldenergydata | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | working | medium | complex | ace-linux-2 | claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ██░ 95% | - | - |
 | WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | working | medium | complex | ace-linux-1 | gemini | assethold | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | - | - |
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | done | medium | complex | ace-linux-1 | gemini | assethold | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | - | - |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | in_progress | low | complex | ace-linux-1 | claude | assethold | - | ❌ | ✅ | ❌ | ❌ | ██░ 85% | - | - |
@@ -489,8 +488,6 @@
 | WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | archived | medium | medium | ace-linux-1 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | ✅ synced | - |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | done | medium | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | ⏳ pending | - |
 | WRK-377 | ROP prediction model — Bourgoyne-Young and Warren in digitalmodel | archived | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | ⏳ pending | - |
-| WRK-378 | Generalise CT hydraulics to full wellbore hydraulics module in digitalmodel | done | high | simple | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | ⏳ pending | - |
-| WRK-379 | Drilling dysfunction detector — stick-slip, washout, bit balling, kick logic | done | medium | simple | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-380 | Multi-physics simulation chain — Gmsh → OpenFOAM → OrcaFlex as agent-executable pipeline | done | medium | complex | ace-linux-1 | - | workspace-hub, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | ⏳ pending | - |
 | WRK-381 | Trust architecture document — formalise plan gate governance for agent-executed actions | done | medium | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-382 | Marketing follow-up — update digitalmodel brochure and aceengineer-website for WRK-373/375 outputs | done | low | simple | ace-linux-1 | - | digitalmodel, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -648,6 +645,14 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-560 | docs(digitalmodel): add calc_examples mapping — pipeline domain | pending | high | medium | ace-linux-1 | - | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-561 | docs(digitalmodel): add calc_examples mapping — structural domain | pending | high | medium | ace-linux-1 | - | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-562 | docs(digitalmodel): add calc_examples mapping — marine domain | pending | high | medium | ace-linux-1 | - | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-563 | docs(digitalmodel): add calc_examples mapping — cathodic-protection domain | pending | medium | small | ace-linux-1 | - | digitalmodel, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | high | medium | ace-linux-1 | - | doris, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | ace-linux-1 | - | saipem, rock-oil-field, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-560, WRK-561, WRK-562, WRK-563 |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -761,8 +766,6 @@
 | WRK-356 | CP module — sacrificial anode design full calculations per DNV-RP-B401 | medium | medium | digitalmodel | - |
 | WRK-363 | Audit and deploy cron schedules across all workstations — comprehensive-learning, session-analysis, model-ids, skills-curation | high | medium | - | - |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | medium | medium | digitalmodel | - |
-| WRK-378 | Generalise CT hydraulics to full wellbore hydraulics module in digitalmodel | high | simple | digitalmodel | - |
-| WRK-379 | Drilling dysfunction detector — stick-slip, washout, bit balling, kick logic | medium | simple | digitalmodel | - |
 | WRK-380 | Multi-physics simulation chain — Gmsh → OpenFOAM → OrcaFlex as agent-executable pipeline | medium | complex | workspace-hub, digitalmodel | - |
 | WRK-381 | Trust architecture document — formalise plan gate governance for agent-executed actions | medium | simple | workspace-hub | - |
 | WRK-382 | Marketing follow-up — update digitalmodel brochure and aceengineer-website for WRK-373/375 outputs | low | simple | digitalmodel, aceengineer-website | - |
@@ -949,13 +952,20 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | high | high | digitalmodel | - |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | high | high | digitalmodel | - |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | high | high | digitalmodel | - |
+| WRK-560 | docs(digitalmodel): add calc_examples mapping — pipeline domain | high | medium | digitalmodel, workspace-hub | - |
+| WRK-561 | docs(digitalmodel): add calc_examples mapping — structural domain | high | medium | digitalmodel, workspace-hub | - |
+| WRK-562 | docs(digitalmodel): add calc_examples mapping — marine domain | high | medium | digitalmodel, workspace-hub | - |
+| WRK-563 | docs(digitalmodel): add calc_examples mapping — cathodic-protection domain | medium | small | digitalmodel, workspace-hub | - |
+| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | high | medium | doris, workspace-hub | - |
+| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | medium | medium | saipem, rock-oil-field, workspace-hub | - |
+| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | high | medium | workspace-hub | - |
+| WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | medium | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
 
 | ID | Title | Priority | Complexity | Repos | Module |
 |-----|-------|----------|------------|-------|--------|
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | medium | complex | digitalmodel | - |
 | WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | medium | complex | assethold | - |
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | high | medium | workspace-hub | - |
@@ -1379,7 +1389,6 @@
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | working | medium | complex | - |
 | WRK-025 | AQWA diffraction analysis runner | archived | high | complex | - |
 | WRK-026 | Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta) | archived | high | complex | - |
 | WRK-027 | AQWA batch analysis execution | archived | high | medium | - |
@@ -1500,8 +1509,6 @@
 | WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | archived | medium | medium | - |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | done | medium | medium | - |
 | WRK-377 | ROP prediction model — Bourgoyne-Young and Warren in digitalmodel | archived | high | medium | - |
-| WRK-378 | Generalise CT hydraulics to full wellbore hydraulics module in digitalmodel | done | high | simple | - |
-| WRK-379 | Drilling dysfunction detector — stick-slip, washout, bit balling, kick logic | done | medium | simple | - |
 | WRK-380 | Multi-physics simulation chain — Gmsh → OpenFOAM → OrcaFlex as agent-executable pipeline | done | medium | complex | - |
 | WRK-382 | Marketing follow-up — update digitalmodel brochure and aceengineer-website for WRK-373/375 outputs | done | low | simple | - |
 | WRK-383 | Standards-to-Module Capability Map — doc → repo → module linkage | done | high | medium | - |
@@ -1564,6 +1571,10 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | - |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | - |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | - |
+| WRK-560 | docs(digitalmodel): add calc_examples mapping — pipeline domain | pending | high | medium | - |
+| WRK-561 | docs(digitalmodel): add calc_examples mapping — structural domain | pending | high | medium | - |
+| WRK-562 | docs(digitalmodel): add calc_examples mapping — marine domain | pending | high | medium | - |
+| WRK-563 | docs(digitalmodel): add calc_examples mapping — cathodic-protection domain | pending | medium | small | - |
 
 ### doris
 
@@ -1594,6 +1605,7 @@
 | WRK-534 | feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | - |
 | WRK-536 | feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | - |
 | WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | - |
+| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | high | medium | - |
 
 ### frontierdeepwater
 
@@ -1628,6 +1640,7 @@
 |-----|-------|--------|----------|------------|--------|
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | done | medium | high | - |
 | WRK-337 | Vessel weather-window calculator — operability analysis from Hs Tp scatter | done | medium | medium | - |
+| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
 
 ### sabithaandkrishnaestates
 
@@ -1644,6 +1657,7 @@
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | high | simple | - |
 | WRK-336 | Portable installation analysis library — extract generic OrcaFlex automation from project code | done | medium | high | - |
 | WRK-337 | Vessel weather-window calculator — operability analysis from Hs Tp scatter | done | medium | medium | - |
+| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
 
 ### workspace-hub
 
@@ -1776,6 +1790,14 @@
 | WRK-393 | Evaluate Polymathic AI — The Well for ecosystem integration | done | medium | medium | - |
 | WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | high | medium | - |
 | WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | - |
+| WRK-560 | docs(digitalmodel): add calc_examples mapping — pipeline domain | pending | high | medium | - |
+| WRK-561 | docs(digitalmodel): add calc_examples mapping — structural domain | pending | high | medium | - |
+| WRK-562 | docs(digitalmodel): add calc_examples mapping — marine domain | pending | high | medium | - |
+| WRK-563 | docs(digitalmodel): add calc_examples mapping — cathodic-protection domain | pending | medium | small | - |
+| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | high | medium | - |
+| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
+| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | - |
+| WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -2026,7 +2048,6 @@
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | complex | workspace-hub, digitalmodel | - |
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | archived | simple | - | - |
 | WRK-377 | ROP prediction model — Bourgoyne-Young and Warren in digitalmodel | archived | medium | digitalmodel | - |
-| WRK-378 | Generalise CT hydraulics to full wellbore hydraulics module in digitalmodel | done | simple | digitalmodel | - |
 | WRK-383 | Standards-to-Module Capability Map — doc → repo → module linkage | done | medium | workspace-hub, digitalmodel, worldenergydata, assetutilities | - |
 | WRK-384 | digitalmodel Module Registry — structured metadata for agent-callable modules | done | medium | digitalmodel | - |
 | WRK-385 | Superintelligent Engineering Agent Architecture — canonical vision and blueprint | done | medium | workspace-hub | - |
@@ -2149,6 +2170,11 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | digitalmodel | - |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | digitalmodel | - |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | digitalmodel | - |
+| WRK-560 | docs(digitalmodel): add calc_examples mapping — pipeline domain | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-561 | docs(digitalmodel): add calc_examples mapping — structural domain | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-562 | docs(digitalmodel): add calc_examples mapping — marine domain | pending | medium | digitalmodel, workspace-hub | - |
+| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | medium | doris, workspace-hub | - |
+| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2162,7 +2188,6 @@
 | WRK-014 | HSE risk index — client-facing risk insights with risk scoring | archived | complex | worldenergydata | - |
 | WRK-015 | Metocean data extrapolation to target locations using GIS and nearest-source modeling | archived | complex | worldenergydata | - |
 | WRK-016 | BSEE completion and intervention activity analysis for insights | archived | complex | worldenergydata | - |
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | working | complex | digitalmodel | - |
 | WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | working | complex | assethold | - |
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | done | complex | assethold | - |
 | WRK-031 | Benchmark OrcaWave vs AQWA for 2-3 hulls | archived | complex | digitalmodel | - |
@@ -2346,7 +2371,6 @@
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | complex | workspace-hub | - |
 | WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | archived | medium | workspace-hub, digitalmodel | - |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | done | medium | digitalmodel | - |
-| WRK-379 | Drilling dysfunction detector — stick-slip, washout, bit balling, kick logic | done | simple | digitalmodel | - |
 | WRK-380 | Multi-physics simulation chain — Gmsh → OpenFOAM → OrcaFlex as agent-executable pipeline | done | complex | workspace-hub, digitalmodel | - |
 | WRK-381 | Trust architecture document — formalise plan gate governance for agent-executed actions | done | simple | workspace-hub | - |
 | WRK-386 | Automated Gap-to-WRK Generator — doc → module gaps spawn new work items | done | medium | workspace-hub | - |
@@ -2377,6 +2401,9 @@
 | WRK-552 | feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | low | OGManufacturing | - |
 | WRK-553 | feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | low | digitalmodel | - |
 | WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | low | OGManufacturing | - |
+| WRK-563 | docs(digitalmodel): add calc_examples mapping — cathodic-protection domain | pending | small | digitalmodel, workspace-hub | - |
+| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | saipem, rock-oil-field, workspace-hub | - |
+| WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -2513,8 +2540,6 @@
 | WRK-370 | Heriberto: garage fence door repair | pending | medium | achantas-data | - |
 | WRK-371 | Heriberto: powder room faucet tightening | pending | medium | achantas-data | - |
 | WRK-374 | Personal habit — get to the point immediately when asking leaders questions | archived | high | - | - |
-| WRK-378 | Generalise CT hydraulics to full wellbore hydraulics module in digitalmodel | done | high | digitalmodel | - |
-| WRK-379 | Drilling dysfunction detector — stick-slip, washout, bit balling, kick logic | done | medium | digitalmodel | - |
 | WRK-381 | Trust architecture document — formalise plan gate governance for agent-executed actions | done | medium | workspace-hub | - |
 | WRK-382 | Marketing follow-up — update digitalmodel brochure and aceengineer-website for WRK-373/375 outputs | done | low | digitalmodel, aceengineer-website | - |
 | WRK-392 | feat(skills): add work-document-and-exit skill — capture WRK state + session handoff | done | low | - | - |
@@ -2762,6 +2787,13 @@
 | WRK-537 | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | digitalmodel | - |
 | WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | doris | - |
 | WRK-555 | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | pending | high | digitalmodel | - |
+| WRK-560 | docs(digitalmodel): add calc_examples mapping — pipeline domain | pending | high | digitalmodel, workspace-hub | - |
+| WRK-561 | docs(digitalmodel): add calc_examples mapping — structural domain | pending | high | digitalmodel, workspace-hub | - |
+| WRK-562 | docs(digitalmodel): add calc_examples mapping — marine domain | pending | high | digitalmodel, workspace-hub | - |
+| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | high | doris, workspace-hub | - |
+| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | saipem, rock-oil-field, workspace-hub | - |
+| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | workspace-hub | - |
+| WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -2775,7 +2807,6 @@
 | WRK-017 | Streamline BSEE field data analysis pipeline — wellbore, casing, drilling, completions, interventions | archived | high | worldenergydata | - |
 | WRK-018 | Extend BSEE field data pipeline to other regulatory sources (RRC, Norway, Mexico, Brazil) | archived | low | worldenergydata | - |
 | WRK-019 | Establish drilling, completion, and intervention cost data by region and environment | done | low | worldenergydata | - |
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | working | medium | digitalmodel | - |
 | WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | working | medium | assethold | - |
 | WRK-022 | US property valuation analysis using GIS — location, traffic, and spatial factors | done | medium | assethold | - |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | in_progress | low | assethold | - |
@@ -2867,7 +2898,7 @@
 
 ## By Computer
 
-### ace-linux-1 (271 active / 284 total)
+### ace-linux-1 (277 active / 290 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3009,8 +3040,6 @@
 | WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | archived | medium | medium | workspace-hub, digitalmodel |
 | WRK-376 | Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades) | done | medium | medium | digitalmodel |
 | WRK-377 | ROP prediction model — Bourgoyne-Young and Warren in digitalmodel | archived | high | medium | digitalmodel |
-| WRK-378 | Generalise CT hydraulics to full wellbore hydraulics module in digitalmodel | done | high | simple | digitalmodel |
-| WRK-379 | Drilling dysfunction detector — stick-slip, washout, bit balling, kick logic | done | medium | simple | digitalmodel |
 | WRK-380 | Multi-physics simulation chain — Gmsh → OpenFOAM → OrcaFlex as agent-executable pipeline | done | medium | complex | workspace-hub, digitalmodel |
 | WRK-381 | Trust architecture document — formalise plan gate governance for agent-executed actions | done | medium | simple | workspace-hub |
 | WRK-382 | Marketing follow-up — update digitalmodel brochure and aceengineer-website for WRK-373/375 outputs | done | low | simple | digitalmodel, aceengineer-website |
@@ -3154,13 +3183,20 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | digitalmodel |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | digitalmodel |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | digitalmodel |
+| WRK-560 | docs(digitalmodel): add calc_examples mapping — pipeline domain | pending | high | medium | digitalmodel, workspace-hub |
+| WRK-561 | docs(digitalmodel): add calc_examples mapping — structural domain | pending | high | medium | digitalmodel, workspace-hub |
+| WRK-562 | docs(digitalmodel): add calc_examples mapping — marine domain | pending | high | medium | digitalmodel, workspace-hub |
+| WRK-563 | docs(digitalmodel): add calc_examples mapping — cathodic-protection domain | pending | medium | small | digitalmodel, workspace-hub |
+| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | high | medium | doris, workspace-hub |
+| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | saipem, rock-oil-field, workspace-hub |
+| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | workspace-hub |
+| WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
-### ace-linux-2 (14 active / 18 total)
+### ace-linux-2 (13 active / 17 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
-| WRK-020 | GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting | working | medium | complex | digitalmodel |
 | WRK-047 | OpenFOAM CFD analysis capability for digitalmodel | in_progress | low | complex | digitalmodel |
 | WRK-048 | Blender working configurations for digitalmodel | pending | low | medium | digitalmodel |
 | WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | digitalmodel, workspace-hub |
@@ -3479,4 +3515,5 @@
 | WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | WRK-357 | - | - |
 | WRK-359 | Design and build vessel marine-parameters database for engineering analysis | WRK-358 | - | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | WRK-351 | - | - |
+| WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | WRK-560, WRK-561, WRK-562, WRK-563 | - | - |
 
