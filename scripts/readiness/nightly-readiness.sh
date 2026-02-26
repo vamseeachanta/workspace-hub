@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# nightly-readiness.sh — 9 ecosystem health checks for the nightly cron pipeline
+# nightly-readiness.sh — 11 ecosystem health checks for the nightly cron pipeline
 # Called from comprehensive-learning-nightly.sh Step 5 (WRK-308)
 # Each check is best-effort: failures are logged but never abort the pipeline.
 # Issues append to .claude/state/readiness-issues.md for Phase 6 to surface.
@@ -261,6 +261,54 @@ check_r_harness() {
     log_fail "R-HARNESS: harness files over 25 lines: ${over[*]}"
   fi
 } ; check_r_harness || true
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-ANSYS: Installed ANSYS versions include expected latest (v252 = R25.2)
+# Windows-workstation check; silently skips on non-Windows machines.
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_ansys() {
+  local ansys_root="/c/Program Files/ANSYS Inc"
+  [[ -d "$ansys_root" ]] || { log_pass "R-ANSYS: ANSYS root absent — skip (non-Windows)"; return; }
+  local expected_ver="v252"
+  local versions latest
+  versions=$(ls "$ansys_root" 2>/dev/null | grep -E '^v[0-9]+$' | sort -V | tr '\n' ' ' | sed 's/ $//')
+  if [[ -z "$versions" ]]; then
+    log_fail "R-ANSYS: no version dirs under '$ansys_root'"
+    return
+  fi
+  latest=$(echo "$versions" | tr ' ' '\n' | tail -1)
+  if [[ "$latest" == "$expected_ver" ]]; then
+    log_pass "R-ANSYS: latest=${latest}, installed: ${versions}"
+  else
+    log_fail "R-ANSYS: latest installed=${latest}, expected ${expected_ver} — installed: ${versions}"
+  fi
+} ; check_r_ansys || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-ORCAFLEX: OrcaFlex 11.6 installed and OrcaFlex64.exe present
+# Windows-workstation check; silently skips on non-Windows machines.
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_orcaflex() {
+  local orcaflex_root="/c/Program Files (x86)/Orcina/OrcaFlex"
+  [[ -d "$orcaflex_root" ]] || { log_pass "R-ORCAFLEX: OrcaFlex root absent — skip (non-Windows)"; return; }
+  local expected_ver="11.6"
+  local versions latest
+  versions=$(ls "$orcaflex_root" 2>/dev/null | grep -E '^[0-9]+\.' | sort -V | tr '\n' ' ' | sed 's/ $//')
+  if [[ -z "$versions" ]]; then
+    log_fail "R-ORCAFLEX: no version dirs under '$orcaflex_root'"
+    return
+  fi
+  latest=$(echo "$versions" | tr ' ' '\n' | tail -1)
+  local exe="${orcaflex_root}/${latest}/OrcaFlex64.exe"
+  if [[ "$latest" == "$expected_ver" && -f "$exe" ]]; then
+    log_pass "R-ORCAFLEX: version=${latest}, OrcaFlex64.exe present"
+  elif [[ "$latest" == "$expected_ver" ]]; then
+    log_fail "R-ORCAFLEX: version=${latest} but OrcaFlex64.exe missing"
+  else
+    log_fail "R-ORCAFLEX: latest installed=${latest}, expected ${expected_ver}"
+  fi
+} ; check_r_orcaflex || true
 
 # ─────────────────────────────────────────────────────────────────────────────
 # R-AI-CLI: AI agent CLIs present and at or above minimum version
