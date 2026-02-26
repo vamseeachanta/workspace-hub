@@ -36,6 +36,8 @@ A few concrete examples of what it handles in minutes:
 
 It also covers the asset integrity side: API 579-1 FFS assessments for tower or monopile wall loss, S-N fatigue with rainflow counting, and remaining life projections. The same assistant supports both the design phase and the in-service monitoring phase.
 
+One thing worth highlighting: the assistant gets better over time. In Phase 1 it already knows the wind engineering standards and metocean datasets. By Phase 3, once your design bases, SHM logs, and inspection reports are indexed, it starts answering questions grounded in your own turbine and site history — *"What ERA5 conditions did we use for the Southern North Sea site assessment last year?"* becomes instantly answerable. The longer it runs, the more it encodes your team's site-specific insight and fatigue management lessons.
+
 The first step is a 30-minute live demo at no cost — using real questions from your wind engineering and operations teams. If the time savings stack up, the next step is a Teams chatbot with separate context for your design engineers and your operations/monitoring team.
 
 Would you have 30 minutes available in the next week or two?

@@ -87,6 +87,15 @@ confidentiality: "Confidential"
 └─────────────────────────────────────────────────────────────────┘
 ```
 
+### Gets Smarter Over Time
+
+Unlike a generic AI tool, this assistant is discipline-specific from day one — and compounds in value with every engagement:
+
+- **Phase 1 → 2**: Each demo question that stretches the system becomes the next knowledge update; the assistant improves after every session
+- **Phase 2 → 3**: Once your project reports and case files are indexed, answers are grounded in *your* analysis history — not just published standards
+- **Phase 3 → 4**: Repeated use encodes your team's preferred methods and lessons learned — including legal case precedents and incident taxonomy built from your own portfolio
+- The longer it runs, the more precise it becomes: *"Find comparable ISM Code violations across our last five casualty cases"* becomes instantly answerable
+
 ### What the AI Does Not Do
 
 - Does not replace the structural engineer or maritime attorney

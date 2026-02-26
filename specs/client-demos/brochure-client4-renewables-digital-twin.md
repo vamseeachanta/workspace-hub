@@ -84,6 +84,15 @@ confidentiality: "Confidential"
 └─────────────────────────────────────────────────────────────────┘
 ```
 
+### Gets Smarter Over Time
+
+Unlike a generic AI tool, this assistant is discipline-specific from day one — and compounds in value with every engagement:
+
+- **Phase 1 → 2**: Each demo question that stretches the system becomes the next knowledge update; the assistant improves after every session
+- **Phase 2 → 3**: Once your design bases, SHM logs, and inspection reports are indexed, answers are grounded in *your* turbine and site history — not just published standards
+- **Phase 3 → 4**: Repeated use encodes your team's preferred analysis methods, site-specific metocean insight, and fatigue management lessons learned across your wind portfolio
+- The longer it runs, the more precise it becomes: *"What ERA5 extreme conditions did we use for the Southern North Sea site assessment last year?"* becomes instantly answerable
+
 ### What the AI Does Not Do
 
 - Does not replace the structural or offshore wind engineer

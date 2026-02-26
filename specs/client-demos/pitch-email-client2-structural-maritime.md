@@ -35,6 +35,8 @@ A few concrete examples:
 
 The maritime legal output is engineering technical analysis — not legal advice — but it gives your team a structured, evidence-based foundation that feeds directly into the legal process. COLREGs, Jones Act, P&I Club process, and MAIB/NTSB incident precedents are all in context.
 
+One thing worth highlighting: the assistant gets better over time. In Phase 1 it already knows the standards and analysis methods. By Phase 3, once your project reports and case files are indexed, it starts answering questions grounded in your own history — *"Find comparable ISM Code violations across our last five casualty cases"* becomes instantly answerable. The longer it runs, the more it encodes your team's preferred methods and builds a precedent library specific to your practice.
+
 The first step is a 30-minute live demo at no cost, using real questions from your structural and legal teams. If it delivers, the next step is a Teams chatbot — one for the structural/offshore team and one for maritime legal consulting — running in your existing channels.
 
 Would you have 30 minutes available in the next week or two?

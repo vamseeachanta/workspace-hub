@@ -35,6 +35,8 @@ A few examples of what it handles in minutes rather than hours:
 
 The first step costs nothing — it runs on existing AI subscriptions. If it saves time, we move to a Teams chatbot that lives in your existing channels.
 
+One thing worth highlighting: the assistant gets better over time. In Phase 1 it already knows the standards and calculation methods cold. By Phase 3, once your project documents are indexed, it starts answering questions grounded in your own design history — *"What wall thickness did we use on the last GoA rigid jumper?"* becomes instantly answerable. The longer it runs, the more it encodes your team's methods, terminology, and lessons learned.
+
 I would like to show you a live 30-minute demo using real project-type questions from your team. No slides, no pitch deck — just answers to engineering questions you would normally spend half a day researching.
 
 Are you free for 30 minutes in the next week or two?

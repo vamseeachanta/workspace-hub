@@ -36,6 +36,8 @@ A few examples of what it handles in minutes:
 
 The assistant covers the full breadth of a general O&G practice: drilling design, reservoir analytics, pipeline integrity, regulatory compliance, and incident analysis. We can configure it with the specific standards and codes your teams work to most.
 
+One thing worth highlighting: the assistant gets better over time. In Phase 1 it already knows the standards, regulatory data, and calculation methods. By Phase 3, once your well files and production reports are indexed, it starts answering questions grounded in your own asset history — *"What EUR did we forecast on our last Permian infill programme and how did actuals compare?"* becomes instantly answerable. The longer it runs, the more it encodes your team's field-specific knowledge and lessons learned.
+
 The first step is a 30-minute live demo at no cost — no slides, no pitch deck, just answers to real questions from your engineering teams. If the time savings stack up, the next step is a Teams chatbot that lives in your existing channels, with a separate context for each discipline team.
 
 Are you free for 30 minutes in the next week or two?

@@ -86,6 +86,15 @@ confidentiality: "Confidential"
 └─────────────────────────────────────────────────────────────────┘
 ```
 
+### Gets Smarter Over Time
+
+Unlike a generic AI tool, this assistant is discipline-specific from day one — and compounds in value with every engagement:
+
+- **Phase 1 → 2**: Each demo question that stretches the system becomes the next knowledge update; the assistant improves after every session
+- **Phase 2 → 3**: Once your well files, production reports, and inspection records are indexed, answers are grounded in *your* asset history — not just public benchmarks
+- **Phase 3 → 4**: Repeated use encodes your team's preferred methods, field-specific decline behaviour, and integrity lessons learned across your portfolio
+- The longer it runs, the more precise it becomes: *"What EUR did we forecast on our last Permian infill programme and how did actuals compare?"* becomes instantly answerable
+
 ### What the AI Does Not Do
 
 - Does not replace the drilling engineer, reservoir engineer, or integrity assessor
