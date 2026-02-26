@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-26T11:46:42Z by generate-index.py -->
+<!-- Generated: 2026-02-26T11:58:44Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-26T11:46:42Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-26T11:58:44Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 421
+**Total items:** 422
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 165 |
+| pending | 166 |
 | working | 8 |
 | blocked | 5 |
 | done | 4 |
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 204 |
+| high | 205 |
 | medium | 176 |
 | low | 40 |
 
@@ -31,7 +31,7 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 70 |
+| simple | 71 |
 | medium | 191 |
 | complex | 91 |
 
@@ -41,7 +41,7 @@
 |------------|-------|
 | CAD-DEVELOPMENTS | 2 |
 | OGManufacturing | 10 |
-| TBD-client2-repo | 4 |
+| TBD-client2-repo | 5 |
 | aceengineer-admin | 3 |
 | aceengineer-strategy | 1 |
 | aceengineer-website | 14 |
@@ -52,11 +52,11 @@
 | client_projects | 1 |
 | digitalmodel | 164 |
 | doris | 22 |
-| frontierdeepwater | 10 |
+| frontierdeepwater | 11 |
 | rock-oil-field | 1 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 5 |
-| workspace-hub | 102 |
+| workspace-hub | 103 |
 | worldenergydata | 80 |
 
 ### Plan Tracking
@@ -64,10 +64,10 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 157 / 421 |
+| Plans exist | 157 / 422 |
 | Plans cross-reviewed | 58 |
 | Plans approved | 79 |
-| Brochure pending | 8 |
+| Brochure pending | 9 |
 | Brochure updated/synced | 8 |
 
 ## Metrics
@@ -76,9 +76,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 421 |
+| Total captured | 422 |
 | Total archived | 225 |
-| Completion rate | 225/421 (53%) |
+| Completion rate | 225/422 (53%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -86,7 +86,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 45 / 165 | 27% |
+| Pending items with plans | 45 / 166 | 27% |
 | Plans cross-reviewed | 6 | 11% |
 | Plans user-approved | 6 | 11% |
 
@@ -103,7 +103,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 92 | 5 | 3 |
+| High     | 93 | 5 | 3 |
 | Medium   | 54  | 2  | 1  |
 | Low      | 19  | 1  | 1  |
 
@@ -531,6 +531,7 @@
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | ace-linux-1 | claude | frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-627, WRK-630 |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | ace-linux-1 | codex | frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | medium | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | ace-linux-1 | claude | workspace-hub, frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | █░░ 50% | ⏳ pending | WRK-632 |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -712,6 +713,7 @@
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | medium | complex | frontierdeepwater, TBD-client2-repo | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | high | simple | frontierdeepwater, TBD-client2-repo | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | high | medium | workspace-hub | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | high | simple | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -999,6 +1001,7 @@
 | WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | high | complex | - |
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | - |
 
 ### aceengineer-admin
 
@@ -1289,6 +1292,7 @@
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | - |
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | - |
 
 ### rock-oil-field
 
@@ -1417,6 +1421,7 @@
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
 | WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | high | complex | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | medium | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1714,6 +1719,7 @@
 | WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | complex | TBD-client2-repo | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | simple | frontierdeepwater, TBD-client2-repo | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | medium | workspace-hub | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | simple | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
 
 ### Medium
 
@@ -2016,6 +2022,7 @@
 | WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | workspace-hub | - |
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | CAD-DEVELOPMENTS | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | frontierdeepwater, TBD-client2-repo | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
 
 ### Medium
@@ -2312,7 +2319,7 @@
 
 ## By Computer
 
-### ace-linux-1 (144 active / 157 total)
+### ace-linux-1 (145 active / 158 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2472,6 +2479,7 @@
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | frontierdeepwater, TBD-client2-repo |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | frontierdeepwater, TBD-client2-repo |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | medium | workspace-hub |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | workspace-hub, frontierdeepwater, TBD-client2-repo |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)
@@ -2813,10 +2821,11 @@
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | - | - | WRK-628 |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | WRK-625 | - | WRK-628 |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | WRK-626 | - | WRK-628 |
-| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | - | WRK-632, WRK-633, WRK-625, WRK-626, WRK-627, WRK-629, WRK-630, WRK-631 | - |
+| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | - | WRK-632, WRK-633, WRK-634, WRK-625, WRK-626, WRK-627, WRK-629, WRK-630, WRK-631 | - |
 | WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal system prompts + knowledge base | - | - | WRK-628 |
 | WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | WRK-629 | - | WRK-628 |
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | WRK-627, WRK-630 | - | WRK-628 |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | - | - | WRK-628 |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | - | - | WRK-628 |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | WRK-632 | - | WRK-628 |
 
