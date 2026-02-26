@@ -330,6 +330,7 @@ uv run python -m digitalmodel.solvers.orcaflex.modular_generator generate \
 
 ## Related Skills
 
+- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Execution patterns and modular example map (`EXAMPLES.md`)
 - [orcaflex-monolithic-to-modular](../orcaflex-monolithic-to-modular/SKILL.md) - Extraction pipeline
 - [orcaflex-yaml-gotchas](../orcaflex-yaml-gotchas/SKILL.md) - Production YAML traps
 - [orcaflex-environment-config](../orcaflex-environment-config/SKILL.md) - Environment builder details

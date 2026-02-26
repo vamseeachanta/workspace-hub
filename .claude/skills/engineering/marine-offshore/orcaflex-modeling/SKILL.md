@@ -17,8 +17,18 @@ triggers:
 - .dat model files
 - .sim simulation files
 capabilities: []
-requires: []
-see_also: []
+capabilities:
+- run representative modular examples (A01/L01/K01/E08/C10) with `run_orcaflex.py`
+- apply A01 riser geometry patterns (catenary/lazy-wave) with consistent parameter naming
+- apply L01 vessel-motion extraction patterns for surge/heave/pitch reporting
+- use portable OrcFxAPI loading via `ORCAFLEX_API_PATH` environment variable
+- support static-only, dynamic-only, and combined run workflows
+requires:
+- orcaflex-file-conversion >=1.0.0,<2.0.0
+see_also:
+- orcaflex-post-processing
+- orcaflex-batch-manager
+- orcaflex-model-generator
 ---
 # OrcaFlex Modeling Skill
 
@@ -68,6 +78,15 @@ compatibility:
 - Hydrodynamic analysis and mooring system design
 - Riser analysis and installation sequence planning
 - Fatigue assessment of offshore structures
+
+## Examples-Derived Patterns (WRK-323 to WRK-328)
+
+- A01 risers: use `water_depth`, `line_length`, and stage-duration patterns consistently across catenary and lazy-wave variants.
+- L01 vessels: extract surge/heave/pitch directly from `TimeHistory("X"|"Z"|"Ry")` and align with report section keys.
+- E08 lay-table: prefer YAML-driven batch loops for parameter sweeps and CSV summaries.
+- C10 multiple statics: implement deterministic case loops with explicit sweep arrays.
+- API portability: always read OrcFxAPI path from `ORCAFLEX_API_PATH` before fallback defaults.
+- Example map: use `EXAMPLES.md` for quick routing from example code to model type and skill usage.
 
 ## Agent Capabilities
 
