@@ -3011,3 +3011,56 @@ orcaflex_models:
     stability parameter (Ks), allowable span length, and fatigue damage.
     WRK-607 created.
   keywords: [DNV RP F105, free span, VIV, pipeline, fatigue, onset of motion]
+
+ansys_assets:
+  description: "ANSYS FEA project files — APDL scripts, Workbench journals, design point logs"
+  projects:
+    - project_id: pipeline_fea_001
+      domain: subsea_pipeline
+      description: "Subsea pipeline structural integrity — static and fatigue FEA"
+      path: "data/ansys/pipeline_fea/"
+      file_types: [".inp", ".wbjn", ".csv", ".dat"]
+      analysis_type: structural_static
+      computer: ace-linux-1
+    - project_id: drilling_riser_fea_001
+      domain: drilling_riser
+      description: "Drilling riser global analysis with ANSYS parametric study"
+      path: "data/ansys/drilling_riser/"
+      file_types: [".inp", ".wbjn", ".csv"]
+      analysis_type: structural_parametric
+      computer: acma-ansys05
+    - project_id: riser_stress_001
+      domain: riser_analysis
+      description: "Production riser stress joint FEA — fatigue life assessment"
+      path: "data/ansys/riser_stress/"
+      file_types: [".inp", ".wbjn"]
+      analysis_type: structural_fatigue
+      computer: acma-ansys05
+    - project_id: offshore_structural_001
+      domain: offshore_structural
+      description: "Offshore jacket tubular joint parametric FEA"
+      path: "data/ansys/offshore_structural/"
+      file_types: [".inp", ".wbjn", ".csv"]
+      analysis_type: structural_parametric
+      computer: acma-ansys05
+    - project_id: thin_wall_fea_001
+      domain: structural_mechanics
+      description: "Thin-wall pressure vessel — buckling and collapse FEA"
+      path: "data/ansys/thin_wall/"
+      file_types: [".inp", ".wbjn", ".csv"]
+      analysis_type: structural_buckling
+      computer: acma-ansys05
+    - project_id: tutorial_beam_001
+      domain: tutorial
+      description: "ANSYS beam tutorial — SECTYPE/SECDATA beam section examples"
+      path: "data/ansys/tutorials/beam/"
+      file_types: [".inp"]
+      analysis_type: structural_static
+      computer: ace-linux-1
+    - project_id: manufacturing_fea_001
+      domain: manufacturing
+      description: "OG manufacturing component FEA — pressure vessel and piping"
+      path: "data/ansys/manufacturing/"
+      file_types: [".inp", ".wbjn", ".csv"]
+      analysis_type: structural_static
+      computer: acma-ansys05
