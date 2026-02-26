@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-25T22:14:05Z by generate-index.py -->
+<!-- Generated: 2026-02-25T22:38:11Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-25T22:14:05Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-25T22:38:11Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,11 +13,11 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 156 |
+| pending | 154 |
 | working | 8 |
 | blocked | 5 |
-| done | 177 |
-| archived | 223 |
+| done | 178 |
+| archived | 224 |
 
 ### By Priority
 
@@ -31,15 +31,15 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 94 |
-| medium | 261 |
+| simple | 95 |
+| medium | 260 |
 | complex | 98 |
 
 ### By Repository
 
 | Repository | Count |
 |------------|-------|
-| CAD-DEVELOPMENTS | 5 |
+| CAD-DEVELOPMENTS | 6 |
 | OGManufacturing | 11 |
 | aceengineer-admin | 4 |
 | aceengineer-strategy | 2 |
@@ -49,7 +49,7 @@
 | assethold | 9 |
 | assetutilities | 59 |
 | client_projects | 1 |
-| digitalmodel | 188 |
+| digitalmodel | 187 |
 | doris | 26 |
 | frontierdeepwater | 4 |
 | pdf-large-reader | 1 |
@@ -64,7 +64,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 184 / 583 |
+| Plans exist | 185 / 583 |
 | Plans cross-reviewed | 96 |
 | Plans approved | 119 |
 | Brochure pending | 10 |
@@ -77,8 +77,8 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 583 |
-| Total archived | 223 |
-| Completion rate | 223/583 (38%) |
+| Total archived | 224 |
+| Completion rate | 224/583 (38%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -86,7 +86,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 45 / 156 | 29% |
+| Pending items with plans | 45 / 154 | 29% |
 | Plans cross-reviewed | 6 | 11% |
 | Plans user-approved | 6 | 11% |
 
@@ -103,7 +103,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 86 | 5 | 3 |
+| High     | 84 | 5 | 3 |
 | Medium   | 52  | 2  | 1  |
 | Low      | 18  | 1  | 1  |
 
@@ -682,7 +682,7 @@
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | done | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | ace-linux-1 | - | digitalmodel, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | ace-linux-1 | - | digitalmodel, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | pending | high | complex | ace-linux-2 | - | workspace-hub, CAD-DEVELOPMENTS | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
@@ -690,7 +690,7 @@
 | WRK-612 | Research and prototype Gmsh Python API for automated hull mesh generation | pending | medium | medium | ace-linux-2 | - | CAD-DEVELOPMENTS | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-610 |
 | WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | pending | medium | medium | ace-linux-2 | - | CAD-DEVELOPMENTS | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-612 |
 | WRK-614 | Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation | pending | medium | medium | ace-linux-2 | - | CAD-DEVELOPMENTS | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-610 |
-| WRK-615 | feat(digitalmodel/pipeline): automate thin-wall FEA — classification, parametric analysis, limit curves | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | simple | ace-linux-2 | - | CAD-DEVELOPMENTS | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata, assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-617 | feat(digitalmodel/ansys): catalog and port APDL scripts from /mnt/ace to digitalmodel.ansys domain | pending | medium | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -878,6 +878,7 @@
 | WRK-600 | chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming | low | simple | worldenergydata | - |
 | WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | low | simple | digitalmodel | - |
 | WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | low | medium | digitalmodel | - |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | high | medium | digitalmodel | - |
 
 ### Pending
 
@@ -1027,7 +1028,6 @@
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | low | low | workspace-hub | - |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | medium | low | workspace-hub | - |
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | high | medium | workspace-hub | - |
-| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | high | medium | digitalmodel | - |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | medium | medium | digitalmodel, OGManufacturing | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | medium | medium | digitalmodel, OGManufacturing | - |
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | high | complex | workspace-hub, CAD-DEVELOPMENTS | - |
@@ -1035,7 +1035,6 @@
 | WRK-612 | Research and prototype Gmsh Python API for automated hull mesh generation | medium | medium | CAD-DEVELOPMENTS | - |
 | WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | medium | medium | CAD-DEVELOPMENTS | - |
 | WRK-614 | Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation | medium | medium | CAD-DEVELOPMENTS | - |
-| WRK-615 | feat(digitalmodel/pipeline): automate thin-wall FEA — classification, parametric analysis, limit curves | high | medium | digitalmodel | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | medium | medium | workspace-hub, digitalmodel, worldenergydata, assetutilities | - |
 | WRK-617 | feat(digitalmodel/ansys): catalog and port APDL scripts from /mnt/ace to digitalmodel.ansys domain | medium | medium | digitalmodel | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
@@ -1290,6 +1289,7 @@
 | WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | medium | medium | workspace-hub, digitalmodel | - |
 | WRK-377 | ROP prediction model — Bourgoyne-Young and Warren in digitalmodel | high | medium | digitalmodel | - |
 | WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | high | simple | workspace-hub | - |
+| WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | high | simple | CAD-DEVELOPMENTS | - |
 
 ## By Repository
 
@@ -1302,6 +1302,7 @@
 | WRK-612 | Research and prototype Gmsh Python API for automated hull mesh generation | pending | medium | medium | - |
 | WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | pending | medium | medium | - |
 | WRK-614 | Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation | pending | medium | medium | - |
+| WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | simple | - |
 
 ### OGManufacturing
 
@@ -1657,10 +1658,9 @@
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | - |
 | WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | done | low | simple | - |
 | WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | done | low | medium | - |
-| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | pending | high | medium | - |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | done | high | medium | - |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | - |
-| WRK-615 | feat(digitalmodel/pipeline): automate thin-wall FEA — classification, parametric analysis, limit curves | pending | high | medium | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
 | WRK-617 | feat(digitalmodel/ansys): catalog and port APDL scripts from /mnt/ace to digitalmodel.ansys domain | pending | medium | medium | - |
 
@@ -2257,10 +2257,10 @@
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | medium | workspace-hub, digitalmodel | - |
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | pending | complex | workspace-hub | - |
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | medium | workspace-hub | - |
-| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | pending | medium | digitalmodel | - |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | done | medium | digitalmodel | - |
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | pending | complex | workspace-hub, CAD-DEVELOPMENTS | - |
 | WRK-611 | Build FCStd parser for AI-agent geometry extraction (no FreeCAD required) | pending | medium | CAD-DEVELOPMENTS | - |
-| WRK-615 | feat(digitalmodel/pipeline): automate thin-wall FEA — classification, parametric analysis, limit curves | pending | medium | digitalmodel | - |
+| WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | simple | CAD-DEVELOPMENTS | - |
 
 ### Medium
 
@@ -2676,6 +2676,7 @@
 | WRK-599 | docs(skills): enhance repo-structure + file-taxonomy with non-Python-files-in-src rules | done | medium | workspace-hub | - |
 | WRK-600 | chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming | done | low | worldenergydata | - |
 | WRK-601 | chore(digitalmodel): fix src/ violations — notebook + YAML in src, gis duplication | done | low | digitalmodel | - |
+| WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | CAD-DEVELOPMENTS | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
 
 ### Medium
@@ -2933,14 +2934,13 @@
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | workspace-hub, digitalmodel | - |
 | WRK-602 | chore(digitalmodel): migrate specialized/gis submodules → digitalmodel.gis | done | low | digitalmodel | - |
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | workspace-hub | - |
-| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | pending | high | digitalmodel | - |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | done | high | digitalmodel | - |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | digitalmodel, OGManufacturing | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | digitalmodel, OGManufacturing | - |
 | WRK-611 | Build FCStd parser for AI-agent geometry extraction (no FreeCAD required) | pending | high | CAD-DEVELOPMENTS | - |
 | WRK-612 | Research and prototype Gmsh Python API for automated hull mesh generation | pending | medium | CAD-DEVELOPMENTS | - |
 | WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | pending | medium | CAD-DEVELOPMENTS | - |
 | WRK-614 | Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation | pending | medium | CAD-DEVELOPMENTS | - |
-| WRK-615 | feat(digitalmodel/pipeline): automate thin-wall FEA — classification, parametric analysis, limit curves | pending | high | digitalmodel | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | workspace-hub, digitalmodel, worldenergydata, assetutilities | - |
 | WRK-617 | feat(digitalmodel/ansys): catalog and port APDL scripts from /mnt/ace to digitalmodel.ansys domain | pending | medium | digitalmodel | - |
 
@@ -3049,7 +3049,7 @@
 
 ## By Computer
 
-### ace-linux-1 (298 active / 311 total)
+### ace-linux-1 (297 active / 310 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3357,15 +3357,14 @@
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | workspace-hub |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | medium | low | workspace-hub |
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | medium | workspace-hub |
-| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | pending | high | medium | digitalmodel |
+| WRK-607 | feat(digitalmodel): implement DNV RP F105 free-spanning pipeline VIV module | done | high | medium | digitalmodel |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | digitalmodel, OGManufacturing |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | digitalmodel, OGManufacturing |
-| WRK-615 | feat(digitalmodel/pipeline): automate thin-wall FEA — classification, parametric analysis, limit curves | pending | high | medium | digitalmodel |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | workspace-hub, digitalmodel, worldenergydata, assetutilities |
 | WRK-617 | feat(digitalmodel/ansys): catalog and port APDL scripts from /mnt/ace to digitalmodel.ansys domain | pending | medium | medium | digitalmodel |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
-### ace-linux-2 (18 active / 22 total)
+### ace-linux-2 (18 active / 23 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3391,6 +3390,7 @@
 | WRK-612 | Research and prototype Gmsh Python API for automated hull mesh generation | pending | medium | medium | CAD-DEVELOPMENTS |
 | WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | pending | medium | medium | CAD-DEVELOPMENTS |
 | WRK-614 | Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation | pending | medium | medium | CAD-DEVELOPMENTS |
+| WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | simple | CAD-DEVELOPMENTS |
 
 ### acma-ansys05 (14 active / 14 total)
 
