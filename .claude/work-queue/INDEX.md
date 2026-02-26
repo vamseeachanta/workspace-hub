@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-26T10:26:21Z by generate-index.py -->
+<!-- Generated: 2026-02-26T11:09:30Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-26T10:26:21Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-26T11:09:30Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 409
+**Total items:** 412
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 153 |
+| pending | 156 |
 | working | 8 |
 | blocked | 5 |
 | done | 4 |
@@ -23,9 +23,9 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 195 |
-| medium | 174 |
-| low | 39 |
+| high | 196 |
+| medium | 175 |
+| low | 40 |
 
 ### By Complexity
 
@@ -33,13 +33,13 @@
 |------------|-------|
 | simple | 69 |
 | medium | 187 |
-| complex | 84 |
+| complex | 87 |
 
 ### By Repository
 
 | Repository | Count |
 |------------|-------|
-| CAD-DEVELOPMENTS | 6 |
+| CAD-DEVELOPMENTS | 2 |
 | OGManufacturing | 10 |
 | aceengineer-admin | 3 |
 | aceengineer-strategy | 1 |
@@ -49,13 +49,13 @@
 | assethold | 2 |
 | assetutilities | 5 |
 | client_projects | 1 |
-| digitalmodel | 158 |
+| digitalmodel | 164 |
 | doris | 22 |
 | frontierdeepwater | 4 |
 | rock-oil-field | 1 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 5 |
-| workspace-hub | 100 |
+| workspace-hub | 101 |
 | worldenergydata | 80 |
 
 ### Plan Tracking
@@ -63,7 +63,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 157 / 409 |
+| Plans exist | 157 / 412 |
 | Plans cross-reviewed | 58 |
 | Plans approved | 79 |
 | Brochure pending | 7 |
@@ -75,9 +75,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 409 |
+| Total captured | 412 |
 | Total archived | 225 |
-| Completion rate | 225/409 (55%) |
+| Completion rate | 225/412 (55%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -85,7 +85,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 45 / 153 | 29% |
+| Pending items with plans | 45 / 156 | 29% |
 | Plans cross-reviewed | 6 | 11% |
 | Plans user-approved | 6 | 11% |
 
@@ -102,9 +102,9 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 83 | 5 | 3 |
-| Medium   | 52  | 2  | 1  |
-| Low      | 18  | 1  | 1  |
+| High     | 84 | 5 | 3 |
+| Medium   | 53  | 2  | 1  |
+| Low      | 19  | 1  | 1  |
 
 ## Master Table
 
@@ -503,7 +503,7 @@
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | acma-ansys05 | - | workspace-hub, client_projects, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | acma-ansys05 | - | workspace-hub, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-593, WRK-594 |
-| WRK-597 | feat(digitalmodel): create geotechnical module for foundations and anchors | pending | medium | complex | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-597 | feat(digitalmodel): geotechnical module — umbrella tracker | pending | medium | complex | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | pending | high | complex | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -512,12 +512,15 @@
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | ace-linux-1 | - | digitalmodel, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | ace-linux-1 | - | digitalmodel, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | high | complex | ace-linux-2 | - | workspace-hub, CAD-DEVELOPMENTS | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-611 | Build FCStd parser for AI-agent geometry extraction (no FreeCAD required) | pending | high | medium | ace-linux-2 | - | CAD-DEVELOPMENTS | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-612 | Research and prototype Gmsh Python API for automated hull mesh generation | pending | medium | medium | ace-linux-2 | - | CAD-DEVELOPMENTS | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | pending | medium | medium | ace-linux-2 | - | CAD-DEVELOPMENTS | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-612 |
-| WRK-614 | Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation | pending | medium | medium | ace-linux-2 | - | CAD-DEVELOPMENTS | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | simple | ace-linux-2 | - | CAD-DEVELOPMENTS | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata, assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-618 | feat(geotechnical): soil profile models, CPT correlation, shared types | pending | high | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-619 | feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves | pending | medium | complex | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
+| WRK-620 | feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109 | pending | medium | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
+| WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | pending | medium | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
+| WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | complex | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618, WRK-619 |
+| WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | high | complex | ace-linux-1 | codex+gemini | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -674,7 +677,7 @@
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | low | medium | digitalmodel | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | high | medium | workspace-hub, client_projects, digitalmodel | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | high | medium | workspace-hub, digitalmodel | - |
-| WRK-597 | feat(digitalmodel): create geotechnical module for foundations and anchors | medium | complex | digitalmodel | - |
+| WRK-597 | feat(digitalmodel): geotechnical module — umbrella tracker | medium | complex | digitalmodel | - |
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | high | complex | workspace-hub | - |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | low | low | workspace-hub | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | low | low | workspace-hub | - |
@@ -682,11 +685,14 @@
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | high | medium | workspace-hub | - |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | medium | medium | digitalmodel, OGManufacturing | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | medium | medium | digitalmodel, OGManufacturing | - |
-| WRK-611 | Build FCStd parser for AI-agent geometry extraction (no FreeCAD required) | high | medium | CAD-DEVELOPMENTS | - |
-| WRK-612 | Research and prototype Gmsh Python API for automated hull mesh generation | medium | medium | CAD-DEVELOPMENTS | - |
-| WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | medium | medium | CAD-DEVELOPMENTS | - |
-| WRK-614 | Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation | medium | medium | CAD-DEVELOPMENTS | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | medium | medium | workspace-hub, digitalmodel, worldenergydata, assetutilities | - |
+| WRK-618 | feat(geotechnical): soil profile models, CPT correlation, shared types | high | medium | digitalmodel | - |
+| WRK-619 | feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves | medium | complex | digitalmodel | - |
+| WRK-620 | feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109 | medium | medium | digitalmodel | - |
+| WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | medium | medium | digitalmodel | - |
+| WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | medium | complex | digitalmodel | - |
+| WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | low | medium | digitalmodel | - |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | high | complex | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -949,10 +955,6 @@
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | high | complex | - |
-| WRK-611 | Build FCStd parser for AI-agent geometry extraction (no FreeCAD required) | pending | high | medium | - |
-| WRK-612 | Research and prototype Gmsh Python API for automated hull mesh generation | pending | medium | medium | - |
-| WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | pending | medium | medium | - |
-| WRK-614 | Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation | pending | medium | medium | - |
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | simple | - |
 
 ### OGManufacturing
@@ -1206,10 +1208,16 @@
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | - |
-| WRK-597 | feat(digitalmodel): create geotechnical module for foundations and anchors | pending | medium | complex | - |
+| WRK-597 | feat(digitalmodel): geotechnical module — umbrella tracker | pending | medium | complex | - |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
+| WRK-618 | feat(geotechnical): soil profile models, CPT correlation, shared types | pending | high | medium | - |
+| WRK-619 | feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves | pending | medium | complex | - |
+| WRK-620 | feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109 | pending | medium | medium | - |
+| WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | pending | medium | medium | - |
+| WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | complex | - |
+| WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | low | medium | - |
 
 ### doris
 
@@ -1372,6 +1380,7 @@
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | medium | - |
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | high | complex | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | high | complex | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1658,8 +1667,9 @@
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | pending | complex | workspace-hub | - |
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | medium | workspace-hub | - |
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | complex | workspace-hub, CAD-DEVELOPMENTS | - |
-| WRK-611 | Build FCStd parser for AI-agent geometry extraction (no FreeCAD required) | pending | medium | CAD-DEVELOPMENTS | - |
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | simple | CAD-DEVELOPMENTS | - |
+| WRK-618 | feat(geotechnical): soil profile models, CPT correlation, shared types | pending | medium | digitalmodel | - |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | complex | workspace-hub | - |
 
 ### Medium
 
@@ -1831,14 +1841,15 @@
 | WRK-574 | Remove digitalmodel setup.py (superseded by pyproject.toml) | in_progress | simple | digitalmodel | - |
 | WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | simple | workspace-hub | - |
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | simple | workspace-hub | - |
-| WRK-597 | feat(digitalmodel): create geotechnical module for foundations and anchors | pending | complex | digitalmodel | - |
+| WRK-597 | feat(digitalmodel): geotechnical module — umbrella tracker | pending | complex | digitalmodel | - |
 | WRK-605 | chore(doc-index): triage _standards/raw/ — add path rules, reclassify 24K PDFs | pending | low | workspace-hub | - |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | digitalmodel, OGManufacturing | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | digitalmodel, OGManufacturing | - |
-| WRK-612 | Research and prototype Gmsh Python API for automated hull mesh generation | pending | medium | CAD-DEVELOPMENTS | - |
-| WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | pending | medium | CAD-DEVELOPMENTS | - |
-| WRK-614 | Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation | pending | medium | CAD-DEVELOPMENTS | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | workspace-hub, digitalmodel, worldenergydata, assetutilities | - |
+| WRK-619 | feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves | pending | complex | digitalmodel | - |
+| WRK-620 | feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109 | pending | medium | digitalmodel | - |
+| WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | pending | medium | digitalmodel | - |
+| WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | complex | digitalmodel | - |
 
 ### Low
 
@@ -1882,6 +1893,7 @@
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | medium | digitalmodel | - |
 | WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | workspace-hub | - |
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | workspace-hub | - |
+| WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | medium | digitalmodel | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | simple | workspace-hub | - |
 
 ## By Complexity
@@ -2146,11 +2158,11 @@
 | WRK-606 | chore(doc-index): build standards transfer ledger — single source of truth for code porting | pending | high | workspace-hub | - |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | digitalmodel, OGManufacturing | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | digitalmodel, OGManufacturing | - |
-| WRK-611 | Build FCStd parser for AI-agent geometry extraction (no FreeCAD required) | pending | high | CAD-DEVELOPMENTS | - |
-| WRK-612 | Research and prototype Gmsh Python API for automated hull mesh generation | pending | medium | CAD-DEVELOPMENTS | - |
-| WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | pending | medium | CAD-DEVELOPMENTS | - |
-| WRK-614 | Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation | pending | medium | CAD-DEVELOPMENTS | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | workspace-hub, digitalmodel, worldenergydata, assetutilities | - |
+| WRK-618 | feat(geotechnical): soil profile models, CPT correlation, shared types | pending | high | digitalmodel | - |
+| WRK-620 | feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109 | pending | medium | digitalmodel | - |
+| WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | pending | medium | digitalmodel | - |
+| WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | low | digitalmodel | - |
 
 ### Complex
 
@@ -2237,13 +2249,16 @@
 | WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | archived | medium | digitalmodel | - |
 | WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | high | workspace-hub, digitalmodel | - |
 | WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | medium | workspace-hub | - |
-| WRK-597 | feat(digitalmodel): create geotechnical module for foundations and anchors | pending | medium | digitalmodel | - |
+| WRK-597 | feat(digitalmodel): geotechnical module — umbrella tracker | pending | medium | digitalmodel | - |
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | pending | high | workspace-hub | - |
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | high | workspace-hub, CAD-DEVELOPMENTS | - |
+| WRK-619 | feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves | pending | medium | digitalmodel | - |
+| WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | digitalmodel | - |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | high | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (134 active / 147 total)
+### ace-linux-1 (135 active / 148 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2393,9 +2408,10 @@
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | digitalmodel, OGManufacturing |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | digitalmodel, OGManufacturing |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | workspace-hub, digitalmodel, worldenergydata, assetutilities |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | high | complex | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
-### ace-linux-2 (11 active / 17 total)
+### ace-linux-2 (7 active / 13 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2411,10 +2427,6 @@
 | WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending | medium | medium | - |
 | WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | workspace-hub |
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | high | complex | workspace-hub, CAD-DEVELOPMENTS |
-| WRK-611 | Build FCStd parser for AI-agent geometry extraction (no FreeCAD required) | pending | high | medium | CAD-DEVELOPMENTS |
-| WRK-612 | Research and prototype Gmsh Python API for automated hull mesh generation | pending | medium | medium | CAD-DEVELOPMENTS |
-| WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | pending | medium | medium | CAD-DEVELOPMENTS |
-| WRK-614 | Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation | pending | medium | medium | CAD-DEVELOPMENTS |
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | simple | CAD-DEVELOPMENTS |
 
 ### acma-ansys05 (12 active / 12 total)
@@ -2657,7 +2669,7 @@
 | WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | medium | moderate | worldenergydata |
 | WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | digitalmodel |
 
-### ace-linux-1, ace-linux-2 (13 active / 13 total)
+### ace-linux-1, ace-linux-2 (19 active / 19 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2672,8 +2684,14 @@
 | WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | simple | workspace-hub |
 | WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | medium | digitalmodel |
 | WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | digitalmodel |
-| WRK-597 | feat(digitalmodel): create geotechnical module for foundations and anchors | pending | medium | complex | digitalmodel |
+| WRK-597 | feat(digitalmodel): geotechnical module — umbrella tracker | pending | medium | complex | digitalmodel |
 | WRK-598 | feat(product): build engineering chatbot for oil & gas clients | pending | high | complex | workspace-hub |
+| WRK-618 | feat(geotechnical): soil profile models, CPT correlation, shared types | pending | high | medium | digitalmodel |
+| WRK-619 | feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves | pending | medium | complex | digitalmodel |
+| WRK-620 | feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109 | pending | medium | medium | digitalmodel |
+| WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | pending | medium | medium | digitalmodel |
+| WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | complex | digitalmodel |
+| WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | low | medium | digitalmodel |
 
 ### orcaflex-license-machine (2 active / 2 total)
 
@@ -2722,5 +2740,11 @@
 | WRK-572 | docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests | WRK-568 | - | - |
 | WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | WRK-568 | - | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | WRK-593, WRK-594 | - | - |
-| WRK-613 | Research CalculiX automation for AI-agent-driven FEA solve on hull geometry | WRK-612 | - | - |
+| WRK-597 | feat(digitalmodel): geotechnical module — umbrella tracker | - | WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623 | - |
+| WRK-618 | feat(geotechnical): soil profile models, CPT correlation, shared types | - | - | WRK-597 |
+| WRK-619 | feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves | WRK-618 | - | WRK-597 |
+| WRK-620 | feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109 | WRK-618 | - | WRK-597 |
+| WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | WRK-618 | - | WRK-597 |
+| WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | WRK-618, WRK-619 | - | WRK-597 |
+| WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | WRK-618 | - | WRK-597 |
 
