@@ -56,6 +56,7 @@
 | [signal-analysis](signal-analysis/SKILL.md) | Perform signal processing, rainflow cycle counting, and spectral analysis for fa | — |
 | [solver-benchmark](solver-benchmark/SKILL.md) | Run N-way diffraction solver benchmarks comparing AQWA, OrcaWave, and BEMRosetta | `benchmark`, `aqwa`, `orcawave`, `bemrosetta` |
 | [structural-analysis](structural-analysis/SKILL.md) | Structural Analysis Skill | — |
+| [vessel-reference](vessel-reference/SKILL.md) | Engineering reference data for 82k DWT Kamsarmax bulk carrier — principal particulars, MAN B&W 5S60MC-C8, BV notations, hydrostatics, OrcaFlex parameters | `kamsarmax`, `bulk-carrier`, `vessel-data`, `bv-class` |
 | [viv-analysis](viv-analysis/SKILL.md) | Assess vortex-induced vibration (VIV) for risers and tubular members with natura | — |
 | [wave-theory](wave-theory/SKILL.md) | Ocean wave theory including wave spectra, statistics, irregular seas, and wave t | `waves`, `wave-theory`, `spectra`, `jonswap` |
 
