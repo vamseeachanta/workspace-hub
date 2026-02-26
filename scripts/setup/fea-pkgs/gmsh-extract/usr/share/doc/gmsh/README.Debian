@@ -1,0 +1,51 @@
+Gmsh for Debian
+---------------
+
+Gmsh is a three-dimensional finite element mesh generator with built-in pre- and
+post-processing facilities 
+
+* Documentation
+---------------
+
+** Gmsh reference manual
+------------------------
+
+The documentation is available in several formats
+
+[PDF]
+/usr/share/doc/gmsh-doc/gmsh.pdf.gz
+
+[Html]
+/usr/share/doc/gmsh-doc/gmsh.html
+
+
+* Tutorials and Examples
+---------------------
+
+A few tutorials is available in /usr/share/doc/gmsh-dic/tutorials.
+A few examples are available in /usr/share/doc/gmsh-doc/examples.
+
+* Solvers
+---------
+If you want to have examples on plugging your own solver to Gmsh have a look at the
+following two solvers (C and perl)
+
+/usr/share/doc/gmsh-doc/solvers
+
+* Converters
+------------
+
+You can find some converters from (autocad|maya|matlab) to gmsh format
+in
+
+/usr/share/doc/gms-doc/converters
+
+ -- Christophe Prud'homme <prudhomm@debian.org>, Wed Nov 17 09:17:28 2004
+
+------------
+
+to build api_demos go into the newly created directory:
+cmake ../../../gmsh/utils/api_demos  -DCMAKE_CXX_FLAGS="-DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX -fopenmp -lgl2ps -lGL -lglut" -DCMAKE_INCLUDE_PATH:="/usr/include/mpi;/usr/include/gmsh" -DCMAKE_VERBOSE_MAKEFILE=ON
+
+ -- Christophe Trophime <christophe.trophime@lncmi.cnrs.fr>, Mon Mar 12 18:30:00 2012
+

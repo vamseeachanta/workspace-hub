@@ -1,0 +1,348 @@
+#!/usr/bin/env bash
+# ABOUTME: Unified CLI entry point routing commands to all workspace engineering tools
+# ABOUTME: Routes dm/we/au/docs/wrk subcommands to their respective modules/scripts
+#
+# Usage:
+#   ace <subcommand> [args...]
+#
+# Subcommands:
+#   dm  [args]                         digitalmodel  — python3 -m digitalmodel [args]
+#   we  [args]                         worldenergydata — python3 -m worldenergydata [args]
+#   au  [args]                         assetutilities — python3 -m assetutilities [args]
+#   docs query [--domain D] [--repo R] document index queries via query-docs.sh
+#   wrk list                           list pending WRK items
+#   wrk show WRK-NNN                   show a specific WRK item
+#   help                               show all commands with descriptions
+#
+# Examples:
+#   ace dm --help
+#   ace we bsee --help
+#   ace au --help
+#   ace wrk list
+#   ace wrk show WRK-326
+#   ace docs query --domain structural
+#   ace docs query --repo worldenergydata --keyword "fatigue"
+#   ace help
+
+set -euo pipefail
+
+# ---------------------------------------------------------------------------
+# Paths
+# ---------------------------------------------------------------------------
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HUB_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+WORK_QUEUE_PENDING="$HUB_ROOT/.claude/work-queue/pending"
+QUERY_DOCS="$SCRIPT_DIR/readiness/query-docs.sh"
+
+# Source paths for submodule packages (used when packages are not pip-installed)
+DM_SRC="$HUB_ROOT/digitalmodel/src"
+WE_SRC="$HUB_ROOT/worldenergydata/src"
+AU_SRC="$HUB_ROOT/assetutilities/src"
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+usage() {
+    cat >&2 <<'EOF'
+ace — unified CLI for workspace engineering tools
+
+Usage:
+  ace <subcommand> [args...]
+
+Subcommands:
+  dm  [--help|<config.yaml>]  digitalmodel YAML engine
+  we  [subcommand] [args]     worldenergydata Typer CLI
+  au  [--help|<config.yaml>]  assetutilities YAML engine
+  docs query [opts]           document index queries
+  wrk list                    list pending WRK items
+  wrk show WRK-NNN            display a WRK item
+  help                        show full help
+
+Run 'ace help' for full usage with examples.
+EOF
+    exit 1
+}
+
+help_full() {
+    cat <<'EOF'
+ace — unified CLI for workspace engineering tools
+
+SUBCOMMANDS
+-----------
+
+  dm  [--help | <config.yaml>]
+      Route to digitalmodel (YAML-driven engine).
+      Example: ace dm --help
+      Example: ace dm mooring_analysis.yaml
+
+  we  [subcommand] [args]
+      Route to worldenergydata (Typer CLI).
+      Example: ace we --help
+      Example: ace we bsee --help
+      Example: ace we fdas calculate-npv --discount-rate 0.10
+
+  au  [--help | <config.yaml>]
+      Route to assetutilities (YAML-driven engine).
+      Example: ace au --help
+      Example: ace au pipe_capacity.yaml
+
+  docs query [opts]
+      Query the document intelligence index.
+      Delegates to: scripts/readiness/query-docs.sh
+      Options:
+        --domain <domain>   filter by engineering domain
+        --repo   <repo>     filter by repository name
+        --keyword <text>    free-text keyword search
+        --source <src>      filter by source type
+        --status <status>   filter by status (gap/covered)
+      Examples:
+        ace docs query --domain structural
+        ace docs query --repo worldenergydata --keyword "fatigue"
+        ace docs query --help
+
+  wrk list
+      List all pending WRK items from .claude/work-queue/pending/.
+
+  wrk show WRK-NNN
+      Display the content of a specific WRK item file.
+      Example: ace wrk show WRK-326
+
+  help
+      Show this help message.
+
+ENVIRONMENT
+-----------
+  Repo modules must be installed (or on PYTHONPATH) for dm/we/au routing.
+  query-docs.sh requires jq and python3.
+EOF
+    exit 0
+}
+
+die() {
+    echo "ace: $*" >&2
+    exit 1
+}
+
+# Build a PYTHONPATH that prepends the submodule src/ directories so that
+# in-workspace (non-pip-installed) packages are found correctly.  Any
+# pre-existing PYTHONPATH is preserved at the end.
+build_pythonpath() {
+    local extra="${DM_SRC}:${WE_SRC}:${AU_SRC}"
+    if [ -n "${PYTHONPATH:-}" ]; then
+        echo "${extra}:${PYTHONPATH}"
+    else
+        echo "${extra}"
+    fi
+}
+
+# Test whether a Python module is importable (with workspace src paths active).
+require_python_module() {
+    local module="$1"
+    if ! PYTHONPATH="$(build_pythonpath)" python3 -c "import $module" 2>/dev/null; then
+        die "Python module '$module' is not available. " \
+            "Install it or ensure its src/ directory exists at ${HUB_ROOT}/${module}."
+    fi
+}
+
+# Show help for YAML-file-driven engines (digitalmodel, assetutilities) that
+# do not have a --help flag of their own.
+dm_help() {
+    cat <<'EOF'
+ace dm — digitalmodel engineering analysis engine
+
+Usage:
+  ace dm <config.yaml>          run analysis defined in YAML config file
+  ace dm --help                 show this help
+
+digitalmodel is a YAML-driven engine.  Pass a configuration YAML file to
+invoke a specific analysis workflow.
+
+Examples:
+  ace dm myproject/config/mooring.yaml
+  ace dm pipeline_analysis.yaml
+
+Supported analysis types (set via cfg.basename in YAML):
+  mooring_analysis, pipe_capacity, viv_analysis, rao_analysis,
+  time_series_analysis, fatigue, ct_hydraulics, orcaflex, and more.
+
+Documentation: digitalmodel/docs/  |  Submodule: digitalmodel/
+EOF
+}
+
+# Show help for assetutilities YAML-driven engine.
+au_help() {
+    cat <<'EOF'
+ace au — assetutilities engineering calculation engine
+
+Usage:
+  ace au <config.yaml>          run calculation defined in YAML config file
+  ace au --help                 show this help
+
+assetutilities is a YAML-driven engine.  Pass a configuration YAML file to
+invoke a specific calculation module.
+
+Examples:
+  ace au myproject/calculations/beam_stress.yaml
+  ace au pipeline_capacity.yaml
+
+Documentation: assetutilities/docs/  |  Submodule: assetutilities/
+EOF
+}
+
+# ---------------------------------------------------------------------------
+# Subcommand: dm
+# ---------------------------------------------------------------------------
+cmd_dm() {
+    # Intercept --help / -h before invoking the engine (YAML engine ignores it)
+    for arg in "$@"; do
+        if [ "$arg" = "--help" ] || [ "$arg" = "-h" ]; then
+            dm_help
+            exit 0
+        fi
+    done
+    require_python_module "digitalmodel"
+    PYTHONPATH="$(build_pythonpath)" exec python3 -m digitalmodel "$@"
+}
+
+# ---------------------------------------------------------------------------
+# Subcommand: we
+# ---------------------------------------------------------------------------
+cmd_we() {
+    require_python_module "worldenergydata"
+    PYTHONPATH="$(build_pythonpath)" exec python3 -m worldenergydata "$@"
+}
+
+# ---------------------------------------------------------------------------
+# Subcommand: au
+# ---------------------------------------------------------------------------
+cmd_au() {
+    # Intercept --help / -h before invoking the engine (YAML engine ignores it)
+    for arg in "$@"; do
+        if [ "$arg" = "--help" ] || [ "$arg" = "-h" ]; then
+            au_help
+            exit 0
+        fi
+    done
+    require_python_module "assetutilities"
+    PYTHONPATH="$(build_pythonpath)" exec python3 -m assetutilities "$@"
+}
+
+# ---------------------------------------------------------------------------
+# Subcommand: docs
+# ---------------------------------------------------------------------------
+cmd_docs() {
+    local docs_sub="${1:-}"
+    shift || true
+
+    case "$docs_sub" in
+        query)
+            # Pass --help through without requiring the index file
+            for arg in "$@"; do
+                if [ "$arg" = "--help" ] || [ "$arg" = "-h" ]; then
+                    cat <<'EOF'
+ace docs query — query the document intelligence index
+
+Usage:
+  ace docs query [options]
+
+Options:
+  --domain  <domain>   filter by engineering domain (e.g. structural, cp)
+  --repo    <repo>     filter by repository name (e.g. digitalmodel)
+  --keyword <text>     free-text keyword search
+  --source  <src>      filter by source type
+  --status  <status>   filter by status (gap/covered)
+  --limit   <N>        max results (default 50)
+  --format  <fmt>      output format: table|json|csv (default table)
+
+Examples:
+  ace docs query --domain structural
+  ace docs query --repo worldenergydata --keyword fatigue
+  ace docs query --status gap
+EOF
+                    exit 0
+                fi
+            done
+            if [ ! -f "$QUERY_DOCS" ]; then
+                die "query-docs.sh not found at $QUERY_DOCS"
+            fi
+            exec bash "$QUERY_DOCS" "$@"
+            ;;
+        "")
+            die "docs requires a subcommand. Try: ace docs query --help"
+            ;;
+        *)
+            die "Unknown docs subcommand '$docs_sub'. Available: query"
+            ;;
+    esac
+}
+
+# ---------------------------------------------------------------------------
+# Subcommand: wrk
+# ---------------------------------------------------------------------------
+cmd_wrk() {
+    local wrk_sub="${1:-}"
+    shift || true
+
+    case "$wrk_sub" in
+        list)
+            if [ ! -d "$WORK_QUEUE_PENDING" ]; then
+                die "Work queue directory not found: $WORK_QUEUE_PENDING"
+            fi
+            local count=0
+            for f in "$WORK_QUEUE_PENDING"/WRK-*.md; do
+                [ -f "$f" ] || continue
+                echo "$(basename "$f" .md)"
+                count=$((count + 1))
+            done
+            if [ "$count" -eq 0 ]; then
+                echo "(no pending WRK items)"
+            fi
+            ;;
+        show)
+            local wrk_id="${1:-}"
+            if [ -z "$wrk_id" ]; then
+                die "wrk show requires a WRK ID. Example: ace wrk show WRK-326"
+            fi
+            # Accept both "WRK-326" and "326"
+            if [[ "$wrk_id" =~ ^[0-9]+$ ]]; then
+                wrk_id="WRK-$wrk_id"
+            fi
+            local wrk_file="$WORK_QUEUE_PENDING/${wrk_id}.md"
+            if [ ! -f "$wrk_file" ]; then
+                die "WRK item not found: $wrk_id (looked in $WORK_QUEUE_PENDING)"
+            fi
+            cat "$wrk_file"
+            ;;
+        "")
+            die "wrk requires a subcommand. Available: list, show WRK-NNN"
+            ;;
+        *)
+            die "Unknown wrk subcommand '$wrk_sub'. Available: list, show"
+            ;;
+    esac
+}
+
+# ---------------------------------------------------------------------------
+# Main dispatch
+# ---------------------------------------------------------------------------
+main() {
+    local cmd="${1:-}"
+    shift || true
+
+    case "$cmd" in
+        dm)        cmd_dm "$@"   ;;
+        we)        cmd_we "$@"   ;;
+        au)        cmd_au "$@"   ;;
+        docs)      cmd_docs "$@" ;;
+        wrk)       cmd_wrk "$@"  ;;
+        help|--help|-h) help_full ;;
+        "")        usage ;;
+        *)
+            echo "ace: Unknown subcommand '$cmd'" >&2
+            echo "Run 'ace help' for available subcommands." >&2
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"

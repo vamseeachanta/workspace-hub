@@ -1,0 +1,776 @@
+{
+  "shard": 7,
+  "total": 10,
+  "docs": [
+    {
+      "sha": "sha256:54e895ffa939f22d5bfdad2e1ea87e16832868e08e0e516bfdd8508184acfd2e",
+      "path": "/mnt/local-analysis/workspace-hub/specs/archive/legacy-agent-os/specs/phase2-task2-2/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:97afee571cc0494e5fe5f68a9cd86e3afc7cb98c1aea637bc7928917309b4821",
+      "path": "/mnt/local-analysis/workspace-hub/specs/modules/bsee-offshore-infrastructure-data-acquisition.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:10f0f676b5a69735af54bf3a73d157d318950fe9aaf3f02a74aeee1113c6ba91",
+      "path": "/mnt/local-analysis/workspace-hub/specs/modules/global-vessel-fleet-data-collection.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:fed09f8dfabef5f840375c2b223d2a0c32fbaf42ba6fd4747b07a6af19fd0904",
+      "path": "/mnt/local-analysis/workspace-hub/specs/modules/plan-reassess-and-improve-workspace-hub-workflow.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:adda900f60f7553137db69b9223cba6fbcf4aab60a8d8bd6995d4377556e9473",
+      "path": "/mnt/local-analysis/workspace-hub/specs/modules/skills-migration-plan.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:1bb01a5ec3db8b47407410971355984147bc4e55081e66acd9c43376780455e8",
+      "path": "/mnt/local-analysis/workspace-hub/specs/modules/workspace-hub-module-based-refactoring.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:26721b1a19f59711fa482463ea8ed804d49476d294144e3ad351d7bc7d20a354",
+      "path": "/mnt/local-analysis/workspace-hub/specs/modules/wrk-131-passing-ship-analysis.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:d9a5dc12a77a6b24c1d5b32634638db6dfaebc30ec04eb35200925da93aebdcd",
+      "path": "/mnt/local-analysis/workspace-hub/specs/modules/ai-native/ai_native_infrastructure_input.yaml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:e336aa2a1dbd589a0edd0702bdc8d65e85842c881eb78ec4aa918430c204c1bf",
+      "path": "/mnt/local-analysis/workspace-hub/specs/modules/skills/enhancement/plan.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:06fc058720337dbe8d21bc02c1e3bd69acf7627e903acbb5ac0f5828ebab9265",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/aceengineer-admin/2025-07-27-invoice-automation/sub-specs/tests.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:51439108d4210754e81cac657750822f2a9a271e8a5db986b1dde8ed649bbabe",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/aceengineer-admin/modules/agent-os/slash-commands/create-module-agent/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:514e25ca555b123fd01b33be57da3d12d8b6fd1a4e641e66ff42989fc3542654",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/aceengineer-website/2025-07-24-user-friendly-marketing-assessment/sub-specs/technical-spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:4f66f0a83a94ad32f32cc228abc7da42bebeb39741e33b7ffff750a7723c459a",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/aceengineer-website/archive/legacy-agent-os/product/tech-stack.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:58d62b96a5e6dd2541a3a080aa645535a05dd562863f1d229adeee7cf86bcf08",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/achantas-data/legal-documents-templates/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:ff2b1feda41bd08c2a8f0d1fe2bcb3bbcc3011be318ef643648e4ba98517fd9c",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1522/ctr-7/_src/rev_a08/postproc/specs/modules/gmsh/api/api_design.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:d5b10f0fff82960cbb9d2cf3525cc06160e7d744d6196261d1d7c53e68cff459",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1535/specs/2025-08-06-offshore-drilling-rig-cost-analysis/sub-specs/visualization-spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:89825a14c23b698b946e34483871af3a88b5611ecf271d0d937b166578f5db8a",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/modules/agent-os/slash-commands/create-module-agent/sub-specs/implementation.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:66a6d667258a8b85e3d8887bea2a4eebfda70094d01a1b1e72e747a10dc1c18b",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/assethold/2025-07-30-agent-os-integration/tasks.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:e2560de58e7acd695d0006e53834052f8f26f1560afe0692326dbbc8c6574cc8",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/assethold/family-dollar-valuation-model/tasks.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:9432f69605185ec662477730241373428cdf26a34a21d80579bca7e9251a98f7",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/assethold/specs/README.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:45cbfdb9938fa7ce8b8b3cd09eb0c2ca3ba5787c92de21cd1733e2a8ec7c5848",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/assetutilities/2025-07-29-agent-os-integration/sub-specs/technical-spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:6291107935b82268ab4c1fa7058b7246b947b2888baf615f7ddbd35f7a66a259",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/assetutilities/modules/agent-os/enhanced-create-specs/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f9742b131e6e5fe6ac6f5c6348ccad5540e7b5d988fc19ef364399b3f10a8ea5",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/assetutilities/modules/agent-os/slash-commands/create-module-agent/tasks.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:636b886c805b4b3da98b36f1e46406a7171ac0385ed880e725f613dbd50b753a",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/assetutilities/modules/authentication/user-auth-system/sub-specs/api-spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:2409df4a103c2fbe374d4dfc5b7431e80a604c514b49088ed4765b1ec2e8b9ca",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/assetutilities/modules/zip-utilities/parallel-processing/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:91e2573978be27b074cfcd71c9abd5ea7c3953fa015d446b70cdcbb6dff17e63",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client_projects/modules/agent-os/slash-commands/create-module-agent/sub-specs/context-optimization.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:21e913e4efbabd9620d26dbbcd1a8bdec53d5a883327412052d2094270dce237",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/placeholder.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:56c2c41103484a26789017a2ecacd576e2f5db600e7817ca28769e2ab95533af",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/dazzling-snuggling-thunder.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:1f70ba1cb9624baa833508b805bcab6022d204e3f2c3426a8ca0118c72d56b11",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/mossy-inventing-penguin.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:e4dfbadd5c702cf51845e11da9a90f35e97ed965b0af87f4615d94498e932034",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/review-gemini-iteration-1.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:6ade5066c595f01ce76b3997857697b8c025f6cbe7fa0a322b4518be0833df85",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/racing-placid-gazelle.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:e6d525a511f8c6adcedd78e07ee43d9654ef49f9a8bba73196db82791646c215",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/agent-os/inter-agent-delegation/executive-summary.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:343d8eb0fdf10a1a5cf838b16723e2103ddf3cde24584907af25a500be7a19f9",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/agent-os/modular-agent-management/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:8f6b6d6c351893585f72481513124cb56efa45c413161122acc474bccc32d206",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/agent-os/python-programming-agents/tasks.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:fc87bb5323ab93f5a4704e54f3a859fb7a917eec7edf00838ac8f1ade07168e4",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/ai-workflows/ai-framework-readme.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:5b2b7056e0827e64cf21f0748429a2d98709d14e93a807ecfad76da5ee554adc",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/aqwa/ship-analysis/go-by-fsts-aqwa-analysis/rev_a08/fsts/au_preproc_dat.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:73fe64048c51eff9eea66d51f503311fdc2d0738c7336a97e9ad7763a467c33e",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/aqwa/ship-analysis/go-by-mooring-wind-analysis/AGENT_OVERVIEW.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f01a641abc2f556f797850add081d1ff14c31cbe7b2113e8a79050bb1e7aaf44",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/aqwa/ship-analysis/go-by-mooring-wind-analysis/postprocess/rev3/postproc/09moor.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:77e4fe62a1bcf9416a4065ad5a6ab41e975cca535339828ad70a0928d83f3395",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/aqwa/ship-analysis/go-by-mooring-wind-analysis/postprocess/rev3/postproc/results/app_aqwa_09moor_120mph_l1.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:77e4fe62a1bcf9416a4065ad5a6ab41e975cca535339828ad70a0928d83f3395",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/aqwa/ship-analysis/go-by-mooring-wind-analysis/postprocess/rev3/postproc/results/app_aqwa_10moor_120mph_l1.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f01a641abc2f556f797850add081d1ff14c31cbe7b2113e8a79050bb1e7aaf44",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/aqwa/ship-analysis/go-by-mooring-wind-analysis/postprocess/rev3/postproc/superseded/09moor_120mph_tug.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:9e6d41c517e2ae46befbc54a1828ce84e785d5856ed60ad6e931f61de9e2ec00",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/aqwa/ship-analysis/go-by-mooring-wind-analysis/postprocess/rev3/results/postproc_viz_cog_rot_L6.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:1ba10a89a4ddd0a20d183a3f921e21a9d65ae309970e827a52a76795631db596",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/aqwa_to_orcaflex/AGENT_OVERVIEW.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:14b0ddf03a540ddc2e07cc34a4594c234d2dc189e248f95203de3817a3080ce5",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/aqwa_to_orcaflex/aqwa/fsts_lngc/results/au_preproc_dat_180km3.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:343c6088a293345533da4c7aae31d8348bf79849d815230c90e63efe9764597d",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/benchmark/unit_box_spec.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:50e0dd22d45b5a32221a5f833be613a54ad8c56785030db1509ff78ee3485338",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/data-procurement/metocean-data/configs/example_config.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:b18bfdbaba30e613e3b0732469c0eabe7198637503acdf8e492cdb23f9fca863",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/data-procurement/web-api-integration/prompt.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f3eb50649a7ec9725e5b1a0e591add9b1fd2da7f2ad517207d5ed20a24bc3bf6",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/data-transformation/lookup-table/OUTPUT_LOCATION_UPDATE.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:ff2d0d340ccb896083345a1369595bec6b23c86e94250b4b5bf2e9e51764e8ad",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/development-tools/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:06dc017d603ea65d9ed845f38c90f948207196bd7149d85af1df670adfa398ad",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/engineering-agent-enhancements/tasks.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:772820883f67ab5b02912aee8d68db982ba34ceeef48b7e19423fcbaf677b9e4",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/fatigue-analysis/cummulative_damage_all_seastate/docs/TROUBLESHOOTING_GUIDE.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:27bafb13b224c610122a6a08930a67072373952621558355243d01910db68804",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/fatigue-analysis/reference-seastate-scale-load/VERIFICATION_SUMMARY.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:80ea01e45ef0e6920512b0b3f5102a7b7c69da0eb365d7247e2168b298c712a0",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/fatigue-analysis/reference-seastate-scale-load/rev_0/prompt.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:eecb3e7cc95211d5f6f0623834a1c0cecf5406dff1bf870caf635c330dd1229f",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/fatigue-analysis/reference-seastate-scale-load/rev_0/docs/archive/CLEANUP_SUMMARY.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f581c559a0b3fff37c678385648fe30c19381e84544e3be4bd39eaba34aa347c",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/fatigue-analysis/reference-seastate-scale-load/rev_0/docs/archive/SAMPLE_DATA_LIMITATIONS.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:dcf777ecefd8371f61549b359a46d2ca82fb9c7318f7cbc25a548001242461d9",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/fatigue-analysis/reference-seastate-scale-load/rev_0/docs/configuration/VESSEL_CONFIGURATIONS_FINAL.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:6771959ba61d1d10ba6d350a2b0f6b4bbd92a9a04f657325e7775eddf858fe13",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/fatigue-analysis/reference-seastate-scale-load/rev_0/docs/naming_convention/REF_TO_SS_MAPPING_TABLE.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:9842c645f6c919c9313383d5bb98099bbdd1ba47b1a692ad5ed3959504a5f1af",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/fatigue-analysis/reference-seastate-scale-load/rev_0/docs/verification/STEP_BY_STEP_VERIFICATION.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:d0c0ab64058fe3c7a318d46bd795961444aa46801695a75b44972842dbe0ceae",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/fatigue-analysis/stress_rainflow_to_damage/CORRECTION_SUMMARY.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:8a079bda809aa2d6d4823b4691f4f7739209b1aa2ec34786075bbfc6f359427e",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/fatigue-analysis/stress_rainflow_to_damage/docs/FATIGUE_ENGINEER_DOCUMENTATION.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f51a17d87e64f406ea831e8e79d47625cb8f9920453110a9e07e5f06c3845ca8",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/freecad/freecad-agent/executive-summary.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f0f7761b426158b642861a9d16fb30c88cedbb9b2d75f00786f85f295f5c3ec5",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/gmsh/gmsh-agent-creation/task_summary.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:1e76e213de78f78843be4d659b83d60190d6a37c77239d0cfa29366c4266cf33",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/marine-engineering/core-analysis/environmental-loading/README.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:a27ac62903e463ecf76606e95974a5bd48f8fcc88641e28247d75997f248fef0",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/marine-engineering/core-analysis/ship-dynamics/task_summary.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:435bbe08a355e075eee3aaba8610543d5c44f4f46be13f9870c7fdeca23460ce",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/marine-engineering/software-integration/orcaflex-integration/README.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:17387782cebab74975588fdb2ab9e09eb7d6d4bc4efc8cd56644693cce21a49a",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/marketing/master_spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:e635ee57cf56e5c6260bfa4bd4ff389dcaa96a313fb32b7ee543e338c68feeca",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/mcp-server/markitdown-integration/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:9811228a732dbcd97dca424a62712b607dd178c09008bd69bf2046fddd9f27fc",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/mcp-server/orcawave-mcp/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:729aa00a4711c2050bb5a2f162eccf585ed23bcaff3bc1a694a17d380790b1ab",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/README.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:ccb6919ecd07ee3cebc396fec49d9488697b0f784dc0e18b41fc0d8bd2cd3853",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/browser-interface/ui_metadata_design.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:27d11e02982d9d59e3f699ae6ec4dfb71dcbf06b3fe44a7aefc185ed2248b459",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/configuration-management/README.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:fa850d3c4a0c73f4ad7320e51f4a4ac86becb84ad750906ccd254f7d691ca33b",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/file-ecosystem-structure/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:8ed4237168542a796103d8f9dfda514080d4c80da0c314fd68ab66c4d3634569",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/force-analysis/tasks.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:5616fc9c9ffa66fe492ac78fc508d781a07b2a636d01da9ec7bd5a27a1db48ac",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/modular-input-file/output/discretised_calm_buoy_base.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:62031460b6e8c49158862d98acd7e7f3ddfb4f45533df77748ac93dc19fc3479",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/modular-input-file/output/_03b_seabed.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:0ce4dc6c05f7a2c92a325cb255890a6ae8cf7871b38ee991ababab12c8b5ef4c",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/modular-input-file/output/_07_lines_discretised.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:8dcc6f48cb9d76e6468ddcb935a744d1c1d7aac6bb98fae1b13e91c194ea93ad",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/01_b_dynamic_analysis_fsts.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f9da48d1001ff094008cfb760ce9d1873d635f8e28a4794fc9f31db355e870a5",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/05_a_wsp_damper_stiffness.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:23f88d47156bc3bb205658090a65423f705fcf55883b7c8d6f6d65dd44daf138",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/09_a_jackets_mwl.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f2a80d929384da973844495a5a4255bf9a5fa68352e4547dc09063c18d6299c9",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_l015_lwl_180km3_l100_sb.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:89fdd5e5bbba8b90206974163987bd7741478eb3ed278b710a008aa123a3484c",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/_05_variable_data.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:141a5637e6f473965a2430a081d3de6c5bb0f942dfb4c797bf0f3419ac80d95d",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/aqwa_to_ofx/aqwa/fsts/preproc/results/dm_aqwa_deck_03_04.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:befe86caa8846bca4b3b5e552056b794ed438d4eba6e0b5576cb083e8dde7bd9",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension/output/reports/analysis_report.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:924b3ffc12652d047ea3c4df6228761f2a9088ce6e855a93d3156254b5ad498f",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension/run_files/yml/fsts_l015_mwl_125km3_l100_pb_vessel_statics_6dof.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:907e513fd8944dc914294b5dcc3e1a9614f5a8ad130f333ba0ef073ac30b8bce",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension/run_files/yml/fsts_l095_lwl_180km3_l000_sb_vessel_statics_6dof.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:334822fa03e4aa3acffdadf3a6bc59b83c90be58ce2dc2b9aa26e1ca1dd79129",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension/run_files/yml/fsts_l015_mwl_125km3_l100_sb_vessel_statics_6dof.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:a96af1ae8a5293c6b505eef4d470300d4f46590c2ed6bea74b0201f60c798000",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension/run_files/yml/includefile_fsts_l015_lwl_135_180km3_l100_pb_vessel_statics_6dof_fender_compression.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:83757954560fac3d1fe33a2ae84e9bfbbe767eb5f88c39ca7bf1631e56516c81",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension/run_files/yml/includefile_fsts_l015_mwl_180km3_l100_pb_vessel_statics_6dof_mooring_line_length.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:707c7abcc90ee189be280331d98bb01852d693f45445dffb8de5baf229bff3fd",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension/run_files/yml/includefile_fsts_l095_hwl_180km3_l000_sb_vessel_statics_6dof_mooring_line_length.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:8a209ab44179f42990a4414ad68ab072364b7e0600c2993a59887dba3290c8f8",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension/run_files/yml/includefile_fsts_l095_mwl_125km3_l000_sb_vessel_statics_6dof_fender_compression.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f92dd89aaea820e6cee5dd2999a9131e4cf75929f10362165dfd024f8d6a0023",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension/scripts/config/au_collate.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:c9a763630bb5226aa70c9603e2d8e84d14b018eea0cdcef3b4ad557a64de02e1",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension/scripts/config/dm_ofx_post_fsts_lngc.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:63b45005b5d08e7dc2c5b9517ee4ed1244fe8906cfad44462bca2d1b70f5680a",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension/scripts/config/results/dm_ofx_anal_mooring_fsts_l095_180km3_pb.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:82a6048537cbdfcf05090a70614c5bec2c66050fda4093f62ff05e55d44a2352",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-analysis/go-by-fsts-lngc/fsts_lngc_pretension_iterated/includefile_fsts_l015_hwl_125km3_l100_pb_vessel_statics_6dof_mooring_line_length.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:bd451463e71acebb3e7b9daa571d6e2b9fcd5d6cc56dcdaa4c897ccb60c0b52e",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-tension-iteration/CLAUDE.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:80a12d83046d19b5c4528f9dd9afc17cd6e45202640104133e67f7360ea2ef16",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-tension-iteration/test-validation-plan.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:80a12d83046d19b5c4528f9dd9afc17cd6e45202640104133e67f7360ea2ef16",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/mooring-tension-iteration/revision-1/test-validation-plan.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:43f123002c88e3852c6f3c984c4aa43616f232bc35b59ec4da3c05327197d51a",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/orcaflex-examples-integration/task_summary.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:007848e0f1d1a5ba31e21a04ad5e7a6a73c0484848d333aa3dafa8a21787f6d0",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/pipeline-installation-modular/quickstart.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:9c8e756addf64a90066ed16a7b06295b6fc331e3b0790ec10e77e7f1e6a0160e",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/postprocess-optimization/prompt.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:5383a6fcf0dab2d3541bc43c0bf87a6488d8161d64900f3b662313f2d56e09b1",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/results-dashboard/prompt.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:b9611b3148a2ee87eb912ffecdc6efa709bf8a7c8c707e1a31a9dd07f661ba5a",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/results-dashboard/implementation/deployment-guide.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:8216e55a131254e6a52ffe4242544f2ccfa696a0a455288e1dd39bd7ea6e7700",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/results-dashboard/implementation/spec-enhanced.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:4e14b22b025ebd55072b2fc68eeaf3775adbbf26fbd88ae749a570bddd26857e",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcaflex/riser-comprehensive-analysis/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:2f77585ee6ecf6ebcdcb06603c54ca8365bdb0208fcf8c1d2571ef5448da45b3",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcawave/diffraction-analysis/prompt.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:d09642009b87a636eac484974e083d1cb9a865c63c677e7aacdc5c02a6701aa0",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcawave/diffraction-analysis/inputs/orcawave/go-by/orcawave_001_ship_raos_rev2.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:7d9f2b92f2db2a8beb91d5043716fdb264642514c769c3fe2b4c5bfe971bec2d",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcawave/diffraction-analysis/revision-1/documentation/COMPLETE_GEOMETRY_SOLUTION.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:d6d7dca14dd76b80a04f16e53027718b71bee84a3253dc87a99174c56093e3a1",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcawave/orcawave-integration/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:76809831439dacd157705313b42b841284bb1db3f30563deee4bcf4398802953",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcawave/prepare-diffraction-analysis-inputs/README.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:74f234c692a2db0b06dc0fa7067826cf76ac6642f9e888bf6d9aa53a65c9af80",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcawave/prepare-diffraction-analysis-inputs/outputs/orcawave_configs/analyses/incident_draft_fuel_centered_adjusted_analysis.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:addd7e3de64de1bbeef72ab83cf4a83b9af99d81e947777d7ca0d37da4ed9556",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcawave/ship-analysis/prompt.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:71bb870988f60e0624d863e0bd335d6086bee21f5df19fa373d446e6d63d8f78",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcawave/test-configs/example_3_minimal_test.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:baa74e17f2b03ddcafdb931088ac5effb85bd7698dadd79e32d684c528e7d5b5",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/orcawave/test-configs/working_model.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:aeddf5225214f5f6e8c8d1473237d26e0d6782141250d9a53a47d6069d712b06",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/signal-analysis/orcaflex-tension-analysis/prompt.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:69039bd978e25caf2d4bf38685f45371e30b658b676750e21919856de0189922",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/signal-analysis/rainflow_with_visualization/VALIDATION_01_ENGINEERING_CALCULATIONS.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:c274219f2bc641b2c49f823c7df2dbde57da6d4fdb90aa296ab11a971ac363a4",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/signal-analysis/rainflow_with_visualization/input/rainflow_analysis_config_production_demo.yml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:7c9f5f26765fd6465f3aa2799086673b2c8e36f08fb15bfdc5469cebd720e7c5",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/workflows/ai-journey-documentation.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:59ae1801813d61e0ef60b2b15c02c89c0dc1f8488a4074f7e42bf2f9aa7671a1",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/design-tools/ai-cad-research/engineering-visualization-workflows.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:4166e41d3df353954f1c7783029eb5a5fa77f76d50200ad5d0e33450aaa5b3f3",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/modules/design-tools/software-interchangeability-format/prompt.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:47105a7e4af73059ab5f8d7ef3a3a00db7d4c2fd4d7c069e25d1138008546327",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/phase3-integration-testing/integration-testing-guide.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:b879949a1a62db50ec1f83fa719d694b074542299a5c8d3b3fb680c0d7233af5",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/digitalmodel/templates/modules/documentation/infrastructure-template.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f3b229a62988e264d12c732a25b1848fd4270a8f7aab0ed5f75a9aca4a9aa2a8",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/doris/modules/agent-os/slash-commands/create-spec/spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:10727eebdae8f56e18b043804e1eaa086f005b5dcbae6e8d47c72023ad0e391a",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/frontierdeepwater/modules/agent-os/slash-commands/create-module-agent/sub-specs/integration.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:1f27fe97f4f00b7ae8a9af299650f3172c1e28533fb69ab07ee261af35975e05",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/hobbies/modules/agent-os/slash-commands/create-module-agent/sub-specs/templates.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:f8389d0f179d64a0e37a23ef819ba9c74e5a7113eec65dd5131ee2e8c72e6793",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/OGManufacturing/2025-08-02-ai-foundation-cad-assessment/tasks.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:ee3bffbac34671959b58ad0418de8cbeb91f27e3b8e32f8f26e7713357ae93ab",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/OGManufacturing/specs/README.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:1f27fe97f4f00b7ae8a9af299650f3172c1e28533fb69ab07ee261af35975e05",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/rock-oil-field/modules/agent-os/slash-commands/create-module-agent/sub-specs/templates.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:d6103cc253cdb41243dfca986ce11532d7dd77ea705ea5cfd82cb7cb39acadc8",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/sd-work/README.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:5bb50c8ecca404bda8ad0253325fc5e0026de53842586867139d5a8b52f95ee0",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/teamresumes/2025-07-25-agent-os-cheatsheet/sub-specs/tests.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:737f2773fd2de89ffb94a0f7b4c89e488420c4c14fd31bd4fd54521b06bb8e57",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/teamresumes/2025-07-25-claude-code-cheatsheet/sub-specs/tests.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:e17a8491eac418c1c98259eb11fec8d5aef472b41615790007dd58a3a3980791",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/teamresumes/2025-07-30-agent-os-integration-enhancement/sub-specs/tests.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:2d0cd3013ef46278468d36608425b127e01b33bf245e0c4683d7a134295850cd",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/cozy-cooking-alpaca-agent-a5ecaeb.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:52cb53390da564528ebfe4afa823243df52035848c2171dc24634605ae1818ee",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/lively-dancing-reddy.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:fa1bced141be5b0dace4ee591a340a5cce588642c44b401f4376309666649495",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-days-comparison/tasks.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:1c591ef75d8697fcd222309cdeb78a22624a74ff5c60eb432e28599c076ebd6c",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/analysis/archieve/drilling_completion/drilling-completion-output-validation/sub-specs/tests.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:33b4923ada3f4e8bdbe7c4322b741ae09a70c659c68cef6de31991ff177ca484",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/analysis/archieve/npv/npv-calculation-accuracy/tasks.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:4bd70849d0954623b3cbe6f833eb36f11eb50bd2f757e450631f0356de48f600",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/analysis/archieve/npv/npv-data-source-comparison/tasks.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:aff9005c1f8e6452abe5d3c26edae00f31705b41ab1d34bd3a56363fcce8f98b",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/analysis/decline-curve-analysis/executive-summary.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:0bb4f31179cdcf085b1c3c5f3eaf9e608c0de143deb013e5c04766a8c10598d7",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/analysis/marine/IMPLEMENTATION_ROADMAP.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:2e8eae599006ef2df9a6ed7029d8b0fc1f6c511eccd7f5228ba5c800fcf15e33",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/analysis/marine/user_prompt.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:ec63d57cb0d9e4168e9d08c307a7a786f33523443d3153eb701587bfbd9bbf72",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/analysis/well-data-verification/sub-specs/api-spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:7d06908796b541aeae051983bed85450cf34046a7902a51860800912c3bbb91a",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/analysis/well-production-dashboard/sub-specs/tests.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:03f7f75658abb89395e4500ff1b4106d32e74ac0b1ea3d9c22705d135945c79f",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/bsee/consolidation/README.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:1ef28126912471d48b0bf66cbefa33c8f7826354172a41b46e1609d5fefc678e",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/bsee/consolidation/sub-specs/data-inventory.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:cbe2327124f2d125cc29972ffb4881d016b5f795e8377c9ba39c83b502508cb4",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/bsee/financial-analysis-sme-code/prompt.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:edc5d197a8b08bf0491b17ccf8ab13c97292e9e95f7522975dbab556f86bdaad",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/bsee/shenandoah_field/detailed_budget_model.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:eac0c566f8832dd4d1a03e5636cfd043174f1bf9b9fc710a537b0c40b285b0ee",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/bsee/shenandoah_field/input.yaml",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:8233c700961dbd954615db2c6c389d22d99ac76a53b4d82314b5f75e69f07335",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/bsee/shenandoah_field/START_HERE.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:6ced213d1d165894e7035acbc0f6c51962aaf9441632088b1eb8f1257e7ce982",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/data-procurement/web-api-integration/sub-specs/technical-spec.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:e1aa07f817b9125896c834370776cfb5f03a357de93a628b7ba7d7dbe2b4985e",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/data-sources/sodir-integration/executive-summary.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:69c6bca0a1c302619c6d998acd25c1fa66721d6a48ac26c0a263529a5c3d47ac",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/hse-integration/data-dictionaries.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:eb15dfc3f6b377913acbbe259e8044ca84567dcde5b1f7b7000cbc8a6d4866e3",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/modules/marketing/README.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:7819e4fd885ed38a7fbc5e1895a426e992cf777893a195eebf1040c0ac4f5083",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/worldenergydata/specs/testing/comprehensive-test-plan/task_summary.md",
+      "source": "workspace_spec"
+    },
+    {
+      "sha": "sha256:e37360c7ceb4f68fe59eb7f30ba165d975dac5ad45e5a39b944a4ec3480315da",
+      "path": "/mnt/local-analysis/workspace-hub/specs/wrk/WRK-185/review-delta.md",
+      "source": "workspace_spec"
+    }
+  ]
+}

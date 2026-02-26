@@ -1,0 +1,1420 @@
+version: "1.0"
+updated: "2026-02-24"
+description: >
+  Engineering domain knowledge graph taxonomy for workspace-hub.
+  Covers naval architecture, structural engineering, metocean, and related
+  disciplines.  Edges represent directed concept dependencies enabling
+  transitive skill discovery.
+
+# -------------------------------------------------------------------------
+# Domains
+# -------------------------------------------------------------------------
+domains:
+  - id: naval_architecture
+    label: Naval Architecture
+  - id: structural_engineering
+    label: Structural Engineering
+  - id: metocean
+    label: Metocean
+  - id: geotechnical
+    label: Geotechnical Engineering
+  - id: hydrodynamics
+    label: Hydrodynamics
+  - id: production_engineering
+    label: Production Engineering
+  - id: riser_engineering
+    label: Riser Engineering
+  - id: mooring_engineering
+    label: Mooring Engineering
+  - id: fatigue_assessment
+    label: Fatigue Assessment
+  - id: inspection_maintenance
+    label: Inspection and Maintenance
+
+# -------------------------------------------------------------------------
+# Nodes  (~100 key engineering concepts)
+# -------------------------------------------------------------------------
+nodes:
+
+  # Naval Architecture
+  - id: hull_form
+    label: Hull Form
+    domain: naval_architecture
+    tags: [geometry, design, naval]
+    description: Geometric shape of the vessel hull
+
+  - id: displacement
+    label: Displacement
+    domain: naval_architecture
+    tags: [hydrostatics, design, naval]
+    description: Weight of water displaced by the hull
+
+  - id: stability
+    label: Stability
+    domain: naval_architecture
+    tags: [hydrostatics, safety, naval]
+    description: Resistance to capsizing; GM, GZ curves
+
+  - id: intact_stability
+    label: Intact Stability
+    domain: naval_architecture
+    tags: [safety, naval, code]
+    description: Stability in undamaged condition per MODU code / IMO
+
+  - id: damaged_stability
+    label: Damaged Stability
+    domain: naval_architecture
+    tags: [safety, naval, code]
+    description: Residual stability after flooding per MARPOL / SOLAS
+
+  - id: freeboard
+    label: Freeboard
+    domain: naval_architecture
+    tags: [geometry, naval, safety]
+    description: Distance from waterline to deck edge
+
+  - id: metacentric_height
+    label: Metacentric Height (GM)
+    domain: naval_architecture
+    tags: [hydrostatics, naval]
+    description: Measure of initial stability
+
+  - id: draft
+    label: Draft
+    domain: naval_architecture
+    tags: [geometry, hydrostatics, naval]
+    description: Vertical distance from keel to waterline
+
+  - id: trim
+    label: Trim
+    domain: naval_architecture
+    tags: [geometry, naval]
+    description: Difference in draft fore and aft
+
+  - id: vessel_motions
+    label: Vessel Motions
+    domain: naval_architecture
+    tags: [dynamics, naval, hydrodynamics]
+    description: Six degree-of-freedom rigid body motions
+
+  - id: natural_period
+    label: Natural Period
+    domain: naval_architecture
+    tags: [dynamics, naval]
+    description: Resonant period of vessel in heave/roll/pitch
+
+  - id: added_mass
+    label: Added Mass
+    domain: hydrodynamics
+    tags: [hydrodynamics, dynamics]
+    description: Effective additional mass due to fluid acceleration
+
+  - id: damping
+    label: Damping
+    domain: hydrodynamics
+    tags: [hydrodynamics, dynamics]
+    description: Energy dissipation in fluid-structure interaction
+
+  # Metocean
+  - id: wave_environment
+    label: Wave Environment
+    domain: metocean
+    tags: [environmental, loading, metocean]
+    description: Sea state characterization — Hs, Tp, wave scatter
+
+  - id: wind_environment
+    label: Wind Environment
+    domain: metocean
+    tags: [environmental, loading, metocean]
+    description: Wind speed and direction statistics
+
+  - id: current_environment
+    label: Current Environment
+    domain: metocean
+    tags: [environmental, loading, metocean]
+    description: Ocean current profile — tidal and loop current
+
+  - id: wave_spectrum
+    label: Wave Spectrum
+    domain: metocean
+    tags: [environmental, metocean, spectral]
+    description: JONSWAP / Bretschneider spectral representation
+
+  - id: scatter_diagram
+    label: Scatter Diagram
+    domain: metocean
+    tags: [metocean, statistics, fatigue]
+    description: Hs-Tp occurrence probability table for fatigue analysis
+
+  - id: extreme_response
+    label: Extreme Response
+    domain: metocean
+    tags: [environmental, loading, statistics]
+    description: 100-year or N-year return period environmental loads
+
+  - id: hurricane_loading
+    label: Hurricane Loading
+    domain: metocean
+    tags: [environmental, loading, gulf_of_mexico]
+    description: Gulf of Mexico tropical cyclone design criteria
+
+  - id: metocean_report
+    label: Metocean Design Report
+    domain: metocean
+    tags: [metocean, document, design]
+    description: Site-specific environmental design criteria document
+
+  # Hydrodynamics
+  - id: wave_loading
+    label: Wave Loading
+    domain: hydrodynamics
+    tags: [loads, hydrodynamics, structural]
+    description: Forces induced by wave action on structures
+
+  - id: morison_equation
+    label: Morison Equation
+    domain: hydrodynamics
+    tags: [hydrodynamics, loads, formula]
+    description: Inertia plus drag force model for slender members
+
+  - id: diffraction_analysis
+    label: Diffraction Analysis
+    domain: hydrodynamics
+    tags: [hydrodynamics, analysis, large_volume]
+    description: Wave diffraction for large-volume bodies — panel method
+
+  - id: radiation_damping
+    label: Radiation Damping
+    domain: hydrodynamics
+    tags: [hydrodynamics, dynamics]
+    description: Energy lost due to outgoing wave radiation
+
+  - id: viscous_damping
+    label: Viscous Damping
+    domain: hydrodynamics
+    tags: [hydrodynamics, dynamics]
+    description: Drag-based energy dissipation in fluid
+
+  - id: response_amplitude_operator
+    label: Response Amplitude Operator (RAO)
+    domain: hydrodynamics
+    tags: [hydrodynamics, dynamics, transfer_function]
+    description: Frequency-domain motion transfer function per unit wave
+
+  - id: slow_drift
+    label: Slow Drift
+    domain: hydrodynamics
+    tags: [hydrodynamics, dynamics, mooring]
+    description: Second-order low-frequency vessel motions
+
+  - id: wave_frequency_response
+    label: Wave Frequency Response
+    domain: hydrodynamics
+    tags: [hydrodynamics, dynamics]
+    description: First-order response at wave encounter frequency
+
+  # Structural Engineering
+  - id: structural_response
+    label: Structural Response
+    domain: structural_engineering
+    tags: [analysis, loads, structural]
+    description: Stress/strain response of structure to applied loads
+
+  - id: stress_concentration
+    label: Stress Concentration Factor (SCF)
+    domain: structural_engineering
+    tags: [structural, fatigue, geometry]
+    description: Local stress amplification at geometric discontinuities
+
+  - id: buckling
+    label: Buckling
+    domain: structural_engineering
+    tags: [structural, failure, stability]
+    description: Instability failure mode for plates and columns
+
+  - id: yield_check
+    label: Yield Check
+    domain: structural_engineering
+    tags: [structural, code, safety]
+    description: Utilization ratio against yield strength per design code
+
+  - id: ultimate_strength
+    label: Ultimate Strength
+    domain: structural_engineering
+    tags: [structural, failure, capacity]
+    description: Maximum load-carrying capacity of a structural member
+
+  - id: fracture_mechanics
+    label: Fracture Mechanics
+    domain: structural_engineering
+    tags: [structural, integrity, fatigue]
+    description: Crack propagation analysis — LEFM, EPFM
+
+  - id: weld_joint
+    label: Weld Joint
+    domain: structural_engineering
+    tags: [structural, fabrication, fatigue]
+    description: Fusion-welded connection between structural members
+
+  - id: tubular_joint
+    label: Tubular Joint
+    domain: structural_engineering
+    tags: [structural, offshore, fatigue]
+    description: Welded intersection of tubular members in jacket structures
+
+  - id: design_code
+    label: Design Code
+    domain: structural_engineering
+    tags: [structural, code, compliance]
+    description: API, DNV, ISO, AISC standards governing structural design
+
+  - id: load_combination
+    label: Load Combination
+    domain: structural_engineering
+    tags: [structural, loads, code]
+    description: Factored combination of dead, live, environmental loads
+
+  - id: weight_report
+    label: Weight Report
+    domain: structural_engineering
+    tags: [structural, naval, design]
+    description: Centre-of-gravity and weight budget summary
+
+  # Fatigue Assessment
+  - id: fatigue
+    label: Fatigue
+    domain: fatigue_assessment
+    tags: [integrity, assessment, failure]
+    description: Cumulative damage due to cyclic loading
+
+  - id: sn_curve
+    label: S-N Curve
+    domain: fatigue_assessment
+    tags: [fatigue, material, code]
+    description: Stress-range vs cycles-to-failure relationship
+
+  - id: palmgren_miner
+    label: Palmgren-Miner Rule
+    domain: fatigue_assessment
+    tags: [fatigue, damage, formula]
+    description: Linear damage accumulation model D = sum(n/N)
+
+  - id: rainflow_counting
+    label: Rainflow Cycle Counting
+    domain: fatigue_assessment
+    tags: [fatigue, signal_processing, algorithm]
+    description: Extraction of stress cycles from irregular time histories
+
+  - id: spectral_fatigue
+    label: Spectral Fatigue Analysis
+    domain: fatigue_assessment
+    tags: [fatigue, frequency_domain, offshore]
+    description: Frequency-domain fatigue using wave spectrum and RAOs
+
+  - id: time_domain_fatigue
+    label: Time Domain Fatigue
+    domain: fatigue_assessment
+    tags: [fatigue, time_domain, offshore]
+    description: Fatigue damage from stress time histories
+
+  - id: fatigue_life
+    label: Fatigue Life
+    domain: fatigue_assessment
+    tags: [fatigue, integrity, assessment]
+    description: Total number of cycles to crack initiation or failure
+
+  - id: crack_growth
+    label: Crack Growth
+    domain: fatigue_assessment
+    tags: [fatigue, integrity, fracture]
+    description: Paris law crack propagation rate da/dN
+
+  - id: hot_spot_stress
+    label: Hot Spot Stress
+    domain: fatigue_assessment
+    tags: [fatigue, structural, stress]
+    description: Extrapolated structural stress at weld toe
+
+  # Mooring Engineering
+  - id: mooring_loads
+    label: Mooring Loads
+    domain: mooring_engineering
+    tags: [loads, design, mooring]
+    description: Tension, offset, and restoring forces in mooring system
+
+  - id: mooring_line
+    label: Mooring Line
+    domain: mooring_engineering
+    tags: [mooring, component, design]
+    description: Chain, wire, or synthetic rope mooring element
+
+  - id: catenary_mooring
+    label: Catenary Mooring
+    domain: mooring_engineering
+    tags: [mooring, configuration, design]
+    description: Catenary shape mooring system — spread or turret
+
+  - id: taut_leg_mooring
+    label: Taut-Leg Mooring
+    domain: mooring_engineering
+    tags: [mooring, configuration, deepwater]
+    description: Near-vertical mooring for deep water with synthetic rope
+
+  - id: mooring_tension
+    label: Mooring Line Tension
+    domain: mooring_engineering
+    tags: [mooring, loads, analysis]
+    description: Dynamic tension at fairlead and along mooring line
+
+  - id: broken_line_analysis
+    label: Broken Line Analysis
+    domain: mooring_engineering
+    tags: [mooring, safety, analysis]
+    description: Residual mooring capacity after one line failure
+
+  - id: offset_analysis
+    label: Vessel Offset Analysis
+    domain: mooring_engineering
+    tags: [mooring, analysis, riser]
+    description: Maximum vessel horizontal excursion from mean position
+
+  - id: mooring_fatigue
+    label: Mooring Fatigue
+    domain: mooring_engineering
+    tags: [mooring, fatigue, integrity]
+    description: Fatigue damage accumulation in mooring lines
+
+  # Riser Engineering
+  - id: riser_system
+    label: Riser System
+    domain: riser_engineering
+    tags: [riser, design, subsea]
+    description: Pipe connecting subsea wellhead or manifold to surface
+
+  - id: steel_catenary_riser
+    label: Steel Catenary Riser (SCR)
+    domain: riser_engineering
+    tags: [riser, design, deepwater]
+    description: Steel pipe riser in catenary configuration
+
+  - id: top_tensioned_riser
+    label: Top Tensioned Riser (TTR)
+    domain: riser_engineering
+    tags: [riser, design, tensioner]
+    description: Riser kept in tension by surface tensioner system
+
+  - id: flexible_riser
+    label: Flexible Riser
+    domain: riser_engineering
+    tags: [riser, design, flexible]
+    description: Multi-layer flexible pipe riser for floating systems
+
+  - id: riser_viv
+    label: Riser VIV
+    domain: riser_engineering
+    tags: [riser, viv, fatigue]
+    description: Vortex-induced vibration of risers in current
+
+  - id: touch_down_zone
+    label: Touch Down Zone (TDZ)
+    domain: riser_engineering
+    tags: [riser, fatigue, seabed]
+    description: Region where SCR contacts the seabed — critical fatigue hot spot
+
+  - id: riser_interference
+    label: Riser Interference
+    domain: riser_engineering
+    tags: [riser, clashing, design]
+    description: Proximity and clash analysis between adjacent risers
+
+  # Vortex-Induced Vibration
+  - id: viv
+    label: Vortex-Induced Vibration (VIV)
+    domain: hydrodynamics
+    tags: [viv, fatigue, dynamics]
+    description: Flow-induced vibration driven by vortex shedding
+
+  - id: strouhal_number
+    label: Strouhal Number
+    domain: hydrodynamics
+    tags: [viv, fluid_dynamics, formula]
+    description: Dimensionless vortex shedding frequency St = fD/U
+
+  - id: lock_in
+    label: Lock-In
+    domain: hydrodynamics
+    tags: [viv, dynamics, resonance]
+    description: Resonance between vortex shedding and structural natural frequency
+
+  # Geotechnical
+  - id: soil_properties
+    label: Soil Properties
+    domain: geotechnical
+    tags: [geotechnical, seabed, foundation]
+    description: Undrained shear strength, friction angle, stiffness profiles
+
+  - id: pile_capacity
+    label: Pile Capacity
+    domain: geotechnical
+    tags: [geotechnical, foundation, structural]
+    description: Axial and lateral capacity of driven piles
+
+  - id: suction_pile
+    label: Suction Pile
+    domain: geotechnical
+    tags: [geotechnical, mooring, foundation]
+    description: Suction caisson anchor for deepwater mooring
+
+  - id: foundation_stiffness
+    label: Foundation Stiffness
+    domain: geotechnical
+    tags: [geotechnical, structural, dynamics]
+    description: Springs representing soil-structure interaction
+
+  # Production Engineering
+  - id: wellbore_pressure
+    label: Wellbore Pressure
+    domain: production_engineering
+    tags: [production, pressure, well]
+    description: Formation pore pressure and annular pressure management
+
+  - id: flowline
+    label: Flowline
+    domain: production_engineering
+    tags: [production, subsea, pipeline]
+    description: Subsea pipeline transporting production fluids
+
+  - id: pipeline_integrity
+    label: Pipeline Integrity
+    domain: production_engineering
+    tags: [production, integrity, inspection]
+    description: Corrosion, wall thickness, and fitness-for-service assessment
+
+  - id: wall_thickness_design
+    label: Wall Thickness Design
+    domain: production_engineering
+    tags: [production, design, code]
+    description: Pressure containment wall thickness per API / DNV codes
+
+  - id: cathodic_protection
+    label: Cathodic Protection
+    domain: inspection_maintenance
+    tags: [integrity, corrosion, subsea]
+    description: Sacrificial anodes or impressed current system
+
+  # Inspection and Maintenance
+  - id: inspection_plan
+    label: Inspection Plan
+    domain: inspection_maintenance
+    tags: [integrity, inspection, maintenance]
+    description: Scheduled inspection activities and acceptance criteria
+
+  - id: risk_based_inspection
+    label: Risk-Based Inspection (RBI)
+    domain: inspection_maintenance
+    tags: [integrity, risk, inspection]
+    description: Prioritise inspection based on probability and consequence of failure
+
+  - id: structural_health_monitoring
+    label: Structural Health Monitoring
+    domain: inspection_maintenance
+    tags: [monitoring, integrity, sensors]
+    description: Continuous or periodic sensing of structural response
+
+  - id: damage_detection
+    label: Damage Detection
+    domain: inspection_maintenance
+    tags: [inspection, monitoring, integrity]
+    description: Identification of cracks, corrosion, or anomalies from data
+
+  # Cross-domain / general
+  - id: global_analysis
+    label: Global Analysis
+    domain: structural_engineering
+    tags: [analysis, structural, system]
+    description: Full-system FEA or coupled analysis of floating system
+
+  - id: local_analysis
+    label: Local Analysis
+    domain: structural_engineering
+    tags: [analysis, structural, detail]
+    description: Detailed stress analysis of critical components
+
+  - id: coupled_analysis
+    label: Coupled Analysis
+    domain: hydrodynamics
+    tags: [analysis, coupled, system]
+    description: Simultaneous solution of vessel motions and mooring/riser response
+
+  - id: time_domain_analysis
+    label: Time Domain Analysis
+    domain: structural_engineering
+    tags: [analysis, time_domain, numerical]
+    description: Step-by-step numerical integration of equations of motion
+
+  - id: frequency_domain_analysis
+    label: Frequency Domain Analysis
+    domain: structural_engineering
+    tags: [analysis, frequency_domain, spectral]
+    description: Spectral-based linear analysis in frequency space
+
+  - id: design_life
+    label: Design Life
+    domain: structural_engineering
+    tags: [design, integrity, code]
+    description: Required service life for fatigue and corrosion design (e.g. 25 years)
+
+  - id: factor_of_safety
+    label: Factor of Safety (FoS)
+    domain: structural_engineering
+    tags: [design, code, safety]
+    description: Ratio of capacity to demand; code-mandated values
+
+  - id: load_effects
+    label: Load Effects
+    domain: structural_engineering
+    tags: [loads, structural, design]
+    description: Internal forces and moments resulting from applied loads
+
+# -------------------------------------------------------------------------
+# Edges  (~300 directed concept relationships)
+# -------------------------------------------------------------------------
+edges:
+
+  # Hull form → hydrostatics chain
+  - source: hull_form
+    target: displacement
+    relation: determines
+    weight: 1.0
+  - source: hull_form
+    target: draft
+    relation: determines
+    weight: 1.0
+  - source: hull_form
+    target: freeboard
+    relation: determines
+    weight: 0.9
+  - source: hull_form
+    target: vessel_motions
+    relation: influences
+    weight: 0.8
+  - source: displacement
+    target: stability
+    relation: governs
+    weight: 0.95
+  - source: displacement
+    target: metacentric_height
+    relation: determines
+    weight: 0.9
+  - source: metacentric_height
+    target: stability
+    relation: measures
+    weight: 1.0
+  - source: metacentric_height
+    target: natural_period
+    relation: determines
+    weight: 0.85
+  - source: draft
+    target: stability
+    relation: affects
+    weight: 0.7
+  - source: draft
+    target: freeboard
+    relation: affects
+    weight: 0.9
+  - source: stability
+    target: intact_stability
+    relation: classifies_as
+    weight: 1.0
+  - source: stability
+    target: damaged_stability
+    relation: classifies_as
+    weight: 0.9
+  - source: stability
+    target: mooring_loads
+    relation: affects
+    weight: 0.7
+  - source: vessel_motions
+    target: mooring_loads
+    relation: drives
+    weight: 0.9
+  - source: vessel_motions
+    target: riser_system
+    relation: loads
+    weight: 0.85
+  - source: vessel_motions
+    target: offset_analysis
+    relation: determines
+    weight: 0.95
+  - source: natural_period
+    target: vessel_motions
+    relation: characterises
+    weight: 0.9
+  - source: trim
+    target: stability
+    relation: influences
+    weight: 0.6
+  - source: weight_report
+    target: displacement
+    relation: informs
+    weight: 0.9
+  - source: weight_report
+    target: stability
+    relation: informs
+    weight: 0.85
+
+  # Hydrodynamics chain
+  - source: wave_environment
+    target: wave_spectrum
+    relation: represented_by
+    weight: 1.0
+  - source: wave_spectrum
+    target: response_amplitude_operator
+    relation: excites
+    weight: 0.95
+  - source: response_amplitude_operator
+    target: vessel_motions
+    relation: quantifies
+    weight: 1.0
+  - source: response_amplitude_operator
+    target: wave_frequency_response
+    relation: produces
+    weight: 1.0
+  - source: response_amplitude_operator
+    target: spectral_fatigue
+    relation: inputs_to
+    weight: 0.9
+  - source: wave_environment
+    target: wave_loading
+    relation: generates
+    weight: 1.0
+  - source: wave_loading
+    target: morison_equation
+    relation: computed_by
+    weight: 0.8
+  - source: wave_loading
+    target: diffraction_analysis
+    relation: computed_by
+    weight: 0.8
+  - source: morison_equation
+    target: structural_response
+    relation: loads
+    weight: 0.85
+  - source: diffraction_analysis
+    target: response_amplitude_operator
+    relation: produces
+    weight: 0.9
+  - source: added_mass
+    target: natural_period
+    relation: increases
+    weight: 0.8
+  - source: damping
+    target: vessel_motions
+    relation: reduces
+    weight: 0.75
+  - source: radiation_damping
+    target: damping
+    relation: is_component_of
+    weight: 0.9
+  - source: viscous_damping
+    target: damping
+    relation: is_component_of
+    weight: 0.85
+  - source: slow_drift
+    target: mooring_loads
+    relation: contributes_to
+    weight: 0.9
+  - source: slow_drift
+    target: offset_analysis
+    relation: drives
+    weight: 0.9
+  - source: wave_frequency_response
+    target: mooring_loads
+    relation: contributes_to
+    weight: 0.8
+
+  # Metocean → loads
+  - source: wave_environment
+    target: mooring_loads
+    relation: contributes_to
+    weight: 0.9
+  - source: wind_environment
+    target: mooring_loads
+    relation: contributes_to
+    weight: 0.7
+  - source: current_environment
+    target: mooring_loads
+    relation: contributes_to
+    weight: 0.7
+  - source: wave_environment
+    target: structural_response
+    relation: excites
+    weight: 0.9
+  - source: wind_environment
+    target: structural_response
+    relation: excites
+    weight: 0.6
+  - source: current_environment
+    target: viv
+    relation: drives
+    weight: 0.95
+  - source: extreme_response
+    target: load_combination
+    relation: defines
+    weight: 0.9
+  - source: hurricane_loading
+    target: extreme_response
+    relation: drives
+    weight: 0.95
+  - source: scatter_diagram
+    target: spectral_fatigue
+    relation: inputs_to
+    weight: 1.0
+  - source: scatter_diagram
+    target: time_domain_fatigue
+    relation: inputs_to
+    weight: 0.9
+  - source: metocean_report
+    target: wave_environment
+    relation: specifies
+    weight: 1.0
+  - source: metocean_report
+    target: wind_environment
+    relation: specifies
+    weight: 1.0
+  - source: metocean_report
+    target: current_environment
+    relation: specifies
+    weight: 1.0
+  - source: metocean_report
+    target: extreme_response
+    relation: specifies
+    weight: 0.9
+
+  # Structural response → fatigue chain
+  - source: structural_response
+    target: fatigue
+    relation: causes
+    weight: 0.95
+  - source: structural_response
+    target: hot_spot_stress
+    relation: produces
+    weight: 0.9
+  - source: structural_response
+    target: yield_check
+    relation: checked_by
+    weight: 0.9
+  - source: structural_response
+    target: buckling
+    relation: may_cause
+    weight: 0.7
+  - source: load_effects
+    target: structural_response
+    relation: produces
+    weight: 1.0
+  - source: load_combination
+    target: load_effects
+    relation: determines
+    weight: 0.95
+  - source: hot_spot_stress
+    target: sn_curve
+    relation: mapped_to
+    weight: 1.0
+  - source: hot_spot_stress
+    target: fatigue_life
+    relation: determines
+    weight: 0.9
+  - source: stress_concentration
+    target: hot_spot_stress
+    relation: amplifies
+    weight: 0.95
+  - source: weld_joint
+    target: stress_concentration
+    relation: creates
+    weight: 0.85
+  - source: tubular_joint
+    target: stress_concentration
+    relation: creates
+    weight: 0.9
+  - source: tubular_joint
+    target: sn_curve
+    relation: classified_by
+    weight: 0.9
+
+  # Fatigue assessment chain
+  - source: sn_curve
+    target: palmgren_miner
+    relation: used_in
+    weight: 1.0
+  - source: palmgren_miner
+    target: fatigue_life
+    relation: calculates
+    weight: 1.0
+  - source: rainflow_counting
+    target: palmgren_miner
+    relation: feeds
+    weight: 0.95
+  - source: rainflow_counting
+    target: time_domain_fatigue
+    relation: enables
+    weight: 1.0
+  - source: spectral_fatigue
+    target: fatigue_life
+    relation: estimates
+    weight: 0.9
+  - source: time_domain_fatigue
+    target: fatigue_life
+    relation: estimates
+    weight: 0.95
+  - source: fatigue_life
+    target: design_life
+    relation: must_exceed
+    weight: 1.0
+  - source: fatigue_life
+    target: inspection_plan
+    relation: informs
+    weight: 0.8
+  - source: fatigue
+    target: crack_growth
+    relation: initiates
+    weight: 0.9
+  - source: crack_growth
+    target: fracture_mechanics
+    relation: analysed_by
+    weight: 0.9
+  - source: fracture_mechanics
+    target: fatigue_life
+    relation: refines
+    weight: 0.85
+  - source: design_code
+    target: sn_curve
+    relation: specifies
+    weight: 1.0
+  - source: design_code
+    target: factor_of_safety
+    relation: mandates
+    weight: 1.0
+  - source: design_code
+    target: design_life
+    relation: mandates
+    weight: 0.9
+  - source: design_code
+    target: yield_check
+    relation: mandates
+    weight: 0.95
+  - source: factor_of_safety
+    target: fatigue_life
+    relation: scales
+    weight: 0.85
+
+  # Mooring chain
+  - source: mooring_loads
+    target: mooring_tension
+    relation: produces
+    weight: 1.0
+  - source: mooring_loads
+    target: fatigue
+    relation: drives
+    weight: 0.8
+  - source: mooring_loads
+    target: mooring_fatigue
+    relation: drives
+    weight: 0.95
+  - source: mooring_line
+    target: catenary_mooring
+    relation: forms
+    weight: 0.8
+  - source: mooring_line
+    target: taut_leg_mooring
+    relation: forms
+    weight: 0.8
+  - source: catenary_mooring
+    target: mooring_loads
+    relation: carries
+    weight: 1.0
+  - source: taut_leg_mooring
+    target: mooring_loads
+    relation: carries
+    weight: 1.0
+  - source: mooring_tension
+    target: broken_line_analysis
+    relation: input_to
+    weight: 0.9
+  - source: mooring_tension
+    target: sn_curve
+    relation: fatigue_classified_by
+    weight: 0.85
+  - source: offset_analysis
+    target: riser_system
+    relation: constraints
+    weight: 0.9
+  - source: suction_pile
+    target: mooring_loads
+    relation: anchors
+    weight: 0.95
+  - source: soil_properties
+    target: suction_pile
+    relation: governs_capacity_of
+    weight: 0.95
+  - source: foundation_stiffness
+    target: natural_period
+    relation: influences
+    weight: 0.7
+  - source: mooring_fatigue
+    target: inspection_plan
+    relation: informs
+    weight: 0.8
+  - source: slow_drift
+    target: mooring_tension
+    relation: amplifies
+    weight: 0.85
+  - source: broken_line_analysis
+    target: factor_of_safety
+    relation: must_satisfy
+    weight: 0.9
+
+  # Riser chain
+  - source: riser_system
+    target: steel_catenary_riser
+    relation: can_be
+    weight: 0.8
+  - source: riser_system
+    target: top_tensioned_riser
+    relation: can_be
+    weight: 0.8
+  - source: riser_system
+    target: flexible_riser
+    relation: can_be
+    weight: 0.8
+  - source: steel_catenary_riser
+    target: touch_down_zone
+    relation: has
+    weight: 1.0
+  - source: touch_down_zone
+    target: fatigue
+    relation: critical_site_for
+    weight: 1.0
+  - source: touch_down_zone
+    target: hot_spot_stress
+    relation: exhibits
+    weight: 0.9
+  - source: riser_viv
+    target: fatigue
+    relation: contributes_to
+    weight: 0.95
+  - source: riser_viv
+    target: hot_spot_stress
+    relation: amplifies
+    weight: 0.85
+  - source: current_environment
+    target: riser_viv
+    relation: drives
+    weight: 0.95
+  - source: riser_interference
+    target: riser_system
+    relation: constrains_layout_of
+    weight: 0.8
+  - source: offset_analysis
+    target: steel_catenary_riser
+    relation: loads
+    weight: 0.85
+  - source: flowline
+    target: pipeline_integrity
+    relation: requires
+    weight: 0.9
+  - source: wall_thickness_design
+    target: pipeline_integrity
+    relation: underpins
+    weight: 0.9
+  - source: cathodic_protection
+    target: pipeline_integrity
+    relation: protects
+    weight: 0.8
+
+  # VIV
+  - source: viv
+    target: fatigue
+    relation: causes
+    weight: 0.95
+  - source: viv
+    target: hot_spot_stress
+    relation: generates
+    weight: 0.9
+  - source: current_environment
+    target: viv
+    relation: drives
+    weight: 1.0
+  - source: strouhal_number
+    target: viv
+    relation: characterises
+    weight: 0.9
+  - source: lock_in
+    target: viv
+    relation: amplifies
+    weight: 1.0
+  - source: natural_period
+    target: lock_in
+    relation: controls
+    weight: 0.9
+
+  # Analysis methods
+  - source: global_analysis
+    target: structural_response
+    relation: produces
+    weight: 0.95
+  - source: global_analysis
+    target: load_effects
+    relation: produces
+    weight: 0.9
+  - source: local_analysis
+    target: hot_spot_stress
+    relation: computes
+    weight: 0.95
+  - source: local_analysis
+    target: stress_concentration
+    relation: quantifies
+    weight: 0.9
+  - source: coupled_analysis
+    target: vessel_motions
+    relation: computes
+    weight: 0.95
+  - source: coupled_analysis
+    target: mooring_loads
+    relation: computes
+    weight: 0.95
+  - source: coupled_analysis
+    target: riser_system
+    relation: computes_response_of
+    weight: 0.9
+  - source: time_domain_analysis
+    target: global_analysis
+    relation: method_for
+    weight: 0.9
+  - source: frequency_domain_analysis
+    target: global_analysis
+    relation: method_for
+    weight: 0.85
+  - source: time_domain_analysis
+    target: rainflow_counting
+    relation: enables
+    weight: 0.95
+
+  # Geotechnical
+  - source: soil_properties
+    target: pile_capacity
+    relation: governs
+    weight: 1.0
+  - source: soil_properties
+    target: foundation_stiffness
+    relation: determines
+    weight: 0.9
+  - source: pile_capacity
+    target: structural_response
+    relation: constrains
+    weight: 0.75
+  - source: foundation_stiffness
+    target: structural_response
+    relation: influences
+    weight: 0.75
+
+  # Inspection and maintenance
+  - source: inspection_plan
+    target: risk_based_inspection
+    relation: may_follow
+    weight: 0.85
+  - source: risk_based_inspection
+    target: structural_health_monitoring
+    relation: recommends
+    weight: 0.7
+  - source: structural_health_monitoring
+    target: damage_detection
+    relation: enables
+    weight: 0.9
+  - source: damage_detection
+    target: fracture_mechanics
+    relation: feeds_data_to
+    weight: 0.8
+  - source: damage_detection
+    target: fatigue_life
+    relation: updates_estimate_of
+    weight: 0.75
+
+  # Production engineering
+  - source: wellbore_pressure
+    target: wall_thickness_design
+    relation: drives
+    weight: 0.9
+  - source: wall_thickness_design
+    target: design_code
+    relation: governed_by
+    weight: 0.95
+  - source: pipeline_integrity
+    target: inspection_plan
+    relation: requires
+    weight: 0.9
+  - source: cathodic_protection
+    target: fatigue_life
+    relation: extends
+    weight: 0.6
+
+# -------------------------------------------------------------------------
+# Skills Map — concept node → list of relevant workspace skills
+# -------------------------------------------------------------------------
+skills_map:
+  hull_form:
+    - vessel-hull-design
+    - hydrostatics-analysis
+    - hull-form-optimisation
+  displacement:
+    - hydrostatics-analysis
+    - stability-analysis
+  stability:
+    - stability-analysis
+    - intact-stability
+    - damage-stability
+  intact_stability:
+    - intact-stability
+    - modu-code-check
+  damaged_stability:
+    - damage-stability
+  freeboard:
+    - hydrostatics-analysis
+  metacentric_height:
+    - stability-analysis
+    - hydrostatics-analysis
+  draft:
+    - hydrostatics-analysis
+  trim:
+    - hydrostatics-analysis
+  vessel_motions:
+    - motion-analysis
+    - rao-computation
+    - coupled-analysis
+  natural_period:
+    - motion-analysis
+    - dynamic-analysis
+  added_mass:
+    - diffraction-analysis
+    - hydrodynamics-analysis
+  damping:
+    - hydrodynamics-analysis
+    - motion-analysis
+  wave_environment:
+    - metocean-analysis
+    - wave-scatter
+    - environmental-assessment
+  wind_environment:
+    - metocean-analysis
+    - wind-loading
+  current_environment:
+    - metocean-analysis
+    - current-loading
+  wave_spectrum:
+    - metocean-analysis
+    - spectral-analysis
+  scatter_diagram:
+    - metocean-analysis
+    - spectral-fatigue
+  extreme_response:
+    - environmental-assessment
+    - extreme-load-analysis
+  hurricane_loading:
+    - hurricane-assessment
+    - gulf-of-mexico-criteria
+  metocean_report:
+    - metocean-analysis
+    - environmental-assessment
+  wave_loading:
+    - wave-load-calculation
+    - hydrodynamics-analysis
+  morison_equation:
+    - wave-load-calculation
+  diffraction_analysis:
+    - diffraction-analysis
+    - hydrodynamics-analysis
+  response_amplitude_operator:
+    - rao-computation
+    - motion-analysis
+    - coupled-analysis
+  slow_drift:
+    - motion-analysis
+    - coupled-analysis
+    - mooring-analysis
+  structural_response:
+    - fem-analysis
+    - structural-assessment
+    - global-analysis
+  stress_concentration:
+    - fatigue-assessment
+    - scf-calculation
+  buckling:
+    - plate-buckling
+    - column-buckling
+    - structural-assessment
+  yield_check:
+    - structural-assessment
+    - code-check
+  ultimate_strength:
+    - structural-assessment
+  fracture_mechanics:
+    - fracture-mechanics
+    - ffs-assessment
+  weld_joint:
+    - weld-inspection
+    - fatigue-assessment
+  tubular_joint:
+    - scf-calculation
+    - fatigue-assessment
+  design_code:
+    - code-check
+    - dnv-standards
+    - api-standards
+  load_combination:
+    - structural-assessment
+    - code-check
+  weight_report:
+    - weight-control
+    - stability-analysis
+  fatigue:
+    - fatigue-assessment
+    - fatigue-life-calculation
+    - inspection-planning
+  sn_curve:
+    - fatigue-assessment
+    - dnv-standards
+  palmgren_miner:
+    - fatigue-assessment
+    - fatigue-life-calculation
+  rainflow_counting:
+    - rainflow-counting
+    - time-domain-fatigue
+  spectral_fatigue:
+    - spectral-fatigue
+    - frequency-domain-analysis
+  time_domain_fatigue:
+    - time-domain-fatigue
+    - rainflow-counting
+  fatigue_life:
+    - fatigue-life-calculation
+    - inspection-planning
+  crack_growth:
+    - fracture-mechanics
+    - ffs-assessment
+  hot_spot_stress:
+    - scf-calculation
+    - fatigue-assessment
+  mooring_loads:
+    - mooring-analysis
+    - coupled-analysis
+  mooring_line:
+    - mooring-analysis
+    - mooring-component-design
+  catenary_mooring:
+    - mooring-analysis
+    - catenary-solver
+  taut_leg_mooring:
+    - mooring-analysis
+    - taut-leg-design
+  mooring_tension:
+    - mooring-analysis
+    - fatigue-assessment
+  broken_line_analysis:
+    - mooring-analysis
+    - intact-stability
+  offset_analysis:
+    - mooring-analysis
+    - riser-clearance
+  mooring_fatigue:
+    - mooring-fatigue
+    - fatigue-assessment
+  riser_system:
+    - riser-analysis
+    - coupled-analysis
+  steel_catenary_riser:
+    - scr-analysis
+    - riser-analysis
+  top_tensioned_riser:
+    - ttr-analysis
+    - riser-analysis
+  flexible_riser:
+    - flexible-riser-analysis
+  riser_viv:
+    - viv-analysis
+    - fatigue-assessment
+  touch_down_zone:
+    - scr-analysis
+    - fatigue-assessment
+  riser_interference:
+    - riser-clearance
+    - riser-analysis
+  viv:
+    - viv-analysis
+    - strouhal-calculation
+  strouhal_number:
+    - viv-analysis
+  lock_in:
+    - viv-analysis
+    - dynamic-analysis
+  soil_properties:
+    - geotechnical-analysis
+    - pile-design
+  pile_capacity:
+    - pile-design
+    - geotechnical-analysis
+  suction_pile:
+    - suction-caisson-design
+    - geotechnical-analysis
+  foundation_stiffness:
+    - geotechnical-analysis
+    - dynamic-analysis
+  wellbore_pressure:
+    - well-engineering
+    - pressure-management
+  flowline:
+    - pipeline-engineering
+    - subsea-engineering
+  pipeline_integrity:
+    - pipeline-integrity
+    - inspection-planning
+  wall_thickness_design:
+    - wall-thickness-design
+    - pipeline-engineering
+  cathodic_protection:
+    - corrosion-engineering
+    - cathodic-protection
+  inspection_plan:
+    - inspection-planning
+    - rbi-assessment
+  risk_based_inspection:
+    - rbi-assessment
+    - integrity-management
+  structural_health_monitoring:
+    - shm-systems
+    - sensor-data-analysis
+  damage_detection:
+    - structural-assessment
+    - shm-systems
+  global_analysis:
+    - global-analysis
+    - fem-analysis
+  local_analysis:
+    - local-stress-analysis
+    - fem-analysis
+  coupled_analysis:
+    - coupled-analysis
+    - orcaflex-skill
+  time_domain_analysis:
+    - time-domain-analysis
+    - coupled-analysis
+  frequency_domain_analysis:
+    - frequency-domain-analysis
+    - spectral-fatigue
+  design_life:
+    - fatigue-life-calculation
+    - integrity-management
+  factor_of_safety:
+    - code-check
+    - structural-assessment
+  load_effects:
+    - structural-assessment
+    - global-analysis

@@ -1,0 +1,501 @@
+# Data Residence Tier Compliance
+# Policy reference: docs/DATA_RESIDENCE_POLICY.md (ADR-004)
+# Generated: 2026-02-24
+# WRK-253 — audit worldenergydata + digitalmodel post-WRK-200; first classification of assethold
+#
+# Tier definitions
+#   tier_1: Collection Data — raw data from external public sources (APIs, downloads)
+#   tier_2: Engineering Reference Data — industry standards, lookup tables, design parameters
+#   tier_3: Project / Portfolio Data — project-specific configs, analysis inputs/outputs
+#
+# git_status values: committed | gitignored | mixed
+# compliance values: compliant | violation | review_needed
+
+version: "1.0"
+policy_ref: "docs/DATA_RESIDENCE_POLICY.md"
+audit_date: "2026-02-24"
+audited_by: "WRK-253"
+related_wrk: [WRK-097, WRK-200]
+
+# ---------------------------------------------------------------------------
+# worldenergydata — Tier 1 owner (Collection Data)
+# ---------------------------------------------------------------------------
+worldenergydata:
+  declared_tier: 1
+  description: "Global energy market data aggregation from external public sources"
+
+  directories:
+    data/raw:
+      tier: 1
+      description: "Legacy raw source data (production and safety project archives)"
+      subdirs:
+        legacy_production:
+          tier: 1
+          description: "Placeholder dirs — originals migrated to archive storage"
+          git_status: committed
+          compliance: compliant
+          notes: "INDEX.md documents that originals live on /mnt/ace; placeholders only"
+        legacy_safety:
+          tier: 1
+          description: "Legacy safety incident project folders (placeholder index only)"
+          git_status: committed
+          compliance: compliant
+
+    data/modules/bsee:
+      tier: 1
+      description: "US Gulf of Mexico offshore data (BSEE public API)"
+      git_status: mixed
+      compliance: compliant
+      notes: >
+        current/ CSV snapshots committed (<10MB limit). Large zip/ and bin/ dirs gitignored
+        per policy — regenerate via scripts/refresh_bsee_all.py. paleowells/ CSVs committed.
+      subdirs:
+        bin:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+          regen_cmd: "uv run python3 scripts/refresh_bsee_all.py"
+        zip:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+        current:
+          tier: 1
+          git_status: committed
+          compliance: compliant
+        paleowells:
+          tier: 1
+          git_status: committed
+          compliance: compliant
+
+    data/modules/hse:
+      tier: 1
+      description: "Health, safety, and environment incident data (OSHA, EPA TRI, BSEE)"
+      git_status: mixed
+      compliance: compliant
+      notes: "Raw downloads gitignored; SQLite DB and curated summaries committed"
+      subdirs:
+        raw/osha:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+          regen_cmd: "uv run python -m src.worldenergydata.hse.osha_acquirer"
+        raw/epa_tri:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+        raw/bsee:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+        hse_incidents.db:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+          notes: "SQLite DB is regenerable; gitignored per policy"
+
+    data/modules/marine_safety:
+      tier: 1
+      description: "Marine safety incidents (BSEE offshore, Canadian TSB, DLP, USCG)"
+      git_status: mixed
+      compliance: compliant
+      subdirs:
+        raw:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+          regen_cmd: "uv run python data/modules/marine_safety/raw/download_datasets.py"
+        database:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+          notes: "marine_safety.db — regenerable SQLite, gitignored"
+        input:
+          tier: 1
+          git_status: committed
+          compliance: compliant
+          notes: "Small curated CSVs (<10MB): fatality, foundering, hatch incidents"
+        checkpoints:
+          tier: 1
+          git_status: committed
+          compliance: compliant
+
+    data/modules/pipeline_safety:
+      tier: 1
+      description: "Pipeline safety data (PHMSA public records)"
+      git_status: mixed
+      compliance: compliant
+      subdirs:
+        raw/phmsa:
+          tier: 1
+          git_status: mixed
+          compliance: compliant
+          notes: "Extracted XLSX/PDF gitignored; zip archives committed if <10MB"
+        phmsa:
+          tier: 1
+          git_status: committed
+          compliance: compliant
+          notes: "Two small XLS files (F000000__3a/3m) — public PHMSA oil price data"
+
+    data/modules/oil_price:
+      tier: 1
+      description: "Oil price data (EIA/PHMSA public)"
+      git_status: committed
+      compliance: compliant
+      notes: "Small XLS files (<10MB); public EIA/PHMSA source"
+
+    data/modules/lng_terminals:
+      tier: 1
+      description: "LNG terminal data (FERC, GIE, GIIGNL public APIs)"
+      git_status: mixed
+      compliance: compliant
+      subdirs:
+        curated:
+          tier: 1
+          git_status: committed
+          compliance: compliant
+          notes: "terminals_seed.csv — small curated list"
+        cache:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+          notes: "API response cache files (ferc_cache, gie_cache, giignl_cache)"
+
+    data/modules/sodir:
+      tier: 1
+      description: "Norwegian offshore data (SODIR/NPD public API)"
+      git_status: mixed
+      compliance: compliant
+      notes: "Large seaArea.csv and prlAreaSplitByBlock.csv gitignored; data fetched on demand"
+      subdirs:
+        raw:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+        processed:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+        exports:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+        cache:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+
+    data/modules/vessel_fleet:
+      tier: 1
+      description: "Vessel fleet data (MarineTraffic and public contractor scrapes)"
+      git_status: committed
+      compliance: compliant
+      subdirs:
+        raw:
+          tier: 1
+          git_status: committed
+          compliance: compliant
+        curated:
+          tier: 1
+          git_status: committed
+          compliance: compliant
+          notes: "Filtered CSVs/Parquet files; public fleet registry data"
+
+    data/modules/vessel_hull_models:
+      tier: 1
+      description: "Vessel hull 3D geometry (CAD exports, OrcaWave diffraction analysis)"
+      git_status: committed
+      compliance: compliant
+      notes: >
+        Hull OBJ files and marine component OBJ files committed. These originate from
+        CAD exports (Rhino) and OrcaWave — correctly classified Tier 1, not Tier 2.
+        WRK-097 corrected prior incorrect attribution to digitalmodel.
+      subdirs:
+        hulls:
+          tier: 1
+          git_status: committed
+        csv:
+          tier: 1
+          git_status: committed
+        marine_components:
+          tier: 1
+          git_status: committed
+
+    data/modules/wind:
+      tier: 1
+      description: "US wind turbine database (USWTDB — public NREL/USGS dataset)"
+      git_status: committed
+      compliance: compliant
+      notes: "ZIP archives of public USWTDB dataset; within size limits"
+
+    data/metocean:
+      tier: 1
+      description: "Metocean data for offshore analysis (NDBC and other public sources)"
+      git_status: mixed
+      compliance: compliant
+      subdirs:
+        raw:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+        processed:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+        cache:
+          tier: 1
+          git_status: gitignored
+          compliance: compliant
+
+    data/marine_safety:
+      tier: 1
+      description: "Top-level marine safety cache/documents (secondary to data/modules/marine_safety)"
+      git_status: mixed
+      compliance: review_needed
+      notes: >
+        Appears to be an older staging area alongside data/modules/marine_safety.
+        cache/ and documents/ subdirs present; verify no duplication with modules path.
+        Recommend consolidation into data/modules/marine_safety in a future WRK item.
+
+    data/catalog:
+      tier: 1
+      description: "Machine-readable data catalog and source registry for worldenergydata"
+      git_status: committed
+      compliance: compliant
+      notes: "data-catalog.yml (generated) and source-registry.yml — committed summaries <10MB"
+
+    data/legacy_production_inventory.json:
+      tier: 1
+      description: "Legacy production data inventory manifest (committed JSON stub)"
+      git_status: committed
+      compliance: compliant
+
+    data/legacy_safety_inventory.json:
+      tier: 1
+      description: "Legacy safety data inventory manifest (committed JSON stub)"
+      git_status: committed
+      compliance: compliant
+
+  violations: []
+  review_items:
+    - path: "data/marine_safety"
+      issue: "Possible duplication with data/modules/marine_safety — consolidation recommended"
+      severity: low
+
+
+# ---------------------------------------------------------------------------
+# digitalmodel — Tier 2 owner (Engineering Reference Data)
+# ---------------------------------------------------------------------------
+digitalmodel:
+  declared_tier: 2
+  description: "Engineering reference data: standards lookup tables, material properties, design parameters"
+
+  directories:
+    data/fatigue:
+      tier: 2
+      description: "Fatigue analysis reference data (SN curves from DNV, API, BS, AWS standards)"
+      git_status: committed
+      compliance: compliant
+      notes: >
+        sn_curves.yaml — 37 SN curves from 4 international standards. Externalized from
+        Python code in WRK-097. Correct Tier 2 placement: data originates from engineering
+        standards, not public APIs.
+      files:
+        sn_curves.yaml:
+          tier: 2
+          source_standards: [DNV-RP-C203, API-RP-2A, BS-7608, AWS-D1.1]
+          git_status: committed
+          compliance: compliant
+
+    data/hull_library:
+      tier: 2
+      description: "Engineering reference hull panel library (validation GDF/CSF models)"
+      git_status: committed
+      compliance: compliant
+      notes: >
+        These are validation/reference panel models (analytical geometries: cylinder,
+        spheroid, ellipsoid, TLP). Origin is engineering analysis benchmarks and DNV
+        validation suites — correctly Tier 2. Distinct from hull geometry in worldenergydata
+        (which is from CAD exports and is Tier 1).
+      subdirs:
+        catalog:
+          tier: 2
+          git_status: committed
+          compliance: compliant
+          notes: "hull_panel_catalog.yaml — machine-readable index of reference panels"
+        panels/primitives:
+          tier: 2
+          git_status: committed
+          compliance: compliant
+          notes: "Analytical validation geometries (cylinder, spheroid, ellipsoid, moonpool)"
+        panels/semi_subs:
+          tier: 2
+          git_status: committed
+          compliance: compliant
+          notes: "ISSC TLP reference models (coarse and fine mesh) for validation"
+
+  tier_1_declared_dependencies:
+    - source: "worldenergydata/data/modules/vessel_hull_models/"
+      declared_in: "config/data_sources.yaml"
+      access: read_only
+      compliance: compliant
+      notes: "Correctly declared external dependency; no data copied into repo"
+    - source: "worldenergydata/data/metocean/"
+      declared_in: "config/data_sources.yaml"
+      access: read_only
+      compliance: compliant
+
+  violations: []
+  review_items: []
+
+  post_wrk200_check:
+    status: clean
+    notes: >
+      WRK-200 renamed/consolidated docs and removed orphan dirs. Data directories
+      (data/fatigue, data/hull_library) were not modified. Tier boundaries unchanged.
+      output/, results/, reports/ dirs were deferred in WRK-200 and remain — these
+      are regenerable outputs and do not affect tier classification.
+
+
+# ---------------------------------------------------------------------------
+# assethold — Tier 3 (first classification per WRK-253)
+# ---------------------------------------------------------------------------
+assethold:
+  declared_tier: 3
+  description: "Personal investment and real estate portfolio management (project/portfolio data)"
+  classification_note: >
+    First formal tier classification per WRK-253. Assethold is a project-specific repo
+    that does not collect public raw data at scale (Tier 1) and does not hold engineering
+    standards (Tier 2). It manages personal portfolio data and analysis, fitting Tier 3.
+
+  directories:
+    data/stocks/cache:
+      tier: 3
+      description: "Downloaded stock price and fundamental data (Yahoo Finance, SEC APIs)"
+      git_status: gitignored
+      compliance: compliant
+      notes: >
+        CSV and JSON files: OHLCV price history, fundamentals info, insider filings.
+        Regenerable via get_stock_data.py and get_SEC_data.py. Gitignored per policy
+        (regenerable pipeline output).
+      regen_cmd: "uv run python -m assethold.modules.stocks"
+
+    data/loopnet:
+      tier: 3
+      description: "Real estate listing data scraped from LoopNet (property data)"
+      git_status: committed
+      compliance: review_needed
+      notes: >
+        Single CSV (2025-06-29_loopnet.csv) committed directly. This is a point-in-time
+        scrape of a commercial real estate platform. File is small (<10MB so within size
+        policy). However, re-evaluate if this data is regenerable — if the scraper can
+        reproduce it, it should be gitignored. If it represents a unique snapshot, committed
+        is acceptable.
+
+    data/processed:
+      tier: 3
+      description: "Processed portfolio analysis outputs"
+      git_status: gitignored
+      compliance: compliant
+      notes: "Pipeline-derived outputs; directory appears empty or gitignored"
+
+    data/raw:
+      tier: 3
+      description: "Raw portfolio input files (Fidelity CSV exports, statements)"
+      git_status: gitignored
+      compliance: compliant
+      notes: >
+        User-provided brokerage exports (Fidelity CSV). Not committed — contains
+        personal financial data. Loaded via config/daily_strategy.yaml data_dir setting
+        or FIDELITY_DATA_DIR env var.
+
+    data/results:
+      tier: 3
+      description: "Analysis result outputs"
+      git_status: gitignored
+      compliance: compliant
+
+    config/daily_strategy.yaml:
+      tier: 3
+      description: "Portfolio strategy configuration (Fidelity CSV loader, action mappings)"
+      git_status: committed
+      compliance: compliant
+      notes: "Config file only — no sensitive data. data_dir pointer is null (uses env var)"
+
+    config/stocks/watchlist.yml:
+      tier: 3
+      description: "Stock monitoring watchlist with alert thresholds"
+      git_status: committed
+      compliance: compliant
+      notes: "Ticker symbols and alert configuration — no PII or financial account data"
+
+    config/validation/validation_config.yaml:
+      tier: 3
+      description: "Data validation rules for portfolio analysis"
+      git_status: committed
+      compliance: compliant
+
+    src/assethold/modules/stocks:
+      tier: 3
+      description: "Stock analysis pipeline code — data acquisition and processing"
+      git_status: committed
+      compliance: compliant
+      notes: "Pipeline scripts, not data. Correctly in src/ not data/"
+
+    src/assethold/modules/multifamily:
+      tier: 3
+      description: "Multifamily real estate analysis module and scenario configs"
+      git_status: committed
+      compliance: compliant
+      notes: >
+        multifamily_2.yaml / multifamily_4.yaml are scenario configuration files
+        (unit count, rent assumptions). Small, committed configs — compliant.
+
+    src/assethold/modules/fixed_interest:
+      tier: 3
+      description: "Fixed income analysis module"
+      git_status: committed
+      compliance: compliant
+
+    src/assethold/analysis/daily_strategy:
+      tier: 3
+      description: "Daily portfolio strategy analysis (signals, reporting, insider data)"
+      git_status: committed
+      compliance: compliant
+
+  violations: []
+  review_items:
+    - path: "data/loopnet/2025-06-29_loopnet.csv"
+      issue: >
+        Point-in-time real estate scrape committed to git. If regenerable, should be
+        gitignored. If unique snapshot, current approach is acceptable (file is <10MB).
+      severity: low
+      recommendation: "Determine if scraper can reproduce; add to .gitignore if so"
+
+
+# ---------------------------------------------------------------------------
+# Summary
+# ---------------------------------------------------------------------------
+summary:
+  repositories_audited: [worldenergydata, digitalmodel, assethold]
+  total_violations: 0
+  total_review_items: 2
+  overall_status: compliant
+
+  tier_assignments:
+    worldenergydata: 1
+    digitalmodel: 2
+    assethold: 3
+
+  post_wrk200_impact:
+    worldenergydata: "No tier boundary changes from WRK-200 naming cleanup"
+    digitalmodel: "data/fatigue and data/hull_library unaffected by WRK-200"
+
+  key_findings:
+    - "All three repos comply with the DATA_RESIDENCE_POLICY.md boundary test"
+    - "worldenergydata correctly gitignores regenerable large raw data (BSEE, OSHA, EPA)"
+    - >
+      digitalmodel Tier 2 data (SN curves, hull validation panels) is correctly separated
+      from Tier 1 hull geometry collection (worldenergydata/data/modules/vessel_hull_models)
+    - "assethold receives first formal Tier 3 classification; no violations found"
+    - "Two low-severity review items raised (data/marine_safety duplication; loopnet CSV)"

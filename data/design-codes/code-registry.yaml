@@ -1,0 +1,114 @@
+# Design code edition registry
+# last_updated: 2026-02-24
+# Used by: scripts/readiness/code-version-guard.sh
+# status values: current | check | superseded
+# "check" means a newer edition is known to exist and should be reviewed.
+
+codes:
+  - id: DNV-ST-F101
+    title: Submarine Pipeline Systems
+    organization: DNV
+    our_edition: "2021"
+    latest_known_edition: "2021"
+    publication_date: "2021-10-01"
+    disciplines: [pipeline, subsea]
+    repos: [digitalmodel, doris]
+    notes: "2021 edition current; 2007 edition deprecated"
+    status: current
+
+  - id: DNV-RP-C203
+    title: Fatigue Design of Offshore Steel Structures
+    organization: DNV
+    our_edition: "2016-04"
+    latest_known_edition: "2024-07"
+    publication_date: "2016-04-01"
+    disciplines: [fatigue, structural]
+    repos: [digitalmodel]
+    notes: "2024-07 edition released; verify applicability before upgrade"
+    status: check
+
+  - id: DNV-RP-C205
+    title: Environmental Conditions and Environmental Loads
+    organization: DNV
+    our_edition: "2021-09"
+    latest_known_edition: "2021-09"
+    publication_date: "2021-09-01"
+    disciplines: [structural, metocean]
+    repos: [digitalmodel]
+    status: current
+
+  - id: DNV-RP-F105
+    title: Free Spanning Pipelines
+    organization: DNV
+    our_edition: "2017"
+    latest_known_edition: "2021"
+    publication_date: "2017-05-01"
+    disciplines: [pipeline, subsea]
+    repos: [digitalmodel, doris]
+    notes: "2021 edition released; free-span VIV fatigue may differ"
+    status: check
+
+  - id: API-RP-2A-WSD
+    title: Planning Designing and Constructing Fixed Offshore Platforms
+    organization: API
+    our_edition: "22nd"
+    latest_known_edition: "23rd"
+    publication_date: "2014-11-01"
+    disciplines: [structural]
+    repos: [digitalmodel]
+    notes: "23rd edition released; check jacket design provisions"
+    status: check
+
+  - id: API-RP-2RD
+    title: Design of Risers for Floating Production Systems and TLPs
+    organization: API
+    our_edition: "2nd"
+    latest_known_edition: "2nd"
+    publication_date: "2013-06-01"
+    disciplines: [riser, structural, subsea]
+    repos: [digitalmodel, doris]
+    status: current
+
+  - id: API-RP-1111
+    title: >
+      Design Construction Operation and Maintenance of Offshore
+      Hydrocarbon Pipelines (Limit State Design)
+    organization: API
+    our_edition: "5th"
+    latest_known_edition: "5th"
+    publication_date: "2015-07-01"
+    disciplines: [pipeline]
+    repos: [doris, digitalmodel]
+    status: current
+
+  - id: BS-7910
+    title: Guide to Methods for Assessing the Acceptability of Flaws in Metallic Structures
+    organization: BSI
+    our_edition: "2019"
+    latest_known_edition: "2019+A1:2021"
+    publication_date: "2019-09-01"
+    disciplines: [fatigue, fracture, structural]
+    repos: [digitalmodel]
+    notes: "Amendment A1 published 2021; verify amendment applicability"
+    status: check
+
+  - id: ASME-B31.4
+    title: Pipeline Transportation Systems for Liquids and Slurries
+    organization: ASME
+    our_edition: "2022"
+    latest_known_edition: "2022"
+    publication_date: "2022-09-01"
+    disciplines: [pipeline]
+    repos: [digitalmodel]
+    status: current
+
+  - id: ISO-13628-7
+    title: Completion/Workover Riser Systems
+    organization: ISO
+    our_edition: "2005"
+    latest_known_edition: "2005"
+    publication_date: "2005-01-01"
+    disciplines: [riser, subsea]
+    repos: [digitalmodel]
+    notes: "No superseding edition confirmed as of registry date"
+    status: current

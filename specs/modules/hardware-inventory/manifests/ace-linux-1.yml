@@ -1,0 +1,21 @@
+hostname: ace-linux-1
+alias: eng-primary
+os: ubuntu
+os_version: "24.04"
+role: primary-dev
+workspace_root: /mnt/local-analysis/workspace-hub
+repos:
+  - worldenergydata
+  - digitalmodel
+  - assetutilities
+  - assethold
+  - workspace-hub
+  - OGManufacturing
+agent_clis:
+  claude: ">=1.0"
+  gemini: ">=0.1"
+domain_tools:
+  python3: ">=3.10"
+  git: ">=2.30"
+  uv: ">=0.1"
+notes: "Primary engineering dev workstation. All open-source / AI-agent work defaults here."

@@ -1,0 +1,69 @@
+generated: '2026-02-25T16:48:44'
+total_docs: 1033789
+total_summaries: 639585
+by_source:
+  og_standards: 27980
+  ace_standards: 55442
+  ace_project: 453285
+  dde_project: 495487
+  workspace_spec: 1587
+  api_metadata: 8
+by_domain:
+  cad: 275447
+  marine: 266154
+  pipeline: 186850
+  other: 126062
+  materials: 72206
+  portfolio: 55942
+  structural: 26422
+  installation: 13390
+  project-management: 5029
+  energy-economics: 2918
+  cathodic-protection: 1709
+  workspace-spec: 1587
+  regulatory: 73
+repos:
+  acma-projects:
+    standards_count: 110
+    gaps: 0
+    implemented: 0
+  assethold:
+    standards_count: 0
+    gaps: 5
+    implemented: 0
+  assetutilities:
+    standards_count: 0
+    gaps: 0
+    implemented: 0
+  digitalmodel:
+    standards_count: 183
+    gaps: 14
+    implemented: 2
+  doris:
+    standards_count: 92
+    gaps: 0
+    implemented: 0
+  frontierdeepwater:
+    standards_count: 0
+    gaps: 0
+    implemented: 0
+  OGManufacturing:
+    standards_count: 71
+    gaps: 0
+    implemented: 0
+  pdf-large-reader:
+    standards_count: 0
+    gaps: 0
+    implemented: 0
+  rock-oil-field:
+    standards_count: 35
+    gaps: 0
+    implemented: 0
+  saipem:
+    standards_count: 35
+    gaps: 0
+    implemented: 0
+  worldenergydata:
+    standards_count: 12
+    gaps: 4
+    implemented: 0

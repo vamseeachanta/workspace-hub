@@ -1,0 +1,13 @@
+repo: assetutilities
+generated: '2026-02-24'
+mission: Shared business automation utilities for common workflows (validators, data
+  pipeline primitives, web automation)
+tier: 1
+standards: []
+apis: []
+local_data:
+- path: assetutilities/src/
+  description: Source modules — validators, data transformation utilities, common
+    pipeline primitives
+  committed: true
+gaps: []
