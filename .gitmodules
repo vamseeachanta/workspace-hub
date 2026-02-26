@@ -1,3 +1,7 @@
+[submodule "CAD-DEVELOPMENTS"]
+	path = CAD-DEVELOPMENTS
+	url = https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS
+
 [submodule "OGManufacturing"]
 	path = OGManufacturing
 	url = https://github.com/vamseeachanta/OGManufacturing
