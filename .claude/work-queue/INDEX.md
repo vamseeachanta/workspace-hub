@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-26T11:21:46Z by generate-index.py -->
+<!-- Generated: 2026-02-26T11:26:30Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-26T11:21:46Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-26T11:26:30Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 415
+**Total items:** 416
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 159 |
+| pending | 160 |
 | working | 8 |
 | blocked | 5 |
 | done | 4 |
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 199 |
+| high | 200 |
 | medium | 175 |
 | low | 40 |
 
@@ -33,7 +33,7 @@
 |------------|-------|
 | simple | 69 |
 | medium | 189 |
-| complex | 88 |
+| complex | 89 |
 
 ### By Repository
 
@@ -43,7 +43,7 @@
 | OGManufacturing | 10 |
 | aceengineer-admin | 3 |
 | aceengineer-strategy | 1 |
-| aceengineer-website | 13 |
+| aceengineer-website | 14 |
 | achantas-data | 9 |
 | acma-projects | 4 |
 | assethold | 2 |
@@ -51,7 +51,7 @@
 | client_projects | 1 |
 | digitalmodel | 164 |
 | doris | 22 |
-| frontierdeepwater | 7 |
+| frontierdeepwater | 8 |
 | rock-oil-field | 1 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 5 |
@@ -63,10 +63,10 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 157 / 415 |
+| Plans exist | 157 / 416 |
 | Plans cross-reviewed | 58 |
 | Plans approved | 79 |
-| Brochure pending | 7 |
+| Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
 ## Metrics
@@ -75,9 +75,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 415 |
+| Total captured | 416 |
 | Total archived | 225 |
-| Completion rate | 225/415 (54%) |
+| Completion rate | 225/416 (54%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -85,7 +85,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 45 / 159 | 28% |
+| Pending items with plans | 45 / 160 | 28% |
 | Plans cross-reviewed | 6 | 11% |
 | Plans user-approved | 6 | 11% |
 
@@ -102,7 +102,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 87 | 5 | 3 |
+| High     | 88 | 5 | 3 |
 | Medium   | 53  | 2  | 1  |
 | Low      | 19  | 1  | 1  |
 
@@ -524,6 +524,7 @@
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | pending | high | medium | ace-linux-1 | codex | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ░░░ 30% | n/a | - |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | high | medium | ace-linux-1 | codex | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-625 |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | high | complex | ace-linux-1 | claude | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-626 |
+| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | ace-linux-1 | claude | frontierdeepwater, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | - 10% | ⏳ pending | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -699,6 +700,7 @@
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | high | medium | frontierdeepwater | - |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | high | medium | frontierdeepwater | - |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | high | complex | frontierdeepwater | - |
+| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | high | complex | frontierdeepwater, aceengineer-website | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -1009,6 +1011,7 @@
 | WRK-250 | Cross-database marine safety case study — MAIB, IMO, EMSA, TSB correlation analysis | archived | medium | medium | - |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | pending | medium | medium | - |
 | WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | pending | medium | medium | - |
+| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | - |
 
 ### achantas-data
 
@@ -1263,6 +1266,7 @@
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | pending | high | medium | - |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | high | medium | - |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | high | complex | - |
+| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | - |
 
 ### rock-oil-field
 
@@ -1682,6 +1686,7 @@
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | pending | medium | frontierdeepwater | - |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | medium | frontierdeepwater | - |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | complex | frontierdeepwater | - |
+| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | complex | frontierdeepwater, aceengineer-website | - |
 
 ### Medium
 
@@ -2270,10 +2275,11 @@
 | WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | digitalmodel | - |
 | WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | high | workspace-hub | - |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | high | frontierdeepwater | - |
+| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | frontierdeepwater, aceengineer-website | - |
 
 ## By Computer
 
-### ace-linux-1 (138 active / 151 total)
+### ace-linux-1 (139 active / 152 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2427,6 +2433,7 @@
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | pending | high | medium | frontierdeepwater |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | high | medium | frontierdeepwater |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | high | complex | frontierdeepwater |
+| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | frontierdeepwater, aceengineer-website |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)
@@ -2765,6 +2772,8 @@
 | WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | WRK-618 | - | WRK-597 |
 | WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | WRK-618, WRK-619 | - | WRK-597 |
 | WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | WRK-618 | - | WRK-597 |
-| WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | WRK-625 | - | - |
-| WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | WRK-626 | - | - |
+| WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | - | - | WRK-628 |
+| WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | WRK-625 | - | WRK-628 |
+| WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | WRK-626 | - | WRK-628 |
+| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | - | WRK-625, WRK-626, WRK-627 | - |
 
