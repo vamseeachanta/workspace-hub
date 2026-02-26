@@ -4141,3 +4141,107 @@ modules:
       Tree Equipment, Twentieth Edition, October 2010'
     status: gap
   unlinked_doc_count: 0
+- module: geotechnical/soil_models
+  standards_count: 2
+  standards:
+  - id: API_RP_2GEO_Geotechnical_and_Foundation_Design
+    title: API RP 2GEO Geotechnical and Foundation Design Considerations
+    org: API
+    discipline: geotechnical
+    summary: |
+      Soil characterisation, CPT correlation (Sec 3-5), pile capacity
+      (Sec 6-8), foundation design. Planned: WRK-618 (Phase 1), WRK-619 (Phase 2).
+    status: gap
+  - id: DNV_RP_C212_Offshore_Soil_Mechanics
+    title: DNV-RP-C212 Offshore Soil Mechanics and Geotechnical Engineering
+    org: DNV
+    discipline: geotechnical
+    summary: |
+      Soil mechanics for offshore structures. Sec 5 bearing capacity,
+      Sec 6 pile design. Planned: WRK-618 (Phase 1), WRK-621 (Phase 4).
+    status: gap
+  unlinked_doc_count: 0
+- module: geotechnical/piles
+  standards_count: 1
+  standards:
+  - id: API_RP_2GEO_Pile_Design_Sec_6_8
+    title: API RP 2GEO Pile Design (Sections 6-8)
+    org: API
+    discipline: geotechnical
+    summary: |
+      Driven pile capacity in clay (alpha method) and sand (beta method),
+      p-y/t-z/q-z curves. Planned: WRK-619 (Phase 2).
+    status: gap
+  unlinked_doc_count: 0
+- module: geotechnical/on_bottom_stability
+  standards_count: 1
+  standards:
+  - id: DNV_RP_F109_On_Bottom_Stability
+    title: DNV-RP-F109 On-Bottom Stability Design of Submarine Pipelines
+    org: DNV
+    discipline: pipeline
+    summary: |
+      Absolute stability (Sec 3.3), generalized method (Sec 3.4),
+      soil resistance, hydrodynamic loads. Planned: WRK-620 (Phase 3).
+    status: gap
+  unlinked_doc_count: 0
+- module: geotechnical/foundations
+  standards_count: 2
+  standards:
+  - id: DNV_RP_C212_Bearing_Capacity_Sec_5
+    title: DNV-RP-C212 Bearing Capacity (Section 5)
+    org: DNV
+    discipline: geotechnical
+    summary: |
+      Shallow foundation bearing capacity for gravity base and mudmat.
+      Brinch Hansen undrained, Terzaghi/Meyerhof drained. Planned: WRK-621 (Phase 4).
+    status: gap
+  - id: ISO_19901_4_Geotechnical_Foundation_Design
+    title: ISO 19901-4 Geotechnical and Foundation Design Considerations
+    org: ISO
+    discipline: geotechnical
+    summary: |
+      Foundation design for offshore structures. Bearing capacity,
+      settlement, pile design. Planned: WRK-621 (Phase 4).
+    status: gap
+  unlinked_doc_count: 0
+- module: geotechnical/anchors
+  standards_count: 3
+  standards:
+  - id: DNVGL_RP_E301_Fluke_Anchors
+    title: DNVGL-RP-E301 Design and Installation of Fluke Anchors
+    org: DNV
+    discipline: marine
+    summary: |
+      Drag/fluke anchor design and installation. Neubecker-Randolph
+      method, anchor efficiency. Planned: WRK-622 (Phase 5).
+    status: gap
+  - id: DNV_RP_E303_Suction_Anchors
+    title: DNV-RP-E303 Geotechnical Design and Installation of Suction Anchors
+    org: DNV
+    discipline: geotechnical
+    summary: |
+      Suction caisson capacity (vertical, horizontal, inclined),
+      installation penetration analysis. Planned: WRK-622 (Phase 5).
+    status: gap
+  - id: API_RP_2SK_Anchor_Sections
+    title: API RP 2SK Station Keeping (Anchor Sections)
+    org: API
+    discipline: marine
+    summary: |
+      Mooring anchor requirements and station keeping criteria.
+      Anchor capacity verification. Planned: WRK-622 (Phase 5).
+    status: gap
+  unlinked_doc_count: 0
+- module: geotechnical/scour
+  standards_count: 1
+  standards:
+  - id: DNV_RP_F107_Pipeline_Protection
+    title: DNV-RP-F107 Risk Assessment of Pipeline Protection
+    org: DNV
+    discipline: pipeline
+    summary: |
+      Scour depth prediction for pipelines and structures,
+      scour protection (rock dumping) design. Planned: WRK-623 (Phase 6).
+    status: gap
+  unlinked_doc_count: 0
