@@ -1,3 +1,13 @@
+---
+title: "Engineering AI Assistant"
+subtitle: "Rigid Jumper & Pipeline Teams"
+date: "February 2026"
+author: "ACE Engineer"
+accent_color: "#0066cc"
+footer: "ACE Engineer | Confidential"
+confidentiality: "Confidential"
+---
+
 # Engineering AI Assistant
 ## Rigid Jumper & Pipeline Teams
 
@@ -46,7 +56,7 @@
 | "What's the GoA 100-yr Hs and how does it compare to GoM?" | 1–2 hr | 2 min |
 | "Extract max tension and curvature from OrcaFlex ASCII results" | 1–2 hr/case | 5 min |
 
----
+<div class="page-break"></div>
 
 ## Page 2 — Roadmap & Next Steps
 

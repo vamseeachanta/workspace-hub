@@ -1,3 +1,13 @@
+---
+title: "Engineering AI Assistant"
+subtitle: "Structural, Offshore & Maritime Legal Teams"
+date: "February 2026"
+author: "ACE Engineer"
+accent_color: "#00557a"
+footer: "ACE Engineer | Confidential"
+confidentiality: "Confidential"
+---
+
 # Engineering AI Assistant
 ## Structural, Offshore & Maritime Legal Teams
 
@@ -48,7 +58,7 @@
 | "Analyse this MAIB report — identify ISM Code failures and root causes" | 3–6 hr | 20 min |
 | "Draft expert witness technical summary for a collision incident" | 1–2 days | 2–4 hr |
 
----
+<div class="page-break"></div>
 
 ## Page 2 — Roadmap & Next Steps
 
