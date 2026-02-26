@@ -491,11 +491,19 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP F105/DNV RP F105 (2006) Free Spanning Pipelines.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP F105/DNV RP F105 (2002) Free Spanning Pipelines.pdf
   status: done
-  wrk_id: WRK-045
+  wrk_id: WRK-607
   repo: digitalmodel
-  modules: []
-  implemented_at: null
-  notes: ''
+  modules:
+  - digitalmodel.subsea.pipeline.free_span.models
+  - digitalmodel.subsea.pipeline.free_span.span_natural_frequency
+  - digitalmodel.subsea.pipeline.free_span.span_onset_screening
+  - digitalmodel.subsea.pipeline.free_span.span_viv_response
+  - digitalmodel.subsea.pipeline.free_span.span_fatigue_damage
+  - digitalmodel.subsea.pipeline.free_span.span_allowable_length
+  implemented_at: '2026-02-25'
+  notes: 'Sec 4.2 allowable span, 4.3.4/4.4.4 IL/CF amplitude, 4.3.5/4.4.6 onset,
+    6.8 natural frequency (full Eq 6.8-1 incl Se/Pcr + Ca(e/D)), 7.3 fatigue (Miner
+    sum, F-class S-N, D_IL+D_CF). 41 tests. Commits: 6244e7b, 2f2cde1, 995d381.'
 - id: DNV-RP-F108
   title: DNV RP F108 with update 2009 (2006) Fracture Control for pipeline installation.pdf
   org: DNV
