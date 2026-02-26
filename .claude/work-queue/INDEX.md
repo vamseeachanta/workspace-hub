@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-26T11:26:30Z by generate-index.py -->
+<!-- Generated: 2026-02-26T11:30:40Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-26T11:26:30Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-26T11:30:40Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 416
+**Total items:** 419
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 160 |
+| pending | 163 |
 | working | 8 |
 | blocked | 5 |
 | done | 4 |
@@ -23,8 +23,8 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 200 |
-| medium | 175 |
+| high | 202 |
+| medium | 176 |
 | low | 40 |
 
 ### By Complexity
@@ -32,8 +32,8 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 69 |
-| medium | 189 |
-| complex | 89 |
+| medium | 190 |
+| complex | 91 |
 
 ### By Repository
 
@@ -41,6 +41,7 @@
 |------------|-------|
 | CAD-DEVELOPMENTS | 2 |
 | OGManufacturing | 10 |
+| TBD-client2-repo | 3 |
 | aceengineer-admin | 3 |
 | aceengineer-strategy | 1 |
 | aceengineer-website | 14 |
@@ -51,7 +52,7 @@
 | client_projects | 1 |
 | digitalmodel | 164 |
 | doris | 22 |
-| frontierdeepwater | 8 |
+| frontierdeepwater | 9 |
 | rock-oil-field | 1 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 5 |
@@ -63,7 +64,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 157 / 416 |
+| Plans exist | 157 / 419 |
 | Plans cross-reviewed | 58 |
 | Plans approved | 79 |
 | Brochure pending | 8 |
@@ -75,9 +76,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 416 |
+| Total captured | 419 |
 | Total archived | 225 |
-| Completion rate | 225/416 (54%) |
+| Completion rate | 225/419 (54%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -85,7 +86,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 45 / 160 | 28% |
+| Pending items with plans | 45 / 163 | 28% |
 | Plans cross-reviewed | 6 | 11% |
 | Plans user-approved | 6 | 11% |
 
@@ -102,8 +103,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 88 | 5 | 3 |
-| Medium   | 53  | 2  | 1  |
+| High     | 90 | 5 | 3 |
+| Medium   | 54  | 2  | 1  |
 | Low      | 19  | 1  | 1  |
 
 ## Master Table
@@ -525,6 +526,9 @@
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | high | medium | ace-linux-1 | codex | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-625 |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | high | complex | ace-linux-1 | claude | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-626 |
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | ace-linux-1 | claude | frontierdeepwater, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | - 10% | ⏳ pending | - |
+| WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA system prompts + knowledge base | pending | high | medium | ace-linux-1 | codex | TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-630 | feat(client2): engineering AI demo — diffraction workflows + plate FFS calcs + GoA data + demo package | pending | high | complex | ace-linux-1 | claude | TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-629 |
+| WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | ace-linux-1 | claude | frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-627, WRK-630 |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -701,6 +705,9 @@
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | high | medium | frontierdeepwater | - |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | high | complex | frontierdeepwater | - |
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | high | complex | frontierdeepwater, aceengineer-website | - |
+| WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA system prompts + knowledge base | high | medium | TBD-client2-repo | - |
+| WRK-630 | feat(client2): engineering AI demo — diffraction workflows + plate FFS calcs + GoA data + demo package | high | complex | TBD-client2-repo | - |
+| WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | medium | complex | frontierdeepwater, TBD-client2-repo | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -979,6 +986,14 @@
 | WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | - |
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | - |
+
+### TBD-client2-repo
+
+| ID | Title | Status | Priority | Complexity | Module |
+|-----|-------|--------|----------|------------|--------|
+| WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA system prompts + knowledge base | pending | high | medium | - |
+| WRK-630 | feat(client2): engineering AI demo — diffraction workflows + plate FFS calcs + GoA data + demo package | pending | high | complex | - |
+| WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | - |
 
 ### aceengineer-admin
 
@@ -1267,6 +1282,7 @@
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | high | medium | - |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | high | complex | - |
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | - |
+| WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | - |
 
 ### rock-oil-field
 
@@ -1687,6 +1703,8 @@
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | medium | frontierdeepwater | - |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | complex | frontierdeepwater | - |
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | complex | frontierdeepwater, aceengineer-website | - |
+| WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA system prompts + knowledge base | pending | medium | TBD-client2-repo | - |
+| WRK-630 | feat(client2): engineering AI demo — diffraction workflows + plate FFS calcs + GoA data + demo package | pending | complex | TBD-client2-repo | - |
 
 ### Medium
 
@@ -1867,6 +1885,7 @@
 | WRK-620 | feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109 | pending | medium | digitalmodel | - |
 | WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | pending | medium | digitalmodel | - |
 | WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | complex | digitalmodel | - |
+| WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | complex | frontierdeepwater, TBD-client2-repo | - |
 
 ### Low
 
@@ -2182,6 +2201,7 @@
 | WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | low | digitalmodel | - |
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | pending | high | frontierdeepwater | - |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | high | frontierdeepwater | - |
+| WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA system prompts + knowledge base | pending | high | TBD-client2-repo | - |
 
 ### Complex
 
@@ -2276,10 +2296,12 @@
 | WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | high | workspace-hub | - |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | high | frontierdeepwater | - |
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | frontierdeepwater, aceengineer-website | - |
+| WRK-630 | feat(client2): engineering AI demo — diffraction workflows + plate FFS calcs + GoA data + demo package | pending | high | TBD-client2-repo | - |
+| WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | frontierdeepwater, TBD-client2-repo | - |
 
 ## By Computer
 
-### ace-linux-1 (139 active / 152 total)
+### ace-linux-1 (142 active / 155 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2434,6 +2456,9 @@
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | high | medium | frontierdeepwater |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | high | complex | frontierdeepwater |
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | frontierdeepwater, aceengineer-website |
+| WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA system prompts + knowledge base | pending | high | medium | TBD-client2-repo |
+| WRK-630 | feat(client2): engineering AI demo — diffraction workflows + plate FFS calcs + GoA data + demo package | pending | high | complex | TBD-client2-repo |
+| WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | frontierdeepwater, TBD-client2-repo |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)
@@ -2775,5 +2800,8 @@
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | - | - | WRK-628 |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | WRK-625 | - | WRK-628 |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | WRK-626 | - | WRK-628 |
-| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | - | WRK-625, WRK-626, WRK-627 | - |
+| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | - | WRK-625, WRK-626, WRK-627, WRK-629, WRK-630, WRK-631 | - |
+| WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA system prompts + knowledge base | - | - | WRK-628 |
+| WRK-630 | feat(client2): engineering AI demo — diffraction workflows + plate FFS calcs + GoA data + demo package | WRK-629 | - | WRK-628 |
+| WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | WRK-627, WRK-630 | - | WRK-628 |
 
