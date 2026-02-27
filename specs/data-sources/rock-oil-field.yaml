@@ -502,6 +502,42 @@ standards:
   - safety valves
   - maintenance
   - API RP 14H
+
+# =============================================================================
+# Calculation Examples
+# Project calculation files cross-referenced with OrcaFlex pipelay models.
+# =============================================================================
+calc_examples:
+
+- standard: DNV-OS-F101-pipelay
+  domain: installation
+  description: >
+    S-lay pipelay workbooks that correspond to OrcaFlex pipelay models in this archive.
+    Provides hand-calculation verification data for the S-lay OrcaFlex model library.
+  files:
+  - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx
+    description: TJG pipelay analysis — hand calc reference matching OrcaFlex S-lay models
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0004-01 Mecor Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
+    description: Mecor pipeline checks — installation load case reference for Mecor OrcaFlex models
+    type: xlsx
+    host: ace-linux-1
+
+- standard: DNV-OS-F101-upheaval
+  domain: installation
+  description: >
+    Pipeline upheaval buckling and weight data referenced in OrcaFlex installation models.
+  files:
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Pipeline Weights/Weight Matching.xlsx
+    description: Pipeline weight matching — submerged weight inputs for OrcaFlex hydrodynamic load model
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/06_review/611 Mecor Pipeline Installation Analysis/Weight Verification/0611-Cal-0001-01 (Weight Verification).xlsx
+    description: Weight verification — validates submerged weight used in OrcaFlex pipelay models
+    type: xlsx
+    host: ace-linux-1
+
 apis: []
 gaps: []
 

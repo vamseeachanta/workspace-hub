@@ -502,6 +502,48 @@ standards:
   - safety valves
   - maintenance
   - API RP 14H
+
+# =============================================================================
+# Calculation Examples
+# Project calculation files for pipelay and installation domain checks.
+# =============================================================================
+calc_examples:
+
+- standard: DNV-OS-F101-pipelay
+  domain: installation
+  description: >
+    S-lay pipelay installation analyses — TJG pipelay project provides complete
+    sagbend, overbend, and stinger load workbooks for S-lay operations.
+  files:
+  - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx
+    description: TJG pipelay analysis — S-lay tension, sagbend bending strain, stinger loads
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis (Clean & Release).xlsx
+    description: Released TJG pipelay analysis — final results for installation design basis
+    type: xlsx
+    host: ace-linux-1
+
+- standard: ISO-13624-1-tensioner
+  domain: installation
+  description: >
+    Tensioner cart FE design calculations — FDAS tensioner cart project provides
+    detailed engineering calculations for drilling riser tensioner design per
+    ISO 13624-1 and API RP 16Q requirements.
+  files:
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/0145-CAL-0001-01 (Engineering).xlsx
+    description: FDAS tensioner cart engineering calculations — structural load and fatigue analysis
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/0145-CAL-0004-01 SEMI Key Dimensions.xlsx
+    description: SEMI key dimensions — tensioner cart geometry and interface dimensions
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/0145-CAL-0005-01 FDAS Work Scopes.xlsx
+    description: FDAS work scopes — tensioner cart design phases and analysis scope definition
+    type: xlsx
+    host: ace-linux-1
+
 apis: []
 gaps: []
 
