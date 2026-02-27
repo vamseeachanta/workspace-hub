@@ -1,13 +1,13 @@
-generated: '2026-02-26'
-total_specs: 1514
+generated: '2026-02-27'
+total_specs: 1518
 by_category:
   archive: 10
-  data-sources: 12
-  modules: 115
-  other: 23
+  data-sources: 13
+  modules: 116
+  other: 24
   repos: 1344
   templates: 2
-  wrk: 8
+  wrk: 9
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 153
+  workspace-hub: 157
   worldenergydata: 216
 by_wrk:
   WRK-9: 1
@@ -192,6 +192,16 @@ by_wrk:
   WRK-477: 1
   WRK-478: 1
   WRK-528: 1
+  WRK-561: 1
+  WRK-562: 1
+  WRK-563: 1
+  WRK-564: 1
+  WRK-565: 1
+  WRK-566: 1
+  WRK-567: 1
+  WRK-569: 1
+  WRK-572: 1
+  WRK-573: 2
   WRK-597: 1
   WRK-607: 1
   WRK-610: 1
@@ -200,13 +210,14 @@ by_wrk:
   WRK-613: 1
   WRK-614: 1
   WRK-615: 1
-  WRK-617: 1
+  WRK-617: 2
   WRK-618: 1
   WRK-619: 1
   WRK-620: 1
   WRK-621: 1
   WRK-622: 1
   WRK-623: 1
+  WRK-624: 1
 specs:
 - path: specs/architecture/agent-vision.md
   title: Superintelligent Engineering Agent Architecture Blueprint
@@ -471,6 +482,16 @@ specs:
   - client-demos
   wrk_refs: []
   mtime: '2026-02-26'
+- path: specs/client-demos/brochure-summary-all-clients.md
+  title: Engineering AI Assistant
+  description: '*Discipline-specific AI — not a generic chatbot. Deep engineering context, real standards, real data.*'
+  category: other
+  repo: workspace-hub
+  tags:
+  - brochure-summary-all-clients
+  - client-demos
+  wrk_refs: []
+  mtime: '2026-02-26'
 - path: specs/client-demos/pitch-email-client1-rigid-jumper-pipeline.md
   title: Pitch Email — Client 1
   description: '*Draft for review. Personalise subject line, recipient name, and [BRACKETED] fields before sending.*'
@@ -555,7 +576,7 @@ specs:
   tags:
   - digitalmodel
   wrk_refs: []
-  mtime: '2026-02-26'
+  mtime: '2026-02-27'
 - path: specs/data-sources/doris.yaml
   title: doris
   description: Data-source index with 92 standard entries for doris
@@ -564,7 +585,7 @@ specs:
   tags:
   - doris
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-02-27'
 - path: specs/data-sources/frontierdeepwater.yaml
   title: frontierdeepwater
   description: Data-source index with 0 standard entries for frontierdeepwater
@@ -585,23 +606,35 @@ specs:
   - WRK-341
   mtime: '2026-02-24'
 - path: specs/data-sources/rock-oil-field.yaml
-  title: rock-oil-field
-  description: Data-source index with 35 standard entries for rock-oil-field
+  title: Rock Oil Field
+  description: ''
   category: data-sources
   repo: workspace-hub
   tags:
   - rock-oil-field
   wrk_refs: []
-  mtime: '2026-02-25'
+  mtime: '2026-02-27'
 - path: specs/data-sources/saipem.yaml
-  title: saipem
-  description: Data-source index with 35 standard entries for saipem
+  title: Saipem
+  description: ''
   category: data-sources
   repo: workspace-hub
   tags:
   - saipem
   wrk_refs: []
-  mtime: '2026-02-25'
+  mtime: '2026-02-27'
+- path: specs/data-sources/script-audit.yaml
+  title: Script Audit
+  description: ''
+  category: data-sources
+  repo: workspace-hub
+  tags:
+  - script-audit
+  wrk_refs:
+  - WRK-569
+  - WRK-573
+  - WRK-617
+  mtime: '2026-02-27'
 - path: specs/data-sources/tier-compliance-report.md
   title: Data Residence Tier Compliance Report
   description: Post-WRK-200 audit of worldenergydata and digitalmodel. First-time Tier 3 classification of assethold. Machine-readable
@@ -1616,6 +1649,24 @@ specs:
   - yaml-state-file-schema-validation
   wrk_refs: []
   mtime: '2026-02-03'
+- path: specs/modules/zippy-gathering-piglet.md
+  title: 'Plan: Document Intelligence Agent Team (WRK-561..567, WRK-572..573)'
+  description: 'The document index has 1,033,789 records but the linkage layer is thin:'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - zippy-gathering-piglet
+  wrk_refs:
+  - WRK-561
+  - WRK-562
+  - WRK-563
+  - WRK-564
+  - WRK-565
+  - WRK-566
+  - WRK-567
+  - WRK-572
+  - WRK-573
+  mtime: '2026-02-27'
 - path: specs/modules/agent-os/slash-commands/create-module-agent/sub-specs/workflow-refresh.md
   title: Workflow Refresh Specification
   description: This specification defines workflow refresh behaviors for the `/create-spec` slash command across all Agent
@@ -19784,6 +19835,23 @@ specs:
   wrk_refs:
   - WRK-373
   mtime: '2026-02-24'
+- path: specs/wrk/WRK-624/plan.md
+  title: WRK-624 Canonical Workflow Hardening
+  description: Route C plan/spec for the canonical 8-stage work-item lifecycle, review matrix, closure enforcement, and ecosystem
+    learning loop.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - governance
+  - lifecycle
+  - plan
+  - review
+  - work-queue
+  - workflow
+  - wrk-624
+  wrk_refs:
+  - WRK-624
+  mtime: '2026-02-27'
 - path: digitalmodel/specs/module-registry.yaml
   title: digitalmodel
   description: Structured registry of all digitalmodel sub-modules for agent discovery

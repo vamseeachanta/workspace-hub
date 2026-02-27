@@ -5,8 +5,8 @@ description: >
   insights → reflect → knowledge → improve → action-candidates → report.
   Runs on ace-linux-1 only. Other machines contribute via git-synced state files.
   Safe for cron scheduling. Replaces running 4 skills manually.
-version: 2.1.0
-updated: 2026-02-22
+version: 2.4.0
+updated: 2026-02-27
 category: workspace-hub
 author: workspace-hub
 type: skill
@@ -138,6 +138,199 @@ test invocations). Flag stale entries for correction. Mark checked entries with
 
 ---
 
+### Phase 3b — Memory Compaction  *(non-mandatory)*
+
+Run `scripts/memory/compact-memory.py` to prevent context-rot in memory files.
+
+**Trigger conditions (any one sufficient):**
+- `MEMORY.md` ≥ 180 lines (20-line safety margin before 200-line hard truncation)
+- Any topic file ≥ 140 lines
+- Phase 3 flagged ≥ 5 stale entries this run
+- First Sunday of the month (forced full compaction regardless of line counts)
+
+**Tier model enforced by compaction:**
+
+```
+MEMORY.md (≤150 lines)          — INDEX ONLY: section headers + pointers to topic files
+  └─ topic files (≤140 lines)   — ACTIVE facts, read on demand
+       └─ archive/              — RETIRED facts, never auto-loaded
+```
+
+**MEMORY.md content rules (enforced on every run):**
+- MUST NOT contain WRK status references — WRK state lives in `.claude/work-queue/` only
+- MUST NOT contain session snapshots (e.g., "File Hardening 2026-02-25" sections) older than 30 days
+- Each entry = pointer to a topic file or a slow-changing invariant (command, path, arch decision)
+
+**Eviction rules (applied in order, results written to `archive/`):**
+
+| Rule | Condition | Archive target |
+|------|-----------|----------------|
+| Done-WRK expiry | Bullet references WRK-NNN with `status: done` for >30 days | `archive/done-wrk.md` |
+| Session snapshot expiry | Section heading contains a date >30 days ago | `archive/done-sprints.md` |
+| Path staleness | File path in bullet does not exist on disk | `archive/stale-paths.md` |
+| Semantic dedup | Two bullets share >80% overlap → keep fresher/more specific | Delete older in-place |
+| Age eviction | Bullet not referenced in any session signal for 90+ days AND not marked `# keep` | `archive/aged-out.md` |
+
+**`# keep` marker:** Append to any bullet exempt from age eviction (foundational invariants only).
+
+**Promotion rules for WRK-635/636 session scan output:**
+- Scan writes to topic files ONLY — never directly to `MEMORY.md`
+- Before writing: check topic file headroom; if ≥ 130 lines, run compaction first
+- Overflow candidates (topic file still full after compaction) → `archive/session-scan-overflow.md`
+- Compaction may promote a new topic file section header to `MEMORY.md` index if not already present
+
+**Script output:** Log to `memory/compact-log.jsonl`:
+```json
+{"timestamp": "...", "lines_freed_memory": N, "lines_freed_topics": N,
+ "bullets_evicted": N, "bullets_archived": N, "trigger": "line-count|staleness|forced"}
+```
+
+**Phase 3b is non-mandatory:** failure logs and continues; does NOT set `_PIPELINE_EXIT=1`.
+If `compact-memory.py` does not yet exist, log `"Phase 3b: SKIPPED — script not yet built (WRK-637)"` and continue.
+
+---
+
+### Phase 3c — Memory Curation  *(non-mandatory)*
+
+Classify every bullet in every memory file by its ideal long-term home across the
+**full ecosystem** — harness files, source code, domain knowledge, config, tests,
+and specs. Generate promotion candidates only — do NOT auto-move or auto-write
+anything. Phase 7 converts candidates into WRK items for human review and execution.
+
+**Run `scripts/memory/curate-memory.py`** (part of WRK-637 deliverable).
+
+If script does not yet exist, log `"Phase 3c: SKIPPED — script not yet built (WRK-637)"` and continue.
+
+#### Full Ecosystem Destination Map
+
+```
+HARNESS ──────────────────────────────────────────────────────────────────────
+  skill        → .claude/skills/<category>/<name>/SKILL.md
+  rule         → .claude/rules/<domain>.md
+  doc          → .claude/docs/<topic>.md
+  memory-keep  → no action (fast-lookup facts that earn their context cost)
+
+SPECS & DOMAIN KNOWLEDGE ─────────────────────────────────────────────────────
+  module-spec  → specs/modules/<repo>/<module>.md
+  domain-doc   → <repo>/docs/domains/<domain>/<topic>.md
+  standards    → <repo>/docs/domains/<domain>/standards-inventory.md (append)
+
+CODE ─────────────────────────────────────────────────────────────────────────
+  utility-fn   → src/<repo>/<pkg>/utils/<module>.py  (new or append)
+  base-class   → src/<repo>/<pkg>/base/<class>.py
+  config-const → config/<domain>/<name>.yaml  (constants, thresholds, tables)
+  calc-example → docs/domains/<domain>/examples/calc-NNN-<name>.md
+
+TESTS ────────────────────────────────────────────────────────────────────────
+  test-fixture → tests/<domain>/conftest.py or fixtures/<name>.yaml
+  test-pattern → .claude/docs/testing-patterns.md  (coding-style appendix)
+
+ARCHIVE ──────────────────────────────────────────────────────────────────────
+  archive      → memory/archive/<category>.md  (handled by Phase 3b; flag here)
+```
+
+#### Classification Rules
+
+| Signal in bullet | Destination class | Example |
+|-----------------|-------------------|---------|
+| Module paths + test counts + component names + commit hashes | `module-spec` | Wall Thickness Framework section → `specs/modules/digitalmodel/wall-thickness.md` |
+| Engineering formula with derivation or constants | `domain-doc` or `calc-example` | Vogel IPR formula, DNV F103 current density tables |
+| Standards lookup table (resistivity, SN-curve, anode) | `config-const` | F103-2010 TABLE_5_1 values → `config/cathodic_protection/dnv_f103_tables.yaml` |
+| Reusable code pattern (≥3 lines, not yet a utility) | `utility-fn` | Plotly NaN fix `json.dumps(..., default=lambda o: None)`, LFS stub detector |
+| Recurring test setup or parameterisation observation | `test-pattern` or `test-fixture` | Bootstrap CI needs ≥10 annual maxima; EVA `n_bootstrap=50` for speed |
+| Multi-step procedure (Step 1 / Step 2 / numbered workflow) | `skill` | Cross-review CLI sequence, reconciliation workflow steps |
+| Hard prohibition / NEVER / must-not that spans multiple repos | `rule` | `sed -i` symlink danger, `awk` gawk portability |
+| Hard prohibition scoped to one repo/module | `domain-doc` + `memory-keep` | `NEVER reference 0113` → legal-deny-list + keep in memory |
+| Architecture or design decision with rationale | `domain-doc` or `module-spec` | Orchestrator context separation principle, 3-tier optional deps pattern |
+| Short command, path, active gotcha, user preference | `memory-keep` | Pytest invocations, `parents[N]` trap, Codex preference |
+| WRK-NNN (DONE/ARCHIVED) + date > 30 days | `archive` | `WRK-096 (02-08): Module flatten` |
+| Same content across ≥2 topic files | upgrade to `skill` or `doc` | Duplication signals missing structured home |
+
+#### Candidate Output
+
+**File:** `.claude/state/candidates/memory-promotion-candidates.md`
+
+Format per candidate:
+
+```markdown
+## Candidate: <destination-class>
+- Source:      memory/<file>.md § <section heading>
+- Preview:     "<first 80 chars of bullet>"
+- Destination: <destination-class>
+- Target path: <proposed path>
+- Repo:        <target repo or workspace-hub>
+- Rationale:   <one line — why this home is better than memory>
+- Occurrence:  <1 | cross-file: <list of files>>
+```
+
+#### Execution Tiers — Auto-Execute vs WRK Item
+
+Do NOT route everything through the WRK queue — that floods the queue with
+50-100 low-priority tasks that never get actioned. Use risk-tiered execution:
+
+**Tier A — Auto-execute immediately in Phase 3c:**
+
+These are pure text/data operations with no code authorship risk. Execute, then
+replace the source bullet with a single pointer line (`→ see <path>`).
+
+| Destination class | Auto-execute action |
+|-------------------|---------------------|
+| `archive` | Move bullet to `memory/archive/<category>.md` |
+| `module-spec` | Create/append `specs/modules/<repo>/<module>.md` |
+| `domain-doc` | Create/append `<repo>/docs/domains/<domain>/<topic>.md` |
+| `config-const` | Create `config/<domain>/<name>.yaml` with extracted constants/tables |
+| `calc-example` | Create `<repo>/docs/domains/<domain>/examples/calc-NNN-<name>.md` |
+| `standards` | Append to `<repo>/docs/domains/<domain>/standards-inventory.md` |
+| `rule` (append-only) | Append new rule entry to existing `.claude/rules/<domain>.md` |
+| `doc` (harness) | Create/append `.claude/docs/<topic>.md` |
+| `test-pattern` (notes only) | Append observation to `.claude/docs/testing-patterns.md` |
+| `memory-keep` | Mark reviewed; no file change |
+
+**Tier B — Create WRK item (human review required):**
+
+These require code authorship, TDD, or design judgment beyond text extraction.
+Route to Phase 7 as WRK candidates.
+
+| Destination class | Why WRK item |
+|-------------------|--------------|
+| `utility-fn` | New source code — TDD mandatory, API design judgment needed |
+| `base-class` | New source code — architecture decision |
+| `test-fixture` | Test code — must validate against real data |
+| `skill` | Skill design requires scope/invocation decisions beyond extraction |
+| `rule` (new file) | New rule file = policy decision, not just text extraction |
+| Any Tier A item that **fails legal pre-scan** | Promote only after client refs scrubbed |
+
+**Legal pre-scan for Tier A (mandatory before auto-execute):**
+
+Before writing any `domain-doc`, `config-const`, `calc-example`, or `standards`
+file, run:
+```bash
+echo "<bullet content>" | python3 scripts/legal/legal-sanity-scan.sh --stdin
+```
+If the scan flags a block-severity hit: skip auto-execute, write to
+`memory-promotion-candidates.md` as a Tier B WRK candidate with note
+`"legal-blocked: <violation>"`.
+
+**Pointer replacement rule (Tier A):**
+
+After auto-executing a bullet, replace it in the source topic file with:
+```
+- **<Original topic>**: → see `<target path>` *(promoted <date>)*
+```
+If the entire section is promoted, replace the section with a single pointer line.
+
+**Scope per run:** All topic files + MEMORY.md across every active project's
+memory dir (`~/.claude/projects/*/memory/`), not just workspace-hub.
+
+**Classification engine:** Gemini for bulk classification
+(`echo batch | gemini -p "classify..." -y`) in ≤50 bullet chunks.
+
+**Commit:** After all Tier A promotions, commit the created/modified files and
+updated memory files in a single chore commit per repo:
+`chore(memory): promote N memory bullets → <destination types> [comprehensive-learning]`
+
+---
+
 ### Phase 4 — Improve  *(mandatory)*
 
 Invoke `/improve`. Sources:
@@ -216,6 +409,37 @@ a WRK item. Reset candidate file after processing.
 | `mcp-candidates.md` | MCP tools | Tool-call gaps → candidate MCP integration |
 | `agent-candidates.md` | Agents | Complex sub-tasks → candidate agent type |
 | `planning-candidates.md` | Planning | Ensemble quality signals → prompt/stance improvements |
+| `memory-promotion-candidates.md` | Memory | Phase 3c output — memory bullets ready for promotion to doc/skill/rule |
+
+**Memory promotion WRK item template:**
+
+```markdown
+---
+id: WRK-NNN
+title: "docs(<repo>): promote memory § <section> → <destination-class>"
+status: pending
+priority: low
+source: comprehensive-learning/phase-7
+computer: ace-linux-1
+---
+## Context
+Auto-created from memory-promotion-candidates.md.
+Source: memory/<file>.md § <section>
+Destination class: <skill|rule|doc|module-spec|domain-doc|standards|utility-fn|
+                    base-class|config-const|calc-example|test-fixture|test-pattern|archive>
+Target path: <proposed path>
+Repo: <target repo>
+
+## Description
+<candidate description + bullet preview>
+
+## Acceptance Criteria
+- [ ] Content written to <target path> with appropriate structure for that file type
+- [ ] Memory bullet replaced with single pointer line (or evicted if fully captured)
+- [ ] Legal scan passes on destination file (mandatory for domain-doc, calc-example,
+      config-const, utility-fn)
+- [ ] Tests pass if destination is code (utility-fn, base-class, test-fixture)
+```
 
 **Also scan for signal-based candidates:**
 
@@ -377,6 +601,8 @@ Write `.claude/state/learning-reports/$(date +%Y-%m-%d-%H%M).md`:
 | 1 Insights | DONE/SKIPPED/FAILED | <brief> |
 | 2 Reflect | ... | re-derivation needed: yes/no |
 | 3 Knowledge | ... | stale memory entries: N |
+| 3b Compaction | ... | lines_freed: N, bullets_evicted: N, trigger: <type> / SKIPPED (WRK-637 pending) |
+| 3c Curation | ... | promotion_candidates: N (doc: N, skill: N, rule: N, archive: N) / SKIPPED (WRK-637 pending) |
 | 4 Improve | ... | ... |
 | 5 Correction Trends | ... | escalated types: N |
 | 6 WRK Feedback | ... | stale auto-WRK: N, threshold adj: yes/no |

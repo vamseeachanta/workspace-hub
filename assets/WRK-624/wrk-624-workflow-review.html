@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-624 Workflow Review</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+  </script>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --panel: #fffdf8;
+      --ink: #172126;
+      --muted: #55636b;
+      --accent: #0f766e;
+      --accent-2: #8a5a2b;
+      --line: #d9d0c0;
+      --warn: #b45309;
+      --good: #166534;
+      --bad: #b91c1c;
+      --shadow: 0 16px 40px rgba(20, 33, 38, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background: radial-gradient(circle at top, #fffaf0 0, var(--bg) 48%, #ebe5d7 100%);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .hero {
+      padding: 48px 24px 28px;
+      border-bottom: 1px solid rgba(23, 33, 38, 0.08);
+      background: linear-gradient(135deg, rgba(15,118,110,0.08), rgba(138,90,43,0.1));
+    }
+    .hero-inner, .content { max-width: 1180px; margin: 0 auto; }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    h1 {
+      margin: 10px 0 12px;
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 0.95;
+      max-width: 10ch;
+    }
+    .lede {
+      max-width: 70ch;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .pill {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.8);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+    }
+    .content {
+      padding: 28px 24px 56px;
+      display: grid;
+      gap: 22px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .card, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+    .card { padding: 18px; }
+    .card h2, .panel h2 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-2);
+    }
+    .metric {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .panel { padding: 22px; }
+    .panel p, .panel li, .panel td, .panel th { color: var(--muted); }
+    .panel strong, .panel code { color: var(--ink); }
+    .mermaid-wrap {
+      overflow-x: auto;
+      padding: 8px;
+      background: linear-gradient(180deg, #fff, #fcf8ef);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-top: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      color: var(--ink);
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    ul { margin: 0; padding-left: 18px; }
+    .status-good { color: var(--good); font-weight: 700; }
+    .status-warn { color: var(--warn); font-weight: 700; }
+    .status-bad { color: var(--bad); font-weight: 700; }
+    .split {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 22px;
+    }
+    @media (max-width: 900px) {
+      .split { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">WRK-624 Review Artifact</div>
+      <h1>Canonical Work-Queue Workflow</h1>
+      <p class="lede">This HTML artifact is the user review surface for the new lifecycle contract. It shows the proposed Mermaid schematic, the hard gates, and the quality-and-learning requirements, including both fast auto-memory capture and deeper comprehensive-learning synthesis, before 3-seed cross-review.</p>
+      <div class="meta">
+        <div class="pill">Status: Draft for review</div>
+        <div class="pill">Scope: workspace-hub, portable to future repo-local queues</div>
+        <div class="pill">Review set: Claude + Codex + Gemini</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="grid">
+      <article class="card">
+        <h2>Stages</h2>
+        <div class="metric">8</div>
+        <p>Capture through Archive with explicit gates.</p>
+      </article>
+      <article class="card">
+        <h2>Mandatory Reviewers</h2>
+        <div class="metric">1-3</div>
+        <p>One reviewer for Route A by default; three reviewers for Route B/C and escalated Route A.</p>
+      </article>
+      <article class="card">
+        <h2>Examples Per WRK</h2>
+        <div class="metric">5-10</div>
+        <p>Real examples plus variation tests for all work items.</p>
+      </article>
+      <article class="card">
+        <h2>HTML Review</h2>
+        <div class="metric">Every WRK</div>
+        <p>Each work item must ship an HTML review artifact for direct user inspection.</p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Mermaid Schematic</h2>
+      <div class="mermaid-wrap">
+        <pre class="mermaid">
+flowchart TD
+    A[Capture] --> B[Resource Intelligence]
+    B --> C[Triage]
+    C --> D[Plan Draft]
+    D --> E{User Reviewed Draft HTML?}
+    E -- Yes --> F[Multi-Agent Review]
+    E -- No --> D
+    F --> G{Plan Reviewed + User Reviewed Final HTML + Approved?}
+    G -- Yes --> H[Claim]
+    G -- No --> F1[Revise Plan HTML]
+    F1 --> D
+    H --> I{Best-Fit Agent + Quota Ready?}
+    I -- Yes --> J{Blocked?}
+    I -- No --> H1[Recommend alternate agent or short defer]
+    H1 --> H
+    J -- No --> K[Execute]
+    J -- Yes --> L[Status: blocked]
+    K --> M{Route Review Passed?}
+    M -- Yes --> N[Close]
+    M -- No --> K
+    N --> O{Queue Valid + Merge/Sync Complete?}
+    O -- Yes --> P[Archive]
+    O -- No --> N
+        </pre>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>New Global Review Rule</h2>
+      <table>
+        <tr>
+          <th>Requirement</th>
+          <th>Rule</th>
+          <th>Closure impact</th>
+        </tr>
+        <tr>
+          <td>HTML artifact</td>
+          <td>Every WRK must produce an HTML review artifact for direct user inspection, including a planning-stage WRK HTML for plan review.</td>
+          <td class="status-bad">Close blocked if missing</td>
+        </tr>
+        <tr>
+          <td>Plan HTML gate</td>
+          <td>User review of the draft WRK HTML artifact is required before multi-agent review, and user review of the final WRK HTML artifact is required again after multi-agent review before execution may proceed. The plan HTML must begin with an executive summary for quick review.</td>
+          <td class="status-bad">Execution blocked if not reviewed</td>
+        </tr>
+        <tr>
+          <td>Agent verification</td>
+          <td>The orchestrating agent verifies the HTML artifact before closure evidence is complete.</td>
+          <td class="status-bad">Close blocked if unverified</td>
+        </tr>
+        <tr>
+          <td>User verification</td>
+          <td>The user reviews the HTML artifact before the WRK may move to final closure.</td>
+          <td class="status-bad">Close blocked if not reviewed</td>
+        </tr>
+        <tr>
+          <td>Claim capability check</td>
+          <td>Claim must assess whether the current AI agent is best suited, and recommend an alternate executor when another agent is a materially better fit.</td>
+          <td class="status-bad">Execution should not proceed blindly</td>
+        </tr>
+        <tr>
+          <td>Claim quota check</td>
+          <td>Claim must verify weekly AI usage and remaining quota before execution using the regular quota snapshot and readiness pipeline. Hour-scale waits are acceptable; week-scale waits are not.</td>
+          <td class="status-bad">Execution should pause or reroute if quota is weak</td>
+        </tr>
+        <tr>
+          <td>Domain outputs</td>
+          <td>Where calculations or analysis outputs exist, the same HTML artifact must surface them in directly reviewable form.</td>
+          <td class="status-bad">Close blocked if omitted</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <h2>Key Rules</h2>
+        <ul>
+          <li><strong>Resource Intelligence</strong> is mandatory for every WRK and produces a modular resource pack.</li>
+          <li><strong>One active orchestrator session</strong> owns transitions into <code>working</code>, <code>done</code>, and <code>archived</code>.</li>
+          <li><strong>Claim</strong> includes an AI capability check and should recommend a better-fit executor when the current agent is not the strongest option.</li>
+          <li><strong>Claim</strong> also checks weekly AI usage availability from the regular quota cron/readiness pipeline so execution does not start on an agent likely to hard-stop; waiting a few hours is acceptable, waiting a week is not.</li>
+          <li><strong>Review matrix</strong> is route-based, but no route skips review.</li>
+          <li><strong>Plan gate</strong> requires user review twice: once on the draft HTML before multi-agent review, and once on the final HTML after multi-agent review.</li>
+          <li><strong>Plan HTML</strong> should front-load an executive summary near the top so the user can review the item quickly.</li>
+          <li><strong>Every WRK</strong> carries 5-10 real examples, variation tests, and learning outputs.</li>
+          <li><strong>Learning capture</strong> has two layers: auto-memory for real-time session capture and comprehensive-learning for slower, deeper multi-agent synthesis.</li>
+          <li><strong>Every WRK</strong> must produce an HTML review artifact, and the user reviews it before close.</li>
+          <li><strong>Domain workflows</strong> must include calculation or analysis outputs inside that HTML artifact in a directly reviewable form.</li>
+          <li><strong>Archive</strong> is blocked until queue validation, merge to main, and sync flow complete.</li>
+        </ul>
+      </article>
+      <article class="panel">
+        <h2>Current Review Status</h2>
+        <table>
+          <tr><th>Gate</th><th>Status</th></tr>
+          <tr><td>Spec draft</td><td class="status-good">Prepared</td></tr>
+          <tr><td>HTML review artifact</td><td class="status-good">Prepared</td></tr>
+          <tr><td>Claude review</td><td class="status-warn">Prior feedback incorporated; rerun pending</td></tr>
+          <tr><td>Codex review</td><td class="status-warn">Current draft pending formal review artifact</td></tr>
+          <tr><td>Gemini review</td><td class="status-warn">Pending deepest-thinking review</td></tr>
+        </table>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Review Matrix</h2>
+      <table>
+        <tr>
+          <th>Route</th>
+          <th>Review level</th>
+          <th>Required reviewers</th>
+          <th>Artifacts</th>
+        </tr>
+        <tr>
+          <td>A</td>
+          <td>Mandatory lightweight review</td>
+          <td>1 by default, auto-escalates to 3 on risk signals</td>
+          <td><code>review-primary.md</code></td>
+        </tr>
+        <tr>
+          <td>B</td>
+          <td>Standard</td>
+          <td>Claude + Codex + Gemini</td>
+          <td><code>review-claude.md</code>, <code>review-codex.md</code>, <code>review-gemini.md</code>, <code>review-synthesis.md</code></td>
+        </tr>
+        <tr>
+          <td>C</td>
+          <td>Full</td>
+          <td>Claude + Codex + Gemini per plan, phase, and close</td>
+          <td>Route B artifact set, repeated per phase</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <h2>Mandatory Metadata</h2>
+        <ul>
+          <li><code>orchestrator</code></li>
+          <li><code>resource_pack_ref</code></li>
+          <li><code>plan_html_review_draft_ref</code></li>
+          <li><code>plan_html_review_final_ref</code></li>
+          <li><code>claim_routing_ref</code></li>
+          <li><code>claim_quota_snapshot_ref</code></li>
+          <li><code>claim_recommendation</code></li>
+          <li><code>example_pack_ref</code></li>
+          <li><code>variation_test_ref</code></li>
+          <li><code>learning_outputs</code></li>
+          <li><code>followup</code></li>
+          <li><code>html_output_ref</code> and <code>html_verification_ref</code></li>
+        </ul>
+      </article>
+      <article class="panel">
+        <h2>Learning Lanes</h2>
+        <ul>
+          <li><strong>Auto-memory</strong>: fast opportunistic capture during active Claude sessions.</li>
+          <li><strong>Comprehensive-learning</strong>: slower deep synthesis across sessions, agents, and machines.</li>
+          <li><strong>Relationship</strong>: complementary lanes writing back into a compatible memory and learning surface.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <h2>Phased Rollout</h2>
+        <ul>
+          <li><strong>Phase 1:</strong> normalize statuses, reconcile drift, reporting validator.</li>
+          <li><strong>Phase 2:</strong> require resource packs, draft-plan and final-plan WRK HTML reviews, close evidence, and HTML review artifacts for new/touched WRKs.</li>
+          <li><strong>Phase 3:</strong> enforce active session binding and hard-block invalid transitions.</li>
+        </ul>
+      </article>
+      <article class="panel">
+        <h2>Archive Gate</h2>
+        <ul>
+          <li>Queue validation must pass.</li>
+          <li>Merge to main must be complete.</li>
+          <li>Repo sync flow must be complete.</li>
+          <li>HTML review artifact must already be verified by agent and user.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Review Focus</h2>
+      <ul>
+        <li>Does the Mermaid diagram show the happy path and the blocking paths clearly enough?</li>
+        <li>Are the new hard gates concrete enough to drive automation?</li>
+        <li>Does making HTML mandatory for every WRK improve reviewability without adding the wrong kind of overhead?</li>
+        <li>Do the example, HTML, learning, and archive requirements feel proportionate and enforceable?</li>
+        <li>Should any stage names or edge labels be tightened before 3-seed review?</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
