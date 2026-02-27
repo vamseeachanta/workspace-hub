@@ -3086,3 +3086,53 @@ ansys_assets:
       file_types: [".inp", ".wbjn", ".csv"]
       analysis_type: structural_static
       computer: acma-ansys05
+
+# =============================================================================
+# FEA Model Library
+# ANSYS .inp input files — accessible on host: ace-linux-1 under /mnt/ace/
+# These provide ground-truth geometry, material, and load case parameters
+# for structural/riser module validation (see WRK-571, WRK-528, WRK-530).
+# =============================================================================
+fea_models:
+
+- type: ansys-modal-viv
+  path_pattern: /mnt/ace/docs/disciplines/*/projects/*/ANL/VIV/MODES/*/common.inp
+  description: >
+    ANSYS modal analysis input files for conductor/riser VIV natural frequency
+    calculation. Multiple configurations: BW (Bare Wire), BTW (Bare + Top Weight),
+    BTTW (Bare + Top Tension + Weight). Files define pipe geometry (OD, WT, length),
+    material E/density, and boundary conditions. Output: mode shapes and natural
+    frequencies — ground truth for digitalmodel.structural.viv.modes.
+  domain: structural
+  standards: [API-RP-2A-WSD-22nd, DNV-RP-F105]
+  configurations: [BW, BTW, BTTW]
+  host: ace-linux-1
+  representative_paths:
+  - /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/ANL/VIV/MODES/BW/common.inp
+  - /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/31290 Shell WellHead Fatigue Assement/BOP on Wellhead/VIV/BW/common.inp
+  notes: >
+    Extract pipe OD, WT, length from SECDATA/REAL cards;
+    expected frequencies from output .out file comments if present.
+
+- type: ansys-scf-local
+  path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/SCF/commandOBJ_SCF_WT1125_2.inp
+  description: >
+    Local FE Stress Concentration Factor model — pipe fitting at WT=11.25mm.
+    Relevant to fatigue S-N + SCF per DNV-RP-C203 and API RP 2A-WSD Section 5.
+    Provides expected SCF value for regression tests of the SCF calculation module.
+  domain: structural
+  standards: [API-RP-2A-WSD-22nd, DNV-RP-C203]
+  host: ace-linux-1
+
+- type: ansys-wave-fatigue
+  path_pattern: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/ANL/WF/*/Q_*.inp
+  description: >
+    ANSYS wave fatigue load case input files. Q_07_7D.inp = 7-day storm;
+    Q_01_1D.inp = 1-day operations load case. Define loading spectrum
+    per sea state for wave fatigue damage accumulation (DNV-OS-E301).
+  domain: structural
+  standards: [DNV-OS-E301, API-RP-2A-WSD-22nd]
+  host: ace-linux-1
+  representative_paths:
+  - /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/ANL/WF/7Day Storm/Q_07_7D.inp
+  - /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/ANL/WF/1Day Operations/Q_01_1D.inp
