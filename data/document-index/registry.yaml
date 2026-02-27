@@ -1,4 +1,4 @@
-generated: '2026-02-25T16:48:44'
+generated: '2026-02-27T11:41:52'
 total_docs: 1033789
 total_summaries: 639585
 by_source:
@@ -9,17 +9,17 @@ by_source:
   workspace_spec: 1587
   api_metadata: 8
 by_domain:
-  cad: 275447
-  marine: 266154
-  pipeline: 186850
-  other: 126062
+  cad: 275445
+  marine: 266155
+  pipeline: 187860
+  other: 101471
   materials: 72206
   portfolio: 55942
-  structural: 26422
+  structural: 49999
   installation: 13390
   project-management: 5029
   energy-economics: 2918
-  cathodic-protection: 1709
+  cathodic-protection: 1714
   workspace-spec: 1587
   regulatory: 73
 repos:

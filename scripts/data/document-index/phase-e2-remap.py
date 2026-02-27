@@ -61,6 +61,57 @@ DEFAULT_CONFIG = SCRIPT_DIR / "config.yaml"
 # ext_set: set of lowercase extensions without dot, or None for any extension.
 # Ordered — first match wins.
 PATH_RULES: list[tuple[str, Optional[set[str]], str, list[str], str]] = [
+    # ── ace/docs/_standards/raw sub-directories (WRK-605) ────────────────
+    # Most-specific first within the raw bucket.
+    # 0000 Codes & Standards — per-org mappings
+    ("_standards/raw/0000 Codes & Standards/ABS",       None, "structural",           ["digitalmodel"],                       "raw_cs_abs"),
+    ("_standards/raw/0000 Codes & Standards/AISC",      None, "structural",           ["digitalmodel"],                       "raw_cs_aisc"),
+    ("_standards/raw/0000 Codes & Standards/AMJIG",     None, "structural",           ["assetutilities"],                     "raw_cs_amjig"),
+    ("_standards/raw/0000 Codes & Standards/AMS",       None, "structural",           ["digitalmodel"],                       "raw_cs_ams"),
+    ("_standards/raw/0000 Codes & Standards/ANSI",      None, "structural",           ["digitalmodel"],                       "raw_cs_ansi"),
+    ("_standards/raw/0000 Codes & Standards/AS/",       None, "structural",           ["digitalmodel"],                       "raw_cs_as"),
+    ("_standards/raw/0000 Codes & Standards/ASCE",      None, "structural",           ["digitalmodel"],                       "raw_cs_asce"),
+    ("_standards/raw/0000 Codes & Standards/ASME",      None, "structural",           ["digitalmodel"],                       "raw_cs_asme"),
+    ("_standards/raw/0000 Codes & Standards/ASNT",      None, "structural",           ["digitalmodel"],                       "raw_cs_asnt"),
+    ("_standards/raw/0000 Codes & Standards/ASTM",      None, "structural",           ["digitalmodel"],                       "raw_cs_astm"),
+    ("_standards/raw/0000 Codes & Standards/AWHEM",     None, "structural",           ["digitalmodel"],                       "raw_cs_awhem"),
+    ("_standards/raw/0000 Codes & Standards/AWS",       None, "structural",           ["digitalmodel"],                       "raw_cs_aws"),
+    ("_standards/raw/0000 Codes & Standards/BSI",       None, "structural",           ["digitalmodel"],                       "raw_cs_bsi"),
+    ("_standards/raw/0000 Codes & Standards/CFR",       None, "structural",           ["digitalmodel"],                       "raw_cs_cfr"),
+    ("_standards/raw/0000 Codes & Standards/DNV",       None, "pipeline",             ["digitalmodel"],                       "raw_cs_dnv"),
+    ("_standards/raw/0000 Codes & Standards/FAA",       None, "structural",           ["digitalmodel"],                       "raw_cs_faa"),
+    ("_standards/raw/0000 Codes & Standards/GLND",      None, "structural",           ["digitalmodel"],                       "raw_cs_glnd"),
+    ("_standards/raw/0000 Codes & Standards/HSE",       None, "structural",           ["digitalmodel"],                       "raw_cs_hse"),
+    ("_standards/raw/0000 Codes & Standards/IADC-TPC",  None, "pipeline",             ["digitalmodel"],                       "raw_cs_iadc"),
+    ("_standards/raw/0000 Codes & Standards/IEC",       None, "structural",           ["digitalmodel"],                       "raw_cs_iec"),
+    ("_standards/raw/0000 Codes & Standards/ISO",       None, "pipeline",             ["digitalmodel"],                       "raw_cs_iso"),
+    ("_standards/raw/0000 Codes & Standards/MIL",       None, "structural",           ["digitalmodel"],                       "raw_cs_mil"),
+    ("_standards/raw/0000 Codes & Standards/NACE",      None, "cathodic-protection",  ["digitalmodel"],                       "raw_cs_nace"),
+    ("_standards/raw/0000 Codes & Standards/_Needs Filing_", None, "pipeline",        ["digitalmodel"],                       "raw_cs_needs_filing"),
+    ("_standards/raw/0000 Codes & Standards/NEMA",      None, "structural",           ["digitalmodel"],                       "raw_cs_nema"),
+    ("_standards/raw/0000 Codes & Standards/NFPA",      None, "structural",           ["digitalmodel"],                       "raw_cs_nfpa"),
+    ("_standards/raw/0000 Codes & Standards/Norsok",    None, "pipeline",             ["digitalmodel"],                       "raw_cs_norsok"),
+    ("_standards/raw/0000 Codes & Standards/OnePetro",  None, "pipeline",             ["digitalmodel"],                       "raw_cs_onepetro"),
+    ("_standards/raw/0000 Codes & Standards/SNAME",     None, "marine",               ["digitalmodel"],                       "raw_cs_sname"),
+    ("_standards/raw/0000 Codes & Standards/Spare",     None, "pipeline",             ["digitalmodel"],                       "raw_cs_spare"),
+    ("_standards/raw/0000 Codes & Standards/unsorted",  None, "pipeline",             ["digitalmodel"],                       "raw_cs_unsorted"),
+    # Catch-all for any remaining 0000 Codes & Standards subdirs
+    ("_standards/raw/0000 Codes & Standards",           None, "pipeline",             ["digitalmodel"],                       "raw_cs_fallback"),
+    # Oil and Gas Codes — per-org mappings
+    ("_standards/raw/Oil and Gas Codes/API Standards",  None, "pipeline",             ["digitalmodel"],                       "raw_ogc_api_standards"),
+    ("_standards/raw/Oil and Gas Codes/API Stds",       None, "pipeline",             ["digitalmodel"],                       "raw_ogc_api_stds"),
+    ("_standards/raw/Oil and Gas Codes/ASTM Standards", None, "structural",           ["digitalmodel"],                       "raw_ogc_astm"),
+    ("_standards/raw/Oil and Gas Codes/British Library", None, "pipeline",            ["digitalmodel"],                       "raw_ogc_british_library"),
+    ("_standards/raw/Oil and Gas Codes/BSI Standards",  None, "structural",           ["digitalmodel"],                       "raw_ogc_bsi"),
+    ("_standards/raw/Oil and Gas Codes/DNV Standards",  None, "pipeline",             ["digitalmodel"],                       "raw_ogc_dnv"),
+    ("_standards/raw/Oil and Gas Codes/ISO Standards",  None, "pipeline",             ["digitalmodel"],                       "raw_ogc_iso"),
+    ("_standards/raw/Oil and Gas Codes/MIL Standards",  None, "structural",           ["digitalmodel"],                       "raw_ogc_mil"),
+    ("_standards/raw/Oil and Gas Codes/Norsok",         None, "pipeline",             ["digitalmodel"],                       "raw_ogc_norsok"),
+    ("_standards/raw/Oil and Gas Codes/Papers",         None, "pipeline",             ["digitalmodel"],                       "raw_ogc_papers"),
+    # Catch-all for any remaining Oil and Gas Codes subdirs/files
+    ("_standards/raw/Oil and Gas Codes",                None, "pipeline",             ["digitalmodel"],                       "raw_ogc_fallback"),
+    # Ultimate catch-all for _standards/raw/
+    ("_standards/raw",                                  None, "pipeline",             ["digitalmodel"],                       "raw_fallback"),
     # ── ace/docs/_standards sub-directories ──────────────────────────────
     ("_standards/ASTM",     None,               "materials",            ["digitalmodel", "OGManufacturing"],    "ace_astm"),
     ("_standards/NACE",     None,               "cathodic-protection",  ["digitalmodel"],                       "ace_nace"),
@@ -70,7 +121,6 @@ PATH_RULES: list[tuple[str, Optional[set[str]], str, list[str], str]] = [
     ("_standards/ASME",     None,               "structural",           ["digitalmodel", "OGManufacturing"],    "ace_asme"),
     ("_standards/SNAME",    None,               "marine",               ["digitalmodel"],                       "ace_sname"),
     ("_standards/Norsok",   None,               "structural",           ["digitalmodel", "OGManufacturing"],    "ace_norsok"),
-    # _standards/raw — intentionally left as other; needs manual inspection
     # ── O&G Standards DB sub-directories ────────────────────────────────
     ("Codes & Standards/ASTM",   None,          "materials",            ["digitalmodel", "OGManufacturing"],    "og_astm"),
     ("Codes & Standards/API",    None,          "pipeline",             ["digitalmodel", "doris"],              "og_api"),
@@ -169,7 +219,7 @@ SKIP_PATH_FRAGMENTS = [
     "Information_Friends",
     "Information_Important",
     "Personal/",
-    "_standards/raw/",     # intentionally unclassified — needs manual inspection
+    # _standards/raw/ — reclassified in WRK-605 (no longer skipped)
     "Literature/",         # general reference, not repo-specific
     "TECH Animation",
     "TECH Writing",
