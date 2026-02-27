@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-27T10:04:37Z by generate-index.py -->
+<!-- Generated: 2026-02-27T10:12:49Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-27T10:04:37Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-27T10:12:49Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 417
+**Total items:** 415
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 161 |
+| pending | 159 |
 | working | 8 |
 | blocked | 5 |
 | done | 4 |
@@ -23,8 +23,8 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 202 |
-| medium | 174 |
+| high | 201 |
+| medium | 173 |
 | low | 40 |
 
 ### By Complexity
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 70 |
-| medium | 188 |
+| medium | 186 |
 | complex | 91 |
 
 ### By Repository
@@ -51,12 +51,11 @@
 | assetutilities | 5 |
 | client_projects | 1 |
 | digitalmodel | 172 |
-| doris | 22 |
+| doris | 21 |
 | frontierdeepwater | 10 |
-| rock-oil-field | 1 |
 | sabithaandkrishnaestates | 1 |
-| saipem | 5 |
-| workspace-hub | 110 |
+| saipem | 4 |
+| workspace-hub | 108 |
 | worldenergydata | 87 |
 
 ### Plan Tracking
@@ -64,7 +63,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 153 / 417 |
+| Plans exist | 151 / 415 |
 | Plans cross-reviewed | 58 |
 | Plans approved | 79 |
 | Brochure pending | 8 |
@@ -76,9 +75,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 417 |
+| Total captured | 415 |
 | Total archived | 225 |
-| Completion rate | 225/417 (54%) |
+| Completion rate | 225/415 (54%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -86,7 +85,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 41 / 161 | 25% |
+| Pending items with plans | 39 / 159 | 25% |
 | Plans cross-reviewed | 6 | 12% |
 | Plans user-approved | 6 | 12% |
 
@@ -103,8 +102,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 90 | 5 | 3 |
-| Medium   | 52  | 2  | 1  |
+| High     | 89 | 5 | 3 |
+| Medium   | 51  | 2  | 1  |
 | Low      | 19  | 1  | 1  |
 
 ## Master Table
@@ -477,8 +476,6 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | high | medium | ace-linux-1 | - | doris, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | ace-linux-1 | - | saipem, rock-oil-field, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-560, WRK-561, WRK-562, WRK-563 |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
@@ -658,8 +655,6 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | high | high | digitalmodel | - |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | high | high | digitalmodel | - |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | high | high | digitalmodel | - |
-| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | high | medium | doris, workspace-hub | - |
-| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | medium | medium | saipem, rock-oil-field, workspace-hub | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | high | medium | workspace-hub | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | medium | medium | workspace-hub | - |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | high | large | digitalmodel | - |
@@ -1280,7 +1275,6 @@
 | WRK-534 | feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | - |
 | WRK-536 | feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | - |
 | WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | - |
-| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | high | medium | - |
 
 ### frontierdeepwater
 
@@ -1297,12 +1291,6 @@
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | - |
 
-### rock-oil-field
-
-| ID | Title | Status | Priority | Complexity | Module |
-|-----|-------|--------|----------|------------|--------|
-| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
-
 ### sabithaandkrishnaestates
 
 | ID | Title | Status | Priority | Complexity | Module |
@@ -1316,7 +1304,6 @@
 | WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | archived | medium | simple | - |
 | WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | archived | high | medium | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | high | simple | - |
-| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
 | WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | - |
 
 ### workspace-hub
@@ -1411,8 +1398,6 @@
 | WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | archived | medium | medium | - |
 | WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | high | medium | - |
 | WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | - |
-| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | high | medium | - |
-| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | - |
 | WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | - |
@@ -1714,7 +1699,6 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | digitalmodel | - |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | digitalmodel | - |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | digitalmodel | - |
-| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | medium | doris, workspace-hub | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | medium | workspace-hub | - |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | large | digitalmodel | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | medium | workspace-hub | - |
@@ -1896,7 +1880,6 @@
 | WRK-552 | feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | low | OGManufacturing | - |
 | WRK-553 | feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | low | digitalmodel | - |
 | WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | low | OGManufacturing | - |
-| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | saipem, rock-oil-field, workspace-hub | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | workspace-hub | - |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | large | digitalmodel | - |
 | WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | digitalmodel, saipem, workspace-hub | - |
@@ -2204,8 +2187,6 @@
 | WRK-537 | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | digitalmodel | - |
 | WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | doris | - |
 | WRK-555 | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | pending | high | digitalmodel | - |
-| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | high | doris, workspace-hub | - |
-| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | saipem, rock-oil-field, workspace-hub | - |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | workspace-hub | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | workspace-hub | - |
 | WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | digitalmodel, saipem, workspace-hub | - |
@@ -2327,7 +2308,7 @@
 
 ## By Computer
 
-### ace-linux-1 (140 active / 153 total)
+### ace-linux-1 (138 active / 151 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2456,8 +2437,6 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | digitalmodel |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | digitalmodel |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | digitalmodel |
-| WRK-564 | docs(doris): add calc_examples mapping — pipeline design calcs | pending | high | medium | doris, workspace-hub |
-| WRK-565 | docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field) | pending | medium | medium | saipem, rock-oil-field, workspace-hub |
 | WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | workspace-hub |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | workspace-hub |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | digitalmodel |
