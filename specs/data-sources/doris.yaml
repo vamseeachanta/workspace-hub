@@ -1297,5 +1297,96 @@ standards:
   - flange specifications
   - wafer-type
   - lug-type
+
+# =============================================================================
+# Calculation Examples
+# Real project calculation files that serve as reference implementations
+# when coding pipeline design checks in the doris repo.
+# =============================================================================
+calc_examples:
+
+# --- Pipeline pressure containment and wall thickness ---
+- standard: DNV-OS-F101
+  domain: pipeline
+  description: >
+    Wall thickness, burst/collapse, and installation load checks per DNV OS F101.
+    Multiple project workbooks provide reference pressure containment calculations.
+  files:
+  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-01 List of Pipelines Installed.xlsx
+    description: Pipeline inventory — OD, WT, grade, MAOP for DNV OS F101 Sec 5 wall thickness basis
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0003-01 Mecor Pipeline Installation DNV WT Sizing.xlsm
+    description: DNV OS F101 wall thickness sizing — burst (SC-High) and collapse (SC-Low) checks
+    type: xlsm
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0004-01 Mecor Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
+    description: Full DNV-OS-F101 pipe checks — combined loading, installation and operational cases
+    type: xlsx
+    host: ace-linux-1
+
+# --- Propagation buckle ---
+- standard: API-RP-1111
+  domain: pipeline
+  description: >
+    Propagation buckle initiation and arrest checks per API RP 1111 for deepwater pipelines.
+  files:
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0005-01 Mecor Pipeline Propagation Checks (Dnv and API).xlsx
+    description: Propagation buckle check per API RP 1111 and DNV OS F101 — transition water depth
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0002-01 API-1111 Mecor Pipeline Installation API WT Sizing.xlsm
+    description: API RP 1111 wall thickness sizing — explicit API-1111 burst and collapse checks
+    type: xlsm
+    host: ace-linux-1
+
+# --- On-bottom stability ---
+- standard: DNV-RP-F109
+  domain: pipeline
+  description: >
+    On-bottom stability hydrodynamic load inputs per DNV RP F109.
+    Environmental data, submerged weight, and pipeline geometry inputs.
+  files:
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0007-01 Metaocean information.xlsx
+    description: Metocean data — design current profiles, wave heights, return periods (F109 inputs)
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Pipeline Weights/Weight Matching.xlsx
+    description: Pipeline weight matching — submerged weight per unit length, coating breakdown
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/06_review/611 Mecor Pipeline Installation Analysis/Weight Verification/0611-Cal-0001-01 (Weight Verification).xlsx
+    description: Weight verification — cross-check of submerged weight against vendor data
+    type: xlsx
+    host: ace-linux-1
+
+# --- Upheaval buckling ---
+- standard: DNV-RP-F110
+  domain: pipeline
+  description: >
+    Upheaval buckling and pipeline expansion analysis per DNV RP F110.
+    Pipelay tension and sagbend analysis provides installation load inputs.
+  files:
+  - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx
+    description: TJG pipelay analysis — S-lay tension, sagbend bending strain, stinger loads (DNV-RP-F110 input data)
+    type: xlsx
+    host: ace-linux-1
+
+# --- Pipelay installation ---
+- standard: DNV-OS-F101-installation
+  domain: pipeline
+  description: >
+    S-lay pipelay installation checks per DNV OS F101 installation section.
+    Sagbend and overbend checks, abandonment and recovery analysis.
+  files:
+  - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis (Clean & Release).xlsx
+    description: Released TJG pipelay analysis — clean copy with final results for installation design basis
+    type: xlsx
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-05 List of Pipelines Installed.xlsx
+    description: Updated pipeline inventory — revised wall thicknesses after FEA validation
+    type: xlsx
+    host: ace-linux-1
+
 apis: []
 gaps: []
