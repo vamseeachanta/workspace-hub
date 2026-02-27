@@ -1,10 +1,10 @@
-generated: '2026-02-25'
+generated: '2026-02-27'
 total: 425
 summary:
   reference: 138
-  wrk_captured: 34
+  wrk_captured: 29
   gap: 235
-  done: 18
+  done: 23
 standards:
 - id: 5L
   title: API Specification 5L for Line Pipe
@@ -428,7 +428,7 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Offshore Standard/DNV OS F101/DNV OS F101 (2007) Submarine Pipeline Systems.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Offshore Standard/DNV OS F101/DNV OS F101 (2013) Submarine Pipeline Systems.pdf
   status: done
-  wrk_id: WRK-513
+  wrk_id: WRK-482
   repo: null
   modules: []
   implemented_at: null
@@ -444,7 +444,7 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Offshore Standard/DNV OS F201/DNV OS F201 (2010) Dynamic Risers.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Offshore Standard/DNV OS F201/DNV OS F201 (2001) Dynamic Risers.pdf
   status: done
-  wrk_id: WRK-383
+  wrk_id: WRK-519
   repo: null
   modules: []
   implemented_at: null
@@ -491,19 +491,11 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP F105/DNV RP F105 (2006) Free Spanning Pipelines.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP F105/DNV RP F105 (2002) Free Spanning Pipelines.pdf
   status: done
-  wrk_id: WRK-607
+  wrk_id: WRK-045
   repo: digitalmodel
-  modules:
-  - digitalmodel.subsea.pipeline.free_span.models
-  - digitalmodel.subsea.pipeline.free_span.span_natural_frequency
-  - digitalmodel.subsea.pipeline.free_span.span_onset_screening
-  - digitalmodel.subsea.pipeline.free_span.span_viv_response
-  - digitalmodel.subsea.pipeline.free_span.span_fatigue_damage
-  - digitalmodel.subsea.pipeline.free_span.span_allowable_length
-  implemented_at: '2026-02-25'
-  notes: 'Sec 4.2 allowable span, 4.3.4/4.4.4 IL/CF amplitude, 4.3.5/4.4.6 onset,
-    6.8 natural frequency (full Eq 6.8-1 incl Se/Pcr + Ca(e/D)), 7.3 fatigue (Miner
-    sum, F-class S-N, D_IL+D_CF). 41 tests. Commits: 6244e7b, 2f2cde1, 995d381.'
+  modules: []
+  implemented_at: null
+  notes: ''
 - id: DNV-RP-F108
   title: DNV RP F108 with update 2009 (2006) Fracture Control for pipeline installation.pdf
   org: DNV
@@ -531,7 +523,7 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP F109/DNV RP F109 (2011) On bottom stability
     of pipelines.pdf
   status: done
-  wrk_id: WRK-332
+  wrk_id: WRK-535
   repo: null
   modules: []
   implemented_at: null
@@ -545,7 +537,7 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP F110/DNV RP F110 (2007) Global buckling
     of submarine pipelines.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-521
   repo: null
   modules: []
@@ -651,7 +643,7 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO 13628/ISO 13628 Pt 12 DRAFT Rev24 (2011) Dynamic Risers for Floating
     Production Installations.docx
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ISO/ISO 13628/ISO 13628 Pt 7 1st Ed (2005) Completion workover riser systems.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-503
   repo: null
   modules: []
@@ -822,7 +814,7 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API-2A/API RP 2A WSD.pdf
   status: done
-  wrk_id: WRK-354
+  wrk_id: WRK-482
   repo: null
   modules: []
   implemented_at: null
@@ -1242,8 +1234,8 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/ASTM/ASTM 03.01 Metals - Metals Test Methods and Analytical Procedures/ASTM E1049-85(2005)
     Standard Practices for Cycle Counting in Fatigue Analysis.pdf
-  status: wrk_captured
-  wrk_id: WRK-315
+  status: done
+  wrk_id: WRK-543
   repo: null
   modules: []
   implemented_at: null
@@ -2015,7 +2007,7 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP B401/DNV RP B401 (2011) Cathodic Protection
     Design.pdf
   status: done
-  wrk_id: WRK-273
+  wrk_id: WRK-470
   repo: null
   modules: []
   implemented_at: null
@@ -2044,7 +2036,7 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Recommended Practices/DNV RP F103/DNV RP F103 (2003) Cathodic protection
     of submarine pipelines by galvanic anodes.pdf
   status: done
-  wrk_id: WRK-273
+  wrk_id: WRK-493
   repo: null
   modules: []
   implemented_at: null
@@ -2347,8 +2339,8 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API 2P.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/AS/API/API Recommended Practice/API RP 2P/API RP 2P 2nd Ed (1987) Analysis of
     Spread Mooring Systems for Floating Drilling Units.pdf
-  status: wrk_captured
-  wrk_id: WRK-559
+  status: done
+  wrk_id: WRK-482
   repo: null
   modules: []
   implemented_at: null
@@ -2388,7 +2380,7 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/AS/API/API Recommended Practice/API RP 2SM/API RP 2SM 1st Ed & Addendum (2001
     & 2007) Design, Manufacture, Installation and Maintenance of Synthetic Fiber Ropes for Offshore Mooring.pdf
-  status: wrk_captured
+  status: done
   wrk_id: WRK-558
   repo: null
   modules: []
@@ -2488,7 +2480,7 @@ standards:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Offshore Standard/DNV OS E301/DNV OS E301 (2010) Position Mooring.pdf
   - /mnt/ace/0000 O&G/0000 Codes & Standards/DNV/DNV Offshore Standard/DNV OS E301/DNV OS E301 (2008) Position Mooring.pdf
   status: done
-  wrk_id: WRK-383
+  wrk_id: WRK-555
   repo: null
   modules: []
   implemented_at: null
@@ -3587,7 +3579,7 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Standards/API RP 2RD.pdf
   status: done
-  wrk_id: WRK-175
+  wrk_id: WRK-625
   repo: null
   modules: []
   implemented_at: null
@@ -3801,7 +3793,7 @@ standards:
   doc_paths:
   - /mnt/ace/0000 O&G/0000 Codes & Standards/Spare/API Stds/API/API RP 579 (2000).pdf
   status: done
-  wrk_id: WRK-156
+  wrk_id: WRK-570
   repo: null
   modules: []
   implemented_at: null
