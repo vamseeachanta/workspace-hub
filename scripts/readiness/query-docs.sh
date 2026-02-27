@@ -27,6 +27,8 @@ KEYWORD=""
 STATUS=""
 LIMIT=50
 FORMAT=table
+CALC_ONLY=false
+STANDARD=""
 
 usage() {
     cat <<EOF
@@ -40,6 +42,8 @@ Options:
   --source SOURCE      Filter by source type (og_standards, ace_project, dde_project, ...)
   --keyword KEYWORD    Full-text keyword search in path/title
   --status STATUS      Filter by status (implemented, gap, data_source, reference)
+  --calc-only          Return only calc files (paths with /CAL/, -CAL-, or -RPT-)
+  --standard STANDARD  Filter by standard ID keyword match in path/title
   --limit N            Max results (default: 50)
   --format FORMAT      Output format: table|json|paths (default: table)
   -h, --help           Show this help
@@ -61,6 +65,8 @@ while [[ $# -gt 0 ]]; do
         --status) STATUS="$2"; shift 2 ;;
         --limit) LIMIT="$2"; shift 2 ;;
         --format) FORMAT="$2"; shift 2 ;;
+        --calc-only) CALC_ONLY=true; shift ;;
+        --standard) STANDARD="$2"; shift 2 ;;
         -h|--help) usage; exit 0 ;;
         *) echo "Unknown option: $1"; usage; exit 1 ;;
     esac
@@ -74,12 +80,13 @@ if [[ ! -f "$INDEX_FILE" ]]; then
 fi
 
 # Use Python for filtering (jq alone doesn't handle JSONL domain arrays well)
-python3 - "$INDEX_FILE" "$DOMAIN" "$REPO" "$SOURCE" "$KEYWORD" "$STATUS" "$LIMIT" "$FORMAT" <<'PYEOF'
+python3 - "$INDEX_FILE" "$DOMAIN" "$REPO" "$SOURCE" "$KEYWORD" "$STATUS" "$LIMIT" "$FORMAT" "$CALC_ONLY" "$STANDARD" <<'PYEOF'
 import sys
 import json
 
-index_file, domain, repo, source, keyword, status, limit, fmt = sys.argv[1:]
+index_file, domain, repo, source, keyword, status, limit, fmt, calc_only_str, standard = sys.argv[1:11]
 limit = int(limit)
+calc_only = calc_only_str.lower() == 'true'
 
 results = []
 with open(index_file) as f:
@@ -110,6 +117,19 @@ with open(index_file) as f:
                 str(rec.get("title", "") or ""),
             ]).lower()
             if kw not in searchable:
+                continue
+        if calc_only:
+            path = rec.get("path", "")
+            if not ("/CAL/" in path or "-CAL-" in path or "-RPT-" in path):
+                continue
+        if standard:
+            std = standard.lower()
+            searchable = " ".join([
+                str(rec.get("path", "")),
+                str(rec.get("doc_number", "") or ""),
+                str(rec.get("title", "") or ""),
+            ]).lower()
+            if std not in searchable:
                 continue
 
         results.append(rec)
