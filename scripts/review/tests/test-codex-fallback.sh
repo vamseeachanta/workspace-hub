@@ -46,6 +46,17 @@ echo "# Codex returned NO_OUTPUT (empty response)" > "$TEST_DIR/review-noout.md"
 v="$("$REVIEW_DIR/normalize-verdicts.sh" "$TEST_DIR/review-noout.md")"
 assert_eq "NO_OUTPUT detected" "NO_OUTPUT" "$v"
 
+echo "Test 4b: validate-review-output — INVALID_OUTPUT"
+cat > "$TEST_DIR/review-invalid.md" <<'EOF'
+I will begin by exploring the repository and then provide a review.
+EOF
+v="$("$REVIEW_DIR/validate-review-output.sh" "$TEST_DIR/review-invalid.md")"
+assert_eq "INVALID_OUTPUT detected" "INVALID_OUTPUT" "$v"
+
+echo "Test 4c: normalize-verdicts — INVALID_OUTPUT"
+v="$("$REVIEW_DIR/normalize-verdicts.sh" "$TEST_DIR/review-invalid.md")"
+assert_eq "INVALID_OUTPUT normalized" "INVALID_OUTPUT" "$v"
+
 echo "Test 5: normalize-verdicts — CONDITIONAL_PASS"
 cat > "$TEST_DIR/review-conditional.md" <<'EOF'
 # Codex Fallback Consensus (WRK-160)

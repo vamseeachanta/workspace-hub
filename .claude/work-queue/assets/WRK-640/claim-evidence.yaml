@@ -1,0 +1,14 @@
+claim_date: 2026-02-27T00:00:00Z
+wrk_id: WRK-640
+route: B
+orchestrator: codex
+best_fit_provider: codex
+review_support:
+  primary_runtime_fix: claude
+  secondary_runtime_fix: gemini
+quota_snapshot:
+  source: config/ai-tools/agent-quota-latest.json
+  status: not_captured_in_session
+rationale:
+  - Work centers on shell and parser hardening in workspace-hub review tooling.
+  - Local execution confirmed provider-specific transport failures and isolated-cwd recovery.

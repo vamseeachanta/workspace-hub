@@ -1,29 +1,44 @@
 {
-  "timestamp": "2026-02-22T11:54:42-06:00",
+  "timestamp": "2026-02-27T15:38:16-06:00",
   "agents": [
     {
       "provider": "claude",
       "tier": "max",
-      "week_pct": 46.0,
-      "five_hour_pct": 4.0,
-      "sonnet_pct": 48.0,
-      "hours_to_reset": 56,
-      "resets_at": "2026-02-25T02:00:00.554408+00:00",
-      "sonnet_resets_at": "2026-02-22T21:00:00.554419+00:00",
-      "sonnet_hours_to_reset": 3,
-      "source": "oauth-api"
+      "weekly_limit": 20000,
+      "week_messages": 81807,
+      "approx_requests": 5453,
+      "week_sessions": 63,
+      "week_tool_calls": 5109,
+      "pct_remaining": 73,
+      "avg_daily_messages": 12931,
+      "trend": "high",
+      "source": "stats-cache.json",
+      "week_cost_usd": 677.49,
+      "week_tokens": 1779392897,
+      "week_input_tokens": 1043075,
+      "week_output_tokens": 535764,
+      "models_used": [
+        "claude-sonnet-4-6",
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-4-5-20250929",
+        "claude-opus-4-6"
+      ]
     },
     {
       "provider": "codex",
-      "week_pct": 74.0,
-      "resets_at": "2026-02-24T14:04:24-0600",
-      "hours_to_reset": 50,
-      "source": "local-session-rate-limits"
+      "tier": "subscription",
+      "weekly_limit": 1400,
+      "week_messages": 97,
+      "pct_remaining": 94,
+      "source": "history.jsonl"
     },
     {
       "provider": "gemini",
-      "week_pct": 0,
-      "source": "manual"
+      "tier": "google_login",
+      "daily_limit": 1000,
+      "today_messages": 0,
+      "pct_remaining": 100,
+      "source": "estimated"
     }
   ]
 }

@@ -1,0 +1,10 @@
+resources:
+  - name: claude_wrapper
+    path: scripts/review/submit-to-claude.sh
+    type: script
+  - name: gemini_wrapper
+    path: scripts/review/submit-to-gemini.sh
+    type: script
+  - name: review_transport_guide
+    path: docs/guides/review-transport.md
+    type: document

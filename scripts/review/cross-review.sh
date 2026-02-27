@@ -94,6 +94,17 @@ build_review_args() {
 CODEX_PASSED=false
 CODEX_NO_OUTPUT=false
 
+classify_review_result() {
+  local result_file="$1"
+  "${SCRIPT_DIR}/validate-review-output.sh" "$result_file" 2>/dev/null || echo "ERROR"
+}
+
+preserve_raw_result() {
+  local result_file="$1"
+  local raw_file="${result_file%.md}.raw.md"
+  cp "$result_file" "$raw_file"
+}
+
 # Submit to reviewers
 submit_review() {
   local reviewer="$1"
@@ -114,6 +125,26 @@ submit_review() {
           echo "# Fallback: manual review required" >> "$result_file"
         }
       fi
+      local claude_status
+      claude_status="$(classify_review_result "$result_file")"
+      case "$claude_status" in
+        VALID) ;;
+        NO_OUTPUT)
+          preserve_raw_result "$result_file"
+          echo "# Claude returned NO_OUTPUT" > "$result_file"
+          ;;
+        INVALID_OUTPUT)
+          echo "    WARNING: Claude returned INVALID_OUTPUT" >&2
+          preserve_raw_result "$result_file"
+          {
+            echo "# Claude returned INVALID_OUTPUT"
+            echo "# Output did not match required review format"
+          } > "$result_file"
+          ;;
+        *)
+          echo "    WARNING: Claude review classification ERROR" >&2
+          ;;
+      esac
       ;;
     codex)
       local codex_exit=0
@@ -126,13 +157,23 @@ submit_review() {
       # A real Codex review contains "codex" output lines (the model's response)
       local codex_size=0
       [[ -f "$result_file" ]] && codex_size="$(wc -c < "$result_file" | tr -d ' ')"
-      if [[ $codex_exit -eq 0 ]] && ! grep -q "^# Codex.*failed\|^# Codex CLI not found\|^# HARD GATE" "$result_file" 2>/dev/null && grep -q "^codex$" "$result_file" 2>/dev/null; then
+      local codex_status
+      codex_status="$(classify_review_result "$result_file")"
+      if [[ $codex_exit -eq 0 ]] && [[ "$codex_status" == "VALID" ]] && ! grep -q "^# Codex.*failed\|^# Codex CLI not found\|^# HARD GATE" "$result_file" 2>/dev/null && grep -q "^codex$" "$result_file" 2>/dev/null; then
         CODEX_PASSED=true
-      elif [[ $codex_exit -eq 0 && "$codex_size" -lt 10 ]]; then
+      elif [[ $codex_exit -eq 0 && ( "$codex_size" -lt 10 || "$codex_status" == "NO_OUTPUT" ) ]]; then
         # Codex ran but produced empty/trivial output (known large-diff limitation)
         CODEX_NO_OUTPUT=true
         echo "    WARNING: Codex returned NO_OUTPUT (${codex_size} bytes) — fallback consensus will be attempted" >&2
         echo "# Codex returned NO_OUTPUT (empty response on large diff)" > "$result_file"
+      elif [[ $codex_exit -eq 0 && "$codex_status" == "INVALID_OUTPUT" ]]; then
+        echo "    WARNING: Codex returned INVALID_OUTPUT — this is a HARD GATE" >&2
+        CODEX_NO_OUTPUT=true
+        preserve_raw_result "$result_file"
+        {
+          echo "# Codex returned INVALID_OUTPUT"
+          echo "# HARD GATE: Codex review did not match required format"
+        } > "$result_file"
       else
         echo "    WARNING: Codex review FAILED (exit $codex_exit) — this is a HARD GATE" >&2
         if [[ $codex_exit -ne 0 ]]; then
@@ -159,6 +200,26 @@ submit_review() {
           echo "# Fallback: manual review required" >> "$result_file"
         }
       fi
+      local gemini_status
+      gemini_status="$(classify_review_result "$result_file")"
+      case "$gemini_status" in
+        VALID) ;;
+        NO_OUTPUT)
+          preserve_raw_result "$result_file"
+          echo "# Gemini returned NO_OUTPUT" > "$result_file"
+          ;;
+        INVALID_OUTPUT)
+          echo "    WARNING: Gemini returned INVALID_OUTPUT" >&2
+          preserve_raw_result "$result_file"
+          {
+            echo "# Gemini returned INVALID_OUTPUT"
+            echo "# Output did not match required review format"
+          } > "$result_file"
+          ;;
+        *)
+          echo "    WARNING: Gemini review classification ERROR" >&2
+          ;;
+      esac
       ;;
   esac
 
@@ -177,7 +238,6 @@ case "$REVIEWER" in
       if [[ "$CODEX_NO_OUTPUT" == "true" ]]; then
         echo ""
         echo "--- Codex returned NO_OUTPUT. Attempting 2-of-3 fallback consensus..." >&2
-        local claude_verdict gemini_verdict
         claude_file="${RESULT_PREFIX}-claude.md"
         gemini_file="${RESULT_PREFIX}-gemini.md"
         claude_verdict="$("${SCRIPT_DIR}/normalize-verdicts.sh" "$claude_file" 2>/dev/null || echo "ERROR")"
@@ -200,7 +260,7 @@ case "$REVIEWER" in
 - **Policy**: Codex remains primary authority; fallback only on NO_OUTPUT, never on explicit REJECT/MAJOR
 FALLBACK_EOF
           echo "    Fallback result: $fallback_file" >&2
-          # Exit 0 — conditional pass
+          exit 0
         else
           echo "=== CODEX HARD GATE FAILED (no fallback consensus) ===" >&2
           echo "Claude=$claude_verdict, Gemini=$gemini_verdict — need both APPROVE or MINOR for fallback." >&2

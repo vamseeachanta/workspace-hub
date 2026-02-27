@@ -229,6 +229,11 @@ flowchart TD
           <td class="status-bad">Close blocked if unverified</td>
         </tr>
         <tr>
+          <td>Review schema</td>
+          <td>Claude, Codex, and Gemini must all emit the same interpretable review structure so other agents and validators can parse the result without provider-specific logic.</td>
+          <td class="status-bad">Review gate blocked on invalid format</td>
+        </tr>
+        <tr>
           <td>User verification</td>
           <td>The user reviews the HTML artifact before the WRK may move to final closure.</td>
           <td class="status-bad">Close blocked if not reviewed</td>
@@ -260,6 +265,7 @@ flowchart TD
           <li><strong>Claim</strong> includes an AI capability check and should recommend a better-fit executor when the current agent is not the strongest option.</li>
           <li><strong>Claim</strong> also checks weekly AI usage availability from the regular quota cron/readiness pipeline so execution does not start on an agent likely to hard-stop; waiting a few hours is acceptable, waiting a week is not.</li>
           <li><strong>Review matrix</strong> is route-based, but no route skips review.</li>
+          <li><strong>Review artifacts</strong> must share a common schema: <code>Verdict</code>, <code>Summary</code>, <code>Issues Found</code>, <code>Suggestions</code>, and <code>Questions for Author</code>.</li>
           <li><strong>Plan gate</strong> requires user review twice: once on the draft HTML before multi-agent review, and once on the final HTML after multi-agent review.</li>
           <li><strong>Plan HTML</strong> should front-load an executive summary near the top so the user can review the item quickly.</li>
           <li><strong>Every WRK</strong> carries 5-10 real examples, variation tests, and learning outputs.</li>

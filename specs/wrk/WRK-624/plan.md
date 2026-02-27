@@ -235,6 +235,13 @@ Close requires evidence for:
 - Claude, Codex, and Gemini are all required.
 - Gemini runs in deepest-thinking mode.
 - `review-synthesis.md` is mandatory.
+- All three agent review artifacts must use the same interpretable review format so other agents and validators can consume them without provider-specific parsing.
+- Minimum required sections for every review artifact:
+  - `Verdict`
+  - `Summary`
+  - `Issues Found`
+  - `Suggestions`
+  - `Questions for Author`
 - Any unresolved `MAJOR` blocks progression unless explicitly waived by the user.
 - Fallback consensus is allowed only for tool failure or `NO_OUTPUT`, not substantive disagreement.
 
@@ -356,6 +363,7 @@ Rules:
 - When two sources disagree, the explicit source-of-truth artifact above wins.
 - Freshness matters: stale advisory data may inform routing, but stale blocking data cannot satisfy a gate.
 - Manual overrides require user-visible evidence in the WRK metadata or review artifacts.
+- Review artifacts that do not conform to the shared interpretable schema are classified as `INVALID_OUTPUT` and do not satisfy the review gate.
 
 ## Merge and Sync Rules
 - Merge-to-main is required before archive.
@@ -414,6 +422,7 @@ Rules:
   - stale session ownership recovery
 - outage tests:
   - reviewer `NO_OUTPUT`
+  - reviewer `INVALID_OUTPUT`
   - quota snapshot unavailable
   - legal/doc-index/html verification tool failure
 - migration tests:
@@ -438,6 +447,7 @@ Rules:
 
 ## Acceptance Criteria
 - 3 review artifacts exist for the current plan revision, or fallback policy is explicitly invoked for `NO_OUTPUT`.
+- Each review artifact conforms to the shared interpretable schema with the required sections.
 - One synthesis artifact records final verdict and unresolved findings count.
 - Mermaid renders the planning HTML review gates, claim routing gate, and archive gate.
 - WRK metadata schema includes:

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Normalize review text into APPROVE|MINOR|MAJOR|NO_OUTPUT|ERROR.
+# Normalize review text into APPROVE|MINOR|MAJOR|NO_OUTPUT|INVALID_OUTPUT|ERROR.
 
 infile="${1:-}"
 if [[ -z "$infile" || ! -f "$infile" ]]; then
@@ -10,6 +10,11 @@ if [[ -z "$infile" || ! -f "$infile" ]]; then
 fi
 
 text="$(tr '[:upper:]' '[:lower:]' < "$infile")"
+trimmed_text="$(tr -d '[:space:]' <<< "$text")"
+if [[ -z "$trimmed_text" ]]; then
+    echo "ERROR"
+    exit 0
+fi
 
 # Prefer explicit verdict headers over free-text mentions in issue sections.
 # Ignore template lines that contain option lists (e.g. "APPROVE | REQUEST_CHANGES | REJECT").
@@ -20,6 +25,16 @@ verdict_line="$(
     || true
 )"
 if [[ -n "$verdict_line" ]]; then
+    issues_text="$(grep -Ei '\[p[123]\]' "$infile" | tr '[:upper:]' '[:lower:]' || true)"
+    if [[ "$verdict_line" == *request_changes* || "$verdict_line" == *request-changes* || "$verdict_line" == *request\ changes* ]]; then
+        if grep -q '\[p1\]\|\[p2\]' <<< "$issues_text"; then
+            echo "MAJOR"
+            exit 0
+        elif grep -q '\[p3\]' <<< "$issues_text"; then
+            echo "MINOR"
+            exit 0
+        fi
+    fi
     case "$verdict_line" in
         *conditional_pass*|*conditional-pass*|*conditional\ pass*)
             echo "CONDITIONAL_PASS"
@@ -52,5 +67,12 @@ elif grep -q "conditional.pass\|conditional_pass" <<< "$text"; then
 elif grep -Eq '^# (claude|gemini) review failed|timed out' <<< "$text"; then
     echo "NO_OUTPUT"
 else
-    echo "ERROR"
+    validation="$("$(cd "$(dirname "$0")" && pwd)/validate-review-output.sh" "$infile" 2>/dev/null || echo "ERROR")"
+    if [[ "$validation" == "INVALID_OUTPUT" ]]; then
+        echo "INVALID_OUTPUT"
+    elif [[ "$validation" == "NO_OUTPUT" ]]; then
+        echo "NO_OUTPUT"
+    else
+        echo "ERROR"
+    fi
 fi
