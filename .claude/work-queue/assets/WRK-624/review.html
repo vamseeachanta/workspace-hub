@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review: WRK-624</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 40px; background: #fafafa; color: #24292e; }
+        .card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px; border: 1px solid #e1e4e8; }
+        h1 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; margin-top: 24px; }
+        .exec-summary { background: #f1f8ff; padding: 20px; border-left: 6px solid #0366d6; margin-bottom: 30px; border-radius: 4px; }
+        .exec-summary h2 { margin-top: 0; border: none; color: #0366d6; }
+        pre { background: #f6f8fa; padding: 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #dfe1e4; }
+        code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; background: rgba(27,31,35,0.05); padding: 0.2em 0.4em; border-radius: 3px; }
+        pre code { background: none; padding: 0; }
+        table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+        th, td { border: 1px solid #dfe1e8; padding: 12px; text-align: left; }
+        th { background-color: #f6f8fa; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>WRK-624 Review</h1>
+        <div class="exec-summary">
+            <h2>Executive Summary</h2>
+            <div><ol>
+<li><strong>Linear workflow schematic</strong> — create a single canonical ASCII/Mermaid stage diagram
+   that every agent can follow step-by-step, with no ambiguity about what "done" means
+   at each stage:</li>
+</ol>
+<p><code>CAPTURE → TRIAGE → PLAN → CLAIM → IMPLEMENT → CROSS-REVIEW → CLOSE → ARCHIVE
+      │         │        │       │         │             │           │        │
+   pending/  pending/  pending/ working/ working/    working/    done/   archive/</code></p>
+<p>Each arrow = a specific <code>mv</code> + frontmatter update + INDEX regeneration.</p>
+<ol>
+<li><strong>Agent completion checklist</strong> — a mandatory <code>## Completion Checklist</code> block that
+   agents must fill in the WRK item body before marking done:</li>
+</ol>
+<p><code>markdown
+   ## Completion Checklist
+   - [ ] Implementation committed: &lt;hash&gt;
+   - [ ] Tests pass: &lt;command + output&gt;
+   - [ ] Cross-review passed: &lt;claude|codex|gemini results path&gt;
+   - [ ] WRK frontmatter updated: status=done, percent_complete=100, commit=&lt;hash&gt;
+   - [ ] File moved: pending/ → done/
+   - [ ] INDEX regenerated: python3 scripts/generate-index.py
+   - [ ] Hub commit: &lt;hash&gt;</code></p>
+<ol>
+<li><strong><code>close-item.sh</code> script</strong> — atomic shell script at
+   <code>scripts/work-queue/close-item.sh &lt;WRK-NNN&gt; &lt;commit-hash&gt;</code> that:</li>
+<li>Updates frontmatter (<code>status: done</code>, <code>percent_complete: 100</code>, <code>commit:</code>, <code>completed_at:</code>)</li>
+<li>Moves file from <code>working/</code> (or <code>pending/</code>) to <code>done/</code></li>
+<li>Runs <code>generate-index.py</code></li>
+<li>
+<p>Stages and commits the state update with <code>chore(work-queue): close WRK-NNN</code></p>
+</li>
+<li>
+<p><strong><code>validate-queue-state.sh</code></strong> — linting script that:</p>
+</li>
+<li>Fails if any file in <code>pending/</code> or <code>working/</code> has <code>status: done</code></li>
+<li>Fails if any file in <code>done/</code> has <code>status: pending</code> or <code>status: working</code></li>
+<li>Warns if <code>working/</code> has items with <code>updated_at</code> &gt; 7 days ago</li>
+<li>
+<p>Runs in <code>generate-index.py</code> as post-check (exit code 0/1)</p>
+</li>
+<li>
+<p><strong>Update <code>process.md</code> and <code>SKILL.md</code></strong> — replace the current prose description with
+   the canonical schematic; add <code>close-item.sh</code> to the Process stage; add the completion
+   checklist template to the Conventions section.</p>
+</li>
+<li>
+<p><strong>Pre-commit hook</strong> — add <code>validate-queue-state.sh</code> to <code>.pre-commit-config.yaml</code> so
+   mismatched state is caught before any hub commit.</p>
+</li>
+</ol></div>
+        </div>
+        <div class="content">
+            <h1>chore(work-queue): Review and Harden Workflow — Linear Stage Schematic + Agent Completion Gates</h1>
+<h2>Problem Statement</h2>
+<p>Agents consistently complete implementation work but miss the final bookkeeping steps,
+leaving WRK items stranded in the wrong pipeline stage. Evidence from 2026-02-26:</p>
+<ul>
+<li><strong>174 items</strong> with <code>status: done</code> were physically sitting in <code>pending/</code> — only frontmatter
+  was updated, the <code>mv pending/ → done/</code> step was skipped</li>
+<li>WRK-617 completed by a parallel session (cross-review results timestamped, git commits
+  present) with zero state update — status still <code>pending</code>, percent_complete still <code>0</code></li>
+<li><code>session-state.yaml</code> not updated since 2026-02-24 — session wrappers not being invoked</li>
+<li><code>daily_today.sh</code> reported "53 done · 145 ready" when reality was "225 done · 174 ready"</li>
+</ul>
+<p>Root cause: the workflow is documented in <code>process.md</code> and <code>SKILL.md</code> but there is no
+<strong>enforced linear checklist</strong> agents must step through, and no automated gate that catches
+"work done, state not updated".</p>
+<h2>What</h2>
+<ol>
+<li><strong>Linear workflow schematic</strong> — create a single canonical ASCII/Mermaid stage diagram
+   that every agent can follow step-by-step, with no ambiguity about what "done" means
+   at each stage:</li>
+</ol>
+<p><code>CAPTURE → TRIAGE → PLAN → CLAIM → IMPLEMENT → CROSS-REVIEW → CLOSE → ARCHIVE
+      │         │        │       │         │             │           │        │
+   pending/  pending/  pending/ working/ working/    working/    done/   archive/</code></p>
+<p>Each arrow = a specific <code>mv</code> + frontmatter update + INDEX regeneration.</p>
+<ol>
+<li><strong>Agent completion checklist</strong> — a mandatory <code>## Completion Checklist</code> block that
+   agents must fill in the WRK item body before marking done:</li>
+</ol>
+<p><code>markdown
+   ## Completion Checklist
+   - [ ] Implementation committed: &lt;hash&gt;
+   - [ ] Tests pass: &lt;command + output&gt;
+   - [ ] Cross-review passed: &lt;claude|codex|gemini results path&gt;
+   - [ ] WRK frontmatter updated: status=done, percent_complete=100, commit=&lt;hash&gt;
+   - [ ] File moved: pending/ → done/
+   - [ ] INDEX regenerated: python3 scripts/generate-index.py
+   - [ ] Hub commit: &lt;hash&gt;</code></p>
+<ol>
+<li><strong><code>close-item.sh</code> script</strong> — atomic shell script at
+   <code>scripts/work-queue/close-item.sh &lt;WRK-NNN&gt; &lt;commit-hash&gt;</code> that:</li>
+<li>Updates frontmatter (<code>status: done</code>, <code>percent_complete: 100</code>, <code>commit:</code>, <code>completed_at:</code>)</li>
+<li>Moves file from <code>working/</code> (or <code>pending/</code>) to <code>done/</code></li>
+<li>Runs <code>generate-index.py</code></li>
+<li>
+<p>Stages and commits the state update with <code>chore(work-queue): close WRK-NNN</code></p>
+</li>
+<li>
+<p><strong><code>validate-queue-state.sh</code></strong> — linting script that:</p>
+</li>
+<li>Fails if any file in <code>pending/</code> or <code>working/</code> has <code>status: done</code></li>
+<li>Fails if any file in <code>done/</code> has <code>status: pending</code> or <code>status: working</code></li>
+<li>Warns if <code>working/</code> has items with <code>updated_at</code> &gt; 7 days ago</li>
+<li>
+<p>Runs in <code>generate-index.py</code> as post-check (exit code 0/1)</p>
+</li>
+<li>
+<p><strong>Update <code>process.md</code> and <code>SKILL.md</code></strong> — replace the current prose description with
+   the canonical schematic; add <code>close-item.sh</code> to the Process stage; add the completion
+   checklist template to the Conventions section.</p>
+</li>
+<li>
+<p><strong>Pre-commit hook</strong> — add <code>validate-queue-state.sh</code> to <code>.pre-commit-config.yaml</code> so
+   mismatched state is caught before any hub commit.</p>
+</li>
+</ol>
+<h2>Why</h2>
+<ul>
+<li>Agents are capable but lose context of the bookkeeping steps at session end</li>
+<li>A single executable script (<code>close-item.sh</code>) eliminates the multi-step manual process</li>
+<li><code>validate-queue-state.sh</code> in pre-commit turns the oversight into an automated catch</li>
+<li>The schematic gives a visual anchor — agents can confirm "I am at stage X, next step is Y"</li>
+</ul>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] <code>docs/work-queue-workflow.md</code> created with canonical ASCII stage diagram</li>
+<li>[ ] <code>scripts/work-queue/close-item.sh &lt;WRK-NNN&gt; &lt;commit-hash&gt;</code> created and executable</li>
+<li>Handles both <code>pending/</code> and <code>working/</code> source locations</li>
+<li>Idempotent (safe to run twice)</li>
+<li>Updates frontmatter, moves file, regenerates INDEX, commits hub state</li>
+<li>[ ] <code>scripts/work-queue/validate-queue-state.sh</code> created</li>
+<li>Exit 1 if status/folder mismatch found</li>
+<li>Integrated into <code>generate-index.py</code> post-check call</li>
+<li>[ ] <code>process.md</code> updated: schematic diagram added, <code>close-item.sh</code> usage documented</li>
+<li>[ ] <code>SKILL.md</code> (work-queue) updated: schematic + completion checklist template added</li>
+<li>[ ] <code>.pre-commit-config.yaml</code> updated: <code>validate-queue-state.sh</code> as a hook</li>
+<li>[ ] All existing 225 <code>done/</code> items pass <code>validate-queue-state.sh</code></li>
+<li>[ ] Legal scan passes</li>
+<li>[ ] Cross-review: Claude + Codex + Gemini — all P1/P2 issues resolved</li>
+</ul>
+<h2>Execution Brief (for Codex)</h2>
+<p><strong>Provider</strong>: Codex (focused script + doc authoring); Gemini for cross-review of docs;
+Claude for final orchestration review.</p>
+<p><strong>Task for Codex</strong>:
+You are implementing <code>close-item.sh</code>, <code>validate-queue-state.sh</code>, and updating <code>process.md</code>
+and <code>SKILL.md</code> for the workspace-hub work-queue system.</p>
+<p>Repository: <code>workspace-hub</code> at <code>/mnt/local-analysis/workspace-hub/</code>
+Work-queue root: <code>.claude/work-queue/</code>
+Scripts root: <code>scripts/work-queue/</code></p>
+<p>Deliverables:
+1. <code>scripts/work-queue/close-item.sh</code> — see spec above; use <code>#!/usr/bin/env bash</code>,
+   <code>set -euo pipefail</code>; no hardcoded paths (use <code>git rev-parse --show-toplevel</code>)
+2. <code>scripts/work-queue/validate-queue-state.sh</code> — same shell conventions
+3. <code>docs/work-queue-workflow.md</code> — ASCII stage diagram + stage table + completion checklist
+4. Edit <code>process.md</code> — add diagram reference + <code>close-item.sh</code> command in Process stage
+5. Edit <code>.claude/skills/coordination/workspace/work-queue/SKILL.md</code> — add checklist template</p>
+<p>Run tests: <code>bash scripts/work-queue/validate-queue-state.sh</code> must exit 0 on current queue.</p>
+<p><strong>What user reviews</strong>: the schematic diagram for clarity, the checklist for completeness,
+and that <code>close-item.sh</code> handles the <code>pending/</code> fallback (not just <code>working/</code>).</p>
+<h2>Agentic AI Horizon</h2>
+<p><strong>Assessment</strong>: High fit for agentic execution. All deliverables are well-scoped scripts
+and doc edits with clear acceptance criteria and machine-checkable outputs.</p>
+<ul>
+<li><code>close-item.sh</code>: deterministic shell — Codex excels here</li>
+<li><code>validate-queue-state.sh</code>: simple file-system checks — straightforward</li>
+<li>Doc updates: targeted edits to existing files, no architecture decisions needed</li>
+<li>Risk: SKILL.md is ≤20 lines limit — agent must check length before editing and migrate
+  excess content to a linked doc file if needed</li>
+</ul>
+<p><strong>Recommended execution</strong>: Codex single-agent, no parallel subagents needed. Gemini
+for doc review pass. Claude final gate.</p>
+        </div>
+    </div>
+</body>
+</html>

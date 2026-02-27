@@ -800,6 +800,18 @@ def main() -> None:
     INDEX_PATH.write_text(content, encoding="utf-8")
     print(f"Generated {INDEX_PATH} with {len(items)} items.")
 
+    # Post-check validation
+    import subprocess
+    script_path = QUEUE_ROOT.parent.parent / "scripts" / "work-queue" / "validate-queue-state.sh"
+    if script_path.exists():
+        result = subprocess.run([str(script_path)], capture_output=True, text=True)
+        if result.returncode != 0:
+            print("\n⚠ Queue state validation failed after index generation:", file=sys.stderr)
+            print(result.stdout, file=sys.stderr)
+            sys.exit(result.returncode)
+        else:
+            print("Queue state validation passed.")
+
 
 if __name__ == "__main__":
     main()

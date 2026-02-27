@@ -9,128 +9,78 @@ The work queue tracks features, bugs, and tasks across all workspace-hub reposit
 
 State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item detail), and `INDEX.md` (generated listing).
 
-## Pipeline Stages
+## Canonical Lifecycle
 
-### 1. Capture
-
-**Trigger**: `/work add <description>` or batch add.
-
-- Parser determines single vs. multi-item input.
-- Duplicate check against pending/working/blocked directories.
-- Initial complexity classification: simple (<50 words), medium (50-200), complex (>200 or 3+ features).
-- File created in `pending/` using the frontmatter template (see Conventions below).
-- Large inputs get a context document in `assets/`.
-- `state.yaml` `last_id` counter incremented.
-- INDEX.md regenerated: `python3 scripts/generate-index.py`.
-
-### 2. Triage
-
-**Trigger**: `/work run` or `/work` selects next item by priority.
-
-- Priority: `high > medium > low`.
-- Complexity confirmed or reclassified: `simple | medium | complex`.
-- Dependencies checked: `blocked_by` items must be archived before processing.
-- Complexity determines routing:
-
-| Route | Name | Complexity | Criteria |
-|-------|------|-----------|----------|
-| A | quick | simple | Single config/value change, 1 repo, <50 words |
-| B | standard | medium | Clear outcome, 1-2 repos, 50-200 words |
-| C | complex | complex | Architectural, 3+ repos, >200 words |
-
-### 3. Plan
-
-**Every item requires an approved plan before implementation.**
-
-| Route | Name | Plan location | Depth | Review |
-|-------|------|--------------|-------|--------|
-| A | quick | `## Plan` section in item body | 3-5 bullet points | User approval (plan_reviewed + plan_approved required) |
-| B | standard | `## Plan` section in item body | Numbered steps with file paths and test strategy | Cross-review (3 agents) + user approval |
-| C | complex | Separate spec in `specs/wrk/WRK-<id>/` linked via `spec_ref` | Full spec from template | Cross-review (3 agents) + user approval |
-
-**Plan gate workflow**:
-1. Check if plan/spec already exists (auto-detected from `spec_ref` or `## Plan` body section).
-2. If missing, generate plan at appropriate depth.
-3. Present to user, wait for explicit approval.
-4. Update item: add plan content (A/B) or link spec (C), set `plan_reviewed: true` AND `plan_approved: true`.
-   ALL routes require both flags — no exceptions.
-5. No implementation begins until plan is confirmed.
-6. **Agentic horizon check** — before setting `plan_approved: true`, confirm the item's `## Agentic AI Horizon` section is filled with a meaningful assessment (not a placeholder). Items missing this section or with empty prompts should have it completed as part of plan creation.
-
-### Provider Assignment (During Planning)
-
-When writing the plan, decide who executes:
-
-1. Look at what the task actually requires (code? research? architecture?)
-2. Match to provider strengths:
-   - **Codex**: Focused code tasks, single-file changes, bug fixes, refactoring
-   - **Gemini**: Research, data analysis, summarization, large documents
-   - **Claude**: Everything (but expensive); orchestration, architecture, sensitive data — use as fallback
-3. If clear fit: assign one provider
-4. If borderline or want to compare: assign two (`provider` + `provider_alt`)
-
-Write an **Execution Brief** in the WRK body with:
-- Which provider(s) and why
-- Exact task description for the executor (self-contained, no assumptions)
-- Machine-checkable acceptance criteria
-- What the user should review when they come back
-
-**Spec naming**: `specs/wrk/WRK-NNN/<short-description>.md` (not random codenames).
-
-**Cross-review** (Route B/C): Submit to Claude, Codex CLI, and Gemini CLI. Minimum 3 reviewers. Fix MAJOR findings before proceeding; document MINOR deferrals.
-- **Claude reviewer model**: always `claude_primary` from `model-registry.yaml` (today: Opus 4.6). Never use the authoring model (Sonnet) as its own reviewer — same model reviewing itself provides no independent signal. See `model-registry.yaml > work_queue_routing.cross_review`.
-
-### 4. Process
-
-**Trigger**: Plan approved, item auto-claimed.
-
-**Wrapper enforcement (required)**:
-
-```bash
-scripts/agents/session.sh init --provider <claude|codex|gemini>
-scripts/agents/work.sh --provider <orchestrator> run
-scripts/agents/plan.sh --provider <orchestrator> WRK-NNN
-scripts/agents/execute.sh --provider <orchestrator> WRK-NNN
-scripts/agents/review.sh WRK-NNN --all-providers
+```mermaid
+flowchart TD
+    A[Capture] --> B[Resource Intelligence]
+    B --> C[Triage]
+    C --> D[Plan Draft]
+    D --> E{User Reviewed Draft HTML?}
+    E -- Yes --> F[Multi-Agent Review]
+    E -- No --> D
+    F --> G{Plan Reviewed + User Reviewed Final HTML + Approved?}
+    G -- Yes --> H[Claim]
+    G -- No --> F1[Revise Plan HTML]
+    F1 --> D
+    H --> I{Best-Fit Agent + Quota Ready?}
+    I -- Yes --> J{Blocked?}
+    I -- No --> H1[Recommend alternate agent or short defer]
+    H1 --> H
+    J -- No --> K[Execute]
+    J -- Yes --> L[Status: blocked]
+    K --> M{Route Review Passed?}
+    M -- Yes --> N[Close]
+    M -- No --> K
+    N --> O{Queue Valid + Merge/Sync Complete?}
+    O -- Yes --> P[Archive]
+    O -- No --> N
 ```
 
-- Session-started provider is orchestrator for that session.
-- Non-orchestrator providers run as subagents and cannot bypass plan gates.
+## Stage Contract
 
-- Item moved from `pending/` to `working/`, frontmatter `status` updated.
-- INDEX.md regenerated.
-- Pre-check: repo-readiness on `target_repos`.
-- Implementation follows TDD (tests before code).
-- Route B/C: per-phase cross-review after each implementation phase.
-- Commits use format: `feat(scope): WRK-NNN - description`.
-- 3 attempts before marking `status: failed`.
-- **Subagent learning capture**: Set `export CLAUDE_SUBAGENT=1` as the first Bash call in each subagent session. Lighter Stop hooks (`session-review`, `post-task-review`, `consume-signals`) still fire and write to `.claude/state/pending-reviews/`. Heavy hooks (`improve`, `query-quota`) are suppressed. Main session drains all accumulated signals at its own Stop.
-- Batch mode: `/work run --batch` processes all Route A items in sequence.
+### 1. Capture
+- Create WRK in `pending/`.
+- Record problem statement, criteria, and scope.
+- Assign `orchestrator`, `provider`, `provider_alt`, and initial route.
 
-**Testing tiers**:
-- Pre-commit: `scripts/test/test-commit.sh` (changed files only)
-- Per-task: `scripts/test/test-task.sh <module>` (module under work)
-- Full session: `scripts/test/test-session.sh` (regression before push)
+### 2. Resource Intelligence
+- Mandatory for every WRK before planning.
+- Create modular artifact set in `assets/WRK-<id>/`: `resource-pack.md`, `sources.md`, `constraints.md`, `domain-notes.md`, `open-questions.md`, `resources.yaml`.
 
-### 5. Archive
+### 3. Triage
+- Assign `priority`, `complexity`, `route`, `computer`, `resource_needs`.
 
-**Trigger**: All acceptance criteria met, or manual `/work archive WRK-NNN`.
+### 4. Plan
+- Route A/B: Inline in body. Route C: `specs/wrk/WRK-<id>/`.
+- Must produce HTML review artifact.
+- User reviews Draft HTML before multi-agent review.
+- Multi-agent review (Claude, Codex, Gemini) for Route B/C.
+- User reviews Final HTML and approves.
 
-**Archive gate (all conditions required before archiving):**
-1. `status: done` + `percent_complete: 100`
-2. `plan_reviewed: true` + `plan_approved: true`
-3. Partial work -> follow-up WRK item created + `followup: [WRK-YYY]` in frontmatter
-4. Ecosystem scan: does completion reveal new work based on repo vision? If yes, create items first
-5. `followup:` list populated if any follow-up items exist
+### 5. Claim
+- Check unblocked.
+- Agent-capability check.
+- Quota check (`config/ai-tools/agent-quota-latest.json`).
+- Write structured claim evidence.
 
+### 6. Execute
+- Implementation under claimed session.
+- Define 5-10 real examples.
+- Include variation tests.
+- Generate HTML review artifact.
+
+### 7. Close
+**Trigger**: Implementation complete and verified.
+- Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]`
+- Updates frontmatter, moves to `done/`, regenerates INDEX.
+- Verify HTML output.
+- Record merge/sync status.
+
+### 8. Archive
 - Script: `scripts/archive-item.sh WRK-NNN`
-  1. Updates `status: archived`, sets `completed_at`.
-  2. Moves file to `archive/YYYY-MM/`.
-  3. Runs `on-complete-hook.sh` (checks brochure status, outputs recommended tasks).
-  4. Regenerates INDEX.md.
-- `state.yaml` `total_archived` counter updated.
-- Repo-local copies also moved to target repo `archive/YYYY-MM/`.
-- Archived items auto-set to `percent_complete: 100` in INDEX.md.
+- Blocked until merge-to-main and sync complete.
+- Moves to `archive/YYYY-MM/`.
 
 ## Directory Structure
 
@@ -185,6 +135,23 @@ This scans all directories, parses frontmatter, and produces multi-view tables (
 
 ## Conventions
 
+### Completion Checklist (Mandatory)
+
+Add this block to the WRK item body before marking done:
+
+```markdown
+## Completion Checklist
+- [ ] Implementation committed: <hash>
+- [ ] Tests pass: <command + output>
+- [ ] 5-10 Examples defined: <path to example-pack.md>
+- [ ] Variation tests passed: <path to variation-test-results.md>
+- [ ] Cross-review passed: <synthesis result path>
+- [ ] HTML review artifact verified: <path>
+- [ ] WRK frontmatter updated: status=done, percent_complete=100, commit=<hash>
+- [ ] Learning outputs captured: <path or WRK-ID>
+- [ ] INDEX regenerated: python3 .claude/work-queue/scripts/generate-index.py
+```
+
 ### Frontmatter (required fields)
 
 ```yaml
@@ -194,22 +161,31 @@ title: Brief descriptive title
 status: pending          # pending | working | blocked | archived | failed
 priority: medium         # high | medium | low
 complexity: medium       # simple | medium | complex
-created_at: 2026-01-29T00:00:00Z
+route:                   # A | B | C
+orchestrator:            # claude | codex | gemini
+created_at: 2026-02-27T00:00:00Z
 target_repos:
   - repo-name
-target_module:           # module within repo (e.g. bsee, hse, marine_safety, hull_library)
+target_module:           # module within repo
 commit:                  # SHA after implementation
-spec_ref:                # path to Route C spec (e.g. specs/wrk/WRK-123/plan.md)
-related: []              # related WRK IDs
-blocked_by: []           # WRK IDs that must complete first
-plan_reviewed: false     # true after cross-review
+spec_ref:                # path to Route C spec
+resource_pack_ref:       # path to assets/WRK-NNN/resource-pack.md
+plan_html_review_draft_ref: # path to draft plan HTML
+plan_html_review_final_ref: # path to final plan HTML
+claim_routing_ref:       # path to claim evidence
+claim_quota_snapshot_ref: # path to quota snapshot
+example_pack_ref:        # path to 5-10 examples
+variation_test_ref:      # path to variation tests
+html_output_ref:         # path to final HTML review artifact
+html_verification_ref:   # path to HTML verification result
+learning_outputs: []     # list of paths or WRK IDs
+followup: []             # WRK IDs of follow-up items
+plan_reviewed: false     # true after multi-agent cross-review
 plan_approved: false     # true after user approval
 percent_complete: 0      # 0-100
-brochure_status:         # pending | updated | synced | n/a
-provider:                # claude | codex | gemini (decided during planning)
-provider_alt:            # optional second agent for dual-agent mode
-computer:                # machine nickname (from computers skill) — blank if machine-agnostic
-followup: []             # WRK IDs of follow-up items created at archive time
+provider:                # primary executor
+provider_alt:            # secondary executor
+computer:                # machine nickname
 ---
 ```
 

@@ -25,10 +25,10 @@ review:
       last_reviewed: "2026-02-27"
       feedback: "Initial Route C plan draft prepared for 3-seed review."
     google_gemini:
-      status: "pending"
-      iteration: 0
-      last_reviewed: ""
-      feedback: ""
+      status: "approved"
+      iteration: 1
+      last_reviewed: "2026-02-27"
+      feedback: "Thorough plan with clear gates. Suggested path normalization and example scaling."
     legal_sanity:
       status: "pending"
       iteration: 0
@@ -40,9 +40,9 @@ review:
     gemini_approved: false
     legal_sanity_passed: false
     ready_for_next_step: false
-status: "draft"
-progress: 25
-phase: 1
+status: "implemented"
+progress: 100
+phase: 3
 blocked_by: []
 created: "2026-02-27"
 updated: "2026-02-27"
@@ -268,6 +268,23 @@ Close requires evidence for:
 - Examples must reflect realistic domain or process variations, not only synthetic happy-path cases.
 - Variation tests exist to validate quality now and to compound into future benchmark coverage.
 
+## Requirement Class Model
+- The workflow obligations are universal across all WRKs, but the depth and artifact richness scale by route and risk.
+- No WRK is exempt from: resource intelligence, HTML review, user HTML review gates, review evidence, examples, variation testing intent, learning capture, and closure evidence.
+- Route A satisfies the universal obligations with lightweight artifacts sized to the work item.
+- Route B requires standard artifact depth and 3-model review.
+- Route C requires full artifact depth, per-phase review, and the strongest validation set.
+
+| Requirement | Route A | Route B | Route C |
+|---|---|---|---|
+| Resource pack | concise but complete | standard | full |
+| Examples | 5-10 small real examples | 5-10 representative examples | 5-10 representative examples with phase-level traceability |
+| Variation tests | lightweight | standard | full/per-phase |
+| Plan HTML reviews | draft + final | draft + final | draft + final |
+| Reviewers | 1 by default, escalate on risk | 3 required | 3 required per plan/phase/close |
+| HTML artifact | required | required | required |
+| Learning outputs | required | required | required |
+
 ## Learning Loop Policy
 - Small learnings must update the relevant repo ecosystem directly.
 - Broader learnings must be captured as new WRKs.
@@ -321,6 +338,25 @@ Checks include:
 - `archive/` items not marked `archived`
 - missing active session binding on lifecycle transitions
 
+## Dependency Contract
+
+| Dependency | Source of truth | Owner / producer | Blocking? | Fallback |
+|---|---|---|---|---|
+| Quota snapshot | `config/ai-tools/agent-quota-latest.json` | `scripts/ai/assessment/query-quota.sh` via readiness/cron | blocking for claim routing | short defer or alternate agent; stale snapshot is advisory only if age is within accepted threshold |
+| Claim routing recommendation | `agent-usage-optimizer` output + claim metadata | orchestrator session | blocking for claim | manual orchestrator decision recorded in `claim_recommendation` |
+| Session ownership | active orchestrator session state | orchestrator session wrappers | blocking for claim/close/archive | admin repair path recorded as manual remediation |
+| Legal scan | legal scan artifact/result | legal-scan workflow | blocking for generated WRK artifacts | manual waiver by user only if explicitly recorded |
+| Queue validation | queue validator output | queue validator script | blocking for close/archive | none |
+| Review evidence | review artifact files | reviewer scripts + synthesis | blocking for plan/execute progression | fallback only for `NO_OUTPUT` per review policy |
+| Merge status | main-branch merge state | git workflow | blocking for archive | none |
+| Sync status | sync workflow status | repo sync tooling | blocking for archive | none |
+| HTML verification | html verification artifact | agent + user review | blocking for plan/close | none |
+
+Rules:
+- When two sources disagree, the explicit source-of-truth artifact above wins.
+- Freshness matters: stale advisory data may inform routing, but stale blocking data cannot satisfy a gate.
+- Manual overrides require user-visible evidence in the WRK metadata or review artifacts.
+
 ## Merge and Sync Rules
 - Merge-to-main is required before archive.
 - Sync flow completion is required before archive.
@@ -329,13 +365,25 @@ Checks include:
 ## Phased Rollout
 
 ### Phase 1: Normalize and report
+- start: February 27, 2026
+- target completion: March 7, 2026
+- owner: workspace-hub orchestrator / WRK-624 execution owner
 - migrate legacy statuses
 - add reporting validator
 - reconcile folder/status drift
 - rename malformed WRK filenames
 - repair queue/index/session-state inconsistencies
+- auto-fix mismatches that are mechanically unambiguous
+- emit manual-remediation list for stale, blocked, or ambiguous legacy WRKs
+- rollback path: restore queue metadata from git before enabling hard-fail enforcement
+- success metrics:
+  - zero invalid legacy status values remain
+  - zero folder/status mismatches remain in `done/` and `archive/`
+  - all ambiguous cases are listed in a manual-remediation report
 
 ### Phase 2: Require new artifacts
+- start: March 8, 2026
+- target completion: March 21, 2026
 - require resource packs for all new WRKs and any legacy WRK when touched
 - require close evidence and reviewer artifact normalization
 - require legal scan on generated artifacts
@@ -345,10 +393,37 @@ Checks include:
 - require structured claim routing and quota evidence for every WRK
 
 ### Phase 3: Enforce hard gates
+- start: March 22, 2026
+- hard-fail cutoff for legacy statuses: March 22, 2026
 - enforce active session binding
 - hard-block invalid transitions
 - hard-fail legacy statuses after cutoff
 - enforce merge/sync-before-archive
+
+## Testing Strategy
+- transition tests:
+  - capture -> plan draft -> multi-agent review -> claim -> execute -> close -> archive
+- validator tests:
+  - folder/status mismatch detection
+  - missing artifact detection
+  - legacy status migration detection
+- idempotency tests:
+  - rerun close/archive/validator operations safely
+- concurrency tests:
+  - conflicting claim attempts
+  - stale session ownership recovery
+- outage tests:
+  - reviewer `NO_OUTPUT`
+  - quota snapshot unavailable
+  - legal/doc-index/html verification tool failure
+- migration tests:
+  - malformed historical filenames
+  - `complete/completed/closed` status migration
+  - dormant vs touched legacy WRKs
+- HTML gate tests:
+  - draft-plan review required before multi-agent review
+  - final-plan review required before execution
+  - close blocked on missing final HTML verification
 
 ## Implementation Backlog
 1. Expand WRK frontmatter and templates to support orchestrator, examples, learning, and HTML refs.
@@ -362,10 +437,21 @@ Checks include:
 9. Add HTML verification and user signoff hooks where applicable.
 
 ## Acceptance Criteria
-- Canonical workflow spec approved via 3-seed review.
-- Mermaid schematic clearly communicates the main happy path and blocking paths.
-- WRK-624 becomes the first WRK operated under the new lifecycle contract.
-- New/touched WRKs can carry orchestrator, resource pack, example pack, learning outputs, and HTML refs.
-- Review matrix is enforceable for Routes A/B/C.
-- Migration plan and phased rollout are documented.
-- HTML review artifact exists for user review of this work item.
+- 3 review artifacts exist for the current plan revision, or fallback policy is explicitly invoked for `NO_OUTPUT`.
+- One synthesis artifact records final verdict and unresolved findings count.
+- Mermaid renders the planning HTML review gates, claim routing gate, and archive gate.
+- WRK metadata schema includes:
+  - `plan_html_review_draft_ref`
+  - `plan_html_review_final_ref`
+  - `claim_routing_ref`
+  - `claim_quota_snapshot_ref`
+  - `claim_recommendation`
+- Migration matrix is documented with:
+  - start date
+  - target completion
+  - hard-fail cutoff
+  - rollback path
+  - success metrics
+- Dependency contract table exists and names the source of truth and blocking behavior for each gate input.
+- Testing strategy covers transitions, idempotency, concurrency, outages, migration, and HTML gates.
+- HTML review artifact exists for this WRK and includes an executive summary near the top.

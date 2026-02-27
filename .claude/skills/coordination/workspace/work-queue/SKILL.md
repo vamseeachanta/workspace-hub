@@ -99,30 +99,71 @@ Rules:
 - Subagents cannot bypass plan gate or change orchestration state.
 - Existing `.claude/work-queue/process.md` remains source of truth.
 
-## Two-Phase System
+## Canonical Lifecycle
 
-### Phase 1: Capture
-- Parse input for single vs multi-request
-- Check duplicates against pending/working/blocked
-- Classify complexity (simple <50 words; medium 50-200 words; complex >200 words or 3+ features)
-- **Assign `computer:`** from routing rules in `.claude/skills/workspace-hub/workstations/SKILL.md`; see Workstation Routing below
-- Create file in `pending/` with proper template
-- Create context document for large inputs
-- Regenerate INDEX.md: run `python3 .claude/work-queue/scripts/generate-index.py`
+```mermaid
+flowchart TD
+    A[Capture] --> B[Resource Intelligence]
+    B --> C[Triage]
+    C --> D[Plan Draft]
+    D --> E{User Reviewed Draft HTML?}
+    E -- Yes --> F[Multi-Agent Review]
+    E -- No --> D
+    F --> G{Plan Reviewed + User Reviewed Final HTML + Approved?}
+    G -- Yes --> H[Claim]
+    G -- No --> F1[Revise Plan HTML]
+    F1 --> D
+    H --> I{Best-Fit Agent + Quota Ready?}
+    I -- Yes --> J{Blocked?}
+    I -- No --> H1[Recommend alternate agent or short defer]
+    H1 --> H
+    J -- No --> K[Execute]
+    J -- Yes --> L[Status: blocked]
+    K --> M{Route Review Passed?}
+    M -- Yes --> N[Close]
+    M -- No --> K
+    N --> O{Queue Valid + Merge/Sync Complete?}
+    O -- Yes --> P[Archive]
+    O -- No --> N
+```
 
-### Phase 2: Process
-- Select next item by priority from `pending/`
-- Triage: classify complexity -> Route A/B/C
-- Dependency check: verify `blocked_by` items are archived
-- **Plan gate (ALL routes)**: create or confirm a plan with the user before implementation (see Planning Requirement below)
-- Auto-claim: move to `working/`, update frontmatter (automatic, no manual step)
-- Regenerate INDEX.md after status change
-- Pre-check: repo-readiness on target repos
-- Delegate to subagents per route
-- Test, commit, auto-archive pipeline (archives when all acceptance criteria met)
-- Regenerate INDEX.md after archiving
-- Failure handling (3 attempts -> mark failed)
-- Batch mode: `/work run --batch` processes all Route A items in sequence
+## Stage Contract
+
+### 1. Capture
+- Create WRK in `pending/`.
+- Assign `orchestrator`, `provider`, `provider_alt`, and initial route.
+
+### 2. Resource Intelligence
+- Mandatory for every WRK before planning.
+- Create modular artifact set in `assets/WRK-<id>/`.
+
+### 3. Triage
+- Minimum triage contract: `priority`, `complexity`, `route`, `computer`, `provider`, `orchestrator`.
+
+### 4. Plan
+- Route A/B: Inline. Route C: `specs/wrk/WRK-<id>/`.
+- Must produce HTML review artifact.
+- User reviews Draft HTML before multi-agent review.
+- Multi-agent review (Claude, Codex, Gemini) for Route B/C.
+- User reviews Final HTML and approves.
+
+### 5. Claim
+- Check unblocked and agent-capability.
+- Quota check (`config/ai-tools/agent-quota-latest.json`).
+- Write structured claim evidence.
+
+### 6. Execute
+- Implementation under claimed session.
+- Define 5-10 real examples and variation tests.
+- Generate HTML review artifact.
+
+### 7. Close
+- Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]`
+- Verify HTML output and record learning outputs.
+
+### 8. Archive
+- Script: `scripts/archive-item.sh WRK-NNN`
+- Blocked until merge-to-main and sync complete.
 
 ## Complexity Routing
 
@@ -193,25 +234,23 @@ The `--wrk WRK-NNN` flag on `test-task.sh` reads `target_repos` from the work it
 
 ## Planning Requirement
 
-**Every work item must have an approved plan before implementation begins.** This ensures sufficient alignment with the user and prevents wasted effort.
+**Every work item must have an approved plan and HTML review before implementation begins.**
 
-### Plan Depth by Route
+### Plan Depth and Gates
 
-| Route | Plan Location | Plan Depth | User Approval |
-|-------|--------------|------------|---------------|
-| A (Simple) | Inline in work item body (`## Plan` section) | 3-5 bullet points: what files change, what the change is, how to verify | User confirms before implementation |
-| B (Medium) | Inline in work item body (`## Plan` section) | Exploration summary + numbered steps with file paths, expected changes, and test strategy | User confirms before implementation |
-| C (Complex) | Separate spec in `specs/wrk/WRK-NNN/` (linked via `spec_ref`) | Full spec using `specs/templates/plan-template.md` with architecture, implementation sequence, test plan, and cross-review | User approves spec before implementation |
+| Route | Plan Location | Plan Depth | Review |
+|-------|--------------|------------|--------|
+| A (Simple) | Inline (`## Plan`) | 3-5 bullet points | User Draft HTML -> User Final HTML |
+| B (Standard) | Inline (`## Plan`) | Steps, paths, test strategy | User Draft HTML -> 3-Agent Review -> User Final HTML |
+| C (Complex) | `specs/wrk/WRK-NNN/` | Full spec from template | User Draft HTML -> 3-Agent Review (per phase) -> User Final HTML |
 
 ### Plan Gate Workflow
 
-1. **Check `spec_ref`**: If the work item already has an approved plan, proceed to implementation
-2. **No plan exists**: Generate a plan at the appropriate depth for the route
-3. **Confirm `computer:`**: Verify workstation assignment is set and correct; update if needed
-4. **Present to user**: Show the plan (including `computer:` assignment) and wait for explicit approval
-5. **User approves**: Update work item with plan content (Route A/B) or link to spec (Route C), then proceed
-6. **User requests changes**: Revise the plan and re-present
-7. **No implementation without approval**: Never begin coding until the plan is confirmed
+1. **User Draft HTML Review**: Present draft plan HTML to user.
+2. **Multi-Agent Review**: Submit to Claude, Codex, and Gemini for Route B/C.
+3. **User Final HTML Review**: Present post-review plan HTML to user.
+4. **User Approval**: Wait for explicit `plan_approved: true` after both HTML reviews.
+5. **No implementation without approval**: Never begin coding until the plan is confirmed.
 
 ### Pre-Move-to-Working Checklist (HARD GATES — never skip)
 
@@ -280,6 +319,21 @@ To create a compound work item:
 ```
 
 This sets `compound: true` in the work item frontmatter, causing the process phase to delegate to `/compound` for the full 4-phase loop.
+
+### Completion Checklist (Mandatory)
+
+```markdown
+## Completion Checklist
+- [ ] Implementation committed: <hash>
+- [ ] Tests pass: <command + output>
+- [ ] 5-10 Examples defined: <path to example-pack.md>
+- [ ] Variation tests passed: <path to variation-test-results.md>
+- [ ] Cross-review passed: <synthesis result path>
+- [ ] HTML review artifact verified: <path>
+- [ ] WRK frontmatter updated: status=done, percent_complete=100, commit=<hash>
+- [ ] Learning outputs captured: <path or WRK-ID>
+- [ ] INDEX regenerated: python3 .claude/work-queue/scripts/generate-index.py
+```
 
 ## Queue Directory Structure
 

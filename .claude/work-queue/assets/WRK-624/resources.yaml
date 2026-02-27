@@ -1,0 +1,4 @@
+resources:
+  - name: example
+    path: path/to/resource
+    type: document

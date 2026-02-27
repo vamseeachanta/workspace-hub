@@ -312,6 +312,48 @@ flowchart TD
       </table>
     </section>
 
+    <section class="panel">
+      <h2>Requirement Classes</h2>
+      <table>
+        <tr>
+          <th>Requirement</th>
+          <th>Route A</th>
+          <th>Route B</th>
+          <th>Route C</th>
+        </tr>
+        <tr>
+          <td>Resource pack</td>
+          <td>Concise but complete</td>
+          <td>Standard</td>
+          <td>Full</td>
+        </tr>
+        <tr>
+          <td>Examples</td>
+          <td>5-10 small real examples</td>
+          <td>5-10 representative examples</td>
+          <td>5-10 representative examples with phase traceability</td>
+        </tr>
+        <tr>
+          <td>Variation tests</td>
+          <td>Lightweight</td>
+          <td>Standard</td>
+          <td>Full / per phase</td>
+        </tr>
+        <tr>
+          <td>Plan HTML reviews</td>
+          <td>Draft + final</td>
+          <td>Draft + final</td>
+          <td>Draft + final</td>
+        </tr>
+        <tr>
+          <td>Reviewers</td>
+          <td>1 by default, escalate on risk</td>
+          <td>3 required</td>
+          <td>3 required per plan / phase / close</td>
+        </tr>
+      </table>
+    </section>
+
     <section class="split">
       <article class="panel">
         <h2>Mandatory Metadata</h2>
@@ -331,6 +373,20 @@ flowchart TD
         </ul>
       </article>
       <article class="panel">
+        <h2>Dependency Authority</h2>
+        <ul>
+          <li><strong>Quota source of truth</strong>: <code>config/ai-tools/agent-quota-latest.json</code></li>
+          <li><strong>Producer</strong>: <code>scripts/ai/assessment/query-quota.sh</code> plus readiness pipeline</li>
+          <li><strong>Queue validation</strong>: validator output is blocking for close/archive</li>
+          <li><strong>Legal scan</strong>: blocking for generated WRK artifacts unless explicitly waived</li>
+          <li><strong>Review evidence</strong>: blocking for plan/execute progression; fallback only for <code>NO_OUTPUT</code></li>
+          <li><strong>Merge + sync</strong>: both are blocking for archive</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="split">
+      <article class="panel">
         <h2>Learning Lanes</h2>
         <ul>
           <li><strong>Auto-memory</strong>: fast opportunistic capture during active Claude sessions.</li>
@@ -344,9 +400,9 @@ flowchart TD
       <article class="panel">
         <h2>Phased Rollout</h2>
         <ul>
-          <li><strong>Phase 1:</strong> normalize statuses, reconcile drift, reporting validator.</li>
-          <li><strong>Phase 2:</strong> require resource packs, draft-plan and final-plan WRK HTML reviews, close evidence, and HTML review artifacts for new/touched WRKs.</li>
-          <li><strong>Phase 3:</strong> enforce active session binding and hard-block invalid transitions.</li>
+          <li><strong>Phase 1 (Feb 27-Mar 7, 2026):</strong> normalize statuses, reconcile drift, reporting validator, manual-remediation list, git rollback path.</li>
+          <li><strong>Phase 2 (Mar 8-Mar 21, 2026):</strong> require resource packs, draft-plan and final-plan WRK HTML reviews, close evidence, and HTML review artifacts for new/touched WRKs.</li>
+          <li><strong>Phase 3 (from Mar 22, 2026):</strong> enforce active session binding, hard-block invalid transitions, hard-fail legacy statuses.</li>
         </ul>
       </article>
       <article class="panel">
@@ -358,6 +414,19 @@ flowchart TD
           <li>HTML review artifact must already be verified by agent and user.</li>
         </ul>
       </article>
+    </section>
+
+    <section class="panel">
+      <h2>Testing Strategy</h2>
+      <ul>
+        <li>Transition tests across the full lifecycle.</li>
+        <li>Validator tests for status, folder, and missing artifact mismatches.</li>
+        <li>Idempotency tests for close, archive, and validation operations.</li>
+        <li>Concurrency tests for conflicting claim attempts and stale session recovery.</li>
+        <li>Outage tests for reviewer failure, quota-source outage, and HTML/legal tool failure.</li>
+        <li>Migration tests for malformed filenames and legacy statuses.</li>
+        <li>HTML gate tests for draft-plan review, final-plan review, and close-time HTML verification.</li>
+      </ul>
     </section>
 
     <section class="panel">
