@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-27T10:12:49Z by generate-index.py -->
+<!-- Generated: 2026-02-27T10:15:51Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-27T10:12:49Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-27T10:15:51Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 415
+**Total items:** 413
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 159 |
+| pending | 157 |
 | working | 8 |
 | blocked | 5 |
 | done | 4 |
@@ -23,8 +23,8 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 201 |
-| medium | 173 |
+| high | 200 |
+| medium | 172 |
 | low | 40 |
 
 ### By Complexity
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 70 |
-| medium | 186 |
+| medium | 184 |
 | complex | 91 |
 
 ### By Repository
@@ -50,12 +50,12 @@
 | assethold | 4 |
 | assetutilities | 5 |
 | client_projects | 1 |
-| digitalmodel | 172 |
+| digitalmodel | 171 |
 | doris | 21 |
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
-| saipem | 4 |
-| workspace-hub | 108 |
+| saipem | 3 |
+| workspace-hub | 106 |
 | worldenergydata | 87 |
 
 ### Plan Tracking
@@ -63,7 +63,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 151 / 415 |
+| Plans exist | 151 / 413 |
 | Plans cross-reviewed | 58 |
 | Plans approved | 79 |
 | Brochure pending | 8 |
@@ -75,9 +75,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 415 |
+| Total captured | 413 |
 | Total archived | 225 |
-| Completion rate | 225/415 (54%) |
+| Completion rate | 225/413 (54%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -85,7 +85,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 39 / 159 | 25% |
+| Pending items with plans | 39 / 157 | 25% |
 | Plans cross-reviewed | 6 | 12% |
 | Plans user-approved | 6 | 12% |
 
@@ -102,8 +102,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 89 | 5 | 3 |
-| Medium   | 51  | 2  | 1  |
+| High     | 88 | 5 | 3 |
+| Medium   | 50  | 2  | 1  |
 | Low      | 19  | 1  | 1  |
 
 ## Master Table
@@ -476,11 +476,9 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-560, WRK-561, WRK-562, WRK-563 |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | medium | large | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
-| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | ace-linux-1 | - | digitalmodel, saipem, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
 | WRK-574 | Remove digitalmodel setup.py (superseded by pyproject.toml) | in_progress | medium | simple | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-575 | Clean digitalmodel docs/modules/ stale content | in_progress | low | simple | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
@@ -655,11 +653,9 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | high | high | digitalmodel | - |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | high | high | digitalmodel | - |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | high | high | digitalmodel | - |
-| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | high | medium | workspace-hub | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | medium | medium | workspace-hub | - |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | high | large | digitalmodel | - |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | medium | large | digitalmodel | - |
-| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | medium | medium | digitalmodel, saipem, workspace-hub | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | high | medium | workspace-hub | - |
 | WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | medium | simple | workspace-hub | - |
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | medium | simple | workspace-hub | - |
@@ -1231,7 +1227,6 @@
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | - |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | - |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | medium | large | - |
-| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | - |
 | WRK-574 | Remove digitalmodel setup.py (superseded by pyproject.toml) | in_progress | medium | simple | - |
 | WRK-575 | Clean digitalmodel docs/modules/ stale content | in_progress | low | simple | - |
 | WRK-582 | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | pending | low | medium | - |
@@ -1304,7 +1299,6 @@
 | WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | archived | medium | simple | - |
 | WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | archived | high | medium | - |
 | WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | high | simple | - |
-| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | - |
 
 ### workspace-hub
 
@@ -1398,9 +1392,7 @@
 | WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | archived | medium | medium | - |
 | WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | high | medium | - |
 | WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | - |
-| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | - |
-| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | medium | - |
 | WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | medium | simple | - |
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | simple | - |
@@ -1699,7 +1691,6 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | digitalmodel | - |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | digitalmodel | - |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | digitalmodel | - |
-| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | medium | workspace-hub | - |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | large | digitalmodel | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | medium | workspace-hub | - |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | medium | workspace-hub, client_projects, digitalmodel | - |
@@ -1882,7 +1873,6 @@
 | WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | low | OGManufacturing | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | workspace-hub | - |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | large | digitalmodel | - |
-| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | digitalmodel, saipem, workspace-hub | - |
 | WRK-574 | Remove digitalmodel setup.py (superseded by pyproject.toml) | in_progress | simple | digitalmodel | - |
 | WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | simple | workspace-hub | - |
 | WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | simple | workspace-hub | - |
@@ -2187,9 +2177,7 @@
 | WRK-537 | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | digitalmodel | - |
 | WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | doris | - |
 | WRK-555 | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | pending | high | digitalmodel | - |
-| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | workspace-hub | - |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | workspace-hub | - |
-| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | digitalmodel, saipem, workspace-hub | - |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | workspace-hub | - |
 | WRK-582 | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | pending | low | digitalmodel | - |
 | WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending | low | worldenergydata | - |
@@ -2308,7 +2296,7 @@
 
 ## By Computer
 
-### ace-linux-1 (138 active / 151 total)
+### ace-linux-1 (136 active / 149 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2437,11 +2425,9 @@
 | WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | digitalmodel |
 | WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | digitalmodel |
 | WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | digitalmodel |
-| WRK-566 | feat(scripts): extend query-docs.sh + build calc-examples mapper | pending | high | medium | workspace-hub |
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | pending | medium | medium | workspace-hub |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | digitalmodel |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | medium | large | digitalmodel |
-| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | pending | medium | medium | digitalmodel, saipem, workspace-hub |
 | WRK-574 | Remove digitalmodel setup.py (superseded by pyproject.toml) | in_progress | medium | simple | digitalmodel |
 | WRK-575 | Clean digitalmodel docs/modules/ stale content | in_progress | low | simple | digitalmodel |
 | WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | medium | workspace-hub |
@@ -2790,7 +2776,6 @@
 | WRK-567 | chore(wrk): back-link calc_examples to enhancement WRK items WRK-482..559 | WRK-560, WRK-561, WRK-562, WRK-563 | - | - |
 | WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | WRK-568 | - | - |
 | WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | WRK-568 | - | - |
-| WRK-573 | chore(docs): audit + triage Python analysis scripts in project archive | WRK-568 | - | - |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | WRK-593, WRK-594 | - | - |
 | WRK-597 | feat(digitalmodel): geotechnical module — umbrella tracker | - | WRK-618, WRK-619, WRK-620, WRK-621, WRK-622, WRK-623 | - |
 | WRK-618 | feat(geotechnical): soil profile models, CPT correlation, shared types | - | - | WRK-597 |
