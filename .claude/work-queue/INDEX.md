@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-27T11:39:23Z by generate-index.py -->
+<!-- Generated: 2026-02-27T11:39:35Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-27T11:39:23Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-27T11:39:35Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 416
+**Total items:** 414
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 160 |
+| pending | 158 |
 | working | 8 |
 | blocked | 5 |
 | done | 4 |
@@ -23,7 +23,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 201 |
+| high | 199 |
 | medium | 173 |
 | low | 41 |
 
@@ -32,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 70 |
-| medium | 185 |
+| medium | 183 |
 | complex | 91 |
 
 ### By Repository
@@ -50,7 +50,7 @@
 | assethold | 4 |
 | assetutilities | 5 |
 | client_projects | 1 |
-| digitalmodel | 171 |
+| digitalmodel | 169 |
 | doris | 21 |
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
@@ -63,7 +63,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 151 / 416 |
+| Plans exist | 151 / 414 |
 | Plans cross-reviewed | 58 |
 | Plans approved | 79 |
 | Brochure pending | 7 |
@@ -75,9 +75,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 416 |
+| Total captured | 414 |
 | Total archived | 225 |
-| Completion rate | 225/416 (54%) |
+| Completion rate | 225/414 (54%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -85,7 +85,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 39 / 160 | 24% |
+| Pending items with plans | 39 / 158 | 25% |
 | Plans cross-reviewed | 6 | 12% |
 | Plans user-approved | 6 | 12% |
 
@@ -102,7 +102,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 89 | 5 | 3 |
+| High     | 87 | 5 | 3 |
 | Medium   | 51  | 2  | 1  |
 | Low      | 20  | 1  | 1  |
 
@@ -409,9 +409,7 @@
 | WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-497 | feat(digitalmodel/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-498 | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -589,9 +587,7 @@
 | WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | high | medium | digitalmodel | - |
 | WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | high | medium | digitalmodel | - |
 | WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | high | medium | digitalmodel | - |
-| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | high | medium | digitalmodel | - |
 | WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | high | medium | digitalmodel | - |
-| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | high | medium | digitalmodel | - |
 | WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | high | medium | digitalmodel | - |
 | WRK-497 | feat(digitalmodel/pipeline): Implement API RP 1111 — API RP 1111 | high | high | digitalmodel | - |
 | WRK-498 | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | high | high | doris | - |
@@ -1193,9 +1189,7 @@
 | WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | high | medium | - |
 | WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | pending | high | medium | - |
 | WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | high | medium | - |
-| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | pending | high | medium | - |
 | WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | high | medium | - |
-| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | pending | high | medium | - |
 | WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | high | medium | - |
 | WRK-497 | feat(digitalmodel/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | - |
 | WRK-499 | feat(digitalmodel/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | high | - |
@@ -1643,9 +1637,7 @@
 | WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | medium | digitalmodel | - |
 | WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | pending | medium | digitalmodel | - |
 | WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | medium | digitalmodel | - |
-| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | pending | medium | digitalmodel | - |
 | WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | medium | digitalmodel | - |
-| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | pending | medium | digitalmodel | - |
 | WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | medium | digitalmodel | - |
 | WRK-497 | feat(digitalmodel/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | digitalmodel | - |
 | WRK-498 | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | doris | - |
@@ -2150,9 +2142,7 @@
 | WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | high | digitalmodel | - |
 | WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | pending | high | digitalmodel | - |
 | WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | high | digitalmodel | - |
-| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | pending | high | digitalmodel | - |
 | WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | high | digitalmodel | - |
-| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | pending | high | digitalmodel | - |
 | WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | high | digitalmodel | - |
 | WRK-501 | feat(digitalmodel/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | digitalmodel | - |
 | WRK-502 | feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | doris | - |
@@ -2309,7 +2299,7 @@
 
 ## By Computer
 
-### ace-linux-1 (137 active / 150 total)
+### ace-linux-1 (135 active / 148 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2371,9 +2361,7 @@
 | WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | high | medium | digitalmodel |
 | WRK-491 | feat(digitalmodel/cathodic_protection): Implement ISO 15589-2 — ISO15589-2-2004forOR Cathodic Protection | pending | high | medium | digitalmodel |
 | WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | high | medium | digitalmodel |
-| WRK-493 | feat(digitalmodel/cathodic_protection): Implement DNV F103 — DNV RP F103 (2010) Cathodic Protection of Submarin | pending | high | medium | digitalmodel |
 | WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | high | medium | digitalmodel |
-| WRK-495 | feat(digitalmodel/cathodic_protection): Implement DNV B401 — DNV RP B401 with 2008 amendments (2005) Cathodic P | pending | high | medium | digitalmodel |
 | WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | high | medium | digitalmodel |
 | WRK-497 | feat(digitalmodel/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | digitalmodel |
 | WRK-498 | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | doris |
