@@ -16,3 +16,5 @@
 - Shell scripts: LF only (no CRLF); no client identifiers in ported code
 
 *Docs: `.claude/docs/` | Rules: `.claude/rules/`*
+- Gotcha: `.claude/knowledge/entries/gotchas/GOT-005-orcawave-vs-orcaflex-api-selection.md`
+
