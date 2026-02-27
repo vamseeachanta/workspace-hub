@@ -1,6 +1,58 @@
 repo: rock-oil-field
-generated: '2026-02-23'
+generated: '2026-02-27'
 standards:
+- id: API RP 1111
+  title: Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit State Design)
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: installation
+  summary: This recommended practice provides criteria for the design, construction, operation, and maintenance of offshore pipelines using the Limit State Design (LSD) approach. It focuses on burst pressure and flow stress to optimize pipeline wall thickness in deepwater and high-pressure environments.
+  keywords:
+  - Limit State Design
+  - Burst Pressure
+  - Flow Stress
+  - Offshore Pipelines
+  - Pipeline Integrity
+- id: DNV-OS-F101
+  title: Submarine Pipeline Systems
+  org: DNV
+  index_ref: ''
+  status: reference
+  domain: installation
+  summary: Globally recognized technical standard for the entire lifecycle of submarine pipeline systems, including concept development, design, construction, operation, and abandonment. It utilizes Load and Resistance Factor Design (LRFD) and the Safety Class concept to ensure structural integrity.
+  keywords:
+  - Submarine Pipeline Systems
+  - LRFD
+  - Safety Class
+  - Limit State Design
+  - External Pressure Collapse
+- id: ISO 13624-1
+  title: Design and operation of marine drilling riser equipment
+  org: ISO
+  index_ref: ''
+  status: reference
+  domain: installation
+  summary: Primary international standard for the design, selection, operation, and maintenance of marine drilling riser systems used in floating drilling operations. It covers the integrated riser system including tensioners, LMRP, and flex joints.
+  keywords:
+  - Marine Drilling Riser
+  - Tensioner System
+  - Floating Drilling
+  - Riser Integrity
+  - Deepwater Drilling
+- id: ISO 13628-5
+  title: Design and operation of subsea production systems — Part 5: Subsea umbilicals
+  org: ISO
+  index_ref: ''
+  status: reference
+  domain: installation
+  summary: Specifies requirements and gives recommendations for the design, material selection, manufacture, design verification, testing, installation, and operation of subsea control umbilicals and associated surface and subsea termination equipment.
+  keywords:
+  - Subsea Umbilicals
+  - Control Umbilicals
+  - Subsea Production Systems
+  - Termination Equipment
+  - Umbilical Installation
 - id: a1865 1 Stevens
   title: a1865_1_Stevens
   org: ''
@@ -509,7 +561,7 @@ standards:
 # =============================================================================
 calc_examples:
 
-- standard: DNV-OS-F101-pipelay
+- standard: DNV-OS-F101
   domain: installation
   description: >
     S-lay pipelay workbooks that correspond to OrcaFlex pipelay models in this archive.
@@ -524,7 +576,7 @@ calc_examples:
     type: xlsx
     host: ace-linux-1
 
-- standard: DNV-OS-F101-upheaval
+- standard: DNV-OS-F101
   domain: installation
   description: >
     Pipeline upheaval buckling and weight data referenced in OrcaFlex installation models.
