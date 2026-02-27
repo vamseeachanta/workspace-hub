@@ -2802,6 +2802,10 @@ calc_examples:
     description: S-N curve definitions for riser analysis — base metal in free corrosion environment
     type: xlsx
     host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0006-03 (Non Linear Stress Strain Curve).xlsx
+    description: Non-linear stress-strain curve — ASME/API material non-linearity for buckle propagation and structural analysis
+    type: xlsx
+    host: ace-linux-1
 
 # --- Marine domain ---
 - standard: DNV-OS-E301
@@ -2874,6 +2878,24 @@ calc_examples:
     host: ace-linux-1
   - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0007-01 (2D Fe Corrosion V8) Draft1.xlsx
     description: 2D FE corrosion simulation workbook — Zn/Fe anode model
+    type: xlsx
+    host: ace-linux-1
+
+- standard: ISO-15589-2
+  domain: cathodic-protection
+  description: >
+    Cathodic protection for offshore pipelines and structures per ISO 15589-2.
+    The HENECO corrosion FE project provides 2D FE corrosion simulation workbooks
+    and Tefals equation calculations applicable to offshore pipeline CP design.
+    The BLK31 SLOR buoyancy tank corrosion review provides system-level CP
+    design notes for offshore structure components.
+  files:
+  - path: /mnt/ace/docs/disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/Documents/MIN/2100-MIN-3042-01 Buoyancy Tank Corrosion Design Review (HMC Issued).pdf
+    description: Buoyancy tank corrosion design review — offshore structure CP system notes
+    type: pdf
+    host: ace-linux-1
+  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0007-01 (2D Fe Corrosion V8) Draft1.xlsx
+    description: 2D FE corrosion simulation (V8) — offshore pipeline anode model
     type: xlsx
     host: ace-linux-1
 
