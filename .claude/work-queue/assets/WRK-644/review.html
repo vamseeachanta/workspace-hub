@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-643 Claude Compact Bundle Review</title>
+  <style>
+    :root {
+      --bg: #f7f2ea;
+      --card: #fffaf4;
+      --ink: #1f2530;
+      --muted: #5f6772;
+      --line: #dccfbc;
+      --accent: #0f6c6d;
+      --accent2: #bc5a24;
+      --warn: #973131;
+      --ok: #256b45;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Source Serif 4", Georgia, serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(15,108,109,0.08), transparent 26%),
+        radial-gradient(circle at left bottom, rgba(188,90,36,0.09), transparent 30%),
+        var(--bg);
+    }
+    .wrap { width: min(1100px, calc(100% - 32px)); margin: 28px auto 48px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 24px rgba(31,37,48,0.08);
+    }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.75rem;
+      color: var(--accent2);
+      font-family: "IBM Plex Mono", monospace;
+      margin-bottom: 10px;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .stat { padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+    .stat strong { display: block; font-size: 1.6rem; color: var(--accent); }
+    .pill { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: 0.8rem; font-family: "IBM Plex Mono", monospace; }
+    .bad { background: rgba(151,49,49,0.10); color: var(--warn); }
+    .ok { background: rgba(37,107,69,0.10); color: var(--ok); }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); }
+    code { font-family: "IBM Plex Mono", monospace; font-size: 0.92rem; }
+    ul { margin: 0; padding-left: 18px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="eyebrow">Executive Summary</div>
+      <h1>Claude compact bundle is implemented, reusable, and still below the real review boundary.</h1>
+      <p>The new bundle path reduces the `WRK-624` plan payload by about 72%, integrates directly into the Claude wrapper, and passes its own bundle-generation test. But Claude still does not return substantive non-interactive review content for the real plan-review target. The bundle is therefore useful as the canonical Claude input surface for future work, not yet as a proven production review path.</p>
+      <div class="grid">
+        <div class="stat"><strong>20.6 KB</strong><span>source plan</span></div>
+        <div class="stat"><strong>5.8 KB</strong><span>compact bundle</span></div>
+        <div class="stat"><strong>72%</strong><span>payload reduction</span></div>
+        <div class="stat"><strong>3</strong><span>real-target validation runs</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>What Changed</h2>
+      <ul>
+        <li>Added <code>scripts/review/build-claude-plan-bundle.py</code> for deterministic provider-specific plan bundling.</li>
+        <li>Added <code>scripts/review/prompts/claude-compact-plan-review.md</code> for Claude-focused review framing.</li>
+        <li>Integrated the bundle path into <code>scripts/review/submit-to-claude.sh --compact-plan</code>.</li>
+        <li>Added <code>scripts/review/tests/test-claude-compact-bundle.sh</code>.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Validation Matrix</h2>
+      <table>
+        <thead>
+          <tr><th>Run</th><th>Mode</th><th>Result</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>R1</td>
+            <td>Wrapper + compact bundle</td>
+            <td><span class="pill bad">No usable review</span></td>
+            <td>Bundle path works, but wrapper/provider combination still did not return structured review content.</td>
+          </tr>
+          <tr>
+            <td>R2</td>
+            <td>Direct Claude on compact bundle</td>
+            <td><span class="pill bad">No output</span></td>
+            <td>Failure is not solely caused by wrapper orchestration.</td>
+          </tr>
+          <tr>
+            <td>R3</td>
+            <td>Direct Claude on tighter bundle</td>
+            <td><span class="pill bad">NO_OUTPUT</span></td>
+            <td>Even the tighter provider-specific bundle is still beyond the current practical boundary for real plan-review semantics.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Conclusion</h2>
+      <ul>
+        <li>The bundle generator is worth keeping. It gives the workflow a stable Claude-specific input contract.</li>
+        <li>The current operational boundary remains: Claude can pass smoke tests but not this real plan review.</li>
+        <li>Next experiments should shrink semantic scope further rather than only trimming bytes.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Artifacts</h2>
+      <ul>
+        <li><code>.claude/work-queue/assets/WRK-643/wrk-624-claude-compact-bundle.md</code></li>
+        <li><code>.claude/work-queue/assets/WRK-643/results.md</code></li>
+        <li><code>.claude/work-queue/assets/WRK-643/raw/wrk-624-claude-direct-review-v2.md</code></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

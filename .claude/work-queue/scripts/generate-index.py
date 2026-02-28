@@ -1,4 +1,10 @@
-#!/usr/bin/env -S uv run --no-project python
+#!/usr/bin/env bash
+""":"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-$REPO_ROOT/.claude/state/uv-cache}"
+mkdir -p "$UV_CACHE_DIR"
+exec uv run --no-project python "$0" "$@"
+":"""
 """Generate INDEX.md for the work queue.
 
 Scans pending/, working/, blocked/, and archive/*/ directories for WRK-*.md
@@ -8,8 +14,6 @@ lookup views.
 Usage:
     python .claude/work-queue/scripts/generate-index.py
 """
-
-from __future__ import annotations
 
 import re
 import sys

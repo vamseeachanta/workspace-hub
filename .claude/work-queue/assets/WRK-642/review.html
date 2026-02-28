@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-642 Claude No-Response Diagnostic</title>
+  <style>
+    :root {
+      --bg: #f4f0e8;
+      --ink: #182028;
+      --muted: #55606b;
+      --card: #fffaf2;
+      --line: #d8ccb7;
+      --accent: #c2551a;
+      --accent-2: #1f5f5b;
+      --warn: #9b2c2c;
+      --ok: #1f6f43;
+      --shadow: 0 10px 30px rgba(24,32,40,0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Iowan Old Style", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(194,85,26,0.09), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(31,95,91,0.10), transparent 32%),
+        var(--bg);
+      line-height: 1.5;
+    }
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 32px auto 56px;
+    }
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.05; }
+    h2 { font-size: 1.35rem; }
+    p, li { font-size: 1rem; }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      font-size: 0.76rem;
+      margin-bottom: 12px;
+      font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .stat {
+      padding: 14px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+    .stat strong {
+      display: block;
+      font-size: 1.6rem;
+      color: var(--accent-2);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .card { padding: 22px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 600; }
+    .pill {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
+      border: 1px solid transparent;
+    }
+    .ok { color: var(--ok); border-color: rgba(31,111,67,0.25); background: rgba(31,111,67,0.08); }
+    .bad { color: var(--warn); border-color: rgba(155,44,44,0.25); background: rgba(155,44,44,0.08); }
+    .muted { color: var(--muted); }
+    code, .path { font-family: "IBM Plex Mono", "SFMono-Regular", monospace; font-size: 0.92rem; }
+    ul { margin: 0; padding-left: 18px; }
+    .note {
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">WRK-642 Executive Summary</div>
+      <h1>Claude no-response is payload-bound, not total transport failure.</h1>
+      <p>Claude produced a valid schema-compliant review on the minimal control case, then failed consistently on WRK-624-sized review inputs. One wrapper path also leaked a stuck process chain after timeout, which means this is both a provider-boundary problem and a wrapper-cleanup problem.</p>
+      <div class="summary-grid">
+        <div class="stat"><strong>6</strong><span>cases executed</span></div>
+        <div class="stat"><strong>1</strong><span>valid structured review</span></div>
+        <div class="stat"><strong>3</strong><span>no-output provider failures</span></div>
+        <div class="stat"><strong>1</strong><span>wrapper hang leak</span></div>
+      </div>
+      <p class="note">Recommended operational policy: keep Claude enabled for smoke-test transport checks, but treat current plan-review workloads as out of boundary until a smaller provider-specific review bundle is proven.</p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Case Matrix</h2>
+        <table>
+          <thead>
+            <tr><th>Case</th><th>Input</th><th>Invocation</th><th>Result</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>C1</td><td>Minimal schema target</td><td>Direct <code>claude -p</code></td><td><span class="pill ok">VALID</span></td></tr>
+            <tr><td>C2</td><td>Compact WRK-624 bundle</td><td>Direct <code>claude -p</code></td><td><span class="pill bad">NO_OUTPUT</span></td></tr>
+            <tr><td>C3</td><td>Compact WRK-624 bundle</td><td><code>submit-to-claude.sh</code></td><td><span class="pill bad">Wrapper fallback</span></td></tr>
+            <tr><td>C4</td><td>Full WRK-624 plan</td><td>Direct <code>claude -p</code></td><td><span class="pill bad">Harness error</span></td></tr>
+            <tr><td>C5</td><td>Full WRK-624 plan</td><td><code>submit-to-claude.sh</code></td><td><span class="pill bad">Wrapper fallback</span></td></tr>
+            <tr><td>C6</td><td>Compact WRK-624 bundle</td><td><code>submit-to-claude.sh</code>, 60s</td><td><span class="pill bad">Hung past timeout</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>Ranked Findings</h2>
+        <ol>
+          <li>Primary trigger is payload size and shape. Claude handles the trivial control, not the WRK-624 review bundle.</li>
+          <li>Wrapper cleanup is incomplete under timeout pressure. One process chain survived the configured timeout and had to be terminated manually.</li>
+          <li>The direct full-plan harness had a command-construction defect and should not be used as provider evidence.</li>
+        </ol>
+      </section>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Operational Recommendations</h2>
+        <ul>
+          <li>Add an outer watchdog that kills the entire wrapper process group.</li>
+          <li>Keep a minimal Claude smoke test in CI so transport health is tested separately from plan complexity.</li>
+          <li>Create a smaller provider-specific compact review bundle for Claude.</li>
+          <li>Pass reviewed content via stdin or temp files, never as positional CLI arguments.</li>
+          <li>Classify current Claude plan-review runs as <code>NO_OUTPUT</code> once the compact bundle boundary is exceeded.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Evidence</h2>
+        <p class="muted">Primary artifacts:</p>
+        <ul>
+          <li><span class="path">.claude/work-queue/assets/WRK-642/test-matrix.md</span></li>
+          <li><span class="path">.claude/work-queue/assets/WRK-642/test-results.md</span></li>
+          <li><span class="path">.claude/work-queue/assets/WRK-642/findings.md</span></li>
+          <li><span class="path">.claude/work-queue/assets/WRK-642/raw/c1/stdout.md</span></li>
+          <li><span class="path">.claude/work-queue/assets/WRK-642/raw/c2/</span></li>
+          <li><span class="path">.claude/work-queue/assets/WRK-642/raw/c6/stdout.md</span></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

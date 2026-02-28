@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review: WRK-207</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 40px; background: #fafafa; color: #24292e; }
+        .card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px; border: 1px solid #e1e4e8; }
+        h1 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; margin-top: 24px; }
+        .exec-summary { background: #f1f8ff; padding: 20px; border-left: 6px solid #0366d6; margin-bottom: 30px; border-radius: 4px; }
+        .exec-summary h2 { margin-top: 0; border: none; color: #0366d6; }
+        pre { background: #f6f8fa; padding: 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #dfe1e4; }
+        code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; background: rgba(27,31,35,0.05); padding: 0.2em 0.4em; border-radius: 3px; }
+        pre code { background: none; padding: 0; }
+        table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+        th, td { border: 1px solid #dfe1e8; padding: 12px; text-align: left; }
+        th { background-color: #f6f8fa; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>WRK-207 Review</h1>
+        <div class="exec-summary">
+            <h2>Executive Summary</h2>
+            <div><p>Keep <code>scripts/ai/assessment/query-quota.sh</code> accurate for weekly usage reporting while
+the Claude OAuth-backed quota source is broken. The current accepted behavior is:</p>
+<ul>
+<li>Codex weekly usage is reported from local history.</li>
+<li>Gemini remains best-effort.</li>
+<li>Claude shows <code>N/A</code> in display, weekly summary, and cached quota snapshots unless the
+  authoritative OAuth-backed source is available.</li>
+</ul>
+<p>This item stays open until the Claude authoritative refresh path is repaired and weekly
+reporting can safely consume it.</p></div>
+        </div>
+        <div class="content">
+            <h1>WRK-207: Fix query-quota.sh weekly usage reporting for Claude and Codex</h1>
+<h2>What</h2>
+<p>Keep <code>scripts/ai/assessment/query-quota.sh</code> accurate for weekly usage reporting while
+the Claude OAuth-backed quota source is broken. The current accepted behavior is:</p>
+<ul>
+<li>Codex weekly usage is reported from local history.</li>
+<li>Gemini remains best-effort.</li>
+<li>Claude shows <code>N/A</code> in display, weekly summary, and cached quota snapshots unless the
+  authoritative OAuth-backed source is available.</li>
+</ul>
+<p>This item stays open until the Claude authoritative refresh path is repaired and weekly
+reporting can safely consume it.</p>
+<h2>Why</h2>
+<p>Weekly usage output is used for planning and statusline visibility across the repo
+ecosystem. Showing an estimated Claude quota as if it were authoritative creates bad
+planning data and contradicts the intended <code>/usage</code> source of truth. <code>N/A</code> is safer
+than a wrong percentage.</p>
+<h2>Problem</h2>
+<p><code>query-quota.sh --weekly</code> reports 100% remaining (inaccurate) because it reads from
+<code>~/.agent-usage/weekly-log.jsonl</code> which is only populated by <code>--log</code> flag runs — never
+populated historically.</p>
+<p>Actual weekly data exists in source files but <code>--weekly</code> doesn't read them directly:
+- <strong>Claude</strong>: <code>~/.claude/stats-cache.json</code> has <code>dailyActivity[]</code> — last 7 days show
+  52,186 messages across 38 sessions (Feb 11–16; Feb 17–18 not yet written to cache).
+  <code>stats-cache.json</code> only updates when sessions close, so current-day data lags.
+- <strong>Codex</strong>: <code>~/.codex/history.jsonl</code> has timestamped entries — 12 messages this week.</p>
+<p>The statusline (<code>statusline-command.sh</code>) and related tooling should only surface Claude
+quota when <code>config/ai-tools/agent-quota-latest.json</code> has been populated from the
+authoritative OAuth-backed source.</p>
+<h2>What Needs Fixing</h2>
+<ol>
+<li>
+<p><strong>Keep Claude gated on authoritative data</strong>: <code>query_claude()</code> must not turn
+   <code>stats-cache.json</code> or <code>ccusage</code> into a displayed quota percentage while the
+   OAuth-backed source is unavailable.</p>
+</li>
+<li>
+<p><strong>Rewrite <code>query_codex()</code> to use weekly window</strong>: filter <code>history.jsonl</code> by
+   <code>ts &gt;= (now - 7*86400)</code> and count entries over the week.</p>
+</li>
+<li>
+<p><strong>Rewrite <code>show_weekly_summary()</code></strong> to read directly from source files (same logic
+   as above) instead of relying on the <code>weekly-log.jsonl</code> accumulation file. For
+   Claude, weekly display should stay <code>N/A</code> until the authoritative source works.</p>
+</li>
+<li>
+<p><strong>Repair the Claude refresh path</strong>: restore a reliable fetch step that writes fresh
+   OAuth-backed quota data into <code>config/ai-tools/agent-quota-latest.json</code>.</p>
+</li>
+<li>
+<p><strong>Statusline <code>ai_usage</code> field</strong>: once the authoritative Claude snapshot is repaired,
+   <code>C:|O:|G:</code> should reflect the same source used by <code>/usage</code>.</p>
+</li>
+</ol>
+<h2>Key Files</h2>
+<ul>
+<li><code>scripts/ai/assessment/query-quota.sh</code> — main script to fix</li>
+<li><code>.claude/statusline-command.sh</code> — reads <code>~/.cache/agent-quota.json</code></li>
+<li><code>~/.claude/stats-cache.json</code> — Claude source data</li>
+<li><code>~/.codex/history.jsonl</code> — Codex source data</li>
+</ul>
+<h2>Cross-Platform Requirements</h2>
+<ul>
+<li>Must work on Linux, Windows (MINGW64/Git Bash), and macOS</li>
+<li><code>date -d</code> is GNU-only — use <code>date -v</code> on macOS or <code>python3 -c "..."</code> for portable epoch math</li>
+<li><code>stat -c %Y</code> (GNU) vs <code>stat -f %m</code> (BSD/macOS) — abstract into a helper or use Python fallback</li>
+<li><code>wc -l</code> output has leading spaces on BSD — always pipe through <code>tr -d ' '</code></li>
+<li>Avoid bashisms that differ between bash 3 (macOS default) and bash 5 (Linux/MINGW)</li>
+<li>Test on all 3 platforms before closing</li>
+</ul>
+<h2>Notes</h2>
+<ul>
+<li><code>stats-cache.json</code> <code>lastComputedDate</code> was <code>2026-02-16</code> — today's sessions not written yet.
+  Weekly sum will undercount current-day usage until session closes.</li>
+<li>Codex history only has 33 total entries — very light usage, easy to count weekly.</li>
+<li>Gemini source (<code>~/.config/gemini/state.json</code>) is less reliable; lower priority.</li>
+<li>Current accepted interim behavior:</li>
+<li><code>query-quota.sh</code> display: Claude <code>N/A</code></li>
+<li><code>query-quota.sh --weekly</code>: Claude <code>N/A</code></li>
+<li><code>query-quota.sh --refresh --json</code>: Claude source <code>unavailable</code>, quota fields null</li>
+<li>Do not close this item until the OAuth-backed Claude refresh source is working again.</li>
+</ul>
+<h2>Consolidation Note (2026-02-27)</h2>
+<ul>
+<li>Canonical open item for weekly usage reporting correctness.</li>
+<li>Use this item when <code>query-quota.sh --weekly</code> is inaccurate, stale, or otherwise needs bug-fix work.</li>
+<li>Do not use this item for routine weekly usage execution; that maps to the historical display/reporting workflow in <code>WRK-108</code>.</li>
+<li>Do not use this item for broad quota infrastructure review; that maps to <code>WRK-172</code>.</li>
+</ul>
+<h2>Agentic AI Horizon</h2>
+<ul>
+<li>Fixing query-quota.sh weekly usage reporting gives accurate quota visibility — directly prevents session-start quota surprises that derail agent execution plans.</li>
+<li>Quota tracking tools are utility infrastructure; fixing this small bug has immediate session-management value.</li>
+<li><strong>Disposition: keep open</strong> — the unsafe estimated path has been removed, but the
+  authoritative Claude refresh source still needs repair.</li>
+</ul>
+<!-- computer: ace-linux-1 -->
+        </div>
+    </div>
+</body>
+</html>
