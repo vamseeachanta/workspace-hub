@@ -294,6 +294,30 @@
           <td>P3 examples</td>
           <td>Optional but valuable enhancements such as broader indexing, extra ecosystem learnings, or non-blocking enrichment.</td>
         </tr>
+        <tr>
+          <td>Pass contract</td>
+          <td>The stage passes only when required files exist, required headings exist, sources are recorded or waived, legal-scan proof exists when applicable, and a `resource-intelligence-summary.md` records the ranked gaps and user decision.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Resource Intelligence Summary Schema</h2>
+      <table>
+        <tr>
+          <th>Field</th>
+          <th>Requirement</th>
+        </tr>
+        <tr><td><code>wrk_id</code></td><td>Required</td></tr>
+        <tr><td><code>summary</code></td><td>Required</td></tr>
+        <tr><td><code>top_p1_gaps</code></td><td>Required</td></tr>
+        <tr><td><code>top_p2_gaps</code></td><td>Required</td></tr>
+        <tr><td><code>top_p3_gaps</code></td><td>Required</td></tr>
+        <tr><td><code>user_decision</code></td><td>Required: <code>pause_and_revise</code> or <code>continue_to_planning</code></td></tr>
+        <tr><td><code>reviewed_at</code></td><td>Required</td></tr>
+        <tr><td><code>reviewer</code></td><td>Required</td></tr>
+        <tr><td><code>legal_scan_ref</code></td><td>Required when applicable</td></tr>
+        <tr><td><code>indexing_ref</code></td><td>Required when indexing is used</td></tr>
       </table>
     </section>
 
@@ -353,6 +377,52 @@
         </tr>
       </table>
       <p><strong>Follow-on skill work:</strong> the dedicated stage definition and validator-ready contract should be delivered under <code>WRK-655</code>, which is now the top recommended follow-on item.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Capture Contract</h2>
+      <table>
+        <tr>
+          <th>Requirement</th>
+          <th>Rule</th>
+        </tr>
+        <tr><td>WRK scaffold</td><td>Capture should create the WRK file in the correct queue folder and create an asset directory at the same time.</td></tr>
+        <tr><td>Minimum frontmatter</td><td>Capture should initialize <code>id</code>, <code>title</code>, <code>status</code>, <code>priority</code>, <code>complexity</code>, <code>route</code>, <code>orchestrator</code>, and <code>target_repos</code>.</td></tr>
+        <tr><td>Initial artifact refs</td><td>Capture should initialize <code>resource_pack_ref</code>, <code>html_output_ref</code>, and <code>plan_html_review_draft_ref</code>.</td></tr>
+        <tr><td>Hard gate</td><td>WRK creation without scaffolded metadata or an asset directory fails capture.</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Triage Contract</h2>
+      <table>
+        <tr>
+          <th>Field</th>
+          <th>Rule</th>
+        </tr>
+        <tr><td><code>route</code></td><td>Must be one of <code>A</code>, <code>B</code>, or <code>C</code>.</td></tr>
+        <tr><td><code>priority</code></td><td>Must be one of <code>high</code>, <code>medium</code>, or <code>low</code>.</td></tr>
+        <tr><td><code>complexity</code></td><td>Must be one of <code>simple</code>, <code>medium</code>, <code>complex</code>, or <code>critical</code>.</td></tr>
+        <tr><td><code>computer</code></td><td>Must match a named workstation entry from the workstation registry.</td></tr>
+        <tr><td><code>provider</code> / <code>provider_alt</code></td><td>Must match valid configured providers for the ecosystem.</td></tr>
+        <tr><td><code>resource_needs</code></td><td>Must be a structured list or an explicit empty list; prose-only is not enough.</td></tr>
+        <tr><td>Hard gate</td><td>Missing required fields or invalid registry values fail triage.</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Execute Contract</h2>
+      <table>
+        <tr>
+          <th>Requirement</th>
+          <th>Rule</th>
+        </tr>
+        <tr><td>Example pack</td><td>Execute should leave behind a defined example pack for the WRK.</td></tr>
+        <tr><td>Variation tests</td><td>Execute should record variation-test results, not just claim they were considered.</td></tr>
+        <tr><td>HTML output</td><td>When the WRK requires HTML-visible outputs, execute should produce them before completion.</td></tr>
+        <tr><td>Session ownership</td><td>Execute completion is valid only when the work happened under the claimed session.</td></tr>
+        <tr><td>Hard gate</td><td>Missing example pack, missing variation-test results, missing required HTML output, or execution outside the claimed session fails execute completion.</td></tr>
+      </table>
     </section>
 
     <section class="grid">
@@ -436,6 +506,7 @@ flowchart TD
           <td>Close remains blocked without user review evidence.</td>
         </tr>
       </table>
+      <p><strong>Normalized review record:</strong> both draft and final plan HTML review records should contain <code>decision</code>, <code>reviewer</code>, <code>reviewed_at</code>, <code>delegate</code> when delegated, <code>notes</code>, and <code>artifact</code>.</p>
     </section>
 
     <section class="panel">
@@ -455,6 +526,11 @@ flowchart TD
           <td>Plan HTML gate</td>
           <td>User review of the draft WRK HTML artifact is required before multi-agent review, and user review of the final WRK HTML artifact is required again after multi-agent review before execution may proceed. The plan HTML must begin with an executive summary for quick review.</td>
           <td class="status-bad">Execution blocked if not reviewed</td>
+        </tr>
+        <tr>
+          <td>Final plan decision</td>
+          <td>The final plan HTML decision must be <code>passed</code> before claim may begin.</td>
+          <td class="status-bad">Claim blocked if not passed</td>
         </tr>
         <tr>
           <td>Agent verification</td>
@@ -482,10 +558,41 @@ flowchart TD
           <td class="status-bad">Execution should pause or reroute if quota is weak</td>
         </tr>
         <tr>
+          <td>Claim evidence</td>
+          <td>Claim must write a canonical <code>claim-evidence.yaml</code> recording session owner, best-fit provider, fallback provider, quota snapshot, freshness, quota decision, claim decision, and any blocked reason.</td>
+          <td class="status-bad">Execution blocked if claim evidence is incomplete</td>
+        </tr>
+        <tr>
           <td>Domain outputs</td>
           <td>Where calculations or analysis outputs exist, the same HTML artifact must surface them in directly reviewable form.</td>
           <td class="status-bad">Close blocked if omitted</td>
         </tr>
+        <tr>
+          <td>Close evidence</td>
+          <td>Close must write a canonical <code>close-evidence.yaml</code> recording commits, tests, review refs, changed files, follow-up WRKs, merge/sync status, HTML output, HTML verification, and learning outputs.</td>
+          <td class="status-bad">Done transition blocked if incomplete</td>
+        </tr>
+        <tr>
+          <td>Archive evidence</td>
+          <td>Archive must write a canonical <code>archive-evidence.yaml</code> recording close evidence, queue validation, merge status, sync status, follow-up WRKs, and archive metadata.</td>
+          <td class="status-bad">Archive blocked if incomplete</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Archive Pass Contract</h2>
+      <table>
+        <tr>
+          <th>Requirement</th>
+          <th>Rule</th>
+        </tr>
+        <tr><td>Close complete</td><td>The item must already have complete close evidence.</td></tr>
+        <tr><td>Queue validation</td><td>Queue validation must pass before archive.</td></tr>
+        <tr><td>Merge status</td><td>Merge-to-main must be complete.</td></tr>
+        <tr><td>Sync status</td><td>Sync flow must be complete.</td></tr>
+        <tr><td>Follow-up work</td><td>Required follow-up WRKs must already exist.</td></tr>
+        <tr><td>Status/folder pairing</td><td>The item may only live in archive with <code>status: archived</code>.</td></tr>
       </table>
     </section>
 

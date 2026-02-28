@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-655 Resource Intelligence Plan Review</title>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --panel: #fffdf8;
+      --ink: #172126;
+      --muted: #55636b;
+      --accent: #0f766e;
+      --accent-2: #8a5a2b;
+      --line: #d9d0c0;
+      --warn: #b45309;
+      --good: #166534;
+      --shadow: 0 16px 40px rgba(20, 33, 38, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background: radial-gradient(circle at top, #fffaf0 0, var(--bg) 48%, #ebe5d7 100%);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .hero {
+      padding: 46px 24px 26px;
+      border-bottom: 1px solid rgba(23, 33, 38, 0.08);
+      background: linear-gradient(135deg, rgba(15,118,110,0.08), rgba(138,90,43,0.1));
+    }
+    .hero-inner, .content { max-width: 1160px; margin: 0 auto; }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    h1 {
+      margin: 10px 0 12px;
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      line-height: 0.95;
+      max-width: 11ch;
+    }
+    .lede {
+      max-width: 72ch;
+      color: var(--muted);
+      font-size: 1.04rem;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .pill {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+    }
+    .content {
+      padding: 28px 24px 56px;
+      display: grid;
+      gap: 22px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-2);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-top: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      color: var(--ink);
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .status-good { color: var(--good); font-weight: 700; }
+    .status-warn { color: var(--warn); font-weight: 700; }
+    code { color: var(--ink); }
+    ul { margin: 0; padding-left: 18px; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">WRK-655 Plan Review</div>
+      <h1>Resource Intelligence Skill</h1>
+      <p class="lede">This HTML is the planning-stage review surface for `WRK-655`. It turns the loosest workflow stage into a first-class skill contract with a visible knowledge map, a `P1/P2/P3` gap model, and a validator-ready artifact definition.</p>
+      <div class="meta">
+        <div class="pill">Status: Draft plan</div>
+        <div class="pill">Route: C</div>
+        <div class="pill">Review gate: user HTML review before multi-agent review</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="panel">
+      <h2>Executive Summary</h2>
+      <p><strong>WRK-655</strong> exists because `Resource Intelligence` is still defined mostly in policy. The workflow now says the stage must rank gaps, pause on unresolved `P1` issues, and show the user a skill map, but there is not yet a reusable ecosystem skill that makes different agents execute the same stage the same way.</p>
+      <p>This work item makes the stage operational: one skill path, one artifact contract, one gap-ranking model, one visible knowledge map, and one clear user decision between <code>pause and revise</code> or <code>continue to planning</code>.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Planned Deliverables</h2>
+      <table>
+        <tr><th>Deliverable</th><th>Purpose</th></tr>
+        <tr><td>Resource Intelligence skill</td><td>Make the stage executable through a defined ecosystem skill rather than ad hoc research behavior.</td></tr>
+        <tr><td>Artifact contract</td><td>Define what must exist in the resource pack for the stage to be considered complete.</td></tr>
+        <tr><td>Gap model</td><td>Define `P1/P2/P3` priorities and the user-pause rule when unresolved `P1` gaps remain.</td></tr>
+        <tr><td>Knowledge map</td><td>Show which skills and systems are used so the user can inspect and tweak the stage.</td></tr>
+        <tr><td>Validator-ready rules</td><td>Make later enforcement and tooling integration possible.</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Knowledge Map</h2>
+      <table>
+        <tr><th>Role</th><th>Skill / System</th><th>Purpose</th></tr>
+        <tr><td>Lifecycle wrapper</td><td><code>work-queue</code></td><td>Align stage artifacts to WRK lifecycle.</td></tr>
+        <tr><td>Domain scoping</td><td><code>engineering-context-loader</code></td><td>Narrow relevant domain context and standards.</td></tr>
+        <tr><td>Repo/document scan</td><td><code>document-inventory</code></td><td>Inventory source collections before deeper processing.</td></tr>
+        <tr><td>Document intelligence</td><td><code>document-rag-pipeline</code></td><td>Build searchable document context when needed.</td></tr>
+        <tr><td>Prior learnings</td><td><code>knowledge-manager</code></td><td>Surface prior decisions, patterns, corrections, and gotchas.</td></tr>
+        <tr><td>Legal gate</td><td><code>legal-sanity</code></td><td>Check resource-pack artifacts for sensitive content.</td></tr>
+        <tr><td>Agent fit</td><td><code>agent-router</code></td><td>Select the right provider mix for later stages.</td></tr>
+        <tr><td>Quota awareness</td><td><code>agent-usage-optimizer</code></td><td>Keep downstream claim/review work within quota.</td></tr>
+        <tr><td>Deep synthesis</td><td><code>comprehensive-learning</code></td><td>Consume outputs later for slower ecosystem learning.</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Gap Priority Model</h2>
+      <table>
+        <tr><th>Priority</th><th>Meaning</th><th>Examples</th></tr>
+        <tr><td><span class="status-warn">P1</span></td><td>Blocking gaps that must be shown to the user first.</td><td>Missing source coverage, missing legal-scan result, unclear problem context, no credible path to domain knowledge.</td></tr>
+        <tr><td>P2</td><td>Material weaknesses that should be resolved but do not automatically force a stop.</td><td>Incomplete constraints, stale repo knowledge, unresolved medium-impact open questions.</td></tr>
+        <tr><td>P3</td><td>Useful enhancements rather than blockers.</td><td>Optional enrichment, broader indexing, extra ecosystem learnings.</td></tr>
+      </table>
+      <p><strong>User decision rule:</strong> unresolved <code>P1</code> gaps should produce <code>pause and revise</code>. If no <code>P1</code> gaps remain, the stage may <code>continue to planning</code>.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Review Focus</h2>
+      <ul>
+        <li>Is the skill boundary clear, or is this still too vague to execute consistently?</li>
+        <li>Is the knowledge map sufficient without becoming bloated?</li>
+        <li>Is the `P1` pause rule operationally clear enough for user review and future tooling?</li>
+        <li>Are the validator-ready requirements concrete enough to support later enforcement?</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

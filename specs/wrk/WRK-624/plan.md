@@ -135,6 +135,30 @@ flowchart TD
 - Record basic problem statement, acceptance criteria, and repo scope.
 - Assign `orchestrator`, `provider`, `provider_alt`, and initial route.
 
+#### Capture scaffold contract
+
+Capture should create, at minimum:
+- WRK file in the correct queue folder
+- asset directory for the WRK
+- minimum frontmatter:
+  - `id`
+  - `title`
+  - `status`
+  - `priority`
+  - `complexity`
+  - `route`
+  - `orchestrator`
+  - `target_repos`
+- initial artifact refs:
+  - `resource_pack_ref`
+  - `html_output_ref`
+  - `plan_html_review_draft_ref`
+
+#### Capture hard gates
+
+- WRK creation without scaffolded minimum metadata fails capture
+- WRK creation without an asset directory fails capture
+
 ### 2. Resource Intelligence
 - Mandatory for every WRK before planning is final.
 - Resource Intelligence should execute through an ecosystem skill rather than ad hoc note gathering.
@@ -191,6 +215,32 @@ Before the stage passes, present the user with:
 - the recommended next action to either continue to planning or revise the resource pack
 - an explicit pause when unresolved `P1` gaps still exist; otherwise continue
 
+#### Resource Intelligence pass contract
+
+- The stage passes only when:
+  - all required files exist
+  - required headings exist in the resource pack
+  - `sources.md` contains at least one recorded source or an explicit waiver
+  - legal-scan proof exists when applicable
+  - a stage summary exists with ranked `P1/P2/P3` gaps
+  - the user decision is recorded as either `pause_and_revise` or `continue_to_planning`
+- The canonical stage summary artifact is:
+  - `resource-intelligence-summary.md`
+
+#### Resource Intelligence summary schema
+
+Minimum required fields in `resource-intelligence-summary.md`:
+- `wrk_id`
+- `summary`
+- `top_p1_gaps`
+- `top_p2_gaps`
+- `top_p3_gaps`
+- `user_decision`
+- `reviewed_at`
+- `reviewer`
+- `legal_scan_ref`
+- `indexing_ref`
+
 ### 3. Triage
 Minimum triage contract:
 - `priority`
@@ -206,6 +256,21 @@ Minimum triage contract:
 Field definitions:
 - `computer`: the execution host or named workstation expected to own the primary work, using the workspace workstation registry naming (for example `ace-linux-1`). This is not a generic hardware class field.
 
+#### Triage field registries
+
+- `route`: `A|B|C`
+- `priority`: `high|medium|low`
+- `complexity`: `simple|medium|complex|critical`
+- `computer`: must match a named workstation entry from the workspace workstation registry
+- `provider` / `provider_alt`: must be valid configured providers for the ecosystem
+- `resource_needs`: structured list or explicit empty list; freeform prose alone is not sufficient
+
+#### Triage hard gates
+
+- missing required triage fields fails triage
+- invalid enum or registry values fail triage
+- blocked items may remain in triage, but may not progress to claim until blockers are cleared or explicitly waived
+
 ### 4. Plan
 - Route A/B plans may remain inline in the WRK body.
 - Route C plans live under `specs/wrk/WRK-<id>/`.
@@ -218,6 +283,19 @@ Field definitions:
 - `plan_html_reviewed_final` passes only when the user has reviewed the post-review WRK HTML artifact for the current plan revision.
 - `user_review_passed` means the user accepted the final plan HTML for execution readiness; if not passed, the plan returns to revision.
 - `plan_approved` requires explicit user approval of the current plan revision.
+
+#### Plan HTML review schema
+
+The draft and final plan HTML review records must include:
+- `decision` (`passed|needs_changes|deferred`)
+- `reviewer`
+- `reviewed_at`
+- `delegate` (if delegated)
+- `notes`
+- `artifact`
+
+Hard gate:
+- final plan HTML decision must be `passed` before claim may begin
 
 ### 5. Claim
 - Only unblocked items may move to `working/`.
@@ -234,12 +312,45 @@ Field definitions:
 - The orchestrator may still retain session ownership while reassigning primary execution to a better-fit agent.
 - Claim evidence should be written in structured form so validators and future automation can read it.
 
+#### Claim evidence schema
+
+The canonical claim artifact is `claim-evidence.yaml` with minimum required fields:
+- `session_owner`
+- `best_fit_provider`
+- `fallback_provider`
+- `quota_snapshot_ref`
+- `quota_snapshot_age_hours`
+- `quota_decision`
+- `claim_decision`
+- `blocked_reason`
+
+Claim hard gates:
+- missing `session_owner` fails claim
+- blocked items may not be claimed
+- stale quota evidence beyond the freshness threshold fails claim
+- claim must record whether best-fit and best-available providers differ
+
 ### 6. Execute
 - Perform implementation under the claimed session.
 - Every WRK must define `5-10` real examples.
 - Every WRK must include variation tests covering realistic problem variants.
 - Every WRK must generate an HTML review artifact for user review before close.
 - Where the WRK includes domain workflow calculations or analysis outputs, the HTML artifact must include those results in a reviewable form.
+
+#### Execute evidence contract
+
+Execute should leave behind, at minimum:
+- `example-pack.md`
+- `variation-test-results.md`
+- execution artifacts or changed files
+- HTML output when applicable
+
+#### Execute hard gates
+
+- missing example pack fails execute completion
+- missing variation-test results fails execute completion
+- missing HTML output fails execute completion when the WRK requires HTML-visible outputs
+- execution outside the claimed session fails execute completion
 
 ### 7. Close
 Close requires evidence for:
@@ -254,10 +365,58 @@ Close requires evidence for:
 - HTML output verification
 - learning outputs propagated directly where small and as follow-up WRKs where broader
 
+#### Close evidence schema
+
+The canonical close artifact is `close-evidence.yaml` with minimum required fields:
+- `implementation_commits`
+- `tests_run`
+- `review_artifacts`
+- `changed_files`
+- `followup_wrks`
+- `merge_status`
+- `sync_status`
+- `html_output_ref`
+- `html_verification_ref`
+- `learning_outputs`
+
+Close hard gates:
+- missing `close-evidence.yaml` fails close
+- missing HTML verification fails close
+- unresolved blocking review findings fail close
+- referenced follow-up WRKs must exist before close can pass
+
 ### 8. Archive
 - `archive/` may contain only `status: archived`.
 - Archive is blocked until merge-to-main and sync flow are complete.
 - `done/` remains the holding area for completed but not yet archived items.
+
+#### Archive pass contract
+
+- Archive passes only when:
+  - `status: done` item has complete close evidence
+  - queue validation passes
+  - merge-to-main is complete
+  - sync flow is complete
+  - required follow-up WRKs exist
+  - archive evidence exists and the item is moved into the archive location with `status: archived`
+
+#### Archive evidence schema
+
+The canonical archive artifact is `archive-evidence.yaml` with minimum required fields:
+- `wrk_id`
+- `close_evidence_ref`
+- `queue_validation_ref`
+- `merge_status`
+- `sync_status`
+- `followup_wrks`
+- `archived_at`
+- `archived_by`
+
+Archive hard gates:
+- missing `archive-evidence.yaml` fails archive
+- incomplete merge or sync fails archive
+- queue validation failure fails archive
+- wrong folder/status pairing fails archive
 
 ## Stage Contract Matrix
 

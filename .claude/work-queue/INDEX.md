@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-28T06:56:35Z by generate-index.py -->
+<!-- Generated: 2026-02-28T13:53:23Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-28T06:56:35Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-28T13:53:23Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 414
+**Total items:** 415
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 174 |
+| pending | 175 |
 | working | 10 |
 | blocked | 5 |
 | archived | 225 |
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 195 |
+| high | 196 |
 | medium | 177 |
 | low | 41 |
 
@@ -32,7 +32,7 @@
 |------------|-------|
 | simple | 70 |
 | medium | 187 |
-| complex | 90 |
+| complex | 91 |
 
 ### By Repository
 
@@ -54,7 +54,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 96 |
+| workspace-hub | 97 |
 | worldenergydata | 80 |
 
 ### Plan Tracking
@@ -62,7 +62,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 151 / 414 |
+| Plans exist | 152 / 415 |
 | Plans cross-reviewed | 58 |
 | Plans approved | 79 |
 | Brochure pending | 7 |
@@ -74,9 +74,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 414 |
+| Total captured | 415 |
 | Total archived | 225 |
-| Completion rate | 225/414 (54%) |
+| Completion rate | 225/415 (54%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -84,7 +84,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 46 / 174 | 26% |
+| Pending items with plans | 47 / 175 | 27% |
 | Plans cross-reviewed | 9 | 16% |
 | Plans user-approved | 9 | 16% |
 
@@ -101,7 +101,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 85 | 8 | 3 |
+| High     | 86 | 8 | 3 |
 | Medium   | 61  | 2  | 1  |
 | Low      | 28  | 0  | 1  |
 
@@ -522,6 +522,7 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-637 |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
+| WRK-655 | feat(skills): define Resource Intelligence skill and validator-ready stage contract | pending | high | complex | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -703,6 +704,7 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | high | medium | workspace-hub | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | high | small | workspace-hub | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | low | medium | workspace-hub | - |
+| WRK-655 | feat(skills): define Resource Intelligence skill and validator-ready stage contract | high | complex | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -1385,6 +1387,7 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | - |
+| WRK-655 | feat(skills): define Resource Intelligence skill and validator-ready stage contract | pending | high | complex | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1673,6 +1676,7 @@
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | medium | workspace-hub | - |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | medium | workspace-hub | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | small | workspace-hub | - |
+| WRK-655 | feat(skills): define Resource Intelligence skill and validator-ready stage contract | pending | complex | workspace-hub | - |
 
 ### Medium
 
@@ -2265,10 +2269,11 @@
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | frontierdeepwater, aceengineer-website | - |
 | WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | high | TBD-client2-repo | - |
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | frontierdeepwater, TBD-client2-repo | - |
+| WRK-655 | feat(skills): define Resource Intelligence skill and validator-ready stage contract | pending | high | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (130 active / 143 total)
+### ace-linux-1 (131 active / 144 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2414,6 +2419,7 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | workspace-hub |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | workspace-hub |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | workspace-hub |
+| WRK-655 | feat(skills): define Resource Intelligence skill and validator-ready stage contract | pending | high | complex | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)

@@ -1,5 +1,5 @@
-generated: '2026-02-27'
-total_specs: 1518
+generated: '2026-02-28'
+total_specs: 1520
 by_category:
   archive: 10
   data-sources: 13
@@ -7,7 +7,7 @@ by_category:
   other: 24
   repos: 1344
   templates: 2
-  wrk: 9
+  wrk: 11
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 157
+  workspace-hub: 159
   worldenergydata: 216
 by_wrk:
   WRK-9: 1
@@ -217,7 +217,8 @@ by_wrk:
   WRK-621: 1
   WRK-622: 1
   WRK-623: 1
-  WRK-624: 1
+  WRK-624: 3
+  WRK-655: 1
 specs:
 - path: specs/architecture/agent-vision.md
   title: Superintelligent Engineering Agent Architecture Blueprint
@@ -19851,7 +19852,38 @@ specs:
   - wrk-624
   wrk_refs:
   - WRK-624
+  mtime: '2026-02-28'
+- path: specs/wrk/WRK-624/review/review-gemini.md
+  title: Review Gemini
+  description: The plan is exceptionally thorough and addresses the core issues of workflow drift and lack of accountability
+    in the work-queue process. It introduces clear, enforceable gates (Route C requirements...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - review
+  - review-gemini
+  - wrk-624
+  wrk_refs:
+  - WRK-624
   mtime: '2026-02-27'
+- path: specs/wrk/WRK-655/plan.md
+  title: WRK-655 Resource Intelligence Skill and Stage Contract
+  description: Route C plan to operationalize Resource Intelligence as a first-class skill with a validator-ready artifact
+    contract, gap-ranking model, and user-review pause behavior.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - document-intelligence
+  - plan
+  - resource-intelligence
+  - skills
+  - work-queue
+  - workflow
+  - wrk-655
+  wrk_refs:
+  - WRK-624
+  - WRK-655
+  mtime: '2026-02-28'
 - path: digitalmodel/specs/module-registry.yaml
   title: digitalmodel
   description: Structured registry of all digitalmodel sub-modules for agent discovery
