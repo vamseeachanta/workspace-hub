@@ -334,7 +334,7 @@ flowchart TD
           <tr><td>Claude review</td><td class="status-good">Full-bundle artifact adopted as final Claude review</td></tr>
           <tr><td>Codex review</td><td class="status-good">Formal review artifact recorded</td></tr>
           <tr><td>Gemini review</td><td class="status-good">Formal review artifact recorded</td></tr>
-          <tr><td>Review synthesis</td><td class="status-warn">Fresh formal rerun completed; verdict still effectively <code>REQUEST_CHANGES</code> due to remaining enforceability gaps and Codex <code>NO_OUTPUT</code></td></tr>
+          <tr><td>Review synthesis</td><td class="status-warn">Seed-compliant Route C review completed; Claude and Codex both returned 3/3 <code>REQUEST_CHANGES</code>, Gemini returned 3/3 <code>APPROVE</code>, so final signoff is still blocked</td></tr>
         </table>
       </article>
     </section>
@@ -517,6 +517,16 @@ flowchart TD
         <li>Migration tests for malformed filenames and legacy statuses.</li>
         <li>HTML gate tests for draft-plan review, final-plan review, and close-time HTML verification.</li>
         <li>Rollback tests for Phase 1, Phase 2, and Phase 3 rollback paths.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>Core Scope</h2>
+      <ul>
+        <li><strong>WRK-624 core delivery</strong>: lifecycle enforcement, review evidence structure, claim/session checks, close/archive gates, migration path, and user HTML review gating.</li>
+        <li><strong>Primary blocker focus</strong>: user HTML review flow must be operationally enforceable and validator-testable.</li>
+        <li><strong>Follow-on scope</strong>: deeper legal-scan automation, document-intelligence integration, and richer comprehensive-learning automation can continue as follow-on work.</li>
+        <li><strong>Seed policy</strong>: full Route C seed depth remains intact because planning is treated as the highest-leverage self-evolution step in the repo ecosystem.</li>
       </ul>
     </section>
 

@@ -31,7 +31,8 @@ flowchart TD
     J -- Yes --> L[Status: blocked]
     K --> M{Route Review Passed?}
     M -- Yes --> N[Close]
-    M -- No --> K
+    M -- No --> M1[Address findings / revise implementation]
+    M1 --> K
     N --> O{Queue Valid + Merge/Sync Complete?}
     O -- Yes --> P[Archive]
     O -- No --> N
@@ -72,10 +73,10 @@ flowchart TD
 
 ### 7. Close
 **Trigger**: Implementation complete and verified.
-- Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]`
+- Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--html-output <path>] [--html-verification <path>] [--commit]`
 - Updates frontmatter, moves to `done/`, regenerates INDEX.
-- Verify HTML output.
-- Record merge/sync status.
+- Enforces HTML review evidence for WRK items using the hardened workflow contract.
+- Record merge/sync status and follow-up/learning outputs where applicable.
 
 ### 8. Archive
 - Script: `scripts/archive-item.sh WRK-NNN`
@@ -158,7 +159,7 @@ Add this block to the WRK item body before marking done:
 ---
 id: WRK-NNN
 title: Brief descriptive title
-status: pending          # pending | working | blocked | archived | failed
+status: pending          # pending | working | done | blocked | archived | failed
 priority: medium         # high | medium | low
 complexity: medium       # simple | medium | complex
 route:                   # A | B | C
@@ -170,8 +171,8 @@ target_module:           # module within repo
 commit:                  # SHA after implementation
 spec_ref:                # path to Route C spec
 resource_pack_ref:       # path to assets/WRK-NNN/resource-pack.md
-plan_html_review_draft_ref: # path to draft plan HTML
-plan_html_review_final_ref: # path to final plan HTML
+plan_html_review_draft_ref: # path to draft plan HTML review evidence
+plan_html_review_final_ref: # path to final plan HTML review evidence
 claim_routing_ref:       # path to claim evidence
 claim_quota_snapshot_ref: # path to quota snapshot
 example_pack_ref:        # path to 5-10 examples

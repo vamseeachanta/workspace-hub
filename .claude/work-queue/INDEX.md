@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-28T05:58:02Z by generate-index.py -->
+<!-- Generated: 2026-02-28T06:56:35Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-28T05:58:02Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-28T06:56:35Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -94,7 +94,7 @@
 |--------|-------|-------|
 | Pending > 30 days | 0 | - |
 | Pending > 14 days | 2 | WRK-126, WRK-137 |
-| Working > 7 days | 4 | WRK-118, WRK-121, WRK-129, WRK-131 |
+| Working > 7 days | 8 | WRK-118, WRK-121, WRK-129, WRK-131, WRK-229, WRK-235, WRK-279, WRK-280 |
 | Blocked > 7 days | 0 | - |
 
 ### Priority Distribution (active items only)

@@ -1,0 +1,14 @@
+claim_date: 2026-02-27T00:00:00Z
+wrk_id: WRK-624
+route: C
+orchestrator: gemini
+best_fit_provider: codex
+alternate_provider: gemini
+quota_snapshot:
+  source: config/ai-tools/agent-quota-latest.json
+  status: not_captured_in_session
+agent_capability:
+  best_fit: matched
+  rationale: Workflow hardening required queue script and markdown/html edits, which aligned with Codex as primary executor.
+user_html_blocker:
+  status: satisfied_for_current_revision

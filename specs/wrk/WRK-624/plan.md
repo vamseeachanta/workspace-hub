@@ -587,6 +587,7 @@ Rules:
   - Phase 3 rollback downgrades hard-fail enforcement while preserving dated remediation evidence
 
 ## Implementation Backlog
+### Core delivery for WRK-624
 1. Expand WRK frontmatter and templates to support orchestrator, examples, learning, and HTML refs.
 2. Add claim-routing scaffolding using existing quota and readiness data sources.
 3. Add resource-pack scaffolding and validator support.
@@ -594,26 +595,48 @@ Rules:
 5. Add review artifact scaffolding and synthesis validation.
 6. Add backlog normalization and migration tooling.
 7. Add merge/sync archive gate integration.
-8. Add legal-scan and document-intelligence hooks for WRK artifacts.
-9. Add HTML verification and user signoff hooks where applicable.
+8. Add HTML verification and user signoff hooks where applicable.
+
+### Follow-on automation / integration
+9. Add legal-scan hooks for WRK artifacts.
+10. Add document-intelligence hooks for WRK artifacts.
+11. Deepen comprehensive-learning integration beyond the minimum handoff contract.
 
 ## Acceptance Criteria
-- 3 review artifacts exist for the current plan revision, or fallback policy is explicitly invoked for `NO_OUTPUT`.
-- Each review artifact conforms to the shared interpretable schema with the required sections.
-- One synthesis artifact records final verdict and unresolved findings count.
-- Mermaid renders the planning HTML review gates, claim routing gate, and archive gate.
+- Route C seeded review policy is documented and preserved as:
+  - 3 seeds per provider for plan / phase / final-close review
+  - no reduction in seed depth for governance/self-evolution work
+- Review artifacts for the current plan revision use the shared interpretable schema and can be validated mechanically.
+- One synthesis artifact records:
+  - current verdict
+  - unresolved blocker groups
+  - whether the review run is seed-compliant
+- Mermaid renders the planning HTML review gates, claim routing gate, retry loop, and archive gate.
 - WRK metadata schema includes:
   - `plan_html_review_draft_ref`
   - `plan_html_review_final_ref`
   - `claim_routing_ref`
   - `claim_quota_snapshot_ref`
   - `claim_recommendation`
+  - `html_output_ref`
+  - `html_verification_ref`
+- User HTML review flow is operationally defined with observable behavior:
+  - draft-plan HTML review blocks multi-agent review until evidence exists
+  - final-plan HTML review blocks execution until evidence exists
+  - close-time HTML review blocks closure until agent and user verification exist
+  - 48-hour pending review triggers explicit `user_deferred`, delegated review evidence, or rollback to the prior actionable stage
+- Validator/test coverage demonstrates the HTML review blocker behavior on representative scenarios:
+  - under-48-hour pending review
+  - over-48-hour pending review with `user_deferred`
+  - delegated review evidence
+  - missing final HTML verification at close
 - Migration matrix is documented with:
   - start date
   - target completion
   - hard-fail cutoff
   - rollback path
   - success metrics
-- Dependency contract table exists and names the source of truth and blocking behavior for each gate input.
-- Testing strategy covers transitions, idempotency, concurrency, outages, migration, and HTML gates.
+- Core-vs-follow-on scope boundary is explicit:
+  - WRK-624 core delivery covers lifecycle enforcement and HTML/user-review gating
+  - deeper legal-scan, document-intelligence, and comprehensive-learning automation may continue as follow-on work
 - HTML review artifact exists for this WRK and includes an executive summary near the top.

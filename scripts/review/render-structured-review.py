@@ -123,7 +123,7 @@ def _render_markdown(review: dict) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--provider", choices=("claude", "gemini"), required=True)
+    parser.add_argument("--provider", choices=("claude", "gemini", "codex"), required=True)
     parser.add_argument("--input", required=True)
     args = parser.parse_args()
 
@@ -131,8 +131,10 @@ def main() -> int:
         text = Path(args.input).read_text(encoding="utf-8")
         if args.provider == "claude":
             review = _parse_claude(text)
-        else:
+        elif args.provider == "gemini":
             review = _parse_gemini(text)
+        else:
+            review = _coerce_review(_extract_json_blob(text))
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         print(str(exc), file=sys.stderr)
         return 1
