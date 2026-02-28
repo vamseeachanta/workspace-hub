@@ -107,23 +107,25 @@ flowchart TD
     D --> E{User Reviewed Draft HTML?}
     E -- Yes --> F[Multi-Agent Review]
     E -- No --> D
-    F --> G{Plan Reviewed + User Reviewed Final HTML + Approved?}
-    G -- Yes --> H[Claim]
+    F --> G{User Review Passed on Final HTML?}
+    G -- Yes --> H{Plan Reviewed + Approved?}
     G -- No --> F1[Revise Plan HTML]
     F1 --> D
-    H --> I{Best-Fit Agent + Quota Ready?}
-    I -- Yes --> J{Blocked?}
-    I -- No --> H1[Recommend alternate agent or short defer]
-    H1 --> H
-    J -- No --> K[Execute]
-    J -- Yes --> L[Status: blocked]
-    K --> M{Route Review Passed?}
-    M -- Yes --> N[Close]
-    M -- No --> M1[Address findings / revise implementation]
-    M1 --> K
-    N --> O{Queue Valid + Merge/Sync Complete?}
-    O -- Yes --> P[Archive]
-    O -- No --> N
+    H -- Yes --> I[Claim]
+    H -- No --> F1
+    I --> J{Best-Fit Agent + Quota Ready?}
+    J -- Yes --> K{Blocked?}
+    J -- No --> I1[Recommend alternate agent or short defer]
+    I1 --> I
+    K -- No --> L[Execute]
+    K -- Yes --> M[Status: blocked]
+    L --> N{Route Review Passed?}
+    N -- Yes --> O[Close]
+    N -- No --> N1[Address findings / revise implementation]
+    N1 --> L
+    O --> P{Queue Valid + Merge/Sync Complete?}
+    P -- Yes --> Q[Archive]
+    P -- No --> O
 ```
 
 ## Stage Contract
@@ -135,6 +137,7 @@ flowchart TD
 
 ### 2. Resource Intelligence
 - Mandatory for every WRK before planning is final.
+- Resource Intelligence should execute through an ecosystem skill rather than ad hoc note gathering.
 - Create modular artifact set in `assets/WRK-<id>/`:
   - `resource-pack.md`
   - `sources.md`
@@ -152,6 +155,41 @@ flowchart TD
   - Source Paths
 - Legal scan must pass for all generated artifacts.
 - Document-intelligence indexing is allowed and preferred when useful.
+- Resource Intelligence must surface a ranked gap list during the stage itself so the user can inspect the current weak points before planning proceeds.
+- The stage must surface the top `P1` gaps to the user first.
+- If one or more `P1` gaps remain unresolved, the stage must pause for user review before it can pass.
+- If no `P1` gaps remain, the stage may continue forward without an extra hold.
+
+#### Resource Intelligence gap ranking
+
+- `P1`: missing or weak source coverage, missing legal-scan result, no clear problem context, no path to required domain knowledge
+- `P2`: incomplete constraints, stale repo knowledge, unresolved open questions that would materially weaken planning
+- `P3`: useful but non-blocking enhancements, additional document-intelligence indexing, optional ecosystem learnings
+
+#### Resource Intelligence skill map
+
+The stage should show the user which skills are being used so the resource-intelligence workflow is inspectable and tweakable:
+
+| Role | Skill | Purpose |
+|---|---|---|
+| Lifecycle wrapper | `work-queue` | Keeps the stage aligned with WRK lifecycle rules and artifacts |
+| Domain scoping | `engineering-context-loader` | Narrows context and relevant standards/skills when engineering tags exist |
+| Repo/document scan | `document-inventory` | Catalogs local documents and source collections before deeper indexing |
+| Document intelligence | `document-rag-pipeline` | Builds searchable document context when source volume or ambiguity justifies it |
+| Prior learnings | `knowledge-manager` | Surfaces prior decisions, patterns, gotchas, and reusable knowledge |
+| Legal check | `legal-sanity` | Confirms generated artifacts and imported content are safe to use |
+| Agent fit | `agent-router` | Helps identify the best provider mix for later plan/review work |
+| Quota awareness | `agent-usage-optimizer` | Helps keep later claim/review work within available model capacity |
+| Deep learning handoff | `comprehensive-learning` | Consumes the resulting artifacts later for slower ecosystem synthesis |
+
+#### Resource Intelligence user pause
+
+Before the stage passes, present the user with:
+- the resource-pack summary
+- the top ranked `P1/P2/P3` gaps, with `P1` surfaced first
+- the skill map used for the stage
+- the recommended next action to either continue to planning or revise the resource pack
+- an explicit pause when unresolved `P1` gaps still exist; otherwise continue
 
 ### 3. Triage
 Minimum triage contract:
@@ -174,9 +212,11 @@ Field definitions:
 - Planning must produce a WRK HTML review artifact that the user can inspect before execution approval is considered complete.
 - Every plan HTML must place an `Executive Summary` section near the top for quick user review of scope, intent, and major gates.
 - The user must review the draft WRK HTML artifact before the multi-agent review starts.
+- The final plan-stage HTML review must end in an explicit user decision: `passed`, `needs_changes`, or `deferred`.
 - `plan_reviewed` passes only when review evidence exists and no unresolved `MAJOR` findings remain.
 - `plan_html_reviewed_draft` passes only when the user has reviewed the draft WRK HTML artifact before multi-agent review.
 - `plan_html_reviewed_final` passes only when the user has reviewed the post-review WRK HTML artifact for the current plan revision.
+- `user_review_passed` means the user accepted the final plan HTML for execution readiness; if not passed, the plan returns to revision.
 - `plan_approved` requires explicit user approval of the current plan revision.
 
 ### 5. Claim
@@ -218,6 +258,19 @@ Close requires evidence for:
 - `archive/` may contain only `status: archived`.
 - Archive is blocked until merge-to-main and sync flow are complete.
 - `done/` remains the holding area for completed but not yet archived items.
+
+## Stage Contract Matrix
+
+| Stage | Gap Priority | Entry Criteria | Required Artifacts | Pass Condition | Blocking Failures | Current Gaps / Tightening Needed |
+|---|---|---|---|---|---|---|
+| Capture | P3 | WRK intent is clear enough to open an item | WRK file, asset folder scaffold, minimum metadata | WRK exists with initial route, owner, and scope recorded | Missing WRK, missing route, missing orchestrator, no asset path | Creation should be scaffolded automatically so minimum metadata is never omitted |
+| Resource Intelligence | P1 | WRK exists and problem statement is non-empty | `resource-pack.md`, `sources.md`, `constraints.md`, `domain-notes.md`, `open-questions.md`, `resources.yaml` | Resource pack exists, required sections are present, source set is non-empty or explicitly waived | Missing pack, no source record, no legal-scan result when required | This remains the loosest stage; validator rules and legal-scan proof need to become machine-checkable |
+| Triage | P2 | Resource intelligence started and initial scope is known | Valid triage fields in WRK frontmatter/body | `priority`, `complexity`, `route`, `computer`, `provider`, `provider_alt`, `resource_needs`, `orchestrator` are all valid | Missing required triage fields, invalid registry values, blocked item routed to execution | Field registries need to be normalized further, especially workstation/value enums |
+| Plan | P1 | Triage complete and resource pack is usable | Route plan/spec, plan HTML, draft/final HTML review records, review artifacts | User reviewed draft HTML, multi-agent review completed, user passed final HTML, plan approved | Missing plan HTML, missing user review decision, unresolved `MAJOR` findings, no approval | User HTML review remains the main practical bottleneck and needs the clearest SLA/delegate path |
+| Claim | P1 | Approved plan exists and item is unblocked | `claim-evidence.yaml`, quota snapshot ref, routing ref | Active session owner recorded, agent fit checked, quota readiness recorded, item moved to `working` cleanly | Missing session owner, blocked item claimed, stale or absent quota evidence, no routing decision | Claim is stronger now, but quota freshness and recovery paths still need tighter schema and repair logic |
+| Execute | P3 | Claimed session is active | Example pack, variation-test evidence, execution artifacts, intermediate HTML where applicable | Implementation complete, examples covered, variation tests recorded, required HTML produced | Missing examples, missing variation tests, execution outside session ownership, no HTML when applicable | End-state behavioral proof needs to stay stronger than simple document existence |
+| Close | P1 | Execute finished and route review passed | Close evidence, final HTML, HTML verification, test evidence, review refs, follow-up refs | Close script can verify required evidence and move item to `done` | Missing HTML evidence, failed tests, missing review refs, unresolved blocking findings | Merge/sync and follow-up evidence should keep moving toward one normalized close-evidence schema |
+| Archive | P2 | Item is in `done` with close evidence complete | Archive-time validation result, merge/sync evidence, final follow-up capture | Archive move is clean, queue validates, merge/sync complete | Incomplete merge/sync, invalid queue state, wrong status/folder pairing | Operational enforcement is still thinner than close enforcement and should be tightened next |
 
 ## Review Matrix
 

@@ -5,7 +5,7 @@
 
 ## Overview
 
-The work queue tracks features, bugs, and tasks across all workspace-hub repositories. Items flow through a five-stage pipeline: **Capture, Triage, Plan, Process, Archive**. The workspace-hub queue is the master; repo-local WRK copies are deprecated and should not be created.
+The work queue tracks features, bugs, and tasks across all workspace-hub repositories. Items flow through an eight-stage lifecycle: **Capture, Resource Intelligence, Triage, Plan, Claim, Execute, Close, Archive**. The workspace-hub queue is the master; repo-local WRK copies are deprecated and should not be created.
 
 State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item detail), and `INDEX.md` (generated listing).
 
@@ -19,23 +19,25 @@ flowchart TD
     D --> E{User Reviewed Draft HTML?}
     E -- Yes --> F[Multi-Agent Review]
     E -- No --> D
-    F --> G{Plan Reviewed + User Reviewed Final HTML + Approved?}
-    G -- Yes --> H[Claim]
+    F --> G{User Review Passed on Final HTML?}
+    G -- Yes --> H{Plan Reviewed + Approved?}
     G -- No --> F1[Revise Plan HTML]
     F1 --> D
-    H --> I{Best-Fit Agent + Quota Ready?}
-    I -- Yes --> J{Blocked?}
-    I -- No --> H1[Recommend alternate agent or short defer]
-    H1 --> H
-    J -- No --> K[Execute]
-    J -- Yes --> L[Status: blocked]
-    K --> M{Route Review Passed?}
-    M -- Yes --> N[Close]
-    M -- No --> M1[Address findings / revise implementation]
-    M1 --> K
-    N --> O{Queue Valid + Merge/Sync Complete?}
-    O -- Yes --> P[Archive]
-    O -- No --> N
+    H -- Yes --> I[Claim]
+    H -- No --> F1
+    I --> J{Best-Fit Agent + Quota Ready?}
+    J -- Yes --> K{Blocked?}
+    J -- No --> I1[Recommend alternate agent or short defer]
+    I1 --> I
+    K -- No --> L[Execute]
+    K -- Yes --> M[Status: blocked]
+    L --> N{Route Review Passed?}
+    N -- Yes --> O[Close]
+    N -- No --> N1[Address findings / revise implementation]
+    N1 --> L
+    O --> P{Queue Valid + Merge/Sync Complete?}
+    P -- Yes --> Q[Archive]
+    P -- No --> O
 ```
 
 ## Stage Contract
@@ -57,7 +59,8 @@ flowchart TD
 - Must produce HTML review artifact.
 - User reviews Draft HTML before multi-agent review.
 - Multi-agent review (Claude, Codex, Gemini) for Route B/C.
-- User reviews Final HTML and approves.
+- User reviews Final HTML and records a pass/fail decision.
+- Only a passed final HTML review may proceed to plan approval and claim.
 
 ### 5. Claim
 - Check unblocked.
@@ -128,8 +131,8 @@ This scans all directories, parses frontmatter, and produces multi-view tables (
 | `/work prioritize` | Interactive priority adjustment |
 | `/work archive WRK-NNN` | Manually archive an item |
 | `/work report` | Queue health summary |
-| `python3 scripts/generate-index.py` | Regenerate INDEX.md |
-| `scripts/archive-item.sh WRK-NNN` | Archive with hooks |
+| `python3 .claude/work-queue/scripts/generate-index.py` | Regenerate INDEX.md |
+| `scripts/work-queue/archive-item.sh WRK-NNN` | Archive with hooks |
 | `scripts/operations/compliance/audit_wrk_location.sh` | Detect WRK files outside canonical queue |
 | `scripts/operations/compliance/validate_work_queue_schema.sh` | Validate WRK frontmatter schema |
 | `scripts/operations/compliance/audit_skill_symlink_policy.sh` | Enforce child-repo skills are propagated links only |

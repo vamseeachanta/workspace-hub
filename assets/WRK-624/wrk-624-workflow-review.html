@@ -143,7 +143,7 @@
       <h1>Canonical Work-Queue Workflow</h1>
       <p class="lede">This HTML artifact is the user review surface for the new lifecycle contract. It shows the proposed Mermaid schematic, the hard gates, and the quality-and-learning requirements, including both fast auto-memory capture and deeper comprehensive-learning synthesis, before provider-diverse multi-seed cross-review.</p>
       <div class="meta">
-        <div class="pill">Status: Draft for review</div>
+        <div class="pill">Status: Implemented core workflow slice</div>
         <div class="pill">Scope: workspace-hub, portable to future repo-local queues</div>
         <div class="pill">Review set: Claude + Codex + Gemini</div>
       </div>
@@ -151,6 +151,210 @@
   </header>
 
   <main class="content">
+    <section class="panel">
+      <h2>Executive Summary</h2>
+      <p><strong>WRK-624</strong> is the canonical work-queue workflow hardening item. The workflow definition, review policy, claim/close gates, and user HTML review rules have been consolidated into one lifecycle contract and the first implementation slice is now in place in workspace-hub.</p>
+      <p>The current implementation makes the queue materially stricter without breaking the older backlog: folder/status validation is active, claim and close scripts now understand structured evidence, and <strong>WRK-624 itself</strong> has been backfilled with draft/final plan HTML review evidence, claim evidence, and final HTML verification evidence.</p>
+      <p>The remaining rollout work is not conceptual; it is operational. Other post-624 items still need metadata/evidence backfill so the validator warnings can eventually be promoted to blocking gates.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Work Done</h2>
+      <table>
+        <tr>
+          <th>Area</th>
+          <th>Implemented under WRK-624</th>
+        </tr>
+        <tr>
+          <td>Validator</td>
+          <td><code>scripts/work-queue/validate-queue-state.sh</code> now checks folder/status consistency and warns on missing phased workflow evidence for WRK-624+ items.</td>
+        </tr>
+        <tr>
+          <td>Claim gate</td>
+          <td><code>scripts/work-queue/claim-item.sh</code> now writes structured claim evidence and records quota snapshot / routing references in WRK frontmatter.</td>
+        </tr>
+        <tr>
+          <td>Close gate</td>
+          <td><code>scripts/work-queue/close-item.sh</code> now accepts HTML evidence paths and enforces <code>html_output_ref</code> plus <code>html_verification_ref</code> before close for WRK-624+.</td>
+        </tr>
+        <tr>
+          <td>Documentation</td>
+          <td><code>.claude/work-queue/process.md</code> now reflects the 8-stage lifecycle, review retry loop, and the close-stage HTML evidence contract.</td>
+        </tr>
+        <tr>
+          <td>WRK-624 evidence</td>
+          <td>The parent work item now points to draft/final plan HTML review records, claim evidence, and final HTML verification evidence.</td>
+        </tr>
+        <tr>
+          <td>Queue indexing</td>
+          <td><code>python3 .claude/work-queue/scripts/generate-index.py</code> completes successfully with post-check validation enabled.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>All Stages: Summary and Gaps</h2>
+      <p>This section is the iteration surface for the lifecycle itself. Each row shows what the stage is for, where it is already strong enough, and what still needs tightening before the workflow is fully hard-gated.</p>
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>Gap Priority</th>
+          <th>Summary</th>
+          <th>Current Strength</th>
+          <th>Current Gaps</th>
+        </tr>
+        <tr>
+          <td>Capture</td>
+          <td>P3</td>
+          <td>Open the WRK with enough metadata to route, review, and scaffold the rest of the lifecycle.</td>
+          <td><span class="status-good">Mostly defined</span></td>
+          <td>Creation still relies too much on disciplined authoring instead of guaranteed scaffolding.</td>
+        </tr>
+        <tr>
+          <td>Resource Intelligence</td>
+          <td>P1</td>
+          <td>Assemble the resource pack, constraints, sources, open questions, and domain notes before planning is treated as real.</td>
+          <td><span class="status-warn">Conceptually strong, weakly enforced</span></td>
+          <td>No fully machine-checkable completion rule yet; legal-scan proof and source sufficiency still need stricter validator coverage.</td>
+        </tr>
+        <tr>
+          <td>Triage</td>
+          <td>P2</td>
+          <td>Classify route, priority, complexity, workstation, providers, and resource needs so the WRK is actionable.</td>
+          <td><span class="status-good">Defined</span></td>
+          <td>Field registries and allowed values still need tighter normalization, especially workstation and routing enums.</td>
+        </tr>
+        <tr>
+          <td>Plan</td>
+          <td>P1</td>
+          <td>Create the implementation plan/spec, route it through multi-agent review, and require explicit user HTML review before approval.</td>
+          <td><span class="status-good">Strong</span></td>
+          <td>User HTML review remains the main practical bottleneck; defer, delegate, and escalation rules can still be tightened.</td>
+        </tr>
+        <tr>
+          <td>Claim</td>
+          <td>P1</td>
+          <td>Bind one live orchestrator session, check agent fit and quota readiness, and record the routing decision before execution.</td>
+          <td><span class="status-good">Improved and partially enforced</span></td>
+          <td>Quota freshness, fallback semantics, and stale-session recovery need a more normalized evidence schema.</td>
+        </tr>
+        <tr>
+          <td>Execute</td>
+          <td>P3</td>
+          <td>Do the work under the claimed session using examples, variation tests, and HTML outputs where applicable.</td>
+          <td><span class="status-good">Clear intent</span></td>
+          <td>Behavioral completion checks still need to stay stronger than simple artifact existence.</td>
+        </tr>
+        <tr>
+          <td>Close</td>
+          <td>P1</td>
+          <td>Verify tests, review evidence, HTML output, HTML verification, and close evidence before moving to <code>done</code>.</td>
+          <td><span class="status-good">Operational core in place</span></td>
+          <td>Merge/sync, learning outputs, and follow-up evidence should converge into one normalized close-evidence contract.</td>
+        </tr>
+        <tr>
+          <td>Archive</td>
+          <td>P2</td>
+          <td>Move only truly completed, merged, synced, and validated items into the archive state.</td>
+          <td><span class="status-warn">Policy stronger than tooling</span></td>
+          <td>Archive enforcement is still thinner than close enforcement and should be hardened next.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Resource Intelligence Review Gate</h2>
+      <p>This stage should not behave like passive note-taking. It should execute through a defined skill path, rank the current gaps, and show the user the top blocking gaps before planning is allowed to harden.</p>
+      <table>
+        <tr>
+          <th>Item</th>
+          <th>Rule</th>
+        </tr>
+        <tr>
+          <td>Top priority surfacing</td>
+          <td>Show the current <strong>P1</strong> gaps first during the stage itself, before lower-priority improvements.</td>
+        </tr>
+        <tr>
+          <td>User pause rule</td>
+          <td>If one or more unresolved <strong>P1</strong> gaps remain, pause for user review. If no <strong>P1</strong> gaps remain, the stage may continue forward.</td>
+        </tr>
+        <tr>
+          <td>User decision</td>
+          <td>The stage should present an explicit decision to the user: <code>pause and revise</code> when unresolved <strong>P1</strong> gaps remain, or <code>continue to planning</code> when they do not.</td>
+        </tr>
+        <tr>
+          <td>P1 examples</td>
+          <td>Missing or weak source coverage, missing legal-scan result, unclear problem context, or no credible path to required domain knowledge.</td>
+        </tr>
+        <tr>
+          <td>P2 examples</td>
+          <td>Incomplete constraints, stale repo knowledge, or open questions that materially weaken planning but do not yet force a stop.</td>
+        </tr>
+        <tr>
+          <td>P3 examples</td>
+          <td>Optional but valuable enhancements such as broader indexing, extra ecosystem learnings, or non-blocking enrichment.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Resource Intelligence Skill Map</h2>
+      <p>The stage should show which skills are being used so the workflow is visible and tweakable instead of hidden inside ad hoc research behavior.</p>
+      <table>
+        <tr>
+          <th>Role</th>
+          <th>Skill</th>
+          <th>Why it is used</th>
+        </tr>
+        <tr>
+          <td>Lifecycle wrapper</td>
+          <td><code>work-queue</code></td>
+          <td>Keeps the stage aligned with WRK lifecycle artifacts and gates.</td>
+        </tr>
+        <tr>
+          <td>Domain scoping</td>
+          <td><code>engineering-context-loader</code></td>
+          <td>Narrows the relevant domain skills, standards, and context when engineering tags are present.</td>
+        </tr>
+        <tr>
+          <td>Repo/document scan</td>
+          <td><code>document-inventory</code></td>
+          <td>Catalogs local document collections before deeper intelligence or indexing work.</td>
+        </tr>
+        <tr>
+          <td>Document intelligence</td>
+          <td><code>document-rag-pipeline</code></td>
+          <td>Builds searchable document context when the source set is large or ambiguous.</td>
+        </tr>
+        <tr>
+          <td>Prior learnings</td>
+          <td><code>knowledge-manager</code></td>
+          <td>Surfaces prior decisions, patterns, gotchas, and reusable knowledge for the WRK.</td>
+        </tr>
+        <tr>
+          <td>Legal check</td>
+          <td><code>legal-sanity</code></td>
+          <td>Checks generated artifacts and imported content for legally sensitive material.</td>
+        </tr>
+        <tr>
+          <td>Agent fit</td>
+          <td><code>agent-router</code></td>
+          <td>Helps determine which provider mix is best suited for later planning and review stages.</td>
+        </tr>
+        <tr>
+          <td>Quota awareness</td>
+          <td><code>agent-usage-optimizer</code></td>
+          <td>Helps keep the later claim/review path within available model capacity.</td>
+        </tr>
+        <tr>
+          <td>Deep learning handoff</td>
+          <td><code>comprehensive-learning</code></td>
+          <td>Consumes the artifacts later for slower ecosystem synthesis and follow-on learnings.</td>
+        </tr>
+      </table>
+      <p><strong>Follow-on skill work:</strong> the dedicated stage definition and validator-ready contract should be delivered under <code>WRK-655</code>, which is now the top recommended follow-on item.</p>
+    </section>
+
     <section class="grid">
       <article class="card">
         <h2>Stages</h2>
@@ -185,25 +389,53 @@ flowchart TD
     D --> E{User Reviewed Draft HTML?}
     E -- Yes --> F[Multi-Agent Review]
     E -- No --> D
-    F --> G{Plan Reviewed + User Reviewed Final HTML + Approved?}
-    G -- Yes --> H[Claim]
+    F --> G{User Review Passed on Final HTML?}
+    G -- Yes --> H{Plan Reviewed + Approved?}
     G -- No --> F1[Revise Plan HTML]
     F1 --> D
-    H --> I{Best-Fit Agent + Quota Ready?}
-    I -- Yes --> J{Blocked?}
-    I -- No --> H1[Recommend alternate agent or short defer]
-    H1 --> H
-    J -- No --> K[Execute]
-    J -- Yes --> L[Status: blocked]
-    K --> M{Route Review Passed?}
-    M -- Yes --> N[Close]
-    M -- No --> M1[Address findings / revise implementation]
-    M1 --> K
-    N --> O{Queue Valid + Merge/Sync Complete?}
-    O -- Yes --> P[Archive]
-    O -- No --> N
+    H -- Yes --> I[Claim]
+    H -- No --> F1[Revise Plan HTML]
+    I --> J{Best-Fit Agent + Quota Ready?}
+    J -- Yes --> K{Blocked?}
+    J -- No --> I1[Recommend alternate agent or short defer]
+    I1 --> I
+    K -- No --> L[Execute]
+    K -- Yes --> M[Status: blocked]
+    L --> N{Route Review Passed?}
+    N -- Yes --> O[Close]
+    N -- No --> N1[Address findings / revise implementation]
+    N1 --> L
+    O --> P{Queue Valid + Merge/Sync Complete?}
+    P -- Yes --> Q[Archive]
+    P -- No --> O
         </pre>
       </div>
+    </section>
+
+    <section class="panel">
+      <h2>User Review Decision</h2>
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>Decision</th>
+          <th>Effect</th>
+        </tr>
+        <tr>
+          <td>Draft plan HTML</td>
+          <td>User reviews before multi-agent review starts.</td>
+          <td>Review cannot start until draft HTML has been inspected.</td>
+        </tr>
+        <tr>
+          <td>Final plan HTML</td>
+          <td>User explicitly marks the final HTML as <code>passed</code>, <code>needs_changes</code>, or <code>deferred</code>.</td>
+          <td>Only <code>passed</code> may move to plan approval and claim. Non-pass returns the item to revision or defer handling.</td>
+        </tr>
+        <tr>
+          <td>Final WRK HTML</td>
+          <td>User reviews the completion HTML before closure is considered complete.</td>
+          <td>Close remains blocked without user review evidence.</td>
+        </tr>
+      </table>
     </section>
 
     <section class="panel">
@@ -255,6 +487,48 @@ flowchart TD
           <td class="status-bad">Close blocked if omitted</td>
         </tr>
       </table>
+    </section>
+
+    <section class="panel">
+      <h2>Recommended Next Work</h2>
+      <table>
+        <tr>
+          <th>Priority</th>
+          <th>Recommendation</th>
+          <th>Why</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Define and operationalize a dedicated Resource Intelligence skill (<code>WRK-655</code>).</td>
+          <td>This is the loosest stage in the lifecycle. It needs a first-class skill, a validator-checkable artifact contract, and an explicit repo/document-intelligence knowledge map.</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Backfill post-624 WRKs to the new metadata and evidence contract.</td>
+          <td>The validator now exposes missing <code>orchestrator</code>, claim, and HTML evidence on newer items; this is the main rollout gap.</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Update WRK creation/scaffolding so new items are compliant from creation time.</td>
+          <td>This prevents repeating the same backfill work on every new workflow item.</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Tighten validator policy from warnings to blocking for new or touched WRKs.</td>
+          <td>The current rollout is intentionally soft; enforcement should harden after the backfill is complete.</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Operationalize user HTML review gates in scripts and hooks.</td>
+          <td>The workflow now defines the decision stage; the next step is making it mechanically enforced.</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Enforce merge/sync readiness at archive time.</td>
+          <td>Close is stronger now; archive should become equally deterministic.</td>
+        </tr>
+      </table>
+      <p><strong>User choice rule:</strong> the next step may either enhance an existing active WRK when the objective is still materially the same, or create a new WRK when the work has independent backlog value. In either case, the queue history must preserve all evidence and decisions.</p>
     </section>
 
     <section class="panel">
