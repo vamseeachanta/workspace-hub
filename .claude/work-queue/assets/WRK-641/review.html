@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review: WRK-641</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 40px; background: #fafafa; color: #24292e; }
+        .card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px; border: 1px solid #e1e4e8; }
+        h1 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; margin-top: 24px; }
+        .exec-summary { background: #f1f8ff; padding: 20px; border-left: 6px solid #0366d6; margin-bottom: 30px; border-radius: 4px; }
+        .exec-summary h2 { margin-top: 0; border: none; color: #0366d6; }
+        pre { background: #f6f8fa; padding: 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #dfe1e4; }
+        code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; background: rgba(27,31,35,0.05); padding: 0.2em 0.4em; border-radius: 3px; }
+        pre code { background: none; padding: 0; }
+        table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+        th, td { border: 1px solid #dfe1e8; padding: 12px; text-align: left; }
+        th { background-color: #f6f8fa; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>WRK-641 Review</h1>
+        <div class="exec-summary">
+            <h2>Executive Summary</h2>
+            <div><p>Backfill a formal WRK for the already-implemented bugfix, then complete the missing
+workflow steps needed to close it correctly:</p>
+<ol>
+<li>capture the exact scope of the wrapper fixes and affected files</li>
+<li>verify the current implementation and test evidence</li>
+<li>generate the required HTML review artifact</li>
+<li>run cross-review appropriate to Route B</li>
+<li>close the item formally if review findings are non-blocking</li>
+</ol></div>
+        </div>
+        <div class="content">
+            <h1>fix(agents): Formalize and Close Codex Session-Wrapper Launch Bugfix</h1>
+<h2>Problem</h2>
+<p>Agent wrapper fixes for Codex launch safety were implemented directly in the repo, but
+the work was not captured under its own WRK item. That leaves the queue without a formal
+record for:</p>
+<ul>
+<li><code>scripts/agents/session.sh</code> no longer mutating queue state on <code>init</code> by default</li>
+<li><code>scripts/agents/session.sh end</code> clearing session ownership cleanly</li>
+<li><code>scripts/agents/work.sh</code> honoring <code>WORK_ITEM_ROOT</code> for isolated execution</li>
+<li>regression coverage added in <code>scripts/agents/tests/test-session-wrapper.sh</code></li>
+</ul>
+<p>Without a dedicated WRK, the bugfix cannot be reviewed and closed through the normal
+WRK-624 workflow requirements.</p>
+<h2>What</h2>
+<p>Backfill a formal WRK for the already-implemented bugfix, then complete the missing
+workflow steps needed to close it correctly:</p>
+<ol>
+<li>capture the exact scope of the wrapper fixes and affected files</li>
+<li>verify the current implementation and test evidence</li>
+<li>generate the required HTML review artifact</li>
+<li>run cross-review appropriate to Route B</li>
+<li>close the item formally if review findings are non-blocking</li>
+</ol>
+<h2>Current Implementation Evidence</h2>
+<ul>
+<li><code>scripts/agents/lib/session-store.sh</code></li>
+<li><code>scripts/agents/session.sh</code></li>
+<li><code>scripts/agents/work.sh</code></li>
+<li><code>scripts/agents/tests/test-session-wrapper.sh</code></li>
+</ul>
+<p>Known behaviors already validated locally:</p>
+<ul>
+<li><code>session.sh init --provider codex</code> works without forcing stale-item mutation</li>
+<li><code>session.sh end</code> clears <code>.claude/work-queue/session-state.yaml</code></li>
+<li><code>work.sh list</code> and <code>work.sh next</code> respect <code>WORK_ITEM_ROOT</code></li>
+<li>regression test covers init/end/isolation behavior</li>
+</ul>
+<h2>Plan</h2>
+<h3>Phase 1 - Verify and package evidence</h3>
+<ul>
+<li>inspect the current diff for the four wrapper/test files</li>
+<li>rerun the wrapper regression test and queue validation</li>
+<li>collect command outputs and affected-file summary into WRK assets</li>
+</ul>
+<h3>Phase 2 - Produce review artifacts</h3>
+<ul>
+<li>generate the WRK HTML review output required by the WRK-624 workflow</li>
+<li>create a compact implementation review bundle describing the bug, root cause, fix,
+  and verification evidence</li>
+<li>run cross-review for the implementation bundle</li>
+</ul>
+<h3>Phase 3 - Close formally</h3>
+<ul>
+<li>address any MAJOR findings if they appear</li>
+<li>update WRK metadata and completion checklist</li>
+<li>move the item through close flow only after review is clean</li>
+</ul>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] Dedicated WRK exists for the agent-wrapper bugfix</li>
+<li>[ ] Wrapper regression test passes from the current repo state</li>
+<li>[ ] Queue validation passes from the current repo state</li>
+<li>[ ] HTML review artifact exists for this WRK</li>
+<li>[ ] Cross-review recorded with no unresolved MAJOR findings</li>
+<li>[ ] WRK closed through the normal queue flow with index regeneration</li>
+</ul>
+<h2>Notes</h2>
+<ul>
+<li>This is a backfill/closure WRK for work already implemented before formal capture.</li>
+<li>The purpose is not to redesign the wrapper behavior again unless review finds a real
+  defect.</li>
+<li>Any remaining failures after this point should be treated as review or close-process
+  gaps, not missing initial implementation.</li>
+</ul>
+        </div>
+    </div>
+</body>
+</html>
