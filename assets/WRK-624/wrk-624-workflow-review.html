@@ -597,6 +597,31 @@ flowchart TD
     </section>
 
     <section class="panel">
+      <h2>Agent Assignment Analysis</h2>
+      <p>The lifecycle should explicitly analyze whether each stage can be executed independently and which agent is best suited to own it, execute it, or support it in parallel.</p>
+      <p><strong>Contract strength:</strong> this assignment model is <strong>required unless overridden with recorded evidence</strong>. It is stronger than guidance, but not yet fully hard-enforced by tooling.</p>
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>Independent?</th>
+          <th>Best stage owner</th>
+          <th>Best execution agent</th>
+          <th>Parallel support</th>
+        </tr>
+        <tr><td>Capture</td><td>Yes</td><td>Claude</td><td>Claude</td><td>No</td></tr>
+        <tr><td>Resource Intelligence</td><td>Yes</td><td>Claude</td><td>Claude + Gemini</td><td>Yes, when broad research and synthesis both matter</td></tr>
+        <tr><td>Triage</td><td>Yes</td><td>Claude</td><td>Claude</td><td>No</td></tr>
+        <tr><td>Plan</td><td>Yes</td><td>Claude</td><td>Codex + Gemini with Claude synthesis</td><td>Yes</td></tr>
+        <tr><td>Claim</td><td>Yes</td><td>Claude</td><td>Claude</td><td>No</td></tr>
+        <tr><td>Execute</td><td>Internally parallelizable, externally gate-dependent</td><td>Codex</td><td>Codex</td><td>Yes, when two implementation paths or comparison builds are useful</td></tr>
+        <tr><td>Close</td><td>Yes</td><td>Claude</td><td>Codex for evidence generation, Claude for closure check</td><td>Sometimes</td></tr>
+        <tr><td>Archive</td><td>Yes</td><td>Claude</td><td>Claude</td><td>No</td></tr>
+      </table>
+      <p><strong>Default recommendations:</strong> orchestrator = <code>Claude</code>; primary execution agent = <code>Codex</code>; deep-review / alternate-analysis support = <code>Gemini</code>.</p>
+      <p><strong>Override rule:</strong> if the workflow deviates from this assignment model, the WRK should record what changed, why it changed, and why the risk is acceptable.</p>
+    </section>
+
+    <section class="panel">
       <h2>Recommended Next Work</h2>
       <table>
         <tr>

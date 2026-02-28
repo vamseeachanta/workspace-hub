@@ -489,6 +489,63 @@ Archive hard gates:
 - Fallback consensus is allowed only for tool failure or `NO_OUTPUT`, not substantive disagreement.
 - `INVALID_OUTPUT` is treated as a blocking reviewer failure state; it does not satisfy the review gate and requires a rerun, alternate mode, or explicit user waiver.
 
+## Agent Assignment Analysis
+
+The workflow should not assume the same agent is best for every stage. For each stage, assess:
+- whether the stage can be executed independently
+- whether the stage benefits from one primary agent or multiple parallel agents
+- which agent is best as stage owner
+- which agent is best as execution specialist
+- which agent is best as the overall orchestrator so no lifecycle steps are missed
+
+Status of this contract:
+- required unless overridden with recorded evidence
+- not yet fully hard-enforced by tooling
+
+### Stage independence assessment
+
+| Stage | Independently executable? | Notes |
+|---|---|---|
+| Capture | yes | Can be handled independently once the task intent is known. |
+| Resource Intelligence | yes | Independent stage, but should feed planning with a standardized artifact set. |
+| Triage | yes | Independent once Resource Intelligence has produced usable context. |
+| Plan | yes | Independent stage with heavy review coupling but clear inputs/outputs. |
+| Claim | yes | Independent decision gate before execution. |
+| Execute | internally parallelizable, externally gate-dependent | Depends on prior claim and later close/review gates, but may use multiple parallel execution agents for sub-workstreams. |
+| Close | yes | Independent evidence-consolidation stage once execute/review are complete. |
+| Archive | yes | Independent finalization stage once close evidence is complete. |
+
+### Recommended stage assignment model
+
+| Stage | Best stage owner | Best execution specialist | Parallel support needed? |
+|---|---|---|---|
+| Capture | Claude | Claude | no |
+| Resource Intelligence | Claude | Claude + Gemini | yes, when broad research and synthesis both matter |
+| Triage | Claude | Claude | no |
+| Plan | Claude | Codex + Gemini with Claude synthesis | yes |
+| Claim | Claude | Claude | no |
+| Execute | Codex | Codex | yes, when two implementation paths or comparison builds are useful |
+| Close | Claude | Codex for evidence generation, Claude for closure check | sometimes |
+| Archive | Claude | Claude | no |
+
+### Orchestration recommendation
+
+- Best default orchestrator agent: `Claude`
+  - strongest fit for lifecycle completeness, checklist discipline, synthesis, and stage-to-stage continuity
+- Best default work execution agent: `Codex`
+  - strongest fit for deterministic implementation and script/code-heavy execution
+- Best complementary deep-review / research support agent: `Gemini`
+  - strongest fit for parallel deep review, alternate reasoning paths, and broad-context analysis
+
+Rules:
+- Assign multiple agents when parallel execution materially improves outcome quality or speed.
+- The orchestrator remains accountable even when execution is delegated.
+- The workflow should record the chosen stage owner and any parallel execution pairing when the WRK materially benefits from it.
+- Any deviation from the recommended assignment model must be recorded with:
+  - what changed
+  - why the override was chosen
+  - why the risk is acceptable
+
 ## Evidence and Metadata Contract
 
 ### New required WRK metadata

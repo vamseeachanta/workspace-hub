@@ -110,6 +110,7 @@ The output of this work is not just one new skill file. It is a coherent stage d
 - the user pause rule is present in policy, but not yet operationalized in one reusable stage flow
 - the knowledge sources are known, but not yet organized into a visible, tweakable skill map
 - repo context, document intelligence, prior learnings, legal scan, and later comprehensive-learning handoff are still stitched together manually
+- codes, standards, and relevant online documents are not yet systematically downloaded, indexed, and stored in the right long-term reference locations
 
 That looseness causes the stage to drift toward ad hoc research behavior, which weakens plan quality and makes later validation harder.
 
@@ -169,6 +170,9 @@ After `WRK-655`, a `Resource Intelligence` run for any WRK should:
 **Tasks**:
 - [ ] Create or update the canonical skill under `.claude/skills/`
 - [ ] Add references/scripts/assets only where they materially reduce ad hoc behavior
+- [ ] Download relevant codes, standards, and online documents discovered during intelligence gathering
+- [ ] Place downloaded source documents in the relevant long-term repo/document reference locations
+- [ ] Record those sources in document intelligence so they remain searchable and reusable
 - [ ] Define or add scaffolding for:
   - [ ] `resource-pack.md`
   - [ ] `sources.md`
@@ -182,6 +186,7 @@ After `WRK-655`, a `Resource Intelligence` run for any WRK should:
 - [ ] Skill implementation
 - [ ] Resource-pack scaffolding
 - [ ] Stage summary template
+- [ ] Downloaded and documented standards / online reference set
 
 **Exit Criteria**:
 - [ ] An agent can execute the stage via the skill rather than hand-rolling the process
@@ -241,6 +246,20 @@ These are useful enhancements rather than blockers:
 - unresolved `P1` gaps -> present `pause and revise`
 - no unresolved `P1` gaps -> present `continue to planning`
 
+## Intelligence Growth Requirement
+
+- As part of intelligence gathering, relevant codes, standards, and documents found online should be:
+  - downloaded where licensing and access allow
+  - documented in the document-intelligence system
+  - placed in the relevant long-term reference location for future reuse
+- Repository intelligence should compound over time rather than remain flatter than external document intelligence.
+- The target direction is that, within a defined future maturity window, repository intelligence becomes richer and more useful than raw document intelligence alone because it accumulates:
+  - curated context
+  - prior decisions
+  - reusable patterns
+  - validated local interpretations
+  - cross-WRK learnings
+
 ## Testing Strategy
 
 1. Stage-path tests
@@ -293,5 +312,6 @@ These are useful enhancements rather than blockers:
 - [ ] Stage knowledge map is documented and easy for the user to inspect/tweak
 - [ ] Validator-ready rules are documented for minimum stage completion
 - [ ] `WRK-624` references are updated to point at the new skill contract
+- [ ] Relevant online codes, standards, and documents are downloaded, documented in document intelligence, and placed in the appropriate long-term reference location
+- [ ] The plan defines how repository intelligence should grow over time beyond raw document intelligence
 - [ ] Legal scan passes
-

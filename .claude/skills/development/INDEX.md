@@ -1,6 +1,6 @@
 # Development Skills
 
-> 23 subcategories in this domain.
+> 24 subcategories in this domain.
 
 ## Subcategories
 
@@ -9,6 +9,7 @@
 - [Data Pipeline Processor](data-pipeline-processor/INDEX.md) — 1 skills
 - [Devtools](devtools/INDEX.md) — 2 skills
 - [Documentation](documentation/INDEX.md) — 1 skills
+- [Elite Frontend Ux](elite-frontend-ux/INDEX.md) — 1 skills
 - [Engineering Report Generator](engineering-report-generator/INDEX.md) — 1 skills
 - [Git Worktree Workflow](git-worktree-workflow/INDEX.md) — 1 skills
 - [Github](github/INDEX.md) — 13 skills
