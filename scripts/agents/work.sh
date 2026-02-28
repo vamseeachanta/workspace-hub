@@ -22,9 +22,8 @@ case "$subcmd" in
         echo "Workflow orchestrator '$provider' acknowledged /work run contract."
         ;;
     list)
-        check_stale_items || true
         echo "── pending/ ──"
-        for f in "$WS_HUB/.claude/work-queue/pending"/WRK-*.md; do
+        for f in "$WORK_ITEM_ROOT/pending"/WRK-*.md; do
             [[ -f "$f" ]] || continue
             local_id="$(basename "$f" .md)"
             local_stale="$(wrk_get_frontmatter_value "$f" "stale")"
@@ -35,7 +34,7 @@ case "$subcmd" in
             echo "  $local_id$marker"
         done
         echo "── working/ ──"
-        for f in "$WS_HUB/.claude/work-queue/working"/WRK-*.md; do
+        for f in "$WORK_ITEM_ROOT/working"/WRK-*.md; do
             [[ -f "$f" ]] || continue
             local_id="$(basename "$f" .md)"
             local_stale="$(wrk_get_frontmatter_value "$f" "stale")"
@@ -46,7 +45,7 @@ case "$subcmd" in
             echo "  $local_id$marker"
         done
         echo "── blocked/ ──"
-        ls -1 "$WS_HUB/.claude/work-queue/blocked" 2>/dev/null || true
+        ls -1 "$WORK_ITEM_ROOT/blocked" 2>/dev/null || true
         ;;
     approve-batch)
         # WRK-159: List approvable items and approve selected ones
@@ -88,7 +87,7 @@ case "$subcmd" in
 
         # Find highest-priority pending item
         best_file="" best_id="" best_priority="" best_prio_rank=99
-        for f in "$WS_HUB/.claude/work-queue/pending"/WRK-*.md; do
+        for f in "$WORK_ITEM_ROOT/pending"/WRK-*.md; do
             [[ -f "$f" ]] || continue
             local_lock="$(wrk_get_frontmatter_value "$f" "locked_by")"
             [[ -n "$local_lock" ]] && continue  # skip locked items

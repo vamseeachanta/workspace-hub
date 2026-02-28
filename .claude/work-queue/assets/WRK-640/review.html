@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review: WRK-640</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 40px; background: #fafafa; color: #24292e; }
+        .card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px; border: 1px solid #e1e4e8; }
+        h1 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; margin-top: 24px; }
+        .exec-summary { background: #f1f8ff; padding: 20px; border-left: 6px solid #0366d6; margin-bottom: 30px; border-radius: 4px; }
+        .exec-summary h2 { margin-top: 0; border: none; color: #0366d6; }
+        pre { background: #f6f8fa; padding: 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #dfe1e4; }
+        code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; background: rgba(27,31,35,0.05); padding: 0.2em 0.4em; border-radius: 3px; }
+        pre code { background: none; padding: 0; }
+        table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+        th, td { border: 1px solid #dfe1e8; padding: 12px; text-align: left; }
+        th { background-color: #f6f8fa; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>WRK-640 Review</h1>
+        <div class="exec-summary">
+            <h2>Executive Summary</h2>
+            <div><ol>
+<li>Diagnose why <code>claude -p</code> and <code>gemini -p</code> are not returning stable review-format
+   output through <code>scripts/review/submit-to-*.sh</code></li>
+<li>Harden the prompt/wrapper path so both providers:</li>
+<li>run non-interactively</li>
+<li>return within bounded time</li>
+<li>emit the shared review schema:<ul>
+<li><code>Verdict</code></li>
+<li><code>Summary</code></li>
+<li><code>Issues Found</code></li>
+<li><code>Suggestions</code></li>
+<li><code>Questions for Author</code></li>
+</ul>
+</li>
+<li>Add transport-level validation and retry strategy where useful</li>
+<li>Document provider-specific constraints and fallback behavior</li>
+<li>Produce passing end-to-end proof with real review artifacts from:</li>
+<li>Claude</li>
+<li>Gemini</li>
+</ol></div>
+        </div>
+        <div class="content">
+            <h1>chore(review): Harden Claude and Gemini Non-Interactive Review Transport</h1>
+<h2>Problem Statement</h2>
+<p><code>WRK-624</code> hardened the review wrappers so failed or malformed reviewer output is
+classified deterministically as <code>NO_OUTPUT</code> or <code>INVALID_OUTPUT</code>. That exposed a
+deeper infrastructure problem: both <code>claude</code> and <code>gemini</code> CLIs are present on
+the command line, but they do not reliably return schema-compliant non-interactive
+plan reviews through the current wrapper flow.</p>
+<p>Observed behavior on 2026-02-27:</p>
+<ul>
+<li><code>claude</code> frequently hangs until timeout and returns no usable review body</li>
+<li><code>gemini</code> often returns planning chatter or execution-like thoughts instead of
+  the required review schema</li>
+<li>the wrappers now classify these failures correctly, but the transport itself
+  is still unreliable</li>
+</ul>
+<p>This leaves the 3-agent review model operationally incomplete even though the
+review policy and validation rules are now explicit.</p>
+<h2>What</h2>
+<ol>
+<li>Diagnose why <code>claude -p</code> and <code>gemini -p</code> are not returning stable review-format
+   output through <code>scripts/review/submit-to-*.sh</code></li>
+<li>Harden the prompt/wrapper path so both providers:</li>
+<li>run non-interactively</li>
+<li>return within bounded time</li>
+<li>emit the shared review schema:<ul>
+<li><code>Verdict</code></li>
+<li><code>Summary</code></li>
+<li><code>Issues Found</code></li>
+<li><code>Suggestions</code></li>
+<li><code>Questions for Author</code></li>
+</ul>
+</li>
+<li>Add transport-level validation and retry strategy where useful</li>
+<li>Document provider-specific constraints and fallback behavior</li>
+<li>Produce passing end-to-end proof with real review artifacts from:</li>
+<li>Claude</li>
+<li>Gemini</li>
+</ol>
+<h2>Why</h2>
+<ul>
+<li><code>WRK-624</code> depends on multi-agent review being practically runnable, not just specified</li>
+<li>clean <code>NO_OUTPUT</code> classification is necessary but not sufficient</li>
+<li>reliable cross-provider review transport is now a first-class workflow dependency</li>
+</ul>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[x] Root cause is documented for current Claude/Gemini review failures</li>
+<li>[x] <code>submit-to-claude.sh</code> returns schema-compliant plan review output in non-interactive mode</li>
+<li>[x] <code>submit-to-gemini.sh</code> returns schema-compliant plan review output in non-interactive mode</li>
+<li>[x] Wrappers enforce bounded execution and classify transport failures deterministically</li>
+<li>[x] At least one real plan review artifact from Claude is valid under <code>validate-review-output.sh</code></li>
+<li>[x] At least one real plan review artifact from Gemini is valid under <code>validate-review-output.sh</code></li>
+<li>[x] Provider-specific guidance is documented for future review automation</li>
+</ul>
+<h2>Notes</h2>
+<p>This is a follow-on item from <code>WRK-624</code>, not a replacement. <code>WRK-624</code> hardened
+review validation and classification; <code>WRK-640</code> addresses the remaining transport
+reliability gap for Claude and Gemini.</p>
+        </div>
+    </div>
+</body>
+</html>

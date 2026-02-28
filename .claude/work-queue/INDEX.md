@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-02-27T20:36:55Z by generate-index.py -->
+<!-- Generated: 2026-02-27T22:41:33Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-02-27T20:36:55Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-02-27T22:41:33Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,8 +13,8 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 177 |
-| working | 11 |
+| pending | 178 |
+| working | 10 |
 | blocked | 5 |
 | archived | 225 |
 
@@ -63,8 +63,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 152 / 418 |
-| Plans cross-reviewed | 59 |
-| Plans approved | 80 |
+| Plans cross-reviewed | 58 |
+| Plans approved | 79 |
 | Brochure pending | 7 |
 | Brochure updated/synced | 8 |
 
@@ -84,9 +84,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 46 / 177 | 26% |
-| Plans cross-reviewed | 10 | 18% |
-| Plans user-approved | 10 | 18% |
+| Pending items with plans | 47 / 178 | 26% |
+| Plans cross-reviewed | 9 | 16% |
+| Plans user-approved | 9 | 16% |
 
 ### Aging
 
@@ -101,7 +101,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 88 | 9 | 3 |
+| High     | 89 | 8 | 3 |
 | Medium   | 61  | 2  | 1  |
 | Low      | 28  | 0  | 1  |
 
@@ -525,7 +525,7 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-637 |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
-| WRK-640 | chore(review): harden Claude and Gemini non-interactive review transport | working | high | medium | ace-linux-1 | codex+claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | n/a | - |
+| WRK-641 | fix(agents): formalize and close codex session-wrapper launch bugfix | pending | high | medium | ace-linux-1 | codex+claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -710,6 +710,7 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | high | medium | workspace-hub | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | high | small | workspace-hub | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | low | medium | workspace-hub | - |
+| WRK-641 | fix(agents): formalize and close codex session-wrapper launch bugfix | high | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -726,7 +727,6 @@
 | WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | high | medium | workspace-hub | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | high | simple | workspace-hub | - |
 | WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | medium | medium | workspace-hub | - |
-| WRK-640 | chore(review): harden Claude and Gemini non-interactive review transport | high | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -1395,7 +1395,7 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | - |
-| WRK-640 | chore(review): harden Claude and Gemini non-interactive review transport | working | high | medium | - |
+| WRK-641 | fix(agents): formalize and close codex session-wrapper launch bugfix | pending | high | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1687,7 +1687,7 @@
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | medium | workspace-hub | - |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | medium | workspace-hub | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | small | workspace-hub | - |
-| WRK-640 | chore(review): harden Claude and Gemini non-interactive review transport | working | medium | workspace-hub | - |
+| WRK-641 | fix(agents): formalize and close codex session-wrapper launch bugfix | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2186,7 +2186,7 @@
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | workspace-hub | - |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | workspace-hub | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | workspace-hub | - |
-| WRK-640 | chore(review): harden Claude and Gemini non-interactive review transport | working | high | workspace-hub | - |
+| WRK-641 | fix(agents): formalize and close codex session-wrapper launch bugfix | pending | high | workspace-hub | - |
 
 ### Complex
 
@@ -2434,7 +2434,7 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | workspace-hub |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | workspace-hub |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | workspace-hub |
-| WRK-640 | chore(review): harden Claude and Gemini non-interactive review transport | working | high | medium | workspace-hub |
+| WRK-641 | fix(agents): formalize and close codex session-wrapper launch bugfix | pending | high | medium | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)

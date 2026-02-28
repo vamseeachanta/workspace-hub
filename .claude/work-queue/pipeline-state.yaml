@@ -9,8 +9,8 @@ sessions:
     active_wrk: null
     last_stage: null
     registered_at: "2026-02-24T11:10:03Z"
-  - session_id: "wrk-624-codex-20260227"
-    provider: "gemini"
-    active_wrk: "WRK-624"
-    last_stage: "working"
-    registered_at: "2026-02-27T00:00:00Z"
+  - session_id: codex-smoke-20260227
+    provider: codex
+    active_wrk: WRK-021
+    last_stage: plan_approval_gate
+    registered_at: 2026-02-27T22:33:56Z

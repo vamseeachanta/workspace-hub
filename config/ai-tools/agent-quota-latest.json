@@ -1,35 +1,23 @@
 {
-  "timestamp": "2026-02-27T15:38:16-06:00",
+  "timestamp": "2026-02-27T16:42:56-06:00",
   "agents": [
     {
       "provider": "claude",
       "tier": "max",
       "weekly_limit": 20000,
-      "week_messages": 81807,
-      "approx_requests": 5453,
-      "week_sessions": 63,
-      "week_tool_calls": 5109,
-      "pct_remaining": 73,
-      "avg_daily_messages": 12931,
-      "trend": "high",
-      "source": "stats-cache.json",
-      "week_cost_usd": 677.49,
-      "week_tokens": 1779392897,
-      "week_input_tokens": 1043075,
-      "week_output_tokens": 535764,
-      "models_used": [
-        "claude-sonnet-4-6",
-        "claude-haiku-4-5-20251001",
-        "claude-sonnet-4-5-20250929",
-        "claude-opus-4-6"
-      ]
+      "week_pct": null,
+      "five_hour_pct": null,
+      "pct_remaining": null,
+      "hours_to_reset": null,
+      "resets_at": "",
+      "source": "unavailable"
     },
     {
       "provider": "codex",
       "tier": "subscription",
       "weekly_limit": 1400,
-      "week_messages": 97,
-      "pct_remaining": 94,
+      "week_messages": 108,
+      "pct_remaining": 93,
       "source": "history.jsonl"
     },
     {

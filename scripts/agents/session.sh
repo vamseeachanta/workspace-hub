@@ -8,7 +8,7 @@ source "$AGENTS_DIR/lib/workflow-guards.sh"
 usage() {
     cat <<'USAGE'
 Usage:
-  scripts/agents/session.sh init --provider <claude|codex|gemini> [--session-id <id>]
+  scripts/agents/session.sh init --provider <claude|codex|gemini> [--session-id <id>] [--check-stale]
   scripts/agents/session.sh show
   scripts/agents/session.sh status   — show all registered sessions (pipeline dashboard)
   scripts/agents/session.sh end      — deregister current session from pipeline
@@ -22,10 +22,12 @@ case "$cmd" in
     init)
         provider=""
         sid="session-$(date +%Y%m%d%H%M%S)"
+        check_stale=false
         while [[ $# -gt 0 ]]; do
             case "$1" in
                 --provider) provider="$2"; shift 2 ;;
                 --session-id) sid="$2"; shift 2 ;;
+                --check-stale) check_stale=true; shift ;;
                 *) echo "Unknown arg: $1" >&2; usage; exit 2 ;;
             esac
         done
@@ -52,8 +54,10 @@ case "$cmd" in
         # Register in pipeline state (WRK-161)
         pipeline_register_session "$sid" "$provider" "" ""
 
-        # Check for stale working items on session startup
-        check_stale_items || true
+        # Avoid mutating the queue on session startup unless explicitly requested.
+        if [[ "$check_stale" == "true" ]]; then
+            check_stale_items || true
+        fi
 
         # Display agent credits and log usage snapshot
         quota_script="$AGENTS_DIR/../ai/assessment/query-quota.sh"
@@ -86,6 +90,11 @@ case "$cmd" in
             echo "Deregistered session '$local_sid' from pipeline."
         else
             echo "No active session to deregister." >&2
+        fi
+        session_clear
+        clear_script="$AGENTS_DIR/../work-queue/clear-active-wrk.sh"
+        if [[ -f "$clear_script" ]]; then
+            bash "$clear_script" 2>/dev/null || true
         fi
         ;;
     *)

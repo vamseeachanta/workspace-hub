@@ -143,3 +143,14 @@ session_add_subagent() {
 session_update_timestamp() {
     session_set_scalar "updated_at" "$(session_now_iso)"
 }
+
+session_clear() {
+    ensure_session_store
+    session_set_scalar "session_id" ""
+    session_set_scalar "orchestrator_agent" ""
+    session_set_list "subagents_used"
+    session_set_scalar "active_wrk" ""
+    session_set_scalar "last_stage" ""
+    session_set_bool "handoff_allowed" "false"
+    session_update_timestamp
+}
