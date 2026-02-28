@@ -64,6 +64,7 @@ if command -v uv >/dev/null 2>&1; then
     version=$(uv --version 2>&1)
     echo "  OK — $version"
     echo "  uv will manage Python for encoding checks (via uv run --no-project python)"
+    echo "  uv cache will default to $REPO_ROOT/.claude/state/uv-cache"
 else
     echo "  WARNING: uv not found!"
     echo "  The encoding check hook will be skipped until 'uv' is installed."

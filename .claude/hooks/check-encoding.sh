@@ -8,6 +8,8 @@ set -euo pipefail
 
 HOOK_NAME="$(basename "$0")"
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "$REPO_ROOT/scripts/lib/uv-env.sh"
+uv_env_setup "$REPO_ROOT"
 
 command -v uv >/dev/null 2>&1 || {
     echo "check-encoding: uv not found. Run: curl -LsSf https://astral.sh/uv/install.sh | sh"

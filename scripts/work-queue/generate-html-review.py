@@ -1,4 +1,10 @@
-#!/usr/bin/env -S uv run --no-project --with markdown python
+#!/usr/bin/env bash
+""":"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-$REPO_ROOT/.claude/state/uv-cache}"
+mkdir -p "$UV_CACHE_DIR"
+exec uv run --no-project --with markdown python "$0" "$@"
+":"""
 import os
 import re
 import markdown
