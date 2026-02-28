@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-646 Claude Read-Tool Review</title>
+  <style>
+    :root {
+      --bg: #f5f0e7;
+      --card: #fffaf2;
+      --ink: #1c2430;
+      --muted: #5b6673;
+      --line: #d9cfbf;
+      --accent: #1c6a63;
+      --warn: #963333;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Georgia, serif; background: var(--bg); color: var(--ink); }
+    .wrap { width: min(1060px, calc(100% - 32px)); margin: 28px auto 48px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; margin-bottom: 18px; }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.74rem; color: var(--accent); font-family: monospace; margin-bottom: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .stat { padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+    .stat strong { display: block; font-size: 1.5rem; color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); }
+    .warn { color: var(--warn); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="eyebrow">Executive Summary</div>
+      <h1>Temp-file `Read` input did not unlock a usable Claude review.</h1>
+      <p>This experiment removed the large stdin bundle from the Claude invocation and replaced it with a short prompt pointing to a file readable through the `Read` tool. Even with that change, Claude did not return a substantive review on the real `WRK-624` target within the bounded run window.</p>
+      <div class="grid">
+        <div class="stat"><strong>2</strong><span>file-read runs</span></div>
+        <div class="stat"><strong>0</strong><span>usable reviews</span></div>
+        <div class="stat"><strong>5.8 KB</strong><span>bundle file size</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Outcome</h2>
+      <table>
+        <thead>
+          <tr><th>Run</th><th>Shape</th><th>Observed result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>R1</td><td>Short prompt + `Read`, no `--add-dir`</td><td class="warn">No output; access setup incomplete</td></tr>
+          <tr><td>R2</td><td>Short prompt + `Read` + `--add-dir`</td><td class="warn">No usable review within bounded run</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Conclusion</h2>
+      <p>The temp-file `Read` variant is not supported by enough positive evidence to replace the existing Claude path. Continue treating Claude plan-review failures as `NO_OUTPUT` rather than assuming the transport issue is solved by moving content out of stdin.</p>
+    </section>
+  </main>
+</body>
+</html>

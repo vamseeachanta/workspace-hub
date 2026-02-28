@@ -141,7 +141,7 @@
     <div class="hero-inner">
       <div class="eyebrow">WRK-624 Review Artifact</div>
       <h1>Canonical Work-Queue Workflow</h1>
-      <p class="lede">This HTML artifact is the user review surface for the new lifecycle contract. It shows the proposed Mermaid schematic, the hard gates, and the quality-and-learning requirements, including both fast auto-memory capture and deeper comprehensive-learning synthesis, before 3-seed cross-review.</p>
+      <p class="lede">This HTML artifact is the user review surface for the new lifecycle contract. It shows the proposed Mermaid schematic, the hard gates, and the quality-and-learning requirements, including both fast auto-memory capture and deeper comprehensive-learning synthesis, before provider-diverse multi-seed cross-review.</p>
       <div class="meta">
         <div class="pill">Status: Draft for review</div>
         <div class="pill">Scope: workspace-hub, portable to future repo-local queues</div>
@@ -159,8 +159,8 @@
       </article>
       <article class="card">
         <h2>Mandatory Reviewers</h2>
-        <div class="metric">1-3</div>
-        <p>One reviewer for Route A by default; three reviewers for Route B/C and escalated Route A.</p>
+        <div class="metric">1-9</div>
+        <p>Route A defaults to 1 seed total; Route B requires 2 seeds per provider; Route C requires 3 seeds per provider.</p>
       </article>
       <article class="card">
         <h2>Examples Per WRK</h2>
@@ -197,7 +197,8 @@ flowchart TD
     J -- Yes --> L[Status: blocked]
     K --> M{Route Review Passed?}
     M -- Yes --> N[Close]
-    M -- No --> K
+    M -- No --> M1[Address findings / revise implementation]
+    M1 --> K
     N --> O{Queue Valid + Merge/Sync Complete?}
     O -- Yes --> P[Archive]
     O -- No --> N
@@ -245,7 +246,7 @@ flowchart TD
         </tr>
         <tr>
           <td>Claim quota check</td>
-          <td>Claim must verify weekly AI usage and remaining quota before execution using the regular quota snapshot and readiness pipeline. Hour-scale waits are acceptable; week-scale waits are not.</td>
+          <td>Claim must verify weekly AI usage and remaining quota before execution using the regular quota snapshot and readiness pipeline. Waiting up to 24 hours is acceptable when it preserves the best-fit agent; beyond 24 hours the claim should recommend rerouting instead of stalling.</td>
           <td class="status-bad">Execution should pause or reroute if quota is weak</td>
         </tr>
         <tr>
@@ -256,6 +257,51 @@ flowchart TD
       </table>
     </section>
 
+    <section class="panel">
+      <h2>Claude Review Mode Policy</h2>
+      <table>
+        <tr>
+          <th>Mode</th>
+          <th>Transport</th>
+          <th>Strength</th>
+          <th>When to use</th>
+        </tr>
+        <tr>
+          <td>Full bundle</td>
+          <td>Patched temp-file <code>Read</code> path via <code>submit-to-claude.sh</code></td>
+          <td class="status-good">Best review quality</td>
+          <td>Default for all relevant substantive reviews, including Route B/C plans, workflow/governance items, and final full-context review.</td>
+        </tr>
+        <tr>
+          <td>Compact bundle</td>
+          <td>Same patched temp-file <code>Read</code> path with <code>--compact-plan</code></td>
+          <td class="status-warn">Faster, but lossy</td>
+          <td>Fallback only for non-final screening passes or when the user explicitly wants faster feedback over full-context analysis.</td>
+        </tr>
+      </table>
+      <p><strong>Policy:</strong> full bundle is the default Claude review mode for all relevant reviews. The default bounded wait for Claude review runs is 5 minutes (<code>300s</code>). If compact mode is used and Claude flags truncation, missing context, or bundle lossiness, rerun it on the full bundle before treating the review as final.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Exploration Chain Policy</h2>
+      <table>
+        <tr>
+          <th>Keep inside one parent WRK</th>
+          <th>Split into new WRK</th>
+        </tr>
+        <tr>
+          <td>
+            Experiments, retries, diagnostics, review-mode comparisons, and synthesis that all serve the same immediate objective and remain in the same active work stream.
+          </td>
+          <td>
+            Work that becomes its own deliverable, changes ownership, is likely to be deferred independently, or is valuable as a standalone backlog item.
+          </td>
+        </tr>
+      </table>
+      <p><strong>Default:</strong> exploratory/debugging chains should stay inside one approved parent WRK, with sub-steps logged in the WRK body or assets, instead of creating a new WRK for every experiment.</p>
+      <p><strong>User choice rule:</strong> when new work could reasonably fit either an existing active WRK or a new WRK, the user should be offered both paths. Reuse the existing WRK when objective and approval scope are still materially the same; create a new WRK when the branch has independent backlog value. In either case, traceability must be preserved and no findings, evidence, or learnings may be lost.</p>
+    </section>
+
     <section class="split">
       <article class="panel">
         <h2>Key Rules</h2>
@@ -263,15 +309,19 @@ flowchart TD
           <li><strong>Resource Intelligence</strong> is mandatory for every WRK and produces a modular resource pack.</li>
           <li><strong>One active orchestrator session</strong> owns transitions into <code>working</code>, <code>done</code>, and <code>archived</code>.</li>
           <li><strong>Claim</strong> includes an AI capability check and should recommend a better-fit executor when the current agent is not the strongest option.</li>
-          <li><strong>Claim</strong> also checks weekly AI usage availability from the regular quota cron/readiness pipeline so execution does not start on an agent likely to hard-stop; waiting a few hours is acceptable, waiting a week is not.</li>
+          <li><strong>Claim</strong> also checks weekly AI usage availability from the regular quota cron/readiness pipeline so execution does not start on an agent likely to hard-stop; waits up to 24 hours are acceptable, longer waits should reroute.</li>
           <li><strong>Review matrix</strong> is route-based, but no route skips review.</li>
           <li><strong>Review artifacts</strong> must share a common schema: <code>Verdict</code>, <code>Summary</code>, <code>Issues Found</code>, <code>Suggestions</code>, and <code>Questions for Author</code>.</li>
+          <li><strong><code>INVALID_OUTPUT</code></strong> is a blocking review failure and requires rerun, alternate mode, or explicit user waiver before the gate can pass.</li>
+          <li><strong>Script paths</strong> are intentionally split: lifecycle operations live in <code>scripts/work-queue/</code>, while queue-index helpers live in <code>.claude/work-queue/scripts/</code>.</li>
           <li><strong>Plan gate</strong> requires user review twice: once on the draft HTML before multi-agent review, and once on the final HTML after multi-agent review.</li>
           <li><strong>Plan HTML</strong> should front-load an executive summary near the top so the user can review the item quickly.</li>
           <li><strong>Every WRK</strong> carries 5-10 real examples, variation tests, and learning outputs.</li>
           <li><strong>Learning capture</strong> has two layers: auto-memory for real-time session capture and comprehensive-learning for slower, deeper multi-agent synthesis.</li>
+          <li><strong>User-review SLA</strong>: HTML review gates remain in place for under 48 hours; beyond that the WRK must record a user defer, named delegate review, or rollback to the prior actionable stage.</li>
           <li><strong>Every WRK</strong> must produce an HTML review artifact, and the user reviews it before close.</li>
           <li><strong>Domain workflows</strong> must include calculation or analysis outputs inside that HTML artifact in a directly reviewable form.</li>
+          <li><strong>Existing vs new WRK</strong>: if either path is viable, present both options to the user and preserve full traceability whichever path is chosen.</li>
           <li><strong>Archive</strong> is blocked until queue validation, merge to main, and sync flow complete.</li>
         </ul>
       </article>
@@ -281,9 +331,10 @@ flowchart TD
           <tr><th>Gate</th><th>Status</th></tr>
           <tr><td>Spec draft</td><td class="status-good">Prepared</td></tr>
           <tr><td>HTML review artifact</td><td class="status-good">Prepared</td></tr>
-          <tr><td>Claude review</td><td class="status-warn">Prior feedback incorporated; rerun pending</td></tr>
-          <tr><td>Codex review</td><td class="status-warn">Current draft pending formal review artifact</td></tr>
-          <tr><td>Gemini review</td><td class="status-warn">Pending deepest-thinking review</td></tr>
+          <tr><td>Claude review</td><td class="status-good">Full-bundle artifact adopted as final Claude review</td></tr>
+          <tr><td>Codex review</td><td class="status-good">Formal review artifact recorded</td></tr>
+          <tr><td>Gemini review</td><td class="status-good">Formal review artifact recorded</td></tr>
+          <tr><td>Review synthesis</td><td class="status-warn">Fresh formal rerun completed; verdict still effectively <code>REQUEST_CHANGES</code> due to remaining enforceability gaps and Codex <code>NO_OUTPUT</code></td></tr>
         </table>
       </article>
     </section>
@@ -300,20 +351,46 @@ flowchart TD
         <tr>
           <td>A</td>
           <td>Mandatory lightweight review</td>
-          <td>1 by default, auto-escalates to 3 on risk signals</td>
+          <td>1 seed by default, auto-escalates on defined risk signals</td>
           <td><code>review-primary.md</code></td>
         </tr>
         <tr>
           <td>B</td>
           <td>Standard</td>
-          <td>Claude + Codex + Gemini</td>
-          <td><code>review-claude.md</code>, <code>review-codex.md</code>, <code>review-gemini.md</code>, <code>review-synthesis.md</code></td>
+          <td>Claude x2, Codex x2, Gemini x2</td>
+          <td>Per-seed reviewer artifacts plus <code>review-synthesis.md</code></td>
         </tr>
         <tr>
           <td>C</td>
           <td>Full</td>
-          <td>Claude + Codex + Gemini per plan, phase, and close</td>
-          <td>Route B artifact set, repeated per phase</td>
+          <td>Claude x3, Codex x3, Gemini x3 per plan, phase, and close</td>
+          <td>Per-seed reviewer artifacts plus per-phase synthesis</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Seed Depth Policy</h2>
+      <table>
+        <tr>
+          <th>Concept</th>
+          <th>Rule</th>
+        </tr>
+        <tr>
+          <td>Provider diversity</td>
+          <td>Which model families must review the item: Claude, Codex, and Gemini for Route B/C.</td>
+        </tr>
+        <tr>
+          <td>Seed depth</td>
+          <td>How many independent runs are required per provider.</td>
+        </tr>
+        <tr>
+          <td>Default depth</td>
+          <td>Route A: 1 seed total. Route B: 2 seeds per provider. Route C: 3 seeds per provider.</td>
+        </tr>
+        <tr>
+          <td>High-governance items</td>
+          <td>Workflow, governance, legal, compliance, and agent-behavior reviews use the Route C seed depth by default.</td>
         </tr>
       </table>
     </section>
@@ -353,9 +430,9 @@ flowchart TD
         </tr>
         <tr>
           <td>Reviewers</td>
-          <td>1 by default, escalate on risk</td>
-          <td>3 required</td>
-          <td>3 required per plan / phase / close</td>
+          <td>1 seed by default, escalate on risk</td>
+          <td>2 seeds/provider</td>
+          <td>3 seeds/provider per plan / phase / close</td>
         </tr>
       </table>
     </section>
@@ -365,6 +442,7 @@ flowchart TD
         <h2>Mandatory Metadata</h2>
         <ul>
           <li><code>orchestrator</code></li>
+          <li><code>computer</code> (named execution host / workstation)</li>
           <li><code>resource_pack_ref</code></li>
           <li><code>plan_html_review_draft_ref</code></li>
           <li><code>plan_html_review_final_ref</code></li>
@@ -384,9 +462,13 @@ flowchart TD
           <li><strong>Quota source of truth</strong>: <code>config/ai-tools/agent-quota-latest.json</code></li>
           <li><strong>Producer</strong>: <code>scripts/ai/assessment/query-quota.sh</code> plus readiness pipeline</li>
           <li><strong>Queue validation</strong>: validator output is blocking for close/archive</li>
+          <li><strong>Workstation registry</strong>: blocking source of truth for validating the <code>computer</code> field.</li>
+          <li><strong>Document-intelligence indexing</strong>: advisory by default, blocking only when the WRK explicitly requires indexed artifacts before close/archive.</li>
+          <li><strong>Comprehensive-learning handoff</strong>: blocking for archive when the WRK explicitly requires deep-learning handoff evidence.</li>
           <li><strong>Legal scan</strong>: blocking for generated WRK artifacts unless explicitly waived</li>
           <li><strong>Review evidence</strong>: blocking for plan/execute progression; fallback only for <code>NO_OUTPUT</code></li>
           <li><strong>Merge + sync</strong>: both are blocking for archive</li>
+          <li><strong>Script location policy</strong>: use <code>scripts/work-queue/</code> for queue operations and <code>.claude/work-queue/scripts/</code> for queue index helpers.</li>
         </ul>
       </article>
     </section>
@@ -398,6 +480,7 @@ flowchart TD
           <li><strong>Auto-memory</strong>: fast opportunistic capture during active Claude sessions.</li>
           <li><strong>Comprehensive-learning</strong>: slower deep synthesis across sessions, agents, and machines.</li>
           <li><strong>Relationship</strong>: complementary lanes writing back into a compatible memory and learning surface.</li>
+          <li><strong>Deep-learning contract</strong>: when required by the WRK, archive expects a handoff artifact with summary, actions, and metadata proving propagation or deferred follow-up.</li>
         </ul>
       </article>
     </section>
@@ -407,8 +490,8 @@ flowchart TD
         <h2>Phased Rollout</h2>
         <ul>
           <li><strong>Phase 1 (Feb 27-Mar 7, 2026):</strong> normalize statuses, reconcile drift, reporting validator, manual-remediation list, git rollback path.</li>
-          <li><strong>Phase 2 (Mar 8-Mar 21, 2026):</strong> require resource packs, draft-plan and final-plan WRK HTML reviews, close evidence, and HTML review artifacts for new/touched WRKs.</li>
-          <li><strong>Phase 3 (from Mar 22, 2026):</strong> enforce active session binding, hard-block invalid transitions, hard-fail legacy statuses.</li>
+          <li><strong>Phase 2 (Mar 8-Mar 21, 2026):</strong> require resource packs, draft-plan and final-plan WRK HTML reviews, close evidence, and HTML review artifacts for new/touched WRKs. Rollback: temporarily return the new artifact gates to warning-only while preserving status migration and validator reporting. Success metrics: new/touched WRKs carry required refs, zero closes without HTML/claim evidence, zero unresolved generated-artifact legal-scan failures.</li>
+          <li><strong>Phase 3 (from Mar 22, 2026):</strong> enforce active session binding, hard-block invalid transitions, hard-fail legacy statuses. Rollback: disable hard-blocking and drop back to Phase 2 warning mode while keeping migration tooling and evidence artifacts intact. Success metrics: zero transition bypasses without remediation evidence, zero archive mismatches, zero archive moves without merge/sync evidence.</li>
         </ul>
       </article>
       <article class="panel">
@@ -430,8 +513,10 @@ flowchart TD
         <li>Idempotency tests for close, archive, and validation operations.</li>
         <li>Concurrency tests for conflicting claim attempts and stale session recovery.</li>
         <li>Outage tests for reviewer failure, quota-source outage, and HTML/legal tool failure.</li>
+        <li>User-availability tests for 48-hour pending review, user-deferred states, and delegated review evidence.</li>
         <li>Migration tests for malformed filenames and legacy statuses.</li>
         <li>HTML gate tests for draft-plan review, final-plan review, and close-time HTML verification.</li>
+        <li>Rollback tests for Phase 1, Phase 2, and Phase 3 rollback paths.</li>
       </ul>
     </section>
 

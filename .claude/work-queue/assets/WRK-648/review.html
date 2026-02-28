@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-648 Full Bundle Claude Validation</title>
+  <style>
+    :root {
+      --bg: #f5efe6;
+      --card: #fff9f2;
+      --ink: #1d2430;
+      --muted: #5c6674;
+      --line: #d8cebd;
+      --accent: #1e6b62;
+      --warn: #9a3131;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: Georgia, serif; }
+    .wrap { width: min(1080px, calc(100% - 32px)); margin: 28px auto 48px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; margin-bottom: 18px; }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.74rem; color: var(--accent); font-family: monospace; margin-bottom: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .stat { padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+    .stat strong { display: block; font-size: 1.5rem; color: var(--accent); }
+    .warn { color: var(--warn); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="eyebrow">Executive Summary</div>
+      <h1>Compact bundle succeeded; full bundle timed out.</h1>
+      <p>The patched Claude transport that succeeded in `WRK-647` on the compact bundle did not return a usable structured review on the full `WRK-624` plan spec within the bounded run window. The transport is improved, but the full input remains operationally too heavy for this wrapper path.</p>
+      <div class="grid">
+        <div class="stat"><strong>VALID</strong><span>`WRK-647` compact result</span></div>
+        <div class="stat"><strong>124</strong><span>`WRK-648` full-bundle exit code</span></div>
+        <div class="stat"><strong>INVALID_OUTPUT</strong><span>full-bundle artifact classification</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Conclusion</h2>
+      <p class="warn">Keep the compact bundle as the operational Claude review path for now. The full bundle is not yet viable under the same bounded wrapper conditions.</p>
+    </section>
+  </main>
+</body>
+</html>

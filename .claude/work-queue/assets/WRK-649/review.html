@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-649 Natural Timeout Validation</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --card: #fff9f2;
+      --ink: #1d2430;
+      --muted: #5a6573;
+      --line: #d8cebd;
+      --accent: #1c6d63;
+      --ok: #256d45;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: Georgia, serif; }
+    .wrap { width: min(1080px, calc(100% - 32px)); margin: 28px auto 48px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; margin-bottom: 18px; }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.74rem; color: var(--accent); font-family: monospace; margin-bottom: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .stat { padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+    .stat strong { display: block; font-size: 1.5rem; color: var(--accent); }
+    .ok { color: var(--ok); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="eyebrow">Executive Summary</div>
+      <h1>The full bundle works if we let it finish.</h1>
+      <p>The natural-timeout rerun completed in 76 seconds and returned a valid full-bundle Claude review. This shows the earlier `WRK-648` failure was caused by manual early termination, not by the full-bundle path being inherently non-viable.</p>
+      <div class="grid">
+        <div class="stat"><strong>76s</strong><span>actual runtime</span></div>
+        <div class="stat"><strong>0</strong><span>exit code</span></div>
+        <div class="stat"><strong class="ok">VALID</strong><span>artifact classification</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Conclusion</h2>
+      <p>The patched Claude wrapper supports full-bundle review on `WRK-624` when the process is allowed to complete naturally. Full bundle is slower than compact mode, but it produces more substantive findings and should be preferred when review quality matters more than latency.</p>
+    </section>
+  </main>
+</body>
+</html>

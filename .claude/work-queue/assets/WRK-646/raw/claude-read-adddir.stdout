@@ -1,0 +1,52 @@
+## Verdict
+
+**APPROVE with Minor Issues**
+
+---
+
+## Summary
+
+WRK-624 proposes converting the work-queue from informal conventions into a machine-enforceable 8-stage lifecycle contract. The plan introduces a three-route review matrix (A/B/C), mandatory artifacts (resource packs, review evidence, HTML gates, close evidence), a phased migration strategy for legacy WRKs, and integration with the ecosystem learning loop. Complexity is marked "critical" with status "implemented" at Phase 3.
+
+---
+
+## Issues Found
+
+**P2 — Truncation hides scope**
+Two `[truncated for Claude compact bundle]` cuts remove Phase 2 rollout details and the full review matrix body. Any findings in the omitted sections cannot be evaluated. The bundle format itself is a blind spot for the reviewer.
+
+**P2 — "Status: implemented" conflicts with phased rollout dates**
+The metadata says `status: implemented` but Phase 1 starts 2026-02-27 and Phase 2 ends 2026-03-21. Either the status is stale/wrong, or "implemented" refers only to plan scaffolding — the distinction should be explicit in the metadata.
+
+**P2 — No hard-fail cutoff dates**
+The acceptance criteria require a migration matrix with a `hard_fail_cutoff` date, but the visible rollout section only shows `start` / `target_completion`. The cutoff is the enforcement moment; its absence here means Phase 1 could slip without a gate firing.
+
+**P3 — Route A auto-escalation trigger is undefined**
+The matrix states "auto-escalate to 3-model review on risk signals" but does not define what signals trigger escalation. Without a concrete list, the gate is unenforceable and discretionary.
+
+**P3 — Dependency contract table not visible**
+Acceptance criteria require a dependency contract table, but it is not present in the bundle. If it was truncated, that is a bundle construction bug; if it was omitted from the plan, it is a P2 gap.
+
+**P3 — Concurrency tests underspecified**
+"Conflicting claim attempts" and "stale session ownership recovery" are listed but there is no detail on what tooling, harness, or assertion style implements them. For a "critical" complexity item this is thin.
+
+---
+
+## Suggestions
+
+- Regenerate the compact bundle without truncation, or ensure each `[truncated]` block has a section-level summary so reviewers are not blind to content.
+- Align `status:` with actual enforcement state — consider `partial` or `phase-1-active` until Phase 3 is complete.
+- Add a `hard_fail_cutoff` field to each phase block (even if it matches `target_completion`).
+- Define Route A risk signals as an explicit enumerated list (e.g., `files_changed > N`, `external_api: true`, `complexity: high`).
+- Surface the dependency contract table in the bundle or link to it directly.
+- Expand concurrency test descriptions to name the test harness and expected assertions.
+
+---
+
+## Questions for Author
+
+1. What does "implemented" in the metadata mean — is the enforcement tooling deployed, or just the plan document written?
+2. What are the concrete risk signals that trigger Route A → Route B escalation?
+3. Was the dependency contract table omitted from the bundle intentionally, or is it missing from the plan itself?
+4. Is there a `hard_fail_cutoff` for the migration phases? If so, where is it recorded?
+5. For the concurrency tests, which script or test harness owns them and at what point in the pipeline do they run?

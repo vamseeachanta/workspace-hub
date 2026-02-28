@@ -1,0 +1,2 @@
+Review the plan at /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-646/wrk-624-read-bundle.md using the Read tool.
+Return only markdown with sections: Verdict, Summary, Issues Found, Suggestions, Questions for Author.

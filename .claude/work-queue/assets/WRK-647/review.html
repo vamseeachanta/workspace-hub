@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-647 Patched Claude Wrapper Validation</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --card: #fff9f2;
+      --ink: #1d2430;
+      --muted: #5a6573;
+      --line: #d8cebd;
+      --accent: #1c6d63;
+      --accent2: #91501f;
+      --ok: #256d45;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: Georgia, serif; }
+    .wrap { width: min(1080px, calc(100% - 32px)); margin: 28px auto 48px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; margin-bottom: 18px; }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.74rem; color: var(--accent2); font-family: monospace; margin-bottom: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .stat { padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+    .stat strong { display: block; font-size: 1.5rem; color: var(--accent); }
+    .ok { color: var(--ok); font-weight: 700; }
+    code { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="eyebrow">Executive Summary</div>
+      <h1>The patched Claude wrapper succeeded on the real WRK-624 target.</h1>
+      <p>The wrapper now writes the compact review bundle to a temp file and asks Claude to read it via the <code>Read</code> tool. On <code>specs/wrk/WRK-624/plan.md</code>, that patched path returned a schema-valid Claude review with verdict <code>REQUEST_CHANGES</code>.</p>
+      <div class="grid">
+        <div class="stat"><strong>1</strong><span>patched wrapper validation run</span></div>
+        <div class="stat"><strong>VALID</strong><span>review artifact classification</span></div>
+        <div class="stat"><strong class="ok">REQUEST_CHANGES</strong><span>Claude verdict</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Meaning</h2>
+      <p>The transport problem is materially improved. Claude can now return a usable review on the real plan target. The remaining issue is review-input sufficiency: the compact bundle is still truncated, so Claude is challenging missing context rather than failing to respond.</p>
+    </section>
+  </main>
+</body>
+</html>

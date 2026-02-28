@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-651 Final Claude Review Selection</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --card: #fff9f2;
+      --ink: #1d2430;
+      --muted: #5a6573;
+      --line: #d8cebd;
+      --accent: #1c6d63;
+      --accent2: #8d4e20;
+      --ok: #256d45;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: Georgia, serif; }
+    .wrap { width: min(1080px, calc(100% - 32px)); margin: 28px auto 48px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; margin-bottom: 18px; }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.74rem; color: var(--accent2); font-family: monospace; margin-bottom: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .stat { padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+    .stat strong { display: block; font-size: 1.5rem; color: var(--accent); }
+    .ok { color: var(--ok); font-weight: 700; }
+    ul { margin: 0; padding-left: 18px; }
+    code { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="eyebrow">Executive Summary</div>
+      <h1>Final Claude review for WRK-624 should use full bundle mode.</h1>
+      <p>Under the documented policy from `WRK-650`, `WRK-624` is a canonical workflow/governance Route C item, so full-bundle Claude review is the correct final mode. The validated final artifact is the full-bundle review produced in `WRK-649`.</p>
+      <div class="grid">
+        <div class="stat"><strong>Full bundle</strong><span>selected policy mode</span></div>
+        <div class="stat"><strong>VALID</strong><span>artifact classification</span></div>
+        <div class="stat"><strong class="ok">REQUEST_CHANGES</strong><span>Claude verdict</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Why full bundle</h2>
+      <ul>
+        <li>`WRK-624` is a canonical workflow/governance item.</li>
+        <li>Policy prefers full bundle when review quality matters more than latency.</li>
+        <li>`WRK-649` proved full bundle completes successfully in 76 seconds.</li>
+        <li>The full-bundle review contains more substantive findings than the compact-bundle review.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

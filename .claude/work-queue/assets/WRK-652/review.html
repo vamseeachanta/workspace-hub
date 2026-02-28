@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-624 Review Synthesis</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --card: #fff9f2;
+      --ink: #1d2430;
+      --muted: #5a6573;
+      --line: #d8cebd;
+      --accent: #1c6d63;
+      --warn: #9a3131;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: Georgia, serif; }
+    .wrap { width: min(1080px, calc(100% - 32px)); margin: 28px auto 48px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; margin-bottom: 18px; }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.74rem; color: var(--accent); font-family: monospace; margin-bottom: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .stat { padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+    .stat strong { display: block; font-size: 1.5rem; color: var(--accent); }
+    .warn { color: var(--warn); font-weight: 700; }
+    ul { margin: 0; padding-left: 18px; }
+    code { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="eyebrow">Executive Summary</div>
+      <h1>Final multi-agent review state for WRK-624 remains REQUEST_CHANGES.</h1>
+      <p>The review set is directionally aligned on the value of the workflow hardening, but not on readiness for final approval. Gemini is supportive, while Claude and Codex still identify specification-quality and enforceability gaps that should be resolved before the plan is treated as final.</p>
+      <div class="grid">
+        <div class="stat"><strong>Claude</strong><span>full-bundle final artifact adopted</span></div>
+        <div class="stat"><strong>Codex</strong><span>request-changes baseline review</span></div>
+        <div class="stat"><strong>Gemini</strong><span>directionally approving review</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Final state</h2>
+      <p class="warn">Synthesis verdict: REQUEST_CHANGES</p>
+      <ul>
+        <li>Resolve metadata and state contradictions.</li>
+        <li>Define machine-enforceable terms like `computer`, `risk signals`, and short-defer limits.</li>
+        <li>Strengthen execute/review retry flow and rollback coverage.</li>
+        <li>Clarify `INVALID_OUTPUT` handling in the final policy surface.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

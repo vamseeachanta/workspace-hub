@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-645 Claude File-Write Review</title>
+  <style>
+    :root {
+      --bg: #f6f1ea;
+      --card: #fffaf3;
+      --ink: #1e2430;
+      --muted: #5a6573;
+      --line: #d8cdbd;
+      --accent: #8b3d1c;
+      --accent2: #165d63;
+      --bad: #9a2e2e;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Georgia, serif; color: var(--ink); background: var(--bg); }
+    .wrap { width: min(1080px, calc(100% - 32px)); margin: 28px auto 48px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; margin-bottom: 18px; }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.74rem; color: var(--accent); font-family: monospace; margin-bottom: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .stat { padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+    .stat strong { display: block; font-size: 1.5rem; color: var(--accent2); }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); }
+    .bad { color: var(--bad); font-weight: 700; }
+    code { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="eyebrow">Executive Summary</div>
+      <h1>Claude file-write review capture is not viable on the current CLI path.</h1>
+      <p>Claude was instructed to write markdown review artifacts directly to disk instead of returning review content through stdout. It failed on both the real `WRK-624` review target and a minimal control target. No requested markdown artifact was created in either run.</p>
+      <div class="grid">
+        <div class="stat"><strong>2</strong><span>file-write runs</span></div>
+        <div class="stat"><strong>0</strong><span>written review files</span></div>
+        <div class="stat"><strong>2</strong><span>no-output outcomes</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Validation Matrix</h2>
+      <table>
+        <thead>
+          <tr><th>Run</th><th>Target</th><th>Expected file</th><th>Observed result</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>R1</td>
+            <td>`WRK-624` compact bundle</td>
+            <td><code>raw/claude-written-review.md</code></td>
+            <td class="bad">No file created; no stdout review</td>
+          </tr>
+          <tr>
+            <td>R2</td>
+            <td>Minimal control</td>
+            <td><code>raw/claude-written-review-control.md</code></td>
+            <td class="bad">No file created; no stdout review</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Conclusion</h2>
+      <p>Prompt-driven file writing should not be used as the Claude review transport strategy. The current workflow should continue to rely on stdout/schema capture where it works and explicit `NO_OUTPUT` classification where it does not.</p>
+    </section>
+  </main>
+</body>
+</html>
