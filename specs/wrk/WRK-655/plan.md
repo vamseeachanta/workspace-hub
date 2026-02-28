@@ -10,7 +10,7 @@ session:
   last_active: "2026-02-28T00:00:00Z"
   conversation_id: "wrk-655"
 review:
-  required_iterations: 1
+  required_iterations: 3
   current_iteration: 0
   status: "draft"
   reviewers:
@@ -141,6 +141,16 @@ After `WRK-655`, a `Resource Intelligence` run for any WRK should:
 | Quota awareness | `agent-usage-optimizer` | Keeps downstream claim/review work within available capacity |
 | Deep learning handoff | `comprehensive-learning` | Consumes stage outputs later for slower ecosystem synthesis |
 
+## Routing Capability Review Requirement
+
+Before `agent-router` and `agent-usage-optimizer` are treated as authority for stage assignment, this WRK should produce one of:
+
+1. a formal reviewed capability matrix covering routing, quota awareness, fallback behavior, and operational limits
+2. an explicit interim-routing rule stating:
+   - what those skills are allowed to influence
+   - what remains user- or orchestrator-judgment
+   - what evidence is required when overriding recommendations
+
 ## Scope
 
 ### Phase 1: Skill Design and Contract Definition
@@ -153,6 +163,8 @@ After `WRK-655`, a `Resource Intelligence` run for any WRK should:
 - [ ] Define required artifact outputs and minimum section requirements
 - [ ] Define the visible knowledge map and role mapping
 - [ ] Define `P1/P2/P3` ranking semantics and user pause behavior
+- [ ] Define whether an existing skill is enhanced or a new canonical skill is created
+- [ ] Review `agent-router` and `agent-usage-optimizer` as routing-capability authorities or document an interim rule
 
 **Deliverables**:
 - [ ] Skill design decision
@@ -170,7 +182,13 @@ After `WRK-655`, a `Resource Intelligence` run for any WRK should:
 **Tasks**:
 - [ ] Create or update the canonical skill under `.claude/skills/`
 - [ ] Add references/scripts/assets only where they materially reduce ad hoc behavior
-- [ ] Download relevant codes, standards, and online documents discovered during intelligence gathering
+- [ ] Download relevant codes, standards, and online documents discovered during intelligence gathering only when they complement existing document-intelligence sources
+- [ ] Record downloaded-source provenance in `resources.yaml`:
+  - [ ] source URL or origin
+  - [ ] license/access status
+  - [ ] retrieval date
+  - [ ] canonical storage path
+  - [ ] duplicate or superseded relationship if applicable
 - [ ] Place downloaded source documents in the relevant long-term repo/document reference locations
 - [ ] Record those sources in document intelligence so they remain searchable and reusable
 - [ ] Define or add scaffolding for:
@@ -200,6 +218,7 @@ After `WRK-655`, a `Resource Intelligence` run for any WRK should:
 - [ ] Define minimum pass conditions for stage completion
 - [ ] Define where legal-scan proof is stored
 - [ ] Define how document-intelligence indexing is recorded
+- [ ] Define how additive downloaded-source storage is validated without duplicating existing document-intelligence sources
 - [ ] Define validator checks for artifact presence and minimum completeness
 - [ ] Update workflow references to point at the new skill contract
 
@@ -249,16 +268,37 @@ These are useful enhancements rather than blockers:
 ## Intelligence Growth Requirement
 
 - As part of intelligence gathering, relevant codes, standards, and documents found online should be:
-  - downloaded where licensing and access allow
+  - downloaded where licensing and access allow and only when they add value beyond already-available document-intelligence sources
   - documented in the document-intelligence system
   - placed in the relevant long-term reference location for future reuse
+  - recorded with provenance and duplicate/superseded status
 - Repository intelligence should compound over time rather than remain flatter than external document intelligence.
-- The target direction is that, within a defined future maturity window, repository intelligence becomes richer and more useful than raw document intelligence alone because it accumulates:
+- Target maturity window: `3 months`
+- Success metric:
+  - `>80%` of tracked Resource-Intelligence documents in scope are marked `read`
+  - key calculations derived from those documents are implemented in the repository ecosystem or explicitly linked to follow-on WRKs
+- "Richer than document intelligence" means the repository can answer common planning/implementation questions through curated local knowledge, implemented calculations, prior decisions, and validated interpretations without re-reading raw source documents in most cases.
+- The target direction is that repository intelligence becomes richer and more useful than raw document intelligence alone because it accumulates:
   - curated context
   - prior decisions
   - reusable patterns
   - validated local interpretations
   - cross-WRK learnings
+
+## Repository-Native Example Set
+
+These examples should be used to validate the stage against realistic `workspace-hub` sources:
+
+1. `AGENTS.md` as the canonical agent contract source
+2. `.claude/work-queue/process.md` as lifecycle/process source
+3. `specs/wrk/WRK-624/plan.md` as the governing workflow spec
+4. `assets/WRK-624/wrk-624-workflow-review.html` as the user-review surface
+5. `scripts/work-queue/validate-queue-state.sh` as validator source
+6. `scripts/work-queue/claim-item.sh` as claim-stage implementation source
+7. `scripts/work-queue/close-item.sh` as close-stage implementation source
+8. `.claude/skills/coordination/orchestration/agent-router/SKILL.md` as routing-authority input
+9. `.claude/skills/ai/agent-usage-optimizer/SKILL.md` as quota-authority input
+10. `.claude/skills/data/documents/document-rag-pipeline/SKILL.md` as document-intelligence pipeline input
 
 ## Testing Strategy
 
@@ -280,6 +320,13 @@ These are useful enhancements rather than blockers:
 - [ ] `WRK-624` references can point at the skill cleanly
 - [ ] follow-on workflow docs remain coherent
 
+5. Example-based validation tests
+- [ ] `AGENTS.md` only path produces a valid minimal resource pack
+- [ ] `WRK-624` spec + HTML path produces a workflow-focused resource pack
+- [ ] scripts-only path (`validate-queue-state.sh`, `claim-item.sh`, `close-item.sh`) produces implementation-grounded constraints
+- [ ] routing-skills path (`agent-router`, `agent-usage-optimizer`) produces a capability-review note or interim-routing rule
+- [ ] mixed local + additive online-source path records provenance and duplicate status correctly
+
 ## File-Level Change Plan
 
 - [ ] Create or update the canonical skill under `.claude/skills/`
@@ -290,12 +337,15 @@ These are useful enhancements rather than blockers:
 ## Review Strategy
 
 - Route C review with provider diversity: Claude, Codex, Gemini
+- Route C seed depth: `3 seeds/provider`
 - Full-bundle review is preferred because this is workflow/governance work
 - Review should focus on:
   - whether the skill contract is too vague
   - whether the knowledge map is sufficient but not bloated
   - whether `P1` pause logic is operationally clear
   - whether validator-readiness is concrete enough for later enforcement
+  - whether additive downloaded-source rules are precise enough to avoid storage drift
+  - whether the 3-month intelligence metric is concrete enough to track
 
 ## Rollback Strategy
 
@@ -310,8 +360,10 @@ These are useful enhancements rather than blockers:
 - [ ] Skill defines a visible `P1/P2/P3` gap-ranking model
 - [ ] Skill defines user-pause behavior for unresolved `P1` gaps
 - [ ] Stage knowledge map is documented and easy for the user to inspect/tweak
+- [ ] `agent-router` and `agent-usage-optimizer` are formally reviewed for routing/quota authority or bounded by an explicit interim rule
 - [ ] Validator-ready rules are documented for minimum stage completion
 - [ ] `WRK-624` references are updated to point at the new skill contract
-- [ ] Relevant online codes, standards, and documents are downloaded, documented in document intelligence, and placed in the appropriate long-term reference location
-- [ ] The plan defines how repository intelligence should grow over time beyond raw document intelligence
+- [ ] Relevant online codes, standards, and documents are added only as complements to existing document-intelligence sources, documented with provenance, and placed in the appropriate long-term reference location
+- [ ] The plan defines a 3-month repository-intelligence maturity target and tracking method
+- [ ] The plan includes repository-native example cases for validating the stage
 - [ ] Legal scan passes

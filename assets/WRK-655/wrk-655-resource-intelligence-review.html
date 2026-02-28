@@ -101,6 +101,23 @@
     .status-good { color: var(--good); font-weight: 700; }
     .status-warn { color: var(--warn); font-weight: 700; }
     code { color: var(--ink); }
+    pre {
+      margin: 0;
+      padding: 14px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f8f4ec;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .mermaid {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f8f4ec;
+      padding: 12px;
+      overflow-x: auto;
+    }
     ul { margin: 0; padding-left: 18px; }
   </style>
 </head>
@@ -114,6 +131,7 @@
         <div class="pill">Status: Draft plan</div>
         <div class="pill">Route: C</div>
         <div class="pill">Review gate: user HTML review before multi-agent review</div>
+        <div class="pill">Seed depth: 3/provider</div>
       </div>
     </div>
   </header>
@@ -126,6 +144,34 @@
     </section>
 
     <section class="panel">
+      <h2>Availability Schematic</h2>
+      <p>This should be identified during planning, not after execution. The purpose is to separate what already exists from what this WRK must add.</p>
+      <div class="mermaid">
+flowchart TD
+    A[Existing document intelligence] --> A1[Registry exists]
+    A --> A2[Index exists]
+    A --> A3[Mounted-drive content already indexed]
+    A --> A4[Remote mounts monitored operationally]
+
+    B[Current gaps] --> B1[No explicit source-registry contract]
+    B --> B2[No canonical mapping: mount root to source bucket]
+    B --> B3[No dedicated Resource Intelligence skill]
+    B --> B4[No validator-ready completion contract]
+    B --> B5[Routing authority not yet formally reviewed]
+
+    C[WRK-655 improvements] --> C1[Define or enhance Resource Intelligence skill]
+    C --> C2[Add source-registry contract]
+    C --> C3[Add provenance, storage, and dedup rules]
+    C --> C4[Add validator-ready stage rules]
+    C --> C5[Review agent-router and agent-usage-optimizer authority]
+    C --> C6[Add example-based validation set]
+
+    A --> C
+    B --> C
+      </div>
+    </section>
+
+    <section class="panel">
       <h2>Planned Deliverables</h2>
       <table>
         <tr><th>Deliverable</th><th>Purpose</th></tr>
@@ -135,6 +181,7 @@
         <tr><td>Knowledge map</td><td>Show which skills and systems are used so the user can inspect and tweak the stage.</td></tr>
         <tr><td>Validator-ready rules</td><td>Make later enforcement and tooling integration possible.</td></tr>
         <tr><td>Downloaded reference set</td><td>Capture relevant online codes, standards, and documents in durable repo/document locations and index them for future reuse.</td></tr>
+        <tr><td>Routing authority review</td><td>Review or bound `agent-router` and `agent-usage-optimizer` before treating them as authority for stage routing and quota decisions.</td></tr>
       </table>
     </section>
 
@@ -155,6 +202,28 @@
     </section>
 
     <section class="panel">
+      <h2>Current Indexed Source State</h2>
+      <table>
+        <tr><th>Finding</th><th>Evidence</th><th>Implication for WRK-655</th></tr>
+        <tr><td>Document-intelligence registry already exists</td><td><code>data/document-index/registry.yaml</code> tracks indexed source buckets.</td><td>`WRK-655` should complement and clarify existing indexed sources, not redefine them from scratch.</td></tr>
+        <tr><td>Indexed source buckets already include mounted-storage content</td><td>Current buckets include <code>og_standards</code>, <code>ace_standards</code>, <code>ace_project</code>, <code>dde_project</code>, and <code>workspace_spec</code>.</td><td>The stage should treat these as baseline intelligence sources.</td></tr>
+        <tr><td>Mounted-drive examples are already in the index</td><td>Example indexed paths include <code>/mnt/ace/0000 O&amp;G/...</code> and <code>/mnt/ace/docs/_standards/...</code>.</td><td>Mounted drives are not hypothetical future sources; they are already part of the indexed estate.</td></tr>
+        <tr><td>Remote/network mounts are monitored operationally</td><td><code>scripts/readiness/check-network-mounts.sh</code> tracks remote mount points under <code>/mnt/remote/...</code>.</td><td>The workflow already knows these mounts exist, but not yet how they map into source buckets.</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Source Registry Gap</h2>
+      <p>The remaining gap is not whether document-intelligence sources exist. They do. The gap is that there is not yet one explicit source-registry contract mapping mounted and remote-mounted roots to document-intelligence source buckets.</p>
+      <p><strong>Recommended contract to add during WRK-655:</strong> <code>source_id</code>, <code>mount_root</code>, <code>local_or_remote</code>, <code>index_status</code>, <code>document_intelligence_bucket</code>, and <code>canonical_storage_policy</code>.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Routing Capability Review</h2>
+      <p>Before <code>agent-router</code> and <code>agent-usage-optimizer</code> are treated as authority for stage assignment, this WRK should either produce a reviewed capability matrix or document an explicit interim-routing rule with limits and override evidence.</p>
+    </section>
+
+    <section class="panel">
       <h2>Gap Priority Model</h2>
       <table>
         <tr><th>Priority</th><th>Meaning</th><th>Examples</th></tr>
@@ -167,8 +236,25 @@
 
     <section class="panel">
       <h2>Intelligence Growth Requirement</h2>
-      <p>Relevant codes, standards, and documents found online during intelligence gathering should be downloaded where allowed, documented in document intelligence, and placed in the relevant long-term reference location for future reuse.</p>
-      <p>The longer-term target is that repository intelligence becomes richer than raw document intelligence alone by compounding local context, prior decisions, reusable patterns, validated interpretations, and cross-WRK learnings.</p>
+      <p>Relevant codes, standards, and documents found online during intelligence gathering should be downloaded only when they complement existing document-intelligence sources, documented in document intelligence, recorded with provenance, and placed in the relevant long-term reference location for future reuse.</p>
+      <p>Target maturity window: <strong>3 months</strong>. Success metric: <strong>&gt;80% of tracked documents marked read and key calculations implemented</strong> in the repository ecosystem or linked follow-on WRKs. Repository intelligence is considered richer when common workflow questions can be answered from curated local knowledge instead of repeatedly re-reading raw source documents.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Repository-Native Example Set</h2>
+      <table>
+        <tr><th>Example</th><th>Why it matters</th></tr>
+        <tr><td><code>AGENTS.md</code></td><td>Canonical agent contract and workflow constraints.</td></tr>
+        <tr><td><code>.claude/work-queue/process.md</code></td><td>Lifecycle and stage-transition source.</td></tr>
+        <tr><td><code>specs/wrk/WRK-624/plan.md</code></td><td>Canonical workflow-hardening spec.</td></tr>
+        <tr><td><code>assets/WRK-624/wrk-624-workflow-review.html</code></td><td>User-review surface for the governing workflow.</td></tr>
+        <tr><td><code>scripts/work-queue/validate-queue-state.sh</code></td><td>Validator behavior and stage evidence checks.</td></tr>
+        <tr><td><code>scripts/work-queue/claim-item.sh</code></td><td>Claim-stage implementation details.</td></tr>
+        <tr><td><code>scripts/work-queue/close-item.sh</code></td><td>Close-stage implementation details.</td></tr>
+        <tr><td><code>agent-router/SKILL.md</code></td><td>Routing-capability authority candidate.</td></tr>
+        <tr><td><code>agent-usage-optimizer/SKILL.md</code></td><td>Quota-capability authority candidate.</td></tr>
+        <tr><td><code>document-rag-pipeline/SKILL.md</code></td><td>Document-intelligence pipeline baseline.</td></tr>
+      </table>
     </section>
 
     <section class="panel">
@@ -181,5 +267,9 @@
       </ul>
     </section>
   </main>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+  </script>
 </body>
 </html>
