@@ -2822,3 +2822,5 @@
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | WRK-637 | - | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | WRK-638 | - | - |
 
+| WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | - | - | WRK-631 |
+| WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | - | - | WRK-665 |
