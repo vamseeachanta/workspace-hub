@@ -10,6 +10,8 @@ target_repos:
 plan_ensemble: false
 ensemble_consensus_score: null
 computer: ace-linux-1
+execution_workstations: [ace-linux-1]
+plan_workstations: [ace-linux-1]
 ---
 
 # Smoke Test

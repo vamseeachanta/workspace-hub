@@ -1,29 +1,29 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-01T11:59:09Z by generate-index.py -->
+<!-- Generated: 2026-03-01T13:30:36Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-01T11:59:09Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-01T13:30:36Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 415
+**Total items:** 422
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 175 |
+| pending | 181 |
 | working | 10 |
-| blocked | 5 |
+| blocked | 6 |
 | archived | 225 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 196 |
-| medium | 177 |
+| high | 201 |
+| medium | 179 |
 | low | 41 |
 
 ### By Complexity
@@ -31,8 +31,8 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 70 |
-| medium | 187 |
-| complex | 91 |
+| medium | 193 |
+| complex | 92 |
 
 ### By Repository
 
@@ -47,22 +47,22 @@
 | achantas-data | 9 |
 | acma-projects | 4 |
 | assethold | 2 |
-| assetutilities | 5 |
+| assetutilities | 6 |
 | client_projects | 1 |
-| digitalmodel | 154 |
+| digitalmodel | 156 |
 | doris | 21 |
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 97 |
-| worldenergydata | 80 |
+| workspace-hub | 100 |
+| worldenergydata | 81 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 152 / 415 |
+| Plans exist | 159 / 422 |
 | Plans cross-reviewed | 58 |
 | Plans approved | 79 |
 | Brochure pending | 7 |
@@ -74,9 +74,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 415 |
+| Total captured | 422 |
 | Total archived | 225 |
-| Completion rate | 225/415 (54%) |
+| Completion rate | 225/422 (53%) |
 | Monthly rate (current month) | 0 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -84,9 +84,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 47 / 175 | 27% |
-| Plans cross-reviewed | 9 | 16% |
-| Plans user-approved | 9 | 16% |
+| Pending items with plans | 53 / 181 | 29% |
+| Plans cross-reviewed | 9 | 14% |
+| Plans user-approved | 9 | 14% |
 
 ### Aging
 
@@ -101,429 +101,436 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 86 | 8 | 3 |
-| Medium   | 61  | 2  | 1  |
+| High     | 90 | 8 | 4 |
+| Medium   | 63  | 2  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## Master Table
 
-| ID | Title | Status | Priority | Complexity | Computer | Provider | Repos | Module | Ensemble? | Plan? | Reviewed? | Approved? | % Done | Brochure | Blocked By |
-|-----|-------|--------|----------|------------|----------|----------|-------|--------|-----------|-------|-----------|-----------|--------|----------|------------|
-| WRK-001 | Repair sink faucet in powder room at 11511 Piping Rock | archived | medium | simple | - | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-002 | Stove repair with factory service at 11511 Piping Rock | archived | medium | simple | - | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-003 | Garage clean up | archived | medium | simple | - | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-004 | Reorganize storage in upstairs bathroom at 11511 Piping Rock | archived | medium | simple | - | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-005 | Clean up email using AI (when safe) | pending | low | medium | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-006 | Upload videos from iPhone to YouTube | blocked | low | simple | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-007 | Upload videos from Doris computer to YouTube | archived | medium | simple | - | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-008 | Upload photos from multiple devices to achantas-media | pending | low | medium | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-009 | Reproduce rev30 lower tertiary BSEE field results for repeatability | archived | high | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-010 | Rerun lower tertiary analysis with latest BSEE data and validate | archived | high | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | WRK-009 |
-| WRK-011 | Run BSEE analysis for all leases with field nicknames and geological era grouping | archived | high | complex | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | WRK-010 |
-| WRK-012 | Audit HSE public data coverage and identify gaps | archived | high | medium | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-013 | HSE data analysis to identify typical mishaps by activity and subactivity | archived | high | complex | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-012 |
-| WRK-014 | HSE risk index — client-facing risk insights with risk scoring | archived | medium | complex | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | WRK-013 |
-| WRK-015 | Metocean data extrapolation to target locations using GIS and nearest-source | archived | medium | complex | - | claude | - | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-016 | BSEE completion and intervention activity analysis for insights | archived | medium | complex | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-017 | Streamline BSEE field data analysis pipeline — wellbore, casing, drilling, completions, interventions | archived | high | complex | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-018 | Extend BSEE field data pipeline to other regulatory sources (RRC, Norway, Mexico, | archived | low | complex | - | claude+gemini | - | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider | pending | medium | complex | ace-linux-1 | gemini | - | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | - | - |
-| WRK-023 | Property GIS development timeline with future projection and Google Earth animation | pending | low | complex | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | ██░ 85% | - | - |
-| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | archived | high | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-025 | AQWA diffraction analysis runner | archived | high | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | - |
-| WRK-026 | Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta) | archived | high | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-027 | AQWA batch analysis execution | archived | high | medium | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | WRK-025 |
-| WRK-028 | AQWA postprocessing - RAOs and verification | archived | high | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | WRK-025 |
-| WRK-029 | OrcaWave diffraction analysis runner + file preparation | archived | high | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-030 | OrcaWave batch analysis + postprocessing | archived | high | complex | - | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | ✅ synced | WRK-029 |
-| WRK-031 | Benchmark OrcaWave vs AQWA for 2-3 hulls | archived | medium | complex | - | claude | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-032 | Modular OrcaFlex pipeline installation input with parametric campaign support | pending | medium | complex | acma-ansys05 | codex | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-033 | Develop OrcaFlex include-file modular skill for parametrised analysis input | archived | medium | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-034 | Develop OrcaWave modular file prep skill for parametrised analysis input | archived | medium | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-035 | Develop AQWA modular file prep skill for parametrised analysis input | archived | medium | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-036 | OrcaFlex structure deployment analysis - supply boat side deployment with structural | pending | low | complex | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-037 | Get OrcaFlex framework of agreement and terms | archived | medium | simple | - | - | aceengineer-admin | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-038 | Compile global LNG terminal project dataset with comprehensive parameters | archived | medium | complex | - | gemini | worldenergydata | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | - | - |
-| WRK-039 | SPM project benchmarking - AQWA vs OrcaFlex | pending | medium | complex | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-040 | Mooring benchmarking - AQWA vs OrcaFlex | archived | medium | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-043 | Parametric hull form analysis with RAO generation and client-facing lookup | pending | low | complex | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | █░░ 70% | - | - |
-| WRK-044 | Pipeline wall thickness calculations with parametric utilisation analysis | archived | medium | complex | - | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-045 | OrcaFlex rigid jumper analysis - stress and VIV for various configurations | pending | medium | complex | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-046 | OrcaFlex drilling and completion riser parametric analysis | pending | medium | complex | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-047 | OpenFOAM CFD analysis capability for digitalmodel | pending | low | complex | ace-linux-2 | claude | - | - | ❌ | ✅ | ✅ | ✅ | ██░ 85% | - | - |
-| WRK-048 | Blender working configurations for digitalmodel | pending | low | medium | ace-linux-2 | codex | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-049 | Determine dynacard module way forward | archived | medium | medium | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-050 | Hardware consolidation \u2014 inventory, assess, repurpose devices + dev environment\ | pending | medium | complex | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | ██░ 85% | - | - |
-| WRK-051 | digitalmodel test coverage improvement | archived | high | complex | - | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-052 | assetutilities test coverage improvement | archived | high | complex | - | - | assetutilities | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-053 | assethold test coverage improvement | archived | medium | medium | - | - | assethold | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-054 | worldenergydata test coverage improvement | archived | medium | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-055 | aceengineer-website test coverage improvement | archived | low | simple | - | - | aceengineer-website | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-056 | aceengineer-admin test coverage improvement | archived | medium | medium | - | - | aceengineer-admin | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-057 | Define canonical spec.yml schema for diffraction analysis | archived | high | medium | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-058 | AQWA input backend — spec.yml to single .dat and modular deck files | archived | high | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-057 |
-| WRK-059 | OrcaWave input backend — spec.yml to single .yml and modular includes | archived | high | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-057 |
-| WRK-060 | Common mesh format and converter pipeline (BEMRosetta + GMSH) | archived | high | medium | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-061 | CLI and integration layer for spec converter | archived | medium | medium | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-058, WRK-059, WRK-060 |
-| WRK-062 | Test suite for spec converter using existing example data | archived | high | medium | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-057 |
-| WRK-063 | Reverse parsers — AQWA .dat and OrcaWave .yml to canonical spec.yml | archived | high | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-057 |
-| WRK-064 | OrcaFlex format converter: license-required validation and backward-compat | blocked | medium | medium | acma-ansys05 | codex | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-065 | S-lay pipeline installation schema + builders for PRPP Eclipse vessel | archived | high | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-066 | Review and improve digitalmodel module structure for discoverability | archived | high | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-067 | Acquire OSHA enforcement and fatality data | archived | high | simple | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-068 | Acquire BSEE incident investigations and INCs data | archived | high | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-069 | Acquire USCG MISLE bulk dataset | blocked | high | simple | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-070 | Import PHMSA pipeline data and build pipeline_safety module | archived | high | medium | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | archived | high | simple | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | archived | high | complex | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-073 | Market digitalmodel and worldenergydata capabilities on aceengineer website | archived | high | complex | - | - | aceengineer-website | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | archived | high | complex | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-075 | OFFPIPE Integration Module \u2014 pipelay cross-validation against OrcaFlex | pending | low | complex | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-076 | Add data collection scheduler/orchestrator for automated refresh pipelines | archived | medium | complex | - | codex | - | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | archived | high | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-078 | Create energy data case study — BSEE field economics with NPV/IRR workflow | archived | medium | medium | - | - | aceengineer-website | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-079 | Create marine safety case study — cross-database incident correlation | archived | medium | medium | - | - | aceengineer-website | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | WRK-074 |
-| WRK-082 | Complete LNG terminal data pipeline — from config to working collection | archived | medium | medium | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-083 | Validate multi-format export (Excel, PDF, Parquet) with real BSEE data | archived | medium | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-084 | Integrate metocean data sources into unified aggregation interface | archived | medium | complex | - | claude | - | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-086 | Rewrite CI workflows for Python/bash workspace | archived | medium | medium | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-087 | Improve test coverage across workspace repos | archived | high | complex | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-088 | Investigate and clean submodule issues (pdf-large-reader, worldenergydata, aceengineercode) | archived | low | simple | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-089 | Review Claude Code version gap and update cc-insights | archived | low | simple | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-090 | Identify and refactor large files exceeding 400-line limit | archived | medium | medium | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-091 | Add dynacard module README | archived | low | low | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-092 | Register dynacard CLI entry point | archived | low | low | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-093 | Improve dynacard AI diagnostics | archived | low | complex | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | - |
-| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | archived | high | complex | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-096 | Review and improve worldenergydata module structure for discoverability | archived | high | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | high | medium | - | - | workspace-hub, worldenergydata, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-098 | Clean up 7.1GB large data committed to worldenergydata git history | archived | high | high | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-099 | Run 3-way benchmark on Unit Box hull | pending | medium | medium | ace-linux-1 | claude | - | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | - | - |
-| WRK-100 | Run 3-way benchmark on Barge hull | archived | medium | medium | - | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | WRK-099 |
-| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | archived | medium | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-103 | Add heavy construction/installation vessel data to worldenergydata | archived | medium | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | archived | high | complex | - | - | worldenergydata | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-105 | Add drilling riser component data to worldenergydata | archived | medium | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | archived | high | simple | - | - | sabithaandkrishnaestates | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | archived | medium | medium | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | archived | medium | medium | - | - | workspace-hub, worldenergydata, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | archived | medium | complex | - | - | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-111 | BSEE field development interactive map and analytics | archived | medium | complex | - | claude | worldenergydata, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | archived | high | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | archived | medium | complex | - | - | digitalmodel, worldenergydata | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-115 | Link RAO data to hull shapes in hull library catalog | archived | medium | medium | - | - | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | archived | medium | medium | - | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | archived | medium | complex | - | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working | medium | complex | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ░░░ 40% | n/a | - |
-| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex | - | - | workspace-hub, worldenergydata, digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-120 | Research and purchase a smart watch | archived | low | simple | - | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | working | high | medium | orcaflex-license-machine | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium | - | - | acma-projects, assetutilities | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-124 | Session 20260211_095832 — 1 file(s) created | archived | medium | low | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-125 | OrcaFlex module roadmap \u2014 evolving coordination and progress tracking | working | high | low | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - 10% | - | - |
-| WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex | ace-linux-1 | claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ██░ 75% | - | - |
-| WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | high | medium | - | - | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | WRK-121 |
-| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | working | high | complex | - | codex | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | archived | high | complex | - | codex | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-130 | Standardize analysis reporting for each OrcaWave structure type | blocked | high | complex | acma-ansys05 | codex | - | - | ❌ | ✅ | ✅ | ❌ | - | - | - |
-| WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | high | complex | orcaflex-license-machine | claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | █░░ 60% | - | - |
-| WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | archived | high | medium | - | codex+claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | blocked | high | medium | acma-ansys05 | claude | - | - | ❌ | ❌ | ✅ | ❌ | - | n/a | - |
-| WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | medium | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | medium | - | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex | ace-linux-1 | gemini | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | complex | - | - | digitalmodel | asset_integrity | ❌ | ✅ | ✅ | ✅ | ░░░ 40% | ✅ updated | - |
-| WRK-139 | Develop gmsh skill and documentation | archived | medium | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | complex | - | - | workspace-hub | agents | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | ace-linux-2 | codex | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 85% | - | - |
-| WRK-142 | Review work accomplishments and draft Anthropic outreach message | archived | high | medium | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | medium | complex | - | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | - | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | ace-linux-1 | claude | aceengineer-website, aceengineer-strategy, workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ░░░ 35% | n/a | - |
-| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | pending | high | complex | ace-linux-1 | codex+claude,gemini | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | █░░ 70% | n/a | - |
-| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | archived | medium | medium | - | codex | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | archived | high | medium | - | codex | worldenergydata | marine_safety | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-153 | Energy data case study — BSEE field economics with NPV/IRR workflow | archived | medium | medium | - | claude | aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-154 | CI workflow rewrite — fix 2 GitHub Actions workflows | archived | high | medium | - | codex | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | archived | high | complex | - | claude | digitalmodel | structural | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-157 | Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps | archived | high | complex | - | claude | digitalmodel | fatigue | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-158 | Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material | archived | medium | medium | - | claude | digitalmodel | structural | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-159 | Three-way design code comparison report — API RP 1111 vs RP 2RD vs STD 2RD | archived | medium | medium | - | claude | digitalmodel | structural | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | archived | medium | simple | - | claude | worldenergydata | hse | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-161 | BSEE Excel statistics re-download and URL importer verification | archived | medium | simple | - | claude | worldenergydata | hse | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-162 | Untitled | pending | medium | medium | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-163 | Well planning risk empowerment framework | archived | medium | complex | - | claude | worldenergydata, digitalmodel | risk_assessment | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-164 | Well production test data quality and nodal analysis foundation | archived | high | complex | - | claude | worldenergydata, digitalmodel | production_engineering | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-167 | Calendar: Krishna ADHD evaluation — 24 Feb 2:30 PM | archived | high | simple | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-168 | MPD systems knowledge module — pressure management for drillships | archived | high | complex | - | claude | worldenergydata, digitalmodel | drilling_pressure_management | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-170 | Integrate MET-OM/metocean-stats as statistical analysis engine for metocean module | archived | medium | complex | - | claude | worldenergydata, digitalmodel | metocean | ❌ | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-171 | Cost data calibration — sanctioned project benchmarking & multivariate cost prediction | pending | medium | complex | ace-linux-1 | claude | worldenergydata | cost | ❌ | ✅ | ❌ | ❌ | ██░ 80% | n/a | - |
-| WRK-172 | AI agent usage tracking \u2014 real-time quota display, OAuth API, session\ | archived | high | medium | - | claude | - | ai-tools | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-177 | Stop Hook: Engineering Calculation Audit Trail | archived | high | medium | - | claude+codex | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-178 | Stop Hook: Data Provenance Snapshot | archived | medium | medium | - | codex | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-179 | Start Hook: Agent Capacity Pre-flight | archived | medium | low | - | codex | - | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | - | - |
-| WRK-180 | Stop Hook: Cross-Agent Learning Sync | pending | low | high | ace-linux-1 | claude+gemini | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-181 | Session Replay & Time Travel | pending | low | high | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - 10% | - | - |
-| WRK-182 | Predictive Session Planning | pending | low | high | ace-linux-1 | claude+gemini | - | - | ❌ | ✅ | ❌ | ❌ | █░░ 60% | - | - |
-| WRK-184 | Improve /improve \u2014 Bug fixes, recommendations output, startup readiness | archived | high | medium | - | claude | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-185 | Ecosystem Truth Review: instruction/skills/work-item centralization | archived | high | medium | - | codex+claude | workspace-hub, digitalmodel, worldenergydata | governance | ❌ | ✅ | ✅ | ❌ | ███ 100% | n/a | - |
-| WRK-186 | Context budget: trim rules/ to under 16KB | archived | high | simple | - | claude | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-187 | Improve /improve: usage-based skill health, classify retry, apply API content | archived | medium | medium | - | claude | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-188 | Wave-1 spec migration: worldenergydata dry-run manifest and apply plan | archived | high | medium | - | codex+claude | workspace-hub, worldenergydata | governance | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-190 | NCS production data module — NPD/Sodir open data integration (worldenergydata) | archived | medium | moderate | - | codex | worldenergydata | ncs | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-193 | UKCS production data module — NSTA/OPRED open data integration (worldenergydata) | archived | low | moderate | - | codex | worldenergydata | ukcs | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-194 | Brazil ANP production data module — well-level monthly CSV integration (worldenergydata) | archived | high | moderate | - | codex | worldenergydata | brazil_anp | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-195 | EIA US production data module — non-GoM onshore + Alaska integration (worldenergydata) | archived | medium | moderate | - | codex | worldenergydata | eia_us | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-196 | Canada offshore + emerging basin watch list (C-NLOER NL data; Guyana/Suriname/Namibia/Falklands monitor) | archived | low | moderate | - | codex | worldenergydata, digitalmodel | canada_offshore + emerging_basins | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-190 |
-| WRK-200 | Filesystem naming cleanup — eliminate duplicate/conflicting dirs across workspace-hub, digitalmodel, worldenergydata | archived | high | complex | - | claude | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-201 | Work queue workflow gate enforcement — plan_reviewed, Route C spec, pre-move checks | archived | high | medium | - | claude | workspace-hub | work-queue | ❌ | ❌ | ❌ | ❌ | ███ 100% | ⏳ pending | - |
-| WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/, tests/ | archived | medium | complex | - | claude | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-205 | Skills knowledge graph — capability metadata and relationship layer beyond flat index | archived | medium | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-206 | Asset integrity / fitness-for-service (FFS) engineering skill — corrosion damage assessment and run-repair-replace decisions | archived | medium | medium | - | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-207 | fix(ai): align weekly quota reporting with authoritative Claude source | pending | medium | medium | - | codex+claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 75% | - | - |
-| WRK-207 | Skill relationship maintenance — bidirectional linking as enforced process | archived | medium | small | - | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-207 | Wire model-tier routing into work queue plan.sh and execute.sh — Sonnet 4.6 default, Opus 4.6 for Route C plan only | archived | medium | simple | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-208 | Untitled | pending | medium | medium | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-208 | Cross-platform encoding guard — pre-commit + post-pull encoding validation | archived | high | simple | - | claude | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-209 | uv enforcement across workspace — eliminate python3/python fallback chains | archived | medium | medium | - | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-210 | Interoperability skill — cross-OS standards and health checks for workspace-hub | archived | medium | small | - | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-211 | Ecosystem health check skill — parallel agent for session and repo-sync workflows | archived | medium | medium | - | claude | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-212 | Agent teams protocol skill — orchestrator routing, subagent patterns, team lifecycle | archived | medium | medium | - | claude | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-213 | Codex multi-agent roles — assess native role system vs workspace-hub agent skill approach | archived | medium | medium | - | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-214 | Session lifecycle compliance — interview-driven review of all workflow scaffolding | archived | high | medium | - | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-215 | Graph-aware skill discovery and enhancement — extend /improve with proactive gap analysis | archived | medium | simple | - | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | WRK-205 |
-| WRK-216 | Subagent learning capture — emit signals to pending-reviews before task completion | archived | medium | simple | - | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-217 | Update ecosystem-health-check.sh — remove stale skill count threshold | archived | medium | simple | - | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | medium | complex | - | claude+gemini | digitalmodel, worldenergydata | well_design | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | ace-linux-1 | gemini+claude | worldenergydata, digitalmodel | drilling_economics | ❌ | ❌ | ❌ | ❌ | ██░ 90% | n/a | - |
-| WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | complex | - | claude+gemini | worldenergydata, digitalmodel, aceengineer-website | decommissioning_analytics | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-222 | Pre-clear session snapshot — /save skill + save-snapshot.sh script | archived | medium | low | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | - | - |
-| WRK-223 | Workstations registry — hardware inventory, hardware-info.sh, ace-linux-1 specs | archived | medium | low | - | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | archived | medium | low | - | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | archived | medium | medium | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | archived | high | medium | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | pending | medium | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | archived | high | medium | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | working | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | archived | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-230 | Untitled | pending | medium | medium | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | archived | high | medium | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | high | medium | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | high | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | WRK-231 |
-| WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | archived | high | medium | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-231 |
-| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | high | complex | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 90% | n/a | - |
-| WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | working | high | complex | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 80% | n/a | - |
-| WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | high | medium | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | high | simple | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | archived | high | medium | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-242 | Multi-format export as automatic pipeline output stage | archived | high | medium | - | - | worldenergydata, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | archived | high | medium | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | archived | high | simple | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | archived | high | medium | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-246 | LNG terminal dataset — queryable module and aceengineer website data card | archived | medium | medium | - | - | worldenergydata, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | archived | medium | simple | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-248 | PHMSA pipeline safety case study — aceengineer website with data-to-assessment workflow | archived | medium | medium | - | - | aceengineer-website, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-249 | ENIGMA safety analysis skill — register as agent-callable capability | archived | medium | medium | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-250 | Cross-database marine safety case study — MAIB, IMO, EMSA, TSB correlation analysis | archived | medium | medium | - | - | worldenergydata, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-252 | worldenergydata module discoverability review — regenerate after new data source modules | archived | medium | simple | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | archived | medium | simple | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | medium | complex | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ██░ 95% | n/a | - |
-| WRK-258 | Close WRK-153 as superseded — defer BSEE case study rebuild to after WRK-019 and WRK-171 | archived | low | simple | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | pending | medium | medium | ace-linux-1 | claude | aceengineer-website, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-019, WRK-171 |
-| WRK-259 | common.units — global unit conversion registry for cross-basin analysis | archived | high | medium | - | claude | worldenergydata | common.units | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-260 | Cross-regional production data query interface — unified layer across all 8 basins | archived | high | moderate | - | claude | worldenergydata | production.unified | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | pending | medium | medium | ace-linux-1 | claude | aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-019, WRK-171 |
-| WRK-265 | Wire CrossDatabaseAnalyzer to live MAIB/IMO/EMSA/TSB importers | archived | high | medium | - | claude | worldenergydata | marine_safety | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | archived | medium | medium | - | claude | worldenergydata | decommissioning | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | archived | medium | medium | - | claude | worldenergydata | well_planning | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | archived | medium | medium | - | claude | worldenergydata | safety_analysis | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | archived | high | medium | - | gemini+claude | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | archived | medium | simple | - | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | archived | medium | medium | - | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-276, WRK-279 |
-| WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | archived | medium | complex | - | claude+codex | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | archived | medium | simple | - | gemini+claude | saipem | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | archived | medium | simple | - | gemini+claude | acma-projects | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | archived | high | medium | - | claude+gemini | digitalmodel, saipem, acma-projects | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | archived | medium | complex | - | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | high | simple | - | claude+codex | digitalmodel, saipem, acma-projects | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-276 |
-| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | working | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ██░ 90% | n/a | - |
-| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | archived | critical | medium | - | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | working | high | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | █░░ 70% | n/a | - |
-| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | archived | high | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | █░░ 70% | n/a | - |
-| WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | archived | high | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | archived | medium | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-285 | Write active WRK id to state file on working/ transition | archived | high | simple | - | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-287 | Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2 | archived | medium | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | working | medium | medium | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | archived | medium | medium | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-294 | Standardize ace-linux-2 mount paths — fstab entries for HDDs with clean paths | pending | high | simple | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ██░ 80% | n/a | - |
-| WRK-297 | SSHFS mounts on ace-linux-1 for ace-linux-2 drives — bidirectional file access | pending | high | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | n/a | WRK-294 |
-| WRK-299 | comprehensive-learning skill — single batch command for all session learning + ecosystem improvement | archived | high | medium | - | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-300 | workstations skill — evolve from registry to multi-machine work distribution | archived | medium | medium | - | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-303 | Ensemble planning — 3×Claude + 3×Codex + 3×Gemini independent agents for non-deterministic plan diversity | archived | medium | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | ⏳ pending | - |
-| WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | archived | high | medium | - | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | ⏳ pending | - |
-| WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | medium | - | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | █░░ 60% | n/a | - |
-| WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | archived | high | low | - | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | high | medium | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | medium | ace-linux-2 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ❌ | ██░ 85% | n/a | - |
-| WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | ⏳ pending | - |
-| WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 95% | n/a | - |
-| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | archived | medium | medium | ace-linux-1 | - | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | archived | medium | high | ace-linux-1 | - | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-357 |
-| WRK-359 | Design and build vessel marine-parameters database for engineering analysis | archived | medium | high | ace-linux-1 | - | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-358 |
-| WRK-360 | Extract contractor contact data + build offshore contractor BD call list | archived | high | medium | ace-linux-1 | - | frontierdeepwater, aceengineer-admin | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | - | - | digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | medium | simple | - | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | medium | - | - | assethold | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | - | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-351 |
-| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | simple | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | archived | low | simple | - | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-370 | Heriberto: garage fence door repair | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | high | complex | ace-linux-2 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ██░ 90% | n/a | - |
-| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | medium | complex | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 80% | ✅ synced | - |
-| WRK-374 | Personal habit — get to the point immediately when asking leaders questions | archived | high | simple | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
-| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | archived | medium | medium | ace-linux-1 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | ✅ synced | - |
-| WRK-377 | ROP prediction model — Bourgoyne-Young and Warren in digitalmodel | archived | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | ⏳ pending | - |
-| WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending | medium | medium | ace-linux-2 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-416 | Untitled | pending | medium | medium | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | ⏳ pending | - |
-| WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ✅ | ❌ | ███ 100% | ⏳ pending | - |
-| WRK-473 | feat(hydrodynamics): integrate wavespectra library for spectral processing | pending | medium | simple | - | - | digitalmodel | hydrodynamics/wave_spectra | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-474 | feat(subsea): integrate MoorDyn + MoorPy for mooring analysis | pending | medium | moderate | - | - | digitalmodel | subsea/mooring_analysis | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending | medium | simple | - | - | digitalmodel | marine_ops/marine_analysis | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-476 | feat(worldenergydata): create ESG/Carbon Emissions module | pending | high | moderate | - | - | worldenergydata | esg_carbon | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | medium | simple | - | - | worldenergydata | safety_analysis/geohazard | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending | high | moderate | - | - | digitalmodel | subsea/cp_analysis | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | pending | medium | moderate | - | - | worldenergydata | sodir | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | medium | moderate | - | - | worldenergydata | metocean | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | - | - | digitalmodel | subsea | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-488 | feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-489 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-498 | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-499 | feat(digitalmodel/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-500 | feat(doris/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | high | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-501 | feat(digitalmodel/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-502 | feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-503 | feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-504 | feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-505 | feat(digitalmodel/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-506 | feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-507 | feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-508 | feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-509 | feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-510 | feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-511 | feat(digitalmodel/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-512 | feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | high | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-513 | feat(digitalmodel/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-514 | feat(doris/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-515 | feat(digitalmodel/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-516 | feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | high | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-517 | feat(digitalmodel/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-518 | feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-519 | feat(digitalmodel/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-520 | feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-521 | feat(digitalmodel/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-522 | feat(doris/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-523 | feat(digitalmodel/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-524 | feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-525 | feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-526 | feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-527 | feat(digitalmodel/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-528 | feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-529 | feat(digitalmodel/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-530 | feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-531 | feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-532 | feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-533 | feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-534 | feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-535 | feat(digitalmodel/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-536 | feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-537 | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-539 | feat(digitalmodel/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-540 | feat(OGManufacturing/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-541 | feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-542 | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-543 | feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-544 | feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-545 | feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-546 | feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | medium | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-547 | feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | high | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-548 | feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | high | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-549 | feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-550 | feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | medium | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-551 | feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-552 | feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | medium | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-553 | feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-555 | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | pending | high | medium | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-556 | feat(digitalmodel/marine): Implement API RP 2I — API RP 2I 3rd Ed (2008) In-service Inspection of M | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
-| WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | medium | large | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
-| WRK-574 | Remove digitalmodel setup.py (superseded by pyproject.toml) | pending | medium | simple | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-575 | Clean digitalmodel docs/modules/ stale content | pending | low | simple | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | medium | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | medium | simple | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | simple | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | simple | ace-linux-1, ace-linux-2 | - | worldenergydata, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending | low | simple | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-582 | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-583 | research: verify ANP Brazil production data REST API availability | pending | low | simple | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending | low | medium | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-585 | feat(worldenergydata): add IRENA offshore wind capacity data | pending | low | simple | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | simple | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | acma-ansys05 | - | workspace-hub, client_projects, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | acma-ansys05 | - | workspace-hub, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-593, WRK-594 |
-| WRK-597 | feat(digitalmodel): geotechnical module — umbrella tracker | pending | medium | complex | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-598 | feat(product): build engineering chatbot for oil & gas clients | pending | high | complex | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
-| WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | ace-linux-1 | - | digitalmodel, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | ace-linux-1 | - | digitalmodel, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | high | complex | ace-linux-2 | - | workspace-hub, CAD-DEVELOPMENTS | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | simple | ace-linux-2 | - | CAD-DEVELOPMENTS | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
-| WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata, assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-618 | feat(geotechnical): soil profile models, CPT correlation, shared types | pending | high | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-619 | feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves | pending | medium | complex | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
-| WRK-620 | feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109 | pending | medium | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
-| WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | pending | medium | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
-| WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | complex | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618, WRK-619 |
-| WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | low | medium | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
-| WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | pending | high | medium | ace-linux-1 | codex | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ░░░ 30% | n/a | - |
-| WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | high | medium | ace-linux-1 | codex | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-625 |
-| WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | high | complex | ace-linux-1 | claude | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-626 |
-| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | ace-linux-1 | claude | frontierdeepwater, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ░░░ 40% | complete | - |
-| WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal system prompts + knowledge base | pending | high | medium | ace-linux-1 | codex | TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | high | complex | ace-linux-1 | claude | TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-629 |
-| WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | ace-linux-1 | claude | frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-627, WRK-630 |
-| WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | ace-linux-1 | codex | frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | medium | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | medium | ace-linux-1, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | medium | small | ace-linux-1, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-635 |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-637 |
-| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
-| WRK-656 | fix(review): enforce orchestrator gate evidence contract | pending | high | complex | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| ID | Title | Status | Priority | Complexity | Computer | Plan WS | Exec WS | Provider | Repos | Module | Ensemble? | Plan? | Reviewed? | Approved? | % Done | Brochure | Blocked By |
+|-----|-------|--------|----------|------------|----------|---------|---------|----------|-------|--------|-----------|-------|-----------|-----------|--------|----------|------------|
+| WRK-001 | Repair sink faucet in powder room at 11511 Piping Rock | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-002 | Stove repair with factory service at 11511 Piping Rock | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-003 | Garage clean up | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-004 | Reorganize storage in upstairs bathroom at 11511 Piping Rock | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-005 | Clean up email using AI (when safe) | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-006 | Upload videos from iPhone to YouTube | blocked | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-007 | Upload videos from Doris computer to YouTube | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-008 | Upload photos from multiple devices to achantas-media | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-009 | Reproduce rev30 lower tertiary BSEE field results for repeatability | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-010 | Rerun lower tertiary analysis with latest BSEE data and validate | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | WRK-009 |
+| WRK-011 | Run BSEE analysis for all leases with field nicknames and geological era grouping | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | WRK-010 |
+| WRK-012 | Audit HSE public data coverage and identify gaps | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-013 | HSE data analysis to identify typical mishaps by activity and subactivity | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-012 |
+| WRK-014 | HSE risk index — client-facing risk insights with risk scoring | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | WRK-013 |
+| WRK-015 | Metocean data extrapolation to target locations using GIS and nearest-source | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-016 | BSEE completion and intervention activity analysis for insights | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-017 | Streamline BSEE field data analysis pipeline — wellbore, casing, drilling, completions, interventions | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-018 | Extend BSEE field data pipeline to other regulatory sources (RRC, Norway, Mexico, | archived | low | complex | - | ace-linux-1 | ace-linux-1 | claude+gemini | - | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | - | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | - | - |
+| WRK-023 | Property GIS development timeline with future projection and Google Earth animation | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | ██░ 85% | - | - |
+| WRK-024 | Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872 | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-025 | AQWA diffraction analysis runner | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | - |
+| WRK-026 | Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta) | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-027 | AQWA batch analysis execution | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | WRK-025 |
+| WRK-028 | AQWA postprocessing - RAOs and verification | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | WRK-025 |
+| WRK-029 | OrcaWave diffraction analysis runner + file preparation | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-030 | OrcaWave batch analysis + postprocessing | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | ✅ synced | WRK-029 |
+| WRK-031 | Benchmark OrcaWave vs AQWA for 2-3 hulls | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | claude | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-032 | Modular OrcaFlex pipeline installation input with parametric campaign support | pending | medium | complex | acma-ansys05 | acma-ansys05 | acma-ansys05 | codex | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-033 | Develop OrcaFlex include-file modular skill for parametrised analysis input | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-034 | Develop OrcaWave modular file prep skill for parametrised analysis input | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-035 | Develop AQWA modular file prep skill for parametrised analysis input | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-036 | OrcaFlex structure deployment analysis - supply boat side deployment with structural | pending | low | complex | acma-ansys05 | acma-ansys05 | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-037 | Get OrcaFlex framework of agreement and terms | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | aceengineer-admin | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-038 | Compile global LNG terminal project dataset with comprehensive parameters | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | gemini | worldenergydata | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | - | - |
+| WRK-039 | SPM project benchmarking - AQWA vs OrcaFlex | pending | medium | complex | acma-ansys05 | acma-ansys05 | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-040 | Mooring benchmarking - AQWA vs OrcaFlex | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-043 | Parametric hull form analysis with RAO generation and client-facing lookup | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | █░░ 70% | - | - |
+| WRK-044 | Pipeline wall thickness calculations with parametric utilisation analysis | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-045 | OrcaFlex rigid jumper analysis - stress and VIV for various configurations | pending | medium | complex | acma-ansys05 | acma-ansys05 | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-046 | OrcaFlex drilling and completion riser parametric analysis | pending | medium | complex | acma-ansys05 | acma-ansys05 | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-047 | OpenFOAM CFD analysis capability for digitalmodel | pending | low | complex | ace-linux-2 | ace-linux-2 | ace-linux-2 | claude | - | - | ❌ | ✅ | ✅ | ✅ | ██░ 85% | - | - |
+| WRK-048 | Blender working configurations for digitalmodel | pending | low | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | codex | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-049 | Determine dynacard module way forward | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-050 | Hardware consolidation \u2014 inventory, assess, repurpose devices + dev environment\ | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | ██░ 85% | - | - |
+| WRK-051 | digitalmodel test coverage improvement | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-052 | assetutilities test coverage improvement | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | assetutilities | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-053 | assethold test coverage improvement | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | assethold | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-054 | worldenergydata test coverage improvement | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-055 | aceengineer-website test coverage improvement | archived | low | simple | - | ace-linux-1 | ace-linux-1 | - | aceengineer-website | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-056 | aceengineer-admin test coverage improvement | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | aceengineer-admin | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-057 | Define canonical spec.yml schema for diffraction analysis | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-058 | AQWA input backend — spec.yml to single .dat and modular deck files | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-057 |
+| WRK-059 | OrcaWave input backend — spec.yml to single .yml and modular includes | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-057 |
+| WRK-060 | Common mesh format and converter pipeline (BEMRosetta + GMSH) | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-061 | CLI and integration layer for spec converter | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-058, WRK-059, WRK-060 |
+| WRK-062 | Test suite for spec converter using existing example data | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-057 |
+| WRK-063 | Reverse parsers — AQWA .dat and OrcaWave .yml to canonical spec.yml | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-057 |
+| WRK-064 | OrcaFlex format converter: license-required validation and backward-compat | blocked | medium | medium | acma-ansys05 | acma-ansys05 | acma-ansys05 | codex | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-065 | S-lay pipeline installation schema + builders for PRPP Eclipse vessel | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-066 | Review and improve digitalmodel module structure for discoverability | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-067 | Acquire OSHA enforcement and fatality data | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-068 | Acquire BSEE incident investigations and INCs data | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-069 | Acquire USCG MISLE bulk dataset | blocked | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-070 | Import PHMSA pipeline data and build pipeline_safety module | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-071 | Acquire NTSB CAROL marine investigations and EPA TRI data | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-072 | Technical safety analysis module for worldenergydata using ENIGMA theory | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-073 | Market digitalmodel and worldenergydata capabilities on aceengineer website | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | aceengineer-website | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-074 | Complete marine safety database importers (MAIB, IMO, EMSA, TSB) | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-075 | OFFPIPE Integration Module \u2014 pipelay cross-validation against OrcaFlex | pending | low | complex | acma-ansys05 | acma-ansys05 | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-076 | Add data collection scheduler/orchestrator for automated refresh pipelines | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | codex | - | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-077 | Validate and wire decline curve modeling into BSEE production workflow | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-078 | Create energy data case study — BSEE field economics with NPV/IRR workflow | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | aceengineer-website | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-079 | Create marine safety case study — cross-database incident correlation | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | aceengineer-website | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | WRK-074 |
+| WRK-082 | Complete LNG terminal data pipeline — from config to working collection | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-083 | Validate multi-format export (Excel, PDF, Parquet) with real BSEE data | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-084 | Integrate metocean data sources into unified aggregation interface | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-086 | Rewrite CI workflows for Python/bash workspace | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-087 | Improve test coverage across workspace repos | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-088 | Investigate and clean submodule issues (pdf-large-reader, worldenergydata, aceengineercode) | archived | low | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-089 | Review Claude Code version gap and update cc-insights | archived | low | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-090 | Identify and refactor large files exceeding 400-line limit | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-091 | Add dynacard module README | archived | low | low | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-092 | Register dynacard CLI entry point | archived | low | low | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-093 | Improve dynacard AI diagnostics | archived | low | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | ✅ synced | - |
+| WRK-094 | Plan, reassess, and improve the workspace-hub workflow | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-096 | Review and improve worldenergydata module structure for discoverability | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-097 | Implement three-tier data residence strategy (worldenergydata ↔ digitalmodel) | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub, worldenergydata, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-098 | Clean up 7.1GB large data committed to worldenergydata git history | archived | high | high | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-099 | Run 3-way benchmark on Unit Box hull | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | - | - |
+| WRK-100 | Run 3-way benchmark on Barge hull | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | WRK-099 |
+| WRK-102 | Add generic hull definition/data for all rigs in worldenergydata | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-103 | Add heavy construction/installation vessel data to worldenergydata | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-104 | Expand drilling rig fleet dataset to all offshore and onshore rigs | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-105 | Add drilling riser component data to worldenergydata | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-107 | Clarify Family Dollar 1099-MISC rent amount discrepancy ($50,085.60) | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | sabithaandkrishnaestates | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-108 | Agent usage credits display — show remaining quota at session start for weekly planning | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-109 | Review, refine, and curate hooks + skills — research best practices from existing workflows | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub, worldenergydata, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-110 | Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-111 | BSEE field development interactive map and analytics | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-113 | Maintain always-current data index with freshness tracking and source metadata | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-114 | Collect hull panel shapes and sizes for various floating bodies from existing sources | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel, worldenergydata | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-115 | Link RAO data to hull shapes in hull library catalog | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-116 | Scale hull panel meshes to target principal dimensions for hydrodynamic analysis | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-117 | Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ░░░ 40% | n/a | - |
+| WRK-119 | Test suite optimization — tiered test profiles for commit, task, and session workflows | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | workspace-hub, worldenergydata, digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-120 | Research and purchase a smart watch | archived | low | simple | - | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-121 | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | working | high | medium | orcaflex-license-machine | orcaflex-license-machine | orcaflex-license-machine | claude | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | acma-projects, assetutilities | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-124 | Session 20260211_095832 — 1 file(s) created | archived | medium | low | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-125 | OrcaFlex module roadmap \u2014 evolving coordination and progress tracking | working | high | low | acma-ansys05 | acma-ansys05 | acma-ansys05 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - 10% | - | - |
+| WRK-126 | Benchmark all example models across time domain and frequency domain with seed equivalence | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ██░ 75% | - | - |
+| WRK-127 | Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | WRK-121 |
+| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | working | high | complex | - | ace-linux-1 | ace-linux-1 | codex | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | archived | high | complex | - | ace-linux-1 | ace-linux-1 | codex | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-130 | Standardize analysis reporting for each OrcaWave structure type | blocked | high | complex | acma-ansys05 | acma-ansys05 | acma-ansys05 | codex | - | - | ❌ | ✅ | ✅ | ❌ | - | - | - |
+| WRK-131 | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | working | high | complex | orcaflex-license-machine | orcaflex-license-machine | orcaflex-license-machine | claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | █░░ 60% | - | - |
+| WRK-132 | Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison | archived | high | medium | - | ace-linux-1 | ace-linux-1 | codex+claude | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | blocked | high | medium | acma-ansys05 | acma-ansys05 | acma-ansys05 | claude | - | - | ❌ | ❌ | ✅ | ❌ | - | n/a | - |
+| WRK-134 | Add future-work brainstorming step before archiving completed items | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-135 | Ingest XLS historical rig fleet data (163 deepwater rigs) | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-137 | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending | low | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-138 | Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | asset_integrity | ❌ | ✅ | ✅ | ✅ | ░░░ 40% | ✅ updated | - |
+| WRK-139 | Develop gmsh skill and documentation | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-139 | Unified multi-agent orchestration architecture (Claude/Codex/Gemini) | archived | high | complex | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | agents | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-140 | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending | medium | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | codex | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 85% | - | - |
+| WRK-142 | Review work accomplishments and draft Anthropic outreach message | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-143 | Full symmetric M-T envelope — closed polygon lens shapes | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-144 | API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-145 | Design code versioning — handle changing revisions of standards | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-148 | ACE-GTM: A&CE Go-to-Market strategy stream | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | aceengineer-website, aceengineer-strategy, workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ░░░ 35% | n/a | - |
+| WRK-149 | digitalmodel test coverage improvement (re-creates WRK-051) | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex+claude,gemini | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | █░░ 70% | n/a | - |
+| WRK-151 | worldenergydata test coverage improvement (re-creates WRK-054) | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | codex | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-152 | Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data | archived | high | medium | - | ace-linux-1 | ace-linux-1 | codex | worldenergydata | marine_safety | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-153 | Energy data case study — BSEE field economics with NPV/IRR workflow | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-154 | CI workflow rewrite — fix 2 GitHub Actions workflows | archived | high | medium | - | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-155 | DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods | archived | high | complex | - | ace-linux-1 | ace-linux-1 | claude | digitalmodel | structural | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-157 | Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps | archived | high | complex | - | ace-linux-1 | ace-linux-1 | claude | digitalmodel | fatigue | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-158 | Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | digitalmodel | structural | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-159 | Three-way design code comparison report — API RP 1111 vs RP 2RD vs STD 2RD | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | digitalmodel | structural | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-160 | OSHA severe injury + fatality data completion and severity mapping fix | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata | hse | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-161 | BSEE Excel statistics re-download and URL importer verification | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata | hse | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-162 | Untitled | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-163 | Well planning risk empowerment framework | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata, digitalmodel | risk_assessment | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-164 | Well production test data quality and nodal analysis foundation | archived | high | complex | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata, digitalmodel | production_engineering | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-167 | Calendar: Krishna ADHD evaluation — 24 Feb 2:30 PM | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-168 | MPD systems knowledge module — pressure management for drillships | archived | high | complex | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata, digitalmodel | drilling_pressure_management | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-170 | Integrate MET-OM/metocean-stats as statistical analysis engine for metocean module | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata, digitalmodel | metocean | ❌ | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-171 | Cost data calibration — sanctioned project benchmarking & multivariate cost prediction | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | worldenergydata | cost | ❌ | ✅ | ❌ | ❌ | ██░ 80% | n/a | - |
+| WRK-172 | AI agent usage tracking \u2014 real-time quota display, OAuth API, session\ | archived | high | medium | - | ace-linux-1 | ace-linux-1 | claude | - | ai-tools | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-177 | Stop Hook: Engineering Calculation Audit Trail | archived | high | medium | - | ace-linux-1 | ace-linux-1 | claude+codex | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-178 | Stop Hook: Data Provenance Snapshot | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | codex | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-179 | Start Hook: Agent Capacity Pre-flight | archived | medium | low | - | ace-linux-1 | ace-linux-1 | codex | - | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | - | - |
+| WRK-180 | Stop Hook: Cross-Agent Learning Sync | pending | low | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude+gemini | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-181 | Session Replay & Time Travel | pending | low | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ❌ | ❌ | - 10% | - | - |
+| WRK-182 | Predictive Session Planning | pending | low | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude+gemini | - | - | ❌ | ✅ | ❌ | ❌ | █░░ 60% | - | - |
+| WRK-184 | Improve /improve \u2014 Bug fixes, recommendations output, startup readiness | archived | high | medium | - | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-185 | Ecosystem Truth Review: instruction/skills/work-item centralization | archived | high | medium | - | ace-linux-1 | ace-linux-1 | codex+claude | workspace-hub, digitalmodel, worldenergydata | governance | ❌ | ✅ | ✅ | ❌ | ███ 100% | n/a | - |
+| WRK-186 | Context budget: trim rules/ to under 16KB | archived | high | simple | - | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-187 | Improve /improve: usage-based skill health, classify retry, apply API content | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-188 | Wave-1 spec migration: worldenergydata dry-run manifest and apply plan | archived | high | medium | - | ace-linux-1 | ace-linux-1 | codex+claude | workspace-hub, worldenergydata | governance | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-190 | NCS production data module — NPD/Sodir open data integration (worldenergydata) | archived | medium | moderate | - | ace-linux-1 | ace-linux-1 | codex | worldenergydata | ncs | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-193 | UKCS production data module — NSTA/OPRED open data integration (worldenergydata) | archived | low | moderate | - | ace-linux-1 | ace-linux-1 | codex | worldenergydata | ukcs | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-194 | Brazil ANP production data module — well-level monthly CSV integration (worldenergydata) | archived | high | moderate | - | ace-linux-1 | ace-linux-1 | codex | worldenergydata | brazil_anp | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-195 | EIA US production data module — non-GoM onshore + Alaska integration (worldenergydata) | archived | medium | moderate | - | ace-linux-1 | ace-linux-1 | codex | worldenergydata | eia_us | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-196 | Canada offshore + emerging basin watch list (C-NLOER NL data; Guyana/Suriname/Namibia/Falklands monitor) | archived | low | moderate | - | ace-linux-1 | ace-linux-1 | codex | worldenergydata, digitalmodel | canada_offshore + emerging_basins | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | WRK-190 |
+| WRK-200 | Filesystem naming cleanup — eliminate duplicate/conflicting dirs across workspace-hub, digitalmodel, worldenergydata | archived | high | complex | - | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-201 | Work queue workflow gate enforcement — plan_reviewed, Route C spec, pre-move checks | archived | high | medium | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | work-queue | ❌ | ❌ | ❌ | ❌ | ███ 100% | ⏳ pending | - |
+| WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/, tests/ | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | claude | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-205 | Skills knowledge graph — capability metadata and relationship layer beyond flat index | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-206 | Asset integrity / fitness-for-service (FFS) engineering skill — corrosion damage assessment and run-repair-replace decisions | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-207 | fix(ai): align weekly quota reporting with authoritative Claude source | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | codex+claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 75% | - | - |
+| WRK-207 | Skill relationship maintenance — bidirectional linking as enforced process | archived | medium | small | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-207 | Wire model-tier routing into work queue plan.sh and execute.sh — Sonnet 4.6 default, Opus 4.6 for Route C plan only | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-208 | Untitled | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-208 | Cross-platform encoding guard — pre-commit + post-pull encoding validation | archived | high | simple | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-209 | uv enforcement across workspace — eliminate python3/python fallback chains | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-210 | Interoperability skill — cross-OS standards and health checks for workspace-hub | archived | medium | small | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-211 | Ecosystem health check skill — parallel agent for session and repo-sync workflows | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-212 | Agent teams protocol skill — orchestrator routing, subagent patterns, team lifecycle | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-213 | Codex multi-agent roles — assess native role system vs workspace-hub agent skill approach | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-214 | Session lifecycle compliance — interview-driven review of all workflow scaffolding | archived | high | medium | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-215 | Graph-aware skill discovery and enhancement — extend /improve with proactive gap analysis | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | WRK-205 |
+| WRK-216 | Subagent learning capture — emit signals to pending-reviews before task completion | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-217 | Update ecosystem-health-check.sh — remove stale skill count threshold | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | claude+gemini | digitalmodel, worldenergydata | well_design | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini+claude | worldenergydata, digitalmodel | drilling_economics | ❌ | ❌ | ❌ | ❌ | ██░ 90% | n/a | - |
+| WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | claude+gemini | worldenergydata, digitalmodel, aceengineer-website | decommissioning_analytics | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-222 | Pre-clear session snapshot — /save skill + save-snapshot.sh script | archived | medium | low | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | - | - |
+| WRK-223 | Workstations registry — hardware inventory, hardware-info.sh, ace-linux-1 specs | archived | medium | low | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-224 | Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue | archived | medium | low | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-225 | Investigate plugins vs skills trade-off for repo ecosystem | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-226 | Audit and improve agent performance files across Claude, Codex, and Gemini | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-228 | Orient all work items toward agentic AI future-boosting, not just task completion | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-230 | Untitled | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-230 | Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
+| WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | WRK-231 |
+| WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-231 |
+| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 90% | n/a | - |
+| WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 80% | n/a | - |
+| WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-242 | Multi-format export as automatic pipeline output stage | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-243 | Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-244 | OrcaFlex template library skill — get canonical spec.yml by structure type | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-245 | Fatigue assessment skill — wrap full module with input schema and auto export | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-246 | LNG terminal dataset — queryable module and aceengineer website data card | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-247 | digitalmodel capability manifest — machine-readable module index for agent discovery | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-248 | PHMSA pipeline safety case study — aceengineer website with data-to-assessment workflow | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | aceengineer-website, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-249 | ENIGMA safety analysis skill — register as agent-callable capability | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-250 | Cross-database marine safety case study — MAIB, IMO, EMSA, TSB correlation analysis | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-252 | worldenergydata module discoverability review — regenerate after new data source modules | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-255 | Hull library lookup skill — closest-match hull form by target dimensions | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ✅ | ✅ | ██░ 95% | n/a | - |
+| WRK-258 | Close WRK-153 as superseded — defer BSEE case study rebuild to after WRK-019 and WRK-171 | archived | low | simple | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | aceengineer-website, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-019, WRK-171 |
+| WRK-259 | common.units — global unit conversion registry for cross-basin analysis | archived | high | medium | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata | common.units | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-260 | Cross-regional production data query interface — unified layer across all 8 basins | archived | high | moderate | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata | production.unified | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-261 | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-019, WRK-171 |
+| WRK-265 | Wire CrossDatabaseAnalyzer to live MAIB/IMO/EMSA/TSB importers | archived | high | medium | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata | marine_safety | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-266 | Calibrate decommissioning cost model against BSEE platform removal notices | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata | decommissioning | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-267 | Calibrate well planning risk probabilities against BSEE incident and HSE data | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata | well_planning | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-268 | Wire ENIGMA safety skill to real HSE incident database for data-driven scoring | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude | worldenergydata | safety_analysis | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-269 | CP standards research — inventory codes, map version gaps, define implementation scope | archived | high | medium | - | ace-linux-1 | ace-linux-1 | gemini+claude | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-271 | CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-276, WRK-279 |
+| WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | claude+codex | digitalmodel | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-274 | saipem repo content index — searchable catalog of disciplines, project files, and key docs | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | gemini+claude | saipem | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-275 | acma-projects repo content index — catalog projects, codes & standards, and key reference docs | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | gemini+claude | acma-projects | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-276 | Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests | archived | high | medium | - | ace-linux-1 | ace-linux-1 | claude+gemini | digitalmodel, saipem, acma-projects | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-277 | CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures | archived | medium | complex | - | ace-linux-1 | ace-linux-1 | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-278 | Wire legal-sanity-scan into pre-commit for CP-stream repos — activate deny list CI gate | archived | high | simple | - | ace-linux-1 | ace-linux-1 | claude+codex | digitalmodel, saipem, acma-projects | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-276 |
+| WRK-279 | Audit & govern the /mnt/ace/ Codex relocation plan | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ██░ 90% | n/a | - |
+| WRK-279 | Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas | archived | critical | medium | - | ace-linux-1 | ace-linux-1 | claude+codex | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | working | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | █░░ 70% | n/a | - |
+| WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | █░░ 70% | n/a | - |
+| WRK-282 | Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-283 | Navigation layer for 0_mrv/, Production/, umbilical/ legacy roots | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-285 | Write active WRK id to state file on working/ transition | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-287 | Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2 | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | working | medium | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-290 | Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta) | archived | medium | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-294 | Standardize ace-linux-2 mount paths — fstab entries for HDDs with clean paths | pending | high | simple | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ██░ 80% | n/a | - |
+| WRK-297 | SSHFS mounts on ace-linux-1 for ace-linux-2 drives — bidirectional file access | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | n/a | WRK-294 |
+| WRK-299 | comprehensive-learning skill — single batch command for all session learning + ecosystem improvement | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-300 | workstations skill — evolve from registry to multi-machine work distribution | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-303 | Ensemble planning — 3×Claude + 3×Codex + 3×Gemini independent agents for non-deterministic plan diversity | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | ⏳ pending | - |
+| WRK-307 | Fix KVM display loss on ace-linux-2 after switching — EDID emulator or config fix | archived | medium | simple | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-309 | chore: portable Python invocation — consistent cross-machine execution, zero error noise | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | ⏳ pending | - |
+| WRK-310 | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel, workspace-hub | - | ❌ | ❌ | ❌ | ❌ | █░░ 60% | n/a | - |
+| WRK-310 | Daily network-mount readiness check — SSHFS mounts always available on both machines | archived | high | low | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-311 | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending | high | medium | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-343 | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending | medium | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ✅ | ❌ | ██░ 85% | n/a | - |
+| WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-351 | Assign workstation to all pending/working/blocked WRK items + bake into planning workflow | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | ⏳ pending | - |
+| WRK-352 | Set up remote desktop access on ace-linux-2 | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 95% | n/a | - |
+| WRK-357 | Extract offshore vessel fleet data from Offshore Magazine survey PDFs | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-358 | Enrich vessel fleet data with online research — current fleet status + newer surveys | archived | medium | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-357 |
+| WRK-359 | Design and build vessel marine-parameters database for engineering analysis | archived | medium | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-358 |
+| WRK-360 | Extract contractor contact data + build offshore contractor BD call list | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | frontierdeepwater, aceengineer-admin | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-361 | Heriberto: powder room sink caulk for water drainage | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-364 | Delete Windows-path directory artifacts in digitalmodel and worldenergydata | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-365 | worldenergydata root cleanup — modules/, validators/, tests/agent_os/ | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | medium | - | ace-linux-1 | ace-linux-1 | - | assethold | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | assetutilities | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-351 |
+| WRK-368 | Create repo-structure skill — canonical source layout for all tier-1 repos | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-369 | Remove agent_os references from digitalmodel .claude/ infrastructure | archived | low | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-370 | Heriberto: garage fence door repair | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-371 | Heriberto: powder room faucet tightening | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | achantas-data | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-372 | AI-engineering software interface skills — map and build skills AI agents need to drive engineering programs | archived | high | complex | ace-linux-2 | ace-linux-2 | ace-linux-2 | claude | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ██░ 90% | n/a | - |
+| WRK-373 | Vision document — bridge current repo mission to autonomous-production future | archived | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 80% | ✅ synced | - |
+| WRK-374 | Personal habit — get to the point immediately when asking leaders questions | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
+| WRK-375 | Incorporate SPE Drillbotics mission into ACE Engineering vision and strategy | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, digitalmodel | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | ✅ synced | - |
+| WRK-377 | ROP prediction model — Bourgoyne-Young and Warren in digitalmodel | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | ⏳ pending | - |
+| WRK-389 | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending | medium | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-416 | Untitled | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | ⏳ pending | - |
+| WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | high | simple | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ✅ | ❌ | ███ 100% | ⏳ pending | - |
+| WRK-473 | feat(hydrodynamics): integrate wavespectra library for spectral processing | pending | medium | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | hydrodynamics/wave_spectra | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-474 | feat(subsea): integrate MoorDyn + MoorPy for mooring analysis | pending | medium | moderate | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | subsea/mooring_analysis | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending | medium | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | marine_ops/marine_analysis | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-476 | feat(worldenergydata): create ESG/Carbon Emissions module | pending | high | moderate | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | esg_carbon | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | medium | simple | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | safety_analysis/geohazard | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending | high | moderate | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | subsea/cp_analysis | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | pending | medium | moderate | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | sodir | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | medium | moderate | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | metocean | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | subsea | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-485 | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-486 | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-487 | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-488 | feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-489 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-490 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-492 | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-494 | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-496 | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-498 | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-499 | feat(digitalmodel/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-500 | feat(doris/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-501 | feat(digitalmodel/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-502 | feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-503 | feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-504 | feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-505 | feat(digitalmodel/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-506 | feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-507 | feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-508 | feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-509 | feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-510 | feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-511 | feat(digitalmodel/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-512 | feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-513 | feat(digitalmodel/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-514 | feat(doris/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-515 | feat(digitalmodel/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-516 | feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-517 | feat(digitalmodel/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-518 | feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-519 | feat(digitalmodel/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-520 | feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-521 | feat(digitalmodel/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-522 | feat(doris/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-523 | feat(digitalmodel/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-524 | feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-525 | feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-526 | feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-527 | feat(digitalmodel/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-528 | feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-529 | feat(digitalmodel/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-530 | feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-531 | feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-532 | feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-533 | feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-534 | feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-535 | feat(digitalmodel/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-536 | feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-537 | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-538 | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | doris | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-539 | feat(digitalmodel/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-540 | feat(OGManufacturing/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-541 | feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-542 | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-543 | feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-544 | feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-545 | feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-546 | feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-547 | feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | high | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-548 | feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending | high | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-549 | feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-550 | feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-551 | feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-552 | feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-553 | feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-554 | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending | medium | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-555 | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-556 | feat(digitalmodel/marine): Implement API RP 2I — API RP 2I 3rd Ed (2008) In-service Inspection of M | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-557 | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-558 | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-559 | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-570 | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending | high | large | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
+| WRK-571 | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending | medium | large | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-568 |
+| WRK-574 | Remove digitalmodel setup.py (superseded by pyproject.toml) | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-575 | Clean digitalmodel docs/modules/ stale content | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-577 | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-578 | feat(skills): audit MCP registry for engineering-domain servers | pending | medium | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-579 | feat(skills): install Semantic Scholar MCP server for literature search | pending | medium | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-580 | feat(worldenergydata): map open-access journal portfolio for engineering | pending | low | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | worldenergydata, workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-581 | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending | low | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-582 | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | pending | low | medium | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-583 | research: verify ANP Brazil production data REST API availability | pending | low | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending | low | medium | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-585 | feat(worldenergydata): add IRENA offshore wind capacity data | pending | low | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | simple | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-587 | research: evaluate Code_Aster for large-scale topside structural FEA | pending | low | medium | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-588 | research: evaluate OpenTURNS for fatigue reliability integration | pending | low | medium | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | acma-ansys05 | acma-ansys05 | acma-ansys05 | - | workspace-hub, client_projects, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | acma-ansys05 | acma-ansys05 | acma-ansys05 | - | workspace-hub, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | WRK-593, WRK-594 |
+| WRK-597 | feat(digitalmodel): geotechnical module — umbrella tracker | pending | medium | complex | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-598 | feat(product): build engineering chatbot for oil & gas clients | pending | high | complex | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-603 | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending | low | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | high | complex | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | workspace-hub, CAD-DEVELOPMENTS | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | simple | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | CAD-DEVELOPMENTS | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata, assetutilities | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-618 | feat(geotechnical): soil profile models, CPT correlation, shared types | pending | high | medium | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-619 | feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves | pending | medium | complex | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
+| WRK-620 | feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109 | pending | medium | medium | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
+| WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | pending | medium | medium | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
+| WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | complex | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618, WRK-619 |
+| WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | low | medium | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
+| WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ░░░ 30% | n/a | - |
+| WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-625 |
+| WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-626 |
+| WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | frontierdeepwater, aceengineer-website | - | ❌ | ❌ | ❌ | ❌ | ░░░ 40% | complete | - |
+| WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal system prompts + knowledge base | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-629 |
+| WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-627, WRK-630 |
+| WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | medium | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | medium | small | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-635 |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-637 |
+| WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
+| WRK-656 | fix(review): enforce orchestrator gate evidence contract | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-659 | analysis(digitalmodel): God Object decomposition plan — 6 files >1000L via Gemini large-context sweep | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | assetutilities | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -705,6 +712,12 @@
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | high | small | workspace-hub | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | low | medium | workspace-hub | - |
 | WRK-656 | fix(review): enforce orchestrator gate evidence contract | high | complex | workspace-hub | - |
+| WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | high | medium | workspace-hub | - |
+| WRK-659 | analysis(digitalmodel): God Object decomposition plan — 6 files >1000L via Gemini large-context sweep | high | medium | digitalmodel | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | high | medium | assetutilities | - |
+| WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | medium | medium | worldenergydata | - |
+| WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | medium | medium | digitalmodel | - |
+| WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | high | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -731,6 +744,7 @@
 | WRK-069 | Acquire USCG MISLE bulk dataset | high | simple | - | - |
 | WRK-130 | Standardize analysis reporting for each OrcaWave structure type | high | complex | - | - |
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | high | medium | - | - |
+| WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | high | complex | workspace-hub | - |
 
 ### Archived
 
@@ -1067,6 +1081,7 @@
 | WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | medium | - |
 
 ### client_projects
 
@@ -1232,6 +1247,8 @@
 | WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | pending | medium | medium | - |
 | WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | complex | - |
 | WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | low | medium | - |
+| WRK-659 | analysis(digitalmodel): God Object decomposition plan — 6 files >1000L via Gemini large-context sweep | pending | high | medium | - |
+| WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | medium | - |
 
 ### doris
 
@@ -1388,6 +1405,9 @@
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | - |
 | WRK-656 | fix(review): enforce orchestrator gate evidence contract | pending | high | complex | - |
+| WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | - |
+| WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | high | medium | - |
+| WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1474,6 +1494,7 @@
 | WRK-584 | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending | low | medium | - |
 | WRK-585 | feat(worldenergydata): add IRENA offshore wind capacity data | pending | low | simple | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
+| WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | medium | - |
 
 ## By Priority
 
@@ -1677,6 +1698,11 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | medium | workspace-hub | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | small | workspace-hub | - |
 | WRK-656 | fix(review): enforce orchestrator gate evidence contract | pending | complex | workspace-hub | - |
+| WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | medium | workspace-hub | - |
+| WRK-659 | analysis(digitalmodel): God Object decomposition plan — 6 files >1000L via Gemini large-context sweep | pending | medium | digitalmodel | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | medium | assetutilities | - |
+| WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | medium | workspace-hub | - |
+| WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | complex | workspace-hub | - |
 
 ### Medium
 
@@ -1859,6 +1885,8 @@
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | complex | frontierdeepwater, TBD-client2-repo | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | workspace-hub | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | small | workspace-hub | - |
+| WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | worldenergydata | - |
+| WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | digitalmodel | - |
 
 ### Low
 
@@ -2174,6 +2202,12 @@
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | workspace-hub | - |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | workspace-hub | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | workspace-hub | - |
+| WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | workspace-hub | - |
+| WRK-659 | analysis(digitalmodel): God Object decomposition plan — 6 files >1000L via Gemini large-context sweep | pending | high | digitalmodel | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | assetutilities | - |
+| WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | worldenergydata | - |
+| WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | digitalmodel | - |
+| WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | high | workspace-hub | - |
 
 ### Complex
 
@@ -2270,10 +2304,11 @@
 | WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | high | TBD-client2-repo | - |
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | frontierdeepwater, TBD-client2-repo | - |
 | WRK-656 | fix(review): enforce orchestrator gate evidence contract | pending | high | workspace-hub | - |
+| WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (131 active / 144 total)
+### ace-linux-1 (138 active / 151 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2420,6 +2455,13 @@
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | workspace-hub |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | workspace-hub |
 | WRK-656 | fix(review): enforce orchestrator gate evidence contract | pending | high | complex | workspace-hub |
+| WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | workspace-hub |
+| WRK-659 | analysis(digitalmodel): God Object decomposition plan — 6 files >1000L via Gemini large-context sweep | pending | high | medium | digitalmodel |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | medium | assetutilities |
+| WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | medium | worldenergydata |
+| WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | medium | digitalmodel |
+| WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | high | medium | workspace-hub |
+| WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)
@@ -2779,10 +2821,4 @@
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | WRK-635 | - | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | WRK-637 | - | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | WRK-638 | - | - |
-| WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | - | - | WRK-656 |
-| WRK-659 | analysis(digitalmodel): God Object decomposition plan — 6 files >1000L via Gemini large-context sweep | - | - | - |
-| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | - | - | WRK-350 |
-| WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | - | - | WRK-568 |
-| WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | - | - | - |
-| WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | - | - | - |
 
