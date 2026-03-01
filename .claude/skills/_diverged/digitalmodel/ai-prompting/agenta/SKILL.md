@@ -1095,15 +1095,15 @@ class ModelComparator:
     # Cost per 1K tokens (approximate)
     MODEL_COSTS = {
         "gpt-4": {"input": 0.03, "output": 0.06},
-        "gpt-4-turbo": {"input": 0.01, "output": 0.03},
-        "gpt-3.5-turbo": {"input": 0.0005, "output": 0.0015},
+        "gpt-4.1": {"input": 0.01, "output": 0.03},
+        "gpt-4.1-mini": {"input": 0.0005, "output": 0.0015},
         "claude-3-opus": {"input": 0.015, "output": 0.075},
         "claude-3-sonnet": {"input": 0.003, "output": 0.015},
         "claude-3-haiku": {"input": 0.00025, "output": 0.00125}
     }
 
     def __init__(self, models: List[str] = None):
-        self.models = models or ["gpt-4", "gpt-3.5-turbo"]
+        self.models = models or ["gpt-4", "gpt-4.1-mini"]
         self.results: Dict[str, List[ModelResult]] = {m: [] for m in self.models}
 
     def _estimate_cost(self, model: str, input_tokens: int, output_tokens: int) -> float:
@@ -1242,7 +1242,7 @@ class ModelComparator:
             return min(summary.keys(), key=lambda m: summary[m]["total_cost"])
         elif priority == "quality":
             # Assume larger models = better quality
-            quality_order = ["gpt-4", "claude-3-opus", "gpt-4-turbo", "claude-3-sonnet", "gpt-3.5-turbo"]
+            quality_order = ["gpt-4", "claude-3-opus", "gpt-4.1", "claude-3-sonnet", "gpt-4.1-mini"]
             for model in quality_order:
                 if model in summary:
                     return model
@@ -1265,7 +1265,7 @@ class ModelComparator:
 # Usage
 ag.init()
 
-comparator = ModelComparator(models=["gpt-4", "gpt-3.5-turbo"])
+comparator = ModelComparator(models=["gpt-4", "gpt-4.1-mini"])
 
 # Single comparison
 results = comparator.run_comparison("Explain quantum computing in simple terms")

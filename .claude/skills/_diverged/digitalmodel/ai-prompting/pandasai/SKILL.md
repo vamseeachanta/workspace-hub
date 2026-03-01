@@ -1846,7 +1846,7 @@ class CostAwarePandasAI:
     # Approximate costs per 1K tokens (adjust based on current pricing)
     COSTS = {
         "gpt-4": {"input": 0.03, "output": 0.06},
-        "gpt-3.5-turbo": {"input": 0.0015, "output": 0.002}
+        "gpt-4.1-mini": {"input": 0.0015, "output": 0.002}
     }
 
     def __init__(self, df: pd.DataFrame, model: str = "gpt-4", budget: float = 10.0):

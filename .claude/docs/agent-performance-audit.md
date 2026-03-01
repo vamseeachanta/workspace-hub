@@ -74,7 +74,7 @@ Evidence from hook log tool distribution and transcript content analysis:
 - Evidence: `.claude/settings.json` currently has `"MAX_TEAMMATES": "5"` (updated per recent commit `48aca5b`). CODEX.md has not been updated to reflect the new limit.
 
 **File: scripts/development/ai-workflow/auto-fix-loop.sh:178 and primary-claude.sh:180**
-- Content: hardcoded `claude-sonnet-4-20250514` (stale dated model ID)
+- Content: hardcoded `claude-sonnet-4-5-20250929` (stale dated model ID)
 - Evidence: model-registry.yaml maps this to `claude-sonnet-4-5-20250929` as replacement.
 
 **File: scripts/improve/lib/classify.sh:14**
@@ -82,10 +82,10 @@ Evidence from hook log tool distribution and transcript content analysis:
 - Status: The primary path reads from registry correctly; the fallback is stale.
 
 **File: scripts/development/ai-workflow/review-openai.sh:182**
-- Content: hardcoded `gpt-4o` (stale — registry has `gpt-4.1` as primary).
+- Content: hardcoded `gpt-4.1` (stale — registry has `gpt-4.1` as primary).
 
 **File: scripts/development/ai-workflow/test-runner.sh:309**
-- Content: hardcoded `gemini-2.0-flash` (stale — registry has `gemini-2.5-flash`).
+- Content: hardcoded `gemini-2.5-flash` (stale — registry has `gemini-2.5-flash`).
 
 **File: scripts/automation/agent_orchestrator.sh:129**
 - Content: hardcoded `claude-sonnet-4.5` (dot notation, likely a typo variant of stale ID).
@@ -202,7 +202,7 @@ CODEX.md and GEMINI.md carry only: Required Gates (WRK mapping, approval, cross-
 |---|---|---|
 | `config/agents/model-registry.yaml` age | CURRENT | `last_updated: 2026-02-18` (2 days ago, within 14-day threshold) |
 | `model-registry.yaml` version | v2.1.0 | Sonnet 4.6 as default, Opus 4.6 for Route C plan phase |
-| Hardcoded stale IDs in `.sh` files | FAIL | 5 scripts with stale IDs: `auto-fix-loop.sh`, `primary-claude.sh` (claude-sonnet-4-20250514), `review-openai.sh` (gpt-4o), `test-runner.sh` (gemini-2.0-flash), `agent_orchestrator.sh` (claude-sonnet-4.5) |
+| Hardcoded stale IDs in `.sh` files | FAIL | 5 scripts with stale IDs: `auto-fix-loop.sh`, `primary-claude.sh` (claude-sonnet-4-5-20250929), `review-openai.sh` (gpt-4.1), `test-runner.sh` (gemini-2.5-flash), `agent_orchestrator.sh` (claude-sonnet-4.5) |
 | Hardcoded stale IDs in `.py` files | 1 file | `scripts/data/og-standards/rag.py` — needs inspection |
 | `workflow-guards.sh` model map | OK | Lines 160-164: inline model name→ID map is manually maintained but matches registry |
 | `scripts/maintenance/update-model-ids.sh` | EXISTS, NOT SCHEDULED | Script exists and is functional; no cron entry found in `crontab.example` or any `.cron` file for this script |
@@ -291,7 +291,7 @@ Based on findings, the preflight hook (to run before every session response and 
 - Evidence: Currently undetected drift (3 vs 5)
 
 **Check 4: Model ID currency**
-- What it detects: Presence of known-stale model strings (`claude-sonnet-4-20250514`, `gpt-4o`, `gemini-2.0-flash`) in `scripts/` directory
+- What it detects: Presence of known-stale model strings (`claude-sonnet-4-5-20250929`, `gpt-4.1`, `gemini-2.5-flash`) in `scripts/` directory
 - Warning: `[R-MODEL] X stale model IDs found in scripts/ — run scripts/maintenance/update-model-ids.sh`
 - Evidence: 5 scripts currently contain stale IDs; `update-model-ids.sh` exists but is not scheduled
 

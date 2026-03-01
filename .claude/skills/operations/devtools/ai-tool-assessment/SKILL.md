@@ -70,7 +70,7 @@ Assess each tool category:
 
 **Primary AI Assistants:**
 - Claude Max: Code generation, complex reasoning, long-context tasks
-- OpenAI Plus: Alternative perspective, GPT-4o access, DALL-E
+- OpenAI Plus: Alternative perspective, GPT-4.1 access, DALL-E
 - Google AI Pro: Gemini access, Google ecosystem integration
 
 **Development Tools:**

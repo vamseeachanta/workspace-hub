@@ -97,7 +97,7 @@ See `/cross-review-policy` skill for full workflow.
 | **Claude/Sonnet** | Standard implementations | Ask before code, TDD mandatory |
 | **Claude/Opus** | Complex architecture | Deep analysis, multiple options |
 | **Claude/Haiku** | Quick tasks | Direct execution, minimal questions |
-| **OpenAI/GPT-4o** | Advanced reasoning | Check constraints, validate approach |
+| **OpenAI/GPT-4.1** | Advanced reasoning | Check constraints, validate approach |
 | **Gemini** | Specific domains | Requires Codex cross-review |
 | **Factory Droids** | Automation | Reference spec files, validate config |
 
