@@ -114,16 +114,19 @@ submit_review() {
 
   case "$reviewer" in
     claude)
+      local claude_exit=0
       if [[ -n "$COMMIT_SHA" ]]; then
-        "${SCRIPT_DIR}/submit-to-claude.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || {
-          echo "# Claude review failed" > "$result_file"
-          echo "# Fallback: manual review required" >> "$result_file"
-        }
+        "${SCRIPT_DIR}/submit-to-claude.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || claude_exit=$?
       else
-        "${SCRIPT_DIR}/submit-to-claude.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || {
-          echo "# Claude review failed" > "$result_file"
-          echo "# Fallback: manual review required" >> "$result_file"
-        }
+        "${SCRIPT_DIR}/submit-to-claude.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || claude_exit=$?
+      fi
+      if [[ "$claude_exit" -eq 124 ]]; then
+        # Watchdog timeout — preserve the WATCHDOG log before overwriting result_file
+        preserve_raw_result "$result_file"
+        echo "# Claude returned NO_OUTPUT (watchdog timeout)" > "$result_file"
+      elif [[ "$claude_exit" -ne 0 ]]; then
+        echo "# Claude review failed" > "$result_file"
+        echo "# Fallback: manual review required" >> "$result_file"
       fi
       local claude_status
       claude_status="$(classify_review_result "$result_file")"
