@@ -127,6 +127,19 @@ After `WRK-655`, a `Resource Intelligence` run for any WRK should:
 7. expose a knowledge map showing which skills and systems were used
 8. leave behind artifacts that a validator can check mechanically
 
+## First-Pass Implemented Paths
+
+- Canonical skill: `.claude/skills/workspace-hub/resource-intelligence/SKILL.md`
+- Source-registry reference: `.claude/skills/workspace-hub/resource-intelligence/references/source-registry.md`
+- Resource-pack scaffolder: `.claude/skills/workspace-hub/resource-intelligence/scripts/init-resource-pack.sh`
+- Resource-pack validator: `.claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh`
+- Maturity sync/check: `.claude/skills/workspace-hub/resource-intelligence/scripts/sync-maturity-summary.py`
+- Summary template: `.claude/skills/workspace-hub/resource-intelligence/templates/resource-intelligence-summary.md`
+- Mounted-source registry: `data/document-index/mounted-source-registry.yaml`
+- Maturity ledger: `data/document-index/resource-intelligence-maturity.yaml`
+- Maturity summary: `data/document-index/resource-intelligence-maturity.md`
+- Legal scan evidence: `.claude/work-queue/assets/WRK-655/legal-scan.md`
+
 ## Knowledge Map
 
 | Role | Skill / System | Purpose |
@@ -151,6 +164,16 @@ Before `agent-router` and `agent-usage-optimizer` are treated as authority for s
    - what remains user- or orchestrator-judgment
    - what evidence is required when overriding recommendations
 
+Selected first-pass decision:
+
+- use the interim-routing rule first
+- `agent-router` is advisory for agent fit
+- `agent-usage-optimizer` is advisory for quota/capacity
+- the orchestrator retains final routing authority during the first implementation pass
+- overrides or deviations should be recorded in WRK evidence when they materially affect execution
+
+This first-pass routing decision is adopted for `WRK-655`; it is no longer an open blocker for this item.
+
 ## Scope
 
 ### Phase 1: Skill Design and Contract Definition
@@ -158,7 +181,7 @@ Before `agent-router` and `agent-usage-optimizer` are treated as authority for s
 **Objective**: Define the canonical `Resource Intelligence` skill and the exact stage contract it implements.
 
 **Tasks**:
-- [ ] Decide whether to enhance an existing skill or create a new canonical `resource-intelligence` skill
+- [ ] Create a new canonical `resource-intelligence` skill under `.claude/skills/`
 - [ ] Define trigger conditions and invocation guidance
 - [ ] Define required artifact outputs and minimum section requirements
 - [ ] Define the visible knowledge map and role mapping
@@ -180,7 +203,7 @@ Before `agent-router` and `agent-usage-optimizer` are treated as authority for s
 **Objective**: Implement the skill and create reusable scaffolding for stage artifacts.
 
 **Tasks**:
-- [ ] Create or update the canonical skill under `.claude/skills/`
+- [x] Create the canonical skill under `.claude/skills/workspace-hub/resource-intelligence/`
 - [ ] Add references/scripts/assets only where they materially reduce ad hoc behavior
 - [ ] Download relevant codes, standards, and online documents discovered during intelligence gathering only when they complement existing document-intelligence sources
 - [ ] Record downloaded-source provenance in `resources.yaml`:
@@ -201,9 +224,9 @@ Before `agent-router` and `agent-usage-optimizer` are treated as authority for s
 - [ ] Define the user-facing stage summary format including top `P1` gaps and continue/pause decision
 
 **Deliverables**:
-- [ ] Skill implementation
-- [ ] Resource-pack scaffolding
-- [ ] Stage summary template
+- [x] Skill implementation
+- [x] Resource-pack scaffolding
+- [x] Stage summary template
 - [ ] Downloaded and documented standards / online reference set
 
 **Exit Criteria**:
@@ -300,6 +323,62 @@ These examples should be used to validate the stage against realistic `workspace
 9. `.claude/skills/ai/agent-usage-optimizer/SKILL.md` as quota-authority input
 10. `.claude/skills/data/documents/document-rag-pipeline/SKILL.md` as document-intelligence pipeline input
 
+## Current Document-Intelligence Assets and Source Mapping
+
+Current document-intelligence assets already present in `workspace-hub`:
+
+| Asset | Path | Role |
+|---|---|---|
+| Registry | `data/document-index/registry.yaml` | Source-bucket counts and aggregate registry |
+| Main index | `data/document-index/index.jsonl` | Queryable document-intelligence index |
+| Backup index | `data/document-index/index.jsonl.bak` | Safety copy of the main index |
+| Shards | `data/document-index/shards/` | Sharded source-index inputs |
+| Summaries | `data/document-index/summaries/` | Per-document summary artifacts |
+| Transfer ledger | `data/document-index/standards-transfer-ledger.yaml` | Standards transfer tracking |
+| Enhancement plan | `data/document-index/enhancement-plan.yaml` | Index improvement planning artifact |
+
+Observed indexed source buckets:
+
+| Source bucket | Example path | Likely mount/root class |
+|---|---|---|
+| `ace_project` | `/mnt/ace/docs/K07NL17002-M00-IA-A-REP-00037_1.pdf` | local mounted drive |
+| `ace_standards` | `/mnt/ace/docs/_standards/og_standards_api_search.txt` | local mounted drive |
+| `og_standards` | `/mnt/ace/0000 O&G/0000 Codes & Standards/Codes & Standards Database.xls` | local mounted drive |
+| `dde_project` | `/mnt/remote/ace-linux-2/dde/documents/0000 Personal/11511/11511 Repair Analysis.pptx` | remote mounted drive |
+| `workspace_spec` | `/mnt/local-analysis/workspace-hub/specs/archive/legacy-agent-os/product/decisions.md` | local workspace |
+| `api_metadata` | `api://worldenergydata/BSEE` | API source |
+
+Implication for `WRK-655`:
+
+- mounted and remote-mounted sources are already part of the indexed estate
+- the remaining gap is an explicit source-registry contract, not discovery from zero
+- this WRK should map source buckets to canonical mount roots and storage policy rather than redefining document intelligence itself
+
+## Proposed Mounted-Source Registry Schema
+
+To close the remaining gap, the Resource Intelligence stage should define a registry row or YAML object with:
+
+- `source_id`
+- `document_intelligence_bucket`
+- `mount_root`
+- `local_or_remote`
+- `index_artifact_ref`
+- `registry_ref`
+- `canonical_storage_policy`
+- `provenance_rule`
+- `dedup_rule`
+- `availability_check_ref`
+
+Registry location decision:
+
+- use the best-structured location as long as it remains clearly linked to:
+  - `data/document-index/registry.yaml`
+  - `data/document-index/index.jsonl`
+  - the relevant long-term reference locations
+- preferred implementation:
+  - a dedicated mounted-source registry file beside the existing document-intelligence registry
+  - cross-linked from the main registry and from Resource Intelligence documentation
+
 ## Testing Strategy
 
 1. Stage-path tests
@@ -327,6 +406,14 @@ These examples should be used to validate the stage against realistic `workspace
 - [ ] routing-skills path (`agent-router`, `agent-usage-optimizer`) produces a capability-review note or interim-routing rule
 - [ ] mixed local + additive online-source path records provenance and duplicate status correctly
 
+Minimum first-pass execution cases:
+
+1. `AGENTS.md`
+2. `specs/wrk/WRK-624/plan.md`
+3. `scripts/work-queue/validate-queue-state.sh`
+4. `.claude/skills/coordination/orchestration/agent-router/SKILL.md`
+5. one remote-mounted `dde_project` example
+
 ## File-Level Change Plan
 
 - [ ] Create or update the canonical skill under `.claude/skills/`
@@ -346,6 +433,7 @@ These examples should be used to validate the stage against realistic `workspace
   - whether validator-readiness is concrete enough for later enforcement
   - whether additive downloaded-source rules are precise enough to avoid storage drift
   - whether the 3-month intelligence metric is concrete enough to track
+  - whether the routing-authority decision needs full review now or should stay open pending more context
 
 ## Rollback Strategy
 
@@ -367,3 +455,32 @@ These examples should be used to validate the stage against realistic `workspace
 - [ ] The plan defines a 3-month repository-intelligence maturity target and tracking method
 - [ ] The plan includes repository-native example cases for validating the stage
 - [ ] Legal scan passes
+
+## Tracking Artifacts
+
+The 3-month maturity target should be tracked through both:
+
+1. a YAML ledger as the source of truth
+2. a linked Markdown summary for human review
+
+Contract:
+
+- Markdown must link to the YAML ledger directly
+- YAML remains the canonical state artifact
+- Markdown may summarize, but must not diverge from the YAML record
+
+First-pass enforcement:
+
+- `sync-maturity-summary.py` generates the Markdown summary from the YAML ledger
+- `sync-maturity-summary.py --check` fails if the Markdown summary has drifted
+
+## Decisions Adopted
+
+1. Canonical skill path:
+   - `.claude/skills/workspace-hub/resource-intelligence/SKILL.md`
+2. Mounted-source registry model:
+   - dedicated linked registry at `data/document-index/mounted-source-registry.yaml`
+3. Tracking pair:
+   - YAML ledger + linked Markdown summary
+4. Routing authority for first pass:
+   - interim-routing rule first

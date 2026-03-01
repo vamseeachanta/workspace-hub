@@ -377,6 +377,7 @@
         </tr>
       </table>
       <p><strong>Follow-on skill work:</strong> the dedicated stage definition and validator-ready contract should be delivered under <code>WRK-655</code>, which is now the top recommended follow-on item.</p>
+      <p><strong>Canonical skill path:</strong> <code>.claude/skills/workspace-hub/resource-intelligence/SKILL.md</code></p>
     </section>
 
     <section class="panel">
@@ -619,6 +620,37 @@ flowchart TD
       </table>
       <p><strong>Default recommendations:</strong> orchestrator = <code>Claude</code>; primary execution agent = <code>Codex</code>; deep-review / alternate-analysis support = <code>Gemini</code>.</p>
       <p><strong>Override rule:</strong> if the workflow deviates from this assignment model, the WRK should record what changed, why it changed, and why the risk is acceptable.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Decision Needed Now</h2>
+      <table>
+        <tr>
+          <th>Decision</th>
+          <th>Why it matters</th>
+          <th>Current recommendation</th>
+        </tr>
+        <tr>
+          <td>Accept the tightened 8-stage workflow contract</td>
+          <td>This is the baseline contract for all follow-on work-queue hardening.</td>
+          <td>Accept the current `WRK-624` draft as the governing workflow contract.</td>
+        </tr>
+        <tr>
+          <td>Keep full seeded Route C review depth</td>
+          <td>This controls planning rigor for workflow, governance, legal, and agent-behavior work.</td>
+          <td>Keep `3 seeds/provider` as the Route C default.</td>
+        </tr>
+        <tr>
+          <td>Treat user HTML review as the main blocking gate</td>
+          <td>This is the practical bottleneck surface for approval and execution readiness.</td>
+          <td>Keep user HTML review as the primary explicit blocker.</td>
+        </tr>
+        <tr>
+          <td>Proceed to `WRK-655`</td>
+          <td>`WRK-655` operationalizes the loosest stage in the workflow: Resource Intelligence.</td>
+          <td>Use `WRK-655` as the next execution item after this HTML review is accepted.</td>
+        </tr>
+      </table>
     </section>
 
     <section class="panel">

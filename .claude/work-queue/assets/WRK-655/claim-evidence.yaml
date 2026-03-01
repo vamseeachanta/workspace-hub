@@ -1,0 +1,14 @@
+claim_date: 2026-02-28T22:38:10Z
+wrk_id: WRK-655
+route: C
+orchestrator: claude
+best_fit_provider: claude
+alternate_provider: 
+quota_snapshot:
+  source: config/ai-tools/agent-quota-latest.json
+  status: available
+agent_capability:
+  best_fit: matched
+  rationale: Claim created from WRK frontmatter. Review before execution if task shape changed.
+user_html_blocker:
+  status: planning_gates_must_pass_before_execution

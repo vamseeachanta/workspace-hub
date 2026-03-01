@@ -1,0 +1,17 @@
+generated: "2026-02-28T00:00:00Z"
+version: "1.0.0"
+target_window: "3 months"
+metric:
+  documents_read_threshold_percent: 80
+  key_calculations_implemented_required: true
+tracking:
+  canonical_markdown_ref: data/document-index/resource-intelligence-maturity.md
+status:
+  documents_in_scope: 5
+  documents_marked_read: 0
+  documents_marked_read_percent: 0
+  key_calculations_implemented: []
+  followup_wrks: []
+notes:
+  - "YAML is the source of truth."
+  - "Markdown summary must link here and must not diverge."

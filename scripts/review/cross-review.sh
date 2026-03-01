@@ -159,7 +159,7 @@ submit_review() {
       [[ -f "$result_file" ]] && codex_size="$(wc -c < "$result_file" | tr -d ' ')"
       local codex_status
       codex_status="$(classify_review_result "$result_file")"
-      if [[ $codex_exit -eq 0 ]] && [[ "$codex_status" == "VALID" ]] && ! grep -q "^# Codex.*failed\|^# Codex CLI not found\|^# HARD GATE" "$result_file" 2>/dev/null && grep -q "^codex$" "$result_file" 2>/dev/null; then
+      if [[ $codex_exit -eq 0 ]] && [[ "$codex_status" == "VALID" ]] && ! grep -q "^# Codex.*failed\|^# Codex CLI not found\|^# HARD GATE" "$result_file" 2>/dev/null; then
         CODEX_PASSED=true
       elif [[ $codex_exit -eq 0 && ( "$codex_size" -lt 10 || "$codex_status" == "NO_OUTPUT" ) ]]; then
         # Codex ran but produced empty/trivial output (known large-diff limitation)

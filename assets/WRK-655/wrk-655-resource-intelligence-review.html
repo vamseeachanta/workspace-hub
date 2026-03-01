@@ -175,13 +175,30 @@ flowchart TD
       <h2>Planned Deliverables</h2>
       <table>
         <tr><th>Deliverable</th><th>Purpose</th></tr>
-        <tr><td>Resource Intelligence skill</td><td>Make the stage executable through a defined ecosystem skill rather than ad hoc research behavior.</td></tr>
+        <tr><td>Canonical Resource Intelligence skill</td><td>Create a new canonical skill so the stage executes through one defined ecosystem path rather than ad hoc research behavior.</td></tr>
         <tr><td>Artifact contract</td><td>Define what must exist in the resource pack for the stage to be considered complete.</td></tr>
         <tr><td>Gap model</td><td>Define `P1/P2/P3` priorities and the user-pause rule when unresolved `P1` gaps remain.</td></tr>
         <tr><td>Knowledge map</td><td>Show which skills and systems are used so the user can inspect and tweak the stage.</td></tr>
         <tr><td>Validator-ready rules</td><td>Make later enforcement and tooling integration possible.</td></tr>
         <tr><td>Downloaded reference set</td><td>Capture relevant online codes, standards, and documents in durable repo/document locations and index them for future reuse.</td></tr>
         <tr><td>Routing authority review</td><td>Review or bound `agent-router` and `agent-usage-optimizer` before treating them as authority for stage routing and quota decisions.</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>First-Pass Implemented Paths</h2>
+      <table>
+        <tr><th>Artifact</th><th>Path</th></tr>
+        <tr><td>Canonical skill</td><td><code>.claude/skills/workspace-hub/resource-intelligence/SKILL.md</code></td></tr>
+        <tr><td>Source-registry reference</td><td><code>.claude/skills/workspace-hub/resource-intelligence/references/source-registry.md</code></td></tr>
+        <tr><td>Scaffolder</td><td><code>.claude/skills/workspace-hub/resource-intelligence/scripts/init-resource-pack.sh</code></td></tr>
+        <tr><td>Validator</td><td><code>.claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh</code></td></tr>
+        <tr><td>Maturity sync/check</td><td><code>.claude/skills/workspace-hub/resource-intelligence/scripts/sync-maturity-summary.py</code></td></tr>
+        <tr><td>Summary template</td><td><code>.claude/skills/workspace-hub/resource-intelligence/templates/resource-intelligence-summary.md</code></td></tr>
+        <tr><td>Mounted-source registry</td><td><code>data/document-index/mounted-source-registry.yaml</code></td></tr>
+        <tr><td>Maturity ledger</td><td><code>data/document-index/resource-intelligence-maturity.yaml</code></td></tr>
+        <tr><td>Maturity summary</td><td><code>data/document-index/resource-intelligence-maturity.md</code></td></tr>
+        <tr><td>Legal scan evidence</td><td><code>.claude/work-queue/assets/WRK-655/legal-scan.md</code></td></tr>
       </table>
     </section>
 
@@ -213,14 +230,44 @@ flowchart TD
     </section>
 
     <section class="panel">
+      <h2>Current Document-Intelligence Assets</h2>
+      <table>
+        <tr><th>Asset</th><th>Path</th><th>Role</th></tr>
+        <tr><td>Registry</td><td><code>data/document-index/registry.yaml</code></td><td>Source-bucket counts and aggregate registry.</td></tr>
+        <tr><td>Main index</td><td><code>data/document-index/index.jsonl</code></td><td>Queryable document-intelligence index.</td></tr>
+        <tr><td>Backup index</td><td><code>data/document-index/index.jsonl.bak</code></td><td>Safety copy of the main index.</td></tr>
+        <tr><td>Shards</td><td><code>data/document-index/shards/</code></td><td>Sharded source-index inputs.</td></tr>
+        <tr><td>Summaries</td><td><code>data/document-index/summaries/</code></td><td>Per-document summary artifacts.</td></tr>
+        <tr><td>Transfer ledger</td><td><code>data/document-index/standards-transfer-ledger.yaml</code></td><td>Standards transfer tracking.</td></tr>
+        <tr><td>Enhancement plan</td><td><code>data/document-index/enhancement-plan.yaml</code></td><td>Index improvement planning artifact.</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Observed Source Buckets and Mount Roots</h2>
+      <table>
+        <tr><th>Source bucket</th><th>Example path</th><th>Mount/root class</th></tr>
+        <tr><td><code>ace_project</code></td><td><code>/mnt/ace/docs/K07NL17002-M00-IA-A-REP-00037_1.pdf</code></td><td>local mounted drive</td></tr>
+        <tr><td><code>ace_standards</code></td><td><code>/mnt/ace/docs/_standards/og_standards_api_search.txt</code></td><td>local mounted drive</td></tr>
+        <tr><td><code>og_standards</code></td><td><code>/mnt/ace/0000 O&amp;G/0000 Codes &amp; Standards/Codes &amp; Standards Database.xls</code></td><td>local mounted drive</td></tr>
+        <tr><td><code>dde_project</code></td><td><code>/mnt/remote/ace-linux-2/dde/documents/0000 Personal/11511/11511 Repair Analysis.pptx</code></td><td>remote mounted drive</td></tr>
+        <tr><td><code>workspace_spec</code></td><td><code>/mnt/local-analysis/workspace-hub/specs/archive/legacy-agent-os/product/decisions.md</code></td><td>local workspace</td></tr>
+        <tr><td><code>api_metadata</code></td><td><code>api://worldenergydata/BSEE</code></td><td>API source</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
       <h2>Source Registry Gap</h2>
       <p>The remaining gap is not whether document-intelligence sources exist. They do. The gap is that there is not yet one explicit source-registry contract mapping mounted and remote-mounted roots to document-intelligence source buckets.</p>
-      <p><strong>Recommended contract to add during WRK-655:</strong> <code>source_id</code>, <code>mount_root</code>, <code>local_or_remote</code>, <code>index_status</code>, <code>document_intelligence_bucket</code>, and <code>canonical_storage_policy</code>.</p>
+      <p><strong>Recommended contract to add during WRK-655:</strong> <code>source_id</code>, <code>document_intelligence_bucket</code>, <code>mount_root</code>, <code>local_or_remote</code>, <code>index_artifact_ref</code>, <code>registry_ref</code>, <code>canonical_storage_policy</code>, <code>provenance_rule</code>, <code>dedup_rule</code>, and <code>availability_check_ref</code>.</p>
+      <p><strong>User decision:</strong> choose the best-structured registry location as long as it is clearly linked to existing document-intelligence assets and well documented for AI agents.</p>
     </section>
 
     <section class="panel">
       <h2>Routing Capability Review</h2>
       <p>Before <code>agent-router</code> and <code>agent-usage-optimizer</code> are treated as authority for stage assignment, this WRK should either produce a reviewed capability matrix or document an explicit interim-routing rule with limits and override evidence.</p>
+      <p><strong>Selected first-pass rule:</strong> use the interim-routing rule first. <code>agent-router</code> is advisory for agent fit, <code>agent-usage-optimizer</code> is advisory for quota/capacity, and the orchestrator retains final routing authority.</p>
+      <p>This first-pass routing decision is adopted for <code>WRK-655</code>; it is no longer an open blocker for this item.</p>
     </section>
 
     <section class="panel">
@@ -254,6 +301,37 @@ flowchart TD
         <tr><td><code>agent-router/SKILL.md</code></td><td>Routing-capability authority candidate.</td></tr>
         <tr><td><code>agent-usage-optimizer/SKILL.md</code></td><td>Quota-capability authority candidate.</td></tr>
         <tr><td><code>document-rag-pipeline/SKILL.md</code></td><td>Document-intelligence pipeline baseline.</td></tr>
+      </table>
+      <p><strong>Minimum first-pass execution cases:</strong> <code>AGENTS.md</code>, <code>WRK-624</code> spec, <code>validate-queue-state.sh</code>, <code>agent-router/SKILL.md</code>, and one remote-mounted <code>dde_project</code> example.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Tracking Artifacts</h2>
+      <p>The 3-month maturity target should be tracked through both a YAML ledger and a linked Markdown summary.</p>
+      <p><strong>Rule:</strong> YAML is the canonical state artifact. Markdown must link to it and summarize it without divergence.</p>
+      <p><strong>First-pass enforcement:</strong> <code>sync-maturity-summary.py</code> generates the Markdown summary from YAML and <code>sync-maturity-summary.py --check</code> fails on drift.</p>
+    </section>
+
+    <section class="panel">
+      <h2>User Decisions Recorded</h2>
+      <table>
+        <tr><th>Decision area</th><th>Decision</th></tr>
+        <tr><td>Skill target</td><td>Create a new canonical <code>resource-intelligence</code> skill.</td></tr>
+        <tr><td>Registry location</td><td>Use the best-structured location, provided it is clearly linked and documented for AI agents.</td></tr>
+        <tr><td>Routing authority</td><td>Use interim-routing rule first; keep orchestrator as final authority.</td></tr>
+        <tr><td>Metric tracking</td><td>Use both YAML and Markdown, with Markdown linked to YAML.</td></tr>
+        <tr><td>First-pass examples</td><td>Use the recommended minimum example set.</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Decision Needed Now</h2>
+      <table>
+        <tr><th>Decision</th><th>Why it matters</th><th>Current recommendation</th></tr>
+        <tr><td>Accept the canonical skill path</td><td>This locks the stage onto one reusable execution path instead of ad hoc variations.</td><td>Use <code>.claude/skills/workspace-hub/resource-intelligence/SKILL.md</code> as the canonical skill.</td></tr>
+        <tr><td>Accept the mounted-source registry model</td><td>This makes mounted and remote-mounted document sources explicit and validator-ready.</td><td>Use <code>data/document-index/mounted-source-registry.yaml</code> as the dedicated linked registry.</td></tr>
+        <tr><td>Accept the YAML + Markdown maturity tracking pair</td><td>This keeps one canonical machine-readable ledger with a human review surface that should not drift.</td><td>Keep YAML as source of truth and Markdown as linked summary.</td></tr>
+        <tr><td>Resolve routing-authority approach</td><td>This determines how strongly Resource Intelligence depends on routing skills during the first pass.</td><td>Adopted: use interim-routing rule first; keep orchestrator final authority.</td></tr>
       </table>
     </section>
 

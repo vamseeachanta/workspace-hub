@@ -1,3 +1,53 @@
 #!/usr/bin/env bash
 set -euo pipefail
 # Pre-commit checks — skill validation moved to nightly cron (WRK-308)
+
+# WRK-307: Enforce lean-session Stop hook limit (best-effort, non-blocking)
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+bash "${REPO_ROOT}/scripts/review/check-stop-hooks.sh" || true
+
+STAGED_FILES="$(git diff --cached --name-only --diff-filter=ACMR || true)"
+[[ -z "$STAGED_FILES" ]] && exit 0
+
+needs_resource_intelligence_checks=0
+declare -A wrk_ids=()
+
+while IFS= read -r file; do
+  [[ -z "$file" ]] && continue
+
+  if [[ "$file" =~ ^\.claude/work-queue/assets/(WRK-[0-9]+)/ ]]; then
+    wrk_ids["${BASH_REMATCH[1]}"]=1
+    needs_resource_intelligence_checks=1
+  fi
+
+  case "$file" in
+    .claude/skills/workspace-hub/resource-intelligence/*|\
+    data/document-index/mounted-source-registry.yaml|\
+    data/document-index/resource-intelligence-maturity.yaml|\
+    data/document-index/resource-intelligence-maturity.md)
+      needs_resource_intelligence_checks=1
+      ;;
+  esac
+done <<< "$STAGED_FILES"
+
+if [[ "$needs_resource_intelligence_checks" -eq 1 ]]; then
+  echo "Running Resource Intelligence pre-commit checks..."
+
+  if [[ -x "${REPO_ROOT}/.claude/skills/workspace-hub/resource-intelligence/tests/test-resource-intelligence-scripts.sh" ]]; then
+    "${REPO_ROOT}/.claude/skills/workspace-hub/resource-intelligence/tests/test-resource-intelligence-scripts.sh"
+  fi
+
+  if [[ -f "${REPO_ROOT}/data/document-index/resource-intelligence-maturity.yaml" && -f "${REPO_ROOT}/data/document-index/resource-intelligence-maturity.md" ]]; then
+    python3 "${REPO_ROOT}/.claude/skills/workspace-hub/resource-intelligence/scripts/sync-maturity-summary.py" \
+      --yaml "${REPO_ROOT}/data/document-index/resource-intelligence-maturity.yaml" \
+      --markdown "${REPO_ROOT}/data/document-index/resource-intelligence-maturity.md" \
+      --check
+  fi
+
+  for wrk_id in "${!wrk_ids[@]}"; do
+    asset_dir="${REPO_ROOT}/.claude/work-queue/assets/${wrk_id}"
+    if [[ -f "${asset_dir}/resource-intelligence-summary.md" && -f "${asset_dir}/resources.yaml" ]]; then
+      bash "${REPO_ROOT}/.claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh" "$wrk_id"
+    fi
+  done
+fi

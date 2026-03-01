@@ -1,0 +1,31 @@
+wrk_id: WRK-655
+no_external_sources: false
+skill_path: .claude/skills/workspace-hub/resource-intelligence/SKILL.md
+index_assets:
+  registry: data/document-index/registry.yaml
+  index: data/document-index/index.jsonl
+  mounted_source_registry: data/document-index/mounted-source-registry.yaml
+  maturity_yaml: data/document-index/resource-intelligence-maturity.yaml
+  maturity_markdown: data/document-index/resource-intelligence-maturity.md
+sources:
+  - id: workspace_hub_local
+    origin: /mnt/local-analysis/workspace-hub
+    license_access: repo-native
+    retrieval_date: 2026-02-28
+    canonical_storage_path: /mnt/local-analysis/workspace-hub
+    duplicate_status: canonical
+    status: available
+  - id: ace_project_local
+    origin: /mnt/ace/docs
+    license_access: mounted-local
+    retrieval_date: 2026-02-28
+    canonical_storage_path: /mnt/ace/docs
+    duplicate_status: reference-in-place
+    status: available
+  - id: dde_project_remote
+    origin: /mnt/remote/ace-linux-2/dde
+    license_access: mounted-remote
+    retrieval_date: 2026-02-28
+    canonical_storage_path: /mnt/remote/ace-linux-2/dde
+    duplicate_status: reference-in-place
+    status: available

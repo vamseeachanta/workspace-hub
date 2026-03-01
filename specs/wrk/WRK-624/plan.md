@@ -206,6 +206,10 @@ The stage should show the user which skills are being used so the resource-intel
 | Quota awareness | `agent-usage-optimizer` | Helps keep later claim/review work within available model capacity |
 | Deep learning handoff | `comprehensive-learning` | Consumes the resulting artifacts later for slower ecosystem synthesis |
 
+The canonical first-pass implementation path for this stage is:
+
+- `.claude/skills/workspace-hub/resource-intelligence/SKILL.md`
+
 #### Resource Intelligence user pause
 
 Before the stage passes, present the user with:
