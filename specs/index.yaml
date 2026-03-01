@@ -1,5 +1,5 @@
-generated: '2026-02-28'
-total_specs: 1520
+generated: '2026-03-01'
+total_specs: 1521
 by_category:
   archive: 10
   data-sources: 13
@@ -7,7 +7,7 @@ by_category:
   other: 24
   repos: 1344
   templates: 2
-  wrk: 11
+  wrk: 12
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 159
+  workspace-hub: 160
   worldenergydata: 216
 by_wrk:
   WRK-9: 1
@@ -217,8 +217,9 @@ by_wrk:
   WRK-621: 1
   WRK-622: 1
   WRK-623: 1
-  WRK-624: 3
-  WRK-655: 1
+  WRK-624: 4
+  WRK-655: 2
+  WRK-664: 1
 specs:
 - path: specs/architecture/agent-vision.md
   title: Superintelligent Engineering Agent Architecture Blueprint
@@ -19852,7 +19853,7 @@ specs:
   - wrk-624
   wrk_refs:
   - WRK-624
-  mtime: '2026-02-28'
+  mtime: '2026-03-01'
 - path: specs/wrk/WRK-624/review/review-gemini.md
   title: Review Gemini
   description: The plan is exceptionally thorough and addresses the core issues of workflow drift and lack of accountability
@@ -19883,7 +19884,26 @@ specs:
   wrk_refs:
   - WRK-624
   - WRK-655
-  mtime: '2026-02-28'
+  mtime: '2026-03-01'
+- path: specs/wrk/WRK-664/plan.md
+  title: WRK-664 Multi-Agent and Multi-Workstation Execution Contract
+  description: Route C plan to add deterministic stage-level agent/workstation assignment, machine-readiness gates, and remote
+    coordination policy to the work-queue workflow.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - agent-routing
+  - orchestration
+  - plan
+  - work-queue
+  - workflow
+  - workstations
+  - wrk-664
+  wrk_refs:
+  - WRK-624
+  - WRK-655
+  - WRK-664
+  mtime: '2026-03-01'
 - path: digitalmodel/specs/module-registry.yaml
   title: digitalmodel
   description: Structured registry of all digitalmodel sub-modules for agent discovery

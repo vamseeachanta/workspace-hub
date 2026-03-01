@@ -1,0 +1,43 @@
+claim_date: 2026-03-01T06:20:00Z
+wrk_id: WRK-657
+route: B
+orchestrator: claude
+best_fit_provider: claude
+alternate_provider: codex
+quota_snapshot:
+  source: config/ai-tools/agent-quota-latest.json
+  status: not_captured_in_session
+gate_evidence:
+  plan_gate:
+    plan_html_review_final_ref: assets/WRK-657/plan-html-review-final.md
+    plan_reviewed: true
+    plan_approved: true
+    notes: user accepted final HTML after multi-agent review and noted skipped sections per WRK-624 precedent
+  cross_review_gate:
+    artifacts:
+      - reviewer: claude
+        artifact: assets/WRK-657/review.html
+        verdict: REQUEST_CHANGES
+      - reviewer: codex
+        artifact: assets/WRK-657/review.html
+        verdict: APPROVE
+      - reviewer: gemini
+        artifact: assets/WRK-657/review.html
+        verdict: MINOR
+    combined_verdict: request changes addressed with Codex/Gemini support
+    fallback: NO_OUTPUT rerun guidance logged; watchdog exit 124 now maps to NO_OUTPUT per new policy
+  tdd_gate:
+    test_manifest: assets/WRK-657/variation-test-results.md
+    summary: regression harness ensures exit 124, exit 0, exit 1 behaviors and PGID cleanup
+  legal_gate:
+    legal_scan_ref: .claude/work-queue/assets/WRK-657/legal-scan.md
+    result: pass
+    notes: local script review only
+no_output_policy:
+  classification: NO_OUTPUT treated as gate failure unless re-run yields valid artifact
+  rerun_guidance: rerun `scripts/review/submit-to-claude.sh` wrapped with new setsid/watcher to generate valid review artifact
+agent_capability:
+  best_fit: matched
+  rationale: Claude is the executor for this wrapper-specific hardening work.
+user_html_blocker:
+  status: satisfied_for_current_revision

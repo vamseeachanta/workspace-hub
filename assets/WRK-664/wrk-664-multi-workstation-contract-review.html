@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-664 Multi-Workstation Contract Review</title>
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --card: #ffffff;
+      --ink: #17202a;
+      --muted: #4b5563;
+      --line: #d9dde3;
+      --accent: #0b6fbf;
+      --warn: #a15c00;
+    }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 28px auto;
+      padding: 0 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    h1, h2 { margin: 0 0 10px 0; }
+    .muted { color: var(--muted); }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      font-size: 12px;
+      margin-right: 6px;
+    }
+    .accent { border-color: var(--accent); color: var(--accent); }
+    .warn { border-color: var(--warn); color: var(--warn); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f2f4f7; }
+    ul { margin: 8px 0 0 18px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>WRK-664: Multi-Agent and Multi-Workstation Contract</h1>
+      <div class="muted">Draft review surface for a parked follow-on item from WRK-624.</div>
+      <p>
+        <span class="badge accent">Status: blocked (parked)</span>
+        <span class="badge">Route: C</span>
+        <span class="badge">Priority: high</span>
+        <span class="badge">Complexity: complex</span>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Executive Summary</h2>
+      <p>
+        Current workflow captures agent and machine fields, but does not yet enforce stage-level
+        assignment contracts for multi-machine execution. WRK-664 defines the missing contract:
+        who executes each stage, where it runs, and what must pass before claim and execute.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Stage Assignment Draft</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Primary Agent</th>
+            <th>Workstation Scope</th>
+            <th>Gate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Plan</td>
+            <td>codex</td>
+            <td>ace-linux-1</td>
+            <td>Plan schema + HTML draft generated</td>
+          </tr>
+          <tr>
+            <td>Claim</td>
+            <td>orchestrator</td>
+            <td>ace-linux-1</td>
+            <td>Routing evidence + quota snapshot recorded</td>
+          </tr>
+          <tr>
+            <td>Execute</td>
+            <td>best-fit provider</td>
+            <td>assigned machine list</td>
+            <td>Machine readiness and capability checks pass</td>
+          </tr>
+          <tr>
+            <td>Cross-Review</td>
+            <td>claude/codex/gemini</td>
+            <td>any AI-capable host</td>
+            <td>Route policy and seed policy satisfied</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Top Gaps</h2>
+      <ul>
+        <li><strong>P1:</strong> No canonical handoff evidence contract for machine switches.</li>
+        <li><strong>P1:</strong> No deterministic remote-coordination failover policy in core workflow.</li>
+        <li><strong>P2:</strong> Stage-level assignment schema not yet integrated into templates/scripts.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Decision Needed Now</h2>
+      <p><span class="badge warn">Keep parked</span> or <span class="badge accent">Activate now</span></p>
+      <p class="muted">Recommended now: keep parked until activation window is explicitly opened.</p>
+    </div>
+  </div>
+</body>
+</html>

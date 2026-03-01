@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-01T13:30:36Z by generate-index.py -->
+<!-- Generated: 2026-03-01T13:54:14Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-01T13:30:36Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-01T13:54:14Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 422
+**Total items:** 424
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 181 |
+| pending | 183 |
 | working | 10 |
 | blocked | 6 |
 | archived | 225 |
@@ -22,8 +22,8 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 201 |
-| medium | 179 |
+| high | 202 |
+| medium | 180 |
 | low | 41 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 70 |
-| medium | 193 |
+| medium | 195 |
 | complex | 92 |
 
 ### By Repository
@@ -54,7 +54,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 100 |
+| workspace-hub | 102 |
 | worldenergydata | 81 |
 
 ### Plan Tracking
@@ -62,7 +62,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 159 / 422 |
+| Plans exist | 160 / 424 |
 | Plans cross-reviewed | 58 |
 | Plans approved | 79 |
 | Brochure pending | 7 |
@@ -74,9 +74,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 422 |
+| Total captured | 424 |
 | Total archived | 225 |
-| Completion rate | 225/422 (53%) |
+| Completion rate | 225/424 (53%) |
 | Monthly rate (current month) | 0 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -84,7 +84,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 53 / 181 | 29% |
+| Pending items with plans | 54 / 183 | 30% |
 | Plans cross-reviewed | 9 | 14% |
 | Plans user-approved | 9 | 14% |
 
@@ -101,8 +101,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 90 | 8 | 4 |
-| Medium   | 63  | 2  | 1  |
+| High     | 91 | 8 | 4 |
+| Medium   | 64  | 2  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## Master Table
@@ -530,6 +530,8 @@
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 5% | n/a | - |
+| WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -718,6 +720,8 @@
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | medium | medium | worldenergydata | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | medium | medium | digitalmodel | - |
 | WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | high | medium | workspace-hub | - |
+| WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | medium | medium | workspace-hub | - |
+| WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | high | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -1408,6 +1412,8 @@
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | - |
 | WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | high | medium | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | - |
+| WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | medium | - |
+| WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1703,6 +1709,7 @@
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | medium | assetutilities | - |
 | WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | medium | workspace-hub | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | complex | workspace-hub | - |
+| WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -1887,6 +1894,7 @@
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | small | workspace-hub | - |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | worldenergydata | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | digitalmodel | - |
+| WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -2208,6 +2216,8 @@
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | worldenergydata | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | digitalmodel | - |
 | WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | high | workspace-hub | - |
+| WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | workspace-hub | - |
+| WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | workspace-hub | - |
 
 ### Complex
 
@@ -2308,7 +2318,7 @@
 
 ## By Computer
 
-### ace-linux-1 (138 active / 151 total)
+### ace-linux-1 (140 active / 153 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2462,6 +2472,8 @@
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | medium | digitalmodel |
 | WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | high | medium | workspace-hub |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | workspace-hub |
+| WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | medium | workspace-hub |
+| WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | medium | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)
@@ -2822,5 +2834,3 @@
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | WRK-637 | - | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | WRK-638 | - | - |
 
-| WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | - | - | WRK-631 |
-| WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | - | - | WRK-665 |

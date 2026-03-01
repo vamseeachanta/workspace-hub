@@ -41,7 +41,7 @@ FRONTMATTER_FIELDS = [
     "plan_ensemble", "ensemble_consensus_score",
     "plan_reviewed", "plan_approved", "percent_complete", "brochure_status",
     "provider", "provider_alt",
-    "computer",
+    "computer", "plan_workstations", "execution_workstations",
 ]
 
 
@@ -222,9 +222,11 @@ def normalize(item: dict) -> dict:
 
     # Workstation assignment
     item.setdefault("computer", "")
+    item.setdefault("plan_workstations", [])
+    item.setdefault("execution_workstations", [])
 
     # Ensure lists are lists
-    for field in ("target_repos", "blocked_by", "related", "children"):
+    for field in ("target_repos", "blocked_by", "related", "children", "plan_workstations", "execution_workstations"):
         val = item[field]
         if val is None:
             item[field] = []
@@ -271,6 +273,13 @@ def repos_str(repos: list) -> str:
 
 def list_str(items: list) -> str:
     return ", ".join(str(i) for i in items) if items else "-"
+
+
+def workstation_str(val) -> str:
+    """Render workstation field that may be list or scalar."""
+    if isinstance(val, list):
+        return ", ".join(str(v) for v in val) if val else "-"
+    return str(val).strip() if str(val).strip() else "-"
 
 
 def bool_icon(val: bool) -> str:
@@ -625,9 +634,9 @@ def generate_index(items: list[dict]) -> str:
     # ── Master Table ─────────────────────────────────────────
     w("## Master Table")
     w("")
-    w("| ID | Title | Status | Priority | Complexity | Computer | Provider | Repos | Module | "
+    w("| ID | Title | Status | Priority | Complexity | Computer | Plan WS | Exec WS | Provider | Repos | Module | "
       "Ensemble? | Plan? | Reviewed? | Approved? | % Done | Brochure | Blocked By |")
-    w("|-----|-------|--------|----------|------------|----------|----------|-------|--------|"
+    w("|-----|-------|--------|----------|------------|----------|---------|---------|----------|-------|--------|"
       "-----------|-------|-----------|-----------|--------|----------|------------|")
     for it in items:
         bid = it.get("id", "?")
@@ -635,10 +644,9 @@ def generate_index(items: list[dict]) -> str:
         status = it["status"]
         prio = it["priority"]
         comp = it["complexity"]
-        computer_val = it.get("computer") or "-"
-        # Shorten list values (multi-machine) for display
-        if isinstance(computer_val, list):
-            computer_val = ", ".join(str(v) for v in computer_val)
+        computer_val = workstation_str(it.get("computer"))
+        plan_ws = workstation_str(it.get("plan_workstations"))
+        exec_ws = workstation_str(it.get("execution_workstations"))
         prov = it.get("provider") or "-"
         prov_alt = it.get("provider_alt") or ""
         provider_cell = prov if not prov_alt else f"{prov}+{prov_alt}"
@@ -651,7 +659,7 @@ def generate_index(items: list[dict]) -> str:
         pct = pct_str(it["percent_complete"])
         brochure = brochure_str(it.get("brochure_status", ""))
         blocked = list_str(it["blocked_by"])
-        w(f"| {bid} | {title} | {status} | {prio} | {comp} | {computer_val} | {provider_cell} | {repos} | {module} | "
+        w(f"| {bid} | {title} | {status} | {prio} | {comp} | {computer_val} | {plan_ws} | {exec_ws} | {provider_cell} | {repos} | {module} | "
           f"{ensemble} | {plan} | {reviewed} | {approved} | {pct} | {brochure} | {blocked} |")
     w("")
 

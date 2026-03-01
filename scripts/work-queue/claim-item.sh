@@ -26,6 +26,8 @@ if [[ -z "$FILE_PATH" ]]; then
   exit 1
 fi
 
+provider="$(awk -F': ' '/^provider:/ { gsub(/"/, "", $2); print $2; exit }' "$FILE_PATH")"
+
 CLAIM_DIR="${WORKSPACE_ROOT}/.claude/work-queue/assets/${WRK_ID}"
 mkdir -p "$CLAIM_DIR"
 CLAIM_FILE="${CLAIM_DIR}/claim-evidence.yaml"
@@ -60,7 +62,7 @@ frontmatter = match.group(1)
 body = text[match.end():]
 
 def get_value(field: str) -> str:
-    m = re.search(rf"^{re.escape(field)}:\s*(.*)$", frontmatter, re.MULTILINE)
+    m = re.search(rf"^{re.escape(field)}:[ \t]*(.*)$", frontmatter, re.MULTILINE)
     return m.group(1).strip() if m else ""
 
 def upsert(field: str, value: str) -> None:
@@ -76,6 +78,8 @@ route = get_value("route")
 orchestrator = get_value("orchestrator")
 provider = get_value("provider")
 provider_alt = get_value("provider_alt")
+plan_workstations = get_value("plan_workstations")
+execution_workstations = get_value("execution_workstations")
 
 quota_snapshot = {
     "source": str(Path(quota_file).relative_to(workspace_root)) if Path(quota_file).exists() else quota_file,
@@ -94,6 +98,8 @@ claim_doc = {
     "orchestrator": orchestrator,
     "best_fit_provider": provider,
     "alternate_provider": provider_alt,
+    "plan_workstations": plan_workstations,
+    "execution_workstations": execution_workstations,
     "quota_snapshot": quota_snapshot,
     "agent_capability": {
         "best_fit": "matched" if provider else "undocumented",
@@ -113,6 +119,8 @@ claim_file.write_text(
             f"orchestrator: {claim_doc['orchestrator']}",
             f"best_fit_provider: {claim_doc['best_fit_provider']}",
             f"alternate_provider: {claim_doc['alternate_provider']}",
+            f"plan_workstations: {claim_doc['plan_workstations']}",
+            f"execution_workstations: {claim_doc['execution_workstations']}",
             "quota_snapshot:",
             f"  source: {claim_doc['quota_snapshot']['source']}",
             f"  status: {claim_doc['quota_snapshot']['status']}",

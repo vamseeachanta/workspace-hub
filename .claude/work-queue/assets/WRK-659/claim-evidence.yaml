@@ -1,0 +1,36 @@
+claim_date: 2026-03-01T12:41:00Z
+wrk_id: WRK-659
+route: C
+orchestrator: claude
+best_fit_provider: claude
+gate_evidence:
+  plan_gate:
+    plan_html_review_final_ref: assets/WRK-659/plan-html-review-final.md
+    plan_reviewed: true
+    plan_approved: true
+    notes: sandbox gate test for WRK-658, human review simulated via button
+  cross_review_gate:
+    artifacts:
+      - reviewer: claude
+        artifact: assets/WRK-659/review.html
+        verdict: APPROVE
+      - reviewer: codex
+        artifact: assets/WRK-659/review.html
+        verdict: APPROVE
+      - reviewer: gemini
+        artifact: assets/WRK-659/review.html
+        verdict: APPROVE
+  tdd_gate:
+    test_manifest: assets/WRK-659/variation-test-results.md
+    summary: simple sandbox tests
+  legal_gate:
+    legal_scan_ref: .claude/work-queue/assets/WRK-659/legal-scan.md
+    result: pass
+no_output_policy:
+  classification: NO_OUTPUT must rerun before claim
+  rerun_guidance: use NR auto-run
+agent_capability:
+  best_fit: matched
+  rationale: sandbox logging test
+user_html_blocker:
+  status: satisfied_for_current_revision

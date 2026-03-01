@@ -52,7 +52,8 @@ flowchart TD
 - Create modular artifact set in `assets/WRK-<id>/`: `resource-pack.md`, `sources.md`, `constraints.md`, `domain-notes.md`, `open-questions.md`, `resources.yaml`.
 
 ### 3. Triage
-- Assign `priority`, `complexity`, `route`, `computer`, `resource_needs`.
+- Assign `priority`, `complexity`, `route`, `computer`, `plan_workstations`, `execution_workstations`, `resource_needs`.
+- `plan_workstations` and `execution_workstations` must be non-empty and may include multiple machines.
 
 ### 4. Plan
 - Route A/B: Inline in body. Route C: `specs/wrk/WRK-<id>/`.
@@ -190,6 +191,8 @@ percent_complete: 0      # 0-100
 provider:                # primary executor
 provider_alt:            # secondary executor
 computer:                # machine nickname
+plan_workstations:       # machine list for planning stage
+execution_workstations:  # machine list for execution stage
 ---
 ```
 

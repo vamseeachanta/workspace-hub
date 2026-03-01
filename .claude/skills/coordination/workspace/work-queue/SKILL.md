@@ -138,7 +138,7 @@ flowchart TD
 - Create modular artifact set in `assets/WRK-<id>/`.
 
 ### 3. Triage
-- Minimum triage contract: `priority`, `complexity`, `route`, `computer`, `provider`, `orchestrator`.
+- Minimum triage contract: `priority`, `complexity`, `route`, `computer`, `plan_workstations`, `execution_workstations`, `provider`, `orchestrator`.
 
 ### 4. Plan
 - Route A/B: Inline. Route C: `specs/wrk/WRK-<id>/`.
@@ -262,6 +262,8 @@ Before setting `status: working` on any Route B/C item, verify ALL of the follow
 | Plan cross-reviewed | `plan_reviewed: true` | B/C | Set ONLY after Codex + Gemini verdict received — NOT at plan creation time |
 | Spec exists | `spec_ref` non-empty | C | Spec must be in `specs/wrk/WRK-NNN/` before moving to working |
 | Workstation assigned | `computer:` non-empty | A/B/C | Must be set at Capture; confirmed at Plan gate |
+| Plan workstation access | `plan_workstations:` non-empty | A/B/C | Must list one or more allowed machines for plan stage |
+| Execution workstation access | `execution_workstations:` non-empty | A/B/C | Must list one or more allowed machines for execution stage |
 
 **Critical distinction:**
 - `plan_approved` = user said "looks good, proceed"
@@ -390,6 +392,8 @@ plan_approved: false   # true when user has approved the plan
 percent_complete: 0    # 0-100, auto-set to 100 on archive
 brochure_status:       # pending | updated | synced | n/a
 computer:              # ace-linux-1 | ace-linux-2 | acma-ansys05 | acma-ws014 | gali-linux-compute-1
+plan_workstations:     # [ace-linux-1] or [ace-linux-1, acma-ansys05]
+execution_workstations: # [ace-linux-1] or [acma-ansys05]
 ---
 
 # Title
@@ -417,6 +421,11 @@ computer:              # ace-linux-1 | ace-linux-2 | acma-ansys05 | acma-ws014 |
 ## Workstation Routing
 
 Every WRK item **must** have a `computer:` field set at Capture time and confirmed at the Plan gate.
+Every WRK item must also declare:
+- `plan_workstations:` one or more machines allowed for planning work
+- `execution_workstations:` one or more machines allowed for execution work
+
+Both fields can contain multiple machines when cross-machine coordination is expected.
 Reference: `.claude/skills/workspace-hub/workstations/SKILL.md`
 
 ### Quick Routing Table
@@ -435,7 +444,7 @@ Reference: `.claude/skills/workspace-hub/workstations/SKILL.md`
 
 ### Bulk-assign script
 
-To assign `computer:` to all active items lacking it:
+To assign workstation fields to all active items lacking them (`computer`, `plan_workstations`, `execution_workstations`):
 ```bash
 python3 scripts/work-queue/assign-workstations.py        # dry-run
 python3 scripts/work-queue/assign-workstations.py --apply # write

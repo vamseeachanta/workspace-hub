@@ -1,0 +1,14 @@
+claim_date: 2026-03-01T13:52:50Z
+wrk_id: WRK-642
+route: B
+orchestrator: codex
+best_fit_provider: codex
+alternate_provider: 
+quota_snapshot:
+  source: config/ai-tools/agent-quota-latest.json
+  status: legacy-remediation
+agent_capability:
+  best_fit: legacy-remediation
+  rationale: Added by WRK-624 remediation to satisfy structured claim evidence gate.
+user_html_blocker:
+  status: legacy-remediation

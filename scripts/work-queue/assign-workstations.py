@@ -1,9 +1,12 @@
 #!/usr/bin/env -S uv run --no-project python
-"""Bulk-assign the `computer:` field to WRK items that lack it.
+"""Bulk-assign workstation fields to WRK items that lack them.
 
 Routing rules are derived from workstations SKILL.md.  The script reads
-each item's `target_repos` and `title`, applies the rules, and writes the
-`computer:` line into the frontmatter if it is absent or blank.
+each item's `target_repos` and `title`, applies the rules, and writes:
+- `computer:`
+- `plan_workstations:`
+- `execution_workstations:`
+when any are absent or blank.
 
 Usage:
     python scripts/work-queue/assign-workstations.py          # dry-run
@@ -151,6 +154,43 @@ def _insert_computer_field(fm_block: str, machine: str) -> str:
     return fm_block.rstrip() + f"\ncomputer: {machine}"
 
 
+def _ensure_stage_workstation_fields(fm_block: str, machine: str, overwrite: bool) -> str:
+    """Ensure plan/execution workstation list fields exist.
+
+    Uses inline list form for compatibility with lightweight regex readers.
+    """
+    list_value = f"[{machine}]"
+
+    def upsert(field: str, block: str) -> str:
+        present = re.search(rf"^{field}:\s*(.*)$", block, re.MULTILINE)
+        if present:
+            current = present.group(1).strip()
+            if overwrite or current in {"", "[]", "null", "~"}:
+                return re.sub(
+                    rf"^{field}:\s*.*$",
+                    f"{field}: {list_value}",
+                    block,
+                    flags=re.MULTILINE,
+                    count=1,
+                )
+            return block
+
+        anchor = r"^computer:.*$"
+        if re.search(anchor, block, re.MULTILINE):
+            return re.sub(
+                anchor,
+                rf"\g<0>\n{field}: {list_value}",
+                block,
+                flags=re.MULTILINE,
+                count=1,
+            )
+        return block.rstrip() + f"\n{field}: {list_value}"
+
+    fm_block = upsert("plan_workstations", fm_block)
+    fm_block = upsert("execution_workstations", fm_block)
+    return fm_block
+
+
 def _overwrite_computer_field(fm_block: str, machine: str) -> str:
     """Set computer: regardless of existing value."""
     if re.search(r"^computer:\s*\S", fm_block, re.MULTILINE):
@@ -191,6 +231,8 @@ def process_file(path: Path, apply: bool, overwrite_existing: bool) -> str | Non
             new_fm = _insert_computer_field(fm_block, machine)
             if new_fm is None:
                 return None
+
+        new_fm = _ensure_stage_workstation_fields(new_fm, machine, overwrite_existing)
 
         # Ensure a newline separates the fm block from the closing ---
         if not new_fm.endswith("\n"):

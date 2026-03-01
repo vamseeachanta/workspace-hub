@@ -126,6 +126,58 @@
     .status-good { color: var(--good); font-weight: 700; }
     .status-warn { color: var(--warn); font-weight: 700; }
     .status-bad { color: var(--bad); font-weight: 700; }
+    .gap-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    .gap-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+    .gap-btn.selected {
+      background: #eef8f6;
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .decision-state {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .gap-comment {
+      width: 100%;
+      min-height: 66px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: #fff;
+      resize: vertical;
+    }
+    .review-actions {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0 0;
+      flex-wrap: wrap;
+    }
+    .action-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      color: var(--ink);
+    }
     .split {
       display: grid;
       grid-template-columns: 1.3fr 1fr;
@@ -195,6 +247,10 @@
     <section class="panel">
       <h2>All Stages: Summary and Gaps</h2>
       <p>This section is the iteration surface for the lifecycle itself. Each row shows what the stage is for, where it is already strong enough, and what still needs tightening before the workflow is fully hard-gated.</p>
+      <p>Use the buttons to confirm each gap decision and add actions/clarifications/guidance for follow-up execution.</p>
+      <div class="review-actions">
+        <button class="action-btn" type="button" id="export-gap-review">Export Gap Decisions</button>
+      </div>
       <table>
         <tr>
           <th>Stage</th>
@@ -202,6 +258,8 @@
           <th>Summary</th>
           <th>Current Strength</th>
           <th>Current Gaps</th>
+          <th>User Gap Decision</th>
+          <th>User Comment / Action Guidance</th>
         </tr>
         <tr>
           <td>Capture</td>
@@ -209,6 +267,15 @@
           <td>Open the WRK with enough metadata to route, review, and scaffold the rest of the lifecycle.</td>
           <td><span class="status-good">Mostly defined</span></td>
           <td>Creation still relies too much on disciplined authoring instead of guaranteed scaffolding.</td>
+          <td>
+            <div class="gap-controls" data-stage="capture">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="capture">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="capture" placeholder="Actions, clarifications, guidance..."></textarea></td>
         </tr>
         <tr>
           <td>Resource Intelligence</td>
@@ -216,13 +283,31 @@
           <td>Assemble the resource pack, constraints, sources, open questions, and domain notes before planning is treated as real.</td>
           <td><span class="status-warn">Conceptually strong, weakly enforced</span></td>
           <td>No fully machine-checkable completion rule yet; legal-scan proof and source sufficiency still need stricter validator coverage.</td>
+          <td>
+            <div class="gap-controls" data-stage="resource_intelligence">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="resource_intelligence">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="resource_intelligence" placeholder="Actions, clarifications, guidance..."></textarea></td>
         </tr>
         <tr>
           <td>Triage</td>
           <td>P2</td>
-          <td>Classify route, priority, complexity, workstation, providers, and resource needs so the WRK is actionable.</td>
+          <td>Classify route, priority, complexity, providers, and stage-specific workstation access so the WRK is actionable.</td>
           <td><span class="status-good">Defined</span></td>
           <td>Field registries and allowed values still need tighter normalization, especially workstation and routing enums.</td>
+          <td>
+            <div class="gap-controls" data-stage="triage">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="triage">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="triage" placeholder="Actions, clarifications, guidance..."></textarea></td>
         </tr>
         <tr>
           <td>Plan</td>
@@ -230,6 +315,15 @@
           <td>Create the implementation plan/spec, route it through multi-agent review, and require explicit user HTML review before approval.</td>
           <td><span class="status-good">Strong</span></td>
           <td>User HTML review remains the main practical bottleneck; defer, delegate, and escalation rules can still be tightened.</td>
+          <td>
+            <div class="gap-controls" data-stage="plan">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="plan">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="plan" placeholder="Actions, clarifications, guidance..."></textarea></td>
         </tr>
         <tr>
           <td>Claim</td>
@@ -237,6 +331,15 @@
           <td>Bind one live orchestrator session, check agent fit and quota readiness, and record the routing decision before execution.</td>
           <td><span class="status-good">Improved and partially enforced</span></td>
           <td>Quota freshness, fallback semantics, and stale-session recovery need a more normalized evidence schema.</td>
+          <td>
+            <div class="gap-controls" data-stage="claim">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="claim">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="claim" placeholder="Actions, clarifications, guidance..."></textarea></td>
         </tr>
         <tr>
           <td>Execute</td>
@@ -244,6 +347,15 @@
           <td>Do the work under the claimed session using examples, variation tests, and HTML outputs where applicable.</td>
           <td><span class="status-good">Clear intent</span></td>
           <td>Behavioral completion checks still need to stay stronger than simple artifact existence.</td>
+          <td>
+            <div class="gap-controls" data-stage="execute">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="execute">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="execute" placeholder="Actions, clarifications, guidance..."></textarea></td>
         </tr>
         <tr>
           <td>Close</td>
@@ -251,6 +363,15 @@
           <td>Verify tests, review evidence, HTML output, HTML verification, and close evidence before moving to <code>done</code>.</td>
           <td><span class="status-good">Operational core in place</span></td>
           <td>Merge/sync, learning outputs, and follow-up evidence should converge into one normalized close-evidence contract.</td>
+          <td>
+            <div class="gap-controls" data-stage="close">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="close">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="close" placeholder="Actions, clarifications, guidance..."></textarea></td>
         </tr>
         <tr>
           <td>Archive</td>
@@ -258,6 +379,15 @@
           <td>Move only truly completed, merged, synced, and validated items into the archive state.</td>
           <td><span class="status-warn">Policy stronger than tooling</span></td>
           <td>Archive enforcement is still thinner than close enforcement and should be hardened next.</td>
+          <td>
+            <div class="gap-controls" data-stage="archive">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="archive">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="archive" placeholder="Actions, clarifications, guidance..."></textarea></td>
         </tr>
       </table>
     </section>
@@ -405,6 +535,8 @@
         <tr><td><code>priority</code></td><td>Must be one of <code>high</code>, <code>medium</code>, or <code>low</code>.</td></tr>
         <tr><td><code>complexity</code></td><td>Must be one of <code>simple</code>, <code>medium</code>, <code>complex</code>, or <code>critical</code>.</td></tr>
         <tr><td><code>computer</code></td><td>Must match a named workstation entry from the workstation registry.</td></tr>
+        <tr><td><code>plan_workstations</code></td><td>Must be non-empty and list one or more named workstations allowed for the plan stage.</td></tr>
+        <tr><td><code>execution_workstations</code></td><td>Must be non-empty and list one or more named workstations allowed for the execution stage.</td></tr>
         <tr><td><code>provider</code> / <code>provider_alt</code></td><td>Must match valid configured providers for the ecosystem.</td></tr>
         <tr><td><code>resource_needs</code></td><td>Must be a structured list or an explicit empty list; prose-only is not enough.</td></tr>
         <tr><td>Hard gate</td><td>Missing required fields or invalid registry values fail triage.</td></tr>
@@ -881,6 +1013,8 @@ flowchart TD
         <ul>
           <li><code>orchestrator</code></li>
           <li><code>computer</code> (named execution host / workstation)</li>
+          <li><code>plan_workstations</code> (one or more allowed planning machines)</li>
+          <li><code>execution_workstations</code> (one or more allowed execution machines)</li>
           <li><code>resource_pack_ref</code></li>
           <li><code>plan_html_review_draft_ref</code></li>
           <li><code>plan_html_review_final_ref</code></li>
@@ -900,7 +1034,7 @@ flowchart TD
           <li><strong>Quota source of truth</strong>: <code>config/ai-tools/agent-quota-latest.json</code></li>
           <li><strong>Producer</strong>: <code>scripts/ai/assessment/query-quota.sh</code> plus readiness pipeline</li>
           <li><strong>Queue validation</strong>: validator output is blocking for close/archive</li>
-          <li><strong>Workstation registry</strong>: blocking source of truth for validating the <code>computer</code> field.</li>
+          <li><strong>Workstation registry</strong>: blocking source of truth for validating <code>computer</code>, <code>plan_workstations</code>, and <code>execution_workstations</code>.</li>
           <li><strong>Document-intelligence indexing</strong>: advisory by default, blocking only when the WRK explicitly requires indexed artifacts before close/archive.</li>
           <li><strong>Comprehensive-learning handoff</strong>: blocking for archive when the WRK explicitly requires deep-learning handoff evidence.</li>
           <li><strong>Legal scan</strong>: blocking for generated WRK artifacts unless explicitly waived</li>
@@ -979,5 +1113,77 @@ flowchart TD
       </ul>
     </section>
   </main>
+  <script>
+    (function () {
+      const STORE_KEY = "wrk624_gap_review_v1";
+
+      function loadState() {
+        try {
+          return JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+        } catch (err) {
+          return {};
+        }
+      }
+
+      function saveState(state) {
+        localStorage.setItem(STORE_KEY, JSON.stringify(state));
+      }
+
+      function applyDecisionUI(stage, decision) {
+        const group = document.querySelector('.gap-controls[data-stage="' + stage + '"]');
+        const label = document.querySelector('[data-stage-state="' + stage + '"]');
+        if (!group || !label) return;
+        group.querySelectorAll(".gap-btn").forEach((btn) => {
+          btn.classList.toggle("selected", btn.dataset.decision === decision);
+        });
+        label.textContent = "Decision: " + (decision || "not set");
+      }
+
+      const state = loadState();
+      state.decisions = state.decisions || {};
+      state.comments = state.comments || {};
+
+      document.querySelectorAll(".gap-controls").forEach((group) => {
+        const stage = group.dataset.stage;
+        applyDecisionUI(stage, state.decisions[stage] || "");
+        group.querySelectorAll(".gap-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            state.decisions[stage] = btn.dataset.decision;
+            saveState(state);
+            applyDecisionUI(stage, btn.dataset.decision);
+          });
+        });
+      });
+
+      document.querySelectorAll(".gap-comment").forEach((area) => {
+        const stage = area.dataset.stageComment;
+        area.value = state.comments[stage] || "";
+        area.addEventListener("input", () => {
+          state.comments[stage] = area.value;
+          saveState(state);
+        });
+      });
+
+      const exportBtn = document.getElementById("export-gap-review");
+      if (exportBtn) {
+        exportBtn.addEventListener("click", async () => {
+          const payload = {
+            wrk_id: "WRK-624",
+            exported_at: new Date().toISOString(),
+            decisions: state.decisions,
+            comments: state.comments
+          };
+          const text = JSON.stringify(payload, null, 2);
+          try {
+            await navigator.clipboard.writeText(text);
+            exportBtn.textContent = "Exported (Copied)";
+          } catch (err) {
+            exportBtn.textContent = "Export Failed";
+          }
+          setTimeout(() => { exportBtn.textContent = "Export Gap Decisions"; }, 1500);
+        });
+      }
+    })();
+  </script>
 </body>
 </html>

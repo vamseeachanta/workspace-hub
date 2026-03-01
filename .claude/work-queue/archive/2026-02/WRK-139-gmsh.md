@@ -18,6 +18,8 @@ plan_reviewed: true
 plan_approved: true
 percent_complete: 100
 brochure_status:
+plan_workstations: [ace-linux-1]
+execution_workstations: [ace-linux-1]
 ---
 
 # Develop gmsh Skill and Documentation

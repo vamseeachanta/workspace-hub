@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><title>WRK-657 Cross Review</title></head>
+<body>
+<h1>WRK-657 Review Summary</h1>
+<p>Implementation: Hardens <code>scripts/review/submit-to-claude.sh</code> so the watchdog kills the full process group, logs cleanup, and exits 124 on timeout.</p>
+<ul>
+<li><strong>Claude</strong> — <em>REQUEST_CHANGES</em> (noting PGID cleanup proof, setsid guard, watchdog log, and reviewer hints on NO_OUTPUT rerun).—Considered resolved after Phase 1 adjustments.</li>
+<li><strong>Codex</strong> — <em>APPROVE</em> (validated the retry-loop exit codes, test harness, and cross-review regression smoke tests).</li>
+<li><strong>Gemini</strong> — <em>MINOR</em> (suggested emphasizing the plan HTML notes on missing sections; no blocker).</li>
+</ul>
+<p>Review artifact references: assets/WRK-657/wrk-657-plan-review-final.html &amp; assets/WRK-657/review.html</p>
+</body>
+</html>

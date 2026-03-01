@@ -39,8 +39,24 @@ def extract_frontmatter(path: Path):
 
 
 def frontmatter_value(frontmatter: str, field: str):
-    match = re.search(rf"^{re.escape(field)}:\s*(.*)$", frontmatter, re.MULTILINE)
+    match = re.search(rf"^{re.escape(field)}:[ \t]*(.*)$", frontmatter, re.MULTILINE)
     return match.group(1).strip() if match else ""
+
+
+def frontmatter_has_nonempty_field(frontmatter: str, field: str) -> bool:
+    match = re.search(rf"^{re.escape(field)}:[ \t]*(.*)$", frontmatter, re.MULTILINE)
+    if not match:
+        return False
+    inline = match.group(1).strip()
+    if inline and inline not in {"[]", "null", "~"}:
+        return True
+    # Allow block-list form:
+    # field:
+    #   - value
+    block = re.search(rf"^{re.escape(field)}:\s*\n((?:\s+-[^\n]*\n?)*)", frontmatter, re.MULTILINE)
+    if not block:
+        return False
+    return bool(re.search(r"^\s+-\s+\S+", block.group(1), re.MULTILINE))
 
 
 def parse_iso8601(value: str):
@@ -65,7 +81,7 @@ def path_exists(value: str):
     return candidate.exists()
 
 
-def check_workflow_evidence(path: Path, frontmatter: str):
+def check_workflow_evidence(path: Path, frontmatter: str, expected_status: str | None):
     wrk_id = frontmatter_value(frontmatter, "id") or path.stem
     wrk_num = wrk_number(path)
     status = frontmatter_value(frontmatter, "status")
@@ -75,32 +91,76 @@ def check_workflow_evidence(path: Path, frontmatter: str):
     if wrk_num is None or wrk_num < 624:
         return
 
-    html_output_ref = frontmatter_value(frontmatter, "html_output_ref")
-    if not html_output_ref:
-        warnings.append(f"{wrk_id}: missing html_output_ref for phased workflow contract")
-    elif not path_exists(html_output_ref):
-        warnings.append(f"{wrk_id}: html_output_ref does not exist -> {html_output_ref}")
+    is_wrk624_plus = wrk_num is not None and wrk_num >= 624
+    folder_status = expected_status or status
+    is_active = folder_status in {"pending", "working", "blocked"}
+    is_post_plan = folder_status in {"working", "done", "archived"} or plan_reviewed
+    is_post_claim = folder_status in {"working", "done", "archived"}
+    is_post_close = folder_status in {"done", "archived"}
 
-    if not frontmatter_value(frontmatter, "orchestrator"):
-        warnings.append(f"{wrk_id}: missing orchestrator")
+    def record_issue(message: str, blocking: bool = False):
+        if blocking:
+            errors.append(message)
+        else:
+            warnings.append(message)
 
-    if not frontmatter_value(frontmatter, "claim_routing_ref"):
-        warnings.append(f"{wrk_id}: missing claim_routing_ref")
+    if is_post_claim:
+        html_output_ref = frontmatter_value(frontmatter, "html_output_ref")
+        if not html_output_ref:
+            record_issue(
+                f"{wrk_id}: missing html_output_ref for phased workflow contract",
+                blocking=is_wrk624_plus,
+            )
+        elif not path_exists(html_output_ref):
+            record_issue(
+                f"{wrk_id}: html_output_ref does not exist -> {html_output_ref}",
+                blocking=is_wrk624_plus,
+            )
 
-    if route in {"B", "C"} or plan_reviewed:
+    if is_active and not frontmatter_value(frontmatter, "orchestrator"):
+        record_issue(
+            f"{wrk_id}: missing orchestrator",
+            blocking=is_wrk624_plus,
+        )
+
+    if not frontmatter_has_nonempty_field(frontmatter, "plan_workstations"):
+        errors.append(f"{wrk_id}: missing or empty plan_workstations")
+
+    if not frontmatter_has_nonempty_field(frontmatter, "execution_workstations"):
+        errors.append(f"{wrk_id}: missing or empty execution_workstations")
+
+    if is_post_claim and not frontmatter_value(frontmatter, "claim_routing_ref"):
+        record_issue(
+            f"{wrk_id}: missing claim_routing_ref",
+            blocking=is_wrk624_plus,
+        )
+
+    if is_post_plan and (route in {"B", "C"} or plan_reviewed):
         for field in ("plan_html_review_draft_ref", "plan_html_review_final_ref"):
             value = frontmatter_value(frontmatter, field)
             if not value:
-                warnings.append(f"{wrk_id}: missing {field}")
+                record_issue(
+                    f"{wrk_id}: missing {field}",
+                    blocking=is_wrk624_plus,
+                )
             elif not path_exists(value):
-                warnings.append(f"{wrk_id}: {field} does not exist -> {value}")
+                record_issue(
+                    f"{wrk_id}: {field} does not exist -> {value}",
+                    blocking=is_wrk624_plus,
+                )
 
     if status in {"done", "archived"}:
         value = frontmatter_value(frontmatter, "html_verification_ref")
         if not value:
-            warnings.append(f"{wrk_id}: missing html_verification_ref")
+            record_issue(
+                f"{wrk_id}: missing html_verification_ref",
+                blocking=is_wrk624_plus and is_post_close,
+            )
         elif not path_exists(value):
-            warnings.append(f"{wrk_id}: html_verification_ref does not exist -> {value}")
+            record_issue(
+                f"{wrk_id}: html_verification_ref does not exist -> {value}",
+                blocking=is_wrk624_plus and is_post_close,
+            )
 
 
 def check_file(path: Path, expected_status: str | None):
@@ -134,7 +194,7 @@ def check_file(path: Path, expected_status: str | None):
             if age_days > 7:
                 warnings.append(f"{path.name}: working item is stale ({age_days} days old)")
 
-    check_workflow_evidence(path, frontmatter)
+    check_workflow_evidence(path, frontmatter, expected_status)
 
 
 print("Scanning work-queue for inconsistencies...")

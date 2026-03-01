@@ -14,10 +14,20 @@ def parse_frontmatter(text: str) -> str:
 
 
 def get_field(front: str, key: str) -> str | None:
-    match = re.search(rf"^{re.escape(key)}:\s*(.+?)$", front, re.MULTILINE)
+    match = re.search(rf"^{re.escape(key)}:[ \t]*(.+?)$", front, re.MULTILINE)
     if not match:
         return None
     return match.group(1).strip()
+
+
+def has_nonempty_field(front: str, key: str) -> bool:
+    scalar = get_field(front, key)
+    if scalar and scalar not in {"[]", "null", "~"}:
+        return True
+    block = re.search(rf"^{re.escape(key)}:\s*\n((?:\s+-[^\n]*\n?)*)", front, re.MULTILINE)
+    if not block:
+        return False
+    return bool(re.search(r"^\s+-\s+\S+", block.group(1), re.MULTILINE))
 
 
 def parse_bool(value: str | None) -> bool:
@@ -77,6 +87,16 @@ def run_checks(wrk_id: str) -> int:
             "name": "Plan gate",
             "ok": plan_reviewed and plan_approved and plan_path.exists(),
             "details": f"reviewed={plan_reviewed}, approved={plan_approved}, artifact={'missing' if not plan_path.exists() else plan_path}",
+        }
+    )
+    gates.append(
+        {
+            "name": "Workstation contract gate",
+            "ok": has_nonempty_field(front, "plan_workstations") and has_nonempty_field(front, "execution_workstations"),
+            "details": (
+                f"plan_workstations={get_field(front, 'plan_workstations') or 'missing'}, "
+                f"execution_workstations={get_field(front, 'execution_workstations') or 'missing'}"
+            ),
         }
     )
     gates.append(

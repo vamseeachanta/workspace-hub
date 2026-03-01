@@ -252,6 +252,8 @@ Minimum triage contract:
 - `route`
 - `blocked_by`
 - `computer`
+- `plan_workstations`
+- `execution_workstations`
 - `provider`
 - `provider_alt`
 - `resource_needs`
@@ -259,6 +261,8 @@ Minimum triage contract:
 
 Field definitions:
 - `computer`: the execution host or named workstation expected to own the primary work, using the workspace workstation registry naming (for example `ace-linux-1`). This is not a generic hardware class field.
+- `plan_workstations`: one or more named workstations allowed for planning-stage work.
+- `execution_workstations`: one or more named workstations allowed for execution-stage work.
 
 #### Triage field registries
 
@@ -266,6 +270,8 @@ Field definitions:
 - `priority`: `high|medium|low`
 - `complexity`: `simple|medium|complex|critical`
 - `computer`: must match a named workstation entry from the workspace workstation registry
+- `plan_workstations`: must be non-empty and each value must match a named workstation entry from the workspace workstation registry
+- `execution_workstations`: must be non-empty and each value must match a named workstation entry from the workspace workstation registry
 - `provider` / `provider_alt`: must be valid configured providers for the ecosystem
 - `resource_needs`: structured list or explicit empty list; freeform prose alone is not sufficient
 
@@ -429,7 +435,7 @@ Archive hard gates:
 |---|---|---|---|---|---|---|
 | Capture | P3 | WRK intent is clear enough to open an item | WRK file, asset folder scaffold, minimum metadata | WRK exists with initial route, owner, and scope recorded | Missing WRK, missing route, missing orchestrator, no asset path | Creation should be scaffolded automatically so minimum metadata is never omitted |
 | Resource Intelligence | P1 | WRK exists and problem statement is non-empty | `resource-pack.md`, `sources.md`, `constraints.md`, `domain-notes.md`, `open-questions.md`, `resources.yaml` | Resource pack exists, required sections are present, source set is non-empty or explicitly waived | Missing pack, no source record, no legal-scan result when required | This remains the loosest stage; validator rules and legal-scan proof need to become machine-checkable |
-| Triage | P2 | Resource intelligence started and initial scope is known | Valid triage fields in WRK frontmatter/body | `priority`, `complexity`, `route`, `computer`, `provider`, `provider_alt`, `resource_needs`, `orchestrator` are all valid | Missing required triage fields, invalid registry values, blocked item routed to execution | Field registries need to be normalized further, especially workstation/value enums |
+| Triage | P2 | Resource intelligence started and initial scope is known | Valid triage fields in WRK frontmatter/body | `priority`, `complexity`, `route`, `computer`, `plan_workstations`, `execution_workstations`, `provider`, `provider_alt`, `resource_needs`, `orchestrator` are all valid | Missing required triage fields, invalid registry values, blocked item routed to execution | Field registries need to be normalized further, especially workstation/value enums |
 | Plan | P1 | Triage complete and resource pack is usable | Route plan/spec, plan HTML, draft/final HTML review records, review artifacts | User reviewed draft HTML, multi-agent review completed, user passed final HTML, plan approved | Missing plan HTML, missing user review decision, unresolved `MAJOR` findings, no approval | User HTML review remains the main practical bottleneck and needs the clearest SLA/delegate path |
 | Claim | P1 | Approved plan exists and item is unblocked | `claim-evidence.yaml`, quota snapshot ref, routing ref | Active session owner recorded, agent fit checked, quota readiness recorded, item moved to `working` cleanly | Missing session owner, blocked item claimed, stale or absent quota evidence, no routing decision | Claim is stronger now, but quota freshness and recovery paths still need tighter schema and repair logic |
 | Execute | P3 | Claimed session is active | Example pack, variation-test evidence, execution artifacts, intermediate HTML where applicable | Implementation complete, examples covered, variation tests recorded, required HTML produced | Missing examples, missing variation tests, execution outside session ownership, no HTML when applicable | End-state behavioral proof needs to stay stronger than simple document existence |
