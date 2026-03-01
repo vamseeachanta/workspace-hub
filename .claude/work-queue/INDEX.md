@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-01T01:10:52Z by generate-index.py -->
+<!-- Generated: 2026-03-01T04:21:44Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-01T01:10:52Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-01T04:21:44Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 415
+**Total items:** 417
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 174 |
+| pending | 176 |
 | working | 11 |
 | blocked | 5 |
 | archived | 225 |
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 196 |
+| high | 198 |
 | medium | 177 |
 | low | 41 |
 
@@ -31,8 +31,8 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 70 |
-| medium | 187 |
-| complex | 91 |
+| medium | 188 |
+| complex | 92 |
 
 ### By Repository
 
@@ -54,7 +54,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 97 |
+| workspace-hub | 99 |
 | worldenergydata | 80 |
 
 ### Plan Tracking
@@ -62,7 +62,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 152 / 415 |
+| Plans exist | 154 / 417 |
 | Plans cross-reviewed | 58 |
 | Plans approved | 79 |
 | Brochure pending | 7 |
@@ -74,9 +74,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 415 |
+| Total captured | 417 |
 | Total archived | 225 |
-| Completion rate | 225/415 (54%) |
+| Completion rate | 225/417 (54%) |
 | Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 3 archived |
 
@@ -84,7 +84,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 46 / 174 | 26% |
+| Pending items with plans | 48 / 176 | 27% |
 | Plans cross-reviewed | 9 | 16% |
 | Plans user-approved | 9 | 16% |
 
@@ -101,7 +101,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 85 | 9 | 3 |
+| High     | 87 | 9 | 3 |
 | Medium   | 61  | 2  | 1  |
 | Low      | 28  | 0  | 1  |
 
@@ -523,6 +523,8 @@
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-637 |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
 | WRK-655 | feat(skills): define Resource Intelligence skill and validator-ready stage contract | working | high | complex | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | █░░ 55% | n/a | - |
+| WRK-656 | fix(review): enforce orchestrator gate evidence contract | pending | high | complex | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-657 | fix(review): harden submit-to-claude.sh timeout cleanup and liveness | pending | high | medium | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -704,6 +706,8 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | high | medium | workspace-hub | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | high | small | workspace-hub | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | low | medium | workspace-hub | - |
+| WRK-656 | fix(review): enforce orchestrator gate evidence contract | high | complex | workspace-hub | - |
+| WRK-657 | fix(review): harden submit-to-claude.sh timeout cleanup and liveness | high | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -1388,6 +1392,8 @@
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | - |
 | WRK-655 | feat(skills): define Resource Intelligence skill and validator-ready stage contract | working | high | complex | - |
+| WRK-656 | fix(review): enforce orchestrator gate evidence contract | pending | high | complex | - |
+| WRK-657 | fix(review): harden submit-to-claude.sh timeout cleanup and liveness | pending | high | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1677,6 +1683,8 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | medium | workspace-hub | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | small | workspace-hub | - |
 | WRK-655 | feat(skills): define Resource Intelligence skill and validator-ready stage contract | working | complex | workspace-hub | - |
+| WRK-656 | fix(review): enforce orchestrator gate evidence contract | pending | complex | workspace-hub | - |
+| WRK-657 | fix(review): harden submit-to-claude.sh timeout cleanup and liveness | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2174,6 +2182,7 @@
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | workspace-hub | - |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | workspace-hub | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | workspace-hub | - |
+| WRK-657 | fix(review): harden submit-to-claude.sh timeout cleanup and liveness | pending | high | workspace-hub | - |
 
 ### Complex
 
@@ -2270,10 +2279,11 @@
 | WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | high | TBD-client2-repo | - |
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | frontierdeepwater, TBD-client2-repo | - |
 | WRK-655 | feat(skills): define Resource Intelligence skill and validator-ready stage contract | working | high | workspace-hub | - |
+| WRK-656 | fix(review): enforce orchestrator gate evidence contract | pending | high | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (131 active / 144 total)
+### ace-linux-1 (133 active / 146 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2420,6 +2430,8 @@
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | workspace-hub |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | workspace-hub |
 | WRK-655 | feat(skills): define Resource Intelligence skill and validator-ready stage contract | working | high | complex | workspace-hub |
+| WRK-656 | fix(review): enforce orchestrator gate evidence contract | pending | high | complex | workspace-hub |
+| WRK-657 | fix(review): harden submit-to-claude.sh timeout cleanup and liveness | pending | high | medium | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)

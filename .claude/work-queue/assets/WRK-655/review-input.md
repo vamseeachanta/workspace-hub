@@ -15,6 +15,10 @@ Operationalize the Resource Intelligence stage from WRK-624 as a canonical skill
 - Skill scaffold script: `.claude/skills/workspace-hub/resource-intelligence/scripts/init-resource-pack.sh`
 - Skill validator: `.claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh`
 - Maturity sync/check: `.claude/skills/workspace-hub/resource-intelligence/scripts/sync-maturity-summary.py`
+- Functional tests: `.claude/skills/workspace-hub/resource-intelligence/tests/test-resource-intelligence-scripts.sh`
+- Local automation hooks:
+  - canonical hook: `scripts/hooks/pre-commit`
+  - local installation target: `.git/hooks/pre-commit` (not version-controlled)
 - Skill summary template: `.claude/skills/workspace-hub/resource-intelligence/templates/resource-intelligence-summary.md`
 - Mounted-source registry: `data/document-index/mounted-source-registry.yaml`
 - Maturity ledger: `data/document-index/resource-intelligence-maturity.yaml`
@@ -31,6 +35,7 @@ Operationalize the Resource Intelligence stage from WRK-624 as a canonical skill
   - `agent-router` advisory for fit
   - `agent-usage-optimizer` advisory for quota/capacity
   - orchestrator retains final authority
+  - if the two advisories conflict, quota/capacity risk takes precedence and the orchestrator records the override reason
 
 ## Existing Source Buckets Confirmed
 - `ace_project`
@@ -44,6 +49,7 @@ Operationalize the Resource Intelligence stage from WRK-624 as a canonical skill
 - `specs/wrk/WRK-655/plan.md`
 - `assets/WRK-655/wrk-655-resource-intelligence-review.html`
 - `.claude/skills/workspace-hub/resource-intelligence/SKILL.md`
+- `.claude/skills/workspace-hub/resource-intelligence/tests/test-resource-intelligence-scripts.sh`
 - `data/document-index/mounted-source-registry.yaml`
 - `data/document-index/resource-intelligence-maturity.yaml`
 
@@ -86,6 +92,9 @@ Operationalize the Resource Intelligence stage from WRK-624 as a canonical skill
 - YAML ledger is canonical
 - Markdown summary is generated from YAML and checked for drift
 - Markdown link is repo-relative to avoid multi-workstation churn
+- Both ledgers now include `schema_version`
+- Metric metadata now records measurement owner and update process
+- Drift check and resource-pack validation are wired into the local pre-commit hook
 
 ### Resource-Pack Summary State
 - `top_p1_gaps`: none
@@ -96,9 +105,9 @@ Operationalize the Resource Intelligence stage from WRK-624 as a canonical skill
 ```yaml
 - source_id: dde_project_remote
   document_intelligence_bucket: dde_project
-  mount_root: "<resolved via env:DDE_PROJECT_REMOTE_ROOT>"
-  mount_root_example: /mnt/remote/ace-linux-2/dde
-  mount_root_ref: env:DDE_PROJECT_REMOTE_ROOT
+  mount_root: ""
+  mount_root_env_var: DDE_PROJECT_REMOTE_ROOT
+  mount_root_example: /mnt/remote/<workstation>/dde
   environment_specific: true
   local_or_remote: remote
   auth_posture: inherited mount credentials
@@ -111,10 +120,14 @@ Operationalize the Resource Intelligence stage from WRK-624 as a canonical skill
 
 ### Artifact Excerpt: resource-intelligence-maturity.yaml
 ```yaml
+schema_version: "1.0.0"
 target_window: "3 months"
+target_start: "2026-03-01"
 metric:
   documents_read_threshold_percent: 80
   key_calculations_implemented_required: true
+  measurement_owner: orchestrator
+  measurement_process: update from reviewed resource packs and linked follow-up WRKs
 tracking:
   canonical_markdown_ref: data/document-index/resource-intelligence-maturity.md
 ```

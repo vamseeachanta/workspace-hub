@@ -1,9 +1,13 @@
 generated: "2026-02-28T00:00:00Z"
 version: "1.0.0"
+schema_version: "1.0.0"
 target_window: "3 months"
+target_start: "2026-03-01"
 metric:
   documents_read_threshold_percent: 80
   key_calculations_implemented_required: true
+  measurement_owner: orchestrator
+  measurement_process: update from reviewed resource packs and linked follow-up WRKs
 tracking:
   canonical_markdown_ref: data/document-index/resource-intelligence-maturity.md
 status:

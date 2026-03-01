@@ -135,6 +135,13 @@ if quota_status == "available":
 path.write_text(f"---\n{frontmatter.rstrip()}\n---\n{body}", encoding="utf-8")
 PY
 
+VERIFY_SCRIPT="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
+echo "Running gate evidence validator for ${WRK_ID}..."
+if ! python3 "$VERIFY_SCRIPT" "$WRK_ID"; then
+  echo "✖ Gate evidence verification failed for ${WRK_ID}; fix the missing artifacts before claiming." >&2
+  exit 1
+fi
+
 mkdir -p "${QUEUE_DIR}/working"
 mv "$FILE_PATH" "${QUEUE_DIR}/working/${WRK_ID}.md"
 

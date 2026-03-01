@@ -13,4 +13,4 @@
 - `reviewed_at`: 2026-02-28T00:00:00Z
 - `reviewer`: codex
 - `legal_scan_ref`: .claude/work-queue/assets/WRK-655/legal-scan.md
-- `indexing_ref`: data/document-index/registry.yaml
+- `indexing_ref`: data/document-index/index.jsonl

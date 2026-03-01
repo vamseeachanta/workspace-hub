@@ -1,8 +1,8 @@
 # Sources
 
-1. `AGENTS.md`
-2. `specs/wrk/WRK-624/plan.md`
-3. `assets/WRK-624/wrk-624-workflow-review.html`
+1. `workspace_hub_local` -> `/mnt/local-analysis/workspace-hub`
+2. `ace_project_local` -> `/mnt/ace/docs`
+3. `dde_project_remote` -> `/mnt/remote/ace-linux-2/dde`
 4. `data/document-index/registry.yaml`
 5. `data/document-index/index.jsonl`
 6. `data/document-index/mounted-source-registry.yaml`

@@ -1,0 +1,29 @@
+claim_date: "<ISO8601 claim timestamp>"
+wrk_id: "WRK-XXX"
+route: "A|B|C"
+orchestrator: "claude|codex|gemini"
+best_fit_provider: "claude|codex|gemini"
+alternate_provider: "optional"
+gate_evidence:
+  plan_gate:
+    plan_html_review_final_ref: "assets/WRK-XXX/plan-html-review-final.md"
+    plan_reviewed: true
+    plan_approved: true
+    notes: "Describe how the final HTML review passed user approval."
+  cross_review_gate:
+    artifacts:
+      - reviewer: "claude/codex/gemini"
+        artifact: "assets/WRK-XXX/review.html"
+        verdict: "APPROVE|MINOR|MAJOR|NO_OUTPUT"
+    combined_verdict: "Summary verdict + fallback classification (e.g., REQUEST_CHANGES with NO_OUTPUT fallback)"
+    fallback: "Indicate whether NO_OUTPUT triggered rerun/fallback behavior."
+  tdd_gate:
+    test_manifest: "assets/WRK-XXX/variation-test-results.md"
+    summary: "Brief statement of the test scope/outcome."
+  legal_gate:
+    legal_scan_ref: ".claude/work-queue/assets/WRK-XXX/legal-scan.md"
+    result: "pass|fail"
+    notes: "Record waiver or blocked findings if result != pass."
+no_output_policy:
+  classification: "Label that NO_OUTPUT cascades to gate failure unless rerun succeeds."
+  rerun_guidance: "Script/CI step that must rerun or escalate when NO_OUTPUT occurs."

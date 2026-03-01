@@ -1,23 +1,23 @@
 {
-  "timestamp": "2026-02-28T16:13:27-06:00",
+  "timestamp": "2026-02-28T22:30:00-06:00",
   "agents": [
     {
       "provider": "claude",
       "tier": "max",
       "weekly_limit": 20000,
-      "week_pct": null,
-      "five_hour_pct": null,
-      "pct_remaining": null,
-      "hours_to_reset": null,
-      "resets_at": "",
-      "source": "unavailable"
+      "week_pct": 5,
+      "five_hour_pct": 2,
+      "pct_remaining": 95,
+      "hours_to_reset": 125,
+      "resets_at": "2026-03-06T03:00:00-06:00",
+      "source": "manual_entry"
     },
     {
       "provider": "codex",
       "tier": "subscription",
       "weekly_limit": 1400,
-      "week_messages": 274,
-      "pct_remaining": 81,
+      "week_messages": 295,
+      "pct_remaining": 79,
       "source": "history.jsonl"
     },
     {

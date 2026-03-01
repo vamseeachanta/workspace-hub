@@ -8,6 +8,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 RENDERER="${SCRIPT_DIR}/render-structured-review.py"
 VALIDATOR="${SCRIPT_DIR}/validate-review-output.sh"
+CODEX_TIMEOUT_SECONDS="${CODEX_TIMEOUT_SECONDS:-300}"
+CODEX_COMPACT_RETRY_CHARS="${CODEX_COMPACT_RETRY_CHARS:-24000}"
 
 CONTENT_FILE=""
 COMMIT_SHA=""
@@ -78,18 +80,20 @@ This review is being run under the active approved work item above.
 "
   fi
 
+  CONTENT_TEXT="$(cat "$CONTENT_FILE")"
   FULL_PROMPT="${SCOPE_PREFIX}${PROMPT}
 
 ---
 CONTENT TO REVIEW:
 ---
 
-$(cat "$CONTENT_FILE")"
+${CONTENT_TEXT}"
 
   schema_file="$(mktemp)"
   raw_file="$(mktemp)"
+  err_file="$(mktemp)"
   rendered_file="$(mktemp)"
-  trap 'rm -f "$schema_file" "$raw_file" "$rendered_file"' EXIT
+  trap 'rm -f "$schema_file" "$raw_file" "$err_file" "$rendered_file"' EXIT
 
   cat > "$schema_file" <<'EOF'
 {
@@ -106,14 +110,80 @@ $(cat "$CONTENT_FILE")"
 }
 EOF
 
-  "$CODEX_BIN" exec "$FULL_PROMPT" \
-    --skip-git-repo-check \
-    --output-schema "$schema_file" \
-    --output-last-message "$raw_file" >/dev/null 2>&1 || {
-      echo "# Codex exec failed (exit $?)"
-      echo "# File: $CONTENT_FILE"
-      exit 0
-    }
+  run_codex_exec() {
+    local prompt_text="$1"
+    if command -v timeout >/dev/null 2>&1; then
+      timeout "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" exec "$prompt_text" \
+        --skip-git-repo-check \
+        --output-schema "$schema_file" \
+        --output-last-message "$raw_file" >/dev/null 2>"$err_file"
+    else
+      "$CODEX_BIN" exec "$prompt_text" \
+        --skip-git-repo-check \
+        --output-schema "$schema_file" \
+        --output-last-message "$raw_file" >/dev/null 2>"$err_file"
+    fi
+  }
+
+  classify_codex_failure() {
+    if [[ -s "$err_file" ]] && rg -qi \
+      "(insufficient[_ -]?quota|quota (exceeded|reached)|billing (limit|quota)|payment required|hard limit reached|credits? (exhausted|depleted|remaining:[[:space:]]*0))" \
+      "$err_file"; then
+      echo "QUOTA"
+      return
+    fi
+    if [[ -s "$err_file" ]] && rg -qi "(timed out|timeout|deadline exceeded)" "$err_file"; then
+      echo "TIMEOUT"
+      return
+    fi
+    if [[ -s "$err_file" ]] && rg -qi "(operation not permitted|permission denied|failed to connect|stream disconnected|error sending request)" "$err_file"; then
+      echo "TRANSPORT"
+      return
+    fi
+    echo "GENERIC"
+  }
+
+  exec_exit=0
+  run_codex_exec "$FULL_PROMPT" || exec_exit=$?
+
+  # One compact retry when full payload returns no usable output.
+  if [[ "$exec_exit" -ne 0 || ! -s "$raw_file" ]]; then
+    compact_text="$(printf '%s' "$CONTENT_TEXT" | head -c "$CODEX_COMPACT_RETRY_CHARS")"
+    COMPACT_PROMPT="${SCOPE_PREFIX}${PROMPT}
+
+---
+CONTENT TO REVIEW (TRUNCATED FOR PROVIDER RELIABILITY):
+---
+
+${compact_text}
+
+[truncated by submit-to-codex compact retry to avoid provider NO_OUTPUT]"
+    : > "$raw_file"
+    exec_exit=0
+    run_codex_exec "$COMPACT_PROMPT" || exec_exit=$?
+  fi
+
+  if [[ "$exec_exit" -ne 0 ]]; then
+    failure_kind="$(classify_codex_failure)"
+    if [[ "$failure_kind" == "QUOTA" ]]; then
+      echo "# Codex quota/credits exhausted"
+      echo "# Action: refresh usage/credits, then rerun this review."
+    elif [[ "$failure_kind" == "TIMEOUT" ]]; then
+      echo "# Codex exec timed out (exit $exec_exit)"
+      echo "# Action: retry or increase CODEX_TIMEOUT_SECONDS."
+    elif [[ "$failure_kind" == "TRANSPORT" ]]; then
+      echo "# Codex transport/network failure (exit $exec_exit)"
+      echo "# Action: run outside restricted sandbox or restore provider connectivity."
+    else
+      echo "# Codex exec failed (exit $exec_exit)"
+    fi
+    echo "# File: $CONTENT_FILE"
+    if [[ -s "$err_file" ]]; then
+      echo "# STDERR:"
+      sed -n '1,20p' "$err_file"
+    fi
+    exit 0
+  fi
 
   if python3 "$RENDERER" --provider codex --input "$raw_file" > "$rendered_file" 2>/dev/null \
     && [[ "$("$VALIDATOR" "$rendered_file")" == "VALID" ]]; then

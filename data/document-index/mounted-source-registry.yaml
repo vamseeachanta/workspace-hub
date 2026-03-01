@@ -1,5 +1,6 @@
 generated: "2026-02-28T00:00:00Z"
 version: "1.0.0"
+schema_version: "1.0.0"
 source_roots:
   - source_id: workspace_hub_local
     document_intelligence_bucket: workspace_spec
@@ -43,9 +44,9 @@ source_roots:
     availability_check_ref: scripts/readiness/check-network-mounts.sh
   - source_id: dde_project_remote
     document_intelligence_bucket: dde_project
-    mount_root: "<resolved via env:DDE_PROJECT_REMOTE_ROOT>"
-    mount_root_example: /mnt/remote/ace-linux-2/dde
-    mount_root_ref: env:DDE_PROJECT_REMOTE_ROOT
+    mount_root: ""
+    mount_root_env_var: DDE_PROJECT_REMOTE_ROOT
+    mount_root_example: /mnt/remote/<workstation>/dde
     environment_specific: true
     local_or_remote: remote
     index_artifact_ref: data/document-index/index.jsonl

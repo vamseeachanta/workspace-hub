@@ -89,13 +89,21 @@ For the first implementation pass:
 - `agent-router` is advisory for agent fit only
 - `agent-usage-optimizer` is advisory for quota and capacity only
 - the orchestrator retains final routing authority
+- if the two advisory systems conflict, quota/capacity risk from `agent-usage-optimizer` takes precedence over fit preference from `agent-router`, and the orchestrator records the final override reason
 - if the orchestrator deviates materially from these advisories, the WRK should record the override reason and risk acceptance in its evidence artifacts
+
+Override reason sink (required):
+
+- `resources.yaml` must record overrides under:
+  - `routing_overrides`
+  - each item should include: `decision`, `reason`, `recorded_at`, `recorded_by`
 
 ## Source Rules
 
 - Prefer repo-native and already-indexed sources first.
 - Treat downloaded documents as additive complements, not replacements.
 - Every downloaded source must record:
+  - source_type (`registry` | `additive`)
   - origin
   - license/access status
   - retrieval date

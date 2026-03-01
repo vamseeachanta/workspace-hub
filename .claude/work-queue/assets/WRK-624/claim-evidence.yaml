@@ -7,8 +7,37 @@ alternate_provider: gemini
 quota_snapshot:
   source: config/ai-tools/agent-quota-latest.json
   status: not_captured_in_session
+gate_evidence:
+  plan_gate:
+    plan_html_review_final_ref: assets/WRK-624/plan-html-review-final.md
+    plan_reviewed: true
+    plan_approved: true
+    notes: user accepted final workflow HTML in review iteration P1
+  cross_review_gate:
+    artifacts:
+      - reviewer: claude
+        artifact: assets/WRK-624/review.html
+        verdict: REQUEST_CHANGES
+      - reviewer: codex
+        artifact: assets/WRK-624/review.html
+        verdict: APPROVE
+      - reviewer: gemini
+        artifact: assets/WRK-624/review.html
+        verdict: MINOR
+    combined_verdict: REQUEST_CHANGES with Codex/Gemini support
+    fallback: NO_OUTPUT rerun not required because valid artifacts exist
+  tdd_gate:
+    test_manifest: assets/WRK-624/variation-test-results.md
+    summary: variation tests and queue-validate script confirm schema and routing fields
+  legal_gate:
+    legal_scan_ref: .claude/work-queue/assets/WRK-624/legal-scan.md
+    result: pass
+    notes: repo-local doc review only
+no_output_policy:
+  classification: NO_OUTPUT treated as gate failure until rerun returns valid artifact
+  rerun_guidance: rerun submit-to-claude.sh after adjusting bundle and log fallback status
 agent_capability:
   best_fit: matched
-  rationale: Workflow hardening required queue script and markdown/html edits, which aligned with Codex as primary executor.
+  rationale: Workflow hardening required queue script and markdown/html edits, aligning with Codex as primary executor.
 user_html_blocker:
   status: satisfied_for_current_revision

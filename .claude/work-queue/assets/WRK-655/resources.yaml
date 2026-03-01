@@ -9,6 +9,7 @@ index_assets:
   maturity_markdown: data/document-index/resource-intelligence-maturity.md
 sources:
   - id: workspace_hub_local
+    source_type: registry
     origin: /mnt/local-analysis/workspace-hub
     license_access: repo-native
     retrieval_date: 2026-02-28
@@ -16,6 +17,7 @@ sources:
     duplicate_status: canonical
     status: available
   - id: ace_project_local
+    source_type: registry
     origin: /mnt/ace/docs
     license_access: mounted-local
     retrieval_date: 2026-02-28
@@ -23,9 +25,11 @@ sources:
     duplicate_status: reference-in-place
     status: available
   - id: dde_project_remote
+    source_type: registry
     origin: /mnt/remote/ace-linux-2/dde
     license_access: mounted-remote
     retrieval_date: 2026-02-28
     canonical_storage_path: /mnt/remote/ace-linux-2/dde
     duplicate_status: reference-in-place
     status: available
+routing_overrides: []

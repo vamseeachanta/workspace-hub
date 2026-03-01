@@ -360,6 +360,7 @@ Execute should leave behind, at minimum:
 Close requires evidence for:
 - implementation commit(s)
 - tests/checks run and result
+- cross-review verdicts from Claude, Codex, and Gemini that explicitly evaluate the executed artifacts against the plan
 - review artifact paths
 - changed files
 - follow-up WRKs
