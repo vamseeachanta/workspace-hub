@@ -3,7 +3,7 @@
 > Generated from: `config/input/[feature-name].yaml`
 > Created: [DATE]
 > Status: [Draft | Under Review | Approved]
-> AI Agent: [OpenAI GPT-4o | Claude Sonnet | etc.]
+> AI Agent: [OpenAI GPT-4.1 | Claude Sonnet | etc.]
 
 ---
 

@@ -60,7 +60,7 @@ When you run `droid` in any repository:
 3. **Multi-Model Support**
    - Works with Claude 3.5 Sonnet
    - Works with GPT-5 Codex
-   - Works with GPT-4 Turbo
+   - Works with GPT-4.1
    - Works with all Factory AI agent variants
 
 ## Key Features
@@ -238,7 +238,7 @@ find /mnt/github/workspace-hub -maxdepth 2 -type d -name ".claude" | wc -l
 
 - **Claude 3.5 Sonnet** - Default, highest quality
 - **GPT-5 Codex** - Specialized coding model
-- **GPT-4 Turbo** - Fast, capable
+- **GPT-4.1** - Fast, capable
 - **Claude 3 Opus** - Maximum context
 - **GPT-4** - Stable, reliable
 
@@ -260,8 +260,8 @@ droid
 # Use GPT-5 Codex
 droid --model gpt-5-codex
 
-# Use GPT-4 Turbo
-droid --model gpt-4-turbo
+# Use GPT-4.1
+droid --model gpt-4.1
 
 # All variants automatically load .claude/CLAUDE.md
 ```

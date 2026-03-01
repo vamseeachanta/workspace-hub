@@ -832,6 +832,18 @@ Rules:
   - zero archive transitions occur without merge/sync completion evidence
   - zero hard-fail gate overrides occur without dated remediation evidence
 
+## Operational Note: Stale Working Triage (2026-03-01)
+- purpose: reduce stale `working/` noise so gate failures remain high-signal and actionable
+- dispositions applied:
+  - closed to `done/`: `WRK-229`, `WRK-279`, `WRK-290`
+  - moved to `blocked/`: `WRK-121`, `WRK-131`, `WRK-280`
+  - parked to `pending/`: `WRK-125`, `WRK-235`
+  - retained in `working/`: `WRK-118` (active partial execution)
+- remediation side-fix: repaired malformed `WRK-659` frontmatter (`plan_workstations`, `execution_workstations`, `plan_html_review_*_ref`)
+- post-triage validation target:
+  - `scripts/work-queue/validate-queue-state.sh` passes with no stale-working warnings
+  - index regenerated after triage to preserve queue consistency
+
 ## Testing Strategy
 - transition tests:
   - capture -> plan draft -> multi-agent review -> claim -> execute -> close -> archive

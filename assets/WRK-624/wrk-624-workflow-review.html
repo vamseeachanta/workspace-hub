@@ -786,6 +786,39 @@ flowchart TD
     </section>
 
     <section class="panel">
+      <h2>Stale Working-Queue Triage (2026-03-01)</h2>
+      <p>Post-remediation stale <code>working/</code> items were triaged to keep validator warnings actionable and the stage signal clean.</p>
+      <table>
+        <tr>
+          <th>Disposition</th>
+          <th>WRK IDs</th>
+          <th>Reason</th>
+        </tr>
+        <tr>
+          <td>Closed to <code>done/</code></td>
+          <td><code>WRK-229</code>, <code>WRK-279</code>, <code>WRK-290</code></td>
+          <td>Evidence indicated materially complete outcomes; stale <code>working</code> status was no longer correct.</td>
+        </tr>
+        <tr>
+          <td>Moved to <code>blocked/</code></td>
+          <td><code>WRK-121</code>, <code>WRK-131</code>, <code>WRK-280</code></td>
+          <td>External dependencies (licenses, network/manual data acquisition, archive access) prevent active execution.</td>
+        </tr>
+        <tr>
+          <td>Parked to <code>pending/</code></td>
+          <td><code>WRK-125</code>, <code>WRK-235</code></td>
+          <td>Standing/roadmap coordination work should not occupy active execution lanes continuously.</td>
+        </tr>
+        <tr>
+          <td>Kept in <code>working/</code></td>
+          <td><code>WRK-118</code></td>
+          <td>Still active with partial completion and immediate follow-on execution value.</td>
+        </tr>
+      </table>
+      <p><strong>Result:</strong> queue validation now passes with zero stale-working warnings.</p>
+    </section>
+
+    <section class="panel">
       <h2>Recommended Next Work</h2>
       <table>
         <tr>

@@ -537,7 +537,7 @@ class ComplexQA(dspy.Module):
 optimizer = MIPRO(
     metric=answer_quality_metric,
     prompt_model=dspy.OpenAI(model="gpt-4"),
-    task_model=dspy.OpenAI(model="gpt-3.5-turbo"),
+    task_model=dspy.OpenAI(model="gpt-4.1-mini"),
     num_candidates=10,
     init_temperature=1.0
 )
@@ -1160,7 +1160,7 @@ optimizer = BootstrapFewShotWithRandomSearch(
 
 ```python
 # Use faster model for compilation
-compile_lm = dspy.OpenAI(model="gpt-3.5-turbo")
+compile_lm = dspy.OpenAI(model="gpt-4.1-mini")
 deploy_lm = dspy.OpenAI(model="gpt-4")
 
 with dspy.settings.context(lm=compile_lm):

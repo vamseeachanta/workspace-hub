@@ -123,7 +123,7 @@ Update the droids.yml to include OpenAI models:
 ```yaml
 # Default model configuration
 defaults:
-  model: claude-sonnet-3-5  # or gpt-4-turbo, gpt-4o
+  model: claude-sonnet-3-5  # or gpt-4.1, gpt-4.1
   temperature: 0.7
   max_tokens: 4096
 
@@ -140,15 +140,15 @@ droids:
 
   # OpenAI models
   openai-refactor:
-    model: gpt-4-turbo
+    model: gpt-4.1
     temperature: 0.3
 
   openai-feature:
-    model: gpt-4o
+    model: gpt-4.1
     temperature: 0.7
 
   openai-fast:
-    model: gpt-3.5-turbo
+    model: gpt-4.1-mini
     temperature: 0.7
 ```
 
@@ -166,10 +166,10 @@ droids:
 
 | Model | Best For | Context | Speed | Cost |
 |-------|----------|---------|-------|------|
-| gpt-4o | Latest, fastest GPT-4 | 128K tokens | Fast | Medium |
-| gpt-4-turbo | Complex reasoning | 128K tokens | Medium | High |
+| gpt-4.1 | Latest, fastest GPT-4 | 128K tokens | Fast | Medium |
+| gpt-4.1 | Complex reasoning | 128K tokens | Medium | High |
 | gpt-4 | High quality | 8K tokens | Slow | High |
-| gpt-3.5-turbo | Simple, fast tasks | 16K tokens | Very Fast | Low |
+| gpt-4.1-mini | Simple, fast tasks | 16K tokens | Very Fast | Low |
 
 ## 🔧 Usage Examples
 
@@ -190,10 +190,10 @@ droid --droid claude-feature exec "design a microservices architecture for user 
 ### Using OpenAI Models
 
 ```bash
-# Use GPT-4 Turbo for refactoring
+# Use GPT-4.1 for refactoring
 droid --droid openai-refactor exec "optimize this code for performance"
 
-# Use GPT-4o for features
+# Use GPT-4.1 for features
 droid --droid openai-feature exec "add authentication with JWT tokens"
 
 # Use GPT-3.5 for simple tasks
@@ -203,13 +203,13 @@ droid --droid openai-fast exec "add docstrings to all functions"
 ### Model Selection Strategy
 
 ```bash
-# Simple tasks → gpt-3.5-turbo (fastest, cheapest)
+# Simple tasks → gpt-4.1-mini (fastest, cheapest)
 droid --droid openai-fast exec "fix typos in comments"
 
-# Standard tasks → claude-sonnet-3-5 or gpt-4o (balanced)
+# Standard tasks → claude-sonnet-3-5 or gpt-4.1 (balanced)
 droid exec "implement user profile endpoint"
 
-# Complex tasks → claude-sonnet-4-0 or gpt-4-turbo (highest quality)
+# Complex tasks → claude-sonnet-4-0 or gpt-4.1 (highest quality)
 droid --droid claude-feature exec "design distributed caching system"
 ```
 
@@ -253,19 +253,19 @@ droid --droid openai-fast exec "document the rate limiting implementation"
 
 1. **Use cheaper models for simple tasks:**
    ```bash
-   # gpt-3.5-turbo for docstrings, comments, simple refactoring
+   # gpt-4.1-mini for docstrings, comments, simple refactoring
    droid --droid openai-fast exec "add type hints"
    ```
 
 2. **Use mid-tier models for standard work:**
    ```bash
-   # claude-sonnet-3-5 or gpt-4o for features, bug fixes
+   # claude-sonnet-3-5 or gpt-4.1 for features, bug fixes
    droid exec "fix authentication bug"
    ```
 
 3. **Reserve expensive models for complex tasks:**
    ```bash
-   # claude-sonnet-4-0 or gpt-4-turbo for architecture, migrations
+   # claude-sonnet-4-0 or gpt-4.1 for architecture, migrations
    droid --droid claude-feature exec "migrate from REST to GraphQL"
    ```
 
@@ -273,9 +273,9 @@ droid --droid openai-fast exec "document the rate limiting implementation"
 
 | Model | Input | Output |
 |-------|-------|--------|
-| gpt-3.5-turbo | $0.50 | $1.50 |
-| gpt-4o | $2.50 | $10.00 |
-| gpt-4-turbo | $10.00 | $30.00 |
+| gpt-4.1-mini | $0.50 | $1.50 |
+| gpt-4.1 | $2.50 | $10.00 |
+| gpt-4.1 | $10.00 | $30.00 |
 | claude-sonnet-3-5 | $3.00 | $15.00 |
 | claude-sonnet-4-0 | $8.00 | $24.00 |
 
@@ -296,8 +296,8 @@ droid --droid claude-feature exec "echo 'Hello from Claude Sonnet 4.0'"
 ### Test OpenAI Models
 
 ```bash
-# Test GPT-4o
-droid --droid openai-feature exec "echo 'Hello from GPT-4o'"
+# Test GPT-4.1
+droid --droid openai-feature exec "echo 'Hello from GPT-4.1'"
 
 # Test GPT-3.5-turbo
 droid --droid openai-fast exec "echo 'Hello from GPT-3.5-turbo'"
@@ -372,8 +372,8 @@ cat /mnt/github/workspace-hub/.drcode/droids.yml | grep model:
 
 ```bash
 # Use faster models
-droid --droid openai-fast exec "..."  # gpt-3.5-turbo
-droid --droid openai-feature exec "..."  # gpt-4o
+droid --droid openai-fast exec "..."  # gpt-4.1-mini
+droid --droid openai-feature exec "..."  # gpt-4.1
 
 # Reduce max_tokens in droids.yml
 # temperature: 0.7
@@ -492,9 +492,9 @@ droid --droid <droid-name>
 # Available droids
 claude-refactor      # Claude Sonnet 3.5, temp 0.3
 claude-feature       # Claude Sonnet 4.0, temp 0.7
-openai-refactor      # GPT-4 Turbo, temp 0.3
-openai-feature       # GPT-4o, temp 0.7
-openai-fast          # GPT-3.5 Turbo, temp 0.7
+openai-refactor      # GPT-4.1, temp 0.3
+openai-feature       # GPT-4.1, temp 0.7
+openai-fast          # GPT-4.1 Mini, temp 0.7
 
 # Help
 droid --help
@@ -506,11 +506,11 @@ droid --version
 
 | Task Type | Recommended Model | Command |
 |-----------|------------------|---------|
-| Simple fixes | gpt-3.5-turbo | `--droid openai-fast` |
+| Simple fixes | gpt-4.1-mini | `--droid openai-fast` |
 | Standard features | claude-sonnet-3-5 | (default) |
 | Complex architecture | claude-sonnet-4-0 | `--droid claude-feature` |
-| Refactoring | gpt-4-turbo | `--droid openai-refactor` |
-| Latest OpenAI | gpt-4o | `--droid openai-feature` |
+| Refactoring | gpt-4.1 | `--droid openai-refactor` |
+| Latest OpenAI | gpt-4.1 | `--droid openai-feature` |
 
 ## 🎓 Next Steps
 

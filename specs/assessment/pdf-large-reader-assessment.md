@@ -66,7 +66,7 @@ File → assess_pdf() → select_strategy() → stream_pdf_pages() / chunk_pdf()
 - **Memory footprint**: Offloaded to Anthropic servers; no local memory management required
 - **Interactivity**: Excellent for exploratory, conversational document analysis
 
-### Codex / GPT-4o (OpenAI) — referenced as fallback in pdf-large-reader
+### Codex / GPT-4.1 (OpenAI) — referenced as fallback in pdf-large-reader
 
 - Similar API-upload model to Claude
 - Page and size limits in the same range (~50–100 pages, ~20–50MB)
@@ -118,7 +118,7 @@ File → assess_pdf() → select_strategy() → stream_pdf_pages() / chunk_pdf()
 
 **Rationale:**
 
-Native AI agents (Claude, GPT-4o) and pdf-large-reader do not compete in the same problem
+Native AI agents (Claude, GPT-4.1) and pdf-large-reader do not compete in the same problem
 space except for a narrow overlap on small documents. For the primary use case that motivated
 this tool — processing large engineering standards and project documents stored on drives
 containing 4.5TB of material — native AI agents are technically incapable:

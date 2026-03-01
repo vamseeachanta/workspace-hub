@@ -64,7 +64,7 @@ The Multi-AI Commit Workflow provides fully automated code review, testing, and 
 
 ### Stage 2: OpenAI Review (`review-openai.sh`)
 
-- **Model**: GPT-4o
+- **Model**: GPT-4.1
 - **Purpose**: Comprehensive code review
 - **Check Categories**:
   - `quality` - Readability, maintainability, DRY, complexity
@@ -121,10 +121,10 @@ Edit `config/multi-ai-workflow.yaml`:
 models:
   primary:
     name: "claude"
-    model: "claude-sonnet-4-20250514"
+    model: "claude-sonnet-4-5-20250929"
   reviewer:
     name: "openai"
-    model: "gpt-4o"
+    model: "gpt-4.1"
 
 stages:
   review:
@@ -261,7 +261,7 @@ Options:
 
 ### review-openai.sh
 
-OpenAI GPT-4o code review.
+OpenAI GPT-4.1 code review.
 
 ```bash
 ./scripts/ai-workflow/review-openai.sh [OPTIONS]

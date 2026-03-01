@@ -52,13 +52,13 @@ droid --droid claude-feature exec "design microservices architecture"
 ### Using OpenAI Models
 
 ```bash
-# GPT-4o (latest, fast)
+# GPT-4.1 (latest, fast)
 droid --droid openai-feature exec "implement user authentication"
 
-# GPT-4 Turbo (complex reasoning)
+# GPT-4.1 (complex reasoning)
 droid --droid openai-refactor exec "optimize algorithm performance"
 
-# GPT-3.5 Turbo (fast, cost-effective)
+# GPT-4.1 Mini (fast, cost-effective)
 droid --droid openai-fast exec "add type hints to Python code"
 ```
 
@@ -66,20 +66,20 @@ droid --droid openai-fast exec "add type hints to Python code"
 
 | Task Type | Best Model | Command |
 |-----------|-----------|---------|
-| Simple fixes, docs | GPT-3.5 Turbo | `droid --droid openai-fast exec "..."` |
+| Simple fixes, docs | GPT-4.1 Mini | `droid --droid openai-fast exec "..."` |
 | Standard features | Claude Sonnet 3.5 | `droid exec "..."` (default) |
-| Web development | GPT-4o | `droid --droid openai-feature exec "..."` |
+| Web development | GPT-4.1 | `droid --droid openai-feature exec "..."` |
 | Complex architecture | Claude Sonnet 4.0 | `droid --droid claude-feature exec "..."` |
-| Refactoring | GPT-4 Turbo | `droid --droid openai-refactor exec "..."` |
+| Refactoring | GPT-4.1 | `droid --droid openai-refactor exec "..."` |
 
 ## 💰 Cost Comparison
 
 | Model | Speed | Quality | Cost | Best For |
 |-------|-------|---------|------|----------|
-| gpt-3.5-turbo | ⚡⚡⚡ | ⭐⭐⭐ | $ | Simple tasks |
-| gpt-4o | ⚡⚡ | ⭐⭐⭐⭐ | $$ | Balanced performance |
+| gpt-4.1-mini | ⚡⚡⚡ | ⭐⭐⭐ | $ | Simple tasks |
+| gpt-4.1 | ⚡⚡ | ⭐⭐⭐⭐ | $$ | Balanced performance |
 | claude-sonnet-3-5 | ⚡⚡ | ⭐⭐⭐⭐ | $$ | General development |
-| gpt-4-turbo | ⚡ | ⭐⭐⭐⭐⭐ | $$$ | Complex tasks |
+| gpt-4.1 | ⚡ | ⭐⭐⭐⭐⭐ | $$$ | Complex tasks |
 | claude-sonnet-4-0 | ⚡ | ⭐⭐⭐⭐⭐ | $$$ | Architecture, planning |
 
 ## 🔄 Common Workflows
@@ -87,7 +87,7 @@ droid --droid openai-fast exec "add type hints to Python code"
 ### Workflow 1: Feature Development
 
 ```bash
-# 1. Research with GPT-4o (fast)
+# 1. Research with GPT-4.1 (fast)
 droid --droid openai-feature exec "research best practices for caching"
 
 # 2. Architecture with Claude (thorough)
@@ -106,7 +106,7 @@ droid --droid openai-fast exec "document caching implementation"
 # 1. Analysis with Claude
 droid exec "analyze code duplication in auth module"
 
-# 2. Refactoring with GPT-4 Turbo
+# 2. Refactoring with GPT-4.1
 droid --droid openai-refactor exec "refactor auth module to remove duplication"
 
 # 3. Testing with Claude
@@ -119,7 +119,7 @@ droid exec "write tests for refactored auth module"
 # 1. Reproduce with Claude (thorough)
 droid exec "write test that reproduces authentication bug"
 
-# 2. Fix with GPT-4o (fast)
+# 2. Fix with GPT-4.1 (fast)
 droid --droid openai-feature exec "fix authentication bug in auth.py:45"
 
 # 3. Verify with Claude
@@ -212,7 +212,7 @@ cat /mnt/github/workspace-hub/.drcode/droids.yml | grep "model:"
 
 # Use correct droid name
 droid --droid openai-feature exec "..."  # ✓ Correct
-droid --droid gpt-4o exec "..."          # ✗ Wrong
+droid --droid gpt-4.1 exec "..."          # ✗ Wrong
 ```
 
 ## 📚 Learn More

@@ -1,7 +1,7 @@
 # AI Agent Guidelines - Development Workflow
 
 > **CRITICAL INSTRUCTIONS FOR ALL AI AGENTS**
-> This document MUST be followed by ALL AI systems: OpenAI (GPT-4, GPT-4o, GPT-3.5), Claude (Sonnet, Opus), Google Gemini, Factory.ai Droids, and any other AI agents.
+> This document MUST be followed by ALL AI systems: OpenAI (GPT-4, GPT-4.1, GPT-3.5), Claude (Sonnet, Opus), Google Gemini, Factory.ai Droids, and any other AI agents.
 >
 > Version: 2.0.0
 > Priority: HIGHEST
@@ -317,7 +317,7 @@ Before creating the execution script:
 
 ## 🎯 Specific Agent Instructions
 
-### OpenAI Models (GPT-4o, GPT-4 Turbo, GPT-3.5 Turbo)
+### OpenAI Models (GPT-4.1, GPT-4.1, GPT-4.1 Mini)
 
 **Via Factory.ai Droids:**
 ```bash
