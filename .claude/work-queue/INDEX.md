@@ -2779,5 +2779,10 @@
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | WRK-635 | - | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | WRK-637 | - | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | WRK-638 | - | - |
-| WRK-658 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | - | - | WRK-631 |
+| WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | - | - | WRK-656 |
+| WRK-659 | analysis(digitalmodel): God Object decomposition plan — 6 files >1000L via Gemini large-context sweep | - | - | - |
+| WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | - | - | WRK-350 |
+| WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | - | - | WRK-568 |
+| WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | - | - | - |
+| WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | - | - | - |
 
