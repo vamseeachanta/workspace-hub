@@ -1,0 +1,18 @@
+{
+  "wrk_id": "WRK-624",
+  "exported_at": "2026-03-01T20:46:41.810Z",
+  "decisions": {
+    "capture": "confirm",
+    "resource_intelligence": "revise",
+    "triage": "confirm",
+    "plan": "confirm",
+    "claim": "confirm",
+    "execute": "confirm",
+    "close": "confirm",
+    "archive": "revise"
+  },
+  "comments": {
+    "resource_intelligence": "is the resource intelligence skill added? Does this increase strength?",
+    "archive": "identify tooling required and spin additional work items as required."
+  }
+}

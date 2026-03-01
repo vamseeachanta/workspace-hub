@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-01T16:12:36Z by generate-index.py -->
+<!-- Generated: 2026-03-01T20:50:02Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-01T16:12:36Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-01T20:50:02Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 421
+**Total items:** 423
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 185 |
+| pending | 187 |
 | working | 2 |
 | blocked | 9 |
 | archived | 225 |
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 200 |
+| high | 202 |
 | medium | 179 |
 | low | 41 |
 
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 70 |
-| medium | 192 |
+| medium | 194 |
 | complex | 92 |
 
 ### By Repository
@@ -54,7 +54,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 100 |
+| workspace-hub | 102 |
 | worldenergydata | 81 |
 
 ### Plan Tracking
@@ -62,7 +62,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 159 / 421 |
+| Plans exist | 159 / 423 |
 | Plans cross-reviewed | 59 |
 | Plans approved | 78 |
 | Brochure pending | 7 |
@@ -74,9 +74,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 421 |
+| Total captured | 423 |
 | Total archived | 225 |
-| Completion rate | 225/421 (53%) |
+| Completion rate | 225/423 (53%) |
 | Monthly rate (current month) | 0 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -84,7 +84,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 54 / 185 | 29% |
+| Pending items with plans | 54 / 187 | 29% |
 | Plans cross-reviewed | 9 | 14% |
 | Plans user-approved | 9 | 14% |
 
@@ -101,7 +101,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 93 | 1 | 7 |
+| High     | 95 | 1 | 7 |
 | Medium   | 64  | 1  | 1  |
 | Low      | 28  | 0  | 1  |
 
@@ -529,6 +529,8 @@
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 5% | n/a | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
@@ -721,6 +723,8 @@
 | WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | high | medium | workspace-hub | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | medium | medium | workspace-hub | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | high | medium | workspace-hub | - |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | high | medium | workspace-hub | - |
+| WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | high | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 
 ### Working
@@ -1405,6 +1409,8 @@
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | medium | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | medium | - |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | high | medium | - |
+| WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 
 ### worldenergydata
@@ -1699,6 +1705,8 @@
 | WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | medium | workspace-hub | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | complex | workspace-hub | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | medium | workspace-hub | - |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | medium | workspace-hub | - |
+| WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2203,6 +2211,8 @@
 | WRK-663 | analysis(workspace-hub): WRK queue triage — classify 160+ pending items by effort/value via Gemini batch | pending | high | workspace-hub | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | workspace-hub | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | workspace-hub | - |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | high | workspace-hub | - |
+| WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | workspace-hub | - |
 
 ### Complex
 
@@ -2303,7 +2313,7 @@
 
 ## By Computer
 
-### ace-linux-1 (138 active / 151 total)
+### ace-linux-1 (140 active / 153 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2457,6 +2467,8 @@
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | workspace-hub |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | medium | workspace-hub |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | medium | workspace-hub |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | high | medium | workspace-hub |
+| WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | medium | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (6 active / 12 total)

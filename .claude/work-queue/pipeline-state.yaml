@@ -17,5 +17,5 @@ sessions:
   - session_id: session-20260301083906
     provider: claude
     active_wrk: WRK-659
-    last_stage: implement_tdd
-    registered_at: 2026-03-01T16:04:33Z
+    last_stage: cross_review
+    registered_at: 2026-03-01T21:53:33Z

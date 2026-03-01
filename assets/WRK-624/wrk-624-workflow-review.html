@@ -250,6 +250,7 @@
       <p>Use the buttons to confirm each gap decision and add actions/clarifications/guidance for follow-up execution.</p>
       <div class="review-actions">
         <button class="action-btn" type="button" id="export-gap-review">Export Gap Decisions</button>
+        <button class="action-btn" type="button" id="save-gap-review-file">Save Gap Decisions File</button>
       </div>
       <table>
         <tr>
@@ -819,6 +820,38 @@ flowchart TD
     </section>
 
     <section class="panel">
+      <h2>User Gap Decisions Applied (2026-03-01)</h2>
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>User decision</th>
+          <th>Action taken</th>
+        </tr>
+        <tr>
+          <td>capture</td>
+          <td class="status-good">confirm</td>
+          <td>No change required.</td>
+        </tr>
+        <tr>
+          <td>resource_intelligence</td>
+          <td class="status-warn">revise</td>
+          <td>Follow-on created: <code>WRK-667</code> to strengthen skill usage and measure quality impact.</td>
+        </tr>
+        <tr>
+          <td>triage / plan / claim / execute / close</td>
+          <td class="status-good">confirm</td>
+          <td>No structural change requested.</td>
+        </tr>
+        <tr>
+          <td>archive</td>
+          <td class="status-warn">revise</td>
+          <td>Follow-on created: <code>WRK-668</code> for archive-tooling contract and spin-off automation.</td>
+        </tr>
+      </table>
+      <p><strong>Decision artifact:</strong> <code>.claude/work-queue/assets/WRK-624/gap-review-user.json</code></p>
+    </section>
+
+    <section class="panel">
       <h2>Recommended Next Work</h2>
       <table>
         <tr>
@@ -1197,16 +1230,19 @@ flowchart TD
         });
       });
 
+      function buildGapPayload() {
+        return {
+          wrk_id: "WRK-624",
+          exported_at: new Date().toISOString(),
+          decisions: state.decisions,
+          comments: state.comments
+        };
+      }
+
       const exportBtn = document.getElementById("export-gap-review");
       if (exportBtn) {
         exportBtn.addEventListener("click", async () => {
-          const payload = {
-            wrk_id: "WRK-624",
-            exported_at: new Date().toISOString(),
-            decisions: state.decisions,
-            comments: state.comments
-          };
-          const text = JSON.stringify(payload, null, 2);
+          const text = JSON.stringify(buildGapPayload(), null, 2);
           try {
             await navigator.clipboard.writeText(text);
             exportBtn.textContent = "Exported (Copied)";
@@ -1214,6 +1250,42 @@ flowchart TD
             exportBtn.textContent = "Export Failed";
           }
           setTimeout(() => { exportBtn.textContent = "Export Gap Decisions"; }, 1500);
+        });
+      }
+
+      const saveBtn = document.getElementById("save-gap-review-file");
+      if (saveBtn) {
+        saveBtn.addEventListener("click", async () => {
+          const text = JSON.stringify(buildGapPayload(), null, 2);
+          const filename = "wrk-624-gap-review-user.json";
+          try {
+            if (window.showSaveFilePicker) {
+              const handle = await window.showSaveFilePicker({
+                suggestedName: filename,
+                types: [{
+                  description: "JSON Files",
+                  accept: { "application/json": [".json"] }
+                }]
+              });
+              const writable = await handle.createWritable();
+              await writable.write(text);
+              await writable.close();
+            } else {
+              const blob = new Blob([text], { type: "application/json" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = filename;
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(url);
+            }
+            saveBtn.textContent = "Saved";
+          } catch (err) {
+            saveBtn.textContent = "Save Failed";
+          }
+          setTimeout(() => { saveBtn.textContent = "Save Gap Decisions File"; }, 1500);
         });
       }
     })();
