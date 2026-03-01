@@ -223,7 +223,15 @@ if [[ "$source_count" -gt 0 ]]; then
     esac
   }
 
+  # Scope parsing to the 'sources:' block only — stop at next top-level key
+  in_sources=0
   while IFS= read -r line; do
+    # Detect top-level keys (no leading spaces)
+    if [[ "$line" =~ ^([a-z_]+):[[:space:]]* ]]; then
+      [[ "${BASH_REMATCH[1]}" == "sources" ]] && in_sources=1 || in_sources=0
+      continue
+    fi
+    [[ "$in_sources" -eq 0 ]] && continue
     if [[ "$line" =~ ^[[:space:]]*-[[:space:]]+([a-z_]+):[[:space:]]*(.*)$ ]]; then
       validate_current_source
       first_key="${BASH_REMATCH[1]}"
@@ -248,11 +256,20 @@ if [[ "$source_count" -gt 0 ]]; then
   done < "$RESOURCES"
   validate_current_source
 
+  # Extract source ids from within the 'sources:' block only
   declared_sources=()
-  while IFS= read -r source_id; do
-    source_id="$(normalize_yaml_scalar "$source_id")"
-    [[ -n "$source_id" ]] && declared_sources+=("$source_id")
-  done < <(grep -E '^[[:space:]]+id:[[:space:]]*' "$RESOURCES" | sed 's/.*:[[:space:]]*//')
+  in_sources_block=0
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^([a-z_]+): ]]; then
+      [[ "${BASH_REMATCH[1]}" == "sources" ]] && in_sources_block=1 || in_sources_block=0
+      continue
+    fi
+    [[ "$in_sources_block" -eq 0 ]] && continue
+    if [[ "$line" =~ ^[[:space:]]+id:[[:space:]]*(.+)$ ]]; then
+      source_id="$(normalize_yaml_scalar "${BASH_REMATCH[1]}")"
+      [[ -n "$source_id" ]] && declared_sources+=("$source_id")
+    fi
+  done < "$RESOURCES"
 
   for sid in "${declared_sources[@]}"; do
     if ! grep -Fq "$sid" "$SOURCES"; then

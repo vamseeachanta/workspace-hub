@@ -353,6 +353,27 @@ sources:
 EOF
 bash "$VALIDATE" WRK-900
 
+# Regression: non-empty routing_overrides must not be parsed as source entries
+cat > "${asset_dir}/resources.yaml" <<'EOF'
+wrk_id: WRK-900
+no_external_sources: false
+sources:
+  - id: AGENTS
+    source_type: registry
+    origin: AGENTS.md
+    license_access: repo-native
+    retrieval_date: 2026-03-01
+    canonical_storage_path: AGENTS.md
+    duplicate_status: canonical
+    status: available
+routing_overrides:
+  - decision: use_claude
+    reason: advisor conflict resolved by orchestrator
+    recorded_at: 2026-03-01T00:00:00Z
+    recorded_by: orchestrator
+EOF
+bash "$VALIDATE" WRK-900
+
 cat > data/document-index/resource-intelligence-maturity.yaml <<'EOF'
 generated: "2026-02-28T00:00:00Z"
 version: "1.0.0"

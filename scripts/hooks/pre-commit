@@ -33,8 +33,8 @@ done <<< "$STAGED_FILES"
 if [[ "$needs_resource_intelligence_checks" -eq 1 ]]; then
   echo "Running Resource Intelligence pre-commit checks..."
 
-  if [[ -x "${REPO_ROOT}/.claude/skills/workspace-hub/resource-intelligence/tests/test-resource-intelligence-scripts.sh" ]]; then
-    "${REPO_ROOT}/.claude/skills/workspace-hub/resource-intelligence/tests/test-resource-intelligence-scripts.sh"
+  if [[ -f "${REPO_ROOT}/.claude/skills/workspace-hub/resource-intelligence/tests/test-resource-intelligence-scripts.sh" ]]; then
+    bash "${REPO_ROOT}/.claude/skills/workspace-hub/resource-intelligence/tests/test-resource-intelligence-scripts.sh"
   fi
 
   if [[ -f "${REPO_ROOT}/data/document-index/resource-intelligence-maturity.yaml" && -f "${REPO_ROOT}/data/document-index/resource-intelligence-maturity.md" ]]; then
