@@ -231,7 +231,7 @@
         </tr>
         <tr>
           <td>Documentation</td>
-          <td><code>.claude/work-queue/process.md</code> now reflects the 8-stage lifecycle, review retry loop, and the close-stage HTML evidence contract.</td>
+          <td><code>.claude/work-queue/process.md</code> now reflects the 9-stage lifecycle, review retry loop, the pre-close future-work synthesis gate, and the close-stage HTML evidence contract.</td>
         </tr>
         <tr>
           <td>WRK-624 evidence</td>
@@ -357,6 +357,22 @@
             <div class="decision-state" data-stage-state="execute">Decision: not set</div>
           </td>
           <td><textarea class="gap-comment" data-stage-comment="execute" placeholder="Actions, clarifications, guidance..."></textarea></td>
+        </tr>
+        <tr>
+          <td>Future Work Synthesis</td>
+          <td>P2</td>
+          <td>Before close, generate and classify recommended follow-up WRKs so deferred work and tooling gaps are explicitly captured.</td>
+          <td><span class="status-warn">Partially defined</span></td>
+          <td>Needs stricter automation and noise control so only meaningful follow-up work is auto-created.</td>
+          <td>
+            <div class="gap-controls" data-stage="future_work_synthesis">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="future_work_synthesis">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="future_work_synthesis" placeholder="Actions, clarifications, guidance..."></textarea></td>
         </tr>
         <tr>
           <td>Close</td>
@@ -562,8 +578,8 @@
     <section class="grid">
       <article class="card">
         <h2>Stages</h2>
-        <div class="metric">8</div>
-        <p>Capture through Archive with explicit gates.</p>
+        <div class="metric">9</div>
+        <p>Capture through Archive with explicit gates, including pre-close future-work synthesis.</p>
       </article>
       <article class="card">
         <h2>Mandatory Reviewers</h2>
@@ -584,34 +600,58 @@
 
     <section class="panel">
       <h2>Mermaid Schematic</h2>
+      <p><strong>Color legend:</strong>
+        <span style="display:inline-block;padding:2px 8px;margin-left:8px;border:1px solid #8a6d00;background:#fff3c4;border-radius:6px;">Artifact Cross-Review Gate</span>
+        <span style="display:inline-block;padding:2px 8px;margin-left:8px;border:1px solid #005f8a;background:#dff3ff;border-radius:6px;">User HTML Review Gate</span>
+        <span style="display:inline-block;padding:2px 8px;margin-left:8px;border:1px solid #4b2f89;background:#efe8ff;border-radius:6px;">Final HTML + Agent Verification</span>
+        <span style="display:inline-block;padding:2px 8px;margin-left:8px;border:1px solid #1f7a1f;background:#e7ffe6;border-radius:6px;">Future Work Synthesis Gate</span>
+      </p>
       <div class="mermaid-wrap">
         <pre class="mermaid">
 flowchart TD
-    A[Capture] --> B[Resource Intelligence]
-    B --> C[Triage]
-    C --> D[Plan Draft]
-    D --> E{User Reviewed Draft HTML?}
-    E -- Yes --> F[Multi-Agent Review]
+    A["Capture"] --> B["Resource Intelligence"]
+    B --> C["Triage"]
+    C --> D["Plan Draft"]
+    D --> E{"User Reviewed Draft HTML"}
+    E -- Yes --> F["Artifact Cross-Review Plan (Claude Codex Gemini seeds)"]
     E -- No --> D
-    F --> G{User Review Passed on Final HTML?}
-    G -- Yes --> H{Plan Reviewed + Approved?}
-    G -- No --> F1[Revise Plan HTML]
+    F --> G{"User Review Passed Final Plan HTML"}
+    G -- Yes --> H{"Plan Reviewed and Approved"}
+    G -- No --> F1["Revise Plan HTML"]
     F1 --> D
-    H -- Yes --> I[Claim]
-    H -- No --> F1[Revise Plan HTML]
-    I --> J{Best-Fit Agent + Quota Ready?}
-    J -- Yes --> K{Blocked?}
-    J -- No --> I1[Recommend alternate agent or short defer]
+    H -- Yes --> I["Claim"]
+    H -- No --> F1
+    I --> J{"Best Fit Agent and Quota Ready"}
+    J -- Yes --> K{"Blocked"}
+    J -- No --> I1["Recommend Alternate Agent or Short Defer"]
     I1 --> I
-    K -- No --> L[Execute]
-    K -- Yes --> M[Status: blocked]
-    L --> N{Route Review Passed?}
-    N -- Yes --> O[Close]
-    N -- No --> N1[Address findings / revise implementation]
+    K -- No --> L["Execute"]
+    K -- Yes --> M["Status Blocked"]
+    L --> N{"Artifact Cross-Review Passed (Execution and Close Gate)"}
+    N -- Yes --> S["Future Work Synthesis and Auto WRK Recommendations"]
+    S --> S1{"Required Follow-up WRKs Created"}
+    S1 -- Yes --> R["Generate Final WRK HTML and Agent Verification"]
+    S1 -- No --> S2["Create Required Follow-up WRKs"]
+    S2 --> S1
+    R --> U{"User Reviewed Final WRK HTML"}
+    U -- Yes --> O["Close"]
+    U -- No --> U1["Revise Final HTML and Address User Comments"]
+    U1 --> R
+    N -- No --> N1["Address Findings and Revise Implementation"]
     N1 --> L
-    O --> P{Queue Valid + Merge/Sync Complete?}
-    P -- Yes --> Q[Archive]
+    O --> P{"Queue Valid and Merge Sync Complete"}
+    P -- Yes --> Q["Archive"]
     P -- No --> O
+
+    classDef reviewGate fill:#fff3c4,stroke:#8a6d00,stroke-width:2px,color:#2f2500
+    classDef userGate fill:#dff3ff,stroke:#005f8a,stroke-width:2px,color:#002d42
+    classDef verifyStep fill:#efe8ff,stroke:#4b2f89,stroke-width:2px,color:#2a1950
+    classDef futureStage fill:#e7ffe6,stroke:#1f7a1f,stroke-width:2px,color:#0f3d0f
+
+    class F,N reviewGate
+    class E,G,U userGate
+    class R verifyStep
+    class S,S1,S2 futureStage
         </pre>
       </div>
     </section>
@@ -707,6 +747,11 @@ flowchart TD
           <td class="status-bad">Done transition blocked if incomplete</td>
         </tr>
         <tr>
+          <td>Future-work synthesis evidence</td>
+          <td>Before close, generate <code>future-work-recommendations.md</code> and create any follow-up WRKs marked required for signoff.</td>
+          <td class="status-bad">Close blocked if required follow-up WRKs are missing</td>
+        </tr>
+        <tr>
           <td>Archive evidence</td>
           <td>Archive must write a canonical <code>archive-evidence.yaml</code> recording close evidence, queue validation, merge status, sync status, follow-up WRKs, and archive metadata.</td>
           <td class="status-bad">Archive blocked if incomplete</td>
@@ -748,6 +793,7 @@ flowchart TD
         <tr><td>Plan</td><td>Yes</td><td>Claude</td><td>Codex + Gemini with Claude synthesis</td><td>Yes</td></tr>
         <tr><td>Claim</td><td>Yes</td><td>Claude</td><td>Claude</td><td>No</td></tr>
         <tr><td>Execute</td><td>Internally parallelizable, externally gate-dependent</td><td>Codex</td><td>Codex</td><td>Yes, when two implementation paths or comparison builds are useful</td></tr>
+        <tr><td>Future Work Synthesis</td><td>Yes</td><td>Claude</td><td>Claude + Codex</td><td>Yes, when one agent mines findings and one drafts follow-up WRKs</td></tr>
         <tr><td>Close</td><td>Yes</td><td>Claude</td><td>Codex for evidence generation, Claude for closure check</td><td>Sometimes</td></tr>
         <tr><td>Archive</td><td>Yes</td><td>Claude</td><td>Claude</td><td>No</td></tr>
       </table>
@@ -764,7 +810,7 @@ flowchart TD
           <th>Current recommendation</th>
         </tr>
         <tr>
-          <td>Accept the tightened 8-stage workflow contract</td>
+          <td>Accept the tightened 9-stage workflow contract</td>
           <td>This is the baseline contract for all follow-on work-queue hardening.</td>
           <td>Accept the current `WRK-624` draft as the governing workflow contract.</td>
         </tr>

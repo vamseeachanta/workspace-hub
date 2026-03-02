@@ -19,3 +19,8 @@ sessions:
     active_wrk: WRK-659
     last_stage: cross_review
     registered_at: 2026-03-01T21:53:33Z
+  - session_id: session-20260301170256
+    provider: claude
+    active_wrk: WRK-659
+    last_stage: plan_approval_gate
+    registered_at: 2026-03-02T01:28:05Z

@@ -5,7 +5,7 @@
 
 ## Overview
 
-The work queue tracks features, bugs, and tasks across all workspace-hub repositories. Items flow through an eight-stage lifecycle: **Capture, Resource Intelligence, Triage, Plan, Claim, Execute, Close, Archive**. The workspace-hub queue is the master; repo-local WRK copies are deprecated and should not be created.
+The work queue tracks features, bugs, and tasks across all workspace-hub repositories. Items flow through a nine-stage lifecycle: **Capture, Resource Intelligence, Triage, Plan, Claim, Execute, Future Work Synthesis, Close, Archive**. The workspace-hub queue is the master; repo-local WRK copies are deprecated and should not be created.
 
 State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item detail), and `INDEX.md` (generated listing).
 
@@ -32,7 +32,11 @@ flowchart TD
     K -- No --> L[Execute]
     K -- Yes --> M[Status: blocked]
     L --> N{Route Review Passed?}
-    N -- Yes --> O[Close]
+    N -- Yes --> R[Future Work Synthesis]
+    R --> R1{Recommended follow-up WRKs created?}
+    R1 -- Yes --> O[Close]
+    R1 -- No --> R2[Generate follow-up WRKs]
+    R2 --> R1
     N -- No --> N1[Address findings / revise implementation]
     N1 --> L
     O --> P{Queue Valid + Merge/Sync Complete?}
@@ -75,14 +79,24 @@ flowchart TD
 - Include variation tests.
 - Generate HTML review artifact.
 
-### 7. Close
+### 7. Future Work Synthesis
+- Triggered after execution review passes and before close.
+- Generate recommended follow-up WRKs automatically from:
+  - unresolved review findings
+  - deferred improvements
+  - tooling/automation gaps discovered during execution
+  - learning outputs that require independent backlog delivery
+- Record outputs in close evidence as `followup_wrks`.
+- Close is blocked until required follow-up WRKs exist.
+
+### 8. Close
 **Trigger**: Implementation complete and verified.
 - Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--html-output <path>] [--html-verification <path>] [--commit]`
 - Updates frontmatter, moves to `done/`, regenerates INDEX.
 - Enforces HTML review evidence for WRK items using the hardened workflow contract.
 - Record merge/sync status and follow-up/learning outputs where applicable.
 
-### 8. Archive
+### 9. Archive
 - Script: `scripts/archive-item.sh WRK-NNN`
 - Blocked until merge-to-main and sync complete.
 - Moves to `archive/YYYY-MM/`.

@@ -1,6 +1,6 @@
 ---
 title: "WRK-624 Canonical Workflow Hardening"
-description: "Route C plan/spec for the canonical 8-stage work-item lifecycle, review matrix, closure enforcement, and ecosystem learning loop."
+description: "Route C plan/spec for the canonical 9-stage work-item lifecycle, review matrix, closure enforcement, and ecosystem learning loop."
 version: "0.1.0"
 module: "work-queue"
 session:
@@ -120,7 +120,11 @@ flowchart TD
     K -- No --> L[Execute]
     K -- Yes --> M[Status: blocked]
     L --> N{Route Review Passed?}
-    N -- Yes --> O[Close]
+    N -- Yes --> R[Future Work Synthesis]
+    R --> R1{Recommended follow-up WRKs created?}
+    R1 -- Yes --> O[Close]
+    R1 -- No --> R2[Generate follow-up WRKs]
+    R2 --> R1
     N -- No --> N1[Address findings / revise implementation]
     N1 --> L
     O --> P{Queue Valid + Merge/Sync Complete?}
@@ -362,7 +366,32 @@ Execute should leave behind, at minimum:
 - missing HTML output fails execute completion when the WRK requires HTML-visible outputs
 - execution outside the claimed session fails execute completion
 
-### 7. Close
+### 7. Future Work Synthesis
+- This stage runs after execution review passes and before close.
+- Recommended follow-up work items should be generated automatically from:
+  - unresolved review findings that are out of current scope
+  - deferred enhancements explicitly acknowledged during review
+  - tooling and workflow gaps discovered during execution/close preparation
+  - learning outputs that require independent backlog ownership
+- The stage should produce a canonical artifact:
+  - `future-work-recommendations.md`
+- Required fields for each recommendation:
+  - title
+  - why now
+  - scope summary
+  - suggested route (`A|B|C`)
+  - suggested owner/orchestrator
+  - required workstation(s)
+  - dependency links to parent WRK and related evidence
+- If one or more recommendations are marked as `required_for_signoff`, corresponding WRK items must exist before close passes.
+
+#### Future Work Synthesis hard gates
+
+- missing `future-work-recommendations.md` fails this stage
+- any recommendation marked `required_for_signoff` without a created WRK id fails this stage
+- close may not proceed until the required follow-up WRKs are linked in evidence
+
+### 8. Close
 Close requires evidence for:
 - implementation commit(s)
 - tests/checks run and result
@@ -396,7 +425,7 @@ Close hard gates:
 - unresolved blocking review findings fail close
 - referenced follow-up WRKs must exist before close can pass
 
-### 8. Archive
+### 9. Archive
 - `archive/` may contain only `status: archived`.
 - Archive is blocked until merge-to-main and sync flow are complete.
 - `done/` remains the holding area for completed but not yet archived items.
@@ -439,7 +468,8 @@ Archive hard gates:
 | Plan | P1 | Triage complete and resource pack is usable | Route plan/spec, plan HTML, draft/final HTML review records, review artifacts | User reviewed draft HTML, multi-agent review completed, user passed final HTML, plan approved | Missing plan HTML, missing user review decision, unresolved `MAJOR` findings, no approval | User HTML review remains the main practical bottleneck and needs the clearest SLA/delegate path |
 | Claim | P1 | Approved plan exists and item is unblocked | `claim-evidence.yaml`, quota snapshot ref, routing ref | Active session owner recorded, agent fit checked, quota readiness recorded, item moved to `working` cleanly | Missing session owner, blocked item claimed, stale or absent quota evidence, no routing decision | Claim is stronger now, but quota freshness and recovery paths still need tighter schema and repair logic |
 | Execute | P3 | Claimed session is active | Example pack, variation-test evidence, execution artifacts, intermediate HTML where applicable | Implementation complete, examples covered, variation tests recorded, required HTML produced | Missing examples, missing variation tests, execution outside session ownership, no HTML when applicable | End-state behavioral proof needs to stay stronger than simple document existence |
-| Close | P1 | Execute finished and route review passed | Close evidence, final HTML, HTML verification, test evidence, review refs, follow-up refs | Close script can verify required evidence and move item to `done` | Missing HTML evidence, failed tests, missing review refs, unresolved blocking findings | Merge/sync and follow-up evidence should keep moving toward one normalized close-evidence schema |
+| Future Work Synthesis | P2 | Execute review has passed | `future-work-recommendations.md`, mapped follow-up WRK ids | Required follow-up WRKs are created and linked before close | Missing recommendation artifact, required follow-ups not created | Auto-generation quality and prioritization should be tuned to avoid noisy backlog inflation |
+| Close | P1 | Execute finished and future-work synthesis complete | Close evidence, final HTML, HTML verification, test evidence, review refs, follow-up refs | Close script can verify required evidence and move item to `done` | Missing HTML evidence, failed tests, missing review refs, unresolved blocking findings | Merge/sync and follow-up evidence should keep moving toward one normalized close-evidence schema |
 | Archive | P2 | Item is in `done` with close evidence complete | Archive-time validation result, merge/sync evidence, final follow-up capture | Archive move is clean, queue validates, merge/sync complete | Incomplete merge/sync, invalid queue state, wrong status/folder pairing | Operational enforcement is still thinner than close enforcement and should be tightened next |
 
 ## Review Matrix
