@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WRK-659 Cross-Review Synthesis</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { color: #1d4ed8; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { background: #1d4ed8; color: white; padding: 0.5rem; text-align: left; }
+    td { padding: 0.5rem; border: 1px solid #e2e8f0; vertical-align: top; }
+    .approve { color: #16a34a; font-weight: 700; }
+    .minor   { color: #d97706; font-weight: 700; }
+    .major   { color: #dc2626; font-weight: 700; }
+    .na      { color: #6b7280; font-weight: 700; }
+    .fixed   { background: #f0fdf4; }
+    .finding { margin: 0.3rem 0; padding: 0.3rem 0.5rem; border-radius: 4px; font-size: 0.9rem; }
+    .f-major { background: #fef2f2; border-left: 3px solid #dc2626; }
+    .f-minor { background: #fffbeb; border-left: 3px solid #d97706; }
+    .f-fixed { background: #f0fdf4; border-left: 3px solid #16a34a; }
+  </style>
+</head>
+<body>
+<h1>WRK-659 Cross-Review Synthesis</h1>
+<p><strong>Phase:</strong> Phase 1 (full pipeline) | <strong>Date:</strong> 2026-03-01 | <strong>Input:</strong> scripts/review/results/wrk-659-phase-1-review-input.md</p>
+
+<table>
+  <tr><th>Reviewer</th><th>Verdict</th><th>Findings</th><th>Artifact</th></tr>
+  <tr>
+    <td>Claude</td>
+    <td class="minor">MINOR</td>
+    <td>
+      <div class="finding f-fixed">✅ [MINOR-1] variation-test-results.md was a placeholder — fixed in TDD step</div>
+    </td>
+    <td>.claude/work-queue/assets/WRK-659/review-claude.md</td>
+  </tr>
+  <tr>
+    <td>Codex</td>
+    <td class="major">MAJOR → RESOLVED</td>
+    <td>
+      <div class="finding f-fixed">✅ [MAJOR-1] NO_OUTPUT policy conflict — claim-evidence.yaml updated to align with SKILL.md</div>
+      <div class="finding f-fixed">✅ [MAJOR-2] plan_reviewed set before cross-review — reset to false; set after verdicts</div>
+      <div class="finding f-fixed">✅ [MAJOR-3] Placeholder review.html — per-reviewer artifacts created</div>
+      <div class="finding f-fixed">✅ [MINOR-4] Missing Codex/Gemini log entries — added</div>
+      <div class="finding f-fixed">✅ [MINOR-5] Human confirm not persistent — log-gate-event entry added</div>
+    </td>
+    <td>.claude/work-queue/assets/WRK-659/review-codex.md</td>
+  </tr>
+  <tr>
+    <td>Gemini</td>
+    <td class="na">NO_OUTPUT</td>
+    <td>Timed out (120s). Per SKILL.md §Cross-Review: NO_OUTPUT acceptable. Documented explicitly.</td>
+    <td>.claude/work-queue/assets/WRK-659/review-gemini.md</td>
+  </tr>
+</table>
+
+<h2>Combined Verdict: APPROVED (all MAJOR findings resolved)</h2>
+<ul>
+  <li>3/3 MAJOR findings from Codex addressed before proceeding</li>
+  <li>2/2 MINOR findings addressed</li>
+  <li>Gemini NO_OUTPUT documented per policy</li>
+  <li>Claude MINOR finding addressed in TDD step</li>
+</ul>
+</body>
+</html>

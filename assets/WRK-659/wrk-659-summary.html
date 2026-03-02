@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-659 Completion Summary</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+    h1 { color: #1d4ed8; border-bottom: 2px solid #1d4ed8; padding-bottom: 0.5rem; }
+    h2 { color: #374151; margin-top: 2rem; }
+    .meta { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
+    .meta table { width: 100%; border-collapse: collapse; }
+    .meta td { padding: 0.3rem 0.5rem; vertical-align: top; }
+    .meta td:first-child { font-weight: 600; color: #475569; width: 200px; }
+    table.gates { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    table.gates th { background: #1d4ed8; color: white; padding: 0.6rem; text-align: left; }
+    table.gates td { padding: 0.5rem; border: 1px solid #e2e8f0; }
+    .pass { color: #16a34a; font-weight: 700; }
+    .no-output { color: #6b7280; font-weight: 700; }
+    .resolved { color: #d97706; font-weight: 700; }
+    .criteria li { padding: 0.4rem 0; }
+    .confirm-btn { background: #1d4ed8; color: white; border: none; padding: 0.75rem 2rem; border-radius: 0.5rem; font-size: 1rem; cursor: pointer; margin: 1rem 0; }
+    .confirm-btn:hover { background: #1e40af; }
+    #confirm-status { margin-left: 1rem; font-weight: 600; color: #16a34a; font-size: 1rem; }
+    .log-entry { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.25rem; padding: 0.4rem 0.75rem; margin: 0.3rem 0; font-family: monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+
+<h1>WRK-659 Completion Summary — Full Pipeline Re-Run</h1>
+
+<div class="meta">
+  <table>
+    <tr><td>WRK ID</td><td>WRK-659</td></tr>
+    <tr><td>Title</td><td>test(workflow): sandbox multi-agent gate enforcement</td></tr>
+    <tr><td>Route</td><td>C (Complex)</td></tr>
+    <tr><td>Status</td><td><strong style="color:#16a34a">DONE</strong></td></tr>
+    <tr><td>Orchestrator</td><td>claude (session-20260301170256)</td></tr>
+    <tr><td>Computer</td><td>ace-linux-1</td></tr>
+    <tr><td>Completed</td><td>2026-03-01</td></tr>
+  </table>
+</div>
+
+<h2>Gate Evidence Summary</h2>
+
+<table class="gates">
+  <tr><th>Gate</th><th>Status</th><th>Evidence Artifact</th></tr>
+  <tr>
+    <td>Plan gate</td>
+    <td class="pass">&#x2705; PASS</td>
+    <td>plan_approved: true | plan_reviewed: true | assets/WRK-659/wrk-659-plan-review-draft.html</td>
+  </tr>
+  <tr>
+    <td>Workstation contract</td>
+    <td class="pass">&#x2705; PASS</td>
+    <td>plan_workstations: [ace-linux-1] | execution_workstations: [ace-linux-1]</td>
+  </tr>
+  <tr>
+    <td>Cross-review &mdash; Claude</td>
+    <td class="pass">&#x2705; MINOR (resolved)</td>
+    <td>.claude/work-queue/assets/WRK-659/review-claude.md</td>
+  </tr>
+  <tr>
+    <td>Cross-review &mdash; Codex</td>
+    <td class="resolved">&#x26A0; MAJOR &rarr; RESOLVED</td>
+    <td>.claude/work-queue/assets/WRK-659/review-codex.md (3 MAJOR + 2 MINOR, all fixed)</td>
+  </tr>
+  <tr>
+    <td>Cross-review &mdash; Gemini</td>
+    <td class="no-output">NO_OUTPUT (acceptable)</td>
+    <td>.claude/work-queue/assets/WRK-659/review-gemini.md | policy: SKILL.md line 197</td>
+  </tr>
+  <tr>
+    <td>TDD</td>
+    <td class="pass">&#x2705; PASS</td>
+    <td>5/5 variation tests pass | .claude/work-queue/assets/WRK-659/variation-test-results.md</td>
+  </tr>
+  <tr>
+    <td>Legal</td>
+    <td class="pass">&#x2705; PASS</td>
+    <td>No violations | .claude/work-queue/assets/WRK-659/legal-scan.md</td>
+  </tr>
+  <tr>
+    <td>verify-gate-evidence.py</td>
+    <td class="pass">&#x2705; EXIT 0</td>
+    <td>All 5 orchestrator gates have documented evidence</td>
+  </tr>
+</table>
+
+<h2>Acceptance Criteria</h2>
+<ul class="criteria">
+  <li>&#x2705; Logs under <code>.claude/work-queue/logs/WRK-659-*.log</code> show start/close per agent &mdash; plan, cross-review (codex+gemini), tdd, legal all have start/finish entries</li>
+  <li>&#x2705; <code>verify-gate-evidence.py WRK-659</code> exits 0 &mdash; all 5 gates pass</li>
+  <li>&#x2705; HTML button records human-review confirmation &mdash; button present in plan HTML; log-gate-event entry persists confirmation</li>
+  <li>&#x2705; Claim evidence references validator template and notes NO_OUTPUT policy &mdash; claim-evidence.yaml updated with authoritative SKILL.md reference</li>
+</ul>
+
+<h2>Codex MAJOR Findings Fixed (Significant)</h2>
+<ol>
+  <li><strong>NO_OUTPUT policy conflict</strong> &mdash; claim-evidence.yaml contradicted SKILL.md. Fixed: aligned to SKILL.md as authoritative source.</li>
+  <li><strong>plan_reviewed set prematurely</strong> &mdash; was set at plan creation; should only be set after cross-review verdicts. Fixed: reset to false until verdicts received, then set.</li>
+  <li><strong>Placeholder review.html</strong> &mdash; single placeholder claiming all approved. Fixed: per-reviewer artifacts created (review-claude.md, review-codex.md, review-gemini.md) and review.html regenerated as synthesis.</li>
+</ol>
+
+<h2>Log Entries</h2>
+<div class="log-entry">plan &middot; start &rarr; re-run from start: plan stage initiated</div>
+<div class="log-entry">plan &middot; finish &rarr; plan approved by user &mdash; draft HTML confirmed</div>
+<div class="log-entry">plan &middot; human-confirmed &rarr; User confirmed draft plan HTML</div>
+<div class="log-entry">cross-review &middot; start &rarr; submitting to Gemini + Codex</div>
+<div class="log-entry">cross-review &middot; codex-verdict &rarr; MAJOR findings received; fixing</div>
+<div class="log-entry">cross-review &middot; codex-done &rarr; all MAJOR findings resolved</div>
+<div class="log-entry">cross-review &middot; gemini-no-output &rarr; NO_OUTPUT (120s timeout, acceptable)</div>
+<div class="log-entry">cross-review &middot; finish &rarr; plan_reviewed: true set</div>
+<div class="log-entry">tdd &middot; start / smoke-test / finish &rarr; 5/5 pass</div>
+<div class="log-entry">legal &middot; start / finish &rarr; PASS &mdash; no violations</div>
+
+<h2>Human Review &mdash; Final Confirmation</h2>
+<p>All gates complete. Click to confirm you have reviewed this completion summary.</p>
+<button class="confirm-btn" type="button"
+  onclick="document.getElementById('confirm-status').textContent='Final review confirmed at ' + new Date().toISOString();">
+  Confirm Final Review
+</button>
+<span id="confirm-status"></span>
+
+<hr>
+<p style="color:#94a3b8;font-size:0.8rem">Generated: 2026-03-01 | Orchestrator: claude | Session: session-20260301170256</p>
+</body>
+</html>

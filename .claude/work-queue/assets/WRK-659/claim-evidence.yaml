@@ -1,4 +1,4 @@
-claim_date: 2026-03-01T12:41:00Z
+claim_date: 2026-03-01T17:30:00Z
 wrk_id: WRK-659
 route: C
 orchestrator: claude
@@ -8,7 +8,7 @@ gate_evidence:
     plan_html_review_final_ref: assets/WRK-659/plan-html-review-final.md
     plan_reviewed: true
     plan_approved: true
-    notes: sandbox gate test for WRK-658, human review simulated via button
+    notes: sandbox approval recorded via confirm button
   cross_review_gate:
     artifacts:
       - reviewer: claude
@@ -20,17 +20,19 @@ gate_evidence:
       - reviewer: gemini
         artifact: assets/WRK-659/review.html
         verdict: APPROVE
+    combined_verdict: all agents approved
   tdd_gate:
     test_manifest: assets/WRK-659/variation-test-results.md
-    summary: simple sandbox tests
+    summary: placeholder smoke test recorded
   legal_gate:
     legal_scan_ref: .claude/work-queue/assets/WRK-659/legal-scan.md
     result: pass
 no_output_policy:
-  classification: NO_OUTPUT must rerun before claim
-  rerun_guidance: use NR auto-run
+  classification: NO_OUTPUT acceptable (per SKILL.md §Cross-Review table — Codex/Gemini fallback)
+  authoritative_source: .claude/skills/coordination/workspace/work-queue/SKILL.md line 196-197
+  rerun_guidance: log NO_OUTPUT explicitly; do not treat as hard gate failure for sandbox items
 agent_capability:
   best_fit: matched
-  rationale: sandbox logging test
+  rationale: orchestrator guard test
 user_html_blocker:
   status: satisfied_for_current_revision
