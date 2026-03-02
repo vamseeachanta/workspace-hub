@@ -312,6 +312,7 @@ Field definitions:
 - Route C plans live under `specs/wrk/WRK-<id>/`.
 - Planning must produce a WRK HTML review artifact that the user can inspect before execution approval is considered complete.
 - Every plan HTML must place an `Executive Summary` section near the top for quick user review of scope, intent, and major gates.
+- Every generated plan and execution HTML must include a `Test Evidence` section with example-pack and variation-test references and status.
 - The user must review the draft WRK HTML artifact before the multi-agent review starts.
 - The final plan-stage HTML review must end in an explicit user decision: `passed`, `needs_changes`, or `deferred`.
 - `plan_reviewed` passes only when review evidence exists and no unresolved `MAJOR` findings remain.
@@ -377,6 +378,7 @@ Claim hard gates:
 - Every WRK must include variation tests covering realistic problem variants.
 - Every WRK must generate an HTML review artifact for user review before close.
 - Where the WRK includes domain workflow calculations or analysis outputs, the HTML artifact must include those results in a reviewable form.
+- HTML artifacts must include explicit test evidence (test artifact paths + summary status) so user review includes verification context.
 
 #### Execute evidence contract
 

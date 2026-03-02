@@ -70,6 +70,7 @@ flowchart TD
 ### 4. Plan
 - Route A/B: Inline in body. Route C: `specs/wrk/WRK-<id>/`.
 - Must produce HTML review artifact.
+- Every generated HTML review artifact must include a `Test Evidence` section showing example-pack and variation-test presence.
 - User reviews Draft HTML before multi-agent review.
 - Multi-agent review (Claude, Codex, Gemini) for Route B/C.
 - User reviews Final HTML and records a pass/fail decision.
@@ -111,6 +112,7 @@ flowchart TD
 - Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--html-output <path>] [--html-verification <path>] [--commit]`
 - Updates frontmatter, moves to `done/`, regenerates INDEX.
 - Enforces HTML review evidence for WRK items using the hardened workflow contract.
+- HTML artifacts are expected to include `Test Evidence` details for auditability.
 - Record merge/sync status and follow-up/learning outputs where applicable.
 - Canonical stage evidence file: `assets/WRK-<id>/evidence/close.yaml`.
 

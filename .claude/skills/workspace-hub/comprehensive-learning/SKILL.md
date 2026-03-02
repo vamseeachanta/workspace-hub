@@ -3,7 +3,8 @@ name: comprehensive-learning
 description: >
   Single fire-and-forget command that runs the full session learning pipeline:
   insights → reflect → knowledge → improve → action-candidates → report.
-  Runs on ace-linux-1 only. Other machines contribute via git-synced state files.
+  All machines run local Phases 1–9 against logs/orchestrator/ and commit derived state.
+  ace-linux-1 additionally runs Phase 10a (cross-machine compilation) and Phase 10 (report).
   Safe for cron scheduling. Replaces running 4 skills manually.
 version: 2.4.0
 updated: 2026-02-27
@@ -28,35 +29,35 @@ wrk_ref: WRK-299
 ---
 # comprehensive-learning — Session Learning Pipeline
 
-Single fire-and-forget skill running the complete learning loop on **ace-linux-1 only**.
-Other machines (ace-linux-2, acma-ansys05) contribute data by committing derived state
-files to git; ace-linux-1 reads them all during its nightly run.
+Single fire-and-forget skill running Phases 1–9 on **all machines** and Phases 10a+10
+(cross-machine compilation + report) on **ace-linux-1 only**.
 
-## Single-Machine Guard
+## Mode-Based Routing
 
 ```bash
 MACHINE=$(hostname -s 2>/dev/null || hostname | cut -d. -f1 | tr '[:upper:]' '[:lower:]')
-if [[ "$MACHINE" != "ace-linux-1" ]]; then
-  echo "comprehensive-learning runs on ace-linux-1 only."
-  echo "From this machine, commit state files and push:"
-  echo "  git add .claude/state/candidates/ .claude/state/corrections/"
-  echo "  git add .claude/state/patterns/ .claude/state/session-signals/"
-  echo "  git commit -m 'chore: session learnings from $(hostname)'"
-  exit 0
-fi
+case "$MACHINE" in
+  ace-linux-1) CL_MODE="full" ;;
+  ace-linux-2) CL_MODE="contribute" ;;
+  acma-ansys05|acma-ws014) CL_MODE="contribute" ;;
+  *) CL_MODE="contribute" ;;
+esac
+echo "comprehensive-learning: mode=${CL_MODE} machine=${MACHINE}"
+# All modes run Phases 1–9. Only 'full' runs Phase 10a (compilation) + Phase 10 (report).
 ```
 
 ## Cross-Machine Data Flow
 
-Other machines contribute by committing these gitignored-exceptions after sessions:
+All machines run Phases 1–9 and commit derived state after each session. ace-linux-1
+aggregates via `git pull` in Phase 10a before compilation.
 
 | Machine | Commits | Notes |
 |---------|---------|-------|
 | ace-linux-2 | `candidates/`, `corrections/`, `patterns/`, `session-signals/` | Open-source CFD/dev sessions |
-| acma-ansys05 | `candidates/`, `corrections/` | OrcaFlex/ANSYS sessions; minimal hub access |
-| acma-ws014 | `candidates/` | Windows sessions |
+| acma-ansys05 | `candidates/`, `corrections/`, `session-signals/`, `patterns/` | OrcaFlex/ANSYS + full AI CLI (claude/codex/gemini) |
+| acma-ws014 | `candidates/` | Windows sessions; no AI CLIs |
 
-ace-linux-1 `git pull` before running pipeline picks up all contributions.
+ace-linux-1 `git pull` in Phase 10a picks up all machines' committed derived state.
 
 ## Pipeline
 
@@ -76,6 +77,12 @@ Invoke `/insights`. Sources:
 - `.claude/state/cc-insights/*.json`
 - `.claude/state/sessions/*.json`
 - `.claude/state/daily-summaries/*.md`
+- `logs/orchestrator/claude/session_YYYYMMDD.jsonl`  (raw tool-call stream — agent loop, file activity)
+- `logs/orchestrator/codex/WRK-*.log`               (cross-review verdicts per WRK)
+- `logs/orchestrator/gemini/WRK-*.log`              (cross-review verdicts per WRK)
+
+Note: `logs/orchestrator/` sources supplement `session-signals/*.jsonl` — they do not replace it.
+Use for tool-call pattern checks (agent loop detection, bash-file-ops anti-pattern).
 
 Extract: skill usage frequency, repeated tool call patterns, task success/failure
 signals, user correction events, **engineering audit signals** (wall_thickness, 
@@ -576,6 +583,41 @@ Run trigger: only if `$(date +%u)` == 7 (Sunday) or explicit invocation.
 
 ---
 
+### Inter-phase: Commit Derived State  *(all modes — runs after Phase 9)*
+
+Commit derived state so ace-linux-1 can pull it in Phase 10a:
+
+```bash
+WS_HUB="$(git rev-parse --show-toplevel)"
+git -C "${WS_HUB}" add \
+  .claude/state/session-signals/ \
+  .claude/state/candidates/ \
+  .claude/state/corrections/ \
+  .claude/state/patterns/ \
+  .claude/state/skill-scores.yaml
+git -C "${WS_HUB}" -c core.hooksPath=/dev/null \
+  commit -m "chore: session learnings from $(hostname) $(date +%Y-%m-%d)" \
+  --allow-empty 2>/dev/null || true
+```
+
+`contribute` machines stop here. `full` mode (ace-linux-1) continues to Phase 10a.
+
+---
+
+### Phase 10a — Cross-Machine Compilation  *(full mode / ace-linux-1 only)*
+
+Skip if `CL_MODE != "full"` — log `"Phase 10a: SKIPPED (mode=${CL_MODE})"` and continue.
+
+1. `git pull --rebase` to pick up all machines' committed derived state
+2. Read `session-signals/` from all machines (identified by signal `hostname` field)
+3. Aggregate `skill-scores.yaml` entries across machines (union, keep latest per skill)
+4. Write cross-machine compilation report to:
+   `.claude/state/session-analysis/compilation-YYYYMMDD.md`
+   Sections: per-machine summary table, aggregated skill scores, cross-machine anti-patterns
+5. Record DONE/SKIPPED/FAILED in Phase 10 report
+
+---
+
 ### Phase 10 — Report  *(always runs — registered via `trap EXIT`)*
 
 **Exit-code semantics:** Phase 10 is "always runs" but **not fatal** — a report-write
@@ -585,14 +627,6 @@ At pipeline start, register the trap:
 _PIPELINE_EXIT=0
 trap '_write_report; exit $_PIPELINE_EXIT' EXIT
 ```
-Rules:
-- Every **mandatory** phase failure MUST `_PIPELINE_EXIT=1` **before** calling `exit`
-  (or `return 1` to the caller which then sets it). No path should reach `exit` with
-  `_PIPELINE_EXIT` still 0 after a mandatory failure.
-- Non-mandatory phase failures: log FAILED + reason, do NOT touch `_PIPELINE_EXIT`.
-- `_write_report` is always best-effort: write what we have, never calls `exit`.
-- `exit $_PIPELINE_EXIT` preserves the mandatory-failure status deterministically;
-  no `:-$REPORT_STATUS` fallback to avoid masking unexpected script failures.
 
 Write `.claude/state/learning-reports/$(date +%Y-%m-%d-%H%M).md`:
 
@@ -601,23 +635,29 @@ Write `.claude/state/learning-reports/$(date +%Y-%m-%d-%H%M).md`:
 
 | Phase | Status | Notes |
 |-------|--------|-------|
-| 1 Insights | DONE/SKIPPED/FAILED | <brief> |
+| 1 Insights | DONE | <brief>. **Gate-skips: N**, **Scope-drift: N**. |
 | 2 Reflect | ... | re-derivation needed: yes/no |
-| 3 Knowledge | ... | stale memory entries: N |
-| 3b Compaction | ... | lines_freed: N, bullets_evicted: N, trigger: <type> / SKIPPED (WRK-637 pending) |
-| 3c Curation | ... | promotion_candidates: N (doc: N, skill: N, rule: N, archive: N) / SKIPPED (WRK-637 pending) |
+| 3 Knowledge | ... | Stale memory entries: N |
+| 3b Compaction | ... | lines_freed: N, bullets_evicted: N |
 | 4 Improve | ... | ... |
 | 5 Correction Trends | ... | escalated types: N |
 | 6 WRK Feedback | ... | stale auto-WRK: N, threshold adj: yes/no |
 | 7 Candidates | ... | WRK items created: N (incl. code-quality: N) |
 | 8 Report Review | ... | escalated recurring issues: N |
-| 9 Coverage Audit | ... | SKIPPED (not Sunday) / gaps found: N |
+| 9 Coverage Audit | ... | gaps found: N |
+| 10a Compilation | ... | machines: N, cross-patterns: N |
 | 10 Report | DONE | <elapsed>s total |
 
 AI agent readiness: <N> OK / <N> warn (from ai-readiness.jsonl)
-TDD pairing rate: <N>% overall (from test-health.jsonl) | repos at risk: <list or "none">
-Provider cost (30-session window): claude $X.XX | codex $X.XX | gemini $X.XX | total $X.XX
-Cost anomalies: <N> sessions >2x median ($X.XX) | top WRK by cost: <WRK-NNN $X.XX, ...>
+TDD pairing rate: <N>% overall (from test-health.jsonl)
+Resource Intelligence Coverage: <N>% (<N>/<N> tasks)
+
+Improvement Trends:
+- [Skill Candidate] <name>: <count> occurrences
+- [Script Candidate] <name>: <count> occurrences
+- [Hook Candidate] <name>: <count> occurrences
+- [Agent Candidate] <name>: <count> occurrences
+
 Machine: ace-linux-1 | Sources: ace-linux-1 + <N other machines via git>
 ```
 

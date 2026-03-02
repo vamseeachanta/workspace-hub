@@ -174,11 +174,12 @@ machines:
 
   acma-ansys05:
     hostname: ACMA-ANSYS05
-    programs: [orcaflex, ansys, aqwa, python, office]
+    programs: [orcaflex, ansys, aqwa, python, office, claude-code, codex, gemini]
+    install_method: {claude: native, codex: npm-user, gemini: pip}
     exclusive: [orcaflex, ansys, aqwa]   # all three are licensed programs on this machine
     shares_hub: null
     isolated: true
-    cron_variant: contribute-minimal
+    cron_variant: contribute
 
   acma-ws014:
     hostname: ACMA-WS014
@@ -206,7 +207,7 @@ See `scripts/readiness/ai-agent-versions.yaml` for expected default models.
 |---------|-----------|-----------|------------|-------|
 | ace-linux-1 | yes (native) | yes (npm-user) | yes (pip) | Full suite — nightly readiness runs here |
 | ace-linux-2 | yes (npm-sudo, WRK-389 pending) | no | no | Switch claude to native install per WRK-389 |
-| acma-ansys05 | no | no | no | Isolated; no AI CLI needed |
+| acma-ansys05 | yes | yes | yes | Windows; Git Bash for scripts |
 | acma-ws014 | no | no | no | Windows; not yet set up |
 | gali-linux-compute-1 | TBD | TBD | TBD | Pending provisioning |
 
@@ -258,11 +259,11 @@ computer: [acma-ansys05, ace-linux-1]
 The `cron_variant` field maps directly to `CL_MACHINE_MODE` in the comprehensive-learning
 skill. No separate config file needed — the skill reads `hostname` at runtime.
 
-| cron_variant | Role | Machine(s) |
-|--------------|------|------------|
-| `full` | Runs complete 10-phase pipeline | ace-linux-1 only |
-| `contribute` | Commits derived state files + pushes; no pipeline | ace-linux-2, acma-ws014 |
-| `contribute-minimal` | Commits candidates + corrections only + pushes | acma-ansys05 (isolated) |
+| cron_variant        | Role                                                          | Machine(s)                         |
+|---------------------|---------------------------------------------------------------|------------------------------------|
+| `full`              | Phases 1–9 locally + Phase 10a compilation + Phase 10 report  | ace-linux-1                        |
+| `contribute`        | Phases 1–9 locally + commit derived state                     | ace-linux-2, acma-ansys05, acma-ws014 |
+| `contribute-minimal`| Reserved for machines with no AI CLIs                         | (future machines)                  |
 
 ## Update Process
 

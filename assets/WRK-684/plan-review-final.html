@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WRK-684 - Plan Review</title>
+  <link rel="stylesheet" href="../../assets/shared/orchestrator.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">WRK-684 Plan Artifact</div>
+      <h1>feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report</h1>
+      <p class="lede">Review the `comprehensive-learning` skill and define specific, measurable outcomes that will automatically roll into the `/today` skill report.</p>
+      <div class="meta">
+        <div class="pill">Status: <span class="badge badge-pending">WORKING</span></div>
+        <div class="pill">Route: B</div>
+        <div class="pill">Priority: medium</div>
+        <div class="pill">Orchestrator: gemini</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <div><p>Review the <code>comprehensive-learning</code> skill and define specific, measurable outcomes that will automatically roll into the <code>/today</code> skill report.</p></div>
+    </div>
+
+    <div class="panel">
+      <h1>feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report</h1>
+<h2>Objective</h2>
+<p>Review the <code>comprehensive-learning</code> skill and define specific, measurable outcomes that will automatically roll into the <code>/today</code> skill report.</p>
+<h2>Context</h2>
+<p>The <code>comprehensive-learning</code> skill helps agents synthesize knowledge, but its outputs are currently siloed. By integrating its key findings into the <code>/today</code> report, we create a unified daily summary of both work completed (WRK items) and new insights gained.</p>
+<h2>Plan</h2>
+<ol>
+<li>Review the current structure and outputs of the <code>comprehensive-learning</code> skill.</li>
+<li>Define a standard JSON or Markdown format for "Learning Outcomes" (e.g., key concepts grasped, unresolved questions, cross-domain links).</li>
+<li>Update the <code>/today</code> script (<code>scripts/reports/generate-today.sh</code> or similar) to parse these learning outcomes and append them to the daily summary.</li>
+</ol>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] <code>comprehensive-learning</code> skill updated to output a standardized summary artifact.</li>
+<li>[ ] <code>/today</code> command successfully reads the artifact and includes a "Learning Outcomes" section in its output.</li>
+</ul>
+    </div>
+
+    <div class="action-footer">
+      <p><strong>Required Action:</strong> Please provide your sign-off in the terminal.</p>
+      <a href="#" class="btn btn-approve">APPROVE</a>
+      <a href="#" class="btn btn-reject">REJECT</a>
+    </div>
+  </main>
+</body>
+</html>

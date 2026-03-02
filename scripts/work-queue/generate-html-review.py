@@ -7,10 +7,37 @@ exec uv run --no-project --with markdown --with PyYAML python "$0" "$@"
 ":"""
 import os
 import re
-import markdown
 import sys
 import yaml
+import html as html_lib
 from pathlib import Path
+
+
+def collect_test_evidence(assets_dir: str) -> dict:
+    """Collect test artifacts for mandatory HTML Test Evidence section."""
+    example_path = Path(assets_dir) / "example-pack.md"
+    variation_path = Path(assets_dir) / "variation-test-results.md"
+
+    example_present = example_path.exists()
+    variation_present = variation_path.exists()
+    summary = "No variation-test summary available."
+
+    if variation_present:
+        raw = variation_path.read_text(encoding="utf-8")
+        for line in raw.splitlines():
+            line = line.strip()
+            if line and not line.startswith("#"):
+                summary = line
+                break
+
+    return {
+        "example_pack_present": example_present,
+        "variation_tests_present": variation_present,
+        "example_pack_path": str(example_path),
+        "variation_tests_path": str(variation_path),
+        "variation_summary": summary,
+    }
+
 
 def generate_review(wrk_id, stage="draft", type="plan", output_file=None):
     workspace_root = os.popen("git rev-parse --show-toplevel").read().strip()
@@ -60,9 +87,10 @@ def generate_review(wrk_id, stage="draft", type="plan", output_file=None):
     # Executive summary extraction
     what_match = re.search(r"## (?:What|Objective)\n(.*?)(?=\n##|\Z)", body, re.DOTALL)
     exec_summary = what_match.group(1).strip() if what_match else "No executive summary found."
-    
-    # Convert body to HTML
-    body_html = markdown.markdown(body, extensions=['extra', 'codehilite', 'tables'])
+
+    # Fast deterministic rendering for large WRK documents.
+    exec_summary_html = f"<pre>{html_lib.escape(exec_summary)}</pre>"
+    body_html = f"<pre>{html_lib.escape(body)}</pre>"
     
     # Check for reviewer artifacts
     reviewers = []
@@ -82,6 +110,7 @@ def generate_review(wrk_id, stage="draft", type="plan", output_file=None):
                         "verdict_class": v_class,
                         "note": f"Review artifact present at assets/{wrk_id}/review-{r_name.lower()}.md"
                     })
+    test_evidence = collect_test_evidence(assets_dir)
 
     # Embedded CSS path logic
     css_rel_path = "../../assets/shared/orchestrator.css"
@@ -112,11 +141,20 @@ def generate_review(wrk_id, stage="draft", type="plan", output_file=None):
   <main class="container">
     <div class="exec-summary">
       <h2>Executive Summary</h2>
-      <div>{markdown.markdown(exec_summary)}</div>
+      <div>{exec_summary_html}</div>
     </div>
 
     <div class="panel">
       {body_html}
+    </div>
+
+    <h2>Test Evidence</h2>
+    <div class="panel">
+      <p><strong>Example Pack:</strong> {"present" if test_evidence["example_pack_present"] else "missing"}</p>
+      <p><strong>Variation Tests:</strong> {"present" if test_evidence["variation_tests_present"] else "missing"}</p>
+      <p><strong>Example Pack Path:</strong> <code>{test_evidence["example_pack_path"]}</code></p>
+      <p><strong>Variation Test Path:</strong> <code>{test_evidence["variation_tests_path"]}</code></p>
+      <p><strong>Variation Test Summary:</strong> {test_evidence["variation_summary"]}</p>
     </div>
 """
     if reviewers:
