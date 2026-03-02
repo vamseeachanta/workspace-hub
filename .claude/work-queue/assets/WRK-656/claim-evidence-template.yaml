@@ -1,10 +1,37 @@
+# Canonical claim-evidence template — WRK-656 governance parent
+# Authoritative template for all orchestrator gate runs.
+# Location: .claude/work-queue/assets/WRK-656/ (WRK-656 owns all orchestrator gate artefacts)
+# Updated: WRK-677 — added metadata_version, session_owner, agent_fit, blocking_state, quota enrichment
+
 claim_date: "<ISO8601 claim timestamp>"
 wrk_id: "WRK-XXX"
 route: "A|B|C"
 orchestrator: "claude|codex|gemini"
 best_fit_provider: "claude|codex|gemini"
 alternate_provider: "optional"
+metadata_version: "1"                  # "1" = hardened (WRK-677+); absent = legacy WARN only
+session_owner: "claude|codex|gemini"   # agent holding this session right now
+agent_fit:
+  capability_match: "matched|partial|undocumented"
+  rationale: "Route <X> / execution_workstations=[<machine>] / provider=<agent>"
+blocking_state:
+  blocked: false                       # true if blocked_by is non-empty
+  blocked_by: []
+  notes: ""
+quota_snapshot:
+  timestamp: "<ISO8601 — strftime %Y-%m-%dT%H:%M:%SZ>"
+  provider: "claude|codex|gemini"
+  status: "available|rate-limited|quota-exceeded|unknown"
+  pct_remaining: null                  # integer 0-100, or null if source unavailable
+  source: "config/ai-tools/agent-quota-latest.json"
 gate_evidence:
+  claim_gate:
+    metadata_version_ok: true
+    session_owner_ok: true
+    quota_ok: true                     # true when status==available or unknown (WARN on unknown)
+    unblocked: true
+    verified_at: "<ISO8601>"
+    notes: ""
   plan_gate:
     plan_html_review_final_ref: "assets/WRK-XXX/plan-html-review-final.md"
     plan_reviewed: true

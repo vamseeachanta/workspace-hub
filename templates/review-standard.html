@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="../../assets/shared/orchestrator.css">
+</head>
+<body>
+  <div class="card">
+    <h1>{{ title }} <span class="badge badge-{{ status_class }}">{{ status }}</span></h1>
+    
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <p>{{ summary }}</p>
+    </div>
+
+    <div class="content">
+      {{ content_html }}
+    </div>
+
+    {% if reviewers %}
+    <h2>Reviewer Synthesis</h2>
+    <div class="reviewer-grid">
+      {% for reviewer in reviewers %}
+      <div class="reviewer-card">
+        <span class="reviewer-name">{{ reviewer.name }}</span>
+        <p><strong>Verdict:</strong> <span class="badge badge-{{ reviewer.verdict_class }}">{{ reviewer.verdict }}</span></p>
+        <p>{{ reviewer.note }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="action-footer">
+      <p><strong>Required Action:</strong> Please provide your sign-off in the terminal.</p>
+      <a href="#" class="btn btn-approve">APPROVE</a>
+      <a href="#" class="btn btn-reject">REJECT</a>
+    </div>
+  </div>
+</body>
+</html>

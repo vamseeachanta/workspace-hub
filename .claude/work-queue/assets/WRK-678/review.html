@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"/><title>WRK-678 Cross-Review Synthesis</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 900px; margin: 0 auto; padding: 24px; background: #fafaf8; color: #172126; }
+  h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  .meta { color: #55636b; font-size: 0.9rem; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.93rem; }
+  th, td { padding: 9px 10px; border: 1px solid #d9d0c0; text-align: left; vertical-align: top; }
+  th { background: #f3efe6; }
+  .approve { color: #166534; font-weight: 600; }
+  .minor { color: #b45309; font-weight: 600; }
+  .request { color: #b91c1c; font-weight: 600; }
+  .resolved { color: #166534; }
+</style>
+</head>
+<body>
+<h1>WRK-678 Cross-Review Synthesis</h1>
+<p class="meta">WRK-678 · test(review): automate close gate follow-up capture · 2026-03-02</p>
+
+<h2>Implementation Cross-Review</h2>
+<table>
+  <tr><th>Reviewer</th><th>Verdict</th><th>Findings</th><th>Status</th></tr>
+  <tr>
+    <td>Claude</td>
+    <td class="approve">APPROVE</td>
+    <td>Inline review: WARN/FAIL/OK split is appropriate (backward compatible). Template covers both follow-up and no-follow-up paths. <code>strip_code_fences()</code> already applied from WRK-676. Gate integrated correctly into validator loop.</td>
+    <td class="resolved">N/A</td>
+  </tr>
+  <tr>
+    <td>Gemini</td>
+    <td class="approve">APPROVE</td>
+    <td>Logic correct. WARN/FAIL/OK split sensible. Template well-documented with both follow-up table and <code>no_follow_ups_rationale</code> escape hatch. Backward compatibility correct: absent file → WARN, present-but-invalid → FAIL. <code>strip_code_fences()</code> correctly applied.</td>
+    <td class="resolved">N/A</td>
+  </tr>
+  <tr>
+    <td>Codex</td>
+    <td class="request">MAJOR → RESOLVED</td>
+    <td>P1 (Critical): <code>wrk_id: WRK-678</code> header self-reference matched <code>\bWRK-\d+\b</code> regex — file with only the metadata header falsely passed the gate. Reproduced with inline Python test.</td>
+    <td class="resolved">Resolved: <code>re.sub(r"^wrk_id:\s+WRK-\d+.*$", "", content)</code> strips the self-reference line before searching. T7 confirmed (False) after fix.</td>
+  </tr>
+</table>
+
+<h2>Combined Verdict</h2>
+<p><strong class="approve">PASS</strong> — Gemini APPROVE, Claude APPROVE, Codex MAJOR resolved (self-reference exclusion via line strip). All findings addressed before claiming.</p>
+
+<h2>Deliverables Verified</h2>
+<ul>
+  <li><code>specs/templates/future-work-recommendations-template.md</code> — new canonical template</li>
+  <li><code>scripts/work-queue/verify-gate-evidence.py</code> — <code>check_future_work_gate()</code> with self-reference exclusion + Future-work gate</li>
+  <li><code>assets/WRK-656/wrk-656-orchestrator-comparison.html</code> — WRK-676/677/678 rows added to Follow-on table</li>
+</ul>
+</body>
+</html>

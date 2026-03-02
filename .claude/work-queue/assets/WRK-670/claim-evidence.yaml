@@ -34,5 +34,30 @@ no_output_policy:
 agent_capability:
   best_fit: matched
   rationale: WRK requires Codex orchestrator parity run
+resource_intelligence_gate:
+  status: covered
+  generated_by: WRK-656 retro RI pass
+  generated_at: 2026-03-02T10:35:00Z
+  artifacts:
+    - path: .claude/work-queue/assets/WRK-670/resource-pack.md
+      description: Problem context, constraints, assumptions, source paths
+    - path: .claude/work-queue/assets/WRK-670/resources.yaml
+      description: Source provenance and storage policy
+    - path: .claude/work-queue/assets/WRK-670/sources.md
+      description: Enumerated source inventory used for this retrofit
+    - path: .claude/work-queue/assets/WRK-670/constraints.md
+      description: Execution constraints for the retrofit stage
+    - path: .claude/work-queue/assets/WRK-670/domain-notes.md
+      description: Governance-domain notes
+    - path: .claude/work-queue/assets/WRK-670/open-questions.md
+      description: Open questions and disposition
+    - path: .claude/work-queue/assets/WRK-670/resource-intelligence-summary.md
+      description: Gap ranking and stage decision
+  gap_ranking:
+    p1: none
+    p2: RI was initially skipped in the parity run; now retrofitted
+    p3: none
+  user_decision: continue_to_planning
+  legal_scan_ref: .claude/work-queue/assets/WRK-670/legal-scan.md
 user_html_blocker:
   status: satisfied_for_current_revision

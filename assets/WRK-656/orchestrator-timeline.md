@@ -13,3 +13,4 @@ Use `scripts/workflow/refresh-orchestrator-timeline.sh` to add new entries.
 | 2026-03-02T04:53:49Z | WRK-669 | claude | WRK-673 RI enforcement pass | Resource Intelligence artifacts retroactively created; claim-evidence.yaml updated with resource_intelligence_gate section | PASS |
 | 2026-03-02T05:12:19Z | WRK-671 | gemini | manual | Rerunning to check for Resource Intelligence pickup | PASS |
 | 2026-03-02T10:03:01Z | WRK-670 | codex | consistency-review | manual rerun for consistency check | PASS |
+| 2026-03-02T10:35:06Z | WRK-670 | codex | retro-ri-coverage | added RI artifact pack and claim evidence section | PASS |

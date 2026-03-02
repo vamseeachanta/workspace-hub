@@ -1,0 +1,51 @@
+wrk_id: WRK-670
+no_external_sources: false
+sources:
+  - id: wrk670_item
+    source_type: additive
+    origin: .claude/work-queue/done/WRK-670.md
+    license_access: internal-repo
+    retrieval_date: 2026-03-02
+    canonical_storage_path: .claude/work-queue/done/WRK-670.md
+    duplicate_status: canonical
+    status: available
+  - id: wrk670_claim
+    source_type: additive
+    origin: .claude/work-queue/assets/WRK-670/claim-evidence.yaml
+    license_access: internal-repo
+    retrieval_date: 2026-03-02
+    canonical_storage_path: .claude/work-queue/assets/WRK-670/claim-evidence.yaml
+    duplicate_status: canonical
+    status: available
+  - id: wrk670_plan_final
+    source_type: additive
+    origin: .claude/work-queue/assets/WRK-670/plan-html-review-final.md
+    license_access: internal-repo
+    retrieval_date: 2026-03-02
+    canonical_storage_path: .claude/work-queue/assets/WRK-670/plan-html-review-final.md
+    duplicate_status: canonical
+    status: available
+  - id: wrk670_legal
+    source_type: additive
+    origin: .claude/work-queue/assets/WRK-670/legal-scan.md
+    license_access: internal-repo
+    retrieval_date: 2026-03-02
+    canonical_storage_path: .claude/work-queue/assets/WRK-670/legal-scan.md
+    duplicate_status: canonical
+    status: available
+  - id: wrk656_comparison
+    source_type: additive
+    origin: assets/WRK-656/wrk-656-orchestrator-comparison.html
+    license_access: internal-repo
+    retrieval_date: 2026-03-02
+    canonical_storage_path: assets/WRK-656/wrk-656-orchestrator-comparison.html
+    duplicate_status: canonical
+    status: available
+  - id: ri_skill_contract
+    source_type: additive
+    origin: .claude/skills/workspace-hub/resource-intelligence/SKILL.md
+    license_access: internal-repo
+    retrieval_date: 2026-03-02
+    canonical_storage_path: .claude/skills/workspace-hub/resource-intelligence/SKILL.md
+    duplicate_status: canonical
+    status: available

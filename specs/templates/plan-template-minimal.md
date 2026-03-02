@@ -97,6 +97,20 @@ links:
 
 ---
 
+## Plan Review Confirmation
+
+<!--
+  MANDATORY: Populate when plan is accepted.
+  The gate validator requires all three fields and decision must be "passed".
+-->
+
+confirmed_by: <!-- reviewer name, e.g. "user" -->
+confirmed_at: <!-- ISO-8601 timestamp, e.g. 2026-03-02T14:30:00Z -->
+decision: <!-- passed | changes-requested -->
+notes: <!-- optional -->
+
+---
+
 ## Phases
 
 ### Phase 1: [Name]

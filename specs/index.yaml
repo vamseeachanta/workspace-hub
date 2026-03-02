@@ -1,13 +1,13 @@
-generated: '2026-03-01'
-total_specs: 1521
+generated: '2026-03-02'
+total_specs: 1531
 by_category:
   archive: 10
   data-sources: 13
-  modules: 116
+  modules: 117
   other: 24
   repos: 1344
-  templates: 2
-  wrk: 12
+  templates: 5
+  wrk: 18
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,9 +26,10 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 160
+  workspace-hub: 170
   worldenergydata: 216
 by_wrk:
+  WRK-5: 1
   WRK-9: 1
   WRK-10: 1
   WRK-11: 1
@@ -100,7 +101,7 @@ by_wrk:
   WRK-120: 1
   WRK-121: 3
   WRK-122: 1
-  WRK-125: 2
+  WRK-125: 3
   WRK-126: 2
   WRK-127: 4
   WRK-128: 1
@@ -110,6 +111,7 @@ by_wrk:
   WRK-134: 1
   WRK-138: 1
   WRK-139: 1
+  WRK-140: 1
   WRK-142: 1
   WRK-146: 2
   WRK-147: 1
@@ -151,6 +153,8 @@ by_wrk:
   WRK-286: 1
   WRK-290: 1
   WRK-293: 1
+  WRK-294: 1
+  WRK-297: 1
   WRK-299: 1
   WRK-300: 1
   WRK-304: 1
@@ -177,6 +181,7 @@ by_wrk:
   WRK-384: 2
   WRK-385: 3
   WRK-386: 1
+  WRK-389: 1
   WRK-391: 4
   WRK-393: 2
   WRK-394: 2
@@ -185,11 +190,11 @@ by_wrk:
   WRK-417: 1
   WRK-418: 1
   WRK-419: 1
-  WRK-473: 1
+  WRK-473: 2
   WRK-474: 1
-  WRK-475: 1
+  WRK-475: 2
   WRK-476: 1
-  WRK-477: 1
+  WRK-477: 2
   WRK-478: 1
   WRK-528: 1
   WRK-561: 1
@@ -219,7 +224,23 @@ by_wrk:
   WRK-623: 1
   WRK-624: 4
   WRK-655: 2
+  WRK-656: 2
+  WRK-657: 1
+  WRK-660: 1
+  WRK-663: 1
   WRK-664: 1
+  WRK-669: 2
+  WRK-670: 2
+  WRK-671: 2
+  WRK-673: 1
+  WRK-675: 1
+  WRK-676: 1
+  WRK-677: 1
+  WRK-678: 1
+  WRK-682: 2
+  WRK-683: 1
+  WRK-686: 1
+  WRK-1000: 1
 specs:
 - path: specs/architecture/agent-vision.md
   title: Superintelligent Engineering Agent Architecture Blueprint
@@ -400,7 +421,7 @@ specs:
   - pdf-large-reader-assessment
   wrk_refs:
   - WRK-341
-  mtime: '2026-02-24'
+  mtime: '2026-03-01'
 - path: specs/audit/agent-performance-audit-2026-02-24.md
   title: Agent Performance Audit — 2026-02-24
   description: '*WRK-226 | Auditor: Claude Sonnet 4.6 | Date: 2026-02-24*'
@@ -825,6 +846,16 @@ specs:
   wrk_refs:
   - WRK-162
   mtime: '2026-02-18'
+- path: specs/modules/dapper-stargazing-willow.md
+  title: 'WRK-683 Plan: arch(orchestrator) — Unified AI Agent Session Logs'
+  description: '**Source WRK:** WRK-683 **Route:** B **Created:** 2026-03-02'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - dapper-stargazing-willow
+  wrk_refs:
+  - WRK-683
+  mtime: '2026-03-02'
 - path: specs/modules/diffraction-spec-converter.md
   title: Unified Input Data Format Converter for Diffraction Solvers
   description: 'Cross-solver spec converter: spec.yml <-> AQWA .dat <-> OrcaWave .yml'
@@ -19711,6 +19742,36 @@ specs:
   - worldenergydata
   wrk_refs: []
   mtime: '2026-02-17'
+- path: specs/templates/claim-evidence-template.yaml
+  title: Claim Evidence Template
+  description: ''
+  category: templates
+  repo: workspace-hub
+  tags:
+  - claim-evidence-template
+  wrk_refs:
+  - WRK-676
+  mtime: '2026-03-02'
+- path: specs/templates/future-work-recommendations-template.md
+  title: Future Work Recommendations — WRK-NNN
+  description: '<!-- MANDATORY close gate artifact (WRK-678+). Fill in follow-up WRKs OR provide no_follow_ups_rationale.
+    The gate validator checks: file exists AND (has WRK-NNN refs OR no_follow_ups_rationale). -->'
+  category: templates
+  repo: workspace-hub
+  tags:
+  - future-work-recommendations-template
+  wrk_refs:
+  - WRK-678
+  mtime: '2026-03-02'
+- path: specs/templates/plan-html-review-final-template.md
+  title: WRK-NNN Final Plan Review
+  description: <!-- Summarise findings resolved from cross-review. Delete section if no changes were needed. -->
+  category: templates
+  repo: workspace-hub
+  tags:
+  - plan-html-review-final-template
+  wrk_refs: []
+  mtime: '2026-03-02'
 - path: specs/templates/plan-template-minimal.md
   title: PLAN METADATA (Minimal Template)
   description: '{{ description }}'
@@ -19719,7 +19780,7 @@ specs:
   tags:
   - plan-template-minimal
   wrk_refs: []
-  mtime: '2026-02-03'
+  mtime: '2026-03-02'
 - path: specs/templates/plan-template.md
   title: PLAN METADATA - Required fields marked with (*)
   description: '{{ description }}'
@@ -19728,7 +19789,7 @@ specs:
   tags:
   - plan-template
   wrk_refs: []
-  mtime: '2026-02-03'
+  mtime: '2026-03-02'
 - path: specs/wrk/WRK-118/plan.md
   title: WRK-118 AI Agent Utilization Strategy — Plan
   description: (feature | bugfix | refactor | test-writing | research | docs → primary + rationale)
@@ -19839,7 +19900,7 @@ specs:
   mtime: '2026-02-24'
 - path: specs/wrk/WRK-624/plan.md
   title: WRK-624 Canonical Workflow Hardening
-  description: Route C plan/spec for the canonical 8-stage work-item lifecycle, review matrix, closure enforcement, and ecosystem
+  description: Route C plan/spec for the canonical 9-stage work-item lifecycle, review matrix, closure enforcement, and ecosystem
     learning loop.
   category: wrk
   repo: workspace-hub
@@ -19853,7 +19914,7 @@ specs:
   - wrk-624
   wrk_refs:
   - WRK-624
-  mtime: '2026-03-01'
+  mtime: '2026-03-02'
 - path: specs/wrk/WRK-624/review/review-gemini.md
   title: Review Gemini
   description: The plan is exceptionally thorough and addresses the core issues of workflow drift and lack of accountability
@@ -19885,6 +19946,28 @@ specs:
   - WRK-624
   - WRK-655
   mtime: '2026-03-01'
+- path: specs/wrk/WRK-663/queue-triage-report.md
+  title: 'Queue Triage Report: WRK-663'
+  description: '| WRK ID | Task Description | Agent | Workstation(s) | | :--- | :--- | :--- | :--- | | **WRK-660** | `assetutilities`
+    coverage audit | Gemini | `ace-linux-1` | | **WRK-389** | Fix Claude install on...'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - queue-triage-report
+  - wrk-663
+  wrk_refs:
+  - WRK-5
+  - WRK-125
+  - WRK-140
+  - WRK-294
+  - WRK-297
+  - WRK-389
+  - WRK-473
+  - WRK-475
+  - WRK-477
+  - WRK-660
+  - WRK-663
+  mtime: '2026-03-02'
 - path: specs/wrk/WRK-664/plan.md
   title: WRK-664 Multi-Agent and Multi-Workstation Execution Contract
   description: Route C plan to add deterministic stage-level agent/workstation assignment, machine-readiness gates, and remote
@@ -19904,6 +19987,73 @@ specs:
   - WRK-655
   - WRK-664
   mtime: '2026-03-01'
+- path: specs/wrk/WRK-670/plan.md
+  title: WRK-670 Plan
+  description: Execute a Codex-orchestrated `/work` gate run and collect parity evidence against WRK-657.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-670
+  wrk_refs:
+  - WRK-657
+  - WRK-670
+  mtime: '2026-03-02'
+- path: specs/wrk/WRK-675/plan.md
+  title: 'WRK-675 Plan: governance(review) — align orchestrator flow & scripts'
+  description: '**Source WRK:** WRK-675 **Route:** C (complex) **Created:** 2026-03-01 **Status:** final (post-cross-review)'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-675
+  wrk_refs:
+  - WRK-656
+  - WRK-669
+  - WRK-670
+  - WRK-671
+  - WRK-673
+  - WRK-675
+  - WRK-1000
+  mtime: '2026-03-02'
+- path: specs/wrk/WRK-677/plan.md
+  title: 'WRK-677 Plan: governance(review) — strengthen claim gate metadata'
+  description: '**Source WRK:** WRK-677 **Route:** C (complex) **Created:** 2026-03-02 **Status:** final (post cross-review)'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-677
+  wrk_refs:
+  - WRK-656
+  - WRK-677
+  mtime: '2026-03-02'
+- path: specs/wrk/WRK-682/plan.md
+  title: 'Plan: WRK-682 — Cross-Terminal Queue Sync'
+  description: Implement automatic, git-aware synchronization of the work queue across all terminal sessions and workstations.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-682
+  wrk_refs:
+  - WRK-682
+  mtime: '2026-03-02'
+- path: specs/wrk/WRK-686/plan.md
+  title: 'Plan: WRK-686 — Canonical HTML Standards for Orchestrator Reviews'
+  description: Establish and enforce a single, professional HTML/CSS standard for all Plan and Implementation Reviews to ensure
+    consistency and scannability across all agents.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-686
+  wrk_refs:
+  - WRK-669
+  - WRK-671
+  - WRK-682
+  - WRK-686
+  mtime: '2026-03-02'
 - path: digitalmodel/specs/module-registry.yaml
   title: digitalmodel
   description: Structured registry of all digitalmodel sub-modules for agent discovery

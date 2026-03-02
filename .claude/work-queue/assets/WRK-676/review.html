@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"/><title>WRK-676 Cross-Review Synthesis</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 900px; margin: 0 auto; padding: 24px; background: #fafaf8; color: #172126; }
+  h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  .meta { color: #55636b; font-size: 0.9rem; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.93rem; }
+  th, td { padding: 9px 10px; border: 1px solid #d9d0c0; text-align: left; vertical-align: top; }
+  th { background: #f3efe6; }
+  .approve { color: #166534; font-weight: 600; }
+  .minor { color: #b45309; font-weight: 600; }
+  .request { color: #b91c1c; font-weight: 600; }
+  .no-output { color: #55636b; font-weight: 600; }
+  .resolved { color: #166534; }
+</style>
+</head>
+<body>
+<h1>WRK-676 Cross-Review Synthesis</h1>
+<p class="meta">WRK-676 · test(review): automate plan gate confirmation · 2026-03-02</p>
+
+<h2>Implementation Cross-Review</h2>
+<table>
+  <tr><th>Reviewer</th><th>Verdict</th><th>Findings</th><th>Status</th></tr>
+  <tr>
+    <td>Claude</td>
+    <td class="approve">APPROVE</td>
+    <td>Inline review: <code>check_plan_confirmation()</code> logic correct, Plan gate integration clean, templates follow existing conventions, backward-compatible for done/ items.</td>
+    <td class="resolved">N/A</td>
+  </tr>
+  <tr>
+    <td>Gemini</td>
+    <td class="minor">MINOR</td>
+    <td>
+      P1: <code>decision_ok</code> used substring match — <code>"passed" in value</code> would pass <code>"not passed"</code>.<br/>
+      P2: <code>\S</code> regex matched template placeholder comments.<br/>
+      P3: <code>plan-template-minimal.md</code> missing confirmation block.
+    </td>
+    <td class="resolved">All resolved: P1 → strict <code>== "passed"</code>; P2 → <code>[a-zA-Z0-9]</code> / <code>[0-9]</code> anchors; P3 → block added to minimal template.</td>
+  </tr>
+  <tr>
+    <td>Codex</td>
+    <td class="request">REQUEST_CHANGES</td>
+    <td>P1 (Critical): confirmation fields inside a fenced code block satisfy the regex — gate can be bypassed via example text in templates or review files. Reproduced with inline Python test.</td>
+    <td class="resolved">Resolved: <code>strip_code_fences()</code> helper added; content is stripped of all ``` blocks before regex matching. Verified with T9 (fenced-only → False) and T1 (plain text → True).</td>
+  </tr>
+</table>
+
+<h2>Combined Verdict</h2>
+<p><strong class="approve">PASS</strong> — Gemini MINOR (3 findings resolved), Codex REQUEST_CHANGES resolved (code-fence bypass fixed via <code>strip_code_fences()</code>), Claude APPROVE. All findings addressed before claiming.</p>
+
+<h2>Deliverables Verified</h2>
+<ul>
+  <li><code>specs/templates/plan-template.md</code> — <code>## Plan Review Confirmation</code> block added</li>
+  <li><code>specs/templates/plan-template-minimal.md</code> — confirmation block added (Gemini P3 fix)</li>
+  <li><code>specs/templates/plan-html-review-final-template.md</code> — new canonical orchestrator template</li>
+  <li><code>specs/templates/claim-evidence-template.yaml</code> — new schema template with <code>plan_confirmation</code> section</li>
+  <li><code>scripts/work-queue/verify-gate-evidence.py</code> — <code>strip_code_fences()</code> + <code>check_plan_confirmation()</code> + Plan gate extended</li>
+</ul>
+</body>
+</html>

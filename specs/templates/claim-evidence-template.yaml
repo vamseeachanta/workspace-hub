@@ -1,0 +1,74 @@
+# claim-evidence.yaml — canonical schema template
+# Copy to .claude/work-queue/assets/WRK-NNN/claim-evidence.yaml and fill in values.
+# Fields marked REQUIRED must be present; others are recommended.
+
+claim_date: ""                           # REQUIRED — ISO-8601 timestamp of claim
+wrk_id: ""                               # REQUIRED — e.g. WRK-676
+route: ""                                # REQUIRED — A | B | C
+orchestrator: ""                         # REQUIRED — claude | codex | gemini
+best_fit_provider: ""                    # REQUIRED — which provider best fits the work
+alternate_provider: ""                   # recommended fallback provider
+
+quota_snapshot:
+  source: config/ai-tools/agent-quota-latest.json
+  status: ""                             # e.g. not_captured_in_session
+
+gate_evidence:
+
+  plan_gate:
+    plan_html_review_final_ref: ""       # REQUIRED — path to plan-html-review-final.md
+    plan_reviewed: true                  # REQUIRED — true when reviewer has read the plan
+    plan_approved: true                  # REQUIRED — true when reviewer approves implementation
+    plan_confirmation:                   # REQUIRED — mirrors the block inside plan-html-review-final.md
+      confirmed_by: ""                   # reviewer name or agent
+      confirmed_at: ""                   # ISO-8601 timestamp
+      decision: passed                   # MUST be "passed"; set to "changes-requested" to block
+      notes: ""
+    workstation_validation:              # REQUIRED — validates plan/execution machine contracts
+      plan_workstations: []              # must match WRK frontmatter plan_workstations
+      execution_workstations: []         # must match WRK frontmatter execution_workstations
+      validated: true
+    notes: ""
+
+  cross_review_gate:
+    artifacts:
+      - reviewer: claude
+        artifact: ""
+        verdict: ""
+        resolved: true
+      - reviewer: codex
+        artifact: ""
+        verdict: ""
+        resolved: true
+      - reviewer: gemini
+        artifact: ""
+        verdict: ""
+        resolved: true
+    combined_verdict: ""
+    no_output_policy: ""                 # document NO_OUTPUT disposition if applicable
+
+  tdd_gate:
+    test_manifest: ""                    # REQUIRED — path to *test*.md artifact
+    summary: ""                          # brief test outcome description
+
+  legal_gate:
+    legal_scan_ref: ""                   # REQUIRED — path to legal-scan.md
+    result: pass                         # MUST be "pass"
+    notes: ""
+
+verifier_output:
+  command: uv run --no-project python3 scripts/work-queue/verify-gate-evidence.py WRK-NNN
+  exit_code: 0
+  result: "→ All orchestrator gates have documented evidence."
+  gates_passed:
+    - Plan gate
+    - Workstation contract gate
+    - Cross-review gate
+    - TDD gate
+    - Legal gate
+
+agent_capability:
+  best_fit: matched
+  rationale: ""
+
+skipped_stages: {}                       # document any skipped stages with justification

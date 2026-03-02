@@ -95,6 +95,9 @@ fatigue, etc.), and **data provenance signals**.
 | Provider NO_OUTPUT rate | ≥3 consecutive ensemble runs where same provider emits NO_OUTPUT | Flag: "provider degraded — check CLI version / auth for <provider>" |
 | AI agent readiness | `session-signals/ai-readiness.jsonl` contains `"status":"warn"` | Flag: "AI agent <name> missing or outdated — see R-AI-CLI in readiness-issues.md" |
 | TDD pairing rate | `session-signals/test-health.jsonl` latest `overall_tdd_pairing_pct` < 70 | Flag: "TDD pairing rate <N>% — repos at risk: <list>" (source: WRK-236 test-health-check.sh) |
+| Agent gate-skip rate | Per-provider count of WRK items closed without `plan_reviewed: true` or missing cross-review artifact | Flag: "Agent <provider> skipped gates on N items — update anti-patterns in skills" |
+| Agent scope drift | Per-provider count of commits touching repos outside `target_repos` for the WRK | Flag: "Agent <provider> exceeded WRK scope N times — add scope-limit prohibitions" |
+| Agent over-eagerness | Claude sessions where `percent_complete` jumped 0→100 in a single turn with no cross-review log entry | Flag: "Claude gate-skip pattern detected — reinforce Never-archive-early rule" |
 
 Signal emitter status (WRK-305):
 

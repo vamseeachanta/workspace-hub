@@ -20,10 +20,21 @@ branch=$(cd "$ws_root" 2>/dev/null && git rev-parse --abbrev-ref HEAD 2>/dev/nul
 
 # Work queue counts (fast find, no recursion)
 wq="$ws_root/.claude/work-queue"
+top_wrk=""
 if [[ -d "$wq/pending" ]]; then
     p=$(find "$wq/pending" -maxdepth 1 -name "WRK-*.md" 2>/dev/null | wc -l | tr -d ' ')
     w=$(find "$wq/working" -maxdepth 1 -name "WRK-*.md" 2>/dev/null | wc -l | tr -d ' ')
     b=$(find "$wq/blocked" -maxdepth 1 -name "WRK-*.md" 2>/dev/null | wc -l | tr -d ' ')
+    
+    # Extract top priority item from INDEX.md (first pending/high item)
+    if [[ -f "$wq/INDEX.md" ]]; then
+        top_line=$(grep "| pending | high" "$wq/INDEX.md" | head -n 1 || true)
+        if [[ -n "$top_line" ]]; then
+            top_id=$(echo "$top_line" | cut -d'|' -f2 | xargs)
+            top_title=$(echo "$top_line" | cut -d'|' -f3 | xargs | cut -c1-30)
+            top_wrk=" [TOP:${top_id}-${top_title}...]"
+        fi
+    fi
 else
     p=0; w=0; b=0
 fi
@@ -101,7 +112,7 @@ parts+=("\033[1;33m[${hostname_s}]\033[0m")
 parts+=("\033[1;35m${model}\033[0m")
 parts+=("\033[1;37m${repo_name}\033[0m")
 parts+=("\033[33m${branch}\033[0m")
-parts+=("\033[36mWRK:${p}p/${w}w/${b}b\033[0m")
+parts+=("\033[36mWRK:${p}p/${w}w/${b}b${top_wrk}\033[0m")
 parts+=("\033[35m${ai_usage}\033[0m")
 parts+=("${cost_fmt}")
 parts+=("ctx:${ctx}")

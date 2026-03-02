@@ -299,6 +299,21 @@ history:
 
 ---
 
+## Plan Review Confirmation
+
+<!--
+  MANDATORY: Populate this block when the plan is accepted by the reviewer.
+  The gate validator scans for these exact fields.
+  'decision' MUST be "passed" for the Plan gate to pass.
+-->
+
+confirmed_by: <!-- reviewer name or agent, e.g. "user" or "claude" -->
+confirmed_at: <!-- ISO-8601 timestamp, e.g. 2026-03-02T14:30:00Z -->
+decision: <!-- passed | changes-requested -->
+notes: <!-- optional approval summary -->
+
+---
+
 ## Progress Tracking
 
 ### Milestones

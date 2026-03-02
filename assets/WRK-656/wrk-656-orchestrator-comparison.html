@@ -146,7 +146,7 @@
           <strong>Current snapshot</strong>
           <ul>
             <li>Claude’s WRK-669 run leads with a polished summary HTML, detailed variation tests, and locked claim evidence. <strong>WRK-673 (2026-03-01)</strong> retroactively exercised the Resource Intelligence stage — artifacts now exist under <code>.claude/work-queue/assets/WRK-669/</code> and <code>claim-evidence.yaml</code> has been updated with <code>resource_intelligence_gate</code> evidence.</li>
-            <li>Codex’s WRK-670 mirrored the gate artifacts, anchored the validator output (see <code>verify-gate-evidence.txt</code>), and signaled a follow-up WRK (WRK-1000) for Codex skill fixes.</li>
+            <li>Codex’s WRK-670 mirrored the gate artifacts, anchored the validator output (see <code>verify-gate-evidence.txt</code>), and is now closed with HTML verification. Latest consistency rerun logged at <code>2026-03-02T10:03:01Z</code> (PASS).</li>
             <li><a href="../WRK-671/wrk-671-agent-orchestrator-report.html">Gemini’s WRK-671 run</a> now features a complete variation-test narrative and full cross-review synthesis (WRK-672 update).</li>
           </ul>
         </li>
@@ -178,8 +178,8 @@
         <tr>
           <td>Resource Intelligence</td>
           <td><span class="badge covered">COVERED</span>Retroactive RI pass via WRK-673. Artifacts: <a href="../../.claude/work-queue/assets/WRK-669/resource-pack.md">resource-pack.md</a>, <a href="../../.claude/work-queue/assets/WRK-669/resources.yaml">resources.yaml</a>, <a href="../../.claude/work-queue/assets/WRK-669/resource-intelligence-summary.md">RI summary</a>. No P1 gaps; decision=continue_to_planning. Legal scan: pass.</td>
-          <td><span class="badge skip">SKIPPED</span>Reused WRK-657 resource pack; no new ingestion required.</td>
-          <td><span class="badge covered">COVERED</span>Retroactive RI pass via WRK-672 (rerun). Artifacts: <a href="../.claude/work-queue/assets/WRK-671/resource-pack.md">resource-pack.md</a>, <a href="../.claude/work-queue/assets/WRK-671/resources.yaml">resources.yaml</a>, <a href="../.claude/work-queue/assets/WRK-671/resource-intelligence-summary.md">RI summary</a>. No P1 gaps. Legal scan: pass.</td>
+          <td><span class="badge covered">COVERED</span>Retroactive RI pass for Codex. Artifacts: <a href="../../.claude/work-queue/assets/WRK-670/resource-pack.md">resource-pack.md</a>, <a href="../../.claude/work-queue/assets/WRK-670/resources.yaml">resources.yaml</a>, <a href="../../.claude/work-queue/assets/WRK-670/resource-intelligence-summary.md">RI summary</a>. No P1 gaps. Legal scan: pass.</td>
+          <td><span class="badge covered">COVERED</span>Retroactive RI pass via WRK-672 (rerun). Artifacts: <a href="../../.claude/work-queue/assets/WRK-671/resource-pack.md">resource-pack.md</a>, <a href="../../.claude/work-queue/assets/WRK-671/resources.yaml">resources.yaml</a>, <a href="../../.claude/work-queue/assets/WRK-671/resource-intelligence-summary.md">RI summary</a>. No P1 gaps. Legal scan: pass.</td>
         </tr>
         <tr>
           <td>Triage</td>
@@ -402,9 +402,9 @@
         <tr>
           <td>4</td>
           <td>Resource Intelligence stage skipped</td>
-          <td>WRK-669 (retroactive), WRK-670, WRK-671 (retroactive)</td>
+          <td>WRK-669 (retroactive), WRK-670 (retroactive), WRK-671 (retroactive)</td>
           <td><span class="badge pass">RESOLVED</span></td>
-          <td>WRK-673: RI evidence enforcement checkpoint — see <a href="../../.claude/work-queue/working/WRK-673.md">working/WRK-673.md</a>. RI artifacts in <code>assets/WRK-669/</code>; claim-evidence updated.</td>
+          <td>RI evidence now covered across all three orchestrator runs: WRK-669 (WRK-673), WRK-670 (retro RI pass), WRK-671 (WRK-672).</td>
         </tr>
       </table>
     </div>
@@ -435,6 +435,24 @@
           <td>WRK-675</td>
           <td>Claude</td>
           <td>Canonical script flow in <a href="orchestrator-flow.md"><code>orchestrator-flow.md</code></a>; comparison HTML updated with Canonical Flow, Script Alignment, and Deviation Notes panels. Codex MAJOR findings resolved (policy accuracy, log narrative, inventory matrix, links).</td>
+          <td><span class="badge pass">Done</span></td>
+        </tr>
+        <tr>
+          <td>WRK-676</td>
+          <td>Claude</td>
+          <td>Automate plan gate confirmation — <code>check_plan_confirmation()</code> added to <code>verify-gate-evidence.py</code>; <code>plan-html-review-final-template.md</code> and <code>claim-evidence-template.yaml</code> created. Gemini MINOR + Codex REQUEST_CHANGES resolved (strict equality, code-fence stripping).</td>
+          <td><span class="badge pass">Done</span></td>
+        </tr>
+        <tr>
+          <td>WRK-677</td>
+          <td>Claude</td>
+          <td>Strengthen claim gate metadata — <code>check_claim_gate()</code> added to validator; <code>metadata_version=1</code> schema enforces <code>session_owner</code>, <code>quota_snapshot.timestamp</code>, <code>blocking_state</code>. Legacy items WARN only.</td>
+          <td><span class="badge pass">Done</span></td>
+        </tr>
+        <tr>
+          <td>WRK-678</td>
+          <td>Claude</td>
+          <td>Automate close gate follow-up capture — <code>future-work-recommendations.md</code> template and <code>check_future_work_gate()</code> added to validator. Requires WRK-IDs or <code>no_follow_ups_rationale</code> before close. Template at <a href="../../specs/templates/future-work-recommendations-template.md"><code>specs/templates/future-work-recommendations-template.md</code></a>.</td>
           <td><span class="badge pass">Done</span></td>
         </tr>
         <tr>

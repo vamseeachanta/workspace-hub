@@ -81,64 +81,96 @@ provider_alt = get_value("provider_alt")
 plan_workstations = get_value("plan_workstations")
 execution_workstations = get_value("execution_workstations")
 
-quota_snapshot = {
-    "source": str(Path(quota_file).relative_to(workspace_root)) if Path(quota_file).exists() else quota_file,
-    "status": quota_status,
-}
-if Path(quota_file).exists():
-    try:
-        quota_snapshot["captured_at"] = Path(quota_file).stat().st_mtime
-    except OSError:
-        pass
+# session_owner — from frontmatter provider
+session_owner = provider or "unknown"
 
-claim_doc = {
-    "claim_date": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-    "wrk_id": wrk_id,
-    "route": route,
-    "orchestrator": orchestrator,
-    "best_fit_provider": provider,
-    "alternate_provider": provider_alt,
-    "plan_workstations": plan_workstations,
-    "execution_workstations": execution_workstations,
-    "quota_snapshot": quota_snapshot,
-    "agent_capability": {
-        "best_fit": "matched" if provider else "undocumented",
-        "rationale": "Claim created from WRK frontmatter. Review before execution if task shape changed.",
-    },
-    "user_html_blocker": {
-        "status": "planning_gates_must_pass_before_execution",
-    },
-}
+# agent_fit — derived from route + workstations + provider
+exec_ws = execution_workstations or "unknown"
+capability_match = "matched" if session_owner != "unknown" else "undocumented"
+agent_fit_rationale = (
+    f"Route {route or '?'} / execution_workstations={exec_ws} / provider={session_owner}"
+)
+
+# blocking_state — from frontmatter blocked_by (handle inline [] and YAML block format)
+blocked_by_raw = get_value("blocked_by")  # captures inline `blocked_by: [WRK-XXX]`
+if not blocked_by_raw or not blocked_by_raw.strip("[]").strip():
+    # YAML block format:  blocked_by:\n  - WRK-NNN
+    block_match = re.search(
+        r"^blocked_by:\s*\n((?:[ \t]+-[^\n]*\n?)*)", frontmatter, re.MULTILINE
+    )
+    if block_match:
+        blocked_by_list = [
+            item.strip().lstrip("-").strip()
+            for item in block_match.group(1).splitlines()
+            if item.strip().lstrip("-").strip()
+        ]
+    else:
+        blocked_by_list = []
+else:
+    blocked_by_list = [
+        x.strip().strip("-").strip()
+        for x in blocked_by_raw.strip("[]").split(",")
+        if x.strip().strip("-").strip()
+    ]
+is_blocked = len(blocked_by_list) > 0
+
+# quota_snapshot — ISO8601 timestamp; pct_remaining from agent-quota-latest.json
+import json
+now_str = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+quota_pct = None
+quota_status_val = "unknown"
+quota_source = quota_file
+if Path(quota_file).exists():
+    quota_source = str(Path(quota_file).relative_to(workspace_root))
+    try:
+        qdata = json.loads(Path(quota_file).read_text(encoding="utf-8"))
+        for agent in qdata.get("agents", []):
+            if agent.get("provider") == session_owner:
+                quota_pct = agent.get("pct_remaining")
+                quota_status_val = (
+                    "available" if quota_pct is None or quota_pct > 10 else "rate-limited"
+                )
+                break
+        else:
+            quota_status_val = "available"  # file present, provider not found → optimistic
+    except Exception:
+        quota_status_val = "unknown"
+
+pct_str = str(quota_pct) if quota_pct is not None else "null"
+blocked_by_yaml = "[" + ", ".join(blocked_by_list) + "]" if blocked_by_list else "[]"
 
 claim_file.write_text(
-    "\n".join(
-        [
-            f"claim_date: {claim_doc['claim_date']}",
-            f"wrk_id: {claim_doc['wrk_id']}",
-            f"route: {claim_doc['route']}",
-            f"orchestrator: {claim_doc['orchestrator']}",
-            f"best_fit_provider: {claim_doc['best_fit_provider']}",
-            f"alternate_provider: {claim_doc['alternate_provider']}",
-            f"plan_workstations: {claim_doc['plan_workstations']}",
-            f"execution_workstations: {claim_doc['execution_workstations']}",
-            "quota_snapshot:",
-            f"  source: {claim_doc['quota_snapshot']['source']}",
-            f"  status: {claim_doc['quota_snapshot']['status']}",
-            "agent_capability:",
-            f"  best_fit: {claim_doc['agent_capability']['best_fit']}",
-            f"  rationale: {claim_doc['agent_capability']['rationale']}",
-            "user_html_blocker:",
-            f"  status: {claim_doc['user_html_blocker']['status']}",
-            "",
-        ]
-    ),
+    "\n".join([
+        f"claim_date: \"{now_str}\"",
+        f"wrk_id: \"{wrk_id}\"",
+        f"route: \"{route}\"",
+        f"orchestrator: \"{orchestrator}\"",
+        f"best_fit_provider: \"{provider or 'unknown'}\"",
+        f"alternate_provider: \"{provider_alt}\"",
+        f"metadata_version: \"1\"",
+        f"session_owner: \"{session_owner}\"",
+        "agent_fit:",
+        f"  capability_match: \"{capability_match}\"",
+        f"  rationale: \"{agent_fit_rationale}\"",
+        "blocking_state:",
+        f"  blocked: {'true' if is_blocked else 'false'}",
+        f"  blocked_by: {blocked_by_yaml}",
+        "  notes: \"\"",
+        "quota_snapshot:",
+        f"  timestamp: \"{now_str}\"",
+        f"  provider: \"{session_owner}\"",
+        f"  status: \"{quota_status_val}\"",
+        f"  pct_remaining: {pct_str}",
+        f"  source: \"{quota_source}\"",
+        "",
+    ]),
     encoding="utf-8",
 )
 
 upsert("status", "working")
 upsert("claim_routing_ref", str(claim_file.relative_to(workspace_root)))
-if quota_status == "available":
-    upsert("claim_quota_snapshot_ref", quota_snapshot["source"])
+if quota_status_val == "available":
+    upsert("claim_quota_snapshot_ref", quota_source)
 
 path.write_text(f"---\n{frontmatter.rstrip()}\n---\n{body}", encoding="utf-8")
 PY

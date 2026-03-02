@@ -1,0 +1,54 @@
+claim_date: "2026-03-02T10:30:00Z"
+wrk_id: "WRK-677"
+route: "C"
+orchestrator: "claude"
+best_fit_provider: "claude"
+alternate_provider: ""
+metadata_version: "1"
+session_owner: "claude"
+agent_fit:
+  capability_match: "matched"
+  rationale: "Route C / execution_workstations=[ace-linux-1] / provider=claude"
+blocking_state:
+  blocked: false
+  blocked_by: []
+  notes: ""
+quota_snapshot:
+  timestamp: "2026-03-02T10:30:00Z"
+  provider: "claude"
+  status: "unknown"
+  pct_remaining: null
+  source: "config/ai-tools/agent-quota-latest.json"
+gate_evidence:
+  claim_gate:
+    metadata_version_ok: true
+    session_owner_ok: true
+    quota_ok: true
+    unblocked: true
+    verified_at: "2026-03-02T10:30:00Z"
+    notes: "claude quota source reports unavailable — status=unknown treated as WARN not FAIL"
+  plan_gate:
+    plan_html_review_final_ref: ".claude/work-queue/assets/WRK-677/plan-html-review-final.md"
+    plan_reviewed: true
+    plan_approved: true
+    notes: "User approved 2026-03-02T10:18:00Z after Codex/Gemini cross-review resolved"
+  cross_review_gate:
+    artifacts:
+      - reviewer: "codex"
+        artifact: ".claude/work-queue/assets/WRK-677/review.md"
+        verdict: "REQUEST_CHANGES → APPROVE (P2 resolved)"
+      - reviewer: "gemini"
+        artifact: ".claude/work-queue/assets/WRK-677/review.md"
+        verdict: "REQUEST_CHANGES → APPROVE (BUG resolved)"
+    combined_verdict: "APPROVE — all P1/P2/bug findings resolved post-review"
+    fallback: "No NO_OUTPUT events. Both reviewers provided structured feedback."
+  tdd_gate:
+    test_manifest: ".claude/work-queue/assets/WRK-677/variation-test-results.md"
+    summary: "10/10 pass — check_claim_gate happy/legacy/fail paths + plan confirmation"
+  legal_gate:
+    legal_scan_ref: ".claude/work-queue/assets/WRK-677/legal-scan.md"
+    result: "pass"
+    notes: "No block-severity violations in changed files"
+no_output_policy:
+  classification: "N/A — no NO_OUTPUT events during this review cycle"
+  rerun_guidance: "scripts/review/cross-review.sh <file> all"
