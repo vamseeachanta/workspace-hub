@@ -11,5 +11,9 @@
 - This run focuses on gate fidelity artifacts rather than production code changes.
 - Final-user browser telemetry is represented by a confirmation control in this markdown artifact.
 
+confirmed_by: user
+confirmed_at: 2026-03-02T15:05:00Z
+decision: passed
+
 **Human confirmation**: <button type="button" onclick="document.getElementById('review-status').textContent='Review confirmed at ' + new Date().toISOString();">Confirm human review</button>
 <span id="review-status"></span>
