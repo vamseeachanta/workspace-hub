@@ -69,15 +69,17 @@ implementation detail of `cross-review.sh`. Calling them directly from orchestra
 
 `cross-review.sh all` submits to all three agents and applies these rules:
 
-| Codex result | Fallback |
-|-------------|---------|
-| VALID (APPROVE / MINOR) | CODEX_PASSED=true — cross-review succeeds |
+| Codex result | Behaviour |
+|-------------|-----------|
+| VALID output (any verdict) | CODEX_PASSED=true — script gate passes; orchestrator MUST resolve all MAJOR/REQUEST_CHANGES findings before claiming |
 | NO_OUTPUT (empty / timeout) | 2-of-3 consensus: if Claude+Gemini both ≤MINOR → CONDITIONAL_PASS |
 | INVALID_OUTPUT | Treated as NO_OUTPUT; HARD GATE warning issued |
-| Explicit REJECT / MAJOR | No fallback — HARD GATE fails; must resolve before proceeding |
+| Script exit non-zero | HARD GATE — exits 1 regardless of other reviewers |
 
-Codex is always the **hard gate**. The 2-of-3 consensus covers NO_OUTPUT only (typically caused by
-Codex not being installed or a large-diff timeout), never an explicit rejection.
+`cross-review.sh` sets CODEX_PASSED=true on any structurally valid Codex output — it does **not**
+auto-fail on MAJOR verdicts. Enforcement is by workflow: orchestrators must read the verdict, fix all
+MAJOR/P1 findings, and resubmit before claiming. The 2-of-3 fallback applies to NO_OUTPUT only,
+never to an explicit MAJOR or REQUEST_CHANGES that was not resolved.
 
 ---
 
@@ -137,8 +139,9 @@ Scripts used by each orchestrator during WRK-669/670/671:
 | `session.sh init` | noted | noted | noted | ✓ |
 | `cross-review.sh all` | partial (used for Gemini; direct call for Claude) | ✓ | ✓ | ✓ |
 | `submit-to-claude.sh` (direct) | ✓ (drift) | ✗ | ✗ | ✗ internal only |
+| `submit-to-codex.sh` (via cross-review) | ✓ | ✓ | ✓ | internal |
 | `verify-gate-evidence.py` | ✓ (exit 0) | ✓ (exit 0) | ✓ (exit 0) | ✓ |
-| `log-gate-event.sh` (YAML) | ✓ | ✓ | ✗ (ISO+INFO drift) | ✓ |
+| `log-gate-event.sh` (YAML) | ✓ | ✓ | ✗ (ISO+INFO drift — did not use this script) | ✓ |
 | `submit-to-gemini.sh` (via cross-review) | ✓ | ✓ | ✓ | internal |
 
 ---

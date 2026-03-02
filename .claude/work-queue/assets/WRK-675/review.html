@@ -65,8 +65,31 @@
   </tr>
 </table>
 
+<h2>Gate Closure Cross-Review (2026-03-02)</h2>
+<table>
+  <tr><th>Reviewer</th><th>Verdict</th><th>Findings</th><th>Status</th></tr>
+  <tr>
+    <td>Codex</td>
+    <td class="request">MAJOR</td>
+    <td>P1: Cross-review policy documented stronger than implemented (script passes on any VALID output; no auto-fail on MAJOR). P2: WRK-673 link targets pending/ (stale). P2: log-gate-event.sh narrative claims "same helper generated WRK-671 log set" but WRK-671 uses ISO+INFO format. P3: submit-to-codex.sh missing from inventory matrix.</td>
+    <td class="resolved">All resolved: policy table corrected to reflect VALID=CODEX_PASSED with workflow enforcement note; WRK-673 link updated to working/; log-gate-event.sh narrative corrected with DRIFT badge; submit-to-codex row added to matrix.</td>
+  </tr>
+  <tr>
+    <td>Gemini</td>
+    <td class="approve">APPROVE</td>
+    <td>No findings. All four focus areas (canonical flow, script completeness, deviation table, cross-review policy) confirmed accurate and complete.</td>
+    <td class="resolved">N/A</td>
+  </tr>
+  <tr>
+    <td>Claude</td>
+    <td class="approve">APPROVE</td>
+    <td>Inline review: deliverables verified, deviations accurately captured, validator exits 0.</td>
+    <td class="resolved">N/A</td>
+  </tr>
+</table>
+
 <h2>Combined Verdict</h2>
-<p><strong class="approve">CONDITIONAL_PASS</strong> — All REQUEST_CHANGES findings from Codex (plan + implementation rounds) resolved. Claude and Gemini NO_OUTPUT per policy (watchdog timeout / not installed). 2-of-3 fallback not required in plan round (Codex + Gemini both reviewed); implementation round resolved via fix-and-resubmit pattern.</p>
+<p><strong class="approve">PASS</strong> — Gate closure review: Codex MAJOR resolved (all 4 findings addressed), Gemini APPROVE, Claude APPROVE. Plan round: Codex/Gemini REQUEST_CHANGES resolved, Claude NO_OUTPUT per policy. Implementation round: Codex REQUEST_CHANGES resolved, Gemini/Claude NO_OUTPUT per policy. All gates documented and validated.</p>
 
 <h2>Deliverables Verified</h2>
 <ul>

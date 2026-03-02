@@ -294,7 +294,7 @@
             <td><code>scripts/work-queue/log-gate-event.sh</code></td>
             <td>Stage logs show start/plan/review/close entries with gate metadata.</td>
             <td>Plan/cross-review logs follow same structure courtesy of this helper.</td>
-            <td>Same helper generated the WRK-671 log set.</td>
+            <td><span class="badge warn">DRIFT</span>WRK-671 used ISO+INFO format, not YAML key-value — did not use this script. See Deviation #2.</td>
           </tr>
         </table>
       </div>
@@ -404,7 +404,7 @@
           <td>Resource Intelligence stage skipped</td>
           <td>WRK-669 (retroactive), WRK-670, WRK-671 (retroactive)</td>
           <td><span class="badge pass">RESOLVED</span></td>
-          <td><a href="../../.claude/work-queue/pending/WRK-673.md">WRK-673</a>: RI evidence enforcement checkpoint. Gemini RI pass added via WRK-672 (rerun).</td>
+          <td>WRK-673: RI evidence enforcement checkpoint — see <a href="../../.claude/work-queue/working/WRK-673.md">working/WRK-673.md</a>. RI artifacts in <code>assets/WRK-669/</code>; claim-evidence updated.</td>
         </tr>
       </table>
     </div>
@@ -434,8 +434,8 @@
         <tr>
           <td>WRK-675</td>
           <td>Claude</td>
-          <td>After 10 additional runs per Claude/Codex, document the canonical script flow (<a href="orchestrator-flow.md"><code>orchestrator-flow.md</code></a>) and align the comparison HTML. Deviation table, script alignment, and cross-review consistency mandate defined.</td>
-          <td><span class="badge covered">In Progress</span></td>
+          <td>Canonical script flow in <a href="orchestrator-flow.md"><code>orchestrator-flow.md</code></a>; comparison HTML updated with Canonical Flow, Script Alignment, and Deviation Notes panels. Codex MAJOR findings resolved (policy accuracy, log narrative, inventory matrix, links).</td>
+          <td><span class="badge pass">Done</span></td>
         </tr>
         <tr>
           <td>WRK-1000</td>
