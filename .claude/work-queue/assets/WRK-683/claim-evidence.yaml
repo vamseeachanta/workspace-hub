@@ -1,0 +1,19 @@
+wrk_id: WRK-683
+closed_at: 2026-03-02T16:45:00Z
+commit: 6a4134d3
+plan_approved: true
+gate_evidence:
+  implementation:
+    - logs/orchestrator/README.md created
+    - .gitignore negation rules added
+    - .claude/hooks/session-logger.sh dual-write added (jq-based JSON encoding)
+    - scripts/review/submit-to-codex.sh tee to orchestrator log
+    - scripts/review/submit-to-gemini.sh tee to orchestrator log
+    - AGENTS.md peer logs policy line added
+    - .claude/docs/orchestrator-pattern.md Cross-Agent Log Access section added
+  bug_fix:
+    - session-logger.sh JSON encoding bug fixed (unescaped quotes in cmd field)
+    - 82/107 pre-fix entries valid; all new entries valid after fix
+  log_verification:
+    - logs/orchestrator/claude/session_20260302.jsonl confirmed present on ace-linux-1
+    - 107 entries written during session; valid JSON confirmed via python3 json.loads
