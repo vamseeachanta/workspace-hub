@@ -49,8 +49,35 @@ verifier_output:
 agent_capability:
   best_fit: matched
   rationale: Claude is orchestrator for this meta gate run; no subagent execution required
+resource_intelligence_gate:
+  status: covered
+  generated_by: WRK-673
+  generated_at: 2026-03-01T00:00:00Z
+  artifacts:
+    - path: .claude/work-queue/assets/WRK-669/resource-pack.md
+      description: Problem context, relevant docs, constraints, source paths
+    - path: .claude/work-queue/assets/WRK-669/resources.yaml
+      description: Source provenance and routing-override record
+    - path: .claude/work-queue/assets/WRK-669/sources.md
+      description: Inventory of all repo-native sources used
+    - path: .claude/work-queue/assets/WRK-669/constraints.md
+      description: Machine, scope, and timing constraints
+    - path: .claude/work-queue/assets/WRK-669/domain-notes.md
+      description: Domain context for orchestration pipeline validation
+    - path: .claude/work-queue/assets/WRK-669/open-questions.md
+      description: Open questions resolved
+    - path: .claude/work-queue/assets/WRK-669/resource-intelligence-summary.md
+      description: Gap ranking (P1/P2/P3) and user decision
+  gap_ranking:
+    p1: none
+    p2: Codex NO_OUTPUT on ace-linux-1 (accepted per machine-constraint policy)
+    p3: RI artifacts retroactive; WRK-670/671 packs deferred
+  user_decision: continue_to_planning
+  legal_scan_ref: .claude/work-queue/assets/WRK-669/legal-scan.md
+  notes: >
+    Original WRK-669 run noted RI as not applicable (meta item). WRK-673 retroactively
+    exercises the stage to satisfy WRK-624 comparison contract. No P1 gaps found.
 skipped_stages:
-  resource_intelligence: meta item — no external data dependencies; not applicable
   ensemble_planning: Route C inline plan; no separate spec file needed for this meta item
 user_html_blocker:
   status: satisfied

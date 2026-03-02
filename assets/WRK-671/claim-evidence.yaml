@@ -3,11 +3,31 @@ title: "test(review): orchestrator gate run with Gemini"
 orchestrator: gemini
 timestamp: 2026-03-02T15:10:00Z
 gates:
+  resource_intelligence: OK
   plan: OK
   workstation_contract: OK
   cross_review: OK
   tdd: OK
   legal: OK
+resource_intelligence_gate:
+  status: covered
+  generated_by: WRK-672 (rerun)
+  generated_at: 2026-03-02T05:25:00Z
+  artifacts:
+    - path: .claude/work-queue/assets/WRK-671/resource-pack.md
+      description: Problem context, relevant docs, constraints, source paths
+    - path: .claude/work-queue/assets/WRK-671/resources.yaml
+      description: Source provenance and reporting record
+    - path: .claude/work-queue/assets/WRK-671/sources.md
+      description: Inventory of repo-native sources used
+    - path: .claude/work-queue/assets/WRK-671/resource-intelligence-summary.md
+      description: Gap ranking (P1/P2/P3) and user decision
+  gap_ranking:
+    p1: none
+    p2: Codex NO_OUTPUT (simulated constraint)
+    p3: retroactive documentation sync
+  user_decision: continue_to_planning
+  legal_scan_ref: .claude/work-queue/assets/WRK-671/legal-scan.md
 verification_output: |
   Gate evidence for WRK-671 (assets: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-671):
     - Plan gate: OK (reviewed=True, approved=True, artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-671/plan-html-review-final.md)

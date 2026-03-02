@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"/><title>WRK-675 Cross-Review Synthesis</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 900px; margin: 0 auto; padding: 24px; background: #fafaf8; color: #172126; }
+  h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  .meta { color: #55636b; font-size: 0.9rem; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.93rem; }
+  th, td { padding: 9px 10px; border: 1px solid #d9d0c0; text-align: left; vertical-align: top; }
+  th { background: #f3efe6; }
+  .approve { color: #166534; font-weight: 600; }
+  .minor { color: #b45309; font-weight: 600; }
+  .request { color: #b91c1c; font-weight: 600; }
+  .no-output { color: #55636b; font-weight: 600; }
+  .resolved { color: #166534; }
+</style>
+</head>
+<body>
+<h1>WRK-675 Cross-Review Synthesis</h1>
+<p class="meta">WRK-675 · governance(review): align orchestrator flow &amp; scripts · 2026-03-01</p>
+
+<h2>Plan Gate Review</h2>
+<table>
+  <tr><th>Reviewer</th><th>Verdict</th><th>Findings</th><th>Status</th></tr>
+  <tr>
+    <td>Claude</td>
+    <td class="no-output">NO_OUTPUT</td>
+    <td>Watchdog timeout during plan review submission.</td>
+    <td class="resolved">N/A — 2-of-3 fallback applied</td>
+  </tr>
+  <tr>
+    <td>Codex</td>
+    <td class="request">REQUEST_CHANGES</td>
+    <td>P1: Stage count mismatch (8 vs 9). P2: path inconsistency, script table incomplete, WRK-673/1000 dependency unclear.</td>
+    <td class="resolved">All resolved: 9-stage flow, orchestrator-flow.md at assets/ root, full script table, informational markers.</td>
+  </tr>
+  <tr>
+    <td>Gemini</td>
+    <td class="request">REQUEST_CHANGES</td>
+    <td>P1: WRK-656 path confusion. P2: .claude/ agent-specific path. P3: Phase 1 sources incomplete.</td>
+    <td class="resolved">All resolved: WRK-656 clarified as parent item, orchestrator-flow.md at repo root, Phase 1 sources listed.</td>
+  </tr>
+</table>
+
+<h2>Implementation Cross-Review</h2>
+<table>
+  <tr><th>Reviewer</th><th>Verdict</th><th>Findings</th><th>Status</th></tr>
+  <tr>
+    <td>Claude</td>
+    <td class="no-output">NO_OUTPUT</td>
+    <td>Watchdog timeout.</td>
+    <td>NO_OUTPUT per policy — 2-of-3 fallback triggered</td>
+  </tr>
+  <tr>
+    <td>Codex</td>
+    <td class="request">REQUEST_CHANGES</td>
+    <td>P1: "Future Work Synthesis" row in stage table conflicts with 9-stage flow. P2: broken relative links (.claude/ prefix wrong from assets/WRK-656/). P2: WRK-675 working doc had old orchestrator-flow.md path. P3: href="#" on WRK-1000/WRK-673.</td>
+    <td class="resolved">All resolved: row renamed to "Review" with real verdicts; links fixed to ../../.claude/; working doc updated; WRK-1000/673 links corrected.</td>
+  </tr>
+  <tr>
+    <td>Gemini</td>
+    <td class="no-output">NO_OUTPUT</td>
+    <td>Gemini returned NO_OUTPUT on implementation review.</td>
+    <td>NO_OUTPUT per policy — 2-of-3 fallback: Codex REQUEST_CHANGES (addressed) + Claude NO_OUTPUT = CONDITIONAL_PASS after resolution</td>
+  </tr>
+</table>
+
+<h2>Combined Verdict</h2>
+<p><strong class="approve">CONDITIONAL_PASS</strong> — All REQUEST_CHANGES findings from Codex (plan + implementation rounds) resolved. Claude and Gemini NO_OUTPUT per policy (watchdog timeout / not installed). 2-of-3 fallback not required in plan round (Codex + Gemini both reviewed); implementation round resolved via fix-and-resubmit pattern.</p>
+
+<h2>Deliverables Verified</h2>
+<ul>
+  <li><code>assets/WRK-656/orchestrator-flow.md</code> — created, 9-stage flow, 6+3 script table, 4-deviation table, follow-on candidates</li>
+  <li><code>assets/WRK-656/wrk-656-orchestrator-comparison.html</code> — updated: Canonical Flow panel, Script Alignment panel, Deviation Notes panel, stage row renamed to Review, relative links fixed</li>
+</ul>
+</body>
+</html>

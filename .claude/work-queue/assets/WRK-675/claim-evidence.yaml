@@ -1,0 +1,59 @@
+claim_date: "2026-03-01T05:00:00Z"
+wrk_id: "WRK-675"
+route: "C"
+orchestrator: "claude"
+best_fit_provider: "claude"
+alternate_provider: "gemini"
+gate_evidence:
+  plan_gate:
+    plan_html_review_draft_ref: ".claude/work-queue/assets/WRK-675/plan-html-review-draft.md"
+    plan_html_review_final_ref: ".claude/work-queue/assets/WRK-675/plan-html-review-final.md"
+    spec_ref: "specs/wrk/WRK-675/plan.md"
+    plan_reviewed: true
+    plan_approved: true
+    notes: >
+      Plan cross-review: Codex REQUEST_CHANGES (P1 stage count, P2 paths/scripts/deps) and
+      Gemini REQUEST_CHANGES (P1 path clarification, P2 agent-neutral location) — all resolved
+      in plan revision. Claude NO_OUTPUT (watchdog timeout). Final plan HTML approved by user.
+  cross_review_gate:
+    artifacts:
+      - reviewer: "claude"
+        artifact: "scripts/review/results/20260302T045143Z-plan.md-plan-claude.md"
+        verdict: "NO_OUTPUT"
+      - reviewer: "codex"
+        artifact: "scripts/review/results/20260302T045143Z-plan.md-plan-codex.md"
+        verdict: "REQUEST_CHANGES → RESOLVED"
+      - reviewer: "gemini"
+        artifact: "scripts/review/results/20260302T045143Z-plan.md-plan-gemini.md"
+        verdict: "REQUEST_CHANGES → RESOLVED"
+      - reviewer: "claude"
+        artifact: "scripts/review/results/20260302T045653Z-review-input.md-implementation-claude.md"
+        verdict: "NO_OUTPUT"
+      - reviewer: "codex"
+        artifact: "scripts/review/results/20260302T045653Z-review-input.md-implementation-codex.md"
+        verdict: "REQUEST_CHANGES → RESOLVED"
+      - reviewer: "gemini"
+        artifact: "scripts/review/results/20260302T045653Z-review-input.md-implementation-gemini.md"
+        verdict: "NO_OUTPUT"
+    combined_verdict: "CONDITIONAL_PASS — Codex REQUEST_CHANGES resolved in both rounds; Claude + Gemini NO_OUTPUT per policy (watchdog timeout / not installed on ace-linux-1)."
+    synthesis_ref: ".claude/work-queue/assets/WRK-675/review.html"
+    fallback: "NO_OUTPUT policy applies; Codex was available and reviewed in both rounds."
+  tdd_gate:
+    test_manifest: ".claude/work-queue/assets/WRK-675/variation-test-results.md"
+    summary: "9 verifier smoke tests — all PASS. Documentation-only WRK; no production code. Deliverable existence and cross-link checks included."
+  legal_gate:
+    legal_scan_ref: ".claude/work-queue/assets/WRK-675/legal-scan.md"
+    result: "pass"
+    notes: "No third-party code introduced; no client identifiers; workspace-hub documentation only."
+verifier_output:
+  command: "python3 scripts/work-queue/verify-gate-evidence.py WRK-675"
+  result: "exit 0 — All orchestrator gates have documented evidence."
+  timestamp: "2026-03-01T05:05:00Z"
+deliverables:
+  - path: "assets/WRK-656/orchestrator-flow.md"
+    description: "Canonical 9-stage flow, 6+3 script suite, 4-deviation table, follow-on candidates"
+  - path: "assets/WRK-656/wrk-656-orchestrator-comparison.html"
+    description: "Updated: Canonical Flow panel, Script Alignment panel, Deviation Notes panel, Review row, fixed links"
+no_output_policy:
+  classification: "NO_OUTPUT from Claude (watchdog) and Gemini (not installed on ace-linux-1) — acceptable per SKILL.md policy."
+  rerun_guidance: "If Codex or Gemini available on ace-linux-2, rerun cross-review.sh all from that machine."

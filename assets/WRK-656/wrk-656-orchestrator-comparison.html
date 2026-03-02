@@ -116,6 +116,7 @@
       margin-right: 0.35rem;
     }
     .badge.pass { background: #dcfce7; color: var(--good); }
+    .badge.covered { background: #dbeafe; color: #1d4ed8; }
     .badge.skip { background: #fefce8; color: var(--warn); }
     .badge.warn { background: #fee2e2; color: var(--bad); }
     .log-list li { margin-bottom: 0.35rem; }
@@ -129,9 +130,10 @@
       <h1>Orchestrator Gate Comparison</h1>
       <p class="lede">This report elevates the Claude/Codex/Gemini orchestrator runs to the same design quality as the WRK-624 workflow review. Every canonical stage is captured, and the comparison links to the underlying artifacts, scripts, and logs so operator validation is traceable.</p>
       <div class="meta">
-        <div class="pill">Status: Multi-agent gate instrumentation</div>
+        <div class="pill">Status: Canonical flow defined (WRK-675)</div>
         <div class="pill">Scope: WRK-669 (Claude), WRK-670 (Codex), WRK-671 (Gemini)</div>
         <div class="pill">Validator: <code>verify-gate-evidence.py</code></div>
+        <div class="pill">Canonical doc: <a href="orchestrator-flow.md">orchestrator-flow.md</a></div>
       </div>
     </div>
   </header>
@@ -143,7 +145,7 @@
         <li>
           <strong>Current snapshot</strong>
           <ul>
-            <li>Claude’s WRK-669 run leads with a polished summary HTML, detailed variation tests, and locked claim evidence.</li>
+            <li>Claude’s WRK-669 run leads with a polished summary HTML, detailed variation tests, and locked claim evidence. <strong>WRK-673 (2026-03-01)</strong> retroactively exercised the Resource Intelligence stage — artifacts now exist under <code>.claude/work-queue/assets/WRK-669/</code> and <code>claim-evidence.yaml</code> has been updated with <code>resource_intelligence_gate</code> evidence.</li>
             <li>Codex’s WRK-670 mirrored the gate artifacts, anchored the validator output (see <code>verify-gate-evidence.txt</code>), and signaled a follow-up WRK (WRK-1000) for Codex skill fixes.</li>
             <li><a href="../WRK-671/wrk-671-agent-orchestrator-report.html">Gemini’s WRK-671 run</a> now features a complete variation-test narrative and full cross-review synthesis (WRK-672 update).</li>
           </ul>
@@ -175,9 +177,9 @@
         </tr>
         <tr>
           <td>Resource Intelligence</td>
-          <td><span class="badge skip">SKIPPED</span>Metadata notes stage intentionally omitted (baseline from WRK-655 resource intelligence).</td>
+          <td><span class="badge covered">COVERED</span>Retroactive RI pass via WRK-673. Artifacts: <a href="../../.claude/work-queue/assets/WRK-669/resource-pack.md">resource-pack.md</a>, <a href="../../.claude/work-queue/assets/WRK-669/resources.yaml">resources.yaml</a>, <a href="../../.claude/work-queue/assets/WRK-669/resource-intelligence-summary.md">RI summary</a>. No P1 gaps; decision=continue_to_planning. Legal scan: pass.</td>
           <td><span class="badge skip">SKIPPED</span>Reused WRK-657 resource pack; no new ingestion required.</td>
-          <td><span class="badge skip">SKIPPED</span>Summary references the same baseline; stage labeled waived in plan notes.</td>
+          <td><span class="badge covered">COVERED</span>Retroactive RI pass via WRK-672 (rerun). Artifacts: <a href="../.claude/work-queue/assets/WRK-671/resource-pack.md">resource-pack.md</a>, <a href="../.claude/work-queue/assets/WRK-671/resources.yaml">resources.yaml</a>, <a href="../.claude/work-queue/assets/WRK-671/resource-intelligence-summary.md">RI summary</a>. No P1 gaps. Legal scan: pass.</td>
         </tr>
         <tr>
           <td>Triage</td>
@@ -187,9 +189,9 @@
         </tr>
         <tr>
           <td>Plan</td>
-          <td><span class="badge pass">PASS</span><a href=".claude/work-queue/assets/WRK-669/plan-html-review-final.md">plan-html-review-final.md</a> (user approved, log references final review).</td>
-          <td><span class="badge pass">PASS</span><a href=".claude/work-queue/assets/WRK-670/plan-html-review-final.md">plan-html-review-final.md</a> (Codex final review recorded twice per log).</td>
-          <td><span class="badge pass">PASS</span><a href=".claude/work-queue/assets/WRK-671/plan-html-review-final.md">plan-html-review-final.md</a> (Gemini plan final documented).</td>
+          <td><span class="badge pass">PASS</span><a href="../../.claude/work-queue/assets/WRK-669/plan-html-review-final.md">plan-html-review-final.md</a> (user approved, log references final review).</td>
+          <td><span class="badge pass">PASS</span><a href="../../.claude/work-queue/assets/WRK-670/plan-html-review-final.md">plan-html-review-final.md</a> (Codex final review recorded twice per log).</td>
+          <td><span class="badge pass">PASS</span><a href="../../.claude/work-queue/assets/WRK-671/plan-html-review-final.md">plan-html-review-final.md</a> (Gemini plan final documented).</td>
         </tr>
         <tr>
           <td>Claim</td>
@@ -204,10 +206,10 @@
           <td><span class="badge pass">PASS</span><code>variation-test-results.md</code> confirms all 6 verifier checks against WRK-671 evidence.</td>
         </tr>
         <tr>
-          <td>Future Work Synthesis</td>
-          <td><span class="badge pass">PASS</span>Summary HTML references follow-up guidance for reruns.</td>
-          <td><span class="badge pass">PASS</span>Orchestrator summary notes the WRK-1000 follow-up for Codex skill support.</td>
-          <td><span class="badge pass">PASS</span>Orchestrator summary HTML and reviewer-specific artifacts (Claude/Codex) now linked.</td>
+          <td>Review</td>
+          <td><span class="badge pass">PASS</span>Cross-review via <code>cross-review.sh all</code>: Claude MINOR (resolved), Codex NO_OUTPUT (not installed), Gemini MAJOR (5 findings, all resolved in-session).</td>
+          <td><span class="badge pass">PASS</span>Cross-review: Claude MINOR, Codex APPROVE, Gemini MINOR (all addressed). INVALID_OUTPUT on one impl review noted → WRK-1000.</td>
+          <td><span class="badge pass">PASS</span>Cross-review: Claude APPROVE, Codex NO_OUTPUT (timeout classified as NO_OUTPUT per policy). Synthesis in <code>review.html</code>.</td>
         </tr>
         <tr>
           <td>Close</td>
@@ -228,9 +230,10 @@
       <div class="card">
         <h2>Scripts & validators</h2>
         <ul>
-          <li><strong>WRK-669 (Claude)</strong>: `/work run WRK-669`, `scripts/review/submit-to-claude.sh`, `scripts/review/cross-review.sh`, `scripts/work-queue/verify-gate-evidence.py`, `scripts/work-queue/log-gate-event.sh`.</li>
-          <li><strong>WRK-670 (Codex)</strong>: `/work run WRK-670`, cross-review wrappers, `verify-gate-evidence.py` (see verify-gate-evidence.txt), `scripts/agents/session.sh` and plan/review wrappers for variation tests.</li>
-          <li><strong>WRK-671 (Gemini)</strong>: `/work run WRK-671`, cross-review (Claude approve + Codex NO_OUTPUT), `verify-gate-evidence.py` noted in close log, log-gate-event stage captures.</li>
+          <li><strong>WRK-669 (Claude)</strong>: <code>/work run WRK-669</code>, <code>cross-review.sh all</code> (+ direct <code>submit-to-claude.sh</code> call — <span style="color:var(--bad)">drift, see Deviation #1</span>), <code>verify-gate-evidence.py</code>, <code>log-gate-event.sh</code>.</li>
+          <li><strong>WRK-670 (Codex)</strong>: <code>/work run WRK-670</code>, <code>cross-review.sh all</code>, <code>verify-gate-evidence.py</code>, <code>session.sh init</code>. Note: INVALID_OUTPUT in one impl review — WRK-1000.</li>
+          <li><strong>WRK-671 (Gemini)</strong>: <code>/work run WRK-671</code>, <code>cross-review.sh all</code>, <code>verify-gate-evidence.py</code>. Note: ISO+INFO log format — <span style="color:var(--bad)">drift, see Deviation #2</span>.</li>
+          <li><strong>Canonical (all future runs)</strong>: <code>cross-review.sh all</code> is the single entry point. Per-agent submit scripts are internal — do not call directly from orchestration.</li>
         </ul>
       </div>
       <div class="card">
@@ -271,9 +274,9 @@
           </tr>
           <tr>
             <td><code>scripts/review/submit-to-claude.sh</code></td>
-            <td>watchdog + PGID cleanup executed; variation tests refer to this script.</td>
-            <td>Not used (Codex run uses standard cross-review wrapper).</td>
-            <td>Not used (Gemini run relies on standard cross-review wrapper).</td>
+            <td><span class="badge warn">DRIFT</span>Called directly in orchestration loop. Should be invoked only through <code>cross-review.sh all</code>.</td>
+            <td><span class="badge pass">OK</span>Not called directly (Codex uses <code>cross-review.sh all</code>).</td>
+            <td><span class="badge pass">OK</span>Not called directly (Gemini uses <code>cross-review.sh all</code>).</td>
           </tr>
           <tr>
             <td><code>scripts/review/cross-review.sh</code></td>
@@ -295,6 +298,152 @@
           </tr>
         </table>
       </div>
+    </div>
+
+    <div class="card" style="margin-top:1.5rem;">
+      <h2>Rerun history</h2>
+      <p>
+        Whenever WRK-624 tooling changes or a new orchestrator run is needed, use the automation script
+        to re-validate gate evidence and log the event without manual HTML editing:
+      </p>
+      <pre style="background:#f1f5f4;border-radius:6px;padding:0.75rem 1rem;font-size:0.85rem;overflow:auto;">scripts/workflow/refresh-orchestrator-timeline.sh WRK-669 --agent claude --trigger "tooling update"</pre>
+      <p>
+        All rerun events are recorded in
+        <a href="orchestrator-timeline.md"><code>assets/WRK-656/orchestrator-timeline.md</code></a>
+        with timestamp, agent name, trigger reason, and validator result.
+      </p>
+    </div>
+    <!-- WRK-675: Canonical Flow, Script Alignment, Deviation Notes -->
+    <div class="panel">
+      <h2>Canonical orchestrator flow (WRK-675)</h2>
+      <p>Defined in <a href="orchestrator-flow.md"><code>orchestrator-flow.md</code></a>. All orchestrators (Claude, Codex, Gemini) must traverse these 9 stages in order. Skipped stages require an explicit waiver in <code>claim-evidence.yaml</code>.</p>
+      <table>
+        <tr><th>#</th><th>Stage</th><th>Key gate</th></tr>
+        <tr><td>1</td><td>Capture</td><td>WRK item created in <code>pending/</code></td></tr>
+        <tr><td>2</td><td>Resource Intelligence</td><td>Artifact set in <code>assets/WRK-NNN/</code> — tracked via WRK-673</td></tr>
+        <tr><td>3</td><td>Triage</td><td>Priority, route, workstations assigned</td></tr>
+        <tr><td>4</td><td>Plan</td><td>Draft HTML → cross-review → final HTML → user approval</td></tr>
+        <tr><td>5</td><td>Claim</td><td>Agent capability + quota check; unblocked</td></tr>
+        <tr><td>6</td><td>Execute</td><td>Implementation + TDD + legal scan</td></tr>
+        <tr><td>7</td><td>Review</td><td><code>cross-review.sh all</code> — Claude + Codex (hard gate) + Gemini</td></tr>
+        <tr><td>8</td><td>Close</td><td><code>verify-gate-evidence.py WRK-NNN</code> → exit 0</td></tr>
+        <tr><td>9</td><td>Archive</td><td>After merge-to-main + sync complete</td></tr>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>Script alignment — canonical vs observed</h2>
+      <p>The single canonical cross-review entry point is <code>scripts/review/cross-review.sh all</code>. It dispatches to all three agents internally. Orchestrators must <strong>not</strong> call per-agent submit scripts directly.</p>
+      <table>
+        <tr><th>Script</th><th>Canonical?</th><th>Claude (WRK-669)</th><th>Codex (WRK-670)</th><th>Gemini (WRK-671)</th></tr>
+        <tr>
+          <td><code>cross-review.sh all</code></td>
+          <td><span class="badge pass">YES</span></td>
+          <td><span class="badge pass">USED</span>(partial — also called submit-to-claude.sh directly)</td>
+          <td><span class="badge pass">USED</span></td>
+          <td><span class="badge pass">USED</span></td>
+        </tr>
+        <tr>
+          <td><code>submit-to-claude.sh</code> (direct)</td>
+          <td><span class="badge warn">INTERNAL</span></td>
+          <td><span class="badge warn">DRIFT</span>Called from orchestration</td>
+          <td><span class="badge pass">OK</span>Not called directly</td>
+          <td><span class="badge pass">OK</span>Not called directly</td>
+        </tr>
+        <tr>
+          <td><code>verify-gate-evidence.py</code></td>
+          <td><span class="badge pass">YES</span></td>
+          <td><span class="badge pass">exit 0</span></td>
+          <td><span class="badge pass">exit 0</span></td>
+          <td><span class="badge pass">exit 0</span></td>
+        </tr>
+        <tr>
+          <td><code>log-gate-event.sh</code> (YAML)</td>
+          <td><span class="badge pass">YES</span></td>
+          <td><span class="badge pass">YAML format</span></td>
+          <td><span class="badge pass">YAML format</span></td>
+          <td><span class="badge warn">DRIFT</span>ISO+INFO format</td>
+        </tr>
+        <tr>
+          <td><code>session.sh init</code></td>
+          <td><span class="badge pass">YES</span></td>
+          <td><span class="badge pass">noted</span></td>
+          <td><span class="badge pass">noted</span></td>
+          <td><span class="badge pass">noted</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>Deviation notes &amp; normalisation targets</h2>
+      <table>
+        <tr><th>#</th><th>Deviation</th><th>Seen in</th><th>Class</th><th>Resolution</th></tr>
+        <tr>
+          <td>1</td>
+          <td>Direct <code>submit-to-claude.sh</code> call in orchestration loop</td>
+          <td>WRK-669 (Claude)</td>
+          <td><span class="badge warn">Drift</span></td>
+          <td>Always use <code>cross-review.sh all</code> — it calls submit-to-claude.sh internally with watchdog + PGID</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Gemini ISO+INFO log format instead of YAML key-value</td>
+          <td>WRK-671 (Gemini)</td>
+          <td><span class="badge warn">Drift</span></td>
+          <td>Future Gemini sessions must emit YAML via <code>log-gate-event.sh</code></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Codex <code>INVALID_OUTPUT</code> in implementation review</td>
+          <td>WRK-670 (Codex)</td>
+          <td><span class="badge warn">Drift</span></td>
+          <td><a href="../../.claude/work-queue/pending/WRK-1000.md">WRK-1000</a>: Codex /work skill compatibility fix (non-blocking for WRK-675)</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Resource Intelligence stage skipped</td>
+          <td>WRK-669 (retroactive), WRK-670, WRK-671 (retroactive)</td>
+          <td><span class="badge pass">RESOLVED</span></td>
+          <td><a href="../../.claude/work-queue/pending/WRK-673.md">WRK-673</a>: RI evidence enforcement checkpoint. Gemini RI pass added via WRK-672 (rerun).</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>Follow-on WRK items</h2>
+      <table>
+        <tr><th>WRK-id</th><th>Agent</th><th>Description</th><th>Status</th></tr>
+        <tr>
+          <td>WRK-672</td>
+          <td>Gemini</td>
+          <td>Finish Gemini orchestrator summary and variation tests (WRK-671). Detailed <code>review.html</code> and <code>variation-test-results.md</code> created.</td>
+          <td><span class="badge pass">Done</span></td>
+        </tr>
+        <tr>
+          <td>WRK-673</td>
+          <td>Claude</td>
+          <td>Resource Intelligence evidence enforcement checkpoint — retroactive RI pass for WRK-669.</td>
+          <td><span class="badge pass">Done</span></td>
+        </tr>
+        <tr>
+          <td>WRK-674</td>
+          <td>Claude</td>
+          <td>Automate rerun validation with <code>scripts/workflow/refresh-orchestrator-timeline.sh</code> so reruns append to <a href="orchestrator-timeline.md"><code>assets/WRK-656/orchestrator-timeline.md</code></a>.</td>
+          <td><span class="badge pass">Done</span></td>
+        </tr>
+        <tr>
+          <td>WRK-675</td>
+          <td>Claude</td>
+          <td>After 10 additional runs per Claude/Codex, document the canonical script flow (<a href="orchestrator-flow.md"><code>orchestrator-flow.md</code></a>) and align the comparison HTML. Deviation table, script alignment, and cross-review consistency mandate defined.</td>
+          <td><span class="badge covered">In Progress</span></td>
+        </tr>
+        <tr>
+          <td>WRK-1000</td>
+          <td>Codex</td>
+          <td>Codex <code>/work</code> skill compatibility fix — resolve <code>INVALID_OUTPUT</code> in implementation cross-review.</td>
+          <td><span class="badge warn">Pending</span></td>
+        </tr>
+      </table>
     </div>
   </section>
 </body>

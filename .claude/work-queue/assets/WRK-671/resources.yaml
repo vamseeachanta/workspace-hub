@@ -1,0 +1,16 @@
+resources:
+  - name: wrk-624-plan
+    path: specs/wrk/WRK-624/plan.md
+    type: specification
+  - name: verify-gate-evidence
+    path: scripts/work-queue/verify-gate-evidence.py
+    type: script
+  - name: gemini-orchestrator-report
+    path: assets/WRK-671/wrk-671-agent-orchestrator-report.html
+    type: report
+  - name: variation-test-results
+    path: assets/WRK-671/variation-test-results.md
+    type: test-results
+  - name: review-results
+    path: assets/WRK-671/review.html
+    type: review-results

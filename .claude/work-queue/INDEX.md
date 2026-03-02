@@ -1,29 +1,30 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-02T03:47:52Z by generate-index.py -->
+<!-- Generated: 2026-03-02T05:02:57Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-02T03:47:52Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-02T05:02:57Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 426
+**Total items:** 433
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 189 |
+| pending | 194 |
 | working | 3 |
 | blocked | 9 |
+| done | 2 |
 | archived | 225 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 203 |
-| medium | 181 |
+| high | 209 |
+| medium | 182 |
 | low | 41 |
 
 ### By Complexity
@@ -31,7 +32,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 70 |
-| medium | 195 |
+| medium | 202 |
 | complex | 94 |
 
 ### By Repository
@@ -54,7 +55,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 105 |
+| workspace-hub | 112 |
 | worldenergydata | 81 |
 
 ### Plan Tracking
@@ -62,9 +63,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 162 / 426 |
-| Plans cross-reviewed | 60 |
-| Plans approved | 79 |
+| Plans exist | 169 / 433 |
+| Plans cross-reviewed | 62 |
+| Plans approved | 81 |
 | Brochure pending | 7 |
 | Brochure updated/synced | 8 |
 
@@ -74,9 +75,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 426 |
+| Total captured | 433 |
 | Total archived | 225 |
-| Completion rate | 225/426 (53%) |
+| Completion rate | 225/433 (52%) |
 | Monthly rate (current month) | 0 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -84,9 +85,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 56 / 189 | 30% |
-| Plans cross-reviewed | 11 | 17% |
-| Plans user-approved | 11 | 17% |
+| Pending items with plans | 61 / 194 | 31% |
+| Plans cross-reviewed | 11 | 15% |
+| Plans user-approved | 11 | 15% |
 
 ### Aging
 
@@ -101,8 +102,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 95 | 2 | 7 |
-| Medium   | 66  | 1  | 1  |
+| High     | 99 | 2 | 7 |
+| Medium   | 67  | 1  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## Master Table
@@ -532,11 +533,25 @@
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-669 | test(review): orchestrator gate run with Claude | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-670 | test(review): orchestrator gate run with Codex | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-671 | feat(work-queue): add /work rerun command using WRK-624 workflow | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | done | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-675 | governance(review): align orchestrator flow & scripts | done | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-676 | test(review): automate plan gate confirmation | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-677 | governance(review): strengthen claim gate metadata | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-678 | test(review): automate close gate follow-up capture | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-679 | test(review): standardize execute gate variation tests | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-680 | governance(review): strengthen archive gate validation | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | medium | ace-linux-2 | ace-linux-1 | ace-linux-1, ace-linux-2 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
+
+### Done (unarchived)
+
+| ID | Title | Priority | Complexity | Repos | Module |
+|-----|-------|----------|------------|-------|--------|
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | high | medium | workspace-hub | - |
+| WRK-675 | governance(review): align orchestrator flow & scripts | high | medium | workspace-hub | - |
 
 ### Pending
 
@@ -728,7 +743,12 @@
 | WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | high | medium | workspace-hub | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | high | medium | workspace-hub | - |
 | WRK-670 | test(review): orchestrator gate run with Codex | high | complex | workspace-hub | - |
-| WRK-671 | feat(work-queue): add /work rerun command using WRK-624 workflow | medium | medium | workspace-hub | - |
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | high | medium | workspace-hub | - |
+| WRK-676 | test(review): automate plan gate confirmation | high | medium | workspace-hub | - |
+| WRK-677 | governance(review): strengthen claim gate metadata | high | medium | workspace-hub | - |
+| WRK-678 | test(review): automate close gate follow-up capture | high | medium | workspace-hub | - |
+| WRK-679 | test(review): standardize execute gate variation tests | medium | medium | workspace-hub | - |
+| WRK-680 | governance(review): strengthen archive gate validation | medium | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | medium | medium | workspace-hub | - |
 
@@ -1418,7 +1438,14 @@
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | medium | - |
 | WRK-669 | test(review): orchestrator gate run with Claude | working | high | complex | - |
 | WRK-670 | test(review): orchestrator gate run with Codex | pending | high | complex | - |
-| WRK-671 | feat(work-queue): add /work rerun command using WRK-624 workflow | pending | medium | medium | - |
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | pending | high | medium | - |
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | done | high | medium | - |
+| WRK-675 | governance(review): align orchestrator flow & scripts | done | high | medium | - |
+| WRK-676 | test(review): automate plan gate confirmation | pending | high | medium | - |
+| WRK-677 | governance(review): strengthen claim gate metadata | pending | high | medium | - |
+| WRK-678 | test(review): automate close gate follow-up capture | pending | high | medium | - |
+| WRK-679 | test(review): standardize execute gate variation tests | pending | medium | medium | - |
+| WRK-680 | governance(review): strengthen archive gate validation | pending | medium | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | medium | - |
 
@@ -1717,6 +1744,12 @@
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | medium | workspace-hub | - |
 | WRK-669 | test(review): orchestrator gate run with Claude | working | complex | workspace-hub | - |
 | WRK-670 | test(review): orchestrator gate run with Codex | pending | complex | workspace-hub | - |
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | pending | medium | workspace-hub | - |
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | done | medium | workspace-hub | - |
+| WRK-675 | governance(review): align orchestrator flow & scripts | done | medium | workspace-hub | - |
+| WRK-676 | test(review): automate plan gate confirmation | pending | medium | workspace-hub | - |
+| WRK-677 | governance(review): strengthen claim gate metadata | pending | medium | workspace-hub | - |
+| WRK-678 | test(review): automate close gate follow-up capture | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -1901,7 +1934,8 @@
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | worldenergydata | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | digitalmodel | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | workspace-hub | - |
-| WRK-671 | feat(work-queue): add /work rerun command using WRK-624 workflow | pending | medium | workspace-hub | - |
+| WRK-679 | test(review): standardize execute gate variation tests | pending | medium | workspace-hub | - |
+| WRK-680 | governance(review): strengthen archive gate validation | pending | medium | workspace-hub | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | workspace-hub | - |
 
 ### Low
@@ -2224,7 +2258,14 @@
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | workspace-hub | - |
 | WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | high | workspace-hub | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | workspace-hub | - |
-| WRK-671 | feat(work-queue): add /work rerun command using WRK-624 workflow | pending | medium | workspace-hub | - |
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | pending | high | workspace-hub | - |
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | done | high | workspace-hub | - |
+| WRK-675 | governance(review): align orchestrator flow & scripts | done | high | workspace-hub | - |
+| WRK-676 | test(review): automate plan gate confirmation | pending | high | workspace-hub | - |
+| WRK-677 | governance(review): strengthen claim gate metadata | pending | high | workspace-hub | - |
+| WRK-678 | test(review): automate close gate follow-up capture | pending | high | workspace-hub | - |
+| WRK-679 | test(review): standardize execute gate variation tests | pending | medium | workspace-hub | - |
+| WRK-680 | governance(review): strengthen archive gate validation | pending | medium | workspace-hub | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | workspace-hub | - |
 
 ### Complex
@@ -2328,7 +2369,7 @@
 
 ## By Computer
 
-### ace-linux-1 (142 active / 155 total)
+### ace-linux-1 (149 active / 162 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2485,7 +2526,14 @@
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | medium | workspace-hub |
 | WRK-669 | test(review): orchestrator gate run with Claude | working | high | complex | workspace-hub |
 | WRK-670 | test(review): orchestrator gate run with Codex | pending | high | complex | workspace-hub |
-| WRK-671 | feat(work-queue): add /work rerun command using WRK-624 workflow | pending | medium | medium | workspace-hub |
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | pending | high | medium | workspace-hub |
+| WRK-673 | test(review): enforce Resource Intelligence evidence for orchestrator reruns | done | high | medium | workspace-hub |
+| WRK-675 | governance(review): align orchestrator flow & scripts | done | high | medium | workspace-hub |
+| WRK-676 | test(review): automate plan gate confirmation | pending | high | medium | workspace-hub |
+| WRK-677 | governance(review): strengthen claim gate metadata | pending | high | medium | workspace-hub |
+| WRK-678 | test(review): automate close gate follow-up capture | pending | high | medium | workspace-hub |
+| WRK-679 | test(review): standardize execute gate variation tests | pending | medium | medium | workspace-hub |
+| WRK-680 | governance(review): strengthen archive gate validation | pending | medium | medium | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)
