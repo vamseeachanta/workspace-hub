@@ -161,6 +161,20 @@ Agents on-demand: `.claude/agent-library/<category>/<agent>.md`
 - `github/` — pr-manager, code-review-swarm, release-manager
 - `sparc/` — specification, pseudocode, architecture
 
+## Cross-Agent Log Access
+
+All AI agent session logs are unified at `logs/orchestrator/` (gitignored; local-machine only):
+
+| Agent  | Path pattern                                      | Written by                          |
+|--------|---------------------------------------------------|-------------------------------------|
+| Claude | `logs/orchestrator/claude/session_YYYYMMDD.jsonl` | `session-logger.sh` (per tool call) |
+| Codex  | `logs/orchestrator/codex/WRK-NNN-TIMESTAMP.log`  | `submit-to-codex.sh` (per review)  |
+| Gemini | `logs/orchestrator/gemini/WRK-NNN-TIMESTAMP.log` | `submit-to-gemini.sh` (per review) |
+
+Claude JSONL is a dual-write copy of `.claude/state/sessions/`. Codex/Gemini logs are
+tee'd from the submit wrapper scripts. `README.md` in this directory is tracked.
+Any agent can read `logs/orchestrator/<peer>/` for cross-session context.
+
 ## Cross-Review Process
 
 Save plans to: `specs/modules/<module>/`

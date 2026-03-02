@@ -9,6 +9,7 @@ Establish and enforce a single, professional HTML/CSS standard for all Plan and 
 - Create `assets/shared/orchestrator.css`.
 - Define a professional "Workspace-Hub" theme (fonts, colors, spacing).
 - Include standard badge styles (APPROVE, REJECT, NO_OUTPUT, PASS, FAIL).
+- **Expanded Inventory:** Incorporate layout patterns and table styles from `assets/WRK-624/wrk-624-workflow-review.html` and `assets/WRK-656/wrk-656-orchestrator-comparison.html` to ensure even high-level reports match the canonical UX.
 
 ### 2. Standardized Template
 - Create `templates/review-standard.html` (base HTML with head, body, and placeholders).

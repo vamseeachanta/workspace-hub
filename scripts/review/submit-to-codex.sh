@@ -6,6 +6,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || true)"
 RENDERER="${SCRIPT_DIR}/render-structured-review.py"
 VALIDATOR="${SCRIPT_DIR}/validate-review-output.sh"
 CODEX_TIMEOUT_SECONDS="${CODEX_TIMEOUT_SECONDS:-300}"
@@ -29,6 +30,15 @@ if [[ -n "$CONTENT_FILE" ]]; then
   if [[ "$CONTENT_FILE" =~ (WRK-[0-9]+) ]]; then
     WRK_ID="${BASH_REMATCH[1]}"
   fi
+fi
+
+# Orchestrator log: unified cross-agent log directory
+ORCH_LOG_FILE=""
+if [[ -n "$REPO_ROOT" ]]; then
+  _ts="$(date -u +%Y%m%dT%H%M%SZ)"
+  _tag="${WRK_ID:-unknown}"
+  ORCH_LOG_FILE="${REPO_ROOT}/logs/orchestrator/codex/${_tag}-${_ts}.log"
+  ( mkdir -p "$(dirname "$ORCH_LOG_FILE")" ) 2>/dev/null || true
 fi
 
 if [[ -z "$COMMIT_SHA" && -z "$CONTENT_FILE" ]]; then
@@ -188,9 +198,11 @@ ${compact_text}
   if python3 "$RENDERER" --provider codex --input "$raw_file" > "$rendered_file" 2>/dev/null \
     && [[ "$("$VALIDATOR" "$rendered_file")" == "VALID" ]]; then
     cat "$rendered_file"
+    ( [[ -n "$ORCH_LOG_FILE" ]] && cat "$rendered_file" >> "$ORCH_LOG_FILE" ) 2>/dev/null || true
   else
     if [[ -s "$raw_file" ]]; then
       cat "$raw_file"
+      ( [[ -n "$ORCH_LOG_FILE" ]] && cat "$raw_file" >> "$ORCH_LOG_FILE" ) 2>/dev/null || true
     else
       echo "# Codex returned NO_OUTPUT"
     fi

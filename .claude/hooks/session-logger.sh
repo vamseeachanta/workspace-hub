@@ -33,12 +33,27 @@ EPOCH=$(date +%s)
 PROJ=$(basename "$(pwd)")
 REPO=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null) || REPO="$PROJ"
 
-# Build log entry
-ENTRY="{\"ts\":\"${TS}\",\"epoch\":${EPOCH},\"hook\":\"${HOOK_TYPE}\",\"tool\":\"${TOOL}\",\"project\":\"${PROJ}\",\"repo\":\"${REPO}\""
-[ -n "$FILE" ] && ENTRY="${ENTRY},\"file\":\"${FILE}\""
-[ -n "$CMD" ] && ENTRY="${ENTRY},\"cmd\":\"${CMD}\""
-ENTRY="${ENTRY}}"
+# Build log entry — use jq to properly encode strings (handles quotes, newlines, etc.)
+ENTRY=$(jq -cn \
+  --arg ts "$TS" \
+  --argjson epoch "$EPOCH" \
+  --arg hook "$HOOK_TYPE" \
+  --arg tool "$TOOL" \
+  --arg project "$PROJ" \
+  --arg repo "$REPO" \
+  --arg file "${FILE:-}" \
+  --arg cmd "${CMD:-}" \
+  '{ts:$ts, epoch:$epoch, hook:$hook, tool:$tool, project:$project, repo:$repo}
+   + if ($file != "") then {file:$file} else {} end
+   + if ($cmd != "") then {cmd:$cmd} else {} end' \
+  2>/dev/null) \
+  || ENTRY="{\"ts\":\"${TS}\",\"hook\":\"${HOOK_TYPE}\",\"tool\":\"${TOOL}\"}"
 
 echo "$ENTRY" >> "$LOG_FILE" 2>/dev/null
+
+# Dual-write: also append to unified orchestrator log
+( mkdir -p "${WS}/logs/orchestrator/claude" \
+  && echo "$ENTRY" >> "${WS}/logs/orchestrator/claude/session_$(date +%Y%m%d).jsonl" \
+) 2>/dev/null || true
 
 exit 0

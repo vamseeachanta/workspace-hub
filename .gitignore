@@ -79,6 +79,8 @@ ENV/
 # Log files
 *.log
 logs/
+!logs/orchestrator/
+!logs/orchestrator/README.md
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

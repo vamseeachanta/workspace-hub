@@ -95,7 +95,7 @@ history:
 
 This plan converts the work-queue process from a loose set of scripts and conventions into a canonical lifecycle contract. The contract starts with WRK-624 and then rolls forward to all new or touched WRKs, while older backlog items are normalized in phases instead of through a disruptive one-shot migration.
 
-The new model adds a mandatory `Resource Intelligence` stage, standardized review evidence, an explicit orchestrator field, example- and variation-based quality validation, active session binding, and a strict close/archive gate. It also treats work items as learning units: each WRK must produce real examples, variation tests, review evidence, future-work capture, direct ecosystem learnings where appropriate, and compatibility with both fast session-memory capture and deeper scheduled learning synthesis.
+The new model adds a mandatory `Resource Intelligence` stage, normalized per-stage evidence under a single `evidence/` directory, an explicit orchestrator field, example- and variation-based quality validation, active session binding, a `Reclaim` recovery stage, and a strict close/archive gate. It also treats work items as learning units: each WRK must produce real examples, variation tests, review evidence, future-work capture, direct ecosystem learnings where appropriate, and compatibility with both fast session-memory capture and deeper scheduled learning synthesis.
 
 ## Canonical Lifecycle
 
@@ -119,7 +119,12 @@ flowchart TD
     I1 --> I
     K -- No --> L[Execute]
     K -- Yes --> M[Status: blocked]
-    L --> N{Route Review Passed?}
+    L --> L0{Execute stayed healthy in claimed session?}
+    L0 -- Yes --> N{Route Review Passed?}
+    L0 -- No --> S[Reclaim]
+    S --> S1{Evidence revalidated + claim renewed?}
+    S1 -- Yes --> I
+    S1 -- No --> M
     N -- Yes --> R[Future Work Synthesis]
     R --> R1{Recommended follow-up WRKs created?}
     R1 -- Yes --> O[Close]
@@ -187,6 +192,8 @@ Capture should create, at minimum:
 - The stage must surface the top `P1` gaps to the user first.
 - If one or more `P1` gaps remain unresolved, the stage must pause for user review before it can pass.
 - If no `P1` gaps remain, the stage may continue forward without an extra hold.
+- Canonical stage evidence should be stored at:
+  - `assets/WRK-<id>/evidence/resource-intelligence.yaml`
 
 #### Resource Intelligence gap ranking
 
@@ -196,19 +203,23 @@ Capture should create, at minimum:
 
 #### Resource Intelligence skill map
 
-The stage should show the user which skills are being used so the resource-intelligence workflow is inspectable and tweakable:
+Use a minimum viable core set (3-4 skills) for baseline stage execution; add extensions only when the WRK context requires them.
+
+Core skills (required):
 
 | Role | Skill | Purpose |
 |---|---|---|
 | Lifecycle wrapper | `work-queue` | Keeps the stage aligned with WRK lifecycle rules and artifacts |
 | Domain scoping | `engineering-context-loader` | Narrows context and relevant standards/skills when engineering tags exist |
 | Repo/document scan | `document-inventory` | Catalogs local documents and source collections before deeper indexing |
-| Document intelligence | `document-rag-pipeline` | Builds searchable document context when source volume or ambiguity justifies it |
-| Prior learnings | `knowledge-manager` | Surfaces prior decisions, patterns, gotchas, and reusable knowledge |
 | Legal check | `legal-sanity` | Confirms generated artifacts and imported content are safe to use |
-| Agent fit | `agent-router` | Helps identify the best provider mix for later plan/review work |
-| Quota awareness | `agent-usage-optimizer` | Helps keep later claim/review work within available model capacity |
-| Deep learning handoff | `comprehensive-learning` | Consumes the resulting artifacts later for slower ecosystem synthesis |
+
+Optional extensions (only as needed):
+- `document-rag-pipeline` for large/ambiguous source corpora
+- `knowledge-manager` for prior decision reuse
+- `agent-router` for downstream plan/review fit recommendations
+- `agent-usage-optimizer` for quota-aware routing
+- `comprehensive-learning` for deep asynchronous synthesis
 
 The canonical first-pass implementation path for this stage is:
 
@@ -230,19 +241,30 @@ Before the stage passes, present the user with:
   - required headings exist in the resource pack
   - `sources.md` contains at least one recorded source or an explicit waiver
   - legal-scan proof exists when applicable
-  - a stage summary exists with ranked `P1/P2/P3` gaps
-  - the user decision is recorded as either `pause_and_revise` or `continue_to_planning`
-- The canonical stage summary artifact is:
+  - a stage evidence record exists with ranked `P1/P2/P3` gaps
+  - `skills.core_used` records at least 3 core skills
+  - `completion_status` is recorded as `pause_and_revise` or `continue_to_planning`
+- The canonical stage evidence artifact is:
+  - `assets/WRK-<id>/evidence/resource-intelligence.yaml`
+- Human-readable companion summary is recommended:
   - `resource-intelligence-summary.md`
+
+Machine-checkable completion rule:
+- pass only when `completion_status: continue_to_planning` and `top_p1_gaps` is empty
+- pause only when `completion_status: pause_and_revise` and one or more `top_p1_gaps` remain
 
 #### Resource Intelligence summary schema
 
-Minimum required fields in `resource-intelligence-summary.md`:
+Minimum required fields in `evidence/resource-intelligence.yaml`:
 - `wrk_id`
+- `stage` (`resource_intelligence`)
+- `completion_status` (`pause_and_revise|continue_to_planning`)
 - `summary`
 - `top_p1_gaps`
 - `top_p2_gaps`
 - `top_p3_gaps`
+- `skills.core_used`
+- `skills.optional_used`
 - `user_decision`
 - `reviewed_at`
 - `reviewer`
@@ -328,7 +350,9 @@ Hard gate:
 
 #### Claim evidence schema
 
-The canonical claim artifact is `claim-evidence.yaml` with minimum required fields:
+The canonical claim artifact is `assets/WRK-<id>/evidence/claim.yaml` (legacy alias: `claim-evidence.yaml`) with minimum required fields:
+- `wrk_id`
+- `stage` (`claim`)
 - `session_owner`
 - `best_fit_provider`
 - `fallback_provider`
@@ -337,12 +361,15 @@ The canonical claim artifact is `claim-evidence.yaml` with minimum required fiel
 - `quota_decision`
 - `claim_decision`
 - `blocked_reason`
+- `claim_expires_at`
+- `reclaim_policy_ref`
 
 Claim hard gates:
 - missing `session_owner` fails claim
 - blocked items may not be claimed
 - stale quota evidence beyond the freshness threshold fails claim
 - claim must record whether best-fit and best-available providers differ
+- missing `claim_expires_at` fails claim
 
 ### 6. Execute
 - Perform implementation under the claimed session.
@@ -358,6 +385,7 @@ Execute should leave behind, at minimum:
 - `variation-test-results.md`
 - execution artifacts or changed files
 - HTML output when applicable
+- `assets/WRK-<id>/evidence/execute.yaml`
 
 #### Execute hard gates
 
@@ -366,7 +394,44 @@ Execute should leave behind, at minimum:
 - missing HTML output fails execute completion when the WRK requires HTML-visible outputs
 - execution outside the claimed session fails execute completion
 
-### 7. Future Work Synthesis
+### 7. Reclaim
+- Reclaim is the recovery stage when execution is interrupted or invalidated after claim.
+- Triggers include:
+  - execute session loss or agent crash
+  - claim expiry before execute completion
+  - mid-flow evidence mutation that invalidates claim assumptions
+- Reclaim must revalidate:
+  - claim freshness and quota snapshot
+  - blocking status
+  - existence and integrity of stage evidence produced so far
+- Reclaim outcomes:
+  - `reclaim_and_resume` (return to Claim then Execute)
+  - `pause_and_replan` (return to Plan)
+  - `block` (move to blocked state)
+
+#### Reclaim evidence schema
+
+Canonical artifact:
+- `assets/WRK-<id>/evidence/reclaim.yaml`
+
+Minimum required fields:
+- `wrk_id`
+- `stage` (`reclaim`)
+- `trigger`
+- `prior_claim_ref`
+- `revalidated_evidence_refs`
+- `reclaim_decision` (`reclaim_and_resume|pause_and_replan|block`)
+- `reclaimed_at`
+- `reclaimed_by`
+
+#### Reclaim hard gates
+
+- reclaim may not pass without an explicit `reclaim_decision`
+- `reclaim_and_resume` requires successful claim revalidation
+- `pause_and_replan` requires a recorded rationale and plan-return marker
+- `block` requires blocker details
+
+### 8. Future Work Synthesis
 - This stage runs after execution review passes and before close.
 - Recommended follow-up work items should be generated automatically from:
   - unresolved review findings that are out of current scope
@@ -374,6 +439,8 @@ Execute should leave behind, at minimum:
   - tooling and workflow gaps discovered during execution/close preparation
   - learning outputs that require independent backlog ownership
 - The stage should produce a canonical artifact:
+  - `assets/WRK-<id>/evidence/future-work.yaml`
+- Human-readable companion:
   - `future-work-recommendations.md`
 - Required fields for each recommendation:
   - title
@@ -387,11 +454,11 @@ Execute should leave behind, at minimum:
 
 #### Future Work Synthesis hard gates
 
-- missing `future-work-recommendations.md` fails this stage
+- missing `evidence/future-work.yaml` fails this stage
 - any recommendation marked `required_for_signoff` without a created WRK id fails this stage
 - close may not proceed until the required follow-up WRKs are linked in evidence
 
-### 8. Close
+### 9. Close
 Close requires evidence for:
 - implementation commit(s)
 - tests/checks run and result
@@ -407,7 +474,9 @@ Close requires evidence for:
 
 #### Close evidence schema
 
-The canonical close artifact is `close-evidence.yaml` with minimum required fields:
+The canonical close artifact is `assets/WRK-<id>/evidence/close.yaml` (legacy alias: `close-evidence.yaml`) with minimum required fields:
+- `wrk_id`
+- `stage` (`close`)
 - `implementation_commits`
 - `tests_run`
 - `review_artifacts`
@@ -420,12 +489,12 @@ The canonical close artifact is `close-evidence.yaml` with minimum required fiel
 - `learning_outputs`
 
 Close hard gates:
-- missing `close-evidence.yaml` fails close
+- missing `evidence/close.yaml` fails close
 - missing HTML verification fails close
 - unresolved blocking review findings fail close
 - referenced follow-up WRKs must exist before close can pass
 
-### 9. Archive
+### 10. Archive
 - `archive/` may contain only `status: archived`.
 - Archive is blocked until merge-to-main and sync flow are complete.
 - `done/` remains the holding area for completed but not yet archived items.
@@ -442,8 +511,9 @@ Close hard gates:
 
 #### Archive evidence schema
 
-The canonical archive artifact is `archive-evidence.yaml` with minimum required fields:
+The canonical archive artifact is `assets/WRK-<id>/evidence/archive.yaml` (legacy alias: `archive-evidence.yaml`) with minimum required fields:
 - `wrk_id`
+- `stage` (`archive`)
 - `close_evidence_ref`
 - `queue_validation_ref`
 - `merge_status`
@@ -453,7 +523,7 @@ The canonical archive artifact is `archive-evidence.yaml` with minimum required 
 - `archived_by`
 
 Archive hard gates:
-- missing `archive-evidence.yaml` fails archive
+- missing `evidence/archive.yaml` fails archive
 - incomplete merge or sync fails archive
 - queue validation failure fails archive
 - wrong folder/status pairing fails archive
@@ -463,14 +533,15 @@ Archive hard gates:
 | Stage | Gap Priority | Entry Criteria | Required Artifacts | Pass Condition | Blocking Failures | Current Gaps / Tightening Needed |
 |---|---|---|---|---|---|---|
 | Capture | P3 | WRK intent is clear enough to open an item | WRK file, asset folder scaffold, minimum metadata | WRK exists with initial route, owner, and scope recorded | Missing WRK, missing route, missing orchestrator, no asset path | Creation should be scaffolded automatically so minimum metadata is never omitted |
-| Resource Intelligence | P1 | WRK exists and problem statement is non-empty | `resource-pack.md`, `sources.md`, `constraints.md`, `domain-notes.md`, `open-questions.md`, `resources.yaml` | Resource pack exists, required sections are present, source set is non-empty or explicitly waived | Missing pack, no source record, no legal-scan result when required | This remains the loosest stage; validator rules and legal-scan proof need to become machine-checkable |
+| Resource Intelligence | P1 | WRK exists and problem statement is non-empty | `resource-pack.md`, `sources.md`, `constraints.md`, `domain-notes.md`, `open-questions.md`, `resources.yaml`, `evidence/resource-intelligence.yaml` | Resource pack exists, required sections are present, source set is non-empty or explicitly waived, RI completion rule is machine-checkable | Missing pack, no source record, no legal-scan result when required, invalid `completion_status` vs `P1` gaps | Minimum core skill set + machine-checkable pass rule reduce stage ambiguity and maintenance overhead |
 | Triage | P2 | Resource intelligence started and initial scope is known | Valid triage fields in WRK frontmatter/body | `priority`, `complexity`, `route`, `computer`, `plan_workstations`, `execution_workstations`, `provider`, `provider_alt`, `resource_needs`, `orchestrator` are all valid | Missing required triage fields, invalid registry values, blocked item routed to execution | Field registries need to be normalized further, especially workstation/value enums |
 | Plan | P1 | Triage complete and resource pack is usable | Route plan/spec, plan HTML, draft/final HTML review records, review artifacts | User reviewed draft HTML, multi-agent review completed, user passed final HTML, plan approved | Missing plan HTML, missing user review decision, unresolved `MAJOR` findings, no approval | User HTML review remains the main practical bottleneck and needs the clearest SLA/delegate path |
-| Claim | P1 | Approved plan exists and item is unblocked | `claim-evidence.yaml`, quota snapshot ref, routing ref | Active session owner recorded, agent fit checked, quota readiness recorded, item moved to `working` cleanly | Missing session owner, blocked item claimed, stale or absent quota evidence, no routing decision | Claim is stronger now, but quota freshness and recovery paths still need tighter schema and repair logic |
-| Execute | P3 | Claimed session is active | Example pack, variation-test evidence, execution artifacts, intermediate HTML where applicable | Implementation complete, examples covered, variation tests recorded, required HTML produced | Missing examples, missing variation tests, execution outside session ownership, no HTML when applicable | End-state behavioral proof needs to stay stronger than simple document existence |
-| Future Work Synthesis | P2 | Execute review has passed | `future-work-recommendations.md`, mapped follow-up WRK ids | Required follow-up WRKs are created and linked before close | Missing recommendation artifact, required follow-ups not created | Auto-generation quality and prioritization should be tuned to avoid noisy backlog inflation |
-| Close | P1 | Execute finished and future-work synthesis complete | Close evidence, final HTML, HTML verification, test evidence, review refs, follow-up refs | Close script can verify required evidence and move item to `done` | Missing HTML evidence, failed tests, missing review refs, unresolved blocking findings | Merge/sync and follow-up evidence should keep moving toward one normalized close-evidence schema |
-| Archive | P2 | Item is in `done` with close evidence complete | Archive-time validation result, merge/sync evidence, final follow-up capture | Archive move is clean, queue validates, merge/sync complete | Incomplete merge/sync, invalid queue state, wrong status/folder pairing | Operational enforcement is still thinner than close enforcement and should be tightened next |
+| Claim | P1 | Approved plan exists and item is unblocked | `evidence/claim.yaml`, quota snapshot ref, routing ref | Active session owner recorded, agent fit checked, quota readiness recorded, expiry recorded, item moved to `working` cleanly | Missing session owner, blocked item claimed, stale or absent quota evidence, no routing decision | Claim now has explicit expiry + reclaim linkage to support recovery |
+| Execute | P3 | Claimed session is active | Example pack, variation-test evidence, execution artifacts, intermediate HTML where applicable, `evidence/execute.yaml` | Implementation complete, examples covered, variation tests recorded, required HTML produced | Missing examples, missing variation tests, execution outside session ownership, no HTML when applicable | End-state behavioral proof needs to stay stronger than simple document existence |
+| Reclaim | P1 | Execute interrupted, claim expired, or evidence invalidated | `evidence/reclaim.yaml`, updated claim evidence refs | Recovery decision recorded and required revalidation completed | Missing reclaim decision, missing revalidation refs, resume without refreshed claim | Introduced to provide deterministic rollback/recovery path |
+| Future Work Synthesis | P2 | Execute review has passed | `evidence/future-work.yaml`, mapped follow-up WRK ids, `future-work-recommendations.md` | Required follow-up WRKs are created and linked before close | Missing recommendation artifact, required follow-ups not created | Auto-generation quality and prioritization should be tuned to avoid noisy backlog inflation |
+| Close | P1 | Execute finished and future-work synthesis complete | `evidence/close.yaml`, final HTML, HTML verification, test evidence, review refs, follow-up refs | Close script can verify required evidence and move item to `done` | Missing HTML evidence, failed tests, missing review refs, unresolved blocking findings | Evidence schemas are normalized under one directory with legacy aliases tolerated during migration |
+| Archive | P2 | Item is in `done` with close evidence complete | `evidence/archive.yaml`, archive-time validation result, merge/sync evidence, final follow-up capture | Archive move is clean, queue validates, merge/sync complete | Incomplete merge/sync, invalid queue state, wrong status/folder pairing | Operational enforcement is still thinner than close enforcement and should be tightened next |
 
 ## Review Matrix
 
@@ -553,6 +624,7 @@ Status of this contract:
 | Plan | yes | Independent stage with heavy review coupling but clear inputs/outputs. |
 | Claim | yes | Independent decision gate before execution. |
 | Execute | internally parallelizable, externally gate-dependent | Depends on prior claim and later close/review gates, but may use multiple parallel execution agents for sub-workstreams. |
+| Reclaim | yes | Independent recovery stage when execute or claim continuity breaks. |
 | Future Work Synthesis | yes | Independent synthesis stage once execution review passes; produces follow-up backlog before closure. |
 | Close | yes | Independent evidence-consolidation stage once execute/review are complete. |
 | Archive | yes | Independent finalization stage once close evidence is complete. |
@@ -567,6 +639,7 @@ Status of this contract:
 | Plan | Claude | Codex + Gemini with Claude synthesis | yes |
 | Claim | Claude | Claude | no |
 | Execute | Codex | Codex | yes, when two implementation paths or comparison builds are useful |
+| Reclaim | Claude | Claude + Codex for evidence revalidation | sometimes |
 | Future Work Synthesis | Claude | Claude + Codex | yes, when one agent mines findings and one drafts follow-up WRKs |
 | Close | Claude | Codex for evidence generation, Claude for closure check | sometimes |
 | Archive | Claude | Claude | no |
@@ -591,10 +664,29 @@ Rules:
 
 ## Evidence and Metadata Contract
 
+### Evidence directory normalization
+
+Canonical storage for stage evidence is:
+- `assets/WRK-<id>/evidence/`
+
+Canonical filenames by stage:
+- `resource-intelligence.yaml`
+- `claim.yaml`
+- `execute.yaml`
+- `reclaim.yaml`
+- `future-work.yaml`
+- `close.yaml`
+- `archive.yaml`
+- `user-gap-review.json` (when user stage decisions are captured)
+
+Legacy compatibility during migration:
+- legacy files such as `claim-evidence.yaml`, `close-evidence.yaml`, `archive-evidence.yaml`, and `gap-review-user.json` may coexist temporarily, but new work should write canonical `evidence/` files first.
+
 ### New required WRK metadata
 - `orchestrator:`
 - `resource_needs:`
 - `resource_pack_ref:`
+- `resource_intelligence_evidence_ref:`
 - `plan_html_review_draft_ref:`
 - `plan_html_review_final_ref:`
 - `claim_routing_ref:`
@@ -602,6 +694,7 @@ Rules:
 - `claim_recommendation:`
 - `example_pack_ref:`
 - `variation_test_ref:`
+- `reclaim_evidence_ref:`
 - `learning_outputs:`
 - `followup:`
 - `html_output_ref:`
@@ -773,7 +866,9 @@ Checks include:
 - missing draft-plan HTML review evidence before multi-agent review
 - missing final-plan HTML review evidence before execution
 - missing claim routing/quota evidence
+- missing normalized `evidence/` stage artifacts for active stages
 - blocked items claimed to `working`
+- execute continuation after claim expiry without reclaim evidence
 - `done/` items not marked `done`
 - `archive/` items not marked `archived`
 - missing active session binding on lifecycle transitions
@@ -788,6 +883,7 @@ Checks include:
 | Document-intelligence indexing | document-intelligence artifact or job status | document-intelligence pipeline | advisory by default, blocking only when the WRK explicitly requires indexed artifacts before close/archive | defer indexing with recorded follow-up or explicit waiver |
 | Comprehensive-learning handoff | comprehensive-learning handoff artifact | comprehensive-learning automation | blocking for archive when the WRK requires deep-learning handoff | direct propagation evidence or explicit deferred follow-up WRK |
 | Session ownership | active orchestrator session state | orchestrator session wrappers | blocking for claim/close/archive | admin repair path recorded as manual remediation |
+| Reclaim evidence | `evidence/reclaim.yaml` | orchestrator session + validator | blocking when execute continuity breaks or claim expires | explicit pause to plan, or move to blocked with rationale |
 | Legal scan | legal scan artifact/result | legal-scan workflow | blocking for generated WRK artifacts | manual waiver by user only if explicitly recorded |
 | Queue validation | queue validator output | queue validator script | blocking for close/archive | none |
 | Review evidence | review artifact files | reviewer scripts + synthesis | blocking for plan/execute progression | fallback only for `NO_OUTPUT` per review policy |

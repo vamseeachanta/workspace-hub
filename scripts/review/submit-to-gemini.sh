@@ -6,12 +6,14 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || true)"
 RENDERER="${SCRIPT_DIR}/render-structured-review.py"
 VALIDATOR="${SCRIPT_DIR}/validate-review-output.sh"
 
 CONTENT_FILE=""
 COMMIT_SHA=""
 PROMPT=""
+WRK_ID=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -21,6 +23,21 @@ while [[ $# -gt 0 ]]; do
     *) echo "Unknown arg: $1" >&2; exit 1 ;;
   esac
 done
+
+if [[ -n "$CONTENT_FILE" ]]; then
+  if [[ "$CONTENT_FILE" =~ (WRK-[0-9]+) ]]; then
+    WRK_ID="${BASH_REMATCH[1]}"
+  fi
+fi
+
+# Orchestrator log: unified cross-agent log directory
+ORCH_LOG_FILE=""
+if [[ -n "$REPO_ROOT" ]]; then
+  _ts="$(date -u +%Y%m%dT%H%M%SZ)"
+  _tag="${WRK_ID:-unknown}"
+  ORCH_LOG_FILE="${REPO_ROOT}/logs/orchestrator/gemini/${_tag}-${_ts}.log"
+  ( mkdir -p "$(dirname "$ORCH_LOG_FILE")" ) 2>/dev/null || true
+fi
 
 if [[ -z "$COMMIT_SHA" && -z "$CONTENT_FILE" ]]; then
   echo "ERROR: Provide --file <path> or --commit <sha>" >&2
@@ -121,6 +138,7 @@ while [[ "$attempt" -le "$GEMINI_RETRIES" ]]; do
     && python3 "$RENDERER" --provider gemini --input "$raw_file" > "$rendered_file" 2>/dev/null \
     && [[ "$("$VALIDATOR" "$rendered_file")" == "VALID" ]]; then
     cat "$rendered_file"
+    ( [[ -n "$ORCH_LOG_FILE" ]] && cat "$rendered_file" >> "$ORCH_LOG_FILE" ) 2>/dev/null || true
     exit 0
   fi
 

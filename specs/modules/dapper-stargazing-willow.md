@@ -1,137 +1,142 @@
-# WRK-683 Plan: arch(orchestrator) — Unified AI Agent Session Logs
+# WRK-683 Plan HTML Review — Draft
 
-**Source WRK:** WRK-683
-**Route:** B
-**Created:** 2026-03-02
+> **WRK:** WRK-683 | **Route:** B | **Orchestrator:** claude | **Status:** DRAFT
 
 ---
 
-> **Plan HTML Review Draft** — WRK-683 | Route B | orchestrator=claude
-> Submit to cross-review: `scripts/review/cross-review.sh specs/modules/dapper-stargazing-willow.md all`
+## Summary
+
+**Title:** arch(orchestrator): unify AI agent session logs in `logs/orchestrator/`
+
+**Problem:** Claude, Codex, and Gemini write session logs to separate, agent-specific
+home directories. No unified location exists for cross-orchestrator log reading or
+cross-agent assessment.
+
+**Key finding from config audit:**
+
+| Agent | Native config | Log path configurable? | Write method |
+|-------|--------------|----------------------|--------------|
+| Claude | `.claude/settings.json` (hooks) | **Yes — hook system** | Update `session-logger.sh` to dual-write |
+| Codex | `~/.codex/config.toml` | No log path setting | Capture via `submit-to-codex.sh` tee |
+| Gemini | `~/.gemini/settings.json` | No log path setting | Capture via `submit-to-gemini.sh` tee |
+
+**Approach:** Claude writes natively via updated hook. Codex and Gemini logs are
+captured at invocation time by the submit wrapper scripts (already write results to
+`scripts/review/results/`; add parallel tee to `logs/orchestrator/`).
 
 ---
 
-## Context
-
-AI agents (Claude, Codex, Gemini) each store their session logs in separate,
-agent-specific home directories:
-- Claude: `.claude/state/sessions/session_YYYYMMDD.jsonl` (hook-driven JSONL)
-- Codex: `~/.codex/history.jsonl` + `~/.codex/log/codex-tui.log`
-- Gemini: `~/.gemini/history/<date>/` (structured history dirs)
-
-Per-WRK orchestrator events go to `.claude/work-queue/logs/WRK-{id}-{stage}.log`.
-
-No unified readable location exists. For cross-orchestrator assessment (e.g., Claude
-reviewing Codex's session log, or Gemini reading Claude's gate events), each agent
-must know three different native paths. WRK-683 adds `logs/orchestrator/` as the
-canonical, single-directory read target for all agent sessions.
-
-**Note:** Codex and Gemini CLIs don't support configurable log output paths.
-Implementation uses a pull-based **collector script** that copies from each agent's
-native location into `logs/orchestrator/`. Claude's logs are collected the same way
-for consistency.
-
----
-
-## Implementation
-
-### Phase 1 — Directory scaffold
-
-Create stub README at `logs/orchestrator/README.md` to document the structure
-(the `logs/` dir is git-ignored for raw content; the README gets a negation rule
-so it IS tracked):
+## Proposed Log File Naming Convention
 
 ```
 logs/orchestrator/
-├── README.md             ← tracked (canonical doc)
-├── claude/               ← gitignored; populated by collector
-├── codex/                ← gitignored; populated by collector
-└── gemini/               ← gitignored; populated by collector
+├── README.md                                   ← tracked; documents structure
+├── claude/
+│   └── session_YYYYMMDD.jsonl                  ← real-time, appended by hook per tool call
+├── codex/
+│   └── WRK-NNN-YYYYMMDD-HHMMSS.log            ← written by submit-to-codex.sh per invocation
+└── gemini/
+    └── WRK-NNN-YYYYMMDD-HHMMSS.log            ← written by submit-to-gemini.sh per invocation
 ```
 
-Add to `.gitignore`:
+Raw content is gitignored (`logs/` is already in `.gitignore`); `README.md` tracked
+via negation rule.
+
+---
+
+## Deliverables
+
+### 1. `logs/orchestrator/README.md` (CREATE — tracked)
+Documents the directory structure, naming conventions, and write method for each agent.
+
+### 2. `.gitignore` (EDIT — +2 lines)
 ```gitignore
-# Allow orchestrator log README to be tracked
 !logs/orchestrator/
 !logs/orchestrator/README.md
 ```
 
-### Phase 2 — Collector script
-
-**New file:** `scripts/agents/collect-orchestrator-logs.sh` (~45 lines)
-
+### 3. `.claude/hooks/session-logger.sh` (EDIT — dual-write for Claude)
+After the existing write to `.claude/state/sessions/`, also append the same JSONL
+line to `logs/orchestrator/claude/session_$(date +%Y%m%d).jsonl`:
 ```bash
-#!/usr/bin/env bash
-# Collect latest session logs from each agent into logs/orchestrator/.
-# Idempotent, non-blocking — all errors suppressed. Called at session init.
-set -uo pipefail
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-DEST="${REPO_ROOT}/logs/orchestrator"
-mkdir -p "${DEST}/claude" "${DEST}/codex" "${DEST}/gemini"
+# Dual-write: native sessions path + unified orchestrator log
+mkdir -p "${REPO_ROOT}/logs/orchestrator/claude"
+echo "${log_line}" >> "${REPO_ROOT}/logs/orchestrator/claude/session_$(date +%Y%m%d).jsonl"
+```
+Guard with `[[ -n "${REPO_ROOT}" ]] && ...` to ensure no error when run outside repo.
 
-# Claude — today's session JSONL
-today="$(date -u +%Y%m%d)"
-src="${REPO_ROOT}/.claude/state/sessions/session_${today}.jsonl"
-[[ -f "${src}" ]] && cp "${src}" "${DEST}/claude/" 2>/dev/null || true
-
-# Codex — history + TUI log
-[[ -f ~/.codex/history.jsonl ]] && cp ~/.codex/history.jsonl "${DEST}/codex/" 2>/dev/null || true
-[[ -f ~/.codex/log/codex-tui.log ]] && cp ~/.codex/log/codex-tui.log "${DEST}/codex/" 2>/dev/null || true
-
-# Gemini — latest non-tmp history directory
-latest_dir="$(ls -t ~/.gemini/history/ 2>/dev/null | grep -v '^tmp' | head -1)"
-if [[ -n "${latest_dir}" ]]; then
-    mkdir -p "${DEST}/gemini/${latest_dir}"
-    cp -r ~/.gemini/history/${latest_dir}/. "${DEST}/gemini/${latest_dir}/" 2>/dev/null || true
-fi
-echo "logs/orchestrator/ refreshed (claude/codex/gemini)"
+### 4. `scripts/review/submit-to-codex.sh` (EDIT — tee output)
+After capturing the Codex response (already written to `scripts/review/results/`),
+also tee to `logs/orchestrator/codex/`:
+```bash
+log_file="${REPO_ROOT}/logs/orchestrator/codex/WRK-${wrk_id}-$(date -u +%Y%m%dT%H%M%SZ).log"
+mkdir -p "$(dirname "${log_file}")"
+echo "${response}" >> "${log_file}"
 ```
 
-### Phase 3 — Wire into session.sh init
-
-**File:** `scripts/agents/session.sh`
-
-Find the `init)` case block (currently ends after quota snapshot calls). Add one
-line after the quota calls:
-
+### 5. `scripts/review/submit-to-gemini.sh` (EDIT — tee output)
+Same pattern as submit-to-codex.sh:
 ```bash
-# Refresh unified orchestrator log directory
-bash "${WORKSPACE_ROOT}/scripts/agents/collect-orchestrator-logs.sh" 2>/dev/null || true
+log_file="${REPO_ROOT}/logs/orchestrator/gemini/WRK-${wrk_id}-$(date -u +%Y%m%dT%H%M%SZ).log"
+mkdir -p "$(dirname "${log_file}")"
+echo "${response}" >> "${log_file}"
 ```
 
-### Phase 4 — Documentation
-
-**File:** `AGENTS.md` — add one policy line (currently 21 lines, under limit):
+### 6. `AGENTS.md` (EDIT — +1 policy line)
 ```
 - **Peer logs**: `logs/orchestrator/<agent>/` — read peer session logs for cross-agent analysis
 ```
 
-**File:** `.claude/docs/orchestrator-pattern.md` — add a "Cross-Agent Log Access" section:
-- Document `logs/orchestrator/{claude,codex,gemini}/` paths
-- Note that `collect-orchestrator-logs.sh` refreshes on each session init
-- Note that raw content is gitignored (local-machine only)
+### 7. `.claude/docs/orchestrator-pattern.md` (EDIT — new section)
+"Cross-Agent Log Access" section: paths, naming convention, when each file is written,
+and that raw content is gitignored (local-machine only).
 
 ---
 
 ## Files Changed
 
-| File | Action | Notes |
+| File | Action | Lines |
 |------|--------|-------|
-| `logs/orchestrator/README.md` | CREATE | Tracked doc of directory structure |
-| `.gitignore` | EDIT | 2 negation lines for logs/orchestrator/README.md |
-| `scripts/agents/collect-orchestrator-logs.sh` | CREATE | Pull-based log collector (~45 lines) |
-| `scripts/agents/session.sh` | EDIT | Wire collector into `init)` case |
-| `AGENTS.md` | EDIT | Add peer logs policy line |
-| `.claude/docs/orchestrator-pattern.md` | EDIT | Add cross-agent log access section |
+| `logs/orchestrator/README.md` | CREATE | ~20 |
+| `.gitignore` | EDIT | +2 |
+| `.claude/hooks/session-logger.sh` | EDIT | +3 |
+| `scripts/review/submit-to-codex.sh` | EDIT | +4 |
+| `scripts/review/submit-to-gemini.sh` | EDIT | +4 |
+| `AGENTS.md` | EDIT | +1 |
+| `.claude/docs/orchestrator-pattern.md` | EDIT | +10 |
 
 ---
 
-## Verification
+## What Is NOT Changing
 
-1. Run `bash scripts/agents/collect-orchestrator-logs.sh` — should produce
-   `logs/orchestrator/{claude,codex,gemini}/` with copied files.
-2. Run `scripts/agents/session.sh init --provider claude` — confirm collector
-   runs and directories are populated.
-3. Confirm `logs/orchestrator/README.md` is git-tracked; raw content is not.
-4. Confirm other agents can `cat logs/orchestrator/codex/history.jsonl` to read
-   Codex session context.
+- `.claude/state/sessions/` remains primary Claude session store (dual-write adds a copy)
+- `.claude/work-queue/logs/` WRK-stage logs unchanged
+- `scripts/review/results/` existing Codex/Gemini output paths unchanged (tee adds a copy)
+- Comprehensive-learning pipeline reads from existing paths (no change)
+- No pull collector script (not needed with wrapper capture)
+
+---
+
+## Acceptance Criteria
+
+- [ ] `logs/orchestrator/README.md` committed and documents the structure
+- [ ] Claude tool calls append to `logs/orchestrator/claude/session_YYYYMMDD.jsonl`
+- [ ] Running `cross-review.sh <file> codex` also writes to `logs/orchestrator/codex/`
+- [ ] Running `cross-review.sh <file> gemini` also writes to `logs/orchestrator/gemini/`
+- [ ] Any agent can read peer logs from `logs/orchestrator/<agent>/` for cross-session context
+- [ ] Raw content is gitignored; `README.md` is tracked
+
+---
+
+## Risk / Trade-offs
+
+| Risk | Mitigation |
+|------|-----------|
+| session-logger.sh write failure blocks tool call | Wrap in subshell: `( mkdir -p ... && echo ... >> ... ) 2>/dev/null \|\| true` |
+| WRK-NNN not available in submit scripts | Use filename from input file argument; fallback to timestamp-only name |
+| Large Claude JSONL grows unbounded | gitignored; same as existing `.claude/state/sessions/` (nightly cron truncates) |
+| submit scripts don't expose `wrk_id` var | Extract from input filename using basename; or use timestamp-only log name |
+
+---
+
+*Cross-review input: submit this file to `scripts/review/cross-review.sh` for Codex/Gemini verdict*

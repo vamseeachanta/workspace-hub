@@ -5,6 +5,11 @@ import re
 import sys
 from pathlib import Path
 
+try:
+    import yaml  # type: ignore[import]
+except Exception:
+    yaml = None
+
 
 def parse_frontmatter(text: str) -> str:
     parts = text.split("---", 2)
@@ -37,27 +42,41 @@ def parse_bool(value: str | None) -> bool:
 
 
 def check_claim_gate(assets_dir: Path) -> tuple[bool | None, str]:
-    """Check claim-evidence.yaml for required metadata (WRK-677 hardened schema).
+    """Check claim evidence for required metadata (canonical + WRK-677 legacy schema).
 
     Returns:
         (True,  detail) — gate OK
         (False, detail) — gate FAIL (hard error)
         (None,  detail) — WARN only (legacy item or absent file, no failure)
     """
-    claim_file = assets_dir / "claim-evidence.yaml"
-    if not claim_file.exists():
-        return None, "claim-evidence.yaml absent (legacy item — WARN)"
+    claim_file = evidence_file(assets_dir, "claim.yaml", ["claim-evidence.yaml"])
+    if claim_file is None:
+        return None, "claim evidence absent (legacy item — WARN)"
 
-    try:
-        import yaml  # type: ignore[import]
-        data = yaml.safe_load(claim_file.read_text(encoding="utf-8")) or {}
-    except Exception as exc:
-        return None, f"could not parse claim-evidence.yaml: {exc}"
+    data, yaml_err = load_yaml(claim_file)
+    if yaml_err:
+        return None, f"could not parse {claim_file.name}: {yaml_err}"
+    assert data is not None
+
+    is_canonical = claim_file.name == "claim.yaml" or str(data.get("stage", "")).lower() == "claim"
+    if is_canonical:
+        errors = []
+        if not data.get("session_owner"):
+            errors.append("session_owner missing")
+        if not data.get("best_fit_provider"):
+            errors.append("best_fit_provider missing")
+        if not data.get("quota_snapshot_ref") and not ((data.get("quota_snapshot") or {}).get("timestamp")):
+            errors.append("quota_snapshot_ref missing")
+        if not data.get("claim_expires_at"):
+            errors.append("claim_expires_at missing")
+        if errors:
+            return False, f"{claim_file.name}: " + "; ".join(errors)
+        return True, f"{claim_file.name}: canonical claim evidence OK"
 
     # str() coercion handles both YAML string "1" and integer 1
     version = str(data.get("metadata_version", "")).strip()
     if version != "1":
-        return None, f"metadata_version={version!r} (legacy schema — WARN only)"
+        return None, f"{claim_file.name}: metadata_version={version!r} (legacy schema — WARN only)"
 
     # Hard checks for metadata_version "1" items
     errors = []
@@ -82,20 +101,80 @@ def check_claim_gate(assets_dir: Path) -> tuple[bool | None, str]:
     quota_note = f"quota={qs_status}({pct_str})"
     if qs_status == "unknown":
         quota_note += " [WARN: source unavailable]"
-    return True, f"version=1, owner={owner}, {quota_note}"
+    return True, f"{claim_file.name}: version=1, owner={owner}, {quota_note}"
+
+
+def check_resource_intelligence_gate(assets_dir: Path) -> tuple[bool | None, str]:
+    """Check resource intelligence evidence with canonical + legacy compatibility."""
+    ri_file = evidence_file(assets_dir, "resource-intelligence.yaml", ["resource-intelligence-summary.md"])
+    if ri_file is None:
+        return None, "resource-intelligence evidence absent (legacy item — WARN)"
+
+    if ri_file.suffix.lower() == ".yaml":
+        data, yaml_err = load_yaml(ri_file)
+        if yaml_err:
+            return None, f"could not parse {ri_file.name}: {yaml_err}"
+        assert data is not None
+        completion = str(data.get("completion_status", "")).strip().lower()
+        top_p1 = data.get("top_p1_gaps") or []
+        if not isinstance(top_p1, list):
+            return False, "resource-intelligence.yaml: top_p1_gaps must be a list"
+        skills = data.get("skills") or {}
+        core_used = skills.get("core_used") or []
+        if not isinstance(core_used, list):
+            return False, "resource-intelligence.yaml: skills.core_used must be a list"
+        if len(core_used) < 3:
+            return False, "resource-intelligence.yaml: skills.core_used must include at least 3 core skills"
+        if completion == "continue_to_planning" and len(top_p1) > 0:
+            return False, "resource-intelligence.yaml: continue_to_planning requires empty top_p1_gaps"
+        if completion == "pause_and_revise" and len(top_p1) == 0:
+            return False, "resource-intelligence.yaml: pause_and_revise requires one or more top_p1_gaps"
+        if completion not in {"continue_to_planning", "pause_and_revise"}:
+            return False, "resource-intelligence.yaml: invalid completion_status"
+        return True, f"{ri_file.name}: completion_status={completion}, p1_count={len(top_p1)}, core_skills={len(core_used)}"
+
+    # Legacy markdown summary check
+    content = strip_code_fences(ri_file.read_text(encoding="utf-8"))
+    user_decision = re.search(r"^user_decision:\s+(.+)$", content, re.MULTILINE)
+    if not user_decision:
+        return None, f"{ri_file.name}: user_decision missing (legacy summary — WARN)"
+    return True, f"{ri_file.name}: legacy summary present"
 
 
 def check_future_work_gate(assets_dir: Path) -> tuple[bool | None, str]:
-    """Check future-work-recommendations.md for follow-up WRKs or no-follow-ups rationale.
+    """Check future-work evidence for follow-up WRKs or no-follow-ups rationale.
 
     Returns:
         (True,  detail) — gate OK
         (False, detail) — gate FAIL (file present but empty/invalid)
         (None,  detail) — WARN only (file absent — legacy item)
     """
-    fw_file = assets_dir / "future-work-recommendations.md"
-    if not fw_file.exists():
-        return None, "future-work-recommendations.md absent (legacy item — WARN)"
+    fw_file = evidence_file(assets_dir, "future-work.yaml", ["future-work-recommendations.md"])
+    if fw_file is None:
+        return None, "future-work evidence absent (legacy item — WARN)"
+    if fw_file.suffix.lower() == ".yaml":
+        data, yaml_err = load_yaml(fw_file)
+        if yaml_err:
+            return None, f"could not parse {fw_file.name}: {yaml_err}"
+        assert data is not None
+        recs = data.get("recommendations") or []
+        if not isinstance(recs, list):
+            return False, f"{fw_file.name}: recommendations must be a list"
+        no_followups = str(data.get("no_follow_ups_rationale", "")).strip()
+        if recs:
+            missing_required_wrks = []
+            for idx, rec in enumerate(recs, start=1):
+                if not isinstance(rec, dict):
+                    return False, f"{fw_file.name}: recommendations[{idx}] must be an object"
+                if rec.get("required_for_signoff") and not rec.get("wrk_id"):
+                    missing_required_wrks.append(idx)
+            if missing_required_wrks:
+                return False, f"{fw_file.name}: required_for_signoff recommendations missing wrk_id at {missing_required_wrks}"
+            return True, f"{fw_file.name}: recommendations={len(recs)}"
+        if no_followups:
+            return True, f"{fw_file.name}: no_follow_ups_rationale=present"
+        return False, f"{fw_file.name}: empty recommendations and no_follow_ups_rationale missing"
+
     content = strip_code_fences(fw_file.read_text(encoding="utf-8"))
     # Exclude the wrk_id: metadata header line (self-reference) from the WRK ref search
     content_no_self = re.sub(r"^wrk_id:\s+WRK-\d+.*$", "", content, flags=re.MULTILINE)
@@ -103,13 +182,32 @@ def check_future_work_gate(assets_dir: Path) -> tuple[bool | None, str]:
     rationale_match = re.search(r"^no_follow_ups_rationale:\s+\S", content, re.MULTILINE)
     if has_wrk_ref or rationale_match:
         summary = "has_wrk_refs=true" if has_wrk_ref else "no_follow_ups_rationale=present"
-        return True, summary
-    return False, "future-work-recommendations.md present but lists no WRKs and no_follow_ups_rationale is empty"
+        return True, f"{fw_file.name}: {summary}"
+    return False, f"{fw_file.name}: present but lists no WRKs and no_follow_ups_rationale is empty"
 
 
 def strip_code_fences(content: str) -> str:
     """Remove fenced code blocks to prevent false-positive confirmation matches."""
     return re.sub(r"```[^\n]*\n.*?```", "", content, flags=re.DOTALL)
+
+
+def check_reclaim_gate(assets_dir: Path) -> tuple[bool | None, str]:
+    """Check reclaim evidence when reclaim stage artifacts are present."""
+    reclaim_file = evidence_file(assets_dir, "reclaim.yaml", [])
+    if reclaim_file is None:
+        return None, "reclaim.yaml absent (no reclaim triggered — WARN)"
+    data, yaml_err = load_yaml(reclaim_file)
+    if yaml_err:
+        return False, f"could not parse {reclaim_file.name}: {yaml_err}"
+    assert data is not None
+    decision = str(data.get("reclaim_decision", "")).strip().lower()
+    if decision not in {"reclaim_and_resume", "pause_and_replan", "block"}:
+        return False, f"{reclaim_file.name}: invalid reclaim_decision={decision or 'missing'}"
+    if decision == "reclaim_and_resume" and not data.get("prior_claim_ref"):
+        return False, f"{reclaim_file.name}: prior_claim_ref required for reclaim_and_resume"
+    if decision == "block" and not data.get("block_reason"):
+        return False, f"{reclaim_file.name}: block_reason required when reclaim_decision=block"
+    return True, f"{reclaim_file.name}: reclaim_decision={decision}"
 
 
 def check_plan_confirmation(plan_path: Path) -> tuple[bool, str]:
@@ -149,6 +247,29 @@ def first_matching_file(directory: Path, names: list[str]) -> Path | None:
         if candidate.exists():
             return candidate
     return None
+
+
+def evidence_file(assets_dir: Path, canonical_name: str, legacy_names: list[str]) -> Path | None:
+    canonical = assets_dir / "evidence" / canonical_name
+    if canonical.exists():
+        return canonical
+    for legacy in legacy_names:
+        candidate = assets_dir / legacy
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def load_yaml(path: Path) -> tuple[dict | None, str | None]:
+    if yaml is None:
+        return None, "PyYAML unavailable"
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        return None, str(exc)
+    if not isinstance(data, dict):
+        return None, "YAML root is not a mapping"
+    return data, None
 
 
 def run_checks(wrk_id: str) -> int:
@@ -202,6 +323,8 @@ def run_checks(wrk_id: str) -> int:
             ),
         }
     )
+    ri_ok, ri_details = check_resource_intelligence_gate(assets_dir)
+    gates.append({"name": "Resource-intelligence gate", "ok": ri_ok, "warn": ri_ok is None, "details": ri_details})
     gates.append(
         {"name": "Cross-review gate", "ok": bool(review_file), "details": f"artifact={'none' if not review_file else review_file}"}
     )
@@ -229,6 +352,10 @@ def run_checks(wrk_id: str) -> int:
     # Future-work gate — WARN when file absent (legacy), FAIL when file present but invalid
     fw_ok, fw_details = check_future_work_gate(assets_dir)
     gates.append({"name": "Future-work gate", "ok": fw_ok, "warn": fw_ok is None, "details": fw_details})
+
+    # Reclaim gate — WARN when absent (no reclaim triggered), FAIL when present but invalid
+    reclaim_ok, reclaim_details = check_reclaim_gate(assets_dir)
+    gates.append({"name": "Reclaim gate", "ok": reclaim_ok, "warn": reclaim_ok is None, "details": reclaim_details})
 
     success = True
     print(f"Gate evidence for {wrk_id} (assets: {assets_dir}):")

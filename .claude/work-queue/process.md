@@ -5,7 +5,7 @@
 
 ## Overview
 
-The work queue tracks features, bugs, and tasks across all workspace-hub repositories. Items flow through a nine-stage lifecycle: **Capture, Resource Intelligence, Triage, Plan, Claim, Execute, Future Work Synthesis, Close, Archive**. The workspace-hub queue is the master; repo-local WRK copies are deprecated and should not be created.
+The work queue tracks features, bugs, and tasks across all workspace-hub repositories. Items flow through a ten-stage lifecycle: **Capture, Resource Intelligence, Triage, Plan, Claim, Execute, Reclaim, Future Work Synthesis, Close, Archive**. The workspace-hub queue is the master; repo-local WRK copies are deprecated and should not be created.
 
 State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item detail), and `INDEX.md` (generated listing).
 
@@ -31,7 +31,12 @@ flowchart TD
     I1 --> I
     K -- No --> L[Execute]
     K -- Yes --> M[Status: blocked]
-    L --> N{Route Review Passed?}
+    L --> L0{Execute stayed healthy in claimed session?}
+    L0 -- Yes --> N{Route Review Passed?}
+    L0 -- No --> S[Reclaim]
+    S --> S1{Evidence revalidated + claim renewed?}
+    S1 -- Yes --> I
+    S1 -- No --> M
     N -- Yes --> R[Future Work Synthesis]
     R --> R1{Recommended follow-up WRKs created?}
     R1 -- Yes --> O[Close]
@@ -54,6 +59,9 @@ flowchart TD
 ### 2. Resource Intelligence
 - Mandatory for every WRK before planning.
 - Create modular artifact set in `assets/WRK-<id>/`: `resource-pack.md`, `sources.md`, `constraints.md`, `domain-notes.md`, `open-questions.md`, `resources.yaml`.
+- Use minimum viable core skills by default: `work-queue`, `engineering-context-loader`, `document-inventory`, `legal-sanity`.
+- Optional extensions (only when needed): `document-rag-pipeline`, `knowledge-manager`, `agent-router`, `agent-usage-optimizer`, `comprehensive-learning`.
+- Record machine-checkable stage evidence in `assets/WRK-<id>/evidence/resource-intelligence.yaml`.
 
 ### 3. Triage
 - Assign `priority`, `complexity`, `route`, `computer`, `plan_workstations`, `execution_workstations`, `resource_needs`.
@@ -72,14 +80,22 @@ flowchart TD
 - Agent-capability check.
 - Quota check (`config/ai-tools/agent-quota-latest.json`).
 - Write structured claim evidence.
+- Record claim expiry and reclaim policy in `assets/WRK-<id>/evidence/claim.yaml` (legacy `claim-evidence.yaml` tolerated during migration).
 
 ### 6. Execute
 - Implementation under claimed session.
 - Define 5-10 real examples.
 - Include variation tests.
 - Generate HTML review artifact.
+- Record execute-stage evidence in `assets/WRK-<id>/evidence/execute.yaml`.
 
-### 7. Future Work Synthesis
+### 7. Reclaim
+- Trigger when execute continuity breaks (session loss, claim expiry, invalidated evidence).
+- Revalidate claim freshness, blockers, and prior stage evidence.
+- Write `assets/WRK-<id>/evidence/reclaim.yaml`.
+- Resume flow only after successful reclaim, then return to `Claim`.
+
+### 8. Future Work Synthesis
 - Triggered after execution review passes and before close.
 - Generate recommended follow-up WRKs automatically from:
   - unresolved review findings
@@ -88,18 +104,36 @@ flowchart TD
   - learning outputs that require independent backlog delivery
 - Record outputs in close evidence as `followup_wrks`.
 - Close is blocked until required follow-up WRKs exist.
+- Canonical stage evidence file: `assets/WRK-<id>/evidence/future-work.yaml` (with companion `future-work-recommendations.md`).
 
-### 8. Close
+### 9. Close
 **Trigger**: Implementation complete and verified.
 - Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--html-output <path>] [--html-verification <path>] [--commit]`
 - Updates frontmatter, moves to `done/`, regenerates INDEX.
 - Enforces HTML review evidence for WRK items using the hardened workflow contract.
 - Record merge/sync status and follow-up/learning outputs where applicable.
+- Canonical stage evidence file: `assets/WRK-<id>/evidence/close.yaml`.
 
-### 9. Archive
-- Script: `scripts/archive-item.sh WRK-NNN`
+### 10. Archive
+- Script: `scripts/work-queue/archive-item.sh WRK-NNN`
 - Blocked until merge-to-main and sync complete.
 - Moves to `archive/YYYY-MM/`.
+- Canonical stage evidence file: `assets/WRK-<id>/evidence/archive.yaml`.
+
+## Evidence Contract
+
+Stage evidence should be normalized under one directory:
+
+```
+assets/WRK-<id>/evidence/
+  resource-intelligence.yaml
+  claim.yaml
+  execute.yaml
+  reclaim.yaml
+  future-work.yaml
+  close.yaml
+  archive.yaml
+```
 
 ## Directory Structure
 
