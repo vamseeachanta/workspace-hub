@@ -553,6 +553,7 @@ Status of this contract:
 | Plan | yes | Independent stage with heavy review coupling but clear inputs/outputs. |
 | Claim | yes | Independent decision gate before execution. |
 | Execute | internally parallelizable, externally gate-dependent | Depends on prior claim and later close/review gates, but may use multiple parallel execution agents for sub-workstreams. |
+| Future Work Synthesis | yes | Independent synthesis stage once execution review passes; produces follow-up backlog before closure. |
 | Close | yes | Independent evidence-consolidation stage once execute/review are complete. |
 | Archive | yes | Independent finalization stage once close evidence is complete. |
 
@@ -566,6 +567,7 @@ Status of this contract:
 | Plan | Claude | Codex + Gemini with Claude synthesis | yes |
 | Claim | Claude | Claude | no |
 | Execute | Codex | Codex | yes, when two implementation paths or comparison builds are useful |
+| Future Work Synthesis | Claude | Claude + Codex | yes, when one agent mines findings and one drafts follow-up WRKs |
 | Close | Claude | Codex for evidence generation, Claude for closure check | sometimes |
 | Archive | Claude | Claude | no |
 

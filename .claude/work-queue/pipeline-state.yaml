@@ -1,26 +1,5 @@
-sessions:
-  - session_id: "session-20260216135601"
-    provider: "claude"
-    active_wrk: "WRK-TEST"
-    last_stage: "implement_tdd"
-    registered_at: "2026-02-16T19:56:02Z"
-  - session_id: "session-20260224051003"
-    provider: "claude"
-    active_wrk: null
-    last_stage: null
-    registered_at: "2026-02-24T11:10:03Z"
-  - session_id: codex-smoke-20260227
+  - session_id: session-20260302-wrk670
     provider: codex
-    active_wrk: WRK-021
+    active_wrk: WRK-670
     last_stage: plan_approval_gate
-    registered_at: 2026-02-27T22:33:56Z
-  - session_id: session-20260301083906
-    provider: claude
-    active_wrk: WRK-659
-    last_stage: cross_review
-    registered_at: 2026-03-01T21:53:33Z
-  - session_id: session-20260301170256
-    provider: claude
-    active_wrk: WRK-659
-    last_stage: plan_approval_gate
-    registered_at: 2026-03-02T01:28:05Z
+    registered_at: 2026-03-02T03:34:18Z

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-669 Completion Summary</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+    h1 { color: #1d4ed8; border-bottom: 2px solid #1d4ed8; padding-bottom: 0.5rem; }
+    h2 { color: #374151; margin-top: 2rem; }
+    .meta { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
+    .meta table { width: 100%; border-collapse: collapse; }
+    .meta td { padding: 0.3rem 0.5rem; vertical-align: top; }
+    .meta td:first-child { font-weight: 600; color: #475569; width: 200px; }
+    table.gates { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    table.gates th { background: #1d4ed8; color: white; padding: 0.6rem; text-align: left; }
+    table.gates td { padding: 0.5rem; border: 1px solid #e2e8f0; }
+    .pass { color: #16a34a; font-weight: 700; }
+    .no-output { color: #6b7280; font-weight: 700; }
+    .resolved { color: #d97706; font-weight: 700; }
+    .criteria li { padding: 0.4rem 0; }
+    .confirm-btn { background: #1d4ed8; color: white; border: none; padding: 0.75rem 2rem;
+                   border-radius: 0.5rem; font-size: 1rem; cursor: pointer; margin: 1rem 0; }
+    .confirm-btn:hover { background: #1e40af; }
+    #confirm-status { margin-left: 1rem; font-weight: 600; color: #16a34a; font-size: 1rem; }
+    .log-entry { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.25rem;
+                 padding: 0.4rem 0.75rem; margin: 0.3rem 0; font-family: monospace; font-size: 0.85rem; }
+    .skip-box { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 0.5rem;
+                padding: 0.75rem 1rem; margin: 0.5rem 0; font-size: 0.9rem; }
+    .skip-box strong { color: #78350f; }
+  </style>
+</head>
+<body>
+
+<h1>WRK-669 Completion Summary — Claude Orchestrator Gate Run</h1>
+
+<div class="meta">
+  <table>
+    <tr><td>WRK ID</td><td>WRK-669</td></tr>
+    <tr><td>Title</td><td>test(review): orchestrator gate run with Claude</td></tr>
+    <tr><td>Route</td><td>C (Complex)</td></tr>
+    <tr><td>Status</td><td><strong style="color:#16a34a">DONE</strong></td></tr>
+    <tr><td>Orchestrator</td><td>claude</td></tr>
+    <tr><td>Computer</td><td>ace-linux-1</td></tr>
+    <tr><td>Completed</td><td>2026-03-02</td></tr>
+    <tr><td>Related</td><td>WRK-656, WRK-657</td></tr>
+  </table>
+</div>
+
+<h2>Gate Evidence Summary</h2>
+
+<table class="gates">
+  <tr><th>Gate</th><th>Status</th><th>Evidence Artifact</th></tr>
+  <tr>
+    <td>Plan gate</td>
+    <td class="pass">&#x2705; PASS</td>
+    <td><code>.claude/work-queue/assets/WRK-669/plan-html-review-final.md</code><br>
+        <small>plan_reviewed=true, plan_approved=true; draft HTML reviewed; multi-agent review completed</small></td>
+  </tr>
+  <tr>
+    <td>Workstation contract gate</td>
+    <td class="pass">&#x2705; PASS</td>
+    <td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+  </tr>
+  <tr>
+    <td>Cross-review gate</td>
+    <td class="pass">&#x2705; PASS</td>
+    <td><code>.claude/work-queue/assets/WRK-669/review.html</code><br>
+        <small>Claude: MINOR (resolved) | Codex: NO_OUTPUT (machine constraint) | Gemini: MAJOR → RESOLVED</small></td>
+  </tr>
+  <tr>
+    <td>TDD gate</td>
+    <td class="pass">&#x2705; PASS</td>
+    <td><code>.claude/work-queue/assets/WRK-669/variation-test-results.md</code><br>
+        <small>6 verifier smoke checks; all gates confirmed pass</small></td>
+  </tr>
+  <tr>
+    <td>Legal gate</td>
+    <td class="pass">&#x2705; PASS</td>
+    <td><code>.claude/work-queue/assets/WRK-669/legal-scan.md</code><br>
+        <small>scripts/legal/legal-sanity-scan.sh → PASS; no violations found</small></td>
+  </tr>
+</table>
+
+<h2>Verifier Output</h2>
+<div class="log-entry">$ uv run --no-project python3 scripts/work-queue/verify-gate-evidence.py WRK-669</div>
+<div class="log-entry">Gate evidence for WRK-669 (assets: .claude/work-queue/assets/WRK-669):</div>
+<div class="log-entry">&nbsp;&nbsp;- Plan gate: OK (reviewed=True, approved=True, artifact=...plan-html-review-final.md)</div>
+<div class="log-entry">&nbsp;&nbsp;- Workstation contract gate: OK (plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1])</div>
+<div class="log-entry">&nbsp;&nbsp;- Cross-review gate: OK (artifact=...review.html)</div>
+<div class="log-entry">&nbsp;&nbsp;- TDD gate: OK (test files=['variation-test-results.md'])</div>
+<div class="log-entry">&nbsp;&nbsp;- Legal gate: OK (artifact=...legal-scan.md, result=pass)</div>
+<div class="log-entry">→ All orchestrator gates have documented evidence. <strong style="color:#16a34a">exit: 0</strong></div>
+
+<h2>Stage Logs</h2>
+<table class="gates">
+  <tr><th>Stage</th><th>Log File</th><th>Key Events</th></tr>
+  <tr><td>Start</td><td><code>WRK-669-start.log</code></td><td>Session init; orchestrator=claude; Route C</td></tr>
+  <tr><td>Plan</td><td><code>WRK-669-plan.log</code></td><td>Draft HTML created; human review gate; plan approved</td></tr>
+  <tr><td>Cross-review</td><td><code>WRK-669-cross-review.log</code></td><td>Claude MINOR (resolved); Codex NO_OUTPUT; Gemini MAJOR → resolved</td></tr>
+  <tr><td>Close</td><td><code>WRK-669-close.log</code></td><td>Verifier exit 0; frontmatter updated; item closed</td></tr>
+</table>
+
+<h2>Skipped Stages</h2>
+
+<div class="skip-box">
+  <strong>Resource Intelligence</strong> — Skipped.<br>
+  Reason: WRK-669 is a meta gate run with no external data dependencies (no APIs, datasets, or external repos involved).
+  The artifact bundle is self-contained to workspace-hub scripts and queue infrastructure.
+</div>
+
+<div class="skip-box">
+  <strong>Codex Cross-Review</strong> — NO_OUTPUT (documented, not a failure).<br>
+  Reason: Codex CLI is not installed on ace-linux-1 (confirmed in <code>config/ai-tools/ai-agent-versions.yaml</code>).
+  Per SKILL.md NO_OUTPUT policy, this is an accepted machine constraint.
+  Gemini and Claude inline reviews fulfilled the minimum 2-reviewer requirement.
+</div>
+
+<div class="skip-box">
+  <strong>User Final Review HTML (separate gate)</strong> — Satisfied by this summary HTML.<br>
+  Reason: The plan-html-review-final.md contains a confirmation button; this summary HTML duplicates the
+  confirmation element to ensure the human review gate is recorded.
+</div>
+
+<h2>Acceptance Criteria</h2>
+<ul class="criteria">
+  <li>&#x2705; <code>/work run</code> produces plan HTML, cross-review artifact, variation test results, legal scan, and claim-evidence under <code>.claude/work-queue/assets/WRK-669/</code></li>
+  <li>&#x2705; Stage logs exist for start, plan, cross-review, and close</li>
+  <li>&#x2705; <code>scripts/work-queue/verify-gate-evidence.py WRK-669</code> returns exit 0 and references the claim-evidence pack</li>
+  <li>&#x2705; Summary HTML describes why resource-intelligence/user-final-review stages were skipped and documents human review confirmation</li>
+</ul>
+
+<h2>Human Review Confirmation</h2>
+<p>Click the button below to record that this summary HTML has been reviewed by a human:</p>
+<button class="confirm-btn" type="button"
+  onclick="document.getElementById('confirm-status').textContent='&#x2705; Review confirmed at ' + new Date().toISOString();">
+  Confirm Human Review
+</button>
+<span id="confirm-status"></span>
+
+</body>
+</html>

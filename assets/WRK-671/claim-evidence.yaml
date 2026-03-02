@@ -1,0 +1,18 @@
+wrk_id: WRK-671
+title: "test(review): orchestrator gate run with Gemini"
+orchestrator: gemini
+timestamp: 2026-03-02T15:10:00Z
+gates:
+  plan: OK
+  workstation_contract: OK
+  cross_review: OK
+  tdd: OK
+  legal: OK
+verification_output: |
+  Gate evidence for WRK-671 (assets: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-671):
+    - Plan gate: OK (reviewed=True, approved=True, artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-671/plan-html-review-final.md)
+    - Workstation contract gate: OK (plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1])
+    - Cross-review gate: OK (artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-671/review.html)
+    - TDD gate: OK (test files=['variation-test-results.md'])
+    - Legal gate: OK (artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-671/legal-scan.md, result=pass)
+  → All orchestrator gates have documented evidence.

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WRK-656 Orchestrator Comparison</title>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --panel: #fffdf8;
+      --ink: #172126;
+      --muted: #55636b;
+      --accent: #0f766e;
+      --accent-2: #8a5a2b;
+      --line: #d9d0c0;
+      --shadow: 0 16px 40px rgba(20, 33, 38, 0.08);
+      --good: #166534;
+      --warn: #b45309;
+      --bad: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background: radial-gradient(circle at top, #fffaf0 0, var(--bg) 48%, #ebe5d7 100%);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .hero {
+      padding: 48px 28px 32px;
+      border-bottom: 1px solid rgba(23, 33, 38, 0.08);
+      background: linear-gradient(135deg, rgba(15,118,110,0.15), rgba(138,90,43,0.12));
+    }
+    .hero-inner, .content { max-width: 1180px; margin: 0 auto; }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    h1 {
+      margin: 10px 0 12px;
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 0.95;
+      max-width: 11ch;
+    }
+    .lede {
+      max-width: 70ch;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .pill {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.8);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+    }
+    .content {
+      padding: 28px 25px 56px;
+      display: grid;
+      gap: 22px;
+    }
+    .card, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+    .card h2, .panel h2 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-2);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      margin-top: 12px;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-top: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      color: var(--ink);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    ul { margin: 0; padding-left: 18px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-right: 0.35rem;
+    }
+    .badge.pass { background: #dcfce7; color: var(--good); }
+    .badge.skip { background: #fefce8; color: var(--warn); }
+    .badge.warn { background: #fee2e2; color: var(--bad); }
+    .log-list li { margin-bottom: 0.35rem; }
+    .summary-list li { padding-bottom: 0.4rem; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">WRK-656 Artefact</div>
+      <h1>Orchestrator Gate Comparison</h1>
+      <p class="lede">This report elevates the Claude/Codex/Gemini orchestrator runs to the same design quality as the WRK-624 workflow review. Every canonical stage is captured, and the comparison links to the underlying artifacts, scripts, and logs so operator validation is traceable.</p>
+      <div class="meta">
+        <div class="pill">Status: Multi-agent gate instrumentation</div>
+        <div class="pill">Scope: WRK-669 (Claude), WRK-670 (Codex), WRK-671 (Gemini)</div>
+        <div class="pill">Validator: <code>verify-gate-evidence.py</code></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="content">
+    <div class="panel">
+      <h2>Synopsis & next steps</h2>
+      <ul class="summary-list">
+        <li>
+          <strong>Current snapshot</strong>
+          <ul>
+            <li>Claude’s WRK-669 run leads with a polished summary HTML, detailed variation tests, and locked claim evidence.</li>
+            <li>Codex’s WRK-670 mirrored the gate artifacts, anchored the validator output (see <code>verify-gate-evidence.txt</code>), and signaled a follow-up WRK (WRK-1000) for Codex skill fixes.</li>
+            <li><a href="../WRK-671/wrk-671-agent-orchestrator-report.html">Gemini’s WRK-671 run</a> now features a complete variation-test narrative and full cross-review synthesis (WRK-672 update).</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Next steps</strong>
+          <ul>
+            <li>Re-run any WRK-66x orchestrator session when WRK-624 or related tooling changes, updating the summary HTML with fresh timestamps and solution notes.</li>
+            <li>Maintain per-asset logs, claim evidence, and validator output inside each WRK folder so this comparison stays synchronized with the latest agent behavior.</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>Stage compliance table</h2>
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>Claude (WRK-669)</th>
+          <th>Codex (WRK-670)</th>
+          <th>Gemini (WRK-671)</th>
+        </tr>
+        <tr>
+          <td>Capture</td>
+          <td><span class="badge pass">PASS</span>Metadata/orchestrator documented; asset directory scaffold in place.</td>
+          <td><span class="badge pass">PASS</span>Queue entry and orchestrator assignments completed in plan log.</td>
+          <td><span class="badge pass">PASS</span>Frontmatter sets orchestrator=Gemini; assets created.</td>
+        </tr>
+        <tr>
+          <td>Resource Intelligence</td>
+          <td><span class="badge skip">SKIPPED</span>Metadata notes stage intentionally omitted (baseline from WRK-655 resource intelligence).</td>
+          <td><span class="badge skip">SKIPPED</span>Reused WRK-657 resource pack; no new ingestion required.</td>
+          <td><span class="badge skip">SKIPPED</span>Summary references the same baseline; stage labeled waived in plan notes.</td>
+        </tr>
+        <tr>
+          <td>Triage</td>
+          <td><span class="badge pass">PASS</span>Required triage fields (priority, route, workstations) filled; plan log indicates gate pass.</td>
+          <td><span class="badge pass">PASS</span>Codex logs confirm triage completeness and no gaps.</td>
+          <td><span class="badge pass">PASS</span>Gemini plan logs capture triage values and orchestrator pointers.</td>
+        </tr>
+        <tr>
+          <td>Plan</td>
+          <td><span class="badge pass">PASS</span><a href=".claude/work-queue/assets/WRK-669/plan-html-review-final.md">plan-html-review-final.md</a> (user approved, log references final review).</td>
+          <td><span class="badge pass">PASS</span><a href=".claude/work-queue/assets/WRK-670/plan-html-review-final.md">plan-html-review-final.md</a> (Codex final review recorded twice per log).</td>
+          <td><span class="badge pass">PASS</span><a href=".claude/work-queue/assets/WRK-671/plan-html-review-final.md">plan-html-review-final.md</a> (Gemini plan final documented).</td>
+        </tr>
+        <tr>
+          <td>Claim</td>
+          <td><span class="badge pass">PASS</span><code>claim-evidence.yaml</code> captures session, gate logs, and validator invocation.</td>
+          <td><span class="badge pass">PASS</span>`.claude/work-queue/assets/WRK-670/claim-evidence.yaml` plus `verify-gate-evidence.txt` recorded.</td>
+          <td><span class="badge pass">PASS</span>Claim evidence file referenced in WRK and logged via close script.</td>
+        </tr>
+        <tr>
+          <td>Execute</td>
+          <td><span class="badge pass">PASS</span><code>variation-test-results.md</code> lists 6 verifier checks and cleanup proof.</td>
+          <td><span class="badge pass">PASS</span>Variation test note describes wrapper script usage and validator execution record.</td>
+          <td><span class="badge pass">PASS</span><code>variation-test-results.md</code> confirms all 6 verifier checks against WRK-671 evidence.</td>
+        </tr>
+        <tr>
+          <td>Future Work Synthesis</td>
+          <td><span class="badge pass">PASS</span>Summary HTML references follow-up guidance for reruns.</td>
+          <td><span class="badge pass">PASS</span>Orchestrator summary notes the WRK-1000 follow-up for Codex skill support.</td>
+          <td><span class="badge pass">PASS</span>Orchestrator summary HTML and reviewer-specific artifacts (Claude/Codex) now linked.</td>
+        </tr>
+        <tr>
+          <td>Close</td>
+          <td><span class="badge pass">PASS</span>`verify-gate-evidence.py WRK-669` exit 0 and close log recorded.</td>
+          <td><span class="badge pass">PASS</span>Validator output and close log show pass (see `verify-gate-evidence.txt`).</td>
+          <td><span class="badge pass">PASS</span>Close log records validator pass and claim evidence capture.</td>
+        </tr>
+        <tr>
+          <td>Archive</td>
+          <td><span class="badge skip">SKIPPED</span>Not archived yet; assets retained for ongoing comparison.</td>
+          <td><span class="badge skip">SKIPPED</span>Pending archive once wrap-up artifacts settle.</td>
+          <td><span class="badge skip">SKIPPED</span>Ready for archive; artifacts fully synchronized with the canonical gate sequence.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Scripts & validators</h2>
+        <ul>
+          <li><strong>WRK-669 (Claude)</strong>: `/work run WRK-669`, `scripts/review/submit-to-claude.sh`, `scripts/review/cross-review.sh`, `scripts/work-queue/verify-gate-evidence.py`, `scripts/work-queue/log-gate-event.sh`.</li>
+          <li><strong>WRK-670 (Codex)</strong>: `/work run WRK-670`, cross-review wrappers, `verify-gate-evidence.py` (see verify-gate-evidence.txt), `scripts/agents/session.sh` and plan/review wrappers for variation tests.</li>
+          <li><strong>WRK-671 (Gemini)</strong>: `/work run WRK-671`, cross-review (Claude approve + Codex NO_OUTPUT), `verify-gate-evidence.py` noted in close log, log-gate-event stage captures.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Stage logs</h2>
+        <div class="log-list">
+          <strong>Claude</strong>
+          <ul>
+            <li><code>.claude/work-queue/logs/WRK-669-start.log</code></li>
+            <li><code>.claude/work-queue/logs/WRK-669-plan.log</code></li>
+            <li><code>.claude/work-queue/logs/WRK-669-cross-review.log</code></li>
+            <li><code>.claude/work-queue/logs/WRK-669-close.log</code></li>
+          </ul>
+          <strong>Codex</strong>
+          <ul>
+            <li><code>.claude/work-queue/logs/WRK-670-start.log</code></li>
+            <li><code>.claude/work-queue/logs/WRK-670-plan.log</code></li>
+            <li><code>.claude/work-queue/logs/WRK-670-cross-review.log</code></li>
+            <li><code>.claude/work-queue/logs/WRK-670-close.log</code></li>
+          </ul>
+          <strong>Gemini</strong>
+          <ul>
+            <li><code>.claude/work-queue/logs/WRK-671-start.log</code></li>
+            <li><code>.claude/work-queue/logs/WRK-671-plan.log</code></li>
+            <li><code>.claude/work-queue/logs/WRK-671-cross-review.log</code></li>
+            <li><code>.claude/work-queue/logs/WRK-671-close.log</code></li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Script consistency checklist</h2>
+        <table>
+          <tr><th>Script/tool</th><th>Claude</th><th>Codex</th><th>Gemini</th></tr>
+          <tr>
+            <td><code>/work run WRK-66x</code></td>
+            <td>Used in <code>WRK-669</code> start log; orchestrator loops through plan/cross-review/execute.</td>
+            <td>Invoked <code>/work run WRK-670</code> with Codex, same wrappers mentioned in variation-test results.</td>
+            <td>Started via <code>/work run WRK-671</code>; plan log records gemini orchestrator.</td>
+          </tr>
+          <tr>
+            <td><code>scripts/review/submit-to-claude.sh</code></td>
+            <td>watchdog + PGID cleanup executed; variation tests refer to this script.</td>
+            <td>Not used (Codex run uses standard cross-review wrapper).</td>
+            <td>Not used (Gemini run relies on standard cross-review wrapper).</td>
+          </tr>
+          <tr>
+            <td><code>scripts/review/cross-review.sh</code></td>
+            <td>Captures Claude/Codex/Gemini verdicts; logged in <code>WRK-669-cross-review.log</code>.</td>
+            <td>Same script orchestrated all reviewers; artifacts recorded in <code>assets/WRK-670/review.html</code>.</td>
+            <td>Cross-review log records Claude approve + Codex timeout via this wrapper.</td>
+          </tr>
+          <tr>
+            <td><code>scripts/work-queue/verify-gate-evidence.py WRK-66x</code></td>
+            <td>Run listed in <code>WRK-669-close.log</code>; output tied into claim evidence.</td>
+            <td>Executed and saved in <code>assets/WRK-670/verify-gate-evidence.txt</code>.</td>
+            <td>Logged in <code>WRK-671-close.log</code> (parser shows PASS).</td>
+          </tr>
+          <tr>
+            <td><code>scripts/work-queue/log-gate-event.sh</code></td>
+            <td>Stage logs show start/plan/review/close entries with gate metadata.</td>
+            <td>Plan/cross-review logs follow same structure courtesy of this helper.</td>
+            <td>Same helper generated the WRK-671 log set.</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

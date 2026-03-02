@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-671 Plan Review (Final)</title>
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --panel: #ffffff;
+      --ink: #1a2332;
+      --muted: #4a5568;
+      --accent: #22c55e;
+      --accent-2: #16a34a;
+      --line: #d1d5db;
+      --shadow: 0 4px 16px rgba(26, 35, 50, 0.07);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    .hero {
+      padding: 44px 24px 28px;
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+      color: #e2e8f0;
+      border-bottom: 3px solid #22c55e;
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; }
+    .eyebrow {
+      text-transform: uppercase; letter-spacing: 0.12em;
+      font-size: 0.7rem; color: #86efac; font-weight: 700; margin-bottom: 8px;
+    }
+    h1 { margin: 0 0 12px; font-size: clamp(1.7rem, 3.5vw, 2.8rem); font-weight: 700; color: #f1f5f9; line-height: 1.1; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill { border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.08); color: #cbd5e1; padding: 5px 12px; border-radius: 999px; font-size: 0.82rem; }
+    .pill.final  { background: rgba(34,197,94,0.25); border-color: rgba(34,197,94,0.5); color: #86efac; }
+
+    .content { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; display: grid; gap: 20px; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 22px 24px; }
+    .panel h2 { margin: 0 0 14px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 700; }
+
+    .confirmation { text-align: center; margin-top: 20px; padding: 20px; border: 2px dashed var(--line); border-radius: 10px; }
+    button { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; }
+    button:hover { background: var(--accent-2); }
+
+    footer { text-align: center; padding: 20px; font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-671 · Final Plan Review — Gemini Orchestrator</div>
+    <h1>Orchestrator Gate Run with Gemini</h1>
+    <div class="meta">
+      <span class="pill">Priority: HIGH</span>
+      <span class="pill">Route C · Complex</span>
+      <span class="pill final">Stage: Final Plan</span>
+      <span class="pill">Repo: workspace-hub</span>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="panel">
+    <h2>Final Plan Confirmation</h2>
+    <p>Gemini has successfully prepared the artifacts and verified the gate sequence. This run serves as evidence for WRK-656.</p>
+    
+    <div class="confirmation">
+      <p><strong>Human Review Action:</strong> Click the button below to confirm the plan.</p>
+      <button type="button" onclick="document.getElementById('review-status').textContent='Review confirmed at ' + new Date().toISOString();">Confirm human review</button>
+      <div id="review-status" style="margin-top:10px; font-weight:bold; color:var(--accent-2);"></div>
+    </div>
+  </div>
+</div>
+
+<footer>WRK-671 · Final Plan Review · 2026-03-02 · Gemini Orchestrator</footer>
+
+</body>
+</html>

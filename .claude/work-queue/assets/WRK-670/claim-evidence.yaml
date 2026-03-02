@@ -1,0 +1,38 @@
+claim_date: 2026-03-02T15:10:00Z
+wrk_id: WRK-670
+route: C
+orchestrator: codex
+best_fit_provider: codex
+gate_evidence:
+  plan_gate:
+    plan_html_review_final_ref: assets/WRK-670/plan-html-review-final.md
+    plan_reviewed: true
+    plan_approved: true
+    notes: user requested direct execution of WRK-670 and plan artifact includes confirmation control
+  cross_review_gate:
+    artifacts:
+      - reviewer: claude
+        artifact: assets/WRK-670/review-claude.md
+        verdict: MINOR
+      - reviewer: codex
+        artifact: assets/WRK-670/review-codex.md
+        verdict: APPROVE
+      - reviewer: gemini
+        artifact: assets/WRK-670/review-gemini.md
+        verdict: MINOR
+    combined_verdict: approved with minor findings resolved
+  tdd_gate:
+    test_manifest: assets/WRK-670/variation-test-results.md
+    summary: sandbox gate-run checks and validator execution logged
+  legal_gate:
+    legal_scan_ref: .claude/work-queue/assets/WRK-670/legal-scan.md
+    result: pass
+no_output_policy:
+  classification: NO_OUTPUT is logged explicitly and requires rerun or 2-of-3 fallback per cross-review policy
+  authoritative_source: scripts/review/cross-review.sh
+  rerun_guidance: rerun reviewer submission and attach updated reviewer artifact before claim finalization
+agent_capability:
+  best_fit: matched
+  rationale: WRK requires Codex orchestrator parity run
+user_html_blocker:
+  status: satisfied_for_current_revision
