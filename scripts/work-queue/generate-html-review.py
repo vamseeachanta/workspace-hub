@@ -9,9 +9,8 @@ import os
 import re
 import sys
 import yaml
-import html as html_lib
+import markdown
 from pathlib import Path
-
 
 def collect_test_evidence(assets_dir: str) -> dict:
     """Collect test artifacts for mandatory HTML Test Evidence section."""
@@ -21,6 +20,11 @@ def collect_test_evidence(assets_dir: str) -> dict:
     example_present = example_path.exists()
     variation_present = variation_path.exists()
     summary = "No variation-test summary available."
+    execute_evidence_path = Path(assets_dir) / "evidence" / "execute.yaml"
+    legacy_execute_evidence_path = Path(assets_dir) / "execute-evidence.yaml"
+    integrated_repo_tests_count = 0
+    integrated_repo_tests_valid_range = False
+    integrated_repo_tests_all_pass = False
 
     if variation_present:
         raw = variation_path.read_text(encoding="utf-8")
@@ -30,14 +34,35 @@ def collect_test_evidence(assets_dir: str) -> dict:
                 summary = line
                 break
 
+    execute_source = execute_evidence_path if execute_evidence_path.exists() else legacy_execute_evidence_path
+    if execute_source.exists():
+        try:
+            execute_data = yaml.safe_load(execute_source.read_text(encoding="utf-8")) or {}
+            tests = execute_data.get("integrated_repo_tests", [])
+            if isinstance(tests, list):
+                integrated_repo_tests_count = len(tests)
+                integrated_repo_tests_valid_range = 3 <= integrated_repo_tests_count <= 5
+                integrated_repo_tests_all_pass = all(
+                    isinstance(test, dict)
+                    and str(test.get("result", "")).strip().lower() in {"pass", "passed"}
+                    for test in tests
+                )
+        except Exception:
+            integrated_repo_tests_count = 0
+            integrated_repo_tests_valid_range = False
+            integrated_repo_tests_all_pass = False
+
     return {
         "example_pack_present": example_present,
         "variation_tests_present": variation_present,
         "example_pack_path": str(example_path),
         "variation_tests_path": str(variation_path),
         "variation_summary": summary,
+        "execute_evidence_path": str(execute_source),
+        "integrated_repo_tests_count": integrated_repo_tests_count,
+        "integrated_repo_tests_valid_range": integrated_repo_tests_valid_range,
+        "integrated_repo_tests_all_pass": integrated_repo_tests_all_pass,
     }
-
 
 def generate_review(wrk_id, stage="draft", type="plan", output_file=None):
     workspace_root = os.popen("git rev-parse --show-toplevel").read().strip()
@@ -80,17 +105,18 @@ def generate_review(wrk_id, stage="draft", type="plan", output_file=None):
     priority = fm.get('priority', 'medium')
     route = fm.get('route', 'B')
     
-    # lede extraction (first line of the body if it's not a header)
+    # lede extraction
     lede_lines = [l for l in body.split('\n') if l.strip() and not l.startswith('#')][:1]
     lede = lede_lines[0] if lede_lines else "Review artifact for " + title
     
     # Executive summary extraction
-    what_match = re.search(r"## (?:What|Objective)\n(.*?)(?=\n##|\Z)", body, re.DOTALL)
+    what_match = re.search(r"## (?:What|Objective|Goal)\n(.*?)(?=\n##|\Z)", body, re.DOTALL)
     exec_summary = what_match.group(1).strip() if what_match else "No executive summary found."
 
-    # Fast deterministic rendering for large WRK documents.
-    exec_summary_html = f"<pre>{html_lib.escape(exec_summary)}</pre>"
-    body_html = f"<pre>{html_lib.escape(body)}</pre>"
+    # Full Markdown rendering
+    md = markdown.Markdown(extensions=['extra', 'codehilite', 'tables'])
+    exec_summary_html = md.convert(exec_summary)
+    body_html = md.convert(body)
     
     # Check for reviewer artifacts
     reviewers = []
@@ -112,10 +138,8 @@ def generate_review(wrk_id, stage="draft", type="plan", output_file=None):
                     })
     test_evidence = collect_test_evidence(assets_dir)
 
-    # Embedded CSS path logic
-    css_rel_path = "../../assets/shared/orchestrator.css"
-
     # Template
+    css_rel_path = "../../assets/shared/orchestrator.css"
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -152,8 +176,10 @@ def generate_review(wrk_id, stage="draft", type="plan", output_file=None):
     <div class="panel">
       <p><strong>Example Pack:</strong> {"present" if test_evidence["example_pack_present"] else "missing"}</p>
       <p><strong>Variation Tests:</strong> {"present" if test_evidence["variation_tests_present"] else "missing"}</p>
+      <p><strong>Integrated/Repo Tests:</strong> {test_evidence["integrated_repo_tests_count"]} {"(valid 3-5)" if test_evidence["integrated_repo_tests_valid_range"] else "(invalid count)"} {"all pass" if test_evidence["integrated_repo_tests_all_pass"] else "not all pass"}</p>
       <p><strong>Example Pack Path:</strong> <code>{test_evidence["example_pack_path"]}</code></p>
       <p><strong>Variation Test Path:</strong> <code>{test_evidence["variation_tests_path"]}</code></p>
+      <p><strong>Execute Evidence Path:</strong> <code>{test_evidence["execute_evidence_path"]}</code></p>
       <p><strong>Variation Test Summary:</strong> {test_evidence["variation_summary"]}</p>
     </div>
 """
@@ -191,7 +217,6 @@ def generate_review(wrk_id, stage="draft", type="plan", output_file=None):
     with open(output_file, 'w') as f:
         f.write(html)
     
-    # Internal artifact for validation
     internal_name = "review.html" if type == "plan" else "implementation-review.html"
     internal_path = os.path.join(queue_dir, "assets", wrk_id, internal_name)
     os.makedirs(os.path.dirname(internal_path), exist_ok=True)

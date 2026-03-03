@@ -89,6 +89,7 @@ flowchart TD
 - Include variation tests.
 - Generate HTML review artifact.
 - Record execute-stage evidence in `assets/WRK-<id>/evidence/execute.yaml`.
+- Execute evidence must include `integrated_repo_tests` with `3-5` passing entries (`scope: integrated|repo`) before close can pass.
 
 ### 7. Reclaim
 - Trigger when execute continuity breaks (session loss, claim expiry, invalidated evidence).
@@ -113,6 +114,7 @@ flowchart TD
 - Updates frontmatter, moves to `done/`, regenerates INDEX.
 - Enforces HTML review evidence for WRK items using the hardened workflow contract.
 - HTML artifacts are expected to include `Test Evidence` details for auditability.
+- Close is blocked unless execute evidence records `3-5` passing integrated/repo tests.
 - Record merge/sync status and follow-up/learning outputs where applicable.
 - Canonical stage evidence file: `assets/WRK-<id>/evidence/close.yaml`.
 
@@ -200,6 +202,7 @@ Add this block to the WRK item body before marking done:
 - [ ] Tests pass: <command + output>
 - [ ] 5-10 Examples defined: <path to example-pack.md>
 - [ ] Variation tests passed: <path to variation-test-results.md>
+- [ ] Integrated/repo tests passed (3-5): <path to evidence/execute.yaml>
 - [ ] Cross-review passed: <synthesis result path>
 - [ ] HTML review artifact verified: <path>
 - [ ] WRK frontmatter updated: status=done, percent_complete=100, commit=<hash>

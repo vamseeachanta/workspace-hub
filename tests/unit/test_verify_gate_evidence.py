@@ -139,3 +139,67 @@ prior_claim_ref: assets/WRK-999/evidence/claim.yaml
     assert ok is False
     assert "block_reason required" in detail
 
+
+def test_integrated_test_gate_fails_when_count_below_three(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "execute.yaml").write_text(
+        """
+integrated_repo_tests:
+  - name: integration-smoke
+    scope: integrated
+    command: uv run --no-project pytest tests/unit/test_a.py
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-999/test-a.txt
+  - name: repo-smoke
+    scope: repo
+    command: uv run --no-project pytest tests/unit/test_b.py
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-999/test-b.txt
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+
+    ok, detail = mod.check_execute_integrated_tests_gate(tmp_path)
+    assert ok is False
+    assert "count must be 3-5" in detail
+
+
+def test_integrated_test_gate_passes_for_three_passing_tests(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "execute.yaml").write_text(
+        """
+integrated_repo_tests:
+  - name: integration-smoke
+    scope: integrated
+    command: uv run --no-project pytest tests/unit/test_a.py
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-999/test-a.txt
+  - name: repo-regression
+    scope: repo
+    command: uv run --no-project pytest tests/unit/test_b.py
+    result: passed
+    artifact_ref: .claude/work-queue/assets/WRK-999/test-b.txt
+  - name: repo-contract
+    scope: repo
+    command: uv run --no-project pytest tests/unit/test_c.py
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-999/test-c.txt
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+
+    ok, detail = mod.check_execute_integrated_tests_gate(tmp_path)
+    assert ok is True
+    assert "integrated_repo_tests=3" in detail

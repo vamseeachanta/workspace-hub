@@ -210,6 +210,40 @@ def check_reclaim_gate(assets_dir: Path) -> tuple[bool | None, str]:
     return True, f"{reclaim_file.name}: reclaim_decision={decision}"
 
 
+def check_execute_integrated_tests_gate(assets_dir: Path) -> tuple[bool, str]:
+    """Require 3-5 integrated/repo tests in execute evidence before close."""
+    execute_file = evidence_file(assets_dir, "execute.yaml", ["execute-evidence.yaml"])
+    if execute_file is None:
+        return False, "execute evidence missing (required: evidence/execute.yaml)"
+    data, yaml_err = load_yaml(execute_file)
+    if yaml_err:
+        return False, f"could not parse {execute_file.name}: {yaml_err}"
+    assert data is not None
+
+    tests = data.get("integrated_repo_tests")
+    if not isinstance(tests, list):
+        return False, f"{execute_file.name}: integrated_repo_tests must be a list"
+    count = len(tests)
+    if count < 3 or count > 5:
+        return False, f"{execute_file.name}: integrated_repo_tests count must be 3-5 (found {count})"
+
+    required_fields = ("name", "scope", "command", "result", "artifact_ref")
+    for idx, test in enumerate(tests, start=1):
+        if not isinstance(test, dict):
+            return False, f"{execute_file.name}: integrated_repo_tests[{idx}] must be an object"
+        missing = [field for field in required_fields if not str(test.get(field, "")).strip()]
+        if missing:
+            return False, f"{execute_file.name}: integrated_repo_tests[{idx}] missing fields: {missing}"
+        scope = str(test.get("scope", "")).strip().lower()
+        if scope not in {"integrated", "repo"}:
+            return False, f"{execute_file.name}: integrated_repo_tests[{idx}] scope must be integrated|repo"
+        result = str(test.get("result", "")).strip().lower()
+        if result not in {"pass", "passed"}:
+            return False, f"{execute_file.name}: integrated_repo_tests[{idx}] result must be pass|passed"
+
+    return True, f"{execute_file.name}: integrated_repo_tests={count} (all passing)"
+
+
 def check_plan_confirmation(plan_path: Path) -> tuple[bool, str]:
     """Check that plan-html-review-final.md contains a valid confirmation block."""
     if not plan_path.exists():
@@ -335,6 +369,8 @@ def run_checks(wrk_id: str) -> int:
             "details": f"test files={[p.name for p in test_candidates]}" if test_candidates else "none",
         }
     )
+    execute_tests_ok, execute_tests_details = check_execute_integrated_tests_gate(assets_dir)
+    gates.append({"name": "Integrated test gate", "ok": execute_tests_ok, "details": execute_tests_details})
     legal_notes = "none"
     legal_ok = False
     if legal_file:

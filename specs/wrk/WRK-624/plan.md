@@ -388,11 +388,20 @@ Execute should leave behind, at minimum:
 - execution artifacts or changed files
 - HTML output when applicable
 - `assets/WRK-<id>/evidence/execute.yaml`
+- `integrated_repo_tests` in execute evidence with `3-5` entries, each including:
+  - `name`
+  - `scope` (`integrated|repo`)
+  - `command`
+  - `result` (`pass|passed`)
+  - `artifact_ref`
 
 #### Execute hard gates
 
 - missing example pack fails execute completion
 - missing variation-test results fails execute completion
+- missing execute evidence fails execute completion
+- integrated/repo test count outside `3-5` fails execute completion
+- any integrated/repo test with non-pass result fails execute completion
 - missing HTML output fails execute completion when the WRK requires HTML-visible outputs
 - execution outside the claimed session fails execute completion
 
@@ -539,7 +548,7 @@ Archive hard gates:
 | Triage | P2 | Resource intelligence started and initial scope is known | Valid triage fields in WRK frontmatter/body | `priority`, `complexity`, `route`, `computer`, `plan_workstations`, `execution_workstations`, `provider`, `provider_alt`, `resource_needs`, `orchestrator` are all valid | Missing required triage fields, invalid registry values, blocked item routed to execution | Field registries need to be normalized further, especially workstation/value enums |
 | Plan | P1 | Triage complete and resource pack is usable | Route plan/spec, plan HTML, draft/final HTML review records, review artifacts | User reviewed draft HTML, multi-agent review completed, user passed final HTML, plan approved | Missing plan HTML, missing user review decision, unresolved `MAJOR` findings, no approval | User HTML review remains the main practical bottleneck and needs the clearest SLA/delegate path |
 | Claim | P1 | Approved plan exists and item is unblocked | `evidence/claim.yaml`, quota snapshot ref, routing ref | Active session owner recorded, agent fit checked, quota readiness recorded, expiry recorded, item moved to `working` cleanly | Missing session owner, blocked item claimed, stale or absent quota evidence, no routing decision | Claim now has explicit expiry + reclaim linkage to support recovery |
-| Execute | P3 | Claimed session is active | Example pack, variation-test evidence, execution artifacts, intermediate HTML where applicable, `evidence/execute.yaml` | Implementation complete, examples covered, variation tests recorded, required HTML produced | Missing examples, missing variation tests, execution outside session ownership, no HTML when applicable | End-state behavioral proof needs to stay stronger than simple document existence |
+| Execute | P3 | Claimed session is active | Example pack, variation-test evidence, execution artifacts, intermediate HTML where applicable, `evidence/execute.yaml` with `3-5` integrated/repo tests | Implementation complete, examples covered, variation tests recorded, required HTML produced, integrated/repo tests recorded and passing | Missing examples, missing variation tests, missing/invalid integrated test evidence, execution outside session ownership, no HTML when applicable | End-state behavioral proof needs to stay stronger than simple document existence |
 | Reclaim | P1 | Execute interrupted, claim expired, or evidence invalidated | `evidence/reclaim.yaml`, updated claim evidence refs | Recovery decision recorded and required revalidation completed | Missing reclaim decision, missing revalidation refs, resume without refreshed claim | Introduced to provide deterministic rollback/recovery path |
 | Future Work Synthesis | P2 | Execute review has passed | `evidence/future-work.yaml`, mapped follow-up WRK ids, `future-work-recommendations.md` | Required follow-up WRKs are created and linked before close | Missing recommendation artifact, required follow-ups not created | Auto-generation quality and prioritization should be tuned to avoid noisy backlog inflation |
 | Close | P1 | Execute finished and future-work synthesis complete | `evidence/close.yaml`, final HTML, HTML verification, test evidence, review refs, follow-up refs | Close script can verify required evidence and move item to `done` | Missing HTML evidence, failed tests, missing review refs, unresolved blocking findings | Evidence schemas are normalized under one directory with legacy aliases tolerated during migration |
@@ -869,6 +878,7 @@ Checks include:
 - missing final-plan HTML review evidence before execution
 - missing claim routing/quota evidence
 - missing normalized `evidence/` stage artifacts for active stages
+- missing integrated/repo test evidence (`3-5` pass results) in execute stage
 - blocked items claimed to `working`
 - execute continuation after claim expiry without reclaim evidence
 - `done/` items not marked `done`

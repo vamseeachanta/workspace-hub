@@ -1,35 +1,41 @@
-# Plan: WRK-684 — Advanced Learning Roll-up into /today
+# Plan: WRK-684 — Institutional Memory & Productivity Dashboard (v2)
 
 ## Goal
-Standardize and integrate advanced "Learning Outcomes" from the `comprehensive-learning` pipeline into the `/today` report, focusing on orchestrator compliance, work quality, resource intelligence, and ecosystem improvement trends.
+Transform the `/today` report from a simple status list into a high-resolution dashboard that tracks orchestrator compliance, execution efficiency, and ecosystem improvement trends based on raw session data.
 
 ## Proposed Changes
 
-### 1. New `/today` Section: `learning-outcomes.sh`
-- Create `scripts/productivity/sections/learning-outcomes.sh`.
-- **Orchestrator Compliance:** Extract "Agent gate-skip rate" and "Agent scope drift" from Phase 1.
-- **Work Quality:** Extract "TDD pairing rate", "Low consensus scores", and "Plan-to-implementation drift" metrics.
-- **Resource Intelligence:** Track the coverage of RI artifacts across active tasks.
-- **Improvement Trends:** Roll up "Action Candidates" from Phase 7 (Skills, Scripts, Hooks, Agents) and "Correction Trends" from Phase 5.
-- **System Health:** Include "AI agent readiness" status and "Stale memory entries" count.
+### 1. Data Aggregation Engine
+- Create `scripts/productivity/aggregate-learning-data.py`.
+- **Functionality:**
+    - Parse `.claude/state/session-signals/*.jsonl` for tool-usage efficiency.
+    - Parse `.claude/state/corrections/*.jsonl` for intervention density.
+    - Aggregate Cross-Review feedback categories from `assets/WRK-*/review-*.md`.
+    - Map RI artifact coverage against actual task implementation logs.
 
-### 2. Orchestrator Integration
-- Update `scripts/productivity/daily_today.sh` to include `run_section learning-outcomes.sh`.
+### 2. High-Resolution `/today` Section: `learning-dashboard.sh`
+- Create `scripts/productivity/sections/learning-dashboard.sh` (replaces the minimal roll-up).
+- **Dashboard Sections:**
+    - **Orchestrator Compliance Table:** [Agent | Stage Adherence | Turn Efficiency | Drift Flags].
+    - **Work Quality Metrics:** [TDD Pairing % | Review Effectiveness | Correction Density].
+    - **Resource Intelligence Coverage:** [Tasks with RI | Source Utilization Rate].
+    - **Active Ecosystem Trends:** [New Action Candidates | Escalated Recurring Issues].
 
-### 3. Metric Harvesting Logic
-- Use structured regex parsing to extract counts and lists from the nightly learning report artifacts.
+### 3. Comprehensive-Learning Skill Integration
+- Standardize the `comprehensive-learning` Phase 10 report to output a structured JSON artifact (`.claude/state/learning-reports/latest-metrics.json`) for fast, reliable parsing by the dashboard.
 
 ## Verification Plan
 
 ### Automated Tests
-- None.
+- Validate JSON schema of the `latest-metrics.json` artifact.
+- Unit test the Python aggregator against diverse session signal patterns.
 
-### Smoke Tests (Variation Tests)
-1. **Trend Check**: Verify that newly identified skill or script candidates appear in the `/today` output.
-2. **Compliance Check**: Confirm that gate violations are highlighted.
-3. **RI Metric Check**: Confirm RI coverage is reported correctly.
+### Smoke Tests
+1. **Efficiency Check:** Verify that "Turn-to-Commit" metrics appear correctly for a recent task.
+2. **Quality Check:** Confirm that a "MAJOR" review verdict correctly impacts the "Work Quality" rating in the report.
+3. **RI Check:** Verify that missing RI artifacts are flagged as compliance warnings.
 
 ## Acceptance Criteria
-- [ ] `/today` includes an "Orchestrator Compliance" section.
-- [ ] `/today` includes a "Work Quality & System Health" section.
-- [ ] `/today` includes an "Ecosystem Improvement Trends" section listing top action candidates.
+- [ ] `/today` displays a multi-table dashboard with compliance and efficiency metrics.
+- [ ] Detailed "Improvement Candidates" are categorized by domain (Skill/Script/Hook).
+- [ ] No regression in report generation speed (uses cached JSON where possible).
