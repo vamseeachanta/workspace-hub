@@ -1,5 +1,5 @@
-generated: '2026-03-02'
-total_specs: 1531
+generated: '2026-03-03'
+total_specs: 1534
 by_category:
   archive: 10
   data-sources: 13
@@ -7,7 +7,7 @@ by_category:
   other: 24
   repos: 1344
   templates: 5
-  wrk: 18
+  wrk: 21
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 170
+  workspace-hub: 173
   worldenergydata: 216
 by_wrk:
   WRK-5: 1
@@ -222,12 +222,12 @@ by_wrk:
   WRK-621: 1
   WRK-622: 1
   WRK-623: 1
-  WRK-624: 4
+  WRK-624: 5
   WRK-655: 2
-  WRK-656: 2
+  WRK-656: 3
   WRK-657: 1
   WRK-660: 1
-  WRK-663: 1
+  WRK-663: 2
   WRK-664: 1
   WRK-669: 2
   WRK-670: 2
@@ -239,7 +239,10 @@ by_wrk:
   WRK-678: 1
   WRK-682: 2
   WRK-683: 1
+  WRK-684: 1
   WRK-686: 1
+  WRK-687: 1
+  WRK-690: 1
   WRK-1000: 1
 specs:
 - path: specs/architecture/agent-vision.md
@@ -679,7 +682,7 @@ specs:
   tags:
   - worldenergydata
   wrk_refs: []
-  mtime: '2026-02-25'
+  mtime: '2026-03-03'
 - path: specs/modules/INDEX.md
   title: Module Index
   description: '| Module | Repo | Type | Domain | Tools | Computer | |--------|------|------|--------|-------|----------|
@@ -847,14 +850,16 @@ specs:
   - WRK-162
   mtime: '2026-02-18'
 - path: specs/modules/dapper-stargazing-willow.md
-  title: 'WRK-683 Plan: arch(orchestrator) — Unified AI Agent Session Logs'
-  description: '**Source WRK:** WRK-683 **Route:** B **Created:** 2026-03-02'
+  title: WRK-687 Plan — Per-Workstation comprehensive-learning with ace-linux-1 Compilation
+  description: WRK-683 established `logs/orchestrator/` as a unified per-machine log directory for all three AI agents (Claude
+    JSONL + Codex/Gemini text logs). The next step is to have every workstation run its o...
   category: modules
   repo: workspace-hub
   tags:
   - dapper-stargazing-willow
   wrk_refs:
   - WRK-683
+  - WRK-687
   mtime: '2026-03-02'
 - path: specs/modules/diffraction-spec-converter.md
   title: Unified Input Data Format Converter for Diffraction Solvers
@@ -19946,6 +19951,18 @@ specs:
   - WRK-624
   - WRK-655
   mtime: '2026-03-01'
+- path: specs/wrk/WRK-663/plan.md
+  title: 'Plan: WRK-663 — Queue Triage'
+  description: Classify the 160+ pending work items into actionable categories and identify the top 10 immediate implementation
+    candidates.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-663
+  wrk_refs:
+  - WRK-663
+  mtime: '2026-03-02'
 - path: specs/wrk/WRK-663/queue-triage-report.md
   title: 'Queue Triage Report: WRK-663'
   description: '| WRK ID | Task Description | Agent | Workstation(s) | | :--- | :--- | :--- | :--- | | **WRK-660** | `assetutilities`
@@ -20039,6 +20056,18 @@ specs:
   wrk_refs:
   - WRK-682
   mtime: '2026-03-02'
+- path: specs/wrk/WRK-684/plan.md
+  title: 'Plan: WRK-684 — Institutional Memory & Productivity Dashboard (v2)'
+  description: Transform the `/today` report from a simple status list into a high-resolution dashboard that tracks orchestrator
+    compliance, execution efficiency, and ecosystem improvement trends based on raw ses...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-684
+  wrk_refs:
+  - WRK-684
+  mtime: '2026-03-02'
 - path: specs/wrk/WRK-686/plan.md
   title: 'Plan: WRK-686 — Canonical HTML Standards for Orchestrator Reviews'
   description: Establish and enforce a single, professional HTML/CSS standard for all Plan and Implementation Reviews to ensure
@@ -20049,11 +20078,25 @@ specs:
   - plan
   - wrk-686
   wrk_refs:
+  - WRK-624
+  - WRK-656
   - WRK-669
   - WRK-671
   - WRK-682
   - WRK-686
   mtime: '2026-03-02'
+- path: specs/wrk/WRK-690/plan.md
+  title: Plan for WRK-690 log evaluation
+  description: Validate whether Claude, Codex, and Gemini sessions hit the new gatepass workflow by reviewing the most recent
+    week of logs and identifying missing gate-evidence artifacts.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-690
+  wrk_refs:
+  - WRK-690
+  mtime: '2026-03-03'
 - path: digitalmodel/specs/module-registry.yaml
   title: digitalmodel
   description: Structured registry of all digitalmodel sub-modules for agent discovery

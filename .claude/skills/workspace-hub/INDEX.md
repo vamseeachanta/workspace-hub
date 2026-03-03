@@ -1,6 +1,6 @@
 # Workspace Hub Skills
 
-> 10 subcategories in this domain.
+> 12 subcategories in this domain.
 
 ## Subcategories
 
@@ -18,6 +18,8 @@
 - [Sync](sync/INDEX.md) — 1 skill
 - [Tool Readiness](tool-readiness/SKILL.md) — 1 skill
 - [Workstations](workstations/SKILL.md) — 1 skill
+- [Workflow Gatepass](workflow-gatepass/SKILL.md) — 1 skill (v1.0.0)
+- [WRK Lifecycle Testpack](wrk-lifecycle-testpack/SKILL.md) — 1 skill (v1.0.0)
 
 ## File Structure Skills Cluster
 

@@ -1,7 +1,7 @@
 ---
 name: work-queue
 description: Maintains a queue of work items (features, bugs, tasks) across workspace-hub repositories with two-phase capture and process pipeline
-version: 1.5.0
+version: 1.6.0
 category: workspace-hub
 type: skill
 trigger: manual
@@ -16,7 +16,7 @@ capabilities:
   - archive_audit_trail
   - reflect_integration
 tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
-related_skills: [claude-reflect, skill-learner, repo-sync]
+related_skills: [claude-reflect, skill-learner, repo-sync, session-start, session-end, workflow-gatepass, wrk-lifecycle-testpack]
 scripts:
   - next-id.sh
   - queue-status.sh
@@ -28,7 +28,7 @@ scripts:
   - ../../../../scripts/agents/execute.sh
   - ../../../../scripts/agents/review.sh
 requires: []
-see_also: []
+see_also: [session-start, workflow-gatepass, wrk-lifecycle-testpack]
 ---
 
 # Work Queue Skill
@@ -99,6 +99,24 @@ Rules:
 - Subagents cannot bypass plan gate or change orchestration state.
 - Existing `.claude/work-queue/process.md` remains source of truth.
 
+## Required Skill Chain (Session Start to Finish)
+
+Every WRK execution must follow this sequence:
+
+1. `session-start`
+2. `work-queue` (`/work` select/create WRK)
+3. Resource Intelligence stage evidence
+4. Plan + reviews
+5. Explicit user approval naming WRK ID
+6. Claim
+7. Execute
+8. Reclaim (if continuity breaks)
+9. Future Work Synthesis
+10. Close (with gate evidence verification)
+11. Archive
+
+No implementation work is allowed before step 5.
+
 ## Canonical Lifecycle
 
 ```mermaid
@@ -157,12 +175,22 @@ flowchart TD
 - Define 5-10 real examples and variation tests.
 - Generate HTML review artifact.
 
-### 7. Close
+### 7. Reclaim
+- Trigger reclaim when claim/session continuity is broken.
+- Revalidate claim and evidence before returning to execute.
+
+### 8. Future Work Synthesis
+- Generate follow-up WRKs for deferred or discovered work.
+- Record follow-up IDs in evidence and WRK metadata.
+
+### 9. Close
 - Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]`
 - Verify HTML output and record learning outputs.
+- Require gate evidence verification and 9-stage close ledger.
+- Require integrated/repo tests evidence with 3-5 passing tests.
 
-### 8. Archive
-- Script: `scripts/archive-item.sh WRK-NNN`
+### 10. Archive
+- Script: `scripts/work-queue/archive-item.sh WRK-NNN`
 - Blocked until merge-to-main and sync complete.
 
 ## Complexity Routing

@@ -16,7 +16,8 @@ triggers:
   - startup check
 related_skills:
   - workspace-hub/save
-  - workspace-hub/work
+  - coordination/workspace/work-queue
+  - workspace-hub/workflow-gatepass
   - workspace-hub/improve
 capabilities:
   - readiness-surface
@@ -71,6 +72,17 @@ For each item show: ID, title, complexity, tags (first 2).
 If a `computer:` field exists in recent working/ items or in `.claude/state/`,
 note which machine was last active. Prompt user to confirm if working on a different
 machine today (multi-machine handoff check).
+
+### 6. Mandatory `/work` Handoff and Approval Gate
+
+Before any implementation begins:
+
+- Select or create a WRK item through `/work` flow.
+- Confirm plan exists for the WRK item.
+- Require explicit user approval that names the WRK ID.
+- If approval does not include WRK ID, continue planning only and do not execute.
+
+This gate is mandatory and enforced by workflow policy.
 
 ## Output Format
 

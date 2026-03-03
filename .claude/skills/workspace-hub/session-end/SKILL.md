@@ -17,6 +17,7 @@ related_skills:
   - workspace-hub/save
   - workspace-hub/improve
   - workspace-hub/session-start
+  - workspace-hub/workflow-gatepass
 capabilities:
   - session-close-checklist
   - work-item-update
@@ -53,6 +54,8 @@ For each item to archive, verify ALL conditions:
 - [ ] `plan_reviewed: true` AND `plan_approved: true`
 - [ ] Any partial work has a follow-up WRK item created and linked via `followup: [WRK-YYY]`
 - [ ] Ecosystem scan complete: does completing this item reveal new work? If yes, create new WRK items first
+- [ ] Gate evidence verified (9-stage verification recorded in close evidence)
+- [ ] Integrated/repo tests evidence present with 3-5 passing tests
 - Archive only when all conditions met
 
 ### 3. New items discovered this session

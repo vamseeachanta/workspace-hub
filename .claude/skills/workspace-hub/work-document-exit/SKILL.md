@@ -18,6 +18,7 @@ related_skills:
   - workspace-hub/session-end
   - workspace-hub/save
   - workspace-hub/session-start
+  - workspace-hub/workflow-gatepass
 capabilities:
   - wrk-state-capture
   - session-handoff
@@ -53,6 +54,7 @@ commit command. Use this as the "prepare to leave" skill when stopping mid-task.
 4. Stages changed files (or prints the `git add` command)
 5. Outputs a ready-to-run commit command
 6. Clears `.claude/state/active-wrk` if it exists
+7. Captures gatepass status notes for next close verification
 
 ---
 
