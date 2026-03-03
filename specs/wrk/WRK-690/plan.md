@@ -1,11 +1,39 @@
-# Plan for WRK-690 log evaluation
+# WRK-690 Combined Plan
 
 ## Goal
-Validate whether Claude, Codex, and Gemini sessions hit the new gatepass workflow by reviewing the most recent week of logs and identifying missing gate-evidence artifacts.
+Execute both tracks under WRK-690:
+1. Workflow hardening: enforce skill-driven gatepass from session start through close/archive.
+2. Outcome-informed log evaluation: analyze recent agent sessions and feed findings back into workflow skills.
 
-## Steps
-1. Catalog the available session stores (hidden home directories) and the orchestrator logs under `logs/orchestrator/` so we know exactly which files hold our data and what time range they cover.
-2. Locate the latest week of JSONL/LOG files for Claude, Codex, and Gemini in both their native session stores and the orchestrator hooks, recording file names, sizes, and timestamps.
-3. Parse or inspect those files for gatepass evidence (session-start to session-end transitions, required skill tags, evidence ledger entries, or missing tokens) and note any anomalies that explain why the agents might skip the gatepass.
-4. Summarize findings, highlight any access limitations, and recommend follow-up actions (e.g., targeted log exports, added instrumentation, or repo fixtures for gate evidence).
-5. Review the `comprehensive-learning` skill to understand its current learnings/scripts and identify opportunities to capture additional insights or automation that reinforce the gatepass enforcement workflow.
+## Track A — Workflow Hardening
+1. Add and wire new skills:
+   - `workflow-gatepass`
+   - `wrk-lifecycle-testpack`
+   - `work-queue-workflow` (explicit alias/entrypoint)
+2. Update existing skills:
+   - `work-queue`
+   - `session-start`
+   - `session-end`
+   - `work-document-exit`
+3. Enforce lifecycle chain in skill docs:
+   `/session-start` -> `/work` -> plan/approval -> claim -> execute -> reclaim -> future-work -> close -> archive.
+4. Require close-gate expectations in skill docs:
+   - 9-stage verification ledger
+   - integrated/repo tests count 3-5
+
+## Track B — Log Evaluation and Feedback Loop
+1. Catalog session stores and orchestrator logs for Claude/Codex/Gemini.
+2. Review weekly evidence artifacts and identify gatepass coverage gaps.
+3. Feed concrete findings into `work-queue` workflow guidance.
+4. Document follow-up recommendations for instrumentation and coverage.
+
+## Current Outcome Integration
+- WRK-690 evidence already includes weekly gatepass summaries and agent/session audit artifacts.
+- Skill updates in this work item must reference those outcomes and tighten close/readiness checks.
+
+## Plan Review Confirmation
+
+confirmed_by: user
+confirmed_at: 2026-03-03T00:00:00Z
+decision: passed
+notes: approved to execute both workflow hardening and log-eval outcome integration

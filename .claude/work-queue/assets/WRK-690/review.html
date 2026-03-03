@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review: WRK-690</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 980px; margin: 0 auto; padding: 40px; background: #fafafa; color: #24292e; }
+        .card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px; border: 1px solid #e1e4e8; }
+        h1 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; margin-top: 24px; }
+        .exec-summary { background: #f1f8ff; padding: 20px; border-left: 6px solid #0366d6; margin-bottom: 30px; border-radius: 4px; }
+        .exec-summary h2 { margin-top: 0; border: none; color: #0366d6; }
+        .artifact-box { background: #f6f8fa; padding: 16px; border-radius: 6px; border: 1px solid #dfe2e5; }
+        code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; background: rgba(27,31,35,0.05); padding: 0.2em 0.4em; border-radius: 3px; }
+        table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+        th, td { border: 1px solid #dfe1e8; padding: 12px; text-align: left; }
+        th { background-color: #f6f8fa; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        ul { margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>WRK-690 Review</h1>
+
+        <div class="exec-summary">
+            <h2>Executive Summary</h2>
+            <ul>
+                <li>WRK-690 now includes a consolidated session-log analysis window for 2026-02-25 through 2026-03-03 across Claude, Codex, and Gemini native stores.</li>
+                <li>Claude gate-start evidence appears only once in the week (<code>session_20260301.jsonl</code> has <code>scripts/agents/session.sh init --provider claude</code>); other daily Claude transcripts in-range do not show this init step.</li>
+                <li>Orchestrator coverage is currently partial on this machine: Claude has two files for the week, while <code>logs/orchestrator/codex/</code> and <code>logs/orchestrator/gemini/</code> remain empty.</li>
+                <li>Daily WRK coverage was calculated for all agents and preserved as reusable assets for gatepass hardening and comprehensive-learning enhancement work.</li>
+            </ul>
+        </div>
+
+        <h2>Scope and Method</h2>
+        <ul>
+            <li>Window analyzed: 2026-02-25 to 2026-03-03 (inclusive).</li>
+            <li>Claude source: <code>.claude/state/sessions/session_YYYYMMDD.jsonl</code>.</li>
+            <li>Codex source: <code>~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl</code>.</li>
+            <li>Gemini source: <code>~/.gemini/tmp/workspace-hub/chats/session-*.json</code>.</li>
+            <li>Metric: unique <code>WRK-###</code> identifiers referenced per day per agent.</li>
+        </ul>
+
+        <h2>Gatepass Findings</h2>
+        <ul>
+            <li>Only <code>session_20260301.jsonl</code> contains explicit gate-init command evidence for Claude.</li>
+            <li>Claude orchestrator log files present in-range: <code>session_20260302.jsonl</code> and <code>session_20260303.jsonl</code>.</li>
+            <li>No local orchestrator files yet for Codex or Gemini despite significant native session activity, indicating missing local cross-review log emission for those providers in this window.</li>
+        </ul>
+
+        <h2>Orchestrator Workflow-Start Session Count</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Definition</th>
+                    <th>Count</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>init + queue activity + WRK signal</code> (relaxed)</td>
+                    <td>10 sessions</td>
+                    <td>1 Claude-native, 8 Codex-native, 1 Gemini-native session file in-range.</td>
+                </tr>
+                <tr>
+                    <td><code>init + set-active-wrk.sh WRK-*</code> (strict)</td>
+                    <td>1 session</td>
+                    <td><code>.claude/state/sessions/session_20260301.jsonl</code> with <code>WRK-659</code>.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>By Day and By Agent (Relaxed)</h2>
+        <p>Definition: session includes <code>session.sh init --provider ...</code> and shows queue workflow activity with WRK signal evidence.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Claude Sessions</th>
+                    <th>Codex Sessions</th>
+                    <th>Gemini Sessions</th>
+                    <th>Total Sessions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>2026-02-25</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>2026-02-26</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+                <tr><td>2026-02-27</td><td>0</td><td>2</td><td>1</td><td>3</td></tr>
+                <tr><td>2026-02-28</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+                <tr><td>2026-03-01</td><td>1</td><td>2</td><td>0</td><td>3</td></tr>
+                <tr><td>2026-03-02</td><td>0</td><td>2</td><td>0</td><td>2</td></tr>
+                <tr><td>2026-03-03</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            </tbody>
+        </table>
+
+        <h2>By Day and By Agent (Strict)</h2>
+        <p>Definition: session includes <code>session.sh init --provider ...</code> and explicit <code>set-active-wrk.sh WRK-*</code>.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Claude Sessions</th>
+                    <th>Codex Sessions</th>
+                    <th>Gemini Sessions</th>
+                    <th>Total Sessions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>2026-02-25</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>2026-02-26</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>2026-02-27</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>2026-02-28</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>2026-03-01</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                <tr><td>2026-03-02</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>2026-03-03</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Scripts, Skills, Tools, and Gate-Pass Coverage</h2>
+        <p>Source artifact: <code>.claude/work-queue/assets/WRK-690/evidence/session-gate-analysis.md</code> and JSON companion.</p>
+
+        <h3>Gate-pass signal coverage</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Stage (work-queue)</th>
+                    <th>Signal</th>
+                    <th>Relaxed</th>
+                    <th>Strict</th>
+                    <th>User Review</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>Plan / Resource Intelligence</td><td>resource_intelligence</td><td>6/10</td><td>1/1</td><td>PASS (strict) / WARN (relaxed)</td><td>Present in strict path; missing in 4 relaxed sessions.</td></tr>
+                <tr><td>2</td><td>Claim / Session Bootstrap</td><td>init</td><td>10/10</td><td>1/1</td><td>PASS</td><td>All qualified sessions include orchestrator init.</td></tr>
+                <tr><td>3</td><td>Claim - Work Activation</td><td>set_active_wrk</td><td>1/10</td><td>1/1</td><td>PASS (strict) / FAIL (relaxed)</td><td>Primary relaxed gap; explicit WRK activation is mostly absent.</td></tr>
+                <tr><td>4</td><td>Work-Queue Routing Skill</td><td>work_queue_skill</td><td>10/10</td><td>1/1</td><td>PASS</td><td><code>/work</code> or <code>scripts/agents/work.sh</code> seen in all qualified sessions.</td></tr>
+                <tr><td>5</td><td>Work Execution</td><td>work_execution</td><td>9/10</td><td>0/1</td><td>WARN</td><td>Execution signal present in most relaxed sessions; strict session does not show explicit <code>execute.sh</code> marker.</td></tr>
+                <tr><td>6</td><td>Artifact Generation</td><td>artifact_generation</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Review/HTML artifacts are referenced throughout qualified sessions.</td></tr>
+                <tr><td>7</td><td>TDD / Eval</td><td>tdd_eval</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Test or evaluation evidence markers are present in all qualified sessions.</td></tr>
+                <tr><td>8</td><td>Verification</td><td>verify_gate_evidence</td><td>7/10</td><td>1/1</td><td>PASS (strict) / WARN (relaxed)</td><td>Gate verification command is not universal in relaxed sessions.</td></tr>
+                <tr><td>9</td><td>User Review (Draft)</td><td>plan_html_review_draft</td><td>9/10</td><td>1/1</td><td>REQUIRED FOR ALL WRKs</td><td>Mandatory explicit user review artifact before cross-review. Target compliance: 100%.</td></tr>
+                <tr><td>10</td><td>Cross-Review</td><td>cross_review</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Cross-review scripts are consistently present.</td></tr>
+                <tr><td>11</td><td>Claim / Evidence Ledger</td><td>claim_evidence</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Claim evidence artifacts are referenced across qualified sessions.</td></tr>
+                <tr><td>12</td><td>User Review (Final)</td><td>plan_html_review_final</td><td>9/10</td><td>1/1</td><td>REQUIRED FOR ALL WRKs</td><td>Mandatory explicit user acceptance artifact before close/archive. Target compliance: 100%.</td></tr>
+                <tr><td>13</td><td>Close Planning</td><td>future_work</td><td>4/10</td><td>0/1</td><td>FAIL</td><td>Future-work evidence is frequently missing.</td></tr>
+                <tr><td>14</td><td>Reclaim</td><td>reclaim</td><td>2/10</td><td>0/1</td><td>WARN</td><td>Reclaim is expected only when triggered; mostly absent.</td></tr>
+                <tr><td>15</td><td>Close / Archive</td><td>close_or_archive</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Close/archive signals are present in all qualified sessions.</td></tr>
+            </tbody>
+        </table>
+
+        <h3>WRK-624 User Review Marking</h3>
+        <p>Explicit user-review artifacts found for WRK-624: <strong>3</strong>.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Artifact</th>
+                    <th>Type</th>
+                    <th>User Review Status</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><code>.claude/work-queue/assets/WRK-624/plan-html-review-draft.md</code></td>
+                    <td>Draft plan review</td>
+                    <td>REVIEWED</td>
+                    <td>Contains <code>reviewer: user</code> and <code>result: reviewed</code>.</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><code>.claude/work-queue/assets/WRK-624/plan-html-review-final.md</code></td>
+                    <td>Final plan review</td>
+                    <td>ACCEPTED / PASSED</td>
+                    <td>Contains <code>confirmed_by: user</code>, <code>decision: passed</code>, and <code>result: accepted</code>.</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><code>.claude/work-queue/assets/WRK-624/gap-review-user.json</code></td>
+                    <td>Stage decision review</td>
+                    <td>REVIEWED (CONFIRM/REVISE)</td>
+                    <td>User decisions captured for capture/resource_intelligence/triage/plan/claim/execute/close/archive stages.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Top scripts used (relaxed set)</h3>
+        <ul>
+            <li><code>scripts/agents/session.sh</code> (6)</li>
+            <li><code>scripts/agents/plan.sh</code> (5)</li>
+            <li><code>scripts/review/submit-to-claude.sh</code> (5)</li>
+            <li><code>scripts/work-queue/verify-gate-evidence.py</code> (5)</li>
+            <li><code>scripts/work-queue/close-item.sh</code> (5)</li>
+            <li><code>scripts/work-queue/generate-html-review.py</code> (5)</li>
+        </ul>
+
+        <h3>Skills observed (relaxed set)</h3>
+        <ul>
+            <li><code>/work</code> (10)</li>
+            <li><code>/clear</code> (8)</li>
+            <li><code>/comprehensive-learning</code> (2)</li>
+            <li><code>/insights</code> (2)</li>
+            <li><code>/save</code> (2)</li>
+            <li><code>/session-start</code> (2)</li>
+        </ul>
+
+        <h3>Top tools observed (relaxed set)</h3>
+        <ul>
+            <li><code>Bash</code> (547)</li>
+            <li><code>Read</code> (179)</li>
+            <li><code>Edit</code> (116)</li>
+            <li><code>Write</code> (104)</li>
+            <li><code>TaskUpdate</code> (12)</li>
+            <li><code>Glob</code> (8)</li>
+        </ul>
+
+        <h2>Daily WRK Coverage by Agent</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Claude WRKs</th>
+                    <th>Codex WRKs</th>
+                    <th>Gemini WRKs</th>
+                    <th>Total Unique WRKs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>2026-02-25</td><td>0</td><td>230</td><td>272</td><td>374</td></tr>
+                <tr><td>2026-02-26</td><td>0</td><td>673</td><td>1</td><td>673</td></tr>
+                <tr><td>2026-02-27</td><td>4</td><td>658</td><td>589</td><td>674</td></tr>
+                <tr><td>2026-02-28</td><td>5</td><td>390</td><td>2</td><td>390</td></tr>
+                <tr><td>2026-03-01</td><td>32</td><td>676</td><td>7</td><td>679</td></tr>
+                <tr><td>2026-03-02</td><td>28</td><td>581</td><td>270</td><td>591</td></tr>
+                <tr><td>2026-03-03</td><td>19</td><td>0</td><td>0</td><td>19</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Claude Weekly WRK Spread</h2>
+        <p>Claude transcripts reference 59 distinct WRK IDs in this window, including <code>WRK-021</code> through <code>WRK-692</code> (with notable concentration around <code>WRK-631</code> to <code>WRK-692</code>).</p>
+
+        <h2>Supporting Assets</h2>
+        <div class="artifact-box">
+            <ul>
+                <li><code>.claude/work-queue/assets/WRK-690/evidence/gatepass-weekly-summary.html</code></li>
+                <li><code>.claude/work-queue/assets/WRK-690/evidence/gatepass-weekly-summary.md</code></li>
+                <li><code>.claude/work-queue/assets/WRK-690/evidence/agent-wrk-counts-by-day.html</code></li>
+                <li><code>.claude/work-queue/assets/WRK-690/evidence/session-wrk-count.md</code></li>
+            </ul>
+        </div>
+
+        <h2>Next Work Inside WRK-690</h2>
+        <ul>
+            <li>Convert these observations into gate enforcement checks in lifecycle scripts.</li>
+            <li>Add comprehensive-learning enhancements that explicitly consume and flag gate-init/gate-missing signals per agent per day.</li>
+            <li>Close orchestration gap for Codex/Gemini log emission so orchestrator folders reflect native session activity consistently.</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-03T15:13:46Z by generate-index.py -->
+<!-- Generated: 2026-03-03T17:51:31Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-03T15:13:46Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-03T17:51:31Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,8 +13,8 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 190 |
-| working | 5 |
+| pending | 189 |
+| working | 6 |
 | blocked | 9 |
 | archived | 226 |
 
@@ -63,8 +63,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 164 / 430 |
-| Plans cross-reviewed | 60 |
-| Plans approved | 79 |
+| Plans cross-reviewed | 61 |
+| Plans approved | 80 |
 | Brochure pending | 7 |
 | Brochure updated/synced | 8 |
 
@@ -84,9 +84,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 190 | 31% |
-| Plans cross-reviewed | 9 | 13% |
-| Plans user-approved | 9 | 13% |
+| Pending items with plans | 57 / 189 | 30% |
+| Plans cross-reviewed | 10 | 15% |
+| Plans user-approved | 10 | 15% |
 
 ### Aging
 
@@ -101,7 +101,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 95 | 2 | 7 |
+| High     | 94 | 3 | 7 |
 | Medium   | 67  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
 
@@ -534,7 +534,7 @@
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | WRK-683 |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-689 | docs(skills): review and beef up file-structure skills with knowledge map and log file locations | working | medium | medium | ace-linux-1 | - | - | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | █░░ 55% | n/a | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-691 |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -731,7 +731,6 @@
 | WRK-681 | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | medium | medium | workspace-hub | - |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | medium | simple | workspace-hub | - |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | medium | medium | worldenergydata | - |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | high | complex | workspace-hub | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | high | medium | workspace-hub | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | high | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | low | simple | workspace-hub | - |
@@ -746,6 +745,7 @@
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | high | medium | workspace-hub | - |
 | WRK-689 | docs(skills): review and beef up file-structure skills with knowledge map and log file locations | medium | medium | workspace-hub | - |
+| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | high | complex | workspace-hub | - |
 
 ### Blocked
 
@@ -1427,7 +1427,7 @@
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | simple | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | working | high | medium | - |
 | WRK-689 | docs(skills): review and beef up file-structure skills with knowledge map and log file locations | working | medium | medium | - |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | pending | high | complex | - |
+| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | working | high | complex | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | high | medium | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | high | medium | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
@@ -1727,7 +1727,7 @@
 | WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | medium | workspace-hub | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | medium | workspace-hub | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | working | medium | workspace-hub | - |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | pending | complex | workspace-hub | - |
+| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | working | complex | workspace-hub | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | medium | workspace-hub | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | medium | workspace-hub | - |
 
@@ -2344,7 +2344,7 @@
 | WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | high | TBD-client2-repo | - |
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | frontierdeepwater, TBD-client2-repo | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | workspace-hub | - |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | pending | high | workspace-hub | - |
+| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | working | high | workspace-hub | - |
 
 ## By Computer
 
@@ -2502,7 +2502,7 @@
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | working | high | medium | workspace-hub |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | medium | worldenergydata |
 | WRK-689 | docs(skills): review and beef up file-structure skills with knowledge map and log file locations | working | medium | medium | workspace-hub |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | pending | high | complex | workspace-hub |
+| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | working | high | complex | workspace-hub |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | high | medium | workspace-hub |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | high | medium | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Gatepass Weekly Summary (WRK-690)</title>
+    <style>
+        body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; margin: 0; background: #f6f8fa; color: #24292f; }
+        .hero { max-width: 960px; margin: 0 auto; padding: 32px 20px 60px; }
+        .card { background: white; border-radius: 12px; padding: 32px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(15,23,42,0.1); border: 1px solid #e1e4e8; }
+        h1, h2 { margin-top: 0; }
+        .summary { background: #f1f5ff; border-left: 6px solid #1d4ed8; padding: 18px 24px; border-radius: 6px; }
+        .summary h2 { color: #1d4ed8; font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .summary ul { margin: 0; padding-left: 1.2rem; }
+        .section { margin-top: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; }
+        th, td { padding: 12px; border: 1px solid #e1e4e8; text-align: left; }
+        th { background: #f6f8fa; }
+        code { font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace; background: rgba(27,31,35,0.05); padding: 0.15rem 0.4rem; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="card">
+            <h1>Gatepass Weekly Summary</h1>
+            <p>Week of 2026-02-25 to 2026-03-03 — WRK-690 log evaluation preliminary notes.</p>
+
+            <div class="summary">
+                <h2>Key takeaways</h2>
+                <ul>
+                    <li>The WRK-690 plan now documents the gatepass log review steps: catalog stores, gather the last week’s Claude/Codex/Gemini sessions, identify gate-missing patterns, and feed learnings back into <code>comprehensive-learning</code>.</li>
+                    <li>Claude’s native sessions for the week show only <code>session_20260301.jsonl</code> executing <code>scripts/agents/session.sh init --provider claude</code>; the other Claude transcripts lack any gate-start registration.</li>
+                    <li>Only two orchestrator transcripts exist for this timeframe (<code>logs/orchestrator/claude/session_20260302.jsonl</code> and <code>session_20260303.jsonl</code>), while the Codex and Gemini orchestrator directories remain empty on Ace-linux-1.</li>
+                    <li>Native Codex (70 rollouts) and Gemini (42 chats) logs are available but have not been mirrored into the orchestrator folders because no cross-review submissions ran from this machine yet.</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Claude gatepass observations</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Session file</th>
+                            <th>Gate-init recorded?</th>
+                            <th>Orchestrator counterpart</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>session_20260301.jsonl</code></td>
+                            <td>Yes (invoked <code>scripts/agents/session.sh init --provider claude</code>)</td>
+                            <td>None for March 1</td>
+                        </tr>
+                        <tr>
+                            <td><code>session_20260302.jsonl</code></td>
+                            <td>No</td>
+                            <td><code>logs/orchestrator/claude/session_20260302.jsonl</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>session_20260303.jsonl</code></td>
+                            <td>No</td>
+                            <td><code>logs/orchestrator/claude/session_20260303.jsonl</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>The remaining Claude session files in the window do not contain gate-init commands, so we may need to surface why the gate wasn’t triggered on those days.</p>
+            </div>
+
+            <div class="section">
+                <h2>Codex &amp; Gemini coverage</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Native session count (Feb 25–Mar 3)</th>
+                            <th>Orchestrator logs present?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Codex</td>
+                            <td>70 rollouts (e.g., <code>~/.codex/sessions/2026/03/02/rollout-*.jsonl</code>)</td>
+                            <td>No (empty <code>logs/orchestrator/codex/</code> folder)</td>
+                        </tr>
+                        <tr>
+                            <td>Gemini</td>
+                            <td>42 chats in <code>~/.gemini/tmp/workspace-hub/chats/session-*.json</code></td>
+                            <td>No (empty <code>logs/orchestrator/gemini/</code> folder)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>We rely on the native stores until the cross-review scripts start writing to the orchestrator directories.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

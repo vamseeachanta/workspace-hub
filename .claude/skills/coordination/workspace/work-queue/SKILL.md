@@ -16,7 +16,7 @@ capabilities:
   - archive_audit_trail
   - reflect_integration
 tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
-related_skills: [claude-reflect, skill-learner, repo-sync, session-start, session-end, workflow-gatepass, wrk-lifecycle-testpack]
+related_skills: [claude-reflect, skill-learner, repo-sync, session-start, session-end, workflow-gatepass, wrk-lifecycle-testpack, work-queue-workflow, comprehensive-learning]
 scripts:
   - next-id.sh
   - queue-status.sh
@@ -28,7 +28,7 @@ scripts:
   - ../../../../scripts/agents/execute.sh
   - ../../../../scripts/agents/review.sh
 requires: []
-see_also: [session-start, workflow-gatepass, wrk-lifecycle-testpack]
+see_also: [session-start, workflow-gatepass, wrk-lifecycle-testpack, work-queue-workflow]
 ---
 
 # Work Queue Skill
@@ -116,6 +116,15 @@ Every WRK execution must follow this sequence:
 11. Archive
 
 No implementation work is allowed before step 5.
+
+## Outcome Feedback Loop (WRK-690)
+
+Use weekly session/log audits to tighten workflow compliance:
+
+- ingest gatepass audit outcomes from WRK evidence artifacts
+- identify missing orchestrator coverage or missing gate tokens
+- create follow-up WRKs for instrumentation and enforcement gaps
+- feed improvements into `comprehensive-learning` and workflow skills
 
 ## Canonical Lifecycle
 
