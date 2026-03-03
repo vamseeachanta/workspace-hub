@@ -186,6 +186,84 @@ def check_future_work_gate(assets_dir: Path) -> tuple[bool | None, str]:
     return False, f"{fw_file.name}: present but lists no WRKs and no_follow_ups_rationale is empty"
 
 
+def check_resource_intelligence_update_gate(assets_dir: Path) -> tuple[bool | None, str]:
+    """Require post-work resource intelligence update before close."""
+    update_file = evidence_file(assets_dir, "resource-intelligence-update.yaml", [])
+    if update_file is None:
+        return False, "resource-intelligence-update.yaml missing"
+    data, yaml_err = load_yaml(update_file)
+    if yaml_err:
+        return False, f"could not parse {update_file.name}: {yaml_err}"
+    assert data is not None
+    additions = data.get("additions") or []
+    if additions and not isinstance(additions, list):
+        return False, f"{update_file.name}: additions must be a list"
+    rationale = str(data.get("no_additions_rationale", "")).strip()
+    if additions:
+        return True, f"{update_file.name}: additions={len(additions)}"
+    if rationale:
+        return True, f"{update_file.name}: no_additions_rationale=present"
+    return False, f"{update_file.name}: add additions[] or no_additions_rationale"
+
+
+def check_user_review_close_gate(assets_dir: Path) -> tuple[bool, str]:
+    """Require explicit user review artifact for close readiness."""
+    review_file = evidence_file(assets_dir, "user-review-close.yaml", [])
+    if review_file is None:
+        return False, "user-review-close.yaml missing"
+    data, yaml_err = load_yaml(review_file)
+    if yaml_err:
+        return False, f"could not parse {review_file.name}: {yaml_err}"
+    assert data is not None
+    missing = [
+        key
+        for key in ("reviewer", "reviewed_at", "decision")
+        if not str(data.get(key, "")).strip()
+    ]
+    if missing:
+        return False, f"{review_file.name}: missing fields: {missing}"
+    decision = str(data.get("decision", "")).strip().lower()
+    if decision not in {"approved", "accepted", "passed"}:
+        return False, f"{review_file.name}: decision must be approved|accepted|passed"
+    return True, f"{review_file.name}: decision={decision}"
+
+
+def check_html_open_default_browser_gate(assets_dir: Path, required: list[str]) -> tuple[bool, str]:
+    """Require browser-open evidence for each user review stage."""
+    evidence = evidence_file(assets_dir, "user-review-browser-open.yaml", [])
+    if evidence is None:
+        return False, "user-review-browser-open.yaml missing"
+    data, yaml_err = load_yaml(evidence)
+    if yaml_err:
+        return False, f"could not parse {evidence.name}: {yaml_err}"
+    assert data is not None
+    events = data.get("events") or []
+    if not isinstance(events, list):
+        return False, f"{evidence.name}: events must be a list"
+    seen = set()
+    for idx, event in enumerate(events, start=1):
+        if not isinstance(event, dict):
+            return False, f"{evidence.name}: events[{idx}] must be an object"
+        stage = str(event.get("stage", "")).strip().lower()
+        if not stage:
+            return False, f"{evidence.name}: events[{idx}] stage missing"
+        opened = event.get("opened_in_default_browser")
+        browser = str(event.get("browser", "")).strip().lower()
+        if opened is not True and browser not in {"default", "system-default"}:
+            return False, f"{evidence.name}: events[{idx}] must confirm default browser open"
+        if not str(event.get("html_ref", "")).strip():
+            return False, f"{evidence.name}: events[{idx}] html_ref missing"
+        if not str(event.get("opened_at", "")).strip():
+            return False, f"{evidence.name}: events[{idx}] opened_at missing"
+        if not str(event.get("reviewer", "")).strip():
+            return False, f"{evidence.name}: events[{idx}] reviewer missing"
+        seen.add(stage)
+    missing = [stage for stage in required if stage not in seen]
+    if missing:
+        return False, f"{evidence.name}: missing required stages {missing}"
+    return True, f"{evidence.name}: stages={sorted(seen)}"
+
+
 def strip_code_fences(content: str) -> str:
     """Remove fenced code blocks to prevent false-positive confirmation matches."""
     return re.sub(r"```[^\n]*\n.*?```", "", content, flags=re.DOTALL)
@@ -266,6 +344,42 @@ def check_plan_confirmation(plan_path: Path) -> tuple[bool, str]:
     return False, "confirmation block incomplete — " + ", ".join(missing)
 
 
+def check_stage_evidence_gate(front: str, workspace_root: Path, wrk_id: str) -> tuple[bool, str]:
+    """Require a per-WRK stage evidence ledger for close readiness."""
+    ref = get_field(front, "stage_evidence_ref")
+    if not ref:
+        return False, "stage_evidence_ref missing in WRK frontmatter"
+    path = abs_path(workspace_root, ref)
+    if not path.exists():
+        return False, f"stage evidence file missing: {ref}"
+    data, yaml_err = load_yaml(path)
+    if yaml_err:
+        return False, f"could not parse {path.name}: {yaml_err}"
+    assert data is not None
+    stages = data.get("stages") or []
+    if not isinstance(stages, list):
+        return False, f"{path.name}: stages must be a list"
+    required_orders = set(range(1, 20))
+    seen_orders = set()
+    for idx, row in enumerate(stages, start=1):
+        if not isinstance(row, dict):
+            return False, f"{path.name}: stages[{idx}] must be an object"
+        order = row.get("order")
+        if not isinstance(order, int):
+            return False, f"{path.name}: stages[{idx}] order must be integer"
+        seen_orders.add(order)
+        if not str(row.get("stage", "")).strip():
+            return False, f"{path.name}: stages[{idx}] stage missing"
+        if not str(row.get("status", "")).strip():
+            return False, f"{path.name}: stages[{idx}] status missing"
+    missing = sorted(required_orders - seen_orders)
+    if missing:
+        return False, f"{path.name}: missing stage orders {missing}"
+    if str(data.get("wrk_id", "")).strip() not in {"", wrk_id}:
+        return False, f"{path.name}: wrk_id mismatch"
+    return True, f"{path.name}: stages={len(stages)}"
+
+
 def abs_path(workspace_root: Path, referenced: str) -> Path:
     candidate = Path(referenced)
     if candidate.is_absolute():
@@ -306,7 +420,7 @@ def load_yaml(path: Path) -> tuple[dict | None, str | None]:
     return data, None
 
 
-def run_checks(wrk_id: str) -> int:
+def run_checks(wrk_id: str, phase: str = "close") -> int:
     workspace_root = Path(__file__).resolve().parents[2]
     queue_dir = workspace_root / ".claude" / "work-queue"
     wrk_path = None
@@ -357,20 +471,29 @@ def run_checks(wrk_id: str) -> int:
             ),
         }
     )
+    if phase == "close":
+        stage_ok, stage_details = check_stage_evidence_gate(front, workspace_root, wrk_id)
+        gates.append({"name": "Stage evidence gate", "ok": stage_ok, "details": stage_details})
     ri_ok, ri_details = check_resource_intelligence_gate(assets_dir)
-    gates.append({"name": "Resource-intelligence gate", "ok": ri_ok, "warn": ri_ok is None, "details": ri_details})
+    gates.append({"name": "Resource-intelligence gate", "ok": bool(ri_ok), "details": ri_details})
+    html_open_required = ["plan_draft", "plan_final"]
+    if phase == "close":
+        html_open_required.append("close_review")
+    html_open_ok, html_open_details = check_html_open_default_browser_gate(assets_dir, html_open_required)
+    gates.append({"name": "User-review HTML-open gate", "ok": html_open_ok, "details": html_open_details})
     gates.append(
         {"name": "Cross-review gate", "ok": bool(review_file), "details": f"artifact={'none' if not review_file else review_file}"}
     )
-    gates.append(
-        {
-            "name": "TDD gate",
-            "ok": len(test_candidates) > 0,
-            "details": f"test files={[p.name for p in test_candidates]}" if test_candidates else "none",
-        }
-    )
-    execute_tests_ok, execute_tests_details = check_execute_integrated_tests_gate(assets_dir)
-    gates.append({"name": "Integrated test gate", "ok": execute_tests_ok, "details": execute_tests_details})
+    if phase == "close":
+        gates.append(
+            {
+                "name": "TDD gate",
+                "ok": len(test_candidates) > 0,
+                "details": f"test files={[p.name for p in test_candidates]}" if test_candidates else "none",
+            }
+        )
+        execute_tests_ok, execute_tests_details = check_execute_integrated_tests_gate(assets_dir)
+        gates.append({"name": "Integrated test gate", "ok": execute_tests_ok, "details": execute_tests_details})
     legal_notes = "none"
     legal_ok = False
     if legal_file:
@@ -379,22 +502,27 @@ def run_checks(wrk_id: str) -> int:
         legal_result = match.group(1).strip() if match else None
         legal_ok = bool(legal_result and "pass" in legal_result.lower())
         legal_notes = f"result={legal_result or 'missing'}"
-    gates.append({"name": "Legal gate", "ok": legal_ok, "details": f"artifact={legal_file if legal_file else 'missing'}, {legal_notes}"})
+    if phase == "close":
+        gates.append({"name": "Legal gate", "ok": legal_ok, "details": f"artifact={legal_file if legal_file else 'missing'}, {legal_notes}"})
 
     # Claim gate — WARN for legacy items (no metadata_version), FAIL for hardened items
     claim_ok, claim_details = check_claim_gate(assets_dir)
-    gates.append({"name": "Claim gate", "ok": claim_ok, "warn": claim_ok is None, "details": claim_details})
+    gates.append({"name": "Claim gate", "ok": bool(claim_ok), "details": claim_details})
 
-    # Future-work gate — WARN when file absent (legacy), FAIL when file present but invalid
-    fw_ok, fw_details = check_future_work_gate(assets_dir)
-    gates.append({"name": "Future-work gate", "ok": fw_ok, "warn": fw_ok is None, "details": fw_details})
+    if phase == "close":
+        fw_ok, fw_details = check_future_work_gate(assets_dir)
+        gates.append({"name": "Future-work gate", "ok": bool(fw_ok), "details": fw_details})
+        riu_ok, riu_details = check_resource_intelligence_update_gate(assets_dir)
+        gates.append({"name": "Resource-intelligence update gate", "ok": bool(riu_ok), "details": riu_details})
+        close_review_ok, close_review_details = check_user_review_close_gate(assets_dir)
+        gates.append({"name": "User-review close gate", "ok": close_review_ok, "details": close_review_details})
 
     # Reclaim gate — WARN when absent (no reclaim triggered), FAIL when present but invalid
     reclaim_ok, reclaim_details = check_reclaim_gate(assets_dir)
     gates.append({"name": "Reclaim gate", "ok": reclaim_ok, "warn": reclaim_ok is None, "details": reclaim_details})
 
     success = True
-    print(f"Gate evidence for {wrk_id} (assets: {assets_dir}):")
+    print(f"Gate evidence for {wrk_id} (phase={phase}, assets: {assets_dir}):")
     for gate in gates:
         is_warn = gate.get("warn", False)
         if is_warn:
@@ -416,11 +544,17 @@ def run_checks(wrk_id: str) -> int:
 
 
 def main() -> None:
-    if len(sys.argv) != 2:
-        print("Usage: verify-gate-evidence.py WRK-<id>")
+    if len(sys.argv) not in {2, 4}:
+        print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close]")
         sys.exit(1)
     wrk_id = sys.argv[1]
-    code = run_checks(wrk_id)
+    phase = "close"
+    if len(sys.argv) == 4:
+        if sys.argv[2] != "--phase" or sys.argv[3] not in {"claim", "close"}:
+            print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close]")
+            sys.exit(1)
+        phase = sys.argv[3]
+    code = run_checks(wrk_id, phase=phase)
     sys.exit(code)
 
 

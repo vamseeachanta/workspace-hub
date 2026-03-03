@@ -47,6 +47,13 @@ if grep -q "html_verification_ref:" "$ITEM_FILE"; then
   fi
 fi
 
+# 4. Gate evidence check (close phase contract must pass before archive)
+VALIDATOR="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
+if ! uv run --no-project python "$VALIDATOR" "$ITEM_ID" --phase close; then
+  echo "✖ Gate evidence verification failed for ${ITEM_ID}; cannot archive." >&2
+  exit 1
+fi
+
 # Create archive directory for current month
 ARCHIVE_DIR="${QUEUE_DIR}/archive/$(date +%Y-%m)"
 mkdir -p "$ARCHIVE_DIR"
@@ -56,7 +63,7 @@ ARCHIVE_PATH="${ARCHIVE_DIR}/${BASENAME}"
 
 # Update status to archived
 NOW_ISO=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-python3 <<EOF
+uv run --no-project python <<EOF
 import re
 with open("$ITEM_FILE", 'r') as f:
     content = f.read()
@@ -76,6 +83,6 @@ EOF
 rm "$ITEM_FILE"
 
 # Regenerate index
-python3 "${QUEUE_DIR}/scripts/generate-index.py"
+uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"
 
 echo "✔ Archived: ${ITEM_ID} -> archive/$(date +%Y-%m)/${BASENAME}"

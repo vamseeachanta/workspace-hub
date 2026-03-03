@@ -130,28 +130,32 @@ Use weekly session/log audits to tighten workflow compliance:
 
 ```mermaid
 flowchart TD
-    A[Capture] --> B[Resource Intelligence]
-    B --> C[Triage]
-    C --> D[Plan Draft]
-    D --> E{User Reviewed Draft HTML?}
-    E -- Yes --> F[Multi-Agent Review]
+    A[1 Capture] --> B[2 Resource Intelligence]
+    B --> C[3 Triage]
+    C --> D[4 Plan Draft]
+    D --> E{5 User Review - Plan Draft + HTML opened?}
     E -- No --> D
-    F --> G{Plan Reviewed + User Reviewed Final HTML + Approved?}
-    G -- Yes --> H[Claim]
-    G -- No --> F1[Revise Plan HTML]
-    F1 --> D
-    H --> I{Best-Fit Agent + Quota Ready?}
-    I -- Yes --> J{Blocked?}
-    I -- No --> H1[Recommend alternate agent or short defer]
-    H1 --> H
-    J -- No --> K[Execute]
-    J -- Yes --> L[Status: blocked]
-    K --> M{Route Review Passed?}
-    M -- Yes --> N[Close]
-    M -- No --> K
-    N --> O{Queue Valid + Merge/Sync Complete?}
-    O -- Yes --> P[Archive]
-    O -- No --> N
+    E -- Yes --> F[6 Cross-Review]
+    F --> G{7 User Review - Plan Final + HTML opened?}
+    G -- No --> D
+    G -- Yes --> H[8 Claim / Activation]
+    H --> I[9 Work-Queue Routing Skill]
+    I --> J[10 Work Execution]
+    J --> K[11 Artifact Generation]
+    K --> L[12 TDD / Eval]
+    L --> M{13 Verify Gate Evidence passed?}
+    M -- No --> J
+    M -- Yes --> N[14 Future Work Synthesis]
+    N --> O[15 Resource Intelligence Update]
+    O --> P{16 User Review + close HTML opened?}
+    P -- No --> O
+    P -- Yes --> Q{17 Continuity broken?}
+    Q -- Yes --> R[17 Reclaim]
+    R --> J
+    Q -- No --> S[18 Close]
+    S --> T{19 Merge/Sync complete?}
+    T -- No --> S
+    T -- Yes --> U[19 Archive]
 ```
 
 ## Stage Contract
@@ -167,55 +171,121 @@ flowchart TD
 ### 3. Triage
 - Minimum triage contract: `priority`, `complexity`, `route`, `computer`, `plan_workstations`, `execution_workstations`, `provider`, `orchestrator`.
 
-### 4. Plan
+### 4. Plan Draft
 - Route A/B: Inline. Route C: `specs/wrk/WRK-<id>/`.
-- Must produce HTML review artifact.
-- User reviews Draft HTML before multi-agent review.
+- Produce draft HTML review artifact.
+
+### 5. User Review - Plan (Draft)
+- User reviews draft HTML before multi-agent review.
+- Mandatory: open completed draft HTML in default browser (`xdg-open <html-path>`).
+
+### 6. Cross-Review
 - Multi-agent review (Claude, Codex, Gemini) for Route B/C.
-- User reviews Final HTML and approves.
+- Resolve MAJOR findings before progressing.
 
-### 5. Claim
-- Check unblocked and agent-capability.
+### 7. User Review - Plan (Final)
+- User reviews final plan HTML and approves.
+- Mandatory: open completed final HTML in default browser (`xdg-open <html-path>`).
+
+### 8. Claim / Activation
+- Check unblocked and agent capability.
 - Quota check (`config/ai-tools/agent-quota-latest.json`).
-- Write structured claim evidence.
+- Write claim evidence and set active WRK.
 
-### 6. Execute
-- Implementation under claimed session.
+### 9. Work-Queue Routing Skill
+- Enter execution via `/work` (or `scripts/agents/work.sh`) for canonical routing.
+
+### 10. Work Execution
+- Implement under active claim.
 - Define 5-10 real examples and variation tests.
-- Generate HTML review artifact.
 
-### 7. Reclaim
+### 11. Artifact Generation
+- Produce completed HTML review and evidence artifacts for executed scope.
+
+### 12. TDD / Eval
+- Run tests/evaluations and capture pass evidence.
+
+### 13. Verify Gate Evidence
+- Run gate verifier before close (`scripts/work-queue/verify-gate-evidence.py`).
+
+### 14. Future Work Synthesis
+- Generate follow-up WRKs for deferred/discovered work.
+- Record follow-up IDs in evidence and WRK metadata.
+
+### 15. Resource Intelligence Update
+- Add post-work resource-intelligence updates discovered during execution.
+
+### 16. User Review
+- User reviews closure package (future work + resource updates + completion state).
+- Mandatory: open completed close HTML in default browser (`xdg-open <html-path>`).
+
+### 17. Reclaim
 - Trigger reclaim when claim/session continuity is broken.
 - Revalidate claim and evidence before returning to execute.
 
-### 8. Future Work Synthesis
-- Generate follow-up WRKs for deferred or discovered work.
-- Record follow-up IDs in evidence and WRK metadata.
+### 18. Close
+- Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]`.
+- Require gate evidence verification, integrated/repo tests (3-5 pass records), user-review evidence, and `stage_evidence_ref` (stages 1-19).
 
-### 9. Close
-- Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]`
-- Verify HTML output and record learning outputs.
-- Require gate evidence verification and 9-stage close ledger.
-- Require integrated/repo tests evidence with 3-5 passing tests.
+### 19. Archive
+- Script: `scripts/work-queue/archive-item.sh WRK-NNN`.
+- Block until merge-to-main and sync completion checks pass.
 
-### 10. Archive
-- Script: `scripts/work-queue/archive-item.sh WRK-NNN`
-- Blocked until merge-to-main and sync complete.
+## Stage Skills and Tools Matrix
+
+| Stage | Primary skills/commands | Scripts | Tools/Evidence |
+|---|---|---|---|
+| 1. Capture | `/work` | `scripts/work-queue/migrate-queue.py` (as needed) | WRK file in `pending/` |
+| 2. Resource Intelligence | `resource-intelligence` | `scripts/init-resource-pack.sh` (as needed) | `resource-intelligence.yaml` |
+| 3. Triage | `/work` triage step | `scripts/work-queue/assign-workstations.py` | WRK frontmatter triage fields |
+| 4. Plan Draft | `plan` flow | `scripts/agents/plan.sh` | Draft plan + HTML artifact |
+| 5. User Review - Plan (Draft) | user review gate | n/a | default browser open (`xdg-open`) + review artifact |
+| 6. Cross-Review | `cross-review` flow | `scripts/review/cross-review.sh`, `submit-to-*.sh` | Multi-provider review outputs |
+| 7. User Review - Plan (Final) | user review gate | n/a | default browser open (`xdg-open`) + final review artifact |
+| 8. Claim / Activation | claim gate | `scripts/work-queue/claim-item.sh`, `set-active-wrk.sh` | `claim.yaml` + active WRK state |
+| 9. Work-Queue Routing Skill | `/work` | `scripts/agents/work.sh` | Routing evidence in logs |
+| 10. Work Execution | execute flow | `scripts/agents/execute.sh` | Execution changes + examples |
+| 11. Artifact Generation | review/output flow | `scripts/work-queue/generate-html-review.py` | HTML/report artifacts |
+| 12. TDD / Eval | test/eval flow | `uv run --no-project pytest ...` | Test/eval outputs |
+| 13. Verify Gate Evidence | gate verifier | `scripts/work-queue/verify-gate-evidence.py` | PASS/WARN/FAIL gate ledger |
+| 14. Future Work Synthesis | future-work planning | n/a | `future-work.yaml` / follow-up WRKs |
+| 15. Resource Intelligence Update | resource update | n/a | `resource-intelligence-update.yaml` |
+| 16. User Review | close review gate | n/a | default browser open (`xdg-open`) + `user-review-close.yaml` + browser-open evidence |
+| 17. Reclaim | continuity recovery | n/a | `reclaim.yaml` when triggered |
+| 18. Close | close gate | `scripts/work-queue/close-item.sh` | done-state update + validated evidence |
+| 19. Archive | archive gate | `scripts/work-queue/archive-item.sh` | archived state + regenerated index |
+
+Template for per-WRK stage ledger:
+- `specs/templates/stage-evidence-template.yaml`
 
 ## Complexity Routing
 
 ```
-ALL routes: Triage -> Ensemble Gate (9 agents) -> Synthesis -> Plan Gate -> ...
-Route A (Simple):  Implement -> Test -> Archive
-Route B (Medium):  Explore -> Implement -> Test -> Archive
-Route C (Complex): Explore -> Implement -> Test -> Review -> Archive
+All routes use the canonical 19-stage lifecycle.
+
+Common mandatory gates for A/B/C:
+1-9 (Capture through Work-Queue Routing),
+13-16 (Verify -> Future Work -> Resource Intelligence Update -> User Review),
+18-19 (Close -> Archive).
+
+Route A (Simple):
+- Lightweight execution in stages 10-12
+- Single cross-review pass at stage 6
+
+Route B (Medium):
+- Full stages 10-12 with standard evidence depth
+- Multi-provider cross-review at stage 6
+
+Route C (Complex):
+- Full stages 10-12 with deeper test/eval and artifact pack
+- Multi-provider cross-review at stage 6 with stricter finding closure
 ```
 
-| Complexity | Criteria | Route |
-|------------|----------|-------|
-| Simple | Single config/value change, clear files, <50 words, 1 repo | A |
-| Medium | Clear outcome, unknown files, 1-2 repos, 50-200 words | B |
-| Complex | Architectural, 3+ repos, ambiguous scope, >200 words | C |
+| Complexity | Criteria | Route focus |
+|------------|----------|-------------|
+| Simple | Single config/value change, clear files, <50 words, 1 repo | A (light execution depth) |
+| Medium | Clear outcome, unknown files, 1-2 repos, 50-200 words | B (standard execution depth) |
+| Complex | Architectural, 3+ repos, ambiguous scope, >200 words | C (deep execution + stricter review closure) |
 
 **All routes require a plan.** The plan depth scales with complexity (see Planning Requirement below).
 

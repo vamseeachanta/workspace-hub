@@ -177,7 +177,7 @@ PY
 
 VERIFY_SCRIPT="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
 echo "Running gate evidence validator for ${WRK_ID}..."
-if ! python3 "$VERIFY_SCRIPT" "$WRK_ID"; then
+if ! uv run --no-project python "$VERIFY_SCRIPT" "$WRK_ID" --phase claim; then
   echo "✖ Gate evidence verification failed for ${WRK_ID}; fix the missing artifacts before claiming." >&2
   exit 1
 fi
@@ -185,6 +185,6 @@ fi
 mkdir -p "${QUEUE_DIR}/working"
 mv "$FILE_PATH" "${QUEUE_DIR}/working/${WRK_ID}.md"
 
-python3 "${QUEUE_DIR}/scripts/generate-index.py"
+uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"
 
 echo "✔ ${WRK_ID} claimed and moved to working/"

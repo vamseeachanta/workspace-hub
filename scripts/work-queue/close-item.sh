@@ -97,14 +97,14 @@ COMPLETED_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
 VALIDATOR="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
 echo "Running gate evidence validator for ${WRK_ID} before close..."
-if ! python3 "$VALIDATOR" "$WRK_ID"; then
+if ! uv run --no-project python "$VALIDATOR" "$WRK_ID" --phase close; then
   echo "✖ Gate evidence verification failed for ${WRK_ID}; gather the missing artifacts before closing." >&2
   exit 1
 fi
 
 echo "Closing $WRK_ID..."
 
-python3 - "$FILE_PATH" "$COMMIT_HASH" "$COMPLETED_AT" "$HTML_OUTPUT" "$HTML_VERIFICATION" "$WORKSPACE_ROOT" <<'PY'
+uv run --no-project python - "$FILE_PATH" "$COMMIT_HASH" "$COMPLETED_AT" "$HTML_OUTPUT" "$HTML_VERIFICATION" "$WORKSPACE_ROOT" <<'PY'
 import sys
 import re
 from pathlib import Path
@@ -179,7 +179,7 @@ if [[ "$SOURCE_DIR" != "done" ]]; then
   echo "✔ Moved to done/"
 fi
 
-python3 "${QUEUE_DIR}/scripts/generate-index.py"
+uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"
 
 if [[ "$DO_COMMIT" == "true" ]]; then
   git add "${QUEUE_DIR}/done/${WRK_ID}.md" "${QUEUE_DIR}/INDEX.md"

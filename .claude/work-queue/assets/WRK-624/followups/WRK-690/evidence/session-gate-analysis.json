@@ -1,0 +1,760 @@
+{
+  "aggregate": {
+    "window": {
+      "start": "2026-02-25",
+      "end": "2026-03-03"
+    },
+    "counts": {
+      "relaxed_sessions": 10,
+      "strict_sessions": 1,
+      "unique_sessions": 10
+    },
+    "by_source": {
+      "claude-native": 1,
+      "codex-native": 8,
+      "gemini-native": 1
+    },
+    "gate_relaxed": {
+      "init": 10,
+      "set_active_wrk": 1,
+      "verify_gate_evidence": 7,
+      "cross_review": 10,
+      "claim_evidence": 10,
+      "future_work": 4,
+      "resource_intelligence": 6,
+      "reclaim": 2,
+      "close_or_archive": 10
+    },
+    "gate_strict": {
+      "init": 1,
+      "set_active_wrk": 1,
+      "verify_gate_evidence": 1,
+      "cross_review": 1,
+      "claim_evidence": 1,
+      "future_work": 0,
+      "resource_intelligence": 1,
+      "reclaim": 0,
+      "close_or_archive": 1
+    },
+    "scripts_relaxed": [
+      [
+        "scripts/agents/session.sh",
+        6
+      ],
+      [
+        "scripts/agents/plan.sh",
+        5
+      ],
+      [
+        "scripts/review/submit-to-claude.sh",
+        5
+      ],
+      [
+        "scripts/work-queue/verify-gate-evidence.py",
+        5
+      ],
+      [
+        "scripts/work-queue/close-item.sh",
+        5
+      ],
+      [
+        "scripts/work-queue/generate-html-review.py",
+        5
+      ],
+      [
+        "scripts/review/submit-to-codex.sh",
+        4
+      ],
+      [
+        "scripts/agents/execute.sh",
+        4
+      ],
+      [
+        "scripts/review/cross-review.sh",
+        3
+      ],
+      [
+        "scripts/review/submit-to-gemini.sh",
+        3
+      ],
+      [
+        "scripts/work-queue/log-gate-event.sh",
+        3
+      ],
+      [
+        "scripts/agents/work.sh",
+        3
+      ],
+      [
+        "scripts/work-queue/assign-workstations.py",
+        3
+      ],
+      [
+        "scripts/agents/review.sh",
+        3
+      ],
+      [
+        "scripts/legal/legal-sanity-scan.sh",
+        2
+      ],
+      [
+        "scripts/workflow/refresh-orchestrator-timeline.sh",
+        2
+      ],
+      [
+        "scripts/cron/comprehensive-learning-nightly.sh",
+        2
+      ],
+      [
+        "scripts/cron/setup-cron.sh",
+        2
+      ],
+      [
+        "scripts/readiness/ai-agent-readiness.sh",
+        2
+      ],
+      [
+        "scripts/review/render-structured-review.py",
+        2
+      ]
+    ],
+    "skills_relaxed": [
+      [
+        "work",
+        10
+      ],
+      [
+        "clear",
+        8
+      ],
+      [
+        "comprehensive-learning",
+        2
+      ],
+      [
+        "insights",
+        2
+      ],
+      [
+        "save",
+        2
+      ],
+      [
+        "session-start",
+        2
+      ],
+      [
+        "improve",
+        1
+      ],
+      [
+        "session-analysis",
+        1
+      ],
+      [
+        "session-end",
+        1
+      ]
+    ],
+    "tools_relaxed": [
+      [
+        "Bash",
+        547
+      ],
+      [
+        "Read",
+        179
+      ],
+      [
+        "Edit",
+        116
+      ],
+      [
+        "Write",
+        104
+      ],
+      [
+        "TaskUpdate",
+        12
+      ],
+      [
+        "Glob",
+        8
+      ],
+      [
+        "ToolSearch",
+        8
+      ],
+      [
+        "TaskCreate",
+        6
+      ],
+      [
+        "AskUserQuestion",
+        6
+      ],
+      [
+        "TaskOutput",
+        6
+      ],
+      [
+        "unknown",
+        2
+      ],
+      [
+        "mcp__claude-in-chrome__tabs_context_mcp",
+        2
+      ],
+      [
+        "mcp__claude-in-chrome__navigate",
+        2
+      ],
+      [
+        "mcp__claude-in-chrome__read_page",
+        1
+      ]
+    ],
+    "scripts_strict": [
+      [
+        "scripts/agents/plan.sh",
+        1
+      ],
+      [
+        "scripts/agents/session.sh",
+        1
+      ],
+      [
+        "scripts/legal/legal-sanity-scan.sh",
+        1
+      ],
+      [
+        "scripts/review/cross-review.sh",
+        1
+      ],
+      [
+        "scripts/review/submit-to-claude.sh",
+        1
+      ],
+      [
+        "scripts/review/submit-to-codex.sh",
+        1
+      ],
+      [
+        "scripts/review/submit-to-gemini.sh",
+        1
+      ],
+      [
+        "scripts/work-queue/log-gate-event.sh",
+        1
+      ],
+      [
+        "scripts/work-queue/set-active-wrk.sh",
+        1
+      ],
+      [
+        "scripts/work-queue/verify-gate-evidence.py",
+        1
+      ],
+      [
+        "scripts/workflow/refresh-orchestrator-timeline.sh",
+        1
+      ]
+    ],
+    "skills_strict": [
+      [
+        "work",
+        1
+      ]
+    ],
+    "tools_strict": [
+      [
+        "Bash",
+        547
+      ],
+      [
+        "Read",
+        179
+      ],
+      [
+        "Edit",
+        116
+      ],
+      [
+        "Write",
+        104
+      ],
+      [
+        "TaskUpdate",
+        12
+      ],
+      [
+        "Glob",
+        8
+      ],
+      [
+        "ToolSearch",
+        8
+      ],
+      [
+        "TaskCreate",
+        6
+      ],
+      [
+        "AskUserQuestion",
+        6
+      ],
+      [
+        "TaskOutput",
+        6
+      ],
+      [
+        "unknown",
+        2
+      ],
+      [
+        "mcp__claude-in-chrome__tabs_context_mcp",
+        2
+      ],
+      [
+        "mcp__claude-in-chrome__navigate",
+        2
+      ],
+      [
+        "mcp__claude-in-chrome__read_page",
+        1
+      ]
+    ]
+  },
+  "sessions": [
+    {
+      "source": "claude-native",
+      "path": ".claude/state/sessions/session_20260301.jsonl",
+      "relaxed": true,
+      "strict": true,
+      "scripts": [
+        "scripts/agents/plan.sh",
+        "scripts/agents/session.sh",
+        "scripts/legal/legal-sanity-scan.sh",
+        "scripts/review/cross-review.sh",
+        "scripts/review/submit-to-claude.sh",
+        "scripts/review/submit-to-codex.sh",
+        "scripts/review/submit-to-gemini.sh",
+        "scripts/work-queue/log-gate-event.sh",
+        "scripts/work-queue/set-active-wrk.sh",
+        "scripts/work-queue/verify-gate-evidence.py",
+        "scripts/workflow/refresh-orchestrator-timeline.sh"
+      ],
+      "skills": [
+        "work"
+      ],
+      "tools_top": [
+        [
+          "Bash",
+          547
+        ],
+        [
+          "Read",
+          179
+        ],
+        [
+          "Edit",
+          116
+        ],
+        [
+          "Write",
+          104
+        ],
+        [
+          "TaskUpdate",
+          12
+        ],
+        [
+          "Glob",
+          8
+        ],
+        [
+          "ToolSearch",
+          8
+        ],
+        [
+          "TaskCreate",
+          6
+        ],
+        [
+          "AskUserQuestion",
+          6
+        ],
+        [
+          "TaskOutput",
+          6
+        ],
+        [
+          "unknown",
+          2
+        ],
+        [
+          "mcp__claude-in-chrome__tabs_context_mcp",
+          2
+        ],
+        [
+          "mcp__claude-in-chrome__navigate",
+          2
+        ],
+        [
+          "mcp__claude-in-chrome__read_page",
+          1
+        ]
+      ],
+      "wrks_count": 32,
+      "gate_signals": {
+        "init": true,
+        "set_active_wrk": true,
+        "verify_gate_evidence": true,
+        "cross_review": true,
+        "claim_evidence": true,
+        "future_work": false,
+        "resource_intelligence": true,
+        "reclaim": false,
+        "close_or_archive": true
+      }
+    },
+    {
+      "source": "codex-native",
+      "path": "/home/vamsee/.codex/sessions/2026/02/26/rollout-2026-02-26T10-29-56-019c9ac9-1a09-79e3-bb83-874bf35dfb11.jsonl",
+      "relaxed": true,
+      "strict": false,
+      "scripts": [
+        "scripts/agents/execute.sh",
+        "scripts/agents/plan.sh",
+        "scripts/agents/work.sh",
+        "scripts/cron/comprehensive-learning-nightly.sh",
+        "scripts/cron/session-analysis-nightly.sh",
+        "scripts/cron/setup-cron.sh",
+        "scripts/cron/skills-curation.sh",
+        "scripts/cron/update-model-ids.sh",
+        "scripts/data/document-index/calc-examples-mapper.py",
+        "scripts/data/document-index/phase-a-index.py",
+        "scripts/generate-resource-index.sh",
+        "scripts/init-resource-pack.sh",
+        "scripts/memory/scan-sessions.py",
+        "scripts/operations/compliance/install_compliance_hooks.sh",
+        "scripts/operations/compliance/validate_work_queue_schema.sh",
+        "scripts/readiness/ai-agent-readiness.sh",
+        "scripts/readiness/build-specs-index.py",
+        "scripts/readiness/check-network-mounts.sh",
+        "scripts/readiness/provider-cost-tracker.sh",
+        "scripts/readiness/query-docs.sh",
+        "scripts/readiness/test-health-check.sh",
+        "scripts/review/build-claude-plan-bundle.py",
+        "scripts/review/cross-review.sh",
+        "scripts/review/render-structured-review.py",
+        "scripts/review/submit-to-claude.sh",
+        "scripts/review/submit-to-codex.sh",
+        "scripts/review/submit-to-gemini.sh",
+        "scripts/review/tests/test-claude-compact-bundle.sh",
+        "scripts/review/validate-review-output.sh",
+        "scripts/setup/install-all-hooks.sh",
+        "scripts/skills/validate-skills.sh",
+        "scripts/work-queue/assign-workstations.py",
+        "scripts/work-queue/claim-item.sh",
+        "scripts/work-queue/close-item.sh",
+        "scripts/work-queue/generate-html-review.py",
+        "scripts/work-queue/migrate-queue.py",
+        "scripts/work-queue/validate-queue-state.sh"
+      ],
+      "skills": [
+        "clear",
+        "comprehensive-learning",
+        "improve",
+        "insights",
+        "save",
+        "session-analysis",
+        "session-end",
+        "session-start",
+        "work"
+      ],
+      "tools_top": [],
+      "wrks_count": 673,
+      "gate_signals": {
+        "init": true,
+        "set_active_wrk": false,
+        "verify_gate_evidence": true,
+        "cross_review": true,
+        "claim_evidence": true,
+        "future_work": true,
+        "resource_intelligence": true,
+        "reclaim": false,
+        "close_or_archive": true
+      }
+    },
+    {
+      "source": "codex-native",
+      "path": "/home/vamsee/.codex/sessions/2026/02/27/rollout-2026-02-27T13-19-08-019ca08a-5f57-7583-9d12-a133361be3cf.jsonl",
+      "relaxed": true,
+      "strict": false,
+      "scripts": [
+        "scripts/agents/session.sh",
+        "scripts/ai/assessment/query-quota.sh",
+        "scripts/cron/setup-cron.sh",
+        "scripts/readiness/ai-agent-readiness.sh",
+        "scripts/readiness/nightly-readiness.sh",
+        "scripts/work-queue/assign-providers.sh",
+        "scripts/work-queue/close-item.sh",
+        "scripts/work-queue/generate-html-review.py"
+      ],
+      "skills": [
+        "clear",
+        "work"
+      ],
+      "tools_top": [],
+      "wrks_count": 630,
+      "gate_signals": {
+        "init": true,
+        "set_active_wrk": false,
+        "verify_gate_evidence": false,
+        "cross_review": true,
+        "claim_evidence": true,
+        "future_work": false,
+        "resource_intelligence": false,
+        "reclaim": false,
+        "close_or_archive": true
+      }
+    },
+    {
+      "source": "codex-native",
+      "path": "/home/vamsee/.codex/sessions/2026/02/27/rollout-2026-02-27T13-23-50-019ca08e-ad00-7a72-ae6c-4ce25a5e4369.jsonl",
+      "relaxed": true,
+      "strict": false,
+      "scripts": [
+        "scripts/agents/execute.sh",
+        "scripts/agents/lib/session-store.sh",
+        "scripts/agents/plan.sh",
+        "scripts/agents/review.sh",
+        "scripts/agents/session.sh",
+        "scripts/agents/tests/test-session-wrapper.sh",
+        "scripts/agents/work.sh",
+        "scripts/data/document-index/build-ledger.py",
+        "scripts/data/document-index/phase-e-backpopulate.py",
+        "scripts/data/document-index/phase-e2-remap.py",
+        "scripts/data/document-index/query-ledger.py",
+        "scripts/development/ai-review/gemini-review.sh",
+        "scripts/lib/uv-env.sh",
+        "scripts/operations/setup-hooks.sh",
+        "scripts/review/cross-review.sh",
+        "scripts/review/render-structured-review.py",
+        "scripts/review/submit-to-claude.sh",
+        "scripts/review/tests/test-provider-transport.sh",
+        "scripts/setup/install-all-hooks.sh",
+        "scripts/work-queue/close-item.sh",
+        "scripts/work-queue/generate-html-review.py"
+      ],
+      "skills": [
+        "clear",
+        "insights",
+        "work"
+      ],
+      "tools_top": [],
+      "wrks_count": 478,
+      "gate_signals": {
+        "init": true,
+        "set_active_wrk": false,
+        "verify_gate_evidence": false,
+        "cross_review": true,
+        "claim_evidence": true,
+        "future_work": false,
+        "resource_intelligence": false,
+        "reclaim": false,
+        "close_or_archive": true
+      }
+    },
+    {
+      "source": "codex-native",
+      "path": "/home/vamsee/.codex/sessions/2026/02/28/rollout-2026-02-28T18-54-38-019ca6e3-e45c-7463-a0a9-80c9cc357ee7.jsonl",
+      "relaxed": true,
+      "strict": false,
+      "scripts": [
+        "scripts/agents/execute.sh",
+        "scripts/agents/plan.sh",
+        "scripts/agents/review.sh",
+        "scripts/agents/session.sh",
+        "scripts/review/submit-to-claude.sh",
+        "scripts/review/submit-to-codex.sh",
+        "scripts/work-queue/log-gate-event.sh",
+        "scripts/work-queue/verify-gate-evidence.py",
+        "scripts/workflow/refresh-orchestrator-timeline.sh"
+      ],
+      "skills": [
+        "clear",
+        "work"
+      ],
+      "tools_top": [],
+      "wrks_count": 380,
+      "gate_signals": {
+        "init": true,
+        "set_active_wrk": false,
+        "verify_gate_evidence": true,
+        "cross_review": true,
+        "claim_evidence": true,
+        "future_work": true,
+        "resource_intelligence": true,
+        "reclaim": false,
+        "close_or_archive": true
+      }
+    },
+    {
+      "source": "codex-native",
+      "path": "/home/vamsee/.codex/sessions/2026/03/01/rollout-2026-03-01T19-24-42-019cac25-c65c-76b3-ad7a-87298e239e36.jsonl",
+      "relaxed": true,
+      "strict": false,
+      "scripts": [
+        "scripts/work-queue/verify-gate-evidence.py"
+      ],
+      "skills": [
+        "clear",
+        "work"
+      ],
+      "tools_top": [],
+      "wrks_count": 11,
+      "gate_signals": {
+        "init": true,
+        "set_active_wrk": false,
+        "verify_gate_evidence": true,
+        "cross_review": true,
+        "claim_evidence": true,
+        "future_work": false,
+        "resource_intelligence": false,
+        "reclaim": false,
+        "close_or_archive": true
+      }
+    },
+    {
+      "source": "codex-native",
+      "path": "/home/vamsee/.codex/sessions/2026/03/01/rollout-2026-03-01T21-22-56-019cac92-0425-7cc3-9bcd-be3c548ba83b.jsonl",
+      "relaxed": true,
+      "strict": false,
+      "scripts": [
+        "scripts/agents/execute.sh",
+        "scripts/agents/plan.sh",
+        "scripts/agents/review.sh",
+        "scripts/agents/session.sh",
+        "scripts/agents/work.sh",
+        "scripts/review/submit-to-claude.sh",
+        "scripts/work-queue/log-gate-event.sh"
+      ],
+      "skills": [
+        "clear",
+        "work"
+      ],
+      "tools_top": [],
+      "wrks_count": 667,
+      "gate_signals": {
+        "init": true,
+        "set_active_wrk": false,
+        "verify_gate_evidence": true,
+        "cross_review": true,
+        "claim_evidence": true,
+        "future_work": false,
+        "resource_intelligence": true,
+        "reclaim": false,
+        "close_or_archive": true
+      }
+    },
+    {
+      "source": "codex-native",
+      "path": "/home/vamsee/.codex/sessions/2026/03/02/rollout-2026-03-02T13-53-22-019cb01c-c859-7c11-aabc-f3e37019f386.jsonl",
+      "relaxed": true,
+      "strict": false,
+      "scripts": [
+        "scripts/agents/session.sh",
+        "scripts/cron/comprehensive-learning-nightly.sh",
+        "scripts/legal/legal-sanity-scan.sh",
+        "scripts/review/submit-to-codex.sh",
+        "scripts/review/submit-to-gemini.sh",
+        "scripts/work-queue/verify-gate-evidence.py",
+        "scripts/work-queue/verify-log-presence.sh"
+      ],
+      "skills": [
+        "clear",
+        "comprehensive-learning",
+        "session-start",
+        "work"
+      ],
+      "tools_top": [],
+      "wrks_count": 256,
+      "gate_signals": {
+        "init": true,
+        "set_active_wrk": false,
+        "verify_gate_evidence": true,
+        "cross_review": true,
+        "claim_evidence": true,
+        "future_work": true,
+        "resource_intelligence": true,
+        "reclaim": true,
+        "close_or_archive": true
+      }
+    },
+    {
+      "source": "codex-native",
+      "path": "/home/vamsee/.codex/sessions/2026/03/02/rollout-2026-03-02T05-57-13-019cae68-db56-7721-9459-e565d1d95340.jsonl",
+      "relaxed": true,
+      "strict": false,
+      "scripts": [
+        "scripts/work-queue/archive-item.sh",
+        "scripts/work-queue/assign-workstations.py",
+        "scripts/work-queue/auto-sync-queue.sh",
+        "scripts/work-queue/close-item.sh",
+        "scripts/work-queue/generate-html-review.py",
+        "scripts/work-queue/verify-gate-evidence.py"
+      ],
+      "skills": [
+        "clear",
+        "save",
+        "work"
+      ],
+      "tools_top": [],
+      "wrks_count": 496,
+      "gate_signals": {
+        "init": true,
+        "set_active_wrk": false,
+        "verify_gate_evidence": true,
+        "cross_review": true,
+        "claim_evidence": true,
+        "future_work": true,
+        "resource_intelligence": true,
+        "reclaim": true,
+        "close_or_archive": true
+      }
+    },
+    {
+      "source": "gemini-native",
+      "path": "/home/vamsee/.gemini/tmp/workspace-hub/chats/session-2026-02-27T15-52-0f3923a2.json",
+      "relaxed": true,
+      "strict": false,
+      "scripts": [
+        "scripts/generate-index.py",
+        "scripts/work-queue/archive-item.sh",
+        "scripts/work-queue/assign-workstations.py",
+        "scripts/work-queue/close-item.sh",
+        "scripts/work-queue/generate-html-review.py",
+        "scripts/work-queue/remediation-report.py",
+        "scripts/work-queue/validate-queue-state.sh"
+      ],
+      "skills": [
+        "work"
+      ],
+      "tools_top": [],
+      "wrks_count": 378,
+      "gate_signals": {
+        "init": true,
+        "set_active_wrk": false,
+        "verify_gate_evidence": false,
+        "cross_review": true,
+        "claim_evidence": true,
+        "future_work": false,
+        "resource_intelligence": false,
+        "reclaim": false,
+        "close_or_archive": true
+      }
+    }
+  ]
+}

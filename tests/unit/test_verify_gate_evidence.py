@@ -203,3 +203,71 @@ integrated_repo_tests:
     ok, detail = mod.check_execute_integrated_tests_gate(tmp_path)
     assert ok is True
     assert "integrated_repo_tests=3" in detail
+
+
+def test_resource_intelligence_update_gate_requires_additions_or_rationale(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "resource-intelligence-update.yaml").write_text(
+        "additions: []\n",
+        encoding="utf-8",
+    )
+    ok, detail = mod.check_resource_intelligence_update_gate(tmp_path)
+    assert ok is False
+    assert "no_additions_rationale" in detail
+
+
+def test_user_review_close_gate_requires_approved_decision(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "user-review-close.yaml").write_text(
+        """
+reviewer: user
+reviewed_at: 2026-03-03T15:00:00Z
+decision: revise
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    ok, detail = mod.check_user_review_close_gate(tmp_path)
+    assert ok is False
+    assert "approved|accepted|passed" in detail
+
+
+def test_html_open_default_browser_gate_requires_all_stages(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "user-review-browser-open.yaml").write_text(
+        """
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-999/review.html
+    opened_at: 2026-03-03T10:00:00Z
+    reviewer: user
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-999/review.html
+    opened_at: 2026-03-03T11:00:00Z
+    reviewer: user
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    ok, detail = mod.check_html_open_default_browser_gate(
+        tmp_path, required=["plan_draft", "plan_final", "close_review"]
+    )
+    assert ok is False
+    assert "missing required stages" in detail
