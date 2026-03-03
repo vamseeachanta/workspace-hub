@@ -204,7 +204,50 @@ apis:
   summary: Real-time and historical wave/wind/metocean data from offshore buoys.
     Required for field development weather-window and operability analysis.
   keywords: [NDBC, wave, wind, metocean, buoy, offshore]
+tools:
+- id: pywasp
+  title: pyWAsP — Python API for WAsP Wind Resource Assessment
+  org: DTU Wind Energy / Ørsted
+  url: https://docs.wasp.dk/pywasp/latest/
+  install: pip install pywasp  # requires WAsP licence for full flow model
+  status: candidate
+  domain: wind-energy
+  summary: >
+    Python API for the WAsP flow model — industry-standard tool for wind resource
+    assessment and wind turbine siting. Core capabilities: terrain effects
+    (IBZ model: speed-up, turning, directional), wind climate generalisation and
+    downscaling, AEP estimation with wake effects (via PyWake), losses, and
+    uncertainty quantification. Built on WindKit (xarray-native data structures).
+  keywords: [WAsP, wind resource, AEP, wake effects, terrain, IBZ, DTU, PyWake,
+             wind atlas, wind siting, xarray, WindKit]
+  relevance_to_ecosystem:
+    - Wind energy AEP — direct input to field-development economics (NPV/MIRR)
+    - Offshore wind Tier 3 GTM targets (Orsted, Equinor, Dominion CVOW) use WAsP
+    - Terrain/metocean interface with NOAA NDBC buoy data (planned integration)
+    - Pairs with worldenergydata.production.forecast (Arps) for hybrid energy models
+  references:
+    - title: "Getting started: Working with xarray and WindKit"
+      url: https://docs.wasp.dk/pywasp/latest/getting_started/working_with_xarray_and_windkit.html
+      notes: >
+        WindKit data structure hierarchy — spatial formats (point, raster, cuboid),
+        wind climate types (TSWC/BWC/WWC/GWC), topography variables
+        (elevation, roughness, land cover), CRS handling. Read before Phase 2 of
+        eval (WRK-688).
+  integration_notes: >
+    WAsP GUI users can migrate to pyWAsP for automation. WindKit xarray structures
+    are compatible with worldenergydata's planned xarray-based metocean module.
+    PyWake is the companion wake model (separate pip package, open-source).
+  added: 2026-03-03
+
 gaps:
+- id: wind-resource-assessment
+  title: Wind resource assessment module (pyWAsP / WindKit integration)
+  domain: wind-energy
+  priority: P2
+  notes: >
+    pyWAsP (https://docs.wasp.dk/pywasp/latest/) identified as canonical tool.
+    Evaluate integration: terrain effects, AEP estimation, PyWake wake model.
+    See WRK-682 for evaluation item.
 - id: eia-weekly-feed
   title: EIA weekly crude/gas production update ingestion
   domain: energy-economics
