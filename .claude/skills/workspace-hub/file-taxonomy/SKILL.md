@@ -183,3 +183,60 @@ NOT `tests/modules/<domain>/` — the `modules/` wrapper in tests is redundant.
 - `scripts/agents/tests/test-*.sh` — harness tests for workflow-guards.sh, execute.sh routing
 - Run with `bash scripts/agents/tests/test-name.sh`; exit 0 = pass, 1 = fail
 - NOT placed in `tests/` (which is for Python packages); shell scripts stay under their `scripts/` home
+
+---
+
+## AI Agent Log & Session File Locations
+
+Consult this section before searching for AI session data or writing log analysis scripts.
+See `/file-structure-skills-map` for the full skill cluster context.
+
+### Native Session Stores (gitignored — local to each machine)
+
+| Agent | Path | Format | Notes |
+|-------|------|--------|-------|
+| Claude | `~/.claude/projects/<encoded-path>/*.jsonl` | JSONL | Full session transcripts; managed by Claude CLI |
+| Codex | `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl` | JSONL | ~302 sessions on ace-linux-1 (2026-03-03) |
+| Gemini | `~/.gemini/tmp/<project>/chats/session-*.json` | JSON | ~772 sessions on ace-linux-1 (2026-03-03) |
+
+`<encoded-path>` = repo path with `/` replaced by `-` (e.g. `-mnt-local-analysis-workspace-hub`).
+
+### Orchestrator Logs (`logs/orchestrator/` — gitignored per-machine)
+
+Written by hooks and cross-review scripts; **not** native session transcripts.
+
+| Path | Written by | Format |
+|------|-----------|--------|
+| `logs/orchestrator/claude/session_YYYYMMDD.jsonl` | Claude pre-tool/post-tool hooks | JSONL |
+| `logs/orchestrator/codex/*.log` | `scripts/review/submit-to-codex.sh` | text |
+| `logs/orchestrator/gemini/*.log` | `scripts/review/submit-to-gemini.sh` | text |
+
+Structure: `logs/orchestrator/{claude,codex,gemini}/` — one dir per agent.
+
+### Derived State (git-tracked — crosses machines via commit)
+
+| Path | Written by | Format |
+|------|-----------|--------|
+| `.claude/state/session-signals/*.jsonl` | session-end hook | JSONL |
+| `.claude/state/session-analysis/` | comprehensive-learning Phases 1–9 | Markdown |
+| `.claude/state/session-analysis/compilation-YYYYMMDD.md` | Phase 10a (ace-linux-1 only) | Markdown |
+| `.claude/state/skill-scores.yaml` | comprehensive-learning Phase 7 | YAML |
+| `.claude/state/candidates/` | comprehensive-learning Phase 6 | YAML |
+| `scripts/review/results/` | `submit-to-{codex,gemini}.sh` | text |
+
+### Key Distinction
+
+```
+native stores   → raw AI session transcripts (local machine only, gitignored)
+orchestrator/   → cross-review invocation logs (sparse — only on cross-review runs)
+derived state   → processed analysis output (git-tracked, crosses machines)
+```
+
+### acma-ansys05 (Windows)
+
+Paths follow the same convention but under `%USERPROFILE%` / `C:\Users\<user>\`:
+- Claude: `%USERPROFILE%\.claude\projects\<encoded-path>\*.jsonl`
+- Codex: `%USERPROFILE%\.codex\sessions\YYYY\MM\DD\rollout-*.jsonl`
+- Gemini: `%USERPROFILE%\.gemini\tmp\<project>\chats\session-*.json`
+
+Use Git Bash to apply Linux-style path patterns on acma-ansys05.

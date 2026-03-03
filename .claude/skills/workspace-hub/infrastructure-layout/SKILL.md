@@ -7,7 +7,7 @@ invocation: /infrastructure-layout
 applies-to: [claude, codex, gemini]
 capabilities: []
 requires: []
-see_also: [repo-structure, file-taxonomy]
+see_also: [repo-structure, file-taxonomy, clean-code]
 ---
 
 # Infrastructure Layout — Canonical Internal Package Structure
