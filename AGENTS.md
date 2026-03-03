@@ -17,4 +17,4 @@ Contract-Version: 1.0.1 | Last-Updated: 2026-02-21 | Canonical source for all AI
 - **Plans**: Route A/B in WRK body; Route C in `specs/wrk/WRK-<id>/`; templates in `specs/templates/`
 - **Reviews**: multi-provider; verdicts APPROVE|MINOR|MAJOR; resolve MAJOR before completion; peer logs: `logs/orchestrator/<agent>/`
 - **Adapters**: CLAUDE.md/CODEX.md/GEMINI.md are adapters; AGENTS.md canonical; no override weakens gates
-- **Dev**: repo tooling only (`uv` for Python); skills in `.claude/skills/` with child-repo symlinks
+- **Dev**: `uv run` for ALL Python execution — never bare `python3` or `pip install`; see `.claude/rules/python-runtime.md` for per-repo commands; skills in `.claude/skills/`

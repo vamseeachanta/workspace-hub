@@ -14,7 +14,7 @@
 ## Quick Reference
 
 - Skills: `/skills` — on-demand only | Session start: `/session-start` before any work request
-- Git: `.claude/rules/git-workflow.md` | Plans: `specs/modules/` | Templates: `specs/templates/`
+- Git: `.claude/rules/git-workflow.md` | Python: `.claude/rules/python-runtime.md` (uv always) | Plans: `specs/modules/`
 - Cross-review (MANDATORY): `scripts/review/cross-review.sh <file> all` — Codex is hard gate
 - Context: Global 2KB + Workspace 4KB + Project 8KB + Local 2KB = 16KB max
 
