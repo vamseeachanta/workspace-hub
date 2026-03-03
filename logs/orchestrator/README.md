@@ -23,11 +23,25 @@ logs/orchestrator/
 | Codex  | `submit-to-codex.sh`  | Per invocation | text   |
 | Gemini | `submit-to-gemini.sh` | Per invocation | text   |
 
+## Native Session Stores (per-agent, outside repo)
+
+Each AI CLI also maintains its own native session store. These are the primary source
+for all AI activity (not just cross-reviews):
+
+| Agent  | Native path                                              | Format | Notes |
+|--------|----------------------------------------------------------|--------|-------|
+| Claude | `logs/orchestrator/claude/` (this repo, hook-written)    | JSONL  | Dual-write with `.claude/state/sessions/` |
+| Codex  | `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`           | JSONL  | All Codex CLI invocations |
+| Gemini | `~/.gemini/tmp/<project>/chats/session-*.json`           | JSON   | All Gemini CLI sessions for this project |
+
+`logs/orchestrator/codex/` and `logs/orchestrator/gemini/` only contain cross-review
+invocations (written by `submit-to-codex.sh` / `submit-to-gemini.sh`).
+
 ## Notes
 
 - Raw content is **gitignored** (`logs/` excluded); this README is tracked via negation rule
 - Claude JSONL mirrors `.claude/state/sessions/` (dual-write; same format)
-- Codex/Gemini logs mirror `scripts/review/results/` output (tee; same content)
+- Codex/Gemini orchestrator logs mirror `scripts/review/results/` output (tee; same content)
 - Local-machine only — not synced across machines
 - Any agent can read peer logs from `logs/orchestrator/<agent>/` for cross-session context
 

@@ -77,12 +77,15 @@ Invoke `/insights`. Sources:
 - `.claude/state/cc-insights/*.json`
 - `.claude/state/sessions/*.json`
 - `.claude/state/daily-summaries/*.md`
-- `logs/orchestrator/claude/session_YYYYMMDD.jsonl`  (raw tool-call stream — agent loop, file activity)
-- `logs/orchestrator/codex/WRK-*.log`               (cross-review verdicts per WRK)
-- `logs/orchestrator/gemini/WRK-*.log`              (cross-review verdicts per WRK)
+- `logs/orchestrator/claude/session_YYYYMMDD.jsonl`          (hook-written tool-call stream)
+- `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`             (native Codex CLI sessions)
+- `~/.gemini/tmp/<project>/chats/session-*.json`             (native Gemini CLI sessions)
+- `logs/orchestrator/codex/WRK-*.log`                        (cross-review verdicts — populated by submit-to-codex.sh)
+- `logs/orchestrator/gemini/WRK-*.log`                       (cross-review verdicts — populated by submit-to-gemini.sh)
 
-Note: `logs/orchestrator/` sources supplement `session-signals/*.jsonl` — they do not replace it.
-Use for tool-call pattern checks (agent loop detection, bash-file-ops anti-pattern).
+Note: native session dirs (`~/.codex/`, `~/.gemini/`) are always populated when the CLIs are used
+and are the primary source for AI activity. Orchestrator dirs contain only cross-review invocations.
+Use orchestrator logs for WRK-specific verdicts; use native logs for broader usage pattern analysis.
 
 Extract: skill usage frequency, repeated tool call patterns, task success/failure
 signals, user correction events, **engineering audit signals** (wall_thickness, 
