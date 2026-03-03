@@ -1,0 +1,31 @@
+wrk_id: WRK-689
+executed_at: 2026-03-03T00:00:00Z
+machine: ace-linux-1
+tdd_note: >
+  Docs-only WRK (skill files + knowledge map markdown). No Python modules changed.
+  Verification via file existence checks and line-count assertions below.
+integrated_repo_tests:
+  - name: file-taxonomy SKILL.md within 400-line limit
+    scope: repo
+    result: pass
+    command: bash -c "wc -l .claude/skills/workspace-hub/file-taxonomy/SKILL.md | awk '{print $1}'"
+    artifact_ref: .claude/work-queue/assets/WRK-689/evidence/execute.yaml
+    notes: "242 lines — within 400-line hard limit; AI log section added (57 lines)"
+  - name: file-structure-skills-map.md created and valid
+    scope: repo
+    result: pass
+    command: "test -f .claude/docs/file-structure-skills-map.md && echo exists"
+    artifact_ref: .claude/work-queue/assets/WRK-689/evidence/execute.yaml
+    notes: "99 lines; scenario lookup, coverage gaps, version history present"
+  - name: infrastructure-layout see_also includes clean-code
+    scope: repo
+    result: pass
+    command: "grep 'see_also' .claude/skills/workspace-hub/infrastructure-layout/SKILL.md"
+    artifact_ref: .claude/work-queue/assets/WRK-689/evidence/execute.yaml
+    notes: "see_also: [repo-structure, file-taxonomy, clean-code] confirmed"
+  - name: INDEX.md includes file-structure skills cluster section
+    scope: repo
+    result: pass
+    command: "grep 'File Structure Skills Cluster' .claude/skills/workspace-hub/INDEX.md"
+    artifact_ref: .claude/work-queue/assets/WRK-689/evidence/execute.yaml
+    notes: "Cluster diagram and scenario table present; versions updated to current"
