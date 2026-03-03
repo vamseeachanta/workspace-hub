@@ -1,0 +1,34 @@
+wrk_id: WRK-687
+executed_at: 2026-03-03T00:00:00Z
+machine: ace-linux-1
+integrated_repo_tests:
+  - name: test_wrk687_lifecycle.sh Stage A — log write and verify
+    scope: repo
+    result: pass
+    command: bash tests/test_wrk687_lifecycle.sh
+    artifact_ref: .claude/work-queue/assets/WRK-687/test-results.md
+    notes: Fixture JSONL created; verify-log-presence.sh exits 0; valid JSON 2/2
+  - name: test_wrk687_lifecycle.sh Stage B — session-analysis dry run
+    scope: repo
+    result: pass
+    command: bash tests/test_wrk687_lifecycle.sh
+    artifact_ref: .claude/work-queue/assets/WRK-687/test-results.md
+    notes: Summary file written; skill-scores.yaml present
+  - name: test_wrk687_lifecycle.sh Stage C — commit step dry run
+    scope: repo
+    result: pass
+    command: bash tests/test_wrk687_lifecycle.sh
+    artifact_ref: .claude/work-queue/assets/WRK-687/test-results.md
+    notes: git commit --allow-empty --dry-run exits without fatal error
+  - name: test_wrk687_lifecycle.sh Stage D — compilation (ace-linux-1 only)
+    scope: repo
+    result: pass
+    command: bash tests/test_wrk687_lifecycle.sh
+    artifact_ref: .claude/work-queue/assets/WRK-687/test-results.md
+    notes: Fixture signal file created; compilation report written to session-analysis/
+  - name: verify-log-presence.sh full run (ace-linux-1)
+    scope: repo
+    result: pass
+    command: bash scripts/work-queue/verify-log-presence.sh
+    artifact_ref: .claude/work-queue/assets/WRK-687/test-results.md
+    notes: claude 57/57 valid JSON; codex native 302 sessions; gemini native 772 sessions
