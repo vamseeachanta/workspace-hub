@@ -18,6 +18,13 @@ REQUIRED_KEYS = (
     "questions_for_author",
 )
 VALID_VERDICTS = frozenset(("APPROVE", "REQUEST_CHANGES", "REJECT"))
+# Some providers (Codex) use MAJOR/MINOR instead of REQUEST_CHANGES/APPROVE
+_VERDICT_NORMALIZE = {
+    "MAJOR": "REQUEST_CHANGES",
+    "MINOR": "APPROVE",
+    "NO CHANGES": "APPROVE",
+    "NO_CHANGES": "APPROVE",
+}
 
 
 def _extract_json_blob(text: str) -> dict:
@@ -81,8 +88,10 @@ def _coerce_review(payload: dict) -> dict:
             review[key] = str(value).strip()
             if not review[key]:
                 raise ValueError(f"Empty value for {key}")
-            if key == "verdict" and review[key] not in VALID_VERDICTS:
-                raise ValueError(f"Invalid verdict: {review[key]}")
+            if key == "verdict":
+                review[key] = _VERDICT_NORMALIZE.get(review[key], review[key])
+                if review[key] not in VALID_VERDICTS:
+                    raise ValueError(f"Invalid verdict: {review[key]}")
     return review
 
 
