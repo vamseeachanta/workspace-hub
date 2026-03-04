@@ -1,0 +1,26 @@
+### Verdict: REQUEST_CHANGES
+
+### Summary
+The governance report demonstrates strong coverage for established signals (TDD, cross-review, close/archive all at 14/14) but contains a critical data inconsistency between strict session counts and strict gate coverage ratios, two mandatory stages at ~7% adoption with no remediation plan, and missing acceptance criteria thresholds. The report cannot be accepted as a closure artifact until the numeric contradiction is resolved and the FAIL-grade gaps have assigned corrective actions.
+
+### Issues Found
+- [P1] Critical: Data inconsistency — the strict orchestrator session count table identifies exactly 1 strict session for the entire week (2026-03-01, WRK-659), yet the gate-pass signal coverage table consistently reports '7/7' for strict coverage across most stages. 1 session cannot yield 7/7 coverage; the two tables appear to use different session pools or different definitions of 'strict'. This undermines confidence in the entire metric set.
+- [P1] Critical: Two mandatory stages — resource_intelligence_update (1/14 relaxed, 1/7 strict) and user_review_close (1/14 relaxed, 1/7 strict) — are both rated FAIL with 'Major gap' but the document provides no remediation plan, no owner, and no deadline. Leaving mandatory stages at ~7% without a corrective action constitutes a governance failure that the report itself flags but does not address.
+- [P2] Important: WRK reference counts appear inflated and unexplained. Codex alone references 673 distinct WRKs on 2026-02-26, nearly double the total active queue size of ~413 items. No methodology note clarifies whether this counts every WRK-NNN string occurrence in session text (including docs and code read-backs) or only active task activation references. If the former, the metric is misleading.
+- [P2] Important: No formal pass/fail thresholds are defined. PASS, WARN, and FAIL designations are applied inconsistently — verify_gate_evidence at 10/14 relaxed earns PASS while artifact_generation at 7/14 earns WARN, with no stated rule distinguishing them. Reproducible governance requires an explicit threshold table.
+- [P2] Important: The 'Next Work Inside WRK-690' section contains 3 informal bullets with no owners, deadlines, or mapped WRK-* items. This violates the WRK gate principle that every multi-step task must map to a WRK item before execution.
+- [P3] Minor: The known close-item.sh bug (uses bare python3 → PyYAML unavailable → integrated test gate silently fails, documented in MEMORY.md) is not referenced in this governance report despite directly affecting the close lifecycle stage being measured.
+- [P3] Minor: The html_open_default_browser lag (7/14 relaxed, 4/7 strict) is noted as 'Enforce browser-open' in three separate rows but no concrete enforcement mechanism — pre-close hook, script guard, or CI check — is proposed or referenced.
+
+### Suggestions
+- Add a formal threshold table (e.g., ≥12/14 = PASS, 8–11/14 = WARN, <8/14 = FAIL) so compliance designations are objective, reproducible, and auditable across weekly rebuilds.
+- Create dedicated WRK items for the two FAIL stages (resource_intelligence_update and user_review_close) with explicit owners, 2-week remediation targets, and a signal emitter checklist that tells agents exactly when and how to emit each signal.
+- Resolve the strict session count contradiction before publishing this as a closure artifact — either fix the session detection logic or add a methodology note clarifying why the orchestrator-count definition differs from the gate-coverage definition.
+- Add a one-sentence methodology note on WRK reference counting to clarify whether the daily counts reflect active task activations or all WRK-NNN string occurrences in session text, and consider filtering to activation-context references only.
+- Add a fix or workaround note for close-item.sh (replace bare python3 with uv run --no-project python) so the integrated test gate is reliable for the close stage being enforced here.
+- Promote the browser-open enforcement from a narrative note to an actionable script guard — e.g., a pre-close hook in verify-gate-evidence.py that checks for html_open_default_browser evidence before allowing stage 17 to advance.
+
+### Questions for Author
+- How can strict gate coverage show '7/7' for most signals when the strict orchestrator session count table identifies only 1 strict session for the entire 7-day window? Are 'strict sessions' for signal measurement and 'strict sessions' for the orchestrator count using different definitions or different source files?
+- The WRK reference counts show Codex referencing 673 distinct WRKs on 2026-02-26 alone — does this count every WRK-NNN string occurrence found anywhere in session log text (including file reads and doc references), or is it scoped to active task activation context? The distinction is critical for interpreting the Daily WRK Coverage table.
+- The Lifecycle Enforcement Progress table marks 'WRK-690 close-phase gate run' as Done with all gates passed, yet the Next Work section says 'Execute WRK-690 close/archive path and confirm stage orders 18/19 progression.' Is WRK-690 currently closed, in-progress, or pending close? The conflicting signals make it unclear whether this report itself is a pre-close or post-close artifact.
