@@ -233,6 +233,41 @@
             </tbody>
         </table>
 
+        <h3>Stage-to-Skill Requirements (Key + Mandatory)</h3>
+        <p>Canonical source for mandatory lifecycle behavior: <code>.claude/skills/workspace-hub/workflow-gatepass/SKILL.md</code>.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Stage</th>
+                    <th>Key Skills</th>
+                    <th>Mandatory Skills</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>Capture</td><td><code>work-queue</code>, <code>work-queue-workflow</code></td><td><code>work-queue-workflow</code></td></tr>
+                <tr><td>2</td><td>Resource Intelligence</td><td><code>resource-intelligence</code>, <code>workflow-gatepass</code></td><td><code>resource-intelligence</code></td></tr>
+                <tr><td>3</td><td>Triage</td><td><code>work-queue</code>, <code>workflow-gatepass</code></td><td><code>work-queue-workflow</code></td></tr>
+                <tr><td>4</td><td>Plan Draft</td><td><code>work-queue</code>, <code>workflow-gatepass</code></td><td><code>work-queue-workflow</code></td></tr>
+                <tr><td>5</td><td>User Review - Plan (Draft)</td><td><code>workflow-gatepass</code>, <code>html-report-verify</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>6</td><td>Cross-Review</td><td><code>workflow-gatepass</code>, <code>work-queue</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>7</td><td>User Review - Plan (Final)</td><td><code>workflow-gatepass</code>, <code>html-report-verify</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>8</td><td>Claim / Activation</td><td><code>work-queue</code>, <code>workflow-gatepass</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>9</td><td>Work-Queue Routing Skill</td><td><code>work-queue-workflow</code>, <code>workflow-gatepass</code></td><td><code>work-queue-workflow</code></td></tr>
+                <tr><td>10</td><td>Work Execution</td><td><code>work-queue</code>, <code>workflow-gatepass</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>11</td><td>Artifact Generation</td><td><code>interactive-report-generator</code>, <code>workflow-gatepass</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>12</td><td>TDD / Eval</td><td><code>wrk-lifecycle-testpack</code>, <code>workflow-gatepass</code></td><td><code>wrk-lifecycle-testpack</code></td></tr>
+                <tr><td>13</td><td>Agent Cross-Review</td><td><code>workflow-gatepass</code>, <code>work-queue</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>14</td><td>Verify Gate Evidence</td><td><code>workflow-gatepass</code>, <code>wrk-lifecycle-testpack</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>15</td><td>Future Work Synthesis</td><td><code>workflow-gatepass</code>, <code>work-queue</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>16</td><td>Resource Intelligence Update</td><td><code>resource-intelligence</code>, <code>workflow-gatepass</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>17</td><td>User Review - Implementation</td><td><code>workflow-gatepass</code>, <code>html-report-verify</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>18</td><td>Reclaim (Conditional)</td><td><code>workflow-gatepass</code>, <code>save</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>19</td><td>Close</td><td><code>workflow-gatepass</code>, <code>wrk-lifecycle-testpack</code></td><td><code>workflow-gatepass</code></td></tr>
+                <tr><td>20</td><td>Archive</td><td><code>workflow-gatepass</code>, <code>work-queue</code></td><td><code>workflow-gatepass</code></td></tr>
+            </tbody>
+        </table>
+
         <h3>Gate-pass signal coverage</h3>
         <table>
             <thead>

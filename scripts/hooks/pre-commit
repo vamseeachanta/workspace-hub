@@ -9,6 +9,7 @@ bash "${REPO_ROOT}/scripts/review/check-stop-hooks.sh" || true
 STAGED_FILES="$(git diff --cached --name-only --diff-filter=ACMR || true)"
 [[ -z "$STAGED_FILES" ]] && exit 0
 
+needs_skills_summary_check=0
 needs_resource_intelligence_checks=0
 declare -A wrk_ids=()
 
@@ -20,7 +21,17 @@ while IFS= read -r file; do
     needs_resource_intelligence_checks=1
   fi
 
+  if [[ "$file" =~ ^\.claude/skills/.+/SKILL\.md$ || "$file" =~ ^\.claude/skills/.+/INDEX\.md$ ]]; then
+    needs_skills_summary_check=1
+  fi
+
   case "$file" in
+    .claude/skills/README.md|\
+    .claude/skills/SKILLS_SUMMARY.md|\
+    .claude/skills/SKILLS_SUMMARY.html|\
+    scripts/skills/generate-skill-summary.py)
+      needs_skills_summary_check=1
+      ;;
     .claude/skills/workspace-hub/resource-intelligence/*|\
     data/document-index/mounted-source-registry.yaml|\
     data/document-index/resource-intelligence-maturity.yaml|\
@@ -29,6 +40,12 @@ while IFS= read -r file; do
       ;;
   esac
 done <<< "$STAGED_FILES"
+
+if [[ "$needs_skills_summary_check" -eq 1 ]]; then
+  echo "Running skills summary sync check..."
+  UV_CACHE_DIR="${REPO_ROOT}/.uv-cache" \
+    uv run --no-project python "${REPO_ROOT}/scripts/skills/generate-skill-summary.py" --check
+fi
 
 if [[ "$needs_resource_intelligence_checks" -eq 1 ]]; then
   echo "Running Resource Intelligence pre-commit checks..."

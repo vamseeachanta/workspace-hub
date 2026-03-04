@@ -6,9 +6,10 @@
 1. Every task maps to WRK-* in `.claude/work-queue/`
 2. Plan + explicit approval before implementation
 3. Route B/C requires cross-review before completion
-4. Code must pass `scripts/legal/legal-sanity-scan.sh`; secrets via env vars; TDD mandatory
-5. No client identifiers in code — see `.claude/rules/legal-compliance.md` and `.legal-deny-list.yaml`
-6. Input validation, parameterized queries, no hardcoded secrets — see `.claude/rules/security.md`
+4. Workflow lifecycle skills are mandatory: `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` + `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md`
+5. Code must pass `scripts/legal/legal-sanity-scan.sh`; secrets via env vars; TDD mandatory
+6. No client identifiers in code — see `.claude/rules/legal-compliance.md` and `.legal-deny-list.yaml`
+7. Input validation, parameterized queries, no hardcoded secrets — see `.claude/rules/security.md`
 
 ## Provider Profile
 **Strengths**: research + content tasks — data analysis, summarization, documentation, large context

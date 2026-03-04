@@ -128,6 +128,7 @@ uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --summary-on
 - Address critical issues first (missing frontmatter, invalid YAML)
 - Use `--severity warning` to focus on actionable improvements
 - Run `--category` filters for focused audits of specific skill areas
+- If skills or index markdown changes, regenerate derived skills summary artifacts: `uv run --no-project python scripts/skills/generate-skill-summary.py`
 
 ## Error Handling
 
