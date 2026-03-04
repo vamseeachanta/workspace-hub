@@ -53,8 +53,11 @@ if [[ -z "$COMMIT_SHA" && -z "$CONTENT_FILE" ]]; then
   exit 1
 fi
 
+# GEMINI_CMD can be overridden in tests to inject a non-existent command name
+GEMINI_CMD="${GEMINI_CMD:-gemini}"
+
 # Check if gemini CLI is available
-if ! command -v gemini &>/dev/null; then
+if ! command -v "$GEMINI_CMD" &>/dev/null; then
   echo "# Gemini CLI not found"
   echo "# Install: npm install -g @anthropic/gemini or pip install google-generativeai"
   echo ""
@@ -136,7 +139,7 @@ run_gemini_once() {
   if command -v timeout >/dev/null 2>&1; then
     (
       cd "$run_dir"
-      printf '%s\n' "$INPUT_TEXT" | timeout "$GEMINI_TIMEOUT_SECONDS" gemini \
+      printf '%s\n' "$INPUT_TEXT" | timeout "$GEMINI_TIMEOUT_SECONDS" "$GEMINI_CMD" \
         -p "$PROMPT_TEXT" \
         --yolo \
         --output-format json >"$raw_file" 2>"$err_file"
@@ -144,7 +147,7 @@ run_gemini_once() {
   elif command -v perl >/dev/null 2>&1; then
     (
       cd "$run_dir"
-      printf '%s\n' "$INPUT_TEXT" | perl -e 'alarm shift; exec @ARGV' "$GEMINI_TIMEOUT_SECONDS" gemini \
+      printf '%s\n' "$INPUT_TEXT" | perl -e 'alarm shift; exec @ARGV' "$GEMINI_TIMEOUT_SECONDS" "$GEMINI_CMD" \
         -p "$PROMPT_TEXT" \
         --yolo \
         --output-format json >"$raw_file" 2>"$err_file"
@@ -152,7 +155,7 @@ run_gemini_once() {
   else
     (
       cd "$run_dir"
-      printf '%s\n' "$INPUT_TEXT" | gemini \
+      printf '%s\n' "$INPUT_TEXT" | "$GEMINI_CMD" \
         -p "$PROMPT_TEXT" \
         --yolo \
         --output-format json >"$raw_file" 2>"$err_file"

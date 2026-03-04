@@ -5,6 +5,8 @@
 #   submit-to-claude.sh --commit <sha> [--prompt <prompt>]
 set -euo pipefail
 
+# CLAUDE_CMD can be overridden in tests to inject a non-existent command name
+CLAUDE_CMD="${CLAUDE_CMD:-claude}"
 # setsid provides process-group isolation — optional, degrades gracefully
 # SETSID_CMD can be overridden in tests to inject a non-existent path
 SETSID_CMD="${SETSID_CMD:-setsid}"
@@ -65,7 +67,7 @@ if [[ -z "$COMMIT_SHA" && -z "$CONTENT_FILE" ]]; then
   exit 1
 fi
 
-if ! command -v claude &>/dev/null; then
+if ! command -v "$CLAUDE_CMD" &>/dev/null; then
   echo "# Claude CLI not found"
   echo "# Install: npm install -g @anthropic-ai/claude-code"
   echo ""
@@ -159,7 +161,7 @@ run_claude_once() {
   : > "$err_file"
   local _exit_code=0
   if command -v timeout >/dev/null 2>&1; then
-    ${SETSID_CMD:+"$SETSID_CMD"} timeout "$CLAUDE_TIMEOUT_SECONDS" claude \
+    ${SETSID_CMD:+"$SETSID_CMD"} timeout "$CLAUDE_TIMEOUT_SECONDS" "$CLAUDE_CMD" \
       -p "$SHORT_PROMPT" \
       --allowedTools 'Read' \
       --add-dir "$run_dir" \
@@ -170,7 +172,7 @@ run_claude_once() {
       --json-schema "$CLAUDE_SCHEMA" \
       --system-prompt "$SYSTEM_PROMPT" >"$raw_file" 2>"$err_file" &
   elif command -v perl >/dev/null 2>&1; then
-    ${SETSID_CMD:+"$SETSID_CMD"} perl -e 'alarm shift; exec @ARGV' "$CLAUDE_TIMEOUT_SECONDS" claude \
+    ${SETSID_CMD:+"$SETSID_CMD"} perl -e 'alarm shift; exec @ARGV' "$CLAUDE_TIMEOUT_SECONDS" "$CLAUDE_CMD" \
       -p "$SHORT_PROMPT" \
       --allowedTools 'Read' \
       --add-dir "$run_dir" \
@@ -181,7 +183,7 @@ run_claude_once() {
       --json-schema "$CLAUDE_SCHEMA" \
       --system-prompt "$SYSTEM_PROMPT" >"$raw_file" 2>"$err_file" &
   else
-    ${SETSID_CMD:+"$SETSID_CMD"} claude \
+    ${SETSID_CMD:+"$SETSID_CMD"} "$CLAUDE_CMD" \
       -p "$SHORT_PROMPT" \
       --allowedTools 'Read' \
       --add-dir "$run_dir" \
@@ -213,13 +215,13 @@ if command -v getent >/dev/null 2>&1; then
   if ! getent hosts api.anthropic.com >/dev/null 2>&1; then
     echo "WARN: DNS resolution failed for api.anthropic.com — skipping claude review" >&2
     echo "# Claude review skipped — network unavailable (EAI_AGAIN)"
-    exit 3
+    exit 0
   fi
 elif command -v ping >/dev/null 2>&1; then
   if ! ping -c 1 -W 2 api.anthropic.com >/dev/null 2>&1; then
     echo "WARN: DNS resolution failed for api.anthropic.com — skipping claude review" >&2
     echo "# Claude review skipped — network unavailable (EAI_AGAIN)"
-    exit 3
+    exit 0
   fi
 fi
 
