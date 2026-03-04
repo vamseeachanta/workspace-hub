@@ -2,3 +2,6 @@ recommendations:
   - title: Add integration tests for claim/close/archive path contracts
     required_for_signoff: true
     wrk_id: WRK-701
+    disposition: spun-off-new
+    status: pending
+    captured: true

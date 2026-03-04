@@ -101,7 +101,11 @@ Rules:
 
 ## Required Skill Chain (Session Start to Finish)
 
-Every WRK execution must follow this sequence:
+Every WRK execution must follow the canonical 20-stage lifecycle defined in
+`workflow-gatepass`.
+
+The sequence below is a **minimum guard sequence** only (not a replacement for
+the 20-stage contract):
 
 1. `session-start`
 2. `work-queue` (`/work` select/create WRK)
@@ -116,6 +120,8 @@ Every WRK execution must follow this sequence:
 11. Archive
 
 No implementation work is allowed before step 5.
+Inferred signals are not measured signals; only explicit stage signals emitted by
+scripts/logging count for compliance reporting.
 
 ## Outcome Feedback Loop (WRK-690)
 
@@ -179,6 +185,7 @@ flowchart TD
 ### 5. User Review - Plan (Draft)
 - User reviews draft HTML before multi-agent review.
 - Mandatory: open completed draft HTML in default browser (`xdg-open <html-path>`).
+- Mandatory: push draft review artifacts to `origin` and log publish evidence.
 
 ### 6. Cross-Review
 - Multi-agent review (Claude, Codex, Gemini) for Route B/C.
@@ -187,6 +194,7 @@ flowchart TD
 ### 7. User Review - Plan (Final)
 - User reviews final plan HTML and approves.
 - Mandatory: open completed final HTML in default browser (`xdg-open <html-path>`).
+- Mandatory: push final review artifacts to `origin` and log publish evidence.
 
 ### 8. Claim / Activation
 - Check unblocked and agent capability.
@@ -223,6 +231,7 @@ flowchart TD
 ### 17. User Review - Implementation
 - User reviews closure package (future work + resource updates + completion state).
 - Mandatory: open completed close HTML in default browser (`xdg-open <html-path>`).
+- Mandatory: push implementation review artifacts to `origin` and log publish evidence.
 
 ### 18. Reclaim
 - Trigger reclaim when claim/session continuity is broken.
@@ -230,6 +239,7 @@ flowchart TD
 
 ### 19. Close
 - Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]`.
+- Close script auto-generates `assets/WRK-NNN/workflow-final-review.html` when `--html-output` is not passed.
 - Require gate evidence verification, integrated/repo tests (3-5 pass records), user-review evidence, and `stage_evidence_ref` (stages 1-20).
 
 ### 20. Archive
@@ -244,9 +254,9 @@ flowchart TD
 | 2. Resource Intelligence | `resource-intelligence` | `scripts/init-resource-pack.sh` (as needed) | `resource-intelligence.yaml` |
 | 3. Triage | `/work` triage step | `scripts/work-queue/assign-workstations.py` | WRK frontmatter triage fields |
 | 4. Plan Draft | `plan` flow | `scripts/agents/plan.sh` | Draft plan + HTML artifact |
-| 5. User Review - Plan (Draft) | user review gate | `scripts/work-queue/log-user-review-browser-open.sh` | default browser open (`xdg-open`) + review artifact |
+| 5. User Review - Plan (Draft) | user review gate | `scripts/work-queue/log-user-review-browser-open.sh`, `scripts/work-queue/log-user-review-publish.sh` | default browser open (`xdg-open`) + origin publish evidence |
 | 6. Cross-Review | `cross-review` flow | `scripts/review/cross-review.sh`, `submit-to-*.sh` | Multi-provider review outputs |
-| 7. User Review - Plan (Final) | user review gate | `scripts/work-queue/log-user-review-browser-open.sh` | default browser open (`xdg-open`) + final review artifact |
+| 7. User Review - Plan (Final) | user review gate | `scripts/work-queue/log-user-review-browser-open.sh`, `scripts/work-queue/log-user-review-publish.sh` | default browser open (`xdg-open`) + origin publish evidence |
 | 8. Claim / Activation | claim gate | `scripts/work-queue/claim-item.sh`, `set-active-wrk.sh` | `claim.yaml` + `activation.yaml` + active WRK state |
 | 9. Work-Queue Routing Skill | `/work` | `scripts/agents/work.sh` | Routing evidence in logs |
 | 10. Work Execution | execute flow | `scripts/agents/execute.sh` | Execution changes + examples |
@@ -256,9 +266,9 @@ flowchart TD
 | 14. Verify Gate Evidence | gate verifier | `scripts/work-queue/verify-gate-evidence.py` | PASS/WARN/FAIL gate ledger + `gate-evidence-summary.{md,json}` |
 | 15. Future Work Synthesis | future-work planning | n/a | `future-work.yaml` / follow-up WRKs |
 | 16. Resource Intelligence Update | resource update | n/a | `resource-intelligence-update.yaml` |
-| 17. User Review - Implementation | close review gate | `scripts/work-queue/log-user-review-browser-open.sh` | default browser open (`xdg-open`) + `user-review-close.yaml` + browser-open evidence |
+| 17. User Review - Implementation | close review gate | `scripts/work-queue/log-user-review-browser-open.sh`, `scripts/work-queue/log-user-review-publish.sh` | default browser open (`xdg-open`) + `user-review-close.yaml` + publish evidence |
 | 18. Reclaim | continuity recovery | n/a | `reclaim.yaml` when triggered |
-| 19. Close | close gate | `scripts/work-queue/close-item.sh` | done-state update + validated evidence |
+| 19. Close | close gate | `scripts/work-queue/close-item.sh` | done-state update + auto final HTML + validated evidence |
 | 20. Archive | archive gate | `scripts/work-queue/archive-item.sh` | archived state + regenerated index |
 
 Template for per-WRK stage ledger:

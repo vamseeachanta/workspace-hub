@@ -71,6 +71,9 @@ flowchart TD
 - Route A/B: Inline in body. Route C: `specs/wrk/WRK-<id>/`.
 - Must produce HTML review artifact.
 - Every generated HTML review artifact must include a `Test Evidence` section showing example-pack and variation-test presence.
+- Plan artifacts must include the Skill Manifest for user review (`mandatory`, `supporting`,
+  `domain`, and `repo_governance` skill sets), sourced from
+  `assets/WRK-<id>/evidence/skill-manifest.yaml`.
 - User reviews Draft HTML before multi-agent review.
 - Multi-agent review (Claude, Codex, Gemini) for Route B/C.
 - User reviews Final HTML and records a pass/fail decision.
@@ -111,6 +114,7 @@ flowchart TD
 ### 9. Close
 **Trigger**: Implementation complete and verified.
 - Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--html-output <path>] [--html-verification <path>] [--commit]`
+- `close-item.sh` auto-generates `assets/WRK-NNN/workflow-final-review.html` when `--html-output` is omitted.
 - Updates frontmatter, moves to `done/`, regenerates INDEX.
 - Enforces HTML review evidence for WRK items using the hardened workflow contract.
 - HTML artifacts are expected to include `Test Evidence` details for auditability.
@@ -131,6 +135,9 @@ Stage evidence should be normalized under one directory:
 ```
 assets/WRK-<id>/evidence/
   resource-intelligence.yaml
+  skill-manifest.yaml
+  skill-invocation-log.yaml
+  user-review-publish.yaml
   claim.yaml
   execute.yaml
   reclaim.yaml
@@ -246,6 +253,8 @@ provider_alt:            # secondary executor
 computer:                # machine nickname
 plan_workstations:       # machine list for planning stage
 execution_workstations:  # machine list for execution stage
+skills_manifest_ref:     # path to assets/WRK-NNN/evidence/skill-manifest.yaml
+skill_invocation_ref:    # path to assets/WRK-NNN/evidence/skill-invocation-log.yaml
 ---
 ```
 

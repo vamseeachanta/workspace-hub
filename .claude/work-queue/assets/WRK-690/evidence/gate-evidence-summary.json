@@ -46,6 +46,13 @@
       "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
+      "name": "User-review publish gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
+    },
+    {
       "name": "Cross-review gate",
       "status": "PASS",
       "ok": true,

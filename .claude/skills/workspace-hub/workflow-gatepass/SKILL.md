@@ -38,9 +38,9 @@ It makes the lifecycle sequence explicit and blocks bypass behavior.
 2. Resource Intelligence.
 3. Triage.
 4. Plan Draft.
-5. User Review - Plan (Draft) with completed HTML opened in default browser.
+5. User Review - Plan (Draft) with completed HTML opened in default browser and review docs pushed to `origin`.
 6. Cross-Review.
-7. User Review - Plan (Final) with completed HTML opened in default browser.
+7. User Review - Plan (Final) with completed HTML opened in default browser and review docs pushed to `origin`.
 8. Claim / Activation.
 9. Work-Queue Routing Skill (`/work` path).
 10. Work Execution.
@@ -50,7 +50,7 @@ It makes the lifecycle sequence explicit and blocks bypass behavior.
 14. Verify Gate Evidence.
 15. Future Work Synthesis.
 16. Resource Intelligence Update.
-17. User Review - Implementation (close package) with completed HTML opened in default browser.
+17. User Review - Implementation (close package) with completed HTML opened in default browser and review docs pushed to `origin`.
 18. Reclaim (conditional when continuity breaks).
 19. Close.
 20. Archive.
@@ -89,6 +89,8 @@ When documenting next work in markdown artifacts, use a table with an explicit
 
 - No implementation before WRK item + plan + explicit WRK approval.
 - No user-review acceptance unless the completed HTML was opened in the default browser.
+- No user-review acceptance unless relevant review artifacts are pushed to `origin`
+  for distributed review (repo-local + remote visibility).
 - No close without a per-WRK stage ledger in assets (`stage_evidence_ref`) covering stages 1-20.
 - No close without gate evidence and `integrated_repo_tests` count in `[3,5]`.
 - No archive when queue validation fails or merge/sync evidence is missing.
@@ -103,6 +105,7 @@ Before close, require all of:
 - `legal gate` passed
 - `cross-review gate` passed
 - `user-review html-open gate` passed for each user-review checkpoint
+- `user-review publish gate` passed for each user-review checkpoint
 - `resource-intelligence gate` passed
 - `reclaim gate` evaluated (pass or n/a with reason)
 - `future-work gate` passed
@@ -123,6 +126,7 @@ Recommended files:
 - `reclaim.yaml`
 - `future-work.yaml`
 - `user-review-browser-open.yaml`
+- `user-review-publish.yaml`
 - `stage-evidence.yaml`
 - `close.yaml`
 - `archive.yaml`
@@ -135,7 +139,7 @@ Recommended files:
 | `scripts/work-queue/parse-session-logs.sh WRK-NNN ...` | Read Claude/Codex/Gemini logs; emit session-log-review.md |
 | `scripts/review/orchestrator-variation-check.sh --wrk WRK-NNN --orchestrator <provider> --scripts "..."` | Run scripts and emit variation-test-results.md |
 | `scripts/work-queue/claim-item.sh WRK-NNN` | Atomic claim + stage-8 auto-progress |
-| `scripts/work-queue/close-item.sh WRK-NNN` | Atomic close + stage-19 auto-progress |
+| `scripts/work-queue/close-item.sh WRK-NNN` | Atomic close + stage-19 auto-progress + auto final HTML generation |
 | `scripts/work-queue/archive-item.sh WRK-NNN` | Atomic archive + stage-20 auto-progress |
 
 `parse-session-logs.sh` handles JSONL (Claude) and plain-text (Codex/Gemini) formats;
@@ -149,6 +153,8 @@ reflects this value for cross-provider comparisons.
 
 - Gatepass compliance requires **explicit signal emission**, not only artifact
   presence. Shared scripts must log lifecycle signals as they execute.
+- Inferred signals are **not** measured signals. Only explicit, machine-logged
+  stage signals count toward coverage and gatepass metrics.
 - User-review stages must emit both stage signal and browser-open signal; do not
   collapse these into one event.
 - Keep close/archive signals distinct (`close_item`, `archive_item`) and also
