@@ -1,29 +1,29 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-04T11:15:09Z by generate-index.py -->
+<!-- Generated: 2026-03-04T20:27:19Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-04T11:15:09Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-04T20:27:19Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 436
+**Total items:** 437
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 197 |
-| working | 4 |
-| blocked | 9 |
+| pending | 198 |
+| working | 3 |
+| blocked | 10 |
 | archived | 226 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 208 |
-| medium | 186 |
+| high | 207 |
+| medium | 188 |
 | low | 41 |
 
 ### By Complexity
@@ -31,8 +31,8 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 72 |
-| medium | 204 |
-| complex | 93 |
+| medium | 206 |
+| complex | 92 |
 
 ### By Repository
 
@@ -54,7 +54,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 129 |
+| workspace-hub | 130 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -62,9 +62,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 165 / 436 |
-| Plans cross-reviewed | 61 |
-| Plans approved | 80 |
+| Plans exist | 164 / 437 |
+| Plans cross-reviewed | 60 |
+| Plans approved | 79 |
 | Brochure pending | 7 |
 | Brochure updated/synced | 8 |
 
@@ -74,9 +74,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 436 |
+| Total captured | 437 |
 | Total archived | 226 |
-| Completion rate | 226/436 (52%) |
+| Completion rate | 226/437 (52%) |
 | Monthly rate (current month) | 1 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -84,9 +84,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 197 | 29% |
-| Plans cross-reviewed | 10 | 15% |
-| Plans user-approved | 10 | 15% |
+| Pending items with plans | 58 / 198 | 29% |
+| Plans cross-reviewed | 9 | 13% |
+| Plans user-approved | 9 | 13% |
 
 ### Aging
 
@@ -101,8 +101,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 99 | 2 | 7 |
-| Medium   | 70  | 2  | 1  |
+| High     | 98 | 1 | 8 |
+| Medium   | 72  | 2  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## Master Table
@@ -533,7 +533,6 @@
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | WRK-683 |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 96% | n/a | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-691 |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -542,9 +541,11 @@
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | medium | - | ace-linux-1 | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1002 |
-| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1003 |
-| WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1004 |
+| WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | blocked | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | quota |
+| WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1002, WRK-1003, WRK-1004 |
+| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -747,8 +748,9 @@
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | medium | simple | workspace-hub | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
-| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
+| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | medium | medium | workspace-hub | - |
+| WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | medium | medium | workspace-hub | - |
 
 ### Working
 
@@ -757,7 +759,6 @@
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | high | complex | workspace-hub | - |
 
 ### Blocked
 
@@ -772,6 +773,7 @@
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | high | medium | aceengineer-admin | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | high | simple | workspace-hub | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | high | complex | workspace-hub | - |
+| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 
 ### Archived
 
@@ -1469,7 +1471,6 @@
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working | medium | simple | - |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | simple | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | high | medium | - |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | working | high | complex | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | high | medium | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | high | medium | - |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | pending | medium | simple | - |
@@ -1479,8 +1480,10 @@
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | medium | simple | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | - |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | - |
-| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | - |
+| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | blocked | high | medium | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | - |
+| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending | medium | medium | - |
+| WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | medium | - |
 
 ### worldenergydata
 
@@ -1783,12 +1786,11 @@
 | WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | medium | workspace-hub | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | medium | workspace-hub | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | medium | workspace-hub | - |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | working | complex | workspace-hub | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | medium | workspace-hub | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | medium | workspace-hub | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | medium | workspace-hub | - |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | medium | workspace-hub | - |
-| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | medium | workspace-hub | - |
+| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | blocked | medium | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | medium | workspace-hub | - |
 
 ### Medium
@@ -1981,6 +1983,8 @@
 | WRK-694 | Per-session log files in session-logger.sh | pending | simple | workspace-hub | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | simple | workspace-hub | - |
+| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending | medium | workspace-hub | - |
+| WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -2313,8 +2317,10 @@
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | workspace-hub | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | workspace-hub | - |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | workspace-hub | - |
-| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | workspace-hub | - |
+| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | blocked | high | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | workspace-hub | - |
+| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending | medium | workspace-hub | - |
+| WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -2412,11 +2418,10 @@
 | WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | high | TBD-client2-repo | - |
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | frontierdeepwater, TBD-client2-repo | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | workspace-hub | - |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | working | high | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (145 active / 159 total)
+### ace-linux-1 (146 active / 160 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2569,7 +2574,6 @@
 | WRK-681 | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending | medium | medium | workspace-hub |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | high | medium | workspace-hub |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | medium | worldenergydata |
-| WRK-690 | feat(workflow): enforce skill-driven /work gatepass from session start to close | working | high | complex | workspace-hub |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | high | medium | workspace-hub |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | high | medium | workspace-hub |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | pending | medium | simple | workspace-hub |
@@ -2577,8 +2581,10 @@
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | medium | simple | workspace-hub |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | workspace-hub |
-| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | workspace-hub |
+| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | blocked | high | medium | workspace-hub |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | workspace-hub |
+| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending | medium | medium | workspace-hub |
+| WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | medium | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)
 
@@ -2945,7 +2951,6 @@
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | WRK-638 | - | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | WRK-683 | - | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | WRK-691 | - | - |
-| WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | WRK-1002 | - | - |
-| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | WRK-1003 | - | - |
-| WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | WRK-1004 | - | - |
+| WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | quota | - | - |
+| WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | WRK-1002, WRK-1003, WRK-1004 | - | - |
 
