@@ -40,24 +40,42 @@ CONTENT_FILE=""
 COMMIT_SHA=""
 SOURCE_NAME=""
 
+sanitize_source_name() {
+  local raw="$1"
+  # Keep filenames predictable and safe for flat results directory.
+  raw="${raw//\//-}"
+  raw="${raw// /-}"
+  raw="${raw//:/-}"
+  raw="${raw//[^A-Za-z0-9._-]/-}"
+  raw="$(echo "$raw" | sed -E 's/-+/-/g; s/^-+//; s/-+$//')"
+  if [[ -z "$raw" ]]; then
+    raw="review-input"
+  fi
+  echo "$raw"
+}
+
 if [[ -f "$FILE_OR_DIFF" ]]; then
   CONTENT_FILE="$FILE_OR_DIFF"
   SOURCE_NAME="$(basename "$FILE_OR_DIFF")"
 elif git rev-parse --verify "$FILE_OR_DIFF" &>/dev/null && [[ "$FILE_OR_DIFF" != *".."* ]]; then
   # Valid git commit SHA
-  COMMIT_SHA="$FILE_OR_DIFF"
+  COMMIT_SHA="$(git rev-parse --verify "${FILE_OR_DIFF}^{commit}" 2>/dev/null || true)"
+  if [[ -z "$COMMIT_SHA" ]]; then
+    echo "ERROR: Invalid commit ref: $FILE_OR_DIFF" >&2
+    exit 1
+  fi
   SOURCE_NAME="commit-${COMMIT_SHA:0:10}"
 elif [[ "$FILE_OR_DIFF" == *".."* ]]; then
   # Git range — write diff to temp file
   CONTENT_FILE="$(mktemp)"
   CLEANUP_FILES+=("$CONTENT_FILE")
   git diff "$FILE_OR_DIFF" > "$CONTENT_FILE" 2>/dev/null || { echo "ERROR: Invalid git range" >&2; exit 1; }
-  SOURCE_NAME="git-diff-${FILE_OR_DIFF//../-}"
+  SOURCE_NAME="git-diff-$(sanitize_source_name "${FILE_OR_DIFF//../-}")"
 else
   # Inline content — write to temp file
   CONTENT_FILE="$(mktemp)"
   CLEANUP_FILES+=("$CONTENT_FILE")
-  echo "$FILE_OR_DIFF" > "$CONTENT_FILE"
+  printf '%s\n' "$FILE_OR_DIFF" > "$CONTENT_FILE"
   SOURCE_NAME="inline-content"
 fi
 
@@ -77,18 +95,6 @@ fi
 PROMPT="$(cat "$PROMPT_FILE")"
 TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
 RESULT_PREFIX="${RESULTS_DIR}/${TIMESTAMP}-${SOURCE_NAME}-${REVIEW_TYPE}"
-
-# Build args for sub-scripts (--file or --commit + --prompt)
-build_review_args() {
-  local args=()
-  if [[ -n "$COMMIT_SHA" ]]; then
-    args+=(--commit "$COMMIT_SHA")
-  else
-    args+=(--file "$CONTENT_FILE")
-  fi
-  args+=(--prompt "$PROMPT")
-  echo "${args[@]}"
-}
 
 # Track Codex gate status
 CODEX_PASSED=false
@@ -169,12 +175,13 @@ submit_review() {
       codex_status="$(classify_review_result "$result_file")"
       if [[ $codex_exit -eq 0 ]] && [[ "$codex_status" == "VALID" ]] && ! grep -q "^# Codex.*failed\|^# Codex CLI not found\|^# HARD GATE" "$result_file" 2>/dev/null; then
         CODEX_PASSED=true
-      elif [[ $codex_exit -eq 0 && ( "$codex_size" -lt 10 || "$codex_status" == "NO_OUTPUT" ) ]]; then
-        # Codex ran but produced empty/trivial output (known large-diff limitation)
+      elif [[ "$codex_status" == "NO_OUTPUT" ]] && grep -q '^# Codex returned NO_OUTPUT' "$result_file" 2>/dev/null \
+          && [[ $codex_exit -eq 0 || $codex_exit -eq 5 ]]; then
+        # Fallback only for genuine NO_OUTPUT (empty response from model, exits 0 or 5).
+        # Non-zero exits from CLI failures, transport errors, or setup issues are hard gates.
         CODEX_NO_OUTPUT=true
         CODEX_FALLBACK_ALLOWED=true
-        echo "    WARNING: Codex returned NO_OUTPUT (${codex_size} bytes) — fallback consensus will be attempted" >&2
-        echo "# Codex returned NO_OUTPUT (empty response on large diff)" > "$result_file"
+        echo "    WARNING: Codex returned NO_OUTPUT (${codex_size} bytes, exit $codex_exit) — fallback consensus will be attempted" >&2
       elif [[ $codex_exit -eq 0 && "$codex_status" == "INVALID_OUTPUT" ]]; then
         echo "    WARNING: Codex returned INVALID_OUTPUT — this is a HARD GATE" >&2
         CODEX_NO_OUTPUT=false
@@ -187,24 +194,21 @@ submit_review() {
       else
         echo "    WARNING: Codex review FAILED (exit $codex_exit) — this is a HARD GATE" >&2
         preserve_raw_result "$result_file"
-        if [[ $codex_exit -ne 0 ]]; then
-          if [[ "$codex_status" == "NO_OUTPUT" ]]; then
-            CODEX_NO_OUTPUT=true
-            CODEX_FALLBACK_ALLOWED=true
-            echo "# Codex review failed (exit $codex_exit)" > "$result_file"
-            echo "# Codex returned NO_OUTPUT (tool failure / transport / timeout)" >> "$result_file"
-          else
-            CODEX_NO_OUTPUT=false
-            CODEX_FALLBACK_ALLOWED=false
-            echo "# Codex review failed (exit $codex_exit)" > "$result_file"
-            echo "# HARD GATE: Codex review is compulsory — resolve before proceeding" >> "$result_file"
-          fi
+        if grep -q "^# Codex CLI not found" "$result_file" 2>/dev/null; then
+          CODEX_NO_OUTPUT=false
+          CODEX_FALLBACK_ALLOWED=false
+          echo "    (Codex CLI missing — fallback disabled; hard gate enforced)" >&2
+          echo "# Codex review failed (exit $codex_exit)" > "$result_file"
+          echo "# HARD GATE: Codex CLI not found — install Codex and rerun." >> "$result_file"
+        elif [[ $codex_exit -ne 0 ]]; then
+          CODEX_NO_OUTPUT=false
+          CODEX_FALLBACK_ALLOWED=false
+          echo "# Codex review failed (exit $codex_exit)" > "$result_file"
+          echo "# HARD GATE: Codex review is compulsory — resolve before proceeding" >> "$result_file"
         elif grep -q "^# Codex exec failed\|^# Codex review failed\|^ERROR:" "$result_file" 2>/dev/null; then
-          # submit-to-codex.sh caught the error and exited 0, but the result
-          # file contains an error stub — treat as NO_OUTPUT for fallback consensus.
-          CODEX_NO_OUTPUT=true
-          CODEX_FALLBACK_ALLOWED=true
-          echo "    (Codex API/model error detected in result — treating as NO_OUTPUT for fallback)" >&2
+          CODEX_NO_OUTPUT=false
+          CODEX_FALLBACK_ALLOWED=false
+          echo "    (Codex API/model error detected in result — hard gate enforced)" >&2
         fi
       fi
       ;;
@@ -264,12 +268,17 @@ case "$REVIEWER" in
         echo "--- Codex unavailable/NO_OUTPUT. Attempting 2-of-3 fallback consensus..." >&2
         claude_file="${RESULT_PREFIX}-claude.md"
         gemini_file="${RESULT_PREFIX}-gemini.md"
+        claude_status="$(classify_review_result "$claude_file")"
+        gemini_status="$(classify_review_result "$gemini_file")"
         claude_verdict="$("${SCRIPT_DIR}/normalize-verdicts.sh" "$claude_file" 2>/dev/null || echo "ERROR")"
         gemini_verdict="$("${SCRIPT_DIR}/normalize-verdicts.sh" "$gemini_file" 2>/dev/null || echo "ERROR")"
+        echo "    Claude artifact status: $claude_status" >&2
+        echo "    Gemini artifact status: $gemini_status" >&2
         echo "    Claude verdict: $claude_verdict" >&2
         echo "    Gemini verdict: $gemini_verdict" >&2
 
-        if [[ ("$claude_verdict" == "APPROVE" || "$claude_verdict" == "MINOR") && \
+        if [[ "$claude_status" == "VALID" && "$gemini_status" == "VALID" && \
+              ("$claude_verdict" == "APPROVE" || "$claude_verdict" == "MINOR") && \
               ("$gemini_verdict" == "APPROVE" || "$gemini_verdict" == "MINOR") ]]; then
           echo "=== CODEX FALLBACK: 2-of-3 consensus reached (Claude=$claude_verdict, Gemini=$gemini_verdict) ===" >&2
           # Write fallback result

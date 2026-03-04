@@ -47,7 +47,8 @@ ORCH_LOG_FILE=""
 if [[ -n "$REPO_ROOT" ]]; then
   _ts="$(date -u +%Y%m%dT%H%M%SZ)"
   _tag="${WRK_ID:-unknown}"
-  ORCH_LOG_FILE="${REPO_ROOT}/logs/orchestrator/codex/${_tag}-${_ts}.log"
+  _uniq="$$-${RANDOM}"
+  ORCH_LOG_FILE="${REPO_ROOT}/logs/orchestrator/codex/${_tag}-${_ts}-${_uniq}.log"
   ( mkdir -p "$(dirname "$ORCH_LOG_FILE")" ) 2>/dev/null || true
 fi
 
@@ -68,17 +69,17 @@ if ! command -v "$CODEX_BIN" &>/dev/null && [[ ! -x "$CODEX_BIN" ]]; then
   echo "# Install: npm install -g @openai/codex"
   echo "# CODEX REVIEW IS COMPULSORY — install the CLI and retry"
   echo ""
+  echo "## Review Context"
+  if [[ -n "$CONTENT_FILE" ]]; then
+    file_size="$(wc -c < "$CONTENT_FILE" 2>/dev/null | tr -d ' ' || echo "unknown")"
+    echo "- File: $CONTENT_FILE"
+    echo "- Size: ${file_size} bytes"
+  else
+    echo "- Commit: $COMMIT_SHA"
+  fi
+  echo ""
   echo "## Review Prompt"
   echo "$PROMPT"
-  echo ""
-  echo "## Content to Review"
-  echo '```'
-  if [[ -n "$CONTENT_FILE" ]]; then
-    head -200 "$CONTENT_FILE"
-  else
-    echo "Commit: $COMMIT_SHA"
-  fi
-  echo '```'
   exit 2
 fi
 
@@ -87,11 +88,14 @@ if [[ -n "$COMMIT_SHA" ]]; then
     echo "ERROR: invalid commit SHA: $COMMIT_SHA" >&2
     exit 1
   fi
-  # Review a specific git commit
-  # codex review --commit <SHA> cannot be combined with positional PROMPT.
-  # Codex writes review output to stderr, so capture both streams.
   commit_exit=0
-  "$CODEX_BIN" review --commit "$COMMIT_SHA" 2>&1 || commit_exit=$?
+  if command -v timeout >/dev/null 2>&1; then
+    timeout "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" review --commit "$COMMIT_SHA" 2>&1 || commit_exit=$?
+  elif command -v perl >/dev/null 2>&1; then
+    perl -e 'alarm shift; exec @ARGV' "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" review --commit "$COMMIT_SHA" 2>&1 || commit_exit=$?
+  else
+    "$CODEX_BIN" review --commit "$COMMIT_SHA" 2>&1 || commit_exit=$?
+  fi
   if [[ "$commit_exit" -ne 0 ]]; then
     echo "# Codex review --commit failed (exit $commit_exit)"
     echo "# Commit: $COMMIT_SHA"
@@ -164,17 +168,17 @@ EOF
   }
 
   classify_codex_failure() {
-    if [[ -s "$err_file" ]] && rg -qi \
+    if [[ -s "$err_file" ]] && grep -Eqi \
       "(insufficient[_ -]?quota|quota (exceeded|reached)|billing (limit|quota)|payment required|hard limit reached|credits? (exhausted|depleted|remaining:[[:space:]]*0))" \
       "$err_file"; then
       echo "QUOTA"
       return
     fi
-    if [[ -s "$err_file" ]] && rg -qi "(timed out|timeout|deadline exceeded)" "$err_file"; then
+    if [[ -s "$err_file" ]] && grep -Eqi "(timed out|timeout|deadline exceeded)" "$err_file"; then
       echo "TIMEOUT"
       return
     fi
-    if [[ -s "$err_file" ]] && rg -qi "(operation not permitted|permission denied|failed to connect|stream disconnected|error sending request)" "$err_file"; then
+    if [[ -s "$err_file" ]] && grep -Eqi "(operation not permitted|permission denied|failed to connect|stream disconnected|error sending request)" "$err_file"; then
       echo "TRANSPORT"
       return
     fi
@@ -183,12 +187,12 @@ EOF
 
   run_renderer() {
     if command -v uv >/dev/null 2>&1; then
-      uv run --no-project python "$RENDERER" --provider codex --input "$raw_file"
-    elif command -v python3 >/dev/null 2>&1; then
-      python3 "$RENDERER" --provider codex --input "$raw_file"
-    else
-      return 127
+      uv run --no-project python "$RENDERER" --provider codex --input "$raw_file" && return
     fi
+    if command -v python3 >/dev/null 2>&1; then
+      python3 "$RENDERER" --provider codex --input "$raw_file" && return
+    fi
+    return 127
   }
 
   prompt_for_run="$FULL_PROMPT"
@@ -257,7 +261,7 @@ ${compact_text}
       cat "$raw_file"
       ( [[ -n "$ORCH_LOG_FILE" ]] && cat "$raw_file" >> "$ORCH_LOG_FILE" ) 2>/dev/null || true
       if [[ "$render_exit" -eq 127 ]]; then
-        echo "# Renderer runtime unavailable (need uv or python3)" >&2
+        echo "# Renderer runtime unavailable (need uv)" >&2
       fi
       exit 6
     else
