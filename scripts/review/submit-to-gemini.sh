@@ -17,9 +17,9 @@ WRK_ID=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --file)   CONTENT_FILE="$2"; shift 2 ;;
-    --commit) COMMIT_SHA="$2"; shift 2 ;;
-    --prompt) PROMPT="$2"; shift 2 ;;
+    --file)   CONTENT_FILE="${2:-}"; shift 2 || shift ;;
+    --commit) COMMIT_SHA="${2:-}"; shift 2 || shift ;;
+    --prompt) PROMPT="${2:-}"; shift 2 || shift ;;
     *) echo "Unknown arg: $1" >&2; exit 1 ;;
   esac
 done
@@ -68,13 +68,17 @@ if [[ -n "$COMMIT_SHA" ]]; then
     echo "ERROR: invalid commit SHA: $COMMIT_SHA" >&2
     exit 1
   fi
-  CONTENT="$(git show "$COMMIT_SHA" 2>/dev/null || echo "Failed to get diff for $COMMIT_SHA")"
+  if ! CONTENT="$(git -C "${REPO_ROOT:-.}" show "$COMMIT_SHA" 2>/dev/null)"; then
+    echo "ERROR: commit not found: $COMMIT_SHA" >&2
+    exit 1
+  fi
 else
   if [[ ! -f "$CONTENT_FILE" ]]; then
     echo "ERROR: file not found: $CONTENT_FILE" >&2
     exit 1
   fi
-  CONTENT="$(cat "$CONTENT_FILE")"
+  # Read up to 5MB to prevent bash OOMs on accidentally provided binaries or giant files
+  CONTENT="$(head -c 5000000 "$CONTENT_FILE" | tr -d '\000')"
 fi
 
 PROMPT_TEXT="${PROMPT}
@@ -107,6 +111,16 @@ err_file="$(mktemp)"
 rendered_file="$(mktemp)"
 trap 'rm -rf "$run_dir" "$raw_file" "$err_file" "$rendered_file"' EXIT
 
+run_renderer() {
+  if command -v uv >/dev/null 2>&1; then
+    uv run --no-project python "$RENDERER" --provider gemini --input "$raw_file"
+  elif command -v python3 >/dev/null 2>&1; then
+    python3 "$RENDERER" --provider gemini --input "$raw_file"
+  else
+    return 127
+  fi
+}
+
 run_gemini_once() {
   : > "$raw_file"
   : > "$err_file"
@@ -114,6 +128,14 @@ run_gemini_once() {
     (
       cd "$run_dir"
       printf '%s\n' "$INPUT_TEXT" | timeout "$GEMINI_TIMEOUT_SECONDS" gemini \
+        -p "$PROMPT_TEXT" \
+        --yolo \
+        --output-format json >"$raw_file" 2>"$err_file"
+    )
+  elif command -v perl >/dev/null 2>&1; then
+    (
+      cd "$run_dir"
+      printf '%s\n' "$INPUT_TEXT" | perl -e 'alarm shift; exec @ARGV' "$GEMINI_TIMEOUT_SECONDS" gemini \
         -p "$PROMPT_TEXT" \
         --yolo \
         --output-format json >"$raw_file" 2>"$err_file"
@@ -135,7 +157,7 @@ while [[ "$attempt" -le "$GEMINI_RETRIES" ]]; do
   run_gemini_once || exit_code=$?
 
   if [[ "$exit_code" -eq 0 ]] \
-    && python3 "$RENDERER" --provider gemini --input "$raw_file" > "$rendered_file" 2>/dev/null \
+    && run_renderer > "$rendered_file" 2>/dev/null \
     && [[ "$("$VALIDATOR" "$rendered_file")" == "VALID" ]]; then
     cat "$rendered_file"
     ( [[ -n "$ORCH_LOG_FILE" ]] && cat "$rendered_file" >> "$ORCH_LOG_FILE" ) 2>/dev/null || true
@@ -160,3 +182,5 @@ if [[ -n "$COMMIT_SHA" ]]; then
 else
   echo "# File: $CONTENT_FILE"
 fi
+
+exit "${exit_code:-1}"

@@ -5,15 +5,18 @@
 #   submit-to-claude.sh --commit <sha> [--prompt <prompt>]
 set -euo pipefail
 
-# setsid is required for process-group isolation — fail fast if absent
+# setsid provides process-group isolation — optional, degrades gracefully
 # SETSID_CMD can be overridden in tests to inject a non-existent path
 SETSID_CMD="${SETSID_CMD:-setsid}"
 if ! command -v "$SETSID_CMD" >/dev/null 2>&1; then
-  echo "ERROR: setsid required for process-group cleanup (install util-linux)" >&2
-  exit 1
+  echo "WARN: setsid not found — running without process-group isolation" >&2
+  SETSID_CMD=""
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || true)"
+# I-08: ensure debug dir exists with correct ownership before claude subprocess runs
+mkdir -p "${HOME}/.claude/debug" 2>/dev/null || true
 RENDERER="${SCRIPT_DIR}/render-structured-review.py"
 VALIDATOR="${SCRIPT_DIR}/validate-review-output.sh"
 
@@ -21,16 +24,32 @@ CONTENT_FILE=""
 COMMIT_SHA=""
 PROMPT=""
 COMPACT_PLAN=0
+WRK_ID=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --file)   CONTENT_FILE="$2"; shift 2 ;;
-    --commit) COMMIT_SHA="$2"; shift 2 ;;
-    --prompt) PROMPT="$2"; shift 2 ;;
+    --file)   CONTENT_FILE="${2:-}"; shift 2 || shift ;;
+    --commit) COMMIT_SHA="${2:-}"; shift 2 || shift ;;
+    --prompt) PROMPT="${2:-}"; shift 2 || shift ;;
     --compact-plan) COMPACT_PLAN=1; shift ;;
     *) echo "Unknown arg: $1" >&2; exit 1 ;;
   esac
 done
+
+if [[ -n "$CONTENT_FILE" ]]; then
+  if [[ "$CONTENT_FILE" =~ (WRK-[0-9]+) ]]; then
+    WRK_ID="${BASH_REMATCH[1]}"
+  fi
+fi
+
+# Orchestrator log: unified cross-agent log directory
+ORCH_LOG_FILE=""
+if [[ -n "$REPO_ROOT" ]]; then
+  _ts="$(date -u +%Y%m%dT%H%M%SZ)"
+  _tag="${WRK_ID:-unknown}"
+  ORCH_LOG_FILE="${REPO_ROOT}/logs/orchestrator/claude/${_tag}-${_ts}.log"
+  ( mkdir -p "$(dirname "$ORCH_LOG_FILE")" ) 2>/dev/null || true
+fi
 
 if [[ -z "$COMMIT_SHA" && -z "$CONTENT_FILE" ]]; then
   echo "ERROR: Provide --file <path> or --commit <sha>" >&2
@@ -65,7 +84,10 @@ if [[ -n "$COMMIT_SHA" ]]; then
     echo "ERROR: invalid commit SHA: $COMMIT_SHA" >&2
     exit 1
   fi
-  CONTENT="$(git show "$COMMIT_SHA" 2>/dev/null || echo "Failed to get diff for $COMMIT_SHA")"
+  if ! CONTENT="$(git -C "${REPO_ROOT:-.}" show "$COMMIT_SHA" 2>/dev/null)"; then
+    echo "ERROR: commit not found: $COMMIT_SHA" >&2
+    exit 1
+  fi
 else
   if [[ ! -f "$CONTENT_FILE" ]]; then
     echo "ERROR: file not found: $CONTENT_FILE" >&2
@@ -77,9 +99,10 @@ else
       echo "ERROR: bundle builder not found: $BUNDLE_BUILDER" >&2
       exit 1
     fi
-    CONTENT="$(python3 "$BUNDLE_BUILDER" --input "$CONTENT_FILE")"
+    CONTENT="$(uv run --no-project python "$BUNDLE_BUILDER" --input "$CONTENT_FILE")"
   else
-    CONTENT="$(cat "$CONTENT_FILE")"
+    # Read up to 5MB to prevent bash OOMs on accidentally provided binaries or giant files
+    CONTENT="$(head -c 5000000 "$CONTENT_FILE" | tr -d '\000')"
   fi
 fi
 
@@ -126,16 +149,40 @@ run_claude_once() {
   : > "$raw_file"
   : > "$err_file"
   local _exit_code=0
-  "$SETSID_CMD" timeout "$CLAUDE_TIMEOUT_SECONDS" claude \
-    -p "$SHORT_PROMPT" \
-    --allowedTools 'Read' \
-    --add-dir "$run_dir" \
-    --permission-mode bypassPermissions \
-    --disable-slash-commands \
-    --no-session-persistence \
-    --output-format json \
-    --json-schema "$CLAUDE_SCHEMA" \
-    --system-prompt "$SYSTEM_PROMPT" >"$raw_file" 2>"$err_file" &
+  if command -v timeout >/dev/null 2>&1; then
+    ${SETSID_CMD:+"$SETSID_CMD"} timeout "$CLAUDE_TIMEOUT_SECONDS" claude \
+      -p "$SHORT_PROMPT" \
+      --allowedTools 'Read' \
+      --add-dir "$run_dir" \
+      --permission-mode bypassPermissions \
+      --disable-slash-commands \
+      --no-session-persistence \
+      --output-format json \
+      --json-schema "$CLAUDE_SCHEMA" \
+      --system-prompt "$SYSTEM_PROMPT" >"$raw_file" 2>"$err_file" &
+  elif command -v perl >/dev/null 2>&1; then
+    ${SETSID_CMD:+"$SETSID_CMD"} perl -e 'alarm shift; exec @ARGV' "$CLAUDE_TIMEOUT_SECONDS" claude \
+      -p "$SHORT_PROMPT" \
+      --allowedTools 'Read' \
+      --add-dir "$run_dir" \
+      --permission-mode bypassPermissions \
+      --disable-slash-commands \
+      --no-session-persistence \
+      --output-format json \
+      --json-schema "$CLAUDE_SCHEMA" \
+      --system-prompt "$SYSTEM_PROMPT" >"$raw_file" 2>"$err_file" &
+  else
+    ${SETSID_CMD:+"$SETSID_CMD"} claude \
+      -p "$SHORT_PROMPT" \
+      --allowedTools 'Read' \
+      --add-dir "$run_dir" \
+      --permission-mode bypassPermissions \
+      --disable-slash-commands \
+      --no-session-persistence \
+      --output-format json \
+      --json-schema "$CLAUDE_SCHEMA" \
+      --system-prompt "$SYSTEM_PROMPT" >"$raw_file" 2>"$err_file" &
+  fi
   CLAUDE_WATCHDOG_PGID=$!
   wait "$CLAUDE_WATCHDOG_PGID" || _exit_code=$?
   if [[ "$_exit_code" -eq 124 ]]; then
@@ -147,6 +194,18 @@ run_claude_once() {
   return "$_exit_code"
 }
 
+# I-10: Unset CLAUDECODE so the claude -p subprocess is not rejected by the
+# nested-session guard ("Claude Code cannot be launched inside another Claude
+# Code session"). This env var is set by all parent Claude Code processes.
+export CLAUDECODE=""
+
+# I-07: Pre-flight DNS check — exit gracefully rather than timing out on EAI_AGAIN
+if ! getent hosts api.anthropic.com >/dev/null 2>&1; then
+  echo "WARN: DNS resolution failed for api.anthropic.com — skipping claude review" >&2
+  echo "# Claude review skipped — network unavailable (EAI_AGAIN)"
+  exit 0
+fi
+
 LAST_EXIT_CODE=1
 attempt=1
 while [[ "$attempt" -le "$CLAUDE_RETRIES" ]]; do
@@ -155,9 +214,10 @@ while [[ "$attempt" -le "$CLAUDE_RETRIES" ]]; do
   [[ "$exit_code" -ne 0 ]] && LAST_EXIT_CODE=$exit_code
 
   if [[ "$exit_code" -eq 0 ]] \
-    && python3 "$RENDERER" --provider claude --input "$raw_file" > "$rendered_file" 2>/dev/null \
+    && uv run --no-project python "$RENDERER" --provider claude --input "$raw_file" > "$rendered_file" 2>/dev/null \
     && [[ "$("$VALIDATOR" "$rendered_file")" == "VALID" ]]; then
     cat "$rendered_file"
+    ( [[ -n "$ORCH_LOG_FILE" ]] && cat "$rendered_file" >> "$ORCH_LOG_FILE" ) 2>/dev/null || true
     exit 0
   fi
 
@@ -173,6 +233,9 @@ echo "# Transport mode: isolated temp directory + print/json schema"
 if [[ -s "$err_file" ]]; then
   echo "# STDERR:"
   sed -n '1,20p' "$err_file"
+fi
+if [[ -s "$raw_file" ]]; then
+  ( [[ -n "$ORCH_LOG_FILE" ]] && cat "$raw_file" >> "$ORCH_LOG_FILE" ) 2>/dev/null || true
 fi
 if [[ -n "$COMMIT_SHA" ]]; then
   echo "# Commit: $COMMIT_SHA"

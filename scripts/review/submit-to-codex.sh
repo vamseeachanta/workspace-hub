@@ -11,6 +11,7 @@ RENDERER="${SCRIPT_DIR}/render-structured-review.py"
 VALIDATOR="${SCRIPT_DIR}/validate-review-output.sh"
 CODEX_TIMEOUT_SECONDS="${CODEX_TIMEOUT_SECONDS:-300}"
 CODEX_COMPACT_RETRY_CHARS="${CODEX_COMPACT_RETRY_CHARS:-24000}"
+CODEX_MAX_PROMPT_CHARS="${CODEX_MAX_PROMPT_CHARS:-120000}"
 
 CONTENT_FILE=""
 COMMIT_SHA=""
@@ -19,9 +20,18 @@ WRK_ID=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --file)   CONTENT_FILE="$2"; shift 2 ;;
-    --commit) COMMIT_SHA="$2"; shift 2 ;;
-    --prompt) PROMPT="$2"; shift 2 ;;
+    --file)
+      [[ $# -ge 2 ]] || { echo "ERROR: --file requires a value" >&2; exit 1; }
+      CONTENT_FILE="$2"; shift 2
+      ;;
+    --commit)
+      [[ $# -ge 2 ]] || { echo "ERROR: --commit requires a value" >&2; exit 1; }
+      COMMIT_SHA="$2"; shift 2
+      ;;
+    --prompt)
+      [[ $# -ge 2 ]] || { echo "ERROR: --prompt requires a value" >&2; exit 1; }
+      PROMPT="$2"; shift 2
+      ;;
     *) echo "Unknown arg: $1" >&2; exit 1 ;;
   esac
 done
@@ -47,9 +57,9 @@ if [[ -z "$COMMIT_SHA" && -z "$CONTENT_FILE" ]]; then
 fi
 
 # Check if codex CLI is available (also check npm global bin)
-CODEX_BIN="codex"
+CODEX_BIN="${CODEX_BIN:-codex}"
 if ! command -v codex &>/dev/null; then
-  if [[ -x "${HOME}/.npm-global/bin/codex" ]]; then
+  if [[ "$CODEX_BIN" == "codex" && -x "${HOME}/.npm-global/bin/codex" ]]; then
     CODEX_BIN="${HOME}/.npm-global/bin/codex"
   fi
 fi
@@ -73,14 +83,25 @@ if ! command -v "$CODEX_BIN" &>/dev/null && [[ ! -x "$CODEX_BIN" ]]; then
 fi
 
 if [[ -n "$COMMIT_SHA" ]]; then
+  if [[ ! "$COMMIT_SHA" =~ ^[0-9a-fA-F]{7,40}$ ]]; then
+    echo "ERROR: invalid commit SHA: $COMMIT_SHA" >&2
+    exit 1
+  fi
   # Review a specific git commit
   # codex review --commit <SHA> cannot be combined with positional PROMPT.
   # Codex writes review output to stderr, so capture both streams.
-  "$CODEX_BIN" review --commit "$COMMIT_SHA" 2>&1 || {
-    echo "# Codex review --commit failed (exit $?)"
+  commit_exit=0
+  "$CODEX_BIN" review --commit "$COMMIT_SHA" 2>&1 || commit_exit=$?
+  if [[ "$commit_exit" -ne 0 ]]; then
+    echo "# Codex review --commit failed (exit $commit_exit)"
     echo "# Commit: $COMMIT_SHA"
-  }
+    exit "$commit_exit"
+  fi
 else
+  if [[ ! -f "$CONTENT_FILE" ]]; then
+    echo "ERROR: file not found: $CONTENT_FILE" >&2
+    exit 1
+  fi
   # Review file content via codex exec using output-schema + output-last-message
   SCOPE_PREFIX=""
   if [[ -n "$WRK_ID" ]]; then
@@ -90,7 +111,8 @@ This review is being run under the active approved work item above.
 "
   fi
 
-  CONTENT_TEXT="$(cat "$CONTENT_FILE")"
+  # Read up to 5MB to prevent bash OOMs on accidentally provided binaries or giant files
+  CONTENT_TEXT="$(head -c 5000000 "$CONTENT_FILE" | tr -d '\000')"
   FULL_PROMPT="${SCOPE_PREFIX}${PROMPT}
 
 ---
@@ -98,6 +120,7 @@ CONTENT TO REVIEW:
 ---
 
 ${CONTENT_TEXT}"
+  payload_chars="${#FULL_PROMPT}"
 
   schema_file="$(mktemp)"
   raw_file="$(mktemp)"
@@ -127,6 +150,11 @@ EOF
         --skip-git-repo-check \
         --output-schema "$schema_file" \
         --output-last-message "$raw_file" >/dev/null 2>"$err_file"
+    elif command -v perl >/dev/null 2>&1; then
+      perl -e 'alarm shift; exec @ARGV' "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" exec "$prompt_text" \
+        --skip-git-repo-check \
+        --output-schema "$schema_file" \
+        --output-last-message "$raw_file" >/dev/null 2>"$err_file"
     else
       "$CODEX_BIN" exec "$prompt_text" \
         --skip-git-repo-check \
@@ -153,12 +181,36 @@ EOF
     echo "GENERIC"
   }
 
+  run_renderer() {
+    if command -v uv >/dev/null 2>&1; then
+      uv run --no-project python "$RENDERER" --provider codex --input "$raw_file"
+    elif command -v python3 >/dev/null 2>&1; then
+      python3 "$RENDERER" --provider codex --input "$raw_file"
+    else
+      return 127
+    fi
+  }
+
+  prompt_for_run="$FULL_PROMPT"
+  if [[ "$payload_chars" -gt "$CODEX_MAX_PROMPT_CHARS" ]]; then
+    compact_text="${CONTENT_TEXT:0:CODEX_COMPACT_RETRY_CHARS}"
+    prompt_for_run="${SCOPE_PREFIX}${PROMPT}
+
+---
+CONTENT TO REVIEW (TRUNCATED FOR ARGUMENT SIZE SAFETY):
+---
+
+${compact_text}
+
+[truncated by submit-to-codex initial guard to avoid oversized CLI payload]"
+  fi
+
   exec_exit=0
-  run_codex_exec "$FULL_PROMPT" || exec_exit=$?
+  run_codex_exec "$prompt_for_run" || exec_exit=$?
 
   # One compact retry when full payload returns no usable output.
   if [[ "$exec_exit" -ne 0 || ! -s "$raw_file" ]]; then
-    compact_text="$(printf '%s' "$CONTENT_TEXT" | head -c "$CODEX_COMPACT_RETRY_CHARS")"
+    compact_text="${CONTENT_TEXT:0:CODEX_COMPACT_RETRY_CHARS}"
     COMPACT_PROMPT="${SCOPE_PREFIX}${PROMPT}
 
 ---
@@ -192,19 +244,25 @@ ${compact_text}
       echo "# STDERR:"
       sed -n '1,20p' "$err_file"
     fi
-    exit 0
+    exit "$exec_exit"
   fi
 
-  if python3 "$RENDERER" --provider codex --input "$raw_file" > "$rendered_file" 2>/dev/null \
+  if run_renderer > "$rendered_file" 2>/dev/null \
     && [[ "$("$VALIDATOR" "$rendered_file")" == "VALID" ]]; then
     cat "$rendered_file"
     ( [[ -n "$ORCH_LOG_FILE" ]] && cat "$rendered_file" >> "$ORCH_LOG_FILE" ) 2>/dev/null || true
   else
+    render_exit=$?
     if [[ -s "$raw_file" ]]; then
       cat "$raw_file"
       ( [[ -n "$ORCH_LOG_FILE" ]] && cat "$raw_file" >> "$ORCH_LOG_FILE" ) 2>/dev/null || true
+      if [[ "$render_exit" -eq 127 ]]; then
+        echo "# Renderer runtime unavailable (need uv or python3)" >&2
+      fi
+      exit 6
     else
       echo "# Codex returned NO_OUTPUT"
+      exit 5
     fi
   fi
 fi
