@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-04T03:45:30Z by generate-index.py -->
+<!-- Generated: 2026-03-04T03:52:33Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-04T03:45:30Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-04T03:52:33Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 437
+**Total items:** 438
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 198 |
+| pending | 199 |
 | working | 4 |
 | blocked | 9 |
 | archived | 226 |
@@ -22,16 +22,16 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 208 |
-| medium | 187 |
+| high | 210 |
+| medium | 186 |
 | low | 41 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 73 |
-| medium | 204 |
+| simple | 72 |
+| medium | 206 |
 | complex | 93 |
 
 ### By Repository
@@ -54,7 +54,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 130 |
+| workspace-hub | 131 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -62,7 +62,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 165 / 437 |
+| Plans exist | 165 / 438 |
 | Plans cross-reviewed | 61 |
 | Plans approved | 80 |
 | Brochure pending | 7 |
@@ -74,9 +74,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 437 |
+| Total captured | 438 |
 | Total archived | 226 |
-| Completion rate | 226/437 (52%) |
+| Completion rate | 226/438 (52%) |
 | Monthly rate (current month) | 1 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -84,7 +84,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 198 | 29% |
+| Pending items with plans | 58 / 199 | 29% |
 | Plans cross-reviewed | 10 | 15% |
 | Plans user-approved | 10 | 15% |
 
@@ -101,8 +101,8 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 99 | 2 | 7 |
-| Medium   | 71  | 2  | 1  |
+| High     | 101 | 2 | 7 |
+| Medium   | 70  | 2  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## Master Table
@@ -545,7 +545,8 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1002 |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1003 |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1004 |
-| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -750,7 +751,8 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
-| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | medium | simple | workspace-hub | - |
+| WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | high | medium | workspace-hub | - |
+| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | high | medium | workspace-hub | - |
 
 ### Working
 
@@ -1483,7 +1485,8 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | - |
-| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | pending | medium | simple | - |
+| WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | pending | high | medium | - |
+| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | pending | high | medium | - |
 
 ### worldenergydata
 
@@ -1793,6 +1796,8 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | medium | workspace-hub | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | medium | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | medium | workspace-hub | - |
+| WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | pending | medium | workspace-hub | - |
+| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -1984,7 +1989,6 @@
 | WRK-694 | Per-session log files in session-logger.sh | pending | simple | workspace-hub | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | simple | workspace-hub | - |
-| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | pending | simple | workspace-hub | - |
 
 ### Low
 
@@ -2110,7 +2114,6 @@
 | WRK-694 | Per-session log files in session-logger.sh | pending | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | medium | workspace-hub | - |
-| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2320,6 +2323,8 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | workspace-hub | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | workspace-hub | - |
+| WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | pending | high | workspace-hub | - |
+| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | pending | high | workspace-hub | - |
 
 ### Complex
 
@@ -2421,7 +2426,7 @@
 
 ## By Computer
 
-### ace-linux-1 (146 active / 160 total)
+### ace-linux-1 (147 active / 161 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2584,7 +2589,8 @@
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | workspace-hub |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | workspace-hub |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | workspace-hub |
-| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | pending | medium | simple | workspace-hub |
+| WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | pending | high | medium | workspace-hub |
+| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | pending | high | medium | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)
 
