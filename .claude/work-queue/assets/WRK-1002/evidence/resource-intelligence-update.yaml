@@ -1,0 +1,23 @@
+wrk_id: WRK-1002
+stage: 16
+generated_at: "2026-03-04T00:00:00Z"
+
+additions:
+  - pattern: "circle math lives at src/geometry/circle.py (not src/workspace_hub/math/)"
+    scope: workspace-hub
+    type: file-location
+  - pattern: "claim-item.sh fails with exit 1 on pre-existing queue errors but still writes claim-evidence.yaml"
+    scope: workspace-hub
+    type: tooling-behavior
+  - pattern: "resource-intelligence.yaml: completion_status must be continue_to_planning or pause_and_revise"
+    scope: workspace-hub
+    type: schema-constraint
+  - pattern: "WRK frontmatter requires html_output_ref + plan_html_review_draft_ref + plan_html_review_final_ref"
+    scope: workspace-hub
+    type: schema-constraint
+  - pattern: "legal-scan gate requires legal-scan.md in assets root (not evidence/)"
+    scope: workspace-hub
+    type: schema-constraint
+  - pattern: "future-work.yaml requires recommendations[] with disposition/status/captured fields per item"
+    scope: workspace-hub
+    type: schema-constraint

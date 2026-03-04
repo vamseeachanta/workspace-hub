@@ -1,0 +1,36 @@
+wrk_id: WRK-1002
+generated_at: "2026-03-04T00:00:00Z"
+stage: 15
+
+recommendations:
+  - title: "Add negative radius validation to calculate_circle"
+    description: >
+      Add ValueError guard for negative radius in calculate_circle().
+      Add corresponding test coverage.
+    source: "Codex impl cross-review P1 + Gemini P1"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    priority: low
+    required_for_signoff: false
+
+  - title: "Tighten calculate_circle return type to dict[str, float]"
+    description: >
+      Update return type annotation from dict to dict[str, float].
+    source: "Codex impl cross-review P2"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    priority: low
+    required_for_signoff: false
+
+  - title: "WRK-1003: Codex orchestrator gatepass test — unblocked"
+    description: >
+      WRK-1003 runs the same lifecycle using Codex as orchestrator.
+      Unblocked when WRK-1002 archives.
+    source: "WRK-1002 acceptance criteria"
+    disposition: existing-updated
+    status: pending
+    captured: true
+    priority: high
+    required_for_signoff: false

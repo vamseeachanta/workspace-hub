@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WRK-1002 - Plan Review</title>
+  <link rel="stylesheet" href="../../assets/shared/orchestrator.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">WRK-1002 Plan Artifact</div>
+      <h1>test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD</h1>
+      <p class="lede">Run a full work-queue gatepass lifecycle — from CAPTURE to ARCHIVE — driven entirely</p>
+      <div class="meta">
+        <div class="pill">Status: <span class="badge badge-pending">PENDING</span></div>
+        <div class="pill">Route: C</div>
+        <div class="pill">Priority: high</div>
+        <div class="pill">Orchestrator: claude</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <div><p>Run a full work-queue gatepass lifecycle — from CAPTURE to ARCHIVE — driven entirely
+by the Claude orchestrator, using the WRK-624 harness. Include a concrete TDD task
+(circle area + circumference) so that user-review steps are actively exercised and
+captured as evidence artifacts.</p></div>
+    </div>
+
+    <h2>Skill Manifest</h2>
+    <div class="panel">
+      <p><strong>Source:</strong> <code>none</code></p>
+      <p><strong>Mandatory Skills:</strong> none</p>
+      <p><strong>Supporting Skills:</strong> none</p>
+      <p><strong>Domain Skills:</strong> none</p>
+      <p><strong>Repo Governance Skills:</strong> none</p>
+    </div>
+
+    <div class="panel">
+      <h1>test(gatepass): Claude Orchestrator — Work-Queue Lifecycle End-to-End</h1>
+<h2>What</h2>
+<p>Run a full work-queue gatepass lifecycle — from CAPTURE to ARCHIVE — driven entirely
+by the Claude orchestrator, using the WRK-624 harness. Include a concrete TDD task
+(circle area + circumference) so that user-review steps are actively exercised and
+captured as evidence artifacts.</p>
+<h2>Why</h2>
+<p>WRK-624 established the harness and canonical workflow; WRK-659/690 worked on
+enforcement. This item is the first of three sequential provider-specific tests that
+confirm each orchestrator can independently run the full lifecycle and produce
+comparable, auditable evidence. Claude runs first because it owns the harness.</p>
+<h2>Concrete TDD Task: Circle Math</h2>
+<p>Implement <code>calculate_circle(radius)</code> in <code>assetutilities</code> (or a hub test module):
+- Returns <code>{"area": π r², "circumference": 2π r}</code>
+- Tests first (TDD): write failing tests, then implement
+- Validates that the TDD gate in <code>verify-gate-evidence.py</code> is correctly triggered</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># tests/unit/test_circle.py  (write this FIRST — red phase)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">workspace_hub.math.circle</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_circle</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_calculate_circle_area</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">calculate_circle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">],</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">25</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_calculate_circle_circumference</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">calculate_circle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;circumference&quot;</span><span class="p">],</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_calculate_circle_zero_radius</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">calculate_circle</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;circumference&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span>
+</code></pre></div>
+
+<h2>Lifecycle Stages (WRK-624 harness)</h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Action</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CAPTURE</td>
+<td>This WRK item exists</td>
+<td>WRK-1002.md</td>
+</tr>
+<tr>
+<td>TRIAGE</td>
+<td>priority/complexity set, workstation assigned</td>
+<td>frontmatter</td>
+</tr>
+<tr>
+<td>PLAN</td>
+<td>plan section below, HTML review</td>
+<td>plan-html-review-final.md</td>
+</tr>
+<tr>
+<td>CLAIM</td>
+<td><code>claim-item.sh WRK-1002</code></td>
+<td>claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>IMPLEMENT</td>
+<td>circle TDD + gatepass skill chain</td>
+<td>commit hash</td>
+</tr>
+<tr>
+<td>CROSS-REVIEW</td>
+<td>Codex reviews implementation</td>
+<td>cross-review-package.md</td>
+</tr>
+<tr>
+<td>CLOSE</td>
+<td><code>close-item.sh WRK-1002</code> after gates pass</td>
+<td>stage-evidence.yaml</td>
+</tr>
+<tr>
+<td>ARCHIVE</td>
+<td><code>archive-item.sh WRK-1002</code></td>
+<td>moved to archive/</td>
+</tr>
+</tbody>
+</table>
+<h2>User-Review Capture</h2>
+<p>At PLAN stage: produce <code>plan-html-review-final.md</code> with fields:</p>
+<div class="codehilite"><pre><span></span><code>confirmed_by: &lt;user&gt;
+confirmed_at: &lt;ISO date&gt;
+decision: passed
+</code></pre></div>
+
+<p>User actively reviews and signs off — this is the artifact the harness validates.</p>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] TDD tests written first (failing), then implementation makes them pass</li>
+<li>[ ] <code>uv run --no-project python -m pytest tests/unit/test_circle.py</code> green</li>
+<li>[ ] <code>verify-gate-evidence.py WRK-1002</code> passes all gates</li>
+<li>[ ] <code>plan-html-review-final.md</code> with <code>decision: passed</code> present (user-reviewed)</li>
+<li>[ ] <code>variation-test-results.md</code> produced under <code>assets/WRK-1002/</code></li>
+<li>[ ] Full lifecycle scripts (<code>claim-item.sh</code>, <code>close-item.sh</code>, <code>archive-item.sh</code>) executed</li>
+<li>[ ] WRK-1003 unblocked on completion</li>
+</ul>
+<h2>Plan</h2>
+<ol>
+<li>Write failing tests → commit (red)</li>
+<li>Implement <code>calculate_circle</code> → commit (green)</li>
+<li>Run full gatepass: plan HTML → claim → cross-review (Codex) → close</li>
+<li>Capture variation-test-results.md using WRK-624 harness pattern</li>
+<li>Record user plan-review confirmation before close</li>
+</ol>
+    </div>
+
+    <h2>Test Evidence</h2>
+    <div class="panel">
+      <p><strong>Example Pack:</strong> missing</p>
+      <p><strong>Variation Tests:</strong> missing</p>
+      <p><strong>Integrated/Repo Tests:</strong> 0 (invalid count) not all pass</p>
+      <p><strong>Example Pack Path:</strong> <code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1002/example-pack.md</code></p>
+      <p><strong>Variation Test Path:</strong> <code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1002/variation-test-results.md</code></p>
+      <p><strong>Execute Evidence Path:</strong> <code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1002/execute-evidence.yaml</code></p>
+      <p><strong>Variation Test Summary:</strong> No variation-test summary available.</p>
+    </div>
+
+    <div class="action-footer">
+      <p><strong>Required Action:</strong> Please provide your sign-off in the terminal.</p>
+      <a href="#" class="btn btn-approve">APPROVE</a>
+      <a href="#" class="btn btn-reject">REJECT</a>
+    </div>
+  </main>
+</body>
+</html>

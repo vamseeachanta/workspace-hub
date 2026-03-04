@@ -1,0 +1,56 @@
+wrk_id: WRK-1002
+stage: 10
+generated_at: "2026-03-04T00:00:00Z"
+orchestrator: claude
+route: C
+
+routing_evidence:
+  skill: coordination/workspace/work-queue
+  invoked_via: /work run WRK-1002
+  stage_9_signal: work_queue_routing_skill
+
+execution_summary:
+  description: "Circle math TDD — calculate_circle(radius) returns {area, circumference}"
+  approach: TDD (red → green)
+  files_changed:
+    - path: tests/unit/test_circle.py
+      action: created
+      phase: red
+      commit: "0125b529"
+    - path: src/geometry/circle.py
+      action: created
+      phase: green
+      commit: "d5ba054a"
+
+integrated_repo_tests:
+  - name: test_calculate_circle_area
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_circle.py::test_calculate_circle_area -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1002/evidence/test-results.md
+  - name: test_calculate_circle_circumference
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_circle.py::test_calculate_circle_circumference -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1002/evidence/test-results.md
+  - name: test_calculate_circle_zero_radius
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_circle.py::test_calculate_circle_zero_radius -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1002/evidence/test-results.md
+  - name: test_calculate_circle_returns_dict
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_circle.py::test_calculate_circle_returns_dict -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1002/evidence/test-results.md
+  - name: test_calculate_circle_unit_radius
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_circle.py::test_calculate_circle_unit_radius -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1002/evidence/test-results.md
+
+tdd_evidence:
+  red_phase_commit: "0125b529"
+  green_phase_commit: "d5ba054a"
+  final_test_count: 5
+  final_pass_count: 5

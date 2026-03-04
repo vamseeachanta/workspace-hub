@@ -1,0 +1,31 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: c17a35f9ef404429a7762244445d58a0f8ea234f
+  documents:
+  - .claude/work-queue/assets/WRK-1002/plan-html-review-draft.html
+  published_at: '2026-03-04T22:46:59Z'
+  reviewer: user
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 31ddfb7aece61a16b2451faf620631a7410f3d52
+  documents:
+  - .claude/work-queue/assets/WRK-1002/plan-html-review-final.md
+  - scripts/review/results/wrk-1002-plan-review.md
+  published_at: '2026-03-04T23:34:42Z'
+  reviewer: user
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 31ddfb7aece61a16b2451faf620631a7410f3d52
+  documents:
+  - .claude/work-queue/assets/WRK-1002/close-review.html
+  - .claude/work-queue/assets/WRK-1002/cross-review-package.md
+  - .claude/work-queue/assets/WRK-1002/evidence/future-work.yaml
+  published_at: '2026-03-04T23:51:14Z'
+  reviewer: user
