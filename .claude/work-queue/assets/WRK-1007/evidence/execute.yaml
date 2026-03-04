@@ -1,0 +1,17 @@
+integrated_repo_tests:
+  - name: "Gemini Robustness"
+    scope: "integrated"
+    command: "bash ./scripts/review/tests/test-submit-to-gemini-robustness.sh"
+    result: "passed"
+    artifact_ref: "n/a"
+  - name: "Claude Robustness"
+    scope: "integrated"
+    command: "bash ./scripts/review/tests/test-submit-to-claude-robustness.sh"
+    result: "passed"
+    artifact_ref: "n/a"
+  - name: "Codex Robustness"
+    scope: "integrated"
+    command: "bash ./scripts/review/tests/test-submit-to-codex-robustness.sh"
+    result: "passed"
+    artifact_ref: "n/a"
+tests_passed: true

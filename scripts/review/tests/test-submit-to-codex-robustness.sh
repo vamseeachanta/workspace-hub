@@ -151,6 +151,19 @@ run_case() {
   echo "$rc" > "$TEST_DIR/rc-${mode}.txt"
 }
 
+run_case_with_script() {
+  local script_path="$1"
+  local mode="$2"
+  shift 2
+  local out="$TEST_DIR/out-${mode}.txt"
+  local err="$TEST_DIR/err-${mode}.txt"
+  local rc=0
+  MOCK_CODEX_MODE="$mode" MOCK_CODEX_STATE_FILE="$STATE_FILE" CODEX_BIN="$MOCK_CODEX" \
+    CODEX_TIMEOUT_SECONDS=1 CODEX_MAX_PROMPT_CHARS=20000 CODEX_COMPACT_RETRY_CHARS=5000 \
+    "$script_path" "$@" >"$out" 2>"$err" || rc=$?
+  echo "$rc" > "$TEST_DIR/rc-${mode}.txt"
+}
+
 echo "Test group: argument and input validation"
 run_case success_json
 assert_status "requires --file or --commit" "1" "$(cat "$TEST_DIR/rc-success_json.txt")"
@@ -207,6 +220,33 @@ assert_contains "success rendered verdict" "$TEST_DIR/out-success_json.txt" "^##
 run_case invalid_json --file "$SAMPLE_FILE" --prompt "strict review"
 assert_status "invalid structured output exits non-zero" "6" "$(cat "$TEST_DIR/rc-invalid_json.txt")"
 assert_contains "invalid output falls back to raw text" "$TEST_DIR/out-invalid_json.txt" "not-json-review"
+
+echo "Test group: renderer/validator dependency failures"
+SUBMIT_NO_UV="$TEST_DIR/submit-no-uv.sh"
+cp "$SUBMIT_SCRIPT" "$SUBMIT_NO_UV"
+chmod +w "$SUBMIT_NO_UV"
+sed -i 's/if command -v uv >/if false \&\& command -v uv >/' "$SUBMIT_NO_UV"
+chmod +x "$SUBMIT_NO_UV"
+run_case_with_script "$SUBMIT_NO_UV" success_json --file "$SAMPLE_FILE" --prompt "strict review"
+assert_status "missing uv runtime exits non-zero" "6" "$(cat "$TEST_DIR/rc-success_json.txt")"
+assert_contains "missing uv runtime marker" "$TEST_DIR/err-success_json.txt" "Renderer runtime unavailable \\(need uv\\)"
+
+VALIDATOR_STUB="$TEST_DIR/validator-invalid.sh"
+cat > "$VALIDATOR_STUB" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+echo "INVALID_OUTPUT"
+exit 0
+EOF
+chmod +x "$VALIDATOR_STUB"
+SUBMIT_BAD_VALIDATOR="$TEST_DIR/submit-bad-validator.sh"
+cp "$SUBMIT_SCRIPT" "$SUBMIT_BAD_VALIDATOR"
+chmod +w "$SUBMIT_BAD_VALIDATOR"
+sed -i "s|^VALIDATOR=.*|VALIDATOR=\"$VALIDATOR_STUB\"|" "$SUBMIT_BAD_VALIDATOR"
+chmod +x "$SUBMIT_BAD_VALIDATOR"
+run_case_with_script "$SUBMIT_BAD_VALIDATOR" success_json --file "$SAMPLE_FILE" --prompt "strict review"
+assert_status "validator-rejected render exits non-zero" "6" "$(cat "$TEST_DIR/rc-success_json.txt")"
+assert_contains "validator-rejected render falls back to raw json" "$TEST_DIR/out-success_json.txt" "\\{\"verdict\":\"APPROVE\""
 
 rm -f "$STATE_FILE"
 run_case first_fail_then_success --file "$LARGE_FILE" --prompt "strict review"

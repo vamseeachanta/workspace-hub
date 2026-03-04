@@ -23,7 +23,7 @@ latest_models:
   claude_balanced: "claude-sonnet-4-6"       # Updated 2026-02-18: Sonnet 4.6 preferred over 4.5 for efficiency
   claude_fast: "claude-haiku-4-5"  # use latest — check anthropic.com/api/docs
   codex_primary: "codex-cli"          # Uses o4-mini under the hood
-  gemini_primary: "gemini-2.5-pro"
+  gemini_primary: "gemini-3.1-pro-preview"
   gemini_fast: "gemini-2.5-flash"
   openai_primary: "gpt-4.1"
   openai_fast: "gpt-4.1-mini"
@@ -95,8 +95,15 @@ providers:
         capability_tier: STANDARD
         default_priority: 90
   gemini:
-    default_model: gemini-pro
+    default_model: gemini-3-1-pro-preview
     models:
+      gemini-3-1-pro-preview:
+        display_name: "Gemini 3.1 Pro Preview"
+        model_id: "gemini-3.1-pro-preview"
+        cost_tier: premium
+        capability_tier: REASONING
+        default_priority: 100
+        quota_risk: HIGH
       gemini-pro:
         display_name: "Gemini 2.5 Pro"
         model_id: "gemini-2.5-pro"

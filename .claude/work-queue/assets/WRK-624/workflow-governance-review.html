@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Review: WRK-624 Workflow Governance</title>
     <meta charset="utf-8">
@@ -76,6 +76,11 @@
         th, td { border-top: 1px solid var(--line); padding: 10px 8px; text-align: left; vertical-align: top; }
         th { font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.86rem; color: var(--ink); }
         ul { margin-top: 8px; }
+        @media print {
+          body { background: #fff; }
+          .card { box-shadow: none; border: 1px solid #ccc; }
+          tr, td, th { page-break-inside: avoid; }
+        }
     </style>
 </head>
 <body>
@@ -92,31 +97,33 @@
         <div class="exec-summary">
             <h2>Executive Summary</h2>
             <ul>
-                <li>WRK-690 now includes a refreshed 7-day native-store analysis window for 2026-02-26 through 2026-03-04 across Claude, Codex, and Gemini.</li>
+                <li>WRK-690 now includes a refreshed 7-day native-store analysis window for 2026-02-25 through 2026-03-03 across Claude, Codex, and Gemini.</li>
                 <li>Weekly rebuild analyzed <strong>175 sessions</strong> and refreshed both gatepass and signal-coverage evidence artifacts.</li>
-                <li>Signal coverage moved to full measured contract compliance for the current weekly dataset: <strong>23/23 required signals measured</strong>.</li>
+                <li>Signal instrumentation now covers the full contract keyset for this weekly dataset: <strong>23/23 required signals measured at least once</strong> (measurement coverage, not universal compliance).</li>
                 <li>Carry-forward lessons were applied into workflow skills and shared script emitters to keep cross-agent orchestration consistent.</li>
             </ul>
         </div>
 
         <h2>Scope and Method</h2>
         <ul>
-            <li>Window analyzed: 2026-02-26 to 2026-03-04 (inclusive, rolling 7-day refresh).</li>
+            <li>Window analyzed: 2026-02-25 to 2026-03-03 (inclusive, rolling 7-day refresh).</li>
             <li>Claude source: <code>.claude/state/sessions/session_YYYYMMDD.jsonl</code>.</li>
             <li>Codex source: <code>~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl</code>.</li>
             <li>Gemini source: <code>~/.gemini/tmp/workspace-hub/chats/session-*.json</code>.</li>
             <li>Primary metric set: gate signal coverage (relaxed/strict), source-wise coverage, and unique <code>WRK-###</code> references.</li>
             <li>Policy note: inferred signals are diagnostic only and are <strong>not</strong> counted as measured signal compliance.</li>
         </ul>
+        <p><strong>Generated-at metadata:</strong> snapshot built on 2026-03-03 (America/Chicago); table bounds are fixed to 2026-02-25 through 2026-03-03.</p>
 
         <h2>Gatepass Findings</h2>
         <ul>
             <li>Weekly rebuilt gate coverage now shows stronger activation and verification evidence in strict sessions.</li>
-            <li>Session signal contract is now fully represented in measured keys for this weekly snapshot (<code>23/23</code> required).</li>
+            <li>Session signal contract is now fully represented in measured keys for this weekly snapshot (<code>23/23</code> required) while compliance depth still varies by stage.</li>
             <li>Remaining quality work is now compliance depth (raising low-frequency stages), not missing signal definitions.</li>
         </ul>
 
         <h2>Orchestrator Workflow-Start Session Count</h2>
+        <p><strong>Scope note:</strong> this table uses strict workflow-start criteria (<code>init + set_active_wrk</code>). Stage-level strict denominators below use the broader strict-qualified cohort from the session-gate analyzer.</p>
         <table>
             <thead>
                 <tr>
@@ -362,15 +369,16 @@
             <li><code>Glob</code> (8)</li>
         </ul>
 
-        <h2>Daily WRK Coverage by Agent</h2>
+        <h2>Daily WRK Reference Coverage by Agent</h2>
+        <p><strong>Method note:</strong> counts below are unique <code>WRK-###</code> references detected in agent session text for each day, not a count of items actively claimed/executed that day.</p>
         <table>
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Claude WRKs</th>
-                    <th>Codex WRKs</th>
-                    <th>Gemini WRKs</th>
-                    <th>Total Unique WRKs</th>
+                    <th>Claude WRK references</th>
+                    <th>Codex WRK references</th>
+                    <th>Gemini WRK references</th>
+                    <th>Total unique WRK references</th>
                 </tr>
             </thead>
             <tbody>
@@ -434,7 +442,7 @@
                     <td>Close-readiness stage contract hardening</td>
                     <td>Done</td>
                     <td><code>scripts/work-queue/verify-gate-evidence.py</code></td>
-                    <td>Close phase now enforces orders 1..16 as done/n-a.</td>
+                    <td>Close phase now enforces mandatory pre-close orders through stage 17 (Reclaim remains conditional).</td>
                 </tr>
                 <tr>
                     <td>WRK-690 close-phase gate run</td>
@@ -452,11 +460,54 @@
         </table>
 
         <h2>Next Work Inside WRK-690</h2>
-        <ul>
-            <li>Finalize cross-review package and capture provider verdict artifacts.</li>
-            <li>Execute WRK-690 close/archive path and confirm stage orders 18/19 progression in evidence ledger.</li>
-            <li>Add comprehensive-learning enhancements for gate-init / gate-missing daily signal synthesis.</li>
-        </ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>Next Work Item</th>
+                    <th>Disposition</th>
+                    <th>Status</th>
+                    <th>Captured</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Enforce Stage 16/17 pre-close checks (<code>resource_intelligence_update</code>, <code>user_review_close</code>)</td>
+                    <td>existing-updated</td>
+                    <td>done</td>
+                    <td>yes</td>
+                    <td>Implemented in gate verifier and covered by unit tests.</td>
+                </tr>
+                <tr>
+                    <td>Automate <code>html_open_default_browser</code> emission for user-review stages</td>
+                    <td>existing-updated</td>
+                    <td>pending</td>
+                    <td>yes</td>
+                    <td>Tracked in WRK-690 remaining scope.</td>
+                </tr>
+                <tr>
+                    <td>Finalize cross-review package and provider verdict artifacts</td>
+                    <td>existing-updated</td>
+                    <td>done</td>
+                    <td>yes</td>
+                    <td>Claude/Codex/Gemini artifacts consolidated in synthesis file.</td>
+                </tr>
+                <tr>
+                    <td>Execute WRK-690 close/archive path and verify stage-order progression</td>
+                    <td>existing-updated</td>
+                    <td>pending</td>
+                    <td>yes</td>
+                    <td>Intentionally deferred; user requested no close yet.</td>
+                </tr>
+                <tr>
+                    <td>Comprehensive-learning enhancements for daily gate-init / gate-missing synthesis</td>
+                    <td>existing-updated</td>
+                    <td>done</td>
+                    <td>yes</td>
+                    <td>Implemented in comprehensive-learning skill as a mandatory per-agent/day matrix output.</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     </main>
 </body>

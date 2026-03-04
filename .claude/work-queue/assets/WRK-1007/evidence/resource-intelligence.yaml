@@ -1,0 +1,7 @@
+completion_status: "continue_to_planning"
+top_p1_gaps: []
+skills:
+  core_used:
+    - "bash"
+    - "python"
+    - "testing"

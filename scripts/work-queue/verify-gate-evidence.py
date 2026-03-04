@@ -169,6 +169,17 @@ def check_future_work_gate(assets_dir: Path) -> tuple[bool | None, str]:
                     return False, f"{fw_file.name}: recommendations[{idx}] must be an object"
                 if rec.get("required_for_signoff") and not rec.get("wrk_id"):
                     missing_required_wrks.append(idx)
+                disposition = str(rec.get("disposition", "")).strip().lower()
+                if disposition not in {"existing-updated", "spun-off-new"}:
+                    return False, (
+                        f"{fw_file.name}: recommendations[{idx}] disposition must be "
+                        "existing-updated|spun-off-new"
+                    )
+                if not str(rec.get("status", "")).strip():
+                    return False, f"{fw_file.name}: recommendations[{idx}] status missing"
+                captured = rec.get("captured")
+                if captured is not True:
+                    return False, f"{fw_file.name}: recommendations[{idx}] captured must be true before close"
             if missing_required_wrks:
                 return False, f"{fw_file.name}: required_for_signoff recommendations missing wrk_id at {missing_required_wrks}"
             return True, f"{fw_file.name}: recommendations={len(recs)}"
@@ -409,7 +420,9 @@ def check_stage_evidence_gate(front: str, workspace_root: Path, wrk_id: str, pha
         preclose_orders = range(1, 19)  # 1..18 must be done|n/a before close
     elif seen_orders == required_orders_legacy:
         expected_orders = required_orders_legacy
-        preclose_orders = range(1, 17)  # legacy contract
+        # Legacy 19-stage ledgers still require stage 17 (User Review - Implementation)
+        # before close; stage 18 (Reclaim) remains conditional.
+        preclose_orders = range(1, 18)  # 1..17 must be done|n/a before close
     else:
         missing_current = sorted(required_orders_current - seen_orders)
         missing_legacy = sorted(required_orders_legacy - seen_orders)

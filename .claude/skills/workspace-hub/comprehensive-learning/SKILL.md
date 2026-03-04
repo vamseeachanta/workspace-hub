@@ -136,6 +136,9 @@ If a signal is absent for a check, skip the check and log
 5. **Track per-agent source coverage:** Always include source breakdown
    (`claude-native`, `codex-native`, `gemini-native`) to detect provider-specific
    drift even when aggregate coverage looks healthy.
+6. **Emit daily gate-init/gate-missing matrix:** In Phase 1 output, include a
+   per-agent-by-day table for `init`, `set_active_wrk`, and any missing mandatory
+   signals so workflow drift is visible before close.
 
 ---
 

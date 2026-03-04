@@ -55,6 +55,28 @@ It makes the lifecycle sequence explicit and blocks bypass behavior.
 19. Close.
 20. Archive.
 
+## Stage 15 to Stage 17 Rule (Next-Work Disposition)
+
+Before Stage 17 (User Review - Implementation), any "next work" discovered from the
+current WRK must be captured using one of these paths:
+
+1. Update an existing WRK item with revised scope and set status to `pending`
+   (or another appropriate non-closed status).
+2. Spin off a new WRK item with explicit scope and links back to the source WRK.
+
+The agent chooses the path, but the decision is mandatory evidence and must be
+recorded in:
+- `assets/WRK-<id>/evidence/future-work.yaml`
+- stage ledger order 15 evidence reference (`stage-evidence.yaml`)
+
+Use `specs/templates/future-work-template.yaml` for the canonical YAML artifact.
+Optional human-readable mirror: `specs/templates/future-work-recommendations-template.md`.
+
+When documenting next work in markdown artifacts, use a table with an explicit
+`Captured` column:
+- `yes`/`✓` when captured as `existing-updated` or `spun-off-new`
+- `no`/`✗` when identified but not yet captured (must be cleared before Stage 17)
+
 ## Route Consistency (A/B/C)
 
 - All routes use the same canonical 20-stage lifecycle.

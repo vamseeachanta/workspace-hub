@@ -1,0 +1,19 @@
+wrk_id: WRK-NNN
+captured_at: YYYY-MM-DDTHH:MM:SSZ
+captured_by: agent
+recommendations:
+  - priority: P1
+    wrk_id: WRK-XXX
+    title: Example follow-up item
+    disposition: existing-updated
+    status: pending
+    captured: true
+    rationale: Explain why this follow-up is required.
+  - priority: P2
+    wrk_id: WRK-YYY
+    title: Example spun-off item
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    rationale: Explain why this should be a new WRK.
+no_follow_ups_rationale: ""

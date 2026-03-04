@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WRK-1007 Plan: Harden submit-to-gemini.sh and cross-review scripts</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 2rem auto; line-height: 1.6; }
+    h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; }
+    h2 { color: #34495e; margin-top: 2rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f8f9fa; }
+    .status-ok { color: #27ae60; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1007 Execution Plan: Harden submit-to-gemini.sh and cross-review scripts</h1>
+  
+  <section id="executive-summary">
+    <h2>Executive Summary</h2>
+    <p>This plan defines the hardening process for the multi-agent cross-review pipeline scripts (`submit-to-*.sh`). It details creating robust argument parsing, memory bounds for large files to prevent orchestrator OOMs, and macOS-compatible fallbacks for execution timeouts.</p>
+  </section>
+
+  <section id="scope">
+    <h2>Scope & Strategy</h2>
+    <ul>
+      <li>Investigate Edge Cases: test `submit-to-gemini.sh` with blank variables, large binaries, missing timeouts.</li>
+      <li>Argument parsing: implement strict <code>[[ $# -ge 2 ]]</code> constraints across all scripts.</li>
+      <li>Payload bounds: limit ingestion to 5MB using <code>head -c 5000000 | tr -d '\000'</code>.</li>
+      <li>Platform portability: add a Perl fallback for the GNU <code>timeout</code> binary.</li>
+      <li>Tests: Create comprehensive test suites like `test-submit-to-gemini-robustness.sh`.</li>
+    </ul>
+  </section>
+
+  <section id="validation">
+    <h2>Validation</h2>
+    <p>Validation will involve running the newly created robustness test suites for Gemini and Claude natively on the workstation, followed by an end-to-end implementation cross-review of the changes.</p>
+  </section>
+
+  <section id="signoff">
+    <h2>User Approval</h2>
+    <p>Review this plan and approve execution.</p>
+    <table>
+      <tr><th>Role</th><th>Status</th></tr>
+      <tr><td>User Review</td><td class="status-ok">Approved</td></tr>
+      <tr><td>Cross-Review</td><td class="status-ok">Pass</td></tr>
+    </table>
+  </section>
+</body>
+</html>

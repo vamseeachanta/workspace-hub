@@ -108,6 +108,9 @@ def test_future_work_gate_fails_required_for_signoff_without_wrk_id(tmp_path: Pa
         """
 recommendations:
   - title: follow up item
+    disposition: existing-updated
+    status: pending
+    captured: true
     required_for_signoff: true
 """.strip()
         + "\n",
@@ -117,6 +120,56 @@ recommendations:
     ok, detail = mod.check_future_work_gate(tmp_path)
     assert ok is False
     assert "required_for_signoff recommendations missing wrk_id" in detail
+
+
+def test_future_work_gate_fails_when_captured_false(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "future-work.yaml").write_text(
+        """
+recommendations:
+  - wrk_id: WRK-123
+    title: follow up item
+    disposition: existing-updated
+    status: pending
+    captured: false
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+
+    ok, detail = mod.check_future_work_gate(tmp_path)
+    assert ok is False
+    assert "captured must be true" in detail
+
+
+def test_future_work_gate_passes_with_disposition_and_captured_true(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "future-work.yaml").write_text(
+        """
+recommendations:
+  - wrk_id: WRK-123
+    title: follow up item
+    disposition: spun-off-new
+    status: pending
+    captured: true
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+
+    ok, detail = mod.check_future_work_gate(tmp_path)
+    assert ok is True
+    assert "recommendations=1" in detail
 
 
 def test_reclaim_gate_block_requires_reason(tmp_path: Path):
@@ -303,6 +356,64 @@ def test_stage_evidence_gate_passes_with_all_19_orders(tmp_path: Path):
     )
     front = "id: WRK-999\nstage_evidence_ref: stage-evidence.yaml\n"
     ok, detail = mod.check_stage_evidence_gate(front, tmp_path, "WRK-999")
+    assert ok is True
+    assert "stages=19" in detail
+
+
+def test_stage_evidence_gate_fails_legacy_close_phase_if_stage17_pending(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_file = tmp_path / "stage-evidence.yaml"
+    rows = []
+    for i in range(1, 20):
+        status = "done"
+        if i == 17:
+            status = "pending"
+        if i in {18, 19}:
+            status = "n/a" if i == 18 else "pending"
+        rows.append(f"  - order: {i}\n    stage: Stage {i}\n    status: {status}\n    evidence: ref-{i}")
+    evidence_file.write_text(
+        "wrk_id: WRK-999\n"
+        "generated_at: \"2026-03-03T00:00:00Z\"\n"
+        "reviewed_by: agent\n"
+        "stages:\n"
+        + "\n".join(rows)
+        + "\n",
+        encoding="utf-8",
+    )
+    front = "id: WRK-999\nstage_evidence_ref: stage-evidence.yaml\n"
+    ok, detail = mod.check_stage_evidence_gate(front, tmp_path, "WRK-999", phase="close")
+    assert ok is False
+    assert "stage order 17 must be done|n/a before close" in detail
+
+
+def test_stage_evidence_gate_passes_legacy_close_phase_when_stage17_done(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_file = tmp_path / "stage-evidence.yaml"
+    rows = []
+    for i in range(1, 20):
+        status = "done"
+        if i == 18:
+            status = "n/a"
+        if i == 19:
+            status = "pending"
+        rows.append(f"  - order: {i}\n    stage: Stage {i}\n    status: {status}\n    evidence: ref-{i}")
+    evidence_file.write_text(
+        "wrk_id: WRK-999\n"
+        "generated_at: \"2026-03-03T00:00:00Z\"\n"
+        "reviewed_by: agent\n"
+        "stages:\n"
+        + "\n".join(rows)
+        + "\n",
+        encoding="utf-8",
+    )
+    front = "id: WRK-999\nstage_evidence_ref: stage-evidence.yaml\n"
+    ok, detail = mod.check_stage_evidence_gate(front, tmp_path, "WRK-999", phase="close")
     assert ok is True
     assert "stages=19" in detail
 

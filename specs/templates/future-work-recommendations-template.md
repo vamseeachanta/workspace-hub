@@ -2,6 +2,9 @@
 
 <!--
   MANDATORY close gate artifact (WRK-678+).
+  Canonical machine-checkable artifact is `future-work.yaml` (see
+  `specs/templates/future-work-template.yaml`).
+  This markdown file is the human-readable mirror.
   Fill in follow-up WRKs OR provide no_follow_ups_rationale.
   The gate validator checks: file exists AND (has WRK-NNN refs OR no_follow_ups_rationale).
 -->
@@ -12,9 +15,16 @@ captured_by: <!-- agent or user -->
 
 ## Follow-up WRKs
 
-| Priority | WRK-ID | Title | Status | Rationale |
-|----------|--------|-------|--------|-----------|
-| P1 | WRK-XXX | ... | pending | ... |
+| Priority | WRK-ID | Title | Disposition | Status | Captured | Rationale |
+|----------|--------|-------|-------------|--------|----------|-----------|
+| P1 | WRK-XXX | ... | existing-updated | pending | yes | ... |
+| P2 | WRK-YYY | ... | spun-off-new | pending | yes | ... |
+
+<!--
+  Captured column is mandatory:
+  - yes (or ✓): follow-up has been captured as either existing-updated or spun-off-new
+  - no (or ✗): identified but not yet captured; must be resolved before Stage 17
+-->
 
 ## Team Decisions
 
