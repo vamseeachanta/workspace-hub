@@ -130,7 +130,7 @@ assert_status() {
 assert_contains() {
   local label="$1" file="$2" pattern="$3"
   TOTAL=$((TOTAL + 1))
-  if rg -q "$pattern" "$file"; then
+  if grep -qE "$pattern" "$file"; then
     echo "  PASS: $label"
     PASS=$((PASS + 1))
   else

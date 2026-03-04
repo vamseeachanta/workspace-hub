@@ -17,7 +17,7 @@ fi
 
 text="$(tr '[:upper:]' '[:lower:]' < "$infile")"
 
-if grep -Eq '^# (claude|codex|gemini).*(failed|not found)|timed out|no_output' <<< "$text"; then
+if grep -Eq '^# (claude|codex|gemini).*(failed|failure|not found)|timed out|no_output' <<< "$text"; then
     echo "NO_OUTPUT"
     exit 0
 fi

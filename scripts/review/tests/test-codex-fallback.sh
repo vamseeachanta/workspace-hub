@@ -57,6 +57,14 @@ echo "Test 4c: normalize-verdicts — INVALID_OUTPUT"
 v="$("$REVIEW_DIR/normalize-verdicts.sh" "$TEST_DIR/review-invalid.md")"
 assert_eq "INVALID_OUTPUT normalized" "INVALID_OUTPUT" "$v"
 
+echo "Test 4d: validate-review-output — transport failure stub as NO_OUTPUT"
+cat > "$TEST_DIR/review-transport-failure.md" <<'EOF'
+# Codex transport/network failure (exit 1)
+# Action: run outside restricted sandbox or restore provider connectivity.
+EOF
+v="$("$REVIEW_DIR/validate-review-output.sh" "$TEST_DIR/review-transport-failure.md")"
+assert_eq "transport failure classified as NO_OUTPUT" "NO_OUTPUT" "$v"
+
 echo "Test 5: normalize-verdicts — CONDITIONAL_PASS"
 cat > "$TEST_DIR/review-conditional.md" <<'EOF'
 # Codex Fallback Consensus (WRK-160)
@@ -122,6 +130,15 @@ else
     result="HARD_BLOCK"
 fi
 assert_eq "explicit reject → hard block" "HARD_BLOCK" "$result"
+
+echo "Test 12: No fallback on INVALID_OUTPUT — hard block"
+codex_invalid_output=true
+if [[ "$codex_invalid_output" == "true" ]]; then
+    result="HARD_BLOCK"
+else
+    result="FALLBACK_ATTEMPTED"
+fi
+assert_eq "invalid output → hard block" "HARD_BLOCK" "$result"
 
 # ── Summary ──────────────────────────────────────────────────────────
 echo ""

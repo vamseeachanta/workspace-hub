@@ -28,9 +28,18 @@ WRK_ID=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --file)   CONTENT_FILE="${2:-}"; shift 2 || shift ;;
-    --commit) COMMIT_SHA="${2:-}"; shift 2 || shift ;;
-    --prompt) PROMPT="${2:-}"; shift 2 || shift ;;
+    --file)
+      [[ $# -ge 2 ]] || { echo "ERROR: --file requires a value" >&2; exit 1; }
+      CONTENT_FILE="$2"; shift 2
+      ;;
+    --commit)
+      [[ $# -ge 2 ]] || { echo "ERROR: --commit requires a value" >&2; exit 1; }
+      COMMIT_SHA="$2"; shift 2
+      ;;
+    --prompt)
+      [[ $# -ge 2 ]] || { echo "ERROR: --prompt requires a value" >&2; exit 1; }
+      PROMPT="$2"; shift 2
+      ;;
     --compact-plan) COMPACT_PLAN=1; shift ;;
     *) echo "Unknown arg: $1" >&2; exit 1 ;;
   esac
@@ -197,13 +206,21 @@ run_claude_once() {
 # I-10: Unset CLAUDECODE so the claude -p subprocess is not rejected by the
 # nested-session guard ("Claude Code cannot be launched inside another Claude
 # Code session"). This env var is set by all parent Claude Code processes.
-export CLAUDECODE=""
+unset CLAUDECODE
 
 # I-07: Pre-flight DNS check — exit gracefully rather than timing out on EAI_AGAIN
-if ! getent hosts api.anthropic.com >/dev/null 2>&1; then
-  echo "WARN: DNS resolution failed for api.anthropic.com — skipping claude review" >&2
-  echo "# Claude review skipped — network unavailable (EAI_AGAIN)"
-  exit 0
+if command -v getent >/dev/null 2>&1; then
+  if ! getent hosts api.anthropic.com >/dev/null 2>&1; then
+    echo "WARN: DNS resolution failed for api.anthropic.com — skipping claude review" >&2
+    echo "# Claude review skipped — network unavailable (EAI_AGAIN)"
+    exit 3
+  fi
+elif command -v ping >/dev/null 2>&1; then
+  if ! ping -c 1 -W 2 api.anthropic.com >/dev/null 2>&1; then
+    echo "WARN: DNS resolution failed for api.anthropic.com — skipping claude review" >&2
+    echo "# Claude review skipped — network unavailable (EAI_AGAIN)"
+    exit 3
+  fi
 fi
 
 LAST_EXIT_CODE=1
@@ -213,8 +230,20 @@ while [[ "$attempt" -le "$CLAUDE_RETRIES" ]]; do
   run_claude_once || exit_code=$?
   [[ "$exit_code" -ne 0 ]] && LAST_EXIT_CODE=$exit_code
 
+  if [[ "$exit_code" -eq 0 ]]; then
+    if command -v uv >/dev/null 2>&1; then
+      uv run --no-project python "$RENDERER" --provider claude --input "$raw_file" > "$rendered_file" 2>/dev/null
+      render_exit=$?
+    else
+      python3 "$RENDERER" --provider claude --input "$raw_file" > "$rendered_file" 2>/dev/null
+      render_exit=$?
+    fi
+  else
+    render_exit=1
+  fi
+
   if [[ "$exit_code" -eq 0 ]] \
-    && uv run --no-project python "$RENDERER" --provider claude --input "$raw_file" > "$rendered_file" 2>/dev/null \
+    && [[ "$render_exit" -eq 0 ]] \
     && [[ "$("$VALIDATOR" "$rendered_file")" == "VALID" ]]; then
     cat "$rendered_file"
     ( [[ -n "$ORCH_LOG_FILE" ]] && cat "$rendered_file" >> "$ORCH_LOG_FILE" ) 2>/dev/null || true

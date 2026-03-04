@@ -93,6 +93,7 @@ build_review_args() {
 # Track Codex gate status
 CODEX_PASSED=false
 CODEX_NO_OUTPUT=false
+CODEX_FALLBACK_ALLOWED=false
 
 classify_review_result() {
   local result_file="$1"
@@ -132,6 +133,10 @@ submit_review() {
       claude_status="$(classify_review_result "$result_file")"
       case "$claude_status" in
         VALID) ;;
+        SKIPPED_NETWORK)
+          preserve_raw_result "$result_file"
+          echo "# Claude returned SKIPPED_NETWORK (DNS failure)" > "$result_file"
+          ;;
         NO_OUTPUT)
           preserve_raw_result "$result_file"
           echo "# Claude returned NO_OUTPUT" > "$result_file"
@@ -167,11 +172,13 @@ submit_review() {
       elif [[ $codex_exit -eq 0 && ( "$codex_size" -lt 10 || "$codex_status" == "NO_OUTPUT" ) ]]; then
         # Codex ran but produced empty/trivial output (known large-diff limitation)
         CODEX_NO_OUTPUT=true
+        CODEX_FALLBACK_ALLOWED=true
         echo "    WARNING: Codex returned NO_OUTPUT (${codex_size} bytes) — fallback consensus will be attempted" >&2
         echo "# Codex returned NO_OUTPUT (empty response on large diff)" > "$result_file"
       elif [[ $codex_exit -eq 0 && "$codex_status" == "INVALID_OUTPUT" ]]; then
         echo "    WARNING: Codex returned INVALID_OUTPUT — this is a HARD GATE" >&2
-        CODEX_NO_OUTPUT=true
+        CODEX_NO_OUTPUT=false
+        CODEX_FALLBACK_ALLOWED=false
         preserve_raw_result "$result_file"
         {
           echo "# Codex returned INVALID_OUTPUT"
@@ -179,14 +186,24 @@ submit_review() {
         } > "$result_file"
       else
         echo "    WARNING: Codex review FAILED (exit $codex_exit) — this is a HARD GATE" >&2
+        preserve_raw_result "$result_file"
         if [[ $codex_exit -ne 0 ]]; then
-          CODEX_NO_OUTPUT=true
-          echo "# Codex review failed (exit $codex_exit)" > "$result_file"
-          echo "# HARD GATE: Codex review is compulsory — resolve before proceeding" >> "$result_file"
+          if [[ "$codex_status" == "NO_OUTPUT" ]]; then
+            CODEX_NO_OUTPUT=true
+            CODEX_FALLBACK_ALLOWED=true
+            echo "# Codex review failed (exit $codex_exit)" > "$result_file"
+            echo "# Codex returned NO_OUTPUT (tool failure / transport / timeout)" >> "$result_file"
+          else
+            CODEX_NO_OUTPUT=false
+            CODEX_FALLBACK_ALLOWED=false
+            echo "# Codex review failed (exit $codex_exit)" > "$result_file"
+            echo "# HARD GATE: Codex review is compulsory — resolve before proceeding" >> "$result_file"
+          fi
         elif grep -q "^# Codex exec failed\|^# Codex review failed\|^ERROR:" "$result_file" 2>/dev/null; then
           # submit-to-codex.sh caught the error and exited 0, but the result
           # file contains an error stub — treat as NO_OUTPUT for fallback consensus.
           CODEX_NO_OUTPUT=true
+          CODEX_FALLBACK_ALLOWED=true
           echo "    (Codex API/model error detected in result — treating as NO_OUTPUT for fallback)" >&2
         fi
       fi
@@ -207,6 +224,10 @@ submit_review() {
       gemini_status="$(classify_review_result "$result_file")"
       case "$gemini_status" in
         VALID) ;;
+        SKIPPED_NETWORK)
+          preserve_raw_result "$result_file"
+          echo "# Gemini returned SKIPPED_NETWORK (DNS failure)" > "$result_file"
+          ;;
         NO_OUTPUT)
           preserve_raw_result "$result_file"
           echo "# Gemini returned NO_OUTPUT" > "$result_file"
@@ -238,9 +259,9 @@ case "$REVIEWER" in
     echo "--- All reviews submitted. Results in: ${RESULTS_DIR}/"
     if [[ "$CODEX_PASSED" != "true" ]]; then
       # WRK-160: Codex fallback — attempt 2-of-3 consensus when Codex returns NO_OUTPUT
-      if [[ "$CODEX_NO_OUTPUT" == "true" ]]; then
+      if [[ "$CODEX_FALLBACK_ALLOWED" == "true" ]]; then
         echo ""
-        echo "--- Codex returned NO_OUTPUT. Attempting 2-of-3 fallback consensus..." >&2
+        echo "--- Codex unavailable/NO_OUTPUT. Attempting 2-of-3 fallback consensus..." >&2
         claude_file="${RESULT_PREFIX}-claude.md"
         gemini_file="${RESULT_PREFIX}-gemini.md"
         claude_verdict="$("${SCRIPT_DIR}/normalize-verdicts.sh" "$claude_file" 2>/dev/null || echo "ERROR")"
