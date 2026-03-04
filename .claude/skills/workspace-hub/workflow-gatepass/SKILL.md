@@ -3,7 +3,7 @@ name: workflow-gatepass
 description: >
   Enforce WRK lifecycle gatepass from session start through close/archive with
   machine-checkable evidence requirements and explicit no-bypass rules.
-version: 1.0.2
+version: 1.0.3
 updated: 2026-03-03
 category: workspace-hub
 triggers:
@@ -23,6 +23,8 @@ capabilities:
 requires:
   - .claude/work-queue/process.md
   - scripts/work-queue/verify-gate-evidence.py
+  - scripts/work-queue/parse-session-logs.sh
+  - scripts/review/orchestrator-variation-check.sh
 invoke: workflow-gatepass
 ---
 # Workflow Gatepass
@@ -102,3 +104,32 @@ Recommended files:
 - `stage-evidence.yaml`
 - `close.yaml`
 - `archive.yaml`
+
+## Reusable Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/work-queue/verify-gate-evidence.py WRK-NNN` | Check all gates pass before close |
+| `scripts/work-queue/parse-session-logs.sh WRK-NNN ...` | Read Claude/Codex/Gemini logs; emit session-log-review.md |
+| `scripts/review/orchestrator-variation-check.sh --wrk WRK-NNN --orchestrator <provider> --scripts "..."` | Run scripts and emit variation-test-results.md |
+| `scripts/work-queue/claim-item.sh WRK-NNN` | Atomic claim + stage-8 auto-progress |
+| `scripts/work-queue/close-item.sh WRK-NNN` | Atomic close + stage-19 auto-progress |
+| `scripts/work-queue/archive-item.sh WRK-NNN` | Atomic archive + stage-20 auto-progress |
+
+`parse-session-logs.sh` handles JSONL (Claude) and plain-text (Codex/Gemini) formats;
+also checks native stores (`~/.codex/sessions/`, `~/.gemini/tmp/`).
+
+`orchestrator-variation-check.sh` is provider-agnostic — set `--orchestrator` to
+`claude`, `codex`, or `gemini`; the runner field in `variation-test-results.md`
+reflects this value for cross-provider comparisons.
+
+## Operational Lessons (WRK-690)
+
+- Gatepass compliance requires **explicit signal emission**, not only artifact
+  presence. Shared scripts must log lifecycle signals as they execute.
+- User-review stages must emit both stage signal and browser-open signal; do not
+  collapse these into one event.
+- Keep close/archive signals distinct (`close_item`, `archive_item`) and also
+  emit terminal aggregation (`close_or_archive`) for weekly reporting.
+- Validate signal logging with both unit tests and shell smoke tests before
+  trusting weekly analytics.

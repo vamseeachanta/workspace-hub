@@ -4,7 +4,7 @@ description: >
   Reusable TDD harness for WRK lifecycle compliance. Verifies that close and
   archive are blocked unless required gate evidence and integrated/repo tests
   are present.
-version: 1.0.0
+version: 1.0.1
 updated: 2026-03-03
 category: workspace-hub
 triggers:
@@ -21,6 +21,8 @@ capabilities:
   - close-readiness-tests
 requires:
   - scripts/work-queue/verify-gate-evidence.py
+  - scripts/review/orchestrator-variation-check.sh
+  - scripts/work-queue/parse-session-logs.sh
 invoke: wrk-lifecycle-testpack
 ---
 # WRK Lifecycle Testpack
@@ -54,3 +56,24 @@ bash tests/work-queue/test-lifecycle-gates.sh
 ```
 
 Add or update test files whenever gate contracts change.
+
+## Orchestrator Variation Tests
+
+For cross-provider test runs (Claude / Codex / Gemini), use the shared harness:
+
+```bash
+# Run variation check for a given provider
+bash scripts/review/orchestrator-variation-check.sh \
+  --wrk WRK-NNN \
+  --orchestrator claude \
+  --scripts \
+    "uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-NNN" \
+    "bash tests/work-queue/test-lifecycle-gates.sh" \
+    "uv run --no-project python -m pytest tests/unit/test_circle.py -v"
+
+# Parse session logs across all providers for a set of WRKs
+bash scripts/work-queue/parse-session-logs.sh WRK-1002 WRK-1003 WRK-1004
+```
+
+`variation-test-results.md` runner field must match the orchestrator name;
+`parse-session-logs.sh` handles JSONL (Claude) and plain-text (Codex/Gemini) formats.
