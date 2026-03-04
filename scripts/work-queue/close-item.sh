@@ -111,7 +111,10 @@ if [[ ! -f "$HTML_OUTPUT_ABS" ]]; then
     exit 1
   fi
   echo "Generating final HTML review for ${WRK_ID}..."
-  "$FINAL_REVIEW_GENERATOR" "$WRK_ID" --output "$HTML_OUTPUT_ABS"
+  if ! bash "$FINAL_REVIEW_GENERATOR" "$WRK_ID" --output "$HTML_OUTPUT_ABS"; then
+    echo "✖ Error: Failed to generate final HTML review for ${WRK_ID}" >&2
+    exit 1
+  fi
 fi
 
 # Normalize to workspace-relative path when possible.

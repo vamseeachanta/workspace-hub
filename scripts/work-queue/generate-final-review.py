@@ -288,7 +288,12 @@ def main() -> int:
 
     default_output = workspace_root / ".claude" / "work-queue" / "assets" / args.wrk_id / "workflow-final-review.html"
     output = Path(args.output).resolve() if args.output else default_output
-    path = generate_final_review(args.wrk_id, output)
+    try:
+        path = generate_final_review(args.wrk_id, output)
+    except FileNotFoundError as exc:
+        print(f"✖ {exc}")
+        return 2
+
     print(f"✔ Final review generated: {path}")
     return 0
 

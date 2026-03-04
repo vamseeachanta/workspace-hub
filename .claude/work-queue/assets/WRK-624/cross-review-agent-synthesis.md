@@ -44,3 +44,18 @@ Decision for this cycle: full 3-agent cross-review set is now available (Claude+
 | Gemini | `scripts/review/results/manual-parallel-gemini-lt3.md` | APPROVE |
 
 Result: low-intensity next-work items completed and cross-reviewed; remaining open item is orchestration log-emission consistency.
+
+## 2026-03-04 Post-Skill-Addition Rerun (Latest)
+
+Scope: workflow-skill additions and close-stage final-HTML automation updates:
+`process.md`, `work-queue/SKILL.md`, `workflow-gatepass/SKILL.md`,
+`close-item.sh`, and `generate-final-review.py`.
+
+| Agent | Artifact | Verdict | Notes |
+|---|---|---|---|
+| Claude | `scripts/review/results/20260304T213040Z-tmp.uqixtHH6uO-implementation-claude.md` | REQUEST_CHANGES | Requests refactor/tests and flags missing scripts in diff scope. |
+| Codex | `scripts/review/results/20260304T213040Z-tmp.uqixtHH6uO-implementation-codex.md` | REQUEST_CHANGES | Flags executable-path/test concerns; some findings are diff-scope artifacts. |
+| Gemini | `scripts/review/results/20260304T213040Z-tmp.uqixtHH6uO-implementation-gemini.md` | REQUEST_CHANGES | Requests tests and script presence in same diff scope. |
+
+Decision: post-skill-addition rerun is complete, but not approved.
+Follow-up remediation should focus on test coverage and tightening generator robustness.
