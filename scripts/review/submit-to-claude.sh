@@ -210,7 +210,9 @@ run_claude_once() {
 # Code session"). This env var is set by all parent Claude Code processes.
 unset CLAUDECODE
 
-# I-07: Pre-flight DNS check — exit gracefully rather than timing out on EAI_AGAIN
+# I-07: Pre-flight DNS check — exit 0 (skip) rather than timeout on EAI_AGAIN.
+# Claude review is non-blocking: a network skip is not a CI failure.
+# Callers must parse stdout for "network unavailable" to detect skips.
 if command -v getent >/dev/null 2>&1; then
   if ! getent hosts api.anthropic.com >/dev/null 2>&1; then
     echo "WARN: DNS resolution failed for api.anthropic.com — skipping claude review" >&2

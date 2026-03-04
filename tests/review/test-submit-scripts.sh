@@ -235,11 +235,13 @@ PROVIDERS
 
 # ── T20: DNS unavailable → WARN + exit 0 ─────────────────────────────────────
 {
-  make_mock "getent" "exit 1"   # simulate EAI_AGAIN DNS failure
+  make_mock "getent" "exit 1"          # simulate EAI_AGAIN DNS failure
+  make_mock "_fake_claude" "exit 1"    # CLI exists so DNS check is reached
   tmpf="$(mktemp --suffix=.md)"; echo "# test" > "$tmpf"
-  ec=0; combined=$(PATH="$FULL_PATH" /bin/bash "$SCRIPTS/submit-to-claude.sh" \
+  ec=0; combined=$(CLAUDE_CMD="${MOCK_DIR}/_fake_claude" \
+    PATH="$FULL_PATH" bash "$SCRIPTS/submit-to-claude.sh" \
     --file "$tmpf" --prompt "p" 2>&1) || ec=$?
-  rm -f "$tmpf" "${MOCK_DIR}/getent"
+  rm -f "$tmpf" "${MOCK_DIR}/getent" "${MOCK_DIR}/_fake_claude"
   assert_exit  "T20: DNS fail → exit 0" 0 "$ec"
   assert_contains "T20: DNS fail → WARN" "WARN" "$combined"
   assert_contains "T20: DNS fail → network message" "network unavailable" "$combined"
