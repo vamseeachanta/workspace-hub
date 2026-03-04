@@ -3,7 +3,7 @@
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-$REPO_ROOT/.claude/state/uv-cache}"
 mkdir -p "$UV_CACHE_DIR"
-exec uv run --no-project --with markdown --with PyYAML --with bleach python "$0" "$@"
+exec uv run --project "$REPO_ROOT" --extra workqueue python "$0" "$@"
 ":"""
 from __future__ import annotations
 
@@ -13,7 +13,6 @@ import re
 import subprocess
 from pathlib import Path
 
-import bleach
 import markdown
 import yaml
 
@@ -68,6 +67,12 @@ def _html_md(md_text: str) -> str:
 
 
 def _sanitize_rendered_html(rendered: str) -> str:
+    try:
+        import bleach  # type: ignore
+    except ImportError:
+        # Fail closed if sanitizer dependency is unavailable in the runtime.
+        return "<p><em>Content unavailable: sanitizer dependency missing.</em></p>"
+
     allowed_tags = set(bleach.sanitizer.ALLOWED_TAGS) | {
         "p",
         "pre",
@@ -91,6 +96,7 @@ def _sanitize_rendered_html(rendered: str) -> str:
         "h4",
         "h5",
         "h6",
+        "blockquote",
     }
     allowed_attrs = {
         "a": ["href", "title"],
@@ -107,6 +113,17 @@ def _sanitize_rendered_html(rendered: str) -> str:
         protocols=["http", "https", "mailto"],
         strip=True,
     )
+
+
+def _safe_workspace_ref(workspace_root: Path, ref: str | None) -> Path | None:
+    if not ref:
+        return None
+    candidate = (workspace_root / str(ref)).resolve()
+    try:
+        candidate.relative_to(workspace_root.resolve())
+    except ValueError:
+        return None
+    return candidate
 
 
 def _collect_asset_files(assets_dir: Path) -> list[str]:
@@ -285,6 +302,8 @@ def _render_final_html(wrk_id: str, meta: dict, sections: dict, test_rows: str, 
 def _collect_sections(body: str, fm: dict, workspace_root: Path, assets_dir: Path, evidence_dir: Path) -> dict:
     plan_draft_ref = fm.get("plan_html_review_draft_ref")
     plan_final_ref = fm.get("plan_html_review_final_ref")
+    draft_path = _safe_workspace_ref(workspace_root, str(plan_draft_ref)) if plan_draft_ref else None
+    final_path = _safe_workspace_ref(workspace_root, str(plan_final_ref)) if plan_final_ref else None
     execute = _load_yaml(evidence_dir / "execute.yaml")
     tests = execute.get("integrated_repo_tests") if isinstance(execute.get("integrated_repo_tests"), list) else []
     return {
@@ -293,8 +312,8 @@ def _collect_sections(body: str, fm: dict, workspace_root: Path, assets_dir: Pat
         "acceptance": _extract_first_section(body, ["Acceptance Criteria", "Success Criteria", "Definition of Done"]),
         "plan": _extract_first_section(body, ["Plan", "Implementation Plan", "Execution Plan"]),
         "execution_brief": _extract_first_section(body, ["Execution Brief", "Implementation Notes", "Execution"]),
-        "draft_review": _load_text((workspace_root / str(plan_draft_ref))) if plan_draft_ref else _load_text(assets_dir / "plan-html-review-draft.md"),
-        "final_review": _load_text((workspace_root / str(plan_final_ref))) if plan_final_ref else _load_text(assets_dir / "plan-html-review-final.md"),
+        "draft_review": _load_text(draft_path) if draft_path else _load_text(assets_dir / "plan-html-review-draft.md"),
+        "final_review": _load_text(final_path) if final_path else _load_text(assets_dir / "plan-html-review-final.md"),
         "cross_review": _load_text(assets_dir / "cross-review-package.md") or _load_text(assets_dir / "cross-review-agent-synthesis.md"),
         "gate_summary": _load_text(evidence_dir / "gate-evidence-summary.md"),
         "resource_pack": _load_text(assets_dir / "resource-pack.md"),

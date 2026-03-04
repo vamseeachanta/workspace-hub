@@ -18,6 +18,11 @@ dev = [
     "pytest>=8.0",
     "pytest-cov>=4.0",
 ]
+workqueue = [
+    "markdown>=3.6",
+    "bleach>=6.0",
+    "PyYAML>=6.0",
+]
 
 [project.scripts]
 ace = "src.ace.cli:main"
