@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-04T03:07:19Z by generate-index.py -->
+<!-- Generated: 2026-03-04T03:45:30Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-04T03:07:19Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-04T03:45:30Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 436
+**Total items:** 437
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 197 |
+| pending | 198 |
 | working | 4 |
 | blocked | 9 |
 | archived | 226 |
@@ -23,14 +23,14 @@
 | Priority | Count |
 |----------|-------|
 | high | 208 |
-| medium | 186 |
+| medium | 187 |
 | low | 41 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 72 |
+| simple | 73 |
 | medium | 204 |
 | complex | 93 |
 
@@ -54,7 +54,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 129 |
+| workspace-hub | 130 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -62,7 +62,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 165 / 436 |
+| Plans exist | 165 / 437 |
 | Plans cross-reviewed | 61 |
 | Plans approved | 80 |
 | Brochure pending | 7 |
@@ -74,9 +74,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 436 |
+| Total captured | 437 |
 | Total archived | 226 |
-| Completion rate | 226/436 (52%) |
+| Completion rate | 226/437 (52%) |
 | Monthly rate (current month) | 1 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -84,7 +84,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 197 | 29% |
+| Pending items with plans | 58 / 198 | 29% |
 | Plans cross-reviewed | 10 | 15% |
 | Plans user-approved | 10 | 15% |
 
@@ -102,7 +102,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 99 | 2 | 7 |
-| Medium   | 70  | 2  | 1  |
+| Medium   | 71  | 2  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## Master Table
@@ -545,6 +545,7 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1002 |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1003 |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1004 |
+| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -749,6 +750,7 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
+| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | medium | simple | workspace-hub | - |
 
 ### Working
 
@@ -1481,6 +1483,7 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | - |
+| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | pending | medium | simple | - |
 
 ### worldenergydata
 
@@ -1981,6 +1984,7 @@
 | WRK-694 | Per-session log files in session-logger.sh | pending | simple | workspace-hub | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | simple | workspace-hub | - |
+| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | pending | simple | workspace-hub | - |
 
 ### Low
 
@@ -2106,6 +2110,7 @@
 | WRK-694 | Per-session log files in session-logger.sh | pending | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | medium | workspace-hub | - |
+| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2416,7 +2421,7 @@
 
 ## By Computer
 
-### ace-linux-1 (145 active / 159 total)
+### ace-linux-1 (146 active / 160 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -2579,6 +2584,7 @@
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | workspace-hub |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | workspace-hub |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | workspace-hub |
+| WRK-1006 | fix(review): setsid hard-fail in submit-to-claude.sh blocks non-Linux agents | pending | medium | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)
 
