@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-079 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-079 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Create marine safety case study — cross-database incident correlation</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Write a case study showing cross-database marine safety incident correlation using actual USCG + NTSB data. Follow the existing case study HTML pattern.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Marine Safety Intelligence is a major marketed service with zero proof points on the website. A case study showing real incident correlation across databases validates the claim.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Case study HTML page in case-studies/ directory</li>
+<li>[x] Shows TSB + MAIB + BSEE cross-database correlation (adapted from USCG + NTSB plan; used actually-ingested sources)</li>
+<li>[x] Demonstrates deduplication and pattern detection</li>
+<li>[x] Includes incident trend data and type distribution tables</li>
+<li>[x] Metrics: 5 sources correlated, 269K+ records integrated, collision pattern found across jurisdictions</li>
+<li>[x] JSON-LD structured data</li>
+<li>[x] Linked from energy.html and case-studies/index.html</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>aceengineer-website/case-studies/</code></p>
+<h3>Existing Assets (reuse)</h3>
+<ul>
+<li><code>marine_safety/cross_reference/correlation_engine.py</code> — fuzzy matching across sources</li>
+<li>Working scrapers: USCG, NTSB, ATSB (290K+ incidents)</li>
+<li><code>marine_safety/analysis/</code> — trend analysis, pattern detection</li>
+<li>Existing case study HTML template pattern</li>
+</ul>
+<h3>Phase 1 — Run Correlation Analysis</h3>
+<ul>
+<li><strong>Define scope</strong>: US waters, 2010-2023, USCG + NTSB + ATSB sources. Document exact query parameters for reproducibility.</li>
+<li>Execute correlation engine on defined data subset</li>
+<li>Document: N incidents correlated, M unique events identified, P duplicate records merged</li>
+<li>Document de-duplication rate calculation method (precision/recall estimates)</li>
+<li>Extract: top incident categories, temporal trends, geographic hotspots</li>
+</ul>
+<h3>Phase 2 — Write Case Study</h3>
+<ul>
+<li><code>case-studies/marine-safety-correlation.html</code>:</li>
+<li>Follow existing HTML/CSS pattern</li>
+<li>Sections: Challenge (fragmented databases), Solution (cross-correlation), Results</li>
+<li>Charts: incident trends, source overlap Venn diagram, geographic heatmap</li>
+<li>Metrics: "Correlated data from N authorities" where N = actual count at time of writing. Do not claim future data sources. Ensure claims match actual run outputs.</li>
+<li>JSON-LD structured data</li>
+</ul>
+<h3>Phase 3 — Integration</h3>
+<ul>
+<li>Link from <code>energy.html</code> marine safety section</li>
+<li>Add to <code>case-studies/index.html</code> grid</li>
+</ul>
+<h3>Dependencies</h3>
+<ul>
+<li>Blocked by WRK-074 (complete marine safety importers) for full "10+ authorities" claim</li>
+<li>Can start with 3 working sources (USCG, NTSB, ATSB) for initial case study</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: MINOR | Codex: MINOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Added explicit scope definition: US waters, 2010-2023, specific sources</li>
+<li>Enforced constraint: case study text must state actual N authorities, not future claims</li>
+<li>Added de-duplication rate calculation method requirement</li>
+<li>Added reproducibility requirement: document exact query parameters</li>
+<li>Added Codex feedback: ensure all claims match actual run outputs</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: Gap analysis — marine safety marketed as core service with zero case studies</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-079
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-079.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-079/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-079.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-079/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-079/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-079/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-079/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-079/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-079/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-079/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-079/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-079/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-079/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-079/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

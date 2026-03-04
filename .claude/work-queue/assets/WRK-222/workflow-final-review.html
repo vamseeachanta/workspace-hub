@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-222 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-222 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Pre-clear session snapshot — /save skill + save-snapshot.sh script</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>A</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p><strong>Provider rationale</strong>: Route A — small scope, single-file ops, inline plan, no cross-review required.</p>
+<p><strong>Self-contained task</strong>: Build a <code>/save</code> skill that captures a session snapshot before the user
+runs the built-in <code>/clear</code> command. <code>/clear</code> cannot be intercepted by hooks, so the snapshot
+must be user-initiated. The skill runs <code>save-snapshot.sh</code> (file-based state) then Claude
+writes the <code>## Ideas / Notes</code> section (conversational context only Claude has).</p>
+<p><strong>Done When</strong>:
+- [x] <code>.claude/hooks/session-memory/save-snapshot.sh</code> created and executable
+- [x] <code>.claude/skills/workspace-hub/save/SKILL.md</code> created
+- [x] <code>ensure-readiness.sh</code> surfaces snapshot when &lt;48h old
+- [x] <code>session-lifecycle.md</code> documents the <code>/save</code> → <code>/clear</code> pre-clear workflow
+- [x] Running <code>/save</code> produces <code>.claude/state/session-snapshot.md</code> with correct WRK state
+- [x] <code>## Ideas / Notes</code> section is present in snapshot (Claude-written)
+- [x] Snapshot surfaced in next-session readiness report</p>
+<p><strong>For User Review</strong>: Verify snapshot output format is useful. Confirm readiness report message
+is visible without being noisy.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

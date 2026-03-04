@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-144 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-144 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>API RP 2RD + API STD 2RD riser wall thickness — WSD &amp; LRFD combined loading</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Implement both API RP 2RD (legacy WSD) and API STD 2RD (current LRFD) riser wall thickness and combined loading checks as new design code strategies alongside the existing API RP 1111 implementation.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><ul>
+<li><strong>API RP 2RD</strong> (legacy): Many existing risers were designed and still comply under the old working stress design (WSD) standard. Need this for re-qualification, brownfield modifications, and projects where the operator's governing design basis references the RP edition.</li>
+<li><strong>API STD 2RD</strong> (current): The replacement standard using LRFD methodology with 4 combined loading interaction methods. Required for new riser designs.</li>
+<li>Having both codes plus API RP 1111 enables cross-code comparison for different pipe applications (pipelines vs risers, legacy vs current).</li>
+</ul></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] API RP 2RD strategy class registered in CODE_REGISTRY (WSD method)</li>
+<li>[ ] API STD 2RD strategy class registered in CODE_REGISTRY (LRFD method)</li>
+<li>[ ] Both support code revision/edition specification (see WRK-145)</li>
+<li>[ ] WSD factors for API RP 2RD as configurable data structure</li>
+<li>[ ] LRFD load factors and resistance factors for API STD 2RD as configurable data structure</li>
+<li>[ ] At least Eq 5.3-3 (Von Mises LRFD) implemented with M-T interaction support</li>
+<li>[ ] Capacity limits and envelopes generated for both code conditions</li>
+<li>[ ] HTML report sections for both codes (can extend existing report or separate)</li>
+<li>[ ] Comparison table: API RP 1111 vs API RP 2RD vs API STD 2RD for same pipe</li>
+<li>[ ] Tests with known reference values</li>
+<li>[ ] Structural analysis skill file updated</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><h3>Phase 1 — Research</h3>
+<ul>
+<li>Deep-read API RP 2RD (legacy WSD) combined loading equations</li>
+<li>Deep-read API STD 2RD Section 5 (strength design) LRFD equations</li>
+<li>Identify load factor tables and resistance factor tables for both</li>
+<li>Map to existing <code>DesignCode</code>, <code>DesignFactors</code>, <code>DesignLoads</code> data structures</li>
+</ul>
+<h3>Phase 2a — API RP 2RD (Legacy WSD)</h3>
+<ul>
+<li><code>wall_thickness_codes.py</code>: Add <code>API_RP_2RD_Strategy</code> class</li>
+<li>WSD Von Mises combined check with RP 2RD design factors</li>
+<li>Define <code>API_RP_2RD_CONDITIONS</code> with WSD factors</li>
+<li>Wire into M-T report generation</li>
+</ul>
+<h3>Phase 2b — API STD 2RD (Current LRFD)</h3>
+<ul>
+<li><code>wall_thickness_codes.py</code>: Add <code>API_STD_2RD_Strategy</code> class</li>
+<li>Implement Eq 5.3-3 first (Von Mises LRFD — closest to existing API 1111)</li>
+<li>Define <code>API_STD_2RD_CONDITIONS</code> with LRFD factors</li>
+<li>Wire into M-T report generation</li>
+</ul>
+<h3>Phase 3 — Comparison</h3>
+<ul>
+<li>Side-by-side report or comparison section</li>
+<li>Same pipe geometry, same loads → different utilisation under different codes</li>
+<li>Three-way comparison: API RP 1111 vs API RP 2RD vs API STD 2RD</li>
+</ul>
+<h3>Phase 4 — Tests</h3>
+<ul>
+<li>Unit tests for each equation for both codes</li>
+<li>Cross-code comparison tests (1111 vs RP 2RD vs STD 2RD for same inputs)</li>
+</ul>
+<hr />
+<p><em>Source: WRK-044 session — user mentioned "Let us move on to other codes" and "review API RP 2RD code and implement it". User clarified: "we should add api rp 2rd as there are risers that follow old standard and will still comply to old standard"</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-144
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-144.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-144/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-144.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-144/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-144/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-144/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-144/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-144/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-144/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-144/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-144/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-144/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-144/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-144/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

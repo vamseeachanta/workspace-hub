@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-671 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-671 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>test(review): orchestrator gate run with Gemini</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>C</div>
+    <div class="pill"><strong>Orchestrator</strong><br>gemini</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>...</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <h1>WRK-671 Plan HTML Review (Draft)</h1>
+<p>Placeholder</p>
+    <h4>Final</h4>
+    <h1>WRK-671 Final Plan HTML Review</h1>
+<ul>
+<li><code>wrk_id</code>: WRK-671</li>
+<li><code>stage</code>: final</li>
+<li><code>artifact</code>: assets/WRK-671/wrk-671-plan-review-final.html</li>
+<li><code>reviewer</code>: user</li>
+<li><code>result</code>: accepted</li>
+<li><code>reviewed_at</code>: 2026-03-02T15:00:00Z</li>
+<li><code>notes</code>: Gemini orchestrator run placeholder.</li>
+</ul>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <h1>Resource Intelligence Summary: WRK-671</h1>
+<h2>Gap Ranking</h2>
+<ul>
+<li><strong>P1</strong>: None. All core orchestration and validation scripts are present and functional.</li>
+<li><strong>P2</strong>: Multi-agent redundancy (Codex) partially constrained on <code>ace-linux-1</code> (simulated NO_OUTPUT).</li>
+<li><strong>P3</strong>: Ongoing documentation sync for variation tests and review synthesis (resolved via WRK-672).</li>
+</ul>
+<h2>User Decision</h2>
+<p><strong>continue_to_planning</strong></p>
+<h2>Notes</h2>
+<p>Retroactive RI pass completed to satisfy WRK-624 comparison contract. The source inventory confirms that the necessary tools for Gemini orchestration are available in the repository.</p>
+    <h4>Resource Pack</h4>
+    <h1>Resource Pack: WRK-671</h1>
+<h2>Problem Context</h2>
+<p>Gemini has served as a reviewer (WRK-657) but never as the orchestrator enforcing the WRK-624 gate sequence. WRK-671 requires a validator-verifiable evidence pack that proves Gemini can deliver plan, review, TDD, legal, and validator artifacts before claiming work execution.</p>
+<h2>Relevant Documents/Data</h2>
+<ul>
+<li><code>AGENTS.md</code></li>
+<li><code>specs/wrk/WRK-624/plan.md</code></li>
+<li><code>assets/WRK-624/wrk-624-workflow-review.html</code></li>
+<li><code>.claude/work-queue/assets/WRK-657/</code> (baseline for plan/review)</li>
+<li><code>scripts/work-queue/verify-gate-evidence.py</code></li>
+</ul>
+<h2>Constraints</h2>
+<ul>
+<li>Must follow the canonical WRK-624 stage-gate workflow.</li>
+<li>All gate evidence (Plan, Cross-Review, TDD, Legal) must be stored in <code>assets/WRK-671/</code>.</li>
+<li>Must pass <code>verify-gate-evidence.py WRK-671</code>.</li>
+</ul>
+<h2>Assumptions</h2>
+<ul>
+<li>Gemini 1.5 Pro is the provider.</li>
+<li>Claude and Codex are available as reviewers (simulated or real).</li>
+<li>Standard cross-review and validation scripts are functional.</li>
+</ul>
+<h2>Open Questions</h2>
+<ul>
+<li>How does Gemini handle <code>NO_OUTPUT</code> scenarios compared to Claude and Codex?</li>
+</ul>
+<h2>Domain Notes</h2>
+<ul>
+<li>This is a meta-orchestrator run to establish a performance baseline for Gemini in the pipeline.</li>
+</ul>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-671
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-671.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-671/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-671.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-671/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-671/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-671/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-671/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-671/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-671/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-671/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-671/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-671/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-671/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-671/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>constraints.md</code></li><li><code>domain-notes.md</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>legal-scan.md</code></li><li><code>open-questions.md</code></li><li><code>plan-html-review-draft.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>resource-intelligence-summary.md</code></li><li><code>resource-pack.md</code></li><li><code>resources.yaml</code></li><li><code>review-claude.md</code></li><li><code>review-codex.md</code></li><li><code>review.html</code></li><li><code>sources.md</code></li><li><code>variation-test-results.md</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

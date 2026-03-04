@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1009 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1009 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Skill upkeep and curation — evals, A/B tests, daily cron integration</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Add a structured eval/test harness for workspace-hub skills so that skill quality is
+continuously validated. Each skill gets capability evals (does it do what it claims?) and
+procedural evals (does it follow the correct workflow?). A/B variants test alternative
+skill prompts against each other. All evals run nightly in the comprehensive-learning
+cron pipeline.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Skills currently have no automated quality checks. Skill regressions (prompt drift, broken
+tool calls, outdated step sequences) go undetected until a session fails. A daily eval run
+catches degradation early and provides objective signal for skill improvement.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Eval framework design documented (<code>specs/skills/skill-eval-framework.md</code>)</li>
+<li>[ ] Capability eval schema defined: each skill declares expected outputs/behaviors</li>
+<li>[ ] Procedural eval schema defined: step-sequence fidelity checks</li>
+<li>[ ] A/B eval scaffold — three comparison modes:</li>
+<li><strong>With vs without</strong>: same task, skill injected vs bare model — measures whether the skill adds value</li>
+<li><strong>Skill vs skill</strong>: two closely related skills run on the same task — identifies overlap, merge candidates, or which variant wins</li>
+<li><strong>Variant vs variant</strong>: two prompt versions of the same skill — picks the better prompt</li>
+<li>[ ] At least 3 pilot skills have evals written (e.g. <code>work-queue</code>, <code>workflow-gatepass</code>, <code>comprehensive-learning</code>)</li>
+<li>[ ] <code>scripts/skills/run-skill-evals.sh</code> executes all evals and emits a JSONL report</li>
+<li>[ ] Comprehensive-learning cron (<code>scripts/cron/comprehensive-learning-nightly.sh</code>) calls the eval script</li>
+<li>[ ] Eval results surfaced in <code>/daily-report</code> or <code>/reflect</code> output</li>
+<li>[ ] Failing evals create follow-up WRK items automatically</li>
+<li>[ ] <strong>Retirement signal</strong>: when A/B delta (with vs without) falls below a threshold,
+  cron flags the skill as a retirement candidate and creates a WRK suggestion (never auto-deletes)</li>
+<li>[ ] <strong>Auto-enhancement</strong>: eval results feed back into <code>comprehensive-learning</code> Phase 7
+  (code-quality scan) so underperforming skills get enhancement candidates queued</li>
+<li>[ ] Research-driven updates: cron checks for new model capabilities or published
+  prompting research and proposes targeted skill enhancements as WRK items</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

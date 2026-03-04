@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-071 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-071 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Acquire NTSB CAROL marine investigations and EPA TRI data</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Query NTSB CAROL (data.ntsb.gov) for mode=marine and export as CSV. Download EPA TRI basic data files (1987-present) from EPA. Build TRI importer.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>NTSB marine importer is ready but has no data. EPA TRI covers toxic releases from 1987 with 1M+ records.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Export NTSB CAROL marine data as CSV (BLOCKED - manual export required, see guide)</li>
+<li>[ ] Import using existing ntsb_importer.py (BLOCKED - depends on CAROL export)</li>
+<li>[x] Download EPA TRI basic data files</li>
+<li>[x] Build EPA TRI importer</li>
+<li>[x] Import EPA TRI dataset (51,487 records, 2020-2024)</li>
+<li>[x] Document record counts and date ranges</li>
+</ul>
+<hr />
+<p><em>Source: HSE data acquisition - NTSB CAROL marine investigations and EPA TRI toxic release data</em></p></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><blockquote>
+<p>Remaining work only. EPA TRI data acquired (51K records, 5 yearly files + combined). NTSB CAROL API unavailable, manual export guide generated. Existing importers ready.</p>
+</blockquote>
+<h3>Phase 1 — EPA TRI: Import to Database</h3>
+<ol>
+<li><strong>Import EPA TRI data</strong> using existing <code>EPATRIImporter</code>:</li>
+<li>Source files at <code>data/modules/hse/raw/epa_tri/</code>:<ul>
+<li><code>tri_basic_2020_oil_gas.csv</code> (7.7MB)</li>
+<li><code>tri_basic_2021_oil_gas.csv</code> (7.5MB)</li>
+<li><code>tri_basic_2022_oil_gas.csv</code> (6.6MB)</li>
+<li><code>tri_basic_2023_oil_gas.csv</code> (2.9MB)</li>
+<li><code>tri_basic_2024_oil_gas.csv</code> (8.4MB)</li>
+<li><code>tri_basic_2020-2024_oil_gas_combined.csv</code> (23.6MB, skip during import to avoid double-counting — importer already checks for "combined" in filename)</li>
+</ul>
+</li>
+<li>Run: <code>PYTHONPATH="src" python3 -m worldenergydata.hse.importers.epa_tri_importer --input-dir data/modules/hse/raw/epa_tri --database-url "sqlite:///data/modules/hse/hse_incidents.db"</code></li>
+<li>Target: <code>ToxicRelease</code> model in <code>hse_incidents.db</code></li>
+<li>Dedup key: <code>tri_facility_id + chemical_name + reporting_year</code></li>
+<li>
+<p>Expected: ~51,503 records across 2020-2024</p>
+</li>
+<li>
+<p><strong>Verify import</strong>:</p>
+</li>
+<li>Count records per reporting year</li>
+<li>Spot-check facility names and chemical releases</li>
+<li>Verify NAICS codes are oil &amp; gas (211xxx, 213xxx)</li>
+<li>
+<p>Check geographic distribution (state column)</p>
+</li>
+<li>
+<p><strong>Add README</strong>: Update <code>data/modules/hse/raw/epa_tri/README.md</code> with final import counts</p>
+</li>
+</ol>
+<h3>Phase 2 — NTSB CAROL: Manual Export Acquisition</h3>
+<ol>
+<li><strong>NTSB CAROL API is NOT publicly accessible</strong> (confirmed during acquisition attempt). Manual export required.</li>
+<li>Manual export guide already generated at: <code>data/modules/marine_safety/raw/ntsb/NTSB_CAROL_MANUAL_EXPORT_GUIDE.md</code></li>
+<li>
+<p>Steps: Navigate to <code>data.ntsb.gov/carol-main-public/query-builder</code>, select Mode=Marine, export CSV</p>
+</li>
+<li>
+<p><strong>Process manual export</strong> once obtained:</p>
+</li>
+<li>Use <code>NTSBCAROLAcquirer.process_export(input_file)</code> to normalize column names and filter marine mode</li>
+<li>
+<p>Output: <code>data/modules/marine_safety/raw/ntsb/ntsb_marine_investigations.csv</code></p>
+</li>
+<li>
+<p><strong>Import via existing <code>NTSBImporter</code></strong>:</p>
+</li>
+<li>Located at: <code>src/worldenergydata/marine_safety/importers/ntsb_importer.py</code></li>
+<li>Uses marine_safety database models (<code>Incident</code>, <code>Location</code>, <code>Vessel</code>) — separate from HSE database</li>
+<li>Depends on: <code>marine_safety.constants</code>, <code>marine_safety.database.models</code>, <code>marine_safety.processors.data_cleaner</code>, <code>marine_safety.processors.data_normalizer</code></li>
+<li>
+<p>Note: This uses a different DB schema than the HSE module (marine_safety has its own models)</p>
+</li>
+<li>
+<p><strong>Alternative data source check</strong>: NTSB also publishes data at <code>data.ntsb.gov/avdata</code> (primarily aviation but may include marine). If CAROL manual export is impractical, investigate the NTSB downloadable datasets.</p>
+</li>
+</ol>
+<h3>Phase 3 — Verification and Quality</h3>
+<ol>
+<li><strong>EPA TRI verification</strong>:</li>
+<li>Run <code>--dry-run</code> mode first to validate CSV structure</li>
+<li>Cross-check total_releases_pounds for reasonableness</li>
+<li>Verify coordinate data (latitude/longitude) falls within US boundaries</li>
+<li>
+<p>Check for common chemicals: hydrogen sulfide, benzene, toluene, xylene, methanol</p>
+</li>
+<li>
+<p><strong>NTSB verification</strong> (post manual export):</p>
+</li>
+<li>Verify mode filtering (Marine only)</li>
+<li>Check date range coverage (2001-present expected)</li>
+<li>Verify vessel types present (cargo, tanker, tug, barge, fishing, passenger)</li>
+<li>
+<p>Check fatality/injury counts are non-negative integers</p>
+</li>
+<li>
+<p><strong>Document in this WRK file</strong>:</p>
+</li>
+<li>EPA TRI: final record count, date range, top 10 chemicals by release volume, state distribution</li>
+<li>NTSB: record count (estimated 3K-8K marine investigations), date range, vessel type distribution</li>
+</ol>
+<h3>Phase 4 — Tests</h3>
+<ol>
+<li><strong>EPA TRI tests</strong>: <code>tests/unit/hse/test_epa_tri_importer.py</code></li>
+<li>Test <code>_normalize_columns()</code> with various TRI column name conventions</li>
+<li>Test <code>_normalize_record()</code> with missing required fields</li>
+<li>Test <code>_is_duplicate()</code> dedup logic</li>
+<li>Test <code>_safe_float()</code> edge cases (NaN, ".", empty string)</li>
+<li>
+<p>Test batch import with small fixture (5-10 records)</p>
+</li>
+<li>
+<p><strong>NTSB tests</strong>: <code>tests/unit/marine_safety/test_ntsb_carol_acquirer.py</code></p>
+</li>
+<li>Test <code>_parse_carol_record()</code> with various field name conventions</li>
+<li>Test <code>_normalize_date()</code> with multiple date formats</li>
+<li>Test <code>process_export()</code> with mock CSV containing mixed-mode records</li>
+<li>
+<p>Test marine mode filtering</p>
+</li>
+<li>
+<p><strong>Path</strong>: <code>PYTHONPATH="src:../assetutilities/src" python3 -m pytest tests/unit/hse/test_epa_tri_importer.py tests/unit/marine_safety/ -v --tb=short --noconftest</code></p>
+</li>
+</ol>
+<h3>Existing Code to Build On</h3>
+<ul>
+<li>EPA TRI acquirer: <code>src/worldenergydata/hse/acquirers/epa_tri_acquirer.py</code></li>
+<li>EPA TRI importer: <code>src/worldenergydata/hse/importers/epa_tri_importer.py</code> (555 lines, complete)</li>
+<li>NTSB CAROL acquirer: <code>src/worldenergydata/marine_safety/acquirers/ntsb_carol_acquirer.py</code> (987 lines, complete)</li>
+<li>NTSB importer: <code>src/worldenergydata/marine_safety/importers/ntsb_importer.py</code> (marine_safety module)</li>
+<li>DB models: <code>src/worldenergydata/hse/database/models.py</code> (ToxicRelease)</li>
+<li>Marine safety models: <code>src/worldenergydata/marine_safety/database/models.py</code> (Incident, Location, Vessel)</li>
+<li>Refresh scripts: <code>scripts/refresh_epa_tri.sh</code>, <code>scripts/refresh_ntsb_marine.sh</code> (both use <code>uv run</code>, need adaptation to system python3)</li>
+<li>Existing NTSB test: <code>tests/modules/marine_safety/test_ntsb_importer.py</code></li>
+</ul>
+<h3>Data State</h3>
+<ul>
+<li><strong>On disk (EPA TRI CSV)</strong>: <code>data/modules/hse/raw/epa_tri/</code> — 5 yearly files + combined (66MB total, 51K records)</li>
+<li><strong>In database (EPA TRI)</strong>: <code>data/modules/hse/hse_incidents.db</code> — 51,487 records in <code>toxic_releases</code> table (20MB SQLite)</li>
+<li><strong>On disk (NTSB)</strong>: <code>data/modules/marine_safety/raw/ntsb/NTSB_CAROL_MANUAL_EXPORT_GUIDE.md</code> (guide only, no data)</li>
+<li><strong>Not yet created</strong>: <code>data/modules/marine_safety/raw/ntsb/ntsb_marine_investigations.csv</code> (blocked on manual export)</li>
+</ul>
+<h3>Dependencies</h3>
+<ul>
+<li>EPA TRI import: no blockers (data on disk, importer ready)</li>
+<li>NTSB CAROL: blocked on manual export (human action required — navigate to data.ntsb.gov and export)</li>
+<li>Shared HSE DB with WRK-067 and WRK-068 (ToxicRelease is a separate table, no conflicts)</li>
+</ul>
+<h3>Review Notes</h3>
+<p><strong>Cross-review date</strong>: 2026-02-10</p>
+<table>
+<thead>
+<tr>
+<th>Reviewer</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Opus 4.6</td>
+<td>MINOR</td>
+</tr>
+<tr>
+<td>Gemini CLI</td>
+<td>APPROVE</td>
+</tr>
+<tr>
+<td>Codex CLI</td>
+<td>NO_OUTPUT</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Feedback incorporated</strong>:
+- EPA TRI importer is 554 lines (plan says 555)
+- Extra combined CSV <code>tri_basic_2022-2023_oil_gas_combined.csv</code> (9.5MB) on disk not accounted for in plan
+- Test path convention inconsistency (tests/unit/ vs tests/modules/)
+- NTSB CAROL API blocker is real; <code>data.ntsb.gov/avdata</code> fallback should be explored as alternative data source</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-071
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-071.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-071/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-071.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-071/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-071/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-071/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-071/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-071/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-071/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-071/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-071/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-071/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-071/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-071/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

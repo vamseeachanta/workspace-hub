@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1002 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1002 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>C</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Run a full work-queue gatepass lifecycle — from CAPTURE to ARCHIVE — driven entirely
+by the Claude orchestrator, using the WRK-624 harness. Include a concrete TDD task
+(circle area + circumference) so that user-review steps are actively exercised and
+captured as evidence artifacts.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>WRK-624 established the harness and canonical workflow; WRK-659/690 worked on
+enforcement. This item is the first of three sequential provider-specific tests that
+confirm each orchestrator can independently run the full lifecycle and produce
+comparable, auditable evidence. Claude runs first because it owns the harness.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] TDD tests written first (failing), then implementation makes them pass</li>
+<li>[ ] <code>uv run --no-project python -m pytest tests/unit/test_circle.py</code> green</li>
+<li>[ ] <code>verify-gate-evidence.py WRK-1002</code> passes all gates</li>
+<li>[ ] <code>plan-html-review-final.md</code> with <code>decision: passed</code> present (user-reviewed)</li>
+<li>[ ] <code>variation-test-results.md</code> produced under <code>assets/WRK-1002/</code></li>
+<li>[ ] Full lifecycle scripts (<code>claim-item.sh</code>, <code>close-item.sh</code>, <code>archive-item.sh</code>) executed</li>
+<li>[ ] WRK-1003 unblocked on completion</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><ol>
+<li>Write failing tests → commit (red)</li>
+<li>Implement <code>calculate_circle</code> → commit (green)</li>
+<li>Run full gatepass: plan HTML → claim → cross-review (Codex) → close</li>
+<li>Capture variation-test-results.md using WRK-624 harness pattern</li>
+<li>Record user plan-review confirmation before close</li>
+</ol></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

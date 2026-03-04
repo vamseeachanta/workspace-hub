@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-098 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-098 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Clean up 7.1GB large data committed to worldenergydata git history</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>C</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Remove ~7.1GB of raw data files from worldenergydata's git history and establish proper .gitignore + pipeline regeneration patterns per DATA_RESIDENCE_POLICY.md.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>OSHA data (6.6GB of CSVs and ZIPs from WRK-067) and BSEE data (526MB from WRK-068) are committed directly to regular git. This bloats the repo, makes clones extremely slow, and violates the new data commit strategy.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] .gitignore merge conflict resolved</li>
+<li>[x] .gitignore rules added for all raw data &gt; 10MB</li>
+<li>[x] README.md with regeneration instructions in each .gitignored data directory</li>
+<li>[x] Git history cleaned (git-filter-repo) to remove large blobs</li>
+<li>[x] .gitattributes updated (LFS removed, binary markers added)</li>
+<li>[ ] Pre-commit hook or CI check blocks files &gt; 50MB without LFS (deferred — no venv)</li>
+<li>[ ] All data acquisition pipelines verified working (OSHA acquirer broken — DOL React SPA)</li>
+<li>[x] Repo clone size reduced from ~4.1GB to 177MB</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

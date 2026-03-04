@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-638 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-638 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p><strong><code>scripts/memory/build-ecosystem-catalog.py</code></strong> — generates
+<strong><code>specs/ecosystem-catalog.yaml</code></strong> by scanning the workspace.</p>
+<h3>Catalog structure</h3>
+<pre><code class="language-yaml"># specs/ecosystem-catalog.yaml — AUTO-GENERATED, do not edit manually
+# Updated: &lt;ISO8601 timestamp&gt;
+# Generator: scripts/memory/build-ecosystem-catalog.py
+
+skills:
+  - path: .claude/skills/engineering/marine-offshore/cathodic-protection/SKILL.md
+    category: engineering/marine-offshore
+    name: cathodic-protection
+    description: &lt;first line of SKILL.md description field&gt;
+  # ... all ~300 skills
+
+rules:
+  - path: .claude/rules/coding-style.md
+    sections: [Naming Conventions, Size Limits, Import Organization, ...]
+  - path: .claude/rules/testing.md
+    sections: [TDD, Coverage, Test Quality, ...]
+  # ... all 6 rule files with section headers extracted
+
+docs:
+  - path: .claude/docs/orchestrator-pattern.md
+    topic: orchestrator-pattern
+  # ... all docs
+
+domain_doc_dirs:
+  # Existing &lt;repo&gt;/docs/domains/&lt;domain&gt;/ directories
+  - repo: digitalmodel
+    domain: cathodic_protection
+    path: digitalmodel/docs/domains/cathodic_protection/
+  - repo: digitalmodel
+    domain: hydrodynamics
+    path: digitalmodel/docs/domains/hydrodynamics/
+  # ...
+
+specs_modules_dirs:
+  # Existing specs/modules/ entries per repo
+  - repo: digitalmodel
+    path: specs/modules/digitalmodel/
+  # ...
+
+config_dirs:
+  # Existing config/&lt;domain&gt;/ directories
+  - path: config/analysis/cost_data/
+    domain: cost_data
+  # ...
+</code></pre>
+<h3>Generator script (<code>scripts/memory/build-ecosystem-catalog.py</code>)</h3>
+<pre><code class="language-python"># Build ecosystem catalog for curate-memory.py destination lookup
+# Run: python3 scripts/memory/build-ecosystem-catalog.py
+# Output: specs/ecosystem-catalog.yaml
+</code></pre>
+<p>Scans:
+- All <code>SKILL.md</code> files under <code>.claude/skills/</code> (excluding <code>_archive/</code>, <code>_diverged/</code>)
+- All <code>.md</code> files under <code>.claude/rules/</code> (extract section headings)
+- All <code>.md</code> files under <code>.claude/docs/</code>
+- All <code>docs/domains/</code> dirs under each submodule
+- All <code>config/</code> subdirs under each submodule
+- All <code>specs/modules/</code> entries</p>
+<p><strong>Exclusions:</strong> <code>_archive/</code>, <code>_diverged/</code>, <code>incoming/</code> — these are not valid
+promotion targets until explicitly promoted.</p>
+<h3>Usage by curate-memory.py</h3>
+<pre><code class="language-python">import yaml
+catalog = yaml.safe_load(open('specs/ecosystem-catalog.yaml'))
+
+# Find existing skill for a candidate
+def find_skill(keywords):
+    return [s for s in catalog['skills']
+            if any(k in s['name'] or k in s['category'] for k in keywords)]
+
+# Find existing rule file that covers a topic
+def find_rule_section(topic):
+    return [r for r in catalog['rules']
+            if any(topic in sec.lower() for sec in r['sections'])]
+</code></pre>
+<h3>Refresh trigger</h3>
+<p>Regenerate catalog as part of Phase 3c setup:</p>
+<pre><code class="language-bash">python3 scripts/memory/build-ecosystem-catalog.py
+# If catalog is &gt; 7 days old, regenerate before curate-memory.py runs
+</code></pre></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] <code>build-ecosystem-catalog.py</code> generates valid YAML without errors</li>
+<li>[ ] Catalog includes all non-archived skills (count ≥ 250)</li>
+<li>[ ] Catalog includes all 6 rule files with section headers</li>
+<li>[ ] Catalog includes domain doc dirs from digitalmodel, worldenergydata at minimum</li>
+<li>[ ] <code>curate-memory.py</code> imports and uses catalog for path proposals</li>
+<li>[ ] Duplicate detection: if candidate matches existing skill name ≥ 80%, propose
+      "extend: <existing path>" not "create: <new path>"</li>
+<li>[ ] Catalog file excluded from legal scan (no content, only paths)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-638
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-638.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-638/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-638.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-638/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-638/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-638/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-638/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-638/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-638/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-638/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-638/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-638/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-638/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-638/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

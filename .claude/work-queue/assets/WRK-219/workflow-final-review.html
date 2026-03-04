@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-219 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-219 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Batch drilling economics analysis — campaign scheduling and cost optimization</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>gemini</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>An economic analysis module for batch drilling campaign optimization, building on the cost
+framework from WRK-019 (drilling/completion/intervention cost data):</p>
+<h3>Part 1 — Batch Drilling Data Model</h3>
+<pre><code class="language-python">class DrillingSite:
+    well_id: str
+    field_name: str
+    location_coords: tuple[float, float]  # lat/lon
+    water_depth_ft: float
+    planned_md_ft: float                  # measured depth
+    well_type: str                        # exploration, development, appraisal
+    bore_design: str                      # slim, standard (link to WRK-218)
+    mpd_required: bool                    # link to WRK-168
+
+class DrillCampaign:
+    campaign_id: str
+    rig_name: str
+    rig_day_rate_usd: float
+    mobilization_cost_usd: float
+    wells: list[DrillingSite]
+    sequence: list[str]                   # ordered well_ids for batch
+    shared_bha_configs: dict              # BHA configs reused across wells
+    learning_curve_factor: float          # time reduction per well in batch (0-1)
+</code></pre>
+<h3>Part 2 — Campaign Scheduling Optimizer</h3>
+<p>Core economic calculations for batch sequence optimization:</p>
+<ol>
+<li>
+<p><strong>Mobilization cost amortization</strong> — share one-time rig mobilization across N wells
+   in a batch vs. individual campaigns</p>
+</li>
+<li>
+<p><strong>Learning curve model</strong> — time reduction on well N vs. well 1 in the same batch:</p>
+</li>
+<li>Industry learning curve factor: ~10-15% time reduction per doubling of wells</li>
+<li>Cumulative average model: T(N) = T(1) × N^(log(LC)/log(2))</li>
+<li>
+<p>Sensitive to formation similarity, crew consistency, BHA design reuse</p>
+</li>
+<li>
+<p><strong>BHA standardization benefit</strong> — reusing the same BHA configuration across multiple
+   wells in a batch reduces trip time and equipment handling costs</p>
+</li>
+<li>
+<p><strong>Sequence optimization</strong> — for N wells, find the ordering that minimizes total rig time:</p>
+</li>
+<li>Geographic clustering: minimize vessel/rig transit between well locations</li>
+<li>Formation clustering: group wells by similar geology to maximize BHA reuse</li>
+<li>
+<p>NPV ordering: high-value (producer) wells earlier in sequence (cash flow timing)</p>
+</li>
+<li>
+<p><strong>Batch vs. standalone NPV comparison</strong>:</p>
+</li>
+<li>Batch NPV: amortized mobilization + learning curve gains vs. flat day rate × days</li>
+<li>Standalone NPV: full mobilization per well, no learning curve</li>
+<li>Break-even analysis: minimum N wells to justify batch commitment</li>
+</ol>
+<h3>Part 3 — BSEE Campaign History Analysis (worldenergydata)</h3>
+<p>Mine existing BSEE drilling activity data to identify historical batch campaigns:</p>
+<ul>
+<li><strong>Batch detection heuristic</strong>: same rig drilling wells in the same field/block within
+  a 12-month window → likely batch campaign</li>
+<li><strong>Batch vs. standalone metrics</strong>: compare average well duration for batched vs.
+  standalone wells in the same depth band and era</li>
+<li><strong>Regional patterns</strong>: GoM deepwater batch frequency by water depth, era (2010-2025)</li>
+<li><strong>Learning curve validation</strong>: fit learning curve factor to BSEE time series for
+  detected batch campaigns</li>
+</ul>
+<h3>Part 4 — Content Visualization</h3>
+<p>Supporting charts for blog post candidate (see WRK-080):
+- Batch NPV vs. standalone NPV: savings as function of N wells and day rate
+- Learning curve chart: cumulative well time vs. batch position
+- Geographic clustering map: well locations colored by optimal batch assignment</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><ul>
+<li><strong>Builds on WRK-019</strong>: The drilling cost layer (day rates, mobilization costs) provides
+  the input data. Batch optimization is the decision tool that sits on top.</li>
+<li><strong>Common client question</strong>: "Should we batch these wells or run independent campaigns?"
+  is one of the first economic questions in field development planning.</li>
+<li><strong>Data opportunity</strong>: BSEE activity data (WRK-016, WRK-018) contains sequential well
+  drilling history that can validate batch economics against real campaigns.</li>
+<li><strong>GTM content</strong>: A data-backed analysis of GoM batch drilling patterns demonstrates both
+  data access and economic modeling capability.</li>
+</ul></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] DrillingSite and DrillCampaign data models defined with tests
+      (models.py — DrillingSite, DrillCampaign dataclasses with learning_curve_factor, shared_bha_configs)</li>
+<li>[x] Learning curve model implemented with configurable factor
+      (economics.py — Wright learning curve: T(N) = T(1) × N^(log(LC)/log(2)), configurable learning_curve_factor)</li>
+<li>[x] Batch vs. standalone NPV comparison function
+      (economics.py — compare_batch_vs_standalone_npv with discount rate and production profile inputs)</li>
+<li>[x] Mobilization cost amortization calculator
+      (economics.py — amortize_mobilization_cost: one-time mobilization shared across N wells)</li>
+<li>[x] BSEE batch detection heuristic (same rig, same field/block, 12-month window)
+      (bsee_batch_detector.py — detect_batch_campaigns using rig/field/block grouping with 365-day window)</li>
+<li>[x] Learning curve validation: fit to BSEE historical batch sequences
+      (bsee_batch_detector.py — fit_learning_curve using detected campaign sequences)</li>
+<li>[ ] Sequence optimizer: geographic clustering for N wells
+      (DEFERRED: geographic clustering for optimal well sequencing deferred per scope reduction)</li>
+<li>[ ] NPV ordering: producer-first sequencing with discount rate sensitivity
+      (DEFERRED: producer-first NPV sequencing deferred per scope reduction)</li>
+<li>[x] Tests: unit tests for all calculators, integration with WRK-019 cost layer
+      (22 tests passing: models, economics, batch_detector; integration with WRK-019 day_rates.yml)</li>
+<li>[ ] Blog post visualizations (3 charts per Part 4 spec)
+      (DEFERRED: Plotly batch NPV chart, learning curve chart, and geographic clustering map deferred)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-219
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-219.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-219/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-219.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-219/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-219/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-219/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-219/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-219/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-219/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-219/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-219/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-219/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-219/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-219/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

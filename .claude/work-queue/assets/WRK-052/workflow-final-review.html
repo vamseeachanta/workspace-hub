@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-052 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-052 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>assetutilities test coverage improvement</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Improve test coverage for the assetutilities repository from the current 21% to 80%+. The repo has 11K statements and 2684 test files, but several key packages have zero coverage.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>At 21% coverage, critical utility packages used across multiple projects have no regression protection. Zero-coverage packages like excel_utilities, pdf_utilities, devtools, reportgen, and validators are particularly risky as they handle data I/O and validation.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] excel_utilities package coverage reaches 80%+</li>
+<li>[ ] pdf_utilities package coverage reaches 80%+</li>
+<li>[ ] devtools package coverage reaches 80%+</li>
+<li>[ ] reportgen package coverage reaches 80%+</li>
+<li>[ ] validators package coverage reaches 80%+</li>
+<li>[ ] Overall repository coverage reaches 80%+</li>
+<li>[ ] CI pipeline reports coverage on every PR</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Spec</strong>: <code>specs/modules/wrk-052-assetutilities-test-coverage.md</code>
+<strong>Target</strong>: <code>assetutilities/tests/</code></p>
+<h3>Current State (from research)</h3>
+<ul>
+<li><strong>11K statements</strong>, 2,684 test files, 21% coverage</li>
+<li><strong>Zero-coverage packages</strong>: excel_utilities, pdf_utilities, devtools, reportgen, validators</li>
+<li><strong>Working packages</strong>: common/ (39 files, 0 tests — critical gap), units/ (TrackedQuantity has tests)</li>
+<li><strong>Key modules</strong>: <code>common/</code> is imported by worldenergydata + digitalmodel — highest blast radius</li>
+<li><strong>Test runner</strong>: <code>PYTHONPATH="src" python3 -m pytest --noconftest</code></li>
+</ul>
+<h3>Phase 1 — Audit &amp; Fix Test Infrastructure</h3>
+<ul>
+<li><strong>Deduplicate test files</strong>: Audit 2,684 test files for duplicates/generated tests. Count unique vs. generated. The high count is suspicious for an 11K-statement library.</li>
+<li>Verify pytest discovers test files after deduplication</li>
+<li>Fix import paths: many tests may import <code>assetutilities</code> incorrectly</li>
+<li>Create <code>conftest.py</code> with proper PYTHONPATH setup</li>
+<li>Establish true baseline: run full suite, count pass/fail/error/skip. Note: "21% coverage" needs verification — if many test files fail to run, actual executed coverage could be much lower.</li>
+</ul>
+<h3>Phase 2 — Priority Tiers (by dependency risk)</h3>
+<p><strong>Tier 1 — Critical (0% → 80%)</strong> — used by other repos:
+- <code>common/</code> — 39 files, 0 tests; shared utilities (file I/O, config parsing, data transforms)
+  - Focus: <code>data_manager.py</code>, <code>config_reader.py</code>, <code>file_utilities.py</code>, <code>yml_utilities.py</code>
+- <code>validators/</code> — input validation used at system boundaries</p>
+<p><strong>Tier 2 — High (0% → 80%)</strong> — data I/O:
+- <code>excel_utilities/</code> — Excel read/write, template population
+- <code>pdf_utilities/</code> — PDF generation, parsing, merging
+- <code>reportgen/</code> — report generation from templates</p>
+<p><strong>Tier 3 — Medium</strong>:
+- <code>devtools/</code> — developer tooling, linting helpers
+- Remaining packages with partial coverage</p>
+<h3>Phase 3 — Test Writing Strategy</h3>
+<ul>
+<li><strong>Real data fixtures</strong>: Create <code>tests/fixtures/</code> with sample Excel, PDF, YAML, JSON files</li>
+<li><strong>No mocks</strong>: Use real file I/O per testing rules; temp directories for write tests</li>
+<li><strong>Per module</strong>: Public API → edge cases → error paths</li>
+<li><strong>Naming</strong>: <code>test_&lt;module&gt;_&lt;function&gt;_&lt;scenario&gt;_&lt;expected&gt;</code></li>
+<li><strong>Target</strong>: 15-25 tests per zero-coverage module</li>
+</ul>
+<h3>Phase 4 — CI Coverage Reporting</h3>
+<ul>
+<li>Add <code>pytest-cov</code> with <code>--cov=assetutilities --cov-report=html</code></li>
+<li>Set per-package minimum thresholds</li>
+<li>Generate coverage badge</li>
+</ul>
+<h3>Phase 5 — Incremental Milestones</h3>
+<ol>
+<li>Audit &amp; fix infrastructure → deduplicate, verify test discovery (Days 1-3)</li>
+<li><code>common/</code> to 80% (estimate after baseline established) — highest priority due to cross-repo usage</li>
+<li><code>validators/</code> to 80% — schedule after common/ assessment</li>
+<li><code>excel_utilities/</code> + <code>pdf_utilities/</code> — staged coverage targets, lower initially due to external deps</li>
+<li><code>reportgen/</code> + <code>devtools/</code> — schedule after Tier 2 assessment</li>
+<li>Overall 80%+ with CI gate — staged per-package thresholds
+<strong>Note</strong>: Original 9-day timeline is unrealistic. Phase 1 audit alone will take 2-3 days. Remaining phases: estimate after baseline established.</li>
+</ol>
+<h3>Dependencies</h3>
+<ul>
+<li>Some tests need openpyxl, pdfplumber, or similar — verify installed</li>
+<li>PDF generation tests may need wkhtmltopdf or weasyprint. <strong>If not installed, skip <code>pdf_utilities</code> tests with <code>pytest.importorskip</code> and document as a known gap.</strong></li>
+<li>Excel fixture files should be small (&lt;100KB) and committed to tests/fixtures/</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: MINOR | Codex: MAJOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Added test file deduplication audit to Phase 1 (2,684 files is suspicious for 11K-statement library)</li>
+<li>Added true baseline verification — current 21% coverage needs verification method</li>
+<li>Replaced 9-day timeline with phased approach — Phase 1 alone needs 2-3 days</li>
+<li>Added <code>pytest.importorskip</code> strategy for PDF/wkhtmltopdf dependencies</li>
+<li>Staged coverage targets for packages with external dependencies</li>
+<li>Claude and Codex agree timeline is unrealistic; Codex rated MAJOR for this reason</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: test coverage audit across workspace-hub repositories</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

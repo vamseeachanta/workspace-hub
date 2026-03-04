@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-665 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-665 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><h3>Phase 1 — Commit guide to workspace-hub (30 min)</h3>
+<p>Copy the guide into the repository so it is version-controlled and accessible
+from any machine:</p>
+<pre><code>docs/agents/narada-openclaw-setup-guide.md
+</code></pre>
+<p>Strip personal identifiers (user home paths, API key examples) and replace with
+generic placeholders / env-var references before committing. Run legal scan to
+confirm no client references.</p>
+<h3>Phase 2 — Create <code>automation/narada-openclaw</code> skill (1–2 h)</h3>
+<p>Path: <code>.claude/skills/automation/narada-openclaw/SKILL.md</code></p>
+<p>Capability sections:
+- <code>install</code> — reproduce Phase I end-to-end from guide
+- <code>add_workspace</code> — clone an existing agent workspace for a new channel
+  (e.g., GitHub assistant variant)
+- <code>channel_whatsapp</code> — QR pair, reconnect, rotate session
+- <code>channel_github</code> — configure GitHub webhook channel (future)
+- <code>model_config</code> — swap underlying model (Claude / GPT-4o / Gemini)
+- <code>debug</code> — common failure modes: QR timeout, build errors, agent not responding
+- <code>backup_restore</code> — QMD memory snapshot + restore procedure</p>
+<p>Trigger: manual, invoked during new agent deployment or channel rotation.</p>
+<p>Related skills: <code>automation/session-memory</code>, <code>agents/agent-spawning</code></p>
+<h3>Phase 3 — GitHub assistant quick-start (optional, 30 min)</h3>
+<p>Extract the "Part III: Replication" section into a dedicated file:</p>
+<pre><code>docs/agents/narada-github-assistant-quickstart.md
+</code></pre>
+<p>Covers only the delta from the full guide — assumes OpenClaw already installed,
+focuses on workspace cloning and GitHub channel configuration.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><ul>
+<li>The guide is currently in a local home directory only — one machine wipe loses it</li>
+<li>A skill makes the setup reproducible by any Claude agent session on any machine</li>
+<li>The GitHub assistant variant is a high-value extension: turns Narada into a
+  code-aware bot that responds in GitHub issue/PR comments via webhook</li>
+</ul></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] <code>docs/agents/narada-openclaw-setup-guide.md</code> committed (no personal paths,
+  no secrets, generic placeholders throughout)</li>
+<li>[ ] <code>.claude/skills/automation/narada-openclaw/SKILL.md</code> created with ≤20 line
+  frontmatter; all capability sections listed above present</li>
+<li>[ ] <code>docs/agents/narada-github-assistant-quickstart.md</code> created (replication
+  delta only, ≤2 pages)</li>
+<li>[ ] Legal scan passes on all three files</li>
+<li>[ ] Skill registered in skill index if one exists</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-665
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-665.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-665/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-665.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-665/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-665/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-665/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-665/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-665/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-665/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-665/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-665/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-665/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-665/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-665/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

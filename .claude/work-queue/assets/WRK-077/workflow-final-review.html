@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-077 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-077 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Validate and wire decline curve modeling into BSEE production workflow</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Connect the existing forecasting/decline curve code (exponential, hyperbolic, harmonic models in sodir/forecasting.py) to actual BSEE production data with an end-to-end example. Currently the code exists but is not integrated into any production workflow.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Website markets "production forecasting and decline curve modeling" as a core FDAS capability. The code exists but has never been run against real production data in a documented workflow.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Decline curve models fit to real BSEE field production data</li>
+<li>[x] At least one documented example with a Gulf of Mexico field</li>
+<li>[x] Comparison of exponential vs hyperbolic vs harmonic fits</li>
+<li>[x] Forecast output with confidence intervals</li>
+<li>[x] Plotly visualization of historical data + forecast</li>
+<li>[x] Integration test with real data</li>
+<li>[x] CLI command to run forecast on any BSEE field</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>src/worldenergydata/bsee/analysis/forecasting/</code></p>
+<h3>Existing Assets (reuse)</h3>
+<ul>
+<li><code>sodir/forecasting.py</code> — Contains <code>ExponentialDecline</code>, <code>HyperbolicDecline</code>, <code>HarmonicDecline</code> model classes with <code>fit()</code> and <code>forecast()</code> methods</li>
+<li><code>ProductionAPI12Analysis</code> — production data aggregation per lease/field</li>
+<li><code>mv_productionsum.bin</code> — materialized 39-year production totals (real data, not LFS stub)</li>
+<li><code>AllFieldsRunner</code> + <code>FieldNameResolver</code> — field selection and lease resolution</li>
+<li><code>analysis/intervention/dashboard.py</code> — Plotly chart patterns for reuse</li>
+</ul>
+<h3>Phase 1 — Decline Curve Adapter</h3>
+<ul>
+<li><code>bsee_decline_adapter.py</code> — Bridge between BSEE production data format and sodir decline models:</li>
+<li>Extract monthly/annual production time series from <code>ProductionRouter</code></li>
+<li>Convert to the <code>(time, rate)</code> format expected by <code>sodir/forecasting.py</code></li>
+<li>Handle data gaps, shut-in periods, and rate changes</li>
+<li>Support oil, gas, and water rate series independently</li>
+</ul>
+<h3>Phase 2 — Model Fitting &amp; Comparison</h3>
+<ul>
+<li><code>decline_analysis.py</code> — Fit all three decline models to a given field's production data:</li>
+<li>Exponential: <code>q(t) = qi * exp(-Di * t)</code></li>
+<li>Hyperbolic: <code>q(t) = qi / (1 + b*Di*t)^(1/b)</code></li>
+<li>Harmonic: <code>q(t) = qi / (1 + Di*t)</code> (special case b=1)</li>
+<li>Compute R², RMSE, AIC for model comparison (note: AIC is new code; <code>sodir/forecasting.py</code> provides R² and RMSE but not AIC)</li>
+<li>Select best-fit model automatically</li>
+<li>Generate forecast with confidence intervals (bootstrap or parametric)</li>
+</ul>
+<h3>Phase 3 — Visualization</h3>
+<ul>
+<li><code>decline_plots.py</code> — Plotly visualizations:</li>
+<li>Historical production + all three model fits overlaid</li>
+<li>Best-fit forecast with confidence envelope</li>
+<li>Residual plot for fit quality assessment</li>
+<li>EUR (Estimated Ultimate Recovery) comparison across models</li>
+</ul>
+<h3>Phase 4 — CLI Integration</h3>
+<ul>
+<li><code>decline_cli.py</code> — Command-line entry point:</li>
+<li>Accept field name, lease number, or area code as input</li>
+<li>Resolve to production data via <code>FieldNameResolver</code> + <code>ProductionRouter</code></li>
+<li>Run all three fits, output summary table + Plotly HTML</li>
+<li>Create <code>__main__.py</code> in <code>forecasting/</code> package for CLI entry point</li>
+<li>Example: <code>python -m worldenergydata.bsee.analysis.forecasting --field "Buckskin"</code></li>
+</ul>
+<h3>Phase 5 — Tests</h3>
+<ul>
+<li>Unit tests: model fitting accuracy against synthetic known-decline data</li>
+<li>Integration test: fit models to real <code>mv_productionsum.bin</code> data for a known GoM field</li>
+<li>Validation: compare EUR estimates against published field reserves where available</li>
+<li>Test confidence interval coverage</li>
+</ul>
+<h3>Data Constraints</h3>
+<ul>
+<li>Only <code>mv_productionsum.bin</code> (annual totals) is materialized — monthly resolution needs LFS pull</li>
+<li>Decline analysis works best with monthly data; annual totals give coarse but usable fits</li>
+<li>Shut-in periods (hurricanes, COVID) need detection and exclusion from fitting window</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: APPROVE | Codex: MINOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Noted AIC computation is new code (not reuse from sodir/forecasting.py)</li>
+<li>Added <code>__main__.py</code> creation requirement for CLI entry point in Phase 4</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: Gap analysis — decline curve code exists in sodir/forecasting.py but not wired to BSEE data</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-077
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-077.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-077/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-077.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-077/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-077/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-077/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-077/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-077/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-077/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-077/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-077/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-077/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-077/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-077/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

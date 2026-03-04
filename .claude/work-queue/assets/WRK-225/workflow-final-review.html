@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-225 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-225 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Investigate plugins vs skills trade-off for repo ecosystem</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Claude Code now offers a plugin/extension mechanism alongside (or instead of) the current skills system used throughout this repo ecosystem. Investigate the differences, trade-offs, and whether migrating to or adopting plugins makes sense.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>The skills system (<code>.claude/skills/</code>) is a bespoke, well-understood pattern used across workspace-hub, codex, and gemini. If Claude's official plugin model provides significant advantages (discoverability, portability, lower maintenance overhead), it may be worth adopting — or at minimum, hybridising. Conversely, if skills offer flexibility that plugins don't, we should document why we stay with skills. The goal is an informed, documented decision, not just awareness.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Document what Claude plugins are: how they're defined, installed, and invoked</li>
+<li>[ ] Compare plugins vs skills on: discoverability, portability, maintenance overhead, composability, agent handoff, cross-provider support (codex/gemini)</li>
+<li>[ ] Identify any capabilities that plugins offer that skills cannot (and vice versa)</li>
+<li>[ ] Produce a recommendation: adopt plugins / hybrid / stay with skills — with rationale</li>
+<li>[ ] Capture findings in a knowledge doc (<code>.claude/docs/plugins-vs-skills.md</code>) or equivalent</li>
+</ul>
+<hr />
+<p><em>Source: "add a work item to investigate the trade-off between plugins (offered by claude) and skills for the repo ecosystem"</em></p></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

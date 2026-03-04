@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-044 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-044 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Pipeline wall thickness calculations with parametric utilisation analysis</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Develop pipeline wall thickness calculation tools to perform parametric analysis across varying load conditions (bending, tension, pressure, combined) and produce pipe utilisation ratios for different wall thicknesses, diameters, and material grades.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Pipeline wall thickness selection is a fundamental design task. Parametric utilisation analysis across load combinations enables rapid design iteration, identification of governing load cases, and optimised wall thickness selection for cost-effective pipeline design.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Wall thickness calculations per relevant design code (e.g. DNV-ST-F101, API 1111)</li>
+<li>[x] Parametric input: varying wall thickness, OD, material grade, SMYS</li>
+<li>[x] Load parametrics: varying bending moments, tensions, internal/external pressure</li>
+<li>[x] Combined loading utilisation checks (pressure, bending, tension interactions)</li>
+<li>[x] Utilisation ratio output for each load combination and wall thickness</li>
+<li>[x] Summary tables and/or graphs showing utilisation vs. load parameters</li>
+<li>[x] Identification of governing load case per wall thickness</li>
+<li>[x] Tests validating calculations against known reference results</li>
+<li>[x] Documentation of design code references and assumptions</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>src/digitalmodel/structural/pipeline/wall_thickness/</code></p>
+<h3>Existing Assets (reuse)</h3>
+<ul>
+<li><code>structural/</code> — stress analysis, code check patterns</li>
+<li><code>solvers/orcaflex/</code> — pipeline models (diameter, wall thickness as input parameters)</li>
+<li><code>fatigue/</code> — S-N curve data, material property patterns</li>
+</ul>
+<h3>Phase 1 — Design Code Implementation</h3>
+<ul>
+<li><code>dnv_st_f101.py</code> — DNV-ST-F101 (Submarine Pipeline Systems):</li>
+<li>Pressure containment (burst): Eq. 5.8 — hoop stress check</li>
+<li>Local buckling (collapse): Eq. 5.13 — external pressure check</li>
+<li>Combined loading: Eq. 5.16 — pressure + bending + tension interaction</li>
+<li>Propagation buckling check</li>
+<li>Material resistance factors (γm, γSC) per safety class</li>
+<li><code>api_1111.py</code> — API 1111 (deferred to separate WRK item unless explicitly required by a project):</li>
+<li>Burst, collapse, combined loading per API methodology</li>
+<li><strong>Future Enhancement</strong>: implement only if a project requirement specifies API 1111; otherwise defer</li>
+</ul>
+<h3>Phase 2 — Parametric Engine</h3>
+<ul>
+<li><code>parametric_wt.py</code>:</li>
+<li>Input: ranges of OD, wall thickness, SMYS, SMTS, design pressure, water depth</li>
+<li>Load parametrics: bending moment range, tension range, pressure combinations</li>
+<li>Generate Cartesian product of all parameter combinations</li>
+<li>Compute utilisation ratio for each combination</li>
+<li>Output: <code>UtilisationResult</code> with governing load case identification</li>
+</ul>
+<h3>Phase 3 — Visualization &amp; Output</h3>
+<ul>
+<li><code>wt_plots.py</code>:</li>
+<li>Utilisation vs wall thickness curves (one per OD)</li>
+<li>Utilisation heatmap: wall thickness × bending moment</li>
+<li>Governing load case identification plot</li>
+<li>Unity check summary table</li>
+<li>Export: Excel summary with all combinations + governing cases highlighted</li>
+</ul>
+<h3>Phase 4 — Tests</h3>
+<ul>
+<li>Validate against DNV-ST-F101 worked examples (DNV-RP-F101 has reference calculations); include at least one known benchmark case with expected numeric outputs</li>
+<li>Verify burst/collapse/combined loading against hand calculations</li>
+<li>Cite exact clause numbers for each equation and document assumptions (thin-wall, etc.)</li>
+<li>Define units consistently (SI) and default safety class factors per DNV Table 5-3</li>
+<li>Edge cases: zero bending, zero tension, atmospheric external pressure</li>
+<li>Parametric sweep: ensure monotonic utilisation increase with decreasing wall thickness</li>
+</ul>
+<h3>Dependencies</h3>
+<ul>
+<li>No external software needed (pure Python calculations)</li>
+<li>Material property data: SMYS/SMTS for common pipeline steels (X52, X60, X65, X70)</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: APPROVE | Codex: MINOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Moved API 1111 to "Future Enhancement" — deferred unless project requires it</li>
+<li>Added known benchmark case requirement with expected numeric outputs per Codex feedback</li>
+<li>Added exact clause number citation and assumption documentation requirement</li>
+<li>Added units (SI) and default safety class factors specification</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: perform pipeline wall thickness calculations to perform various parametric analysis to get various pipe utilizations for varying bending, tensions etc.</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-044
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-044.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-044/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-044.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-044/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-044/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-044/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-044/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-044/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-044/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-044/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-044/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-044/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-044/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-044/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

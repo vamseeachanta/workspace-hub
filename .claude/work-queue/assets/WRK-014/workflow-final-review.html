@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-014 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-014 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>HSE risk index — client-facing risk insights with risk scoring</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Design and build a risk index framework that translates HSE incident analysis (WRK-013) into actionable risk scores for client presentation. The risk index should help clients understand the relative risk associated with different activities, locations, or operations based on historical incident data.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Raw incident data and frequency tables are not directly actionable for clients. A risk index provides an intuitive, comparable metric that enables informed decision-making about safety investments, operational planning, and risk mitigation priorities.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Define risk index methodology (factors: frequency, severity, consequence, exposure)</li>
+<li>[x] Design risk scoring scale (e.g., 1-10, low/medium/high/critical)</li>
+<li>[x] Calculate risk index per activity/subactivity category</li>
+<li>[x] Calculate risk index per field, water depth band, geological era (slicer)</li>
+<li>[x] Present results in client-ready format (tables, charts, dashboards)</li>
+<li>[x] Include risk comparison across categories for prioritization</li>
+<li>[x] Document methodology transparently for client review</li>
+<li>[x] Include caveats and data limitations</li>
+<li>[x] Validate risk rankings against industry knowledge and common sense checks</li>
+<li>[x] Configurable weights via YAML config</li>
+<li>[x] Time-trend chart (annual rolling average)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>src/worldenergydata/hse/risk_index/</code> (co-located with existing <code>hse/</code> module which has acquirers, database, importers)</p>
+<h3>Existing Assets (reuse)</h3>
+<ul>
+<li><code>analysis/intervention/</code> — activity aggregation, enrichment, insight generator</li>
+<li><code>marine_safety/</code> — 290K+ incident records, correlation engine with fuzzy matching</li>
+<li><code>ComprehensiveActivityAnalyzer</code> — activity categorization by type</li>
+<li><code>EraClassifier</code> — geological era classification for field context</li>
+<li><code>AllFieldsRunner</code> — field-level aggregation</li>
+</ul>
+<h3>Phase 0 — Data Audit</h3>
+<ul>
+<li>Audit BSEE incident schema to identify exactly which fields map to frequency, severity, and consequence factors</li>
+<li>Determine how exposure hours/well-years will be computed from available data; define fallback when exposure data is missing</li>
+<li>Define confidence level formula (data completeness, record length, variance)</li>
+<li>Check required fields in incident pipeline; document fallback when consequence factors are unavailable</li>
+</ul>
+<h3>Phase 1 — Risk Index Methodology</h3>
+<ul>
+<li><code>risk_methodology.py</code> — Define composite risk score formula:</li>
+<li><strong>Frequency factor</strong>: incident count / exposure metric (well-years preferred; use active well count as proxy if manhours unavailable)</li>
+<li><strong>Severity factor</strong>: weighted by injury/fatality/spill volume from BSEE incident data</li>
+<li><strong>Consequence factor</strong>: environmental impact, equipment damage, production loss</li>
+<li><strong>Exposure factor</strong>: water depth category, well count, production volume</li>
+<li>Configurable weighting via YAML config</li>
+<li>Scale: 1-10 with descriptive bands (1-2 Low, 3-4 Moderate, 5-6 Elevated, 7-8 High, 9-10 Critical)</li>
+</ul>
+<h3>Phase 2 — Risk Calculation Engine</h3>
+<ul>
+<li><code>risk_calculator.py</code> — Calculate risk index per:</li>
+<li>Activity category (drilling, completion, intervention, production)</li>
+<li>Field / area code</li>
+<li>Water depth band (shallow &lt;500ft, mid 500-5000ft, deep &gt;5000ft)</li>
+<li>Geological era / formation</li>
+<li>Output: <code>RiskIndex</code> dataclass with score, contributing factors, confidence level</li>
+</ul>
+<h3>Phase 3 — Client-Facing Presentation</h3>
+<ul>
+<li><code>risk_dashboard.py</code> — Plotly charts:</li>
+<li>Risk heatmap (activity × water depth)</li>
+<li>Risk comparison bar chart across fields/categories</li>
+<li>Risk trend over time (annual rolling average)</li>
+<li>Risk factor decomposition (stacked bar)</li>
+<li><code>risk_report.py</code> — Markdown/HTML report with methodology section, caveats, data limitations</li>
+</ul>
+<h3>Phase 4 — Tests</h3>
+<ul>
+<li>Unit tests: risk formula correctness with known inputs</li>
+<li>Validation: risk rankings with concrete test cases (e.g., "Given field A with 10 incidents and field B with 2 incidents over same period, field A risk score &gt; field B risk score"; deep water &gt; shallow, drilling &gt; production)</li>
+<li>Edge cases: fields with zero incidents, single-incident fields, missing data</li>
+</ul>
+<h3>Dependencies</h3>
+<ul>
+<li>Blocked by WRK-013 (HSE incident analysis pipeline)</li>
+<li>Requires materialized BSEE incident/activity data</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: MINOR | Codex: MINOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Fixed target path from <code>bsee/analysis/hse/risk_index/</code> to <code>hse/risk_index/</code> to co-locate with existing HSE module</li>
+<li>Added Phase 0 data audit step to identify available BSEE fields for risk factors</li>
+<li>Clarified exposure metric: use well-years as proxy when manhours unavailable</li>
+<li>Replaced vague "match industry intuition" test with concrete test case assertions</li>
+<li>Added confidence level formula and fallback handling per Codex feedback</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: for hse data insights, present to client the risks with a risk index to help</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-014
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-014.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-014/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-014.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-014/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-014/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-014/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-014/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-014/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-014/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-014/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-014/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-014/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-014/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-014/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

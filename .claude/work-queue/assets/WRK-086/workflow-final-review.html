@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-086 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-086 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Rewrite CI workflows for Python/bash workspace</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Disabled in commit <code>1fc6d47</code> on 2026-01-31. Identified during reflect review on 2026-02-03.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><ul>
+<li><strong>Step 0</strong>: Audit all 5 workflows (including <code>phase1-consolidation.yml</code> which is not listed above). Decide per workflow: keep, merge, or remove.</li>
+<li><strong>Step 1</strong>: For each kept workflow, define success criteria (e.g., pytest passes, coverage threshold met)</li>
+<li><strong>Step 2</strong>: <code>baseline-check.yml</code> → Rewrite: <code>actions/setup-python@v5</code>, system python3, <code>pytest</code> with coverage. Install dependencies from workspace-hub <code>pyproject.toml</code> (if exists) or specific submodule <code>pyproject.toml</code> files.</li>
+<li><strong>Step 3</strong>: <code>multi-ai-review.yml</code> → Rewrite: use existing <code>scripts/review/cross-review.sh</code>. If Codex CLI or Gemini CLI are not installable in GitHub Actions, the workflow should gracefully skip unavailable reviewers (consistent with cross-review.sh NO_OUTPUT handling). Use pinned tool versions.</li>
+<li><strong>Step 4</strong>: <code>baseline-audit.yml</code> → Either merge into baseline-check or remove if redundant</li>
+<li><strong>Step 5</strong>: <code>refactor-analysis.yml</code> → Remove (one-off analysis, not a recurring CI need)</li>
+<li><strong>Step 6</strong>: Re-enable push/PR triggers, verify on main branch</li>
+<li><strong>Note</strong>: <code>uv</code> is NOT installed on this system — use <code>pip install</code> or system python3 in CI</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: MINOR | Codex: MINOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Added Step 0 to audit all 5 workflows (including missed <code>phase1-consolidation.yml</code>)</li>
+<li>Added per-workflow success criteria definition</li>
+<li>Added dependency installation source specification (pyproject.toml)</li>
+<li>Added graceful skip for unavailable AI review tools in CI per Claude feedback</li>
+<li>Added pinned tool versions requirement per Codex feedback</li>
+<li>Added artifact upload specification (coverage reports/logs)</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

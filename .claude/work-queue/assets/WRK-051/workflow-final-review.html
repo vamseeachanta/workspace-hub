@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-051 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-051 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>digitalmodel test coverage improvement</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Improve test coverage for the digitalmodel repository from the current 2.7% to 80%+. The repo has 83K lines and 4064 test files that exist but fail to cover the source code properly.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>At 2.7% coverage, the digitalmodel codebase has virtually no safety net for regressions. The test files exist but do not properly import or exercise the digitalmodel package, meaning refactoring and new features carry high risk.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Test collection fixed to import digitalmodel package</li>
+<li>[ ] Coverage for orcaflex package reaches 80%+</li>
+<li>[ ] Coverage for fatigue package reaches 80%+</li>
+<li>[ ] Coverage for marine package reaches 80%+</li>
+<li>[ ] Coverage for signal package reaches 80%+</li>
+<li>[ ] Overall repository coverage reaches 80%+</li>
+<li>[ ] CI pipeline reports coverage on every PR</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Spec</strong>: <code>specs/modules/wrk-051-digitalmodel-test-coverage.md</code>
+<strong>Target</strong>: <code>digitalmodel/tests/</code></p>
+<h3>Current State (from research)</h3>
+<ul>
+<li><strong>1,097 source files</strong>, ~488 test files (verified on disk), 2.7% coverage</li>
+<li><strong>Critical zero-coverage gaps</strong>: visualization/ (0%), data_systems/ (1.8%), common/ (low)</li>
+<li><strong>Working test patterns</strong>: marine_ops/ (dynacard has 83 tests), orcaflex/ (converter tests exist)</li>
+<li><strong>Root cause</strong>: Many test files exist but fail to import <code>digitalmodel</code> package correctly (PYTHONPATH issues)</li>
+<li><strong>Test runner</strong>: <code>PYTHONPATH="src:../assetutilities/src" python3 -m pytest --noconftest</code></li>
+</ul>
+<h3>Phase 1 — Fix Test Collection Infrastructure</h3>
+<ul>
+<li>Investigate whether <code>digitalmodel</code> is properly installable as a package (<code>pip install -e .</code> or <code>uv pip install -e .</code>). If not, fix packaging before conftest.</li>
+<li>Fix <code>conftest.py</code> to properly set up <code>digitalmodel</code> package imports</li>
+<li>Audit test discovery: which of ~488 test files actually run vs. skip/error</li>
+<li>Create <code>pytest.ini</code> or <code>pyproject.toml</code> [tool.pytest] section with correct paths</li>
+<li>Target: all existing test files should at minimum be discovered by pytest</li>
+</ul>
+<h3>Phase 2 — Priority Tiers (by business criticality)</h3>
+<p><strong>Tier 1 — Critical (0% → 80%)</strong>:
+- <code>visualization/</code> — SVG generation, Plotly charts, schematics (0 tests, 7+ modules)
+- <code>data_systems/</code> — data loaders, schemas, catalog (1.8%, 2 tests)
+- <code>common/</code> — shared utilities used across all modules</p>
+<p><strong>Tier 2 — High</strong>:
+- <code>marine_ops/</code> — extend beyond dynacard (artificial_lift, mooring, installation)
+- <code>orcaflex/</code> — model generation, post-processing, batch management
+- <code>fatigue/</code> — S-N curves, rainflow counting, damage accumulation</p>
+<p><strong>Tier 3 — Medium</strong>:
+- <code>signal/</code> — signal processing, FFT, filtering
+- <code>structural/</code> — stress analysis, code checks
+- <code>hydrodynamics/</code> — RAO, wave spectra, diffraction</p>
+<h3>Phase 3 — Test Writing Strategy</h3>
+<ul>
+<li><strong>Per module</strong>: Write tests for public API surface first, then edge cases</li>
+<li><strong>Test fixtures</strong>: Create shared fixture files for common data patterns (YAML configs, sample DataFrames)</li>
+<li><strong>No mocks</strong>: Use real data per testing rules; mock only external APIs (OrcaFlex license, file I/O)</li>
+<li><strong>OrcaFlex-dependent tests</strong>: Use <code>pytest.importorskip('OrcFxAPI')</code> to skip when unavailable. This is consistent with "mock only external APIs" rule.</li>
+<li><strong>Naming</strong>: <code>test_&lt;module&gt;_&lt;function&gt;_&lt;scenario&gt;_&lt;expected&gt;</code> convention</li>
+<li><strong>Target</strong>: 20-30 tests per module, each &lt;100ms</li>
+</ul>
+<h3>Phase 4 — CI Coverage Reporting</h3>
+<ul>
+<li>Add <code>pytest-cov</code> configuration with <code>--cov=digitalmodel --cov-report=html</code></li>
+<li>Set minimum coverage threshold per package in CI config</li>
+<li>Generate coverage badge for README</li>
+</ul>
+<h3>Phase 5 — Incremental Milestones</h3>
+<ol>
+<li>Fix infrastructure → verify ~488 files discovered (Phase 1: 1 week)</li>
+<li>Tier 1 modules to 80% — estimate per-module effort after Phase 1 audit reveals actual test gap sizes</li>
+<li>Tier 2 modules to 80% — schedule after Tier 1 assessment</li>
+<li>Tier 3 modules to 80% — schedule after Tier 2 assessment</li>
+<li>Overall 80%+ with CI gate — staged per-package thresholds, not all-at-once
+<strong>Note</strong>: Original 7-week timeline is aspirational. Given 1,097 source files and external dependencies, realistic timeline will be established after Phase 1 audit.</li>
+</ol>
+<h3>Dependencies</h3>
+<ul>
+<li>Requires <code>assetutilities</code> on PYTHONPATH (many digitalmodel modules import from it)</li>
+<li>OrcaFlex tests need conditional skip when OrcFxAPI not installed</li>
+<li>Some visualization tests may need matplotlib/plotly — use image comparison or output validation</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: MINOR | Codex: MAJOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Updated test file count from 335 to ~488 (verified on disk)</li>
+<li>Added package installability check to Phase 1 (root cause may be packaging, not just conftest)</li>
+<li>Added <code>pytest.importorskip('OrcFxAPI')</code> strategy for OrcaFlex tests</li>
+<li>Replaced fixed 7-week timeline with phased milestone approach — estimate after Phase 1 audit</li>
+<li>Added staged CI coverage gating (per-package thresholds after baseline stabilization)</li>
+<li>Codex and Claude agree timeline is unrealistic; Codex rated MAJOR for this reason</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: test coverage audit across workspace-hub repositories</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

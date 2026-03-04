@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-036 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-036 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>OrcaFlex structure deployment analysis - supply boat side deployment with structural loads</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>OrcaFlex analysis of structure deployment from a supply boat (side of vessel). Model the deployment through the splash zone to capture loads, then provide those loads for downstream structural integrity assessment.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Structural deployment through the splash zone is a critical lift operation. OrcaFlex time-domain analysis captures the dynamic loads (wave-induced, snap, slam) that static calculations miss. These loads feed into structural FEA to verify the equipment and rigging integrity under installation conditions.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] OrcaFlex model of structure deployed from supply boat side</li>
+<li>[ ] Splash zone analysis capturing dynamic loads during lowering</li>
+<li>[ ] Parametric runs: varying lengths, weight cases (accurate and envelope)</li>
+<li>[ ] Seastate sensitivity with vessel RAOs applied</li>
+<li>[ ] Load extraction (tensions, shears, bending moments) at critical locations</li>
+<li>[ ] Loads formatted/exported for structural analysis input</li>
+<li>[ ] Results summary with governing load cases identified</li>
+<li>[ ] Documentation of model assumptions, parameters, and load output format</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><blockquote>
+<p><strong>Note</strong>: <code>target_repos</code> in frontmatter says <code>acma-projects</code> but the analysis tooling belongs in <code>digitalmodel</code>. The OrcaFlex model generation, parametric runner, and load extraction modules should be implemented in <code>digitalmodel/</code>. Project-specific configs and results stay in the project repo.</p>
+</blockquote>
+<h3>Phase 0: Reference Examples from rock-oil-field</h3>
+<p><strong>Prerequisite</strong>: Before implementation, review and extract reference examples from <code>rock-oil-field/s7/</code> which contains existing OrcaFlex deployment analysis examples. These should inform the schema design, parametric ranges, and expected output format.</p>
+<p><strong>Steps</strong>:
+1. Inventory <code>rock-oil-field/s7/</code> for deployment-related OrcaFlex models and configurations
+2. Identify: structure types deployed, rigging configurations, seastate parameters used, load extraction methods
+3. Extract patterns to inform <code>DeploymentSpec</code> schema design (Phase 1)
+4. Note any project-specific references that must NOT be carried into generic digitalmodel code</p>
+<h3>Phase 1: Deployment Schema Extension</h3>
+<p>Extend the existing <code>ProjectInputSpec</code> Pydantic schema to support structure deployment models (currently supports pipeline and riser only).</p>
+<p><strong>Target files (modify)</strong>:
+- <code>src/digitalmodel/solvers/orcaflex/modular_generator/schema/_enums.py</code> (44 lines) -- add <code>StructureType.DEPLOYMENT</code> enum value
+- <code>src/digitalmodel/solvers/orcaflex/modular_generator/schema/root.py</code> (172 lines) -- add optional <code>deployment</code> field alongside <code>pipeline</code> and <code>riser</code>, update <code>model_validator</code> to allow exactly one of the three</p>
+<p><strong>Target files (new)</strong>:
+- <code>src/digitalmodel/solvers/orcaflex/modular_generator/schema/deployment.py</code> -- Pydantic models for deployment configuration</p>
+<p><strong>Schema models in <code>deployment.py</code></strong>:</p>
+<pre><code>DeployedStructure:
+    name: str
+    mass: float                    # Dry mass (te)
+    submerged_weight: float        # Submerged weight (kN)
+    dimensions: [L, W, H]         # Envelope dimensions (m)
+    cog: [x, y, z]                # Centre of gravity (m)
+    gyration_radii: [Rxx, Ryy, Rzz]
+    drag_coefficients: {Cd_x, Cd_y, Cd_z}
+    added_mass_coefficients: {Ca_x, Ca_y, Ca_z}
+
+RiggingConfig:
+    sling_count: int
+    sling_length: float
+    sling_capacity: float          # SWL (kN)
+    spreader_bar: bool
+    spreader_length: float | None
+
+CraneConfig:
+    boom_length: float
+    capacity: float                # SWL at radius (kN)
+    hook_height_above_deck: float
+    winch_speed: float             # Lowering speed (m/s)
+    side_deployment: bool = True   # Side of vessel deployment
+
+SupplyBoatConfig:
+    vessel_name: str
+    rao_file: str                  # Path to vessel RAO data
+    vessel_properties: VesselProperties  # Reuse existing model from equipment.py
+    crane: CraneConfig
+    deployment_side: str           # &quot;port&quot; | &quot;starboard&quot;
+
+SplashZoneConfig:
+    start_depth: float             # Start of splash zone (m, from MWL)
+    end_depth: float               # End of splash zone (m)
+    lowering_steps: list[float]    # Depth increments for analysis (m)
+    hold_durations: list[float]    # Hold time at each step (s)
+
+DeploymentSpec:
+    structure: DeployedStructure
+    rigging: RiggingConfig
+    supply_boat: SupplyBoatConfig
+    splash_zone: SplashZoneConfig
+    weight_cases: list[WeightCase]  # Accurate + envelope weights
+</code></pre>
+<p><strong>Test file</strong>:
+- <code>tests/solvers/orcaflex/modular_generator/schema/test_deployment.py</code></p>
+<p><strong>Steps (TDD)</strong>:
+1. Write tests: <code>DeployedStructure</code> validates non-negative mass, positive dimensions
+2. Write tests: <code>SplashZoneConfig</code> validates <code>start_depth &lt; end_depth</code>, lowering steps within range
+3. Write tests: <code>DeploymentSpec</code> cross-validates sling capacity &gt;= structure submerged weight
+4. Write tests: <code>ProjectInputSpec</code> with <code>deployment</code> field parses correctly; <code>pipeline + deployment</code> raises <code>ValueError</code>
+5. Implement all schema models
+6. Update <code>root.py</code> validator to accept <code>deployment</code> as third option</p>
+<h3>Phase 2: Deployment Builders</h3>
+<p>Create builders for deployment-specific OrcaFlex objects: the structure (6D buoy), rigging lines, crane wire, and supply boat vessel.</p>
+<p><strong>Target files (new)</strong>:
+- <code>src/digitalmodel/solvers/orcaflex/modular_generator/builders/deployment_structure_builder.py</code> -- 6D buoy for deployed structure
+- <code>src/digitalmodel/solvers/orcaflex/modular_generator/builders/deployment_rigging_builder.py</code> -- sling lines, spreader bar
+- <code>src/digitalmodel/solvers/orcaflex/modular_generator/builders/deployment_crane_builder.py</code> -- crane wire line with winch control</p>
+<p><strong>Target files (modify)</strong>:
+- <code>src/digitalmodel/solvers/orcaflex/modular_generator/builders/__init__.py</code> -- register new builders
+- <code>src/digitalmodel/solvers/orcaflex/modular_generator/builders/context.py</code> (100 lines) -- add deployment-specific context fields</p>
+<p><strong>Builder registration</strong>:
+- <code>deployment_structure_builder.py</code>: <code>@BuilderRegistry.register("08b_deployment_structure.yml", order=85)</code>
+- <code>deployment_rigging_builder.py</code>: <code>@BuilderRegistry.register("08c_deployment_rigging.yml", order=86)</code>
+- <code>deployment_crane_builder.py</code>: <code>@BuilderRegistry.register("08d_deployment_crane.yml", order=87)</code></p>
+<p><strong>Test files</strong>:
+- <code>tests/solvers/orcaflex/modular_generator/builders/test_deployment_builders.py</code></p>
+<p><strong>Steps (TDD)</strong>:
+1. Write tests: Structure builder emits 6D buoy with correct mass, inertia, drag properties
+2. Write tests: Rigging builder emits sling lines connecting buoy to crane hook point
+3. Write tests: Crane builder emits winch-controlled line with lowering displacement
+4. Write tests: <code>should_generate()</code> returns False for pipeline/riser specs
+5. Implement builders following existing patterns (<code>buoys_builder.py</code>, <code>lines_builder.py</code>)</p>
+<h3>Phase 3: Parametric Splash Zone Campaign</h3>
+<p>Extend the existing <code>CampaignMatrix</code> to support deployment-specific parametric variations.</p>
+<p><strong>Target files (modify)</strong>:
+- <code>src/digitalmodel/solvers/orcaflex/modular_generator/schema/campaign.py</code> (487 lines) -- add deployment-specific axes to <code>CampaignMatrix</code></p>
+<p><strong>Target files (new)</strong>:
+- <code>src/digitalmodel/solvers/orcaflex/deployment/splash_zone_runner.py</code> -- orchestrate multi-step lowering analysis</p>
+<p><strong>New campaign axes</strong>:</p>
+<pre><code class="language-python">class CampaignMatrix(BaseModel):
+    # ... existing fields ...
+    structure_lengths: list[float] | None = None    # Varying structure lengths
+    weight_cases: list[str] | None = None           # &quot;accurate&quot; | &quot;envelope&quot;
+    sea_states: list[SeaStateCase] | None = None    # Hs/Tp/heading combinations
+</code></pre>
+<p><strong>Test files</strong>:
+- <code>tests/solvers/orcaflex/deployment/test_splash_zone_runner.py</code>
+- <code>tests/solvers/orcaflex/modular_generator/schema/test_campaign_deployment.py</code></p>
+<p><strong>Steps (TDD)</strong>:
+1. Write tests: Campaign with 3 lengths x 2 weight cases x 3 sea states = 18 runs
+2. Write tests: Each run directory has correct structure mass for its weight case
+3. Write tests: Splash zone runner generates one model per lowering step per run
+4. Implement campaign extension
+5. Implement splash zone runner: iterate lowering steps, extract loads at each depth</p>
+<h3>Phase 4: Load Extraction &amp; Export</h3>
+<p>Extract structural loads (tensions, shears, bending moments) from OrcaFlex results and export in formats suitable for structural FEA input.</p>
+<p><strong>Target files (new)</strong>:
+- <code>src/digitalmodel/solvers/orcaflex/deployment/load_extractor.py</code> -- extract loads from <code>.sim</code> results
+- <code>src/digitalmodel/solvers/orcaflex/deployment/load_export.py</code> -- export to CSV/JSON for structural analysis
+- <code>src/digitalmodel/solvers/orcaflex/deployment/governing_case.py</code> -- identify governing load cases</p>
+<p><strong>Test files</strong>:
+- <code>tests/solvers/orcaflex/deployment/test_load_extractor.py</code>
+- <code>tests/solvers/orcaflex/deployment/test_load_export.py</code>
+- <code>tests/solvers/orcaflex/deployment/test_governing_case.py</code></p>
+<p><strong>Steps (TDD)</strong>:
+1. Write tests: Extractor reads sling tensions, hook load, structure accelerations from <code>.sim</code>
+2. Write tests: Dynamic amplification factors (DAF) computed correctly from static vs dynamic results
+3. Write tests: Governing case identified by maximum sling tension across all parametric runs
+4. Write tests: Export CSV has columns: case_id, depth_m, sling_tension_kN, hook_load_kN, heave_m, roll_deg
+5. Implement load extractor (OrcFxAPI: <code>model.objectNamed(line).TimeHistory("Effective Tension", ...)</code>)
+6. Implement governing case selector: max envelope across all runs per extraction point
+7. Implement CSV/JSON export for structural analysis handoff</p>
+<h3>Phase 5: Results Summary &amp; Reporting</h3>
+<p><strong>Target files (new)</strong>:
+- <code>src/digitalmodel/solvers/orcaflex/deployment/deployment_report.py</code> -- Plotly HTML report</p>
+<p><strong>Test files</strong>:
+- <code>tests/solvers/orcaflex/deployment/test_deployment_report.py</code></p>
+<p><strong>Steps</strong>:
+1. Sling tension vs lowering depth plot (one trace per sea state)
+2. DAF vs lowering depth plot
+3. Governing load case summary table
+4. Splash zone exceedance curves (probability of exceeding SWL)
+5. Export report as interactive HTML</p>
+<h3>Dependencies &amp; Prerequisites</h3>
+<p>| Dependency | Status | Notes |
+|------------|--------|
+-------|
+| OrcFxAPI Python package | Required for Phase 4-5 | <code>pytest.skip</code> if unavailable |
+| Supply boat RAO data | User-provided | Vessel-specific <code>.yml</code> RAO file |
+| Existing <code>VesselProperties</code> model | Available | <code>equipment.py</code> line 261-283 |
+| Existing campaign infrastructure | Available | <code>campaign.py</code> (487 lines), <code>CampaignGenerator</code> |
+| Existing builder registry | Available | <code>registry.py</code> (82 lines) |
+| <code>orcaflex_installation.py</code> | Reference | <code>create_installation_depth_model2()</code> (lines 199-241) handles similar depth-varying deployment |</p>
+<h3>Existing Code to Build On</h3>
+<p>| Component | Path | Lines | Reuse Strategy |
+|-----------|------|-------|
+----------------|
+| Legacy deployment model | <code>solvers/orcaflex/orcaflex_installation.py</code> | 241 | <code>create_installation_depth_model2()</code> for depth-varying 6D buoys, slings, crane wire |
+| Campaign generator | <code>solvers/orcaflex/modular_generator/schema/campaign.py</code> | 487 | Extend <code>CampaignMatrix</code> with deployment axes |
+| Builder base + registry | <code>solvers/orcaflex/modular_generator/builders/base.py</code> + <code>registry.py</code> | 73+82 | Standard builder pattern |
+| Buoys builder (6D buoy pattern) | <code>solvers/orcaflex/modular_generator/builders/buoys_builder.py</code> | 610 | 6D buoy emission pattern for deployed structure |
+| Lines builder | <code>solvers/orcaflex/modular_generator/builders/lines_builder.py</code> | 331 | Line definition pattern for slings + crane wire |
+| Vessel builder | <code>solvers/orcaflex/modular_generator/builders/vessel_builder.py</code> | 124 | Supply boat vessel object pattern |
+| Equipment schema | <code>solvers/orcaflex/modular_generator/schema/equipment.py</code> | 404 | Reuse <code>VesselProperties</code>, <code>VesselMooring</code> |</p>
+<h3>Test Strategy</h3>
+<p>| Test Scope | Target Path | Count (est.) |
+|------------|-------------|
+--------------|
+| Deployment schema | <code>tests/solvers/orcaflex/modular_generator/schema/test_deployment.py</code> | ~20 |
+| Deployment builders | <code>tests/solvers/orcaflex/modular_generator/builders/test_deployment_builders.py</code> | ~18 |
+| Campaign deployment | <code>tests/solvers/orcaflex/modular_generator/schema/test_campaign_deployment.py</code> | ~10 |
+| Splash zone runner | <code>tests/solvers/orcaflex/deployment/test_splash_zone_runner.py</code> | ~12 |
+| Load extraction | <code>tests/solvers/orcaflex/deployment/test_load_extractor.py</code> | ~10 |
+| Load export | <code>tests/solvers/orcaflex/deployment/test_load_export.py</code> | ~8 |
+| Governing case | <code>tests/solvers/orcaflex/deployment/test_governing_case.py</code> | ~6 |
+| Deployment report | <code>tests/solvers/orcaflex/deployment/test_deployment_report.py</code> | ~6 |
+| <strong>Total</strong> | | <strong>~90</strong> |</p>
+<p>Run command: <code>PYTHONPATH="src:../assetutilities/src" python3 -m pytest tests/solvers/orcaflex/deployment/ tests/solvers/orcaflex/modular_generator/schema/test_deployment.py tests/solvers/orcaflex/modular_generator/builders/test_deployment_builders.py -v --tb=short --noconftest</code></p>
+<h3>Review Notes</h3>
+<p><strong>Cross-review date</strong>: 2026-02-10</p>
+<p>| Reviewer | Verdict |
+|----------|
+---------|
+| Claude Opus 4.6 | APPROVE |
+| Gemini CLI | APPROVE |
+| Codex CLI | NO_OUTPUT |</p>
+<p><strong>Feedback incorporated</strong>:
+- 10 of 11 line count claims are exact matches; remaining 3 off by 1 line each
+- Correctly follows established patterns (BuilderRegistry, TDD)
+- OrcFxAPI-dependent tests properly gated behind skip marks</p>
+<p><em>Approved by user: 2026-02-10 (with Phase 0 added: review rock-oil-field/s7/ examples before implementation)</em></p>
+<hr />
+<p><em>Source: orcaflex analysis of structure deployment analysis. deploy equipment using supply boat on side of the vessel. perform analysis to ensure loads are captured. Finally structural integrity needs to be determined. method: splash zone; varying lengths; accurate weight or envelope weights; seastate RAOs etc. provide loads for structural analysis</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-036
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-036.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-036/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-036.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-036/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-036/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-036/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-036/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-036/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-036/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-036/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-036/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-036/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-036/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-036/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

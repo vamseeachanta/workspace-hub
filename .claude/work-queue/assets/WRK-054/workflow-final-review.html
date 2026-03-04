@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-054 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-054 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>worldenergydata test coverage improvement</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Improve test coverage for the worldenergydata repository from the current 22.6% to 80%+. Investigate why 3329 test files only yield 22.6% coverage -- likely a source path misconfiguration.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>With 3329 test files but only 22.6% coverage, there is a strong indication that tests are not measuring coverage against the correct source paths. Fixing this configuration issue may reveal significantly higher actual coverage, and any remaining gaps can then be addressed efficiently.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Coverage configuration investigated and documented</li>
+<li>[ ] Source path misconfiguration identified and fixed</li>
+<li>[ ] Accurate baseline coverage measured after fix</li>
+<li>[ ] Tests written for remaining uncovered code paths</li>
+<li>[ ] Overall repository coverage reaches 80%+</li>
+<li>[ ] CI pipeline reports coverage on every PR</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>worldenergydata/tests/</code></p>
+<h3>Phase 1 — Fix Coverage Configuration</h3>
+<ul>
+<li>Check <code>pyproject.toml</code> / <code>.coveragerc</code> for source path settings</li>
+<li>Verify <code>--cov=worldenergydata</code> points to <code>src/worldenergydata/</code> (post-flatten paths)</li>
+<li>Fix any <code>omit</code> or <code>include</code> patterns that exclude valid source</li>
+<li>Re-run coverage to get accurate baseline (expect significant jump from 22.6%)</li>
+</ul>
+<h3>Phase 2 — Assess Actual Gaps</h3>
+<ul>
+<li>After config fix, identify true uncovered modules</li>
+<li>Expected well-covered: bsee (WRK-011 added 54 tests), marine_safety</li>
+<li>Expected gaps: newer modules (metocean API clients, LNG, paleowells)</li>
+<li>Prioritize by business criticality</li>
+</ul>
+<h3>Phase 3 — Fill Coverage Gaps</h3>
+<ul>
+<li>Write tests for uncovered modules, focusing on:</li>
+<li>Data loaders (handle LFS stubs gracefully — add explicit skip logic for LFS stubs in test fixtures)</li>
+<li>API clients (mock external HTTP calls at boundary; document which clients are mocked and how)</li>
+<li>Analysis modules (use materialized test data)</li>
+<li>Define per-subpackage coverage targets (bsee, metocean, marine_safety, etc.)</li>
+<li>Test runner: <code>PYTHONPATH="src:../assetutilities/src" python3 -m pytest --noconftest --cov=worldenergydata</code></li>
+<li><strong>Note</strong>: If import errors occur due to <code>_compat.py</code> path shim, add <code>--import-mode=importlib</code> to pytest invocation</li>
+</ul>
+<h3>Phase 4 — CI Integration</h3>
+<ul>
+<li>Add coverage reporting configuration</li>
+<li>Set per-module minimum thresholds</li>
+</ul>
+<h3>Data Constraints</h3>
+<ul>
+<li>129/133 .bin files are LFS stubs — tests must handle gracefully</li>
+<li>Use materialized data (production_raw, rig_fleet) for integration tests</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: APPROVE | Codex: MINOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Added <code>--import-mode=importlib</code> note for post-flatten path shim compatibility</li>
+<li>Added explicit LFS stub skip logic requirement in test fixtures</li>
+<li>Added per-subpackage coverage targets per Codex feedback</li>
+<li>Added documentation of which API clients are mocked and how</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: test coverage audit across workspace-hub repositories</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

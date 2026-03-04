@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-666 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-666 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Build a lightweight listener that monitors a designated WhatsApp number or group
+channel and converts incoming messages into WRK items in the repo ecosystem —
+the same way <code>/work add &lt;desc&gt;</code> does from the CLI.</p>
+<h3>Architecture</h3>
+<pre><code>WhatsApp (phone/group) → OpenClaw Narada agent → capture script → WRK-NNN.md
+                                                       ↓
+                                               git commit + push
+                                                       ↓
+                                           INDEX.md regenerated
+</code></pre>
+<p>The Narada agent (WRK-665) acts as the listener. When a message arrives on the
+configured number/channel it is passed to a capture handler that:
+1. Classifies the message as a work item (vs. general chat)
+2. Extracts title, repo target, and priority hints from the text
+3. Calls <code>scripts/work-queue/next-id.sh</code> to get the next WRK-NNN
+4. Writes the WRK file, commits, and pushes</p>
+<h3>Monitored sources</h3>
+<ul>
+<li><strong>Self number</strong>: messages sent to own WhatsApp number (voice-note transcription supported)</li>
+<li><strong>Dedicated group</strong>: a "Work Capture" WhatsApp group where any member can drop tasks</li>
+</ul>
+<h3>Message format (loose — Narada normalises)</h3>
+<pre><code>Plain text:   &quot;Add auth module to aceengineer-website&quot;
+Structured:   &quot;WRK: Fix login redirect | repo: aceengineer-website | priority: high&quot;
+Voice note:   transcribed via Whisper or OpenAI audio before routing
+</code></pre>
+<h3>Components</h3>
+<p><strong>1. OpenClaw skill file</strong> (inside the Narada workspace):</p>
+<pre><code>~/.openclaw/workspace-whatsapp-ai-group/skills/wrk-capture.js
+</code></pre>
+<ul>
+<li>Triggered on every message from the configured source number/group</li>
+<li>Calls <code>classify_message()</code> → returns <code>{is_wrk: bool, title, repo, priority}</code></li>
+<li>If <code>is_wrk</code>, calls the capture script via <code>child_process.exec</code></li>
+</ul>
+<p><strong>2. Capture script</strong> (in workspace-hub):</p>
+<pre><code>scripts/work-queue/whatsapp-capture.sh &lt;title&gt; &lt;repo&gt; &lt;priority&gt;
+</code></pre>
+<ul>
+<li>Wraps <code>next-id.sh</code> + WRK file creation + <code>git add/commit/push</code></li>
+<li>Writes minimal WRK frontmatter + <code>## What</code> from the title</li>
+<li>Logs to <code>.claude/work-queue/logs/whatsapp-capture.log</code></li>
+</ul>
+<p><strong>3. Acknowledgement</strong> (Narada replies to WhatsApp):</p>
+<pre><code>&quot;✓ Captured as WRK-NNN: &lt;title&gt; (repo: &lt;repo&gt;, priority: &lt;priority&gt;)&quot;
+</code></pre>
+<p><strong>4. Configuration</strong> (<code>.env</code> or <code>openclaw.json</code> extension):</p>
+<pre><code>WRK_CAPTURE_SOURCE_NUMBER=+1XXXXXXXXXX   # self or group JID
+WRK_CAPTURE_REPO_DEFAULT=workspace-hub
+WRK_CAPTURE_PRIORITY_DEFAULT=medium
+WRK_REPO_PATH=/mnt/local-analysis/workspace-hub
+</code></pre></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] <code>scripts/work-queue/whatsapp-capture.sh</code> creates a valid WRK file and commits</li>
+<li>[ ] OpenClaw skill classifies messages and routes to capture script</li>
+<li>[ ] Source filter prevents processing messages from unrecognised numbers</li>
+<li>[ ] End-to-end: WhatsApp message → WRK-NNN.md in repo within 10 seconds</li>
+<li>[ ] Narada sends acknowledgement reply with WRK ID</li>
+<li>[ ] Rate limit (10/hr) and dedup (24h) guards in place</li>
+<li>[ ] Capture log at <code>.claude/work-queue/logs/whatsapp-capture.log</code></li>
+<li>[ ] Config documented in <code>docs/agents/narada-openclaw-setup-guide.md</code> (WRK-665)</li>
+<li>[ ] Legal scan passes (no secrets in committed files)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><h3>Phase 1 — Capture script (30 min)</h3>
+<p>Write <code>scripts/work-queue/whatsapp-capture.sh</code>:</p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -euo pipefail
+TITLE=&quot;$1&quot;; REPO=&quot;${2:-workspace-hub}&quot;; PRIORITY=&quot;${3:-medium}&quot;
+NEXT_ID=$(bash &quot;$(git rev-parse --show-toplevel)/scripts/work-queue/next-id.sh&quot; 2&gt;/dev/null)
+# write WRK-NNN.md with minimal frontmatter
+# git add + commit + push
+# echo &quot;WRK-$NEXT_ID: $TITLE&quot; &gt;&gt; whatsapp-capture.log
+</code></pre>
+<p>Test standalone: <code>bash scripts/work-queue/whatsapp-capture.sh "Test item" workspace-hub medium</code></p>
+<h3>Phase 2 — OpenClaw skill (45 min)</h3>
+<p>Create <code>~/.openclaw/workspace-whatsapp-ai-group/skills/wrk-capture.js</code> with:
+- <code>classify_message(text)</code> — returns structured object
+- <code>handle(message)</code> — orchestrates classify → exec → reply
+- Source filter: only process messages from <code>WRK_CAPTURE_SOURCE_NUMBER</code></p>
+<p>Register in <code>~/.openclaw/workspace-whatsapp-ai-group/openclaw.json</code> under <code>skills</code>.</p>
+<h3>Phase 3 — End-to-end test (15 min)</h3>
+<ol>
+<li>Start Narada gateway: <code>cd ~/.openclaw/workspace-whatsapp-ai-group &amp;&amp; npm start</code></li>
+<li>Send test message from configured number: "Add dark mode to aceengineer-website"</li>
+<li>Verify: WRK-NNN.md appears in <code>pending/</code>, commit exists, Narada replied with confirmation</li>
+</ol>
+<h3>Phase 4 — Hardening (15 min)</h3>
+<ul>
+<li>Rate limit: max 10 captures per hour (prevent accidental spam)</li>
+<li>Dedup: if identical title captured in last 24h, reply with existing WRK-NNN instead</li>
+<li>Git conflict guard: pull before commit; retry once on push failure</li>
+</ul></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-666
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-666.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-666/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-666.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-666/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-666/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-666/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-666/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-666/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-666/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-666/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-666/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-666/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-666/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-666/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

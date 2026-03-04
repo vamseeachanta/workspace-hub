@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-628 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-628 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Umbrella tracker for the full phased AI adoption initiative targeting engineering teams.
+Three phases, executed over 1–6 months:</p>
+<pre><code>Phase 1: Desktop Q&amp;A Demo (Week 1)      → WRK-625, WRK-626, WRK-627
+Phase 2: Engineering Chatbot (1-3 mo)   → TBD WRK items post-demo
+Phase 3: Advanced Integration (3-6 mo)  → TBD WRK items post-pilot
+</code></pre>
+<h3>Phase 1 — Desktop Q&amp;A Demo (active)</h3>
+<p>Two clients, each with discipline-specific demo builds:</p>
+<p><strong>Client 1</strong> — rigid jumpers, FFS (pipe), GoA data:
+- <strong>WRK-625</strong> — Day 1: system prompts + knowledge base [30% done]
+- <strong>WRK-626</strong> — Days 2-3: calculation templates + OrcaFlex data processing
+- <strong>WRK-627</strong> — Days 4-5: multi-step workflows + BSEE/GoA data + demo package</p>
+<p><strong>Client 2</strong> — diffraction analysis, FFS (plates), GoA analysis, maritime legal consulting:
+- <strong>WRK-629</strong> — Day 1-2: system prompts + knowledge base + diffraction/plate FFS context
+- <strong>WRK-630</strong> — Days 3-5: workflows + GoA data + demo package</p>
+<p>Demo target: 1 week per client. Success = both clients agree to a 2-week pilot.</p>
+<h3>Phase 2 — Microsoft Teams Chatbot (post-demo)</h3>
+<p>Both clients have Microsoft Teams — deploy via Azure Bot Service + Claude API.
+One bot per client, each loaded with their discipline-specific system prompt.
+- <strong>WRK-631</strong> — Teams bot integration, both clients, Option A (API) → Option B (RAG)
+Architecture: start with Option A (Claude API + system prompt), graduate to Option B (RAG
+backend with company doc index) as usage and doc volume grows.</p>
+<h3>Phase 3 — Advanced Integration (post-pilot)</h3>
+<p>Multi-agent workflows: OrcaFlex batch parametric studies, knowledge base indexing,
+AI-assisted QA/peer review. New WRK items when Phase 2 is operational.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Engineering AI demos create the highest ROI pathway to recurring AI services revenue.
+A successful 1-week demo → pilot → chatbot deployment represents a repeatable template
+applicable to other client disciplines and firms. The roadshow format (phased, low
+initial cost, measurable ROI) is designed to convert demo curiosity into paid engagement.</p>
+<p>Expected benefits demonstrated in the demo:
+| Task | Before | After | Reduction |
+|------|--------|-------|-----------|
+| Code reference lookup | 15-30 min | 1-2 min | 90% |
+| Preliminary sizing | 2-4 hr | 15-30 min | 85% |
+| Calc memo drafting | 4-8 hr | 1-2 hr | 75% |
+| Simulation data extraction | 1-2 hr/case | 5-10 min | 90% |</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Phase 1 demo delivered (WRK-625 + WRK-626 + WRK-627 complete)</li>
+<li>[ ] Demo run with SME1 and SME2 — feedback captured in <code>ai-initiatives/pilot/feedback.md</code></li>
+<li>[ ] Post-demo debrief: go/no-go for Phase 2 chatbot documented</li>
+<li>[ ] Phase 2 WRK items created if demo succeeds</li>
+<li>[ ] ROI tracking started: <code>ai-initiatives/pilot/time_savings_log.md</code></li>
+<li>[ ] Aceengineer-website portfolio entry updated (brochure_status: synced)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-628
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-628.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-628/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-628.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-628/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-628/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-628/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-628/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-628/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-628/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-628/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-628/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-628/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-628/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-628/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

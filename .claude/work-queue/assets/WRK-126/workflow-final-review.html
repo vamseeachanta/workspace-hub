@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-126 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-126 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Benchmark all example models across time domain and frequency domain with seed equivalence</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Establish comparison benchmarks for all example models across both time domain and frequency domain analysis. Run each model with different random seeds to demonstrate analysis equivalence and statistical consistency. Cover all existing examples in the digitalmodel repository.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><ul>
+<li>Validates that example models produce consistent results across analysis domains</li>
+<li>Seed variation confirms results are not artifacts of a single random realization</li>
+<li>Provides a comprehensive regression/validation baseline for all examples</li>
+<li>Builds confidence in the analysis framework for both frequency-domain (RAOs, added mass, damping) and time-domain (motion histories, tensions, statistics)</li>
+</ul></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] All example models inventoried and categorized (frequency domain vs time domain vs both)</li>
+<li>[ ] Frequency domain benchmarks run and results compared for all applicable examples (solver-tier, awaits licensed machine)</li>
+<li>[ ] Time domain benchmarks run with multiple seeds for all applicable examples (solver-tier, awaits licensed machine)</li>
+<li>[x] Seed equivalence demonstrated (unit-tier mock; solver-tier stubs ready for Codex)</li>
+<li>[x] Benchmark results documented with comparison metrics (unit-tier HTML report generated)</li>
+<li>[x] Pass/fail criteria defined and applied to each example (SEED_COV_THRESHOLD, RAO_AMP_TOLERANCE_PCT)</li>
+<li>[x] Regression baseline established for future comparisons (seed_equivalence_baselines.json)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>scripts/benchmark_model_library.py</code> (extend) + <code>scripts/seed_equivalence.py</code> (new)</p>
+<h3>Existing Assets (reuse)</h3>
+<ul>
+<li><code>scripts/benchmark_model_library.py</code> — 3-way benchmark, 51 models validated (Path A/B/C)</li>
+<li><code>scripts/benchmark_riser_library.py</code> — riser-specific benchmarking</li>
+<li><code>scripts/semantic_validate.py</code> — section-by-section comparison pre-gate</li>
+<li><code>benchmark_output/model_library_benchmark.json</code> — existing baseline (7.4 MB)</li>
+<li>New s7 models from WRK-121: ~14 spec.yml groups (jumper, installation, mooring, training)</li>
+</ul>
+<h3>Phase 1 — Model Inventory &amp; Classification</h3>
+<ul>
+<li>Consolidate all example models: 51 existing library + ~14 new s7 groups + 4 riser models</li>
+<li>Classify each as: statics-only, time-domain, frequency-domain, or both</li>
+<li>Tag frequency-domain applicability: models with wave response, vessel RAOs, diffraction</li>
+<li>Output: <code>benchmark_output/model_inventory.yaml</code> with classification per model</li>
+</ul>
+<h3>Phase 2 — Statics Baseline (existing, extend)</h3>
+<ul>
+<li>Run existing 3-way benchmark on full inventory (Path A → B → C)</li>
+<li>Include new s7 models (jumper + installation + mooring)</li>
+<li>Establish statics convergence as pass/fail gate for time/freq domain runs</li>
+<li>Tolerance: tension &lt;1%, bending &lt;5% (existing criteria)</li>
+</ul>
+<h3>Phase 3 — Time Domain Benchmark</h3>
+<ul>
+<li>For each time-domain model: run with N=5 seeds (random wave seeds)</li>
+<li><strong>Pre-check</strong>: detect models with fixed/hardcoded seeds in input files — flag these as "seed-invariant" (they pass trivially but don't test statistical variation)</li>
+<li>Duration: full simulation per model spec (typically 3-hour storm + build-up)</li>
+<li>Extract statistics per seed: mean, std, max, min for key results (tension, bending, vessel motion)</li>
+<li>Store per-seed results in <code>benchmark_output/seed_equivalence/&lt;model&gt;/</code></li>
+</ul>
+<h3>Phase 4 — Frequency Domain Benchmark</h3>
+<ul>
+<li>For models with vessel RAOs/diffraction: compare frequency-domain transfer functions</li>
+<li>Use existing <code>run_3way_benchmark.py</code> for hull models (barge, ship, spar)</li>
+<li>Compare: RAO amplitude/phase across headings, added mass, radiation damping</li>
+<li>Tolerance: RAO amplitude &lt;5%, phase &lt;10deg (existing from diffraction benchmarks)</li>
+</ul>
+<h3>Phase 5 — Seed Equivalence Analysis</h3>
+<ul>
+<li>Statistical convergence: plot mean/std vs N_seeds (1-5), show convergence</li>
+<li>Seed-to-seed CoV (coefficient of variation) for each response quantity</li>
+<li>Pass criterion: CoV &lt; 10% for Hs-normalized statistics</li>
+<li>Confidence intervals: 95% CI on extreme statistics</li>
+<li>Output: <code>benchmark_output/seed_equivalence_report.html</code></li>
+</ul>
+<h3>Phase 6 — Consolidated Report</h3>
+<ul>
+<li>Per-model summary: statics pass/fail, time-domain stats, freq-domain comparison</li>
+<li>Global dashboard: model x metric matrix (green/yellow/red)</li>
+<li>Regression baseline JSON for future comparison</li>
+<li>Duration estimate: ~8-12 hours for full run (51+ models × 5 seeds × full simulation duration for TD). Plan for overnight/batch execution.</li>
+<li><strong>Test tiers</strong>: Unit tests (no solver, mock data) run always. Solver-integration tests (need OrcFxAPI) run on licensed machine. Full benchmark (nightly/manual).</li>
+</ul>
+<hr />
+<p><em>Source: benchmark or establish comparison for all example models for time domain and frequency domain analysis; establish equivalence of analysis by running different seeds. We will do this for all examples</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-126
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-126.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-126/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-126.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-126/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-126/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-126/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-126/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-126/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-126/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-126/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-126/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-126/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-126/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-126/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

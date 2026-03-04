@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-016 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-016 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>BSEE completion and intervention activity analysis for insights</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Analyze BSEE well completion and intervention activity data to extract meaningful insights. This includes examining completion types, intervention frequencies, workover patterns, and their relationships to well age, field characteristics, water depth, and production performance. Identify trends, anomalies, and actionable patterns in how wells are completed and subsequently maintained.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Completion and intervention data reveals the lifecycle cost and operational burden of wells across the Gulf of Mexico. Understanding which completion strategies lead to fewer interventions, which fields have disproportionate workover rates, and what triggers intervention activity helps inform well design decisions and operational planning.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Identify and catalog BSEE completion and intervention datasets available</li>
+<li>[ ] Characterize completion types and their distribution across fields, water depths, and eras</li>
+<li>[ ] Analyze intervention activity: frequency, types (workover, sidetrack, plug-back, etc.), triggers</li>
+<li>[ ] Correlate intervention frequency with completion type, well age, and field characteristics</li>
+<li>[ ] Identify outlier wells/fields with unusually high or low intervention rates</li>
+<li>[ ] Find temporal trends in completion practices and intervention rates</li>
+<li>[ ] Produce summary insights with supporting visualizations</li>
+<li>[ ] Document methodology, data sources, and limitations</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>src/worldenergydata/bsee/analysis/completion_intervention/</code></p>
+<h3>Existing Assets (reuse)</h3>
+<ul>
+<li><code>ComprehensiveActivityAnalyzer</code> — 7 analysis modules (drilling_efficiency, depth, era, cross_activity, lifecycle, operator, benchmarking)</li>
+<li><code>analysis/intervention/</code> — activity_aggregator, enrichment_engine, insight_generator, field_visualizer, dashboard</li>
+<li><code>WellAPI12</code> — well history/timeline per API-12</li>
+<li>Data: WAR activity records (completions, workovers, sidetracks, plug-backs)</li>
+<li><code>EraClassifier</code> — geological era for cross-referencing</li>
+<li><code>AllFieldsRunner</code> — field-level aggregation</li>
+</ul>
+<h3>Phase 1 — Completion Characterization</h3>
+<ul>
+<li><strong>Step 0</strong>: Audit WAR activity description field to determine if completion types are structured (coded values) or free-text. If free-text, define a keyword-based classifier as Phase 1a before proceeding with distribution analysis. Set minimum classification accuracy target or provide manual mapping for ambiguous cases.</li>
+<li><code>completion_analysis.py</code>:</li>
+<li>Classify completion types from WAR data (open hole, cased/perforated, gravel pack, frac pack, etc.)</li>
+<li>Distribution analysis: completion type × water depth × geological era × field</li>
+<li>Temporal trends: how completion practices changed over decades</li>
+<li>Data availability gate: document WAR activity completeness by decade (pre-2000 records may be incomplete)</li>
+<li>Output: <code>CompletionProfile</code> per field/lease</li>
+</ul>
+<h3>Phase 2 — Intervention Pattern Analysis</h3>
+<ul>
+<li><code>intervention_patterns.py</code>:</li>
+<li>Categorize interventions: workover, sidetrack, plug-back, re-completion, stimulation</li>
+<li>Frequency analysis: interventions per well-year by field, era, water depth</li>
+<li>Trigger identification: production decline → intervention correlation</li>
+<li>Time-to-first-intervention analysis by completion type</li>
+<li>Output: <code>InterventionProfile</code> per field/completion type</li>
+</ul>
+<h3>Phase 3 — Cross-Correlation Insights</h3>
+<ul>
+<li><code>completion_intervention_correlator.py</code>:</li>
+<li>Correlate completion type with intervention frequency (which completions last longest?)</li>
+<li>Outlier detection: fields/wells with unusually high/low intervention rates</li>
+<li>Well age vs intervention rate curve</li>
+<li>Water depth impact on intervention frequency</li>
+<li>Production impact: pre/post intervention production comparison</li>
+</ul>
+<h3>Phase 4 — Visualization &amp; Report</h3>
+<ul>
+<li>Reuse <code>analysis/intervention/dashboard.py</code> Plotly patterns</li>
+<li>Charts: completion type distribution, intervention frequency heatmap, time-to-intervention survival curve, outlier scatter plot</li>
+<li>Summary insights document with actionable findings</li>
+</ul>
+<h3>Phase 5 — Tests</h3>
+<ul>
+<li>Unit tests per analysis module with known test data</li>
+<li>Integration test with materialized production/activity data</li>
+<li>Validation: results should align with industry knowledge (e.g., deepwater wells = fewer interventions)</li>
+</ul>
+<h3>Data Constraints</h3>
+<ul>
+<li>WAR activity data needed — check if materialized or LFS stub</li>
+<li>Completion type classification may require NLP on activity descriptions if not structured</li>
+<li>Some fields may have incomplete activity records pre-2000</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: APPROVE | Codex: MINOR | Gemini: MINOR</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Added Step 0 to Phase 1: audit WAR data structure to determine if completion types are structured or free-text</li>
+<li>Added data availability gate for WAR activity completeness by decade</li>
+<li>Clarified completion type classification method requirement (keyword-based classifier if free-text)</li>
+<li>Added minimum accuracy target / manual mapping fallback per Codex and Gemini feedback</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: bsee data completion and intervention activity analysis to find insights</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>war-data-audit.yml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

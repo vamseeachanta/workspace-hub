@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-088 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-088 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Investigate and clean submodule issues (pdf-large-reader, worldenergydata, aceengineercode)</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><h3>Current State (from research 2026-02-09)</h3>
+<ol>
+<li>
+<p><strong>pdf-large-reader</strong>: Clean. <code>git status</code> inside the submodule shows <code>nothing to commit, working tree clean</code>. Branch is <code>master</code>, up to date with <code>origin/master</code>. The workspace-hub <code>git submodule status</code> shows <code>+37339e0</code> (ahead of pointer) but the submodule itself is clean. Resolution: update the workspace-hub submodule pointer.</p>
+</li>
+<li>
+<p><strong>worldenergydata</strong>: Has uncommitted modifications inside the submodule:</p>
+</li>
+<li>Modified: <code>reports/coverage/coverage.json</code></li>
+<li>Untracked: <code>frontierdeepwater/</code>, <code>reports/bsee/</code>, several scripts (<code>scripts/bsee/analyze_buckskin.py</code>, <code>scripts/build_drilling_report.py</code>, <code>scripts/build_intervention_detail_report.py</code>), several spec files, and new source/test dirs (<code>src/worldenergydata/bsee/analysis/buckskin/</code>, <code>tests/modules/bsee/analysis/buckskin/</code>)</li>
+<li>
+<p>The <code>frontierdeepwater/</code> untracked dir inside worldenergydata is suspicious -- likely a nested submodule or accidental clone</p>
+</li>
+<li>
+<p><strong>aceengineercode</strong>: The directory does <strong>not exist</strong> on disk. There is no <code>.gitmodules</code> entry for it. The workspace-hub directory listing shows <code>aceengineer-admin</code> and <code>aceengineer-website</code> but no <code>aceengineercode</code>. This issue may have been resolved already, or the original report was based on stale state. Verify with <code>git ls-files --error-unmatch aceengineercode</code> and <code>git ls-tree HEAD aceengineercode</code>.</p>
+</li>
+</ol>
+<h3>Step 1: Resolve pdf-large-reader (5 min)</h3>
+<ol>
+<li>Run <code>cd pdf-large-reader &amp;&amp; git log --oneline -1</code> to confirm current commit</li>
+<li>At workspace-hub level: <code>git add pdf-large-reader</code> to update the submodule pointer</li>
+<li>Verify with <code>git diff --cached pdf-large-reader</code></li>
+</ol>
+<h3>Step 2: Resolve worldenergydata (15 min)</h3>
+<ol>
+<li>Decide on untracked files inside worldenergydata:</li>
+<li><code>reports/bsee/</code>, <code>scripts/bsee/analyze_buckskin.py</code>, <code>scripts/build_*.py</code>: likely work-in-progress -- either commit or add to <code>.gitignore</code></li>
+<li><code>src/worldenergydata/bsee/analysis/buckskin/</code> and <code>tests/modules/bsee/analysis/buckskin/</code>: new analysis module -- commit if ready, gitignore if WIP</li>
+<li><code>frontierdeepwater/</code>: investigate -- if it is a nested clone, remove it and add to <code>.gitignore</code></li>
+<li><code>specs/modules/*.md</code>: auto-generated spec files -- commit or gitignore</li>
+<li>Handle modified <code>reports/coverage/coverage.json</code>: add to <code>.gitignore</code> (generated artifact) or commit if tracked intentionally</li>
+<li>Commit inside worldenergydata submodule first, then update pointer at workspace-hub level</li>
+</ol>
+<h3>Step 3: Verify aceengineercode (5 min)</h3>
+<ol>
+<li>Run <code>git ls-tree HEAD | grep aceengineercode</code> at workspace-hub level</li>
+<li>Run <code>git log --all --oneline -- aceengineercode | head -5</code> to check history</li>
+<li>If no tree entry and no directory: mark as resolved (was stale state)</li>
+<li>If a git tree entry exists without a directory: <code>git rm aceengineercode</code> to clean the index</li>
+</ol>
+<h3>Step 4: Final Verification</h3>
+<ol>
+<li>Run <code>git submodule status</code> at workspace-hub level</li>
+<li>Confirm no <code>+</code> (ahead) or <code>-</code> (uninitialized) prefixes on pdf-large-reader or worldenergydata</li>
+<li>Run <code>git status</code> to confirm clean state for resolved items</li>
+</ol>
+<h3>Review Notes</h3>
+<p><strong>Cross-review date</strong>: 2026-02-10</p>
+<table>
+<thead>
+<tr>
+<th>Reviewer</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Opus 4.6</td>
+<td>APPROVE</td>
+</tr>
+<tr>
+<td>Gemini CLI</td>
+<td>APPROVE</td>
+</tr>
+<tr>
+<td>Codex CLI</td>
+<td>NO_OUTPUT</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Feedback incorporated</strong>:
+- aceengineercode issue already resolved (no directory, no .gitmodules entry, no git tree entry)
+- Steps are pragmatic and low-risk</p>
+<p><em>Approved by user: 2026-02-10</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-088
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-088.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-088/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-088.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-088/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-088/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-088/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-088/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-088/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-088/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-088/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-088/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-088/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-088/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-088/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

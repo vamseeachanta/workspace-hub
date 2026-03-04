@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-217 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-217 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Update ecosystem-health-check.sh — remove stale skill count threshold</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Remove the hardcoded skill count threshold (350) and bloated-category threshold (50)
+from <code>.claude/hooks/ecosystem-health-check.sh</code>. Replace with staleness-focused checks
+that align with the improve SKILL.md v1.4.0 policy.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>The improve SKILL.md v1.4.0 explicitly removed count-based thresholds:</p>
+<blockquote>
+<p>"A large, well-indexed skill library is not a problem — stale and unreferenced skills
+are. Staleness detection requires the knowledge graph (WRK-205)."</p>
+</blockquote>
+<p>But <code>ecosystem-health-check.sh</code> still fires on count (line 29: <code>&gt;350</code>) and category size
+(line 38: <code>&gt;50</code>), generating noisy signals every session. The <code>/improve</code> run on 2026-02-19
+skipped both signals as outdated, noting the mismatch. The hook and the skill are out of sync.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] No warn signal emitted for skill count alone (442+ skills is fine)</li>
+<li>[ ] No warn signal emitted for category size alone</li>
+<li>[ ] Skill count still logged as info metric (not warn)</li>
+<li>[ ] Index quality check added (missing <code>capabilities:</code> frontmatter &gt; 20% of category)</li>
+<li>[ ] Comment references improve SKILL.md v1.4.0 policy</li>
+<li>[ ] <code>/improve</code> run after change produces no spurious ecosystem-review signals</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Route A — simple. Two block removals + one replacement + one addition in a 97-line script.</p>
+<p><em>Awaiting plan approval.</em></p>
+<hr />
+<p><em>Source: /improve session 2026-02-19 — signals skipped as outdated; mismatch between
+ecosystem-health-check.sh thresholds and improve SKILL.md v1.4.0 policy flagged.</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

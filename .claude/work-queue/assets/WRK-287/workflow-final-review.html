@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-287 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-287 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Set up Linux-to-Linux network file sharing for workspace-hub access from ace-linux-2</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Configure network file sharing so that <code>ace-linux-2</code> (another machine on the same LAN) can
+access <code>/mnt/local-analysis/workspace-hub</code> from <code>ace-linux-1</code> (192.168.1.100) seamlessly —
+as if it were a local directory. Windows sharing is out of scope for now.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Two machines in the same office network need to share a single workspace-hub so that work
+can be done from either seat without manual file transfers or duplicate state.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] ace-linux-2 IP discovered and added to <code>/etc/hosts</code> on both machines — 192.168.1.103, ping confirmed both directions</li>
+<li>[x] SSH key-based auth bidirectional — ace-linux-2→ace-linux-1 (ssh-copy-id done); ace-linux-1→ace-linux-2 (verified via SSH 2026-02-22)</li>
+<li>[x] workspace-hub accessible from ace-linux-2 at <code>/mnt/workspace-hub</code> — mounted and readable</li>
+<li>[x] Remote drives mounted under <code>/mnt/remote/&lt;hostname&gt;/</code> on both machines — fstab entries written; manual mounts verified pre-reboot</li>
+<li>[x] All mounts persist across reboot (ace-linux-2) — root known_hosts fix applied 2026-02-22; all 3 mounts confirmed after reboot</li>
+<li>[x] Basic smoke test: <code>git status</code> from <code>/mnt/workspace-hub</code> on ace-linux-2 — exit 0, 3.21s ✓ (acceptable for SSHFS)</li>
+<li>[x] Reboot test: mounts survive reboot (ace-linux-2 side) — all 3 SSHFS mounts auto-connected after reboot + known_hosts fix ✓</li>
+<li>[x] Reboot test: ace-linux-1 side — rebooted 2026-02-22; root known_hosts fix applied (ssh-keyscan ace-linux-2 + 192.168.1.103); both SSHFS mounts live ✓</li>
+<li>[ ] ace-linux-1 nvidia guardrails — apply <code>apt-mark hold</code> + unattended-upgrades blacklist for nvidia-535</li>
+<li>[ ] KVM EDID emulator dongle — permanent fix for T400 display drop on KVM switch</li>
+<li>[ ] Windows/Samba path documented as a future WRK item (not implemented)</li>
+<li>[x] Daily readiness check cron installed on both machines — WRK-310 done ✓</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><ul>
+<li><strong>Phase 0 (done)</strong>: Router DHCP reservations bound (Linksys WRT1900AC)</li>
+<li><strong>Phase 1 (done)</strong>: <code>/etc/hosts</code> bidirectional; ping by hostname confirmed</li>
+<li><strong>Phase 2 (done)</strong>: SSH server on ace-linux-1; ed25519 keys bidirectional; <code>sshfs</code> on ace-linux-2</li>
+<li><strong>Phase 3 (done)</strong>: <code>/mnt/workspace-hub</code> mounted on ace-linux-2; readable; <code>drwxrwxrwx vamsee</code></li>
+<li><strong>Phase 4 — ACE-LINUX-1 SIDE (pending)</strong>:</li>
+<li><code>sudo mkdir -p /mnt/remote/ace-linux-2/{local-analysis,dde}</code></li>
+<li><code>sudo chown vamsee:vamsee /mnt/remote/ace-linux-2/{local-analysis,dde}</code></li>
+<li>Test: <code>sshfs vamsee@ace-linux-2:/mnt/local-analysis /mnt/remote/ace-linux-2/local-analysis</code></li>
+<li>Test: <code>sshfs vamsee@ace-linux-2:/mnt/dde /mnt/remote/ace-linux-2/dde</code></li>
+<li>Add fstab entries with safeguards (see fstab block below)</li>
+<li><code>sudo systemctl daemon-reload</code></li>
+<li><strong>Phase 4 — ACE-LINUX-2 SIDE (pending)</strong>:</li>
+<li><code>sudo mkdir -p /mnt/remote/ace-linux-1/{local-analysis,ace}</code></li>
+<li><code>sudo chown vamsee:vamsee /mnt/remote/ace-linux-1/{local-analysis,ace}</code></li>
+<li>Test: <code>sshfs vamsee@ace-linux-1:/mnt/local-analysis /mnt/remote/ace-linux-1/local-analysis</code></li>
+<li>Test: <code>sshfs vamsee@ace-linux-1:/mnt/ace /mnt/remote/ace-linux-1/ace</code></li>
+<li>Add fstab entries with safeguards (see fstab block below)</li>
+<li>Add workspace-hub fstab entry for persistence</li>
+<li><code>sudo systemctl daemon-reload</code></li>
+<li><strong>Phase 5 (both sides)</strong>: Reboot each machine; confirm all mounts auto-reconnect</li>
+<li><strong>NOTE — plan_reviewed still false</strong>: Codex + Gemini plan review pending</li>
+<li><strong>ace-linux-1 fstab fix</strong>: Run <code>sudo bash /tmp/fix-fstab-wrk287.sh</code> (removes <code>&lt;&lt; 'EOF'</code> marker, fixes split lines, adds UserKnownHostsFile+allow_other+default_permissions)</li>
+</ul>
+<h3>fstab Entries</h3>
+<p><strong>On ace-linux-1</strong> (<code>/etc/fstab</code> — append):</p>
+<pre><code>vamsee@ace-linux-2:/mnt/local-analysis /mnt/remote/ace-linux-2/local-analysis fuse.sshfs noauto,_netdev,x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.mount-timeout=30,reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,IdentityFile=/home/vamsee/.ssh/id_ed25519 0 0
+vamsee@ace-linux-2:/mnt/dde /mnt/remote/ace-linux-2/dde fuse.sshfs noauto,_netdev,x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.mount-timeout=30,reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,IdentityFile=/home/vamsee/.ssh/id_ed25519 0 0
+</code></pre>
+<p><strong>On ace-linux-2</strong> (<code>/etc/fstab</code> — append):</p>
+<pre><code>vamsee@ace-linux-1:/mnt/local-analysis/workspace-hub /mnt/workspace-hub fuse.sshfs noauto,_netdev,x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.mount-timeout=30,reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,IdentityFile=/home/vamsee/.ssh/id_ed25519 0 0
+vamsee@ace-linux-1:/mnt/local-analysis /mnt/remote/ace-linux-1/local-analysis fuse.sshfs noauto,_netdev,x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.mount-timeout=30,reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,IdentityFile=/home/vamsee/.ssh/id_ed25519 0 0
+vamsee@ace-linux-1:/mnt/ace /mnt/remote/ace-linux-1/ace fuse.sshfs noauto,_netdev,x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.mount-timeout=30,reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,IdentityFile=/home/vamsee/.ssh/id_ed25519 0 0
+</code></pre>
+<p><em>Approved by user: 2026-02-21</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

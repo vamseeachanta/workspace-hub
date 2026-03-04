@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-214 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-214 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Session lifecycle compliance — interview-driven review of all workflow scaffolding</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Review all session lifecycle workflow scaffolding — readiness checks, skill loading,
+orchestration rules, learning capture, and agent behaviour contracts — through a
+structured manual interview. Identify gaps, ambiguities, and failure modes. Improve
+the scaffolding so these processes are reliably followed by any AI agent without
+missing steps.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>The session lifecycle is the invisible foundation of every work session: it sets
+who the orchestrator is, what skills are loaded, what rules apply, and how learnings
+are captured. When any part is unclear or poorly enforced, agents either skip steps
+or silently deviate. The recent <code>/clear</code> + blank-output failure (WRK-213 research
+finding) is a direct symptom of this gap.</p>
+<p>The goal is zero ambiguity: every agent, every session, follows the same process
+to the letter — not because it was told to in the moment, but because the scaffolding
+makes deviation impossible or immediately visible.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Interview complete — all 7 lifecycle phases walked through with Vamsee</li>
+<li>[ ] Gap list documented: every step that is unclear, unenforced, or skippable</li>
+<li>[ ] Improvement proposals written for each gap</li>
+<li>[ ] At least the top 3 gaps addressed (hook, doc, or skill change)</li>
+<li>[ ] Session start / stop sequence documented in a single canonical reference
+      (e.g., <code>docs/session-lifecycle.md</code> or a SKILL.md update)</li>
+</ul>
+<h3>Tool Readiness Review (absorbed from WRK-222, 2026-02-19)</h3>
+<p><em>Context</em>: Statusline bug fixed — <code>stats-cache.json</code> was stale (last entry 2026-02-16),
+causing computed <code>pct_remaining: 100%</code> for all providers. Fixes applied:
+- <code>statusline-command.sh</code>: reads <code>agent-quota-latest.json</code> (OAuth, week_pct) as primary
+- <code>query-quota.sh</code>: portable OS helpers added (stat, date, touch, ISO date)
+- <code>readiness.sh</code>: now triggers <code>query-quota.sh --refresh</code> in background when cache &gt;4h</p>
+<ul>
+<li>[ ] Create <code>.claude/skills/workspace-hub/tool-readiness/SKILL.md</code> — repeatable
+      session-start check covering: CLI availability, data source freshness,
+      statusline integrity, cross-OS script compatibility, work queue accessibility</li>
+<li>[ ] Register skill in <code>SKILLS_GRAPH.yaml</code></li>
+<li>[ ] Verify <code>readiness.sh</code> background refresh works at session start (cache auto-refreshed)</li>
+<li>[ ] Document: <code>agent-quota-latest.json</code> ownership — which script writes it, at what cadence</li>
+<li>[ ] Add <code>--fix</code> mode to skill (runs <code>query-quota.sh --refresh</code> and reports result)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Route B — medium complexity. Explore existing scaffolding first, then conduct interview.</p>
+<p><em>Awaiting plan approval.</em></p>
+<hr />
+<p><em>Source: user request 2026-02-19 — "review workflow scaffolding and ensure no AI agents miss it: session lifecycle (readiness, skills, learnings, orchestration rules). Manually interview until satisfied, things followed to the dot."</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

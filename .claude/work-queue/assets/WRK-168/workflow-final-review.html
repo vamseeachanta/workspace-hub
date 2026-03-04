@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-168 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-168 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>MPD systems knowledge module — pressure management for drillships</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Build a knowledge module covering MPD systems, configurations, and their integration with drillship operations. Two parts:</p>
+<h3>Part 1 — MPD System Data Model (worldenergydata)</h3>
+<p>Structured data capturing MPD system specifications across the active fleet:</p>
+<pre><code class="language-python">class MPDSystemEntry:
+    system_name: str                    # e.g., &quot;Safekick&quot;, &quot;EC-Drill&quot;, &quot;Microflux&quot;
+    manufacturer: str                   # e.g., &quot;Safekick AS&quot;, &quot;SLB&quot;, &quot;Halliburton&quot;
+    system_type: str                    # &quot;closed-loop&quot;, &quot;pressurized mud cap&quot;, &quot;dual gradient&quot;
+    rig_name: str | None                # rig it's installed on
+    rig_type: str | None                # drillship, semi-sub, jack-up
+    pressure_rating_psi: float | None
+    flow_rate_capacity_gpm: float | None
+    choke_type: str | None              # &quot;automated&quot;, &quot;manual&quot;, &quot;hybrid&quot;
+    backpressure_capability: bool       # can apply surface backpressure
+    rotating_control_device: str | None # RCD model/manufacturer
+    integration_level: str | None       # &quot;fully automated&quot;, &quot;semi-automated&quot;, &quot;advisory&quot;
+    year_installed: int | None
+</code></pre>
+<h3>Part 2 — MPD Technical Reference (digitalmodel)</h3>
+<p>Engineering reference content for MPD analysis and well planning:</p>
+<ol>
+<li><strong>MPD configurations taxonomy</strong> — closed-loop (CBHP), pressurized mud cap (PMCD), dual gradient, returns flow control (RFC)</li>
+<li><strong>Pressure window management</strong> — pore pressure, fracture gradient, ECD management, narrow-margin drilling</li>
+<li><strong>Equipment integration</strong> — how MPD interfaces with BOP, riser, mud system, choke manifold on a drillship</li>
+<li><strong>Operational scenarios</strong> — connections (pump-off/pump-on pressure management), kicks, ballooning, losses</li>
+<li><strong>MPD vs conventional</strong> — decision framework: when MPD is required, beneficial, or unnecessary</li>
+</ol>
+<h3>Part 3 — Fleet MPD Capability Flag (worldenergydata)</h3>
+<p>Add MPD fields to <code>DrillingRigEntry</code> model (see separate enhancement below) and populate from contractor configurations where known.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><ul>
+<li><strong>GTM positioning</strong>: MPD capability assessment is a consulting deliverable. Operators choosing rigs need to evaluate MPD systems — A&amp;CE can provide structured comparison data.</li>
+<li><strong>Riser analysis connection</strong>: MPD changes the annular pressure profile, affecting riser loading (WRK-046). The riser parametric analysis should include MPD loading cases.</li>
+<li><strong>Risk framework integration</strong>: MPD is a strategic risk mitigation technology. WRK-163's risk framework should recognize MPD as a rig capability that changes what risks are manageable at the operational tier.</li>
+<li><strong>Well planning</strong>: WRK-164 (production test quality) and pressure management share physics — ECD, pressure gradients, flow dynamics.</li>
+<li><strong>Market reality</strong>: "If your rig isn't running it, you're going to get left behind."</li>
+</ul></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] MPDSystemEntry data model defined and tested</li>
+<li>[ ] MPD fields added to DrillingRigEntry (mpd_capable, mpd_system, mpd_manufacturer)</li>
+<li>[ ] MPD configuration taxonomy document (4 main types with decision tree)</li>
+<li>[ ] Pressure window management reference (pore pressure / fracture gradient / ECD)</li>
+<li>[ ] Equipment integration reference (BOP, riser, choke manifold, RCD)</li>
+<li>[ ] At least 3 contractor fleet configs updated with known MPD data (Valaris, Transocean, Noble)</li>
+<li>[ ] Tests for data model, loading, and fleet queries ("list all MPD-capable drillships")</li>
+<li>[ ] Connection points documented for WRK-046 (riser loading) and WRK-163 (risk framework)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-168
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-168.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-168/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-168.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-168/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-168/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-168/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-168/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-168/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-168/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-168/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-168/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-168/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-168/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-168/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

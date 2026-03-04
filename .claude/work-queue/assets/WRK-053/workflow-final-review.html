@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-053 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-053 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>assethold test coverage improvement</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Set up test infrastructure and achieve 80%+ test coverage for the assethold repository. Currently there is no coverage data available, meaning the testing infrastructure may not be configured.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Without any coverage data, there is no visibility into code quality or regression risk. Setting up the testing infrastructure is a prerequisite for safe development and maintenance.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] pytest and coverage tooling configured and working</li>
+<li>[ ] Baseline coverage measured and documented</li>
+<li>[ ] Core module tests written</li>
+<li>[ ] Overall repository coverage reaches 80%+</li>
+<li>[ ] CI pipeline reports coverage on every PR</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>assethold/tests/</code></p>
+<h3>Phase 1 — Set Up Test Infrastructure</h3>
+<ul>
+<li>Create <code>pyproject.toml</code> or add <code>[tool.pytest.ini_options]</code> section</li>
+<li>Configure <code>pytest-cov</code> with <code>--cov=assethold</code></li>
+<li>Verify package is importable from tests</li>
+<li>Run initial test discovery to establish baseline</li>
+</ul>
+<h3>Phase 1.5 — Module Inventory</h3>
+<ul>
+<li>Inventory all modules under <code>src/assethold/modules/</code> and <code>src/assethold/common/</code> to understand current functionality</li>
+<li>Note: <code>stocks/</code> (WRK-021), <code>property/</code> (WRK-022) do not exist yet — test only existing modules</li>
+</ul>
+<h3>Phase 2 — Baseline Assessment</h3>
+<ul>
+<li>Identify all source modules in assethold (from inventory above)</li>
+<li>Run coverage measurement against all source</li>
+<li>Document which modules have 0% vs partial coverage</li>
+<li>Prioritize by business criticality of existing modules (engine.py, common utilities, modules/)</li>
+<li>Set per-package minimum coverage threshold, not only overall</li>
+</ul>
+<h3>Phase 3 — Test Writing</h3>
+<ul>
+<li>Focus on existing modules only; future modules (stocks, property) will have tests written as part of their respective WRK items</li>
+<li>Create test fixtures for sample data; document how fixtures are shared across tests</li>
+<li>Follow TDD naming: <code>test_&lt;module&gt;_&lt;function&gt;_&lt;scenario&gt;_&lt;expected&gt;</code></li>
+<li>Target: 80%+ coverage per module</li>
+</ul>
+<h3>Phase 4 — CI Integration</h3>
+<ul>
+<li>Add coverage reporting to CI pipeline</li>
+<li>Set minimum threshold enforcement</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: MINOR | Codex: MINOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Added Phase 1.5 module inventory step to discover what actually exists before writing tests</li>
+<li>Clarified that <code>stocks/</code>, <code>property/</code>, <code>tax/</code> modules don't exist yet — scope limited to existing modules</li>
+<li>Added per-package coverage threshold (not just overall)</li>
+<li>Added test fixture sharing documentation requirement</li>
+<li>Identified top modules to target: <code>engine.py</code>, <code>common/</code>, <code>modules/</code> per Codex feedback</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: test coverage audit across workspace-hub repositories</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

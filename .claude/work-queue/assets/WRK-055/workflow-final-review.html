@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-055 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-055 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>aceengineer-website test coverage improvement</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Add test coverage to the aceengineer-website repository, which currently has 0% coverage. The codebase is small (4 source files, 0 tests) making this a quick win.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Even a small codebase benefits from tests to catch regressions, especially for a public-facing website. With only 4 source files, achieving 80%+ coverage is a low-effort, high-value task.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Test infrastructure configured for both Python and JS</li>
+<li>[ ] Tests written for all 4 source files</li>
+<li>[ ] Python component coverage reaches 80%+</li>
+<li>[ ] JavaScript component coverage reaches 80%+</li>
+<li>[ ] Overall repository coverage reaches 80%+</li>
+<li>[ ] CI pipeline reports coverage on every PR</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><h3>Current State Assessment</h3>
+<p>The WRK-055 description says "0% coverage, 4 source files, 0 tests" but this is outdated. Research reveals the repo <strong>already has substantial test coverage</strong>:</p>
+<ul>
+<li><strong>Python source files</strong>: <code>scripts/content_sync.py</code> (438 lines), <code>scripts/competitor_analysis.py</code> (585 lines)</li>
+<li><strong>Python test files</strong>: <code>tests/python/test_content_sync.py</code> (936 lines), <code>tests/python/test_competitor_analysis.py</code> (980 lines)</li>
+<li><strong>Test infrastructure</strong>: <code>tests/python/conftest.py</code> with 148 lines of shared fixtures</li>
+<li><strong>Coverage data</strong>: <code>coverage.xml</code> reports <strong>97.04% line coverage</strong> (360/371 lines covered)</li>
+<li><strong>JS source</strong>: <code>build.js</code> (183 lines), <code>assets/js/navbar-toggle.js</code> -- no JS tests exist</li>
+<li><strong>Build tool</strong>: Node.js (posthtml, purgecss, clean-css) via <code>package.json</code></li>
+<li><strong>Python deps</strong>: <code>pyproject.toml</code> lists <code>pytest</code>, <code>pytest-cov</code>, <code>pyyaml</code> as dev deps</li>
+</ul>
+<h3>Phase 1: Assess Remaining Python Gaps (0.5 hours)</h3>
+<ol>
+<li>Review coverage.xml to identify the 11 uncovered lines (3% gap)</li>
+<li>File: <code>/mnt/local-analysis/workspace-hub/aceengineer-website/coverage.xml</code></li>
+<li>Likely gap: the <code>yaml</code> ImportError fallback branches in both scripts (lines 22-25 of competitor_analysis.py)</li>
+<li>Determine if the uncovered lines are import guards (<code>except ImportError: sys.exit(1)</code>) which are hard to test without subprocess invocation</li>
+<li>Add targeted tests for any testable uncovered lines</li>
+</ol>
+<h3>Phase 2: Add <code>build.js</code> Test Coverage (2 hours)</h3>
+<ol>
+<li><strong>Install test framework</strong>: Add <code>jest</code> to <code>package.json</code> devDependencies</li>
+<li>Target path: <code>/mnt/local-analysis/workspace-hub/aceengineer-website/package.json</code></li>
+<li><strong>Refactor <code>build.js</code> for testability</strong>: Extract pure functions that can be unit-tested</li>
+<li><code>parseFrontMatter(content)</code> -- already a pure function, testable directly</li>
+<li><code>getHtmlFiles(dir)</code> -- filesystem function, testable with temp dirs</li>
+<li><code>ensureDir(dir)</code> -- simple wrapper, testable</li>
+<li>File: <code>/mnt/local-analysis/workspace-hub/aceengineer-website/build.js</code></li>
+<li><strong>Create test file</strong>: <code>tests/js/build.test.js</code></li>
+<li>Test <code>parseFrontMatter</code> with valid YAML front matter, no front matter, empty front matter</li>
+<li>Test <code>getHtmlFiles</code> with mock directory structure (using <code>fs.mkdtempSync</code>)</li>
+<li>Test <code>ensureDir</code> creates nested directories</li>
+<li><strong>Add jest config</strong> to <code>package.json</code>:
+   <code>json
+   "scripts": {
+     "test": "jest",
+     "test:coverage": "jest --coverage"
+   }</code></li>
+</ol>
+<h3>Phase 3: Add <code>navbar-toggle.js</code> Test Coverage (1 hour)</h3>
+<ol>
+<li><strong>Assess file</strong>: <code>/mnt/local-analysis/workspace-hub/aceengineer-website/assets/js/navbar-toggle.js</code></li>
+<li>Likely DOM manipulation code for Bootstrap navbar collapse</li>
+<li><strong>Create test file</strong>: <code>tests/js/navbar-toggle.test.js</code></li>
+<li>Use <code>jsdom</code> environment for DOM testing</li>
+<li>Test toggle behavior, aria-expanded attribute changes</li>
+<li><strong>Add jsdom dependency</strong> if needed</li>
+</ol>
+<h3>Phase 4: CI Integration (1 hour)</h3>
+<ol>
+<li><strong>GitHub Actions workflow</strong>: Create <code>.github/workflows/test.yml</code></li>
+<li>Run <code>pytest</code> for Python tests</li>
+<li>Run <code>jest</code> for JS tests</li>
+<li>Report combined coverage</li>
+<li><strong>Coverage thresholds</strong>: Configure 80% minimum in both pytest and jest configs</li>
+</ol>
+<h3>Test Strategy</h3>
+<ul>
+<li><strong>Python</strong>: Already at 97% -- close remaining gaps with subprocess-level import error tests or mark as <code>pragma: no cover</code></li>
+<li><strong>JavaScript</strong>: Focus on <code>parseFrontMatter</code> (most logic), <code>getHtmlFiles</code> (file discovery), skip async <code>processFile</code> (integration-level, requires posthtml)</li>
+<li><strong>Pattern</strong>: Follow existing test structure in <code>tests/python/</code> -- add parallel <code>tests/js/</code> directory</li>
+</ul>
+<h3>Dependencies and Prerequisites</h3>
+<ul>
+<li>Node.js (already available -- <code>node_modules/</code> exists)</li>
+<li><code>npm install --save-dev jest</code> for JS testing</li>
+<li>Python venv with pytest (already configured in <code>pyproject.toml</code>)</li>
+</ul>
+<h3>Review Notes</h3>
+<p><strong>Cross-review date</strong>: 2026-02-10</p>
+<table>
+<thead>
+<tr>
+<th>Reviewer</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Opus 4.6</td>
+<td>APPROVE</td>
+</tr>
+<tr>
+<td>Gemini CLI</td>
+<td>APPROVE</td>
+</tr>
+<tr>
+<td>Codex CLI</td>
+<td>NO_OUTPUT</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Feedback incorporated</strong>:
+- Self-correcting plan: original description says "0% coverage, 4 source files" but plan correctly discovers existing 97% Python coverage and refocuses on JS gap
+- All 4 line count discrepancies off by exactly 1 line</p>
+<p><em>Approved by user: 2026-02-10</em></p>
+<h3>Acceptance Criteria Update</h3>
+<p>The original criteria should be revised:
+- [x] Test infrastructure configured for Python (already done)
+- [ ] Test infrastructure configured for JS (jest)
+- [x] Python component coverage at 97% (exceeds 80% target)
+- [ ] JavaScript component coverage reaches 80%+
+- [ ] CI pipeline reports coverage on every PR</p>
+<hr />
+<p><em>Source: test coverage audit across workspace-hub repositories</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-055
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-055.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-055/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-055.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-055/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-055/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-055/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-055/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-055/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-055/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-055/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-055/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-055/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-055/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-055/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

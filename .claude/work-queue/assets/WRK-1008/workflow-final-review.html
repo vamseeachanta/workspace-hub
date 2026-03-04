@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1008 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1008 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>hardening(review): troubleshoot submit-to-codex.sh with cross-agent regression coverage</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><ol>
+<li>Troubleshoot <code>submit-to-codex.sh</code> against known real failure signatures and new incoming examples.</li>
+<li>Define and enforce a strict caller contract (exit codes + stdout/stderr behavior).</li>
+<li>Add comprehensive automated regression tests to prevent recurrence.</li>
+<li>Verify cross-agent compatibility for Claude/Gemini orchestrators invoking Codex adapter.</li>
+</ol></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] No actionable failure path reports success to caller</li>
+<li>[x] Exit-code contract documented in script comments and verified in tests</li>
+<li>[x] Regression tests cover all confirmed evidence classes listed above</li>
+<li>[x] Cross-review invocation from another agent is deterministic under transport, timeout, and success scenarios</li>
+<li>[x] Artifact package in <code>.claude/work-queue/assets/WRK-1008/</code> — failure catalog in WRK notes; test results via scripts/review/tests/ (31/31 + 20/20 + 4/4 + 8/8)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <h1>WRK-1008 Plan — Final Review Confirmation</h1>
+<h2>Plan Summary</h2>
+<p>Harden <code>scripts/review/submit-to-codex.sh</code> against confirmed transport failures,
+timeout/no-output classifications, and renderer/validator issues. Add comprehensive
+regression tests and enforce strict exit-code contracts for orchestrator callers.</p>
+<h2>Key Decisions</h2>
+<ul>
+<li>Deterministic exit code mapping: QUOTA/TIMEOUT/TRANSPORT/GENERIC</li>
+<li>NO_OUTPUT fallback allowed only for exits 0 or 5 (genuine model no-output)</li>
+<li>Renderer: uv-first with python3 fallback on uv failure</li>
+<li>grep -Eqi replaces rg in non-interactive bash scripts</li>
+<li>MAJOR/MINOR verdict normalization in render-structured-review.py</li>
+</ul>
+<h2>Confirmation</h2>
+<p>confirmed_by: orchestrator-claude
+confirmed_at: 2026-03-04T00:00:00Z
+decision: passed</p>
+    <h4>Final</h4>
+    <h1>WRK-1008 Plan — Final Review Confirmation</h1>
+<h2>Plan Summary</h2>
+<p>Harden <code>scripts/review/submit-to-codex.sh</code> against confirmed transport failures,
+timeout/no-output classifications, and renderer/validator issues. Add comprehensive
+regression tests and enforce strict exit-code contracts for orchestrator callers.</p>
+<h2>Key Decisions</h2>
+<ul>
+<li>Deterministic exit code mapping: QUOTA/TIMEOUT/TRANSPORT/GENERIC</li>
+<li>NO_OUTPUT fallback allowed only for exits 0 or 5 (genuine model no-output)</li>
+<li>Renderer: uv-first with python3 fallback on uv failure</li>
+<li>grep -Eqi replaces rg in non-interactive bash scripts</li>
+<li>MAJOR/MINOR verdict normalization in render-structured-review.py</li>
+</ul>
+<h2>Confirmation</h2>
+<p>confirmed_by: orchestrator-claude
+confirmed_at: 2026-03-04T00:00:00Z
+decision: passed</p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>test-submit-to-codex-robustness.sh 27/27 pass</td><td>repo</td><td>pass</td><td><code>bash scripts/review/tests/test-submit-to-codex-robustness.sh</code></td><td>.claude/work-queue/assets/WRK-1008/test-results.md</td></tr><tr><td>2</td><td>test-codex-fallback.sh 20/20 pass</td><td>repo</td><td>pass</td><td><code>bash scripts/review/tests/test-codex-fallback.sh</code></td><td>.claude/work-queue/assets/WRK-1008/test-results.md</td></tr><tr><td>3</td><td>test-cross-review-codex-hardgate.sh 8/8 pass</td><td>repo</td><td>pass</td><td><code>bash scripts/review/tests/test-cross-review-codex-hardgate.sh</code></td><td>.claude/work-queue/assets/WRK-1008/test-results.md</td></tr><tr><td>4</td><td>test-cross-review-path-sanitization.sh 4/4 pass</td><td>repo</td><td>pass</td><td><code>bash scripts/review/tests/test-cross-review-path-sanitization.sh</code></td><td>.claude/work-queue/assets/WRK-1008/test-results.md</td></tr><tr><td>5</td><td>render-structured-review.py MAJOR verdict normalization</td><td>repo</td><td>pass</td><td><code>echo &#x27;{&quot;verdict&quot;:&quot;MAJOR&quot;,&quot;summary&quot;:&quot;ok&quot;,&quot;issues_found&quot;:[],&quot;suggestions&quot;:[],&quot;questions_for_author&quot;:[]}&#x27; | uv run --no-project python scripts/review/render-structured-review.py --provider codex --input /dev/stdin</code></td><td>.claude/work-queue/assets/WRK-1008/evidence/execute.yaml</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><h1>Gate Evidence Summary (WRK-1008, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=19, contract=19-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=6</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1008/review-results.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['test-results.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=5 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1008/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>PASS</td>
+<td>claim.yaml: canonical claim evidence OK</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=2</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=3</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+</tbody>
+</table></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p>wrk_id: WRK-1008
+generated_at: "2026-03-04T00:00:00Z"
+recommendations:
+  - wrk_id: WRK-1005
+    title: "Cross-provider assessment baseline with hardened scripts"
+    required_for_signoff: false
+    notes: &gt;
+      WRK-1006 + WRK-1008 fixes now enable reliable cross-review runs.
+      WRK-1005 can capture a meaningful baseline table.
+  - wrk_id: null
+    title: "Add test for test-cross-review-codex-hardgate.sh parallel-run collision (P3)"
+    required_for_signoff: false
+    notes: &gt;
+      Codex P3: test writes to fixed /tmp paths; use mktemp for parallel safety.
+      Low priority; no functional impact on single-run environments.</p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-1008
+generated_at: "2026-03-04T00:00:00Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/pending/WRK-1008.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1008/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/pending/WRK-1008.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1008/plan-html-review-final.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1008/evidence/user-review-browser-open.yaml
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1008/review-results.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1008/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1008/evidence/activation.yaml
+  - order: 9
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1008/evidence/execute.yaml
+  - order: 10
+    stage: Artifact Generation
+    status: done
+    evidence: scripts/review/tests/test-submit-to-codex-robustness.sh
+  - order: 11
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1008/test-results.md
+  - order: 12
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 13
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1008/evidence/future-work.yaml
+  - order: 14
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1008/evidence/resource-intelligence-update.yaml
+  - order: 15
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1008/evidence/user-review-close.yaml
+  - order: 16
+    stage: Reclaim
+    status: n/a
+    evidence: n/a
+  - order: 17
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 18
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh
+  - order: 19
+    stage: Done
+    status: pending
+    evidence: .claude/work-queue/done/</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>html-verification.md</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-draft.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review-results.md</code></li><li><code>test-results.md</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

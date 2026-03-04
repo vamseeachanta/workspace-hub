@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-050 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-050 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Hardware consolidation — inventory, assess, repurpose devices + dev environment readiness</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Inventory, assess, and consolidate all available hardware into a coherent plan for repurposing, upgrading, or retiring each device. Build a cross-platform hardware assessment script (Windows + Linux) to automate data collection. Additionally, set up per-machine dev environment readiness: agent CLI health checks, terminal configuration, repo/submodule work assignments, and domain tool maintenance — all automated via shell startup hooks.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Multiple devices are sitting idle or underutilized. A systematic inventory and assessment identifies what can be repurposed (homelab, NAS, dev workstation, GPU compute) vs. what should be retired or recycled. Once machines are assigned roles, each needs a frictionless dev environment: agent CLIs verified, terminal starting in the right place, correct repos cloned, and domain tools up-to-date. Without this, every new terminal session wastes time on setup and troubleshooting.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><h3>Phase 1: Assessment Script</h3>
+<ul>
+<li>[x] Cross-platform script (handles Windows via PowerShell + Linux via Bash)</li>
+<li>[x] Collects: CPU model/cores/speed, RAM size/type, GPU model/VRAM, storage devices/capacity/health, motherboard model, network interfaces, OS version</li>
+<li>[x] Output: structured JSON or YAML for easy comparison</li>
+<li>[x] External drive health check (SMART data where available)</li>
+<li>[x] Portable — runs without installing additional software (or minimal deps)</li>
+</ul>
+<h3>Phase 2: Inventory</h3>
+<ul>
+<li>[~] Run script on all 3 old PCs (AE-01 done 2026-02-02, AE-02 done 2026-02-21, AE-03 pending)</li>
+<li>[x] Run script on ACMA-WS014 (done 2026-02-20 — see <code>specs/modules/hardware-inventory/acma-ws014.md</code>)</li>
+<li>[ ] Run script on ACMA-WS003</li>
+<li>[ ] Run script on Lenovo laptop</li>
+<li>[ ] Catalog external drives (working vs non-working, capacity, interface)</li>
+<li>[ ] Document spare SSD and GPU specs</li>
+<li>[ ] Assess 7 monitors (model, size, resolution, inputs, condition)</li>
+<li>[ ] Assess 2x 4 TB spinning drives (SMART health, interface, age)</li>
+<li>[ ] Assess printers: HP and Epson (model, condition, ink/toner status, connectivity)</li>
+<li>[ ] Assess main router (model, firmware, ports, WiFi standard, throughput)</li>
+<li>[ ] Assess small router (model, firmware, capabilities)</li>
+<li>[ ] Consolidate results into a single inventory document</li>
+</ul>
+<h3>Phase 3: Consolidation Plan</h3>
+<ul>
+<li>[ ] Assess each device for repurpose potential (homelab server, NAS, GPU node, dev workstation, media PC, retire)</li>
+<li>[x] Plan GPU installation: which old PCs get the NVIDIA T400 cards</li>
+<li><strong>Decision (2026-02-20)</strong>: All 3 AceEngineer machines are identical (ASUS Z10PE-D16, same build). AceEngineer-01 confirmed has a free PCIe slot. Install one T400 in AceEngineer-02 and one in AceEngineer-03. AceEngineer-01 retains its GTX 750 Ti (T400 swap optional).</li>
+<li>[ ] Plan SSD installation: which device benefits most from the 500 GB SSD</li>
+<li>[ ] Lenovo laptop decision: use as headless server, external-monitor workstation, or retire</li>
+<li>[ ] External drive triage: data recovery for non-working drives, consolidation for working ones</li>
+<li>[ ] Cost/benefit of any additional upgrades (RAM, network cards, etc.)</li>
+<li>[ ] Network assessment: do current routers meet needs (coverage, WiFi 6/6E, throughput, VLANs, mesh)?</li>
+<li>[ ] New router recommendation if upgrade needed (model, features, cost justification)</li>
+<li>[ ] Small router repurpose decision: AP mode, mesh node, IoT network, or retire</li>
+<li>[ ] Final disposition plan per device</li>
+</ul>
+<h3>Phase 4: Dev Environment Readiness</h3>
+<ul>
+<li>[x] <strong>a/ Agent CLI health check</strong>: On terminal startup, verify claude, codex, gemini CLIs are installed, on PATH, and running current versions</li>
+<li>[x] <strong>b/ Terminal configuration</strong>: Terminal program always available on Linux (bash/zsh) and Windows (PowerShell/Windows Terminal); default start directory = workspace-hub; no time wasted navigating</li>
+<li>[ ] <strong>c/ Machine-to-repo mapping</strong>: Define per-machine manifest declaring which repos and submodules are worked on from that machine; clone/pull on startup if missing</li>
+<li>[ ] <strong>d/ Domain tool maintenance</strong>: Per-machine checks for assigned tools (e.g. blender, openfoam, gmsh, freecad, orcaflex); detect outdated versions; generate upgrade plan for user approval</li>
+<li>[ ] <strong>e/ Automation via shell hooks</strong>: Implement checks as shell profile hooks (.bashrc / PowerShell $PROFILE) calling a lightweight startup script; keep startup &lt;2s; log verbose output to file for troubleshooting</li>
+<li>[x] <strong>f/ Machine alias names</strong>: Each machine gets a public alias based on its assigned repos/role (e.g. "eng-workstation", "sim-node"); used in manifests, git configs, and commit metadata instead of raw hostnames</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><h3>Current State Summary</h3>
+<p><strong>Completed (Phase 1):</strong>
+- Assessment scripts exist and work: <code>scripts/operations/system/hardware-assess.sh</code> (Linux) and <code>hardware-assess.ps1</code> (Windows)
+- Skill documented: <code>.claude/skills/operations/devops/hardware-assessment/SKILL.md</code>
+- AceEngineer-01 fully assessed: <code>specs/modules/hardware-inventory/aceengineer-01.md</code> (2026-02-02)
+- Maintenance records: <code>specs/modules/hardware-inventory/maintenance/</code> has pre/post JSON assessments and system changelog for vamsee-linux1</p>
+<p><strong>Remaining Phase 2 items:</strong> AceEngineer-03, ACMA-WS003, Lenovo laptop, external drives, routers (AE-02, ACMA-WS014, gali-linux-compute-1 now done)</p>
+<h3>Phase 2: Complete Inventory (2-3 sessions, requires physical access)</h3>
+<h4>Step 2a: Windows Machine Assessments</h4>
+<ol>
+<li>Run <code>hardware-assess.ps1</code> on AceEngineer-02 (Windows 10):</li>
+<li>Copy script via USB or network share</li>
+<li>Execute: <code>powershell -ExecutionPolicy Bypass -File hardware-assess.ps1</code></li>
+<li>Save output to <code>specs/modules/hardware-inventory/aceengineer-02.md</code></li>
+<li>Note: This machine's OS is flagged "Illegal" -- record license status for Phase 3 decision</li>
+<li>Run <code>hardware-assess.ps1</code> on AceEngineer-03 (Windows 10):</li>
+<li>Same procedure, save to <code>specs/modules/hardware-inventory/aceengineer-03.md</code></li>
+<li>Record installed software versions (OrcaFlex, SolidWorks, COMSOL, MATLAB, etc.)</li>
+<li>Run <code>hardware-assess.ps1</code> on ACMA-WS014 (Win11, i9) and ACMA-WS003 (Win10, i7):</li>
+<li>Save to <code>specs/modules/hardware-inventory/acma-ws014.md</code> and <code>acma-ws003.md</code></li>
+<li>Note: these are work machines -- document any corporate policies on repurposing</li>
+</ol>
+<h4>Step 2b: Laptop Assessment</h4>
+<ol>
+<li>Connect Lenovo laptop to external monitor</li>
+<li>Run appropriate assessment script (check OS first)</li>
+<li>Save to <code>specs/modules/hardware-inventory/lenovo-laptop.md</code></li>
+<li>Document screen damage severity and external-monitor-only usability</li>
+</ol>
+<h4>Step 2c: Peripheral Inventory</h4>
+<ol>
+<li>External drives: Physically connect each, run <code>lsblk</code> or Disk Management, check SMART if available</li>
+<li>Document in <code>specs/modules/hardware-inventory/storage-peripherals.md</code>:</li>
+<li>Each drive: capacity, interface (USB2/3, SATA), working/non-working, data contents summary</li>
+<li>Spare 500GB SSD: model, interface, health</li>
+<li>Routers: Check admin panels (typically 192.168.1.1 or 192.168.0.1)</li>
+<li>Document in <code>specs/modules/hardware-inventory/network-equipment.md</code>:</li>
+<li>Main router: model, firmware version, WiFi standard, port count, current throughput</li>
+<li>Small router: model, capabilities, current use</li>
+<li>NVIDIA T400 GPUs: Record from box/label, document in storage-peripherals.md</li>
+</ol>
+<h4>Step 2d: Consolidation Document</h4>
+<ol>
+<li>Create <code>specs/modules/hardware-inventory/INVENTORY.md</code> -- single summary table of all devices</li>
+<li>Include columns: Device, Hostname, CPU, RAM, GPU, Storage, OS, Status, Assessment Date</li>
+<li>Link to individual assessment files</li>
+</ol>
+<h3>Phase 3: Consolidation Decisions (1-2 sessions, after Phase 2 complete)</h3>
+<h4>Step 3a: Repurpose Assessment Matrix</h4>
+<p>Create <code>specs/modules/hardware-inventory/consolidation-plan.md</code> with a decision matrix:</p>
+<p>| Device | Current State | Repurpose Options | Recommended Role | Required Upgrades | Est. Cost |
+|--------|--------------|-------------------|-----------------|-------------------|
+-----------|</p>
+<p>Evaluate each device against these roles:
+- <strong>Homelab server</strong> (Docker, self-hosted services): needs reliable storage, moderate CPU
+- <strong>NAS/backup server</strong>: needs large storage, low CPU acceptable
+- <strong>GPU compute node</strong>: needs PCIe slot for T400, adequate PSU
+- <strong>Dev workstation</strong>: needs fast SSD, decent RAM
+- <strong>Media server</strong> (Plex/Jellyfin): needs transcoding capability
+- <strong>Headless server</strong>: suitable for broken-screen laptop
+- <strong>Retire/recycle</strong>: if not cost-effective to repurpose</p>
+<h4>Step 3b: GPU and SSD Allocation</h4>
+<ol>
+<li>Determine which machines have available PCIe slots and adequate PSU for T400 cards</li>
+<li>Determine which machine benefits most from the spare 500GB SSD (likely AceEngineer-02 or 03)</li>
+<li>Document installation plan with required tools/adapters</li>
+</ol>
+<h4>Step 3c: Network Assessment</h4>
+<ol>
+<li>Evaluate current WiFi coverage, speed tests at various locations</li>
+<li>Compare current router specs against needs (WiFi 6/6E, VLAN support, mesh capability)</li>
+<li>If upgrade needed: recommend specific model with cost justification</li>
+<li>Small router decision: AP mode, mesh node, IoT VLAN, or retire</li>
+</ol>
+<h4>Step 3d: External Drive Triage</h4>
+<ol>
+<li>Working drives: consolidate data to main storage, decide if drives are worth keeping</li>
+<li>Non-working drives: attempt data recovery if valuable data suspected, then recycle</li>
+<li>Document data disposition in consolidation plan</li>
+</ol>
+<h4>Step 3e: Final Disposition</h4>
+<ol>
+<li>Write final recommendation per device in consolidation-plan.md</li>
+<li>Include cost estimates for any upgrades (RAM, storage, OS licenses)</li>
+<li>Prioritize actions by cost-effectiveness and immediate utility</li>
+<li>AceEngineer-02 OS decision: Ubuntu install planned per existing notes -- confirm and schedule</li>
+</ol>
+<h3>Phase 4: Dev Environment Readiness (after Phase 3 assigns machine roles)</h3>
+<h4>Step 4a: Machine Manifest Files</h4>
+<ol>
+<li>Create <code>specs/modules/hardware-inventory/manifests/&lt;hostname&gt;.yml</code> per machine</li>
+<li>Each manifest declares:</li>
+<li><code>hostname</code>, <code>os</code>, <code>role</code> (from Phase 3 consolidation plan)</li>
+<li><code>alias</code>: public-facing name based on assigned work (e.g. <code>eng-workstation</code>, <code>sim-node</code>, <code>data-server</code>); used in git configs, commit metadata, and logs instead of raw hostnames</li>
+<li><code>repos</code>: list of repos/submodules this machine works on (e.g. <code>[worldenergydata, digitalmodel]</code>)</li>
+<li><code>agent_clis</code>: required agent CLIs with minimum versions (<code>claude &gt;= 1.x</code>, <code>codex &gt;= 0.x</code>, <code>gemini &gt;= 0.x</code>)</li>
+<li><code>domain_tools</code>: required tools with minimum versions (<code>blender &gt;= 4.x</code>, <code>openfoam &gt;= 12</code>, <code>gmsh &gt;= 4.x</code>, <code>freecad &gt;= 1.x</code>, etc.)</li>
+<li><code>workspace_root</code>: path to workspace-hub on that machine</li>
+<li>Manifests are committed to repo — single source of truth for what each machine needs</li>
+</ol>
+<p><strong>Standing assignment policy:</strong>
+- <strong>vamsee-linux1 (AceEngineer-01)</strong>: worldenergydata analysis and data curation, digitalmodel Python development, assetutilities, workspace-hub orchestration. All open-source / AI-agent work defaults here.
+- <strong>Licensed-software machines</strong> (AceEngineer-03, ACMA workstations): tasks requiring proprietary licenses (OrcaFlex, SolidWorks, COMSOL, MATLAB, Autodesk Inventor, 3ds Max, Moses). Route work to these only when the license is needed.</p>
+<h4>Step 4b: Dev Environment Check Script</h4>
+<ol>
+<li>Create <code>scripts/operations/system/dev-env-check.sh</code> (Linux) and <code>dev-env-check.ps1</code> (Windows)</li>
+<li>Script reads the manifest for current hostname and validates:</li>
+<li><strong>Agent CLIs</strong> (a/): checks <code>claude --version</code>, <code>codex --version</code>, <code>gemini --version</code>; compares against manifest minimums; reports outdated/missing</li>
+<li><strong>Terminal config</strong> (b/): verifies cwd is workspace-hub; warns if not</li>
+<li><strong>Repos</strong> (c/): checks each declared repo exists at expected path; reports missing repos with clone instructions</li>
+<li><strong>Domain tools</strong> (d/): checks each declared tool version; if outdated, generates an upgrade plan (commands to run) and writes to <code>~/.dev-env-upgrade-plan.md</code> for user review</li>
+<li>Output: color-coded summary (green = OK, yellow = outdated, red = missing)</li>
+<li>Verbose log to <code>~/.dev-env-check.log</code> for troubleshooting</li>
+<li>Exit 0 always (informational, never blocks terminal startup)</li>
+<li>Target: &lt;2 seconds execution time</li>
+</ol>
+<h4>Step 4c: Shell Profile Integration</h4>
+<ol>
+<li><strong>Linux</strong>: Add one-liner to <code>.bashrc</code> / <code>.zshrc</code>:
+   <code>bash
+   [ -f /path/to/workspace-hub/scripts/operations/system/dev-env-check.sh ] &amp;&amp; source /path/to/workspace-hub/scripts/operations/system/dev-env-check.sh</code></li>
+<li><strong>Windows</strong>: Add to PowerShell <code>$PROFILE</code>:
+   <code>powershell
+   if (Test-Path "C:\path\to\workspace-hub\scripts\operations\system\dev-env-check.ps1") { &amp; "C:\path\to\workspace-hub\scripts\operations\system\dev-env-check.ps1" }</code></li>
+<li>Set default start directory to workspace-hub in terminal emulator settings (Windows Terminal <code>settings.json</code>, Linux <code>.bashrc</code> <code>cd</code>)</li>
+<li>Document setup instructions per OS in <code>specs/modules/hardware-inventory/dev-env-setup.md</code></li>
+</ol>
+<h4>Step 4d: Claude Code Pre-Session Hook (optional enhancement)</h4>
+<ol>
+<li>Consider adding to <code>.claude/settings.json</code> hooks to run <code>dev-env-check</code> before first tool use</li>
+<li>Trade-off: shell profile catches all terminals; Claude hook only fires in Claude sessions</li>
+<li>Recommendation: shell profile as primary, Claude hook as belt-and-suspenders for agent-specific checks</li>
+</ol>
+<h3>Target Files</h3>
+<p>| Artifact | Path |
+|----------|
+------|
+| AE-02 assessment | <code>specs/modules/hardware-inventory/aceengineer-02.md</code> |
+| AE-03 assessment | <code>specs/modules/hardware-inventory/aceengineer-03.md</code> |
+| ACMA-WS014 assessment | <code>specs/modules/hardware-inventory/acma-ws014.md</code> |
+| ACMA-WS003 assessment | <code>specs/modules/hardware-inventory/acma-ws003.md</code> |
+| Laptop assessment | <code>specs/modules/hardware-inventory/lenovo-laptop.md</code> |
+| Storage peripherals | <code>specs/modules/hardware-inventory/storage-peripherals.md</code> |
+| Network equipment | <code>specs/modules/hardware-inventory/network-equipment.md</code> |
+| Inventory summary | <code>specs/modules/hardware-inventory/INVENTORY.md</code> |
+| Consolidation plan | <code>specs/modules/hardware-inventory/consolidation-plan.md</code> |
+| Machine manifests | <code>specs/modules/hardware-inventory/manifests/&lt;hostname&gt;.yml</code> |
+| Dev env check (Linux) | <code>scripts/operations/system/dev-env-check.sh</code> |
+| Dev env check (Windows) | <code>scripts/operations/system/dev-env-check.ps1</code> |
+| Dev env setup guide | <code>specs/modules/hardware-inventory/dev-env-setup.md</code> |</p>
+<h3>Review Notes</h3>
+<p><strong>Cross-review date</strong>: 2026-02-10</p>
+<p>| Reviewer | Verdict |
+|----------|
+---------|
+| Claude Opus 4.6 | APPROVE |
+| Gemini CLI | APPROVE |
+| Codex CLI | NO_OUTPUT |</p>
+<p><strong>Feedback incorporated</strong>:
+- All software artifacts verified (assessment scripts, skill file, AE-01 assessment)
+- Remaining work is physical access to hardware (6 devices unassessed)</p>
+<p><em>Approved by user: 2026-02-10</em></p>
+<p><strong>RAM market intel (2026-02-21):</strong> Prices are in a crisis driven by AI server demand — DDR4 32GB kits up ~2x (was $60–90, now $150–180); DDR5 32GB up ~3x (was $80–120, now $360–410). Analysts expect a further 55–60% rise in Q1 2026 with no relief before late 2026 or 2027. Implication for Phase 3 cost/benefit: <strong>hold off on RAM upgrades unless strictly necessary</strong> — the DDR3 spare sticks remain incompatible with AceEngineer-01/02/03 (those need DDR4 ECC). If AceEngineer-02/03 assessment reveals less than 16 GB, a targeted DDR4 ECC buy may still be justified given those machines' workloads, but buy before prices rise further. (Source: Tom's Hardware RAM Price Index 2026, TechRadar, WCCFTech)</p>
+<p><strong>Work assignments (2026-02-11):</strong> Added machine-to-repo assignment policy:
+- AceEngineer-01 (vamsee-linux1) is the primary machine for worldenergydata analysis and data curation
+- Exception: tasks requiring proprietary software licenses (e.g. OrcaFlex, SolidWorks, MATLAB, COMSOL) go to machines with those licenses (AceEngineer-03, ACMA workstations)
+- This decision feeds into Phase 4 manifests (<code>repos</code> field for vamsee-linux1)</p>
+<p><strong>Scope expansion (2026-02-10):</strong> Added Phase 4 — Dev Environment Readiness (items a-e):
+- a/ Agent CLI health checks on terminal startup
+- b/ Terminal always configured, starts in workspace-hub
+- c/ Per-machine repo/submodule work assignments via manifests
+- d/ Domain tool version checks with upgrade plans
+- e/ Shell profile hooks as automation mechanism
+- f/ Machine alias names for public repos (based on assigned work)
+- Phase 4 plan pending cross-review</p>
+<p><strong>Inventory update (2026-02-10):</strong> Added full hardware counts — 7 monitors, 2x 4TB spinning drives, 2 printers (HP + Epson). Summary: 1 Mac, 2 Windows, 2 Linux, 1 Lenovo laptop (broken screen); 7 monitors; 2x 4TB HDD; 2 printers.</p>
+<hr />
+<p><em>Source: hardware consolidation work — 1 Mac, 2 Windows, 2 Linux computers, 1 Lenovo laptop broken screen, 7 monitors, 2x NVIDIA T400 4GB spare, 2x 4TB used spinning hard drives, old external drives working/non-working, 1x 500GB internal SSD, 2 printers (HP + Epson), 1 main router, 1 small router, cross-platform assessment script + dev environment readiness</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-050
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-050.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-050/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-050.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-050/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-050/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-050/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-050/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-050/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-050/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-050/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-050/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-050/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-050/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-050/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

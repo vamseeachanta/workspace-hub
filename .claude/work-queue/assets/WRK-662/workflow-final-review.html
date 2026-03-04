@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-662 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-662 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>gemini</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>digitalmodel implements calculations against 15+ engineering standards
+(DNV, API, ISO, ABS, BS). Version years and clause numbers are embedded as
+string literals and comments throughout the codebase. Inconsistencies cause
+calculation errors when a standard is revised.</p>
+<p>Use Gemini to sweep all engineering modules in one pass and produce a
+standards-citation-audit report flagging:
+1. Conflicting version years for the same standard across modules
+2. Clause citations that look implausible (wrong section numbering pattern)
+3. Modules referencing a standard without a version year
+4. Standards used in multiple modules with different acceptance thresholds</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Engineering standards evolve; using mixed version years in the same codebase can produce
+contradictory acceptance criteria for the same parameter. Gemini's large context makes a
+single-pass audit of 15+ modules practical without losing cross-module context.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] <code>specs/wrk/WRK-662/standards-citation-audit.md</code> with all 4 tables populated</li>
+<li>[ ] CONFLICT table has ≤ 5 items OR all conflicts are resolved with inline comments</li>
+<li>[ ] MISSING VERSION table has action taken (year added or deferred with rationale)</li>
+<li>[ ] Cross-check against standards-transfer-ledger shows ≥80% of cited standards
+  appear in the ledger</li>
+<li>[ ] Legal scan passes</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><h3>Phase 1 — Collect all engineering source files (10 min)</h3>
+<p>Target directories:
+- <code>src/digitalmodel/cathodic_protection/</code>
+- <code>src/digitalmodel/subsea/pipeline/</code>
+- <code>src/digitalmodel/structural/</code>
+- <code>src/digitalmodel/marine_ops/</code>
+- <code>src/digitalmodel/well/</code></p>
+<pre><code class="language-bash">cd digitalmodel
+
+find src/digitalmodel/{cathodic_protection,subsea,structural,marine_ops,well} \
+  -name &quot;*.py&quot; | sort | xargs cat | \
+gemini -p &quot;
+You are auditing engineering standards citations in Python source code.
+
+Find every reference to an engineering standard (DNV, API, ISO, ABS, BS, NACE, ASME,
+AISC, ASCE) in comments, docstrings, and string literals. For each reference extract:
+- Standard name + number (e.g., DNV-RP-F105, API RP 1111, ISO 15589-2)
+- Version year if present (e.g., 2017, 2021)
+- Clause/section reference if present (e.g., §6.2.1, Section 4.3)
+- Source file and approximate line context
+- Acceptance threshold if present (e.g., 0.85Fy, -0.800V Ag/AgCl)
+
+Then produce:
+1. CONFLICT table: same standard, different version years across files
+2. MISSING VERSION table: standard referenced with no year
+3. IMPLAUSIBLE CLAUSE table: clause numbering that looks wrong for that standard type
+4. THRESHOLD MISMATCH table: same standard used with different acceptance values
+5. SUMMARY: total standards found, total files scanned, highest-risk conflicts&quot; -y \
+&gt; specs/wrk/WRK-662/standards-citation-audit.md
+</code></pre>
+<h3>Phase 2 — Cross-check against standards-transfer-ledger (5 min)</h3>
+<pre><code class="language-bash"># Check which standards in audit are in the ledger
+python3 -c &quot;
+import yaml, re
+ledger = yaml.safe_load(open('data/document-index/standards-transfer-ledger.yaml'))
+audit = open('specs/wrk/WRK-662/standards-citation-audit.md').read()
+for entry in ledger.get('standards', []):
+    name = entry.get('standard','')
+    found = name in audit
+    print(f'{\&quot;✓\&quot; if found else \&quot;✗\&quot;} {name}')
+&quot; 2&gt;/dev/null | head -30
+</code></pre>
+<h3>Phase 3 — Fix highest-priority conflicts (30 min)</h3>
+<p>For each CONFLICT finding:
+- Determine which version year is authoritative (check standards-transfer-ledger.yaml)
+- Update the non-authoritative file to match
+- Add inline comment: <code># DNV-RP-F105 2017 §X.Y — updated from 2014 per WRK-662</code></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-662
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-662.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-662/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-662.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-662/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-662/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-662/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-662/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-662/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-662/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-662/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-662/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-662/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-662/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-662/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

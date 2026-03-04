@@ -8,7 +8,7 @@ Usage:
   close-item.sh <WRK-NNN> [commit-hash] [options]
 
 Options:
-  --html-output <path>         Path to final HTML review artifact
+  --html-output <path>         Path to final HTML review artifact (auto-generated if omitted)
   --html-verification <path>   Path to HTML verification evidence
   --learning-output <value>    Path or WRK id to append to learning_outputs (repeatable)
   --followup <WRK-NNN>         Follow-up WRK id to append (repeatable)
@@ -78,6 +78,7 @@ done
 WORKSPACE_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 QUEUE_DIR="${WORKSPACE_ROOT}/.claude/work-queue"
 GATE_LOGGER="${WORKSPACE_ROOT}/scripts/work-queue/log-gate-event.sh"
+FINAL_REVIEW_GENERATOR="${WORKSPACE_ROOT}/scripts/work-queue/generate-final-review.py"
 
 FILE_PATH=""
 SOURCE_DIR=""
@@ -95,6 +96,28 @@ if [[ -z "$FILE_PATH" ]]; then
 fi
 
 COMPLETED_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+# Ensure final HTML review exists for this WRK; default path is auto-generated.
+if [[ -z "$HTML_OUTPUT" ]]; then
+  HTML_OUTPUT=".claude/work-queue/assets/${WRK_ID}/workflow-final-review.html"
+fi
+HTML_OUTPUT_ABS="$HTML_OUTPUT"
+if [[ "$HTML_OUTPUT_ABS" != /* ]]; then
+  HTML_OUTPUT_ABS="${WORKSPACE_ROOT}/${HTML_OUTPUT_ABS}"
+fi
+if [[ ! -f "$HTML_OUTPUT_ABS" ]]; then
+  if [[ ! -f "$FINAL_REVIEW_GENERATOR" ]]; then
+    echo "✖ Error: Missing final review generator: ${FINAL_REVIEW_GENERATOR}" >&2
+    exit 1
+  fi
+  echo "Generating final HTML review for ${WRK_ID}..."
+  "$FINAL_REVIEW_GENERATOR" "$WRK_ID" --output "$HTML_OUTPUT_ABS"
+fi
+
+# Normalize to workspace-relative path when possible.
+if [[ "$HTML_OUTPUT_ABS" == "${WORKSPACE_ROOT}/"* ]]; then
+  HTML_OUTPUT="${HTML_OUTPUT_ABS#${WORKSPACE_ROOT}/}"
+fi
 
 VALIDATOR="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
 echo "Running gate evidence validator for ${WRK_ID} before close..."

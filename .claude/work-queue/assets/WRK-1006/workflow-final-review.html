@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1006 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1006 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>The submit scripts are called by agents (Claude, Codex, Gemini) during cross-review
+gates. A failure in any of these scripts causes a gate failure that blocks the entire
+WRK lifecycle. Current issues and any new ones discovered during WRK-1002/1003/1004
+runs need to be systematically identified, fixed, and guarded by a test suite so
+cross-review success rates improve for all three providers.</p>
+<p>This item is intentionally open-ended: it collects issues as they are discovered
+across WRK-1002/1003/1004 runs and treats them as a consolidated fix+test batch.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] <code>tests/review/test-submit-scripts.sh</code> passes all 23 tests (T01–T23) — 41 assertions pass</li>
+<li>[x] No bare <code>python3</code> in any <code>scripts/review/submit-to-*.sh</code> — all updated to uv-first + python3 fallback</li>
+<li>[x] <code>setsid</code> absence produces WARN not exit-1 in all three scripts (I-02 fixed, T05 validates)</li>
+<li>[x] <code>CLAUDECODE</code> env var unset before <code>claude -p</code> subprocess (T23 passes)</li>
+<li>[x] DNS failure produces WARN + clean exit 0 (not unhandled crash) in <code>submit-to-claude.sh</code> (T20 validates)</li>
+<li>[x] <code>~/.claude/debug/</code> dir creation handled gracefully (no crash if missing) (T21 validates)</li>
+<li>[x] Concurrent invocations documented; serialisation guidance noted in I-09 fix comments</li>
+<li>[x] <code>submit-to-claude.sh</code> produces VALID output when called with a real review file (T14 validates with fixture)</li>
+<li>[ ] Cross-review baseline table populated (Phase 4) — deferred; not blocking</li>
+<li>[ ] <code>troubleshoot-log.md</code> documents every issue found + resolution — deferred; issues documented in WRK itself</li>
+<li>[x] <code>verify-gate-evidence.py WRK-1006</code> passes all gates</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <h1>WRK-1006 Plan — Final Review Confirmation</h1>
+<h2>Plan Summary</h2>
+<p>Troubleshoot and harden <code>scripts/review/submit-to-{claude,codex,gemini}.sh</code> for reliable
+agent-invoked cross-review calls. Deliver a comprehensive test suite (T01–T23) covering
+all confirmed failure modes and add CMD env-var injection hooks for testability.</p>
+<h2>Key Decisions</h2>
+<ul>
+<li>Replace PATH-masking with <code>CLAUDE_CMD</code>/<code>GEMINI_CMD</code>/<code>CODEX_BIN</code> env-var overrides</li>
+<li>DNS failure exits 0 (graceful skip, non-blocking review)</li>
+<li>setsid absence: WARN not exit-1</li>
+<li>CLAUDECODE cleared before subprocess invocation</li>
+</ul>
+<h2>Confirmation</h2>
+<p>confirmed_by: orchestrator-claude
+confirmed_at: 2026-03-04T00:00:00Z
+decision: passed</p>
+    <h4>Final</h4>
+    <h1>WRK-1006 Plan — Final Review Confirmation</h1>
+<h2>Plan Summary</h2>
+<p>Troubleshoot and harden <code>scripts/review/submit-to-{claude,codex,gemini}.sh</code> for reliable
+agent-invoked cross-review calls. Deliver a comprehensive test suite (T01–T23) covering
+all confirmed failure modes and add CMD env-var injection hooks for testability.</p>
+<h2>Key Decisions</h2>
+<ul>
+<li>Replace PATH-masking with <code>CLAUDE_CMD</code>/<code>GEMINI_CMD</code>/<code>CODEX_BIN</code> env-var overrides</li>
+<li>DNS failure exits 0 (graceful skip, non-blocking review)</li>
+<li>setsid absence: WARN not exit-1</li>
+<li>CLAUDECODE cleared before subprocess invocation</li>
+</ul>
+<h2>Confirmation</h2>
+<p>confirmed_by: orchestrator-claude
+confirmed_at: 2026-03-04T00:00:00Z
+decision: passed</p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>test-submit-scripts.sh all 41 assertions pass</td><td>repo</td><td>pass</td><td><code>bash tests/review/test-submit-scripts.sh</code></td><td>.claude/work-queue/assets/WRK-1006/test-results.md</td></tr><tr><td>2</td><td>validate-review-output.sh VALID on rendered fixture</td><td>repo</td><td>pass</td><td><code>bash scripts/review/validate-review-output.sh tests/review/fixtures/rendered-valid.md</code></td><td>.claude/work-queue/assets/WRK-1006/evidence/execute.yaml</td></tr><tr><td>3</td><td>render-structured-review.py codex provider valid JSON</td><td>repo</td><td>pass</td><td><code>uv run --no-project python scripts/review/render-structured-review.py --provider codex --input tests/review/fixtures/codex-valid-output.txt</code></td><td>.claude/work-queue/assets/WRK-1006/evidence/execute.yaml</td></tr><tr><td>4</td><td>CLAUDECODE cleared before subprocess (T23)</td><td>repo</td><td>pass</td><td><code>CLAUDECODE=nested-session bash tests/review/test-submit-scripts.sh 2&gt;&amp;1 | grep T23</code></td><td>.claude/work-queue/assets/WRK-1006/test-results.md</td></tr><tr><td>5</td><td>DNS skip exits 0 (T20)</td><td>repo</td><td>pass</td><td><code>bash tests/review/test-submit-scripts.sh 2&gt;&amp;1 | grep T20</code></td><td>.claude/work-queue/assets/WRK-1006/test-results.md</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><h1>Gate Evidence Summary (WRK-1006, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=19, contract=19-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=5</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1006/review-results.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['test-results.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=5 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1006/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>PASS</td>
+<td>claim.yaml: canonical claim evidence OK</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=4</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=3</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+</tbody>
+</table></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p>wrk_id: WRK-1006
+generated_at: "2026-03-04T00:00:00Z"
+recommendations:
+  - wrk_id: WRK-1002
+    title: "Execute WRK-1002 cross-review with hardened scripts"
+    required_for_signoff: false
+    notes: WRK-1006 fixes unblock reliable cross-review execution for WRK-1002.
+  - wrk_id: WRK-1003
+    title: "Execute WRK-1003 cross-review with hardened scripts"
+    required_for_signoff: false
+    notes: Same as WRK-1002.
+  - wrk_id: WRK-1004
+    title: "Execute WRK-1004 cross-review with hardened scripts"
+    required_for_signoff: false
+    notes: Same as WRK-1002.
+  - wrk_id: WRK-1005
+    title: "Cross-provider assessment baseline"
+    required_for_signoff: false
+    notes: Phase 4 baseline table deferred from WRK-1006 scope; now unblocked.</p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-1006
+generated_at: "2026-03-04T00:00:00Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/pending/WRK-1006.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1006/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/pending/WRK-1006.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1006/plan-html-review-final.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1006/evidence/user-review-browser-open.yaml
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1006/review-results.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1006/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1006/evidence/activation.yaml
+  - order: 9
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1006/evidence/execute.yaml
+  - order: 10
+    stage: Artifact Generation
+    status: done
+    evidence: tests/review/test-submit-scripts.sh
+  - order: 11
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1006/test-results.md
+  - order: 12
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 13
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1006/evidence/future-work.yaml
+  - order: 14
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1006/evidence/resource-intelligence-update.yaml
+  - order: 15
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-1006/evidence/user-review-close.yaml
+  - order: 16
+    stage: Reclaim
+    status: n/a
+    evidence: n/a
+  - order: 17
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 18
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh
+  - order: 19
+    stage: Done
+    status: pending
+    evidence: .claude/work-queue/done/</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>html-verification.md</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-draft.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>probe-claude-html.txt</code></li><li><code>review-results.md</code></li><li><code>test-results.md</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

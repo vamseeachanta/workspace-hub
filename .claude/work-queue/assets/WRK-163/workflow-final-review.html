@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-163 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-163 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Well planning risk empowerment framework</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>A risk classification framework that explicitly models <strong>project authority boundaries</strong> and connects risks to the organizational lever required to mitigate them. Three risk tiers:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Scope</th>
+<th>Authority</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Operational</strong></td>
+<td>Within project execution</td>
+<td>Drilling team</td>
+<td>Swelling clay, mud weight, BOP testing</td>
+</tr>
+<tr>
+<td><strong>Tactical</strong></td>
+<td>Requires cross-functional input</td>
+<td>Project manager + functional leads</td>
+<td>Rig-specific procedures, casing design changes, logistics</td>
+</tr>
+<tr>
+<td><strong>Strategic</strong></td>
+<td>Outside project authority</td>
+<td>Corporate / procurement / fleet</td>
+<td>Downhole tool contracts, rig selection, regulatory changes</td>
+</tr>
+</tbody>
+</table>
+<h3>Key Features</h3>
+<ol>
+<li><strong>Risk ownership tagging</strong> — each risk tagged with the organizational function that holds the mitigation lever (project, procurement, fleet, regulatory, corporate)</li>
+<li><strong>Escalation pathway</strong> — strategic risks auto-flagged for escalation with a structured request template ("We need X capability because Y risk, the lever is Z")</li>
+<li><strong>Risk influence map</strong> — visualization showing which risks the project controls vs. influences vs. observes</li>
+<li><strong>Actionable risk language</strong> — templates that convert "we need a better tool" into "Request: evaluate downhole tool alternatives for [formation], current tool limitation: [gap], risk if unaddressed: [consequence], decision owner: [function]"</li>
+<li><strong>Rig capability matching</strong> — link to rig fleet data (WRK-104/135) to quantify the gap between required and available rig capacities</li>
+<li><strong>MPD as strategic risk mitigation</strong> — MPD capability changes which risks are manageable at the operational tier vs. requiring strategic escalation. A well that requires MPD but is assigned a non-MPD rig is a strategic risk (fleet/procurement lever). A well on an MPD-equipped rig can manage narrow pressure windows operationally. The risk framework should tag MPD availability as a rig capability factor that shifts risks between tiers. Link to WRK-168 (MPD systems module) for system data.</li>
+</ol>
+<h3>Data Model Sketch</h3>
+<pre><code class="language-python">class RiskAuthority(Enum):
+    PROJECT = &quot;project&quot;           # drilling team can mitigate directly
+    CROSS_FUNCTIONAL = &quot;cross&quot;    # needs coordination with other disciplines
+    PROCUREMENT = &quot;procurement&quot;   # contract / vendor decision
+    FLEET = &quot;fleet&quot;               # rig selection / scheduling
+    REGULATORY = &quot;regulatory&quot;     # government / classification society
+    CORPORATE = &quot;corporate&quot;       # policy / budget / strategy
+
+class WellPlanningRisk:
+    id: str
+    description: str                  # plain language risk
+    severity: Severity
+    likelihood: Likelihood
+    risk_tier: str                    # operational / tactical / strategic
+    authority: RiskAuthority          # who holds the mitigation lever
+    mitigation_action: str            # what needs to happen
+    decision_owner: str               # role/function that decides
+    escalation_required: bool         # True if outside project scope
+    escalation_template: str | None   # structured request if escalated
+    linked_capability: str | None     # e.g., &quot;rig_fleet.hookload &gt;= 1000t&quot;
+</code></pre></div>
+
+  <h2>Why</h2>
+  <div class="panel"><ul>
+<li><strong>GTM value</strong>: This is a pain point every drilling engineer recognizes. A tool that explicitly handles "risks I can see but can't fix" differentiates from generic risk matrices.</li>
+<li><strong>Data linkage</strong>: Connects to existing rig fleet inventory (WRK-104/135), drilling cost data (WRK-019), and HSE risk index (WRK-014/162).</li>
+<li><strong>Consulting deliverable</strong>: The empowerment framework itself is a consulting output — helps operators restructure how well planning teams interact with corporate functions.</li>
+</ul></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Risk authority taxonomy defined (enum + descriptions)</li>
+<li>[ ] WellPlanningRisk data model implemented with tier classification</li>
+<li>[ ] Escalation template generator for strategic risks</li>
+<li>[ ] Risk influence map visualization (project controls / influences / observes)</li>
+<li>[ ] Integration with existing <code>risk-assessment</code> skill (5x5 matrix + authority tagging)</li>
+<li>[ ] Test suite with realistic well planning scenarios (deepwater, ERD, HPHT)</li>
+<li>[ ] Example risk register output showing all three tiers populated</li>
+<li>[ ] At least one scenario demonstrating MPD as a tier-shifting capability (strategic risk → operational risk when MPD available)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-163
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-163.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-163/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-163.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-163/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-163/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-163/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-163/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-163/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-163/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-163/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-163/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-163/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-163/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-163/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>construction_vessel_who_is_who.jpeg</code></li><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

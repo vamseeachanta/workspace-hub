@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-118 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-118 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Define and implement a systematic strategy for utilizing available AI agents (Claude Code, Codex CLI, Gemini CLI) across the full development lifecycle: planning, architecture, implementation, testing, code review, and documentation. Establish clear role assignments, handoff patterns, and quality gates that leverage each agent's strengths.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Multiple AI agents are available (Claude Code as orchestrator, Codex CLI and Gemini CLI for cross-review) but usage is currently ad-hoc — mostly limited to cross-review of completed work. A deliberate strategy would maximize agent utilization across all phases: using agents for upfront planning validation, parallel implementation exploration, automated test generation, documentation drafting, and continuous review — not just post-hoc review.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Audit current agent capabilities and limitations (Claude Code, Codex CLI, Gemini CLI)</li>
+<li>[x] Define role matrix: which agent handles which workflow phase (planning, coding, testing, review, docs)</li>
+<li>[ ] Document agent invocation patterns for each phase (commands, flags, input/output formats)</li>
+<li>[x] Create agent delegation templates for common tasks (feature implementation, bug fix, refactor, test writing)</li>
+<li>[ ] Establish quality gates that require multi-agent consensus (e.g., 2-of-3 approve before merge)</li>
+<li>[ ] Integrate agent utilization into work queue routing (Route A/B/C agent assignments)</li>
+<li>[ ] Test the strategy on 2-3 real work items from the queue</li>
+<li>[ ] Document lessons learned and refine the strategy</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Phase 1 — Audit &amp; role matrix</strong> <em>(Gemini)</em>
+- Scan <code>.claude/work-queue/archive/</code> for actual provider usage patterns by task type
+- Derive empirical role matrix from real data, not assumptions
+- Extend <code>behavior-contract.yaml</code> strengths block with task-type granularity
+  (feature | bugfix | refactor | test-writing | research | docs → primary + rationale)</p>
+<p><strong>Phase 2 — task_agents delegation templates</strong> <em>(Claude)</em>
+- Author <code>docs/modules/ai/agent-delegation-templates.md</code>
+- Standard <code>task_agents:</code> maps for each task type × route (A/B/C):
+  - feature/A → codex | feature/B → claude plan + codex impl | feature/C → claude + codex + gemini
+  - bugfix → codex diagnose+fix + claude review
+  - refactor → codex + gemini summary
+  - test-writing → codex primary + claude review
+  - research/docs → gemini primary + claude synthesize
+- Referenced by WRK-199 as the decision table it automates</p>
+<p><strong>Phase 3 — Wire task_classifier into /work run</strong> <em>(Codex)</em>
+- Add routing recommendation step to work.sh pre-plan gate
+- Call <code>scripts/coordination/routing/lib/task_classifier.sh</code> → <code>provider_recommender.sh</code>
+- Auto-populate <code>task_agents:</code> in WRK frontmatter from recommendation
+- Display rationale: "Recommending Codex (phase 2-3): focused code task, Claude quota at 7%(S)"</p>
+<p><strong>Phase 4 — Provider assessment scaffolding</strong> <em>(Claude)</em>
+- Create <code>.claude/state/provider-assessments/</code> directory + YAML template
+- Wire post-cross-review step: write assessment entry per reviewer verdict
+- Add quarterly report trigger to work.sh</p>
+<p><strong>Phase 5 — Validate on 3 items</strong> <em>(Claude)</em>
+- Apply routing to WRK-199, WRK-184, WRK-186
+- Confirm task_agents populated correctly and rationale is sensible
+- Adjust templates if recommendations drift</p>
+<p><em>Approved by user: 2026-02-18</em></p>
+<hr />
+<p><em>Source: add to utilize available ai agents for planning, development, testing etc.</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-118
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-118.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-118/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-118.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-118/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-118/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-118/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-118/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-118/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-118/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-118/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-118/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-118/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-118/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-118/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>agent-assignment-tracker.md</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-148 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-148 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>ACE-GTM: A&amp;CE Go-to-Market strategy stream</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Parent work item for all A&amp;CE go-to-market activity. This is a <strong>running stream</strong> — new findings, recommendations, and action items get added here as the strategy evolves. Child items get spun off for execution.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Revenue is oxygen. The engineering substance is strong but the packaging, positioning, and pipeline don't exist yet. This stream coordinates all work to fix that.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] All child items (WRK-142, 146, 147) completed</li>
+<li>[ ] Website repositioned with firm voice</li>
+<li>[ ] Business strategy repo operational with weekly scorecard habit</li>
+<li>[ ] At least 1 outbound experiment launched</li>
+<li>[ ] Pipeline has 5+ qualified prospects</li>
+</ul>
+<hr />
+<p><em>This is a stream item — it stays open as long as GTM work is active. Archive only when the strategy stabilizes and pipeline is self-sustaining.</em></p></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: Coordination across WRK-146, WRK-147, and ongoing GTM activity</p>
+<h3>Execution Sequence</h3>
+<ol>
+<li><strong>WRK-147</strong> (strategy repo) — create first, provides home for all GTM artifacts</li>
+<li><strong>WRK-146</strong> (website overhaul) — execute second, makes A&amp;CE presentable to prospects</li>
+<li><strong>Outbound experiments</strong> — start after website is repositioned</li>
+<li><strong>Conference prep</strong> — OTC Houston registration (May 4-7), ISOPE abstract submission</li>
+</ol>
+<h3>Coordination Pattern</h3>
+<ul>
+<li>This item stays <code>in_progress</code> indefinitely (stream item)</li>
+<li>Weekly scorecard updates in aceengineer-strategy repo</li>
+<li>New findings append to ## Findings &amp; Recommendations Log</li>
+<li>Actionable items spin off as child WRK items</li>
+<li>Monthly: full re-assessment of priorities and pipeline</li>
+</ul>
+<h3>Success Metrics</h3>
+<ul>
+<li>5+ qualified prospects in pipeline within 60 days</li>
+<li>1+ outbound experiment launched within 2 weeks</li>
+<li>Website repositioned within 1 week</li>
+<li>Strategy repo operational within 1 day</li>
+</ul>
+<h3>Dependencies</h3>
+<ul>
+<li>WRK-147 must complete before strategy tracking begins</li>
+<li>WRK-146 must complete before outbound begins</li>
+</ul></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-148
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-148.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-148/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-148.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-148/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-148/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-148/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-148/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-148/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-148/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-148/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-148/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-148/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-148/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-148/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>ace-gtm-strategy-2026-02-16.pdf</code></li><li><code>ace-gtm-strategy-styled-2026-02-16.pdf</code></li><li><code>conference-prep.md</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>linkedin-content-calendar.md</code></li><li><code>outreach-tracker.md</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

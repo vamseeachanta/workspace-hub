@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-024 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-024 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Buckskin field BSEE data analysis — Keathley Canyon blocks 785, 828, 829, 830, 871, 872</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Perform BSEE data analysis for the Buckskin field, which covers six lease blocks in the Keathley Canyon:
+- KC 785
+- KC 828
+- KC 829
+- KC 830
+- KC 871
+- KC 872</p>
+<p>Extract and analyze all available BSEE data for these blocks including production data, wellbore information, drilling/completion activities, and intervention history. Present results under the field nickname "Buckskin."</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Buckskin is a specific field of interest requiring a focused data package. This serves as both a deliverable and a validation case for the broader BSEE field data pipeline (WRK-017).</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Query BSEE data for all six Keathley Canyon lease blocks (785, 828, 829, 830, 871, 872)</li>
+<li>[x] Map BOEM OCS lease numbers (G 25806, G 25813, G 25814, G 25815, G 25823)</li>
+<li>[x] Add Buckskin to database tables in Part 1 and Part 2</li>
+<li>[x] Production data summary (oil, gas, water) by block and aggregated for field</li>
+<li>[x] Validate against known benchmarks: ~30,000 bopd initial, top-10 wells in 2021/2022</li>
+<li>[x] Wellbore inventory: count, types, status per block (discovery well, 3 appraisal, production wells)</li>
+<li>[x] Drilling and completion activity timeline (2009 discovery through current)</li>
+<li>[x] Intervention activity summary</li>
+<li>[x] Note Buckskin South Expansion (Dec 2025 contract)</li>
+<li>[x] Results labeled with field nickname "Buckskin"</li>
+<li>[x] Visualizations: production trends, well count over time, phased development timeline</li>
+<li>[x] Cross-reference with lower tertiary / Wilcox classification</li>
+<li>[x] Document operator transitions: Repsol → LLOG → Harbour Energy (2026)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>src/worldenergydata/bsee/analysis/fields/buckskin/</code></p>
+<h3>Existing Assets (reuse)</h3>
+<ul>
+<li><code>FieldNameResolver</code> — resolve "Buckskin" → KC lease set via BOEM field-to-lease mapping</li>
+<li><code>EraClassifier</code> — classify as Lower Tertiary / Wilcox</li>
+<li><code>AllFieldsRunner</code> — field-level aggregation (wellbore counts, production summaries)</li>
+<li><code>ComprehensiveActivityAnalyzer</code> — 7-module WAR analyzer (drilling efficiency, depth, era, lifecycle)</li>
+<li><code>ProductionAPI12Analysis</code> — production aggregation per lease</li>
+<li><code>WellAPI12</code> — well history/timeline per API-12</li>
+<li><code>analysis/intervention/</code> — activity aggregation, enrichment, field visualization</li>
+<li>Data loaders: <code>bsee/data/loaders/well/</code>, <code>bsee/data/loaders/block/</code>, <code>bsee/data/loaders/lease/</code></li>
+<li>Materialized data: <code>mv_productionsum.bin</code> (39-year totals), <code>mv_production_waterdepth.bin</code> (31K leases)</li>
+</ul>
+<h3>Phase 0 — Audit Existing Code</h3>
+<ul>
+<li>Audit existing <code>bsee/analysis/buckskin/</code> directory (analyzer.py 244 lines, extractor.py 172 lines, report.py 424 lines — 841 lines total)</li>
+<li>Identify gaps relative to this plan's acceptance criteria</li>
+<li>Extend existing code rather than rebuilding from scratch</li>
+</ul>
+<h3>Phase 1 — Field Configuration</h3>
+<ul>
+<li><code>buckskin_config.py</code> — Define Buckskin field context:</li>
+<li>Blocks: KC 785, 828, 829, 830, 871, 872</li>
+<li>BOEM leases: OCS-G 25806, 25813, 25814, 25815, 25823</li>
+<li>Area code: KC (Keathley Canyon)</li>
+<li>Geological era: Lower Tertiary (Wilcox)</li>
+<li>Nickname: "Buckskin"</li>
+<li>Use <code>FieldNameResolver</code> to validate lease mapping against BOEM data</li>
+</ul>
+<h3>Phase 2 — Data Extraction</h3>
+<ul>
+<li>Query <code>ProductionRouter</code> for all 5 BOEM lease numbers</li>
+<li>Extract wellbore inventory via <code>WellRouter</code> (discovery well, 3 appraisal, production wells)</li>
+<li>Extract drilling/completion timeline via <code>ComprehensiveActivityAnalyzer</code></li>
+<li>Extract intervention history via <code>analysis/intervention/</code></li>
+<li>Handle LFS stubs gracefully (129/133 bins are stubs; use materialized production_raw data)</li>
+</ul>
+<h3>Phase 3 — Analysis &amp; Validation</h3>
+<ul>
+<li>Aggregate production by block and for full field</li>
+<li>Validate against known benchmarks: ~30,000 bopd initial (June 2019), top-10 wells 2021/2022 (source: to be verified against BOEM production reports)</li>
+<li>Build operator transition timeline: Repsol (2009 discovery) → LLOG (development) → Harbour Energy (2026)</li>
+<li>Cross-reference with lower tertiary / Wilcox classification via <code>EraClassifier</code></li>
+<li>Note Buckskin South Expansion (Dec 2025 contract)</li>
+</ul>
+<h3>Phase 4 — Report &amp; Visualization</h3>
+<ul>
+<li>Plotly charts: production trends, well count over time, phased development timeline</li>
+<li>Tabular output: Part 1 (field summary) and Part 2 (well-level detail)</li>
+<li>Lower tertiary summary table entry</li>
+<li>Reuse <code>reports/comprehensive/exporters/</code> for Excel output</li>
+</ul>
+<h3>Phase 5 — Tests</h3>
+<ul>
+<li>Unit tests for Buckskin config resolution</li>
+<li>Integration test with materialized production data</li>
+<li>Validation tests against known benchmark values</li>
+<li>Test with LFS stub handling (empty DataFrame fallback)</li>
+</ul>
+<h3>Data Constraints</h3>
+<ul>
+<li>~~Blocked by WRK-009~~ (WRK-009 completed and archived 2026-01-30)</li>
+<li>Per-well monthly production requires LFS pull or ZIP regeneration</li>
+<li>Water depth data available in <code>mv_production_waterdepth.bin</code> (materialized)</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: MINOR | Codex: MINOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Removed stale blocker WRK-009 (completed 2026-01-30) from YAML frontmatter and Data Constraints</li>
+<li>Added Phase 0 to audit existing Buckskin code (841 lines in analyzer.py, extractor.py, report.py)</li>
+<li>Fixed "Data routers" references to actual loader directory paths</li>
+<li>Added source verification note to benchmark values (~30,000 bopd)</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: buckskin bsee data analysis; nickname: buckskin. Buckskin field covers six lease blocks, namely 785, 828, 829, 830, 871 and 872 in the Keathley Canyon. Additional context from Roy re database integration, operator history, and field development details.</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-024
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-024.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-024/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-024.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-024/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-024/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-024/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-024/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-024/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-024/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-024/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-024/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-024/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-024/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-024/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-042 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-042 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Develop long-term plan for Investments repo</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>gemini</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Create a long-term plan/roadmap for the Investments repository — defining its purpose, structure, tracking goals, and development direction.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>A clear long-term plan provides direction for the repo, ensures consistent tracking and analysis, and supports informed decision-making over time.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Review current state of the Investments repo (content, structure, activity)</li>
+<li>[ ] Define the repo's purpose and scope</li>
+<li>[ ] Outline long-term goals and milestones</li>
+<li>[ ] Plan documented and committed to the repo</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><h3>Current State Assessment</h3>
+<p>The investments repo is an investment analysis and portfolio management system with substantial real content:</p>
+<ul>
+<li><strong>re_cre/</strong>: 18+ commercial real estate property directories (bank, conv_store, drugstore, hotel, land, medical, mix_use, multifamily, multiplex, pharmacy, qsr, retail, re_tenx, private_investor_club, corner_lots, plus specific addresses like 159_keen_st, 412_wurtland_ave). Contains detailed underwriting, lease analysis, flood reports, auction notes, and negotiation docs. Has a Drugstore Market Report PDF.</li>
+<li><strong>re_auctions/</strong>: Auction tracking with info.md</li>
+<li><strong>family-dollar-analysis/</strong>: Multi-phase analysis (Houston, Texas, national) with dashboards, competitive analysis, property records, validation, and caching</li>
+<li><strong>urban-development-dashboard/</strong>: Flask/web app with app/, data/, static/, tests/ directories and its own venv</li>
+<li><strong>dev_tools/</strong>: Development tooling</li>
+<li><strong>src/modules/</strong>, <strong>src/external/</strong>: Python source code</li>
+<li><strong>tests/</strong>: Unit, integration, and specialized tests (buffet_negotiation)</li>
+</ul>
+<p>The repo has an <code>.agent-os/</code> with a well-developed product mission, tech stack, roadmap (5 phases through 24+ months), and decisions log. The CLAUDE.md declares asset classes: CRE, multifamily, single-family, farmland, equity. Same scaffolding bloat as hobbies (<code>.hive-mind/</code>, <code>.swarm/</code>, <code>agents/</code> with only sample files).</p>
+<p>The existing <code>.agent-os/product/roadmap.md</code> already has a 5-phase plan. This work item should reconcile the existing roadmap with actual repo state.</p>
+<h3>Phase 1: Audit CRE Content and Identify Lease Data (1 session)</h3>
+<ol>
+<li>Inventory all CRE property directories in <code>re_cre/</code> (18+ property types)</li>
+<li>For each property type: identify lease agreements, terms, financial data</li>
+<li>Map existing content: what lease terms, rent schedules, CAM structures, escalation clauses exist</li>
+<li>Identify sensitive/client-specific data that requires redaction</li>
+<li>Document findings in <code>investments/docs/cre-data-audit.md</code></li>
+</ol>
+<h3>Phase 2: Extract and Redact Lease Terms into assethold (2-3 sessions)</h3>
+<p><strong>Primary deliverable</strong>: Generic lease term database in assethold for CRE analysis</p>
+<ol>
+<li>Define generic lease term schema in <code>assethold/src/assethold/modules/cre/</code>:</li>
+<li><code>lease_models.py</code> — Pydantic models: <code>LeaseTerms</code>, <code>RentSchedule</code>, <code>CAMStructure</code>, <code>EscalationClause</code>, <code>TenantProfile</code></li>
+<li>Property types: NNN, gross, modified gross, percentage rent</li>
+<li>Key fields: base rent, CAM charges, escalation rate, lease duration, options, TI allowance</li>
+<li>Extract lease terms from <code>investments/re_cre/</code> property directories</li>
+<li><strong>Redact</strong>: Remove tenant names, specific addresses, deal-specific negotiations</li>
+<li><strong>Generalize</strong>: Convert specific deals into representative market-rate templates by property type</li>
+<li>Store in <code>assethold/data/cre/lease_templates/</code> as YAML files (one per property type)</li>
+<li>Tests: schema validation, redaction completeness check</li>
+</ol>
+<h3>Phase 3: CRE Analysis Foundation in assethold (1-2 sessions)</h3>
+<ol>
+<li>Build basic CRE analysis tools using the lease term data:</li>
+<li><code>lease_analyzer.py</code> — NOI calculation, cap rate analysis, rent roll generation</li>
+<li><code>market_comparison.py</code> — Compare lease terms across property types</li>
+<li>Reuse existing <code>multifamily/</code> IRR/cash flow engine patterns</li>
+<li>Family Dollar analysis as template: generalize the existing <code>family-dollar-analysis/</code> into a reusable NNN retail analysis template</li>
+<li>Tests for all new analysis modules</li>
+</ol>
+<h3>Phase 4: Clean Up and Roadmap (1 session)</h3>
+<ol>
+<li>Remove scaffolding bloat: <code>.hive-mind/</code>, <code>.swarm/</code>, <code>agents/</code> (sample files only)</li>
+<li>Simplify <code>CLAUDE.md</code> to focus on CRE/investment analysis</li>
+<li>Update <code>investments/README.md</code> with purpose and quick-start</li>
+<li>Write pragmatic 12-month roadmap in <code>investments/docs/roadmap-practical.md</code></li>
+</ol>
+<h3>Target Files</h3>
+<p>| Artifact | Path |
+|----------|
+------|
+| Audit report | <code>investments/docs/repo-audit.md</code> |
+| Updated roadmap | <code>investments/.agent-os/product/roadmap.md</code> |
+| Practical roadmap | <code>investments/docs/roadmap-practical.md</code> |
+| README | <code>investments/README.md</code> |</p>
+<h3>Review Notes</h3>
+<p><strong>Cross-review date</strong>: 2026-02-10</p>
+<p>| Reviewer | Verdict |
+|----------|
+---------|
+| Claude Opus 4.6 | APPROVE |
+| Gemini CLI | APPROVE |
+| Codex CLI | NO_OUTPUT |</p>
+<p><strong>Feedback incorporated</strong>:
+- Existing roadmap at <code>.agent-os/product/roadmap.md</code> confirmed
+- README confirmed missing
+- <code>src/modules/</code> and <code>src/external/</code> are both empty (plan should note)</p>
+<p><em>Approved by user: 2026-02-10 (plan refocused on lease term extraction + redaction into assethold)</em></p>
+<hr />
+<p><em>Source: long-term plan for investments repo</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-042
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-042.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-042/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-042.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-042/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-042/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-042/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-042/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-042/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-042/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-042/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-042/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-042/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-042/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-042/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

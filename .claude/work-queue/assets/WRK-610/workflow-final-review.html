@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-610 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-610 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Restructure and integrate <code>CAD-DEVELOPMENTS</code> (a collaborator repo at <code>github.com/bakkiprasad5669/CAD-DEVELOPMENTS</code>) as a workspace-hub submodule with the right directory structure, README, and toolchain config to serve its mission: <strong>AI-agent-driven FEA model development from scratch</strong> (geometry → mesh → solve → post-process pipeline executed by AI agents on ace-linux-2).</p>
+<p>Current state: 13 flat files (12 FreeCAD <code>.FCStd</code> ship/boat hull models + 1 Blender <code>CTD.blend</code>) with a one-line README, sitting untracked at workspace-hub root.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>The repo has a high-leverage mission (AI agents that build FEA models end-to-end) but no structure to support it. Without a proper pipeline layout, agent handoffs, and ecosystem registration, the work will stay isolated and ad hoc. Establishing the foundation now enables WRK-394 (planing hull dynamics) and future structural FEA/CFD work to reuse this infrastructure.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] CAD-DEVELOPMENTS has a pipeline-ready directory layout: <code>geometry/</code>, <code>mesh/</code>, <code>analysis/</code>, <code>results/</code>, <code>agents/</code>, <code>docs/</code>, <code>specs/</code></li>
+<li>[ ] Existing FreeCAD files organised into <code>geometry/hull/</code> (boat/ship models) and <code>geometry/instruments/</code> (CTD)</li>
+<li>[ ] <code>README.md</code> describes mission, pipeline stages, tools, required setup, and collaborator credit</li>
+<li>[ ] <code>.gitignore</code> covers FreeCAD/Blender backup files and large solver output files</li>
+<li>[ ] <code>docs/pipeline.md</code> — written pipeline spec: stages, tools per stage, agent entry points, I/O contracts</li>
+<li>[ ] <code>agents/</code> scaffold: one stub Python file per stage (<code>geometry_agent.py</code>, <code>mesh_agent.py</code>, <code>solve_agent.py</code>, <code>postprocess_agent.py</code>)</li>
+<li>[ ] All changes pushed to <code>bakkiprasad5669/CAD-DEVELOPMENTS</code> main</li>
+<li>[ ] CAD-DEVELOPMENTS registered as workspace-hub git submodule (<code>git submodule add …</code>)</li>
+<li>[ ] Entry in <code>specs/modules/INDEX.md</code> for CAD-DEVELOPMENTS (mission, tools, computer)</li>
+<li>[ ] <code>validate-file-placement.sh</code> passes on workspace-hub</li>
+<li>[ ] workspace-hub commit: submodule pointer + .gitmodules entry</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Route C — Full spec. Two implementation phases.</strong></p>
+<h3>Spec file: <code>specs/wrk/WRK-610/wrk-610-cad-fea-pipeline-setup.md</code></h3>
+<hr />
+<h3>Pipeline Vision</h3>
+<pre><code>User intent / engineering brief
+        │
+        ▼
+[geometry_agent] ─ FreeCAD Python API ──→  geometry/ (.FCStd + STEP exports)
+        │
+        ▼
+[mesh_agent] ─── Gmsh Python API ─────→  mesh/ (.msh files, quality report)
+        │
+        ▼
+[solve_agent] ── CalculiX / FEniCS ───→  analysis/ (.inp / .py definitions)
+               / Elmer / OpenFOAM        results/ (gitignored VTK/VTU)
+        │
+        ▼
+[postprocess_agent] ── ParaView CLI ──→  docs/results-summary.md
+                     / FreeCAD
+</code></pre>
+<p><strong>Tools available on ace-linux-2</strong>: FreeCAD, Blender, Gmsh, CalculiX, FEniCS, Elmer, OpenFOAM</p>
+<hr />
+<h3>Phase 1 — Repository restructuring (CAD-DEVELOPMENTS)</h3>
+<p><strong>Step 1.1 — Create directory structure</strong></p>
+<pre><code>geometry/
+  hull/         ← existing ship/boat .FCStd files
+  instruments/  ← CTD.blend (Blender) + any instrument geometry
+mesh/           ← Gmsh .geo scripts and generated .msh (gitignored)
+analysis/
+  hull/         ← CalculiX .inp / FEniCS .py per analysis case
+results/        ← solver outputs (gitignored)
+agents/         ← Python agent stubs for each pipeline stage
+docs/           ← pipeline.md, tutorials
+specs/          ← material props, BCs, load cases YAML
+</code></pre>
+<p><strong>Step 1.2 — Move files</strong>
+- <code>BOAT.FCStd</code>, <code>BOAT1.FCStd</code>, <code>b1.FCStd</code>, <code>boat profile.FCStd</code>, <code>new curved boat.FCStd</code>, <code>ship model.FCStd</code>, <code>solid ship.FCStd</code>, <code>example.FCStd</code> → <code>geometry/hull/</code>
+- <code>Ship macro.FCStd</code>, <code>ship macro python console1.FCStd</code> → <code>geometry/hull/</code> (keep as macro examples)
+- <code>ship dim drg re1.FCStd</code>, <code>ship drg.new.FCStd</code> → <code>geometry/hull/</code>
+- <code>CTD.blend</code> → <code>geometry/instruments/</code></p>
+<p><strong>Step 1.3 — <code>.gitignore</code></strong></p>
+<pre><code>*.FCStd1
+*.FCBak
+*.blend1
+mesh/*.msh
+results/
+*.vtk
+*.vtu
+*.pvd
+__pycache__/
+*.py[cod]
+</code></pre>
+<p><strong>Step 1.4 — <code>README.md</code></strong> (replace "# my-files-")
+- Mission statement: AI-agent-driven FEA from scratch
+- Pipeline diagram (ASCII)
+- Tools + installation (FreeCAD, Gmsh, CalculiX/FEniCS, Blender)
+- Directory guide
+- Collaborator credit (bakkiprasad5669) + workspace-hub link</p>
+<p><strong>Step 1.5 — <code>docs/pipeline.md</code></strong>
+- Full pipeline spec: stages, tools, I/O contracts, agent entry points
+- Example workflow: boat hull structural analysis (pressure loads, mesh, CalculiX linear static)</p>
+<p><strong>Step 1.6 — <code>agents/</code> scaffold</strong>
+Four stub files with docstrings and placeholder <code>run()</code> functions:
+- <code>geometry_agent.py</code> — FreeCAD Python API, parametric geometry generation
+- <code>mesh_agent.py</code> — Gmsh Python API, mesh size controls, quality checks
+- <code>solve_agent.py</code> — CalculiX/FEniCS/Elmer dispatch, material + BC injection
+- <code>postprocess_agent.py</code> — VTK result parsing, summary extraction</p>
+<p><strong>Step 1.7 — Push to <code>bakkiprasad5669/CAD-DEVELOPMENTS</code></strong></p>
+<hr />
+<h3>Phase 2 — workspace-hub integration</h3>
+<p><strong>Step 2.1 — Register submodule</strong></p>
+<pre><code class="language-bash"># From workspace-hub root (CAD-DEVELOPMENTS dir already present)
+git submodule add https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS CAD-DEVELOPMENTS
+</code></pre>
+<p><strong>Step 2.2 — <code>specs/modules/INDEX.md</code></strong> entry:
+| Module | Type | Mission | Tools | Computer |
+|--------|------|---------|-------|----------|
+| CAD-DEVELOPMENTS | FEA pipeline | AI-agent FEA model development | FreeCAD, Gmsh, CalculiX, FEniCS, Elmer | ace-linux-2 |</p>
+<p><strong>Step 2.3 — Verify + commit</strong>
+- <code>validate-file-placement.sh</code> passes
+- <code>git submodule status</code> shows clean pin at HEAD
+- Commit: <code>chore(WRK-610): add CAD-DEVELOPMENTS as AI-agent FEA pipeline submodule</code></p>
+<hr />
+<h3>Test / Verify</h3>
+<ul>
+<li><code>git submodule status</code> in workspace-hub: shows <code>CAD-DEVELOPMENTS</code> pinned, no <code>+</code>/<code>-</code>/<code>U</code></li>
+<li><code>git status</code> in CAD-DEVELOPMENTS: clean (after push)</li>
+<li>All 13 source files present under <code>geometry/hull/</code> or <code>geometry/instruments/</code></li>
+<li><code>agents/geometry_agent.py</code> importable: <code>python3 -c "import agents.geometry_agent"</code></li>
+<li><code>validate-file-placement.sh</code> on workspace-hub: exit 0</li>
+</ul>
+<p><em>Plan approved by user: 2026-02-25</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-610
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-610.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-610/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-610.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-610/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-610/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-610/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-610/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-610/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-610/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-610/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-610/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-610/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-610/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-610/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

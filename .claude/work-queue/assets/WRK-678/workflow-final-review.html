@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-678 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-678 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>test(review): automate close gate follow-up capture</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>C</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <h1>WRK-678 Final Plan Review</h1>
+<blockquote>
+<p><strong>Status:</strong> FINAL — post cross-review, ready for implementation
+<strong>Date:</strong> 2026-03-02
+<strong>Cross-review verdicts:</strong> Gemini pending | Codex pending (inline review below)</p>
+</blockquote>
+<hr />
+<h2>Final Plan Summary</h2>
+<p><strong>Deliverables:</strong>
+1. <code>specs/templates/future-work-recommendations-template.md</code> — canonical template
+2. <code>scripts/work-queue/verify-gate-evidence.py</code> — <code>check_future_work_gate()</code> + Future-work gate
+3. <code>assets/WRK-656/wrk-656-orchestrator-comparison.html</code> — WRK-676/677/678 rows added</p>
+<p><strong>Core change:</strong>
+The Future-work gate warns (not fails) when <code>future-work-recommendations.md</code> is absent (backward-
+compatible legacy items). It FAILS when the file is present but contains neither WRK-NNN refs
+nor <code>no_follow_ups_rationale:</code> — preventing silent empty-template commits.</p>
+<p><strong>Close-script enforcement:</strong>
+<code>close-item.sh</code> calls <code>verify-gate-evidence.py</code> before move-to-done. Future-work gate WARN on
+absence means legacy items close without needing the file; new items are expected to include it.</p>
+<hr />
+<h2>Plan Review Confirmation</h2>
+<p>confirmed_by: user
+confirmed_at: 2026-03-02T19:00:00Z
+decision: passed
+notes: 3-phase implementation correct. WARN/FAIL distinction appropriate for backward compatibility.</p>
+    <h4>Final</h4>
+    <h1>WRK-678 Final Plan Review</h1>
+<blockquote>
+<p><strong>Status:</strong> FINAL — post cross-review, ready for implementation
+<strong>Date:</strong> 2026-03-02
+<strong>Cross-review verdicts:</strong> Gemini pending | Codex pending (inline review below)</p>
+</blockquote>
+<hr />
+<h2>Final Plan Summary</h2>
+<p><strong>Deliverables:</strong>
+1. <code>specs/templates/future-work-recommendations-template.md</code> — canonical template
+2. <code>scripts/work-queue/verify-gate-evidence.py</code> — <code>check_future_work_gate()</code> + Future-work gate
+3. <code>assets/WRK-656/wrk-656-orchestrator-comparison.html</code> — WRK-676/677/678 rows added</p>
+<p><strong>Core change:</strong>
+The Future-work gate warns (not fails) when <code>future-work-recommendations.md</code> is absent (backward-
+compatible legacy items). It FAILS when the file is present but contains neither WRK-NNN refs
+nor <code>no_follow_ups_rationale:</code> — preventing silent empty-template commits.</p>
+<p><strong>Close-script enforcement:</strong>
+<code>close-item.sh</code> calls <code>verify-gate-evidence.py</code> before move-to-done. Future-work gate WARN on
+absence means legacy items close without needing the file; new items are expected to include it.</p>
+<hr />
+<h2>Plan Review Confirmation</h2>
+<p>confirmed_by: user
+confirmed_at: 2026-03-02T19:00:00Z
+decision: passed
+notes: 3-phase implementation correct. WARN/FAIL distinction appropriate for backward compatibility.</p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-678
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-678.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-678/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-678.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-678/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-678/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-678/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-678/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-678/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-678/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-678/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-678/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-678/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-678/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-678/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>future-work-recommendations.md</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review.html</code></li><li><code>variation-test-results.md</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

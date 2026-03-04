@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-094 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-094 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Plan, reassess, and improve the workspace-hub workflow</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Conduct a comprehensive review of the current workspace-hub workflow — including the work queue system, skill execution pipeline, orchestrator pattern, reflect cycle, and daily productivity loop. Identify bottlenecks, redundancies, and gaps. Propose and implement improvements.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>The workspace has grown organically with 90+ work items captured, but only 16 processed. The state.yaml is out of sync (last_id: 85 vs actual highest WRK-093). The workflow needs a holistic reassessment to improve throughput, reduce friction, and ensure the tools actually accelerate work rather than adding overhead.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Audit current workflow: capture → triage → process → archive pipeline</li>
+<li>[x] Identify bottlenecks (e.g., 20 pending items, low process rate)</li>
+<li>[x] Review state.yaml sync issues and fix counter drift</li>
+<li>[x] Assess skill effectiveness (which skills are used, which are dead weight)</li>
+<li>[ ] Evaluate orchestrator pattern adherence in practice</li>
+<li>[x] Propose concrete improvements with effort/impact assessment</li>
+<li>[x] Implement quick wins immediately</li>
+<li>[x] Document revised workflow in specs/</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Spec</strong>: <code>specs/modules/wrk-094-workflow-improvement.md</code>
+<strong>Target</strong>: workspace-hub <code>.claude/</code> infrastructure</p>
+<h3>Current State (from research)</h3>
+<ul>
+<li><strong>Queue</strong>: 107 items, 63 pending, 1 working, 40 archived (31% processed)</li>
+<li><strong>State drift</strong>: <code>state.yaml</code> last_id=106 (actual=107), last_processed=WRK-011 (WRK-098 is latest)</li>
+<li><strong>Automation</strong>: Zero cron jobs; all processing is manual <code>/work run</code> invocation</li>
+<li><strong>Skills</strong>: 21 coordination skills; ~15 are low/zero value (zombie skills)</li>
+<li><strong>Reflect cycle</strong>: Stuck — abstract/generalize/store phases never complete</li>
+<li><strong>Plan coverage</strong>: ~13% of items have plans (should be 100% before processing)</li>
+</ul>
+<h3>Phase 1 — Quick Wins (DONE 2026-02-12, commit <code>e207ced</code>)</h3>
+<ol>
+<li>~~<strong>Fix state.yaml counters</strong>~~: Done. Resynced total_captured 117→132, total_archived 35→50. Consolidated duplicate <code>archived/</code> → <code>archive/2026-02/</code> (5 files). Moved 3 in_progress items to <code>working/</code>. Fixed WRK-121 frontmatter.</li>
+<li>~~<strong>Cull zombie skills</strong>~~: Done. Audited 24 coordination + 25 cross-category skills. Archived 28 zombies to <code>_archive/</code> (prompting wrappers, automation platforms, doc generators, agent patterns, auto-generated stubs). Kept 15 coordination skills (4 Tier 1 + 11 Tier 2). 3 flagged for monitoring.</li>
+<li>~~<strong>Add plan gate enforcement</strong>~~: Done. Created <code>process.md</code> (202 lines) documenting full pipeline with plan gate workflow. Created <code>metrics-template.md</code> for INDEX.md integration.</li>
+</ol>
+<h3>Phase 2 — Automated Orchestration (DONE 2026-02-13, commit <code>458b198</code>)</h3>
+<ol>
+<li>~~<strong>Investigate automated batch processing feasibility</strong>~~: Done. Claude Code is interactive-only; cron not viable. Manual batch invocation is the recommended approach.</li>
+<li>~~<strong>Fix reflect RAGS cycle</strong>~~: Done. Root cause was <code>git submodule foreach</code> hanging on broken/detached submodules. Fix applied (commit <code>458b198</code>):</li>
+<li>Replaced <code>git submodule foreach</code> with <code>git submodule status</code> (reads <code>.gitmodules</code> without entering repos)</li>
+<li>Added per-repo timeout (30s) + overall timeout (300s) in <code>daily-reflect.sh</code></li>
+<li>Fixed <code>bash -c</code> injection risk: export functions, pass vars as positional args (Codex review)</li>
+<li>Added JSON validation after timeout (detect truncated data, Codex review)</li>
+<li>Fixed <code>log_info</code>/<code>log_success</code> stdout contamination + <code>grep -c</code> double-output bug</li>
+<li>Tested: 24 repos analyzed, 0 hangs, clean JSON output</li>
+<li>Cross-reviewed: Claude APPROVE, Gemini NO_OUTPUT, Codex MAJOR→fixed</li>
+<li>~~<strong>Batch INDEX regeneration + live metrics</strong>~~: Done. <code>generate-index.py</code> now computes and renders 27 live metrics (throughput, plan coverage, aging, priority distribution). Verified: 47% throughput, 88% plan coverage, aging data correct.</li>
+</ol>
+<h3>Phase 3 — Process Improvements (DONE — governance established)</h3>
+<ol>
+<li>~~<strong>Skill lifecycle governance</strong>~~: Done. 3-tier system established and applied:</li>
+<li>Tier 1 (Core): work-queue, claude-reflect, repo-readiness, skill-learner</li>
+<li>Tier 2 (Value-add): knowledge-manager, repo-sync, compliance-check, legal-sanity, commit-workflow, workspace-cli, repo-capability-map, data-validation-reporter, interactive-report-generator, context-management, compound-engineering</li>
+<li>Tier 3 (Archived): 28 skills moved to <code>_archive/</code> with README</li>
+<li>~~<strong>Brochure sync automation</strong>~~: Removed — file as separate WRK item (scope creep from core workflow improvement)</li>
+<li><strong>Orchestrator ↔ work-queue integration</strong>: Unblocked now that reflect cycle is fixed. Can auto-trigger batch processing after RAGS loop completes. Low priority — manual <code>/work run</code> is sufficient for current throughput.</li>
+</ol>
+<h3>Phase 4 — Documentation (DONE)</h3>
+<ol>
+<li>~~<strong>Revised workflow doc</strong>~~: Done. Created <code>.claude/work-queue/process.md</code> (202 lines) — full pipeline reference with frontmatter template, cross-review format, commit conventions.</li>
+<li>~~<strong>Skill catalog cleanup</strong>~~: N/A — no <code>skills-catalog.json</code> exists in workspace-hub (only in worldenergydata submodule as symlink).</li>
+<li>~~<strong>Metrics dashboard</strong>~~: Done. Created <code>.claude/work-queue/assets/metrics-template.md</code> (42 lines) — throughput, plan coverage, aging, priority distribution with placeholder variables for <code>generate-index.py</code> integration.</li>
+</ol>
+<h3>Success Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+<th>Target</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Queue throughput</td>
+<td>31% (40/107)</td>
+<td>47% (64/137)</td>
+<td>80%</td>
+<td>In progress</td>
+</tr>
+<tr>
+<td>Plan coverage</td>
+<td>13%</td>
+<td>88% (58/66 pending)</td>
+<td>100%</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>Active skills</td>
+<td>336 (66 zombie)</td>
+<td>301 (28 archived)</td>
+<td>~300 core</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>State.yaml accuracy</td>
+<td>Drifted (5+ counters wrong)</td>
+<td>Synced</td>
+<td>Synced</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>Automated processing</td>
+<td>0</td>
+<td>Feasibility assessed</td>
+<td>Manual batch</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>Reflect cycle</td>
+<td>1/4 phases</td>
+<td>4/4 (fixed + tested)</td>
+<td>4/4</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>Workflow docs</td>
+<td>Missing</td>
+<td>process.md + metrics template</td>
+<td>Documented</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>Live metrics</td>
+<td>None</td>
+<td>27 metrics in INDEX.md</td>
+<td>Integrated</td>
+<td>Done</td>
+</tr>
+</tbody>
+</table>
+<h3>Remaining Work</h3>
+<ul>
+<li>~~<strong>Reflect script fix</strong>~~: Done (commit <code>458b198</code>). Per-repo timeout, JSON validation, injection fix.</li>
+<li>~~<strong>Metrics integration</strong>~~: Done (commit <code>458b198</code>). 27 live metrics in INDEX.md.</li>
+<li><strong>Orchestrator integration</strong>: Unblocked. Low priority — manual batch is sufficient (Phase 3 item 9).</li>
+<li><strong>WRK-132 location fix</strong>: Move from <code>pending/</code> to <code>working/</code> or correct frontmatter.</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: MINOR | Codex: MAJOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Phase 1: Replaced vague "archive 10-15 skills" with explicit keep/archive list requirement for all 20 skills, with dependency audit</li>
+<li>Phase 2: Replaced "cron job" with feasibility investigation — Claude Code is interactive CLI, non-interactive cron is non-trivial</li>
+<li>Phase 3: Removed brochure sync automation (scope creep) — should be separate WRK item</li>
+<li>Added concrete throughput mechanism: batch-process simple Route A items with plans</li>
+<li>Updated automated processing target from "1 daily cron" to feasibility-gated</li>
+<li>Codex additionally requested state.yaml update script with validation checks, and concrete reflect cycle debug steps</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: /work add to let us plan reassess and improve the workflow</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-094
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-094.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-094/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-094.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-094/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-094/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-094/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-094/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-094/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-094/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-094/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-094/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-094/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-094/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-094/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

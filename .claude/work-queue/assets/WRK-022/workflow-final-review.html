@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-022 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-022 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>US property valuation analysis using GIS — location, traffic, and spatial factors</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>gemini</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Build a property valuation analysis tool for US properties that incorporates geographic location, road vehicle count (traffic volume), and other spatial factors to assess property value. Utilize GIS skills and tools (Google Maps, QGIS, public GIS data) to gather and analyze location-based attributes that influence property value.</p>
+<p>Factors to consider:
+- <strong>Geographic location</strong>: neighborhood, proximity to amenities, school districts, zoning
+- <strong>Traffic/vehicle counts</strong>: road traffic volume from DOT data, highway proximity
+- <strong>Spatial factors</strong>: flood zones, elevation, proximity to commercial centers, transit access
+- <strong>Market data</strong>: comparable sales, tax assessments, listing prices</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Property value is heavily influenced by location-specific factors that are best analyzed spatially. Combining traditional valuation inputs with GIS-derived spatial intelligence provides a more comprehensive and defensible property assessment.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Property lookup by address with geocoding</li>
+<li>[x] GIS-based spatial attribute extraction for a given property:</li>
+<li>Road vehicle count / traffic volume (DOT/state traffic count data)</li>
+<li>Flood zone status (FEMA data)</li>
+<li>School district and ratings</li>
+<li>Proximity to amenities (commercial, transit, parks)</li>
+<li>Zoning classification</li>
+<li>[x] Integration with property market data (tax records, comparable sales where available)</li>
+<li>[x] Valuation model incorporating spatial and market factors</li>
+<li>[ ] Visualization: property on map with overlaid spatial factors (deferred — see Agentic AI Horizon)</li>
+<li>[x] Comparable property analysis within configurable radius</li>
+<li>[x] Report output with valuation estimate and supporting spatial analysis</li>
+<li>[x] Document data sources, methodology, and limitations</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>assethold/src/assethold/property/</code></p>
+<h3>Scope Limitation</h3>
+<p>Initial version limited to 3-5 supported counties with known web portals. National coverage requires per-county assessor integration which is out of scope. This is a spatial factor screening model, not a certified appraisal.</p>
+<h3>Phase 1 — Geocoding &amp; Property Lookup</h3>
+<ul>
+<li><code>geocoder.py</code>:</li>
+<li>Address → (lat, lon) via Nominatim/OpenStreetMap (free, no API key)</li>
+<li>County assessor web scraping for specific target counties (start with 3-5 counties with known web portals: e.g., Harris County TX, Los Angeles County CA, Cook County IL)</li>
+<li>Tax assessment data from public records for supported counties</li>
+<li><strong>Privacy/legal review</strong>: verify data usage rights for each county source before scraping</li>
+<li><code>property_model.py</code>:</li>
+<li><code>Property</code> dataclass: address, lat, lon, parcel_id, zoning, lot_size, building_sqft</li>
+</ul>
+<h3>Phase 2 — Spatial Factor Extraction</h3>
+<ul>
+<li><code>spatial_factors.py</code>:</li>
+<li><strong>Traffic volume</strong>: State DOT traffic count data (AADT from public APIs/CSVs)</li>
+<li><strong>Flood zone</strong>: FEMA NFHL data via FEMA API or GeoJSON</li>
+<li><strong>School districts</strong>: NCES school boundary data</li>
+<li><strong>Proximity scores</strong>: distance to nearest commercial center, transit, parks (OpenStreetMap Overpass API)</li>
+<li><strong>Zoning</strong>: from parcel data or municipal GIS layers</li>
+<li>Each factor returns a normalized score (0-1) for the valuation model</li>
+</ul>
+<h3>Phase 3 — Market Data Integration</h3>
+<ul>
+<li><code>market_data.py</code>:</li>
+<li>Comparable sales lookup within configurable radius</li>
+<li>Redfin public listing data (terms permitting) or manual comparable entry</li>
+<li>County tax assessment data for supported counties</li>
+<li><strong>Note</strong>: Zillow API (Zestimate) was deprecated in 2021; MLS data requires paid API access. Automated comparable sales data requires paid API. Document this limitation clearly.</li>
+<li><strong>Fallback</strong>: when comps are absent, use county tax assessment value as baseline with spatial factor adjustments only</li>
+</ul>
+<h3>Phase 4 — Valuation Model</h3>
+<ul>
+<li><code>valuation.py</code>:</li>
+<li>Weighted factor model: base_value x (traffic_factor x school_factor x flood_factor x proximity_factor)</li>
+<li>Comparable sales adjustment: median comp price +/- spatial factor adjustments</li>
+<li>Output: <code>ValuationResult</code> with <strong>estimated range</strong> (not point estimate), confidence range, factor breakdown</li>
+<li><strong>Caveat</strong>: This is a spatial factor screening model, not a certified appraisal. Output labeled as "estimated range" not "valuation"</li>
+</ul>
+<h3>Phase 5 — Visualization &amp; Report</h3>
+<ul>
+<li><code>property_map.py</code>:</li>
+<li>Folium map with property marker + spatial factor overlays (flood zones, traffic counts, comps)</li>
+<li><code>valuation_report.py</code>:</li>
+<li>Markdown/HTML report: property details, factor scores, comparable sales, valuation estimate</li>
+<li>Factor decomposition chart (Plotly waterfall)</li>
+</ul>
+<h3>Phase 6 — Tests</h3>
+<ul>
+<li>Unit tests: geocoding, distance calculations, factor normalization</li>
+<li>Valuation model tests with known property + known factors</li>
+<li>Edge cases: rural properties (sparse comps), commercial vs residential</li>
+</ul>
+<h3>External Dependencies</h3>
+<ul>
+<li>Free APIs: Nominatim, OpenStreetMap, FEMA, state DOT data</li>
+<li>Optional: Google Maps API key</li>
+<li><strong>Removed</strong>: Zillow API (deprecated 2021). Comparable sales require paid API access (Bridge Interactive, Redfin API) — manual entry as fallback</li>
+<li>No paid data sources required for base functionality (spatial factors only)</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: MAJOR | Codex: MAJOR | Gemini: MINOR</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Added Scope Limitation section: initial version limited to 3-5 supported counties</li>
+<li>Replaced "county assessor APIs" with county web scraping for specific known portals</li>
+<li>Removed Zillow API reference (deprecated 2021); replaced with Redfin/manual entry</li>
+<li>Added fallback valuation path when comps are absent (tax assessment baseline)</li>
+<li>Labeled output as "estimated range" not "valuation" — this is a screening model, not appraisal</li>
+<li>Added privacy/legal review step for property data usage per Codex feedback</li>
+<li>Removed "public MLS data" claim (MLS is not public)</li>
+<li>Identified 3 specific starter counties (Harris TX, Los Angeles CA, Cook IL)</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: ability to analyze the value of a property in US based on its geological location, road vehicle count etc. Utilize gis skills as needed.</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-022
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-022.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-022/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-022.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-022/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-022/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-022/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-022/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-022/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-022/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-022/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-022/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-022/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-022/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-022/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

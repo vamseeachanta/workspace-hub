@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-630 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-630 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Days 2–5 deliverables for Client 2 engineering AI demo.</p>
+<h3>Calculation Templates (Day 2)</h3>
+<p><strong>Diffraction analysis templates:</strong>
+- <code>demo/calc_diffraction_panel_model_setup.md</code> — AQWA/WAMIT model conventions prompt:
+  panel mesh requirements (8 panels per wavelength min), symmetry planes, free surface,
+  waterplane area check, zero-speed vs forward speed; typical RAO output format
+- <code>demo/calc_rao_interpretation.md</code> — RAO extraction prompt: peak period identification,
+  heading matrix coverage, cancellation frequencies, cross-coupling terms (heave/pitch)
+- <code>demo/calc_qtf_second_order.md</code> — QTF usage: difference-frequency loads for mooring
+  low-frequency response; sum-frequency for TLP/spar springing; Newman's approximation
+  when full QTF not available</p>
+<p><strong>Plate FFS calculation templates:</strong>
+- <code>demo/calc_plate_ffs_part4_metal_loss.md</code> — API 579-1 Part 4 for plate: average
+  measured thickness vs minimum required; RSF_a screening; Level 1 vs Level 2 distinction
+  for plates (no hoop stress — limit load governs); MFFL (minimum future flaw limit)
+- <code>demo/calc_plate_ffs_part8_distortion.md</code> — Part 8 shell distortions: peaking/angular
+  misalignment in welds, out-of-roundness; equivalent stress from distortion; buckling
+  interaction check for stiffened plates
+- <code>demo/calc_plate_ffs_part9_cracks.md</code> — FAD approach for crack-like flaws:
+  K_r vs L_r diagram; BS 7910 Level 2B; fracture toughness input (K_mat or J_mat);
+  fatigue crack growth projection (Paris law); remaining life calculation</p>
+<p><strong>GoA analysis templates:</strong>
+- <code>demo/calc_goa_seismic_check.md</code> — API RP 2EQ spectral analysis: platform period,
+  base shear, OLE/CLE/ALE limit states; pushover capacity check
+- <code>demo/calc_goa_extreme_metocean.md</code> — 100-yr GoA wave/current/wind parameters;
+  comparison with GoM (typically harsher wave heights, lower Hs for ice-dominated zones);
+  API RP 2N ice loading: first-year ridges, multi-year ice pressure, ice crushing force</p>
+<h3>Multi-Step Workflows (Day 4)</h3>
+<p><strong>Diffraction-to-structural load workflow:</strong>
+File: <code>demo/workflow_diffraction_to_structural.md</code>
+1. Input: water depth, vessel/structure dimensions, wave environment (Hs, Tp, heading)
+2. Step 1 → panel model adequacy check (mesh density for peak period)
+3. Step 2 → RAO interpretation (identify governing responses by heading)
+4. Step 3 → combined load derivation (wave + wind + current for governing sea state)
+5. Step 4 → structural utilisation flag (member/joint check indication)
+6. Output: summary table — governing headings, load cases for detailed structural check</p>
+<p><strong>GoA FFS decision workflow:</strong>
+File: <code>demo/workflow_goa_ffs_decision.md</code>
+1. Input: inspection findings (wall loss % / crack dimensions / distortion mm)
+2. Step 1 → GoA environment severity classification (ice zone, seismic zone, metocean)
+3. Step 2 → FFS Level 1 screening (API 579-1 plates)
+4. Step 3 → remaining life at GoA corrosion rate
+5. Step 4 → re-inspection interval recommendation (BSEE GoA ops environment)
+6. Output: FFS verdict + GoA-specific inspection schedule</p>
+<h3>Maritime Legal Case Templates (Day 4)</h3>
+<p><strong>Casualty investigation analysis:</strong>
+- <code>demo/maritime_casualty_analysis.md</code> — prompt template for reviewing MAIB/NTSB/USCG
+  reports: extract contributing factors → ISM Code failures → root-cause hierarchy;
+  sample: parse a MAIB report section and output structured findings table
+- <code>demo/maritime_statistical_context.md</code> — prompt using <code>worldenergydata.MAIBLoader</code> +
+  <code>NTSBMarineLoader</code> (WRK-320): "find comparable incidents for vessel type X / failure
+  mode Y" → precedent table with dates, vessel types, outcomes, regulatory citations</p>
+<p><strong>Expert witness support:</strong>
+- <code>demo/expert_witness_report_template.md</code> — structured technical report for legal:
+  scope of appointment, methodology, engineering findings, opinion (standard of care),
+  limitations; Daubert-compliant framing; deposition Q&amp;A prep prompt
+- <code>demo/liability_framing_prompt.md</code> — translate engineering findings into
+  legal causation language: "the failure of [component] was a proximate cause of...
+  consistent with / inconsistent with the standard of care because..."</p>
+<p><strong>Maritime legal decision workflow:</strong>
+File: <code>demo/workflow_maritime_legal_analysis.md</code>
+1. Input: incident description (vessel type, operation, casualty type, jurisdiction)
+2. Step 1 → applicable regulatory framework (USCG CFR / MAIB / IMO)
+3. Step 2 → ISM Code non-conformity screen (safety management system failures)
+4. Step 3 → comparable incident precedents (MAIB/NTSB database query)
+5. Step 4 → standard of care assessment (industry practice vs regulatory requirement)
+6. Step 5 → damages estimation framework (limitation of liability, P&amp;I coverage)
+7. Output: case analysis memo outline with evidence gaps flagged</p>
+<h3>BSEE GoA Data Prompts (Day 4)</h3>
+<p>File: <code>demo/goa_bsee_data_queries.md</code>
+- GoA active leases, historical platforms (Cook Inlet focus)
+- Environmental study requirements for GoA OCS projects
+- Seismic hazard data for GoA vs GOM structural design
+- Ice zone classification per USCG/BSEE GoA regulations</p>
+<h3>Demo Package (Day 5)</h3>
+<p>File: <code>demo/demo_script_client2.md</code>
+- 15-20 min flow: diffraction overview → plate FFS walkthrough → GoA live data query
+- 3 "wow" moments: QTF second-order loads, plate crack FAD diagram, GoA vs GOM comparison
+- FAQ: "How does AI handle site-specific GoA conditions?" — BSEE data integration demo</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Diffraction workflows + FFS for plates + GoA is a high-value combination for offshore
+structural integrity work that is typically very time-intensive (multi-day model setup,
+manual code checks). The GoA angle is differentiated — most AI demos focus on GoM.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] 3 diffraction templates with AQWA/WAMIT conventions and sample I/O</li>
+<li>[ ] 3 plate FFS templates (Part 4/8/9) with worked examples</li>
+<li>[ ] 2 GoA-specific calc templates (seismic + metocean) with sample parameters</li>
+<li>[ ] Diffraction-to-structural workflow prompt chain documented</li>
+<li>[ ] GoA FFS decision workflow documented</li>
+<li>[ ] BSEE GoA data query prompts tested</li>
+<li>[ ] 4 maritime legal templates created (casualty analysis, statistical context, expert
+  witness report, liability framing)</li>
+<li>[ ] Maritime legal decision workflow (7-step) documented with sample I/O</li>
+<li>[ ] MAIB/NTSB statistical context prompt validated against <code>worldenergydata</code> loaders</li>
+<li>[ ] Demo script (15-20 min) includes maritime legal showcase (casualty analysis moment)</li>
+<li>[ ] Legal scan passes</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-630
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-630.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-630/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-630.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-630/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-630/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-630/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-630/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-630/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-630/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-630/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-630/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-630/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-630/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-630/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-115 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-115 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Link RAO data to hull shapes in hull library catalog</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Add RAO (Response Amplitude Operator) linkage to hull shapes in the hull library catalog. Each hull entry should be able to reference associated RAO datasets that accumulate over time as diffraction analyses are performed. When a new diffraction analysis produces RAOs for a cataloged hull, the link is established automatically.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Hull panel meshes (WRK-114) and diffraction solver results (RAOs) are currently disconnected. Linking them creates a growing knowledge base: each hull gains a history of RAO results across different analysis conditions (wave headings, drafts, solver types). This enables rapid lookup of existing RAOs before re-running expensive diffraction analyses, and feeds into the parametric hull pipeline (WRK-043) and solver benchmarking (WRK-031).</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] PanelCatalogEntry schema extended with RAO reference field(s)</li>
+<li>[x] RAO registry/index that maps hull_id → list of RAO datasets (solver, draft, date, file path)</li>
+<li>[x] Hook or utility to register new RAO results against a hull after diffraction analysis</li>
+<li>[x] Catalog YAML/CSV updated to include RAO link metadata</li>
+<li>[ ] HTML report updated to show RAO availability per hull (deferred to WRK-136)</li>
+<li>[x] Tests covering RAO linking, lookup, and catalog round-trip</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>data/hull_library/catalog/hull_panel_catalog.yaml</code> (extend) + <code>data/hull_library/raos/</code> (new)</p>
+<h3>Existing Assets (reuse)</h3>
+<ul>
+<li><code>data/hull_library/catalog/hull_panel_catalog.yaml</code> — 23 entries, PanelCatalogEntry schema</li>
+<li><code>src/digitalmodel/hydrodynamics/hull_library/panel_catalog.py</code> — PanelCatalogEntry Pydantic model</li>
+<li>Benchmark RAO data: <code>benchmark_output/barge_benchmark/r4/</code>, <code>benchmark_output/ship_benchmark/r1/</code>, <code>benchmark_output/spar_benchmark/r1/</code></li>
+<li><code>src/digitalmodel/hydrodynamics/diffraction/</code> — DiffractionSpec, OrcaWave/AQWA backends</li>
+<li><code>scripts/run_3way_benchmark.py</code> — produces RAO comparison data as JSON</li>
+</ul>
+<h3>Phase 1 — Schema Extension</h3>
+<ul>
+<li>Extend <code>PanelCatalogEntry</code> (in <code>hydrodynamics/hull_library/panel_catalog.py</code>) with optional <code>raos: list[RaoReference]</code> field</li>
+<li><code>RaoReference</code> schema: <code>solver</code> (AQWA/OrcaWave/BEMRosetta), <code>draft_m</code>, <code>loading_condition</code> (ballast/loaded/intermediate), <code>headings_deg: list</code>, <code>date</code>, <code>file_path</code>, <code>benchmark_revision</code></li>
+<li>Backward compatible: existing entries without <code>raos</code> field remain valid</li>
+<li>Draft-matching: lookup must filter by draft_m tolerance (±0.5m) to prevent using ballast RAOs for loaded condition</li>
+</ul>
+<h3>Phase 2 — RAO Registry</h3>
+<ul>
+<li><code>data/hull_library/raos/</code> directory structure: <code>raos/{hull_id}/{solver}_{draft}m_{date}.json</code></li>
+<li>Registry index: <code>data/hull_library/raos/registry.yaml</code> — maps hull_id → list of RAO datasets</li>
+<li>Each RAO dataset JSON: frequencies, headings, 6-DOF RAO amplitude + phase arrays</li>
+<li>Populate with existing benchmark data (barge r4, ship r1, spar r1)</li>
+</ul>
+<h3>Phase 3 — Auto-Linking Hook</h3>
+<ul>
+<li>Shared diffraction postprocessor function (not only in benchmark script): <code>register_rao(hull_id, solver, draft, headings, rao_data, output_dir)</code></li>
+<li>Called from: <code>run_3way_benchmark.py</code>, <code>orcawave_backend.py</code>, <code>aqwa_backend.py</code> — any diffraction entry point</li>
+<li>Updates both registry.yaml and catalog entry</li>
+<li>Idempotent: re-running same analysis overwrites previous entry for same hull+solver+draft+loading_condition</li>
+</ul>
+<h3>Phase 4 — Catalog &amp; Report Updates</h3>
+<ul>
+<li>Update catalog YAML with RAO references for benchmarked hulls</li>
+<li>Extend HTML report: per-hull row shows RAO availability (checkmarks per solver)</li>
+<li>Add lookup utility: <code>get_raos(hull_id, solver=None, draft=None)</code> → returns matching RAO datasets</li>
+<li>Tests: registration, lookup, catalog round-trip, backward compatibility</li>
+</ul>
+<hr />
+<p><em>Source: "add to hull shapes a link to the RAOs over time. Link the raos as diffraction analysis is performed."</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-115
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-115.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-115/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-115.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-115/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-115/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-115/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-115/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-115/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-115/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-115/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-115/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-115/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-115/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-115/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

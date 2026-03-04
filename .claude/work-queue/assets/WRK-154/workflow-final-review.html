@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-154 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-154 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>CI workflow rewrite — fix 2 GitHub Actions workflows</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>codex</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Fix 2 existing GitHub Actions workflows for the Python/bash workspace. Audit found only 2 workflows (not 4 as originally estimated): <code>baseline-check.yml</code> (4.5 KB, push/PR trigger) and <code>multi-ai-review.yml</code> (6.7 KB, PR trigger). Both are syntactically enabled but untested. WRK-086 was planned but never executed. CI is functionally non-operational.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><ul>
+<li>Zero automated checks on any push or PR</li>
+<li>No coverage reporting, no linting, no baseline verification</li>
+<li>Blocks quality assurance for all repos</li>
+</ul></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] baseline-check.yml rewritten for Python/bash (not JS)</li>
+<li>[ ] multi-ai-review.yml assessed — rewrite or remove</li>
+<li>[ ] At least 1 workflow triggers on push to main</li>
+<li>[ ] All enabled workflows pass on current main</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>.github/workflows/</code> in workspace-hub</p>
+<h3>Current State (from audit)</h3>
+<ul>
+<li>2 workflows exist (not 4 as originally estimated)</li>
+<li><code>baseline-check.yml</code>: triggers on push (main, feature/*), PR to main, workflow_dispatch</li>
+<li><code>multi-ai-review.yml</code>: triggers on PR to main, workflow_dispatch</li>
+<li>Both are syntactically enabled but may fail on execution (untested)</li>
+</ul>
+<h3>Phase 1 — Audit &amp; Test</h3>
+<ul>
+<li>Trigger each workflow manually via <code>gh workflow run</code></li>
+<li>Capture and diagnose failures</li>
+<li>Check: Python version, dependency installation, test command, PYTHONPATH</li>
+<li>Check: AI review scripts exist and are executable</li>
+</ul>
+<h3>Phase 2 — Fix baseline-check.yml</h3>
+<ul>
+<li>Ensure Python 3.12 setup</li>
+<li>Fix dependency installation (no uv — use pip or system packages)</li>
+<li>Fix test command: <code>PYTHONPATH="src:../assetutilities/src" python3 -m pytest tests/ -v --tb=short --noconftest</code></li>
+<li>Add tiered test execution (commit/task/session per manual input)</li>
+<li>Verify workflow passes on current main</li>
+</ul>
+<h3>Phase 3 — Fix multi-ai-review.yml</h3>
+<ul>
+<li>Verify <code>scripts/review/</code> scripts exist and work</li>
+<li>Check: codex, gemini CLI availability in GitHub Actions runner</li>
+<li>If AI CLIs not available in CI: convert to workflow_dispatch manual trigger only</li>
+<li>Assess: keep, rewrite, or remove based on practical value</li>
+</ul>
+<h3>Phase 4 — Verify &amp; Document</h3>
+<ul>
+<li>Both workflows pass on main branch</li>
+<li>Document trigger conditions and manual dispatch options</li>
+<li>Add workflow status badges to README if desired</li>
+</ul>
+<h3>Test Strategy</h3>
+<ul>
+<li>Use <code>gh workflow run</code> for manual testing</li>
+<li>Check <code>gh run list</code> for status</li>
+<li>OAuth token needs <code>workflow</code> scope to push workflow changes</li>
+</ul>
+<h3>Dependencies</h3>
+<ul>
+<li>GitHub Actions runner (ubuntu-latest)</li>
+<li><code>workflow</code> scope on OAuth token (known limitation from memory)</li>
+</ul></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-154
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-154.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-154/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-154.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-154/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-154/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-154/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-154/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-154/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-154/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-154/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-154/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-154/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-154/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-154/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

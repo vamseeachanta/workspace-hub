@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-659 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-659 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>test(workflow): sandbox multi-agent gate enforcement</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>C</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Logs under <code>.claude/work-queue/logs/WRK-659-*.log</code> show start/close per agent.</li>
+<li>[x] <code>verify-gate-evidence.py WRK-659</code> passes after cross-review/TDD/legal artifacts are in place.</li>
+<li>[x] HTML button records human-review confirmation for the sandbox test.</li>
+<li>[x] Claim evidence references the validator template and notes the NO_OUTPUT policy.</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><ul>
+<li><strong>Spec</strong>: <code>assets/WRK-659/wrk-659-plan-review-draft.html</code> (plan HTML — user confirmed)</li>
+<li><strong>Steps</strong>: Reset WRK → session init → plan HTML → cross-review (Codex+Gemini) → TDD → legal → verify gates → close</li>
+<li><strong>Test</strong>: smoke tests for session.sh, log-gate-event.sh, verify-gate-evidence.py, plan.sh</li>
+<li><strong>Verify</strong>: <code>verify-gate-evidence.py WRK-659</code> exits 0 before close</li>
+</ul>
+<p><em>Approved by user: 2026-03-01</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <h1>WRK-659 Final Plan HTML Review</h1>
+<ul>
+<li><code>wrk_id</code>: WRK-659</li>
+<li><code>stage</code>: final</li>
+<li><code>artifact</code>: assets/WRK-659/wrk-659-plan-review-final.html</li>
+<li><code>reviewer</code>: user</li>
+<li><code>result</code>: accepted</li>
+<li><code>reviewed_at</code>: 2026-03-01T12:40:00Z</li>
+<li><code>notes</code>: Sandbox plan to exercise the gate/validator/logging workflow. Human review gap: need to confirm plan UI is opened and button clicked.</li>
+</ul>
+<h2>Human Review Gaps</h2>
+<ul>
+<li>Plan differs from WRK-657 in that it captures logging metadata only; no real code changes.</li>
+<li>Confirmation button ensures each agent “viewed” the HTML before proceeding.</li>
+</ul>
+<p><strong>Confirm review</strong>: <button type="button" onclick="document.getElementById('status').textContent='Human confirmed at ' + new Date().toISOString();">Confirm human review</button>
+<span id="status"></span></p>
+    <h4>Final</h4>
+    <h1>WRK-659 Final Plan HTML Review</h1>
+<ul>
+<li><code>wrk_id</code>: WRK-659</li>
+<li><code>stage</code>: final</li>
+<li><code>artifact</code>: assets/WRK-659/wrk-659-plan-review-final.html</li>
+<li><code>reviewer</code>: user</li>
+<li><code>result</code>: accepted</li>
+<li><code>reviewed_at</code>: 2026-03-01T12:40:00Z</li>
+<li><code>notes</code>: Sandbox plan to exercise the gate/validator/logging workflow. Human review gap: need to confirm plan UI is opened and button clicked.</li>
+</ul>
+<h2>Human Review Gaps</h2>
+<ul>
+<li>Plan differs from WRK-657 in that it captures logging metadata only; no real code changes.</li>
+<li>Confirmation button ensures each agent “viewed” the HTML before proceeding.</li>
+</ul>
+<p><strong>Confirm review</strong>: <button type="button" onclick="document.getElementById('status').textContent='Human confirmed at ' + new Date().toISOString();">Confirm human review</button>
+<span id="status"></span></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <h1>Resource Pack for WRK-659 sandbox</h1>
+<ul>
+<li>Context: gate enforcement sandbox with logging and validator</li>
+<li>Sources: docs/orchestrator-gate-contract.md, scripts/work-queue/verify-gate-evidence.py</li>
+<li>Constraints: use masked data, no external dependencies</li>
+</ul>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-659
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-659.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-659/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-659.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-659/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-659/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-659/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-659/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-659/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-659/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-659/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-659/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-659/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-659/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-659/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>WRK-659-claude_orchestrator-close.log</code></li><li><code>WRK-659-claude_orchestrator-close.md</code></li><li><code>WRK-659-claude_orchestrator-cross-review.log</code></li><li><code>WRK-659-claude_orchestrator-cross-review.md</code></li><li><code>WRK-659-claude_orchestrator-legal.log</code></li><li><code>WRK-659-claude_orchestrator-legal.md</code></li><li><code>WRK-659-claude_orchestrator-plan.log</code></li><li><code>WRK-659-claude_orchestrator-plan.md</code></li><li><code>WRK-659-claude_orchestrator-tdd.log</code></li><li><code>WRK-659-claude_orchestrator-tdd.md</code></li><li><code>claim-evidence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>html-verification.md</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>resource-pack.md</code></li><li><code>review-claude.md</code></li><li><code>review-codex.md</code></li><li><code>review-gemini.md</code></li><li><code>review.html</code></li><li><code>variation-test-results.md</code></li><li><code>workflow-final-review.html</code></li><li><code>wrk-659-claude_orchestrator-summary.html</code></li></ul></div>
+</body>
+</html>

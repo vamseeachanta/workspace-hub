@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-019 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-019 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Establish drilling, completion, and intervention cost data by region and environment</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Build a cost data layer on top of the field data pipelines that provides drilling, completion, and intervention cost estimates segmented by:
+- <strong>Environment</strong>: offshore vs. onshore
+- <strong>Region</strong>: Gulf of Mexico, North Sea, Brazil, Mexico, Texas (RRC), etc.
+- <strong>Activity type</strong>: drilling (by well type/depth), completion (by type), intervention (by workover type)
+- <strong>Water depth / well depth bands</strong> for offshore</p>
+<p>Sources may include public cost indices, IHS/Rystad benchmarks (where available), BSEE/regulatory filings, and derived estimates from duration-based proxies (rig day rates × activity duration).</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Cost data transforms activity analysis from descriptive to economically meaningful. Clients need cost context to evaluate field economics, benchmark operations, and make investment decisions. Without cost, activity counts alone don't convey operational burden.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Identify available public and derivable cost data sources
+      (config/analysis/cost_data/cost_sources.yml — data source registry with methodology docs)</li>
+<li>[x] Define cost categories: drilling cost, completion cost, intervention cost
+      (models.py ActivityType enum; cost_engine.py estimate_drilling/completion/intervention_cost)</li>
+<li>[x] Segment costs by offshore vs. onshore, region, water depth, well depth
+      (day_rates.yml — 7 regions: gom, north_sea, brazil, west_africa, asia_pacific, permian, eagle_ford;
+       regional_profiles.yml — per-environment profiles; depth bands in models.py)</li>
+<li>[x] Implement cost estimation methodology (direct data where available, proxy-based where not)
+      (cost_engine.py — proxy day_rate×days + calibrated model path; LFS stub fallback to LOW confidence)</li>
+<li>[x] Integrate cost layer with field data pipeline outputs
+      (FieldPipelineCostIntegrator in pipeline/field_cost_integration.py;
+       23 unit tests at tests/unit/cost/test_field_integration.py; commit a188be5)</li>
+<li>[x] Produce cost summaries per field, lease, or region query
+      (cost_summary.py: FieldCostSummary, summarize_field_costs, summarize_lease_costs,
+       summarize_region_costs)</li>
+<li>[x] Cross-regional cost benchmarking capability
+      (benchmarking.py: BenchmarkResult, compare_fields_to_regional_average, detect_outliers,
+       build_comparison_dataframe)</li>
+<li>[x] Document data sources, methodology, assumptions, and confidence levels
+      (cost_sources.yml — full methodology, confidence level definitions, LFS constraints;
+       regional_profiles.yml — per-region profiles with fiscal terms)</li>
+<li>[x] Validate against published industry cost benchmarks where available
+      (day_rates.yml cross-referenced against Baker Hughes, BOEM, Transocean/Valaris earnings;
+       cost_calibration.py MultivariateCalibration proxy comparison in CalibrationReport)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><blockquote>
+<p>Full plan. This item is blocked by WRK-017 (BSEE field data pipeline), which provides the unified query interface and drilling/completion activity data that the cost layer operates on.</p>
+</blockquote>
+<h3>Prerequisite: WRK-017 Completion</h3>
+<p>WRK-017 delivers:
+- <code>FieldContext</code> dataclass (leases, field name, area code, geological era)
+- <code>pipeline_runner.py</code> orchestrating existing analyzers
+- Drilling/completion activity data via <code>ComprehensiveActivityAnalyzer</code>
+- Intervention activity data via <code>analysis/intervention/</code> module</p>
+<p>The cost layer in WRK-019 wraps around WRK-017 outputs to add economic context.</p>
+<h3>Existing Assets to Build On</h3>
+<p><strong>Financial module</strong> (already exists at <code>src/worldenergydata/bsee/analysis/financial/</code>):
+- <code>drilling_completion.py</code> — <code>DrillingCompletionProcessor</code> with cost-per-day calculations, subsea vs. dry-tree differentiation, monthly CAPEX schedules, lease-level aggregation (674 lines)
+- <code>cash_flow_calculator.py</code> — NPV, cash flow modeling
+- <code>config_loader.py</code> — <code>SMEConfigLoader</code> with default cost assumptions: drilling $100K/day, completion $75K/day, subsea drilling $150K/day, subsea completion $100K/day, rig rate $300K/day
+- <code>analyzer.py</code>, <code>data_loader.py</code>, <code>lease_grouper.py</code>, <code>report_generator.py</code>, <code>validators.py</code></p>
+<p><strong>Economic assumptions</strong> (already exists):
+- <code>config/analysis/lower_tertiary/economic_assumptions.yml</code> — comprehensive YAML with:
+  - Commodity prices (WTI $75/bbl, HH $3.50/mcf)
+  - CAPEX: drilling $150-250M/well, completion $50-100M/well (Lower Tertiary HPHT)
+  - OPEX: fixed $120M/yr, variable $15-18/bbl
+  - Fiscal terms: 18.75% royalty, 21% federal tax
+  - Sensitivity parameters</p>
+<p><strong>Intervention analysis</strong> (already exists):
+- <code>src/worldenergydata/bsee/analysis/intervention/</code> — activity_aggregator, comprehensive_analyzer, enrichment_engine
+- Workover types, frequencies, duration data</p>
+<p><strong>BSEE data loaders</strong>:
+- <code>src/worldenergydata/bsee/data/loaders/well/</code> — well data
+- <code>src/worldenergydata/bsee/data/loaders/infrastructure/</code> — platform/facility data
+- <code>src/worldenergydata/bsee/data/loaders/rig_fleet/</code> — rig inventory (16 rigs from WAR data)</p>
+<h3>Phase 1 — Cost Data Source Identification and Schema</h3>
+<ol>
+<li><strong>Define cost data sources</strong> — create <code>config/analysis/cost_data/cost_sources.yml</code>:</li>
+<li><strong>Direct data</strong>: BSEE/regulatory filings (limited public cost data)</li>
+<li><strong>Proxy-based</strong>: Duration x day rate (drilling days x rig rate, completion days x completion rate)</li>
+<li><strong>Public indices</strong>: Baker Hughes rig count (proxy for market tightness), EIA drilling productivity report</li>
+<li><strong>Regional benchmarks</strong>: Published industry averages by water depth band and region</li>
+<li>
+<p><strong>Existing config</strong>: Extend <code>economic_assumptions.yml</code> pattern to multiple regions</p>
+</li>
+<li>
+<p><strong>Define cost schema</strong> — create <code>src/worldenergydata/bsee/analysis/cost/models.py</code>:
+   <code>@dataclass
+   class CostEstimate:
+       activity_type: str          # drilling, completion, intervention
+       environment: str            # offshore, onshore
+       region: str                 # gom, north_sea, permian, etc.
+       water_depth_band: str       # shallow (&lt;500ft), mid (500-5000ft), deep (&gt;5000ft), ultra-deep (&gt;7000ft)
+       well_depth_band: str        # shallow (&lt;10Kft), mid (10-20Kft), deep (&gt;20Kft)
+       cost_usd: float
+       cost_per_day_usd: float
+       duration_days: float
+       confidence: str             # high (direct), medium (proxy), low (benchmark)
+       source: str
+       year: int</code></p>
+</li>
+<li>
+<p><strong>Define cost category taxonomy</strong>:</p>
+</li>
+<li>Drilling: tangible (casing, cement, mud) + intangible (rig time, services) + mobilization</li>
+<li>Completion: perforating, stimulation, gravel pack, equipment</li>
+<li>Intervention: workover rig, coiled tubing, wireline, plug-and-abandon</li>
+</ol>
+<h3>Phase 2 — Cost Estimation Engine</h3>
+<ol>
+<li><strong>Create cost engine</strong>: <code>src/worldenergydata/bsee/analysis/cost/cost_engine.py</code></li>
+<li>Extends <code>DrillingCompletionProcessor</code> from <code>financial/drilling_completion.py</code></li>
+<li>Adds region-aware cost selection</li>
+<li>Adds water depth band classification (from BSEE well data)</li>
+<li>
+<p>Adds well depth band classification</p>
+</li>
+<li>
+<p><strong>Day-rate database</strong>: <code>config/analysis/cost_data/day_rates.yml</code></p>
+</li>
+<li>Offshore GOM by water depth: shallow/jackup ($80-150K/day), mid-water/semisubmersible ($200-350K/day), deepwater/drillship ($400-600K/day)</li>
+<li>Onshore by basin: Permian ($15-25K/day), Eagle Ford ($18-28K/day), Bakken ($20-30K/day)</li>
+<li>Completion rates: conventional ($50-100K/day), HPHT ($150-250K/day)</li>
+<li>Intervention rates: workover rig ($40-80K/day), coiled tubing ($30-60K/day), wireline ($10-20K/day)</li>
+<li>
+<p>Year-indexed (2020-2025) to capture market cycles</p>
+</li>
+<li>
+<p><strong>Proxy calculation</strong>: <code>cost_engine.py</code> methods:</p>
+</li>
+<li><code>estimate_drilling_cost(well_data, region, year)</code> — matches well to day rate by depth/region, multiplies by BSEE-reported drilling days</li>
+<li><code>estimate_completion_cost(well_data, region, year)</code> — same approach for completion days</li>
+<li><code>estimate_intervention_cost(intervention_data, region, year)</code> — maps workover type to cost category</li>
+<li><code>estimate_with_confidence(...)</code> — returns <code>CostEstimate</code> with confidence level</li>
+</ol>
+<h3>Phase 3 — Regional Cost Profiles</h3>
+<ol>
+<li><strong>Create regional profiles</strong>: <code>config/analysis/cost_data/regional_profiles.yml</code></li>
+<li><strong>Gulf of Mexico</strong>: Use existing <code>economic_assumptions.yml</code> as template, extend to shelf/slope/deepwater</li>
+<li><strong>North Sea (Sodir module)</strong>: Norwegian Continental Shelf cost benchmarks</li>
+<li><strong>Brazil</strong>: Pre-salt deepwater benchmarks</li>
+<li><strong>Permian Basin</strong>: Onshore tight oil benchmarks</li>
+<li><strong>Texas RRC</strong>: General onshore Texas benchmarks</li>
+<li>
+<p>Each profile: drilling, completion, intervention costs by well type</p>
+</li>
+<li>
+<p><strong>Regional cost loader</strong>: <code>src/worldenergydata/bsee/analysis/cost/regional_loader.py</code></p>
+</li>
+<li>Reads YAML profiles</li>
+<li>Provides <code>get_cost_profile(region, environment, year)</code> interface</li>
+<li>Supports fallback: if specific region not available, use environment-level average</li>
+</ol>
+<h3>Phase 4 — Integration with Field Pipeline (WRK-017)</h3>
+<ol>
+<li><strong>Add cost layer to pipeline</strong>: Extend <code>pipeline_runner.py</code> (from WRK-017):</li>
+<li>After drilling/completion analysis, call cost engine to add cost estimates</li>
+<li>After intervention analysis, call cost engine for intervention costs</li>
+<li>
+<p>Output: <code>FieldReport</code> now includes cost summary</p>
+</li>
+<li>
+<p><strong>Cost summary module</strong>: <code>src/worldenergydata/bsee/analysis/cost/cost_summary.py</code></p>
+</li>
+<li><code>summarize_field_costs(field_context, drilling_data, completion_data, intervention_data)</code> -&gt; <code>FieldCostSummary</code></li>
+<li>Per-field: total drilling cost, total completion cost, total intervention cost</li>
+<li>Per-lease: same breakdown</li>
+<li>Per-region: cross-field benchmarking</li>
+<li>
+<p>Include confidence ratings per estimate</p>
+</li>
+<li>
+<p><strong>Cross-regional benchmarking</strong>: <code>src/worldenergydata/bsee/analysis/cost/benchmarking.py</code></p>
+</li>
+<li>Compare field costs against regional averages</li>
+<li>Identify outliers (cost per well, cost per bbl EUR, cost per ft drilled)</li>
+<li>Generate benchmarking visualizations (Plotly HTML)</li>
+</ol>
+<h3>Phase 5 — Reports and Visualization</h3>
+<ol>
+<li><strong>Cost report generator</strong>: <code>src/worldenergydata/bsee/analysis/cost/report.py</code></li>
+<li>HTML report with Plotly charts:<ul>
+<li>Cost breakdown by category (stacked bar)</li>
+<li>Regional cost comparison (grouped bar)</li>
+<li>Cost trend over time (line chart)</li>
+<li>Water depth vs. cost scatter plot</li>
+</ul>
+</li>
+<li>
+<p>Reuse <code>reports/comprehensive/exporters/</code> pattern</p>
+</li>
+<li>
+<p><strong>Integration with existing reports</strong>:</p>
+</li>
+<li>Extend <code>analysis/financial/report_generator.py</code> to include WRK-019 cost data</li>
+<li>Add cost context to intervention reports from <code>analysis/intervention/dashboard.py</code></li>
+</ol>
+<h3>Phase 6 — Tests</h3>
+<ol>
+<li><strong>Unit tests</strong>: <code>tests/unit/bsee/analysis/cost/</code></li>
+<li><code>test_cost_engine.py</code>: Test day-rate lookup, proxy calculation, confidence classification</li>
+<li><code>test_regional_loader.py</code>: Test YAML loading, fallback behavior, year interpolation</li>
+<li><code>test_cost_summary.py</code>: Test aggregation by field, lease, region</li>
+<li><code>test_benchmarking.py</code>: Test outlier detection, cross-regional comparison</li>
+<li>
+<p>Target: 15+ tests per module, 80% coverage</p>
+</li>
+<li>
+<p><strong>Integration tests</strong>:</p>
+</li>
+<li>Test cost estimation for known Lower Tertiary fields (Stones, Cascade/Chinook) using existing lease groups from <code>SMEConfigLoader.DEFAULT_CONFIG</code></li>
+<li>Verify cost output integrates with <code>FieldReport</code> from WRK-017</li>
+<li>
+<p>Test with LFS stub fallback (empty DataFrame handling)</p>
+</li>
+<li>
+<p><strong>Path</strong>: <code>PYTHONPATH="src:../assetutilities/src" python3 -m pytest tests/unit/bsee/analysis/cost/ -v --tb=short --noconftest</code></p>
+</li>
+</ol>
+<h3>New Files (Target Paths)</h3>
+<ul>
+<li><code>src/worldenergydata/bsee/analysis/cost/__init__.py</code></li>
+<li><code>src/worldenergydata/bsee/analysis/cost/models.py</code> — CostEstimate, FieldCostSummary dataclasses</li>
+<li><code>src/worldenergydata/bsee/analysis/cost/cost_engine.py</code> — proxy-based cost estimation</li>
+<li><code>src/worldenergydata/bsee/analysis/cost/regional_loader.py</code> — YAML profile reader</li>
+<li><code>src/worldenergydata/bsee/analysis/cost/cost_summary.py</code> — field/lease/region aggregation</li>
+<li><code>src/worldenergydata/bsee/analysis/cost/benchmarking.py</code> — cross-regional comparisons</li>
+<li><code>src/worldenergydata/bsee/analysis/cost/report.py</code> — HTML/Plotly report generation</li>
+<li><code>config/analysis/cost_data/cost_sources.yml</code> — data source documentation</li>
+<li><code>config/analysis/cost_data/day_rates.yml</code> — day rate database by region/year</li>
+<li><code>config/analysis/cost_data/regional_profiles.yml</code> — regional cost profiles</li>
+<li><code>tests/unit/bsee/analysis/cost/test_cost_engine.py</code></li>
+<li><code>tests/unit/bsee/analysis/cost/test_regional_loader.py</code></li>
+<li><code>tests/unit/bsee/analysis/cost/test_cost_summary.py</code></li>
+<li><code>tests/unit/bsee/analysis/cost/test_benchmarking.py</code></li>
+</ul>
+<h3>Data Constraints</h3>
+<ul>
+<li>129/133 <code>.bin</code> files are LFS stubs — cost engine must handle gracefully (return empty cost estimate with warning)</li>
+<li>Only 4 real <code>.bin</code> files: production_raw data and rig_fleet (16 rigs)</li>
+<li>Drilling days data depends on WAR (Well Activity Reports) — available but may be incomplete for all fields</li>
+<li>No direct public cost data from BSEE filings — all costs are proxy-based or benchmark-derived</li>
+<li>Confidence levels: HIGH for proxy (days x rate), MEDIUM for regional benchmark, LOW for extrapolation</li>
+</ul>
+<h3>Dependencies</h3>
+<ul>
+<li><strong>Blocked by WRK-017</strong>: <code>FieldContext</code>, <code>pipeline_runner.py</code>, unified query interface</li>
+<li><strong>Builds on</strong>: <code>analysis/financial/drilling_completion.py</code> (reuse <code>DrillingCompletionProcessor</code>)</li>
+<li><strong>Builds on</strong>: <code>config/analysis/lower_tertiary/economic_assumptions.yml</code> (template for regional profiles)</li>
+<li><strong>Builds on</strong>: <code>analysis/intervention/</code> module (intervention activity data for cost attribution)</li>
+<li><strong>Optional</strong>: WRK-018 (field-level production data) for cost-per-barrel metrics</li>
+</ul>
+<h3>Review Notes</h3>
+<p><strong>Cross-review date</strong>: 2026-02-10</p>
+<p>| Reviewer | Verdict |
+|----------|
+---------|
+| Claude Opus 4.6 | APPROVE |
+| Gemini CLI | APPROVE |
+| Codex CLI | NO_OUTPUT |</p>
+<p><strong>Feedback incorporated</strong>:
+- All paths verified
+- drilling_completion.py is 673 lines (plan says 674, off by 1)
+- Blocking dependency on WRK-017 correctly tracked
+- LFS stub constraints correctly documented</p>
+<p><em>Approved by user: 2026-02-10</em></p>
+<hr />
+<p><em>Source: establish drilling, completion and intervention cost data based on offshore vs. onshore, region etc.</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-019
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-019.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-019/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-019.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-019/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-019/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-019/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-019/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-019/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-019/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-019/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-019/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-019/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-019/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-019/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

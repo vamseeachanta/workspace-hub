@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-635 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-635 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Build <code>scripts/memory/scan-sessions.py</code> — a script that reads all historical Claude
+Code session <code>.jsonl</code> files from disk and extracts learnings into the auto-memory files.</p>
+<h3>Session file locations to scan</h3>
+<ul>
+<li><strong>ace-linux-1</strong>: <code>~/.claude/projects/-mnt-local-analysis-workspace-hub/*.jsonl</code>
+  — 282 files, up to 121 MB each</li>
+<li><strong>acma-ansys05</strong>: equivalent path if Claude Code sessions exist there
+  — check <code>%USERPROFILE%\.claude\projects\</code> (Windows)</li>
+</ul>
+<h3>Script: <code>scripts/memory/scan-sessions.py</code></h3>
+<p><strong>Phase 1 — parse and filter</strong>
+- Walk all <code>*.jsonl</code> files in the project session directory
+- Parse each line; extract records where <code>type=user</code> (role=user) and <code>type=assistant</code>
+- Skip tool-result records (type=system, file-history-snapshot, etc.)
+- Filter: skip sessions already after auto-memory activation date (2026-02-27)
+- Output: list of <code>(timestamp, session_id, role, text)</code> tuples</p>
+<p><strong>Phase 2 — summarise via LLM</strong>
+- Batch messages into ~50K-token chunks (Gemini preferred — large context, low cost)
+- Prompt: extract factual learnings: commands discovered, module paths, patterns,
+  bug fixes, architectural decisions, WRK completions not yet in MEMORY.md
+- Output per batch: bullet list of learnings with source session_id</p>
+<p><strong>Phase 3 — deduplicate against existing MEMORY.md</strong>
+- Load current <code>memory/MEMORY.md</code> and topic files
+- Filter out learnings already captured (fuzzy match on key phrases)
+- Bucket remaining learnings by topic (engineering, git, work-queue, ai-orchestration…)</p>
+<p><strong>Phase 4 — write to memory files</strong>
+- Append new bullets to appropriate topic files (create new topic file if needed)
+- Update <code>MEMORY.md</code> index if new topic files added
+- Log: <code>memory/scan-sessions-run.log</code> — sessions processed, learnings added, skipped</p>
+<h3>CLI interface</h3>
+<pre><code>python3 scripts/memory/scan-sessions.py \
+  --sessions-dir ~/.claude/projects/-mnt-local-analysis-workspace-hub \
+  --memory-dir ~/.claude/projects/-mnt-local-analysis-workspace-hub/memory \
+  --before 2026-02-27 \
+  --dry-run          # print learnings without writing
+  --topic engineering  # restrict to one topic bucket
+</code></pre>
+<h3>Helper: <code>scripts/memory/session-stats.sh</code></h3>
+<p>Quick stats without full scan:
+- Count sessions per project directory
+- Total size on disk
+- Date range (oldest → newest)
+- Estimate token count</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>282+ historical sessions contain solved problems, discovered patterns, and confirmed
+architectural decisions that pre-date the auto-memory feature. Scanning them retroactively
+prevents re-discovering the same things in future sessions and enriches MEMORY.md with
+ground-truth knowledge from actual work done.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] <code>session-stats.sh</code> reports counts + date range for each project dir</li>
+<li>[ ] <code>scan-sessions.py --dry-run</code> prints extracted learnings without writing</li>
+<li>[ ] Deduplication correctly skips facts already in MEMORY.md</li>
+<li>[ ] Full run on 282 sessions completes without OOM (streaming, not bulk-load)</li>
+<li>[ ] At least 10 net-new learnings added to topic files from pre-auto-memory sessions</li>
+<li>[ ] <code>scan-sessions-run.log</code> records what was processed and added</li>
+<li>[ ] Script works on both Linux (<code>~/.claude/</code>) and Windows (<code>%USERPROFILE%\.claude\</code>)</li>
+<li>[ ] Legal scan passes (no client identifiers in output)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-635
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-635.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-635/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-635.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-635/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-635/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-635/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-635/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-635/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-635/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-635/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-635/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-635/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-635/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-635/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

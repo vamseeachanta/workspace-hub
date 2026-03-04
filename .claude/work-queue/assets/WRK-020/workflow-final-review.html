@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-020 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-020 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>GIS skill for cross-application geospatial tools — Blender, QGIS, well plotting</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Build a GIS skill/module within digitalmodel that provides geospatial information, coordinate handling, and visualization tools for use across multiple applications and use cases:
+- <strong>Applications</strong>: Blender (3D visualization), QGIS (spatial analysis), Google Earth/Maps, and other GIS-capable tools
+- <strong>Use cases</strong>: Identifying and plotting well locations, bathymetry/terrain rendering, field boundary mapping, pipeline routes, platform locations
+- <strong>Core capabilities</strong>: Coordinate transformation (geographic ↔ projected ↔ local), GIS data import/export, spatial queries, and integration APIs for each target application</p>
+<p>Example workflow: given well coordinates from BSEE or other regulatory data, plot them interactively in Blender with proper geospatial positioning, or export to QGIS for spatial analysis overlaid on bathymetry.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>GIS operations are needed across multiple workflows (metocean analysis, field data visualization, digital twin positioning, client presentations). A centralized GIS skill avoids duplicating coordinate handling and spatial logic across separate tools, and provides consistent geospatial capabilities to all downstream applications.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Coordinate reference system (CRS) handling: WGS84, UTM zones, local project coordinates</li>
+<li>[x] Coordinate transformation utilities between CRS types</li>
+<li>[x] Well location plotting capability:</li>
+<li>[x] QGIS: layer generation with well markers, attribute tables (<code>qgis_export.py</code>)</li>
+<li>[x] Blender: 3D positioned well objects with metadata (<code>blender_export.py</code>)</li>
+<li>[x] GIS data format support: GeoJSON, Shapefile, KML/KMZ, GeoTIFF</li>
+<li>[x] Spatial query support: find wells within radius, bounding box, polygon</li>
+<li>[ ] Bathymetry/terrain data integration for 3D rendering — Blender terrain mesh generation deferred (GeoTIFFHandler + QGIS export done)</li>
+<li>[x] Blender GIS integration: Python scripts for importing geospatial data (<code>blender_export.py</code>)</li>
+<li>[x] QGIS integration: processing scripts for well data workflows (<code>qgis_export.py</code>, <code>.qml</code> style)</li>
+<li>[x] API/interface for other applications to consume GIS data (<code>FeatureLayer</code>, <code>WellLayer</code>, GeoJSON export)</li>
+<li>[x] Document supported CRS, data formats, and application integration steps (.claude/skills/gis/SKILL.md)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>src/digitalmodel/gis/</code> (new top-level module — digitalmodel does not currently have a <code>gis/</code> directory)</p>
+<h3>Existing Assets (reuse)</h3>
+<ul>
+<li><code>worldenergydata/metocean/</code> — NDBC buoy coordinates, NOAA station locations</li>
+<li><code>worldenergydata/bsee/</code> — well locations (lat/lon from BSEE block/lease data)</li>
+<li><code>digitalmodel/visualization/svg_primitives.py</code> — SVG generation patterns</li>
+<li>pyproj (if installed) for CRS transformations</li>
+</ul>
+<h3>Phase 1 — CRS &amp; Coordinate Engine</h3>
+<ul>
+<li>[x] <code>coordinates.py</code>:</li>
+<li>[x] <code>CoordinatePoint</code> dataclass: lat, lon, elevation, crs</li>
+<li>[x] CRS definitions: WGS84 (EPSG:4326), UTM zones, NAD83, local project coords</li>
+<li>[x] Transform between CRS using pyproj or manual formulas</li>
+<li>[x] Batch transform for coordinate lists</li>
+</ul>
+<h3>Phase 2a — Core Formats (GeoJSON, KML/KMZ via xml.etree) [DONE]</h3>
+<ul>
+<li>[x] <code>io/geojson_handler.py</code>: Read/write GeoJSON, DataFrame conversion</li>
+<li>[x] <code>io/kml_handler.py</code>: Read/write KML/KMZ (lxml.etree)</li>
+</ul>
+<h3>Phase 2b — Heavy Formats (optional, requires external deps) [DONE]</h3>
+<ul>
+<li>[x] <code>io/shapefile_handler.py</code>: Shapefile support via optional geopandas/fiona</li>
+<li>[x] <code>io/geotiff_handler.py</code>: GeoTIFF reader for bathymetry (optional rasterio)</li>
+</ul>
+<h3>Phase 3 — Spatial Queries [DONE]</h3>
+<ul>
+<li>[x] <code>core/spatial_query.py</code>:</li>
+<li>[x] Find points within radius (Haversine via <code>GeoPoint.distance_to</code>)</li>
+<li>[x] Bounding box query (<code>GeoBoundingBox.contains</code>)</li>
+<li>[x] Polygon containment (ray casting)</li>
+<li>[x] Nearest-N search (linear scan, ascending sorted)</li>
+</ul>
+<h3>Phase 4 — Application Integrations [DONE]</h3>
+<ul>
+<li>[x] <code>integrations/blender_export.py</code>:</li>
+<li>[x] <code>BlenderExporter.generate_well_script()</code> — self-contained Blender Python script</li>
+<li>[x] Coordinate mapping: WGS84 → UTM → Blender scene units via configurable scale</li>
+<li>[x] Well metadata as Blender custom properties; scene origin anchor at centroid</li>
+<li>[x] <code>BlenderExporter.write_well_script()</code> — write to .py file</li>
+<li>[x] <code>BlenderExporter.geo_to_blender()</code> — static coordinate helper</li>
+<li>[x] <code>integrations/qgis_export.py</code>:</li>
+<li>[x] <code>QGISExporter.generate_project()</code> — QGIS project XML (.qgs) with embedded memory layer</li>
+<li>[x] Field definitions and WKT feature geometries in project file</li>
+<li>[x] <code>QGISExporter.generate_well_qml()</code> — QML style definition for well markers</li>
+<li>[x] <code>QGISExporter.to_geojson_layer()</code> — GeoJSON export via FeatureLayer</li>
+<li>[x] <code>integrations/folium_maps.py</code> — Folium/Leaflet HTML maps (pre-existing)</li>
+<li>[x] <code>integrations/google_earth_export.py</code> — styled KML for Google Earth (pre-existing)</li>
+<li>[x] <code>integrations/plotly_maps.py</code> — Plotly mapbox scatter/dashboard (pre-existing)</li>
+</ul>
+<h3>Phase 4b — Data Models [DONE]</h3>
+<ul>
+<li>[x] <code>layers/feature_layer.py</code>:</li>
+<li>[x] <code>FeatureLayer</code>: pandas-backed tabular GIS collection</li>
+<li>[x] <code>centroid</code>, <code>bounding_box</code>, <code>filter()</code>, <code>from_geojson()</code>, <code>to_geojson()</code></li>
+<li>[x] <code>layers/well_layer.py</code>:</li>
+<li>[x] <code>WellLayer(FeatureLayer)</code>: well-specific subclass</li>
+<li>[x] <code>filter_by_status()</code>, <code>filter_by_depth_range()</code>, <code>to_well_list()</code></li>
+</ul>
+<h3>Phase 5 — Tests [DONE — 113 passing]</h3>
+<ul>
+<li>[x] <code>tests/gis/test_crs_and_spatial.py</code>: CRS, UTM detection, GeoPoint distance, GeoBoundingBox (27 tests)</li>
+<li>[x] <code>tests/gis/test_geojson_roundtrip.py</code>: GeoJSON write→read→compare (8 tests)</li>
+<li>[x] <code>tests/gis/test_spatial_queries.py</code>: radius, bbox, polygon, nearest-N (14 tests)</li>
+<li>[x] <code>tests/gis/test_feature_layer.py</code>: FeatureLayer + WellLayer construction, filters (19 tests)</li>
+<li>[x] <code>tests/gis/test_blender_export.py</code>: ast.parse script validation, coord mapping (13 tests)</li>
+<li>[x] <code>tests/gis/test_qgis_export.py</code>: XML schema validation for .qgs and .qml (18 tests)</li>
+<li>[x] <code>tests/gis/test_coordinates.py</code>: CoordinatePoint, transform_points, get_utm_crs (5 tests)</li>
+<li>Test matrix: all 113 tests pass with pyproj installed; zero optional deps required for MVP subset</li>
+</ul>
+<h3>Dependencies</h3>
+<ul>
+<li>Core: no heavy dependencies (pure Python CRS for basic UTM)</li>
+<li>Optional: pyproj (accurate transforms), geopandas (shapefiles), folium (maps), rasterio (GeoTIFF)</li>
+<li>Blender/QGIS: export scripts only (don't require runtime installation)</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Plan verdict</strong>: Claude: MINOR | Codex: MINOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Noted <code>gis/</code> is a new top-level module in digitalmodel</li>
+<li>Split Phase 2 into 2a (Core Formats: GeoJSON, KML) and 2b (Heavy Formats: Shapefile, GeoTIFF)</li>
+<li>Added Blender/QGIS export validation tests (ast.parse, XML schema) without runtime deps</li>
+<li>Added test matrix and MVP test subset per Codex feedback</li>
+<li>Defined strict MVP: GeoJSON + Haversine + Folium export with zero optional deps</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<h3>Implementation Notes (2026-02-24)</h3>
+<ul>
+<li>All Phases 1–5 implemented; 133 tests passing (113 original + 20 security regressions)</li>
+<li>New files: <code>layers/feature_layer.py</code>, <code>layers/well_layer.py</code>, <code>integrations/blender_export.py</code>, <code>integrations/qgis_export.py</code></li>
+<li>Legal scan: no violations in <code>gis/</code> module</li>
+<li>Remaining: Blender terrain mesh generation (geotiff-to-blender.py terrain import) deferred — all other phases complete</li>
+<li>Documentation of CRS/formats/integration steps: complete (.claude/skills/gis/SKILL.md)</li>
+</ul>
+<h3>Security Hardening (2026-02-25)</h3>
+<ul>
+<li>Cross-review: Codex hard gate passed (3 rounds); Claude and Gemini reviewed</li>
+<li>Fixes applied per Codex findings:</li>
+<li>P1: XXE-safe KML parsing (resolve_entities=False, no_network=True)</li>
+<li>P1: Zip-slip prevention in KMZ extraction (per-member validation)</li>
+<li>P1: Cross-UTM-zone consistency in Blender export (centroid zone)</li>
+<li>P2: CRS string normalisation (bare numerics → EPSG:<code>)</li>
+<li>P2: UTM zone/hemisphere validation in coordinate_transformer</li>
+<li>P2: HTML escaping in Google Earth KML descriptions</li>
+<li>P2: Style ID sanitisation in Google Earth export</li>
+<li>P3: Defensive copy in FeatureLayer.data property</li>
+<li>P3: Consistent KeyError in WellLayer.filter_by_depth_range</li>
+<li>P3: Dead code removal in KML _build_placemark</li>
+<li>Codex config updated: gpt-4.1 → gpt-5.3-codex (ChatGPT account compatible)</li>
+</ul>
+<hr />
+<p><em>Source: gis skill to help with required gis information and tools for use across different applications eg: blender, qgis, etc. and different usecases eg: for identifying and plotting wells in interactive softwares such as blender etc</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-020
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-020.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-020/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-020.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-020/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-020/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-020/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-020/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-020/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-020/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-020/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-020/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-020/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-020/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-020/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

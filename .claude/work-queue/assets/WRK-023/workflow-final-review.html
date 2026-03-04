@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-023 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-023 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Property GIS development timeline with future projection and Google Earth animation</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>For a given property, build a GIS-based timeline showing how the surrounding area has developed over time and project how future development may evolve. Leverage historical satellite imagery (Google Earth historical imagery, Landsat, Sentinel), permit/zoning data, and development patterns to create:
+1. <strong>Historical timeline</strong>: visual progression of development around the property over years/decades
+2. <strong>Future projection</strong>: anticipated development based on zoning plans, permit filings, growth patterns
+3. <strong>Animation</strong>: Google Earth-style animated flythrough or timelapse showing development progression</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Understanding how an area has developed — and where it's heading — is critical for property investment decisions. A visual GIS timeline makes development patterns immediately apparent and supports investment thesis with spatial evidence rather than just market comparables.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Historical satellite/aerial imagery retrieval for a property location across multiple time periods</li>
+<li>[x] Development change detection: identify new construction, road expansion, land use changes</li>
+<li>[x] Permit and zoning data integration where available (local government open data)</li>
+<li>[x] Timeline visualization: side-by-side or slider comparison of historical imagery</li>
+<li>[x] Future development projection based on:</li>
+<li>Current zoning and planned zoning changes</li>
+<li>Filed permits and approved developments</li>
+<li>Growth trajectory extrapolation from historical patterns</li>
+<li>[x] Google Earth animation / KML timelapse export</li>
+<li>[ ] Blender 3D visualization option for development progression</li>
+<li>[x] Report output with timeline narrative and key development milestones</li>
+<li>[x] Document data sources, projection methodology, and confidence levels</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><h3>Phase 0: Tool Research Spike (MUST COMPLETE FIRST)</h3>
+<p><strong>Goal</strong>: Research available tools and platforms before writing any code. This is a complex GIS domain — leveraging existing tools is critical.</p>
+<p><strong>Research areas</strong>:
+1. <strong>Google Earth Pro</strong> — Built-in historical imagery slider (free). Can it be scripted/automated via KML? What's the API story?
+2. <strong>Google Earth Engine</strong> — Free for research. JavaScript/Python API for Landsat/Sentinel imagery. Evaluate: time-series composites, change detection algorithms (NDVI, land cover classification), export to video/GIF
+3. <strong>QGIS</strong> — Free desktop GIS. Evaluate: TimeManager plugin for temporal visualization, satellite imagery plugins, KML export, Python scripting (PyQGIS)
+4. <strong>QGIS Temporal Controller</strong> — Built-in time-based animation since QGIS 3.14
+5. <strong>Mapbox / Leafmap / Geemap</strong> — Python libraries wrapping Google Earth Engine or Mapbox for Jupyter-based visualization
+6. <strong>Planet Explorer / Maxar</strong> — Commercial high-res imagery options (may have free tiers for historical)
+7. <strong>USGS EarthExplorer</strong> — Free Landsat imagery download. Evaluate API usability
+8. <strong>Copernicus Browser</strong> — Free Sentinel-2 imagery. Evaluate Sentinel Hub APIs
+9. <strong>OpenStreetMap historical</strong> — OSM Time Machine, Overpass Turbo with date filters</p>
+<p><strong>Deliverable</strong>: <code>assethold/docs/gis-tool-research.md</code> with:
+- Tool comparison matrix (features, cost, API quality, learning curve)
+- Recommended stack for each sub-task (imagery, change detection, animation, projection)
+- Proof-of-concept for top 2 candidates (e.g., Google Earth Engine + QGIS)
+- Decision on build-vs-leverage for each component</p>
+<p><strong>Exit criteria</strong>: Research document reviewed and approved before proceeding to Phase 1.</p>
+<h3>Current Codebase Assessment</h3>
+<p><strong>Repository</strong>: <code>/mnt/local-analysis/workspace-hub/assethold/</code></p>
+<p><strong>Existing property-related code</strong>:
+- <code>src/assethold/modules/multifamily/</code> -- multifamily property analysis (IRR, cash flow, equity multiple)
+- <code>src/assethold/modules/stocks/</code> -- stock/portfolio analysis
+- <code>src/assethold/modules/fixed_interest/</code> -- fixed deposit calculations
+- <code>data/loopnet/</code> -- scraped commercial property listings (CSV, 42KB)
+- <code>specs/commercial-property-valuation-framework/</code> -- detailed valuation spec (commercial property scoring, location analysis, cap rate)
+- <code>specs/family-dollar-valuation-model/</code> -- NNN property valuation model</p>
+<p><strong>No existing GIS/geospatial code</strong>: grep for gis/satellite/imagery/kml/blender/landsat/sentinel returned zero matches in application code. All matches were in agent tooling metadata.</p>
+<p><strong>Tech stack</strong>: Python 3.9+, pandas, plotly, matplotlib, numpy, yaml, sqlalchemy. No geospatial libraries currently installed.</p>
+<p><strong>Test infrastructure</strong>: <code>tests/conftest.py</code> (10K lines), <code>tests/test_smoke.py</code>, pytest with 80% coverage requirement.</p>
+<h3>Phase 1: Research and Data Source Integration (4 hours)</h3>
+<ol>
+<li><strong>Add geospatial dependencies</strong> to <code>pyproject.toml</code>:</li>
+<li><code>geopy</code> -- geocoding addresses to lat/lon</li>
+<li><code>folium</code> -- interactive Leaflet maps</li>
+<li><code>simplekml</code> -- KML file generation for Google Earth</li>
+<li><code>rasterio</code> -- satellite imagery handling (GeoTIFF)</li>
+<li><code>shapely</code> -- geometric operations</li>
+<li><code>geopandas</code> -- spatial DataFrames</li>
+<li>
+<p>Optional: <code>sentinelsat</code> (Sentinel-2 imagery API), <code>landsatxplore</code> (Landsat API)</p>
+</li>
+<li>
+<p><strong>Create module structure</strong>:
+   <code>src/assethold/modules/gis/
+       __init__.py
+       geocoder.py          # Address -&gt; lat/lon, property boundary lookup
+       imagery_fetcher.py   # Satellite imagery download (Landsat/Sentinel)
+       change_detector.py   # Development change detection between images
+       timeline_builder.py  # Assemble historical timeline
+       projector.py         # Future development projection
+       kml_exporter.py      # Google Earth KML/KMZ animation export
+       report_generator.py  # HTML/PDF report with timeline narrative</code></p>
+</li>
+<li>
+<p><strong>Data sources to integrate</strong>:</p>
+</li>
+<li><strong>Google Earth Engine</strong> (free for research): historical Landsat imagery back to 1984, Sentinel-2 from 2015</li>
+<li><strong>USGS EarthExplorer API</strong>: Landsat Collection 2 Level-2 (surface reflectance)</li>
+<li><strong>Sentinel Hub</strong>: Sentinel-2 imagery with cloud filtering</li>
+<li><strong>OpenStreetMap</strong>: building footprints, road networks (via Overpass API)</li>
+<li><strong>Local government open data</strong>: permit filings, zoning maps (varies by jurisdiction)</li>
+<li><strong>Census/ACS data</strong>: population growth, demographics over time</li>
+</ol>
+<h3>Phase 2: Historical Imagery Retrieval (6 hours)</h3>
+<ol>
+<li><strong><code>geocoder.py</code></strong>: Address to coordinates with property boundary</li>
+<li>Use geopy for geocoding</li>
+<li>Use Census TIGER/Line for parcel boundaries</li>
+<li>
+<p>Return lat/lon centroid + bounding box for imagery queries</p>
+</li>
+<li>
+<p><strong><code>imagery_fetcher.py</code></strong>: Download historical satellite images</p>
+</li>
+<li>Query Landsat Collection 2 via <code>landsatxplore</code> for 5-year intervals (1990, 1995, 2000, ...)</li>
+<li>Query Sentinel-2 via <code>sentinelsat</code> for recent years (2016-present, higher resolution)</li>
+<li>Cloud cover filtering (&lt;20%)</li>
+<li>Crop to property area of interest (AOI) + surrounding buffer (e.g., 2km radius)</li>
+<li>Save as GeoTIFF with metadata (date, source, resolution)</li>
+<li>
+<p>Target: <code>data/gis/{property_id}/imagery/</code></p>
+</li>
+<li>
+<p><strong><code>change_detector.py</code></strong>: Identify development changes between time periods</p>
+</li>
+<li>Normalized Difference Vegetation Index (NDVI) comparison -- vegetation loss indicates construction</li>
+<li>Building footprint extraction from OpenStreetMap historical data</li>
+<li>Simple pixel-based change detection between consecutive images</li>
+<li>Output: list of change events with location, date range, change type</li>
+</ol>
+<h3>Phase 3: Timeline Visualization (4 hours)</h3>
+<ol>
+<li><strong><code>timeline_builder.py</code></strong>: Assemble historical development timeline</li>
+<li>Combine satellite imagery, building footprints, and permit data into a chronological timeline</li>
+<li>
+<p>Output: list of development milestones with dates, descriptions, and spatial extent</p>
+</li>
+<li>
+<p><strong>Interactive timeline views</strong>:</p>
+</li>
+<li><strong>Folium slider map</strong>: side-by-side or overlay comparison with time slider</li>
+<li><strong>Plotly timeline</strong>: horizontal timeline with milestones and development density chart</li>
+<li><strong>Image gallery</strong>: grid of satellite images at different time periods with annotations</li>
+</ol>
+<h3>Phase 4: Future Development Projection (4 hours)</h3>
+<ol>
+<li><strong><code>projector.py</code></strong>: Predict future development patterns</li>
+<li><strong>Input data</strong>: historical growth rate, current zoning, filed permits, development plans</li>
+<li><strong>Methods</strong>:<ul>
+<li>Linear extrapolation of building density growth rate</li>
+<li>Zoning analysis: identify undeveloped parcels zoned for development</li>
+<li>Permit analysis: map approved-but-unbuilt permits as "planned development"</li>
+<li>Buffer analysis: development tends to expand outward from existing centers</li>
+</ul>
+</li>
+<li><strong>Output</strong>: projected development map for 5/10/15 year horizons with confidence levels</li>
+<li>Confidence: HIGH (approved permits), MEDIUM (zoned for development), LOW (growth trajectory extrapolation)</li>
+</ol>
+<h3>Phase 5: Google Earth Animation and KML Export (3 hours)</h3>
+<ol>
+<li><strong><code>kml_exporter.py</code></strong>: Generate KML/KMZ for Google Earth</li>
+<li>Use <code>simplekml</code> library</li>
+<li>Create TimeSpan-tagged ground overlays (satellite images pinned to their dates)</li>
+<li>Add placemarks for development milestones</li>
+<li>Add projected development as semi-transparent overlays</li>
+<li>Export as <code>.kmz</code> (compressed KML with embedded images)</li>
+<li>
+<p>Google Earth timeline slider will animate through the overlays</p>
+</li>
+<li>
+<p><strong>Optional Blender integration</strong> (stretch goal):</p>
+</li>
+<li>Generate 3D terrain mesh from elevation data (USGS DEM)</li>
+<li>Drape satellite imagery as texture</li>
+<li>Script camera flythrough animation</li>
+<li>Export as video (MP4)</li>
+<li>This is complex and should be a separate follow-up task</li>
+</ol>
+<h3>Phase 6: Report Generation (2 hours)</h3>
+<ol>
+<li><strong><code>report_generator.py</code></strong>: Create HTML report</li>
+<li>Title page with property address and map</li>
+<li>Timeline section with side-by-side imagery comparisons</li>
+<li>Development milestones table</li>
+<li>Future projection section with confidence levels</li>
+<li>Data sources and methodology description</li>
+<li>Interactive folium map embedded in HTML</li>
+<li>Target: <code>data/gis/{property_id}/reports/timeline_report.html</code></li>
+</ol>
+<h3>Phase 7: Tests (3 hours)</h3>
+<ol>
+<li><strong>Create test directory</strong>: <code>tests/unit/test_gis/</code></li>
+<li><strong>Test files</strong>:</li>
+<li><code>test_geocoder.py</code> -- mock geopy responses, verify coordinate extraction</li>
+<li><code>test_change_detector.py</code> -- synthetic raster comparison, verify NDVI change detection</li>
+<li><code>test_timeline_builder.py</code> -- mock milestone data, verify chronological ordering</li>
+<li><code>test_projector.py</code> -- known growth patterns, verify extrapolation</li>
+<li><code>test_kml_exporter.py</code> -- verify KML XML structure and TimeSpan elements</li>
+<li><strong>Test data</strong>: Create synthetic fixtures (small GeoTIFFs, mock API responses)</li>
+<li><strong>Coverage target</strong>: 80% minimum for new module</li>
+</ol>
+<h3>File Paths Summary</h3>
+<p>New directories and files:</p>
+<pre><code>assethold/src/assethold/modules/gis/
+    __init__.py
+    geocoder.py
+    imagery_fetcher.py
+    change_detector.py
+    timeline_builder.py
+    projector.py
+    kml_exporter.py
+    report_generator.py
+assethold/tests/unit/test_gis/
+    __init__.py
+    test_geocoder.py
+    test_change_detector.py
+    test_timeline_builder.py
+    test_projector.py
+    test_kml_exporter.py
+assethold/data/gis/
+    .gitkeep
+assethold/config/gis/
+    default_config.yaml   # API keys, default buffer radius, image resolution
+</code></pre>
+<p>Files to modify:
+- <code>assethold/pyproject.toml</code> -- add geospatial dependencies</p>
+<h3>Dependencies and Prerequisites</h3>
+<p><strong>New Python packages</strong> (add to pyproject.toml):
+- <code>geopy&gt;=2.4.0</code> -- geocoding
+- <code>folium&gt;=0.15.0</code> -- interactive maps
+- <code>simplekml&gt;=1.3.6</code> -- KML generation
+- <code>geopandas&gt;=0.14.0</code> -- spatial DataFrames
+- <code>rasterio&gt;=1.3.0</code> -- raster/satellite image IO
+- <code>shapely&gt;=2.0.0</code> -- geometry operations</p>
+<p><strong>Optional packages</strong> (for satellite imagery APIs):
+- <code>sentinelsat&gt;=1.2.0</code> -- Sentinel-2 data access (requires Copernicus account)
+- <code>landsatxplore&gt;=0.15.0</code> -- USGS Landsat data access (requires USGS EarthExplorer account)</p>
+<p><strong>External accounts needed</strong>:
+- USGS EarthExplorer account (free) for Landsat data
+- Copernicus Open Access Hub account (free) for Sentinel-2 data
+- Google Earth Engine account (free for research) for historical imagery API</p>
+<p><strong>Related work items</strong>: WRK-020, WRK-022 (related property analysis tasks)</p>
+<h3>Risk Assessment</h3>
+<ul>
+<li><strong>API rate limits</strong>: Landsat/Sentinel downloads can be slow for many time periods. Mitigate with caching and async downloads.</li>
+<li><strong>Image quality</strong>: Cloud cover may limit usable imagery for some time periods. Mitigate with cloud masking and composite generation.</li>
+<li><strong>Jurisdiction variability</strong>: Permit/zoning data availability varies widely by county/city. Design the system to work with satellite imagery alone as minimum viable, with permits as enhancement.</li>
+<li><strong>Blender integration</strong>: Complex, requires Blender Python API. Recommend deferring to a follow-up task and focusing on KML animation for Phase 1.</li>
+</ul>
+<h3>Review Notes</h3>
+<p><strong>Cross-review date</strong>: 2026-02-10</p>
+<p>| Reviewer | Verdict |
+|----------|
+---------|
+| Claude Opus 4.6 | MINOR |
+| Gemini CLI | MAJOR |
+| Codex CLI | NO_OUTPUT |</p>
+<p><strong>Feedback incorporated</strong>:
+- conftest.py line count is wrong: plan states "10K lines" but actual is 304 lines (33x overcount)
+- Heavy external dependency load: rasterio and geopandas have heavy C library dependencies (GDAL, PROJ) that may be difficult to install
+- Blender integration correctly deferred
+- Phase 2.3 change_detector.py complexity severely underestimated: 6-hour estimate for historical imagery retrieval including change detection is unrealistic, recommend breaking into sub-tasks and starting with simpler methods (NDVI)
+- Phase 4 projector.py "predict future development patterns" is a sophisticated modeling task: 4-hour estimate is severely underestimated, recommend reducing scope or allocating much more time
+- Historical OSM data specificity: standard Overpass API returns current data only, historical snapshots require specialized access -- needs clarification</p>
+<p><em>Approved by user: 2026-02-10 (with mandatory Phase 0 tool research spike added)</em></p>
+<hr />
+<p><em>Source: for a property, develop a gis timeline of the development and anticipation of how the future development may look like. google earth animation etc.</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-023
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-023.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-023/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-023.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-023/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-023/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-023/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-023/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-023/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-023/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-023/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-023/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-023/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-023/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-023/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

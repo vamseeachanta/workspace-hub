@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-376 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-376 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Casing/tubing triaxial stress design envelope check (von Mises, API DF, anisotropic grades)</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Implement a triaxial stress design envelope check for casing and tubing strings in
+<code>digitalmodel</code>, following the approach used by commercial well design tools such as
+StimGnosis 4.2 (reference image: LinkedIn post showing Design Envelope tab for a 7"
+Production Tubing string in 25Cr anisotropic grade).</p>
+<p>The check produces a <strong>von Mises design envelope plot</strong> (Real Axial Force [klbf] vs
+Differential Pressure [psi]) with:</p>
+<ol>
+<li><strong>API limits ellipse</strong> — burst/collapse/tension/compression limits corrected for the
+   applicable Design Factor at rated conditions (e.g. 100% RBW)</li>
+<li><strong>VME ellipse (isotropic)</strong> — Von Mises Equivalent stress envelope with DF applied</li>
+<li><strong>Anisotropic VME ellipse</strong> — for CRA/chrome grades where hoop and axial yield differ
+   (e.g. 25Cr: max yield 95,000 psi, min yield 80,000 psi, sigma hoop ≠ sigma tension)</li>
+<li><strong>Load case points</strong> plotted on the same axes for:</li>
+<li>Initial condition (as-run)</li>
+<li>Pressure test (% of MHP, e.g. 70%)</li>
+<li>Shut-in tubing leak HOT</li>
+<li>Full evacuation</li>
+<li>Tubing shut-in HOT</li>
+<li>Any additional user-defined load cases</li>
+</ol>
+<p>Output: pass/fail per load case with margin-to-envelope, plus a Plotly interactive plot.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>The triaxial check (API TR 5C3 / ISO 10400) is the industry-standard method for casing
+and tubing string design verification. Current digitalmodel coverage handles individual
+burst/collapse/tension checks but lacks:
+- The combined triaxial (von Mises) envelope
+- Multi-load-case overlay on a single design space
+- Support for anisotropic (CRA/chrome) grade yield asymmetry
+- The interactive design envelope plot as a deliverable</p>
+<p>This gap means casing design reviews require external tools (StimGnosis, WellCat, Landmark
+StressCheck). Implementing the check in digitalmodel makes it scriptable, automatable, and
+integrated with the wider asset lifecycle analysis pipeline.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] <code>digitalmodel</code> module created: <code>src/digitalmodel/well/casing/triaxial_check.py</code></li>
+<li>[ ] <code>TriaxialEnvelope</code> class: computes API limit ellipse and VME ellipse from tubular
+  section properties (OD, wall thickness, grade, yield strength, design factor)</li>
+<li>[ ] Anisotropic yield support: separate hoop / axial yield strengths (for CRA grades)</li>
+<li>[ ] <code>LoadCase</code> dataclass: holds (axial force [klbf], differential pressure [psi], label)</li>
+<li>[ ] Pass/fail evaluation: each load case checked against all three envelopes; margin
+  reported as % remaining to nearest envelope</li>
+<li>[ ] Plotly interactive output: overlaid ellipses + load case scatter, matching the
+  StimGnosis layout (x = Real Axial Force klbf, y = Differential Pressure psi)</li>
+<li>[ ] Unit tests: at least one isotropic grade case and one anisotropic (25Cr) case with
+  known expected margins</li>
+<li>[ ] CLI entry point or example notebook demonstrating the 7" 25Cr case from the reference</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-376
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-376.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-376/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-376.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-376/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-376/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-376/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-376/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-376/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-376/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-376/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-376/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-376/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-376/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-376/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

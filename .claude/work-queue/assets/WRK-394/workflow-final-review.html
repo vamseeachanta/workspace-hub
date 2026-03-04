@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-394 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-394 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Planing hull motion model — nonlinear 2D+t strip theory for high-speed vessels</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Implement a nonlinear planing hull heave-and-pitch motion model in
+<code>src/digitalmodel/hydrodynamics/planing_hull/</code> based on the 2D+t strip theory
+approach from Tavakoli et al. (2026), <em>Physics of Fluids</em> 38, 027129.</p>
+<p>Reference PDF:
+<code>docs/domains/hydrodynamics/literature/tavakoli-2026-planing-hull-dynamics-strip-theory-cfd.pdf</code></p>
+<p>The model covers:
+- <strong>2D+t formulation</strong>: second-order Stokes wave kinematics + Wagner water-entry
+  force per strip; each strip solved as a time-advancing 2D problem
+- <strong>Heave and pitch EOMs</strong>: rigid-body coupled ODEs with time-varying added mass,
+  lift, pitching moment, and cross-flow drag
+- <strong>Inputs</strong>: hull geometry (Fridsma series or custom), Froude number, wave
+  steepness <code>ε = kH/2</code>, wave frequency, heading (head seas)
+- <strong>Outputs</strong>: heave RAO, pitch RAO, heave/pitch phase angles, 2nd-harmonic amplitudes</p>
+<p>The CFD model (Section IV of the paper) is out of scope — the 2D+t model (Sections II–III)
+is the target: low-cost, fast-to-run, good for parametric sweeps.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Planing hull analysis is directly relevant to ACE Engineering's fast-vessel and patrol-boat
+client work. The 2D+t model is:
+- An order of magnitude cheaper than CFD (minutes vs hours per run)
+- Accurate for intermediate-to-long waves and moderate steepness
+- Validated by the authors against towing tank data and CFD</p>
+<p>This capability does not yet exist in digitalmodel (current hydrodynamics module handles
+displacement ships via AQWA/OrcaFlex). Adding it enables rapid early-stage seakeeping
+assessment for planing vessels without spinning up a full CFD solver.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] <code>PlaningHullGeometry</code> dataclass: length L, beam B, deadrise β, chine height hc, LCG</li>
+<li>[x] <code>PlaningStripModel</code> class: builds strip layout, computes added mass and water-entry force per strip using Wagner model</li>
+<li>[x] <code>PlaningMotionSolver</code> class: integrates coupled heave/pitch EOMs via RK4; configurable time step</li>
+<li>[x] <code>compute_rao(speed, wave_freq, wave_steepness) -&gt; PlaningRAO</code> high-level entry point</li>
+<li>[x] <code>PlaningRAO</code> dataclass: heave_rao, pitch_rao, heave_phase, pitch_phase, second_harmonic_heave</li>
+<li>[x] Unit tests: known closed-form limits (zero wave steepness → linear); monotonicity of 2nd harmonic with steepness</li>
+<li>[x] Validation: reproduce Figure 7 or Figure 8 of Tavakoli 2026 (Fridsma hull, Froude 1.19 or similar)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-394
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-394.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-394/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-394.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-394/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-394/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-394/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-394/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-394/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-394/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-394/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-394/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-394/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-394/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-394/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

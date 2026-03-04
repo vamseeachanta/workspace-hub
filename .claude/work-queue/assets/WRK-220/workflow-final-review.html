@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-220 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-220 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Offshore decommissioning analytics — data-driven lifecycle planning module</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Build a decommissioning analytics module addressing the five strategic challenges
+identified in the Acteon framework:</p>
+<h3>Challenge 1 — Cost Forecasting (worldenergydata)</h3>
+<p>Extend WRK-019's cost framework to include decommissioning costs:</p>
+<pre><code class="language-python">class DecommissioningCostEstimate:
+    asset_type: str          # &quot;fixed_platform&quot;, &quot;floating&quot;, &quot;SPM&quot;, &quot;FSO&quot;, &quot;pipeline&quot;
+    water_depth_ft: float
+    structural_weight_tonnes: float
+    region: str              # &quot;gom&quot;, &quot;north_sea&quot;, &quot;apac&quot;, &quot;west_africa&quot;
+    well_count: int          # number of wells to P&amp;A
+    estimated_cost_usd: float
+    confidence: str          # &quot;high&quot;, &quot;medium&quot;, &quot;low&quot;
+    year: int
+    data_source: str
+</code></pre>
+<p>Reference data sources:
+- BSEE Platform Removal Notices (public, contains operator, platform ID, year)
+- OSPAR Commission decommissioning reports (North Sea)
+- OGA/NSTA decommissioning cost estimates (UK)
+- Published industry benchmarks (Wood Mackenzie, Rystad)</p>
+<h3>Challenge 2 — Data Gaps (worldenergydata + digitalmodel)</h3>
+<p>Late-life assets often lack current integrity records. Analytics approach:</p>
+<ol>
+<li><strong>BSEE late-life asset identification</strong>: platforms with production declining &gt;80% over 5
+   years, or no production for 12+ months → flag as decommissioning candidates</li>
+<li><strong>Data completeness scoring</strong>: for each flagged asset, score data availability across:</li>
+<li>As-built drawings (binary: BSEE filing exists?)</li>
+<li>Last inspection report date (from BSEE/SEMS filings)</li>
+<li>Well integrity records (number of wells with P&amp;A bonds filed)</li>
+<li>Mooring system documentation</li>
+<li><strong>Digital twin readiness assessment</strong>: classify assets as "twin-ready", "data-gap", or
+   "survey-required" based on completeness score</li>
+</ol>
+<h3>Challenge 3 — Environmental and Safety Risk</h3>
+<p>Risk scoring for decommissioning operations:</p>
+<ol>
+<li><strong>Structural condition proxy</strong>: age + water depth + incident history from BSEE data</li>
+<li><strong>Environmental sensitivity</strong>: reef habitat designation, proximity to marine protected areas</li>
+<li><strong>Live pipeline proximity</strong>: flag assets with neighboring live pipelines (like SPM case study)</li>
+<li><strong>Decommissioning sequence risk</strong>: which assets to prioritize for removal given
+   risk score and cost efficiency</li>
+</ol>
+<h3>Challenge 4 — Regulatory Navigation (worldenergydata)</h3>
+<p>Track decommissioning regulatory requirements by region:</p>
+<pre><code class="language-python">class DecommissioningRegulation:
+    region: str
+    regulatory_body: str       # &quot;BSEE&quot;, &quot;NSTA&quot;, &quot;PSA&quot;, &quot;ANP&quot;
+    requirement_type: str      # &quot;well_PA&quot;, &quot;structure_removal&quot;, &quot;pipeline_flushing&quot;
+    lead_time_months: int      # typical approval lead time
+    key_threshold: str         # e.g., &quot;structures &gt;300t must be fully removed&quot;
+    reference_doc: str
+</code></pre>
+<ul>
+<li>BSEE: NTL 2010-G05 (platform removal) and BSEE bonding requirements</li>
+<li>UK: NSTA decommissioning programmes (Section 29 notices)</li>
+<li>Norway: PSA — facilities ordinance requirements</li>
+</ul>
+<h3>Challenge 5 — Capacity Constraints</h3>
+<p>Market availability tracker for decommissioning specialist services:</p>
+<ul>
+<li>Heavy lift vessel availability (link to vessel fleet data WRK-103)</li>
+<li>Dive support vessel market (shallow water decommissioning)</li>
+<li>P&amp;A specialist rig availability</li>
+<li>Expected demand surge years (based on North Sea platform age distribution)</li>
+</ul>
+<h3>Content Asset (aceengineer-website)</h3>
+<p>Blog post: "The Five Data Problems in Offshore Decommissioning (And How BSEE Data Helps
+Solve Three of Them)" — see WRK-080 for candidate entry</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><ul>
+<li><strong>Growing market</strong>: North Sea decommissioning spend projected at $50B+ over next decade.
+  GoM decommissioning backlog is significant. A&amp;CE's BSEE data access is directly applicable.</li>
+<li><strong>BSEE data ready</strong>: Platform Removal Notices, well P&amp;A bonds, production decline data —
+  all exist in BSEE public data and worldenergydata pipeline. WRK-016 and WRK-018 already
+  bring in multi-regional field data that supports the data gap analysis.</li>
+<li><strong>Digital twins connection</strong>: WRK-168 (MPD) and WRK-163 (risk framework) already build
+  toward data-driven well operations. Decommissioning extends the same philosophy to asset end-of-life.</li>
+<li><strong>GTM service line</strong>: "Decommissioning analytics" is a distinct, defensible service line
+  that operators can justify internally — budget exists, regulatory deadlines create urgency.</li>
+<li><strong>Case study credibility</strong>: Acteon/Intermoor case studies (SPM + FSO in GoT) demonstrate
+  real-world scope. A&amp;CE's analytics approach sits above the operational execution layer.</li>
+</ul></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] DecommissioningCostEstimate model with BSEE platform removal data ingestion</li>
+<li>[ ] Late-life asset identification algorithm (production decline threshold)</li>
+<li>[ ] Data completeness scoring for candidate decommissioning assets</li>
+<li>[ ] Environmental risk scoring model</li>
+<li>[ ] Regulatory requirements database (BSEE, NSTA, PSA, minimum)</li>
+<li>[ ] Vessel capacity market tracker (linked to WRK-103 vessel fleet)</li>
+<li>[ ] BSEE platform removal count: how many platforms removed per year (2010-2025)?</li>
+<li>[ ] Blog post candidate content (see WRK-080)</li>
+<li>[ ] Tests: unit tests for all models, integration with existing BSEE pipeline</li>
+</ul>
+<hr />
+<p><em>Source: Acteon blog "Offshore Decommissioning: Five Ways Operators Can Lead with Insight
+over Instinct" + Acteon case studies (SPM Calm Buoy, FSO Gulf of Thailand), Feb 2026.</em></p></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-220
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-220.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-220/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-220.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-220/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-220/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-220/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-220/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-220/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-220/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-220/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-220/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-220/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-220/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-220/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

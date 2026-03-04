@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-078 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-078 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Create energy data case study — BSEE field economics with NPV/IRR workflow</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Write a case study for the website showing a BSEE field economics analysis using the NPV/IRR workflow with real (anonymized) data. Follow the existing case study HTML pattern established by the 4 engineering case studies.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>The website has 4 engineering case studies but zero energy data case studies. This is a major sales gap — prospects in the energy data vertical have no proof points to evaluate.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Case study HTML page in case-studies/ directory</li>
+<li>[ ] Follows existing case study HTML/CSS pattern</li>
+<li>[ ] Shows real BSEE production data analysis workflow</li>
+<li>[ ] Includes NPV/IRR calculation results</li>
+<li>[ ] Metrics section with quantified results (time savings, accuracy)</li>
+<li>[ ] JSON-LD structured data</li>
+<li>[ ] Linked from energy.html and case-studies/index.html</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>aceengineer-website/case-studies/</code></p>
+<h3>Existing Assets (reuse)</h3>
+<ul>
+<li>4 existing engineering case studies (HTML template pattern)</li>
+<li><code>analysis/financial/</code> — NPV, cash flow, drilling cost modules in worldenergydata</li>
+<li><code>mv_productionsum.bin</code> — materialized production data for real analysis</li>
+</ul>
+<h3>Phase 0 — Audit Financial Modules</h3>
+<ul>
+<li>Audit <code>src/worldenergydata/bsee/analysis/financial/</code> to confirm NPV/IRR/cash flow modules exist and are functional</li>
+<li>If modules are stubs or incomplete, scope Phase 1 to only what is available</li>
+<li>Add reproducibility note: document script location and command to regenerate all results</li>
+</ul>
+<h3>Phase 1 — Run Analysis</h3>
+<ul>
+<li>Select a well-known GoM field (e.g., Thunder Horse or Mars — public BSEE data)</li>
+<li>Use field name and public BSEE data only. Do not reference operator-specific information beyond what BSEE publishes.</li>
+<li>Run production analysis via <code>ProductionAPI12Analysis</code></li>
+<li>Run NPV/IRR calculation via <code>analysis/financial/</code> module</li>
+<li>Capture results: production curves, NPV, IRR, payback period</li>
+</ul>
+<h3>Phase 2 — Write Case Study</h3>
+<ul>
+<li><code>case-studies/bsee-field-economics.html</code>:</li>
+<li>Follow existing case study HTML/CSS pattern (Bootstrap 3.x)</li>
+<li>Sections: Challenge, Solution, Results, Methodology</li>
+<li>Charts: export as static PNG images (not inline Plotly JS — 3MB+ page overhead). Include descriptive alt text for accessibility.</li>
+<li>Metrics section: use defensible, measured metrics (e.g., "NPV calculated for Z wells in Y seconds") — avoid unverifiable claims like "Reduced analysis time from X weeks to Y hours"</li>
+<li>JSON-LD structured data for SEO</li>
+</ul>
+<h3>Phase 3 — Integration</h3>
+<ul>
+<li>Link from <code>energy.html</code> featured case studies section</li>
+<li>Add to <code>case-studies/index.html</code> grid</li>
+<li>Update sitemap if exists</li>
+</ul>
+<h3>Phase 4 — Review</h3>
+<ul>
+<li>Verify no client-specific data in case study (use public BSEE data only)</li>
+<li>Legal scan: <code>scripts/legal/legal-sanity-scan.sh --repo=aceengineer-website</code></li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: MINOR | Codex: MINOR | Gemini: APPROVE</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Added Phase 0 to audit financial modules exist and are functional before proceeding</li>
+<li>Mandated static PNG images instead of inline Plotly JS for page performance</li>
+<li>Replaced unverifiable metrics with defensible, measured metrics</li>
+<li>Added operator-data constraint: use public BSEE data only, no operator-specific info</li>
+<li>Added reproducibility note (script location/command) per Codex feedback</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: Gap analysis — zero energy data case studies on website</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

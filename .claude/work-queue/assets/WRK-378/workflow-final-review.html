@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-378 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-378 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Generalise CT hydraulics to full wellbore hydraulics module in digitalmodel</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>The existing <code>digitalmodel/src/digitalmodel/marine_ops/ct_hydraulics/ct_hydraulics.py</code>
+already implements: ECD calculation, pressure drop (Darcy-Weisbach), Reynolds number,
+friction factor (laminar/turbulent), pump pressure, and travel/bottoms-up time — but
+is hard-coded for coiled tubing pipe dimensions.</p>
+<p>This work generalises it to a <code>WellboreHydraulics</code> class at
+<code>src/digitalmodel/well/drilling/hydraulics.py</code> that accepts arbitrary pipe/annulus
+geometry and adds:
+- <strong>Annular velocity</strong> for any pipe OD + hole diameter pair
+- <strong>Cuttings transport ratio</strong> (AV vs minimum slip velocity)
+- <strong>Multi-section</strong> pressure drop (surface line + drillstring + BHA + annulus)
+- <strong>Mud weight window</strong> input validation (pore pressure to fracture gradient)</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>ECD is the primary pressure management variable in drilling — it determines whether
+the wellbore is over or underbalanced at any depth. Without a generalised hydraulics
+model, no drilling controller can enforce the safe operating window. This is an H1
+gap from the Drillbotics capability path (WRK-375) and from
+<code>docs/vision/VISION.md</code>.</p>
+<p>Estimated effort is low (~250 lines) since the CT foundation is already tested.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] <code>digitalmodel/src/digitalmodel/well/drilling/hydraulics.py</code> created</li>
+<li>[x] <code>WellboreHydraulics</code> class: accepts <code>pipe_od</code>, <code>pipe_id</code>, <code>hole_diameter</code>,
+  <code>mud_weight</code>, <code>flow_rate</code>, <code>tvd</code>, <code>plastic_viscosity</code>, <code>yield_point</code></li>
+<li>[x] <code>.ecd(annular_pressure_loss) -&gt; float</code> — equivalent circulating density (ppg)</li>
+<li>[x] <code>.annular_velocity() -&gt; float</code> — ft/min</li>
+<li>[x] <code>.pressure_drop_annulus() -&gt; float</code> — psi</li>
+<li>[x] <code>.cuttings_transport_ratio() -&gt; float</code> — 0–1 (&gt;0.5 = adequate hole cleaning)</li>
+<li>[x] Existing <code>ct_hydraulics.py</code> tests continue to pass (no regression)</li>
+<li>[x] New unit tests covering at least one field-realistic scenario with known ECD</li>
+<li>[x] Exported from <code>digitalmodel.well.drilling</code> package <code>__init__.py</code></li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-378
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-378.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-378/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-378.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-378/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-378/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-378/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-378/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-378/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-378/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-378/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-378/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-378/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-378/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-378/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

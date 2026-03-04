@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-658 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-658 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>fix(workflow): enforce gate+logging contract for every AI agent</div>
+    <div class="pill"><strong>Status</strong><br>pending</div>
+    <div class="pill"><strong>Route</strong><br>C</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Create a parallel-agent-level workflow guard that:</p>
+<ol>
+<li>logs the start and completion of every agent-driven WRK run (session/work/plan/execute/review) so the lifecycle can be replayed for missing stages</li>
+<li>runs <code>scripts/work-queue/verify-gate-evidence.py</code> (and the NO_OUTPUT policy) before any claim or close, regardless of whether Claude, Codex, or Gemini executes</li>
+<li>exercises the flow in a sandbox (real or created WRK) using Claude, Codex, and Gemini so we prove the guard works across providers</li>
+<li>updates the gate-contract docs/templates (CLAUDE.md, orchestrator-gate-contract.md, template) so the rule applies to all agents</li>
+</ol>
+<p>Scope is intentionally broad so that the enforcement is mirrored across the ecosystem and the logs act as proofs when stages are missed.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] <code>/work run</code> wrappers log start/stop with provider and gate outcome, and the logs are stored under <code>.claude/work-queue/logs/</code> for every agent run</li>
+<li>[ ] <code>claim-item.sh</code>, <code>close-item.sh</code>, and <code>verify-gate-evidence.py</code> rely on those logs and refuse to proceed without valid gate evidence (including user-approved plan HTML)</li>
+<li>[ ] The sandbox run shows Claude/Codex/Gemini obey the gate (plan review + cross-review + TDD + legal + user approval) and the logs/validator pass</li>
+<li>[ ] Documentation (CLAUDE.md/orchestrator-gate-contract.md) explicitly states the contract applies to all AI agents and references the new logging artifacts</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><h3>Phase 1 — Logging guard</h3>
+<ul>
+<li>extend the <code>/work run</code> wrappers (<code>scripts/agents/session.sh</code>, <code>scripts/agents/work.sh</code>, <code>scripts/agents/plan.sh</code>, <code>scripts/agents/execute.sh</code>, <code>scripts/agents/review.sh</code>) to append start/stop entries (timestamp, provider, action, validator result) to <code>.claude/work-queue/logs/</code> before each gate and after completion</li>
+<li>ensure <code>claim-item.sh</code>/<code>close-item.sh</code> log the validator outcome so the entry can be replayed</li>
+</ul>
+<h3>Phase 2 — Cross-agent validation</h3>
+<ul>
+<li>adapt the validator (verify-gate-evidence.py) to read the log entries, verify user-approved plan+review artifacts exist for every agent, and fail when <code>user_html_blocker</code> or plan approval is missing</li>
+<li>document the fail-fast contract in the docs so every agent knows that missing log/plan entries block claims</li>
+</ul>
+<h3>Phase 3 — Sandbox rehearsal</h3>
+<ul>
+<li>pick or create a sandbox WRK (e.g., WRK-659) and run it end-to-end using Claude, Codex, and Gemini sequentially with the new logging/validator guard</li>
+<li>capture the cross-review artifacts/test evidence and deposit them in the assets folder (review outputs, plan HTML, legal scan, etc.) so the log proves the gate worked</li>
+<li>update the docs with the sandbox results as an example of the contract working across agents</li>
+</ul></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-658
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-658.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-658/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-658.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-658/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-658/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-658/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-658/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-658/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-658/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-658/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-658/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-658/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-658/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-658/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

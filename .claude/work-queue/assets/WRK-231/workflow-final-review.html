@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-231 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-231 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Create a <code>session-analysis</code> skill that wraps, improves, and unifies the existing session-end hooks into a first-class, versioned, self-improving capability. This is the holy grail: deep analysis of every session surfaces knowledge gaps, skill improvement targets, and agent behaviour patterns — and everything else (skills curation, noise reduction, gap surfacing, lifecycle health) falls out of it naturally.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Sessions are where valuable time is spent. Every session is a signal-rich event: the agent attempted things, succeeded or failed, hit knowledge limits, used skills well or poorly, and received corrections. That signal is currently almost entirely wasted — hooks fire quietly, log shallow data, and nothing feeds back into improving the system. The hooks exist (<code>session-review.sh</code>, <code>session-end-evaluate.sh</code>, <code>generate-session-report.sh</code>) but they do shallow analysis: keyword matching, tool counts, pattern detection. There is no skill wrapping them, no improvement tracking, no semantic gap identification, and no mechanism to turn what the agent <em>didn't know</em> into actionable output. A first-class skill:
+- Is versioned and can be improved incrementally
+- Has explicit quality metrics (is the analysis getting better?)
+- Does semantic analysis, not just keyword matching
+- Produces structured, actionable output fed directly into WRK-229 (curation), WRK-230 (lifecycle), and WRK-226 (noise audit)
+- Creates WRK items automatically for deep knowledge gaps</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Create <code>.claude/skills/coordination/workspace/session-analysis/SKILL.md</code> — versioned, with explicit capabilities, two triggers (session-end hook + morning cron), and output spec</li>
+<li>[ ] Session-end hook: lightweight only — raw signal capture to <code>state/session-signals/</code>, &lt;2s runtime, no analysis</li>
+<li>[ ] Morning cron (5 AM, same slot as claude-reflect): heavy analysis — reads previous day's signals, scores, routes outputs</li>
+<li>[ ] Cross-machine: <code>ace-linux-1</code> is primary aggregator — morning cron checks for signal files from other machines (git pull / shared mount); analyses what's available, local-only if nothing arrived</li>
+<li>[ ] Existing hooks (<code>session-review.sh</code>, <code>session-end-evaluate.sh</code>) simplified to signal capture only — heavy logic moved to cron job</li>
+<li>[ ] Analysis produces a structured session report: knowledge gaps (shallow/deep), skill quality signals, correction events, context noise candidates</li>
+<li>[ ] Per-tool usage record captured each session: frequency, sequences, redundancy, anti-patterns, delegation rate</li>
+<li>[ ] Tool use index maintained at <code>.claude/state/tool-use-index.yaml</code> — per-tool counts, co-occurrence pairs, anti-pattern log, delegation score trend</li>
+<li>[ ] Tool knowledge graph at <code>.claude/state/tool-knowledge-graph.yaml</code> — tool → context, tool → successors, tool → skills that rely on it; updated after each session</li>
+<li>[ ] Anti-patterns auto-flagged (e.g. Bash used for file ops, Grep skipped for Read+manual scan) — surfaced in session summary and fed to WRK-226 noise/preflight</li>
+<li>[ ] Per-skill performance record captured each session: used/ignored, one-shot rate, correction count, improvement vector, modularity signal</li>
+<li>[ ] Skill scorecard updated in <code>skill-registry.yaml</code> after each session: <code>usage_rate</code>, <code>one_shot_rate</code>, <code>mean_corrections</code>, <code>top_failure_modes</code>, <code>graph_consensus</code>, <code>modularity_score</code></li>
+<li>[ ] Skills below threshold on any scorecard metric → flagged as improvement target → fed to WRK-229 as priority curation target</li>
+<li>[ ] Skills with zero usage over 10 sessions → flagged for archival review</li>
+<li>[ ] Knowledge graph consensus check: after each session, scan related skills for contradictions or overlaps introduced by recent skill updates</li>
+<li>[ ] Script usage tracked per session: scripts invoked, success/failure, new scripts written, reuse candidates</li>
+<li>[ ] <code>script-candidates.md</code> updated after each session: scripts → skills, bash sequences → scripts, scripts → hooks — the agentic uplift pipeline</li>
+<li>[ ] New capability detection: new libraries, APIs, MCP tools, file types surfaced as skill creation candidates</li>
+<li>[ ] Delegation quality scored per session: Task tool %, inline-vs-delegated ratio, subagent result quality</li>
+<li>[ ] Agent library health tracked: which agents spawned, output quality, over/under-delegation flagged, unused agents identified</li>
+<li>[ ] Hook health tracked: which hooks fired, output produced, silent failures flagged</li>
+<li>[ ] Git operations health: commit frequency, uncommitted-on-exit warning, submodule drift, branch age, commit message compliance</li>
+<li>[ ] Cross-machine conflict risk: <code>uncommitted_changes</code> flag in signal file; morning cron surfaces recommendation if pattern persists</li>
+<li>[ ] MCP health: calls made, failures, unused MCPs loaded into context</li>
+<li>[ ] Rules health: violations detected (anti-patterns), rules never triggered (noise candidates)</li>
+<li>[ ] WRK item velocity tracked: items advanced, stalled, friction points logged</li>
+<li>[ ] User intervention events classified: correction / redirect / clarification / override — rate tracked as primary agent quality metric</li>
+<li>[ ] Trending signals aggregated across sessions: skill improvement velocity, anti-pattern recurrence, WRK throughput, delegation score, gap closure rate, session length, new skill/script creation rate, git commit frequency trend</li>
+<li>[ ] Deep gaps → auto-create WRK item (<code>WRK-NNN: [topic] knowledge gap — session evidence: [session-id]</code>)</li>
+<li>[ ] Shallow gaps → feed directly to WRK-229 skills curation pipeline as research targets</li>
+<li>[ ] Context noise signals → feed to WRK-226 preflight hook</li>
+<li>[ ] Session analysis summary stored at <code>.claude/state/session-analysis/YYYY-MM-DD-HH.md</code> — readable by next session's preflight</li>
+<li>[ ] Context window spend tracked per session: which context sections used the most tokens, which sections were loaded but never referenced — fed to WRK-226</li>
+<li>[ ] Recurring error patterns detected across sessions: same error in 3+ sessions → auto-create WRK item candidate</li>
+<li>[ ] Session goal completion tracked: stated intent vs actual output per session; sessions with &lt;50% completion flagged for review</li>
+<li>[ ] Work queue velocity tracked: items queued vs archived per session; net queue growth persisting &gt;5 sessions → surfaced as systemic issue</li>
+<li>[ ] Quality metric: track % of sessions producing at least one actionable output (gap WRK, skill target, or noise signal) — target &gt;80%</li>
+<li>[ ] Skill is improved after each 10-session batch based on quality metric — version bumped when analysis improves</li>
+</ul>
+<h3>Additional Session Dimensions — Full Ecosystem Health</h3>
+<p>The session analysis covers everything we actively maintain in the repo that influences daily work — not just skills and tools. Every artefact that shapes how the agent operates is fair game for improvement signals.</p>
+<p><strong>Full analysis scope:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Artefact</th>
+<th>What to track</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Skills</strong></td>
+<td>Usage, one-shot rate, corrections, modularity (covered above)</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Frequency, sequences, anti-patterns, delegation rate (covered above)</td>
+</tr>
+<tr>
+<td><strong>Scripts</strong></td>
+<td>Invocations, failures, reuse candidates, agentic uplift path</td>
+</tr>
+<tr>
+<td><strong>Agents</strong> (<code>.claude/agent-library/</code>)</td>
+<td>Which agents were spawned? Did they produce good output? Were results used or discarded? Agent quality score per session</td>
+</tr>
+<tr>
+<td><strong>Hooks</strong></td>
+<td>Which hooks fired? Did they produce output? Silent failures? Hook health per session</td>
+</tr>
+<tr>
+<td><strong>Git operations</strong></td>
+<td>Commit frequency, branch state, submodule sync, cross-machine conflict risk (see below)</td>
+</tr>
+<tr>
+<td><strong>MCP servers</strong></td>
+<td>Which MCPs were called? Latency, failures, unused MCPs loaded into context</td>
+</tr>
+<tr>
+<td><strong>Settings/config</strong></td>
+<td><code>settings.json</code>, <code>model-registry.yaml</code>, <code>behavior-contract.yaml</code> — were any settings ignored or contradicted during the session?</td>
+</tr>
+<tr>
+<td><strong>Rules</strong></td>
+<td>Which rules were violated (anti-patterns)? Which rules were never relevant (noise candidates)?</td>
+</tr>
+<tr>
+<td><strong>Keybindings / UI config</strong></td>
+<td>Were any friction points apparent in how commands were invoked?</td>
+</tr>
+</tbody>
+</table>
+<h4>Git Operations Health</h4>
+<p>Git is daily infrastructure. Sessions reveal friction:</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>What to capture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Commit frequency</strong></td>
+<td>Sessions with no commits = work at risk; flag if &gt;30 min of changes uncommitted</td>
+</tr>
+<tr>
+<td><strong>Cross-machine conflict risk</strong></td>
+<td>Uncommitted changes on session end = potential clash when another machine pulls; emit warning + suggest commit</td>
+</tr>
+<tr>
+<td><strong>Submodule drift</strong></td>
+<td>Submodule pointer not updated after inner commit = known friction source</td>
+</tr>
+<tr>
+<td><strong>Branch age</strong></td>
+<td>Working branches &gt;3 days old without merge = stale work risk</td>
+</tr>
+<tr>
+<td><strong>Force-push events</strong></td>
+<td>Log when detected — high-risk operation</td>
+</tr>
+<tr>
+<td><strong>Commit message quality</strong></td>
+<td>Conventional Commits compliance; missing WRK reference</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cross-machine strategy</strong>: at session end, if there are uncommitted changes, the signal file should flag <code>uncommitted_changes: true</code>. The morning cron on <code>ace-linux-1</code> checks this — if another machine has uncommitted changes across sessions, surface a recommendation to commit more frequently. The principle: <strong>commit at every logical checkpoint, not just at task completion</strong>.</p>
+<h4>Agent Library Health</h4>
+<p><code>.claude/agent-library/</code> has 45 agent definitions. Sessions reveal which ones actually work:</p>
+<ul>
+<li>Which agents were spawned via Task tool?</li>
+<li>Did the agent complete its task or time out / produce poor output?</li>
+<li>Were agents spawned for tasks that a simple tool call could have handled? (over-delegation)</li>
+<li>Were complex tasks handled inline when they should have been delegated? (under-delegation)</li>
+<li>Agent definitions not used in last 30 sessions → archival candidates</li>
+</ul>
+<h4>Script Usage &amp; Agentic Script Identification</h4>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>What to capture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scripts invoked</strong></td>
+<td>Which <code>.sh</code> / <code>.py</code> scripts were called via Bash? Frequency, success/failure, repeated calls</td>
+</tr>
+<tr>
+<td><strong>New scripts written</strong></td>
+<td>Did the agent write a new script in this session? File path, purpose, whether it was reused later in same session</td>
+</tr>
+<tr>
+<td><strong>Script reuse candidates</strong></td>
+<td>Scripts called 2+ times across sessions → candidate to wrap as a skill or promote to <code>scripts/</code></td>
+</tr>
+<tr>
+<td><strong>Agentic uplift candidates</strong></td>
+<td>Manual bash sequences that could become scripts; scripts that could become hooks; hooks that could become skills — each is a step toward more autonomous operation</td>
+</tr>
+<tr>
+<td><strong>Script quality signals</strong></td>
+<td>Were scripts written with <code>#!/usr/bin/env bash</code>, LF endings, error handling? Anti-patterns flagged</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Output</strong>: a <code>script-candidates.md</code> list — scripts that should be promoted, hooks that should be created, skills that should wrap existing scripts. This is the direct path to making repos more agentic.</p>
+<h4>New Capability Detection</h4>
+<p>When the agent does something novel in a session — a new library used, a new API called, a new pattern applied — that's a signal for skill creation even if no gap was hit:</p>
+<ul>
+<li>New <code>import</code> / <code>require</code> statements in code written → library not yet in skills?</li>
+<li>New MCP tool calls → MCP server skill coverage adequate?</li>
+<li>New external services or APIs touched → should become a skill with auth patterns</li>
+<li>New file types created → any pattern worth capturing?</li>
+</ul>
+<h4>Agentic Delegation Quality</h4>
+<p>Sessions reveal how well the orchestrator pattern is being followed:</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task tool % of total calls</td>
+<td>&gt;30% on complex sessions</td>
+</tr>
+<tr>
+<td>Inline execution of complex tasks (should have been delegated)</td>
+<td>→ flag as orchestration anti-pattern</td>
+</tr>
+<tr>
+<td>Subagent result quality (did the Task agent produce good output?)</td>
+<td>Feed into agent-library improvement</td>
+</tr>
+<tr>
+<td>User had to re-do what an agent did</td>
+<td>High-signal failure — log specifically</td>
+</tr>
+</tbody>
+</table>
+<h4>WRK Item Velocity &amp; Friction</h4>
+<ul>
+<li>How many WRK items were advanced per session?</li>
+<li>Which items stalled (touched but not progressed)?</li>
+<li>Where did friction occur — plan gate, cross-review, blocked dependency?</li>
+<li>Items that took 3+ sessions to advance → candidate for decomposition</li>
+</ul>
+<h4>User Intervention Patterns</h4>
+<p>Every user correction, redirect, or clarification is a signal:</p>
+<ul>
+<li><strong>Correction</strong> (agent was wrong) → skill or rule gap</li>
+<li><strong>Redirect</strong> (agent went in wrong direction) → plan quality issue or ambiguous WRK item</li>
+<li><strong>Clarification</strong> (agent asked unnecessarily) → missing context in CLAUDE.md or MEMORY.md</li>
+<li><strong>Override</strong> (user rejected agent's autonomous decision) → autonomy boundary miscalibrated</li>
+</ul>
+<p>Intervention rate per session is a direct measure of agent quality. Target: decreasing over time.</p>
+<h4>Communication Efficiency</h4>
+<ul>
+<li>Exchanges per task (high = poor initial understanding or ambiguous instructions)</li>
+<li>Questions asked by agent (necessary vs unnecessary)</li>
+<li>User message length trend (long messages = agent not anticipating needs)</li>
+</ul>
+<h4>Repo Change Patterns</h4>
+<ul>
+<li>Which repos were touched?</li>
+<li>Change type distribution: tests / features / config / docs / scripts / skills</li>
+<li>Test pass rate on first run vs after correction</li>
+<li>Files created that don't follow naming conventions → flag immediately</li>
+</ul>
+<h4>Trending Signals (across sessions, not just per-session)</h4>
+<p>Aggregated trends that only emerge across multiple sessions:</p>
+<table>
+<thead>
+<tr>
+<th>Trend</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Skill improvement velocity</td>
+<td>Are skill one-shot rates increasing over time?</td>
+</tr>
+<tr>
+<td>Anti-pattern recurrence</td>
+<td>Same anti-patterns repeating = systemic, not one-off</td>
+</tr>
+<tr>
+<td>WRK item throughput</td>
+<td>Items archived per week — is the queue shrinking or growing?</td>
+</tr>
+<tr>
+<td>Delegation score trend</td>
+<td>Is orchestration getting more autonomous over time?</td>
+</tr>
+<tr>
+<td>Knowledge gap closure rate</td>
+<td>Are gap WRK items being resolved, or accumulating?</td>
+</tr>
+<tr>
+<td>Session length trend</td>
+<td>Shorter sessions with same output = improving efficiency</td>
+</tr>
+<tr>
+<td>New script/skill creation rate</td>
+<td>Is the ecosystem growing its own capabilities?</td>
+</tr>
+</tbody>
+</table></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-231
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-231.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-231/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-231.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-231/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-231/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-231/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-231/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-231/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-231/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-231/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-231/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-231/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-231/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-231/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

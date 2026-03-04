@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-655 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-655 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(skills): define Resource Intelligence skill and validator-ready stage contract</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>C</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Create or enhance the ecosystem so <code>Resource Intelligence</code> becomes a defined, reusable
+skill-driven stage.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Resource Intelligence executes through a defined skill, not ad hoc instructions</li>
+<li>[ ] Skill defines required artifacts for <code>resource-pack.md</code>, <code>sources.md</code>, <code>constraints.md</code>, <code>domain-notes.md</code>, <code>open-questions.md</code>, and <code>resources.yaml</code></li>
+<li>[ ] Skill defines a visible <code>P1/P2/P3</code> gap-ranking model</li>
+<li>[ ] Skill defines user-pause behavior for unresolved <code>P1</code> gaps</li>
+<li>[ ] Stage knowledge map is documented and easy for the user to inspect/tweak</li>
+<li>[ ] Capability review of <code>agent-router</code> and <code>agent-usage-optimizer</code> is completed or a bounded interim-routing rule is documented explicitly</li>
+<li>[ ] Validator-ready rules are documented for minimum stage completion</li>
+<li>[ ] <code>WRK-624</code> references are updated to point at the new skill contract</li>
+<li>[ ] Relevant online codes, standards, and documents are downloaded only as additive complements to existing document-intelligence sources, documented with provenance, and placed in the appropriate long-term reference location</li>
+<li>[ ] The plan defines a 3-month repository-intelligence maturity target and tracking method</li>
+<li>[ ] The plan defines example-rich validation cases for this repository's Resource Intelligence stage</li>
+<li>[ ] Legal scan passes</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <h1>WRK-655 Draft Plan HTML Review</h1>
+<ul>
+<li>artifact: <code>assets/WRK-655/wrk-655-resource-intelligence-review.html</code></li>
+<li>decision: pending_user_review</li>
+<li>reviewed_at:</li>
+<li>reviewer:</li>
+<li>notes:</li>
+<li>Review the executive summary, knowledge map, <code>P1/P2/P3</code> gap model, and validator-ready scope before multi-agent review begins.</li>
+</ul>
+    <h4>Final</h4>
+    <h1>WRK-655 Final Plan HTML Review</h1>
+<ul>
+<li><code>wrk_id</code>: WRK-655</li>
+<li><code>decision</code>: passed</li>
+<li><code>reviewer</code>: user</li>
+<li><code>reviewed_at</code>: 2026-03-01T02:45:00Z</li>
+<li><code>delegate</code>:</li>
+<li><code>artifact</code>: assets/WRK-655/wrk-655-resource-intelligence-review.html</li>
+<li><code>notes</code>: Final planning-stage HTML reviewed after decisions on canonical skill path, mounted-source registry, maturity tracking, and interim routing authority were adopted.</li>
+</ul>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <h1>Resource Intelligence Summary</h1>
+<ul>
+<li><code>wrk_id</code>: WRK-655</li>
+<li><code>summary</code>: Existing document-intelligence assets and source buckets are real and usable. The first-pass implementation now adds a canonical Resource Intelligence skill, a mounted-source registry, and linked maturity tracking artifacts.</li>
+<li><code>top_p1_gaps</code>:</li>
+<li>none</li>
+<li><code>top_p2_gaps</code>:</li>
+<li>validator enforcement boundary still needs first-pass implementation detail</li>
+<li>downloaded-source placement policy by source class still needs final execution wording</li>
+<li><code>top_p3_gaps</code>:</li>
+<li>deeper automation of online-source retrieval can be expanded later</li>
+<li><code>user_decision</code>: continue_to_planning</li>
+<li><code>reviewed_at</code>: 2026-02-28T00:00:00Z</li>
+<li><code>reviewer</code>: codex</li>
+<li><code>legal_scan_ref</code>: .claude/work-queue/assets/WRK-655/legal-scan.md</li>
+<li><code>indexing_ref</code>: data/document-index/index.jsonl</li>
+</ul>
+    <h4>Resource Pack</h4>
+    <h1>Resource Pack</h1>
+<h2>Problem Context</h2>
+<p><code>WRK-655</code> operationalizes the <code>Resource Intelligence</code> stage defined in <code>WRK-624</code> so that agents follow one canonical workflow instead of ad hoc research steps.</p>
+<h2>Relevant Documents/Data</h2>
+<ul>
+<li><code>AGENTS.md</code></li>
+<li><code>specs/wrk/WRK-624/plan.md</code></li>
+<li><code>assets/WRK-624/wrk-624-workflow-review.html</code></li>
+<li><code>data/document-index/registry.yaml</code></li>
+<li><code>data/document-index/index.jsonl</code></li>
+<li><code>data/document-index/mounted-source-registry.yaml</code></li>
+</ul>
+<h2>Constraints</h2>
+<ul>
+<li>Existing document-intelligence sources must be complemented, not duplicated.</li>
+<li>User pause is required when unresolved <code>P1</code> gaps remain.</li>
+<li>Legal-sanity evidence must be recordable.</li>
+<li>YAML is canonical where paired YAML/Markdown tracking exists.</li>
+</ul>
+<h2>Assumptions</h2>
+<ul>
+<li><code>workspace_spec</code>, <code>ace_project</code>, <code>ace_standards</code>, <code>og_standards</code>, and <code>dde_project</code> are valid existing source buckets.</li>
+<li>A dedicated canonical skill is preferable to extending multiple looser skills.</li>
+</ul>
+<h2>Open Questions</h2>
+<ul>
+<li>Whether routing authority should require full capability review immediately or accept an interim rule first.</li>
+</ul>
+<h2>Domain Notes</h2>
+<ul>
+<li>This is workflow/governance work with direct coupling to queue validators and document-intelligence assets.</li>
+</ul>
+<h2>Source Paths</h2>
+<ul>
+<li><code>/mnt/local-analysis/workspace-hub</code></li>
+<li><code>/mnt/ace/docs</code></li>
+<li><code>/mnt/ace/0000 O&amp;G</code></li>
+<li><code>/mnt/remote/ace-linux-2/dde</code></li>
+</ul>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-655
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-655.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-655/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-655.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-655/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-655/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-655/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-655/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-655/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-655/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-655/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-655/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-655/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-655/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-655/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>claim-evidence.yaml</code></li><li><code>constraints.md</code></li><li><code>domain-notes.md</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>html-verification.md</code></li><li><code>legal-scan.md</code></li><li><code>open-questions.md</code></li><li><code>plan-html-review-draft.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>resource-intelligence-summary.md</code></li><li><code>resource-pack.md</code></li><li><code>resources.yaml</code></li><li><code>review-input.md</code></li><li><code>sources.md</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

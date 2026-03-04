@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-131 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-131 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response</div>
+    <div class="pill"><strong>Status</strong><br>blocked</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Build a passing ship analysis capability for moored vessels. Calculate hydrodynamic forces on a moored vessel due to a passing ship (surge, sway, yaw), evaluate mooring line tensions under passing ship events, and generate standardized reports. Covers perpendicular and parallel passing cases, with/without wind, at varying speeds and distances.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><ul>
+<li>Passing ship effects are a critical design case for port/terminal mooring systems</li>
+<li>~15+ historical projects demonstrate recurring demand for this analysis type</li>
+<li>Currently relies on standalone Excel tool (<code>PassingShipForceCalculator.xlsm</code>) and manual AQWA runs</li>
+<li>Standardizing into the digitalmodel framework enables parametric studies, consistent reporting, and reuse</li>
+</ul></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] <code>PassingShipSpec</code> Pydantic schema defined and validated</li>
+<li>[x] Passing ship force calculation implemented in Python (from Excel tool extraction)</li>
+<li>[x] Force time history generation for given passing scenario (speed, distance, ship size)</li>
+<li>[ ] Mooring response analysis with passing ship forces (line tensions, motions)</li>
+<li>[ ] Parametric study capability (speed × distance × wind × passing angle matrix)</li>
+<li>[ ] 5-7 benchmark cases reproduced from historical projects, results within tolerance</li>
+<li>[ ] Each benchmark has sanitized <code>spec.yml</code> in <code>docs/domains/orcaflex/passing_ship/</code></li>
+<li>[ ] Standardized HTML report with force plots, tension envelopes, motion time histories</li>
+<li>[x] Integration with existing hydrodynamics module</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>src/digitalmodel/hydrodynamics/passing_ship/</code> (new module) + <code>docs/domains/orcaflex/passing_ship/</code></p>
+<p><strong>Primary solver</strong>: AQWA (matches historical project workflow). OrcaFlex is secondary/alternative path for mooring response only — not required for Phase 1-2.</p>
+<p><strong>Prerequisites</strong> (not WRK items — local resource access):
+- Access to <code>G:\ACMA Tool\Passing Ships\</code> for Excel tool extraction (Phase 1)
+- Access to <code>R:\Archive - Drive J\</code> for benchmark data (Phase 5)
+- AQWA v252 license for mooring analysis (Phase 3)
+- All archive data must pass legal sanitization before entering repo</p>
+<p><strong>Phase gates</strong>: Each phase produces a testable deliverable. Phase 1-2 (force model + schema) can proceed independently. Phase 3 (mooring) requires Phase 1. Phase 5 (benchmarks) requires Phases 1-4. Phase 6 (reporting) depends on WRK-130 for report template.</p>
+<h3>Existing Assets (reuse)</h3>
+<p>| Component | Path | Purpose |
+|-----------|------|
+---------|
+| DiffractionSpec pattern | <code>hydrodynamics/diffraction/input_schemas.py</code> | Pydantic spec pattern to follow |
+| AQWA runner | <code>hydrodynamics/aqwa/aqwa_router.py</code> | AQWA execution orchestration |
+| AQWA .dat parser | <code>hydrodynamics/diffraction/aqwa_lis_parser.py</code> | AQWA output parsing |
+| Benchmark framework | <code>hydrodynamics/diffraction/benchmark_runner.py</code> | Report generation pattern |
+| Report generator | WRK-130 (once complete) | HTML report template |
+| Legal deny list | <code>.legal-deny-list.yaml</code> | Client reference sanitization |
+| Excel tool | <code>G:\ACMA Tool\Passing Ships\PassingShipForceCalculator.xlsm</code> | Reference implementation (local) |
+| Archive projects | <code>R:\Archive - Drive J\</code> | ~15 benchmark sources (local) |</p>
+<h3>Phase 1 — Extract Excel Tool Logic</h3>
+<ul>
+<li>Read <code>PassingShipForceCalculator.xlsm</code> worksheets: identify formulas, input cells, output ranges</li>
+<li>Document the force model: expected to be Flory (2002) or Wang (1975) passing ship interaction theory</li>
+<li>Key equations to extract:</li>
+<li>Surge force: F_x(t) as function of ship speed, separation, vessel dimensions, water depth</li>
+<li>Sway force: F_y(t) — lateral suction/repulsion</li>
+<li>Yaw moment: M_z(t) — bow-in/bow-out turning</li>
+<li>Time history shape: typically bell-curve or double-peak as passing ship traverses</li>
+<li>Implement in <code>passing_ship/force_model.py</code>:</li>
+<li><code>compute_passing_forces(moored_vessel, passing_ship, track, environment) -&gt; ForceTimeHistory</code></li>
+<li>Return: time series of [Fx, Fy, Mz] at specified time steps</li>
+<li>Validate against Excel tool: same inputs → same outputs (within 0.1%)</li>
+<li><strong>VBA contingency</strong>: If logic resides in VBA macros (not cell formulas), use <code>openpyxl</code> for cell formulas + manual VBA inspection. If VBA is too complex, use the Excel tool as a black-box validator: run N test cases via <code>xlwings</code>, capture outputs, validate Python implementation against those outputs.</li>
+<li>Create 1 synthetic regression test case (not from client data) that can run in CI without archive access</li>
+</ul>
+<h3>Phase 2 — PassingShipSpec Pydantic Schema</h3>
+<p>Create <code>passing_ship/schema.py</code>:</p>
+<pre><code>PassingShipSpec:
+  moored_vessel:
+    hull: {LOA, beam, draft, displacement, Cb}
+    mooring: {lines: [{type, length, pretension, fairlead_pos, anchor_pos}]}
+    loading_condition: {draft, trim, GM}
+    rao_source: {type: file|catalog, path: str}
+  passing_ship:
+    type: {tanker|container|bulk|LNG}
+    dimensions: {LOA, beam, draft, displacement, Cb}
+    track:
+      speed: float (knots)
+      separation: float (m, CL-to-CL)
+      angle: float (deg, 0=parallel, 90=perpendicular)
+      closest_approach_offset: float (m, longitudinal)
+  environment:
+    water_depth: float (m)
+    wind: {speed, direction} | null
+    current: {speed, direction} | null
+    wave: {Hs, Tp, gamma, direction} | null
+  analysis_matrix:
+    cases: [{name, wind: bool, passing: bool, speed, separation, angle}]
+  output:
+    line_tensions: bool
+    vessel_motions: bool
+    fender_loads: bool
+    force_time_histories: bool
+</code></pre>
+<ul>
+<li>Validate with Pydantic: required fields, value ranges (speed &gt; 0, separation &gt; 0)</li>
+<li>YAML format: <code>spec.yml</code> in each analysis directory</li>
+</ul>
+<h3>Phase 3 — Mooring Response Analysis</h3>
+<ul>
+<li><code>passing_ship/mooring_analysis.py</code>:</li>
+<li>Load moored vessel OrcaFlex model (from spec or pre-built .yml)</li>
+<li>Apply passing ship force time history as external loads (surge, sway, yaw)</li>
+<li>Run time-domain analysis via OrcaFlex (preferred) or AQWA</li>
+<li>Extract results: line tensions, vessel motions, fender loads</li>
+<li>OrcaFlex integration path:</li>
+<li>Create <code>ExternallyCalculatedForce</code> or apply via <code>TimeHistory</code> data on vessel</li>
+<li>Alternatively: generate force .csv, reference from OrcaFlex model</li>
+<li>AQWA integration path:</li>
+<li>Apply forces via AQWA deck input (time-varying external force cards)</li>
+<li>Run AQWA drift analysis with mooring</li>
+</ul>
+<h3>Phase 4 — Parametric Study Engine</h3>
+<ul>
+<li><code>passing_ship/parametric.py</code>:</li>
+<li>Read <code>analysis_matrix</code> from spec</li>
+<li>Generate case combinations: speed × separation × wind × angle</li>
+<li>Run each case (reuse base model, vary force time history + environment)</li>
+<li>Collect results into structured output</li>
+<li>Case naming convention: <code>{speed}kn_{sep}m_{angle}deg_{wind_status}</code></li>
+<li>Parallel execution support: independent cases can run concurrently</li>
+</ul>
+<h3>Phase 5 — Benchmark Against Historical Projects</h3>
+<ul>
+<li>Select 5-7 projects from <code>R:\Archive - Drive J\</code> covering:</li>
+<li>1+ perpendicular passing</li>
+<li>1+ parallel passing</li>
+<li>1+ wind + passing combined</li>
+<li>1+ port/dock berth</li>
+<li>1+ open water / VLCC terminal</li>
+<li>Speed range: 2-5 knots</li>
+<li>For each:</li>
+<li>Extract original inputs (vessel data, mooring, passing ship params, environment)</li>
+<li>Sanitize per <code>.legal-deny-list.yaml</code> — replace all client/project names</li>
+<li>Create <code>spec.yml</code> in <code>docs/modules/orcaflex/passing_ship/&lt;benchmark_name&gt;/</code></li>
+<li>Run through Python pipeline</li>
+<li>Compare: line tensions within 5%, vessel motions within 10%</li>
+<li>Store benchmark results in <code>benchmark_output/passing_ship/</code></li>
+</ul>
+<h3>Phase 6 — Reporting</h3>
+<ul>
+<li><code>passing_ship/report_generator.py</code>:</li>
+<li>Single-page HTML report per analysis case (follows WRK-129/130 convention)</li>
+<li>Sections: input summary, force time history plots, line tension envelopes, vessel motion time histories, fender load summary, parametric comparison table</li>
+<li>Plotly interactive plots: force vs time, tension vs time per line group</li>
+<li>Pass/fail design check annotations (MBL utilization, motion exceedance)</li>
+<li>Summary report for parametric study: matrix of cases × peak values</li>
+</ul>
+<h3>Test Strategy</h3>
+<ul>
+<li><strong>Unit tests</strong> (no solver): force model against known analytical/Excel outputs, schema validation, parametric case generation</li>
+<li><strong>Integration tests</strong> (AQWA license): single passing case end-to-end, mooring response convergence</li>
+<li><strong>Benchmark tests</strong> (archive access): 5-7 historical reproductions, tolerance: tension 5%, motions 10%</li>
+<li><strong>Synthetic regression</strong>: 1 non-client test case permanently in repo for CI</li>
+</ul>
+<hr />
+<p><em>Source: passing ship analysis for moored vessels. Resources: G:\ACMA Tool\Passing Ships; R:\Archive - Drive J (15+ past projects)</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-131
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-131.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-131/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-131.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-131/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-131/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-131/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-131/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-131/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-131/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-131/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-131/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-131/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-131/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-131/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

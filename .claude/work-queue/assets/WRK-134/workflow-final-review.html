@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-134 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-134 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Add future-work brainstorming step before archiving completed items</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Add a workflow step between item completion and archiving that identifies and brainstorms future work inspired by or enabled by the just-completed item. This captures follow-on opportunities while context is fresh.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Completed work items often reveal new opportunities, adjacent improvements, or downstream tasks. Currently these insights are lost once an item is archived. A structured brainstorming step ensures continuity and keeps the work queue fed with high-quality, context-rich items.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] <code>on-complete-hook.sh</code> (or new pre-archive hook) prompts for future work identification</li>
+<li>[ ] Hook analyzes the completed item's scope, target repos, and related items to suggest follow-on work</li>
+<li>[ ] Suggested items can be auto-captured as new WRK items (pending user approval)</li>
+<li>[ ] process.md updated to document the new step between completion and archive</li>
+<li>[ ] SKILL.md updated with the new lifecycle step</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Spec</strong>: inline (Route B — medium complexity, 1 repo)
+<strong>Target</strong>: <code>.claude/work-queue/scripts/</code>, <code>.claude/work-queue/process.md</code>, <code>.claude/skills/coordination/workspace/work-queue/SKILL.md</code></p>
+<h3>Design Decision: Pre-Archive Hook vs. Archive Script Integration</h3>
+<p>Integrate the future-work brainstorming into <code>archive-item.sh</code> as a <strong>pre-archive step</strong> that runs <em>before</em> the file move, rather than as a separate hook script. Rationale:</p>
+<ul>
+<li>The current flow is: <code>archive-item.sh</code> -&gt; update frontmatter -&gt; move file -&gt; <code>on-complete-hook.sh</code> (brochure check) -&gt; regenerate INDEX.</li>
+<li>A pre-archive brainstorming step belongs <em>before</em> the move, while context is still accessible and the user can abort the archive if they want to act on suggestions first.</li>
+<li>The brainstorming logic itself goes into a new script <code>suggest-future-work.sh</code> that <code>archive-item.sh</code> calls. This keeps responsibilities separated (single-purpose scripts) while maintaining the linear archive flow.</li>
+<li>The brochure hook (<code>on-complete-hook.sh</code>) remains post-archive as-is — it is informational and does not gate archiving.</li>
+</ul>
+<p><strong>Revised archive flow</strong>:</p>
+<pre><code>archive-item.sh WRK-NNN
+  1. Find item in pending/working/blocked
+  2. NEW: Run suggest-future-work.sh WRK-NNN &lt;item-path&gt;
+     a. Parse completed item: title, ACs, plan, target_repos, related items
+     b. Cross-reference pending items to avoid duplicate suggestions
+     c. Generate suggestion categories (extensions, test gaps, docs, perf, adjacent)
+     d. Print suggestions to stdout
+     e. Prompt: &quot;Create any of these as WRK items? [y/N/select]&quot;
+     f. If yes: call capture pipeline for approved suggestions, set related: [WRK-NNN]
+  3. Update status to archived, set completed_at
+  4. Move to archive/YYYY-MM/
+  5. Run on-complete-hook.sh (brochure — unchanged)
+  6. Regenerate INDEX.md
+</code></pre>
+<h3>Existing Assets to Reuse</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Path</th>
+<th>Reuse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Archive script</td>
+<td><code>.claude/work-queue/scripts/archive-item.sh</code></td>
+<td>Insert call to new script at step 2</td>
+</tr>
+<tr>
+<td>Brochure hook</td>
+<td><code>.claude/work-queue/scripts/on-complete-hook.sh</code></td>
+<td>Pattern for frontmatter parsing (YAML extraction loop)</td>
+</tr>
+<tr>
+<td>Index generator</td>
+<td><code>.claude/work-queue/scripts/generate-index.py</code></td>
+<td><code>parse_frontmatter()</code> regex parser — reference for field extraction</td>
+</tr>
+<tr>
+<td>Process docs</td>
+<td><code>.claude/work-queue/process.md</code></td>
+<td>Section 5 (Archive) needs new sub-step</td>
+</tr>
+<tr>
+<td>Skill definition</td>
+<td><code>.claude/skills/coordination/workspace/work-queue/SKILL.md</code></td>
+<td>Scripts table + archive flow description</td>
+</tr>
+<tr>
+<td>Pending items dir</td>
+<td><code>.claude/work-queue/pending/</code></td>
+<td>Cross-reference target for duplicate detection</td>
+</tr>
+<tr>
+<td>State YAML</td>
+<td><code>.claude/work-queue/state.yaml</code></td>
+<td><code>last_id</code> counter for new WRK item creation</td>
+</tr>
+<tr>
+<td>Frontmatter template</td>
+<td><code>.claude/work-queue/process.md</code> (Conventions section)</td>
+<td>Template for generated WRK drafts</td>
+</tr>
+</tbody>
+</table>
+<h3>Phase 1 — Script Implementation (ACs 1-3)</h3>
+<p><strong>Files</strong>:
+- <code>NEW: .claude/work-queue/scripts/suggest-future-work.sh</code>
+- <code>EDIT: .claude/work-queue/scripts/archive-item.sh</code></p>
+<h4>1a. Create <code>suggest-future-work.sh</code></h4>
+<p>Shell script (<code>#!/usr/bin/env bash</code>) that:</p>
+<ol>
+<li><strong>Accepts</strong>: <code>&lt;WRK-NNN&gt; &lt;item-file-path&gt;</code></li>
+<li><strong>Parses the completed item</strong> (reuse the YAML frontmatter extraction pattern from <code>on-complete-hook.sh</code>):</li>
+<li><code>title</code> — what was accomplished</li>
+<li><code>target_repos</code> — which repos were touched</li>
+<li><code>related</code> — linked items (check their status: are they still pending?)</li>
+<li><code>complexity</code> — informs suggestion depth</li>
+<li>Body text: <code>## What</code>, <code>## Acceptance Criteria</code>, <code>## Plan</code> sections</li>
+<li><strong>Reads existing pending items</strong> — scan <code>pending/*.md</code> to extract titles and IDs for duplicate avoidance</li>
+<li><strong>Generates suggestion categories</strong> — prints structured suggestions under these headings:</li>
+<li><strong>Extensions</strong>: capabilities that naturally follow from the completed work (e.g., "WRK-NNN added X — consider adding Y integration")</li>
+<li><strong>Test coverage</strong>: if the item's ACs mention tests, suggest additional edge cases or integration tests</li>
+<li><strong>Documentation</strong>: if no brochure exists for target repos, suggest creating one; if the item added features, suggest user-facing docs</li>
+<li><strong>Performance</strong>: for data/compute items, suggest benchmarking or optimization</li>
+<li><strong>Adjacent improvements</strong>: items that share <code>target_repos</code> or <code>related</code> items that are still pending — highlight synergies</li>
+<li>
+<p><strong>Prints suggestions</strong> to stdout in numbered format:
+   ```
+   === Future Work Suggestions (from WRK-NNN) ===</p>
+</li>
+<li>
+<p>[extension] Add <Y> support to <module> (builds on <title>)</p>
+</li>
+<li>[test-gap] Integration tests for <module> with real data</li>
+<li>[docs] Create marketing brochure for <repo></li>
+<li>[adjacent] WRK-XXX (<related pending item>) may benefit from patterns established here</li>
+</ol>
+<p>Create WRK items for any of these? [enter numbers, 'all', or 'skip']:
+   <code>``
+6. **Captures user selection** — reads from stdin:
+   -</code>skip<code>or empty: no items created, proceed to archive
+   -</code>all<code>: create all suggestions
+   -</code>1,3<code>or</code>1 3<code>: create selected suggestions
+7. **Creates WRK items** for approved suggestions:
+   - Read</code>last_id<code>from</code>state.yaml<code>, increment for each new item
+   - Write frontmatter using the standard template (from</code>process.md<code>Conventions)
+   - Set</code>related: [WRK-NNN]<code>linking back to the parent completed item
+   - Set</code>priority: low<code>(suggestions default to low; user can reprioritize later)
+   - Set</code>complexity: simple<code>as default (user refines during triage)
+   - Write file to</code>pending/<WRK-NEW>.md<code>- Update</code>state.yaml<code></code>last_id<code>and</code>total_captured<code>counters
+   - Regenerate INDEX.md after all items created
+8. **TTY detection**: If stdin is not a TTY (</code>[[ ! -t 0 ]]<code>), auto-skip the interactive prompt to avoid hanging in batch/CI/agent contexts. Print suggestions to stdout but do not wait for input.
+9. **Exit code**: 0 on success (including skip), non-zero on error. Never blocks archiving on failure — if the script errors, print a warning and let</code>archive-item.sh` continue.</p>
+<p><strong>Suggestion generation approach</strong>: The script generates suggestions based on <strong>pattern matching</strong> against the completed item's content, not AI inference. This keeps it fast and deterministic:
+- If ACs contain unchecked boxes → suggest follow-up item for remaining work
+- If <code>target_repos</code> has repos without <code>docs/marketing/*brochure*</code> → suggest brochure creation
+- If <code>related</code> contains pending items → surface them as adjacent work
+- If title/body contains keywords like "phase 1", "initial", "basic" → suggest phase 2/advanced version
+- If complexity is <code>complex</code> and no test coverage mentioned → suggest test hardening
+- The orchestrator agent (Claude Code) can provide richer AI-generated suggestions when running <code>/work archive</code> interactively; the script provides a deterministic baseline</p>
+<h4>1b. Modify <code>archive-item.sh</code></h4>
+<p>Insert the <code>suggest-future-work.sh</code> call between finding the item and updating frontmatter:</p>
+<pre><code class="language-bash"># ── Suggest future work (pre-archive) ───────────────
+if [[ -x &quot;$SCRIPT_DIR/suggest-future-work.sh&quot; ]]; then
+    echo &quot;&quot;
+    &quot;$SCRIPT_DIR/suggest-future-work.sh&quot; &quot;$WRK_ID&quot; &quot;$SOURCE_FILE&quot; || {
+        echo &quot;WARN: suggest-future-work.sh failed, continuing with archive&quot;
+    }
+fi
+</code></pre>
+<p>Place this after the "Find the item" block (line ~37) and before the "Create archive directory" block (line ~42). The <code>|| { warn }</code> pattern ensures archive proceeds even if suggestions fail.</p>
+<p><strong>Non-interactive mode</strong>: Add <code>--no-suggest</code> flag to <code>archive-item.sh</code> for batch/CI use:</p>
+<pre><code class="language-bash">NO_SUGGEST=false
+if [[ &quot;${2:-}&quot; == &quot;--no-suggest&quot; ]]; then
+    NO_SUGGEST=true
+fi
+</code></pre>
+<p>Skip the suggestion step when <code>NO_SUGGEST=true</code>.</p>
+<h4>Test strategy (Phase 1)</h4>
+<ul>
+<li><strong>Manual test</strong>: Archive a real completed item (e.g., one of the items in <code>working/</code>) and verify suggestions appear</li>
+<li><strong>Dry-run test</strong>: Run <code>suggest-future-work.sh</code> directly against a working item without archiving — verify output format and no side effects when user selects <code>skip</code></li>
+<li><strong>Edge cases</strong>: item with no ACs, item with empty target_repos, item with no related items, item with all related items already archived</li>
+</ul>
+<h3>Phase 2 — Documentation Updates (ACs 4-5)</h3>
+<p><strong>Files</strong>:
+- <code>EDIT: .claude/work-queue/process.md</code>
+- <code>EDIT: .claude/skills/coordination/workspace/work-queue/SKILL.md</code></p>
+<h4>2a. Update <code>process.md</code></h4>
+<p>In Section 5 (Archive), insert a new sub-step between the trigger description and the script steps:</p>
+<pre><code class="language-markdown">### 5. Archive
+
+**Trigger**: All acceptance criteria met, or manual `/work archive WRK-NNN`.
+
+#### 5a. Future Work Brainstorming (pre-archive)
+
+Before archiving, the system prompts for follow-on work identification:
+
+- Script: `scripts/suggest-future-work.sh WRK-NNN &lt;item-path&gt;`
+  1. Parses the completed item's title, ACs, plan, target repos, and related items.
+  2. Cross-references existing pending items to avoid duplicate suggestions.
+  3. Generates categorized suggestions: extensions, test gaps, documentation, performance, adjacent work.
+  4. Presents numbered suggestions for user selection.
+  5. Creates approved suggestions as new WRK items with `related: [WRK-NNN]`.
+- Skippable: user can enter 'skip' to proceed directly to archive.
+- Non-blocking: if the script fails, archive continues with a warning.
+- Disable with `--no-suggest` flag on `archive-item.sh`.
+
+#### 5b. Archive Execution
+
+- Script: `scripts/archive-item.sh WRK-NNN`
+  [existing steps 1-4 renumbered, unchanged]
+</code></pre>
+<p>Also update the directory structure diagram to include <code>suggest-future-work.sh</code>.</p>
+<h4>2b. Update <code>SKILL.md</code></h4>
+<ol>
+<li>Add <code>suggest-future-work.sh</code> to the <code>scripts:</code> frontmatter list.</li>
+<li>In the "Phase 2: Process" section, add a note about the pre-archive brainstorming step.</li>
+<li>Add a new section "## Future Work Brainstorming" documenting the suggestion categories and capture flow.</li>
+<li>Update the Scripts table at the bottom to include the new script.</li>
+<li>Bump version to <code>1.5.0</code> with changelog entry.</li>
+</ol>
+<h4>Test strategy (Phase 2)</h4>
+<ul>
+<li>Verify <code>process.md</code> renders correctly (no broken markdown tables or lists)</li>
+<li>Verify SKILL.md frontmatter parses correctly (YAML valid)</li>
+<li>Verify the new script appears in the scripts listing</li>
+</ul>
+<h3>Phase 3 — Refinement and Edge Cases</h3>
+<p><strong>Files</strong>:
+- <code>EDIT: .claude/work-queue/scripts/suggest-future-work.sh</code> (refinements)</p>
+<ol>
+<li><strong>Duplicate detection</strong>: Before suggesting an item, grep pending titles for keyword overlap (&gt;50% word match). If a close match exists, annotate the suggestion: <code>[may overlap with WRK-XXX: &lt;title&gt;]</code></li>
+<li><strong>Related item surfacing</strong>: For each <code>related</code> ID in the completed item, check if it is still in <code>pending/</code> or <code>blocked/</code>. If so, include it as an "adjacent" suggestion with context about the relationship.</li>
+<li><strong>Quiet mode</strong>: Add <code>--quiet</code> flag that prints suggestions but skips the interactive prompt (for use by the orchestrator agent, which handles user interaction itself).</li>
+</ol>
+<h3>Acceptance Criteria Mapping</h3>
+<table>
+<thead>
+<tr>
+<th>AC</th>
+<th>Phase</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook prompts for future work identification</td>
+<td>Phase 1a</td>
+<td><code>suggest-future-work.sh</code> prints categorized suggestions</td>
+</tr>
+<tr>
+<td>Hook analyzes scope, target repos, related items</td>
+<td>Phase 1a</td>
+<td>Script parses frontmatter + body, cross-references pending items</td>
+</tr>
+<tr>
+<td>Suggested items auto-captured as WRK items</td>
+<td>Phase 1a</td>
+<td>Script creates <code>pending/WRK-NEW.md</code> with <code>related: [WRK-NNN]</code></td>
+</tr>
+<tr>
+<td>process.md updated</td>
+<td>Phase 2a</td>
+<td>New sub-step 5a documented in Archive section</td>
+</tr>
+<tr>
+<td>SKILL.md updated</td>
+<td>Phase 2b</td>
+<td>New script in frontmatter, new section, version bump</td>
+</tr>
+</tbody>
+</table>
+<h3>Estimated Effort</h3>
+<ul>
+<li>Phase 1: ~120 lines of bash (suggest-future-work.sh) + ~10 lines edit (archive-item.sh) — 2-3 hours</li>
+<li>Phase 2: ~40 lines added to process.md + ~30 lines added to SKILL.md — 1 hour</li>
+<li>Phase 3: ~30 lines refinement to suggest-future-work.sh — 30 minutes</li>
+<li><strong>Total</strong>: ~4 hours</li>
+</ul>
+<hr /></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

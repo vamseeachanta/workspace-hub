@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-229 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-229 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Skills curation — online research, knowledge graph review, update index, session-input health check</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Three standing mechanisms for keeping the skills library alive, well-targeted, and high-signal:</p>
+<ol>
+<li>
+<p><strong>Periodic online research</strong> — at a dynamically adjusted cadence (daily → weekly → monthly), an agent researches the web for developments relevant to skills in the library, identifies gaps or stale content, and updates, curates, or creates new skills as warranted. New skill identification is first-class: if research or graph review surfaces a capability gap with no existing skill, a new skill is created, not just an update logged. The cadence shortens when research yields strong signals, lengthens when yield is low.</p>
+</li>
+<li>
+<p><strong>Knowledge graph review</strong> — at the same cadence as online research, analyse the skills knowledge graph (<code>SKILLS_GRAPH.yaml</code>) against active work items and repo activity to identify: which skill domains are heavily used but data-thin, which WRK items cluster around under-served skills, and which skills have no connections to current work (candidates for archival). Outputs a prioritised list of skills that need more data — this list directly feeds the online research agent's search targets for that run.</p>
+</li>
+<li>
+<p><strong>Session-input health check</strong> — verify that sessions are actually contributing to skills. If the <code>skill-learner</code> post-commit hook and session capture pipeline are running, they should be feeding new patterns into <code>.claude/skills/</code> and <code>.claude/state/</code>. This health check confirms the pipeline is live and producing output, and flags when it has gone quiet.</p>
+</li>
+</ol></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>A skills library that isn't growing from external research and live session work is stale by default. Worse, without a knowledge graph review, research effort is blind — it doesn't know which skill domains are actually load-bearing for current repo work and which are orphaned. The knowledge graph closes this loop: it identifies where skill data is thin relative to actual demand, so research effort is directed, not scattered. The ecosystem already has the <code>skill-learner</code> post-commit hook and session memory hooks — but there is no mechanism to confirm they are producing output, no agent actively researching online, and no graph-driven prioritisation of where to focus. All three gaps are addressed here.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><h3>Online Research Pipeline</h3>
+<ul>
+<li>[ ] Create a <code>skills-researcher</code> skill at <code>.claude/skills/coordination/workspace/skills-researcher/SKILL.md</code></li>
+<li>[ ] Skill runs on a dynamic cadence: starts daily, auto-adjusts based on yield (high yield = maintain frequency; low yield = step down to weekly, then monthly)</li>
+<li>[ ] Each run: searches for developments relevant to top N skills by usage/recency; identifies new tools, patterns, or deprecations; updates or curates existing skills; <strong>identifies and creates new skills</strong> where a capability gap exists with no current coverage; logs yield (# updates + # new skills created per run)</li>
+<li>[ ] Cadence adjustment logic: if 3 consecutive runs yield &lt; threshold findings → step down frequency; if yield spikes → step back up</li>
+<li>[ ] Maintains a research log at <code>.claude/state/skills-research-log.jsonl</code></li>
+<li>[ ] Updates <code>skill-registry.yaml</code> and skill INDEX files after each curation pass</li>
+</ul>
+<h3>Knowledge Graph Review</h3>
+<ul>
+<li>[ ] At each curation run: load <code>SKILLS_GRAPH.yaml</code> + active WRK items (pending/working/blocked) + recent git commit history</li>
+<li>[ ] Score each skill domain by: (a) frequency referenced in active WRK items, (b) commit activity in related repos, (c) current skill depth (# connected skills, content length, last updated)</li>
+<li>[ ] Output a <strong>priority list</strong>: skill domains with high demand but low data — top N become the research agent's search targets for that run</li>
+<li>[ ] Flag skills with zero connections to current work as archival candidates</li>
+<li>[ ] Flag capability gaps (high-demand domain, no skill exists) as <strong>new skill candidates</strong> — passed to the research agent as creation targets for that run</li>
+<li>[ ] For gaps that are deep or require domain expertise to fill properly — i.e. a quick research pass won't suffice — <strong>automatically spin off a new WRK item</strong> so the user can engage: describe the gap, why it matters, what data/research is needed, and a suggested approach. These are not auto-resolved; they surface for user collaboration.</li>
+<li>[ ] Log graph analysis results to <code>.claude/state/skills-graph-review-log.jsonl</code></li>
+</ul>
+<p><strong>Gap triage logic:</strong>
+- Shallow gap (known domain, missing coverage) → agent creates skill autonomously
+- Deep gap (requires domain expertise, significant research, or user input) → spin off <code>WRK-NNN: [domain] skill gap — needs user input</code> with context, demand evidence, and suggested approach</p>
+<h3>Session-Input Health Check</h3>
+<ul>
+<li>[ ] Add a health check to the weekly session review (or <code>ensure-readiness.sh</code>) that verifies:</li>
+<li><code>skill-learner</code> hook has fired at least once in the last N sessions</li>
+<li><code>.claude/state/sessions/</code> contains skill-related entries (pattern captures, skill candidates)</li>
+<li>New skills or skill updates have been committed in the last 7 days</li>
+<li>[ ] Health check emits a warning if the pipeline has gone quiet, with a diagnostic message identifying which stage is silent</li>
+<li>[ ] Integrate with WRK-226 preflight hook work — session health and skills health are related signals</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-229
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-229.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-229/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-229.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-229/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-229/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-229/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-229/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-229/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-229/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-229/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-229/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-229/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-229/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-229/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

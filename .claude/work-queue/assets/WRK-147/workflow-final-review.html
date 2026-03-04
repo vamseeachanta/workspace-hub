@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-147 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-147 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Set up aceengineer-strategy private repo with business operations framework</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Create a private GitHub repo <code>aceengineer-strategy</code> that mirrors the engineering orchestration pattern (workspace-hub → agents → work items → review gates) for business strategy, GTM execution, and pipeline management. Same discipline, different problem domain.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Vamsee already solved the engineering execution problem with agent orchestration, work queues, and review gates. The business side needs the same structure but with a privacy wall. Engineering repos (public) and business repo (private) must stay completely separate — no cross-references, no symlinks.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Private repo created on GitHub (https://github.com/vamseeachanta/aceengineer-strategy)</li>
+<li>[x] .claude/ directory with CLAUDE.md, 5 agent definitions, 3 workflow definitions</li>
+<li>[x] strategy/ directory with positioning, ICP, competitors, pricing, GTM documents</li>
+<li>[x] pipeline/ directory with prospects template and lost-deals template</li>
+<li>[x] experiments/ directory with TEMPLATE.md and at least 1 active experiment</li>
+<li>[x] metrics/ directory with weekly scorecard template</li>
+<li>[x] content/ directory with blog-to-sales-map seeded from existing blog posts</li>
+<li>[x] All templates populated with real content from the Feb 15-16 strategy session</li>
+</ul>
+<hr />
+<p><em>Source: A&amp;CE Strategy Session Feb 15-16 — "The business strategy isn't a different discipline — it's the same system pointed at a different problem. The repo is the business, the experiments are the sprints, and the scorecard is the test suite."</em></p></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: New private GitHub repo <code>aceengineer-strategy</code></p>
+<h3>Phase 1 — Create Repo &amp; Structure</h3>
+<ul>
+<li><code>gh repo create aceengineer-strategy --private</code></li>
+<li>Create directory tree as specified in ## Repo Structure</li>
+<li>Add <code>.gitignore</code> (exclude PII, contact details, pricing specifics)</li>
+<li>Add <code>README.md</code> with repo purpose and navigation</li>
+</ul>
+<h3>Phase 2 — CLAUDE.md &amp; Agent Definitions</h3>
+<ul>
+<li>Create <code>.claude/CLAUDE.md</code> with business strategy orchestrator rules</li>
+<li>Create 5 agent definitions: market-analyst, outbound-agent, pricing-analyst, content-strategist, strategy-reviewer</li>
+<li>Create 3 workflow definitions: prospect-pipeline, quarterly-review, experiment-cycle</li>
+</ul>
+<h3>Phase 3 — Strategy Documents</h3>
+<ul>
+<li>Seed <code>strategy/positioning.md</code> from Feb 15-16 session notes (WRK-146 strategic positioning section)</li>
+<li>Seed <code>strategy/ideal-customer.md</code> from GTM strategy (mid-market offshore, 10-50 engineers)</li>
+<li>Seed <code>strategy/competitors.md</code> from WRK-148 comparable companies (Cognite, Akselos, Palantir)</li>
+<li>Seed <code>strategy/pricing-model.md</code> with $120K retainer model</li>
+<li>Seed <code>strategy/go-to-market.md</code> from WRK-148 priority action matrix</li>
+</ul>
+<h3>Phase 4 — Pipeline &amp; Experiments</h3>
+<ul>
+<li>Create <code>pipeline/prospects.md</code> with 20 target companies from WRK-148</li>
+<li>Create <code>pipeline/lost-deals.md</code> template</li>
+<li>Create <code>experiments/TEMPLATE.md</code></li>
+<li>Create first experiment: "LinkedIn content series — AI automation for OrcaFlex"</li>
+</ul>
+<h3>Phase 5 — Metrics &amp; Content</h3>
+<ul>
+<li>Create <code>metrics/weekly-scorecard.md</code> template (5 numbers)</li>
+<li>Create <code>content/blog-to-sales-map.md</code> mapping existing blog posts to ICP pain points</li>
+</ul>
+<h3>Dependencies</h3>
+<ul>
+<li>GitHub CLI (<code>gh</code>) for repo creation</li>
+<li>Content from WRK-148 assets (ace-gtm-strategy PDF)</li>
+<li>No code dependencies</li>
+</ul></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-147
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-147.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-147/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-147.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-147/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-147/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-147/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-147/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-147/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-147/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-147/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-147/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-147/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-147/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-147/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

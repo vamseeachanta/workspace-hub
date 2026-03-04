@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-018 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-018 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Extend BSEE field data pipeline to other regulatory sources (RRC, Norway, Mexico, Brazil)</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Adapt the streamlined BSEE field data analysis pipeline (WRK-017) to work with equivalent data from other regulatory bodies and jurisdictions:
+- <strong>Texas Railroad Commission (RRC)</strong>: onshore and state waters Texas
+- <strong>Norway (NPD/Sodir)</strong>: Norwegian Continental Shelf
+- <strong>Mexico (CNH/SENER)</strong>: Mexican offshore and onshore
+- <strong>Brazil (ANP)</strong>: Brazilian pre-salt and conventional
+- Other sources as identified</p>
+<p>For each source, implement the same analysis domains: wellbore counts, well path data, casing program schematics, drilling/completion activities, and intervention activities — adapted to the data formats and fields available from each regulator.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>The BSEE pipeline covers US federal offshore only. Extending to other jurisdictions provides a global view of field data, enables cross-regional benchmarking, and maximizes the value of the analysis framework by reusing the pipeline architecture across data sources.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[x] Inventory available data from each target source (RRC, NPD, CNH, ANP)</li>
+<li>[x] Map data fields from each source to the common pipeline schema</li>
+<li>[x] Implement data ingestion adapters per source</li>
+<li>[x] Wellbore, well path, casing, drilling, completion, intervention analysis for each source</li>
+<li>[x] Handle source-specific differences (naming conventions, units, data gaps)</li>
+<li>[x] Unified query interface: same input parameters work across all sources</li>
+<li>[x] Cross-source comparison capability (e.g., Gulf of Mexico vs. North Sea)</li>
+<li>[x] Document data availability and limitations per source</li>
+<li>[x] Validate outputs against known fields in each jurisdiction</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p><strong>Target</strong>: <code>src/worldenergydata/bsee/pipeline/adapters/</code> (nested under WRK-017's pipeline directory; if pipeline is later generalized to be source-agnostic, refactor <code>bsee/pipeline/</code> to top-level <code>pipeline/</code> with <code>bsee/</code> as the first adapter)</p>
+<h3>Phase 1 — Inventory Data Availability</h3>
+<ul>
+<li>RRC (Texas): production data, completion reports (publicly available via RRC query system). Note: casing data and intervention data are not in standard public downloads; completion data is limited</li>
+<li>NPD/Sodir (Norway): FactPages API (already have <code>sodir/</code> module with forecasting). Full coverage expected across all 6 domains</li>
+<li>CNH (Mexico): public production data (Ronda/CNH portal). Note: well-level casing/completion data availability is uncertain</li>
+<li>ANP (Brazil): ANP open data portal (production, wells, concessions). Note: casing program details may not be publicly available</li>
+<li><strong>Data availability matrix</strong>: For each source, produce a mapping of the 6 analysis domains (wellbore, well path, casing, drilling/completion, intervention, production) to available/partial/unavailable. Partial and unavailable domains return empty DataFrames with documented reasons</li>
+</ul>
+<h3>Phase 2 — Common Schema</h3>
+<ul>
+<li><code>common_schema.py</code> — Unified field pipeline schema that maps to WRK-017 <code>FieldContext</code></li>
+<li>Adapter interface: <code>def adapt(source_data) -&gt; FieldContext</code></li>
+<li>Handle source-specific units (metric vs imperial), naming conventions, data gaps</li>
+<li><strong>Canonical units</strong>: Common schema uses SI units (meters, cubic meters, kilograms). Each adapter's <code>adapt()</code> method converts source units to SI on ingestion. Unit conversion functions live in <code>pipeline/units.py</code></li>
+</ul>
+<h3>Phase 3 — Per-Source Adapters</h3>
+<ul>
+<li><code>rrc_adapter.py</code> — Texas RRC data ingestion</li>
+<li><code>sodir_adapter.py</code> — Wire existing sodir module into pipeline (already has data loaders)</li>
+<li><code>cnh_adapter.py</code> — Mexico CNH data ingestion</li>
+<li><code>anp_adapter.py</code> — Brazil ANP data ingestion</li>
+</ul>
+<h3>Phase 4 — Cross-Source Analysis</h3>
+<ul>
+<li><code>multi_source_query.py</code> — Accepts field name + optional source filter, dispatches to matching adapter(s). Same input parameters work across all sources</li>
+<li><code>benchmarking.py</code> — Computes comparable metrics (recovery factor, drilling efficiency, water depth distribution) across sources. Output: structured comparison DataFrame + Plotly visualization</li>
+<li>Cross-regional benchmarking (GoM vs North Sea vs Brazil pre-salt)</li>
+</ul>
+<h3>Phase 5 — Testing</h3>
+<ul>
+<li>Unit tests per adapter with fixture data</li>
+<li>Integration test: query Troll field (Sodir), a well-known RRC field, and validate output schema matches <code>FieldContext</code></li>
+<li>Minimum 80% coverage on new adapter code</li>
+</ul>
+<h3>Dependencies</h3>
+<ul>
+<li>Blocked by WRK-017 (BSEE pipeline must be complete first as template)</li>
+</ul>
+<h3>Review Notes</h3>
+<ul>
+<li><strong>Verdict</strong>: Claude: MINOR</li>
+<li><strong>Actions taken</strong>:</li>
+<li>Added per-source data availability notes to Phase 1 (RRC casing/intervention gaps, CNH/ANP uncertainty)</li>
+<li>Added data availability matrix requirement to Phase 1 (6 domains mapped to available/partial/unavailable per source)</li>
+<li>Added Phase 5 for testing: unit tests per adapter, integration tests with known fields, 80% coverage target</li>
+<li>Fixed target path from <code>src/worldenergydata/pipeline/adapters/</code> to <code>src/worldenergydata/bsee/pipeline/adapters/</code> to align with WRK-017</li>
+<li>Expanded Phase 4 with concrete deliverables: <code>multi_source_query.py</code> and <code>benchmarking.py</code></li>
+<li>Added canonical unit standard (SI) to Phase 2 with <code>pipeline/units.py</code> for conversion functions</li>
+<li><em>Cross-reviewed: 2026-02-09</em></li>
+</ul>
+<p><em>Approved by user: 2026-02-09</em></p>
+<hr />
+<p><em>Source: based on bsee field data pipeline, implement the same pipelines for other data sources (rail road commission, norway, mexico, brazil etc.)</em></p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p>wrk_id: WRK-018
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-018.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-018/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-018.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-018/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-018/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-018/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-018/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-018/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-018/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-018/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-018/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-018/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-018/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-018/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh</p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>evidence/stage-evidence.yaml</code></li></ul></div>
+</body>
+</html>

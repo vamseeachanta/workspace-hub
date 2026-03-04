@@ -1,0 +1,7 @@
+events:
+- stage: close_review
+  opened_in_default_browser: false
+  browser: not-opened
+  html_ref: .claude/work-queue/assets/WRK-624/workflow-final-review.html
+  opened_at: '2026-03-04T20:08:27Z'
+  reviewer: user

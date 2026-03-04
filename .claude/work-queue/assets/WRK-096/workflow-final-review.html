@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-096 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-096 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Review and improve worldenergydata module structure for discoverability</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>Apply the same module structure improvement approach used in WRK-066 (digitalmodel) to the worldenergydata repository. Audit the current layout, simplify the module hierarchy, standardize naming, and improve discoverability so that all subpackages are clearly organized and findable.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>WRK-066 successfully restructured digitalmodel for discoverability — the same treatment is needed for worldenergydata. Poor organization makes it difficult for users and AI agents to locate functionality, increases onboarding friction, and leads to duplicated or misplaced code. worldenergydata has grown to include 15+ data sources across energy, marine safety, and production analytics domains, making clear module organization critical.</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><h3>Audit Phase (DONE — 2026-02-08)</h3>
+<ul>
+<li>[x] Current module structure audited (17 modules, 538 files under modules/, 615 total)</li>
+<li>[x] External consumers identified: zero Python imports; assetutilities/aceengineer-website refs are string-only</li>
+<li>[x] CLI entry points inventoried: 1 entry point (worldenergydata.cli.main:app), 11 command modules</li>
+</ul>
+<h3>Design Phase (DONE — 2026-02-08)</h3>
+<ul>
+<li>[x] Flatten-only approach designed (no domain grouping): worldenergydata.modules.X → worldenergydata.X</li>
+<li>[x] Naming conventions confirmed: all modules already snake_case, no violations</li>
+<li>[x] Migration strategy: MetaPathFinder compat layer with DeprecationWarning (from digitalmodel/_compat.py pattern)</li>
+<li>[x] Full implementation plan: <code>worldenergydata/specs/modules/sharded-orbiting-turtle.md</code> (8 phases)</li>
+<li>[ ] Public API surface defined per package (deferred to implementation Phase 5)</li>
+</ul>
+<h3>Implementation Phase (DONE — 2026-02-08)</h3>
+<ul>
+<li>[x] Module organization follows clear, discoverable patterns</li>
+<li>[x] Top-level <code>__init__.py</code> or module index provides discoverability with defined public API</li>
+<li>[x] Old import paths preserved as deprecation shims (import redirects with warnings)</li>
+<li>[x] Documentation updated to reflect new structure</li>
+</ul>
+<h3>Validation Phase (DONE — 2026-02-08)</h3>
+<ul>
+<li>[x] All existing imports and tests updated for new paths</li>
+<li>[x] No regressions — 762 tests pass (8 failures pre-existing missing deps)</li>
+<li>[x] External consumer imports validated (zero Python consumers confirmed)</li>
+<li>[x] CLI entry points verified functional after restructure</li>
+<li>[ ] Rollback plan tested: git-based revert to pre-restructure state confirmed viable</li>
+</ul>
+<h3>Review Phase (DONE — 2026-02-08)</h3>
+<ul>
+<li>[x] Cross-review of implementation (Claude + Gemini: 2 APPROVE, Codex: no output)</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><p>Not available.</p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>

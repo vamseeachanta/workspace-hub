@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-205 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-205 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Skills knowledge graph — capability metadata and relationship layer beyond flat index</div>
+    <div class="pill"><strong>Status</strong><br>archived</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+  </div>
+
+  <h2>Prompt Start Context</h2>
+  <div class="panel"><p>With 468 skills across 16 domains and a 34KB README index, the current flat-index approach
+scales linearly with size. Add a lightweight relationship and capability metadata layer to
+enable semantic discovery and tiered/dynamic loading without requiring a full graph database.</p></div>
+
+  <h2>Why</h2>
+  <div class="panel"><p>Triggered by review of ArsContexta and DeepIQ industrial knowledge graph whitepaper patterns.
+Key insight: taxonomy (what we have) + ontology (relationships) + KG instantiation = full
+discoverability. The current index must be fully loaded to find anything; relationships and
+capability tags would allow just-in-time loading of only the relevant subset.</p>
+<p>Known pain points:
+- 34KB README index is expensive to include in context for every session
+- No way to ask "which skills compose into a drilling-analysis workflow?"
+- No dependency or conflict relationships between skills
+- 115 diverged skills have no canonical linkage back to hub versions</p></div>
+
+  <h2>Acceptance Criteria</h2>
+  <div class="panel"><ul>
+<li>[ ] Each SKILL.md gains a structured <code>capabilities:</code>, <code>requires:</code>, and <code>see_also:</code> frontmatter block — <strong>all 468 skills</strong> get at minimum an empty skeleton; top 3 domains (engineering, data, development) get hand-reviewed content</li>
+<li>[ ] A <code>SKILLS_GRAPH.yaml</code> or <code>skills-map.json</code> at <code>.claude/skills/</code> root encodes cross-skill relationships (composes, alternatives, requires)</li>
+<li>[ ] Category-level sub-indexes created (e.g., <code>engineering/INDEX.md</code>) so only the relevant slice need be loaded</li>
+<li>[ ] Main README becomes a meta-index of sub-indexes (reduces load-time for 80% of sessions)</li>
+<li>[ ] <code>_diverged/</code> skills include a <code>canonical_ref:</code> field pointing to hub version</li>
+</ul></div>
+
+  <h2>Plan</h2>
+  <div class="panel"><p>Not available.</p></div>
+  <h3>Plan Review Artifacts</h3>
+  <div class="panel">
+    <h4>Draft</h4>
+    <p><em>Not available.</em></p>
+    <h4>Final</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Execution Brief</h2>
+  <div class="panel"><h3>Provider</h3>
+<ul>
+<li><strong>Executor</strong>: Claude Sonnet (orchestrator) + 2-agent team (Bash agents for bulk ops)</li>
+<li><strong>Alt</strong>: Codex for Steps 2/3/5 scripting if Sonnet quota constrained</li>
+</ul>
+<h3>Task for Executor</h3>
+<p>Execute revised plan v2 on a feature branch. Follow Step 1 → 7 in sequence.
+Do not skip validation (Step 7). Commit at each step boundary.</p>
+<h3>Done When</h3>
+<ul>
+<li>[ ] All 468 SKILL.md have <code>capabilities:</code>, <code>requires:</code>, <code>see_also:</code> keys</li>
+<li>[ ] <code>SKILLS_GRAPH.yaml</code> exists and all edges point to valid paths</li>
+<li>[ ] 12 category INDEX.md files exist under their domains</li>
+<li>[ ] README.md is ~50 lines pointing to category indexes</li>
+<li>[ ] 115 <code>_diverged/</code> skills have <code>canonical_ref:</code> (unmatched flagged, not missing)</li>
+<li>[ ] Validation step exits 0</li>
+</ul>
+<h3>For User Review</h3>
+<ul>
+<li>Step 1 schema definition — review the 16→12 domain mapping before scripting begins</li>
+<li>Step 7 validation report — any broken canonical_ref paths need manual triage</li>
+</ul>
+<hr />
+<p><em>Source: User asked to assess whether skills need managing beyond flat index, triggered by arscontexta tweet + DeepIQ KG whitepaper</em></p></div>
+
+  <h2>Cross-Review Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Test Summary</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Gate Evidence Summary</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Resource Intelligence</h2>
+  <div class="panel">
+    <h4>Resource Summary</h4>
+    <p><em>Not available.</em></p>
+    <h4>Resource Pack</h4>
+    <p><em>Not available.</em></p>
+  </div>
+
+  <h2>Skill Manifest</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Future Work</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Stage Evidence Ledger</h2>
+  <div class="panel"><p><em>Not available.</em></p></div>
+
+  <h2>Asset Index</h2>
+  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+</body>
+</html>
