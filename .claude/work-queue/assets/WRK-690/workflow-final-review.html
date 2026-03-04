@@ -7,7 +7,7 @@
   <style>
     body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
     h1, h2 { margin-top: 24px; }
-    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
     .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
     .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
     table { border-collapse: collapse; width: 100%; margin-top: 8px; }
@@ -20,9 +20,10 @@
   <h1>WRK-690 Final Review</h1>
   <div class="meta">
     <div class="pill"><strong>Title</strong><br>feat(workflow): enforce skill-driven /work gatepass from session start to close</div>
-    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Status</strong><br>done</div>
     <div class="pill"><strong>Route</strong><br>C</div>
-    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Orchestrator</strong><br>codex</div>
+    <div class="pill"><strong>Provider</strong><br>codex</div>
   </div>
 
   <h2>Prompt Start Context</h2>
@@ -149,6 +150,11 @@ artifact: .claude/work-queue/assets/WRK-624/workflow-governance-review.html</p>
 <td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
 </tr>
 <tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
 <td>Cross-review gate</td>
 <td>PASS</td>
 <td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-690/review.html</td>
@@ -211,7 +217,10 @@ artifact: .claude/work-queue/assets/WRK-624/workflow-governance-review.html</p>
   <div class="panel"><p>recommendations:
   - title: Add integration tests for claim/close/archive path contracts
     required_for_signoff: true
-    wrk_id: WRK-701</p></div>
+    wrk_id: WRK-701
+    disposition: spun-off-new
+    status: pending
+    captured: true</p></div>
 
   <h2>Stage Evidence Ledger</h2>
   <div class="panel"><p>wrk_id: WRK-690
@@ -300,6 +309,6 @@ stages:
     evidence: scripts/work-queue/archive-item.sh</p></div>
 
   <h2>Asset Index</h2>
-  <div class="panel"><ul><li><code>cross-review-package.md</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/agent-wrk-counts-by-day.html</code></li><li><code>evidence/claim.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/gatepass-weekly-summary.html</code></li><li><code>evidence/gatepass-weekly-summary.md</code></li><li><code>evidence/lessons-applied.md</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/session-change-log-2026-03-04.md</code></li><li><code>evidence/session-gate-analysis.json</code></li><li><code>evidence/session-gate-analysis.md</code></li><li><code>evidence/session-signal-coverage-audit.json</code></li><li><code>evidence/session-signal-coverage-audit.md</code></li><li><code>evidence/session-wrk-count.md</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/stage-skills-tools-matrix.md</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/wrk-624-user-review-audit.md</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-draft.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review.html</code></li><li><code>test-results.md</code></li><li><code>workflow-final-review.html</code></li></ul></div>
+  <div class="panel"><ul><li><code>cross-review-package.md</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/agent-wrk-counts-by-day.html</code></li><li><code>evidence/claim.yaml</code></li><li><code>evidence/close-readiness-gaps.md</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/gatepass-weekly-summary.html</code></li><li><code>evidence/gatepass-weekly-summary.md</code></li><li><code>evidence/lessons-applied.md</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/session-change-log-2026-03-04.md</code></li><li><code>evidence/session-gate-analysis.json</code></li><li><code>evidence/session-gate-analysis.md</code></li><li><code>evidence/session-signal-coverage-audit.json</code></li><li><code>evidence/session-signal-coverage-audit.md</code></li><li><code>evidence/session-wrk-count.md</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/stage-skills-tools-matrix.md</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>evidence/wrk-624-user-review-audit.md</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-draft.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review.html</code></li><li><code>test-results.md</code></li><li><code>workflow-final-review.html</code></li></ul></div>
 </body>
 </html>

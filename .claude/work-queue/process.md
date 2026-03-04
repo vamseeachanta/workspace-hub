@@ -199,6 +199,28 @@ This scans all directories, parses frontmatter, and produces multi-view tables (
 
 ## Conventions
 
+### Multi-Agent Side Effects (Persistent Rule)
+
+When multiple agents work in parallel, unrelated file changes may appear during a WRK.
+If those changes are outside the active WRK scope:
+
+- Do not treat them as a blocker.
+- Do not revert them unless explicitly directed.
+- Continue the assigned WRK workflow gates.
+- Record the observation in the active WRK under `## Out-of-Scope Side Effects`
+  (include affected paths and decision to leave untouched).
+
+### Scope Control (First Pass)
+
+- Orchestrator can check out one or more WRK items for coordinated parallel tasks.
+- Planning edits are limited to WRK planning locations:
+  - Route A/B: WRK body
+  - Route C: `specs/wrk/WRK-<id>/`
+  - WRK evidence under `.claude/work-queue/assets/WRK-<id>/`
+- If planning needs edits in another WRK item, pause and request explicit user permission naming that WRK id.
+- Execution can touch the repository as needed for the active WRK deliverable.
+- If execution extends into another domain/module family beyond active WRK scope, pause and request explicit user permission.
+
 ### Completion Checklist (Mandatory)
 
 Add this block to the WRK item body before marking done:
@@ -228,6 +250,7 @@ priority: medium         # high | medium | low
 complexity: medium       # simple | medium | complex
 route:                   # A | B | C
 orchestrator:            # claude | codex | gemini
+orchestrator_history:    # ordered list when orchestration ownership changes
 created_at: 2026-02-27T00:00:00Z
 target_repos:
   - repo-name
@@ -257,6 +280,11 @@ skills_manifest_ref:     # path to assets/WRK-NNN/evidence/skill-manifest.yaml
 skill_invocation_ref:    # path to assets/WRK-NNN/evidence/skill-invocation-log.yaml
 ---
 ```
+
+Orchestrator/provider normalization rule:
+- `orchestrator` stores the current canonical orchestrator for reporting.
+- `provider` stores the primary execution provider.
+- If orchestration ownership changes over time, preserve prior values in `orchestrator_history` (oldest to newest) rather than keeping conflicting `orchestrator`/`provider` values.
 
 ### Body structure
 

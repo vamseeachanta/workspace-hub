@@ -219,7 +219,7 @@ def _render_final_html(wrk_id: str, meta: dict, sections: dict, test_rows: str, 
   <style>
     body {{ font-family: Arial, sans-serif; margin: 24px; color: #111; }}
     h1, h2 {{ margin-top: 24px; }}
-    .meta {{ display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }}
+    .meta {{ display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }}
     .pill {{ background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }}
     .panel {{ border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }}
     table {{ border-collapse: collapse; width: 100%; margin-top: 8px; }}
@@ -235,6 +235,7 @@ def _render_final_html(wrk_id: str, meta: dict, sections: dict, test_rows: str, 
     <div class="pill"><strong>Status</strong><br>{html.escape(str(meta.get("status", "pending")))}</div>
     <div class="pill"><strong>Route</strong><br>{html.escape(str(meta.get("route", "-")))}</div>
     <div class="pill"><strong>Orchestrator</strong><br>{html.escape(str(meta.get("orchestrator", "unknown")))}</div>
+    <div class="pill"><strong>Provider</strong><br>{html.escape(str(meta.get("provider", "unknown")))}</div>
   </div>
 
   <h2>Prompt Start Context</h2>
@@ -341,6 +342,7 @@ def generate_final_review(wrk_id: str, output: Path) -> Path:
         "status": str(fm.get("status") or "pending"),
         "route": str(fm.get("route") or "-"),
         "orchestrator": str(fm.get("orchestrator") or fm.get("provider") or "unknown"),
+        "provider": str(fm.get("provider") or fm.get("orchestrator") or "unknown"),
     }
     html_doc = _render_final_html(wrk_id, meta, sections, _build_test_rows(sections.get("integrated_tests", [])), links_html)
     output.parent.mkdir(parents=True, exist_ok=True)

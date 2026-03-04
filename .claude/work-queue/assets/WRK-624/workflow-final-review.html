@@ -7,7 +7,7 @@
   <style>
     body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
     h1, h2 { margin-top: 24px; }
-    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
     .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
     .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
     table { border-collapse: collapse; width: 100%; margin-top: 8px; }
@@ -22,7 +22,8 @@
     <div class="pill"><strong>Title</strong><br>chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates</div>
     <div class="pill"><strong>Status</strong><br>archived</div>
     <div class="pill"><strong>Route</strong><br>C</div>
-    <div class="pill"><strong>Orchestrator</strong><br>gemini</div>
+    <div class="pill"><strong>Orchestrator</strong><br>codex</div>
+    <div class="pill"><strong>Provider</strong><br>codex</div>
   </div>
 
   <h2>Prompt Start Context</h2>
@@ -265,7 +266,43 @@ Scope: Consolidated pointer artifact for WRK-624 agent cross-review stage eviden
 </tr>
 </tbody>
 </table>
-<p>Result: low-intensity next-work items completed and cross-reviewed; remaining open item is orchestration log-emission consistency.</p></div>
+<p>Result: low-intensity next-work items completed and cross-reviewed; remaining open item is orchestration log-emission consistency.</p>
+<h2>2026-03-04 Post-Skill-Addition Rerun (Latest)</h2>
+<p>Scope: workflow-skill additions and close-stage final-HTML automation updates:
+<code>process.md</code>, <code>work-queue/SKILL.md</code>, <code>workflow-gatepass/SKILL.md</code>,
+<code>close-item.sh</code>, and <code>generate-final-review.py</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Artifact</th>
+<th>Verdict</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude</td>
+<td><code>scripts/review/results/20260304T213040Z-tmp.uqixtHH6uO-implementation-claude.md</code></td>
+<td>REQUEST_CHANGES</td>
+<td>Requests refactor/tests and flags missing scripts in diff scope.</td>
+</tr>
+<tr>
+<td>Codex</td>
+<td><code>scripts/review/results/20260304T213040Z-tmp.uqixtHH6uO-implementation-codex.md</code></td>
+<td>REQUEST_CHANGES</td>
+<td>Flags executable-path/test concerns; some findings are diff-scope artifacts.</td>
+</tr>
+<tr>
+<td>Gemini</td>
+<td><code>scripts/review/results/20260304T213040Z-tmp.uqixtHH6uO-implementation-gemini.md</code></td>
+<td>REQUEST_CHANGES</td>
+<td>Requests tests and script presence in same diff scope.</td>
+</tr>
+</tbody>
+</table>
+<p>Decision: post-skill-addition rerun is complete, but not approved.
+Follow-up remediation should focus on test coverage and tightening generator robustness.</p></div>
 
   <h2>Test Summary</h2>
   <table>
@@ -287,22 +324,22 @@ Scope: Consolidated pointer artifact for WRK-624 agent cross-review stage eviden
     <h4>Resource Pack</h4>
     <h1>Resource Pack: WRK-624</h1>
 <h2>Problem Context</h2>
-<!-- Describe the problem domain and context -->
+
 
 <h2>Relevant Documents/Data</h2>
-<!-- List key docs and data sources -->
+
 
 <h2>Constraints</h2>
-<!-- Technical or business constraints -->
+
 
 <h2>Assumptions</h2>
-<!-- Key assumptions made -->
+
 
 <h2>Open Questions</h2>
-<!-- Questions to resolve during planning -->
+
 
 <h2>Domain Notes</h2>
-<!-- Domain-specific knowledge capture -->
+
   </div>
 
   <h2>Skill Manifest</h2>
@@ -394,6 +431,6 @@ stages:
     evidence: scripts/work-queue/archive-item.sh</p></div>
 
   <h2>Asset Index</h2>
-  <div class="panel"><ul><li><code>claim-evidence.yaml</code></li><li><code>cli-update-handoff-2026-03-03.md</code></li><li><code>constraints.md</code></li><li><code>cross-review-agent-synthesis.md</code></li><li><code>cross-review-attempts-20260304.md</code></li><li><code>domain-notes.md</code></li><li><code>evidence/gate-evidence-summary-latest.txt</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>example-pack.md</code></li><li><code>followups/WRK-690/evidence/activation.yaml</code></li><li><code>followups/WRK-690/evidence/agent-wrk-counts-by-day.html</code></li><li><code>followups/WRK-690/evidence/claim.yaml</code></li><li><code>followups/WRK-690/evidence/execute.yaml</code></li><li><code>followups/WRK-690/evidence/future-work.yaml</code></li><li><code>followups/WRK-690/evidence/gate-evidence-summary.json</code></li><li><code>followups/WRK-690/evidence/gate-evidence-summary.md</code></li><li><code>followups/WRK-690/evidence/gatepass-weekly-summary.html</code></li><li><code>followups/WRK-690/evidence/gatepass-weekly-summary.md</code></li><li><code>followups/WRK-690/evidence/lessons-applied.md</code></li><li><code>followups/WRK-690/evidence/resource-intelligence-update.yaml</code></li><li><code>followups/WRK-690/evidence/resource-intelligence.yaml</code></li><li><code>followups/WRK-690/evidence/session-gate-analysis.json</code></li><li><code>followups/WRK-690/evidence/session-gate-analysis.md</code></li><li><code>followups/WRK-690/evidence/session-signal-coverage-audit.json</code></li><li><code>followups/WRK-690/evidence/session-signal-coverage-audit.md</code></li><li><code>followups/WRK-690/evidence/session-wrk-count.md</code></li><li><code>followups/WRK-690/evidence/stage-evidence.yaml</code></li><li><code>followups/WRK-690/evidence/stage-skills-tools-matrix.md</code></li><li><code>followups/WRK-690/evidence/user-review-browser-open.yaml</code></li><li><code>followups/WRK-690/evidence/user-review-close.yaml</code></li><li><code>followups/WRK-690/evidence/wrk-624-user-review-audit.md</code></li><li><code>followups/WRK-690/legal-scan.md</code></li><li><code>followups/WRK-690/plan-html-review-draft.md</code></li><li><code>followups/WRK-690/plan-html-review-final.md</code></li><li><code>followups/WRK-690/review.html</code></li><li><code>followups/WRK-690/test-results.md</code></li><li><code>gap-review-user.json</code></li><li><code>html-verification.md</code></li><li><code>legal-scan.md</code></li><li><code>open-questions.md</code></li><li><code>plan-html-review-draft.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>remediation-active-gates.md</code></li><li><code>resource-pack.md</code></li><li><code>resources.yaml</code></li><li><code>review.html</code></li><li><code>skills-canonicalization-decision-table.html</code></li><li><code>skills-canonicalization-decision-table.md</code></li><li><code>skills-canonicalization-review.md</code></li><li><code>sources.md</code></li><li><code>user-implementation-review.html</code></li><li><code>variation-test-results.md</code></li><li><code>workflow-governance-review.html</code></li></ul></div>
+  <div class="panel"><ul><li><code>claim-evidence.yaml</code></li><li><code>cli-update-handoff-2026-03-03.md</code></li><li><code>constraints.md</code></li><li><code>cross-review-agent-synthesis.md</code></li><li><code>cross-review-attempts-20260304.md</code></li><li><code>domain-notes.md</code></li><li><code>evidence/gate-evidence-summary-latest.txt</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>example-pack.md</code></li><li><code>followups/WRK-690/evidence/activation.yaml</code></li><li><code>followups/WRK-690/evidence/agent-wrk-counts-by-day.html</code></li><li><code>followups/WRK-690/evidence/claim.yaml</code></li><li><code>followups/WRK-690/evidence/execute.yaml</code></li><li><code>followups/WRK-690/evidence/future-work.yaml</code></li><li><code>followups/WRK-690/evidence/gate-evidence-summary.json</code></li><li><code>followups/WRK-690/evidence/gate-evidence-summary.md</code></li><li><code>followups/WRK-690/evidence/gatepass-weekly-summary.html</code></li><li><code>followups/WRK-690/evidence/gatepass-weekly-summary.md</code></li><li><code>followups/WRK-690/evidence/lessons-applied.md</code></li><li><code>followups/WRK-690/evidence/resource-intelligence-update.yaml</code></li><li><code>followups/WRK-690/evidence/resource-intelligence.yaml</code></li><li><code>followups/WRK-690/evidence/session-gate-analysis.json</code></li><li><code>followups/WRK-690/evidence/session-gate-analysis.md</code></li><li><code>followups/WRK-690/evidence/session-signal-coverage-audit.json</code></li><li><code>followups/WRK-690/evidence/session-signal-coverage-audit.md</code></li><li><code>followups/WRK-690/evidence/session-wrk-count.md</code></li><li><code>followups/WRK-690/evidence/stage-evidence.yaml</code></li><li><code>followups/WRK-690/evidence/stage-skills-tools-matrix.md</code></li><li><code>followups/WRK-690/evidence/user-review-browser-open.yaml</code></li><li><code>followups/WRK-690/evidence/user-review-close.yaml</code></li><li><code>followups/WRK-690/evidence/wrk-624-user-review-audit.md</code></li><li><code>followups/WRK-690/legal-scan.md</code></li><li><code>followups/WRK-690/plan-html-review-draft.md</code></li><li><code>followups/WRK-690/plan-html-review-final.md</code></li><li><code>followups/WRK-690/review.html</code></li><li><code>followups/WRK-690/test-results.md</code></li><li><code>gap-review-user.json</code></li><li><code>html-verification.md</code></li><li><code>legal-scan.md</code></li><li><code>open-questions.md</code></li><li><code>plan-html-review-draft.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>remediation-active-gates.md</code></li><li><code>resource-pack.md</code></li><li><code>resources.yaml</code></li><li><code>review.html</code></li><li><code>skills-canonicalization-decision-table.html</code></li><li><code>skills-canonicalization-decision-table.md</code></li><li><code>skills-canonicalization-review.md</code></li><li><code>sources.md</code></li><li><code>user-implementation-review.html</code></li><li><code>variation-test-results.md</code></li><li><code>workflow-final-review.html</code></li><li><code>workflow-governance-review.html</code></li></ul></div>
 </body>
 </html>
