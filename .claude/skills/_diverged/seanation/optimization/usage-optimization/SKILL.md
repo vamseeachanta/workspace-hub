@@ -3,6 +3,7 @@ name: usage-optimization
 version: "1.0.0"
 category: optimization
 description: "Usage Optimization — guidelines and best practices."
+canonical_ref: "ai/optimization/usage-optimization"
 ---
 
 # Usage Optimization Skill

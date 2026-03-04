@@ -28,7 +28,7 @@ related_skills:
   - docusaurus
   - sphinx
   - pandoc
-canonical_ref: UNMATCHED
+canonical_ref: "development/documentation/gitbook"
 ---
 
 # GitBook Documentation Skill

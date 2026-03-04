@@ -34,7 +34,7 @@ related_skills:
   - pandoc
   - mkdocs
   - reveal-js
-canonical_ref: UNMATCHED
+canonical_ref: "development/documentation/marp"
 ---
 
 # Marp Presentation Skill

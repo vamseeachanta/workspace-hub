@@ -33,7 +33,12 @@ see_also:
 
 # Resource Intelligence
 
-Use this skill to execute the `Resource Intelligence` stage for a WRK item. The goal is to produce a standard artifact pack and a clear user decision:
+Use this skill to execute Resource Intelligence stages for a WRK item:
+
+- Stage 2: `Resource Intelligence`
+- Stage 16: `Resource Intelligence Update`
+
+The goal is to produce a standard artifact pack and a clear user decision:
 
 - `pause_and_revise`
 - `continue_to_planning`
@@ -46,7 +51,7 @@ Use this skill to execute the `Resource Intelligence` stage for a WRK item. The 
 
 ## Required Outputs
 
-Create or update these files under `.claude/work-queue/assets/WRK-<id>/`:
+For Stage 2, create or update these files under `.claude/work-queue/assets/WRK-<id>/`:
 
 - `resource-pack.md`
 - `sources.md`
@@ -55,6 +60,11 @@ Create or update these files under `.claude/work-queue/assets/WRK-<id>/`:
 - `open-questions.md`
 - `resources.yaml`
 - `resource-intelligence-summary.md`
+
+For Stage 16 updates, record incremental additions in evidence:
+
+- `evidence/resource-intelligence-update.yaml`
+- `evidence/stage-evidence.yaml` entry for stage 16
 
 ## Core Workflow
 
@@ -66,6 +76,10 @@ Create or update these files under `.claude/work-queue/assets/WRK-<id>/`:
 6. Run or record legal-sanity evidence if needed.
 7. Rank gaps as `P1`, `P2`, `P3`.
 8. Write `resource-intelligence-summary.md` with the user decision.
+9. Emit explicit stage evidence signals (stage 2 or stage 16) in stage ledger artifacts.
+
+Only explicit machine-logged stage signals count as measured compliance; inferred
+signals do not count.
 
 ## Gap Ranking
 

@@ -10,6 +10,8 @@ Usage:
 Notes:
   - By default this script opens the provided HTML in the system default browser via xdg-open.
   - Evidence is appended to: .claude/work-queue/assets/<WRK-NNN>/evidence/user-review-browser-open.yaml
+  - After browser-open logging, record origin publish evidence using:
+    scripts/work-queue/log-user-review-publish.sh
 USAGE
 }
 
@@ -109,6 +111,7 @@ evidence_file.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8"
 PY
 
 echo "✔ Logged browser-open evidence: ${EVIDENCE_FILE} (stage=${STAGE})"
+echo "ℹ Next step: log origin publish evidence via scripts/work-queue/log-user-review-publish.sh"
 
 if [[ -x "$GATE_LOGGER" ]]; then
   SIGNAL=""

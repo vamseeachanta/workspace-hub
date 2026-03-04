@@ -513,3 +513,79 @@ orchestrator_agent: codex
     ok, detail = mod.check_activation_gate(tmp_path, "WRK-999")
     assert ok is True
     assert "activation evidence OK" in detail
+
+
+def test_user_review_publish_gate_requires_all_review_stages(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "user-review-publish.yaml").write_text(
+        """
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: feature/WRK-999
+    commit: abcdef1
+    documents:
+      - .claude/work-queue/assets/WRK-999/review.html
+    published_at: 2026-03-04T00:00:00Z
+    reviewer: user
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    ok, detail = mod.check_user_review_publish_gate(
+        tmp_path, required=["plan_draft", "plan_final", "close_review"]
+    )
+    assert ok is False
+    assert "missing required stages" in detail
+
+
+def test_user_review_publish_gate_passes_when_required_stages_are_pushed(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "user-review-publish.yaml").write_text(
+        """
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: feature/WRK-999
+    commit: abcdef1
+    documents:
+      - .claude/work-queue/assets/WRK-999/plan-html-review-draft.md
+    published_at: 2026-03-04T00:00:00Z
+    reviewer: user
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: feature/WRK-999
+    commit: abcdef2
+    documents:
+      - .claude/work-queue/assets/WRK-999/plan-html-review-final.md
+    published_at: 2026-03-04T00:10:00Z
+    reviewer: user
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: feature/WRK-999
+    commit: abcdef3
+    documents:
+      - .claude/work-queue/assets/WRK-999/review.html
+    published_at: 2026-03-04T00:20:00Z
+    reviewer: user
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    ok, detail = mod.check_user_review_publish_gate(
+        tmp_path, required=["plan_draft", "plan_final", "close_review"]
+    )
+    assert ok is True
+    assert "stages=" in detail

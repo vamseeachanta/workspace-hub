@@ -12,6 +12,60 @@ import yaml
 import markdown
 from pathlib import Path
 
+
+def collect_skill_manifest(workspace_root: str, fm: dict, assets_dir: str) -> dict:
+    """Collect skill manifest data from evidence or WRK frontmatter."""
+    manifest = {
+        "mandatory_skills": [],
+        "supporting_skills": [],
+        "domain_skills": [],
+        "repo_governance_skills": [],
+        "source": "none",
+    }
+
+    # Prefer explicit evidence file.
+    manifest_ref = fm.get("skills_manifest_ref")
+    candidate_paths = []
+    if manifest_ref:
+        if os.path.isabs(str(manifest_ref)):
+            candidate_paths.append(str(manifest_ref))
+        else:
+            candidate_paths.append(os.path.join(workspace_root, str(manifest_ref)))
+    candidate_paths.append(os.path.join(assets_dir, "evidence", "skill-manifest.yaml"))
+
+    for path in candidate_paths:
+        if os.path.exists(path):
+            try:
+                data = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
+            except Exception:
+                data = {}
+            if isinstance(data, dict):
+                for key in (
+                    "mandatory_skills",
+                    "supporting_skills",
+                    "domain_skills",
+                    "repo_governance_skills",
+                ):
+                    value = data.get(key) or []
+                    if isinstance(value, list):
+                        manifest[key] = [str(item) for item in value if str(item).strip()]
+                manifest["source"] = path
+                return manifest
+
+    # Fallback to frontmatter lists when available.
+    for key in (
+        "mandatory_skills",
+        "supporting_skills",
+        "domain_skills",
+        "repo_governance_skills",
+    ):
+        value = fm.get(key) or []
+        if isinstance(value, list):
+            manifest[key] = [str(item) for item in value if str(item).strip()]
+    if any(manifest[k] for k in ("mandatory_skills", "supporting_skills", "domain_skills", "repo_governance_skills")):
+        manifest["source"] = "frontmatter"
+    return manifest
+
 def collect_test_evidence(assets_dir: str) -> dict:
     """Collect test artifacts for mandatory HTML Test Evidence section."""
     example_path = Path(assets_dir) / "example-pack.md"
@@ -121,6 +175,7 @@ def generate_review(wrk_id, stage="draft", type="plan", output_file=None):
     # Check for reviewer artifacts
     reviewers = []
     assets_dir = os.path.join(queue_dir, "assets", wrk_id)
+    skill_manifest = collect_skill_manifest(workspace_root, fm, assets_dir)
     if os.path.exists(assets_dir):
         for r_name in ["Claude", "Codex", "Gemini"]:
             r_path = os.path.join(assets_dir, f"review-{r_name.lower()}.md")
@@ -166,6 +221,15 @@ def generate_review(wrk_id, stage="draft", type="plan", output_file=None):
     <div class="exec-summary">
       <h2>Executive Summary</h2>
       <div>{exec_summary_html}</div>
+    </div>
+
+    <h2>Skill Manifest</h2>
+    <div class="panel">
+      <p><strong>Source:</strong> <code>{skill_manifest["source"]}</code></p>
+      <p><strong>Mandatory Skills:</strong> {", ".join(skill_manifest["mandatory_skills"]) if skill_manifest["mandatory_skills"] else "none"}</p>
+      <p><strong>Supporting Skills:</strong> {", ".join(skill_manifest["supporting_skills"]) if skill_manifest["supporting_skills"] else "none"}</p>
+      <p><strong>Domain Skills:</strong> {", ".join(skill_manifest["domain_skills"]) if skill_manifest["domain_skills"] else "none"}</p>
+      <p><strong>Repo Governance Skills:</strong> {", ".join(skill_manifest["repo_governance_skills"]) if skill_manifest["repo_governance_skills"] else "none"}</p>
     </div>
 
     <div class="panel">

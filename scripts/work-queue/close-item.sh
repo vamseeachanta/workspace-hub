@@ -111,6 +111,7 @@ if [[ ! -f "$HTML_OUTPUT_ABS" ]]; then
     exit 1
   fi
   echo "Generating final HTML review for ${WRK_ID}..."
+  # The generator is a bash/Python polyglot wrapper; invoke via bash for portability.
   if ! bash "$FINAL_REVIEW_GENERATOR" "$WRK_ID" --output "$HTML_OUTPUT_ABS"; then
     echo "✖ Error: Failed to generate final HTML review for ${WRK_ID}" >&2
     exit 1

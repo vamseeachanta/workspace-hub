@@ -27,7 +27,7 @@ related_skills:
   - langchain
   - dspy
   - prompt-engineering
-canonical_ref: UNMATCHED
+canonical_ref: "ai/prompting/agenta"
 ---
 
 # Agenta Skill

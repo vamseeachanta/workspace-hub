@@ -276,6 +276,48 @@ def check_html_open_default_browser_gate(assets_dir: Path, required: list[str]) 
     return True, f"{evidence.name}: stages={sorted(seen)}"
 
 
+def check_user_review_publish_gate(assets_dir: Path, required: list[str]) -> tuple[bool, str]:
+    """Require origin-publish evidence for each user review checkpoint."""
+    evidence = evidence_file(assets_dir, "user-review-publish.yaml", [])
+    if evidence is None:
+        return False, "user-review-publish.yaml missing"
+    data, yaml_err = load_yaml(evidence)
+    if yaml_err:
+        return False, f"could not parse {evidence.name}: {yaml_err}"
+    assert data is not None
+    events = data.get("events") or []
+    if not isinstance(events, list):
+        return False, f"{evidence.name}: events must be a list"
+    seen = set()
+    for idx, event in enumerate(events, start=1):
+        if not isinstance(event, dict):
+            return False, f"{evidence.name}: events[{idx}] must be an object"
+        stage = str(event.get("stage", "")).strip().lower()
+        if not stage:
+            return False, f"{evidence.name}: events[{idx}] stage missing"
+        pushed = event.get("pushed_to_origin")
+        if pushed is not True:
+            return False, f"{evidence.name}: events[{idx}] pushed_to_origin must be true"
+        if not str(event.get("remote", "")).strip():
+            return False, f"{evidence.name}: events[{idx}] remote missing"
+        if not str(event.get("branch", "")).strip():
+            return False, f"{evidence.name}: events[{idx}] branch missing"
+        if not str(event.get("commit", "")).strip():
+            return False, f"{evidence.name}: events[{idx}] commit missing"
+        docs = event.get("documents") or []
+        if not isinstance(docs, list) or len(docs) == 0:
+            return False, f"{evidence.name}: events[{idx}] documents must be a non-empty list"
+        if not str(event.get("published_at", "")).strip():
+            return False, f"{evidence.name}: events[{idx}] published_at missing"
+        if not str(event.get("reviewer", "")).strip():
+            return False, f"{evidence.name}: events[{idx}] reviewer missing"
+        seen.add(stage)
+    missing = [stage for stage in required if stage not in seen]
+    if missing:
+        return False, f"{evidence.name}: missing required stages {missing}"
+    return True, f"{evidence.name}: stages={sorted(seen)}"
+
+
 def check_activation_gate(assets_dir: Path, wrk_id: str) -> tuple[bool, str]:
     """Require explicit activation evidence (set-active-wrk + session init snapshot)."""
     activation_file = evidence_file(assets_dir, "activation.yaml", [])
@@ -588,6 +630,8 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
         html_open_required.append("close_review")
     html_open_ok, html_open_details = check_html_open_default_browser_gate(assets_dir, html_open_required)
     gates.append({"name": "User-review HTML-open gate", "ok": html_open_ok, "details": html_open_details})
+    publish_ok, publish_details = check_user_review_publish_gate(assets_dir, html_open_required)
+    gates.append({"name": "User-review publish gate", "ok": publish_ok, "details": publish_details})
     gates.append(
         {"name": "Cross-review gate", "ok": bool(review_file), "details": f"artifact={'none' if not review_file else review_file}"}
     )

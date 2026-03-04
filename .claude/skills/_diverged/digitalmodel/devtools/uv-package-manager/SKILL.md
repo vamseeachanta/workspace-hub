@@ -6,7 +6,7 @@ author: workspace-hub
 category: devtools
 tags: [uv, python, package-manager, virtual-environment, dependency-management]
 platforms: [python, linux, macos, windows]
-canonical_ref: AMBIGUOUS  # candidates: development/devtools/uv-package-manager,operations/devtools/uv-package-manager
+canonical_ref: "operations/devtools/uv-package-manager"
 ---
 
 # UV Package Manager Skill

@@ -38,6 +38,7 @@ Minimum test suite per workflow change:
 3. Missing integrated/repo test evidence fails verification.
 4. Integrated/repo test count outside `3-5` fails verification.
 5. Full valid evidence pack passes verification.
+6. Stage signals are explicitly logged (not inferred) for stages touched by the change.
 
 ## Required Test Data Shape
 
@@ -56,6 +57,9 @@ bash tests/work-queue/test-lifecycle-gates.sh
 ```
 
 Add or update test files whenever gate contracts change.
+
+Signal coverage rule: inferred signals are not measured signals. Tests must verify
+explicit, machine-logged evidence/signal presence for required stages.
 
 ## Orchestrator Variation Tests
 

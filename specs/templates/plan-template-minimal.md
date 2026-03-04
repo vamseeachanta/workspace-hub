@@ -47,6 +47,15 @@ target_completion: ""
 priority: "medium"
 tags: []
 
+# Skill Manifest (Required)
+skills:
+  mandatory: []
+  supporting: []
+  domain: []
+  repo_governance: []
+  manifest_ref: ""
+  invocation_log_ref: ""
+
 # Links
 links:
   spec: ""
@@ -108,6 +117,20 @@ confirmed_by: <!-- reviewer name, e.g. "user" -->
 confirmed_at: <!-- ISO-8601 timestamp, e.g. 2026-03-02T14:30:00Z -->
 decision: <!-- passed | changes-requested -->
 notes: <!-- optional -->
+
+---
+
+## Skill Manifest
+
+| Category | Skills |
+|----------|--------|
+| Mandatory | {{ skills.mandatory }} |
+| Supporting | {{ skills.supporting }} |
+| Domain | {{ skills.domain }} |
+| Repo Governance | {{ skills.repo_governance }} |
+
+- Manifest artifact: `{{ skills.manifest_ref }}`
+- Invocation log artifact: `{{ skills.invocation_log_ref }}`
 
 ---
 

@@ -26,7 +26,7 @@ platforms: [python]
 related_skills:
   - langchain
   - prompt-engineering
-canonical_ref: UNMATCHED
+canonical_ref: "ai/prompting/dspy"
 ---
 
 # DSPy Skill

@@ -3,16 +3,17 @@
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-$REPO_ROOT/.claude/state/uv-cache}"
 mkdir -p "$UV_CACHE_DIR"
-exec uv run --no-project --with markdown --with PyYAML python "$0" "$@"
+exec uv run --no-project --with markdown --with PyYAML --with bleach python "$0" "$@"
 ":"""
 from __future__ import annotations
 
 import argparse
 import html
-import os
 import re
+import subprocess
 from pathlib import Path
 
+import bleach
 import markdown
 import yaml
 
@@ -62,7 +63,50 @@ def _load_text(path: Path) -> str:
 def _html_md(md_text: str) -> str:
     if not md_text:
         return "<p><em>Not available.</em></p>"
-    return markdown.markdown(md_text, extensions=["extra", "tables"])
+    rendered = markdown.markdown(md_text, extensions=["extra", "tables"])
+    return _sanitize_rendered_html(rendered)
+
+
+def _sanitize_rendered_html(rendered: str) -> str:
+    allowed_tags = set(bleach.sanitizer.ALLOWED_TAGS) | {
+        "p",
+        "pre",
+        "code",
+        "span",
+        "div",
+        "br",
+        "hr",
+        "table",
+        "thead",
+        "tbody",
+        "tr",
+        "th",
+        "td",
+        "ul",
+        "ol",
+        "li",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+    }
+    allowed_attrs = {
+        "a": ["href", "title"],
+        "code": ["class"],
+        "span": ["class"],
+        "div": ["class"],
+        "th": ["colspan", "rowspan"],
+        "td": ["colspan", "rowspan"],
+    }
+    return bleach.clean(
+        rendered,
+        tags=allowed_tags,
+        attributes=allowed_attrs,
+        protocols=["http", "https", "mailto"],
+        strip=True,
+    )
 
 
 def _collect_asset_files(assets_dir: Path) -> list[str]:
@@ -85,6 +129,22 @@ def _discover_work_items(queue_dir: Path) -> list[str]:
         if pattern.match(wrk_id):
             wrk_ids.add(wrk_id)
     return sorted(wrk_ids)
+
+
+def _workspace_root() -> Path:
+    proc = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    root = proc.stdout.strip() if proc.returncode == 0 else ""
+    return Path(root or ".").resolve()
+
+
+def _validate_wrk_id(wrk_id: str) -> None:
+    if not re.fullmatch(r"WRK-[A-Za-z0-9-]+", wrk_id):
+        raise ValueError(f"Invalid WRK id: {wrk_id}")
 
 
 def _resolve_wrk_path(queue_dir: Path, wrk_id: str) -> Path:
@@ -112,46 +172,12 @@ def _resolve_wrk_path(queue_dir: Path, wrk_id: str) -> Path:
     raise FileNotFoundError(f"WRK not found: {wrk_id}")
 
 
-def generate_final_review(wrk_id: str, output: Path) -> Path:
-    workspace_root = Path(os.popen("git rev-parse --show-toplevel").read().strip() or ".").resolve()
-    queue_dir = workspace_root / ".claude" / "work-queue"
-    wrk_path = _resolve_wrk_path(queue_dir, wrk_id)
-
-    fm, body = _split_frontmatter(wrk_path.read_text(encoding="utf-8"))
-    assets_dir = queue_dir / "assets" / wrk_id
-    evidence_dir = assets_dir / "evidence"
-
-    title = str(fm.get("title") or wrk_id)
-    status = str(fm.get("status") or "pending")
-    route = str(fm.get("route") or "-")
-    orchestrator = str(fm.get("orchestrator") or fm.get("provider") or "unknown")
-
-    what = _extract_first_section(body, ["What", "Prompt", "Problem", "Context"])
-    why = _extract_first_section(body, ["Why", "Objective", "Goals"])
-    acceptance = _extract_first_section(body, ["Acceptance Criteria", "Success Criteria", "Definition of Done"])
-    plan = _extract_first_section(body, ["Plan", "Implementation Plan", "Execution Plan"])
-    execution_brief = _extract_first_section(body, ["Execution Brief", "Implementation Notes", "Execution"])
-
-    plan_draft_ref = fm.get("plan_html_review_draft_ref")
-    plan_final_ref = fm.get("plan_html_review_final_ref")
-    draft_review = _load_text((workspace_root / str(plan_draft_ref))) if plan_draft_ref else _load_text(assets_dir / "plan-html-review-draft.md")
-    final_review = _load_text((workspace_root / str(plan_final_ref))) if plan_final_ref else _load_text(assets_dir / "plan-html-review-final.md")
-
-    execute = _load_yaml(evidence_dir / "execute.yaml")
-    integrated_tests = execute.get("integrated_repo_tests") if isinstance(execute.get("integrated_repo_tests"), list) else []
-    cross_review = _load_text(assets_dir / "cross-review-package.md") or _load_text(assets_dir / "cross-review-agent-synthesis.md")
-    gate_summary = _load_text(evidence_dir / "gate-evidence-summary.md")
-    resource_pack = _load_text(assets_dir / "resource-pack.md")
-    resource_summary = _load_text(assets_dir / "resource-intelligence-summary.md")
-    future_work = _load_text(evidence_dir / "future-work.yaml")
-    skill_manifest = _load_text(evidence_dir / "skill-manifest.yaml")
-    stage_evidence = _load_text(evidence_dir / "stage-evidence.yaml")
-
-    test_rows = ""
+def _build_test_rows(integrated_tests: list[dict]) -> str:
+    rows = ""
     for idx, test in enumerate(integrated_tests, start=1):
         if not isinstance(test, dict):
             continue
-        test_rows += (
+        rows += (
             "<tr>"
             f"<td>{idx}</td>"
             f"<td>{html.escape(str(test.get('name', '')))}</td>"
@@ -161,13 +187,13 @@ def generate_final_review(wrk_id: str, output: Path) -> Path:
             f"<td>{html.escape(str(test.get('artifact_ref', '')))}</td>"
             "</tr>"
         )
-    if not test_rows:
-        test_rows = '<tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>'
+    if rows:
+        return rows
+    return '<tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>'
 
-    asset_links = _collect_asset_files(assets_dir)
-    links_html = "".join(f"<li><code>{html.escape(item)}</code></li>" for item in asset_links) or "<li><em>No assets found.</em></li>"
 
-    html_doc = f"""<!DOCTYPE html>
+def _render_final_html(wrk_id: str, meta: dict, sections: dict, test_rows: str, links_html: str) -> str:
+    return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -188,36 +214,36 @@ def generate_final_review(wrk_id: str, output: Path) -> Path:
 <body>
   <h1>{html.escape(wrk_id)} Final Review</h1>
   <div class="meta">
-    <div class="pill"><strong>Title</strong><br>{html.escape(title)}</div>
-    <div class="pill"><strong>Status</strong><br>{html.escape(status)}</div>
-    <div class="pill"><strong>Route</strong><br>{html.escape(route)}</div>
-    <div class="pill"><strong>Orchestrator</strong><br>{html.escape(orchestrator)}</div>
+    <div class="pill"><strong>Title</strong><br>{html.escape(str(meta.get("title", wrk_id)))}</div>
+    <div class="pill"><strong>Status</strong><br>{html.escape(str(meta.get("status", "pending")))}</div>
+    <div class="pill"><strong>Route</strong><br>{html.escape(str(meta.get("route", "-")))}</div>
+    <div class="pill"><strong>Orchestrator</strong><br>{html.escape(str(meta.get("orchestrator", "unknown")))}</div>
   </div>
 
   <h2>Prompt Start Context</h2>
-  <div class="panel">{_html_md(what or "Not available.")}</div>
+  <div class="panel">{_html_md(sections.get("what", "") or "Not available.")}</div>
 
   <h2>Why</h2>
-  <div class="panel">{_html_md(why or "Not available.")}</div>
+  <div class="panel">{_html_md(sections.get("why", "") or "Not available.")}</div>
 
   <h2>Acceptance Criteria</h2>
-  <div class="panel">{_html_md(acceptance or "Not available.")}</div>
+  <div class="panel">{_html_md(sections.get("acceptance", "") or "Not available.")}</div>
 
   <h2>Plan</h2>
-  <div class="panel">{_html_md(plan or "Not available.")}</div>
+  <div class="panel">{_html_md(sections.get("plan", "") or "Not available.")}</div>
   <h3>Plan Review Artifacts</h3>
   <div class="panel">
     <h4>Draft</h4>
-    {_html_md(draft_review)}
+    {_html_md(sections.get("draft_review", ""))}
     <h4>Final</h4>
-    {_html_md(final_review)}
+    {_html_md(sections.get("final_review", ""))}
   </div>
 
   <h2>Execution Brief</h2>
-  <div class="panel">{_html_md(execution_brief or "Not available.")}</div>
+  <div class="panel">{_html_md(sections.get("execution_brief", "") or "Not available.")}</div>
 
   <h2>Cross-Review Summary</h2>
-  <div class="panel">{_html_md(cross_review)}</div>
+  <div class="panel">{_html_md(sections.get("cross_review", ""))}</div>
 
   <h2>Test Summary</h2>
   <table>
@@ -230,24 +256,24 @@ def generate_final_review(wrk_id: str, output: Path) -> Path:
   </table>
 
   <h2>Gate Evidence Summary</h2>
-  <div class="panel">{_html_md(gate_summary)}</div>
+  <div class="panel">{_html_md(sections.get("gate_summary", ""))}</div>
 
   <h2>Resource Intelligence</h2>
   <div class="panel">
     <h4>Resource Summary</h4>
-    {_html_md(resource_summary)}
+    {_html_md(sections.get("resource_summary", ""))}
     <h4>Resource Pack</h4>
-    {_html_md(resource_pack)}
+    {_html_md(sections.get("resource_pack", ""))}
   </div>
 
   <h2>Skill Manifest</h2>
-  <div class="panel">{_html_md(skill_manifest)}</div>
+  <div class="panel">{_html_md(sections.get("skill_manifest", ""))}</div>
 
   <h2>Future Work</h2>
-  <div class="panel">{_html_md(future_work)}</div>
+  <div class="panel">{_html_md(sections.get("future_work", ""))}</div>
 
   <h2>Stage Evidence Ledger</h2>
-  <div class="panel">{_html_md(stage_evidence)}</div>
+  <div class="panel">{_html_md(sections.get("stage_evidence", ""))}</div>
 
   <h2>Asset Index</h2>
   <div class="panel"><ul>{links_html}</ul></div>
@@ -255,6 +281,49 @@ def generate_final_review(wrk_id: str, output: Path) -> Path:
 </html>
 """
 
+
+def _collect_sections(body: str, fm: dict, workspace_root: Path, assets_dir: Path, evidence_dir: Path) -> dict:
+    plan_draft_ref = fm.get("plan_html_review_draft_ref")
+    plan_final_ref = fm.get("plan_html_review_final_ref")
+    execute = _load_yaml(evidence_dir / "execute.yaml")
+    tests = execute.get("integrated_repo_tests") if isinstance(execute.get("integrated_repo_tests"), list) else []
+    return {
+        "what": _extract_first_section(body, ["What", "Prompt", "Problem", "Context"]),
+        "why": _extract_first_section(body, ["Why", "Objective", "Goals"]),
+        "acceptance": _extract_first_section(body, ["Acceptance Criteria", "Success Criteria", "Definition of Done"]),
+        "plan": _extract_first_section(body, ["Plan", "Implementation Plan", "Execution Plan"]),
+        "execution_brief": _extract_first_section(body, ["Execution Brief", "Implementation Notes", "Execution"]),
+        "draft_review": _load_text((workspace_root / str(plan_draft_ref))) if plan_draft_ref else _load_text(assets_dir / "plan-html-review-draft.md"),
+        "final_review": _load_text((workspace_root / str(plan_final_ref))) if plan_final_ref else _load_text(assets_dir / "plan-html-review-final.md"),
+        "cross_review": _load_text(assets_dir / "cross-review-package.md") or _load_text(assets_dir / "cross-review-agent-synthesis.md"),
+        "gate_summary": _load_text(evidence_dir / "gate-evidence-summary.md"),
+        "resource_pack": _load_text(assets_dir / "resource-pack.md"),
+        "resource_summary": _load_text(assets_dir / "resource-intelligence-summary.md"),
+        "future_work": _load_text(evidence_dir / "future-work.yaml"),
+        "skill_manifest": _load_text(evidence_dir / "skill-manifest.yaml"),
+        "stage_evidence": _load_text(evidence_dir / "stage-evidence.yaml"),
+        "integrated_tests": tests,
+    }
+
+
+def generate_final_review(wrk_id: str, output: Path) -> Path:
+    _validate_wrk_id(wrk_id)
+    workspace_root = _workspace_root()
+    queue_dir = workspace_root / ".claude" / "work-queue"
+    wrk_path = _resolve_wrk_path(queue_dir, wrk_id)
+    fm, body = _split_frontmatter(wrk_path.read_text(encoding="utf-8"))
+    assets_dir = queue_dir / "assets" / wrk_id
+    evidence_dir = assets_dir / "evidence"
+    sections = _collect_sections(body, fm, workspace_root, assets_dir, evidence_dir)
+    links = _collect_asset_files(assets_dir)
+    links_html = "".join(f"<li><code>{html.escape(item)}</code></li>" for item in links) or "<li><em>No assets found.</em></li>"
+    meta = {
+        "title": str(fm.get("title") or wrk_id),
+        "status": str(fm.get("status") or "pending"),
+        "route": str(fm.get("route") or "-"),
+        "orchestrator": str(fm.get("orchestrator") or fm.get("provider") or "unknown"),
+    }
+    html_doc = _render_final_html(wrk_id, meta, sections, _build_test_rows(sections.get("integrated_tests", [])), links_html)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(html_doc, encoding="utf-8")
     return output
@@ -267,7 +336,7 @@ def main() -> int:
     parser.add_argument("--output", help="Output HTML path")
     args = parser.parse_args()
 
-    workspace_root = Path(os.popen("git rev-parse --show-toplevel").read().strip() or ".").resolve()
+    workspace_root = _workspace_root()
     queue_dir = workspace_root / ".claude" / "work-queue"
 
     if args.all:
@@ -285,6 +354,11 @@ def main() -> int:
 
     if not args.wrk_id:
         parser.error("Provide WRK id or --all")
+    try:
+        _validate_wrk_id(args.wrk_id)
+    except ValueError as exc:
+        print(f"✖ {exc}")
+        return 2
 
     default_output = workspace_root / ".claude" / "work-queue" / "assets" / args.wrk_id / "workflow-final-review.html"
     output = Path(args.output).resolve() if args.output else default_output

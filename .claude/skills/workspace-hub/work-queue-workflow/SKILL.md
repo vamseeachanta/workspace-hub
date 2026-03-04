@@ -34,9 +34,15 @@ It delegates to canonical `work-queue` and `workflow-gatepass` contracts.
 1. Run `session-start`.
 2. Use `/work` to select/create the WRK item.
 3. Ensure plan exists and user approval explicitly names WRK ID.
-4. Execute claim -> implement -> test -> evidence capture.
+4. Run the canonical **20-stage lifecycle** (Capture -> Archive) from
+   `workflow-gatepass`.
+   User-review checkpoints (stages 5/7/17) must include default-browser open and
+   origin publish evidence for review artifacts.
 5. Verify close gate evidence and integrated/repo tests (3-5 pass records).
 6. Close and archive using queue scripts.
+
+Do not use shortened lifecycle variants for execution governance. This entrypoint
+must always resolve to the canonical 20-stage chain.
 
 ## Source of Truth
 

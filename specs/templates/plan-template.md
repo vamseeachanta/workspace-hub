@@ -88,6 +88,17 @@ technical:
   platforms: []                    # Target platforms (windows, linux, macos)
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Skill Manifest (Required for workflow-governed WRK plans)
+# ─────────────────────────────────────────────────────────────────────────────
+skills:
+  mandatory: []                    # Must be explicitly invoked/logged
+  supporting: []                   # Optional workflow skills
+  domain: []                       # Domain-specific execution skills
+  repo_governance: []              # File/repo/code organization skills
+  manifest_ref: ""                 # assets/WRK-<id>/evidence/skill-manifest.yaml
+  invocation_log_ref: ""           # assets/WRK-<id>/evidence/skill-invocation-log.yaml
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Classification & Discovery
 # ─────────────────────────────────────────────────────────────────────────────
 priority: "medium"                 # high | medium | low
@@ -154,6 +165,20 @@ history:
 
 - [ ] Prerequisite 1
 - [ ] Prerequisite 2
+
+---
+
+## Skill Manifest
+
+| Category | Skills |
+|----------|--------|
+| Mandatory | {{ skills.mandatory }} |
+| Supporting | {{ skills.supporting }} |
+| Domain | {{ skills.domain }} |
+| Repo Governance | {{ skills.repo_governance }} |
+
+- Manifest artifact: `{{ skills.manifest_ref }}`
+- Invocation log artifact: `{{ skills.invocation_log_ref }}`
 
 ---
 

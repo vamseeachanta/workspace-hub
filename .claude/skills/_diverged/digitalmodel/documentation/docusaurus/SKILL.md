@@ -38,7 +38,7 @@ related_skills:
   - mkdocs
   - sphinx
   - gatsby
-canonical_ref: UNMATCHED
+canonical_ref: "development/documentation/docusaurus"
 ---
 
 # Docusaurus Documentation Skill

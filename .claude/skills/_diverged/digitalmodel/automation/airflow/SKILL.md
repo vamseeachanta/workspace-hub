@@ -28,7 +28,7 @@ related_skills:
   - yaml-configuration
   - python-scientific-computing
   - pandas-data-processing
-canonical_ref: UNMATCHED
+canonical_ref: "operations/automation/airflow"
 ---
 
 # Apache Airflow Skill

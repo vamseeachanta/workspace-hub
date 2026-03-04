@@ -12,15 +12,15 @@ Generated: 2026-03-04
 
 | Area | Total | Has active canonical by `name` | Missing active canonical by `name` |
 |---|---:|---:|---:|
-| `_archive` | 30 | 1 | 29 |
-| `_diverged` | 115 | 98 | 13 |
+| `_archive` | 0 | 0 | 0 |
+| `_diverged` | 114 | 114 | 0 |
 
 | Diverged canonical_ref quality | Count |
 |---|---:|
-| With `canonical_ref` | 57 |
-| Without `canonical_ref` | 54 |
-| `canonical_ref: UNMATCHED` | 14 |
-| `canonical_ref: AMBIGUOUS` | 2 |
+| With `canonical_ref` | 114 |
+| Without `canonical_ref` | 0 |
+| `canonical_ref: UNMATCHED` | 0 |
+| `canonical_ref: AMBIGUOUS` | 0 |
 
 ## Decision Rule (Required)
 
@@ -36,30 +36,26 @@ Each archived/diverged skill must end in exactly one state:
 
 No indefinite holding state.
 
-## Immediate Candidates
+## Progress Completed
 
-### Safe delete now (duplicate already canonical)
+- Added canonical references to 54 diverged skills that had no `canonical_ref` and a unique active canonical target.
+- Canonicalized 13 previously unmatched diverged skills by promoting active canonical skill files under:
+  - `.claude/skills/operations/automation/`
+  - `.claude/skills/development/documentation/`
+  - `.claude/skills/ai/prompting/`
+- Resolved all `AMBIGUOUS` canonical refs (now 0).
+- Deleted 14 archive duplicates now covered by active canonical skills:
+  - 1 prior duplicate (`gmsh-meshing`)
+  - 13 additional legacy duplicates in archive prompting/automation/documentation groups
+- Deleted remaining 16 archive orphan skills after decision-table triage.
+- Deleted the final unmatched diverged file (`worldenergydata/.../python-code-refactor`).
 
-- `.claude/skills/_archive/eng/mesh-utilities/gmsh-meshing/SKILL.md`  
-  Canonical exists at `.claude/skills/engineering/cad/gmsh-meshing/SKILL.md`.
+## Remaining Unresolved
 
-### Missing canonical active target by name (requires decision: create canonical or delete)
+- None. All reviewed `_archive` / `_diverged` skills now have explicit canonicalization or deletion outcomes.
 
-- `.claude/skills/_diverged/digitalmodel/documentation/sphinx/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/automation/windmill/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/documentation/gitbook/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/documentation/pandoc/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/automation/n8n/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/documentation/marp/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/documentation/docusaurus/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/ai-prompting/pandasai/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/ai-prompting/dspy/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/ai-prompting/langchain/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/automation/airflow/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/ai-prompting/agenta/SKILL.md`
-- `.claude/skills/_diverged/digitalmodel/automation/activepieces/SKILL.md`
+## Tracking Artifact
 
-### Archive orphan pool (29 files)
-
-Archive skills currently have no active canonical by name and should be triaged under the same rule: either promote to canonical active location with explicit ownership, or delete.
-
+- Detailed row-level decision + execution status:
+  - `.claude/work-queue/assets/WRK-624/skills-canonicalization-decision-table.md`
+  - `.claude/work-queue/assets/WRK-624/skills-canonicalization-decision-table.html`

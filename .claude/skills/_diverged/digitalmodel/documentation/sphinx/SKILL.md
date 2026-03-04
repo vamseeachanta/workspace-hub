@@ -39,7 +39,7 @@ related_skills:
   - mkdocs
   - pandoc
   - docusaurus
-canonical_ref: UNMATCHED
+canonical_ref: "development/documentation/sphinx"
 ---
 
 # Sphinx Python Documentation Skill
