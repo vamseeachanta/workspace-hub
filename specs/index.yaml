@@ -1,12 +1,12 @@
-generated: '2026-03-03'
-total_specs: 1534
+generated: '2026-03-04'
+total_specs: 1535
 by_category:
   archive: 10
   data-sources: 13
   modules: 117
   other: 24
   repos: 1344
-  templates: 5
+  templates: 6
   wrk: 21
 by_repo:
   OGManufacturing: 16
@@ -26,9 +26,10 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 173
+  workspace-hub: 174
   worldenergydata: 216
 by_wrk:
+  WRK-0: 1
   WRK-5: 1
   WRK-9: 1
   WRK-10: 1
@@ -1951,7 +1952,7 @@ specs:
   - WRK-417
   - WRK-418
   - WRK-419
-  mtime: '2026-02-25'
+  mtime: '2026-03-03'
 - path: specs/online-resources/follow-on-candidates.md
   title: Follow-On WRK Candidates — WRK-391 Research Outputs
   description: '**Generated:** 2026-02-24 **Source:** WRK-391 Online Resources Research'
@@ -19795,6 +19796,16 @@ specs:
   - plan-template
   wrk_refs: []
   mtime: '2026-03-02'
+- path: specs/templates/stage-evidence-template.yaml
+  title: Stage Evidence Template
+  description: ''
+  category: templates
+  repo: workspace-hub
+  tags:
+  - stage-evidence-template
+  wrk_refs:
+  - WRK-0
+  mtime: '2026-03-04'
 - path: specs/wrk/WRK-118/plan.md
   title: WRK-118 AI Agent Utilization Strategy — Plan
   description: (feature | bugfix | refactor | test-writing | research | docs → primary + rationale)
@@ -20086,9 +20097,8 @@ specs:
   - WRK-686
   mtime: '2026-03-02'
 - path: specs/wrk/WRK-690/plan.md
-  title: Plan for WRK-690 log evaluation
-  description: Validate whether Claude, Codex, and Gemini sessions hit the new gatepass workflow by reviewing the most recent
-    week of logs and identifying missing gate-evidence artifacts.
+  title: WRK-690 Combined Plan
+  description: 'Execute both tracks under WRK-690:'
   category: wrk
   repo: workspace-hub
   tags:
@@ -20204,7 +20214,7 @@ specs:
   - bsee
   - worldenergydata
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-03-03'
 - path: worldenergydata/specs/modules/eia_us.md
   title: 'Module: eia_us'
   description: Provides US domestic energy production analytics using EIA data sources, covering state-level crude and NGL
@@ -20215,7 +20225,7 @@ specs:
   - eia_us
   - worldenergydata
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-03-03'
 - path: worldenergydata/specs/modules/metocean.md
   title: 'Module: metocean'
   description: Provides retrieval, storage, and analysis of meteorological and oceanographic data from public APIs including
@@ -20227,7 +20237,7 @@ specs:
   - worldenergydata
   wrk_refs:
   - WRK-316
-  mtime: '2026-02-24'
+  mtime: '2026-03-03'
 - path: worldenergydata/specs/modules/sodir.md
   title: 'Module: sodir'
   description: Provides integration with the Norwegian Offshore Directorate (SODIR, formerly NPD) REST API to collect and
@@ -20238,7 +20248,7 @@ specs:
   - sodir
   - worldenergydata
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-03-03'
 - path: worldenergydata/specs/modules/vessel_fleet.md
   title: 'Module: vessel_fleet'
   description: Provides global offshore vessel fleet data collection, enrichment, and storage, covering construction vessels
@@ -20249,7 +20259,7 @@ specs:
   - vessel_fleet
   - worldenergydata
   wrk_refs: []
-  mtime: '2026-02-24'
+  mtime: '2026-03-03'
 - path: assethold/specs/modules/hidden-sprouting-stream.md
   title: 'WRK-189-ext: HTML Report, UV Environment, Sectioned Data, Stock Comparison Design'
   description: 'The daily strategy tool works end-to-end (live run confirmed, 170 tests passing). Three enhancements are needed:'
