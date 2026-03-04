@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-04T03:52:33Z by generate-index.py -->
+<!-- Generated: 2026-03-04T04:11:48Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-04T03:52:33Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-04T04:11:48Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 72 |
-| medium | 206 |
+| medium | 205 |
 | complex | 93 |
 
 ### By Repository
@@ -546,7 +546,7 @@
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1003 |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1004 |
 | WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1007 | fix(review): comprehensively test and troubleshoot submit-to-gemini.sh | pending | high | moderate | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -752,7 +752,7 @@
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
 | WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | high | medium | workspace-hub | - |
-| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | high | medium | workspace-hub | - |
+| WRK-1007 | fix(review): comprehensively test and troubleshoot submit-to-gemini.sh | high | moderate | workspace-hub | - |
 
 ### Working
 
@@ -1486,7 +1486,7 @@
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | - |
 | WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | pending | high | medium | - |
-| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | pending | high | medium | - |
+| WRK-1007 | fix(review): comprehensively test and troubleshoot submit-to-gemini.sh | pending | high | moderate | - |
 
 ### worldenergydata
 
@@ -1797,7 +1797,7 @@
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | medium | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | medium | workspace-hub | - |
 | WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | pending | medium | workspace-hub | - |
-| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | pending | medium | workspace-hub | - |
+| WRK-1007 | fix(review): comprehensively test and troubleshoot submit-to-gemini.sh | pending | moderate | workspace-hub | - |
 
 ### Medium
 
@@ -2324,7 +2324,6 @@
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | workspace-hub | - |
 | WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | pending | high | workspace-hub | - |
-| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | pending | high | workspace-hub | - |
 
 ### Complex
 
@@ -2590,7 +2589,7 @@
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | pending | high | medium | workspace-hub |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | pending | high | medium | workspace-hub |
 | WRK-1006 | chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite | pending | high | medium | workspace-hub |
-| WRK-1007 | hardening(review): troubleshoot submit-to-codex.sh with comprehensive cross-agent tests | pending | high | medium | workspace-hub |
+| WRK-1007 | fix(review): comprehensively test and troubleshoot submit-to-gemini.sh | pending | high | moderate | workspace-hub |
 
 ### ace-linux-2 (7 active / 13 total)
 
