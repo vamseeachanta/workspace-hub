@@ -1,0 +1,7 @@
+wrk_id: WRK-1008
+activated_at: "2026-03-04T04:18:25Z"
+set_active_wrk: true
+session_id: "78c0a06e-2676-4b7a-842c-eb9e4bf88c57"
+orchestrator_agent: claude
+machine: ace-linux-1
+notes: WRK-1008 activated within the same session as WRK-1006; user requested cross-review failure investigation.

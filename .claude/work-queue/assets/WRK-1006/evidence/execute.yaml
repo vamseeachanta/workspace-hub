@@ -1,0 +1,37 @@
+wrk_id: WRK-1006
+executed_at: 2026-03-04T00:00:00Z
+machine: ace-linux-1
+tdd_note: >
+  Full test suite created first (TDD), then implementation fixes confirmed each test.
+  All 41 assertions pass with no live API calls (mocked via CLAUDE_CMD/GEMINI_CMD/CODEX_BIN).
+integrated_repo_tests:
+  - name: test-submit-scripts.sh all 41 assertions pass
+    scope: repo
+    result: pass
+    command: bash tests/review/test-submit-scripts.sh
+    artifact_ref: .claude/work-queue/assets/WRK-1006/test-results.md
+    notes: "23 test groups, 41 assertions; no live API calls"
+  - name: validate-review-output.sh VALID on rendered fixture
+    scope: repo
+    result: pass
+    command: bash scripts/review/validate-review-output.sh tests/review/fixtures/rendered-valid.md
+    artifact_ref: .claude/work-queue/assets/WRK-1006/evidence/execute.yaml
+    notes: "Returns VALID; covers T09/T10/T11 fixture path"
+  - name: render-structured-review.py codex provider valid JSON
+    scope: repo
+    result: pass
+    command: uv run --no-project python scripts/review/render-structured-review.py --provider codex --input tests/review/fixtures/codex-valid-output.txt
+    artifact_ref: .claude/work-queue/assets/WRK-1006/evidence/execute.yaml
+    notes: "Produces 5-section markdown with APPROVE verdict"
+  - name: CLAUDECODE cleared before subprocess (T23)
+    scope: repo
+    result: pass
+    command: CLAUDECODE=nested-session bash tests/review/test-submit-scripts.sh 2>&1 | grep T23
+    artifact_ref: .claude/work-queue/assets/WRK-1006/test-results.md
+    notes: "T23 PASS: mock claude sees empty CLAUDECODE=[]"
+  - name: DNS skip exits 0 (T20)
+    scope: repo
+    result: pass
+    command: bash tests/review/test-submit-scripts.sh 2>&1 | grep T20
+    artifact_ref: .claude/work-queue/assets/WRK-1006/test-results.md
+    notes: "T20 PASS: exit 0 with network-unavailable message"

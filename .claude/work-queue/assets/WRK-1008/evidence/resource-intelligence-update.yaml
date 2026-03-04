@@ -1,0 +1,24 @@
+wrk_id: WRK-1008
+updated_at: "2026-03-04T00:00:00Z"
+additions:
+  - topic: run_renderer uv-first with python3 fallback
+    insight: >
+      run_renderer() should try uv first (uv run ... && return), then fall back to python3
+      on uv failure (not just on uv absence). This ensures render works when uv is present
+      but fails transiently (sandbox restrictions, import errors).
+    relevant_files:
+      - scripts/review/submit-to-codex.sh
+  - topic: NO_OUTPUT fallback eligibility — exits 0 and 5 only
+    insight: >
+      CODEX_FALLBACK_ALLOWED should only be true when codex_exit is 0 (success) or 5
+      (explicit no-output sentinel). Non-zero exits from CLI failures, transport errors,
+      or tool setup issues are hard gates and must not be eligible for 2-of-3 consensus.
+    relevant_files:
+      - scripts/review/cross-review.sh
+  - topic: MAJOR/MINOR verdict normalization in render-structured-review.py
+    insight: >
+      Codex sometimes returns "verdict":"MAJOR" or "verdict":"MINOR" (non-standard).
+      The renderer must normalize these via _VERDICT_NORMALIZE before the VALID_VERDICTS
+      check to avoid ValueError and exit 6 fallback to raw output.
+    relevant_files:
+      - scripts/review/render-structured-review.py

@@ -1,0 +1,17 @@
+wrk_id: WRK-1006
+generated_at: "2026-03-04T00:00:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - bash-scripting
+    - shell-testing
+    - cross-review
+    - submit-scripts
+    - validate-review-output
+  docs_consulted:
+    - scripts/review/submit-to-claude.sh
+    - scripts/review/submit-to-codex.sh
+    - scripts/review/submit-to-gemini.sh
+    - .claude/work-queue/pending/WRK-1006.md
+notes: Resource intelligence gathered from existing failure logs and issue tracker in WRK item.

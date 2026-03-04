@@ -1,0 +1,37 @@
+wrk_id: WRK-1008
+executed_at: 2026-03-04T00:00:00Z
+machine: ace-linux-1
+tdd_note: >
+  Tests written in parallel with implementation. All regression suites pass.
+  P1-A/B/C/D fixes verified against existing test assertions.
+integrated_repo_tests:
+  - name: test-submit-to-codex-robustness.sh 27/27 pass
+    scope: repo
+    result: pass
+    command: bash scripts/review/tests/test-submit-to-codex-robustness.sh
+    artifact_ref: .claude/work-queue/assets/WRK-1008/test-results.md
+    notes: "27 assertions; transport/timeout/quota/generic/render/validate paths"
+  - name: test-codex-fallback.sh 20/20 pass
+    scope: repo
+    result: pass
+    command: bash scripts/review/tests/test-codex-fallback.sh
+    artifact_ref: .claude/work-queue/assets/WRK-1008/test-results.md
+    notes: "20 assertions; NO_OUTPUT fallback consensus with exit code guard"
+  - name: test-cross-review-codex-hardgate.sh 8/8 pass
+    scope: repo
+    result: pass
+    command: bash scripts/review/tests/test-cross-review-codex-hardgate.sh
+    artifact_ref: .claude/work-queue/assets/WRK-1008/test-results.md
+    notes: "8 assertions; hard-gate enforcement for non-zero exits"
+  - name: test-cross-review-path-sanitization.sh 4/4 pass
+    scope: repo
+    result: pass
+    command: bash scripts/review/tests/test-cross-review-path-sanitization.sh
+    artifact_ref: .claude/work-queue/assets/WRK-1008/test-results.md
+    notes: "4 assertions; git-range source name sanitization"
+  - name: render-structured-review.py MAJOR verdict normalization
+    scope: repo
+    result: pass
+    command: "echo '{\"verdict\":\"MAJOR\",\"summary\":\"ok\",\"issues_found\":[],\"suggestions\":[],\"questions_for_author\":[]}' | uv run --no-project python scripts/review/render-structured-review.py --provider codex --input /dev/stdin"
+    artifact_ref: .claude/work-queue/assets/WRK-1008/evidence/execute.yaml
+    notes: "MAJOR -> REQUEST_CHANGES normalization confirmed; edb5237d"

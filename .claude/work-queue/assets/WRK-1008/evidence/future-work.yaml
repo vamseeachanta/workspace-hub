@@ -1,0 +1,15 @@
+wrk_id: WRK-1008
+generated_at: "2026-03-04T00:00:00Z"
+recommendations:
+  - wrk_id: WRK-1005
+    title: "Cross-provider assessment baseline with hardened scripts"
+    required_for_signoff: false
+    notes: >
+      WRK-1006 + WRK-1008 fixes now enable reliable cross-review runs.
+      WRK-1005 can capture a meaningful baseline table.
+  - wrk_id: null
+    title: "Add test for test-cross-review-codex-hardgate.sh parallel-run collision (P3)"
+    required_for_signoff: false
+    notes: >
+      Codex P3: test writes to fixed /tmp paths; use mktemp for parallel safety.
+      Low priority; no functional impact on single-run environments.

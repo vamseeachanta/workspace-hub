@@ -1,0 +1,26 @@
+wrk_id: WRK-1006
+updated_at: "2026-03-04T00:00:00Z"
+additions:
+  - topic: CMD env-var injection pattern for CLI testability
+    insight: >
+      Use CLAUDE_CMD/GEMINI_CMD/CODEX_BIN env-var overrides instead of PATH manipulation
+      when testing scripts that invoke AI CLIs. On Ubuntu, /bin is a symlink to /usr/bin,
+      so PATH exclusion is impossible without breaking system tools.
+    relevant_files:
+      - scripts/review/submit-to-claude.sh
+      - scripts/review/submit-to-gemini.sh
+      - tests/review/test-submit-scripts.sh
+  - topic: DNS graceful skip pattern (exit 0 non-blocking review)
+    insight: >
+      Claude review is non-blocking; DNS failure should exit 0 with a marker message
+      so cross-review.sh can detect and record the skip rather than treating it as a
+      failure. Callers parse stdout for "# Claude review skipped" to detect skips.
+    relevant_files:
+      - scripts/review/submit-to-claude.sh
+  - topic: rg alias only available in interactive shells
+    insight: >
+      The Claude Code vendor ripgrep alias (rg) is only active in interactive shells.
+      Scripts and test suites in non-interactive bash must use grep -Eqi / grep -q instead.
+    relevant_files:
+      - scripts/review/submit-to-codex.sh
+      - scripts/review/tests/test-cross-review-path-sanitization.sh

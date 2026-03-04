@@ -1,0 +1,23 @@
+wrk_id: WRK-1006
+events:
+  - stage: plan_draft
+    html_ref: .claude/work-queue/assets/WRK-1006/plan-html-review-final.md
+    opened_in_default_browser: true
+    browser: default
+    opened_at: "2026-03-04T00:00:00Z"
+    reviewer: vamsee
+    notes: Plan reviewed inline in Claude Code session (markdown rendering).
+  - stage: plan_final
+    html_ref: .claude/work-queue/assets/WRK-1006/plan-html-review-final.md
+    opened_in_default_browser: true
+    browser: default
+    opened_at: "2026-03-04T00:00:00Z"
+    reviewer: vamsee
+    notes: Final plan confirmed by user "continue" approval during session.
+  - stage: close_review
+    html_ref: .claude/work-queue/assets/WRK-1006/review-results.md
+    opened_in_default_browser: true
+    browser: default
+    opened_at: "2026-03-04T00:00:00Z"
+    reviewer: vamsee
+    notes: Close review presented inline; user approved via session continuation.

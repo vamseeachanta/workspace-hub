@@ -1,0 +1,19 @@
+wrk_id: WRK-1006
+generated_at: "2026-03-04T00:00:00Z"
+recommendations:
+  - wrk_id: WRK-1002
+    title: "Execute WRK-1002 cross-review with hardened scripts"
+    required_for_signoff: false
+    notes: WRK-1006 fixes unblock reliable cross-review execution for WRK-1002.
+  - wrk_id: WRK-1003
+    title: "Execute WRK-1003 cross-review with hardened scripts"
+    required_for_signoff: false
+    notes: Same as WRK-1002.
+  - wrk_id: WRK-1004
+    title: "Execute WRK-1004 cross-review with hardened scripts"
+    required_for_signoff: false
+    notes: Same as WRK-1002.
+  - wrk_id: WRK-1005
+    title: "Cross-provider assessment baseline"
+    required_for_signoff: false
+    notes: Phase 4 baseline table deferred from WRK-1006 scope; now unblocked.
