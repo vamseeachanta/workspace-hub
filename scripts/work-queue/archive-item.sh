@@ -79,6 +79,13 @@ with open("$ARCHIVE_PATH", 'w') as f:
     f.write(content)
 EOF
 
+# Best-effort stage progress update for archive stage.
+STAGE_UPDATER="${WORKSPACE_ROOT}/scripts/work-queue/update-stage-evidence.py"
+if [[ -f "$STAGE_UPDATER" ]]; then
+  uv run --no-project python "$STAGE_UPDATER" "$ITEM_ID" --order 20 --status done --reviewed-by "orchestrator" >/dev/null || \
+    echo "⚠ Could not update stage-evidence order 20 for ${ITEM_ID}" >&2
+fi
+
 # Remove from source directory
 rm "$ITEM_FILE"
 

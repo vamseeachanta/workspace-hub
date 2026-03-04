@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-624 User Implementation Review Update</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; line-height: 1.45; color: #111; }
+    h1, h2 { margin-bottom: 8px; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0 18px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f4f4f4; }
+    code { background: #f6f6f8; padding: 1px 4px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-624 User Implementation Review</h1>
+  <p>Update timestamp: 2026-03-03. This review updates stage naming and user-facing implementation checkpoint wording.</p>
+
+  <h2>Stage Rename Applied</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Old Name</th>
+        <th>New Name</th>
+        <th>Intent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>16</td>
+        <td>User Review</td>
+        <td>User Review - Implementation</td>
+        <td>Explicitly marks the post-implementation user checkpoint before close/archive.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Stage Insertion Applied</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Position</th>
+        <th>Stage</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>After 12 (TDD / Eval)</td>
+        <td>13. Agent Cross-Review</td>
+        <td>Mandatory agent cross-review of implementation outputs before final gate verification.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Updated Artifacts</h2>
+  <ul>
+    <li><code>.claude/work-queue/assets/WRK-624/workflow-governance-review.html</code></li>
+    <li><code>specs/templates/stage-evidence-template.yaml</code></li>
+    <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/stage-evidence.yaml</code></li>
+    <li><code>.claude/work-queue/assets/WRK-690/evidence/stage-evidence.yaml</code></li>
+    <li><code>.claude/skills/coordination/workspace/work-queue/SKILL.md</code></li>
+    <li><code>.claude/skills/workspace-hub/workflow-gatepass/SKILL.md</code></li>
+  </ul>
+
+  <h2>Review Action</h2>
+  <p>Use this page for user implementation review signoff and to verify stage terminology consistency across docs, skills, and evidence ledgers.</p>
+</body>
+</html>

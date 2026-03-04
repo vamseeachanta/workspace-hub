@@ -271,3 +271,134 @@ events:
     )
     assert ok is False
     assert "missing required stages" in detail
+
+
+def test_stage_evidence_gate_fails_when_missing_ref(tmp_path: Path):
+    mod = _load_verify_module()
+    front = "id: WRK-999\nstatus: working\n"
+    ok, detail = mod.check_stage_evidence_gate(front, tmp_path, "WRK-999")
+    assert ok is False
+    assert "stage_evidence_ref missing" in detail
+
+
+def test_stage_evidence_gate_passes_with_all_19_orders(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_file = tmp_path / "stage-evidence.yaml"
+    rows = "\n".join(
+        [
+            f"  - order: {i}\n    stage: Stage {i}\n    status: done\n    evidence: ref-{i}"
+            for i in range(1, 20)
+        ]
+    )
+    evidence_file.write_text(
+        "wrk_id: WRK-999\n"
+        "generated_at: \"2026-03-03T00:00:00Z\"\n"
+        "reviewed_by: agent\n"
+        "stages:\n"
+        f"{rows}\n",
+        encoding="utf-8",
+    )
+    front = "id: WRK-999\nstage_evidence_ref: stage-evidence.yaml\n"
+    ok, detail = mod.check_stage_evidence_gate(front, tmp_path, "WRK-999")
+    assert ok is True
+    assert "stages=19" in detail
+
+
+def test_stage_evidence_gate_passes_with_all_20_orders(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_file = tmp_path / "stage-evidence.yaml"
+    rows = "\n".join(
+        [
+            f"  - order: {i}\n    stage: Stage {i}\n    status: done\n    evidence: ref-{i}"
+            for i in range(1, 21)
+        ]
+    )
+    evidence_file.write_text(
+        "wrk_id: WRK-999\n"
+        "generated_at: \"2026-03-03T00:00:00Z\"\n"
+        "reviewed_by: agent\n"
+        "stages:\n"
+        f"{rows}\n",
+        encoding="utf-8",
+    )
+    front = "id: WRK-999\nstage_evidence_ref: stage-evidence.yaml\n"
+    ok, detail = mod.check_stage_evidence_gate(front, tmp_path, "WRK-999", phase="close")
+    assert ok is True
+    assert "stages=20" in detail
+
+
+def test_stage_evidence_gate_fails_close_phase_if_preclose_stage_pending(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+
+    evidence_file = tmp_path / "stage-evidence.yaml"
+    rows = []
+    for i in range(1, 21):
+        status = "done"
+        if i == 17:
+            status = "pending"
+        if i == 18:
+            status = "n/a"
+        if i in {19, 20}:
+            status = "pending"
+        rows.append(f"  - order: {i}\n    stage: Stage {i}\n    status: {status}\n    evidence: ref-{i}")
+    evidence_file.write_text(
+        "wrk_id: WRK-999\n"
+        "generated_at: \"2026-03-03T00:00:00Z\"\n"
+        "reviewed_by: agent\n"
+        "stages:\n"
+        + "\n".join(rows)
+        + "\n",
+        encoding="utf-8",
+    )
+    front = "id: WRK-999\nstage_evidence_ref: stage-evidence.yaml\n"
+    ok, detail = mod.check_stage_evidence_gate(front, tmp_path, "WRK-999", phase="close")
+    assert ok is False
+    assert "stage order 17 must be done|n/a before close" in detail
+
+
+def test_activation_gate_requires_set_active_and_session_fields(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "activation.yaml").write_text(
+        """
+wrk_id: WRK-999
+set_active_wrk: false
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    ok, detail = mod.check_activation_gate(tmp_path, "WRK-999")
+    assert ok is False
+    assert "set_active_wrk must be true" in detail
+
+
+def test_activation_gate_passes_with_required_fields(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable in test environment")
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "activation.yaml").write_text(
+        """
+wrk_id: WRK-999
+set_active_wrk: true
+session_id: session-20260303
+orchestrator_agent: codex
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    ok, detail = mod.check_activation_gate(tmp_path, "WRK-999")
+    assert ok is True
+    assert "activation evidence OK" in detail

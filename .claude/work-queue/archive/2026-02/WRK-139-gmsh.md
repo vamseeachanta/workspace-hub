@@ -20,8 +20,8 @@ percent_complete: 100
 brochure_status:
 plan_workstations: [ace-linux-1]
 execution_workstations: [ace-linux-1]
+stage_evidence_ref: .claude/work-queue/assets/WRK-139/evidence/stage-evidence.yaml
 ---
-
 # Develop gmsh Skill and Documentation
 
 ## What

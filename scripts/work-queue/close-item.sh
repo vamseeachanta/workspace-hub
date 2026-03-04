@@ -179,6 +179,13 @@ if [[ "$SOURCE_DIR" != "done" ]]; then
   echo "✔ Moved to done/"
 fi
 
+# Best-effort stage progress update for close stage.
+STAGE_UPDATER="${WORKSPACE_ROOT}/scripts/work-queue/update-stage-evidence.py"
+if [[ -f "$STAGE_UPDATER" ]]; then
+  uv run --no-project python "$STAGE_UPDATER" "$WRK_ID" --order 19 --status done --reviewed-by "orchestrator" >/dev/null || \
+    echo "⚠ Could not update stage-evidence order 19 for ${WRK_ID}" >&2
+fi
+
 uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"
 
 if [[ "$DO_COMMIT" == "true" ]]; then

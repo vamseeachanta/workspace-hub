@@ -50,7 +50,7 @@ Minimum test suite per workflow change:
 ```bash
 uv run --no-project pytest -q tests/unit/test_verify_gate_evidence.py
 uv run --no-project pytest -q tests/unit/test_generate_html_review.py
+bash tests/work-queue/test-lifecycle-gates.sh
 ```
 
 Add or update test files whenever gate contracts change.
-

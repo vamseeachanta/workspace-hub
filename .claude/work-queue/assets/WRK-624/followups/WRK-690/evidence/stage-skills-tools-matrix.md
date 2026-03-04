@@ -22,13 +22,14 @@ Document what happens at each mandatory workflow stage and which skills/tools/sc
 | 10. Work Execution | Implement scoped work | execution changes + examples |
 | 11. Artifact Generation | Generate HTML/report outputs | `review.html` and related artifacts |
 | 12. TDD / Eval | Run tests/evals | test/eval outputs |
-| 13. Verify Gate Evidence | Validate gate ledger | verifier PASS/WARN/FAIL output |
-| 14. Future Work Synthesis | Capture deferred/discovered follow-ups | `future-work.yaml` |
-| 15. Resource Intelligence Update | Add post-work resource additions | `resource-intelligence-update.yaml` |
-| 16. User Review | User reviews close package | `user-review-close.yaml` + browser-open proof |
-| 17. Reclaim | Re-establish continuity if needed | `reclaim.yaml` |
-| 18. Close | Transition WRK to done with gates passing | close script output + done state |
-| 19. Archive | Move WRK to archive after sync/merge gates | archive script output + archived state |
+| 13. Agent Cross-Review | Agent review on implementation outputs | `cross-review-package.md` / provider review notes |
+| 14. Verify Gate Evidence | Validate gate ledger | verifier PASS/WARN/FAIL output |
+| 15. Future Work Synthesis | Capture deferred/discovered follow-ups | `future-work.yaml` |
+| 16. Resource Intelligence Update | Add post-work resource additions | `resource-intelligence-update.yaml` |
+| 17. User Review - Implementation | User reviews implementation close package | `user-review-close.yaml` + browser-open proof |
+| 18. Reclaim | Re-establish continuity if needed | `reclaim.yaml` |
+| 19. Close | Transition WRK to done with gates passing | close script output + done state |
+| 20. Archive | Move WRK to archive after sync/merge gates | archive script output + archived state |
 
 ## Skills, Scripts, and Tools by Stage
 
@@ -46,14 +47,16 @@ Document what happens at each mandatory workflow stage and which skills/tools/sc
 | 10 | execute flow | `scripts/agents/execute.sh` | implementation artifacts |
 | 11 | report flow | `generate-html-review.py` | HTML/report files |
 | 12 | test/eval | `uv run --no-project pytest ...` | test outputs |
-| 13 | gate check | `verify-gate-evidence.py` | gate ledger output |
-| 14 | follow-up synthesis | n/a | future-work evidence |
-| 15 | resource update | n/a | resource-update evidence |
-| 16 | close review | n/a | `xdg-open` + review-close evidence |
-| 17 | reclaim | n/a | reclaim evidence |
-| 18 | close | `close-item.sh` | done-state transition |
-| 19 | archive | `archive-item.sh` | archive transition |
+| 13 | agent cross-review | `cross-review-package.md` | provider review outputs |
+| 14 | gate check | `verify-gate-evidence.py` | gate ledger output |
+| 15 | follow-up synthesis | n/a | future-work evidence |
+| 16 | resource update | n/a | resource-update evidence |
+| 17 | implementation close review | n/a | `xdg-open` + review-close evidence |
+| 18 | reclaim | n/a | reclaim evidence |
+| 19 | close | `close-item.sh` | done-state transition |
+| 20 | archive | `archive-item.sh` | archive transition |
 
 ## Review Notes
 - Browser-open proof is mandatory for all user-review stages (5, 7, 16).
 - Verifier is now phase-aware (`--phase claim|close`) and used by claim/close/archive scripts.
+- Canonical cross-review pointer for parent item is `.claude/work-queue/assets/WRK-624/cross-review-agent-synthesis.md`.

@@ -33,7 +33,7 @@ stages:
   - order: 8
     stage: Claim / Activation
     status: done
-    evidence: .claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/claim.yaml
+    evidence: .claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/activation.yaml
   - order: 9
     stage: Work-Queue Routing Skill
     status: done
@@ -51,30 +51,34 @@ stages:
     status: done
     evidence: .claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/session-gate-analysis.md
   - order: 13
+    stage: Agent Cross-Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-690/cross-review-package.md
+  - order: 14
     stage: Verify Gate Evidence
     status: done
     evidence: scripts/work-queue/verify-gate-evidence.py
-  - order: 14
+  - order: 15
     stage: Future Work Synthesis
     status: done
     evidence: .claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/future-work.yaml
-  - order: 15
-    stage: Resource Intelligence Update
-    status: pending
-    evidence: .claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/resource-intelligence-update.yaml
   - order: 16
-    stage: User Review
-    status: pending
-    evidence: .claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/user-review-close.yaml
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/resource-intelligence-update.yaml
   - order: 17
+    stage: User Review - Implementation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/user-review-close.yaml
+  - order: 18
     stage: Reclaim
     status: n/a
     evidence: .claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/reclaim.yaml
-  - order: 18
+  - order: 19
     stage: Close
     status: pending
     evidence: scripts/work-queue/close-item.sh
-  - order: 19
+  - order: 20
     stage: Archive
     status: pending
     evidence: scripts/work-queue/archive-item.sh

@@ -1,0 +1,16 @@
+integrated_repo_tests:
+  - name: verify-gate-evidence-unit
+    scope: repo
+    command: uv run --no-project pytest -q tests/unit/test_verify_gate_evidence.py
+    result: pass
+    artifact_ref: tests/unit/test_verify_gate_evidence.py
+  - name: close-item-gate-path
+    scope: integrated
+    command: bash scripts/work-queue/close-item.sh WRK-690 --help
+    result: pass
+    artifact_ref: scripts/work-queue/close-item.sh
+  - name: archive-item-gate-path
+    scope: integrated
+    command: bash scripts/work-queue/archive-item.sh WRK-690
+    result: pass
+    artifact_ref: scripts/work-queue/archive-item.sh

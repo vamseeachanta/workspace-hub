@@ -1004,6 +1004,26 @@ resources:
       unlike AISHub.
     discovery_status: new
 
+  - id: maritime_optima_insights
+    name: Maritime Optima — Sea Routes and Anti-Shipping Activity Analysis
+    category: realtime_feeds
+    subcategory: vessel_tracking
+    url: https://maritimeoptima.com/insights/how-are-sea-routes-affected-by-events-and-anti-shipping-activities
+    auth_required: false
+    cost_model: free (insights article; full platform subscription required)
+    relevance_score: 4
+    related_module: worldenergydata/marine_safety, digitalmodel/marine_ops
+    maturity: live
+    notes: >
+      Maritime Optima insights article on how geopolitical events and anti-shipping
+      activities (e.g., Houthi Red Sea attacks, Strait of Hormuz disruptions) alter
+      global sea routes. Maritime Optima platform provides voyage analytics, port call
+      data, and route risk scoring. Relevant to marine ops risk, vessel routing
+      decisions, offshore installation supply chain impact analysis, and freight
+      market context. Full platform API available (commercial); the insights series
+      documents real-world routing shifts useful as reference cases.
+    discovery_status: new
+
   - id: open_meteo_realtime
     name: Open-Meteo Real-Time Marine Weather (no key)
     category: realtime_feeds

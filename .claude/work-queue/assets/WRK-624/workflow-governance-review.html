@@ -214,13 +214,14 @@
                 <tr><td>10</td><td>Work Execution</td><td>Yes</td><td>Implement scoped work under claim.</td><td>Execution script/tool activity</td><td><code>work_execution</code></td><td>9/10, 0/1</td><td>Improve strict coverage</td></tr>
                 <tr><td>11</td><td>Artifact Generation</td><td>Yes</td><td>Produce review/evidence outputs.</td><td>HTML/report artifacts</td><td><code>artifact_generation</code></td><td>10/10, 1/1</td><td>Keep</td></tr>
                 <tr><td>12</td><td>TDD / Eval</td><td>Yes</td><td>Validate behavior with tests/evals.</td><td>Test/eval evidence in session</td><td><code>tdd_eval</code></td><td>10/10, 1/1</td><td>Keep</td></tr>
-                <tr><td>13</td><td>Verify Gate Evidence</td><td>Yes</td><td>Run gate verifier before close.</td><td><code>verify-gate-evidence.py</code> evidence</td><td><code>verify_gate_evidence</code></td><td>7/10, 1/1</td><td>Tighten</td></tr>
-                <tr><td>14</td><td>Future Work Synthesis</td><td>Yes</td><td>Record deferred findings as follow-up WRKs.</td><td>Future-work artifact with IDs</td><td><code>future_work</code></td><td>4/10, 0/1</td><td>Tighten</td></tr>
-                <tr><td>15</td><td>Resource Intelligence Update</td><td>Yes</td><td>Capture additions discovered during execution before closure.</td><td>Post-work resource addendum in evidence pack</td><td><code>resource_intelligence_update</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
-                <tr><td>16</td><td>User Review</td><td>Yes</td><td>User validates future work + closure readiness before close.</td><td>Close review artifact + default-browser open proof</td><td><code>user_review_close</code>, <code>html_open_default_browser</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
-                <tr><td>17</td><td>Reclaim</td><td>Conditional</td><td>Re-establish continuity after interruption.</td><td>Reclaim artifact + reason</td><td><code>reclaim</code></td><td>2/10, 0/1</td><td>Conditional gate</td></tr>
-                <tr><td>18</td><td>Close</td><td>Yes</td><td>Close WRK with complete ledger/tests.</td><td>Close artifact + close script evidence</td><td><code>close_item</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
-                <tr><td>19</td><td>Archive</td><td>Yes</td><td>Archive only after merge/sync readiness.</td><td>Archive artifact + archive script evidence</td><td><code>archive_item</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
+                <tr><td>13</td><td>Agent Cross-Review</td><td>Yes</td><td>Agent review of implementation outputs before final verification.</td><td>Cross-review package + provider findings</td><td><code>agent_cross_review</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
+                <tr><td>14</td><td>Verify Gate Evidence</td><td>Yes</td><td>Run gate verifier before close.</td><td><code>verify-gate-evidence.py</code> evidence</td><td><code>verify_gate_evidence</code></td><td>7/10, 1/1</td><td>Tighten</td></tr>
+                <tr><td>15</td><td>Future Work Synthesis</td><td>Yes</td><td>Record deferred findings as follow-up WRKs.</td><td>Future-work artifact with IDs</td><td><code>future_work</code></td><td>4/10, 0/1</td><td>Tighten</td></tr>
+                <tr><td>16</td><td>Resource Intelligence Update</td><td>Yes</td><td>Capture additions discovered during execution before closure.</td><td>Post-work resource addendum in evidence pack</td><td><code>resource_intelligence_update</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
+                <tr><td>17</td><td>User Review - Implementation</td><td>Yes</td><td>User validates implementation output, future work, and closure readiness before close.</td><td>Implementation review artifact + default-browser open proof</td><td><code>user_review_close</code>, <code>html_open_default_browser</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
+                <tr><td>18</td><td>Reclaim</td><td>Conditional</td><td>Re-establish continuity after interruption.</td><td>Reclaim artifact + reason</td><td><code>reclaim</code></td><td>2/10, 0/1</td><td>Conditional gate</td></tr>
+                <tr><td>19</td><td>Close</td><td>Yes</td><td>Close WRK with complete ledger/tests.</td><td>Close artifact + close script evidence</td><td><code>close_item</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
+                <tr><td>20</td><td>Archive</td><td>Yes</td><td>Archive only after merge/sync readiness.</td><td>Archive artifact + archive script evidence</td><td><code>archive_item</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
             </tbody>
         </table>
 
@@ -250,11 +251,12 @@
                 <tr><td>10</td><td>Cross-Review</td><td>cross_review</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Cross-review scripts are consistently present.</td></tr>
                 <tr><td>11</td><td>Claim / Evidence Ledger</td><td>claim_evidence</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Claim evidence artifacts are referenced across qualified sessions.</td></tr>
                 <tr><td>12</td><td>User Review - Plan (Final)</td><td>plan_html_review_final + html_open_default_browser</td><td>9/10</td><td>1/1</td><td>REQUIRED FOR ALL WRKs</td><td>Mandatory explicit user acceptance artifact and browser-open evidence before close/archive. Target compliance: 100%.</td></tr>
-                <tr><td>13</td><td>Close Planning</td><td>future_work</td><td>4/10</td><td>0/1</td><td>FAIL</td><td>Future-work evidence is frequently missing.</td></tr>
-                <tr><td>14</td><td>Resource Intelligence Update</td><td>resource_intelligence_update</td><td>N/A</td><td>N/A</td><td>REQUIRED FOR ALL WRKs</td><td>Add explicit post-work resource-intelligence addendum before final user review.</td></tr>
-                <tr><td>15</td><td>User Review</td><td>user_review_close + html_open_default_browser</td><td>N/A</td><td>N/A</td><td>REQUIRED FOR ALL WRKs</td><td>Add explicit post-future-work user review with browser-open evidence before reclaim/close.</td></tr>
-                <tr><td>16</td><td>Reclaim</td><td>reclaim</td><td>2/10</td><td>0/1</td><td>WARN</td><td>Reclaim is expected only when triggered; mostly absent.</td></tr>
-                <tr><td>17</td><td>Close / Archive</td><td>close_or_archive</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Close/archive signals are present in all qualified sessions.</td></tr>
+                <tr><td>13</td><td>Agent Cross-Review</td><td>agent_cross_review</td><td>N/A</td><td>N/A</td><td>REQUIRED FOR ALL WRKs</td><td>New implementation-stage cross-review checkpoint after TDD/Eval.</td></tr>
+                <tr><td>14</td><td>Close Planning</td><td>future_work</td><td>4/10</td><td>0/1</td><td>FAIL</td><td>Future-work evidence is frequently missing.</td></tr>
+                <tr><td>15</td><td>Resource Intelligence Update</td><td>resource_intelligence_update</td><td>N/A</td><td>N/A</td><td>REQUIRED FOR ALL WRKs</td><td>Add explicit post-work resource-intelligence addendum before final user review.</td></tr>
+                <tr><td>16</td><td>User Review - Implementation</td><td>user_review_close + html_open_default_browser</td><td>N/A</td><td>N/A</td><td>REQUIRED FOR ALL WRKs</td><td>Add explicit post-future-work implementation review with browser-open evidence before reclaim/close.</td></tr>
+                <tr><td>17</td><td>Reclaim</td><td>reclaim</td><td>2/10</td><td>0/1</td><td>WARN</td><td>Reclaim is expected only when triggered; mostly absent.</td></tr>
+                <tr><td>18</td><td>Close / Archive</td><td>close_or_archive</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Close/archive signals are present in all qualified sessions.</td></tr>
             </tbody>
         </table>
 
@@ -278,6 +280,7 @@
                 <tr><td>Work Execution</td><td><code>work_execution</code></td><td>9/10</td><td>0/1</td><td>Strict miss</td><td>Strict run lacks explicit execute marker.</td></tr>
                 <tr><td>Artifact Generation</td><td><code>artifact_generation</code></td><td>10/10</td><td>1/1</td><td>None</td><td>Artifact output is consistently present.</td></tr>
                 <tr><td>TDD / Eval</td><td><code>tdd_eval</code></td><td>10/10</td><td>1/1</td><td>None</td><td>Evaluation evidence is consistently present.</td></tr>
+                <tr><td>Agent Cross-Review</td><td><code>agent_cross_review</code></td><td>N/A</td><td>N/A</td><td>Signal pending</td><td>Add explicit implementation cross-review marker after TDD/Eval.</td></tr>
                 <tr><td>Verification</td><td><code>verify_gate_evidence</code></td><td>7/10</td><td>1/1</td><td>3 misses in relaxed</td><td>Enforce verifier before close.</td></tr>
                 <tr><td>User Review - Plan (Draft)</td><td><code>plan_html_review_draft</code> + <code>html_open_default_browser</code></td><td>9/10</td><td>1/1</td><td>1 miss in relaxed</td><td>Keep mandatory before cross-review.</td></tr>
                 <tr><td>Cross-Review</td><td><code>cross_review</code></td><td>10/10</td><td>1/1</td><td>None</td><td>Healthy coverage.</td></tr>
@@ -285,7 +288,7 @@
                 <tr><td>User Review - Plan (Final)</td><td><code>plan_html_review_final</code> + <code>html_open_default_browser</code></td><td>9/10</td><td>1/1</td><td>1 miss in relaxed</td><td>Keep mandatory before close/archive.</td></tr>
                 <tr><td>Close Planning</td><td><code>future_work</code></td><td>4/10</td><td>0/1</td><td>Major gap</td><td>Needs explicit follow-up capture rule.</td></tr>
                 <tr><td>Resource Intelligence Update</td><td><code>resource_intelligence_update</code></td><td>N/A</td><td>N/A</td><td>Signal pending</td><td>Add post-work resource addendum before closure.</td></tr>
-                <tr><td>User Review</td><td><code>user_review_close</code> + <code>html_open_default_browser</code></td><td>N/A</td><td>N/A</td><td>Signal pending</td><td>Add explicit user checkpoint after future work synthesis.</td></tr>
+                <tr><td>User Review - Implementation</td><td><code>user_review_close</code> + <code>html_open_default_browser</code></td><td>N/A</td><td>N/A</td><td>Signal pending</td><td>Add explicit implementation checkpoint after future work synthesis.</td></tr>
                 <tr><td>Reclaim</td><td><code>reclaim</code></td><td>2/10</td><td>0/1</td><td>Conditional gap</td><td>Track only when continuity breaks.</td></tr>
                 <tr><td>Close / Archive</td><td><code>close_or_archive</code></td><td>10/10</td><td>1/1</td><td>None</td><td>Terminal signal is present.</td></tr>
             </tbody>
@@ -391,15 +394,67 @@
                 <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/agent-wrk-counts-by-day.html</code></li>
                 <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/session-wrk-count.md</code></li>
                 <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/stage-skills-tools-matrix.md</code></li>
+                <li><code>.claude/work-queue/assets/WRK-624/cross-review-agent-synthesis.md</code></li>
                 <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/stage-evidence.yaml</code></li>
+                <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/gate-evidence-summary.md</code></li>
             </ul>
         </div>
 
+        <h2>Lifecycle Enforcement Progress (2026-03-03)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Workstream</th>
+                    <th>Status</th>
+                    <th>Evidence</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Queue blocker remediation (WRK-687/688/689/694)</td>
+                    <td>Done</td>
+                    <td><code>.claude/work-queue/INDEX.md</code></td>
+                    <td>Queue validation now passes with no blocking errors.</td>
+                </tr>
+                <tr>
+                    <td>Lifecycle script integration tests</td>
+                    <td>Done</td>
+                    <td><code>tests/work-queue/test-lifecycle-gates.sh</code></td>
+                    <td>Claim/close/archive gate behavior validated end-to-end.</td>
+                </tr>
+                <tr>
+                    <td>Stage evidence updater utility</td>
+                    <td>Done</td>
+                    <td><code>scripts/work-queue/update-stage-evidence.py</code></td>
+                    <td>Order-based stage status updates with dry-run support.</td>
+                </tr>
+                <tr>
+                    <td>Close-readiness stage contract hardening</td>
+                    <td>Done</td>
+                    <td><code>scripts/work-queue/verify-gate-evidence.py</code></td>
+                    <td>Close phase now enforces orders 1..16 as done/n-a.</td>
+                </tr>
+                <tr>
+                    <td>WRK-690 close-phase gate run</td>
+                    <td>Done</td>
+                    <td><code>.claude/work-queue/assets/WRK-690/evidence/gate-evidence-summary.md</code></td>
+                    <td>All gates passed; reclaim remains conditional WARN when absent.</td>
+                </tr>
+                <tr>
+                    <td>WRK-624 agent cross-review artifact packaging</td>
+                    <td>Done</td>
+                    <td><code>.claude/work-queue/assets/WRK-624/cross-review-agent-synthesis.md</code></td>
+                    <td>Codex + Gemini review artifacts consolidated under canonical WRK-624 assets.</td>
+                </tr>
+            </tbody>
+        </table>
+
         <h2>Next Work Inside WRK-690</h2>
         <ul>
-            <li>Convert these observations into gate enforcement checks in lifecycle scripts.</li>
-            <li>Add comprehensive-learning enhancements that explicitly consume and flag gate-init/gate-missing signals per agent per day.</li>
-            <li>Close orchestration gap for Codex/Gemini log emission so orchestrator folders reflect native session activity consistently.</li>
+            <li>Finalize cross-review package and capture provider verdict artifacts.</li>
+            <li>Execute WRK-690 close/archive path and confirm stage orders 18/19 progression in evidence ledger.</li>
+            <li>Add comprehensive-learning enhancements for gate-init / gate-missing daily signal synthesis.</li>
         </ul>
     </div>
     </main>

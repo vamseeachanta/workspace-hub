@@ -1,0 +1,80 @@
+wrk_id: WRK-560
+generated_at: "2026-03-03T22:04:48Z"
+reviewed_by: "agent"
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-560.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: .claude/work-queue/assets/WRK-560/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: .claude/work-queue/working/WRK-560.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: specs/wrk/WRK-560/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-560/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    evidence: .claude/work-queue/assets/WRK-560/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-560/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: .claude/work-queue/assets/WRK-560/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: .claude/work-queue/assets/WRK-560/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: .claude/work-queue/assets/WRK-560/evidence/test-results.md
+  - order: 13
+    stage: Verify Gate Evidence
+    status: done
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 14
+    stage: Future Work Synthesis
+    status: done
+    evidence: .claude/work-queue/assets/WRK-560/evidence/future-work.yaml
+  - order: 15
+    stage: Resource Intelligence Update
+    status: done
+    evidence: .claude/work-queue/assets/WRK-560/evidence/resource-intelligence-update.yaml
+  - order: 16
+    stage: User Review
+    status: done
+    evidence: .claude/work-queue/assets/WRK-560/evidence/user-review-close.yaml
+  - order: 17
+    stage: Reclaim
+    status: n/a
+    evidence: .claude/work-queue/assets/WRK-560/evidence/reclaim.yaml
+  - order: 18
+    stage: Close
+    status: pending
+    evidence: scripts/work-queue/close-item.sh
+  - order: 19
+    stage: Archive
+    status: pending
+    evidence: scripts/work-queue/archive-item.sh

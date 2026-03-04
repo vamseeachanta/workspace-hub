@@ -3,6 +3,7 @@
 
 import re
 import sys
+import json
 from pathlib import Path
 
 try:
@@ -264,6 +265,26 @@ def check_html_open_default_browser_gate(assets_dir: Path, required: list[str]) 
     return True, f"{evidence.name}: stages={sorted(seen)}"
 
 
+def check_activation_gate(assets_dir: Path, wrk_id: str) -> tuple[bool, str]:
+    """Require explicit activation evidence (set-active-wrk + session init snapshot)."""
+    activation_file = evidence_file(assets_dir, "activation.yaml", [])
+    if activation_file is None:
+        return False, "activation.yaml missing"
+    data, yaml_err = load_yaml(activation_file)
+    if yaml_err:
+        return False, f"could not parse {activation_file.name}: {yaml_err}"
+    assert data is not None
+    if str(data.get("wrk_id", "")).strip() != wrk_id:
+        return False, f"{activation_file.name}: wrk_id mismatch"
+    if data.get("set_active_wrk") is not True:
+        return False, f"{activation_file.name}: set_active_wrk must be true"
+    if not str(data.get("session_id", "")).strip():
+        return False, f"{activation_file.name}: session_id missing"
+    if not str(data.get("orchestrator_agent", "")).strip():
+        return False, f"{activation_file.name}: orchestrator_agent missing"
+    return True, f"{activation_file.name}: activation evidence OK"
+
+
 def strip_code_fences(content: str) -> str:
     """Remove fenced code blocks to prevent false-positive confirmation matches."""
     return re.sub(r"```[^\n]*\n.*?```", "", content, flags=re.DOTALL)
@@ -344,7 +365,7 @@ def check_plan_confirmation(plan_path: Path) -> tuple[bool, str]:
     return False, "confirmation block incomplete — " + ", ".join(missing)
 
 
-def check_stage_evidence_gate(front: str, workspace_root: Path, wrk_id: str) -> tuple[bool, str]:
+def check_stage_evidence_gate(front: str, workspace_root: Path, wrk_id: str, phase: str = "close") -> tuple[bool, str]:
     """Require a per-WRK stage evidence ledger for close readiness."""
     ref = get_field(front, "stage_evidence_ref")
     if not ref:
@@ -359,25 +380,96 @@ def check_stage_evidence_gate(front: str, workspace_root: Path, wrk_id: str) -> 
     stages = data.get("stages") or []
     if not isinstance(stages, list):
         return False, f"{path.name}: stages must be a list"
-    required_orders = set(range(1, 20))
+    required_orders_legacy = set(range(1, 20))
+    required_orders_current = set(range(1, 21))
     seen_orders = set()
+    rows_by_order: dict[int, dict] = {}
+    allowed_statuses = {"pending", "in_progress", "done", "n/a", "blocked"}
     for idx, row in enumerate(stages, start=1):
         if not isinstance(row, dict):
             return False, f"{path.name}: stages[{idx}] must be an object"
         order = row.get("order")
         if not isinstance(order, int):
             return False, f"{path.name}: stages[{idx}] order must be integer"
+        if order in rows_by_order:
+            return False, f"{path.name}: duplicate stage order {order}"
         seen_orders.add(order)
         if not str(row.get("stage", "")).strip():
             return False, f"{path.name}: stages[{idx}] stage missing"
-        if not str(row.get("status", "")).strip():
+        status = str(row.get("status", "")).strip().lower()
+        if not status:
             return False, f"{path.name}: stages[{idx}] status missing"
-    missing = sorted(required_orders - seen_orders)
-    if missing:
-        return False, f"{path.name}: missing stage orders {missing}"
+        if status not in allowed_statuses:
+            return False, f"{path.name}: stages[{idx}] invalid status {status!r}"
+        if not str(row.get("evidence", "")).strip():
+            return False, f"{path.name}: stages[{idx}] evidence missing"
+        rows_by_order[order] = row
+    if seen_orders == required_orders_current:
+        expected_orders = required_orders_current
+        preclose_orders = range(1, 19)  # 1..18 must be done|n/a before close
+    elif seen_orders == required_orders_legacy:
+        expected_orders = required_orders_legacy
+        preclose_orders = range(1, 17)  # legacy contract
+    else:
+        missing_current = sorted(required_orders_current - seen_orders)
+        missing_legacy = sorted(required_orders_legacy - seen_orders)
+        if len(missing_current) <= len(missing_legacy):
+            return False, f"{path.name}: missing stage orders {missing_current}"
+        return False, f"{path.name}: missing stage orders {missing_legacy}"
     if str(data.get("wrk_id", "")).strip() not in {"", wrk_id}:
         return False, f"{path.name}: wrk_id mismatch"
-    return True, f"{path.name}: stages={len(stages)}"
+
+    if phase == "close":
+        # Close readiness requires all mandatory pre-close stages completed.
+        for order in preclose_orders:
+            status = str(rows_by_order[order].get("status", "")).strip().lower()
+            if status not in {"done", "n/a"}:
+                return False, f"{path.name}: stage order {order} must be done|n/a before close (found {status})"
+    return True, f"{path.name}: stages={len(stages)}, contract={len(expected_orders)}-stage"
+
+
+def write_gate_summary(wrk_id: str, assets_dir: Path, phase: str, gates: list[dict]) -> None:
+    """Persist gate summary for auditability in assets evidence folder."""
+    evidence_dir = assets_dir / "evidence"
+    evidence_dir.mkdir(parents=True, exist_ok=True)
+    summary_json = evidence_dir / "gate-evidence-summary.json"
+    summary_md = evidence_dir / "gate-evidence-summary.md"
+    serializable = []
+    for gate in gates:
+        ok = gate.get("ok")
+        warn = gate.get("warn", False)
+        if warn:
+            status = "WARN"
+        elif ok:
+            status = "PASS"
+        else:
+            status = "FAIL"
+        serializable.append(
+            {
+                "name": gate.get("name"),
+                "status": status,
+                "ok": bool(ok),
+                "warn": bool(warn),
+                "details": gate.get("details", ""),
+            }
+        )
+    summary_payload = {
+        "wrk_id": wrk_id,
+        "phase": phase,
+        "summary_file": str(summary_json.relative_to(assets_dir.parent.parent)),
+        "gates": serializable,
+    }
+    summary_json.write_text(json.dumps(summary_payload, indent=2), encoding="utf-8")
+    lines = [
+        f"# Gate Evidence Summary ({wrk_id}, phase={phase})",
+        "",
+        "| Gate | Status | Details |",
+        "|---|---|---|",
+    ]
+    for item in serializable:
+        details = str(item["details"]).replace("|", "\\|")
+        lines.append(f"| {item['name']} | {item['status']} | {details} |")
+    summary_md.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def abs_path(workspace_root: Path, referenced: str) -> Path:
@@ -472,10 +564,12 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
         }
     )
     if phase == "close":
-        stage_ok, stage_details = check_stage_evidence_gate(front, workspace_root, wrk_id)
+        stage_ok, stage_details = check_stage_evidence_gate(front, workspace_root, wrk_id, phase=phase)
         gates.append({"name": "Stage evidence gate", "ok": stage_ok, "details": stage_details})
     ri_ok, ri_details = check_resource_intelligence_gate(assets_dir)
     gates.append({"name": "Resource-intelligence gate", "ok": bool(ri_ok), "details": ri_details})
+    activation_ok, activation_details = check_activation_gate(assets_dir, wrk_id)
+    gates.append({"name": "Activation gate", "ok": activation_ok, "details": activation_details})
     html_open_required = ["plan_draft", "plan_final"]
     if phase == "close":
         html_open_required.append("close_review")
@@ -534,6 +628,8 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
         print(f"  - {gate['name']}: {status} ({gate['details']})")
         if not gate["ok"] and not is_warn:
             success = False
+
+    write_gate_summary(wrk_id, assets_dir, phase, gates)
 
     if not success:
         print("→ Gate evidence incomplete. Please collect the missing artifacts before claiming.", file=sys.stderr)

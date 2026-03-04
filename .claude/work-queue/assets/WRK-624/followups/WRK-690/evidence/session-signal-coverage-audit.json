@@ -1,0 +1,215 @@
+{
+  "required_signals": 23,
+  "measured_required_signals": 8,
+  "missing_required_signals": [
+    "wrk_created",
+    "triage_contract_complete",
+    "plan_draft_complete",
+    "plan_html_review_draft",
+    "html_open_default_browser",
+    "plan_html_review_final",
+    "work_queue_skill",
+    "work_execution",
+    "artifact_generation",
+    "tdd_eval",
+    "agent_cross_review",
+    "resource_intelligence_update",
+    "user_review_close",
+    "close_item",
+    "archive_item"
+  ],
+  "rows": [
+    {
+      "signal": "wrk_created",
+      "stage": "1 Capture",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "0/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "resource_intelligence",
+      "stage": "2 Resource Intelligence",
+      "required": true,
+      "currently_measured": true,
+      "relaxed_inferred": "6/10",
+      "strict_inferred": "1/1"
+    },
+    {
+      "signal": "triage_contract_complete",
+      "stage": "3 Triage",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "0/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "plan_draft_complete",
+      "stage": "4 Plan Draft",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "5/10",
+      "strict_inferred": "1/1"
+    },
+    {
+      "signal": "plan_html_review_draft",
+      "stage": "5 User Review - Plan (Draft)",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "0/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "html_open_default_browser",
+      "stage": "5/7/17 User Reviews",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "0/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "cross_review",
+      "stage": "6 Cross-Review",
+      "required": true,
+      "currently_measured": true,
+      "relaxed_inferred": "10/10",
+      "strict_inferred": "1/1"
+    },
+    {
+      "signal": "plan_html_review_final",
+      "stage": "7 User Review - Plan (Final)",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "0/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "claim_evidence",
+      "stage": "8 Claim / Activation",
+      "required": true,
+      "currently_measured": true,
+      "relaxed_inferred": "10/10",
+      "strict_inferred": "1/1"
+    },
+    {
+      "signal": "set_active_wrk",
+      "stage": "8 Claim / Activation",
+      "required": true,
+      "currently_measured": true,
+      "relaxed_inferred": "1/10",
+      "strict_inferred": "1/1"
+    },
+    {
+      "signal": "work_queue_skill",
+      "stage": "9 Work-Queue Routing",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "10/10",
+      "strict_inferred": "1/1"
+    },
+    {
+      "signal": "work_execution",
+      "stage": "10 Work Execution",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "4/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "artifact_generation",
+      "stage": "11 Artifact Generation",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "5/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "tdd_eval",
+      "stage": "12 TDD / Eval",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "0/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "agent_cross_review",
+      "stage": "13 Agent Cross-Review",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "5/10",
+      "strict_inferred": "1/1"
+    },
+    {
+      "signal": "verify_gate_evidence",
+      "stage": "14 Verify Gate Evidence",
+      "required": true,
+      "currently_measured": true,
+      "relaxed_inferred": "7/10",
+      "strict_inferred": "1/1"
+    },
+    {
+      "signal": "future_work",
+      "stage": "15 Future Work Synthesis",
+      "required": true,
+      "currently_measured": true,
+      "relaxed_inferred": "4/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "resource_intelligence_update",
+      "stage": "16 Resource Intelligence Update",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "0/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "user_review_close",
+      "stage": "17 User Review - Implementation",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "0/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "reclaim",
+      "stage": "18 Reclaim",
+      "required": false,
+      "currently_measured": true,
+      "relaxed_inferred": "2/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "close_item",
+      "stage": "19 Close",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "5/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "archive_item",
+      "stage": "20 Archive",
+      "required": true,
+      "currently_measured": false,
+      "relaxed_inferred": "2/10",
+      "strict_inferred": "0/1"
+    },
+    {
+      "signal": "close_or_archive",
+      "stage": "19/20 Terminal",
+      "required": true,
+      "currently_measured": true,
+      "relaxed_inferred": "10/10",
+      "strict_inferred": "1/1"
+    },
+    {
+      "signal": "init",
+      "stage": "Session bootstrap",
+      "required": true,
+      "currently_measured": true,
+      "relaxed_inferred": "10/10",
+      "strict_inferred": "1/1"
+    }
+  ]
+}

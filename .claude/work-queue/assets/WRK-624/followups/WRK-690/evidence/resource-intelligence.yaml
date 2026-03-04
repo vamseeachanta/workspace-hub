@@ -1,19 +1,14 @@
-stage: resource-intelligence
 wrk_id: WRK-690
-status: passed
-core_skills:
-  - work-queue
-  - legal-sanity
-  - engineering-context-loader
-  - document-inventory
-optional_skills_considered:
-  - work-document-exit
-  - session-start
-  - session-end
-  - qa-closure
-gaps_identified:
-  - skill-process drift between work-queue skill and canonical process
-  - no single lifecycle skill enforcing start-to-finish gatepass
-  - missing lifecycle-level TDD harness for bypass prevention
-recommendation: proceed_route_c
-timestamp: 2026-03-03T00:00:00Z
+stage: resource_intelligence
+completion_status: continue_to_planning
+top_p1_gaps: []
+top_p2_gaps:
+  - automate close-review evidence generation
+top_p3_gaps: []
+skills:
+  core_used:
+    - work-queue
+    - workflow-gatepass
+    - comprehensive-learning
+  optional_used:
+    - wrk-lifecycle-testpack

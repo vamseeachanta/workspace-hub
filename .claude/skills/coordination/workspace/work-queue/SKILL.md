@@ -143,19 +143,20 @@ flowchart TD
     I --> J[10 Work Execution]
     J --> K[11 Artifact Generation]
     K --> L[12 TDD / Eval]
-    L --> M{13 Verify Gate Evidence passed?}
-    M -- No --> J
-    M -- Yes --> N[14 Future Work Synthesis]
-    N --> O[15 Resource Intelligence Update]
-    O --> P{16 User Review + close HTML opened?}
-    P -- No --> O
-    P -- Yes --> Q{17 Continuity broken?}
-    Q -- Yes --> R[17 Reclaim]
-    R --> J
-    Q -- No --> S[18 Close]
-    S --> T{19 Merge/Sync complete?}
-    T -- No --> S
-    T -- Yes --> U[19 Archive]
+    L --> M[13 Agent Cross-Review]
+    M --> N{14 Verify Gate Evidence passed?}
+    N -- No --> J
+    N -- Yes --> O[15 Future Work Synthesis]
+    O --> P[16 Resource Intelligence Update]
+    P --> Q{17 User Review - Implementation + close HTML opened?}
+    Q -- No --> P
+    Q -- Yes --> R{18 Continuity broken?}
+    R -- Yes --> S[18 Reclaim]
+    S --> J
+    R -- No --> T[19 Close]
+    T --> U{20 Merge/Sync complete?}
+    U -- No --> T
+    U -- Yes --> V[20 Archive]
 ```
 
 ## Stage Contract
@@ -205,29 +206,33 @@ flowchart TD
 ### 12. TDD / Eval
 - Run tests/evaluations and capture pass evidence.
 
-### 13. Verify Gate Evidence
+### 13. Agent Cross-Review
+- Agent cross-review focused on implementation outputs (post TDD/Eval).
+- Package provider findings and closure notes before final gate verification.
+
+### 14. Verify Gate Evidence
 - Run gate verifier before close (`scripts/work-queue/verify-gate-evidence.py`).
 
-### 14. Future Work Synthesis
+### 15. Future Work Synthesis
 - Generate follow-up WRKs for deferred/discovered work.
 - Record follow-up IDs in evidence and WRK metadata.
 
-### 15. Resource Intelligence Update
+### 16. Resource Intelligence Update
 - Add post-work resource-intelligence updates discovered during execution.
 
-### 16. User Review
+### 17. User Review - Implementation
 - User reviews closure package (future work + resource updates + completion state).
 - Mandatory: open completed close HTML in default browser (`xdg-open <html-path>`).
 
-### 17. Reclaim
+### 18. Reclaim
 - Trigger reclaim when claim/session continuity is broken.
 - Revalidate claim and evidence before returning to execute.
 
-### 18. Close
+### 19. Close
 - Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]`.
-- Require gate evidence verification, integrated/repo tests (3-5 pass records), user-review evidence, and `stage_evidence_ref` (stages 1-19).
+- Require gate evidence verification, integrated/repo tests (3-5 pass records), user-review evidence, and `stage_evidence_ref` (stages 1-20).
 
-### 19. Archive
+### 20. Archive
 - Script: `scripts/work-queue/archive-item.sh WRK-NNN`.
 - Block until merge-to-main and sync completion checks pass.
 
@@ -239,21 +244,22 @@ flowchart TD
 | 2. Resource Intelligence | `resource-intelligence` | `scripts/init-resource-pack.sh` (as needed) | `resource-intelligence.yaml` |
 | 3. Triage | `/work` triage step | `scripts/work-queue/assign-workstations.py` | WRK frontmatter triage fields |
 | 4. Plan Draft | `plan` flow | `scripts/agents/plan.sh` | Draft plan + HTML artifact |
-| 5. User Review - Plan (Draft) | user review gate | n/a | default browser open (`xdg-open`) + review artifact |
+| 5. User Review - Plan (Draft) | user review gate | `scripts/work-queue/log-user-review-browser-open.sh` | default browser open (`xdg-open`) + review artifact |
 | 6. Cross-Review | `cross-review` flow | `scripts/review/cross-review.sh`, `submit-to-*.sh` | Multi-provider review outputs |
-| 7. User Review - Plan (Final) | user review gate | n/a | default browser open (`xdg-open`) + final review artifact |
-| 8. Claim / Activation | claim gate | `scripts/work-queue/claim-item.sh`, `set-active-wrk.sh` | `claim.yaml` + active WRK state |
+| 7. User Review - Plan (Final) | user review gate | `scripts/work-queue/log-user-review-browser-open.sh` | default browser open (`xdg-open`) + final review artifact |
+| 8. Claim / Activation | claim gate | `scripts/work-queue/claim-item.sh`, `set-active-wrk.sh` | `claim.yaml` + `activation.yaml` + active WRK state |
 | 9. Work-Queue Routing Skill | `/work` | `scripts/agents/work.sh` | Routing evidence in logs |
 | 10. Work Execution | execute flow | `scripts/agents/execute.sh` | Execution changes + examples |
 | 11. Artifact Generation | review/output flow | `scripts/work-queue/generate-html-review.py` | HTML/report artifacts |
 | 12. TDD / Eval | test/eval flow | `uv run --no-project pytest ...` | Test/eval outputs |
-| 13. Verify Gate Evidence | gate verifier | `scripts/work-queue/verify-gate-evidence.py` | PASS/WARN/FAIL gate ledger |
-| 14. Future Work Synthesis | future-work planning | n/a | `future-work.yaml` / follow-up WRKs |
-| 15. Resource Intelligence Update | resource update | n/a | `resource-intelligence-update.yaml` |
-| 16. User Review | close review gate | n/a | default browser open (`xdg-open`) + `user-review-close.yaml` + browser-open evidence |
-| 17. Reclaim | continuity recovery | n/a | `reclaim.yaml` when triggered |
-| 18. Close | close gate | `scripts/work-queue/close-item.sh` | done-state update + validated evidence |
-| 19. Archive | archive gate | `scripts/work-queue/archive-item.sh` | archived state + regenerated index |
+| 13. Agent Cross-Review | implementation review | `cross-review-package.md` | provider verdicts + finding closure |
+| 14. Verify Gate Evidence | gate verifier | `scripts/work-queue/verify-gate-evidence.py` | PASS/WARN/FAIL gate ledger + `gate-evidence-summary.{md,json}` |
+| 15. Future Work Synthesis | future-work planning | n/a | `future-work.yaml` / follow-up WRKs |
+| 16. Resource Intelligence Update | resource update | n/a | `resource-intelligence-update.yaml` |
+| 17. User Review - Implementation | close review gate | `scripts/work-queue/log-user-review-browser-open.sh` | default browser open (`xdg-open`) + `user-review-close.yaml` + browser-open evidence |
+| 18. Reclaim | continuity recovery | n/a | `reclaim.yaml` when triggered |
+| 19. Close | close gate | `scripts/work-queue/close-item.sh` | done-state update + validated evidence |
+| 20. Archive | archive gate | `scripts/work-queue/archive-item.sh` | archived state + regenerated index |
 
 Template for per-WRK stage ledger:
 - `specs/templates/stage-evidence-template.yaml`
@@ -261,12 +267,12 @@ Template for per-WRK stage ledger:
 ## Complexity Routing
 
 ```
-All routes use the canonical 19-stage lifecycle.
+All routes use the canonical 20-stage lifecycle.
 
 Common mandatory gates for A/B/C:
 1-9 (Capture through Work-Queue Routing),
-13-16 (Verify -> Future Work -> Resource Intelligence Update -> User Review),
-18-19 (Close -> Archive).
+13-17 (Agent Cross-Review -> Verify -> Future Work -> Resource Intelligence Update -> User Review),
+19-20 (Close -> Archive).
 
 Route A (Simple):
 - Lightweight execution in stages 10-12

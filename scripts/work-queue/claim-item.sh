@@ -31,6 +31,8 @@ provider="$(awk -F': ' '/^provider:/ { gsub(/"/, "", $2); print $2; exit }' "$FI
 CLAIM_DIR="${WORKSPACE_ROOT}/.claude/work-queue/assets/${WRK_ID}"
 mkdir -p "$CLAIM_DIR"
 CLAIM_FILE="${CLAIM_DIR}/claim-evidence.yaml"
+EVIDENCE_DIR="${CLAIM_DIR}/evidence"
+mkdir -p "$EVIDENCE_DIR"
 
 echo "Checking quota..."
 QUOTA_STATUS="missing"
@@ -40,7 +42,7 @@ else
   echo "⚠ Quota file missing: $QUOTA_FILE"
 fi
 
-python3 - "$FILE_PATH" "$CLAIM_FILE" "$QUOTA_FILE" "$QUOTA_STATUS" "$WORKSPACE_ROOT" <<'PY'
+uv run --no-project python - "$FILE_PATH" "$CLAIM_FILE" "$QUOTA_FILE" "$QUOTA_STATUS" "$WORKSPACE_ROOT" <<'PY'
 from datetime import datetime, timezone
 import re
 import sys
@@ -167,19 +169,93 @@ claim_file.write_text(
     encoding="utf-8",
 )
 
+# Bootstrap per-WRK stage evidence ledger from template for mandatory close validation.
+stage_evidence_dir = claim_file.parent / "evidence"
+stage_evidence_dir.mkdir(parents=True, exist_ok=True)
+stage_evidence_file = stage_evidence_dir / "stage-evidence.yaml"
+if not stage_evidence_file.exists():
+    template_path = workspace_root / "specs" / "templates" / "stage-evidence-template.yaml"
+    if template_path.exists():
+        template_text = template_path.read_text(encoding="utf-8")
+    else:
+        # Minimal fallback keeps claim path unblocked even if template is missing.
+        template_text = (
+            "wrk_id: WRK-000\n"
+            "generated_at: \"2026-03-03T00:00:00Z\"\n"
+            "reviewed_by: \"agent\"\n"
+            "stages:\n"
+            "  - order: 1\n"
+            "    stage: Capture\n"
+            "    status: done\n"
+            "    evidence: .claude/work-queue/working/WRK-000.md\n"
+        )
+    template_text = template_text.replace("WRK-000", wrk_id)
+    template_text = template_text.replace("2026-03-03T00:00:00Z", now_str)
+    stage_evidence_file.write_text(template_text, encoding="utf-8")
+
 upsert("status", "working")
 upsert("claim_routing_ref", str(claim_file.relative_to(workspace_root)))
+upsert("stage_evidence_ref", str(stage_evidence_file.relative_to(workspace_root)))
 if quota_status_val == "available":
     upsert("claim_quota_snapshot_ref", quota_source)
 
 path.write_text(f"---\n{frontmatter.rstrip()}\n---\n{body}", encoding="utf-8")
 PY
 
+# Explicit activation gate: set active WRK and record activation evidence.
+SET_ACTIVE_SCRIPT="${WORKSPACE_ROOT}/scripts/work-queue/set-active-wrk.sh"
+if ! bash "$SET_ACTIVE_SCRIPT" "$WRK_ID" >/dev/null; then
+  echo "✖ Failed to set active WRK for ${WRK_ID}." >&2
+  exit 1
+fi
+
+SESSION_STATE="${WORKSPACE_ROOT}/.claude/state/session-state.yaml"
+SESSION_ID="$(awk -F': ' '/^session_id:/ {gsub(/"/, "", $2); print $2; exit}' "$SESSION_STATE" 2>/dev/null || true)"
+ORCH_AGENT="$(awk -F': ' '/^orchestrator_agent:/ {gsub(/"/, "", $2); print $2; exit}' "$SESSION_STATE" 2>/dev/null || true)"
+if [[ -z "$SESSION_ID" ]]; then
+  SESSION_ID="unknown"
+fi
+if [[ -z "$ORCH_AGENT" ]]; then
+  ORCH_AGENT="${provider:-unknown}"
+fi
+
+cat > "${EVIDENCE_DIR}/activation.yaml" <<EOF
+wrk_id: "${WRK_ID}"
+set_active_wrk: true
+active_wrk_ref: ".claude/state/active-wrk"
+session_id: "${SESSION_ID}"
+orchestrator_agent: "${ORCH_AGENT}"
+activated_at: "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+EOF
+
+# Bootstrap close user-review evidence files so all WRKs start with required artifacts.
+if [[ ! -f "${EVIDENCE_DIR}/user-review-close.yaml" ]]; then
+  cat > "${EVIDENCE_DIR}/user-review-close.yaml" <<EOF
+reviewer: user
+reviewed_at: ""
+decision: pending
+notes: "Populate at close-stage user review."
+EOF
+fi
+
+if [[ ! -f "${EVIDENCE_DIR}/user-review-browser-open.yaml" ]]; then
+  cat > "${EVIDENCE_DIR}/user-review-browser-open.yaml" <<'EOF'
+events: []
+EOF
+fi
+
 VERIFY_SCRIPT="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
 echo "Running gate evidence validator for ${WRK_ID}..."
 if ! uv run --no-project python "$VERIFY_SCRIPT" "$WRK_ID" --phase claim; then
   echo "✖ Gate evidence verification failed for ${WRK_ID}; fix the missing artifacts before claiming." >&2
   exit 1
+fi
+
+# Best-effort stage progress update for claim/activation stage.
+STAGE_UPDATER="${WORKSPACE_ROOT}/scripts/work-queue/update-stage-evidence.py"
+if [[ -f "$STAGE_UPDATER" ]]; then
+  uv run --no-project python "$STAGE_UPDATER" "$WRK_ID" --order 8 --status done --reviewed-by "$ORCH_AGENT" >/dev/null || \
+    echo "⚠ Could not update stage-evidence order 8 for ${WRK_ID}" >&2
 fi
 
 mkdir -p "${QUEUE_DIR}/working"

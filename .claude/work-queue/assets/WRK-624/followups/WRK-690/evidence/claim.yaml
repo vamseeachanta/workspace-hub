@@ -1,8 +1,6 @@
 stage: claim
 wrk_id: WRK-690
-status: active
-claimed_by: codex
-orchestrator: claude
-claimed_at: 2026-03-03T00:00:00Z
-expires_at: 2026-03-04T00:00:00Z
-note: claim created for workflow-skill implementation and outcome-integration tasks
+session_owner: codex
+best_fit_provider: codex
+quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
+claim_expires_at: "2026-03-04T20:00:00Z"

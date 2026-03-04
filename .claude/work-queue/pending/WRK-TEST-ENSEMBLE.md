@@ -12,8 +12,8 @@ ensemble_consensus_score: null
 computer: ace-linux-1
 execution_workstations: [ace-linux-1]
 plan_workstations: [ace-linux-1]
+stage_evidence_ref: .claude/work-queue/assets/WRK-TEST-ENSEMBLE/evidence/stage-evidence.yaml
 ---
-
 # Smoke Test
 
 ## What

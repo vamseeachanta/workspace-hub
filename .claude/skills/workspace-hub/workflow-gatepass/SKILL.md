@@ -44,18 +44,19 @@ It makes the lifecycle sequence explicit and blocks bypass behavior.
 10. Work Execution.
 11. Artifact Generation.
 12. TDD / Eval.
-13. Verify Gate Evidence.
-14. Future Work Synthesis.
-15. Resource Intelligence Update.
-16. User Review (close package) with completed HTML opened in default browser.
-17. Reclaim (conditional when continuity breaks).
-18. Close.
-19. Archive.
+13. Agent Cross-Review (implementation evidence review).
+14. Verify Gate Evidence.
+15. Future Work Synthesis.
+16. Resource Intelligence Update.
+17. User Review - Implementation (close package) with completed HTML opened in default browser.
+18. Reclaim (conditional when continuity breaks).
+19. Close.
+20. Archive.
 
 ## Route Consistency (A/B/C)
 
-- All routes use the same canonical 19-stage lifecycle.
-- Common mandatory gates for A/B/C: 1-9, 13-16, 18-19.
+- All routes use the same canonical 20-stage lifecycle.
+- Common mandatory gates for A/B/C: 1-9, 13-17, 19-20.
 - Route A: lighter execution depth in stages 10-12 with one cross-review pass.
 - Route B: standard execution depth in stages 10-12 with multi-provider cross-review.
 - Route C: deeper execution/testing in stages 10-12 with stricter cross-review finding closure.
@@ -64,7 +65,7 @@ It makes the lifecycle sequence explicit and blocks bypass behavior.
 
 - No implementation before WRK item + plan + explicit WRK approval.
 - No user-review acceptance unless the completed HTML was opened in the default browser.
-- No close without a per-WRK stage ledger in assets (`stage_evidence_ref`) covering stages 1-19.
+- No close without a per-WRK stage ledger in assets (`stage_evidence_ref`) covering stages 1-20.
 - No close without gate evidence and `integrated_repo_tests` count in `[3,5]`.
 - No archive when queue validation fails or merge/sync evidence is missing.
 
@@ -82,7 +83,7 @@ Before close, require all of:
 - `reclaim gate` evaluated (pass or n/a with reason)
 - `future-work gate` passed
 - `archive-readiness gate` passed or deferred with follow-up WRK
-- `stage evidence gate` passed (`stage_evidence_ref` file exists and includes stages 1-19)
+- `stage evidence gate` passed (`stage_evidence_ref` file exists and includes stages 1-20)
 
 ## Evidence Locations
 
