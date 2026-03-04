@@ -11,6 +11,7 @@ fi
 
 WORKSPACE_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 ASSETS_DIR="${WORKSPACE_ROOT}/.claude/work-queue/assets/${WRK_ID}"
+GATE_LOGGER="${WORKSPACE_ROOT}/scripts/work-queue/log-gate-event.sh"
 
 mkdir -p "$ASSETS_DIR"
 
@@ -63,3 +64,8 @@ resources:
 EOF
 
 echo "✔ Resource pack scaffolded in ${ASSETS_DIR}"
+
+if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$WRK_ID" "resource-intelligence" "resource_intelligence" "orchestrator" \
+    "resource pack scaffolded"
+fi

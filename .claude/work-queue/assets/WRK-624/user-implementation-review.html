@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WRK-624 User Implementation Review Update</title>
+  <title>WRK-624 User Implementation Review</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 24px; line-height: 1.45; color: #111; }
     h1, h2 { margin-bottom: 8px; }
@@ -11,61 +11,79 @@
     th, td { border: 1px solid #ddd; padding: 8px; text-align: left; vertical-align: top; }
     th { background: #f4f4f4; }
     code { background: #f6f6f8; padding: 1px 4px; border-radius: 3px; }
+    .ok { color: #0b7a24; font-weight: 700; }
+    .warn { color: #8a5a00; font-weight: 700; }
   </style>
 </head>
 <body>
-  <h1>WRK-624 User Implementation Review</h1>
-  <p>Update timestamp: 2026-03-03. This review updates stage naming and user-facing implementation checkpoint wording.</p>
+  <h1>WRK-624 User Review - Implementation</h1>
+  <p>Update timestamp: 2026-03-04. This implementation review reflects latest WRK-690 follow-up evidence and stage enforcement updates.</p>
 
-  <h2>Stage Rename Applied</h2>
+  <h2>Implementation Gate Status</h2>
   <table>
     <thead>
       <tr>
-        <th>Order</th>
-        <th>Old Name</th>
-        <th>New Name</th>
-        <th>Intent</th>
+        <th>Item</th>
+        <th>Status</th>
+        <th>Evidence</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>16</td>
-        <td>User Review</td>
-        <td>User Review - Implementation</td>
-        <td>Explicitly marks the post-implementation user checkpoint before close/archive.</td>
+        <td>20-stage workflow model active</td>
+        <td class="ok">DONE</td>
+        <td><code>specs/templates/stage-evidence-template.yaml</code>, WRK stage ledgers</td>
+      </tr>
+      <tr>
+        <td>Agent Cross-Review stage inserted after TDD/Eval</td>
+        <td class="ok">DONE</td>
+        <td><code>workflow-governance-review.html</code>, skills + stage ledger updates</td>
+      </tr>
+      <tr>
+        <td>User Review stage renamed to "User Review - Implementation"</td>
+        <td class="ok">DONE</td>
+        <td>Stage matrix and workflow skills updated</td>
+      </tr>
+      <tr>
+        <td>Signal contract coverage (required measured)</td>
+        <td class="ok">23/23</td>
+        <td><code>.claude/work-queue/assets/WRK-690/evidence/session-signal-coverage-audit.md</code></td>
+      </tr>
+      <tr>
+        <td>Policy: inferred != measured</td>
+        <td class="ok">ENFORCED</td>
+        <td><code>AGENTS.md</code>, audit markdown policy line, governance HTML notes</td>
       </tr>
     </tbody>
   </table>
 
-  <h2>Stage Insertion Applied</h2>
+  <h2>Current Weekly Coverage Snapshot (2026-02-26 to 2026-03-04)</h2>
   <table>
     <thead>
       <tr>
-        <th>Position</th>
-        <th>Stage</th>
-        <th>Purpose</th>
+        <th>Signal</th>
+        <th>Relaxed</th>
+        <th>Strict</th>
+        <th>Assessment</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>After 12 (TDD / Eval)</td>
-        <td>13. Agent Cross-Review</td>
-        <td>Mandatory agent cross-review of implementation outputs before final gate verification.</td>
-      </tr>
+      <tr><td><code>set_active_wrk</code></td><td>9/14</td><td>7/7</td><td class="warn">Improve relaxed path</td></tr>
+      <tr><td><code>verify_gate_evidence</code></td><td>10/14</td><td>7/7</td><td class="warn">Improve relaxed path</td></tr>
+      <tr><td><code>resource_intelligence_update</code></td><td>1/14</td><td>1/7</td><td class="warn">Major remaining gap</td></tr>
+      <tr><td><code>user_review_close</code></td><td>1/14</td><td>1/7</td><td class="warn">Major remaining gap</td></tr>
+      <tr><td><code>close_or_archive</code></td><td>14/14</td><td>7/7</td><td class="ok">Stable</td></tr>
     </tbody>
   </table>
 
-  <h2>Updated Artifacts</h2>
+  <h2>Lessons Applied to Skills</h2>
   <ul>
-    <li><code>.claude/work-queue/assets/WRK-624/workflow-governance-review.html</code></li>
-    <li><code>specs/templates/stage-evidence-template.yaml</code></li>
-    <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/stage-evidence.yaml</code></li>
-    <li><code>.claude/work-queue/assets/WRK-690/evidence/stage-evidence.yaml</code></li>
-    <li><code>.claude/skills/coordination/workspace/work-queue/SKILL.md</code></li>
-    <li><code>.claude/skills/workspace-hub/workflow-gatepass/SKILL.md</code></li>
+    <li><code>.claude/skills/workspace-hub/comprehensive-learning/SKILL.md</code> (measured vs inferred policy + weekly rebuild practice)</li>
+    <li><code>.claude/skills/workspace-hub/workflow-gatepass/SKILL.md</code> (explicit signal emission and stage logging expectations)</li>
+    <li><code>.claude/skills/workspace-hub/work-queue-workflow/SKILL.md</code> (shared-script path + analysis refresh order)</li>
   </ul>
 
-  <h2>Review Action</h2>
-  <p>Use this page for user implementation review signoff and to verify stage terminology consistency across docs, skills, and evidence ledgers.</p>
+  <h2>Review Decision Prompt</h2>
+  <p>Confirm whether implementation is accepted with follow-up focus on low-frequency mandatory stages (<code>resource_intelligence_update</code>, <code>user_review_close</code>) in next execution cycle.</p>
 </body>
 </html>

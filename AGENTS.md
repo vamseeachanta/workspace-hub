@@ -16,5 +16,6 @@ Contract-Version: 1.0.1 | Last-Updated: 2026-02-21 | Canonical source for all AI
 - **Work items**: `.claude/work-queue/` only; no WRK-*.md in child repos; regenerate INDEX.md on changes
 - **Plans**: Route A/B in WRK body; Route C in `specs/wrk/WRK-<id>/`; templates in `specs/templates/`
 - **Reviews**: multi-provider; verdicts APPROVE|MINOR|MAJOR; resolve MAJOR before completion; peer logs: `logs/orchestrator/<agent>/`
+- **Signal metrics**: inferred signals are diagnostic only and must never be counted as measured gate compliance
 - **Adapters**: CLAUDE.md/CODEX.md/GEMINI.md are adapters; AGENTS.md canonical; no override weakens gates
 - **Dev**: `uv run` for ALL Python execution — never bare `python3` or `pip install`; see `.claude/rules/python-runtime.md` for per-repo commands; skills in `.claude/skills/`

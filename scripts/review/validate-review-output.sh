@@ -17,7 +17,17 @@ fi
 
 text="$(tr '[:upper:]' '[:lower:]' < "$infile")"
 
-if grep -Eq '^# (claude|codex|gemini).*(failed|failure|not found)|timed out|no_output' <<< "$text"; then
+if grep -Eiq '^(# (claude|codex|gemini).*(skipped_network|skipped network))' <<< "$text"; then
+    echo "SKIPPED_NETWORK"
+    exit 0
+fi
+
+if grep -Eiq '^# (claude|gemini) (returned no_output|review failed|transport/network failure|exec timed out|quota/credits exhausted|cli not found|review failed or timed out)' <<< "$text"; then
+    echo "NO_OUTPUT"
+    exit 0
+fi
+
+if grep -Eiq '^# codex returned no_output' <<< "$text"; then
     echo "NO_OUTPUT"
     exit 0
 fi

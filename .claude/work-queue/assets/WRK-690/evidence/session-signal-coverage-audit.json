@@ -1,215 +1,309 @@
 {
   "required_signals": 23,
-  "measured_required_signals": 8,
-  "missing_required_signals": [
-    "wrk_created",
-    "triage_contract_complete",
-    "plan_draft_complete",
-    "plan_html_review_draft",
-    "html_open_default_browser",
-    "plan_html_review_final",
-    "work_queue_skill",
-    "work_execution",
-    "artifact_generation",
-    "tdd_eval",
-    "agent_cross_review",
-    "resource_intelligence_update",
-    "user_review_close",
-    "close_item",
-    "archive_item"
+  "measured_required_signals": 23,
+  "missing_required_signals": [],
+  "inferred_required_signals_any_session": 23,
+  "sources": [
+    "claude-native",
+    "codex-native",
+    "gemini-native"
   ],
+  "by_source_signal_coverage": {
+    "claude-native": {
+      "wrk_created": "35/50",
+      "resource_intelligence": "12/50",
+      "triage_contract_complete": "3/50",
+      "plan_draft_complete": "18/50",
+      "plan_html_review_draft": "12/50",
+      "html_open_default_browser": "2/50",
+      "cross_review": "20/50",
+      "plan_html_review_final": "15/50",
+      "claim_evidence": "13/50",
+      "set_active_wrk": "10/50",
+      "work_queue_skill": "49/50",
+      "work_execution": "20/50",
+      "artifact_generation": "4/50",
+      "tdd_eval": "23/50",
+      "agent_cross_review": "10/50",
+      "verify_gate_evidence": "10/50",
+      "future_work": "4/50",
+      "resource_intelligence_update": "0/50",
+      "user_review_close": "0/50",
+      "reclaim": "2/50",
+      "close_item": "8/50",
+      "archive_item": "2/50",
+      "close_or_archive": "8/50",
+      "init": "19/50"
+    },
+    "codex-native": {
+      "wrk_created": "60/60",
+      "resource_intelligence": "40/60",
+      "triage_contract_complete": "6/60",
+      "plan_draft_complete": "13/60",
+      "plan_html_review_draft": "20/60",
+      "html_open_default_browser": "5/60",
+      "cross_review": "18/60",
+      "plan_html_review_final": "24/60",
+      "claim_evidence": "23/60",
+      "set_active_wrk": "9/60",
+      "work_queue_skill": "60/60",
+      "work_execution": "8/60",
+      "artifact_generation": "9/60",
+      "tdd_eval": "60/60",
+      "agent_cross_review": "14/60",
+      "verify_gate_evidence": "16/60",
+      "future_work": "4/60",
+      "resource_intelligence_update": "1/60",
+      "user_review_close": "1/60",
+      "reclaim": "4/60",
+      "close_item": "20/60",
+      "archive_item": "7/60",
+      "close_or_archive": "20/60",
+      "init": "13/60"
+    },
+    "gemini-native": {
+      "wrk_created": "59/65",
+      "resource_intelligence": "25/65",
+      "triage_contract_complete": "1/65",
+      "plan_draft_complete": "7/65",
+      "plan_html_review_draft": "13/65",
+      "html_open_default_browser": "1/65",
+      "cross_review": "12/65",
+      "plan_html_review_final": "16/65",
+      "claim_evidence": "12/65",
+      "set_active_wrk": "2/65",
+      "work_queue_skill": "54/65",
+      "work_execution": "1/65",
+      "artifact_generation": "5/65",
+      "tdd_eval": "20/65",
+      "agent_cross_review": "6/65",
+      "verify_gate_evidence": "11/65",
+      "future_work": "1/65",
+      "resource_intelligence_update": "0/65",
+      "user_review_close": "0/65",
+      "reclaim": "0/65",
+      "close_item": "7/65",
+      "archive_item": "1/65",
+      "close_or_archive": "7/65",
+      "init": "6/65"
+    }
+  },
   "rows": [
     {
       "signal": "wrk_created",
       "stage": "1 Capture",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "0/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "14/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "resource_intelligence",
       "stage": "2 Resource Intelligence",
       "required": true,
       "currently_measured": true,
-      "relaxed_inferred": "6/10",
-      "strict_inferred": "1/1"
+      "inferred_any_session": true,
+      "relaxed_inferred": "14/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "triage_contract_complete",
       "stage": "3 Triage",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "0/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "6/14",
+      "strict_inferred": "3/7"
     },
     {
       "signal": "plan_draft_complete",
       "stage": "4 Plan Draft",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "5/10",
-      "strict_inferred": "1/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "14/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "plan_html_review_draft",
       "stage": "5 User Review - Plan (Draft)",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "0/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "13/14",
+      "strict_inferred": "6/7"
     },
     {
       "signal": "html_open_default_browser",
       "stage": "5/7/17 User Reviews",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "0/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "7/14",
+      "strict_inferred": "4/7"
     },
     {
       "signal": "cross_review",
       "stage": "6 Cross-Review",
       "required": true,
       "currently_measured": true,
-      "relaxed_inferred": "10/10",
-      "strict_inferred": "1/1"
+      "inferred_any_session": true,
+      "relaxed_inferred": "14/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "plan_html_review_final",
       "stage": "7 User Review - Plan (Final)",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "0/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "14/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "claim_evidence",
       "stage": "8 Claim / Activation",
       "required": true,
       "currently_measured": true,
-      "relaxed_inferred": "10/10",
-      "strict_inferred": "1/1"
+      "inferred_any_session": true,
+      "relaxed_inferred": "14/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "set_active_wrk",
       "stage": "8 Claim / Activation",
       "required": true,
       "currently_measured": true,
-      "relaxed_inferred": "1/10",
-      "strict_inferred": "1/1"
+      "inferred_any_session": true,
+      "relaxed_inferred": "9/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "work_queue_skill",
       "stage": "9 Work-Queue Routing",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "10/10",
-      "strict_inferred": "1/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "14/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "work_execution",
       "stage": "10 Work Execution",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "4/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "13/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "artifact_generation",
       "stage": "11 Artifact Generation",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "5/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "7/14",
+      "strict_inferred": "4/7"
     },
     {
       "signal": "tdd_eval",
       "stage": "12 TDD / Eval",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "0/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "14/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "agent_cross_review",
       "stage": "13 Agent Cross-Review",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "5/10",
-      "strict_inferred": "1/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "11/14",
+      "strict_inferred": "6/7"
     },
     {
       "signal": "verify_gate_evidence",
       "stage": "14 Verify Gate Evidence",
       "required": true,
       "currently_measured": true,
-      "relaxed_inferred": "7/10",
-      "strict_inferred": "1/1"
+      "inferred_any_session": true,
+      "relaxed_inferred": "10/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "future_work",
       "stage": "15 Future Work Synthesis",
       "required": true,
       "currently_measured": true,
-      "relaxed_inferred": "4/10",
-      "strict_inferred": "0/1"
+      "inferred_any_session": true,
+      "relaxed_inferred": "6/14",
+      "strict_inferred": "5/7"
     },
     {
       "signal": "resource_intelligence_update",
       "stage": "16 Resource Intelligence Update",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "0/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "1/14",
+      "strict_inferred": "1/7"
     },
     {
       "signal": "user_review_close",
       "stage": "17 User Review - Implementation",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "0/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "1/14",
+      "strict_inferred": "1/7"
     },
     {
       "signal": "reclaim",
       "stage": "18 Reclaim",
       "required": false,
       "currently_measured": true,
-      "relaxed_inferred": "2/10",
-      "strict_inferred": "0/1"
+      "inferred_any_session": true,
+      "relaxed_inferred": "6/14",
+      "strict_inferred": "6/7"
     },
     {
       "signal": "close_item",
       "stage": "19 Close",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "5/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "14/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "archive_item",
       "stage": "20 Archive",
       "required": true,
-      "currently_measured": false,
-      "relaxed_inferred": "2/10",
-      "strict_inferred": "0/1"
+      "currently_measured": true,
+      "inferred_any_session": true,
+      "relaxed_inferred": "8/14",
+      "strict_inferred": "4/7"
     },
     {
       "signal": "close_or_archive",
       "stage": "19/20 Terminal",
       "required": true,
       "currently_measured": true,
-      "relaxed_inferred": "10/10",
-      "strict_inferred": "1/1"
+      "inferred_any_session": true,
+      "relaxed_inferred": "14/14",
+      "strict_inferred": "7/7"
     },
     {
       "signal": "init",
       "stage": "Session bootstrap",
       "required": true,
       "currently_measured": true,
-      "relaxed_inferred": "10/10",
-      "strict_inferred": "1/1"
+      "inferred_any_session": true,
+      "relaxed_inferred": "14/14",
+      "strict_inferred": "7/7"
     }
   ]
 }

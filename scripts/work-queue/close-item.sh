@@ -77,6 +77,7 @@ done
 
 WORKSPACE_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 QUEUE_DIR="${WORKSPACE_ROOT}/.claude/work-queue"
+GATE_LOGGER="${WORKSPACE_ROOT}/scripts/work-queue/log-gate-event.sh"
 
 FILE_PATH=""
 SOURCE_DIR=""
@@ -100,6 +101,10 @@ echo "Running gate evidence validator for ${WRK_ID} before close..."
 if ! uv run --no-project python "$VALIDATOR" "$WRK_ID" --phase close; then
   echo "✖ Gate evidence verification failed for ${WRK_ID}; gather the missing artifacts before closing." >&2
   exit 1
+fi
+
+if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence" "orchestrator" "close gate verified"
 fi
 
 echo "Closing $WRK_ID..."
@@ -177,6 +182,11 @@ if [[ "$SOURCE_DIR" != "done" ]]; then
   mv "$FILE_PATH" "${QUEUE_DIR}/done/${WRK_ID}.md"
   FILE_PATH="${QUEUE_DIR}/done/${WRK_ID}.md"
   echo "✔ Moved to done/"
+fi
+
+if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$WRK_ID" "close" "close_item" "orchestrator" "work item moved to done"
+  bash "$GATE_LOGGER" "$WRK_ID" "close" "close_or_archive" "orchestrator" "terminal close signal"
 fi
 
 # Best-effort stage progress update for close stage.

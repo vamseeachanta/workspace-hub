@@ -44,6 +44,7 @@ esac
 
 WORKSPACE_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 QUEUE_DIR="${WORKSPACE_ROOT}/.claude/work-queue"
+GATE_LOGGER="${WORKSPACE_ROOT}/scripts/work-queue/log-gate-event.sh"
 
 HTML_PATH="$HTML_REF"
 if [[ "$HTML_PATH" != /* ]]; then
@@ -108,3 +109,18 @@ evidence_file.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8"
 PY
 
 echo "✔ Logged browser-open evidence: ${EVIDENCE_FILE} (stage=${STAGE})"
+
+if [[ -x "$GATE_LOGGER" ]]; then
+  SIGNAL=""
+  case "$STAGE" in
+    plan_draft) SIGNAL="plan_html_review_draft" ;;
+    plan_final) SIGNAL="plan_html_review_final" ;;
+    close_review) SIGNAL="user_review_close" ;;
+  esac
+  if [[ -n "$SIGNAL" ]]; then
+    bash "$GATE_LOGGER" "$WRK_ID" "$STAGE" "$SIGNAL" "user" "html=${REL_HTML}"
+  fi
+  if [[ "$DO_OPEN" == "true" ]]; then
+    bash "$GATE_LOGGER" "$WRK_ID" "$STAGE" "html_open_default_browser" "user" "html=${REL_HTML}"
+  fi
+fi

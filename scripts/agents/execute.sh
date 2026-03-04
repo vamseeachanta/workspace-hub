@@ -3,6 +3,7 @@ set -euo pipefail
 
 AGENTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$AGENTS_DIR/lib/workflow-guards.sh"
+gate_logger="${WS_HUB}/scripts/work-queue/log-gate-event.sh"
 
 provider=""
 wrk_id=""
@@ -41,6 +42,9 @@ else
 fi
 
 session_record_stage "$wrk_id" "implement_tdd"
+if [[ -x "$gate_logger" ]]; then
+    bash "$gate_logger" "$wrk_id" "execute" "work_execution" "$provider" "execution contract accepted"
+fi
 echo "Execution contract accepted for $wrk_id as $mode ('$provider')."
 
 # ── Provider dispatch (WRK-198: per-phase task_agents routing) ───────
@@ -93,6 +97,9 @@ else
     echo "Dispatching $wrk_id to provider: $assigned"
 fi
 "$AGENTS_DIR/providers/${assigned}.sh" execute "$wrk_file" "${claude_model_args[@]}"
+if [[ -x "$gate_logger" ]]; then
+    bash "$gate_logger" "$wrk_id" "execute" "tdd_eval" "$assigned" "provider dispatch completed"
+fi
 
 # If dual-agent mode, also dispatch alt provider
 alt=$(wrk_get_frontmatter_value "$wrk_file" "provider_alt")

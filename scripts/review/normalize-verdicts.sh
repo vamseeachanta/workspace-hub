@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Normalize review text into APPROVE|MINOR|MAJOR|NO_OUTPUT|INVALID_OUTPUT|ERROR.
+# Normalize review text into APPROVE|MINOR|MAJOR|NO_OUTPUT|SKIPPED_NETWORK|INVALID_OUTPUT|ERROR.
 
 infile="${1:-}"
 if [[ -z "$infile" || ! -f "$infile" ]]; then
@@ -60,16 +60,22 @@ if [[ -n "$verdict_line" ]]; then
 fi
 
 # Fallback markers for machine-generated stubs and transport failures.
-if grep -Eq '^# codex returned no_output|^# codex review failed|^# codex cli not found' <<< "$text"; then
+if grep -Eq '^# codex cli not found' <<< "$text"; then
+    echo "ERROR"
+elif grep -Eq '^# codex returned no_output|^# codex review failed.*no_output' <<< "$text"; then
     echo "NO_OUTPUT"
+elif grep -Eq '^# (claude|codex|gemini).*(skipped_network|skipped network)' <<< "$text"; then
+    echo "SKIPPED_NETWORK"
 elif grep -q "conditional.pass\|conditional_pass" <<< "$text"; then
     echo "CONDITIONAL_PASS"
-elif grep -Eq '^# (claude|gemini) review failed|timed out' <<< "$text"; then
+elif grep -Eq '^# (claude|gemini).*(review failed|timed out)' <<< "$text"; then
     echo "NO_OUTPUT"
 else
     validation="$("$(cd "$(dirname "$0")" && pwd)/validate-review-output.sh" "$infile" 2>/dev/null || echo "ERROR")"
     if [[ "$validation" == "INVALID_OUTPUT" ]]; then
         echo "INVALID_OUTPUT"
+    elif [[ "$validation" == "SKIPPED_NETWORK" ]]; then
+        echo "SKIPPED_NETWORK"
     elif [[ "$validation" == "NO_OUTPUT" ]]; then
         echo "NO_OUTPUT"
     else

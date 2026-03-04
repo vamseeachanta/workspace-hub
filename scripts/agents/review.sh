@@ -18,12 +18,20 @@ done
 
 file="$(resolve_wrk_file "$wrk_id")" || { echo "ERROR: work item not found: $wrk_id" >&2; exit 2; }
 session_record_stage "$wrk_id" "cross_review"
+gate_logger="${WS_HUB}/scripts/work-queue/log-gate-event.sh"
+if [[ -x "$gate_logger" ]]; then
+    bash "$gate_logger" "$wrk_id" "cross-review" "cross_review" "orchestrator" "cross-review started"
+fi
 
 input_file="$file"
 if [[ "$all_providers" == "true" ]]; then
     "$WS_HUB/scripts/review/cross-review.sh" "$input_file" all --type implementation
 else
     "$WS_HUB/scripts/review/cross-review.sh" "$input_file" codex --type implementation
+fi
+
+if [[ -x "$gate_logger" ]]; then
+    bash "$gate_logger" "$wrk_id" "cross-review" "agent_cross_review" "orchestrator" "cross-review completed"
 fi
 
 wrk_release "$wrk_id"

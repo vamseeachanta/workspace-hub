@@ -4,6 +4,7 @@ set -euo pipefail
 AGENTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$AGENTS_DIR/lib/session-store.sh"
 source "$AGENTS_DIR/lib/workflow-guards.sh"
+GATE_LOGGER="${AGENTS_DIR}/../work-queue/log-gate-event.sh"
 
 usage() {
     cat <<'USAGE'
@@ -50,6 +51,9 @@ case "$cmd" in
         session_update_timestamp
 
         echo "Initialized session '$sid' with orchestrator '$provider'."
+        if [[ -x "$GATE_LOGGER" ]]; then
+            bash "$GATE_LOGGER" "WRK-SESSION" "session" "init" "$provider" "session_id=${sid}"
+        fi
 
         # Register in pipeline state (WRK-161)
         pipeline_register_session "$sid" "$provider" "" ""

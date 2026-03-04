@@ -4,6 +4,7 @@ set -euo pipefail
 
 WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 QUEUE_DIR="${WORKSPACE_ROOT}/.claude/work-queue"
+GATE_LOGGER="${WORKSPACE_ROOT}/scripts/work-queue/log-gate-event.sh"
 
 ITEM_ID="${1:-}"
 if [[ -z "$ITEM_ID" ]]; then
@@ -54,6 +55,10 @@ if ! uv run --no-project python "$VALIDATOR" "$ITEM_ID" --phase close; then
   exit 1
 fi
 
+if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence" "orchestrator" "archive gate verified"
+fi
+
 # Create archive directory for current month
 ARCHIVE_DIR="${QUEUE_DIR}/archive/$(date +%Y-%m)"
 mkdir -p "$ARCHIVE_DIR"
@@ -91,5 +96,10 @@ rm "$ITEM_FILE"
 
 # Regenerate index
 uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"
+
+if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$ITEM_ID" "archive" "archive_item" "orchestrator" "work item archived"
+  bash "$GATE_LOGGER" "$ITEM_ID" "archive" "close_or_archive" "orchestrator" "terminal archive signal"
+fi
 
 echo "✔ Archived: ${ITEM_ID} -> archive/$(date +%Y-%m)/${BASENAME}"

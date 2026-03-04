@@ -63,7 +63,51 @@ cat > "$TEST_DIR/review-transport-failure.md" <<'EOF'
 # Action: run outside restricted sandbox or restore provider connectivity.
 EOF
 v="$("$REVIEW_DIR/validate-review-output.sh" "$TEST_DIR/review-transport-failure.md")"
-assert_eq "transport failure classified as NO_OUTPUT" "NO_OUTPUT" "$v"
+assert_eq "codex transport failure stays non-NO_OUTPUT" "INVALID_OUTPUT" "$v"
+
+echo "Test 4d2: normalize-verdicts — codex CLI missing is ERROR"
+cat > "$TEST_DIR/review-codex-missing.md" <<'EOF'
+# Codex CLI not found
+# Install: npm install -g @openai/codex
+EOF
+v="$("$REVIEW_DIR/normalize-verdicts.sh" "$TEST_DIR/review-codex-missing.md")"
+assert_eq "codex cli missing normalized as ERROR" "ERROR" "$v"
+
+echo "Test 4e: validate-review-output — valid review mentioning timed out/no_output remains VALID"
+cat > "$TEST_DIR/review-valid-with-keywords.md" <<'EOF'
+### Verdict: REQUEST_CHANGES
+
+### Summary
+Overall good, but one section mentions timed out behavior and no_output fallback policy.
+
+### Issues Found
+- [P2] Important: make sure "timed out" appears only in issue prose and does not force NO_OUTPUT.
+
+### Suggestions
+- Keep no_output policy language in docs.
+
+### Questions for Author
+- None.
+EOF
+v="$("$REVIEW_DIR/validate-review-output.sh" "$TEST_DIR/review-valid-with-keywords.md")"
+assert_eq "keyword prose does not force NO_OUTPUT" "VALID" "$v"
+
+echo "Test 4f: validate/normalize — SKIPPED_NETWORK classification"
+cat > "$TEST_DIR/review-skipped-network.md" <<'EOF'
+# Gemini skipped_network due to policy
+EOF
+v="$("$REVIEW_DIR/validate-review-output.sh" "$TEST_DIR/review-skipped-network.md")"
+assert_eq "validator emits SKIPPED_NETWORK" "SKIPPED_NETWORK" "$v"
+v="$("$REVIEW_DIR/normalize-verdicts.sh" "$TEST_DIR/review-skipped-network.md")"
+assert_eq "normalizer emits SKIPPED_NETWORK" "SKIPPED_NETWORK" "$v"
+
+echo "Test 4g: validate-review-output — non-provider no_output heading remains INVALID_OUTPUT"
+cat > "$TEST_DIR/review-heading-nooutput.md" <<'EOF'
+# no_output policy notes
+This is documentation, not a provider failure stub.
+EOF
+v="$("$REVIEW_DIR/validate-review-output.sh" "$TEST_DIR/review-heading-nooutput.md")"
+assert_eq "non-provider no_output heading not classified as NO_OUTPUT" "INVALID_OUTPUT" "$v"
 
 echo "Test 5: normalize-verdicts — CONDITIONAL_PASS"
 cat > "$TEST_DIR/review-conditional.md" <<'EOF'

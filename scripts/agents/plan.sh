@@ -86,4 +86,8 @@ if [[ "$provider" == "claude" ]]; then
 fi
 
 session_record_stage "$wrk_id" "plan_approval_gate"
+gate_logger="${WS_HUB}/scripts/work-queue/log-gate-event.sh"
+if [[ -x "$gate_logger" ]]; then
+    bash "$gate_logger" "$wrk_id" "plan" "plan_draft_complete" "$provider" "plan gate passed"
+fi
 echo "Plan gate passed for ${wrk_id} under orchestrator '${provider}'."

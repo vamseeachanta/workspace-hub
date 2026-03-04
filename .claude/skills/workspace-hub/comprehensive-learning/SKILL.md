@@ -120,6 +120,23 @@ Signal emitter status (WRK-305):
 If a signal is absent for a check, skip the check and log
 `"signal not available — emitter not configured"`.
 
+### WRK-690 Signal Coverage Lessons (mandatory carry-forward)
+
+1. **Measure, then infer:** Keep `currently_measured` and `inferred` as separate fields.
+   Do not treat inference as evidence compliance. Inferred signals are never
+   counted as measured signals.
+2. **Emit signals in shared workflow scripts:** Add signal emission in shared
+   orchestrator scripts (`scripts/agents/*`, `scripts/work-queue/*`) so Codex,
+   Claude, and Gemini sessions all contribute consistently.
+3. **Normalize gate logs:** `log-gate-event.sh` must always include explicit
+   `signal:` and `action:` keys for machine parsing.
+4. **Rebuild weekly baseline from native stores:** Run
+   `scripts/work-queue/build-session-gate-analysis.py` before coverage audits so
+   weekly numbers reflect current signal contract.
+5. **Track per-agent source coverage:** Always include source breakdown
+   (`claude-native`, `codex-native`, `gemini-native`) to detect provider-specific
+   drift even when aggregate coverage looks healthy.
+
 ---
 
 ### Phase 2 — Reflect  *(non-mandatory)*

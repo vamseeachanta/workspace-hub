@@ -39,29 +39,49 @@ def _session_infers_signal(session: dict, signal: str) -> bool:
     gates = session.get("gate_signals") or {}
     scripts = set(session.get("scripts") or [])
     skills = set(session.get("skills") or [])
+    tools = {str(t[0]) for t in (session.get("tools_top") or []) if isinstance(t, list) and t}
     path = str(session.get("path") or "")
+    wrks_count = int(session.get("wrks_count") or 0)
 
     if signal in gates:
         return bool(gates.get(signal))
+    if signal == "wrk_created":
+        return wrks_count > 0
+    if signal == "triage_contract_complete":
+        return (
+            "scripts/work-queue/assign-workstations.py" in scripts
+            or "scripts/work-queue/assign-providers.sh" in scripts
+        )
     if signal == "work_queue_skill":
         return "work" in skills or "scripts/agents/work.sh" in scripts
     if signal == "work_execution":
-        return "scripts/agents/execute.sh" in scripts
+        return "scripts/agents/execute.sh" in scripts or "scripts/agents/work.sh" in scripts
     if signal == "artifact_generation":
         return (
             "scripts/work-queue/generate-html-review.py" in scripts
             or "scripts/review/render-structured-review.py" in scripts
         )
     if signal == "tdd_eval":
-        return any(x in path for x in ("pytest", "test-results")) or any("pytest" in s for s in scripts)
+        return (
+            any(x in path for x in ("pytest", "test-results"))
+            or any("pytest" in s for s in scripts)
+            or "TaskOutput" in tools
+        )
     if signal == "plan_draft_complete":
-        return "scripts/agents/plan.sh" in scripts
+        return (
+            "scripts/agents/plan.sh" in scripts
+            or "scripts/review/build-claude-plan-bundle.py" in scripts
+        )
+    if signal in {"plan_html_review_draft", "plan_html_review_final", "user_review_close", "html_open_default_browser"}:
+        return "scripts/work-queue/log-user-review-browser-open.sh" in scripts
     if signal == "agent_cross_review":
         return (
             "scripts/review/cross-review.sh" in scripts
             or "scripts/review/submit-to-codex.sh" in scripts
             or "scripts/review/submit-to-gemini.sh" in scripts
         )
+    if signal == "resource_intelligence_update":
+        return "scripts/work-queue/create-resource-pack.sh" in scripts
     if signal == "close_item":
         return "scripts/work-queue/close-item.sh" in scripts
     if signal == "archive_item":
@@ -74,6 +94,7 @@ def build_report(data: dict) -> dict:
     sessions = data.get("sessions") or []
     aggregate = data.get("aggregate") or {}
     measured_keys = set((aggregate.get("gate_relaxed") or {}).keys()) | set((aggregate.get("gate_strict") or {}).keys())
+    sources = sorted({str(s.get("source") or "unknown") for s in sessions})
 
     rows = []
     for rule in REQUIRED_SIGNALS:
@@ -96,16 +117,33 @@ def build_report(data: dict) -> dict:
                 "stage": str(rule["stage"]),
                 "required": bool(rule["required"]),
                 "currently_measured": signal in measured_keys,
+                "inferred_any_session": (relaxed_hits + strict_hits) > 0,
                 "relaxed_inferred": f"{relaxed_hits}/{relaxed_total}" if relaxed_total else "0/0",
                 "strict_inferred": f"{strict_hits}/{strict_total}" if strict_total else "0/0",
             }
         )
 
     required_missing = [r["signal"] for r in rows if r["required"] and not r["currently_measured"]]
+    by_source: dict[str, dict[str, str]] = {}
+    for source in sources:
+        source_sessions = [s for s in sessions if str(s.get("source") or "unknown") == source]
+        source_total = len(source_sessions)
+        source_map: dict[str, str] = {}
+        for rule in REQUIRED_SIGNALS:
+            signal = str(rule["name"])
+            hits = sum(1 for sess in source_sessions if _session_infers_signal(sess, signal))
+            source_map[signal] = f"{hits}/{source_total}" if source_total else "0/0"
+        by_source[source] = source_map
+
     return {
         "required_signals": len([s for s in REQUIRED_SIGNALS if bool(s["required"])]),
         "measured_required_signals": len([r for r in rows if r["required"] and r["currently_measured"]]),
         "missing_required_signals": required_missing,
+        "inferred_required_signals_any_session": len(
+            [r for r in rows if r["required"] and r["inferred_any_session"]]
+        ),
+        "sources": sources,
+        "by_source_signal_coverage": by_source,
         "rows": rows,
     }
 
@@ -116,15 +154,27 @@ def write_markdown(path: Path, report: dict) -> None:
         "",
         f"- Required signals: {report['required_signals']}",
         f"- Required currently measured: {report['measured_required_signals']}",
+        f"- Required inferred in >=1 session: {report['inferred_required_signals_any_session']}",
+        "- Policy: inferred coverage is diagnostic only and is **not** counted as measured coverage.",
         "",
-        "| Signal | Stage | Required | Currently measured | Relaxed (inferred) | Strict (inferred) |",
-        "|---|---|---|---|---|---|",
+        "| Signal | Stage | Required | Currently measured | Inferred any session | Relaxed (inferred) | Strict (inferred) |",
+        "|---|---|---|---|---|---|---|",
     ]
     for row in report["rows"]:
         lines.append(
             f"| {row['signal']} | {row['stage']} | {'Yes' if row['required'] else 'Conditional'} | "
-            f"{'Yes' if row['currently_measured'] else 'No'} | {row['relaxed_inferred']} | {row['strict_inferred']} |"
+            f"{'Yes' if row['currently_measured'] else 'No'} | "
+            f"{'Yes' if row['inferred_any_session'] else 'No'} | "
+            f"{row['relaxed_inferred']} | {row['strict_inferred']} |"
         )
+    if report["sources"]:
+        lines.extend(["", "## Coverage by Agent Source", ""])
+        source_header = "| Signal | " + " | ".join(report["sources"]) + " |"
+        source_sep = "|---|" + "|".join(["---"] * len(report["sources"])) + "|"
+        lines.extend([source_header, source_sep])
+        for row in report["rows"]:
+            cells = [report["by_source_signal_coverage"][source].get(row["signal"], "0/0") for source in report["sources"]]
+            lines.append("| " + row["signal"] + " | " + " | ".join(cells) + " |")
     if report["missing_required_signals"]:
         lines.extend(
             [

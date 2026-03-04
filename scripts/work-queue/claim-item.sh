@@ -11,6 +11,7 @@ fi
 
 WORKSPACE_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 QUEUE_DIR="${WORKSPACE_ROOT}/.claude/work-queue"
+GATE_LOGGER="${WORKSPACE_ROOT}/scripts/work-queue/log-gate-event.sh"
 QUOTA_FILE="${WORKSPACE_ROOT}/config/ai-tools/agent-quota-latest.json"
 
 FILE_PATH=""
@@ -228,6 +229,10 @@ orchestrator_agent: "${ORCH_AGENT}"
 activated_at: "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 EOF
 
+if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$WRK_ID" "claim" "set_active_wrk" "$ORCH_AGENT" "activation evidence captured"
+fi
+
 # Bootstrap close user-review evidence files so all WRKs start with required artifacts.
 if [[ ! -f "${EVIDENCE_DIR}/user-review-close.yaml" ]]; then
   cat > "${EVIDENCE_DIR}/user-review-close.yaml" <<EOF
@@ -249,6 +254,10 @@ echo "Running gate evidence validator for ${WRK_ID}..."
 if ! uv run --no-project python "$VERIFY_SCRIPT" "$WRK_ID" --phase claim; then
   echo "✖ Gate evidence verification failed for ${WRK_ID}; fix the missing artifacts before claiming." >&2
   exit 1
+fi
+
+if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$WRK_ID" "claim" "claim_evidence" "$ORCH_AGENT" "claim gate verified"
 fi
 
 # Best-effort stage progress update for claim/activation stage.

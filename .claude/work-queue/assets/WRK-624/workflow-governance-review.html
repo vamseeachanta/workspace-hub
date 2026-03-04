@@ -92,27 +92,28 @@
         <div class="exec-summary">
             <h2>Executive Summary</h2>
             <ul>
-                <li>WRK-690 now includes a consolidated session-log analysis window for 2026-02-25 through 2026-03-03 across Claude, Codex, and Gemini native stores.</li>
-                <li>Claude gate-start evidence appears only once in the week (<code>session_20260301.jsonl</code> has <code>scripts/agents/session.sh init --provider claude</code>); other daily Claude transcripts in-range do not show this init step.</li>
-                <li>Orchestrator coverage is currently partial on this machine: Claude has two files for the week, while <code>logs/orchestrator/codex/</code> and <code>logs/orchestrator/gemini/</code> remain empty.</li>
-                <li>Daily WRK coverage was calculated for all agents and preserved as reusable assets for gatepass hardening and comprehensive-learning enhancement work.</li>
+                <li>WRK-690 now includes a refreshed 7-day native-store analysis window for 2026-02-26 through 2026-03-04 across Claude, Codex, and Gemini.</li>
+                <li>Weekly rebuild analyzed <strong>175 sessions</strong> and refreshed both gatepass and signal-coverage evidence artifacts.</li>
+                <li>Signal coverage moved to full measured contract compliance for the current weekly dataset: <strong>23/23 required signals measured</strong>.</li>
+                <li>Carry-forward lessons were applied into workflow skills and shared script emitters to keep cross-agent orchestration consistent.</li>
             </ul>
         </div>
 
         <h2>Scope and Method</h2>
         <ul>
-            <li>Window analyzed: 2026-02-25 to 2026-03-03 (inclusive).</li>
+            <li>Window analyzed: 2026-02-26 to 2026-03-04 (inclusive, rolling 7-day refresh).</li>
             <li>Claude source: <code>.claude/state/sessions/session_YYYYMMDD.jsonl</code>.</li>
             <li>Codex source: <code>~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl</code>.</li>
             <li>Gemini source: <code>~/.gemini/tmp/workspace-hub/chats/session-*.json</code>.</li>
-            <li>Metric: unique <code>WRK-###</code> identifiers referenced per day per agent.</li>
+            <li>Primary metric set: gate signal coverage (relaxed/strict), source-wise coverage, and unique <code>WRK-###</code> references.</li>
+            <li>Policy note: inferred signals are diagnostic only and are <strong>not</strong> counted as measured signal compliance.</li>
         </ul>
 
         <h2>Gatepass Findings</h2>
         <ul>
-            <li>Only <code>session_20260301.jsonl</code> contains explicit gate-init command evidence for Claude.</li>
-            <li>Claude orchestrator log files present in-range: <code>session_20260302.jsonl</code> and <code>session_20260303.jsonl</code>.</li>
-            <li>No local orchestrator files yet for Codex or Gemini despite significant native session activity, indicating missing local cross-review log emission for those providers in this window.</li>
+            <li>Weekly rebuilt gate coverage now shows stronger activation and verification evidence in strict sessions.</li>
+            <li>Session signal contract is now fully represented in measured keys for this weekly snapshot (<code>23/23</code> required).</li>
+            <li>Remaining quality work is now compliance depth (raising low-frequency stages), not missing signal definitions.</li>
         </ul>
 
         <h2>Orchestrator Workflow-Start Session Count</h2>
@@ -202,26 +203,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>1</td><td>Capture</td><td>Yes</td><td>Create WRK and baseline metadata.</td><td>WRK file + route/owner fields</td><td><code>wrk_created</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
-                <tr><td>2</td><td>Resource Intelligence</td><td>Yes</td><td>Establish scope context and constraints.</td><td>Artifact pack in <code>assets/WRK-&lt;id&gt;/</code></td><td><code>resource_intelligence</code></td><td>6/10, 1/1</td><td>Keep + tighten</td></tr>
-                <tr><td>3</td><td>Triage</td><td>Yes</td><td>Set priority/complexity/route/workstations.</td><td>Triage contract fields complete</td><td><code>triage_contract_complete</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
-                <tr><td>4</td><td>Plan Draft</td><td>Yes</td><td>Produce executable plan and draft HTML.</td><td>Plan artifact + draft HTML</td><td><code>plan_draft_complete</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
-                <tr><td>5</td><td>User Review - Plan (Draft)</td><td>Yes</td><td>User validates draft before peer review.</td><td>Draft review artifact + default-browser open proof</td><td><code>plan_html_review_draft</code>, <code>html_open_default_browser</code></td><td>9/10, 1/1</td><td>Enforce 100%</td></tr>
-                <tr><td>6</td><td>Cross-Review</td><td>Yes</td><td>Multi-provider quality/risk review.</td><td>Cross-review logs for available agents</td><td><code>cross_review</code></td><td>10/10, 1/1</td><td>Keep</td></tr>
-                <tr><td>7</td><td>User Review - Plan (Final)</td><td>Yes</td><td>User confirms final plan and acceptance.</td><td>Final review artifact + decision + default-browser open proof</td><td><code>plan_html_review_final</code>, <code>html_open_default_browser</code></td><td>9/10, 1/1</td><td>Enforce 100%</td></tr>
-                <tr><td>8</td><td>Claim / Activation</td><td>Yes</td><td>Bind execution to WRK and claimant.</td><td>Claim ledger + active WRK set</td><td><code>claim_evidence</code>, <code>set_active_wrk</code></td><td>10/10,1/1 and 1/10,1/1</td><td>Fix relaxed gap</td></tr>
-                <tr><td>9</td><td>Work-Queue Routing Skill</td><td>Yes</td><td>Ensure canonical <code>/work</code> path.</td><td><code>/work</code> or <code>scripts/agents/work.sh</code></td><td><code>work_queue_skill</code></td><td>10/10, 1/1</td><td>Keep</td></tr>
-                <tr><td>10</td><td>Work Execution</td><td>Yes</td><td>Implement scoped work under claim.</td><td>Execution script/tool activity</td><td><code>work_execution</code></td><td>9/10, 0/1</td><td>Improve strict coverage</td></tr>
-                <tr><td>11</td><td>Artifact Generation</td><td>Yes</td><td>Produce review/evidence outputs.</td><td>HTML/report artifacts</td><td><code>artifact_generation</code></td><td>10/10, 1/1</td><td>Keep</td></tr>
-                <tr><td>12</td><td>TDD / Eval</td><td>Yes</td><td>Validate behavior with tests/evals.</td><td>Test/eval evidence in session</td><td><code>tdd_eval</code></td><td>10/10, 1/1</td><td>Keep</td></tr>
-                <tr><td>13</td><td>Agent Cross-Review</td><td>Yes</td><td>Agent review of implementation outputs before final verification.</td><td>Cross-review package + provider findings</td><td><code>agent_cross_review</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
-                <tr><td>14</td><td>Verify Gate Evidence</td><td>Yes</td><td>Run gate verifier before close.</td><td><code>verify-gate-evidence.py</code> evidence</td><td><code>verify_gate_evidence</code></td><td>7/10, 1/1</td><td>Tighten</td></tr>
-                <tr><td>15</td><td>Future Work Synthesis</td><td>Yes</td><td>Record deferred findings as follow-up WRKs.</td><td>Future-work artifact with IDs</td><td><code>future_work</code></td><td>4/10, 0/1</td><td>Tighten</td></tr>
-                <tr><td>16</td><td>Resource Intelligence Update</td><td>Yes</td><td>Capture additions discovered during execution before closure.</td><td>Post-work resource addendum in evidence pack</td><td><code>resource_intelligence_update</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
-                <tr><td>17</td><td>User Review - Implementation</td><td>Yes</td><td>User validates implementation output, future work, and closure readiness before close.</td><td>Implementation review artifact + default-browser open proof</td><td><code>user_review_close</code>, <code>html_open_default_browser</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
-                <tr><td>18</td><td>Reclaim</td><td>Conditional</td><td>Re-establish continuity after interruption.</td><td>Reclaim artifact + reason</td><td><code>reclaim</code></td><td>2/10, 0/1</td><td>Conditional gate</td></tr>
-                <tr><td>19</td><td>Close</td><td>Yes</td><td>Close WRK with complete ledger/tests.</td><td>Close artifact + close script evidence</td><td><code>close_item</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
-                <tr><td>20</td><td>Archive</td><td>Yes</td><td>Archive only after merge/sync readiness.</td><td>Archive artifact + archive script evidence</td><td><code>archive_item</code> (new)</td><td>N/A</td><td>Add signal</td></tr>
+                <tr><td>1</td><td>Capture</td><td>Yes</td><td>Create WRK and baseline metadata.</td><td>WRK file + route/owner fields</td><td><code>wrk_created</code></td><td>14/14, 7/7</td><td>Measured</td></tr>
+                <tr><td>2</td><td>Resource Intelligence</td><td>Yes</td><td>Establish scope context and constraints.</td><td>Artifact pack in <code>assets/WRK-&lt;id&gt;/</code></td><td><code>resource_intelligence</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
+                <tr><td>3</td><td>Triage</td><td>Yes</td><td>Set priority/complexity/route/workstations.</td><td>Triage contract fields complete</td><td><code>triage_contract_complete</code></td><td>6/14, 3/7</td><td>Tighten</td></tr>
+                <tr><td>4</td><td>Plan Draft</td><td>Yes</td><td>Produce executable plan and draft HTML.</td><td>Plan artifact + draft HTML</td><td><code>plan_draft_complete</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
+                <tr><td>5</td><td>User Review - Plan (Draft)</td><td>Yes</td><td>User validates draft before peer review.</td><td>Draft review artifact + default-browser open proof</td><td><code>plan_html_review_draft</code>, <code>html_open_default_browser</code></td><td>13/14, 6/7 and 7/14, 4/7</td><td>Enforce browser-open</td></tr>
+                <tr><td>6</td><td>Cross-Review</td><td>Yes</td><td>Multi-provider quality/risk review.</td><td>Cross-review logs for available agents</td><td><code>cross_review</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
+                <tr><td>7</td><td>User Review - Plan (Final)</td><td>Yes</td><td>User confirms final plan and acceptance.</td><td>Final review artifact + decision + default-browser open proof</td><td><code>plan_html_review_final</code>, <code>html_open_default_browser</code></td><td>14/14, 7/7 and 7/14, 4/7</td><td>Enforce browser-open</td></tr>
+                <tr><td>8</td><td>Claim / Activation</td><td>Yes</td><td>Bind execution to WRK and claimant.</td><td>Claim ledger + active WRK set</td><td><code>claim_evidence</code>, <code>set_active_wrk</code></td><td>14/14, 7/7 and 9/14, 7/7</td><td>Improve relaxed activation</td></tr>
+                <tr><td>9</td><td>Work-Queue Routing Skill</td><td>Yes</td><td>Ensure canonical <code>/work</code> path.</td><td><code>/work</code> or <code>scripts/agents/work.sh</code></td><td><code>work_queue_skill</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
+                <tr><td>10</td><td>Work Execution</td><td>Yes</td><td>Implement scoped work under claim.</td><td>Execution script/tool activity</td><td><code>work_execution</code></td><td>13/14, 7/7</td><td>Tighten relaxed</td></tr>
+                <tr><td>11</td><td>Artifact Generation</td><td>Yes</td><td>Produce review/evidence outputs.</td><td>HTML/report artifacts</td><td><code>artifact_generation</code></td><td>7/14, 4/7</td><td>Tighten</td></tr>
+                <tr><td>12</td><td>TDD / Eval</td><td>Yes</td><td>Validate behavior with tests/evals.</td><td>Test/eval evidence in session</td><td><code>tdd_eval</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
+                <tr><td>13</td><td>Agent Cross-Review</td><td>Yes</td><td>Agent review of implementation outputs before final verification.</td><td>Cross-review package + provider findings</td><td><code>agent_cross_review</code></td><td>11/14, 6/7</td><td>Tighten</td></tr>
+                <tr><td>14</td><td>Verify Gate Evidence</td><td>Yes</td><td>Run gate verifier before close.</td><td><code>verify-gate-evidence.py</code> evidence</td><td><code>verify_gate_evidence</code></td><td>10/14, 7/7</td><td>Tighten relaxed</td></tr>
+                <tr><td>15</td><td>Future Work Synthesis</td><td>Yes</td><td>Record deferred findings as follow-up WRKs.</td><td>Future-work artifact with IDs</td><td><code>future_work</code></td><td>6/14, 5/7</td><td>Tighten</td></tr>
+                <tr><td>16</td><td>Resource Intelligence Update</td><td>Yes</td><td>Capture additions discovered during execution before closure.</td><td>Post-work resource addendum in evidence pack</td><td><code>resource_intelligence_update</code></td><td>1/14, 1/7</td><td>Major gap</td></tr>
+                <tr><td>17</td><td>User Review - Implementation</td><td>Yes</td><td>User validates implementation output, future work, and closure readiness before close.</td><td>Implementation review artifact + default-browser open proof</td><td><code>user_review_close</code>, <code>html_open_default_browser</code></td><td>1/14, 1/7 and 7/14, 4/7</td><td>Major gap</td></tr>
+                <tr><td>18</td><td>Reclaim</td><td>Conditional</td><td>Re-establish continuity after interruption.</td><td>Reclaim artifact + reason</td><td><code>reclaim</code></td><td>6/14, 6/7</td><td>Conditional gate</td></tr>
+                <tr><td>19</td><td>Close</td><td>Yes</td><td>Close WRK with complete ledger/tests.</td><td>Close artifact + close script evidence</td><td><code>close_item</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
+                <tr><td>20</td><td>Archive</td><td>Yes</td><td>Archive only after merge/sync readiness.</td><td>Archive artifact + archive script evidence</td><td><code>archive_item</code></td><td>8/14, 4/7</td><td>Tighten</td></tr>
             </tbody>
         </table>
 
@@ -239,24 +240,24 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>1</td><td>Plan / Resource Intelligence</td><td>resource_intelligence</td><td>6/10</td><td>1/1</td><td>PASS (strict) / WARN (relaxed)</td><td>Present in strict path; missing in 4 relaxed sessions.</td></tr>
-                <tr><td>2</td><td>Claim / Session Bootstrap</td><td>init</td><td>10/10</td><td>1/1</td><td>PASS</td><td>All qualified sessions include orchestrator init.</td></tr>
-                <tr><td>3</td><td>Claim - Work Activation</td><td>set_active_wrk</td><td>1/10</td><td>1/1</td><td>PASS (strict) / FAIL (relaxed)</td><td>Primary relaxed gap; explicit WRK activation is mostly absent.</td></tr>
-                <tr><td>4</td><td>Work-Queue Routing Skill</td><td>work_queue_skill</td><td>10/10</td><td>1/1</td><td>PASS</td><td><code>/work</code> or <code>scripts/agents/work.sh</code> seen in all qualified sessions.</td></tr>
-                <tr><td>5</td><td>Work Execution</td><td>work_execution</td><td>9/10</td><td>0/1</td><td>WARN</td><td>Execution signal present in most relaxed sessions; strict session does not show explicit <code>execute.sh</code> marker.</td></tr>
-                <tr><td>6</td><td>Artifact Generation</td><td>artifact_generation</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Review/HTML artifacts are referenced throughout qualified sessions.</td></tr>
-                <tr><td>7</td><td>TDD / Eval</td><td>tdd_eval</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Test or evaluation evidence markers are present in all qualified sessions.</td></tr>
-                <tr><td>8</td><td>Verification</td><td>verify_gate_evidence</td><td>7/10</td><td>1/1</td><td>PASS (strict) / WARN (relaxed)</td><td>Gate verification command is not universal in relaxed sessions.</td></tr>
-                <tr><td>9</td><td>User Review - Plan (Draft)</td><td>plan_html_review_draft + html_open_default_browser</td><td>9/10</td><td>1/1</td><td>REQUIRED FOR ALL WRKs</td><td>Mandatory explicit user review artifact and browser-open evidence before cross-review. Target compliance: 100%.</td></tr>
-                <tr><td>10</td><td>Cross-Review</td><td>cross_review</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Cross-review scripts are consistently present.</td></tr>
-                <tr><td>11</td><td>Claim / Evidence Ledger</td><td>claim_evidence</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Claim evidence artifacts are referenced across qualified sessions.</td></tr>
-                <tr><td>12</td><td>User Review - Plan (Final)</td><td>plan_html_review_final + html_open_default_browser</td><td>9/10</td><td>1/1</td><td>REQUIRED FOR ALL WRKs</td><td>Mandatory explicit user acceptance artifact and browser-open evidence before close/archive. Target compliance: 100%.</td></tr>
-                <tr><td>13</td><td>Agent Cross-Review</td><td>agent_cross_review</td><td>N/A</td><td>N/A</td><td>REQUIRED FOR ALL WRKs</td><td>New implementation-stage cross-review checkpoint after TDD/Eval.</td></tr>
-                <tr><td>14</td><td>Close Planning</td><td>future_work</td><td>4/10</td><td>0/1</td><td>FAIL</td><td>Future-work evidence is frequently missing.</td></tr>
-                <tr><td>15</td><td>Resource Intelligence Update</td><td>resource_intelligence_update</td><td>N/A</td><td>N/A</td><td>REQUIRED FOR ALL WRKs</td><td>Add explicit post-work resource-intelligence addendum before final user review.</td></tr>
-                <tr><td>16</td><td>User Review - Implementation</td><td>user_review_close + html_open_default_browser</td><td>N/A</td><td>N/A</td><td>REQUIRED FOR ALL WRKs</td><td>Add explicit post-future-work implementation review with browser-open evidence before reclaim/close.</td></tr>
-                <tr><td>17</td><td>Reclaim</td><td>reclaim</td><td>2/10</td><td>0/1</td><td>WARN</td><td>Reclaim is expected only when triggered; mostly absent.</td></tr>
-                <tr><td>18</td><td>Close / Archive</td><td>close_or_archive</td><td>10/10</td><td>1/1</td><td>PASS</td><td>Close/archive signals are present in all qualified sessions.</td></tr>
+                <tr><td>1</td><td>Plan / Resource Intelligence</td><td>resource_intelligence</td><td>14/14</td><td>7/7</td><td>PASS</td><td>Strong coverage in both relaxed and strict sessions.</td></tr>
+                <tr><td>2</td><td>Claim / Session Bootstrap</td><td>init</td><td>14/14</td><td>7/7</td><td>PASS</td><td>All qualified sessions include orchestrator init.</td></tr>
+                <tr><td>3</td><td>Claim - Work Activation</td><td>set_active_wrk</td><td>9/14</td><td>7/7</td><td>PASS (strict) / WARN (relaxed)</td><td>Relaxed activation still trails strict coverage.</td></tr>
+                <tr><td>4</td><td>Work-Queue Routing Skill</td><td>work_queue_skill</td><td>14/14</td><td>7/7</td><td>PASS</td><td><code>/work</code> routing is now consistently measured.</td></tr>
+                <tr><td>5</td><td>Work Execution</td><td>work_execution</td><td>13/14</td><td>7/7</td><td>PASS / WARN</td><td>One relaxed miss remains.</td></tr>
+                <tr><td>6</td><td>Artifact Generation</td><td>artifact_generation</td><td>7/14</td><td>4/7</td><td>WARN</td><td>Artifact signal frequency remains moderate.</td></tr>
+                <tr><td>7</td><td>TDD / Eval</td><td>tdd_eval</td><td>14/14</td><td>7/7</td><td>PASS</td><td>TDD/eval signal consistently present.</td></tr>
+                <tr><td>8</td><td>Verification</td><td>verify_gate_evidence</td><td>10/14</td><td>7/7</td><td>PASS (strict) / WARN (relaxed)</td><td>Verifier runs are strong in strict sessions, improving in relaxed.</td></tr>
+                <tr><td>9</td><td>User Review - Plan (Draft)</td><td>plan_html_review_draft + html_open_default_browser</td><td>13/14 and 7/14</td><td>6/7 and 4/7</td><td>REQUIRED FOR ALL WRKs</td><td>Stage signal strong; browser-open still lagging.</td></tr>
+                <tr><td>10</td><td>Cross-Review</td><td>cross_review</td><td>14/14</td><td>7/7</td><td>PASS</td><td>Cross-review scripts remain consistent.</td></tr>
+                <tr><td>11</td><td>Claim / Evidence Ledger</td><td>claim_evidence</td><td>14/14</td><td>7/7</td><td>PASS</td><td>Claim evidence now universally present in qualified sessions.</td></tr>
+                <tr><td>12</td><td>User Review - Plan (Final)</td><td>plan_html_review_final + html_open_default_browser</td><td>14/14 and 7/14</td><td>7/7 and 4/7</td><td>REQUIRED FOR ALL WRKs</td><td>Final plan review signal is strong; browser-open gap remains.</td></tr>
+                <tr><td>13</td><td>Agent Cross-Review</td><td>agent_cross_review</td><td>11/14</td><td>6/7</td><td>WARN</td><td>Implementation cross-review is measured but not universal.</td></tr>
+                <tr><td>14</td><td>Close Planning</td><td>future_work</td><td>6/14</td><td>5/7</td><td>WARN</td><td>Future-work synthesis has improved but is not yet universal.</td></tr>
+                <tr><td>15</td><td>Resource Intelligence Update</td><td>resource_intelligence_update</td><td>1/14</td><td>1/7</td><td>FAIL</td><td>Still the largest remaining mandatory-stage gap.</td></tr>
+                <tr><td>16</td><td>User Review - Implementation</td><td>user_review_close + html_open_default_browser</td><td>1/14 and 7/14</td><td>1/7 and 4/7</td><td>FAIL</td><td>Implementation review signal remains low despite browser events.</td></tr>
+                <tr><td>17</td><td>Reclaim</td><td>reclaim</td><td>6/14</td><td>6/7</td><td>Conditional</td><td>Conditional stage appears where continuity breaks.</td></tr>
+                <tr><td>18</td><td>Close / Archive</td><td>close_or_archive</td><td>14/14</td><td>7/7</td><td>PASS</td><td>Terminal lifecycle signal is stable.</td></tr>
             </tbody>
         </table>
 
@@ -273,24 +274,24 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>Plan / Resource Intelligence</td><td><code>resource_intelligence</code></td><td>6/10</td><td>1/1</td><td>4 misses in relaxed</td><td>Needs mandatory pre-plan artifact enforcement.</td></tr>
-                <tr><td>Claim / Session Bootstrap</td><td><code>init</code></td><td>10/10</td><td>1/1</td><td>None</td><td>Healthy baseline coverage.</td></tr>
-                <tr><td>Claim - Work Activation</td><td><code>set_active_wrk</code></td><td>1/10</td><td>1/1</td><td>9 misses in relaxed</td><td>Largest gatepass gap; prioritize first.</td></tr>
-                <tr><td>Work-Queue Routing Skill</td><td><code>work_queue_skill</code></td><td>10/10</td><td>1/1</td><td>None</td><td>Routing via <code>/work</code> is stable.</td></tr>
-                <tr><td>Work Execution</td><td><code>work_execution</code></td><td>9/10</td><td>0/1</td><td>Strict miss</td><td>Strict run lacks explicit execute marker.</td></tr>
-                <tr><td>Artifact Generation</td><td><code>artifact_generation</code></td><td>10/10</td><td>1/1</td><td>None</td><td>Artifact output is consistently present.</td></tr>
-                <tr><td>TDD / Eval</td><td><code>tdd_eval</code></td><td>10/10</td><td>1/1</td><td>None</td><td>Evaluation evidence is consistently present.</td></tr>
-                <tr><td>Agent Cross-Review</td><td><code>agent_cross_review</code></td><td>N/A</td><td>N/A</td><td>Signal pending</td><td>Add explicit implementation cross-review marker after TDD/Eval.</td></tr>
-                <tr><td>Verification</td><td><code>verify_gate_evidence</code></td><td>7/10</td><td>1/1</td><td>3 misses in relaxed</td><td>Enforce verifier before close.</td></tr>
-                <tr><td>User Review - Plan (Draft)</td><td><code>plan_html_review_draft</code> + <code>html_open_default_browser</code></td><td>9/10</td><td>1/1</td><td>1 miss in relaxed</td><td>Keep mandatory before cross-review.</td></tr>
-                <tr><td>Cross-Review</td><td><code>cross_review</code></td><td>10/10</td><td>1/1</td><td>None</td><td>Healthy coverage.</td></tr>
-                <tr><td>Claim / Evidence Ledger</td><td><code>claim_evidence</code></td><td>10/10</td><td>1/1</td><td>None</td><td>Healthy coverage.</td></tr>
-                <tr><td>User Review - Plan (Final)</td><td><code>plan_html_review_final</code> + <code>html_open_default_browser</code></td><td>9/10</td><td>1/1</td><td>1 miss in relaxed</td><td>Keep mandatory before close/archive.</td></tr>
-                <tr><td>Close Planning</td><td><code>future_work</code></td><td>4/10</td><td>0/1</td><td>Major gap</td><td>Needs explicit follow-up capture rule.</td></tr>
-                <tr><td>Resource Intelligence Update</td><td><code>resource_intelligence_update</code></td><td>N/A</td><td>N/A</td><td>Signal pending</td><td>Add post-work resource addendum before closure.</td></tr>
-                <tr><td>User Review - Implementation</td><td><code>user_review_close</code> + <code>html_open_default_browser</code></td><td>N/A</td><td>N/A</td><td>Signal pending</td><td>Add explicit implementation checkpoint after future work synthesis.</td></tr>
-                <tr><td>Reclaim</td><td><code>reclaim</code></td><td>2/10</td><td>0/1</td><td>Conditional gap</td><td>Track only when continuity breaks.</td></tr>
-                <tr><td>Close / Archive</td><td><code>close_or_archive</code></td><td>10/10</td><td>1/1</td><td>None</td><td>Terminal signal is present.</td></tr>
+                <tr><td>Plan / Resource Intelligence</td><td><code>resource_intelligence</code></td><td>14/14</td><td>7/7</td><td>0 misses in strict</td><td>Coverage is now strong.</td></tr>
+                <tr><td>Claim / Session Bootstrap</td><td><code>init</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Healthy baseline coverage.</td></tr>
+                <tr><td>Claim - Work Activation</td><td><code>set_active_wrk</code></td><td>9/14</td><td>7/7</td><td>5 misses in relaxed</td><td>Main remaining activation gap is relaxed path.</td></tr>
+                <tr><td>Work-Queue Routing Skill</td><td><code>work_queue_skill</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Routing via <code>/work</code> is stable.</td></tr>
+                <tr><td>Work Execution</td><td><code>work_execution</code></td><td>13/14</td><td>7/7</td><td>1 miss in relaxed</td><td>Near-complete coverage.</td></tr>
+                <tr><td>Artifact Generation</td><td><code>artifact_generation</code></td><td>7/14</td><td>4/7</td><td>Moderate gap</td><td>Needs broader artifact marker coverage.</td></tr>
+                <tr><td>TDD / Eval</td><td><code>tdd_eval</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Evaluation evidence is consistently present.</td></tr>
+                <tr><td>Agent Cross-Review</td><td><code>agent_cross_review</code></td><td>11/14</td><td>6/7</td><td>Visible gap</td><td>Improve implementation cross-review consistency.</td></tr>
+                <tr><td>Verification</td><td><code>verify_gate_evidence</code></td><td>10/14</td><td>7/7</td><td>4 misses in relaxed</td><td>Continue enforcing verifier before close.</td></tr>
+                <tr><td>User Review - Plan (Draft)</td><td><code>plan_html_review_draft</code> + <code>html_open_default_browser</code></td><td>13/14 and 7/14</td><td>6/7 and 4/7</td><td>Browser-open lag</td><td>Keep browser-open as explicit mandatory proof.</td></tr>
+                <tr><td>Cross-Review</td><td><code>cross_review</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Healthy coverage.</td></tr>
+                <tr><td>Claim / Evidence Ledger</td><td><code>claim_evidence</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Healthy coverage.</td></tr>
+                <tr><td>User Review - Plan (Final)</td><td><code>plan_html_review_final</code> + <code>html_open_default_browser</code></td><td>14/14 and 7/14</td><td>7/7 and 4/7</td><td>Browser-open lag</td><td>Keep mandatory before close/archive.</td></tr>
+                <tr><td>Close Planning</td><td><code>future_work</code></td><td>6/14</td><td>5/7</td><td>Remaining gap</td><td>Follow-up capture still needs tightening.</td></tr>
+                <tr><td>Resource Intelligence Update</td><td><code>resource_intelligence_update</code></td><td>1/14</td><td>1/7</td><td>Major gap</td><td>Post-work resource addendum is still rare.</td></tr>
+                <tr><td>User Review - Implementation</td><td><code>user_review_close</code> + <code>html_open_default_browser</code></td><td>1/14 and 7/14</td><td>1/7 and 4/7</td><td>Major gap</td><td>Implementation review stage adoption is low.</td></tr>
+                <tr><td>Reclaim</td><td><code>reclaim</code></td><td>6/14</td><td>6/7</td><td>Conditional</td><td>Track only when continuity breaks.</td></tr>
+                <tr><td>Close / Archive</td><td><code>close_or_archive</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Terminal signal is present.</td></tr>
             </tbody>
         </table>
 

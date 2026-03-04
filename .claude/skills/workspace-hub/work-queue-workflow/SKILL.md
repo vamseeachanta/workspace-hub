@@ -44,3 +44,11 @@ It delegates to canonical `work-queue` and `workflow-gatepass` contracts.
 - Execution workflow: `coordination/workspace/work-queue/SKILL.md`
 - Gate enforcement: `workspace-hub/workflow-gatepass/SKILL.md`
 
+## Practical Lessons (WRK-690)
+
+- Always run the workflow through shared scripts (`session.sh`, `work.sh`,
+  `plan.sh`, `execute.sh`, `review.sh`, close/archive scripts) so signal logs are
+  consistent across orchestrators.
+- Refresh weekly gate-analysis before presenting coverage conclusions:
+  1) `build-session-gate-analysis.py` 2) `audit-session-signal-coverage.py`.
+- Treat per-agent coverage gaps as workflow defects even if aggregate metrics pass.

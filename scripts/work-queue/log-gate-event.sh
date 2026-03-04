@@ -16,11 +16,13 @@ mkdir -p "$log_dir"
 log_file="$log_dir/${wrk_id}-${stage}.log"
 
 timestamp="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+signal="$action"
 {
   echo "timestamp: $timestamp"
   echo "wrk_id: $wrk_id"
   echo "stage: $stage"
   echo "action: $action"
+  echo "signal: $signal"
   echo "provider: $provider"
   if [[ -n "$notes" ]]; then
     echo "notes: $notes"
