@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-05T16:30:12Z by generate-index.py -->
+<!-- Generated: 2026-03-05T17:35:24Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-05T16:30:12Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-05T17:35:24Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 445
+**Total items:** 446
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 201 |
+| pending | 202 |
 | working | 5 |
 | blocked | 9 |
 | archived | 230 |
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 209 |
+| high | 210 |
 | medium | 194 |
 | low | 41 |
 
@@ -32,7 +32,7 @@
 |------------|-------|
 | simple | 74 |
 | medium | 212 |
-| complex | 92 |
+| complex | 93 |
 
 ### By Category
 
@@ -44,7 +44,7 @@
 | engineering | 117 |
 | data | 26 |
 | platform | 12 |
-| business | 6 |
+| business | 7 |
 | maintenance | 6 |
 | personal | 4 |
 | uncategorised | 4 |
@@ -69,7 +69,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 138 |
+| workspace-hub | 139 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,7 +77,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 167 / 445 |
+| Plans exist | 167 / 446 |
 | Plans cross-reviewed | 65 |
 | Plans approved | 84 |
 | Brochure pending | 7 |
@@ -89,9 +89,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 445 |
+| Total captured | 446 |
 | Total archived | 230 |
-| Completion rate | 230/445 (52%) |
+| Completion rate | 230/446 (52%) |
 | Monthly rate (current month) | 5 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -99,7 +99,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 57 / 201 | 28% |
+| Pending items with plans | 57 / 202 | 28% |
 | Plans cross-reviewed | 10 | 15% |
 | Plans user-approved | 10 | 15% |
 
@@ -116,7 +116,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 97 | 2 | 7 |
+| High     | 98 | 2 | 7 |
 | Medium   | 76  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
 
@@ -432,7 +432,7 @@
 | WRK-588 | LOW | research: evaluate OpenTURNS for fatigue reliability integration | pending |
 | WRK-603 | LOW | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending |
 
-### business (6 items — 3 high, 2 medium, 1 low)
+### business (7 items — 4 high, 2 medium, 1 low)
 
 #### business / cre-finance
 
@@ -447,6 +447,7 @@
 | WRK-148 | HIGH | ACE-GTM: A&CE Go-to-Market strategy stream | pending |
 | WRK-470 | HIGH | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending |
 | WRK-632 | HIGH | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending |
+| WRK-1019 | HIGH | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending |
 | WRK-665 | MEDIUM | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending |
 
 #### business / website
@@ -959,6 +960,7 @@
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1167,6 +1169,7 @@
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | medium | medium | workspace-hub | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | high | medium | workspace-hub | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | medium | simple | workspace-hub | - |
+| WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | high | complex | workspace-hub | - |
 
 ### Working
 
@@ -1913,6 +1916,7 @@
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | - |
+| WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | - |
 
 ### worldenergydata
 
@@ -2223,6 +2227,7 @@
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working | medium | workspace-hub | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | simple | workspace-hub | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | medium | workspace-hub | - |
+| WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | complex | workspace-hub | - |
 
 ### Medium
 
@@ -2863,10 +2868,11 @@
 | WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | high | TBD-client2-repo | - |
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | frontierdeepwater, TBD-client2-repo | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | workspace-hub | - |
+| WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (151 active / 168 total)
+### ace-linux-1 (152 active / 169 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3038,6 +3044,7 @@
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | workspace-hub |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | workspace-hub |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | workspace-hub |
+| WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 
