@@ -51,6 +51,9 @@ flowchart TD
 
 ## Stage Contract
 
+Operating principle: **humans steer, agents execute**.
+Use mechanical checks (scripts/linters/tests) as primary enforcement.
+
 ### 1. Capture
 - Create WRK in `pending/`.
 - Record problem statement, criteria, and scope.
@@ -70,13 +73,23 @@ flowchart TD
 ### 4. Plan
 - Route A/B: Inline in body. Route C: `specs/wrk/WRK-<id>/`.
 - Must produce HTML review artifact.
-- Every generated HTML review artifact must include a `Test Evidence` section showing example-pack and variation-test presence.
+- Every generated HTML review artifact must include a `Test Summary` section showing example-pack and variation-test presence.
 - Plan artifacts must include the Skill Manifest for user review (`mandatory`, `supporting`,
   `domain`, and `repo_governance` skill sets), sourced from
   `assets/WRK-<id>/evidence/skill-manifest.yaml`.
 - User reviews Draft HTML before multi-agent review as an interactive plan session:
-  ask tough clarifying questions, challenge weak assumptions, think hard, and
-  research hard before finalizing the draft plan.
+  - ask tough clarifying questions,
+  - challenge weak assumptions and surface tradeoffs,
+  - think hard and research hard before finalizing the draft plan,
+  - research tests/evals from available Resource Intelligence and Document
+    Intelligence artifacts,
+  - seek user review of proposed tests/evals and ask user to add/adjust
+    tests/evals before progression.
+- At each user-review stage (draft/final/implementation), review the HTML
+  `Gate-Pass Stage Status` section (table + summary) before presenting a recommendation.
+- Record stage-5 interactive review details in:
+  `assets/WRK-<id>/evidence/user-review-plan-draft.yaml`
+  (template: `specs/templates/user-review-plan-draft-template.yaml`).
 - Multi-agent review (Claude, Codex, Gemini) for Route B/C.
 - User reviews Final HTML and records a pass/fail decision.
 - Only a passed final HTML review may proceed to plan approval and claim.
@@ -119,7 +132,7 @@ flowchart TD
 - `close-item.sh` auto-generates `assets/WRK-NNN/workflow-final-review.html` when `--html-output` is omitted.
 - Updates frontmatter, moves to `done/`, regenerates INDEX.
 - Enforces HTML review evidence for WRK items using the hardened workflow contract.
-- HTML artifacts are expected to include `Test Evidence` details for auditability.
+- HTML artifacts are expected to include `Test Summary` details for auditability.
 - Close is blocked unless execute evidence records `3-5` passing integrated/repo tests.
 - Record merge/sync status and follow-up/learning outputs where applicable.
 - Canonical stage evidence file: `assets/WRK-<id>/evidence/close.yaml`.
@@ -140,6 +153,7 @@ assets/WRK-<id>/evidence/
   skill-manifest.yaml
   skill-invocation-log.yaml
   user-review-publish.yaml
+  user-review-plan-draft.yaml
   claim.yaml
   execute.yaml
   reclaim.yaml

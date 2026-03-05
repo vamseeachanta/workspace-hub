@@ -19,6 +19,7 @@ Legacy positional args still accepted: WRK-NNN [--stage draft] [--type plan]
 import os
 import re
 import sys
+from html import escape as html_escape
 import yaml
 import markdown
 from pathlib import Path
@@ -191,6 +192,7 @@ ARTIFACT_LABELS = {
 
 KEY_SECTIONS_BY_ARTIFACT = {
     "plan-draft": [
+        "Gate-Pass Stage Status",
         "Prompt Start Context",
         "Why",
         "Acceptance Criteria",
@@ -199,6 +201,7 @@ KEY_SECTIONS_BY_ARTIFACT = {
         "Open Questions",
     ],
     "plan-final": [
+        "Gate-Pass Stage Status",
         "Prompt Start Context",
         "Why",
         "Acceptance Criteria",
@@ -218,6 +221,7 @@ KEY_SECTIONS_BY_ARTIFACT = {
         "Skill Manifest",
     ],
     "close": [
+        "Gate-Pass Stage Status",
         "Prompt Start Context",
         "Why",
         "Acceptance Criteria",
@@ -377,6 +381,103 @@ def collect_reviewers(assets_dir: str, wrk_id: str) -> list:
     return reviewers
 
 
+def collect_stage_gatepass(assets_dir: str) -> dict:
+    """Collect per-stage lifecycle status from stage-evidence YAML."""
+    stage_file = Path(assets_dir) / "evidence" / "stage-evidence.yaml"
+    if not stage_file.exists():
+        return {
+            "present": False,
+            "stages": [],
+            "summary": "Missing stage-evidence.yaml",
+            "autonomy": "Not applicable.",
+            "reason": "stage-evidence.yaml missing",
+        }
+
+    try:
+        data = yaml.safe_load(stage_file.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return {
+            "present": False,
+            "stages": [],
+            "summary": "Invalid stage-evidence.yaml",
+            "autonomy": "Not applicable.",
+            "reason": "stage-evidence.yaml parse error",
+        }
+
+    if not isinstance(data, dict):
+        return {
+            "present": False,
+            "stages": [],
+            "summary": "Invalid stage-evidence.yaml",
+            "autonomy": "Not applicable.",
+            "reason": "stage-evidence root must be a mapping",
+        }
+
+    raw_stages = data.get("stages", [])
+    if not isinstance(raw_stages, list):
+        return {
+            "present": False,
+            "stages": [],
+            "summary": "Invalid stage-evidence.yaml",
+            "autonomy": "Not applicable.",
+            "reason": "stages must be a list",
+        }
+
+    stages = []
+    # Backward-compat: some legacy ledgers used "autonomy_maturity".
+    autonomy = str(data.get("autonomy_maturity_level", data.get("autonomy_maturity", "Not applicable.")))
+    done = pending = na = 0
+    fail = 0
+    for item in raw_stages:
+        if not isinstance(item, dict):
+            continue
+        order = item.get("order", "")
+        stage = str(item.get("stage", "")).strip() or "Unknown"
+        status = str(item.get("status", "")).strip().lower() or "unknown"
+        evidence = str(item.get("evidence", "")).strip() or "n/a"
+        owner = str(item.get("owner", "Not applicable.")).strip() or "Not applicable."
+        blocker = str(item.get("blocker", "Not applicable.")).strip() or "Not applicable."
+        comment = str(item.get("comment", "Not applicable.")).strip() or "Not applicable."
+        raw_human_decision = item.get("human_decision_required", "Not applicable.")
+        if isinstance(raw_human_decision, bool):
+            human_decision = "yes" if raw_human_decision else "no"
+        else:
+            normalized_human_decision = str(raw_human_decision).strip().lower()
+            if normalized_human_decision in {"true", "yes"}:
+                human_decision = "yes"
+            elif normalized_human_decision in {"false", "no"}:
+                human_decision = "no"
+            else:
+                human_decision = str(raw_human_decision).strip() or "Not applicable."
+        if status in {"done", "pass", "passed"}:
+            gate = "PASS"
+            done += 1
+        elif status in {"fail", "failed", "blocked", "missing", "error"}:
+            gate = "FAIL"
+            fail += 1
+        elif status in {"n/a", "na", "not_applicable"}:
+            gate = "N/A"
+            na += 1
+        else:
+            gate = "WARN"
+            pending += 1
+        stages.append({
+            "order": order,
+            "stage": stage,
+            "status": status,
+            "gate": gate,
+            "evidence": evidence,
+            "owner": owner,
+            "blocker": blocker,
+            "comment": comment,
+            "human_decision_required": human_decision,
+        })
+
+    stages.sort(key=lambda s: int(s["order"]) if str(s["order"]).isdigit() else 999)
+    summary = f"{done} pass · {fail} fail · {pending} pending/warn · {na} n/a"
+    return {"present": True, "stages": stages, "summary": summary, "autonomy": autonomy}
+
+
 # ── HTML section builders ─────────────────────────────────────────────────────
 
 def render_meta_grid(fm: dict) -> str:
@@ -454,6 +555,56 @@ def render_reviewer_synthesis(reviewers: list) -> str:
 </table>"""
 
 
+def render_gatepass_section(gp: dict) -> str:
+    if not gp.get("present"):
+        reason = html_escape(str(gp.get("reason", "Missing stage evidence")), quote=True)
+        summary_text = html_escape(str(gp.get("summary", "Missing stage evidence")), quote=True)
+        return (
+            "<h2>Gate-Pass Stage Status</h2>"
+            f"<p>{badge('FAIL', 'fail')} <strong>{summary_text}</strong> — {reason}</p>"
+        )
+    rows = ""
+    for s in gp.get("stages", []):
+        gate_kind = (
+            "pass" if s["gate"] == "PASS"
+            else ("fail" if s["gate"] == "FAIL" else ("warn" if s["gate"] == "WARN" else "info"))
+        )
+        order_text = html_escape(str(s["order"]), quote=True)
+        status_text = html_escape(str(s["status"]).upper(), quote=True)
+        stage_text = html_escape(str(s["stage"]), quote=True)
+        gate_text = html_escape(str(s["gate"]), quote=True)
+        human_decision = html_escape(str(s["human_decision_required"]), quote=True)
+        owner_text = html_escape(str(s["owner"]), quote=True)
+        blocker_text = html_escape(str(s["blocker"]), quote=True)
+        comment_text = html_escape(str(s["comment"]), quote=True)
+        evidence_text = html_escape(str(s["evidence"]), quote=True)
+        rows += (
+            f"<tr><td>{order_text}</td>"
+            f"<td>{stage_text}</td>"
+            f"<td>{badge(status_text, 'info')}</td>"
+            f"<td>{badge(gate_text, gate_kind)}</td>"
+            f"<td>{human_decision}</td>"
+            f"<td>{owner_text}</td>"
+            f"<td>{blocker_text}</td>"
+            f"<td>{comment_text}</td>"
+            f"<td><code>{evidence_text}</code></td></tr>\n"
+        )
+    if not rows:
+        return (
+            "<h2>Gate-Pass Stage Status</h2>"
+            f"<p>{badge('FAIL', 'fail')} <strong>No valid stage rows found</strong> — "
+            "stage-evidence.yaml present but empty or malformed</p>"
+        )
+    summary_text = html_escape(str(gp.get("summary", "Not applicable.")), quote=True)
+    autonomy_text = html_escape("Autonomy: " + str(gp.get("autonomy", "Not applicable.")), quote=True)
+    return f"""<h2>Gate-Pass Stage Status</h2>
+<p><strong>Summary:</strong> {summary_text} &nbsp; {badge(autonomy_text, 'info')}</p>
+<table>
+  <thead><tr><th>Order</th><th>Stage</th><th>Stage Status</th><th>Gate-Pass</th><th>Human Decision</th><th>Owner</th><th>Blocker?</th><th>Comment</th><th>Evidence</th></tr></thead>
+  <tbody>{rows}</tbody>
+</table>"""
+
+
 # ── Main HTML renderer ────────────────────────────────────────────────────────
 
 def _extract_h2_titles(html: str) -> set[str]:
@@ -492,8 +643,9 @@ def _suppress_duplicate_generated_sections(
     skill_manifest_html: str,
     test_evidence_html: str,
     reviewer_html: str,
-) -> tuple[str, str, str]:
-    """Avoid duplicate section blocks when WRK body already includes canonical sections."""
+    gatepass_html: str,
+) -> tuple[str, str, str, str]:
+    """Avoid duplicate generated sections when WRK body already includes them."""
     titles = _extract_h2_titles(body_html)
     if "Skill Manifest" in titles:
         skill_manifest_html = ""
@@ -501,7 +653,9 @@ def _suppress_duplicate_generated_sections(
         test_evidence_html = ""
     if "Cross-Review Summary" in titles:
         reviewer_html = ""
-    return skill_manifest_html, test_evidence_html, reviewer_html
+    if "Gate-Pass Stage Status" in titles:
+        gatepass_html = ""
+    return skill_manifest_html, test_evidence_html, reviewer_html, gatepass_html
 
 def render_wrk_html(
     wrk_meta: dict,
@@ -524,10 +678,16 @@ def render_wrk_html(
     exec_summary_html = sections.get("exec_summary_html", "")
     body_html = sections.get("body_html", "")
     skill_manifest_html = sections.get("skill_manifest_html", "")
+    gatepass_html = sections.get("gatepass_html", "")
     test_evidence_html = sections.get("test_evidence_html", "")
     reviewer_html = sections.get("reviewer_html", "")
 
     meta_grid = render_meta_grid(wrk_meta)
+    gatepass_card_html = (
+        f"<div class=\"card\">\n    {gatepass_html}\n  </div>"
+        if gatepass_html.strip()
+        else ""
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -562,6 +722,8 @@ def render_wrk_html(
   <div class="card">
     {body_html}
   </div>
+
+  {gatepass_card_html}
 
   <div class="card">
     {test_evidence_html}
@@ -629,20 +791,23 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
     skill_manifest = collect_skill_manifest(workspace_root, fm, assets_dir)
     test_evidence = collect_test_evidence(assets_dir)
     reviewers = collect_reviewers(assets_dir, wrk_id)
+    gatepass = collect_stage_gatepass(assets_dir)
 
     skill_manifest_html = render_skill_manifest(skill_manifest)
     test_evidence_html = render_test_evidence(test_evidence)
     reviewer_html = render_reviewer_synthesis(reviewers)
-    skill_manifest_html, test_evidence_html, reviewer_html = _suppress_duplicate_generated_sections(
+    gatepass_html = render_gatepass_section(gatepass)
+    skill_manifest_html, test_evidence_html, reviewer_html, gatepass_html = _suppress_duplicate_generated_sections(
         body_html,
         skill_manifest_html,
         test_evidence_html,
         reviewer_html,
+        gatepass_html,
     )
     body_html = _append_missing_key_sections(
         body_html,
         artifact_type,
-        extra_html=[skill_manifest_html, test_evidence_html, reviewer_html],
+        extra_html=[skill_manifest_html, test_evidence_html, reviewer_html, gatepass_html],
     )
 
     sections = {
@@ -650,6 +815,7 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
         "exec_summary_html": exec_summary_html,
         "body_html": body_html,
         "skill_manifest_html": skill_manifest_html,
+        "gatepass_html": gatepass_html,
         "test_evidence_html": test_evidence_html,
         "reviewer_html": reviewer_html,
     }

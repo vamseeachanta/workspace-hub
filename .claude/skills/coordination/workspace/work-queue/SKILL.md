@@ -197,6 +197,8 @@ flowchart TD
 ### 1. Capture
 - Create WRK in `pending/`.
 - Assign `orchestrator`, `provider`, `provider_alt`, and initial route.
+- Write `## Mission` — one sentence scope boundary — before saving. No WRK file without it.
+- Infer and set `category:` + `subcategory:` via `scripts/work-queue/infer-category.py`.
 
 ### 2. Resource Intelligence
 - Mandatory for every WRK before planning.
@@ -210,17 +212,31 @@ flowchart TD
 - Produce draft HTML review artifact.
 
 ### 5. User Review - Plan (Draft) — Agent/User Interactive Plan Session
-- Run this stage as an interactive agent-user plan-mode session (not a one-way artifact drop).
-- Agent must walk the draft plan section-by-section with the user and capture explicit decisions:
-  - scope in/out,
-  - acceptance criteria adjustments,
-  - risks/constraints/open questions,
-  - approve-as-is vs revise-and-rerun.
-- Agent must ask tough clarifying questions where ambiguity remains, challenge weak assumptions, and surface tradeoffs explicitly.
-- Agent must think hard and research hard before finalizing the draft: verify critical facts, validate dependencies, and identify likely failure modes.
-- Mandatory: update plan artifacts immediately from user decisions before moving to stage 6.
-- Mandatory: open completed draft HTML in default browser (`xdg-open <html-path>`).
-- Mandatory: push draft review artifacts to `origin` and log publish evidence.
+- Session mode:
+  - Run this stage as an interactive agent-user plan-mode session (not a one-way artifact drop).
+- Interactive review and decisions:
+  - Walk the draft plan section-by-section with the user.
+  - Capture explicit decisions on:
+    - scope in/out,
+    - acceptance criteria adjustments,
+    - risks/constraints/open questions,
+    - approve-as-is vs revise-and-rerun.
+- Quality bar for agent reasoning:
+  - Ask tough clarifying questions where ambiguity remains.
+  - Challenge weak assumptions and surface tradeoffs explicitly.
+  - Think hard and research hard before finalizing the draft.
+  - Verify critical facts, validate dependencies, and identify likely failure modes.
+- Tests/evals from intelligence artifacts:
+  - Research tests and evals from available Resource Intelligence and Document Intelligence artifacts.
+  - Seek user review of proposed tests/evals and ask the user to add/adjust tests/evals before finalizing Stage 5.
+- Stage-5 evidence artifact:
+  - Write `assets/WRK-<id>/evidence/user-review-plan-draft.yaml` using
+    `specs/templates/user-review-plan-draft-template.yaml`.
+- Stage gate requirements:
+  - Update plan artifacts immediately from user decisions before moving to stage 6.
+  - Review the HTML `Gate-Pass Stage Status` section (table + summary) with the user before recommendation.
+  - Open completed draft HTML in default browser (`xdg-open <html-path>`).
+  - Push draft review artifacts to `origin` and log publish evidence.
 
 ### 6. Cross-Review
 - Multi-agent review (Claude, Codex, Gemini) for Route B/C.
@@ -228,6 +244,7 @@ flowchart TD
 
 ### 7. User Review - Plan (Final)
 - User reviews final plan HTML and approves.
+- Review the HTML `Gate-Pass Stage Status` section (table + summary) with the user before final recommendation.
 - Mandatory: open completed final HTML in default browser (`xdg-open <html-path>`).
 - Mandatory: push final review artifacts to `origin` and log publish evidence.
 
@@ -240,6 +257,8 @@ flowchart TD
 - Enter execution via `/work` (or `scripts/agents/work.sh`) for canonical routing.
 
 ### 10. Work Execution
+- **Re-read `## Mission` before writing a single line of code.** If any discovered task is
+  outside the mission boundary, capture it as a new WRK item and continue — do not expand scope.
 - Implement under active claim.
 - Define 5-10 real examples and variation tests.
 
@@ -265,6 +284,7 @@ flowchart TD
 
 ### 17. User Review - Implementation
 - User reviews closure package (future work + resource updates + completion state).
+- Review the HTML `Gate-Pass Stage Status` section (table + summary) with the user before closure recommendation.
 - Mandatory: open completed close HTML in default browser (`xdg-open <html-path>`).
 - Mandatory: push implementation review artifacts to `origin` and log publish evidence.
 
@@ -552,9 +572,18 @@ brochure_status:       # pending | updated | synced | n/a
 computer:              # ace-linux-1 | ace-linux-2 | acma-ansys05 | acma-ws014 | gali-linux-compute-1
 plan_workstations:     # [ace-linux-1] or [ace-linux-1, acma-ansys05]
 execution_workstations: # [ace-linux-1] or [acma-ansys05]
+category:              # harness | engineering | data | platform | business | maintenance | personal
+subcategory:           # adaptive free-text kebab-case; infer via infer-category.py; grows as work evolves
 ---
 
 # Title
+
+## Mission
+**One sentence. The non-negotiable scope boundary for this WRK.**
+[What must be true when done — and what is explicitly NOT in scope.]
+
+> Read this at the start of every execution stage. If a task, file change, or decision is
+> not directly in service of this mission, stop and capture it as a new WRK item instead.
 
 ## What
 [1-3 sentence description]

@@ -19,16 +19,35 @@ echo "Checking x11vnc on ${ACE2_HOST}..."
 if ! ssh "${ACE2_HOST}" "ss -tlnp 2>/dev/null | grep -q ':${REMOTE_PORT}'"; then
     echo "x11vnc not running — attempting to start it via SSH..."
 
-    # Prompt for sudo password on ace-linux-2 via PTY, start x11vnc in background, then verify
-    echo "Enter sudo password for ace-linux-2 to start x11vnc:"
-    ssh -t "${ACE2_HOST}" \
-        "sudo x11vnc -display :0 -auth /run/user/120/gdm/Xauthority -forever -nopw -listen localhost -rfbport ${REMOTE_PORT} -bg -o /tmp/x11vnc.log && echo 'x11vnc launched'"
+    # Dynamically find display + auth from the live Xorg process
+    XINFO=$(ssh "${ACE2_HOST}" "ps wwwaux | grep -E ' /usr/lib/xorg/Xorg ' | grep -v grep | head -1")
+    XAUTH=$(echo "${XINFO}" | grep -oP '(?<=-auth )\S+')
+    # Determine display from X11 socket (e.g. :0 or :1)
+    XDISP=$(ssh "${ACE2_HOST}" "ls /tmp/.X11-unix/ | head -1 | sed 's/X/:/'" 2>/dev/null)
+    XDISP="${XDISP:-:0}"
+
+    if [ -z "${XAUTH}" ]; then
+        echo "ERROR: Could not find Xorg process on ace-linux-2. Is a display running?"
+        exit 1
+    fi
+    echo "Found display ${XDISP}, auth ${XAUTH}"
+
+    # Check if vamsee owns the display (no sudo needed) or root required
+    XOWNER=$(echo "${XINFO}" | awk '{print $1}')
+    if [ "${XOWNER}" = "vamsee" ]; then
+        ssh "${ACE2_HOST}" \
+            "x11vnc -display ${XDISP} -auth ${XAUTH} -noshm -forever -nopw -listen localhost -rfbport ${REMOTE_PORT} -bg -o /tmp/x11vnc-vamsee.log && echo 'x11vnc launched'"
+    else
+        echo "Display owned by ${XOWNER} — enter sudo password for ace-linux-2:"
+        ssh -t "${ACE2_HOST}" \
+            "sudo x11vnc -display ${XDISP} -auth ${XAUTH} -noshm -forever -nopw -listen localhost -rfbport ${REMOTE_PORT} -bg -o /tmp/x11vnc-vamsee.log && echo 'x11vnc launched'"
+    fi
 
     # Give x11vnc a moment to bind the port
     sleep 2
     if ! ssh "${ACE2_HOST}" "ss -tlnp 2>/dev/null | grep -q ':${REMOTE_PORT}'"; then
         echo "ERROR: x11vnc still not listening on port ${REMOTE_PORT}."
-        echo "  Check log: ssh ace-linux-2 'cat /tmp/x11vnc.log'"
+        echo "  Check log: ssh ace-linux-2 'cat /tmp/x11vnc-vamsee.log'"
         exit 1
     fi
     echo "x11vnc is up."

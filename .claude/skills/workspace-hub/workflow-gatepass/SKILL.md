@@ -32,6 +32,8 @@ invoke: workflow-gatepass
 Use this skill whenever a WRK item is being progressed through execution and close.
 It makes the lifecycle sequence explicit and blocks bypass behavior.
 
+Operating principle: **humans steer, agents execute**.
+
 ## Required Lifecycle Chain
 
 1. Capture.
@@ -39,8 +41,14 @@ It makes the lifecycle sequence explicit and blocks bypass behavior.
 3. Triage.
 4. Plan Draft.
 5. User Review - Plan (Draft) as an agent-user interactive plan-mode session:
-   ask tough clarifying questions, challenge weak assumptions, think hard, and
-   research hard; then open completed HTML in default browser and push review docs to `origin`.
+   - ask tough clarifying questions,
+   - challenge weak assumptions and surface tradeoffs,
+   - think hard and research hard before progressing,
+   - research tests/evals from available Resource Intelligence and Document
+     Intelligence artifacts,
+   - seek user review of proposed tests/evals and ask user to add/adjust
+     tests/evals before progression,
+   - open completed HTML in default browser and push review docs to `origin`.
 6. Cross-Review.
 7. User Review - Plan (Final) with completed HTML opened in default browser and review docs pushed to `origin`.
 8. Claim / Activation.
@@ -93,6 +101,13 @@ When documenting next work in markdown artifacts, use a table with an explicit
 - No user-review acceptance unless the completed HTML was opened in the default browser.
 - No stage-5 completion unless the interactive question-and-decision loop is
   captured in the plan evidence (including explicit tough-question outcomes).
+- No stage-5 completion unless test/eval proposals were derived from available
+  resource/document intelligence and reviewed with user disposition.
+- No stage-5 completion unless `user-review-plan-draft.yaml` (or equivalent)
+  captures tough questions, challenged assumptions, tradeoffs, and user test/eval
+  additions from resource/document intelligence.
+- No user-review completion (stages 5/7/17) unless the Gate-Pass Stage Status
+  section was reviewed with the user (table + summary) and gaps were called out.
 - No user-review acceptance unless relevant review artifacts are pushed to `origin`
   for distributed review (repo-local + remote visibility).
 - No close without a per-WRK stage ledger in assets (`stage_evidence_ref`) covering stages 1-20.

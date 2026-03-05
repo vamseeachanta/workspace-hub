@@ -5,8 +5,8 @@ description: >
   design system, complete section catalog, interactivity layer, and rendering rules so every
   draft-plan, final-plan, implementation-review, and close-review HTML looks and behaves
   identically regardless of which agent or session generated it.
-version: 1.1.0
-updated: 2026-03-04
+version: 1.2.0
+updated: 2026-03-05
 category: workspace-hub
 type: skill
 trigger: manual
@@ -354,6 +354,7 @@ Always the first section inside the first card:
 | 7 | Agentic AI Horizon | 5 + 7 | AI-horizon analysis paragraph |
 | 8 | Plan | 5 + 7 | Phases as `<h3>` sub-sections |
 | 9 | Resource Intelligence | 5 + 7 | Key files, constraints, scope context |
+| 9a | Gate-Pass Stage Status | 5 + 7 | Stage-by-stage table + summary; review before user-facing recommendation |
 | 10 | Open Questions | 5 only | Unresolved items; omit if none |
 | 11 | Changes from Draft | 7 only | What changed after cross-review |
 | 12 | Cross-Review Summary | 7 only | Provider verdict table (see §3.4) |
@@ -388,6 +389,7 @@ Always the first section inside the first card:
 | 23 | Lifecycle Enforcement Progress | Table: workstream, status, evidence, notes |
 | 24 | Next Work | Disposition table for deferred items |
 | 25 | Asset Index | `.artifact-box` — bullet list of all evidence file paths |
+| 25a | Gate-Pass Stage Status | Stage-by-stage table + summary; mandatory review in stage 17 |
 
 ---
 
@@ -558,6 +560,9 @@ uv run --no-project python scripts/work-queue/generate-html-review.py \
 This skill is **mandatory** at the following stages. An agent must not proceed to the next
 stage without producing a conforming HTML artifact and opening it in the default browser.
 
+At user-review checkpoints (stages 5, 7, and 17), agents must review the
+`Gate-Pass Stage Status` section with the user before presenting recommendations.
+
 | Stage | Artifact type | Trigger |
 |-------|--------------|---------|
 | 5 — User Review Plan (Draft) | `plan-draft` | Before presenting draft to user |
@@ -595,6 +600,11 @@ Before handing an HTML artifact to the user, verify:
 ---
 
 ## Version History
+
+- **1.2.0** (2026-03-05): Gate-pass section integration
+  - Added `Gate-Pass Stage Status` as a required user-review section for stages 5/7/17 artifacts
+  - Requires table + summary view and explicit review before user-facing recommendation
+  - Synced generator behavior to include stage/gate table from `evidence/stage-evidence.yaml`
 
 - **1.1.0** (2026-03-04): Generator enhancements (WRK-1011)
   - `_suppress_duplicate_generated_sections()`: avoids double Skill Manifest / Test Summary / Cross-Review when body already contains them

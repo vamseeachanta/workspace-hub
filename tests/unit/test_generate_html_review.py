@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import io
 from pathlib import Path
 
 import pytest
@@ -246,13 +247,245 @@ def test_close_normalizes_future_work_to_next_work(mod):
 
 
 def test_suppress_duplicate_generated_sections(mod):
-    body_html = "<h2>Cross-Review Summary</h2><p>Existing.</p><h2>Test Summary</h2><p>Existing.</p>"
-    sm, te, rv = mod._suppress_duplicate_generated_sections(
+    body_html = (
+        "<h2>Cross-Review Summary</h2><p>Existing.</p>"
+        "<h2>Test Summary</h2><p>Existing.</p>"
+        "<h2>Gate-Pass Stage Status</h2><p>Existing.</p>"
+    )
+    sm, te, rv, gp = mod._suppress_duplicate_generated_sections(
         body_html,
         "<h2>Skill Manifest</h2><p>Generated.</p>",
         "<h2>Test Summary</h2><p>Generated.</p>",
         "<h2>Cross-Review Summary</h2><p>Generated.</p>",
+        "<h2>Gate-Pass Stage Status</h2><p>Generated.</p>",
     )
     assert te == ""
     assert rv == ""
+    assert gp == ""
     assert sm != ""
+
+
+def test_render_gatepass_section_not_applicable(mod):
+    html = mod.render_gatepass_section({
+        "present": False,
+        "stages": [],
+        "summary": "Missing stage-evidence.yaml",
+        "reason": "stage-evidence.yaml missing",
+    })
+    assert "Gate-Pass Stage Status" in html
+    assert "FAIL" in html
+    assert "Missing stage-evidence.yaml" in html
+
+
+def test_render_gatepass_section_empty_rows_is_fail(mod):
+    html = mod.render_gatepass_section({
+        "present": True,
+        "stages": [],
+        "summary": "0 pass · 0 fail · 0 pending/warn · 0 n/a",
+        "autonomy": "L1",
+    })
+    assert "Gate-Pass Stage Status" in html
+    assert "No valid stage rows found" in html
+    assert "FAIL" in html
+
+
+def test_collect_stage_gatepass_reads_and_sorts(tmp_path: Path):
+    mod = _load_html_module()
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "stage-evidence.yaml").write_text(
+        """
+autonomy_maturity_level: L3
+stages:
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: a.md
+  - order: 2
+    stage: Resource Intelligence
+    status: blocked
+    evidence: b.md
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    evidence: c.md
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    gp = mod.collect_stage_gatepass(str(tmp_path))
+    assert gp["present"] is True
+    assert gp["autonomy"] == "L3"
+    assert [s["order"] for s in gp["stages"]] == [2, 10, 18]
+    assert gp["summary"] == "1 pass · 1 fail · 0 pending/warn · 1 n/a"
+
+
+def test_collect_stage_gatepass_legacy_autonomy_and_bool_human_decision(tmp_path: Path):
+    mod = _load_html_module()
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "stage-evidence.yaml").write_text(
+        """
+autonomy_maturity: L2
+stages:
+  - order: 5
+    stage: User Review
+    status: pending
+    evidence: d.md
+    human_decision_required: true
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    gp = mod.collect_stage_gatepass(str(tmp_path))
+    assert gp["present"] is True
+    assert gp["autonomy"] == "L2"
+    assert gp["stages"][0]["human_decision_required"] == "yes"
+
+
+def test_collect_stage_gatepass_missing_file(tmp_path: Path):
+    mod = _load_html_module()
+    gp = mod.collect_stage_gatepass(str(tmp_path))
+    assert gp["present"] is False
+    assert gp["summary"] == "Missing stage-evidence.yaml"
+
+
+def test_collect_stage_gatepass_malformed_yaml(tmp_path: Path):
+    mod = _load_html_module()
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "stage-evidence.yaml").write_text("key: [unclosed", encoding="utf-8")
+    gp = mod.collect_stage_gatepass(str(tmp_path))
+    assert gp["present"] is False
+
+
+def test_collect_stage_gatepass_non_mapping_root(tmp_path: Path):
+    mod = _load_html_module()
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "stage-evidence.yaml").write_text("- a\n- b\n", encoding="utf-8")
+    gp = mod.collect_stage_gatepass(str(tmp_path))
+    assert gp["present"] is False
+
+
+def test_collect_stage_gatepass_non_list_stages(tmp_path: Path):
+    mod = _load_html_module()
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "stage-evidence.yaml").write_text(
+        "stages: not-a-list\n",
+        encoding="utf-8",
+    )
+    gp = mod.collect_stage_gatepass(str(tmp_path))
+    assert gp["present"] is False
+    assert gp["reason"] == "stages must be a list"
+
+
+def test_render_gatepass_section_escapes_html(mod):
+    gp = {
+        "present": True,
+        "summary": "1 < 2 & risky",
+        "autonomy": "L2<script>",
+        "stages": [
+            {
+                "order": "<b>1</b>",
+                "stage": "<Stage>",
+                "status": "done",
+                "gate": "PASS",
+                "evidence": "path/<bad>.md",
+                "owner": "user&agent",
+                "blocker": "no",
+                "comment": "x < y",
+                "human_decision_required": "yes",
+            }
+        ],
+    }
+    html = mod.render_gatepass_section(gp)
+    assert "<script>" not in html
+    assert "&lt;b&gt;1&lt;/b&gt;" in html
+    assert "&lt;Stage&gt;" in html
+    assert "1 &lt; 2 &amp; risky" in html
+
+
+def test_render_wrk_html_does_not_emit_empty_gatepass_card(mod, minimal_meta, minimal_sections):
+    sections = dict(minimal_sections)
+    sections["gatepass_html"] = ""
+    html = mod.render_wrk_html(minimal_meta, "plan-draft", sections)
+    assert '<div class="card">\n    \n  </div>' not in html
+
+
+def test_gatepass_section_appears_once_when_already_in_body(mod):
+    body_html = "<h2>Gate-Pass Stage Status</h2><p>Existing.</p>"
+    sm, te, rv, gp = mod._suppress_duplicate_generated_sections(
+        body_html,
+        "<h2>Skill Manifest</h2><p>Generated.</p>",
+        "<h2>Test Summary</h2><p>Generated.</p>",
+        "<h2>Cross-Review Summary</h2><p>Generated.</p>",
+        "<h2>Gate-Pass Stage Status</h2><p>Generated.</p>",
+    )
+    with_missing = mod._append_missing_key_sections(
+        body_html,
+        "plan-draft",
+        extra_html=[sm, te, rv, gp],
+    )
+    assert with_missing.count("Gate-Pass Stage Status") == 1
+
+
+def test_render_wrk_html_includes_gatepass_once_when_only_generated(mod, minimal_meta):
+    sections = {
+        "lede": "lede",
+        "exec_summary_html": "<p>summary</p>",
+        "body_html": "<h2>What</h2><p>body</p>",
+        "skill_manifest_html": "",
+        "gatepass_html": "<h2>Gate-Pass Stage Status</h2><p>Generated.</p>",
+        "test_evidence_html": "",
+        "reviewer_html": "",
+    }
+    html = mod.render_wrk_html(minimal_meta, "plan-draft", sections)
+    assert html.count("Gate-Pass Stage Status") == 1
+
+
+def test_generate_review_renders_single_gatepass_heading(tmp_path: Path, monkeypatch):
+    mod = _load_html_module()
+    repo = tmp_path / "repo"
+    queue = repo / ".claude" / "work-queue"
+    working = queue / "working"
+    assets = queue / "assets" / "WRK-1"
+    evidence = assets / "evidence"
+    working.mkdir(parents=True)
+    evidence.mkdir(parents=True)
+    (working / "WRK-1.md").write_text(
+        """---
+id: WRK-1
+title: Sample
+status: working
+route: B
+complexity: B
+orchestrator: codex
+computer: ace-linux-1
+created_at: 2026-03-05
+percent_complete: 50
+---
+
+## What
+Build sample.
+""",
+        encoding="utf-8",
+    )
+    (evidence / "stage-evidence.yaml").write_text(
+        """
+autonomy_maturity_level: L2
+stages:
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    evidence: evidence.md
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    out = assets / "plan-draft-review.html"
+    mod.generate_review("WRK-1", "plan-draft", str(out))
+    html = out.read_text(encoding="utf-8")
+    assert html.count("<h2>Gate-Pass Stage Status</h2>") == 1

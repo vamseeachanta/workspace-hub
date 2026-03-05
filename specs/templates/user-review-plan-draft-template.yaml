@@ -1,0 +1,32 @@
+wrk_id: WRK-000
+stage: plan_draft
+reviewed_at: "2026-03-05T00:00:00Z"
+reviewed_by: user
+interactive_session: true
+tough_questions_asked:
+  - question: "What failure mode hurts users most if this plan is wrong?"
+    outcome: "Prioritized reliability checks in acceptance criteria."
+assumptions_challenged:
+  - assumption: "Dependency X is stable."
+    disposition: "Rejected"
+    note: "Added fallback path and monitoring checks."
+tradeoffs_decided:
+  - decision: "Ship narrow scope first."
+    rationale: "Lower risk and faster validation cycle."
+tests_evals_proposed_from_intelligence:
+  sources:
+    - resource_intelligence
+    - document_intelligence
+  proposed:
+    - "Startup latency under 800ms"
+    - "Critical user journeys span threshold <= 2s"
+user_test_eval_changes:
+  added:
+    - "Edge-case replay for failed onboarding path"
+  removed: []
+  modified:
+    - "Tightened timeout from 1200ms to 800ms"
+gatepass_section_reviewed_with_user: true
+gatepass_summary_at_review: "16 pass · 0 fail · 2 pending/warn · 1 n/a"
+approval_decision: revise_and_rerun
+notes: "Revise plan with added evals, then rerun stage 5."

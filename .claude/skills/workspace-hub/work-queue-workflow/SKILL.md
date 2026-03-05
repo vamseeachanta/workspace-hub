@@ -30,6 +30,9 @@ invoke: work-queue-workflow
 This skill is a clear entrypoint for users who ask for the "work-queue workflow".
 It delegates to canonical `work-queue` and `workflow-gatepass` contracts.
 
+Operating principle: **humans steer, agents execute**.
+Every stage should explicitly track whether a human decision is required.
+
 ## Start-to-Finish Chain
 
 1. Run `session-start`.
@@ -39,9 +42,17 @@ It delegates to canonical `work-queue` and `workflow-gatepass` contracts.
    `workflow-gatepass`.
    At **stages 5, 7, 11, 17, 19** run `generate-html-review.py --type <artifact_type>`
    (see `workflow-html` SKILL for artifact types and section catalog).
-   Stage 5 is an agent-user interactive plan-mode session: ask tough clarifying
-   questions, challenge weak assumptions, think hard, and research hard before
-   allowing progression to stage 6.
+   Stage 5 is an agent-user interactive plan-mode session:
+   - ask tough clarifying questions,
+   - challenge weak assumptions and surface tradeoffs,
+   - think hard and research hard before allowing progression to stage 6,
+   - research tests/evals from available Resource Intelligence and Document
+     Intelligence artifacts,
+   - seek user review of proposed tests/evals and ask user to add/adjust
+     tests/evals before moving forward.
+   User-review checkpoints (stages 5/7/17) must include explicit review of the
+   HTML **Gate-Pass Stage Status** section (stage-by-stage table + summary) before
+   presenting final recommendations to the user.
    User-review checkpoints (stages 5/7/17) must include default-browser open and
    origin publish evidence for the canonical warm-parchment HTML artifact.
 5. Verify close gate evidence and integrated/repo tests (3-5 pass records).
@@ -67,3 +78,7 @@ must always resolve to the canonical 20-stage chain.
 - In multi-agent parallel execution, keep WRK boundaries strict: unrelated changes
   from other active agents are non-blocking and must be documented (not reverted)
   in the current WRK as out-of-scope side effects.
+- Keep AGENTS concise and map-like; use repo-local docs as system-of-record.
+- Favor mechanical enforcement (scripts/linters/tests) over prose-only rules.
+- Throughput policy: fast merges are acceptable only with bounded-risk controls
+  (rollback path, follow-up WRK capture, recurring cleanup/refactor runs).
