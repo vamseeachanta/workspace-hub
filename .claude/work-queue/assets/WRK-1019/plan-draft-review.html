@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Draft Review: WRK-1019 — feat(skills): repo-portfolio-steering skill — balance harnes</title>
+  <style>
+:root {
+  --bg:       #f3efe6;
+  --panel:    #fffdf8;
+  --ink:      #172126;
+  --muted:    #55636b;
+  --accent:   #0f766e;
+  --accent-2: #8a5a2b;
+  --line:     #d9d0c0;
+  --shadow:   0 16px 40px rgba(20,33,38,0.08);
+  --good:     #166534;
+  --warn:     #b45309;
+  --bad:      #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.5;margin:0;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.05);padding:.2em .4em;border-radius:3px;}
+pre code{background:none;padding:0;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.88rem;}
+.hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
+.hero-inner,.content{max-width:1180px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
+  color:var(--accent);font-weight:700;}
+h1{margin:10px 0 12px;font-size:clamp(2rem,4vw,3.8rem);line-height:.95;}
+.lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
+.content{padding:28px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
+  color:var(--accent-2);letter-spacing:.02em;}
+h2[data-collapsed="true"]{margin-bottom:4px;}
+h2 .section-summary-chip{max-width:min(70ch,70vw);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
+h3{color:var(--ink);margin-top:18px;}
+.exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
+  border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
+  border-radius:10px;}
+.exec-summary h2{margin-top:0;border:none;color:var(--accent);}
+.artifact-box{background:#fff;padding:16px;border-radius:10px;
+  border:1px solid var(--line);}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem;}
+th,td{border-top:1px solid var(--line);padding:10px 8px;
+  text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.86rem;color:var(--ink);}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:.9rem;}
+.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-warn{background:#fef3c7;color:var(--warn);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-info{background:#dbeafe;color:#1d4ed8;}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:900px){.split{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}
+  tr,td,th{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-1019 &middot; Plan Draft Review</div>
+    <h1>feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives</h1>
+    <p class="lede">**Create a `/repo-portfolio-steering` skill that gives a periodic read on (a) harness vs engineering work balance, (b) which technical capabilities are closest to GTM-ready, and (c) the next highest-leverage action to find projects and fund the repos — preventing harness over-investment at the expense of billable engineering output.**</p>
+  </div>
+</header>
+
+<main class="content">
+  <div class="meta">
+  <div class="pill"><strong>WRK ID</strong>WRK-1019</div>
+  <div class="pill"><strong>Status</strong><span class="badge badge-info">PENDING</span></div>
+  <div class="pill"><strong>Route</strong>complex</div>
+  <div class="pill"><strong>Orchestrator</strong>claude</div>
+  <div class="pill"><strong>Computer</strong>ace-linux-1</div>
+  <div class="pill"><strong>Created</strong>2026-03-05</div>
+  <div class="pill"><strong>Commit</strong><code>n/a</code></div>
+  <div class="pill"><strong>% Done</strong>0%</div>
+</div>
+
+  <div class="card">
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <p>A skill that answers the recurring strategic question: <em>"Given where the queue is today, am I spending the right proportion of effort on harness vs engineering work, and what should I do next to move toward funded projects?"</em></p>
+<p>The skill is not a dashboard — it is an actionable steering report. It reads the current queue state and produces:</p>
+<ol>
+<li><strong>Balance snapshot</strong>: ratio of harness : engineering : other work in the active queue (pending + working)</li>
+<li><strong>Harness saturation signal</strong>: flag if harness items exceed a threshold (e.g. &gt;30% of queue) — signals over-sharpening</li>
+<li><strong>GTM-ready technical capabilities</strong>: which engineering modules have enough maturity to be demoed/sold today (based on test coverage, documentation, brochure status)</li>
+<li><strong>Next 3 actions to fund</strong>: specific WRK items or module pairs that, if completed, unlock a project pitch or billable engagement</li>
+<li><strong>Recommended harness budget</strong>: how many harness items to run per 10 engineering items (a spend rate, not a ban)</li>
+</ol>
+    </div>
+
+    <h2>Skill Manifest</h2>
+<table>
+  <thead><tr><th>Category</th><th>Skill</th></tr></thead>
+  <tbody><tr><td colspan='2' style='color:var(--muted)'>Not applicable.</td></tr></tbody>
+</table>
+<p style="font-size:.82rem;color:var(--muted)">Source: <code>none</code></p>
+  </div>
+
+  <div class="card">
+    <h1>feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives</h1>
+<h2>Mission</h2>
+<p><strong>Create a <code>/repo-portfolio-steering</code> skill that gives a periodic read on (a) harness vs engineering work balance, (b) which technical capabilities are closest to GTM-ready, and (c) the next highest-leverage action to find projects and fund the repos — preventing harness over-investment at the expense of billable engineering output.</strong></p>
+<h2>What</h2>
+<p>A skill that answers the recurring strategic question: <em>"Given where the queue is today, am I spending the right proportion of effort on harness vs engineering work, and what should I do next to move toward funded projects?"</em></p>
+<p>The skill is not a dashboard — it is an actionable steering report. It reads the current queue state and produces:</p>
+<ol>
+<li><strong>Balance snapshot</strong>: ratio of harness : engineering : other work in the active queue (pending + working)</li>
+<li><strong>Harness saturation signal</strong>: flag if harness items exceed a threshold (e.g. &gt;30% of queue) — signals over-sharpening</li>
+<li><strong>GTM-ready technical capabilities</strong>: which engineering modules have enough maturity to be demoed/sold today (based on test coverage, documentation, brochure status)</li>
+<li><strong>Next 3 actions to fund</strong>: specific WRK items or module pairs that, if completed, unlock a project pitch or billable engagement</li>
+<li><strong>Recommended harness budget</strong>: how many harness items to run per 10 engineering items (a spend rate, not a ban)</li>
+</ol>
+<h2>Why</h2>
+<p>The harness (skills, queue, workflow, hooks) is essential infrastructure but has no natural stopping point — it can absorb unlimited effort. Without a steering check, sessions drift toward harness refinement and the engineering repos (which generate revenue) stagnate.</p>
+<p>GTM objectives require specific technical capabilities to exist and be demonstrable. This skill makes the connection explicit: here is what you need to build, here is what you need to market, here is what the queue should look like to get there.</p>
+<h2>Skill Design</h2>
+<p><strong>Name</strong>: <code>repo-portfolio-steering</code>
+<strong>Trigger</strong>: <code>/repo-portfolio-steering</code> or during <code>/session-start</code> weekly mode
+<strong>Output</strong>: Structured steering report (~1 page) with 5 sections above
+<strong>Inputs</strong>: INDEX.md category view, <code>specs/data-sources/</code>, brochure status fields, WRK <code>category</code> fields</p>
+<h3>Official Plugin Composition Pattern</h3>
+<p>This skill is a <strong>custom composition skill</strong> — it references official plugins rather than embedding their logic:</p>
+<table>
+<thead>
+<tr>
+<th>Official plugin</th>
+<th>Role in this skill</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>feature-dev@claude-plugin-directory</code></td>
+<td>Multi-phase guided workflow structure (7-phase pattern: discover → explore → design → implement → review → summarise)</td>
+</tr>
+<tr>
+<td><code>skill-creator@claude-plugin-directory</code></td>
+<td>If the steering report recommends creating a new skill, delegate to this plugin</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule</strong>: Do NOT copy logic from official plugins into this SKILL.md. Call or reference them by name.
+When a new plugin release drops, update the reference — the custom layer adapts only for workspace-specific inputs (INDEX.md, brochure_status, WRK category fields).</p>
+<p>This mirrors the pattern established in <code>skill-creator/SKILL.md</code> v2.2.0: official plugin = core mechanics; custom skill = thin workspace-specific orchestration layer on top.</p>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] Skill file at <code>.claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md</code></li>
+<li>[ ] Balance snapshot: reads INDEX.md By Category and computes harness % vs engineering % of active queue</li>
+<li>[ ] Harness saturation threshold: configurable (default 30%), warns when exceeded</li>
+<li>[ ] GTM-readiness scan: reads brochure_status fields + test coverage proxies to rank modules by demo-readiness</li>
+<li>[ ] "Next 3 to fund" section: maps high-maturity engineering WRKs to GTM opportunities (engineering domain → client persona → project type)</li>
+<li>[ ] Recommended harness budget: outputs a spend-rate recommendation (e.g. "run 1 harness item per 5 engineering items this week")</li>
+<li>[ ] Integrates with <code>/session-start</code> as an optional weekly steering mode</li>
+<li>[ ] Skill description triggers on "project funding", "GTM", "balance harness", "portfolio steering", "what to build next"</li>
+</ul>
+<h2>Agentic AI Horizon</h2>
+<ul>
+<li>As the queue grows and engineering modules mature, this skill becomes the primary planning tool for deciding where to invest.</li>
+<li>The harness/engineering ratio signal is a leading indicator: if harness &gt; 30%, the next 2 weeks of sessions should be pure engineering.</li>
+<li>GTM-ready modules generate project opportunities → funded work → more engineering investment → virtuous cycle.</li>
+</ul>
+<hr />
+<p><em>Source: "balance harness progress vs technical work to achieve GTM objectives, find projects, fund repos"</em></p>
+<h2>Prompt Start Context</h2><p>Not applicable.</p><h2>Plan</h2><p>Not applicable.</p><h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p>
+  </div>
+
+  <div class="card">
+    <h2>Gate-Pass Stage Status</h2><p><span class="badge badge-fail">FAIL</span> <strong>Missing stage-evidence.yaml</strong> — stage-evidence.yaml missing</p>
+  </div>
+
+  <div class="card">
+    <h2>Test Summary</h2>
+<table>
+  <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Example Pack</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1019/example-pack.md</code></td></tr>
+    <tr><td>Variation Tests</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1019/variation-test-results.md</code></td></tr>
+    <tr><td>Integrated Repo Tests</td><td><span class="badge badge-warn">0 tests — outside 3-5</span> <span class="badge badge-info">not all pass</span></td>
+        <td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1019/execute-evidence.yaml</code></td></tr>
+  </tbody>
+</table>
+<p><strong>Variation summary:</strong> No variation-test summary available.</p>
+    <h2>Cross-Review Summary</h2><p>Not applicable.</p>
+  </div>
+
+</main>
+
+<script>
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+/* Collapsible cards with summary preview */
+document.querySelectorAll('.card h2').forEach(h2=>{
+  h2.style.cursor='pointer';
+  h2.title='Click to collapse/expand';
+  function buildSummary(sibs){
+    const badges=[];
+    sibs.forEach(s=>s.querySelectorAll('.badge').forEach(b=>badges.push(b.outerHTML)));
+    const bHtml=badges.slice(0,4).join(' ');
+    let text='';
+    for(const s of sibs){
+      if(s.tagName==='UL'||s.tagName==='OL'){
+        const n=s.querySelectorAll('li').length;
+        text=n+' item'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='TABLE'){
+        const n=s.querySelectorAll('tbody tr').length;
+        text=n+' row'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='P'&&s.textContent.trim()){
+        text=s.textContent.trim().slice(0,80)+(s.textContent.length>80?'\u2026':'');break;
+      }
+    }
+    const parts=[bHtml,text].filter(Boolean).join(' &nbsp;&middot;&nbsp; ');
+    return parts||'&nbsp;';
+  }
+  const sibs=[];let el=h2.nextElementSibling;
+  while(el){sibs.push(el);el=el.nextElementSibling;}
+  const chip=document.createElement('span');
+  chip.style.cssText='display:inline-block;margin-left:12px;font-size:.8rem;font-weight:400;'+
+    'color:#55636b;vertical-align:middle;pointer-events:none;';
+  chip.className='section-summary-chip';
+  chip.innerHTML=buildSummary(sibs);h2.appendChild(chip);
+  const arrow=document.createElement('span');
+  arrow.style.cssText='float:right;font-size:.8rem;color:#0f766e;user-select:none;margin-top:2px;';
+  arrow.textContent='▾';h2.appendChild(arrow);
+  h2.addEventListener('click',()=>{
+    const col=h2.dataset.collapsed==='true';
+    sibs.forEach(s=>s.style.display=col?'':'none');
+    h2.dataset.collapsed=col?'false':'true';
+    h2.style.borderBottomColor=col?'':'transparent';
+    chip.style.opacity=col?'0.75':'1';
+    arrow.textContent=col?'▾':'▸';
+  });
+});
+
+/* Sticky auto-TOC */
+(function(){
+  const hs=[...document.querySelectorAll('.content .card h2')];
+  if(hs.length<4)return;
+  const nav=document.createElement('nav');
+  nav.id='toc';
+  nav.style.cssText='position:sticky;top:0;z-index:100;background:rgba(255,253,248,.95);'+
+    'border-bottom:1px solid #d9d0c0;padding:8px 24px;font-size:.82rem;'+
+    'display:flex;flex-wrap:wrap;gap:6px 18px;';
+  hs.forEach((h,i)=>{
+    if(!h.id)h.id='sec-'+i;
+    const a=document.createElement('a');
+    a.href='#'+h.id;a.textContent=h.textContent.replace('▾','').replace('▸','').trim();
+    a.style.cssText='color:#0f766e;text-decoration:none;white-space:nowrap;';
+    a.onmouseenter=()=>a.style.textDecoration='underline';
+    a.onmouseleave=()=>a.style.textDecoration='none';
+    nav.appendChild(a);
+  });
+  document.body.insertBefore(nav,document.querySelector('.content'));
+})();
+
+/* Back-to-top */
+const btn=document.createElement('button');
+btn.textContent='↑ Top';
+btn.style.cssText='position:fixed;bottom:28px;right:28px;padding:8px 14px;'+
+  'background:#0f766e;color:#fff;border:none;border-radius:8px;cursor:pointer;'+
+  'font-size:.85rem;opacity:0;transition:opacity .2s;z-index:200;';
+document.body.appendChild(btn);
+window.addEventListener('scroll',()=>btn.style.opacity=scrollY>300?'1':'0');
+btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>
