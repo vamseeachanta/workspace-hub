@@ -1,7 +1,7 @@
 ---
 name: work-queue
 description: Maintains a queue of work items (features, bugs, tasks) across workspace-hub repositories with two-phase capture and process pipeline
-version: 1.6.0
+version: 1.6.1
 category: workspace-hub
 type: skill
 trigger: manual
@@ -122,6 +122,33 @@ the 20-stage contract):
 No implementation work is allowed before step 5.
 Inferred signals are not measured signals; only explicit stage signals emitted by
 scripts/logging count for compliance reporting.
+
+## Parallel Work Policy (/work Orchestration)
+
+`/work` must distinguish between:
+
+- Independent tasks: execute under separate WRKs with separate evidence packages.
+- Parallel related tasks: allow concurrent execution across agents, but each agent
+  only modifies files in its active WRK scope.
+
+If an agent discovers file changes from another parallel agent that are outside the
+active WRK scope:
+
+- treat them as non-blocking,
+- do not revert or “clean up” those changes unless explicitly instructed,
+- continue the active WRK lifecycle,
+- log the observation in the active WRK under `Out-of-Scope Side Effects`.
+
+## Scope Control (First Pass)
+
+- Orchestrator may check out one or more WRK items for coordinated parallel work.
+- Planning is restricted to WRK planning surfaces:
+  - WRK body for Route A/B
+  - `specs/wrk/WRK-<id>/` for Route C
+  - `.claude/work-queue/assets/WRK-<id>/` evidence artifacts
+- If planning edits another WRK item, stop and request explicit user approval naming that WRK id.
+- Execution for the active WRK may touch the repository broadly when required by scope.
+- If execution expands into a separate domain/module family outside active WRK scope, stop and request explicit user approval.
 
 ## Outcome Feedback Loop (WRK-690)
 
@@ -254,21 +281,21 @@ flowchart TD
 | 2. Resource Intelligence | `resource-intelligence` | `scripts/init-resource-pack.sh` (as needed) | `resource-intelligence.yaml` |
 | 3. Triage | `/work` triage step | `scripts/work-queue/assign-workstations.py` | WRK frontmatter triage fields |
 | 4. Plan Draft | `plan` flow | `scripts/agents/plan.sh` | Draft plan + HTML artifact |
-| 5. User Review - Plan (Draft) | user review gate | `scripts/work-queue/log-user-review-browser-open.sh`, `scripts/work-queue/log-user-review-publish.sh` | default browser open (`xdg-open`) + origin publish evidence |
+| 5. User Review - Plan (Draft) | user review gate + **`workflow-html`** | `generate-html-review.py --type plan-draft`, `log-user-review-browser-open.sh`, `log-user-review-publish.sh` | canonical plan-draft HTML opened in default browser + origin publish evidence |
 | 6. Cross-Review | `cross-review` flow | `scripts/review/cross-review.sh`, `submit-to-*.sh` | Multi-provider review outputs |
-| 7. User Review - Plan (Final) | user review gate | `scripts/work-queue/log-user-review-browser-open.sh`, `scripts/work-queue/log-user-review-publish.sh` | default browser open (`xdg-open`) + origin publish evidence |
+| 7. User Review - Plan (Final) | user review gate + **`workflow-html`** | `generate-html-review.py --type plan-final`, `log-user-review-browser-open.sh`, `log-user-review-publish.sh` | canonical plan-final HTML opened in default browser + origin publish evidence |
 | 8. Claim / Activation | claim gate | `scripts/work-queue/claim-item.sh`, `set-active-wrk.sh` | `claim.yaml` + `activation.yaml` + active WRK state |
 | 9. Work-Queue Routing Skill | `/work` | `scripts/agents/work.sh` | Routing evidence in logs |
 | 10. Work Execution | execute flow | `scripts/agents/execute.sh` | Execution changes + examples |
-| 11. Artifact Generation | review/output flow | `scripts/work-queue/generate-html-review.py` | HTML/report artifacts |
+| 11. Artifact Generation | review/output flow + **`workflow-html`** | `generate-html-review.py --type implementation` | canonical implementation HTML + evidence artifacts |
 | 12. TDD / Eval | test/eval flow | `uv run --no-project pytest ...` | Test/eval outputs |
 | 13. Agent Cross-Review | implementation review | `cross-review-package.md` | provider verdicts + finding closure |
 | 14. Verify Gate Evidence | gate verifier | `scripts/work-queue/verify-gate-evidence.py` | PASS/WARN/FAIL gate ledger + `gate-evidence-summary.{md,json}` |
 | 15. Future Work Synthesis | future-work planning | n/a | `future-work.yaml` / follow-up WRKs |
 | 16. Resource Intelligence Update | resource update | n/a | `resource-intelligence-update.yaml` |
-| 17. User Review - Implementation | close review gate | `scripts/work-queue/log-user-review-browser-open.sh`, `scripts/work-queue/log-user-review-publish.sh` | default browser open (`xdg-open`) + `user-review-close.yaml` + publish evidence |
+| 17. User Review - Implementation | close review gate + **`workflow-html`** | `generate-html-review.py --type close`, `log-user-review-browser-open.sh`, `log-user-review-publish.sh` | canonical close HTML opened in default browser + `user-review-close.yaml` + publish evidence |
 | 18. Reclaim | continuity recovery | n/a | `reclaim.yaml` when triggered |
-| 19. Close | close gate | `scripts/work-queue/close-item.sh` | done-state update + auto final HTML + validated evidence |
+| 19. Close | close gate + **`workflow-html`** | `scripts/work-queue/close-item.sh` | auto-generates close HTML via `generate-html-review.py --type close` + validated evidence |
 | 20. Archive | archive gate | `scripts/work-queue/archive-item.sh` | archived state + regenerated index |
 
 Template for per-WRK stage ledger:

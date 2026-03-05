@@ -1,0 +1,12 @@
+wrk_id: WRK-1003
+captured_at: "2026-03-04T22:47:50Z"
+captured_by: codex
+recommendations:
+  - priority: P1
+    wrk_id: WRK-1004
+    title: Continue codex gatepass extension after WRK-1003 completion
+    disposition: existing-updated
+    status: pending
+    captured: true
+    rationale: WRK-1004 is explicitly dependent on WRK-1003 completion and should proceed next.
+no_follow_ups_rationale: ""

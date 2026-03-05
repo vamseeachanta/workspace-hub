@@ -126,6 +126,20 @@ def _safe_workspace_ref(workspace_root: Path, ref: str | None) -> Path | None:
     return candidate
 
 
+def _summary_text(raw: str, fallback: str = "No summary available.") -> str:
+    text = re.sub(r"\s+", " ", (raw or "").strip())
+    if not text:
+        return fallback
+    return text[:140] + ("..." if len(text) > 140 else "")
+
+
+def _render_section(title: str, summary: str, content_html: str) -> str:
+    return (
+        f"<details open><summary><strong>{html.escape(title)}</strong> — "
+        f"{html.escape(summary)}</summary><div class=\"panel\">{content_html}</div></details>"
+    )
+
+
 def _collect_asset_files(assets_dir: Path) -> list[str]:
     if not assets_dir.exists():
         return []
@@ -238,63 +252,40 @@ def _render_final_html(wrk_id: str, meta: dict, sections: dict, test_rows: str, 
     <div class="pill"><strong>Provider</strong><br>{html.escape(str(meta.get("provider", "unknown")))}</div>
   </div>
 
-  <h2>Prompt Start Context</h2>
-  <div class="panel">{_html_md(sections.get("what", "") or "Not available.")}</div>
+  {_render_section("Prompt Start Context", _summary_text(sections.get("what", "")), _html_md(sections.get("what", "") or "Not available."))}
 
-  <h2>Why</h2>
-  <div class="panel">{_html_md(sections.get("why", "") or "Not available.")}</div>
+  {_render_section("Why", _summary_text(sections.get("why", "")), _html_md(sections.get("why", "") or "Not available."))}
 
-  <h2>Acceptance Criteria</h2>
-  <div class="panel">{_html_md(sections.get("acceptance", "") or "Not available.")}</div>
+  {_render_section("Acceptance Criteria", _summary_text(sections.get("acceptance", "")), _html_md(sections.get("acceptance", "") or "Not available."))}
 
-  <h2>Plan</h2>
-  <div class="panel">{_html_md(sections.get("plan", "") or "Not available.")}</div>
-  <h3>Plan Review Artifacts</h3>
-  <div class="panel">
-    <h4>Draft</h4>
-    {_html_md(sections.get("draft_review", ""))}
-    <h4>Final</h4>
-    {_html_md(sections.get("final_review", ""))}
-  </div>
+  {_render_section("Plan", _summary_text(sections.get("plan", "")), _html_md(sections.get("plan", "") or "Not available."))}
 
-  <h2>Execution Brief</h2>
-  <div class="panel">{_html_md(sections.get("execution_brief", "") or "Not available.")}</div>
+  {_render_section("Plan Review Artifacts", _summary_text((sections.get("draft_review", "") + " " + sections.get("final_review", "")).strip()), f"<h4>Draft</h4>{_html_md(sections.get('draft_review', ''))}<h4>Final</h4>{_html_md(sections.get('final_review', ''))}")}
 
-  <h2>Cross-Review Summary</h2>
-  <div class="panel">{_html_md(sections.get("cross_review", ""))}</div>
+  {_render_section("Execution Brief", _summary_text(sections.get("execution_brief", "")), _html_md(sections.get("execution_brief", "") or "Not available."))}
 
-  <h2>Test Summary</h2>
-  <table>
+  {_render_section("Cross-Review Summary", _summary_text(sections.get("cross_review", "")), _html_md(sections.get("cross_review", "")))}
+
+  <details open><summary><strong>Test Summary</strong> — {html.escape(_summary_text(str(len(sections.get("integrated_tests", []))) + " integrated/repo tests recorded."))}</summary><div class="panel"><table>
     <thead>
       <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
     </thead>
     <tbody>
       {test_rows}
     </tbody>
-  </table>
+  </table></div></details>
 
-  <h2>Gate Evidence Summary</h2>
-  <div class="panel">{_html_md(sections.get("gate_summary", ""))}</div>
+  {_render_section("Gate Evidence Summary", _summary_text(sections.get("gate_summary", "")), _html_md(sections.get("gate_summary", "")))}
 
-  <h2>Resource Intelligence</h2>
-  <div class="panel">
-    <h4>Resource Summary</h4>
-    {_html_md(sections.get("resource_summary", ""))}
-    <h4>Resource Pack</h4>
-    {_html_md(sections.get("resource_pack", ""))}
-  </div>
+  {_render_section("Resource Intelligence", _summary_text((sections.get("resource_summary", "") + " " + sections.get("resource_pack", "")).strip()), f"<h4>Resource Summary</h4>{_html_md(sections.get('resource_summary', ''))}<h4>Resource Pack</h4>{_html_md(sections.get('resource_pack', ''))}")}
 
-  <h2>Skill Manifest</h2>
-  <div class="panel">{_html_md(sections.get("skill_manifest", ""))}</div>
+  {_render_section("Skill Manifest", _summary_text(sections.get("skill_manifest", "")), _html_md(sections.get("skill_manifest", "")))}
 
-  <h2>Future Work</h2>
-  <div class="panel">{_html_md(sections.get("future_work", ""))}</div>
+  {_render_section("Future Work", _summary_text(sections.get("future_work", "")), _html_md(sections.get("future_work", "")))}
 
-  <h2>Stage Evidence Ledger</h2>
-  <div class="panel">{_html_md(sections.get("stage_evidence", ""))}</div>
+  {_render_section("Stage Evidence Ledger", _summary_text(sections.get("stage_evidence", "")), _html_md(sections.get("stage_evidence", "")))}
 
-  <h2>Asset Index</h2>
-  <div class="panel"><ul>{links_html}</ul></div>
+  <details open><summary><strong>Asset Index</strong> — {html.escape(_summary_text(str(links_html.count('<li>')) + " assets indexed."))}</summary><div class="panel"><ul>{links_html}</ul></div></details>
 </body>
 </html>
 """

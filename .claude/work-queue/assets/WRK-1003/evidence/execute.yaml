@@ -1,0 +1,23 @@
+wrk_id: WRK-1003
+executed_at: "2026-03-04T22:47:50Z"
+machine: ace-linux-2
+tdd_note: Codex rerun executed circle tests and gate checks against WRK-624 harness.
+integrated_repo_tests:
+  - name: circle unit tests (5/5 pass)
+    scope: repo
+    result: pass
+    command: uv run --no-project python -m pytest tests/unit/test_circle.py -v
+    artifact_ref: .claude/work-queue/assets/WRK-1003/test-results.md
+    notes: Reproduced WRK-1002 baseline behavior.
+  - name: claim gate verifier
+    scope: integrated
+    result: pass
+    command: uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-1003 --phase claim
+    artifact_ref: .claude/work-queue/assets/WRK-1003/variation-test-results.md
+    notes: Claim-phase lifecycle evidence validated.
+  - name: queue-state validation
+    scope: integrated
+    result: pass
+    command: bash scripts/work-queue/validate-queue-state.sh
+    artifact_ref: .claude/work-queue/assets/WRK-1003/variation-test-results.md
+    notes: Queue state valid with non-blocking stale-item warnings.

@@ -1,0 +1,29 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: c17a35f9ef404429a7762244445d58a0f8ea234f
+  documents:
+  - .claude/work-queue/assets/WRK-1003/plan-html-review-draft.md
+  published_at: '2026-03-04T22:46:55Z'
+  reviewer: user
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: c17a35f9ef404429a7762244445d58a0f8ea234f
+  documents:
+  - .claude/work-queue/assets/WRK-1003/plan-html-review-final.md
+  published_at: '2026-03-04T22:46:55Z'
+  reviewer: user
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: c17a35f9ef404429a7762244445d58a0f8ea234f
+  documents:
+  - .claude/work-queue/assets/WRK-1003/review-results.md
+  - .claude/work-queue/assets/WRK-1003/variation-test-results.md
+  published_at: '2026-03-04T22:47:50Z'
+  reviewer: user

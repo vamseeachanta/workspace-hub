@@ -3,8 +3,8 @@ name: work-queue-workflow
 description: >
   Explicit entrypoint skill for the WRK work-queue lifecycle workflow. Points to
   the canonical work-queue process and gatepass enforcement sequence.
-version: 1.0.0
-updated: 2026-03-03
+version: 1.0.1
+updated: 2026-03-04
 category: workspace-hub
 triggers:
   - work-queue workflow
@@ -14,6 +14,7 @@ triggers:
 related_skills:
   - coordination/workspace/work-queue
   - workspace-hub/workflow-gatepass
+  - workspace-hub/workflow-html
   - workspace-hub/session-start
   - workspace-hub/session-end
 capabilities:
@@ -36,8 +37,10 @@ It delegates to canonical `work-queue` and `workflow-gatepass` contracts.
 3. Ensure plan exists and user approval explicitly names WRK ID.
 4. Run the canonical **20-stage lifecycle** (Capture -> Archive) from
    `workflow-gatepass`.
+   At **stages 5, 7, 11, 17, 19** run `generate-html-review.py --type <artifact_type>`
+   (see `workflow-html` SKILL for artifact types and section catalog).
    User-review checkpoints (stages 5/7/17) must include default-browser open and
-   origin publish evidence for review artifacts.
+   origin publish evidence for the canonical warm-parchment HTML artifact.
 5. Verify close gate evidence and integrated/repo tests (3-5 pass records).
 6. Close and archive using queue scripts.
 
@@ -58,3 +61,6 @@ must always resolve to the canonical 20-stage chain.
 - Refresh weekly gate-analysis before presenting coverage conclusions:
   1) `build-session-gate-analysis.py` 2) `audit-session-signal-coverage.py`.
 - Treat per-agent coverage gaps as workflow defects even if aggregate metrics pass.
+- In multi-agent parallel execution, keep WRK boundaries strict: unrelated changes
+  from other active agents are non-blocking and must be documented (not reverted)
+  in the current WRK as out-of-scope side effects.

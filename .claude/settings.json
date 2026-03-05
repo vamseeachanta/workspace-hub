@@ -9,6 +9,7 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "MAX_TEAMMATES": "10"
   },
+  "includeCoAuthoredBy": true,
   "permissions": {
     "allow": [
       "Bash(git status)",
@@ -45,6 +46,7 @@
       "Bash(eval:*)"
     ]
   },
+  "enabledMcpjsonServers": [],
   "hooks": {
     "PreToolUse": [
       {
@@ -56,13 +58,13 @@
           },
           {
             "type": "command",
-            "statusMessage": "Ecosystem link check",
-            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/propagate-ecosystem-check.sh\" 2>/dev/null || true"
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/propagate-ecosystem-check.sh\" 2>/dev/null || true",
+            "statusMessage": "Ecosystem link check"
           },
           {
             "type": "command",
-            "statusMessage": "Session readiness check",
-            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/readiness/readiness.sh\" 2>/dev/null || true"
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/readiness/readiness.sh\" 2>/dev/null || true",
+            "statusMessage": "Session readiness check"
           }
         ]
       },
@@ -135,24 +137,41 @@
         "hooks": [
           {
             "type": "command",
-            "statusMessage": "Capturing session signals",
-            "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/consume-signals.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'"
+            "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/consume-signals.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'",
+            "statusMessage": "Capturing session signals"
           },
           {
             "type": "command",
-            "statusMessage": "Emitting session quality signals",
-            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/emit-session-quality-signals.sh\" 2>/dev/null || true"
+            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/emit-session-quality-signals.sh\" 2>/dev/null || true",
+            "statusMessage": "Emitting session quality signals"
           }
         ]
       }
     ]
   },
-  "plansDirectory": "specs/modules",
-  "includeCoAuthoredBy": true,
-  "enabledMcpjsonServers": [],
   "statusLine": {
     "type": "command",
     "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/statusline-command.sh\"",
     "padding": 0
-  }
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "playground@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
+  },
+  "plansDirectory": "specs/modules"
 }

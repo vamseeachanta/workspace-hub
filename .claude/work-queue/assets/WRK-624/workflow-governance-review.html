@@ -1,549 +1,507 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Review: WRK-624 Workflow Governance</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        :root {
-          --bg: #f3efe6;
-          --panel: #fffdf8;
-          --ink: #172126;
-          --muted: #55636b;
-          --accent: #0f766e;
-          --accent-2: #8a5a2b;
-          --line: #d9d0c0;
-          --shadow: 0 16px 40px rgba(20, 33, 38, 0.08);
-        }
-        * { box-sizing: border-box; }
-        body {
-          margin: 0;
-          font-family: Georgia, "Times New Roman", serif;
-          background: radial-gradient(circle at top, #fffaf0 0, var(--bg) 48%, #ebe5d7 100%);
-          color: var(--ink);
-          line-height: 1.5;
-        }
-        .hero {
-          padding: 48px 24px 28px;
-          border-bottom: 1px solid rgba(23, 33, 38, 0.08);
-          background: linear-gradient(135deg, rgba(15,118,110,0.08), rgba(138,90,43,0.1));
-        }
-        .hero-inner, .content { max-width: 1180px; margin: 0 auto; }
-        .eyebrow {
-          text-transform: uppercase;
-          letter-spacing: 0.12em;
-          font-size: 0.72rem;
-          color: var(--accent);
-          font-weight: 700;
-        }
-        h1 {
-          margin: 10px 0 12px;
-          font-size: clamp(2rem, 4vw, 3.8rem);
-          line-height: 0.95;
-          border: 0;
-          padding: 0;
-        }
-        .lede { max-width: 78ch; color: var(--muted); font-size: 1.05rem; }
-        .content { padding: 28px 24px 56px; }
-        .card {
-          background: var(--panel);
-          padding: 26px;
-          border-radius: 18px;
-          box-shadow: var(--shadow);
-          border: 1px solid var(--line);
-          margin-bottom: 20px;
-        }
-        h2 {
-          border-bottom: 1px solid var(--line);
-          padding-bottom: 0.3em;
-          margin-top: 24px;
-          color: var(--accent-2);
-          letter-spacing: 0.02em;
-        }
-        .exec-summary {
-          background: linear-gradient(180deg, #fff, #fcf8ef);
-          border-left: 6px solid var(--accent);
-          padding: 20px;
-          margin-bottom: 30px;
-          border-radius: 10px;
-        }
-        .exec-summary h2 { margin-top: 0; border: none; color: var(--accent); }
-        .artifact-box { background: #fff; padding: 16px; border-radius: 10px; border: 1px solid var(--line); }
-        .card p, .card li, .card td, .card th { color: var(--muted); }
-        .card strong, .card code { color: var(--ink); }
-        code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; background: rgba(27,31,35,0.05); padding: 0.2em 0.4em; border-radius: 3px; }
-        table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.95rem; }
-        th, td { border-top: 1px solid var(--line); padding: 10px 8px; text-align: left; vertical-align: top; }
-        th { font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.86rem; color: var(--ink); }
-        ul { margin-top: 8px; }
-        @media print {
-          body { background: #fff; }
-          .card { box-shadow: none; border: 1px solid #ccc; }
-          tr, td, th { page-break-inside: avoid; }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Close Review: WRK-624 — chore(work-queue): review and harden workflow — linear stage</title>
+  <style>
+:root {
+  --bg:       #f3efe6;
+  --panel:    #fffdf8;
+  --ink:      #172126;
+  --muted:    #55636b;
+  --accent:   #0f766e;
+  --accent-2: #8a5a2b;
+  --line:     #d9d0c0;
+  --shadow:   0 16px 40px rgba(20,33,38,0.08);
+  --good:     #166534;
+  --warn:     #b45309;
+  --bad:      #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.5;margin:0;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.05);padding:.2em .4em;border-radius:3px;}
+pre code{background:none;padding:0;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.88rem;}
+.hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
+.hero-inner,.content{max-width:1180px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
+  color:var(--accent);font-weight:700;}
+h1{margin:10px 0 12px;font-size:clamp(1.6rem,4vw,3rem);line-height:1.05;}
+.lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
+.content{padding:28px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
+  color:var(--accent-2);letter-spacing:.02em;}
+h2[data-collapsed="true"]{margin-bottom:4px;}
+h2 .section-summary-chip{max-width:min(70ch,70vw);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
+h3{color:var(--ink);margin-top:18px;}
+.exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
+  border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
+  border-radius:10px;}
+.exec-summary h2{margin-top:0;border:none;color:var(--accent);}
+.artifact-box{background:#fff;padding:16px;border-radius:10px;
+  border:1px solid var(--line);}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem;}
+th,td{border-top:1px solid var(--line);padding:10px 8px;
+  text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.86rem;color:var(--ink);}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:.9rem;}
+.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-warn{background:#fef3c7;color:var(--warn);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-info{background:#dbeafe;color:#1d4ed8;}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:900px){.split{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}
+  tr,td,th{page-break-inside:avoid;}}
+</style>
 </head>
 <body>
-    <header class="hero">
-        <div class="hero-inner">
-            <div class="eyebrow">WRK-624 Governance Artifact</div>
-            <h1>Workflow Governance Review</h1>
-            <p class="lede"><strong>Provenance:</strong> consolidated governance report with WRK-690 weekly gatepass/session analysis folded into WRK-624 as the canonical parent item.</p>
-        </div>
-    </header>
-    <main class="content">
-    <div class="card">
 
-        <div class="exec-summary">
-            <h2>Executive Summary</h2>
-            <ul>
-                <li>WRK-690 now includes a refreshed 7-day native-store analysis window for 2026-02-25 through 2026-03-03 across Claude, Codex, and Gemini.</li>
-                <li>Weekly rebuild analyzed <strong>175 sessions</strong> and refreshed both gatepass and signal-coverage evidence artifacts.</li>
-                <li>Signal instrumentation now covers the full contract keyset for this weekly dataset: <strong>23/23 required signals measured at least once</strong> (measurement coverage, not universal compliance).</li>
-                <li>Carry-forward lessons were applied into workflow skills and shared script emitters to keep cross-agent orchestration consistent.</li>
-            </ul>
-        </div>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-624 &middot; Close Review</div>
+    <h1>chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates</h1>
+    <p class="lede">Agents consistently complete implementation work but miss the final bookkeeping steps,</p>
+  </div>
+</header>
 
-        <h2>Scope and Method</h2>
-        <ul>
-            <li>Window analyzed: 2026-02-25 to 2026-03-03 (inclusive, rolling 7-day refresh).</li>
-            <li>Claude source: <code>.claude/state/sessions/session_YYYYMMDD.jsonl</code>.</li>
-            <li>Codex source: <code>~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl</code>.</li>
-            <li>Gemini source: <code>~/.gemini/tmp/workspace-hub/chats/session-*.json</code>.</li>
-            <li>Primary metric set: gate signal coverage (relaxed/strict), source-wise coverage, and unique <code>WRK-###</code> references.</li>
-            <li>Policy note: inferred signals are diagnostic only and are <strong>not</strong> counted as measured signal compliance.</li>
-        </ul>
-        <p><strong>Generated-at metadata:</strong> snapshot built on 2026-03-03 (America/Chicago); table bounds are fixed to 2026-02-25 through 2026-03-03.</p>
+<main class="content">
+  <div class="meta">
+  <div class="pill"><strong>WRK ID</strong>WRK-624</div>
+  <div class="pill"><strong>Status</strong><span class="badge badge-info">ARCHIVED</span></div>
+  <div class="pill"><strong>Route</strong>C — complex</div>
+  <div class="pill"><strong>Orchestrator</strong>codex</div>
+  <div class="pill"><strong>Computer</strong>ace-linux-1</div>
+  <div class="pill"><strong>Created</strong>2026-02-26</div>
+  <div class="pill"><strong>Commit</strong><code>n/a</code></div>
+  <div class="pill"><strong>% Done</strong>100%</div>
+</div>
 
-        <h2>Gatepass Findings</h2>
-        <ul>
-            <li>Weekly rebuilt gate coverage now shows stronger activation and verification evidence in strict sessions.</li>
-            <li>Session signal contract is now fully represented in measured keys for this weekly snapshot (<code>23/23</code> required) while compliance depth still varies by stage.</li>
-            <li>Remaining quality work is now compliance depth (raising low-frequency stages), not missing signal definitions.</li>
-        </ul>
-
-        <h2>Orchestrator Workflow-Start Session Count</h2>
-        <p><strong>Scope note:</strong> this table uses strict workflow-start criteria (<code>init + set_active_wrk</code>). Stage-level strict denominators below use the broader strict-qualified cohort from the session-gate analyzer.</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Definition</th>
-                    <th>Count</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>init + queue activity + WRK signal</code> (relaxed)</td>
-                    <td>10 sessions</td>
-                    <td>1 Claude-native, 8 Codex-native, 1 Gemini-native session file in-range.</td>
-                </tr>
-                <tr>
-                    <td><code>init + set-active-wrk.sh WRK-*</code> (strict)</td>
-                    <td>1 session</td>
-                    <td><code>.claude/state/sessions/session_20260301.jsonl</code> with <code>WRK-659</code>.</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>By Day and By Agent (Relaxed)</h2>
-        <p>Definition: session includes <code>session.sh init --provider ...</code> and shows queue workflow activity with WRK signal evidence.</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Claude Sessions</th>
-                    <th>Codex Sessions</th>
-                    <th>Gemini Sessions</th>
-                    <th>Total Sessions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>2026-02-25</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                <tr><td>2026-02-26</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
-                <tr><td>2026-02-27</td><td>0</td><td>2</td><td>1</td><td>3</td></tr>
-                <tr><td>2026-02-28</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
-                <tr><td>2026-03-01</td><td>1</td><td>2</td><td>0</td><td>3</td></tr>
-                <tr><td>2026-03-02</td><td>0</td><td>2</td><td>0</td><td>2</td></tr>
-                <tr><td>2026-03-03</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-            </tbody>
-        </table>
-
-        <h2>By Day and By Agent (Strict)</h2>
-        <p>Definition: session includes <code>session.sh init --provider ...</code> and explicit <code>set-active-wrk.sh WRK-*</code>.</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Claude Sessions</th>
-                    <th>Codex Sessions</th>
-                    <th>Gemini Sessions</th>
-                    <th>Total Sessions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>2026-02-25</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                <tr><td>2026-02-26</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                <tr><td>2026-02-27</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                <tr><td>2026-02-28</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                <tr><td>2026-03-01</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
-                <tr><td>2026-03-02</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                <tr><td>2026-03-03</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-            </tbody>
-        </table>
-
-        <h2>Scripts, Skills, Tools, and Gate-Pass Coverage</h2>
-        <p>Source artifact: <code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/session-gate-analysis.md</code> and JSON companion.</p>
-
-        <h3>Mandatory Stage Matrix Review (proposed v2)</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Order</th>
-                    <th>Stage</th>
-                    <th>Mandatory</th>
-                    <th>Objective</th>
-                    <th>Required Items</th>
-                    <th>Signal(s)</th>
-                    <th>Weekly Evidence (R/S)</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>1</td><td>Capture</td><td>Yes</td><td>Create WRK and baseline metadata.</td><td>WRK file + route/owner fields</td><td><code>wrk_created</code></td><td>14/14, 7/7</td><td>Measured</td></tr>
-                <tr><td>2</td><td>Resource Intelligence</td><td>Yes</td><td>Establish scope context and constraints.</td><td>Artifact pack in <code>assets/WRK-&lt;id&gt;/</code></td><td><code>resource_intelligence</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
-                <tr><td>3</td><td>Triage</td><td>Yes</td><td>Set priority/complexity/route/workstations.</td><td>Triage contract fields complete</td><td><code>triage_contract_complete</code></td><td>6/14, 3/7</td><td>Tighten</td></tr>
-                <tr><td>4</td><td>Plan Draft</td><td>Yes</td><td>Produce executable plan and draft HTML.</td><td>Plan artifact + draft HTML</td><td><code>plan_draft_complete</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
-                <tr><td>5</td><td>User Review - Plan (Draft)</td><td>Yes</td><td>User validates draft before peer review.</td><td>Draft review artifact + default-browser open proof</td><td><code>plan_html_review_draft</code>, <code>html_open_default_browser</code></td><td>13/14, 6/7 and 7/14, 4/7</td><td>Enforce browser-open</td></tr>
-                <tr><td>6</td><td>Cross-Review</td><td>Yes</td><td>Multi-provider quality/risk review.</td><td>Cross-review logs for available agents</td><td><code>cross_review</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
-                <tr><td>7</td><td>User Review - Plan (Final)</td><td>Yes</td><td>User confirms final plan and acceptance.</td><td>Final review artifact + decision + default-browser open proof</td><td><code>plan_html_review_final</code>, <code>html_open_default_browser</code></td><td>14/14, 7/7 and 7/14, 4/7</td><td>Enforce browser-open</td></tr>
-                <tr><td>8</td><td>Claim / Activation</td><td>Yes</td><td>Bind execution to WRK and claimant.</td><td>Claim ledger + active WRK set</td><td><code>claim_evidence</code>, <code>set_active_wrk</code></td><td>14/14, 7/7 and 9/14, 7/7</td><td>Improve relaxed activation</td></tr>
-                <tr><td>9</td><td>Work-Queue Routing Skill</td><td>Yes</td><td>Ensure canonical <code>/work</code> path.</td><td><code>/work</code> or <code>scripts/agents/work.sh</code></td><td><code>work_queue_skill</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
-                <tr><td>10</td><td>Work Execution</td><td>Yes</td><td>Implement scoped work under claim.</td><td>Execution script/tool activity</td><td><code>work_execution</code></td><td>13/14, 7/7</td><td>Tighten relaxed</td></tr>
-                <tr><td>11</td><td>Artifact Generation</td><td>Yes</td><td>Produce review/evidence outputs.</td><td>HTML/report artifacts</td><td><code>artifact_generation</code></td><td>7/14, 4/7</td><td>Tighten</td></tr>
-                <tr><td>12</td><td>TDD / Eval</td><td>Yes</td><td>Validate behavior with tests/evals.</td><td>Test/eval evidence in session</td><td><code>tdd_eval</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
-                <tr><td>13</td><td>Agent Cross-Review</td><td>Yes</td><td>Agent review of implementation outputs before final verification.</td><td>Cross-review package + provider findings</td><td><code>agent_cross_review</code></td><td>11/14, 6/7</td><td>Tighten</td></tr>
-                <tr><td>14</td><td>Verify Gate Evidence</td><td>Yes</td><td>Run gate verifier before close.</td><td><code>verify-gate-evidence.py</code> evidence</td><td><code>verify_gate_evidence</code></td><td>10/14, 7/7</td><td>Tighten relaxed</td></tr>
-                <tr><td>15</td><td>Future Work Synthesis</td><td>Yes</td><td>Record deferred findings as follow-up WRKs.</td><td>Future-work artifact with IDs</td><td><code>future_work</code></td><td>6/14, 5/7</td><td>Tighten</td></tr>
-                <tr><td>16</td><td>Resource Intelligence Update</td><td>Yes</td><td>Capture additions discovered during execution before closure.</td><td>Post-work resource addendum in evidence pack</td><td><code>resource_intelligence_update</code></td><td>1/14, 1/7</td><td>Major gap</td></tr>
-                <tr><td>17</td><td>User Review - Implementation</td><td>Yes</td><td>User validates implementation output, future work, and closure readiness before close.</td><td>Implementation review artifact + default-browser open proof</td><td><code>user_review_close</code>, <code>html_open_default_browser</code></td><td>1/14, 1/7 and 7/14, 4/7</td><td>Major gap</td></tr>
-                <tr><td>18</td><td>Reclaim</td><td>Conditional</td><td>Re-establish continuity after interruption.</td><td>Reclaim artifact + reason</td><td><code>reclaim</code></td><td>6/14, 6/7</td><td>Conditional gate</td></tr>
-                <tr><td>19</td><td>Close</td><td>Yes</td><td>Close WRK with complete ledger/tests.</td><td>Close artifact + close script evidence</td><td><code>close_item</code></td><td>14/14, 7/7</td><td>Keep</td></tr>
-                <tr><td>20</td><td>Archive</td><td>Yes</td><td>Archive only after merge/sync readiness.</td><td>Archive artifact + archive script evidence</td><td><code>archive_item</code></td><td>8/14, 4/7</td><td>Tighten</td></tr>
-            </tbody>
-        </table>
-
-        <h3>Stage-to-Skill Requirements (Key + Mandatory)</h3>
-        <p>Canonical source for mandatory lifecycle behavior: <code>.claude/skills/workspace-hub/workflow-gatepass/SKILL.md</code>.</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Order</th>
-                    <th>Stage</th>
-                    <th>Key Skills</th>
-                    <th>Mandatory Skills</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>1</td><td>Capture</td><td><code>work-queue</code>, <code>work-queue-workflow</code></td><td><code>work-queue-workflow</code></td></tr>
-                <tr><td>2</td><td>Resource Intelligence</td><td><code>resource-intelligence</code>, <code>workflow-gatepass</code></td><td><code>resource-intelligence</code></td></tr>
-                <tr><td>3</td><td>Triage</td><td><code>work-queue</code>, <code>workflow-gatepass</code></td><td><code>work-queue-workflow</code></td></tr>
-                <tr><td>4</td><td>Plan Draft</td><td><code>work-queue</code>, <code>workflow-gatepass</code></td><td><code>work-queue-workflow</code></td></tr>
-                <tr><td>5</td><td>User Review - Plan (Draft)</td><td><code>workflow-gatepass</code>, <code>html-report-verify</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>6</td><td>Cross-Review</td><td><code>workflow-gatepass</code>, <code>work-queue</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>7</td><td>User Review - Plan (Final)</td><td><code>workflow-gatepass</code>, <code>html-report-verify</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>8</td><td>Claim / Activation</td><td><code>work-queue</code>, <code>workflow-gatepass</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>9</td><td>Work-Queue Routing Skill</td><td><code>work-queue-workflow</code>, <code>workflow-gatepass</code></td><td><code>work-queue-workflow</code></td></tr>
-                <tr><td>10</td><td>Work Execution</td><td><code>work-queue</code>, <code>workflow-gatepass</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>11</td><td>Artifact Generation</td><td><code>interactive-report-generator</code>, <code>workflow-gatepass</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>12</td><td>TDD / Eval</td><td><code>wrk-lifecycle-testpack</code>, <code>workflow-gatepass</code></td><td><code>wrk-lifecycle-testpack</code></td></tr>
-                <tr><td>13</td><td>Agent Cross-Review</td><td><code>workflow-gatepass</code>, <code>work-queue</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>14</td><td>Verify Gate Evidence</td><td><code>workflow-gatepass</code>, <code>wrk-lifecycle-testpack</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>15</td><td>Future Work Synthesis</td><td><code>workflow-gatepass</code>, <code>work-queue</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>16</td><td>Resource Intelligence Update</td><td><code>resource-intelligence</code>, <code>workflow-gatepass</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>17</td><td>User Review - Implementation</td><td><code>workflow-gatepass</code>, <code>html-report-verify</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>18</td><td>Reclaim (Conditional)</td><td><code>workflow-gatepass</code>, <code>save</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>19</td><td>Close</td><td><code>workflow-gatepass</code>, <code>wrk-lifecycle-testpack</code></td><td><code>workflow-gatepass</code></td></tr>
-                <tr><td>20</td><td>Archive</td><td><code>workflow-gatepass</code>, <code>work-queue</code></td><td><code>workflow-gatepass</code></td></tr>
-            </tbody>
-        </table>
-
-        <h3>Gate-pass signal coverage</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Order</th>
-                    <th>Stage (work-queue)</th>
-                    <th>Signal</th>
-                    <th>Relaxed</th>
-                    <th>Strict</th>
-                    <th>User Review</th>
-                    <th>Comments</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>1</td><td>Plan / Resource Intelligence</td><td>resource_intelligence</td><td>14/14</td><td>7/7</td><td>PASS</td><td>Strong coverage in both relaxed and strict sessions.</td></tr>
-                <tr><td>2</td><td>Claim / Session Bootstrap</td><td>init</td><td>14/14</td><td>7/7</td><td>PASS</td><td>All qualified sessions include orchestrator init.</td></tr>
-                <tr><td>3</td><td>Claim - Work Activation</td><td>set_active_wrk</td><td>9/14</td><td>7/7</td><td>PASS (strict) / WARN (relaxed)</td><td>Relaxed activation still trails strict coverage.</td></tr>
-                <tr><td>4</td><td>Work-Queue Routing Skill</td><td>work_queue_skill</td><td>14/14</td><td>7/7</td><td>PASS</td><td><code>/work</code> routing is now consistently measured.</td></tr>
-                <tr><td>5</td><td>Work Execution</td><td>work_execution</td><td>13/14</td><td>7/7</td><td>PASS / WARN</td><td>One relaxed miss remains.</td></tr>
-                <tr><td>6</td><td>Artifact Generation</td><td>artifact_generation</td><td>7/14</td><td>4/7</td><td>WARN</td><td>Artifact signal frequency remains moderate.</td></tr>
-                <tr><td>7</td><td>TDD / Eval</td><td>tdd_eval</td><td>14/14</td><td>7/7</td><td>PASS</td><td>TDD/eval signal consistently present.</td></tr>
-                <tr><td>8</td><td>Verification</td><td>verify_gate_evidence</td><td>10/14</td><td>7/7</td><td>PASS (strict) / WARN (relaxed)</td><td>Verifier runs are strong in strict sessions, improving in relaxed.</td></tr>
-                <tr><td>9</td><td>User Review - Plan (Draft)</td><td>plan_html_review_draft + html_open_default_browser</td><td>13/14 and 7/14</td><td>6/7 and 4/7</td><td>REQUIRED FOR ALL WRKs</td><td>Stage signal strong; browser-open still lagging.</td></tr>
-                <tr><td>10</td><td>Cross-Review</td><td>cross_review</td><td>14/14</td><td>7/7</td><td>PASS</td><td>Cross-review scripts remain consistent.</td></tr>
-                <tr><td>11</td><td>Claim / Evidence Ledger</td><td>claim_evidence</td><td>14/14</td><td>7/7</td><td>PASS</td><td>Claim evidence now universally present in qualified sessions.</td></tr>
-                <tr><td>12</td><td>User Review - Plan (Final)</td><td>plan_html_review_final + html_open_default_browser</td><td>14/14 and 7/14</td><td>7/7 and 4/7</td><td>REQUIRED FOR ALL WRKs</td><td>Final plan review signal is strong; browser-open gap remains.</td></tr>
-                <tr><td>13</td><td>Agent Cross-Review</td><td>agent_cross_review</td><td>11/14</td><td>6/7</td><td>WARN</td><td>Implementation cross-review is measured but not universal.</td></tr>
-                <tr><td>14</td><td>Close Planning</td><td>future_work</td><td>6/14</td><td>5/7</td><td>WARN</td><td>Future-work synthesis has improved but is not yet universal.</td></tr>
-                <tr><td>15</td><td>Resource Intelligence Update</td><td>resource_intelligence_update</td><td>1/14</td><td>1/7</td><td>FAIL</td><td>Still the largest remaining mandatory-stage gap.</td></tr>
-                <tr><td>16</td><td>User Review - Implementation</td><td>user_review_close + html_open_default_browser</td><td>1/14 and 7/14</td><td>1/7 and 4/7</td><td>FAIL</td><td>Implementation review signal remains low despite browser events.</td></tr>
-                <tr><td>17</td><td>Reclaim</td><td>reclaim</td><td>6/14</td><td>6/7</td><td>Conditional</td><td>Conditional stage appears where continuity breaks.</td></tr>
-                <tr><td>18</td><td>Close / Archive</td><td>close_or_archive</td><td>14/14</td><td>7/7</td><td>PASS</td><td>Terminal lifecycle signal is stable.</td></tr>
-            </tbody>
-        </table>
-
-        <h3>Stage Coverage (Orchestrator-Style)</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Stage</th>
-                    <th>Signal</th>
-                    <th>Relaxed</th>
-                    <th>Strict</th>
-                    <th>Gap (R-S)</th>
-                    <th>Comment</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>Plan / Resource Intelligence</td><td><code>resource_intelligence</code></td><td>14/14</td><td>7/7</td><td>0 misses in strict</td><td>Coverage is now strong.</td></tr>
-                <tr><td>Claim / Session Bootstrap</td><td><code>init</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Healthy baseline coverage.</td></tr>
-                <tr><td>Claim - Work Activation</td><td><code>set_active_wrk</code></td><td>9/14</td><td>7/7</td><td>5 misses in relaxed</td><td>Main remaining activation gap is relaxed path.</td></tr>
-                <tr><td>Work-Queue Routing Skill</td><td><code>work_queue_skill</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Routing via <code>/work</code> is stable.</td></tr>
-                <tr><td>Work Execution</td><td><code>work_execution</code></td><td>13/14</td><td>7/7</td><td>1 miss in relaxed</td><td>Near-complete coverage.</td></tr>
-                <tr><td>Artifact Generation</td><td><code>artifact_generation</code></td><td>7/14</td><td>4/7</td><td>Moderate gap</td><td>Needs broader artifact marker coverage.</td></tr>
-                <tr><td>TDD / Eval</td><td><code>tdd_eval</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Evaluation evidence is consistently present.</td></tr>
-                <tr><td>Agent Cross-Review</td><td><code>agent_cross_review</code></td><td>11/14</td><td>6/7</td><td>Visible gap</td><td>Improve implementation cross-review consistency.</td></tr>
-                <tr><td>Verification</td><td><code>verify_gate_evidence</code></td><td>10/14</td><td>7/7</td><td>4 misses in relaxed</td><td>Continue enforcing verifier before close.</td></tr>
-                <tr><td>User Review - Plan (Draft)</td><td><code>plan_html_review_draft</code> + <code>html_open_default_browser</code></td><td>13/14 and 7/14</td><td>6/7 and 4/7</td><td>Browser-open lag</td><td>Keep browser-open as explicit mandatory proof.</td></tr>
-                <tr><td>Cross-Review</td><td><code>cross_review</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Healthy coverage.</td></tr>
-                <tr><td>Claim / Evidence Ledger</td><td><code>claim_evidence</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Healthy coverage.</td></tr>
-                <tr><td>User Review - Plan (Final)</td><td><code>plan_html_review_final</code> + <code>html_open_default_browser</code></td><td>14/14 and 7/14</td><td>7/7 and 4/7</td><td>Browser-open lag</td><td>Keep mandatory before close/archive.</td></tr>
-                <tr><td>Close Planning</td><td><code>future_work</code></td><td>6/14</td><td>5/7</td><td>Remaining gap</td><td>Follow-up capture still needs tightening.</td></tr>
-                <tr><td>Resource Intelligence Update</td><td><code>resource_intelligence_update</code></td><td>1/14</td><td>1/7</td><td>Major gap</td><td>Post-work resource addendum is still rare.</td></tr>
-                <tr><td>User Review - Implementation</td><td><code>user_review_close</code> + <code>html_open_default_browser</code></td><td>1/14 and 7/14</td><td>1/7 and 4/7</td><td>Major gap</td><td>Implementation review stage adoption is low.</td></tr>
-                <tr><td>Reclaim</td><td><code>reclaim</code></td><td>6/14</td><td>6/7</td><td>Conditional</td><td>Track only when continuity breaks.</td></tr>
-                <tr><td>Close / Archive</td><td><code>close_or_archive</code></td><td>14/14</td><td>7/7</td><td>None</td><td>Terminal signal is present.</td></tr>
-            </tbody>
-        </table>
-
-        <h3>WRK-624 User Review Marking</h3>
-        <p>Explicit user-review artifacts found for WRK-624: <strong>3</strong>.</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Artifact</th>
-                    <th>Type</th>
-                    <th>User Review Status</th>
-                    <th>Comments</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td><code>.claude/work-queue/assets/WRK-624/plan-html-review-draft.md</code></td>
-                    <td>Draft plan review</td>
-                    <td>REVIEWED</td>
-                    <td>Contains <code>reviewer: user</code> and <code>result: reviewed</code>.</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td><code>.claude/work-queue/assets/WRK-624/plan-html-review-final.md</code></td>
-                    <td>Final plan review</td>
-                    <td>ACCEPTED / PASSED</td>
-                    <td>Contains <code>confirmed_by: user</code>, <code>decision: passed</code>, and <code>result: accepted</code>.</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td><code>.claude/work-queue/assets/WRK-624/gap-review-user.json</code></td>
-                    <td>Stage decision review</td>
-                    <td>REVIEWED (CONFIRM/REVISE)</td>
-                    <td>User decisions captured for capture/resource_intelligence/triage/plan/claim/execute/close/archive stages.</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h3>Top scripts used (relaxed set)</h3>
-        <ul>
-            <li><code>scripts/agents/session.sh</code> (6)</li>
-            <li><code>scripts/agents/plan.sh</code> (5)</li>
-            <li><code>scripts/review/submit-to-claude.sh</code> (5)</li>
-            <li><code>scripts/work-queue/verify-gate-evidence.py</code> (5)</li>
-            <li><code>scripts/work-queue/close-item.sh</code> (5)</li>
-            <li><code>scripts/work-queue/generate-html-review.py</code> (5)</li>
-        </ul>
-
-        <h3>Skills observed (relaxed set)</h3>
-        <ul>
-            <li><code>/work</code> (10)</li>
-            <li><code>/clear</code> (8)</li>
-            <li><code>/comprehensive-learning</code> (2)</li>
-            <li><code>/insights</code> (2)</li>
-            <li><code>/save</code> (2)</li>
-            <li><code>/session-start</code> (2)</li>
-        </ul>
-
-        <h3>Top tools observed (relaxed set)</h3>
-        <ul>
-            <li><code>Bash</code> (547)</li>
-            <li><code>Read</code> (179)</li>
-            <li><code>Edit</code> (116)</li>
-            <li><code>Write</code> (104)</li>
-            <li><code>TaskUpdate</code> (12)</li>
-            <li><code>Glob</code> (8)</li>
-        </ul>
-
-        <h2>Daily WRK Reference Coverage by Agent</h2>
-        <p><strong>Method note:</strong> counts below are unique <code>WRK-###</code> references detected in agent session text for each day, not a count of items actively claimed/executed that day.</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Claude WRK references</th>
-                    <th>Codex WRK references</th>
-                    <th>Gemini WRK references</th>
-                    <th>Total unique WRK references</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>2026-02-25</td><td>0</td><td>230</td><td>272</td><td>374</td></tr>
-                <tr><td>2026-02-26</td><td>0</td><td>673</td><td>1</td><td>673</td></tr>
-                <tr><td>2026-02-27</td><td>4</td><td>658</td><td>589</td><td>674</td></tr>
-                <tr><td>2026-02-28</td><td>5</td><td>390</td><td>2</td><td>390</td></tr>
-                <tr><td>2026-03-01</td><td>32</td><td>676</td><td>7</td><td>679</td></tr>
-                <tr><td>2026-03-02</td><td>28</td><td>581</td><td>270</td><td>591</td></tr>
-                <tr><td>2026-03-03</td><td>19</td><td>0</td><td>0</td><td>19</td></tr>
-            </tbody>
-        </table>
-
-        <h2>Claude Weekly WRK Spread</h2>
-        <p>Claude transcripts reference 59 distinct WRK IDs in this window, including <code>WRK-021</code> through <code>WRK-692</code> (with notable concentration around <code>WRK-631</code> to <code>WRK-692</code>).</p>
-
-        <h2>Supporting Assets</h2>
-        <div class="artifact-box">
-            <ul>
-                <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/gatepass-weekly-summary.html</code></li>
-                <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/gatepass-weekly-summary.md</code></li>
-                <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/agent-wrk-counts-by-day.html</code></li>
-                <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/session-wrk-count.md</code></li>
-                <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/stage-skills-tools-matrix.md</code></li>
-                <li><code>.claude/work-queue/assets/WRK-624/cross-review-agent-synthesis.md</code></li>
-                <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/stage-evidence.yaml</code></li>
-                <li><code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/gate-evidence-summary.md</code></li>
-            </ul>
-        </div>
-
-        <h2>Lifecycle Enforcement Progress (2026-03-03)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Workstream</th>
-                    <th>Status</th>
-                    <th>Evidence</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Queue blocker remediation (WRK-687/688/689/694)</td>
-                    <td>Done</td>
-                    <td><code>.claude/work-queue/INDEX.md</code></td>
-                    <td>Queue validation now passes with no blocking errors.</td>
-                </tr>
-                <tr>
-                    <td>Lifecycle script integration tests</td>
-                    <td>Done</td>
-                    <td><code>tests/work-queue/test-lifecycle-gates.sh</code></td>
-                    <td>Claim/close/archive gate behavior validated end-to-end.</td>
-                </tr>
-                <tr>
-                    <td>Stage evidence updater utility</td>
-                    <td>Done</td>
-                    <td><code>scripts/work-queue/update-stage-evidence.py</code></td>
-                    <td>Order-based stage status updates with dry-run support.</td>
-                </tr>
-                <tr>
-                    <td>Close-readiness stage contract hardening</td>
-                    <td>Done</td>
-                    <td><code>scripts/work-queue/verify-gate-evidence.py</code></td>
-                    <td>Close phase now enforces mandatory pre-close orders through stage 17 (Reclaim remains conditional).</td>
-                </tr>
-                <tr>
-                    <td>WRK-690 close-phase gate run</td>
-                    <td>Done</td>
-                    <td><code>.claude/work-queue/assets/WRK-690/evidence/gate-evidence-summary.md</code></td>
-                    <td>All gates passed; reclaim remains conditional WARN when absent.</td>
-                </tr>
-                <tr>
-                    <td>WRK-624 agent cross-review artifact packaging</td>
-                    <td>Done</td>
-                    <td><code>.claude/work-queue/assets/WRK-624/cross-review-agent-synthesis.md</code></td>
-                    <td>Codex + Gemini review artifacts consolidated under canonical WRK-624 assets.</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>Next Work Inside WRK-690</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Next Work Item</th>
-                    <th>Disposition</th>
-                    <th>Status</th>
-                    <th>Captured</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Enforce Stage 16/17 pre-close checks (<code>resource_intelligence_update</code>, <code>user_review_close</code>)</td>
-                    <td>existing-updated</td>
-                    <td>done</td>
-                    <td>yes</td>
-                    <td>Implemented in gate verifier and covered by unit tests.</td>
-                </tr>
-                <tr>
-                    <td>Automate <code>html_open_default_browser</code> emission for user-review stages</td>
-                    <td>existing-updated</td>
-                    <td>pending</td>
-                    <td>yes</td>
-                    <td>Tracked in WRK-690 remaining scope.</td>
-                </tr>
-                <tr>
-                    <td>Finalize cross-review package and provider verdict artifacts</td>
-                    <td>existing-updated</td>
-                    <td>done</td>
-                    <td>yes</td>
-                    <td>Claude/Codex/Gemini artifacts consolidated in synthesis file.</td>
-                </tr>
-                <tr>
-                    <td>Execute WRK-690 close/archive path and verify stage-order progression</td>
-                    <td>existing-updated</td>
-                    <td>pending</td>
-                    <td>yes</td>
-                    <td>Intentionally deferred; user requested no close yet.</td>
-                </tr>
-                <tr>
-                    <td>Comprehensive-learning enhancements for daily gate-init / gate-missing synthesis</td>
-                    <td>existing-updated</td>
-                    <td>done</td>
-                    <td>yes</td>
-                    <td>Implemented in comprehensive-learning skill as a mandatory per-agent/day matrix output.</td>
-                </tr>
-            </tbody>
-        </table>
+  <div class="card">
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <ol>
+<li><strong>Linear workflow schematic</strong> — create a single canonical ASCII/Mermaid stage diagram
+   that every agent can follow step-by-step, with no ambiguity about what "done" means
+   at each stage:</li>
+</ol>
+<p><code>CAPTURE → TRIAGE → PLAN → CLAIM → IMPLEMENT → CROSS-REVIEW → CLOSE → ARCHIVE
+      │         │        │       │         │             │           │        │
+   pending/  pending/  pending/ working/ working/    working/    done/   archive/</code></p>
+<p>Each arrow = a specific <code>mv</code> + frontmatter update + INDEX regeneration.</p>
+<ol>
+<li><strong>Agent completion checklist</strong> — a mandatory <code>## Completion Checklist</code> block that
+   agents must fill in the WRK item body before marking done:</li>
+</ol>
+<p><code>markdown
+   ## Completion Checklist
+   - [ ] Implementation committed: &lt;hash&gt;
+   - [ ] Tests pass: &lt;command + output&gt;
+   - [ ] Cross-review completed: &lt;claude|codex|gemini results path&gt;
+   - [ ] WRK frontmatter updated: status=done, percent_complete=100, commit=&lt;hash&gt;
+   - [ ] File moved: pending/ → done/
+   - [ ] INDEX regenerated: python3 .claude/work-queue/scripts/generate-index.py
+   - [ ] Hub commit: &lt;hash&gt;</code></p>
+<ol>
+<li><strong><code>close-item.sh</code> script</strong> — atomic shell script at
+   <code>scripts/work-queue/close-item.sh &lt;WRK-NNN&gt; &lt;commit-hash&gt;</code> that:</li>
+<li>Updates frontmatter (<code>status: done</code>, <code>percent_complete: 100</code>, <code>commit:</code>, <code>completed_at:</code>)</li>
+<li>Moves file from <code>working/</code> (or <code>pending/</code>) to <code>done/</code></li>
+<li>Runs <code>generate-index.py</code></li>
+<li>
+<p>Stages and commits the state update with <code>chore(work-queue): close WRK-NNN</code></p>
+</li>
+<li>
+<p><strong><code>validate-queue-state.sh</code></strong> — linting script that:</p>
+</li>
+<li>Fails if any file in <code>pending/</code> or <code>working/</code> has <code>status: done</code></li>
+<li>Fails if any file in <code>done/</code> has <code>status: pending</code> or <code>status: working</code></li>
+<li>Warns if <code>working/</code> has items with <code>updated_at</code> &gt; 7 days ago</li>
+<li>
+<p>Runs in <code>generate-index.py</code> as post-check (exit code 0/1)</p>
+</li>
+<li>
+<p><strong>Update <code>process.md</code> and <code>SKILL.md</code></strong> — replace the current prose description with
+   the canonical schematic; add <code>close-item.sh</code> to the Process stage; add the completion
+   checklist template to the Conventions section.</p>
+</li>
+<li>
+<p><strong>Pre-commit hook</strong> — add <code>validate-queue-state.sh</code> to <code>.pre-commit-config.yaml</code> so
+   mismatched state is caught before any hub commit.</p>
+</li>
+</ol>
     </div>
-    </main>
+
+    <h2>Skill Manifest</h2>
+<table>
+  <thead><tr><th>Category</th><th>Skill</th></tr></thead>
+  <tbody><tr><td colspan='2' style='color:var(--muted)'>No skills recorded</td></tr></tbody>
+</table>
+<p style="font-size:.82rem;color:var(--muted)">Source: <code>none</code></p>
+  </div>
+
+  <div class="card">
+    <h1>chore(work-queue): Review and Harden Workflow — Linear Stage Schematic + Agent Completion Gates</h1>
+<h2>Problem Statement</h2>
+<p>Agents consistently complete implementation work but miss the final bookkeeping steps,
+leaving WRK items stranded in the wrong pipeline stage. Evidence from 2026-02-26:</p>
+<ul>
+<li><strong>174 items</strong> with <code>status: done</code> were physically sitting in <code>pending/</code> — only frontmatter
+  was updated, the <code>mv pending/ → done/</code> step was skipped</li>
+<li>WRK-617 completed by a parallel session (cross-review results timestamped, git commits
+  present) with zero state update — status still <code>pending</code>, percent_complete still <code>0</code></li>
+<li><code>session-state.yaml</code> not updated since 2026-02-24 — session wrappers not being invoked</li>
+<li><code>daily_today.sh</code> reported "53 done · 145 ready" when reality was "225 done · 174 ready"</li>
+</ul>
+<p>Root cause: the workflow is documented in <code>process.md</code> and <code>SKILL.md</code> but there is no
+<strong>enforced linear checklist</strong> agents must step through, and no automated gate that catches
+"work done, state not updated".</p>
+<h2>What</h2>
+<ol>
+<li><strong>Linear workflow schematic</strong> — create a single canonical ASCII/Mermaid stage diagram
+   that every agent can follow step-by-step, with no ambiguity about what "done" means
+   at each stage:</li>
+</ol>
+<p><code>CAPTURE → TRIAGE → PLAN → CLAIM → IMPLEMENT → CROSS-REVIEW → CLOSE → ARCHIVE
+      │         │        │       │         │             │           │        │
+   pending/  pending/  pending/ working/ working/    working/    done/   archive/</code></p>
+<p>Each arrow = a specific <code>mv</code> + frontmatter update + INDEX regeneration.</p>
+<ol>
+<li><strong>Agent completion checklist</strong> — a mandatory <code>## Completion Checklist</code> block that
+   agents must fill in the WRK item body before marking done:</li>
+</ol>
+<p><code>markdown
+   ## Completion Checklist
+   - [ ] Implementation committed: &lt;hash&gt;
+   - [ ] Tests pass: &lt;command + output&gt;
+   - [ ] Cross-review completed: &lt;claude|codex|gemini results path&gt;
+   - [ ] WRK frontmatter updated: status=done, percent_complete=100, commit=&lt;hash&gt;
+   - [ ] File moved: pending/ → done/
+   - [ ] INDEX regenerated: python3 .claude/work-queue/scripts/generate-index.py
+   - [ ] Hub commit: &lt;hash&gt;</code></p>
+<ol>
+<li><strong><code>close-item.sh</code> script</strong> — atomic shell script at
+   <code>scripts/work-queue/close-item.sh &lt;WRK-NNN&gt; &lt;commit-hash&gt;</code> that:</li>
+<li>Updates frontmatter (<code>status: done</code>, <code>percent_complete: 100</code>, <code>commit:</code>, <code>completed_at:</code>)</li>
+<li>Moves file from <code>working/</code> (or <code>pending/</code>) to <code>done/</code></li>
+<li>Runs <code>generate-index.py</code></li>
+<li>
+<p>Stages and commits the state update with <code>chore(work-queue): close WRK-NNN</code></p>
+</li>
+<li>
+<p><strong><code>validate-queue-state.sh</code></strong> — linting script that:</p>
+</li>
+<li>Fails if any file in <code>pending/</code> or <code>working/</code> has <code>status: done</code></li>
+<li>Fails if any file in <code>done/</code> has <code>status: pending</code> or <code>status: working</code></li>
+<li>Warns if <code>working/</code> has items with <code>updated_at</code> &gt; 7 days ago</li>
+<li>
+<p>Runs in <code>generate-index.py</code> as post-check (exit code 0/1)</p>
+</li>
+<li>
+<p><strong>Update <code>process.md</code> and <code>SKILL.md</code></strong> — replace the current prose description with
+   the canonical schematic; add <code>close-item.sh</code> to the Process stage; add the completion
+   checklist template to the Conventions section.</p>
+</li>
+<li>
+<p><strong>Pre-commit hook</strong> — add <code>validate-queue-state.sh</code> to <code>.pre-commit-config.yaml</code> so
+   mismatched state is caught before any hub commit.</p>
+</li>
+</ol>
+<h2>Why</h2>
+<ul>
+<li>Agents are capable but lose context of the bookkeeping steps at session end</li>
+<li>A single executable script (<code>close-item.sh</code>) eliminates the multi-step manual process</li>
+<li><code>validate-queue-state.sh</code> in pre-commit turns the oversight into an automated catch</li>
+<li>The schematic gives a visual anchor — agents can confirm "I am at stage X, next step is Y"</li>
+</ul>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] <code>docs/work-queue-workflow.md</code> created with canonical ASCII stage diagram</li>
+<li>[ ] <code>scripts/work-queue/close-item.sh &lt;WRK-NNN&gt; &lt;commit-hash&gt;</code> created and executable</li>
+<li>Handles both <code>pending/</code> and <code>working/</code> source locations</li>
+<li>Idempotent (safe to run twice)</li>
+<li>Updates frontmatter, moves file, regenerates INDEX, commits hub state</li>
+<li>[ ] <code>scripts/work-queue/validate-queue-state.sh</code> created</li>
+<li>Exit 1 if status/folder mismatch found</li>
+<li>Integrated into <code>generate-index.py</code> post-check call</li>
+<li>[ ] <code>process.md</code> updated: schematic diagram added, <code>close-item.sh</code> usage documented</li>
+<li>[ ] <code>SKILL.md</code> (work-queue) updated: schematic + completion checklist template added</li>
+<li>[ ] <code>.pre-commit-config.yaml</code> updated: <code>validate-queue-state.sh</code> as a hook</li>
+<li>[ ] All existing 225 <code>done/</code> items pass <code>validate-queue-state.sh</code></li>
+<li>[ ] Legal scan passes</li>
+<li>[ ] Cross-review: Claude + Codex + Gemini — all P1/P2 issues resolved</li>
+</ul>
+<h2>Completion Checklist</h2>
+<ul>
+<li>[x] Implementation committed: N/A (not committed yet)</li>
+<li>[x] Tests pass: scripts/work-queue/validate-queue-state.sh</li>
+<li>[x] 5-10 Examples defined: .claude/work-queue/assets/WRK-624/example-pack.md</li>
+<li>[x] Variation tests passed: .claude/work-queue/assets/WRK-624/variation-test-results.md</li>
+<li>[x] Cross-review completed: see final review artifacts and synthesis below</li>
+<li>[x] HTML review artifact verified: assets/WRK-624/wrk-624-workflow-review.html</li>
+<li>[x] WRK frontmatter updated: status=done, percent_complete=100</li>
+<li>[x] Learning outputs captured: N/A</li>
+<li>[x] INDEX regenerated: python3 .claude/work-queue/scripts/generate-index.py</li>
+</ul>
+<h2>Final Review Artifacts</h2>
+<ul>
+<li>Claude final artifact: <code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-651/claude-review-final.md</code></li>
+<li>Codex review artifact: <code>/mnt/local-analysis/workspace-hub/scripts/review/results/20260227T133331Z-plan.md-plan-codex.md</code></li>
+<li>Gemini review artifact: <code>/mnt/local-analysis/workspace-hub/specs/wrk/WRK-624/review/review-gemini.md</code></li>
+<li>Final synthesis: <code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-652/review-synthesis.md</code></li>
+<li>Synthesis HTML: <code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-652/review.html</code></li>
+<li>Formal rerun Claude artifact: <code>/mnt/local-analysis/workspace-hub/scripts/review/results/20260228T054652Z-plan.md-plan-claude.md</code></li>
+<li>Formal rerun Codex artifact: <code>/mnt/local-analysis/workspace-hub/scripts/review/results/20260228T054652Z-plan.md-plan-codex.md</code></li>
+<li>Formal rerun Gemini artifact: <code>/mnt/local-analysis/workspace-hub/scripts/review/results/20260228T054652Z-plan.md-plan-gemini.md</code></li>
+<li>Seed-compliant Route C artifacts: <code>/mnt/local-analysis/workspace-hub/scripts/review/results/wrk624-seeded/v2/seed{1,2,3}-{claude,codex,gemini}.md</code></li>
+</ul>
+<h2>Final Review State</h2>
+<ul>
+<li>Claude mode selected under policy: full bundle</li>
+<li>Claude bounded wait selected under policy: <code>300s</code></li>
+<li>Historical multi-agent synthesis verdict: <code>REQUEST_CHANGES</code></li>
+<li>Latest formal rerun verdict: <code>REQUEST_CHANGES</code></li>
+<li>Latest formal rerun depth: single seed per provider; informative, but not compliant with the newer Route C standard of 3 seeds per provider</li>
+<li>Seed-compliant Route C review verdict: <code>REQUEST_CHANGES</code></li>
+<li>Seed pattern:</li>
+<li>Claude: 3/3 <code>REQUEST_CHANGES</code></li>
+<li>Codex: 3/3 <code>REQUEST_CHANGES</code></li>
+<li>Gemini: 3/3 <code>APPROVE</code></li>
+<li>Direct remediation edits were applied in <code>specs/wrk/WRK-624/plan.md</code> and <code>assets/WRK-624/wrk-624-workflow-review.html</code>.</li>
+<li>The rerun-identified blocker groups have now been addressed in the current draft revision.</li>
+<li>Remaining review-state caveats:</li>
+<li>strict seeded review still found open acceptance-criteria and scope-boundary gaps before signoff</li>
+<li>user HTML review flow remains the primary blocker surface to make operationally watertight</li>
+<li>full Route C seed depth is intentionally retained</li>
+<li>agent assignment analysis is currently a required contract unless overridden with evidence, but it has not yet been fully validated against the <code>agent-router</code> and <code>agent-usage-optimizer</code> capability skills</li>
+</ul>
+<h2>Queue Remediation Update (2026-03-01)</h2>
+<ul>
+<li>stale <code>working/</code> triage was executed to keep validator output high-signal and stage status accurate</li>
+<li>dispositions applied:</li>
+<li>closed to <code>done/</code>: <code>WRK-229</code>, <code>WRK-279</code>, <code>WRK-290</code></li>
+<li>moved to <code>blocked/</code>: <code>WRK-121</code>, <code>WRK-131</code>, <code>WRK-280</code></li>
+<li>parked to <code>pending/</code>: <code>WRK-125</code>, <code>WRK-235</code></li>
+<li>retained in <code>working/</code>: <code>WRK-118</code> (active partial execution)</li>
+<li>remediation side-fix: corrected malformed frontmatter in <code>WRK-659</code> for:</li>
+<li><code>plan_workstations</code></li>
+<li><code>execution_workstations</code></li>
+<li><code>plan_html_review_draft_ref</code></li>
+<li><code>plan_html_review_final_ref</code></li>
+<li>post-remediation state:</li>
+<li><code>scripts/work-queue/validate-queue-state.sh</code> passes</li>
+<li>queue index regenerated successfully</li>
+</ul>
+<h2>User Gap Decisions (2026-03-01)</h2>
+<p>Source: <code>.claude/work-queue/assets/WRK-624/gap-review-user.json</code></p>
+<ul>
+<li>confirmed stages: <code>capture</code>, <code>triage</code>, <code>plan</code>, <code>claim</code>, <code>execute</code>, <code>close</code></li>
+<li>revision requested:</li>
+<li><code>resource_intelligence</code>: clarify whether the Resource Intelligence skill is added and whether it measurably strengthens workflow quality</li>
+<li><code>archive</code>: identify required tooling and spin additional work items where needed</li>
+<li>execution response:</li>
+<li>created follow-on <code>WRK-667</code> for Resource Intelligence skill strengthening and measurable effect tracking</li>
+<li>created follow-on <code>WRK-668</code> for archive-tooling definition, enforcement hooks, and required spin-off handling</li>
+</ul>
+<h2>Review/Debug Chain Summary</h2>
+<ul>
+<li><code>WRK-642</code>: diagnosed the original Claude no-response behavior and separated transport failure from wrapper ambiguity.</li>
+<li><code>WRK-644</code>: introduced the Claude-specific compact bundle path.</li>
+<li><code>WRK-645</code>: ruled out prompt-driven file-write capture as a viable Claude review transport.</li>
+<li><code>WRK-647</code>: validated the patched Claude wrapper on compact-bundle review.</li>
+<li><code>WRK-649</code>: validated that full-bundle Claude review succeeds when allowed to complete naturally.</li>
+<li><code>WRK-650</code>: codified the full-vs-compact Claude review policy in the workflow spec.</li>
+<li><code>WRK-651</code>: adopted the full-bundle artifact as the final policy-compliant Claude review for <code>WRK-624</code>.</li>
+<li><code>WRK-652</code>: attached final review artifacts and synthesis directly to this WRK.</li>
+<li><code>WRK-653</code>: updated the workflow so future exploratory/debugging chains stay inside one parent WRK by default.</li>
+</ul>
+<h2>Agent Assignment Note</h2>
+<ul>
+<li>The current stage-by-stage assignment model is an interim contract based on observed fit and workflow needs.</li>
+<li>It is required unless overridden with recorded evidence.</li>
+<li>It is not yet the final capability-grounded model because the assignment table has not yet been fully derived from an explicit review of:</li>
+<li><code>agent-router</code></li>
+<li><code>agent-usage-optimizer</code></li>
+<li>That refinement should happen as part of the follow-on Resource Intelligence skill work in <code>WRK-655</code>.</li>
+</ul>
+<h2>Execution Brief</h2>
+<p>(for Codex)</p>
+<p><strong>Provider</strong>: Codex (focused script + doc authoring); Gemini for cross-review of docs;
+Claude for final orchestration review.</p>
+<p><strong>Task for Codex</strong>:
+You are implementing <code>close-item.sh</code>, <code>validate-queue-state.sh</code>, and updating <code>process.md</code>
+and <code>SKILL.md</code> for the workspace-hub work-queue system.</p>
+<p>Repository: <code>workspace-hub</code> at <code>/mnt/local-analysis/workspace-hub/</code>
+Work-queue root: <code>.claude/work-queue/</code>
+Scripts root: <code>scripts/work-queue/</code></p>
+<p>Deliverables:
+1. <code>scripts/work-queue/close-item.sh</code> — see spec above; use <code>#!/usr/bin/env bash</code>,
+   <code>set -euo pipefail</code>; no hardcoded paths (use <code>git rev-parse --show-toplevel</code>)
+2. <code>scripts/work-queue/validate-queue-state.sh</code> — same shell conventions
+3. <code>docs/work-queue-workflow.md</code> — ASCII stage diagram + stage table + completion checklist
+4. Edit <code>process.md</code> — add diagram reference + <code>close-item.sh</code> command in Process stage
+5. Edit <code>.claude/skills/coordination/workspace/work-queue/SKILL.md</code> — add checklist template</p>
+<p>Run tests: <code>bash scripts/work-queue/validate-queue-state.sh</code> must exit 0 on current queue.</p>
+<p><strong>What user reviews</strong>: the schematic diagram for clarity, the checklist for completeness,
+and that <code>close-item.sh</code> handles the <code>pending/</code> fallback (not just <code>working/</code>).</p>
+<h2>Agentic AI Horizon</h2>
+<p><strong>Assessment</strong>: High fit for agentic execution. All deliverables are well-scoped scripts
+and doc edits with clear acceptance criteria and machine-checkable outputs.</p>
+<ul>
+<li><code>close-item.sh</code>: deterministic shell — Codex excels here</li>
+<li><code>validate-queue-state.sh</code>: simple file-system checks — straightforward</li>
+<li>Doc updates: targeted edits to existing files, no architecture decisions needed</li>
+<li>Risk: SKILL.md is ≤20 lines limit — agent must check length before editing and migrate
+  excess content to a linked doc file if needed</li>
+</ul>
+<p><strong>Recommended execution</strong>: Codex single-agent, no parallel subagents needed. Gemini
+for doc review pass. Claude final gate.</p>
+<h2>Post-Archive Follow-Up (from WRK-690 Findings, 2026-03-03)</h2>
+<p>WRK-690 session evidence indicates the WRK-624 workflow needs stricter gate enforcement
+to ensure agents follow the lifecycle exactly.</p>
+<p>Required updates to WRK-624 contract (carry into active workflow specs/scripts):</p>
+<ol>
+<li>Add explicit mandatory stage sequence with machine-checkable signals:
+   <code>resource_intelligence -&gt; init -&gt; set_active_wrk -&gt; /work routing -&gt; work_execution -&gt; artifact_generation -&gt; tdd_eval -&gt; verify_gate_evidence -&gt; plan_html_review_draft -&gt; cross_review -&gt; claim_evidence -&gt; plan_html_review_final -&gt; future_work -&gt; reclaim(if needed) -&gt; close/archive</code></li>
+<li>Enforce two required user-review gates for all WRKs:</li>
+<li><code>plan_html_review_draft_ref</code> (before cross-review)</li>
+<li><code>plan_html_review_final_ref</code> (before close/archive)</li>
+<li>Require explicit work activation signal (<code>set-active-wrk.sh WRK-NNN</code>) before execution.</li>
+<li>Treat <code>future_work</code> as mandatory close-stage evidence; keep <code>reclaim</code> conditional.</li>
+<li>Extend close validation outputs to include PASS/WARN/FAIL by stage with comments.</li>
+</ol>
+<p>Observed compliance snapshot from WRK-690 session set:
+- strict path: 1/1 with complete activation and user-review gates
+- relaxed path: 10 sessions qualified, but only 1/10 with explicit <code>set_active_wrk</code></p>
+<p>These findings are now captured in:
+- <code>.claude/work-queue/assets/WRK-624/workflow-governance-review.html</code> (canonical)
+- <code>.claude/work-queue/assets/WRK-624/followups/WRK-690/review.html</code> (satellite copy)
+- <code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/session-gate-analysis.md</code></p>
+<h2>CLI Update Handoff</h2>
+<p>Before CLI update / session restart, resume context from:
+- <code>.claude/work-queue/assets/WRK-624/cli-update-handoff-2026-03-03.md</code></p>
+  </div>
+
+  <div class="card">
+    <h2>Test Evidence</h2>
+<table>
+  <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Example Pack</td><td><span class="badge badge-pass">present</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-624/example-pack.md</code></td></tr>
+    <tr><td>Variation Tests</td><td><span class="badge badge-pass">present</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-624/variation-test-results.md</code></td></tr>
+    <tr><td>Integrated Repo Tests</td><td><span class="badge badge-warn">0 tests — outside 3-5</span> <span class="badge badge-info">not all pass</span></td>
+        <td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-624/execute-evidence.yaml</code></td></tr>
+  </tbody>
+</table>
+<p><strong>Variation summary:</strong> - **Input**: WRK-X with no status field.</p>
+    
+  </div>
+
+</main>
+
+<script>
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+/* Collapsible cards with summary preview */
+document.querySelectorAll('.card h2').forEach(h2=>{
+  h2.style.cursor='pointer';
+  h2.title='Click to collapse/expand';
+  function buildSummary(sibs){
+    const badges=[];
+    sibs.forEach(s=>s.querySelectorAll('.badge').forEach(b=>badges.push(b.outerHTML)));
+    const bHtml=badges.slice(0,4).join(' ');
+    let text='';
+    for(const s of sibs){
+      if(s.tagName==='UL'||s.tagName==='OL'){
+        const n=s.querySelectorAll('li').length;
+        text=n+' item'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='TABLE'){
+        const n=s.querySelectorAll('tbody tr').length;
+        text=n+' row'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='P'&&s.textContent.trim()){
+        text=s.textContent.trim().slice(0,80)+(s.textContent.length>80?'\u2026':'');break;
+      }
+    }
+    const parts=[bHtml,text].filter(Boolean).join(' &nbsp;&middot;&nbsp; ');
+    return parts||'&nbsp;';
+  }
+  const sibs=[];let el=h2.nextElementSibling;
+  while(el){sibs.push(el);el=el.nextElementSibling;}
+  const chip=document.createElement('span');
+  chip.style.cssText='display:inline-block;margin-left:12px;font-size:.8rem;font-weight:400;'+
+    'color:#55636b;vertical-align:middle;pointer-events:none;';
+  chip.className='section-summary-chip';
+  chip.innerHTML=buildSummary(sibs);h2.appendChild(chip);
+  const arrow=document.createElement('span');
+  arrow.style.cssText='float:right;font-size:.8rem;color:#0f766e;user-select:none;margin-top:2px;';
+  arrow.textContent='▾';h2.appendChild(arrow);
+  h2.addEventListener('click',()=>{
+    const col=h2.dataset.collapsed==='true';
+    sibs.forEach(s=>s.style.display=col?'':'none');
+    h2.dataset.collapsed=col?'false':'true';
+    h2.style.borderBottomColor=col?'':'transparent';
+    chip.style.opacity=col?'0.75':'1';
+    arrow.textContent=col?'▾':'▸';
+  });
+});
+
+/* Sticky auto-TOC */
+(function(){
+  const hs=[...document.querySelectorAll('.content .card h2')];
+  if(hs.length<4)return;
+  const nav=document.createElement('nav');
+  nav.id='toc';
+  nav.style.cssText='position:sticky;top:0;z-index:100;background:rgba(255,253,248,.95);'+
+    'border-bottom:1px solid #d9d0c0;padding:8px 24px;font-size:.82rem;'+
+    'display:flex;flex-wrap:wrap;gap:6px 18px;';
+  hs.forEach((h,i)=>{
+    if(!h.id)h.id='sec-'+i;
+    const a=document.createElement('a');
+    a.href='#'+h.id;a.textContent=h.textContent.replace('▾','').replace('▸','').trim();
+    a.style.cssText='color:#0f766e;text-decoration:none;white-space:nowrap;';
+    a.onmouseenter=()=>a.style.textDecoration='underline';
+    a.onmouseleave=()=>a.style.textDecoration='none';
+    nav.appendChild(a);
+  });
+  document.body.insertBefore(nav,document.querySelector('.content'));
+})();
+
+/* Back-to-top */
+const btn=document.createElement('button');
+btn.textContent='↑ Top';
+btn.style.cssText='position:fixed;bottom:28px;right:28px;padding:8px 14px;'+
+  'background:#0f766e;color:#fff;border:none;border-radius:8px;cursor:pointer;'+
+  'font-size:.85rem;opacity:0;transition:opacity .2s;z-index:200;';
+document.body.appendChild(btn);
+window.addEventListener('scroll',()=>btn.style.opacity=scrollY>300?'1':'0');
+btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
 </body>
 </html>

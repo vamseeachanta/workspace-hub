@@ -161,3 +161,6 @@ reflects this value for cross-provider comparisons.
   emit terminal aggregation (`close_or_archive`) for weekly reporting.
 - Validate signal logging with both unit tests and shell smoke tests before
   trusting weekly analytics.
+- In multi-agent parallel repos, out-of-scope side effects from other agents are
+  non-blocking for the active WRK. Do not revert them unless directed; document
+  them in the active WRK under `Out-of-Scope Side Effects`.
