@@ -1,9 +1,10 @@
 ---
 name: skill-creator
 description: Create new Claude Code skills with proper structure, documentation, and best practices. Use when building custom skills for specific domains, workflows, or organizational needs.
-version: 2.1.0
+version: 2.2.0
 category: builders
-last_updated: 2026-03-04
+last_updated: 2026-03-05
+official_plugin: skill-creator@claude-plugin-directory
 related_skills:
   - session-start-routine
   - sparc-workflow
@@ -13,6 +14,24 @@ related_skills:
 ---
 
 # Skill Creator Skill
+
+## Official Plugin Reference
+
+This custom skill **extends** the official Anthropic `skill-creator` plugin:
+- Install: `/plugin install skill-creator@claude-plugin-directory`
+- Repo: `anthropics/claude-plugins-official/plugins/skill-creator`
+- Capabilities: create skills, improve existing skills, run evals, benchmark performance with variance analysis
+
+**Composition pattern**: invoke the official plugin for core skill creation mechanics.
+This custom skill adds **workspace-specific conventions** on top:
+- WRK linkage (every skill tied to a WRK item)
+- Category taxonomy (`category:` / `subcategory:` fields)
+- Gate compliance (verify-gate-evidence.py integration)
+- Workspace-hub folder conventions and naming rules
+
+**When the official plugin releases a new version**: update `official_plugin:` field above,
+review the changelog, and adjust only the workspace-specific sections below that conflict.
+Do NOT copy official plugin logic into this file — reference it.
 
 ## Canonical Reference
 
