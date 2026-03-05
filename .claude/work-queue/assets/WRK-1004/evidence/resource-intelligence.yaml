@@ -1,0 +1,30 @@
+wrk_id: WRK-1004
+generated_at: "2026-03-04T00:00:00Z"
+generated_by: gemini
+stage: 2
+
+target_repos:
+  - workspace-hub
+
+existing_files:
+  - path: src/workspace_hub/math/circle.py
+    status: planned
+    notes: "calculate_circle(radius) — returns {area, circumference}"
+  - path: tests/unit/test_circle.py
+    status: planned
+    notes: "TDD tests"
+
+related_scripts:
+  - scripts/work-queue/claim-item.sh
+  - scripts/work-queue/close-item.sh
+  - scripts/work-queue/archive-item.sh
+  - scripts/work-queue/verify-gate-evidence.py
+
+skills:
+  core_used:
+    - workspace-hub/workflow-gatepass
+    - workspace-hub/wrk-lifecycle-testpack
+    - coordination/workspace/work-queue
+
+completion_status: continue_to_planning
+top_p1_gaps: []

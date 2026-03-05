@@ -2,43 +2,214 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WRK-1002 - Final Review</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Close Review: WRK-1002 — test(gatepass): claude orchestrator — work-queue lifecycle e</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
-    h1, h2 { margin-top: 24px; }
-    .meta { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
-    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
-    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
-    th { background: #f5f5f5; }
-    code { background: #f3f3f3; padding: 1px 4px; }
-  </style>
+:root {
+  --bg:       #f3efe6;
+  --panel:    #fffdf8;
+  --ink:      #172126;
+  --muted:    #55636b;
+  --accent:   #0f766e;
+  --accent-2: #8a5a2b;
+  --line:     #d9d0c0;
+  --shadow:   0 16px 40px rgba(20,33,38,0.08);
+  --good:     #166534;
+  --warn:     #b45309;
+  --bad:      #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.5;margin:0;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.05);padding:.2em .4em;border-radius:3px;}
+pre code{background:none;padding:0;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.88rem;}
+.hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
+.hero-inner,.content{max-width:1180px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
+  color:var(--accent);font-weight:700;}
+h1{margin:10px 0 12px;font-size:clamp(2rem,4vw,3.8rem);line-height:.95;}
+.lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
+.content{padding:28px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
+  color:var(--accent-2);letter-spacing:.02em;}
+h2[data-collapsed="true"]{margin-bottom:4px;}
+h2 .section-summary-chip{max-width:min(70ch,70vw);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
+h3{color:var(--ink);margin-top:18px;}
+.exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
+  border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
+  border-radius:10px;}
+.exec-summary h2{margin-top:0;border:none;color:var(--accent);}
+.artifact-box{background:#fff;padding:16px;border-radius:10px;
+  border:1px solid var(--line);}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem;}
+th,td{border-top:1px solid var(--line);padding:10px 8px;
+  text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.86rem;color:var(--ink);}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:.9rem;}
+.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-warn{background:#fef3c7;color:var(--warn);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-info{background:#dbeafe;color:#1d4ed8;}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:900px){.split{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}
+  tr,td,th{page-break-inside:avoid;}}
+</style>
 </head>
 <body>
-  <h1>WRK-1002 Final Review</h1>
-  <div class="meta">
-    <div class="pill"><strong>Title</strong><br>test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD</div>
-    <div class="pill"><strong>Status</strong><br>pending</div>
-    <div class="pill"><strong>Route</strong><br>C</div>
-    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
-  </div>
 
-  <h2>Prompt Start Context</h2>
-  <div class="panel"><p>Run a full work-queue gatepass lifecycle — from CAPTURE to ARCHIVE — driven entirely
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-1002 &middot; Close Review</div>
+    <h1>test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD</h1>
+    <p class="lede">Run a full work-queue gatepass lifecycle — from CAPTURE to ARCHIVE — driven entirely</p>
+  </div>
+</header>
+
+<main class="content">
+  <div class="meta">
+  <div class="pill"><strong>WRK ID</strong>WRK-1002</div>
+  <div class="pill"><strong>Status</strong><span class="badge badge-info">ARCHIVED</span></div>
+  <div class="pill"><strong>Route</strong>C — medium</div>
+  <div class="pill"><strong>Orchestrator</strong>claude</div>
+  <div class="pill"><strong>Computer</strong>ace-linux-1</div>
+  <div class="pill"><strong>Created</strong>2026-03-03</div>
+  <div class="pill"><strong>Commit</strong><code>d5ba054</code></div>
+  <div class="pill"><strong>% Done</strong>100%</div>
+</div>
+
+  <div class="card">
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <p>Run a full work-queue gatepass lifecycle — from CAPTURE to ARCHIVE — driven entirely
 by the Claude orchestrator, using the WRK-624 harness. Include a concrete TDD task
 (circle area + circumference) so that user-review steps are actively exercised and
-captured as evidence artifacts.</p></div>
+captured as evidence artifacts.</p>
+    </div>
 
-  <h2>Why</h2>
-  <div class="panel"><p>WRK-624 established the harness and canonical workflow; WRK-659/690 worked on
+    <h2>Skill Manifest</h2>
+<table>
+  <thead><tr><th>Category</th><th>Skill</th></tr></thead>
+  <tbody><tr><td colspan='2' style='color:var(--muted)'>Not applicable.</td></tr></tbody>
+</table>
+<p style="font-size:.82rem;color:var(--muted)">Source: <code>none</code></p>
+  </div>
+
+  <div class="card">
+    <h1>test(gatepass): Claude Orchestrator — Work-Queue Lifecycle End-to-End</h1>
+<h2>What</h2>
+<p>Run a full work-queue gatepass lifecycle — from CAPTURE to ARCHIVE — driven entirely
+by the Claude orchestrator, using the WRK-624 harness. Include a concrete TDD task
+(circle area + circumference) so that user-review steps are actively exercised and
+captured as evidence artifacts.</p>
+<h2>Why</h2>
+<p>WRK-624 established the harness and canonical workflow; WRK-659/690 worked on
 enforcement. This item is the first of three sequential provider-specific tests that
 confirm each orchestrator can independently run the full lifecycle and produce
-comparable, auditable evidence. Claude runs first because it owns the harness.</p></div>
+comparable, auditable evidence. Claude runs first because it owns the harness.</p>
+<h2>Concrete TDD Task: Circle Math</h2>
+<p>Implement <code>calculate_circle(radius)</code> in <code>assetutilities</code> (or a hub test module):
+- Returns <code>{"area": π r², "circumference": 2π r}</code>
+- Tests first (TDD): write failing tests, then implement
+- Validates that the TDD gate in <code>verify-gate-evidence.py</code> is correctly triggered</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># tests/unit/test_circle.py  (write this FIRST — red phase)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">workspace_hub.math.circle</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_circle</span>
 
-  <h2>Acceptance Criteria</h2>
-  <div class="panel"><ul>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_calculate_circle_area</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">calculate_circle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">],</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">25</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_calculate_circle_circumference</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">calculate_circle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;circumference&quot;</span><span class="p">],</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_calculate_circle_zero_radius</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">calculate_circle</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;circumference&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span>
+</code></pre></div>
+
+<h2>Lifecycle Stages (WRK-624 harness)</h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Action</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CAPTURE</td>
+<td>This WRK item exists</td>
+<td>WRK-1002.md</td>
+</tr>
+<tr>
+<td>TRIAGE</td>
+<td>priority/complexity set, workstation assigned</td>
+<td>frontmatter</td>
+</tr>
+<tr>
+<td>PLAN</td>
+<td>plan section below, HTML review</td>
+<td>plan-html-review-final.md</td>
+</tr>
+<tr>
+<td>CLAIM</td>
+<td><code>claim-item.sh WRK-1002</code></td>
+<td>claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>IMPLEMENT</td>
+<td>circle TDD + gatepass skill chain</td>
+<td>commit hash</td>
+</tr>
+<tr>
+<td>CROSS-REVIEW</td>
+<td>Codex reviews implementation</td>
+<td>cross-review-package.md</td>
+</tr>
+<tr>
+<td>CLOSE</td>
+<td><code>close-item.sh WRK-1002</code> after gates pass</td>
+<td>stage-evidence.yaml</td>
+</tr>
+<tr>
+<td>ARCHIVE</td>
+<td><code>archive-item.sh WRK-1002</code></td>
+<td>moved to archive/</td>
+</tr>
+</tbody>
+</table>
+<h2>User-Review Capture</h2>
+<p>At PLAN stage: produce <code>plan-html-review-final.md</code> with fields:</p>
+<div class="codehilite"><pre><span></span><code>confirmed_by: &lt;user&gt;
+confirmed_at: &lt;ISO date&gt;
+decision: passed
+</code></pre></div>
+
+<p>User actively reviews and signs off — this is the artifact the harness validates.</p>
+<h2>Acceptance Criteria</h2>
+<ul>
 <li>[ ] TDD tests written first (failing), then implementation makes them pass</li>
 <li>[ ] <code>uv run --no-project python -m pytest tests/unit/test_circle.py</code> green</li>
 <li>[ ] <code>verify-gate-evidence.py WRK-1002</code> passes all gates</li>
@@ -46,61 +217,119 @@ comparable, auditable evidence. Claude runs first because it owns the harness.</
 <li>[ ] <code>variation-test-results.md</code> produced under <code>assets/WRK-1002/</code></li>
 <li>[ ] Full lifecycle scripts (<code>claim-item.sh</code>, <code>close-item.sh</code>, <code>archive-item.sh</code>) executed</li>
 <li>[ ] WRK-1003 unblocked on completion</li>
-</ul></div>
-
-  <h2>Plan</h2>
-  <div class="panel"><ol>
+</ul>
+<h2>Plan</h2>
+<ol>
 <li>Write failing tests → commit (red)</li>
 <li>Implement <code>calculate_circle</code> → commit (green)</li>
 <li>Run full gatepass: plan HTML → claim → cross-review (Codex) → close</li>
 <li>Capture variation-test-results.md using WRK-624 harness pattern</li>
 <li>Record user plan-review confirmation before close</li>
-</ol></div>
-  <h3>Plan Review Artifacts</h3>
-  <div class="panel">
-    <h4>Draft</h4>
-    <p><em>Not available.</em></p>
-    <h4>Final</h4>
-    <p><em>Not available.</em></p>
+</ol>
+<h2>Prompt Start Context</h2><p>Not applicable.</p><h2>Execution Brief</h2><p>Not applicable.</p><h2>Gate Evidence Summary</h2><p>Not applicable.</p><h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Problem Context</h2><p>Not applicable.</p><h2>Relevant Documents/Data</h2><p>Not applicable.</p><h2>Constraints</h2><p>Not applicable.</p><h2>Assumptions</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p><h2>Domain Notes</h2><p>Not applicable.</p><h2>Source Paths</h2><p>Not applicable.</p><h2>Resource Intelligence Update</h2><p>Not applicable.</p><h2>Next Work</h2><p>Not applicable.</p><h2>Lifecycle Enforcement Progress</h2><p>Not applicable.</p><h2>Stage Evidence Ledger</h2><p>Not applicable.</p><h2>Asset Index</h2><p>Not applicable.</p><h2>User Review - Plan (Draft)</h2><p>Not applicable.</p><h2>User Review - Plan (Final)</h2><p>Not applicable.</p><h2>User Review - Implementation</h2><p>Not applicable.</p><h2>Agentic AI Horizon</h2><p>Not applicable.</p>
   </div>
 
-  <h2>Execution Brief</h2>
-  <div class="panel"><p>Not available.</p></div>
-
-  <h2>Cross-Review Summary</h2>
-  <div class="panel"><p><em>Not available.</em></p></div>
-
-  <h2>Test Summary</h2>
-  <table>
-    <thead>
-      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
-    </thead>
-    <tbody>
-      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
-    </tbody>
-  </table>
-
-  <h2>Gate Evidence Summary</h2>
-  <div class="panel"><p><em>Not available.</em></p></div>
-
-  <h2>Resource Intelligence</h2>
-  <div class="panel">
-    <h4>Resource Summary</h4>
-    <p><em>Not available.</em></p>
-    <h4>Resource Pack</h4>
-    <p><em>Not available.</em></p>
+  <div class="card">
+    <h2>Test Summary</h2>
+<table>
+  <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Example Pack</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1002/example-pack.md</code></td></tr>
+    <tr><td>Variation Tests</td><td><span class="badge badge-pass">present</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1002/variation-test-results.md</code></td></tr>
+    <tr><td>Integrated Repo Tests</td><td><span class="badge badge-pass">5 tests — valid range</span> <span class="badge badge-pass">all pass</span></td>
+        <td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1002/evidence/execute.yaml</code></td></tr>
+  </tbody>
+</table>
+<p><strong>Variation summary:</strong> wrk_id: WRK-1002</p>
+    <h2>Cross-Review Summary</h2><p>Not applicable.</p>
   </div>
 
-  <h2>Skill Manifest</h2>
-  <div class="panel"><p><em>Not available.</em></p></div>
+</main>
 
-  <h2>Future Work</h2>
-  <div class="panel"><p><em>Not available.</em></p></div>
+<script>
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
 
-  <h2>Stage Evidence Ledger</h2>
-  <div class="panel"><p><em>Not available.</em></p></div>
+/* Collapsible cards with summary preview */
+document.querySelectorAll('.card h2').forEach(h2=>{
+  h2.style.cursor='pointer';
+  h2.title='Click to collapse/expand';
+  function buildSummary(sibs){
+    const badges=[];
+    sibs.forEach(s=>s.querySelectorAll('.badge').forEach(b=>badges.push(b.outerHTML)));
+    const bHtml=badges.slice(0,4).join(' ');
+    let text='';
+    for(const s of sibs){
+      if(s.tagName==='UL'||s.tagName==='OL'){
+        const n=s.querySelectorAll('li').length;
+        text=n+' item'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='TABLE'){
+        const n=s.querySelectorAll('tbody tr').length;
+        text=n+' row'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='P'&&s.textContent.trim()){
+        text=s.textContent.trim().slice(0,80)+(s.textContent.length>80?'\u2026':'');break;
+      }
+    }
+    const parts=[bHtml,text].filter(Boolean).join(' &nbsp;&middot;&nbsp; ');
+    return parts||'&nbsp;';
+  }
+  const sibs=[];let el=h2.nextElementSibling;
+  while(el){sibs.push(el);el=el.nextElementSibling;}
+  const chip=document.createElement('span');
+  chip.style.cssText='display:inline-block;margin-left:12px;font-size:.8rem;font-weight:400;'+
+    'color:#55636b;vertical-align:middle;pointer-events:none;';
+  chip.className='section-summary-chip';
+  chip.innerHTML=buildSummary(sibs);h2.appendChild(chip);
+  const arrow=document.createElement('span');
+  arrow.style.cssText='float:right;font-size:.8rem;color:#0f766e;user-select:none;margin-top:2px;';
+  arrow.textContent='▾';h2.appendChild(arrow);
+  h2.addEventListener('click',()=>{
+    const col=h2.dataset.collapsed==='true';
+    sibs.forEach(s=>s.style.display=col?'':'none');
+    h2.dataset.collapsed=col?'false':'true';
+    h2.style.borderBottomColor=col?'':'transparent';
+    chip.style.opacity=col?'0.75':'1';
+    arrow.textContent=col?'▾':'▸';
+  });
+});
 
-  <h2>Asset Index</h2>
-  <div class="panel"><ul><li><code>workflow-final-review.html</code></li></ul></div>
+/* Sticky auto-TOC */
+(function(){
+  const hs=[...document.querySelectorAll('.content .card h2')];
+  if(hs.length<4)return;
+  const nav=document.createElement('nav');
+  nav.id='toc';
+  nav.style.cssText='position:sticky;top:0;z-index:100;background:rgba(255,253,248,.95);'+
+    'border-bottom:1px solid #d9d0c0;padding:8px 24px;font-size:.82rem;'+
+    'display:flex;flex-wrap:wrap;gap:6px 18px;';
+  hs.forEach((h,i)=>{
+    if(!h.id)h.id='sec-'+i;
+    const a=document.createElement('a');
+    a.href='#'+h.id;a.textContent=h.textContent.replace('▾','').replace('▸','').trim();
+    a.style.cssText='color:#0f766e;text-decoration:none;white-space:nowrap;';
+    a.onmouseenter=()=>a.style.textDecoration='underline';
+    a.onmouseleave=()=>a.style.textDecoration='none';
+    nav.appendChild(a);
+  });
+  document.body.insertBefore(nav,document.querySelector('.content'));
+})();
+
+/* Back-to-top */
+const btn=document.createElement('button');
+btn.textContent='↑ Top';
+btn.style.cssText='position:fixed;bottom:28px;right:28px;padding:8px 14px;'+
+  'background:#0f766e;color:#fff;border:none;border-radius:8px;cursor:pointer;'+
+  'font-size:.85rem;opacity:0;transition:opacity .2s;z-index:200;';
+document.body.appendChild(btn);
+window.addEventListener('scroll',()=>btn.style.opacity=scrollY>300?'1':'0');
+btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
 </body>
 </html>

@@ -1,0 +1,28 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: HEAD
+  documents:
+  - .claude/work-queue/assets/WRK-1004/plan-html-review-final.md
+  published_at: '2026-03-04T00:00:00Z'
+  reviewer: user
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: HEAD
+  documents:
+  - .claude/work-queue/assets/WRK-1004/plan-html-review-final.md
+  published_at: '2026-03-04T00:00:00Z'
+  reviewer: user
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: HEAD
+  documents:
+  - .claude/work-queue/assets/WRK-1004/close-review.html
+  published_at: '2026-03-04T00:00:00Z'
+  reviewer: user
