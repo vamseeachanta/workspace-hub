@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-05T14:58:44Z by generate-index.py -->
+<!-- Generated: 2026-03-05T16:30:12Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-05T14:58:44Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-05T16:30:12Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 444
+**Total items:** 445
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 200 |
+| pending | 201 |
 | working | 5 |
 | blocked | 9 |
 | archived | 230 |
@@ -23,14 +23,14 @@
 | Priority | Count |
 |----------|-------|
 | high | 209 |
-| medium | 193 |
+| medium | 194 |
 | low | 41 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 73 |
+| simple | 74 |
 | medium | 212 |
 | complex | 92 |
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 39 |
+| harness | 40 |
 | engineering | 117 |
 | data | 26 |
 | platform | 12 |
@@ -69,7 +69,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 137 |
+| workspace-hub | 138 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,7 +77,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 167 / 444 |
+| Plans exist | 167 / 445 |
 | Plans cross-reviewed | 65 |
 | Plans approved | 84 |
 | Brochure pending | 7 |
@@ -89,9 +89,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 444 |
+| Total captured | 445 |
 | Total archived | 230 |
-| Completion rate | 230/444 (52%) |
+| Completion rate | 230/445 (52%) |
 | Monthly rate (current month) | 5 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -99,7 +99,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 57 / 200 | 28% |
+| Pending items with plans | 57 / 201 | 28% |
 | Plans cross-reviewed | 10 | 15% |
 | Plans user-approved | 10 | 15% |
 
@@ -117,14 +117,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 97 | 2 | 7 |
-| Medium   | 75  | 3  | 1  |
+| Medium   | 76  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (39 items — 14 high, 20 medium, 5 low)
+### harness (40 items — 14 high, 21 medium, 5 low)
 
 #### harness / hooks
 
@@ -138,6 +138,7 @@
 |----|----------|-------|--------|
 | WRK-207 | MEDIUM | fix(ai): align weekly quota reporting with authoritative Claude source | pending |
 | WRK-636 | MEDIUM | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending |
+| WRK-1018 | MEDIUM | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending |
 | WRK-182 | LOW | Predictive Session Planning | pending |
 
 #### harness / skills
@@ -957,6 +958,7 @@
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1164,6 +1166,7 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | medium | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | medium | medium | workspace-hub | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | high | medium | workspace-hub | - |
+| WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | medium | simple | workspace-hub | - |
 
 ### Working
 
@@ -1909,6 +1912,7 @@
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | - |
+| WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | - |
 
 ### worldenergydata
 
@@ -2417,6 +2421,7 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | workspace-hub | - |
+| WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | simple | workspace-hub | - |
 
 ### Low
 
@@ -2543,6 +2548,7 @@
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | medium | workspace-hub | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | workspace-hub | - |
+| WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2860,7 +2866,7 @@
 
 ## By Computer
 
-### ace-linux-1 (150 active / 167 total)
+### ace-linux-1 (151 active / 168 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3031,6 +3037,7 @@
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | workspace-hub |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | workspace-hub |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | workspace-hub |
+| WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 
