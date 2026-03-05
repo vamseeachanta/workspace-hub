@@ -53,10 +53,32 @@ Brochure-ready engineering repos:
    - `engineering_pct = engineering_count / total_active * 100`
    - Table: category → count → % → trend indicator
 
-2. **Harness Saturation Signal** — threshold check:
+2. **Harness Saturation Signal** — multi-layer check:
+
+   **Layer 1 — Queue balance** (static):
    - Default threshold: 30% (configurable via `HARNESS_THRESHOLD` in skill frontmatter)
    - `HEALTHY` if harness_pct ≤ threshold; `OVER-INVESTED` if exceeded
    - Recommendation: "Run X harness items max before returning to engineering"
+
+   **Layer 2 — Agentic activity by provider** (from `.claude/state/portfolio-signals.yaml`):
+   - Per-provider (claude / codex / gemini) breakdown of WRK items closed in last 7 days
+     by category: harness vs engineering vs other
+   - Shows whether a specific provider is drifting toward harness-only work
+   - Example output:
+     ```
+     Provider   | Harness (7d) | Engineering (7d) | Harness%
+     claude     | 4            | 3                | 57% ⚠ OVER
+     codex      | 1            | 5                | 17% ✓
+     gemini     | 0            | 2                | 0%  ✓
+     ```
+   - Source: `portfolio-signals.yaml` `provider_activity` section (see Cron Signal below)
+
+   **Layer 3 — Agentic capability research signal** (from `.claude/state/portfolio-signals.yaml`):
+   - Daily cron (comprehensive-learning Phase 1 or dedicated `update-portfolio-signals.sh`)
+     discovers new Claude/Codex/Gemini capability releases relevant to engineering work:
+     new model capabilities, tool updates, API changes that could unlock faster engineering
+   - Surfaced as: "New: [capability] — potential impact on [engineering domain]"
+   - Keeps the signal fresh without requiring manual research per session
 
 3. **GTM-Ready Technical Capabilities** — rank engineering modules by demo-readiness:
    - Inputs: `brochure_status` field in WRK frontmatter + test coverage proxy (test count in execute.yaml)
@@ -94,6 +116,58 @@ Brochure-ready engineering repos:
 | WRK frontmatter | `.claude/work-queue/pending/*.md` + `working/*.md` | brochure_status, category, priority |
 | Data-source specs | `specs/data-sources/*.yaml` | Module maturity proxies |
 | Engineering module index | `specs/modules/` (per repo) | Module-level completeness |
+| **Portfolio signals** | `.claude/state/portfolio-signals.yaml` | Per-provider agentic activity + capability research |
+
+### Portfolio Signals File (`.claude/state/portfolio-signals.yaml`)
+
+Maintained by daily cron (`scripts/cron/update-portfolio-signals.sh` or as a new
+Phase in `comprehensive-learning`). Schema:
+
+```yaml
+generated_at: "2026-03-05T06:00:00Z"
+lookback_days: 7
+
+# Layer 2: per-provider WRK activity by category
+provider_activity:
+  claude:
+    harness: 4
+    engineering: 3
+    data: 0
+    other: 1
+  codex:
+    harness: 1
+    engineering: 5
+    data: 0
+    other: 0
+  gemini:
+    harness: 0
+    engineering: 2
+    data: 1
+    other: 0
+
+# Layer 3: agentic capability research (updated by cron)
+capability_signals:
+  - date: "2026-03-04"
+    provider: claude
+    capability: "extended thinking on complex reasoning"
+    engineering_domains: ["structural", "pipeline", "reservoir"]
+    impact: medium
+    source: "https://www.anthropic.com/..."
+  - date: "2026-03-03"
+    provider: codex
+    capability: "o3-mini available in CLI"
+    engineering_domains: ["all"]
+    impact: high
+    source: "https://platform.openai.com/..."
+```
+
+**Update mechanism:**
+- `update-portfolio-signals.sh` runs as part of `comprehensive-learning-nightly.sh`
+  (new Phase 0.5 before Phase 1, or appended to Phase 1)
+- Provider activity: parsed from closed WRK YAML files archived in last 7 days
+  (reads `category:` and `orchestrator:` fields from archive files)
+- Capability research: web search via gemini CLI or curated RSS feeds
+  (conservative — only high-confidence, official source signals)
 
 ### Session-Start Integration
 
@@ -112,8 +186,11 @@ The skill registers an optional **weekly steering mode** for `/session-start`:
 | 4 | GTM-readiness scan ranks modules by brochure_status + test proxy | `test_gtm_readiness_ranking` |
 | 5 | Next 3 to fund section maps domains to personas | `test_next3_fund_mapping` |
 | 6 | Recommended harness budget outputs spend-rate | `test_harness_budget_formula` |
-| 7 | Session-start integration point documented | `test_session_start_trigger_documented` |
-| 8 | Skill description triggers on correct phrases | `test_description_trigger_phrases` |
+| 7 | Harness saturation signal includes per-provider agentic activity (Layer 2) | `test_provider_activity_parsed` |
+| 8 | Capability research signal surfaced from portfolio-signals.yaml (Layer 3) | `test_capability_signals_surfaced` |
+| 9 | Missing portfolio-signals.yaml handled gracefully (no crash) | `test_portfolio_signals_missing_graceful` |
+| 10 | Session-start integration point documented | `test_session_start_trigger_documented` |
+| 11 | Skill description triggers on correct phrases | `test_description_trigger_phrases` |
 
 ## Execution Steps
 
@@ -145,19 +222,24 @@ The skill registers an optional **weekly steering mode** for `/session-start`:
 Tests in `tests/skills/test_repo_portfolio_steering.py`:
 
 ```python
-# 8 tests targeting acceptance criteria
-test_skill_file_exists()                    # path + name + version in frontmatter
-test_balance_snapshot_parses_index()        # compute-balance.py against real INDEX.md
-test_harness_threshold_default()            # default 30% fires correctly
-test_harness_threshold_custom()             # HARNESS_THRESHOLD override
-test_gtm_readiness_ranking()               # brochure_status sort order
-test_next3_fund_mapping()                  # domain → persona mapping table present
-test_harness_budget_formula()              # all 3 spend-rate tiers correct
-test_description_trigger_phrases()         # required phrases in description field
+# 11 tests targeting acceptance criteria
+test_skill_file_exists()                        # path + name + version in frontmatter
+test_balance_snapshot_parses_index()            # compute-balance.py against real INDEX.md
+test_harness_threshold_default()                # default 30% fires correctly
+test_harness_threshold_custom()                 # HARNESS_THRESHOLD override
+test_provider_activity_parsed()                 # portfolio-signals.yaml provider_activity read
+test_provider_activity_over_threshold_flagged() # per-provider harness% > 30 → ⚠ OVER
+test_capability_signals_surfaced()              # capability_signals entries appear in report
+test_portfolio_signals_missing_graceful()       # missing yaml → Layer 2/3 skipped, no crash
+test_gtm_readiness_ranking()                    # brochure_status sort order
+test_next3_fund_mapping()                       # domain → persona mapping table present
+test_harness_budget_formula()                   # all 3 spend-rate tiers correct
+test_description_trigger_phrases()              # required phrases in description field
 ```
 
-Script under test: `scripts/skills/repo-portfolio-steering/compute-balance.py`
-(pure Python, no external deps beyond stdlib + yaml)
+Scripts under test:
+- `scripts/skills/repo-portfolio-steering/compute-balance.py` — queue + provider parsing
+- `scripts/cron/update-portfolio-signals.sh` — signal file update (tested via dry-run flag)
 
 ## Output Files
 
