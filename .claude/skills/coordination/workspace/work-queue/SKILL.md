@@ -1,7 +1,7 @@
 ---
 name: work-queue
 description: Maintains a queue of work items (features, bugs, tasks) across workspace-hub repositories with two-phase capture and process pipeline
-version: 1.6.3
+version: 1.6.4
 category: workspace-hub
 type: skill
 trigger: manual
@@ -64,6 +64,9 @@ scripts/agents/session.sh init --provider claude
 | `/work add <desc>` | Capture | Log one or more work items |
 | `/work run` or `/work` | Process | Process next item in queue |
 | `/work list` | Status | Read and display `.claude/work-queue/INDEX.md` |
+| `/work list --by-category` | Status | Category-grouped view (harness→engineering→..., HIGH first within each) |
+| `/work list --category <name>` | Status | Narrow to one category, all subcategories, priority-sorted |
+| `/work list --category <name> --subcategory <sub>` | Status | Narrow to one category+subcategory |
 | `/work status WRK-NNN` | Detail | Show specific item details |
 | `/work prioritize` | Reorder | Interactive priority adjustment |
 | `/work archive WRK-NNN` | Archive | Manually archive an item |
@@ -760,6 +763,20 @@ aceengineer-website/docs/marketing/PORTFOLIO_CAPABILITIES.md
 3. If `--brief` flag is passed, output ID-only list (one per line, no file reads)
 4. If INDEX.md is missing or empty, regenerate: `python3 .claude/work-queue/scripts/generate-index.py`
 
+### `/work list --by-category` behavior
+1. Read `## By Category` section from INDEX.md
+2. Render each category group with heading, item count, and priority-sorted items
+3. Format: `WRK-NNN [PRIORITY] title — status`
+
+### `/work list --category <name>` behavior
+1. Filter INDEX.md By Category section to the named category only
+2. Show all subcategories for that category, priority-sorted within each
+3. Useful for focused single-category work sessions
+
+### `/work list --category <name> --subcategory <sub>` behavior
+1. Further narrow to a single subcategory within the category
+2. Show items priority-sorted
+
 ### Index Regeneration Triggers
 After ANY mutation to work items, regenerate the index:
 - `/work add` — after creating the new item file
@@ -894,6 +911,11 @@ Target: under 2 seconds total for 50 items.
 
 ## Version History
 
+- **1.6.4** (2026-03-05): Category view flags for /work list (WRK-1015)
+  - `/work list --by-category`: category-grouped view from INDEX.md
+  - `/work list --category <name>`: narrow to one category
+  - `/work list --category <name> --subcategory <sub>`: narrow to subcategory
+  - session-start Step 4: top unblocked item per category instead of flat top-3
 - **1.6.3** (2026-03-05): Stage 5 enforced as hard blocking gate (WRK-1017)
   - Added HARD GATE — BLOCKING notice at top of Stage 5 contract
   - Added Stage 5 exit checklist (6 items, all required before Stage 6)
