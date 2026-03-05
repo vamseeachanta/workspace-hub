@@ -1,5 +1,5 @@
 wrk_id: WRK-1015
-generated_at: "2026-03-05T00:00:00Z"
+generated_at: '2026-03-05T14:58:06Z'
 reviewed_by: orchestrator
 stages:
 - order: 1
@@ -28,7 +28,7 @@ stages:
   stage: Cross-Review
   status: done
   evidence: .claude/work-queue/assets/WRK-1015/review.md
-  notes: Gemini APPROVE — 3 P2/P3 findings, all deferred
+  notes: "Gemini APPROVE \u2014 3 P2/P3 findings, all deferred"
 - order: 7
   stage: User Review - Plan (Final)
   status: done
@@ -61,17 +61,18 @@ stages:
   stage: Agent Cross-Review
   status: done
   evidence: .claude/work-queue/assets/WRK-1015/review.md
-  notes: Gemini APPROVE — 3 minor findings, all deferred
+  notes: "Gemini APPROVE \u2014 3 minor findings, all deferred"
 - order: 14
   stage: Verify Gate Evidence
   status: done
   evidence: scripts/work-queue/verify-gate-evidence.py
-  notes: All gates pass — see gate-evidence-summary.json
+  notes: "All gates pass \u2014 see gate-evidence-summary.json"
 - order: 15
   stage: Future Work Synthesis
   status: done
   evidence: .claude/work-queue/assets/WRK-1015/evidence/future-work.yaml
-  notes: 3 deferred items — live rendering, taxonomy.md auto-update, confirmation prompt
+  notes: "3 deferred items \u2014 live rendering, taxonomy.md auto-update, confirmation\
+    \ prompt"
 - order: 16
   stage: Resource Intelligence Update
   status: done
@@ -85,7 +86,7 @@ stages:
   stage: Reclaim
   status: n/a
   evidence: n/a
-  notes: Session continuity unbroken — N/A
+  notes: "Session continuity unbroken \u2014 N/A"
 - order: 19
   stage: Close
   status: done
