@@ -3,7 +3,7 @@ name: work-queue-workflow
 description: >
   Explicit entrypoint skill for the WRK work-queue lifecycle workflow. Points to
   the canonical work-queue process and gatepass enforcement sequence.
-version: 1.0.2
+version: 1.0.3
 updated: 2026-03-05
 category: workspace-hub
 triggers:
@@ -42,14 +42,36 @@ Every stage should explicitly track whether a human decision is required.
    `workflow-gatepass`.
    At **stages 5, 7, 11, 17, 19** run `generate-html-review.py --type <artifact_type>`
    (see `workflow-html` SKILL for artifact types and section catalog).
+   **STOP — Stage 5 is a BLOCKING interactive gate. Do NOT call `cross-review`
+   (Stage 6), do NOT set `plan_reviewed: true`, and do NOT progress to Stage 7
+   until the user has responded in this session with explicit approval or revision
+   requests. Presenting the HTML artifact and waiting silently is NOT sufficient —
+   the user must actively respond.**
+
    Stage 5 is an agent-user interactive plan-mode session:
-   - ask tough clarifying questions,
-   - challenge weak assumptions and surface tradeoffs,
-   - think hard and research hard before allowing progression to stage 6,
-   - research tests/evals from available Resource Intelligence and Document
-     Intelligence artifacts,
-   - seek user review of proposed tests/evals and ask user to add/adjust
+   - Open the plan-draft HTML in the default browser (`xdg-open <html-path>`) AND
+     push to origin BEFORE presenting any recommendation to the user.
+   - Walk the draft plan section-by-section with the user — this is a dialogue,
+     not a one-way artifact drop.
+   - Ask tough clarifying questions; do not accept silence as approval.
+   - Challenge weak assumptions and surface tradeoffs explicitly.
+   - Think hard and research hard before allowing progression to stage 6.
+   - Research tests/evals from available Resource Intelligence and Document
+     Intelligence artifacts.
+   - Seek user review of proposed tests/evals and ask user to add/adjust
      tests/evals before moving forward.
+   - Write `assets/WRK-<id>/evidence/user-review-plan-draft.yaml` capturing all
+     user decisions (scope in/out, acceptance-criteria changes, risks, approve-
+     as-is vs revise-and-rerun). This artifact is required for gate verification.
+
+   **Stage 5 checklist — ALL must be true before advancing to Stage 6:**
+   - [ ] Plan HTML opened in browser (`xdg-open`)
+   - [ ] HTML pushed to origin and publish evidence logged
+   - [ ] Interactive walk-through completed section-by-section with user
+   - [ ] User has responded (not just "ok" — explicit scope/criteria/risk decisions)
+   - [ ] `user-review-plan-draft.yaml` written with decision log
+   - [ ] Plan artifacts updated from user decisions
+
    User-review checkpoints (stages 5/7/17) must include explicit review of the
    HTML **Gate-Pass Stage Status** section (stage-by-stage table + summary) before
    presenting final recommendations to the user.
@@ -66,6 +88,14 @@ must always resolve to the canonical 20-stage chain.
 - Process contract: `.claude/work-queue/process.md`
 - Execution workflow: `coordination/workspace/work-queue/SKILL.md`
 - Gate enforcement: `workspace-hub/workflow-gatepass/SKILL.md`
+
+## Version History
+
+- **1.0.3** (2026-03-05): Stage 5 enforced as hard blocking gate (WRK-1017)
+  - Added STOP — BLOCK marker and explicit blocking language for Stage 5
+  - Added Stage 5 checklist (6 items, all required before Stage 6)
+  - Documented `user-review-plan-draft.yaml` as required gate-verification artifact
+- **1.0.2** (2026-03-05): Initial captured version
 
 ## Practical Lessons (WRK-690)
 

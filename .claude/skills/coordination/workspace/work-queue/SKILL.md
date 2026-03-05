@@ -1,7 +1,7 @@
 ---
 name: work-queue
 description: Maintains a queue of work items (features, bugs, tasks) across workspace-hub repositories with two-phase capture and process pipeline
-version: 1.6.2
+version: 1.6.3
 category: workspace-hub
 type: skill
 trigger: manual
@@ -212,6 +212,12 @@ flowchart TD
 - Produce draft HTML review artifact.
 
 ### 5. User Review - Plan (Draft) — Agent/User Interactive Plan Session
+
+> **HARD GATE — BLOCKING**: Do NOT advance to Stage 6 until user has actively responded
+> in this session. Presenting the HTML artifact and waiting is NOT sufficient — the user
+> must explicitly approve, revise, or request changes. This is an interactive dialog, not
+> a one-way drop.
+
 - Session mode:
   - Run this stage as an interactive agent-user plan-mode session (not a one-way artifact drop).
 - Interactive review and decisions:
@@ -237,6 +243,13 @@ flowchart TD
   - Review the HTML `Gate-Pass Stage Status` section (table + summary) with the user before recommendation.
   - Open completed draft HTML in default browser (`xdg-open <html-path>`).
   - Push draft review artifacts to `origin` and log publish evidence.
+- Stage 5 exit checklist (ALL must be true before Stage 6):
+  - [ ] Plan HTML opened in browser (`xdg-open`)
+  - [ ] HTML pushed to origin and publish evidence logged
+  - [ ] Interactive walk-through completed section-by-section with user
+  - [ ] User has responded (not just "ok" — explicit scope/criteria/risk decisions)
+  - [ ] `user-review-plan-draft.yaml` written with decision log
+  - [ ] Plan artifacts updated from user decisions
 
 ### 6. Cross-Review
 - Multi-agent review (Claude, Codex, Gemini) for Route B/C.
@@ -881,6 +894,10 @@ Target: under 2 seconds total for 50 items.
 
 ## Version History
 
+- **1.6.3** (2026-03-05): Stage 5 enforced as hard blocking gate (WRK-1017)
+  - Added HARD GATE — BLOCKING notice at top of Stage 5 contract
+  - Added Stage 5 exit checklist (6 items, all required before Stage 6)
+  - Made explicit that presenting HTML and waiting is not sufficient; user must actively respond
 - **1.5.0** (2026-02-24): Richer WRK item display template (WRK-390)
   - Display Template section: ID, priority, title (80-char), goal summary, blockers, recommended action
   - Goal extracted from first sentence of `## Goal`, `## Context`, or `## What`
