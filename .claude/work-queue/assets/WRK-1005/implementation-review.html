@@ -307,17 +307,17 @@ input_wrks: [WRK-1002, WRK-1003, WRK-1004]
 user review).</p>
 <h2>Acceptance Criteria</h2>
 <ul>
-<li>[ ] All three provider variation-test-results.md files read and summarized</li>
-<li>[ ] Session log files read for all 3 providers (orchestrator + native stores)</li>
-<li>[ ] <code>parse-session-logs.sh WRK-1002 WRK-1003 WRK-1004</code> run; output in assessment</li>
-<li>[ ] Log review table populated: presence, events, tool count, duration, errors</li>
-<li>[ ] <code>orchestrator-assessment.md</code> scorecard complete with evidence citations</li>
-<li>[ ] <code>orchestrator-assessment.html</code> produced for user review</li>
-<li>[ ] Recommended routing rules section populated</li>
-<li>[ ] Action items captured as new WRK entries if needed</li>
-<li>[ ] Findings shared with WRK-679 (harness standardization) and workstations SKILL.md</li>
-<li>[ ] <code>verify-gate-evidence.py WRK-1005</code> passes all gates</li>
-<li>[ ] User plan-review confirmation captured (<code>plan-html-review-final.md</code>)</li>
+<li>[x] All three provider variation-test-results.md files read and summarized — WRK-1002 (claude), WRK-1003 (codex), WRK-1004 (gemini) all read; scorecard synthesized</li>
+<li>[x] Session log files read for all 3 providers (orchestrator + native stores) — Claude JSONL, Codex text log, Gemini native store detected</li>
+<li>[x] <code>parse-session-logs.sh WRK-1002 WRK-1003 WRK-1004</code> run; output in assessment — output at <code>assets/WRK-1004/session-log-review.md</code></li>
+<li>[x] Log review table populated: presence, events, tool count, duration, errors — 3×3 table in assessment §Session Log Review</li>
+<li>[x] <code>orchestrator-assessment.md</code> scorecard complete with evidence citations — 7 dimensions, provider matrix, routing rules, action items</li>
+<li>[x] <code>orchestrator-assessment.html</code> produced for user review — at <code>assets/WRK-1005/orchestrator-assessment.html</code></li>
+<li>[x] Recommended routing rules section populated — Route A→Codex, B→Claude/Codex, C→Claude, cross-review→Codex, synthesis→Gemini</li>
+<li>[x] Action items captured as new WRK entries if needed — 4 items: WRK-679 (×3 TDD/log/routing) + WRK-1014 (plan-mode stage)</li>
+<li>[x] Findings shared with WRK-679 (harness standardization) — captured in future-work.yaml; workstations SKILL.md update deferred to WRK-679</li>
+<li>[ ] <code>verify-gate-evidence.py WRK-1005</code> passes all gates — 11/16 PASS; 3 pending Stage 17 close review, 1 WARN (reclaim n/a)</li>
+<li>[x] User plan-review confirmation captured (<code>plan-html-review-final.md</code>) — <code>decision: passed</code>, <code>confirmed_by: user</code>, 2026-03-05</li>
 </ul>
 <h2>Execution Brief</h2><p>Not applicable.</p><h2>Files Changed</h2><p>Not applicable.</p><h2>Gate Evidence Summary</h2><p>Not applicable.</p><h2>Stage Evidence Ledger</h2><p>Not applicable.</p>
   </div>
