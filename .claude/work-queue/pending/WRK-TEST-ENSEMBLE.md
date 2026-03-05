@@ -13,6 +13,9 @@ computer: ace-linux-1
 execution_workstations: [ace-linux-1]
 plan_workstations: [ace-linux-1]
 stage_evidence_ref: .claude/work-queue/assets/WRK-TEST-ENSEMBLE/evidence/stage-evidence.yaml
+subcategory: uncategorised
+category: uncategorised
+
 ---
 # Smoke Test
 
