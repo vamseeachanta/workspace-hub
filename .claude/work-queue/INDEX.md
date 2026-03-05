@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-05T14:57:13Z by generate-index.py -->
+<!-- Generated: 2026-03-05T14:58:44Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-05T14:57:13Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-05T14:58:44Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 443
+**Total items:** 444
 
 ### By Status
 
@@ -16,14 +16,14 @@
 | pending | 200 |
 | working | 5 |
 | blocked | 9 |
-| archived | 229 |
+| archived | 230 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 209 |
-| medium | 192 |
+| medium | 193 |
 | low | 41 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 73 |
-| medium | 211 |
+| medium | 212 |
 | complex | 92 |
 
 ### By Category
@@ -69,7 +69,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 136 |
+| workspace-hub | 137 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,9 +77,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 167 / 443 |
-| Plans cross-reviewed | 64 |
-| Plans approved | 83 |
+| Plans exist | 167 / 444 |
+| Plans cross-reviewed | 65 |
+| Plans approved | 84 |
 | Brochure pending | 7 |
 | Brochure updated/synced | 8 |
 
@@ -89,10 +89,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 443 |
-| Total archived | 229 |
-| Completion rate | 229/443 (52%) |
-| Monthly rate (current month) | 4 archived |
+| Total captured | 444 |
+| Total archived | 230 |
+| Completion rate | 230/444 (52%) |
+| Monthly rate (current month) | 5 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -954,6 +954,7 @@
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 20% | n/a | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
@@ -1421,6 +1422,7 @@
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
+| WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | medium | medium | workspace-hub | - |
 
 ## By Repository
 
@@ -1904,6 +1906,7 @@
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | medium | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | - |
+| WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | - |
 
@@ -2412,6 +2415,7 @@
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | workspace-hub | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | workspace-hub | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | workspace-hub | - |
+| WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | workspace-hub | - |
 
 ### Low
@@ -2753,6 +2757,7 @@
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | workspace-hub | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | workspace-hub | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | workspace-hub | - |
+| WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | workspace-hub | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | workspace-hub | - |
 
@@ -2855,7 +2860,7 @@
 
 ## By Computer
 
-### ace-linux-1 (150 active / 166 total)
+### ace-linux-1 (150 active / 167 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3023,6 +3028,7 @@
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | workspace-hub |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | medium | workspace-hub |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | workspace-hub |
+| WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | workspace-hub |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | workspace-hub |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | workspace-hub |
 
