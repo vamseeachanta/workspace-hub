@@ -1,7 +1,7 @@
 ---
 name: work-queue
 description: Maintains a queue of work items (features, bugs, tasks) across workspace-hub repositories with two-phase capture and process pipeline
-version: 1.6.1
+version: 1.6.2
 category: workspace-hub
 type: skill
 trigger: manual
@@ -209,8 +209,16 @@ flowchart TD
 - Route A/B: Inline. Route C: `specs/wrk/WRK-<id>/`.
 - Produce draft HTML review artifact.
 
-### 5. User Review - Plan (Draft)
-- User reviews draft HTML before multi-agent review.
+### 5. User Review - Plan (Draft) — Agent/User Interactive Plan Session
+- Run this stage as an interactive agent-user plan-mode session (not a one-way artifact drop).
+- Agent must walk the draft plan section-by-section with the user and capture explicit decisions:
+  - scope in/out,
+  - acceptance criteria adjustments,
+  - risks/constraints/open questions,
+  - approve-as-is vs revise-and-rerun.
+- Agent must ask tough clarifying questions where ambiguity remains, challenge weak assumptions, and surface tradeoffs explicitly.
+- Agent must think hard and research hard before finalizing the draft: verify critical facts, validate dependencies, and identify likely failure modes.
+- Mandatory: update plan artifacts immediately from user decisions before moving to stage 6.
 - Mandatory: open completed draft HTML in default browser (`xdg-open <html-path>`).
 - Mandatory: push draft review artifacts to `origin` and log publish evidence.
 

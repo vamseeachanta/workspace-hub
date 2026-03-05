@@ -1,0 +1,18 @@
+wrk_id: WRK-1005
+generated_at: "2026-03-05T05:50:00Z"
+additions:
+  - resource: Orchestrator Routing Rules
+    location: assets/WRK-1005/orchestrator-assessment.md §Routing
+    description: >
+      Route A→Codex (speed), Route B→Claude/Codex, Route C→Claude (TDD depth),
+      cross-review→Codex (structured JSON output), synthesis→Gemini
+  - resource: Gemini TDD gap identified
+    location: assets/WRK-1005/orchestrator-assessment.md §Gaps
+    description: >
+      Gemini execute.yaml contained dummy echo tests. Gate verifier does not currently
+      reject non-pytest tests. WRK-679 to add quality gate.
+  - resource: parse-session-logs.sh output format
+    location: assets/WRK-1004/session-log-review.md
+    description: >
+      Script produces 3-provider × 3-WRK log review table. Claude JSONL WRK-ref
+      extraction requires message-content parsing (not yet implemented).

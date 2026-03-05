@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Draft Review: WRK-1005 — assess(orchestrators): cross-provider capability assessment </title>
+  <style>
+:root {
+  --bg:       #f3efe6;
+  --panel:    #fffdf8;
+  --ink:      #172126;
+  --muted:    #55636b;
+  --accent:   #0f766e;
+  --accent-2: #8a5a2b;
+  --line:     #d9d0c0;
+  --shadow:   0 16px 40px rgba(20,33,38,0.08);
+  --good:     #166534;
+  --warn:     #b45309;
+  --bad:      #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.5;margin:0;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.05);padding:.2em .4em;border-radius:3px;}
+pre code{background:none;padding:0;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.88rem;}
+.hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
+.hero-inner,.content{max-width:1180px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
+  color:var(--accent);font-weight:700;}
+h1{margin:10px 0 12px;font-size:clamp(2rem,4vw,3.8rem);line-height:.95;}
+.lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
+.content{padding:28px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
+  color:var(--accent-2);letter-spacing:.02em;}
+h2[data-collapsed="true"]{margin-bottom:4px;}
+h2 .section-summary-chip{max-width:min(70ch,70vw);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
+h3{color:var(--ink);margin-top:18px;}
+.exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
+  border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
+  border-radius:10px;}
+.exec-summary h2{margin-top:0;border:none;color:var(--accent);}
+.artifact-box{background:#fff;padding:16px;border-radius:10px;
+  border:1px solid var(--line);}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem;}
+th,td{border-top:1px solid var(--line);padding:10px 8px;
+  text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.86rem;color:var(--ink);}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:.9rem;}
+.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-warn{background:#fef3c7;color:var(--warn);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-info{background:#dbeafe;color:#1d4ed8;}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:900px){.split{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}
+  tr,td,th{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-1005 &middot; Plan Draft Review</div>
+    <h1>assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini</h1>
+    <p class="lede">Consolidate the evidence from WRK-1002 (Claude), WRK-1003 (Codex), and WRK-1004</p>
+  </div>
+</header>
+
+<main class="content">
+  <div class="meta">
+  <div class="pill"><strong>WRK ID</strong>WRK-1005</div>
+  <div class="pill"><strong>Status</strong><span class="badge badge-info">PENDING</span></div>
+  <div class="pill"><strong>Route</strong>C — medium</div>
+  <div class="pill"><strong>Orchestrator</strong>claude</div>
+  <div class="pill"><strong>Computer</strong>ace-linux-1</div>
+  <div class="pill"><strong>Created</strong>2026-03-03</div>
+  <div class="pill"><strong>Commit</strong><code>n/a</code></div>
+  <div class="pill"><strong>% Done</strong>0%</div>
+</div>
+
+  <div class="card">
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <p>Consolidate the evidence from WRK-1002 (Claude), WRK-1003 (Codex), and WRK-1004
+(Gemini) into a single structured assessment report. Evaluate each orchestrator's
+ability to run the full work-queue gatepass lifecycle independently, and identify
+strengths, gaps, and recommended routing rules.</p>
+<p>This item is purely analytical — no new implementation. Blocked on all three
+provider tests completing first.</p>
+    </div>
+
+    <h2>Skill Manifest</h2>
+<table>
+  <thead><tr><th>Category</th><th>Skill</th></tr></thead>
+  <tbody><tr><td colspan='2' style='color:var(--muted)'>Not applicable.</td></tr></tbody>
+</table>
+<p style="font-size:.82rem;color:var(--muted)">Source: <code>none</code></p>
+  </div>
+
+  <div class="card">
+    <h1>assess(orchestrators): Cross-Provider Capability Assessment</h1>
+<h2>What</h2>
+<p>Consolidate the evidence from WRK-1002 (Claude), WRK-1003 (Codex), and WRK-1004
+(Gemini) into a single structured assessment report. Evaluate each orchestrator's
+ability to run the full work-queue gatepass lifecycle independently, and identify
+strengths, gaps, and recommended routing rules.</p>
+<p>This item is purely analytical — no new implementation. Blocked on all three
+provider tests completing first.</p>
+<h2>Why</h2>
+<p>Running the three lifecycle tests in WRK-1002/1003/1004 produces comparable evidence,
+but the comparison is split across three assets directories. A dedicated assessment
+item keeps that synthesis clean, avoids cluttering the individual WRKs, and produces
+a single actionable report that feeds into:
+- WRK-679 (harness standardization)
+- Workstations SKILL.md routing table
+- comprehensive-learning Phase 1 orchestrator trend analysis</p>
+<h2>Inputs</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Artifact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WRK-1002</td>
+<td><code>assets/WRK-1002/variation-test-results.md</code></td>
+</tr>
+<tr>
+<td>WRK-1003</td>
+<td><code>assets/WRK-1003/variation-test-results.md</code></td>
+</tr>
+<tr>
+<td>WRK-1004</td>
+<td><code>assets/WRK-1004/variation-test-results.md</code></td>
+</tr>
+<tr>
+<td>WRK-1004</td>
+<td><code>assets/WRK-1004/cross-provider-comparison.md</code></td>
+</tr>
+<tr>
+<td>Claude logs</td>
+<td><code>logs/orchestrator/claude/session_YYYYMMDD.jsonl</code></td>
+</tr>
+<tr>
+<td>Codex logs</td>
+<td><code>logs/orchestrator/codex/session_YYYYMMDD.log</code></td>
+</tr>
+<tr>
+<td>Gemini logs</td>
+<td><code>logs/orchestrator/gemini/session_YYYYMMDD.log</code></td>
+</tr>
+<tr>
+<td>Native stores</td>
+<td><code>~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl</code></td>
+</tr>
+<tr>
+<td>Native stores</td>
+<td><code>~/.gemini/tmp/workspace-hub/chats/session-*.json</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Assessment Dimensions</h2>
+<h3>1. Lifecycle Completeness</h3>
+<p>Can each orchestrator run all 8 stages (CAPTURE → ARCHIVE) without manual intervention?</p>
+<h3>2. Gate Compliance</h3>
+<p>Did each provider pass all <code>verify-gate-evidence.py</code> gates on first attempt, or
+require remediation?</p>
+<h3>3. TDD Faithfulness</h3>
+<p>Did each provider write failing tests before implementation (true TDD), or implement
+first and backfill tests?</p>
+<h3>4. User-Review Integration</h3>
+<p>Was the <code>plan-html-review-final.md</code> user confirmation correctly triggered and
+captured before implementation proceeded?</p>
+<h3>5. Tool / Skill Invocation</h3>
+<p>Which providers can invoke <code>/work</code> skill directly vs. require script fallback?
+(See WRK-1000 for Codex limitation)</p>
+<h3>6. Session Log Review</h3>
+<p>Read and parse the session log files for each provider. Assess:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Claude</th>
+<th>Codex</th>
+<th>Gemini</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Log file present</td>
+<td><code>logs/orchestrator/claude/</code></td>
+<td><code>logs/orchestrator/codex/</code></td>
+<td><code>logs/orchestrator/gemini/</code></td>
+</tr>
+<tr>
+<td><code>session_open</code> event recorded</td>
+<td>JSONL <code>event</code> field</td>
+<td>text scan</td>
+<td>text scan</td>
+</tr>
+<tr>
+<td><code>load_assessment</code> event present</td>
+<td>JSONL</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>WRK-1002/1003/1004 referenced</td>
+<td>by WRK id</td>
+<td>by WRK id</td>
+<td>by WRK id</td>
+</tr>
+<tr>
+<td>Tool call count (proxy for effort)</td>
+<td>sum from JSONL</td>
+<td>line count</td>
+<td>line count</td>
+</tr>
+<tr>
+<td>Gate events logged</td>
+<td>plan/tdd/legal/cross-review</td>
+<td>grep</td>
+<td>grep</td>
+</tr>
+<tr>
+<td>Session duration</td>
+<td><code>ts</code> delta</td>
+<td>timestamps</td>
+<td>timestamps</td>
+</tr>
+<tr>
+<td>Errors or retries logged</td>
+<td>error fields</td>
+<td>grep ERROR</td>
+<td>grep ERROR</td>
+</tr>
+</tbody>
+</table>
+<p>Log parsing script: <code>scripts/work-queue/parse-session-logs.sh WRK-1002 WRK-1003 WRK-1004</code>
+(create if not exists — must handle both JSONL and plain-text log formats)</p>
+<h3>7. Divergence from Spec</h3>
+<p>Did any provider produce a <code>calculate_circle</code> implementation that diverged from
+the canonical contract (return keys, precision, edge cases)?</p>
+<h2>Output: Assessment Report</h2>
+<p>Produce <code>assets/WRK-1005/orchestrator-assessment.md</code> with:</p>
+<div class="codehilite"><pre><span></span><code><span class="gh"># Orchestrator Assessment Report</span>
+date: &lt;ISO&gt;
+assessed_by: claude
+input_wrks: [WRK-1002, WRK-1003, WRK-1004]
+
+<span class="gu">## Scorecard</span>
+
+| Dimension | Claude | Codex | Gemini |
+|-----------|--------|-------|--------|
+| Lifecycle completeness | | | |
+| Gate compliance (first pass) | | | |
+| TDD faithfulness | | | |
+| User-review captured | | | |
+| /work skill invocable | | | |
+| Session log review complete | | | |
+| Spec divergence | | | |
+| <span class="gs">**Overall**</span> | | | |
+
+<span class="gu">## Findings</span>
+
+<span class="gu">### Strengths by Provider</span>
+...
+
+<span class="gu">### Gaps by Provider</span>
+...
+
+<span class="gu">## Recommended Routing Rules</span>
+
+<span class="k">-</span><span class="w"> </span>Route A (simple) → preferred provider: ...
+<span class="k">-</span><span class="w"> </span>Route B (medium) → preferred provider: ...
+<span class="k">-</span><span class="w"> </span>Route C (complex) → preferred provider: ...
+<span class="k">-</span><span class="w"> </span>Cross-review role → preferred provider: ...
+
+<span class="gu">## Action Items</span>
+
+| Item | Priority | Target WRK |
+|------|----------|-----------|
+| ... | | |
+</code></pre></div>
+
+<p>Also produce <code>assets/WRK-1005/orchestrator-assessment.html</code> (styled HTML for
+user review).</p>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] All three provider variation-test-results.md files read and summarized</li>
+<li>[ ] Session log files read for all 3 providers (orchestrator + native stores)</li>
+<li>[ ] <code>parse-session-logs.sh WRK-1002 WRK-1003 WRK-1004</code> run; output in assessment</li>
+<li>[ ] Log review table populated: presence, events, tool count, duration, errors</li>
+<li>[ ] <code>orchestrator-assessment.md</code> scorecard complete with evidence citations</li>
+<li>[ ] <code>orchestrator-assessment.html</code> produced for user review</li>
+<li>[ ] Recommended routing rules section populated</li>
+<li>[ ] Action items captured as new WRK entries if needed</li>
+<li>[ ] Findings shared with WRK-679 (harness standardization) and workstations SKILL.md</li>
+<li>[ ] <code>verify-gate-evidence.py WRK-1005</code> passes all gates</li>
+<li>[ ] User plan-review confirmation captured (<code>plan-html-review-final.md</code>)</li>
+</ul>
+<h2>Prompt Start Context</h2><p>Not applicable.</p><h2>Plan</h2><p>Not applicable.</p><h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p>
+  </div>
+
+  <div class="card">
+    <h2>Test Summary</h2>
+<table>
+  <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Example Pack</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1005/example-pack.md</code></td></tr>
+    <tr><td>Variation Tests</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1005/variation-test-results.md</code></td></tr>
+    <tr><td>Integrated Repo Tests</td><td><span class="badge badge-warn">0 tests — outside 3-5</span> <span class="badge badge-info">not all pass</span></td>
+        <td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1005/execute-evidence.yaml</code></td></tr>
+  </tbody>
+</table>
+<p><strong>Variation summary:</strong> No variation-test summary available.</p>
+    <h2>Cross-Review Summary</h2><p>Not applicable.</p>
+  </div>
+
+</main>
+
+<script>
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+/* Collapsible cards with summary preview */
+document.querySelectorAll('.card h2').forEach(h2=>{
+  h2.style.cursor='pointer';
+  h2.title='Click to collapse/expand';
+  function buildSummary(sibs){
+    const badges=[];
+    sibs.forEach(s=>s.querySelectorAll('.badge').forEach(b=>badges.push(b.outerHTML)));
+    const bHtml=badges.slice(0,4).join(' ');
+    let text='';
+    for(const s of sibs){
+      if(s.tagName==='UL'||s.tagName==='OL'){
+        const n=s.querySelectorAll('li').length;
+        text=n+' item'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='TABLE'){
+        const n=s.querySelectorAll('tbody tr').length;
+        text=n+' row'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='P'&&s.textContent.trim()){
+        text=s.textContent.trim().slice(0,80)+(s.textContent.length>80?'\u2026':'');break;
+      }
+    }
+    const parts=[bHtml,text].filter(Boolean).join(' &nbsp;&middot;&nbsp; ');
+    return parts||'&nbsp;';
+  }
+  const sibs=[];let el=h2.nextElementSibling;
+  while(el){sibs.push(el);el=el.nextElementSibling;}
+  const chip=document.createElement('span');
+  chip.style.cssText='display:inline-block;margin-left:12px;font-size:.8rem;font-weight:400;'+
+    'color:#55636b;vertical-align:middle;pointer-events:none;';
+  chip.className='section-summary-chip';
+  chip.innerHTML=buildSummary(sibs);h2.appendChild(chip);
+  const arrow=document.createElement('span');
+  arrow.style.cssText='float:right;font-size:.8rem;color:#0f766e;user-select:none;margin-top:2px;';
+  arrow.textContent='▾';h2.appendChild(arrow);
+  h2.addEventListener('click',()=>{
+    const col=h2.dataset.collapsed==='true';
+    sibs.forEach(s=>s.style.display=col?'':'none');
+    h2.dataset.collapsed=col?'false':'true';
+    h2.style.borderBottomColor=col?'':'transparent';
+    chip.style.opacity=col?'0.75':'1';
+    arrow.textContent=col?'▾':'▸';
+  });
+});
+
+/* Sticky auto-TOC */
+(function(){
+  const hs=[...document.querySelectorAll('.content .card h2')];
+  if(hs.length<4)return;
+  const nav=document.createElement('nav');
+  nav.id='toc';
+  nav.style.cssText='position:sticky;top:0;z-index:100;background:rgba(255,253,248,.95);'+
+    'border-bottom:1px solid #d9d0c0;padding:8px 24px;font-size:.82rem;'+
+    'display:flex;flex-wrap:wrap;gap:6px 18px;';
+  hs.forEach((h,i)=>{
+    if(!h.id)h.id='sec-'+i;
+    const a=document.createElement('a');
+    a.href='#'+h.id;a.textContent=h.textContent.replace('▾','').replace('▸','').trim();
+    a.style.cssText='color:#0f766e;text-decoration:none;white-space:nowrap;';
+    a.onmouseenter=()=>a.style.textDecoration='underline';
+    a.onmouseleave=()=>a.style.textDecoration='none';
+    nav.appendChild(a);
+  });
+  document.body.insertBefore(nav,document.querySelector('.content'));
+})();
+
+/* Back-to-top */
+const btn=document.createElement('button');
+btn.textContent='↑ Top';
+btn.style.cssText='position:fixed;bottom:28px;right:28px;padding:8px 14px;'+
+  'background:#0f766e;color:#fff;border:none;border-radius:8px;cursor:pointer;'+
+  'font-size:.85rem;opacity:0;transition:opacity .2s;z-index:200;';
+document.body.appendChild(btn);
+window.addEventListener('scroll',()=>btn.style.opacity=scrollY>300?'1':'0');
+btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>

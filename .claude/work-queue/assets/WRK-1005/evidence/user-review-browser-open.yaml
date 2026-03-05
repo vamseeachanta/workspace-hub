@@ -1,0 +1,13 @@
+events:
+- stage: plan_draft
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1005/plan-draft-review.html
+  opened_at: '2026-03-05T05:10:00Z'
+  reviewer: user
+- stage: plan_final
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1005/plan-final-review.html
+  opened_at: '2026-03-05T05:30:00Z'
+  reviewer: user

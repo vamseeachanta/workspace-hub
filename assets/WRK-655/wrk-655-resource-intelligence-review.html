@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Implementation Review: WRK-655 — feat(skills): define Resource Intelligence skill and validat</title>
+  <title>Close Review: WRK-655 — feat(skills): define Resource Intelligence skill and validat</title>
   <style>
 :root {
   --bg:       #f3efe6;
@@ -32,7 +32,7 @@ pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
 .hero-inner,.content{max-width:1180px;margin:0 auto;}
 .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
   color:var(--accent);font-weight:700;}
-h1{margin:10px 0 12px;font-size:clamp(1.6rem,4vw,3rem);line-height:1.05;}
+h1{margin:10px 0 12px;font-size:clamp(2rem,4vw,3.8rem);line-height:.95;}
 .lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
 .content{padding:28px 24px 56px;}
 .card{background:var(--panel);padding:26px;border-radius:18px;
@@ -40,6 +40,8 @@ h1{margin:10px 0 12px;font-size:clamp(1.6rem,4vw,3rem);line-height:1.05;}
 h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
   color:var(--accent-2);letter-spacing:.02em;}
 h2[data-collapsed="true"]{margin-bottom:4px;}
+h2 .section-summary-chip{max-width:min(70ch,70vw);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
 h3{color:var(--ink);margin-top:18px;}
 .exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
   border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
@@ -76,7 +78,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 
 <header class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">WRK-655 &middot; Implementation Review</div>
+    <div class="eyebrow">WRK-655 &middot; Close Review</div>
     <h1>feat(skills): define Resource Intelligence skill and validator-ready stage contract</h1>
     <p class="lede">`Resource Intelligence` is now part of the canonical `WRK-624` workflow, but it is</p>
   </div>
@@ -104,7 +106,7 @@ skill-driven stage.</p>
     <h2>Skill Manifest</h2>
 <table>
   <thead><tr><th>Category</th><th>Skill</th></tr></thead>
-  <tbody><tr><td colspan='2' style='color:var(--muted)'>No skills recorded</td></tr></tbody>
+  <tbody><tr><td colspan='2' style='color:var(--muted)'>Not applicable.</td></tr></tbody>
 </table>
 <p style="font-size:.82rem;color:var(--muted)">Source: <code>none</code></p>
   </div>
@@ -311,10 +313,11 @@ skill-driven stage.</p>
 <li>The goal is not generic “research guidance.” The goal is a repeatable, inspectable
   stage contract that materially improves planning quality.</li>
 </ul>
+<h2>Prompt Start Context</h2><p>Not applicable.</p><h2>Why</h2><p>Not applicable.</p><h2>Plan</h2><p>Not applicable.</p><h2>Execution Brief</h2><p>Not applicable.</p><h2>Gate Evidence Summary</h2><p>Not applicable.</p><h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Problem Context</h2><p>Not applicable.</p><h2>Relevant Documents/Data</h2><p>Not applicable.</p><h2>Constraints</h2><p>Not applicable.</p><h2>Assumptions</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p><h2>Domain Notes</h2><p>Not applicable.</p><h2>Source Paths</h2><p>Not applicable.</p><h2>Resource Intelligence Update</h2><p>Not applicable.</p><h2>Next Work</h2><p>Not applicable.</p><h2>Lifecycle Enforcement Progress</h2><p>Not applicable.</p><h2>Stage Evidence Ledger</h2><p>Not applicable.</p><h2>Asset Index</h2><p>Not applicable.</p><h2>User Review - Plan (Draft)</h2><p>Not applicable.</p><h2>User Review - Plan (Final)</h2><p>Not applicable.</p><h2>User Review - Implementation</h2><p>Not applicable.</p><h2>Agentic AI Horizon</h2><p>Not applicable.</p>
   </div>
 
   <div class="card">
-    <h2>Test Evidence</h2>
+    <h2>Test Summary</h2>
 <table>
   <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
   <tbody>
@@ -325,7 +328,7 @@ skill-driven stage.</p>
   </tbody>
 </table>
 <p><strong>Variation summary:</strong> No variation-test summary available.</p>
-    
+    <h2>Cross-Review Summary</h2><p>Not applicable.</p>
   </div>
 
 </main>
@@ -367,8 +370,9 @@ document.querySelectorAll('.card h2').forEach(h2=>{
   const sibs=[];let el=h2.nextElementSibling;
   while(el){sibs.push(el);el=el.nextElementSibling;}
   const chip=document.createElement('span');
-  chip.style.cssText='display:none;margin-left:12px;font-size:.8rem;font-weight:400;'+
+  chip.style.cssText='display:inline-block;margin-left:12px;font-size:.8rem;font-weight:400;'+
     'color:#55636b;vertical-align:middle;pointer-events:none;';
+  chip.className='section-summary-chip';
   chip.innerHTML=buildSummary(sibs);h2.appendChild(chip);
   const arrow=document.createElement('span');
   arrow.style.cssText='float:right;font-size:.8rem;color:#0f766e;user-select:none;margin-top:2px;';
@@ -378,7 +382,7 @@ document.querySelectorAll('.card h2').forEach(h2=>{
     sibs.forEach(s=>s.style.display=col?'':'none');
     h2.dataset.collapsed=col?'false':'true';
     h2.style.borderBottomColor=col?'':'transparent';
-    chip.style.display=col?'none':'inline';
+    chip.style.opacity=col?'0.75':'1';
     arrow.textContent=col?'▾':'▸';
   });
 });

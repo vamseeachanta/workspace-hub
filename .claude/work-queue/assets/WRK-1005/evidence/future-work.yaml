@@ -1,0 +1,48 @@
+wrk_id: WRK-1005
+generated_at: "2026-03-05T05:45:00Z"
+recommendations:
+  - title: "Harden Gemini + Codex TDD gate — require tdd_red_commit in execute.yaml"
+    description: >
+      Gate verifier should reject execute.yaml missing tdd_red_commit for Routes B/C.
+      Dummy echo tests should fail the integrated test gate.
+    source: WRK-1005 assessment finding (Gemini execute.yaml dummy tests)
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    priority: high
+    required_for_signoff: false
+    wrk: WRK-679
+
+  - title: "Improve Gemini session log routing — write named log to orchestrator/gemini/"
+    description: >
+      parse-session-logs.sh currently falls back to native store for Gemini.
+      A named session log enables duration + WRK-ref extraction.
+    source: WRK-1005 session log review
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    priority: medium
+    required_for_signoff: false
+    wrk: WRK-679
+
+  - title: "Update Workstations SKILL.md routing table with assessment findings"
+    description: >
+      Route A→Codex, Route C→Claude, cross-review→Codex confirmed by this assessment.
+    source: WRK-1005 orchestrator-assessment.md §Routing Rules
+    disposition: existing-updated
+    status: pending
+    captured: true
+    priority: low
+    required_for_signoff: false
+    wrk: WRK-679
+
+  - title: "Implement plan-mode ideation sub-stage (Stage 4a) in workflow lifecycle"
+    description: >
+      EnterPlanMode before artifact creation produces higher quality first-draft plans.
+    source: WRK-1005 plan gate conversation
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    priority: medium
+    required_for_signoff: false
+    wrk: WRK-1014

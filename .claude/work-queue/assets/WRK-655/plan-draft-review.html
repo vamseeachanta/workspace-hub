@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Draft Review: WRK-655 — feat(skills): define Resource Intelligence skill and validat</title>
+  <style>
+:root {
+  --bg:       #f3efe6;
+  --panel:    #fffdf8;
+  --ink:      #172126;
+  --muted:    #55636b;
+  --accent:   #0f766e;
+  --accent-2: #8a5a2b;
+  --line:     #d9d0c0;
+  --shadow:   0 16px 40px rgba(20,33,38,0.08);
+  --good:     #166534;
+  --warn:     #b45309;
+  --bad:      #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.5;margin:0;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.05);padding:.2em .4em;border-radius:3px;}
+pre code{background:none;padding:0;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.88rem;}
+.hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
+.hero-inner,.content{max-width:1180px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
+  color:var(--accent);font-weight:700;}
+h1{margin:10px 0 12px;font-size:clamp(2rem,4vw,3.8rem);line-height:.95;}
+.lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
+.content{padding:28px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
+  color:var(--accent-2);letter-spacing:.02em;}
+h2[data-collapsed="true"]{margin-bottom:4px;}
+h2 .section-summary-chip{max-width:min(70ch,70vw);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
+h3{color:var(--ink);margin-top:18px;}
+.exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
+  border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
+  border-radius:10px;}
+.exec-summary h2{margin-top:0;border:none;color:var(--accent);}
+.artifact-box{background:#fff;padding:16px;border-radius:10px;
+  border:1px solid var(--line);}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem;}
+th,td{border-top:1px solid var(--line);padding:10px 8px;
+  text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.86rem;color:var(--ink);}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:.9rem;}
+.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-warn{background:#fef3c7;color:var(--warn);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-info{background:#dbeafe;color:#1d4ed8;}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:900px){.split{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}
+  tr,td,th{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-655 &middot; Plan Draft Review</div>
+    <h1>feat(skills): define Resource Intelligence skill and validator-ready stage contract</h1>
+    <p class="lede">`Resource Intelligence` is now part of the canonical `WRK-624` workflow, but it is</p>
+  </div>
+</header>
+
+<main class="content">
+  <div class="meta">
+  <div class="pill"><strong>WRK ID</strong>WRK-655</div>
+  <div class="pill"><strong>Status</strong><span class="badge badge-pass">DONE</span></div>
+  <div class="pill"><strong>Route</strong>C — complex</div>
+  <div class="pill"><strong>Orchestrator</strong>claude</div>
+  <div class="pill"><strong>Computer</strong>['ace-linux-1']</div>
+  <div class="pill"><strong>Created</strong>2026-02-28</div>
+  <div class="pill"><strong>Commit</strong><code>06d4c15</code></div>
+  <div class="pill"><strong>% Done</strong>100%</div>
+</div>
+
+  <div class="card">
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <p>Create or enhance the ecosystem so <code>Resource Intelligence</code> becomes a defined, reusable
+skill-driven stage.</p>
+    </div>
+
+    <h2>Skill Manifest</h2>
+<table>
+  <thead><tr><th>Category</th><th>Skill</th></tr></thead>
+  <tbody><tr><td colspan='2' style='color:var(--muted)'>Not applicable.</td></tr></tbody>
+</table>
+<p style="font-size:.82rem;color:var(--muted)">Source: <code>none</code></p>
+  </div>
+
+  <div class="card">
+    <h1>feat(skills): Define Resource Intelligence Skill and Validator-Ready Stage Contract</h1>
+<h2>Problem</h2>
+<p><code>Resource Intelligence</code> is now part of the canonical <code>WRK-624</code> workflow, but it is
+still the loosest stage in practice:</p>
+<ul>
+<li>the stage is described in policy, but not yet operationalized through a dedicated skill</li>
+<li>its artifact contract is not yet validator-checkable end to end</li>
+<li>repo context, document intelligence, legal scan, prior learnings, and skill routing
+  are known concepts, but not yet presented as one defined workflow</li>
+<li>relevant online codes, standards, and documents are not yet systematically downloaded, documented, and placed in durable reference locations</li>
+<li>user review of stage gaps is not yet backed by a reusable ecosystem skill</li>
+</ul>
+<p>Without a first-class skill, the stage risks degenerating into inconsistent, ad hoc
+research notes that vary by agent and session.</p>
+<h2>What</h2>
+<p>Create or enhance the ecosystem so <code>Resource Intelligence</code> becomes a defined, reusable
+skill-driven stage.</p>
+<h2>First-Pass Implementation Progress</h2>
+<ul>
+<li>canonical skill created at <code>.claude/skills/workspace-hub/resource-intelligence/</code></li>
+<li>mounted-source registry created at <code>data/document-index/mounted-source-registry.yaml</code></li>
+<li>maturity ledger created at <code>data/document-index/resource-intelligence-maturity.yaml</code></li>
+<li>linked maturity summary created at <code>data/document-index/resource-intelligence-maturity.md</code></li>
+<li><code>WRK-655</code> resource-pack artifacts created under <code>.claude/work-queue/assets/WRK-655/</code></li>
+<li><code>WRK-624</code> references updated to point to the canonical skill path</li>
+</ul>
+<h3>Scope</h3>
+<ol>
+<li><strong>Create or enhance a dedicated Resource Intelligence skill</strong></li>
+<li>canonical path under <code>.claude/skills/</code></li>
+<li>clear trigger conditions</li>
+<li>minimal but reusable workflow</li>
+<li>
+<p>explicit artifact outputs for the WRK resource pack</p>
+</li>
+<li>
+<p><strong>Define the stage knowledge map</strong></p>
+</li>
+<li>repo lifecycle wrapper</li>
+<li>domain context loader</li>
+<li>repo/document inventory</li>
+<li>document intelligence / indexing</li>
+<li>prior knowledge surfacing</li>
+<li>legal scan</li>
+<li>agent-fit and quota awareness</li>
+<li>deep-learning handoff</li>
+<li>
+<p>reviewed capability authority for routing and quota decisions</p>
+</li>
+<li>
+<p><strong>Define the stage gap model</strong></p>
+</li>
+<li><code>P1</code>: blocking gaps</li>
+<li><code>P2</code>: material but non-blocking gaps</li>
+<li><code>P3</code>: enhancement gaps</li>
+<li>
+<p>explicit rule:</p>
+<ul>
+<li>surface <code>P1</code> gaps to user first</li>
+<li>pause for user when unresolved <code>P1</code> gaps remain</li>
+<li>continue when no <code>P1</code> gaps remain</li>
+</ul>
+</li>
+<li>
+<p><strong>Make the stage validator-ready</strong></p>
+</li>
+<li>define minimum artifact presence rules</li>
+<li>define minimum content/section rules</li>
+<li>define legal-scan proof location</li>
+<li>define how document-intelligence indexing is recorded</li>
+<li>
+<p>define provenance, storage, and dedup rules for downloaded complementary sources</p>
+</li>
+<li>
+<p><strong>Update workflow references</strong></p>
+</li>
+<li><code>WRK-624</code> spec and HTML should point to the new skill and stage contract</li>
+<li>recommended-next-work section should reflect the new stage capability</li>
+<li><strong>Increase long-term intelligence value</strong></li>
+<li>relevant online codes, standards, and documents should be downloaded only as complements to existing document-intelligence sources</li>
+<li>each downloaded source should have provenance, licensing/access status, and canonical storage location recorded</li>
+<li>downloaded sources should be documented in document intelligence</li>
+<li>downloaded sources should be placed in the relevant reference location for future reuse</li>
+<li>used to compound repository intelligence over time</li>
+</ol>
+<h2>Knowledge Map to Support This WRK</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Skill / System</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lifecycle wrapper</td>
+<td><code>work-queue</code></td>
+<td>Align stage artifacts to WRK lifecycle</td>
+</tr>
+<tr>
+<td>Domain scoping</td>
+<td><code>engineering-context-loader</code></td>
+<td>Narrow relevant domain context and standards</td>
+</tr>
+<tr>
+<td>Repo/document scan</td>
+<td><code>document-inventory</code></td>
+<td>Inventory source collections before deeper processing</td>
+</tr>
+<tr>
+<td>Document intelligence</td>
+<td><code>document-rag-pipeline</code></td>
+<td>Build searchable document context when needed</td>
+</tr>
+<tr>
+<td>Prior learnings</td>
+<td><code>knowledge-manager</code></td>
+<td>Surface prior decisions, patterns, gotchas</td>
+</tr>
+<tr>
+<td>Legal check</td>
+<td><code>legal-sanity</code></td>
+<td>Check resource-pack artifacts for sensitive content</td>
+</tr>
+<tr>
+<td>Agent fit</td>
+<td><code>agent-router</code></td>
+<td>Help select best provider mix for later stages</td>
+</tr>
+<tr>
+<td>Quota awareness</td>
+<td><code>agent-usage-optimizer</code></td>
+<td>Keep downstream claim/review work within quota</td>
+</tr>
+<tr>
+<td>Deep synthesis</td>
+<td><code>comprehensive-learning</code></td>
+<td>Consume outputs later for slower ecosystem learning</td>
+</tr>
+</tbody>
+</table>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] Resource Intelligence executes through a defined skill, not ad hoc instructions</li>
+<li>[ ] Skill defines required artifacts for <code>resource-pack.md</code>, <code>sources.md</code>, <code>constraints.md</code>, <code>domain-notes.md</code>, <code>open-questions.md</code>, and <code>resources.yaml</code></li>
+<li>[ ] Skill defines a visible <code>P1/P2/P3</code> gap-ranking model</li>
+<li>[ ] Skill defines user-pause behavior for unresolved <code>P1</code> gaps</li>
+<li>[ ] Stage knowledge map is documented and easy for the user to inspect/tweak</li>
+<li>[ ] Capability review of <code>agent-router</code> and <code>agent-usage-optimizer</code> is completed or a bounded interim-routing rule is documented explicitly</li>
+<li>[ ] Validator-ready rules are documented for minimum stage completion</li>
+<li>[ ] <code>WRK-624</code> references are updated to point at the new skill contract</li>
+<li>[ ] Relevant online codes, standards, and documents are downloaded only as additive complements to existing document-intelligence sources, documented with provenance, and placed in the appropriate long-term reference location</li>
+<li>[ ] The plan defines a 3-month repository-intelligence maturity target and tracking method</li>
+<li>[ ] The plan defines example-rich validation cases for this repository's Resource Intelligence stage</li>
+<li>[ ] Legal scan passes</li>
+</ul>
+<h2>Suggested Improvements From Review</h2>
+<ol>
+<li>Add <code>route: C</code> directly to WRK frontmatter so the item itself is a clean example of the tightened contract.</li>
+<li>Treat blank <code>plan_html_review_final_ref</code> and <code>claim_routing_ref</code> as stage-pending fields, not omissions:</li>
+<li><code>plan_html_review_final_ref</code> remains empty until post-review</li>
+<li><code>claim_routing_ref</code> remains empty until claim/execution</li>
+<li>Require downloaded-source provenance to be recorded in <code>resources.yaml</code> with:</li>
+<li>source URL or origin</li>
+<li>license/access status</li>
+<li>retrieval date</li>
+<li>canonical storage path</li>
+<li>duplicate/superseded relationship if any</li>
+<li>Require a formal capability review of <code>agent-router</code> and <code>agent-usage-optimizer</code>, or else record an explicit interim-routing rule with limits.</li>
+<li>Define repository-native example cases for validation before execution.</li>
+</ol>
+<h2>User Decisions Recorded</h2>
+<ol>
+<li><strong>Skill target</strong>: create a new canonical <code>resource-intelligence</code> skill.</li>
+<li><strong>Mounted-source registry location</strong>: use the best-structured location as long as the registry is clearly linked to existing document-intelligence assets and well documented for AI agents.</li>
+<li><strong>Routing authority approach</strong>: use the interim-routing rule first; <code>agent-router</code> is advisory for fit, <code>agent-usage-optimizer</code> is advisory for quota, and the orchestrator retains final authority.</li>
+<li><strong>Tracking artifacts for the 3-month metric</strong>: use both YAML and Markdown, with the Markdown linked to the YAML to prevent drift.</li>
+<li><strong>Minimum first-pass example set</strong>: accept the recommended example set from the plan.</li>
+</ol>
+<h2>Repository-Native Example Sources</h2>
+<p>These are the most relevant baseline sources to validate the Resource Intelligence stage in <code>workspace-hub</code>:</p>
+<ol>
+<li><code>AGENTS.md</code></li>
+<li><code>.claude/work-queue/process.md</code></li>
+<li><code>specs/wrk/WRK-624/plan.md</code></li>
+<li><code>assets/WRK-624/wrk-624-workflow-review.html</code></li>
+<li><code>scripts/work-queue/validate-queue-state.sh</code></li>
+<li><code>scripts/work-queue/claim-item.sh</code></li>
+<li><code>scripts/work-queue/close-item.sh</code></li>
+<li><code>.claude/skills/coordination/orchestration/agent-router/SKILL.md</code></li>
+<li><code>.claude/skills/ai/agent-usage-optimizer/SKILL.md</code></li>
+<li><code>.claude/skills/data/documents/document-rag-pipeline/SKILL.md</code></li>
+</ol>
+<h2>Notes</h2>
+<ul>
+<li>Prefer enhancing an existing skill if one already cleanly fits the role; only create a new one if that produces a clearer ecosystem contract.</li>
+<li>Keep the skill concise; push detailed references into linked files where needed.</li>
+<li>The goal is not generic “research guidance.” The goal is a repeatable, inspectable
+  stage contract that materially improves planning quality.</li>
+</ul>
+<h2>Prompt Start Context</h2><p>Not applicable.</p><h2>Why</h2><p>Not applicable.</p><h2>Plan</h2><p>Not applicable.</p><h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p>
+  </div>
+
+  <div class="card">
+    <h2>Test Summary</h2>
+<table>
+  <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Example Pack</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-655/example-pack.md</code></td></tr>
+    <tr><td>Variation Tests</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-655/variation-test-results.md</code></td></tr>
+    <tr><td>Integrated Repo Tests</td><td><span class="badge badge-warn">0 tests — outside 3-5</span> <span class="badge badge-info">not all pass</span></td>
+        <td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-655/execute-evidence.yaml</code></td></tr>
+  </tbody>
+</table>
+<p><strong>Variation summary:</strong> No variation-test summary available.</p>
+    <h2>Cross-Review Summary</h2><p>Not applicable.</p>
+  </div>
+
+</main>
+
+<script>
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+/* Collapsible cards with summary preview */
+document.querySelectorAll('.card h2').forEach(h2=>{
+  h2.style.cursor='pointer';
+  h2.title='Click to collapse/expand';
+  function buildSummary(sibs){
+    const badges=[];
+    sibs.forEach(s=>s.querySelectorAll('.badge').forEach(b=>badges.push(b.outerHTML)));
+    const bHtml=badges.slice(0,4).join(' ');
+    let text='';
+    for(const s of sibs){
+      if(s.tagName==='UL'||s.tagName==='OL'){
+        const n=s.querySelectorAll('li').length;
+        text=n+' item'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='TABLE'){
+        const n=s.querySelectorAll('tbody tr').length;
+        text=n+' row'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='P'&&s.textContent.trim()){
+        text=s.textContent.trim().slice(0,80)+(s.textContent.length>80?'\u2026':'');break;
+      }
+    }
+    const parts=[bHtml,text].filter(Boolean).join(' &nbsp;&middot;&nbsp; ');
+    return parts||'&nbsp;';
+  }
+  const sibs=[];let el=h2.nextElementSibling;
+  while(el){sibs.push(el);el=el.nextElementSibling;}
+  const chip=document.createElement('span');
+  chip.style.cssText='display:inline-block;margin-left:12px;font-size:.8rem;font-weight:400;'+
+    'color:#55636b;vertical-align:middle;pointer-events:none;';
+  chip.className='section-summary-chip';
+  chip.innerHTML=buildSummary(sibs);h2.appendChild(chip);
+  const arrow=document.createElement('span');
+  arrow.style.cssText='float:right;font-size:.8rem;color:#0f766e;user-select:none;margin-top:2px;';
+  arrow.textContent='▾';h2.appendChild(arrow);
+  h2.addEventListener('click',()=>{
+    const col=h2.dataset.collapsed==='true';
+    sibs.forEach(s=>s.style.display=col?'':'none');
+    h2.dataset.collapsed=col?'false':'true';
+    h2.style.borderBottomColor=col?'':'transparent';
+    chip.style.opacity=col?'0.75':'1';
+    arrow.textContent=col?'▾':'▸';
+  });
+});
+
+/* Sticky auto-TOC */
+(function(){
+  const hs=[...document.querySelectorAll('.content .card h2')];
+  if(hs.length<4)return;
+  const nav=document.createElement('nav');
+  nav.id='toc';
+  nav.style.cssText='position:sticky;top:0;z-index:100;background:rgba(255,253,248,.95);'+
+    'border-bottom:1px solid #d9d0c0;padding:8px 24px;font-size:.82rem;'+
+    'display:flex;flex-wrap:wrap;gap:6px 18px;';
+  hs.forEach((h,i)=>{
+    if(!h.id)h.id='sec-'+i;
+    const a=document.createElement('a');
+    a.href='#'+h.id;a.textContent=h.textContent.replace('▾','').replace('▸','').trim();
+    a.style.cssText='color:#0f766e;text-decoration:none;white-space:nowrap;';
+    a.onmouseenter=()=>a.style.textDecoration='underline';
+    a.onmouseleave=()=>a.style.textDecoration='none';
+    nav.appendChild(a);
+  });
+  document.body.insertBefore(nav,document.querySelector('.content'));
+})();
+
+/* Back-to-top */
+const btn=document.createElement('button');
+btn.textContent='↑ Top';
+btn.style.cssText='position:fixed;bottom:28px;right:28px;padding:8px 14px;'+
+  'background:#0f766e;color:#fff;border:none;border-radius:8px;cursor:pointer;'+
+  'font-size:.85rem;opacity:0;transition:opacity .2s;z-index:200;';
+document.body.appendChild(btn);
+window.addEventListener('scroll',()=>btn.style.opacity=scrollY>300?'1':'0');
+btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>

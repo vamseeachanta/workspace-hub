@@ -74,7 +74,9 @@ flowchart TD
 - Plan artifacts must include the Skill Manifest for user review (`mandatory`, `supporting`,
   `domain`, and `repo_governance` skill sets), sourced from
   `assets/WRK-<id>/evidence/skill-manifest.yaml`.
-- User reviews Draft HTML before multi-agent review.
+- User reviews Draft HTML before multi-agent review as an interactive plan session:
+  ask tough clarifying questions, challenge weak assumptions, think hard, and
+  research hard before finalizing the draft plan.
 - Multi-agent review (Claude, Codex, Gemini) for Route B/C.
 - User reviews Final HTML and records a pass/fail decision.
 - Only a passed final HTML review may proceed to plan approval and claim.

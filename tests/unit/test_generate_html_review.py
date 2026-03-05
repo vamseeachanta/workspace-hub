@@ -220,8 +220,10 @@ def test_status_badge_pending_is_info(mod):
 
 # ── render_reviewer_synthesis ─────────────────────────────────────────────────
 
-def test_empty_reviewers_returns_empty(mod):
-    assert mod.render_reviewer_synthesis([]) == ""
+def test_empty_reviewers_returns_not_applicable(mod):
+    html = mod.render_reviewer_synthesis([])
+    assert "Cross-Review Summary" in html
+    assert "Not applicable." in html
 
 
 def test_reviewers_table_includes_verdicts(mod):
@@ -234,3 +236,23 @@ def test_reviewers_table_includes_verdicts(mod):
     html = mod.render_reviewer_synthesis(reviewers)
     assert "APPROVE" in html and "badge-pass" in html
     assert "NO_OUTPUT" in html and "badge-info" in html
+
+
+def test_close_normalizes_future_work_to_next_work(mod):
+    body = "## Future Work\n- item 1\n"
+    normalized = mod._normalize_close_section_names(body, "close")
+    assert "## Next Work" in normalized
+    assert "## Future Work" not in normalized
+
+
+def test_suppress_duplicate_generated_sections(mod):
+    body_html = "<h2>Cross-Review Summary</h2><p>Existing.</p><h2>Test Summary</h2><p>Existing.</p>"
+    sm, te, rv = mod._suppress_duplicate_generated_sections(
+        body_html,
+        "<h2>Skill Manifest</h2><p>Generated.</p>",
+        "<h2>Test Summary</h2><p>Generated.</p>",
+        "<h2>Cross-Review Summary</h2><p>Generated.</p>",
+    )
+    assert te == ""
+    assert rv == ""
+    assert sm != ""

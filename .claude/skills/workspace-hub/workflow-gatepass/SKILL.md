@@ -3,8 +3,8 @@ name: workflow-gatepass
 description: >
   Enforce WRK lifecycle gatepass from session start through close/archive with
   machine-checkable evidence requirements and explicit no-bypass rules.
-version: 1.0.3
-updated: 2026-03-03
+version: 1.0.4
+updated: 2026-03-05
 category: workspace-hub
 triggers:
   - workflow gatepass
@@ -38,7 +38,9 @@ It makes the lifecycle sequence explicit and blocks bypass behavior.
 2. Resource Intelligence.
 3. Triage.
 4. Plan Draft.
-5. User Review - Plan (Draft) with completed HTML opened in default browser and review docs pushed to `origin`.
+5. User Review - Plan (Draft) as an agent-user interactive plan-mode session:
+   ask tough clarifying questions, challenge weak assumptions, think hard, and
+   research hard; then open completed HTML in default browser and push review docs to `origin`.
 6. Cross-Review.
 7. User Review - Plan (Final) with completed HTML opened in default browser and review docs pushed to `origin`.
 8. Claim / Activation.
@@ -89,6 +91,8 @@ When documenting next work in markdown artifacts, use a table with an explicit
 
 - No implementation before WRK item + plan + explicit WRK approval.
 - No user-review acceptance unless the completed HTML was opened in the default browser.
+- No stage-5 completion unless the interactive question-and-decision loop is
+  captured in the plan evidence (including explicit tough-question outcomes).
 - No user-review acceptance unless relevant review artifacts are pushed to `origin`
   for distributed review (repo-local + remote visibility).
 - No close without a per-WRK stage ledger in assets (`stage_evidence_ref`) covering stages 1-20.

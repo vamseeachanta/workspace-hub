@@ -1,9 +1,9 @@
 ---
 name: skill-creator
 description: Create new Claude Code skills with proper structure, documentation, and best practices. Use when building custom skills for specific domains, workflows, or organizational needs.
-version: 2.0.0
+version: 2.1.0
 category: builders
-last_updated: 2026-01-02
+last_updated: 2026-03-04
 related_skills:
   - session-start-routine
   - sparc-workflow
@@ -13,6 +13,11 @@ related_skills:
 ---
 
 # Skill Creator Skill
+
+## Canonical Reference
+
+See `references/anthropic-complete-guide-building-skills.pdf` for the official Anthropic guide.
+Key chapters: Fundamentals (p4), Planning & Design (p7), Testing & Iteration (p14), Patterns (p21).
 
 ## Overview
 
@@ -66,13 +71,19 @@ EOF
 
 ```
 .claude/skills/
-└── skill-name/
-    ├── SKILL.md           # Required: Main skill definition
-    └── resources/         # Optional: Supporting files
-        ├── templates/
-        ├── examples/
-        └── data/
+└── skill-name/            # kebab-case only (no underscores, spaces, capitals)
+    ├── SKILL.md           # Required: exactly "SKILL.md" (case-sensitive)
+    ├── scripts/           # Optional: executable code (Python, Bash, etc.)
+    ├── references/        # Optional: documentation loaded as needed
+    └── assets/            # Optional: templates, fonts, icons used in output
 ```
+
+**Critical rules (from Anthropic guide):**
+- `SKILL.md` must be named exactly `SKILL.md` — no variations (SKILL.MD, skill.md, etc.)
+- NO `README.md` inside the skill folder — all docs go in SKILL.md or references/
+- Folder name must be kebab-case only (no underscores, no capitals, no spaces)
+- Keep SKILL.md under 5,000 words — move detailed docs to references/ and link to them
+- Do NOT use "claude" or "anthropic" in skill name (reserved)
 
 ### SKILL.md Structure
 
@@ -140,11 +151,14 @@ description: A skill for presentations.  # Too vague
 description: This skill helps you...     # Starts with filler
 ```
 
+**Description formula (Anthropic guide):** `[What it does] + [When to use it] + [Key capabilities]`
+
 **Tips for descriptions:**
 - Start with an action verb
-- Include specific use cases
-- Mention key technologies/tools
-- Keep under 200 characters
+- Include specific trigger phrases users would actually say
+- Mention key technologies/tools and relevant file types
+- Keep under 1,024 characters (hard limit); no XML angle brackets
+- Too generic ("Helps with projects") = won't trigger; add negative triggers if overtriggering
 
 ### 2. Progressive Disclosure
 
@@ -271,23 +285,24 @@ related_skills:
 
 ### Step 4: Add Supporting Materials
 
-If needed, create resources:
+If needed, create supporting directories:
 
 ```
 skill-name/
 ├── SKILL.md
-└── resources/
-    ├── templates/
-    │   └── starter.template
-    ├── examples/
-    │   └── complete-example.py
-    └── config/
-        └── defaults.yaml
+├── references/            # documentation, guides, API references
+│   └── api-patterns.md
+├── scripts/               # executable scripts
+│   └── validate.sh
+└── assets/                # templates, fonts, icons
+    └── report-template.md
 ```
 
 Reference them in SKILL.md:
 ```markdown
-See [starter template](resources/templates/starter.template) for a quick start.
+Before writing queries, consult `references/api-patterns.md` for:
+- Rate limiting guidance
+- Pagination patterns
 ```
 
 ## Skill Templates
@@ -631,5 +646,6 @@ Skills are discovered from:
 
 ## Version History
 
+- **2.1.0** (2026-03-04): Synced critical rules with Anthropic official guide (references/ instead of resources/, no README.md in skill folder, SKILL.md <5000 words, description formula, folder naming); added canonical reference PDF
 - **2.0.0** (2026-01-02): Upgraded to v2 template - added Quick Start, When to Use, Execution Checklist, Error Handling, Metrics sections; enhanced frontmatter with version, category, related_skills
 - **1.0.0** (2024-10-15): Initial release with skill anatomy, design principles, templates, quality checklist

@@ -32,7 +32,7 @@ pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
 .hero-inner,.content{max-width:1180px;margin:0 auto;}
 .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
   color:var(--accent);font-weight:700;}
-h1{margin:10px 0 12px;font-size:clamp(1.6rem,4vw,3rem);line-height:1.05;}
+h1{margin:10px 0 12px;font-size:clamp(2rem,4vw,3.8rem);line-height:.95;}
 .lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
 .content{padding:28px 24px 56px;}
 .card{background:var(--panel);padding:26px;border-radius:18px;
@@ -154,7 +154,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
     <h2>Skill Manifest</h2>
 <table>
   <thead><tr><th>Category</th><th>Skill</th></tr></thead>
-  <tbody><tr><td colspan='2' style='color:var(--muted)'>No skills recorded</td></tr></tbody>
+  <tbody><tr><td colspan='2' style='color:var(--muted)'>Not applicable.</td></tr></tbody>
 </table>
 <p style="font-size:.82rem;color:var(--muted)">Source: <code>none</code></p>
   </div>
@@ -396,13 +396,180 @@ to ensure agents follow the lifecycle exactly.</p>
 - <code>.claude/work-queue/assets/WRK-624/workflow-governance-review.html</code> (canonical)
 - <code>.claude/work-queue/assets/WRK-624/followups/WRK-690/review.html</code> (satellite copy)
 - <code>.claude/work-queue/assets/WRK-624/followups/WRK-690/evidence/session-gate-analysis.md</code></p>
+<h2>Mandatory Stage Matrix (Canonical 20-Stage Lifecycle)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Stage</th>
+<th>Primary Signal</th>
+<th>Mandatory Skill(s)</th>
+<th>Supporting Skill(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Capture</td>
+<td><code>wrk_created</code></td>
+<td><code>work-queue-workflow</code></td>
+<td><code>work-queue</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Resource Intelligence</td>
+<td><code>resource_intelligence</code></td>
+<td><code>resource-intelligence</code></td>
+<td><code>workflow-gatepass</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Triage</td>
+<td><code>triage_contract_complete</code></td>
+<td><code>work-queue-workflow</code></td>
+<td><code>work-queue</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Plan Draft</td>
+<td><code>plan_draft_complete</code></td>
+<td><code>work-queue-workflow</code></td>
+<td><code>work-queue</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>User Review - Plan (Draft)</td>
+<td><code>plan_html_review_draft</code>, <code>html_open_default_browser</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>html-report-verify</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Cross-Review</td>
+<td><code>cross_review</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>work-queue</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>User Review - Plan (Final)</td>
+<td><code>plan_html_review_final</code>, <code>html_open_default_browser</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>html-report-verify</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Claim / Activation</td>
+<td><code>claim_evidence</code>, <code>set_active_wrk</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>work-queue</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Work-Queue Routing Skill</td>
+<td><code>work_queue_skill</code></td>
+<td><code>work-queue-workflow</code></td>
+<td><code>workflow-gatepass</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Work Execution</td>
+<td><code>work_execution</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>work-queue</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Artifact Generation</td>
+<td><code>artifact_generation</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>interactive-report-generator</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td>TDD / Eval</td>
+<td><code>tdd_eval</code></td>
+<td><code>wrk-lifecycle-testpack</code></td>
+<td><code>workflow-gatepass</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td>Agent Cross-Review</td>
+<td><code>agent_cross_review</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>work-queue</code></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Verify Gate Evidence</td>
+<td><code>verify_gate_evidence</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>wrk-lifecycle-testpack</code></td>
+</tr>
+<tr>
+<td>15</td>
+<td>Future Work Synthesis</td>
+<td><code>future_work</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>work-queue</code></td>
+</tr>
+<tr>
+<td>16</td>
+<td>Resource Intelligence Update</td>
+<td><code>resource_intelligence_update</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>resource-intelligence</code></td>
+</tr>
+<tr>
+<td>17</td>
+<td>User Review - Implementation</td>
+<td><code>user_review_close</code>, <code>html_open_default_browser</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>html-report-verify</code></td>
+</tr>
+<tr>
+<td>18</td>
+<td>Reclaim (Conditional)</td>
+<td><code>reclaim</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>save</code></td>
+</tr>
+<tr>
+<td>19</td>
+<td>Close</td>
+<td><code>close_item</code>, <code>close_or_archive</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>wrk-lifecycle-testpack</code></td>
+</tr>
+<tr>
+<td>20</td>
+<td>Archive</td>
+<td><code>archive_item</code>, <code>close_or_archive</code></td>
+<td><code>workflow-gatepass</code></td>
+<td><code>work-queue</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Stage-to-Skill Notes</h2>
+<ul>
+<li>Canonical lifecycle authority: <code>.claude/skills/workspace-hub/workflow-gatepass/SKILL.md</code>.</li>
+<li>Workflow entrypoint and route contract: <code>.claude/skills/workspace-hub/work-queue-workflow/SKILL.md</code>.</li>
+<li>Stage 5 policy is interactive and mandatory: agent-user plan-mode review with
+  tough clarifying questions, explicit tradeoff capture, and hard-thinking/hard-research
+  before progression to cross-review.</li>
+<li>Signal metrics rule: inferred signals are diagnostic only and never counted as measured compliance.</li>
+<li>Legacy WRK-690 matrix reference (retained as source evidence):
+  <code>.claude/work-queue/assets/WRK-624/followups/WRK-690/review.html</code>.</li>
+</ul>
 <h2>CLI Update Handoff</h2>
 <p>Before CLI update / session restart, resume context from:
-- <code>.claude/work-queue/assets/WRK-624/cli-update-handoff-2026-03-03.md</code></p>
+- <code>.claude/work-queue/assets/WRK-624/cli-update-handoff-2026-03-03.md</code>
+- <code>.claude/work-queue/assets/WRK-624/cli-update-handoff-2026-03-04.md</code></p>
+<h2>Prompt Start Context</h2><p>Not applicable.</p><h2>Plan</h2><p>Not applicable.</p><h2>Gate Evidence Summary</h2><p>Not applicable.</p><h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Problem Context</h2><p>Not applicable.</p><h2>Relevant Documents/Data</h2><p>Not applicable.</p><h2>Constraints</h2><p>Not applicable.</p><h2>Assumptions</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p><h2>Domain Notes</h2><p>Not applicable.</p><h2>Source Paths</h2><p>Not applicable.</p><h2>Resource Intelligence Update</h2><p>Not applicable.</p><h2>Next Work</h2><p>Not applicable.</p><h2>Lifecycle Enforcement Progress</h2><p>Not applicable.</p><h2>Stage Evidence Ledger</h2><p>Not applicable.</p><h2>Asset Index</h2><p>Not applicable.</p><h2>User Review - Plan (Draft)</h2><p>Not applicable.</p><h2>User Review - Plan (Final)</h2><p>Not applicable.</p><h2>User Review - Implementation</h2><p>Not applicable.</p>
   </div>
 
   <div class="card">
-    <h2>Test Evidence</h2>
+    <h2>Test Summary</h2>
 <table>
   <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
   <tbody>
@@ -413,7 +580,7 @@ to ensure agents follow the lifecycle exactly.</p>
   </tbody>
 </table>
 <p><strong>Variation summary:</strong> - **Input**: WRK-X with no status field.</p>
-    
+    <h2>Cross-Review Summary</h2><p>Not applicable.</p>
   </div>
 
 </main>

@@ -1,0 +1,57 @@
+wrk_id: WRK-1005
+generated_at: "2026-03-05T05:00:00Z"
+assessed_by: claude
+
+completion_status: continue_to_planning
+
+context:
+  description: >
+    Pure analytical item — synthesize WRK-1002/1003/1004 evidence into a single
+    cross-provider orchestrator assessment report.
+  blocker_resolution: all three blockers (WRK-1002, WRK-1003, WRK-1004) now archived.
+
+skills:
+  core_used:
+    - workspace-hub:work
+    - workspace-hub:work-queue-workflow
+    - workspace-hub:workflow-gatepass
+
+inputs_available:
+  - artifact: .claude/work-queue/assets/WRK-1002/variation-test-results.md
+    status: present
+  - artifact: .claude/work-queue/assets/WRK-1003/variation-test-results.md
+    status: present
+  - artifact: .claude/work-queue/assets/WRK-1004/variation-test-results.md
+    status: present
+  - artifact: .claude/work-queue/assets/WRK-1004/cross-provider-comparison.md
+    status: present
+  - artifact: .claude/work-queue/assets/WRK-1002/evidence/gate-evidence-summary.md
+    status: present
+  - artifact: .claude/work-queue/assets/WRK-1003/evidence/gate-evidence-summary.md
+    status: present
+  - artifact: .claude/work-queue/assets/WRK-1004/evidence/gate-evidence-summary.md
+    status: present
+  - artifact: .claude/work-queue/assets/WRK-1002/evidence/stage-evidence.yaml
+    status: present
+  - artifact: .claude/work-queue/assets/WRK-1003/evidence/stage-evidence.yaml
+    status: present
+  - artifact: .claude/work-queue/assets/WRK-1004/evidence/stage-evidence.yaml
+    status: present
+  - artifact: logs/orchestrator/claude/session_20260304.jsonl
+    status: present
+  - artifact: logs/orchestrator/codex/session_20260304.log
+    status: present
+  - artifact: logs/orchestrator/gemini/
+    status: no_named_session_log (native store confirmed present)
+  - artifact: scripts/work-queue/parse-session-logs.sh
+    status: present
+
+p1_count: 0
+p2_count: 0
+
+gaps:
+  - description: >
+      Gemini native log store present but no named session log in orchestrator/gemini/;
+      parse-session-logs.sh detects this and notes "missing (native: present)".
+    severity: low
+    impact: log review table shows partial Gemini session log evidence

@@ -5,7 +5,7 @@ description: >
   design system, complete section catalog, interactivity layer, and rendering rules so every
   draft-plan, final-plan, implementation-review, and close-review HTML looks and behaves
   identically regardless of which agent or session generated it.
-version: 1.0.0
+version: 1.1.0
 updated: 2026-03-04
 category: workspace-hub
 type: skill
@@ -596,10 +596,19 @@ Before handing an HTML artifact to the user, verify:
 
 ## Version History
 
+- **1.1.0** (2026-03-04): Generator enhancements (WRK-1011)
+  - `_suppress_duplicate_generated_sections()`: avoids double Skill Manifest / Test Summary / Cross-Review when body already contains them
+  - `_append_missing_key_sections()`: stubs missing canonical sections as "Not applicable."
+  - `_normalize_close_section_names()`: maps "Future Work" → "Next Work" in close artifacts
+  - `KEY_SECTIONS_BY_ARTIFACT` map with 4 artifact types
+  - Archive subdirectory search (`archive/**/*.md`)
+  - Chip opacity toggle (always visible, dims when expanded; `.section-summary-chip` CSS class)
+  - 29 unit tests pass
+
 - **1.0.0** (2026-03-04): Initial release (WRK-1011)
   - Warm-parchment design system from WRK-624/WRK-690 reference
   - 25-section catalog across 4 artifact types
-  - Interactivity: collapsible cards, auto-TOC, back-to-top, smooth scroll
+  - Interactivity: collapsible cards with summary/status chips, auto-TOC, back-to-top, smooth scroll
   - Status badge system (PASS/WARN/FAIL/INFO)
-  - Generator script integration spec
+  - Generator script integration spec (`render_wrk_html()`)
   - Mandatory stage wiring (5, 7, 11, 17, 19)

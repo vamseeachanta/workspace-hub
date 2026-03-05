@@ -13,7 +13,7 @@
 | TDD gate | PASS | test files=['test-results.md', 'variation-test-results.md'] |
 | Integrated test gate | PASS | execute.yaml: integrated_repo_tests=3 (all passing) |
 | Legal gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1003/legal-scan.md, result=PASS |
-| Claim gate | PASS | claim-evidence.yaml: version=1, owner=codex, quota=available(54%) |
+| Claim gate | PASS | claim-evidence.yaml: version=1, owner=codex, quota=available(50%) |
 | Future-work gate | PASS | future-work.yaml: recommendations=1 |
 | Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: no_additions_rationale=present |
 | User-review close gate | PASS | user-review-close.yaml: decision=approved |

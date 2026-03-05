@@ -85,7 +85,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "claim-evidence.yaml: version=1, owner=codex, quota=available(54%)"
+      "details": "claim-evidence.yaml: version=1, owner=codex, quota=available(50%)"
     },
     {
       "name": "Future-work gate",

@@ -52,7 +52,7 @@ pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
 .hero-inner,.content{max-width:1180px;margin:0 auto;}
 .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
   color:var(--accent);font-weight:700;}
-h1{margin:10px 0 12px;font-size:clamp(1.6rem,4vw,3rem);line-height:1.05;}
+h1{margin:10px 0 12px;font-size:clamp(2rem,4vw,3.8rem);line-height:.95;}
 .lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
 .content{padding:28px 24px 56px;}
 .card{background:var(--panel);padding:26px;border-radius:18px;
@@ -187,6 +187,64 @@ ARTIFACT_LABELS = {
     "plan-final":     "Plan Final Review",
     "implementation": "Implementation Review",
     "close":          "Close Review",
+}
+
+KEY_SECTIONS_BY_ARTIFACT = {
+    "plan-draft": [
+        "Prompt Start Context",
+        "Why",
+        "Acceptance Criteria",
+        "Plan",
+        "Resource Intelligence",
+        "Open Questions",
+    ],
+    "plan-final": [
+        "Prompt Start Context",
+        "Why",
+        "Acceptance Criteria",
+        "Plan",
+        "Resource Intelligence",
+        "Open Questions",
+        "Cross-Review Summary",
+        "User Review - Plan (Final)",
+    ],
+    "implementation": [
+        "Execution Brief",
+        "Files Changed",
+        "Cross-Review Summary",
+        "Test Summary",
+        "Gate Evidence Summary",
+        "Stage Evidence Ledger",
+        "Skill Manifest",
+    ],
+    "close": [
+        "Prompt Start Context",
+        "Why",
+        "Acceptance Criteria",
+        "Plan",
+        "Execution Brief",
+        "Cross-Review Summary",
+        "Test Summary",
+        "Gate Evidence Summary",
+        "Resource Intelligence",
+        "Problem Context",
+        "Relevant Documents/Data",
+        "Constraints",
+        "Assumptions",
+        "Open Questions",
+        "Domain Notes",
+        "Source Paths",
+        "Skill Manifest",
+        "Resource Intelligence Update",
+        "Next Work",
+        "Lifecycle Enforcement Progress",
+        "Stage Evidence Ledger",
+        "Asset Index",
+        "User Review - Plan (Draft)",
+        "User Review - Plan (Final)",
+        "User Review - Implementation",
+        "Agentic AI Horizon",
+    ],
 }
 
 # ── Badge helpers ─────────────────────────────────────────────────────────────
@@ -351,7 +409,7 @@ def render_skill_manifest(manifest: dict) -> str:
         for item in items:
             rows += f"<tr><td>{label}</td><td><code>{item}</code></td></tr>\n"
     if not rows:
-        rows = "<tr><td colspan='2' style='color:var(--muted)'>No skills recorded</td></tr>"
+        rows = "<tr><td colspan='2' style='color:var(--muted)'>Not applicable.</td></tr>"
     return f"""<h2>Skill Manifest</h2>
 <table>
   <thead><tr><th>Category</th><th>Skill</th></tr></thead>
@@ -368,7 +426,7 @@ def render_test_evidence(te: dict) -> str:
           else badge(f"{cnt} tests — outside 3-5", "warn")
     allp = badge("all pass", "pass") if te["integrated_repo_tests_all_pass"] \
            else badge("not all pass", "warn" if cnt > 0 else "info")
-    return f"""<h2>Test Evidence</h2>
+    return f"""<h2>Test Summary</h2>
 <table>
   <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
   <tbody>
@@ -383,7 +441,7 @@ def render_test_evidence(te: dict) -> str:
 
 def render_reviewer_synthesis(reviewers: list) -> str:
     if not reviewers:
-        return ""
+        return "<h2>Cross-Review Summary</h2><p>Not applicable.</p>"
     rows = ""
     for r in reviewers:
         rows += (f"<tr><td>{r['name']}</td>"
@@ -397,6 +455,53 @@ def render_reviewer_synthesis(reviewers: list) -> str:
 
 
 # ── Main HTML renderer ────────────────────────────────────────────────────────
+
+def _extract_h2_titles(html: str) -> set[str]:
+    titles = set()
+    for raw in re.findall(r"<h2[^>]*>(.*?)</h2>", html, flags=re.IGNORECASE | re.DOTALL):
+        txt = re.sub(r"<[^>]+>", "", raw).strip()
+        if txt:
+            titles.add(txt)
+    return titles
+
+
+def _append_missing_key_sections(body_html: str, artifact_type: str, extra_html: list[str] | None = None) -> str:
+    required = KEY_SECTIONS_BY_ARTIFACT.get(artifact_type, [])
+    if not required:
+        return body_html
+    present = _extract_h2_titles(body_html)
+    for block in (extra_html or []):
+        present.update(_extract_h2_titles(block))
+    missing = [name for name in required if name not in present]
+    if not missing:
+        return body_html
+    additions = "".join(f"<h2>{name}</h2><p>Not applicable.</p>" for name in missing)
+    return f"{body_html}\n{additions}"
+
+
+def _normalize_close_section_names(body_md: str, artifact_type: str) -> str:
+    """Consolidate legacy close-stage section names into canonical names."""
+    if artifact_type != "close":
+        return body_md
+    # Consolidate to one section name in generated HTML.
+    return re.sub(r"(?mi)^##\s*Future\s+Work\s*$", "## Next Work", body_md)
+
+
+def _suppress_duplicate_generated_sections(
+    body_html: str,
+    skill_manifest_html: str,
+    test_evidence_html: str,
+    reviewer_html: str,
+) -> tuple[str, str, str]:
+    """Avoid duplicate section blocks when WRK body already includes canonical sections."""
+    titles = _extract_h2_titles(body_html)
+    if "Skill Manifest" in titles:
+        skill_manifest_html = ""
+    if "Test Summary" in titles:
+        test_evidence_html = ""
+    if "Cross-Review Summary" in titles:
+        reviewer_html = ""
+    return skill_manifest_html, test_evidence_html, reviewer_html
 
 def render_wrk_html(
     wrk_meta: dict,
@@ -506,6 +611,7 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
         fm = {}
 
     body = content[fm_match.end():]
+    body = _normalize_close_section_names(body, artifact_type)
     md = markdown.Markdown(extensions=["extra", "codehilite", "tables"])
 
     # Lede: first non-blank, non-heading line of body
@@ -524,13 +630,28 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
     test_evidence = collect_test_evidence(assets_dir)
     reviewers = collect_reviewers(assets_dir, wrk_id)
 
+    skill_manifest_html = render_skill_manifest(skill_manifest)
+    test_evidence_html = render_test_evidence(test_evidence)
+    reviewer_html = render_reviewer_synthesis(reviewers)
+    skill_manifest_html, test_evidence_html, reviewer_html = _suppress_duplicate_generated_sections(
+        body_html,
+        skill_manifest_html,
+        test_evidence_html,
+        reviewer_html,
+    )
+    body_html = _append_missing_key_sections(
+        body_html,
+        artifact_type,
+        extra_html=[skill_manifest_html, test_evidence_html, reviewer_html],
+    )
+
     sections = {
         "lede": lede,
         "exec_summary_html": exec_summary_html,
         "body_html": body_html,
-        "skill_manifest_html": render_skill_manifest(skill_manifest),
-        "test_evidence_html": render_test_evidence(test_evidence),
-        "reviewer_html": render_reviewer_synthesis(reviewers),
+        "skill_manifest_html": skill_manifest_html,
+        "test_evidence_html": test_evidence_html,
+        "reviewer_html": reviewer_html,
     }
 
     html = render_wrk_html(fm, artifact_type, sections)

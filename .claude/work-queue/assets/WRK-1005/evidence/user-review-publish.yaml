@@ -1,0 +1,20 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 798770e776428a22ccc8247c732b13d02b113c15
+  documents:
+  - .claude/work-queue/assets/WRK-1005/plan-draft-review.html
+  published_at: '2026-03-05T05:10:00Z'
+  reviewer: user
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 798770e776428a22ccc8247c732b13d02b113c15
+  documents:
+  - .claude/work-queue/assets/WRK-1005/plan-final-review.html
+  - .claude/work-queue/assets/WRK-1005/plan-html-review-final.md
+  published_at: '2026-03-05T05:30:00Z'
+  reviewer: user
