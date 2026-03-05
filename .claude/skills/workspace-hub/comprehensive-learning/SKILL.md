@@ -534,6 +534,15 @@ guard so cron failures are explicit rather than silently producing malformed WRK
 ) 200>/tmp/workspace-hub-next-id.lock
 ```
 
+**Category inference (mandatory at WRK creation):**
+Before writing the WRK file, infer category and subcategory:
+```bash
+CATEGORY_JSON=$(uv run --no-project python scripts/work-queue/infer-category.py "$WRK_TITLE" "$WRK_BODY_SNIPPET")
+WRK_CATEGORY=$(echo "$CATEGORY_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['category'])")
+WRK_SUBCATEGORY=$(echo "$CATEGORY_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['subcategory'])")
+```
+Write `category: $WRK_CATEGORY` and `subcategory: $WRK_SUBCATEGORY` into the frontmatter before saving.
+
 WRK item template:
 
 ```markdown
@@ -544,6 +553,8 @@ status: pending
 priority: low
 source: comprehensive-learning/phase-7
 computer: <MACHINE>
+category: <inferred-category>
+subcategory: <inferred-subcategory>
 ---
 ## Context
 Auto-created from `.claude/state/candidates/<type>-candidates.md`.
