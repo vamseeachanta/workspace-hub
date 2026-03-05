@@ -1,0 +1,37 @@
+wrk_id: WRK-1015
+generated_at: "2026-03-05T00:00:00Z"
+stage: 15
+
+recommendations:
+  - title: "feat(work-queue): /work list --by-category live rendering from queue files"
+    description: >
+      Current implementation reads INDEX.md By Category section for /work list --by-category.
+      A live-read version would parse queue files directly and be more accurate but slower.
+    source: "implementation gap observed during WRK-1015"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    priority: low
+    required_for_signoff: false
+
+  - title: "feat(work-queue): category-taxonomy.md auto-update on new subcategory"
+    description: >
+      Spec called for specs/skills/category-taxonomy.md append-only log when new subcategory
+      is minted by assign-categories.py. Deferred from WRK-1015 scope.
+    source: "WRK-1015 spec §subcategory design principle"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    priority: low
+    required_for_signoff: false
+
+  - title: "feat(work-queue): /work add interactive category confirmation prompt"
+    description: >
+      Currently /work add silently infers category. Could ask user to confirm or override
+      the inferred category before writing the WRK file.
+    source: "UX improvement idea during WRK-1015"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    priority: low
+    required_for_signoff: false

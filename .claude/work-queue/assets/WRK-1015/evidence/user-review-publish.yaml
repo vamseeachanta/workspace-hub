@@ -1,0 +1,30 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: a2bca8bf
+  documents:
+    - .claude/work-queue/assets/WRK-1015/plan-html-review-final.md
+  published_at: "2026-03-05T00:00:00Z"
+  reviewer: user
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 7eb5f095
+  documents:
+    - .claude/work-queue/assets/WRK-1015/plan-html-review-final.md
+    - .claude/work-queue/assets/WRK-1015/review.md
+  published_at: "2026-03-05T00:00:00Z"
+  reviewer: user
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 7a09f094
+  documents:
+    - .claude/work-queue/assets/WRK-1015/workflow-final-review.html
+    - .claude/work-queue/assets/WRK-1015/evidence/future-work.yaml
+  published_at: "2026-03-05T00:00:00Z"
+  reviewer: user

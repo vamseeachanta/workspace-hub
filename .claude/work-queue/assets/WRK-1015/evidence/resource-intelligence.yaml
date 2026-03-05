@@ -1,0 +1,39 @@
+wrk_id: WRK-1015
+generated_at: "2026-03-05T00:00:00Z"
+generated_by: claude
+stage: 2
+
+target_repos:
+  - workspace-hub
+
+existing_files:
+  - path: scripts/work-queue/infer-category.py
+    status: new
+    notes: "Keyword inference engine with word-boundary matching; returns {category, subcategory}"
+  - path: scripts/work-queue/assign-categories.py
+    status: new
+    notes: "Bulk assign — dry-run by default; --apply to write; scoped frontmatter parser"
+  - path: .claude/work-queue/scripts/generate-index.py
+    status: modified
+    notes: "Category View section added above Master Table"
+  - path: tests/unit/test_infer_category.py
+    status: new
+    notes: "42 unit tests covering all 7 categories + word-boundary + title-first + edge cases"
+
+related_scripts:
+  - scripts/work-queue/infer-category.py
+  - scripts/work-queue/assign-categories.py
+  - .claude/work-queue/scripts/generate-index.py
+  - scripts/work-queue/verify-gate-evidence.py
+
+skills:
+  core_used:
+    - coordination/workspace/work-queue
+    - workspace-hub/workflow-gatepass
+    - workspace-hub/comprehensive-learning
+  related:
+    - workspace-hub/session-start
+    - workspace-hub/work-queue-workflow
+
+completion_status: continue_to_planning
+top_p1_gaps: []

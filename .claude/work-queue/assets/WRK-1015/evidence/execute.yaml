@@ -1,0 +1,70 @@
+wrk_id: WRK-1015
+stage: 10
+generated_at: "2026-03-05T00:00:00Z"
+orchestrator: claude
+route: B
+
+routing_evidence:
+  skill: coordination/workspace/work-queue
+  invoked_via: /work run WRK-1015
+  complexity: medium
+
+execution_summary:
+  description: "Category+subcategory grouping — inference engine, bulk-assign, INDEX.md Category View, /work list flags, session-start per-category, unit tests"
+  approach: "Keyword inference engine (word-boundary) + bulk assignment + generate-index.py Category View + skill updates"
+  files_changed:
+    - path: scripts/work-queue/infer-category.py
+      action: created
+      commit: "a2bca8bf"
+    - path: scripts/work-queue/assign-categories.py
+      action: created
+      commit: "a2bca8bf"
+    - path: .claude/work-queue/scripts/generate-index.py
+      action: modified
+      commit: "7eb5f095"
+    - path: tests/unit/test_infer_category.py
+      action: created
+      commit: "b0c82587"
+    - path: .claude/skills/coordination/workspace/work-queue/SKILL.md
+      action: modified
+      commit: "7a09f094"
+
+integrated_repo_tests:
+  - name: "test_infer_category - harness"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_infer_category.py::TestCategoryHarness -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1015/test-results.md
+  - name: "test_infer_category - engineering"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_infer_category.py::TestCategoryEngineering -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1015/test-results.md
+  - name: "test_infer_category - word_boundary fea/feat fix"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_infer_category.py::TestWordBoundary -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1015/test-results.md
+  - name: "test_infer_category - full suite (42 tests)"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/unit/test_infer_category.py -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1015/test-results.md
+  - name: "assign-categories.py idempotency check"
+    scope: integrated
+    command: "uv run --no-project python scripts/work-queue/assign-categories.py"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1015/test-results.md
+
+tdd_evidence:
+  test_file: tests/unit/test_infer_category.py
+  final_test_count: 42
+  final_pass_count: 42
+  categories_covered: [harness, engineering, data, business, platform, maintenance, personal]
+
+bulk_assign_evidence:
+  items_processed: 213
+  items_categorised: 202
+  coverage_pct: 98
+  command: "uv run --no-project python scripts/work-queue/assign-categories.py --apply --all"
+  idempotent_check: "No changes needed — all items already categorised."

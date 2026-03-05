@@ -1,0 +1,20 @@
+wrk_id: WRK-1015
+stage: 16
+generated_at: "2026-03-05T00:00:00Z"
+
+additions:
+  - pattern: "infer-category.py: word-boundary regex required for short (<=4 char) alphabetic keywords to prevent substring false-positives (fea→feat)"
+    scope: workspace-hub
+    type: bug-pattern
+  - pattern: "assign-categories.py: frontmatter parser must use explicit --- delimiter scanning — naive re.sub on full text clobbers body"
+    scope: workspace-hub
+    type: bug-pattern
+  - pattern: "Category inference: harness keywords must include conventional-commit scopes like (skills), (work-queue) to distinguish from engineering"
+    scope: workspace-hub
+    type: implementation-pattern
+  - pattern: "infer-category.py title-first: always match title before body to prevent body keyword contamination from git commit history or refs"
+    scope: workspace-hub
+    type: implementation-pattern
+  - pattern: "98% category coverage on 206 active WRK items after bulk-assign (4 truly ambiguous items remain uncategorised)"
+    scope: workspace-hub
+    type: data-quality
