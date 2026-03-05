@@ -1,13 +1,13 @@
-generated: '2026-03-04'
-total_specs: 1535
+generated: '2026-03-05'
+total_specs: 1541
 by_category:
   archive: 10
   data-sources: 13
   modules: 117
   other: 24
   repos: 1344
-  templates: 6
-  wrk: 21
+  templates: 10
+  wrk: 23
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,10 +26,10 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 174
+  workspace-hub: 180
   worldenergydata: 216
 by_wrk:
-  WRK-0: 1
+  WRK-0: 4
   WRK-5: 1
   WRK-9: 1
   WRK-10: 1
@@ -84,7 +84,7 @@ by_wrk:
   WRK-96: 2
   WRK-97: 2
   WRK-98: 3
-  WRK-100: 1
+  WRK-100: 2
   WRK-101: 1
   WRK-102: 2
   WRK-103: 2
@@ -245,6 +245,10 @@ by_wrk:
   WRK-687: 1
   WRK-690: 1
   WRK-1000: 1
+  WRK-1002: 1
+  WRK-1003: 2
+  WRK-1004: 1
+  WRK-1005: 1
 specs:
 - path: specs/architecture/agent-vision.md
   title: Superintelligent Engineering Agent Architecture Blueprint
@@ -19760,15 +19764,24 @@ specs:
   mtime: '2026-03-02'
 - path: specs/templates/future-work-recommendations-template.md
   title: Future Work Recommendations — WRK-NNN
-  description: '<!-- MANDATORY close gate artifact (WRK-678+). Fill in follow-up WRKs OR provide no_follow_ups_rationale.
-    The gate validator checks: file exists AND (has WRK-NNN refs OR no_follow_ups_rationale). -->'
+  description: <!-- MANDATORY close gate artifact (WRK-678+). Canonical machine-checkable artifact is `future-work.yaml` (see
+    `specs/templates/future-work-template.yaml`). This markdown file is the human-readable...
   category: templates
   repo: workspace-hub
   tags:
   - future-work-recommendations-template
   wrk_refs:
   - WRK-678
-  mtime: '2026-03-02'
+  mtime: '2026-03-04'
+- path: specs/templates/future-work-template.yaml
+  title: Future Work Template
+  description: ''
+  category: templates
+  repo: workspace-hub
+  tags:
+  - future-work-template
+  wrk_refs: []
+  mtime: '2026-03-04'
 - path: specs/templates/plan-html-review-final-template.md
   title: WRK-NNN Final Plan Review
   description: <!-- Summarise findings resolved from cross-review. Delete section if no changes were needed. -->
@@ -19786,7 +19799,7 @@ specs:
   tags:
   - plan-template-minimal
   wrk_refs: []
-  mtime: '2026-03-02'
+  mtime: '2026-03-04'
 - path: specs/templates/plan-template.md
   title: PLAN METADATA - Required fields marked with (*)
   description: '{{ description }}'
@@ -19795,7 +19808,27 @@ specs:
   tags:
   - plan-template
   wrk_refs: []
-  mtime: '2026-03-02'
+  mtime: '2026-03-04'
+- path: specs/templates/skill-invocation-log-template.yaml
+  title: Skill Invocation Log Template
+  description: ''
+  category: templates
+  repo: workspace-hub
+  tags:
+  - skill-invocation-log-template
+  wrk_refs:
+  - WRK-0
+  mtime: '2026-03-04'
+- path: specs/templates/skill-manifest-template.yaml
+  title: Skill Manifest Template
+  description: ''
+  category: templates
+  repo: workspace-hub
+  tags:
+  - skill-manifest-template
+  wrk_refs:
+  - WRK-0
+  mtime: '2026-03-04'
 - path: specs/templates/stage-evidence-template.yaml
   title: Stage Evidence Template
   description: ''
@@ -19806,6 +19839,42 @@ specs:
   wrk_refs:
   - WRK-0
   mtime: '2026-03-04'
+- path: specs/templates/user-review-publish-template.yaml
+  title: User Review Publish Template
+  description: ''
+  category: templates
+  repo: workspace-hub
+  tags:
+  - user-review-publish-template
+  wrk_refs:
+  - WRK-0
+  mtime: '2026-03-04'
+- path: specs/wrk/WRK-1003/plan.md
+  title: WRK-1003 Execution Plan
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1003
+  wrk_refs:
+  - WRK-1003
+  mtime: '2026-03-04'
+- path: specs/wrk/WRK-1005/plan.md
+  title: 'WRK-1005 Plan: Cross-Provider Orchestrator Assessment'
+  description: 'date: 2026-03-05 wrk_id: WRK-1005 route: C complexity: medium orchestrator: claude'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1005
+  wrk_refs:
+  - WRK-100
+  - WRK-1002
+  - WRK-1003
+  - WRK-1004
+  - WRK-1005
+  mtime: '2026-03-05'
 - path: specs/wrk/WRK-118/plan.md
   title: WRK-118 AI Agent Utilization Strategy — Plan
   description: (feature | bugfix | refactor | test-writing | research | docs → primary + rationale)
