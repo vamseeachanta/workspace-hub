@@ -42,6 +42,7 @@ FRONTMATTER_FIELDS = [
     "plan_reviewed", "plan_approved", "percent_complete", "brochure_status",
     "provider", "provider_alt",
     "computer", "plan_workstations", "execution_workstations",
+    "category", "subcategory",
 ]
 
 
@@ -224,6 +225,10 @@ def normalize(item: dict) -> dict:
     item.setdefault("computer", "")
     item.setdefault("plan_workstations", [])
     item.setdefault("execution_workstations", [])
+
+    # Category classification
+    item.setdefault("category", "uncategorised")
+    item.setdefault("subcategory", "uncategorised")
 
     # Ensure lists are lists
     for field in ("target_repos", "blocked_by", "related", "children", "plan_workstations", "execution_workstations"):
@@ -590,6 +595,26 @@ def generate_index(items: list[dict]) -> str:
             w(f"| {cx} | {c} |")
     w("")
 
+    # By category (active items only)
+    CATEGORY_ORDER = ["harness", "engineering", "data", "platform", "business", "maintenance", "personal", "uncategorised"]
+    active_items_summary = [it for it in items if it["status"] in ("pending", "working", "blocked")]
+    cat_counts_summary: dict[str, int] = {}
+    for it in active_items_summary:
+        cat = str(it.get("category", "uncategorised")).lower()
+        cat_counts_summary[cat] = cat_counts_summary.get(cat, 0) + 1
+
+    w("### By Category")
+    w("")
+    w("> Active items only (pending/working/blocked).")
+    w("")
+    w("| Category | Active Items |")
+    w("|----------|-------------|")
+    for cat in CATEGORY_ORDER:
+        c = cat_counts_summary.get(cat, 0)
+        if c > 0:
+            w(f"| {cat} | {c} |")
+    w("")
+
     # By repo
     repo_counts: dict[str, int] = {}
     for it in items:
@@ -630,6 +655,40 @@ def generate_index(items: list[dict]) -> str:
     # ── Metrics ──────────────────────────────────────────────
     w(render_metrics(items).rstrip())
     w("")
+
+    # ── By Category ──────────────────────────────────────────
+    w("## By Category")
+    w("")
+    w("> Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.")
+    w("")
+
+    active_items = [it for it in items if it["status"] in ("pending", "working", "blocked")]
+    CATEGORY_ORDER = ["harness", "engineering", "data", "platform", "business", "maintenance", "personal", "uncategorised"]
+    PRIO_ORDER = {"high": 0, "medium": 1, "low": 2}
+
+    for cat in CATEGORY_ORDER:
+        cat_items = [it for it in active_items if str(it.get("category", "uncategorised")).lower() == cat]
+        if not cat_items:
+            continue
+        h = sum(1 for it in cat_items if str(it.get("priority", "")).lower() == "high")
+        m = sum(1 for it in cat_items if str(it.get("priority", "")).lower() == "medium")
+        l = sum(1 for it in cat_items if str(it.get("priority", "")).lower() == "low")
+        w(f"### {cat} ({len(cat_items)} items — {h} high, {m} medium, {l} low)")
+        w("")
+        # group by subcategory
+        sub_map: dict[str, list[dict]] = {}
+        for it in cat_items:
+            sub = str(it.get("subcategory", "uncategorised")).lower()
+            sub_map.setdefault(sub, []).append(it)
+        for sub in sorted(sub_map.keys()):
+            sub_items = sorted(sub_map[sub], key=lambda x: (PRIO_ORDER.get(str(x.get("priority", "medium")).lower(), 1), sort_key(x)))
+            w(f"#### {cat} / {sub}")
+            w("")
+            w("| ID | Priority | Title | Status |")
+            w("|----|----------|-------|--------|")
+            for it in sub_items:
+                w(f"| {it.get('id', '?')} | {str(it.get('priority', '-')).upper()} | {it['title']} | {it['status']} |")
+            w("")
 
     # ── Master Table ─────────────────────────────────────────
     w("## Master Table")

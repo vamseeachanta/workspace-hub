@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-05T12:23:08Z by generate-index.py -->
+<!-- Generated: 2026-03-05T14:48:41Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-05T12:23:08Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-05T14:48:41Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -33,6 +33,21 @@
 | simple | 73 |
 | medium | 212 |
 | complex | 92 |
+
+### By Category
+
+> Active items only (pending/working/blocked).
+
+| Category | Active Items |
+|----------|-------------|
+| harness | 40 |
+| engineering | 117 |
+| data | 26 |
+| platform | 12 |
+| business | 6 |
+| maintenance | 6 |
+| personal | 4 |
+| uncategorised | 4 |
 
 ### By Repository
 
@@ -104,6 +119,396 @@
 | High     | 97 | 2 | 7 |
 | Medium   | 76  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
+
+## By Category
+
+> Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
+
+### harness (40 items — 14 high, 21 medium, 5 low)
+
+#### harness / hooks
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-180 | LOW | Stop Hook: Cross-Agent Learning Sync | pending |
+
+#### harness / session
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-207 | MEDIUM | fix(ai): align weekly quota reporting with authoritative Claude source | pending |
+| WRK-636 | MEDIUM | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending |
+| WRK-182 | LOW | Predictive Session Planning | pending |
+
+#### harness / skills
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-234 | HIGH | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending |
+| WRK-235 | HIGH | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending |
+| WRK-577 | HIGH | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending |
+| WRK-633 | HIGH | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending |
+| WRK-637 | HIGH | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending |
+| WRK-638 | HIGH | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending |
+| WRK-658 | HIGH | fix(workflow): enforce gate+logging contract for every AI agent | pending |
+| WRK-667 | HIGH | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending |
+| WRK-691 | HIGH | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending |
+| WRK-692 | HIGH | feat(session): interactive session analysis — codex-orchestrator variant | pending |
+| WRK-1005 | HIGH | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working |
+| WRK-230 | MEDIUM | Untitled | pending |
+| WRK-578 | MEDIUM | feat(skills): audit MCP registry for engineering-domain servers | pending |
+| WRK-579 | MEDIUM | feat(skills): install Semantic Scholar MCP server for literature search | pending |
+| WRK-597 | MEDIUM | feat(digitalmodel): geotechnical module — umbrella tracker | pending |
+| WRK-681 | MEDIUM | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending |
+| WRK-684 | MEDIUM | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working |
+| WRK-685 | MEDIUM | feat(skills): update /today to highlight availability of unused preview AI models | pending |
+| WRK-1000 | MEDIUM | fix(work-queue): restore /work skill compatibility in Codex CLI | pending |
+| WRK-1009 | MEDIUM | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending |
+| WRK-1010 | MEDIUM | Skill capability assessment for WRK-624 workflow governance skill set | pending |
+| WRK-1011 | MEDIUM | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working |
+| WRK-1013 | MEDIUM | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending |
+| WRK-1016 | MEDIUM | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending |
+| WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
+| WRK-639 | LOW | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending |
+
+#### harness / uncategorised
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-181 | LOW | Session Replay & Time Travel | pending |
+
+#### harness / work-queue
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
+| WRK-668 | HIGH | feat(work-queue): archive tooling contract and auto spin-off workflow | pending |
+| WRK-118 | MEDIUM | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working |
+| WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
+| WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
+| WRK-693 | MEDIUM | fix(scripts): audit and replace bare python3 with uv across all hub scripts | pending |
+| WRK-1015 | MEDIUM | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | pending |
+
+#### harness / workflow
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1017 | HIGH | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending |
+| WRK-1014 | MEDIUM | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending |
+
+### engineering (117 items — 69 high, 37 medium, 11 low)
+
+#### engineering / cathodic-protection
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-478 | HIGH | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending |
+| WRK-496 | HIGH | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending |
+
+#### engineering / drilling
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-219 | MEDIUM | Batch drilling economics analysis — campaign scheduling and cost optimization | pending |
+
+#### engineering / marine
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-121 | HIGH | Extract & Catalog OrcaFlex Models from rock-oil-field/s7 | blocked |
+| WRK-125 | HIGH | OrcaFlex module roadmap — evolving coordination and progress tracking | pending |
+| WRK-129 | HIGH | Standardize analysis reporting for each OrcaFlex structure type | working |
+| WRK-130 | HIGH | Standardize analysis reporting for each OrcaWave structure type | blocked |
+| WRK-131 | HIGH | Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response | blocked |
+| WRK-133 | HIGH | Update OrcaFlex license agreement with addresses and 3rd-party terms | blocked |
+| WRK-311 | HIGH | improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth | pending |
+| WRK-555 | HIGH | feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring | pending |
+| WRK-559 | HIGH | feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring | pending |
+| WRK-618 | HIGH | feat(geotechnical): soil profile models, CPT correlation, shared types | pending |
+| WRK-629 | HIGH | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal system prompts + knowledge base | pending |
+| WRK-630 | HIGH | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending |
+| WRK-039 | MEDIUM | SPM project benchmarking - AQWA vs OrcaFlex | pending |
+| WRK-046 | MEDIUM | OrcaFlex drilling and completion riser parametric analysis | pending |
+| WRK-064 | MEDIUM | OrcaFlex format converter: license-required validation and backward-compat wrapper | blocked |
+| WRK-099 | MEDIUM | Run 3-way benchmark on Unit Box hull | pending |
+| WRK-171 | MEDIUM | Cost data calibration — sanctioned project benchmarking & multivariate cost prediction | pending |
+| WRK-208 | MEDIUM | Untitled | pending |
+| WRK-256 | MEDIUM | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending |
+| WRK-473 | MEDIUM | feat(hydrodynamics): integrate wavespectra library for spectral processing | pending |
+| WRK-474 | MEDIUM | feat(subsea): integrate MoorDyn + MoorPy for mooring analysis | pending |
+| WRK-477 | MEDIUM | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending |
+| WRK-480 | MEDIUM | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending |
+| WRK-619 | MEDIUM | feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves | pending |
+| WRK-622 | MEDIUM | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending |
+| WRK-043 | LOW | Parametric hull form analysis with RAO generation and client-facing lookup graphs | pending |
+| WRK-075 | LOW | OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex | pending |
+| WRK-137 | LOW | Download and parse rig spec PDFs (102 PDFs from 4 operators) | pending |
+| WRK-583 | LOW | research: verify ANP Brazil production data REST API availability | pending |
+| WRK-585 | LOW | feat(worldenergydata): add IRENA offshore wind capacity data | pending |
+| WRK-604 | LOW | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending |
+
+#### engineering / pipeline
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-126 | HIGH | Benchmark all example models across time domain and frequency domain with seed equivalence | pending |
+| WRK-481 | HIGH | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending |
+| WRK-498 | HIGH | feat(doris/pipeline): Implement API RP 1111 — API RP 1111 | pending |
+| WRK-499 | HIGH | feat(digitalmodel/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending |
+| WRK-500 | HIGH | feat(doris/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci | pending |
+| WRK-501 | HIGH | feat(digitalmodel/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending |
+| WRK-502 | HIGH | feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se | pending |
+| WRK-503 | HIGH | feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending |
+| WRK-504 | HIGH | feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri | pending |
+| WRK-505 | HIGH | feat(digitalmodel/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending |
+| WRK-506 | HIGH | feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers | pending |
+| WRK-507 | HIGH | feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending |
+| WRK-508 | HIGH | feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers | pending |
+| WRK-509 | HIGH | feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending |
+| WRK-510 | HIGH | feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ | pending |
+| WRK-511 | HIGH | feat(digitalmodel/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending |
+| WRK-512 | HIGH | feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float | pending |
+| WRK-513 | HIGH | feat(digitalmodel/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending |
+| WRK-514 | HIGH | feat(doris/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems | pending |
+| WRK-515 | HIGH | feat(digitalmodel/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending |
+| WRK-516 | HIGH | feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C | pending |
+| WRK-517 | HIGH | feat(digitalmodel/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending |
+| WRK-518 | HIGH | feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy | pending |
+| WRK-519 | HIGH | feat(digitalmodel/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending |
+| WRK-520 | HIGH | feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers | pending |
+| WRK-521 | HIGH | feat(digitalmodel/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending |
+| WRK-522 | HIGH | feat(doris/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi | pending |
+| WRK-523 | HIGH | feat(digitalmodel/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending |
+| WRK-524 | HIGH | feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr | pending |
+| WRK-525 | HIGH | feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending |
+| WRK-526 | HIGH | feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference | pending |
+| WRK-527 | HIGH | feat(digitalmodel/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending |
+| WRK-528 | HIGH | feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines | pending |
+| WRK-529 | HIGH | feat(digitalmodel/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending |
+| WRK-530 | HIGH | feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an | pending |
+| WRK-531 | HIGH | feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending |
+| WRK-532 | HIGH | feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers | pending |
+| WRK-533 | HIGH | feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending |
+| WRK-534 | HIGH | feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management | pending |
+| WRK-535 | HIGH | feat(digitalmodel/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending |
+| WRK-536 | HIGH | feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s | pending |
+| WRK-537 | HIGH | feat(digitalmodel/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending |
+| WRK-538 | HIGH | feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari | pending |
+| WRK-589 | HIGH | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending |
+| WRK-595 | HIGH | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending |
+| WRK-598 | HIGH | feat(product): build engineering chatbot for oil & gas clients | pending |
+| WRK-625 | HIGH | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | pending |
+| WRK-628 | HIGH | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending |
+| WRK-666 | HIGH | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending |
+| WRK-032 | MEDIUM | Modular OrcaFlex pipeline installation input with parametric campaign support | pending |
+| WRK-045 | MEDIUM | OrcaFlex rigid jumper analysis - stress and VIV for various configurations | pending |
+| WRK-140 | MEDIUM | Integrate gmsh meshing skill into digitalmodel and solver pipelines | pending |
+| WRK-162 | MEDIUM | Untitled | pending |
+| WRK-310 | MEDIUM | explore: OrcFxAPI schematic capture for OrcaWave models (program screenshots) | pending |
+| WRK-343 | MEDIUM | OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh | pending |
+| WRK-479 | MEDIUM | feat(worldenergydata): wire SODIR FactPages OData API | pending |
+| WRK-483 | MEDIUM | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending |
+| WRK-484 | MEDIUM | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending |
+| WRK-485 | MEDIUM | feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo | pending |
+| WRK-486 | MEDIUM | feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo | pending |
+| WRK-571 | MEDIUM | feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python | pending |
+| WRK-608 | MEDIUM | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending |
+| WRK-616 | MEDIUM | chore(wrk-309): convert document-intelligence findings into structured data sources | pending |
+| WRK-620 | MEDIUM | feat(geotechnical): pipeline on-bottom stability per DNV-RP-F109 | pending |
+| WRK-621 | MEDIUM | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | pending |
+| WRK-631 | MEDIUM | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending |
+| WRK-662 | MEDIUM | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending |
+| WRK-694 | MEDIUM | Per-session log files in session-logger.sh | pending |
+| WRK-023 | LOW | Property GIS development timeline with future projection and Google Earth animation | pending |
+| WRK-047 | LOW | OpenFOAM CFD analysis capability for digitalmodel | pending |
+| WRK-623 | LOW | feat(geotechnical): scour prediction per DNV-RP-F107 | pending |
+
+#### engineering / structural
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-543 | HIGH | feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending |
+| WRK-544 | HIGH | feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending |
+| WRK-416 | MEDIUM | Untitled | pending |
+| WRK-609 | MEDIUM | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending |
+| WRK-036 | LOW | OrcaFlex structure deployment analysis - supply boat side deployment with structural loads | pending |
+| WRK-587 | LOW | research: evaluate Code_Aster for large-scale topside structural FEA | pending |
+
+#### engineering / uncategorised
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-488 | HIGH | feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR | pending |
+| WRK-489 | HIGH | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al | pending |
+| WRK-490 | HIGH | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals | pending |
+| WRK-492 | HIGH | feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al | pending |
+| WRK-487 | MEDIUM | feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter | pending |
+
+#### engineering / wind
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-688 | MEDIUM | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending |
+
+### data (26 items — 12 high, 13 medium, 1 low)
+
+#### data / document-intelligence
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-547 | HIGH | feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending |
+| WRK-548 | HIGH | feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o | pending |
+| WRK-570 | HIGH | feat(digitalmodel): port API 579 FFS MATLAB (GML/LML) to Python | pending |
+| WRK-541 | MEDIUM | feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending |
+| WRK-542 | MEDIUM | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending |
+| WRK-545 | MEDIUM | feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending |
+| WRK-546 | MEDIUM | feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle | pending |
+| WRK-549 | MEDIUM | feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending |
+| WRK-550 | MEDIUM | feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force | pending |
+| WRK-551 | MEDIUM | feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending |
+| WRK-552 | MEDIUM | feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal | pending |
+| WRK-553 | MEDIUM | feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending |
+| WRK-554 | MEDIUM | feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car | pending |
+| WRK-679 | MEDIUM | test(review): standardize execute gate variation tests | pending |
+
+#### data / online-resources
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-584 | LOW | feat(worldenergydata): index NSTA UK National Data Repository datasets | pending |
+
+#### data / production
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-627 | HIGH | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending |
+| WRK-259 | MEDIUM | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | pending |
+| WRK-261 | MEDIUM | BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171) | pending |
+
+#### data / standards
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-280 | HIGH | ABS standards acquisition: create folder + download CP Guidance Notes | blocked |
+| WRK-494 | HIGH | feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli | pending |
+| WRK-539 | HIGH | feat(digitalmodel/structural): Implement API RP 2A — API RP 2A WSD | pending |
+| WRK-540 | HIGH | feat(OGManufacturing/structural): Implement API RP 2A — API RP 2A WSD | pending |
+| WRK-556 | HIGH | feat(digitalmodel/marine): Implement API RP 2I — API RP 2I 3rd Ed (2008) In-service Inspection of M | pending |
+| WRK-557 | HIGH | feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve | pending |
+| WRK-558 | HIGH | feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design, | pending |
+
+#### data / uncategorised
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-069 | HIGH | Acquire USCG MISLE bulk dataset | blocked |
+
+### platform (12 items — 4 high, 3 medium, 5 low)
+
+#### platform / ai-tools
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1012 | HIGH | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending |
+| WRK-050 | MEDIUM | Hardware consolidation — inventory, assess, repurpose devices + dev environment readiness | pending |
+| WRK-227 | MEDIUM | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | pending |
+| WRK-389 | MEDIUM | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending |
+
+#### platform / uncategorised
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-048 | LOW | Blender working configurations for digitalmodel | pending |
+
+#### platform / workstations
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-294 | HIGH | Standardize ace-linux-2 mount paths — fstab entries for HDDs with clean paths | pending |
+| WRK-297 | HIGH | SSHFS mounts on ace-linux-1 for ace-linux-2 drives — bidirectional file access | pending |
+| WRK-687 | HIGH | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending |
+| WRK-352 | LOW | Set up remote desktop access on ace-linux-2 | pending |
+| WRK-582 | LOW | research: geomechanics module feasibility (OpenGeoSys, MOOSE) | pending |
+| WRK-588 | LOW | research: evaluate OpenTURNS for fatigue reliability integration | pending |
+| WRK-603 | LOW | chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage | pending |
+
+### business (6 items — 3 high, 2 medium, 1 low)
+
+#### business / cre-finance
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-021 | MEDIUM | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | pending |
+
+#### business / gtm
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-148 | HIGH | ACE-GTM: A&CE Go-to-Market strategy stream | pending |
+| WRK-470 | HIGH | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending |
+| WRK-632 | HIGH | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending |
+| WRK-665 | MEDIUM | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending |
+
+#### business / website
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-580 | LOW | feat(worldenergydata): map open-access journal portfolio for engineering | pending |
+
+### maintenance (6 items — 2 high, 3 medium, 1 low)
+
+#### maintenance / cleanup
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-661 | MEDIUM | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending |
+| WRK-1001 | MEDIUM | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending |
+| WRK-575 | LOW | Clean digitalmodel docs/modules/ stale content | pending |
+
+#### maintenance / refactor
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-574 | MEDIUM | Remove digitalmodel setup.py (superseded by pyproject.toml) | pending |
+
+#### maintenance / testing
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-149 | HIGH | digitalmodel test coverage improvement (re-creates WRK-051) | pending |
+| WRK-660 | HIGH | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending |
+
+### personal (4 items — 1 high, 0 medium, 3 low)
+
+#### personal / admin
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-005 | LOW | Clean up email using AI (when safe) | pending |
+
+#### personal / home
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-626 | HIGH | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending |
+
+#### personal / uncategorised
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-006 | LOW | Upload videos from iPhone to YouTube | blocked |
+| WRK-008 | LOW | Upload photos from multiple devices to achantas-media | pending |
+
+### uncategorised (4 items — 1 high, 1 medium, 2 low)
+
+#### uncategorised / uncategorised
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-476 | HIGH | feat(worldenergydata): create ESG/Carbon Emissions module | pending |
+| WRK-475 | MEDIUM | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending |
+| WRK-581 | LOW | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending |
+| WRK-TEST-ENSEMBLE | LOW | Smoke test for ensemble planning | pending |
 
 ## Master Table
 
