@@ -24,3 +24,17 @@ events:
   - .claude/work-queue/pending/WRK-1017.md
   published_at: '2026-03-06T11:41:12Z'
   reviewer: user
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: a70047e1c6af7ea283e03ce2c9b712022c550a18
+  documents:
+  - .claude/work-queue/assets/WRK-1017/plan-draft-review.html
+  - .claude/work-queue/assets/WRK-1017/common-plan-draft.md
+  - .claude/work-queue/assets/WRK-1017/combined-plan.md
+  - .claude/work-queue/assets/WRK-1017/evidence/user-review-common-draft.yaml
+  - .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
+  - .claude/work-queue/pending/WRK-1017.md
+  published_at: '2026-03-06T13:35:32Z'
+  reviewer: user
