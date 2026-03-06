@@ -8,10 +8,11 @@ Rules:
 - Start from this draft; extend it, do not replace it with a new structure.
 - Keep Route B authority with the inline `## Plan` in `WRK-1017.md`.
 - Treat model-specific plan files as evidence inputs for the combine step.
-- For each model pass, use explicit `deep think` / `ultra think` prompt
-  language plus a direct instruction to prioritize planning quality over speed,
-  challenge assumptions, compare alternatives, and seek the best plan rather
-  than the fastest completion.
+- For each model pass, use model-specific high-effort wording rather than the
+  exact same phrase for all three models.
+- Keep one shared intent across all model passes: prioritize planning quality
+  over speed, challenge assumptions, compare alternatives, identify failure
+  modes, and seek the best plan rather than the fastest completion.
 
 ## Summary
 - WRK: `WRK-1017`
@@ -37,19 +38,39 @@ Rules:
 - `.claude/skills/coordination/workspace/work-queue/SKILL.md`
 
 ## Required Stage 5 Substeps
-1. Create one common draft to seed all planning passes.
-2. Run an independent planning pass with `claude` using `deep think` /
-   `ultra think` wording and a quality-over-speed instruction.
-3. Document and prepare to exit with mandatory session-log/evidence update.
-4. Run an independent planning pass with `codex` using `deep think` /
-   `ultra think` wording and a quality-over-speed instruction.
-5. Document and prepare to exit with mandatory session-log/evidence update.
-6. Run an independent planning pass with `gemini` using `deep think` /
-   `ultra think` wording and a quality-over-speed instruction.
-7. Document and prepare to exit with mandatory session-log/evidence update.
-8. Combine the individual plans into one synthesized plan.
-9. Rate each model plan during the combine step.
-10. Seek user review and approval on the combined plan.
+- Create one common draft to seed all planning passes.
+- Seek user review and approval on the common draft plan in a live
+  user-interactive review session before launching the model-specific planning
+  passes.
+- Review wording rule:
+  - this is a human-in-the-loop review checkpoint
+  - this review is manual and user-interactive
+  - do not automate the review conversation
+  - do not auto-capture approval
+  - do not auto-advance the workflow after review
+- In Claude CLI:
+  - independent `claude` plan pass using synthesis-heavy effort wording and
+    explicit quality-over-speed instruction
+  - document and prepare to exit with mandatory session-log/evidence update
+- In Codex CLI:
+  - independent `codex` plan pass using execution-heavy effort wording and
+    explicit quality-over-speed instruction
+  - document and prepare to exit with mandatory session-log/evidence update
+- In Gemini CLI:
+  - independent `gemini` plan pass using exploration-heavy effort wording and
+    explicit quality-over-speed instruction
+  - document and prepare to exit with mandatory session-log/evidence update
+- Combine the individual plans into one synthesized plan using the orchestrator
+  agent.
+- Rate each model plan during the combine step.
+- Seek user review and approval on the combined plan in a live
+  user-interactive review session.
+- Review wording rule:
+  - this is a human-in-the-loop review checkpoint
+  - this review is manual and user-interactive
+  - do not automate the review conversation
+  - do not auto-capture approval
+  - do not auto-advance to Stage 6 after review
 
 ## Required Artifacts
 - `.claude/work-queue/assets/WRK-1017/common-plan-draft.md`
@@ -108,6 +129,10 @@ Rules:
 - Use `strong | adequate | weak` for overall plan quality.
 - Require mandatory session-log/evidence updates after each model pass.
 - Use `claude`, then `codex`, then `gemini` ordering.
+- Use model-specific effort wording rather than assuming `deep think` /
+  `ultra think` are interpreted identically by all models.
+- Keep user review explicit at two points: common draft approval and combined
+  plan approval.
 
 ## Combine-Step Expectations
 - Produce one synthesized plan in `combined-plan.md`.
@@ -122,3 +147,5 @@ Rules:
   gate language?
 - What verification commands best prove the new requirements without adding new
   tooling?
+- Should the Stage 5 automation live in a new orchestrator-facing script or as
+  an extension of `scripts/agents/plan.sh`?

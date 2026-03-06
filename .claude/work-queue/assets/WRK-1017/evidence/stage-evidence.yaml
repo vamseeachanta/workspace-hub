@@ -42,7 +42,7 @@ stages:
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: User approved the revised draft plan and reviewed Gate-Pass status; origin publish evidence is still missing, so Stage 5 remains open.
+    comment: Current revised draft plan is approved and locked locally for implementation against this plan state; origin publish evidence is still missing, so Stage 5 remains open.
     evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review

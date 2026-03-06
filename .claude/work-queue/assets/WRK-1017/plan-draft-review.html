@@ -144,15 +144,41 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li><code>.claude/work-queue/assets/WRK-1017/combined-plan.md</code></li>
 <li><strong>Stage 5 protocol to enforce</strong>:</li>
 <li>create one common draft</li>
-<li>independent <code>claude</code> plan pass using <code>deep think</code> / <code>ultra think</code> wording and explicit quality-over-speed instruction</li>
+<li>seek user review and approval on the common draft plan in a live user-interactive review session</li>
+<li>review wording rule:<ul>
+<li>this is a human-in-the-loop review checkpoint</li>
+<li>this review is manual and user-interactive</li>
+<li>do not automate the review conversation</li>
+<li>do not auto-capture approval</li>
+<li>do not auto-advance the workflow after review</li>
+</ul>
+</li>
+<li>In Claude CLI:<ul>
+<li>independent <code>claude</code> plan pass using synthesis-heavy effort wording and explicit quality-over-speed instruction</li>
 <li>document and prepare to exit with mandatory session-log/evidence update</li>
-<li>independent <code>codex</code> plan pass using <code>deep think</code> / <code>ultra think</code> wording and explicit quality-over-speed instruction</li>
+</ul>
+</li>
+<li>In Codex CLI:<ul>
+<li>independent <code>codex</code> plan pass using execution-heavy effort wording and explicit quality-over-speed instruction</li>
 <li>document and prepare to exit with mandatory session-log/evidence update</li>
-<li>independent <code>gemini</code> plan pass using <code>deep think</code> / <code>ultra think</code> wording and explicit quality-over-speed instruction</li>
+</ul>
+</li>
+<li>In Gemini CLI:<ul>
+<li>independent <code>gemini</code> plan pass using exploration-heavy effort wording and explicit quality-over-speed instruction</li>
 <li>document and prepare to exit with mandatory session-log/evidence update</li>
-<li>combine the three model plans</li>
+</ul>
+</li>
+<li>combine the three model plans using the orchestrator agent</li>
 <li>rate each model plan during combine</li>
-<li>seek user review and approval on the combined plan</li>
+<li>seek user review and approval on the combined plan in a live user-interactive review session</li>
+<li>review wording rule:<ul>
+<li>this is a human-in-the-loop review checkpoint</li>
+<li>this review is manual and user-interactive</li>
+<li>do not automate the review conversation</li>
+<li>do not auto-capture approval</li>
+<li>do not auto-advance to Stage 6 after review</li>
+</ul>
+</li>
 <li><strong>Contract decisions to implement</strong>:</li>
 <li>Put explicit hard-gate Stage 5 wording in all three files: Stage 5 is blocking, Stage 6 must not start until Stage 5 is complete, presenting HTML alone is insufficient, and silence is not approval.</li>
 <li>Preserve the same 10-step Stage 5 ordering across all three workflow contracts.</li>
@@ -163,7 +189,17 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>Require each <code>document and prepare to exit</code> substep to leave a handoff note plus session-log/evidence traceability.</li>
 <li>Preserve existing Stage 5 evidence requirements: <code>user-review-plan-draft.yaml</code>, browser-open evidence, origin-publish evidence, and explicit user response.</li>
 <li>Add explicit wording that <code>plan_reviewed: true</code> is not a Stage 5 action for Route B.</li>
-<li>Add a planning-effort instruction for all three model passes: use <code>deep think</code> / <code>ultra think</code> wording, explicitly optimize for plan quality over speed, challenge assumptions, compare alternatives, and seek the best plan rather than the fastest output.</li>
+<li>Add model-specific planning-effort instructions for all three model passes rather than assuming <code>deep think</code> / <code>ultra think</code> are treated identically:<ul>
+<li><code>claude</code>: synthesis-heavy cues such as <code>deep think</code>, <code>ultra think</code>, <code>challenge assumptions</code>, <code>surface tradeoffs</code></li>
+<li><code>codex</code>: execution-heavy cues such as <code>be precise</code>, <code>minimize ambiguity</code>, <code>mechanically verify transitions</code></li>
+<li><code>gemini</code>: exploration-heavy cues such as <code>consider alternatives</code>, <code>identify blind spots</code>, <code>probe edge cases</code></li>
+<li>shared requirement across all three: optimize for plan quality over speed, compare alternatives, and seek the best plan rather than the fastest output</li>
+</ul>
+</li>
+<li>Do not automate the Stage 5 review sessions. Common-draft review, each model-specific planning pass, and combined-plan review remain user-interactive checkpoints.</li>
+<li>If tooling is added, keep it assistive-only: prepare prompt/context files, print or open the next manual CLI command, scaffold evidence files, regenerate HTML after manual work, and validate artifact completeness.</li>
+<li>Keep user-gated steps explicit and manual: common draft approval, combined plan approval, browser-open review, and publish evidence.</li>
+<li>Validate the manual-review workflow by committing the current work, rerunning any assistive script if introduced, and checking that it reproduces the required artifacts with targeted test/eval.</li>
 <li><strong>Combine decisions adopted</strong>:</li>
 <li>use <code>claude</code> as the primary structural source</li>
 <li>keep <code>codex</code> refinements on stage transitions, <code>plan_reviewed</code> separation, and verification discipline</li>
@@ -188,6 +224,13 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li><code>rg -n "common-plan-draft|claude-plan|codex-plan|gemini-plan|combined-plan|document and prepare to exit" .claude/skills/workspace-hub/work-queue-workflow/SKILL.md .claude/skills/workspace-hub/workflow-gatepass/SKILL.md .claude/skills/coordination/workspace/work-queue/SKILL.md</code></li>
 <li><code>rg -n "plan_reviewed|plan_approved" .claude/skills/coordination/workspace/work-queue/SKILL.md .claude/skills/workspace-hub/work-queue-workflow/SKILL.md</code></li>
 <li><code>uv run --no-project python scripts/work-queue/generate-html-review.py WRK-1017 --type plan-draft</code></li>
+<li><strong>Manual-review issues and improvements</strong>:</li>
+<li>Add a dedicated common-draft review evidence file, recommended:
+    <code>assets/WRK-1017/evidence/user-review-common-draft.yaml</code></li>
+<li>Keep common-draft review lightweight at first: markdown + YAML approval, no second HTML artifact unless needed.</li>
+<li>Make any new tooling assistive-only rather than review-automating.</li>
+<li>Prefer overwriting canonical plan artifacts in place on rerun to keep the manual workflow simple.</li>
+<li>Validate with manual-review-aware checks: artifact existence/content, evidence presence, HTML regeneration, and gate-verification where applicable.</li>
 </ul>
 <h2>Plan Quality Eval Comparison</h2>
 <p>This section is populated from the completed combine-plans substep and mirrored
@@ -261,7 +304,7 @@ in <code>assets/WRK-1017/evidence/plan-quality-eval.yaml</code>.</p>
 <tr><td>2</td><td>Resource Intelligence</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Resource intelligence artifact pack not yet created for this WRK.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/resource-intelligence.yaml</code></td></tr>
 <tr><td>3</td><td>Triage</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>orchestrator</td><td>no</td><td>Route, priority, complexity, and workstations are set in frontmatter.</td><td><code>.claude/work-queue/pending/WRK-1017.md</code></td></tr>
 <tr><td>4</td><td>Plan Draft</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Draft plan exists and draft HTML has been generated.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-draft-review.html</code></td></tr>
-<tr><td>5</td><td>User Review - Plan (Draft)</td><td><span class="badge badge-info">WORKING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>no</td><td>User approved the revised draft plan and reviewed Gate-Pass status; origin publish evidence is still missing, so Stage 5 remains open.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml</code></td></tr>
+<tr><td>5</td><td>User Review - Plan (Draft)</td><td><span class="badge badge-info">WORKING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>no</td><td>Current revised draft plan is approved and locked locally for implementation against this plan state; origin publish evidence is still missing, so Stage 5 remains open.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml</code></td></tr>
 <tr><td>6</td><td>Cross-Review</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Blocked until Stage 5 draft review is closed.</td><td><code>scripts/review/results/wrk-1017-review.md</code></td></tr>
 <tr><td>7</td><td>User Review - Plan (Final)</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>yes</td><td>Awaits cross-review and final-plan artifact generation.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-final-review.html</code></td></tr>
 <tr><td>8</td><td>Claim / Activation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Cannot claim before plan gates pass.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/claim.yaml</code></td></tr>
