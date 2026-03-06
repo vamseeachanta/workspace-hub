@@ -5,7 +5,7 @@ description: >
   design system, complete section catalog, interactivity layer, and rendering rules so every
   draft-plan, final-plan, implementation-review, and close-review HTML looks and behaves
   identically regardless of which agent or session generated it.
-version: 1.2.0
+version: 1.3.0
 updated: 2026-03-05
 category: workspace-hub
 type: skill
@@ -89,8 +89,8 @@ code {
                  color: var(--accent); font-weight: 700; }
 
 /* H1 */
-h1             { margin: 10px 0 12px; font-size: clamp(2rem,4vw,3.8rem);
-                 line-height: 0.95; }
+h1             { margin: 10px 0 12px; font-size: clamp(1.75rem,3.2vw,3rem);
+                 line-height: 1.02; }
 
 /* Lede (subtitle below H1) */
 .lede          { max-width: 78ch; color: var(--muted); font-size: 1.05rem; }
@@ -113,6 +113,10 @@ h3             { color: var(--ink); margin-top: 18px; }
                  border-left: 6px solid var(--accent); padding: 20px;
                  margin-bottom: 30px; border-radius: 10px; }
 .exec-summary h2 { margin-top: 0; border: none; color: var(--accent); }
+
+/* Context / comparison panels */
+.panel         { background: #fff; padding: 16px; border-radius: 10px;
+                 border: 1px solid var(--line); }
 
 /* Artifact / asset link box */
 .artifact-box  { background: #fff; padding: 16px; border-radius: 10px;
@@ -348,17 +352,18 @@ Always the first section inside the first card:
 
 | # | Section | Stage | Notes |
 |---|---------|-------|-------|
-| 4 | Prompt Start Context | 5 + 7 | Verbatim original request; `<div class="panel">` |
+| 4 | Prompt Start Context | 5 + 7 | Verbatim original request when available; otherwise synthesize from WRK title + `## What`; render in `<div class="panel">` |
 | 5 | Why | 5 + 7 | Rationale bullet list |
 | 6 | Acceptance Criteria | 5 + 7 | `[ ]` / `[x]` checkboxes; convert `- [ ]` → `☐`, `- [x]` → `☑` |
 | 7 | Agentic AI Horizon | 5 + 7 | AI-horizon analysis paragraph |
 | 8 | Plan | 5 + 7 | Phases as `<h3>` sub-sections |
-| 9 | Resource Intelligence | 5 + 7 | Key files, constraints, scope context |
-| 9a | Gate-Pass Stage Status | 5 + 7 | Stage-by-stage table + summary; review before user-facing recommendation |
-| 10 | Open Questions | 5 only | Unresolved items; omit if none |
-| 11 | Changes from Draft | 7 only | What changed after cross-review |
-| 12 | Cross-Review Summary | 7 only | Provider verdict table (see §3.4) |
-| 13 | User Approval | 7 only | Explicit `plan_approved: true` record |
+| 9 | Plan Quality Eval Comparison | 5 + 7 | Required section; `Not applicable.` unless multi-model plan synthesis is used |
+| 10 | Resource Intelligence | 5 + 7 | Key files, constraints, scope context |
+| 10a | Gate-Pass Stage Status | 5 + 7 | Stage-by-stage table + summary; review before user-facing recommendation |
+| 11 | Open Questions | 5 only | Unresolved items; omit if none |
+| 12 | Changes from Draft | 7 only | What changed after cross-review |
+| 13 | Cross-Review Summary | 7 only | Provider verdict table (see §3.4) |
+| 14 | User Approval | 7 only | Explicit `plan_approved: true` record |
 
 ---
 
@@ -422,6 +427,42 @@ Always the first section inside the first card:
 ```
 
 Verdict badge mapping: `APPROVE` → `badge-pass` | `MINOR` → `badge-warn` | `MAJOR` → `badge-fail` | `NO_OUTPUT` → `badge-info`
+
+---
+
+### 3.5a Plan Quality Eval Comparison (plan artifacts)
+
+```html
+<h2>Plan Quality Eval Comparison</h2>
+<p><strong>Combine-step decision:</strong> {{decision_summary}}</p>
+<table>
+  <thead>
+    <tr>
+      <th>Plan</th><th>Rating</th><th>Completeness</th><th>Test/Eval</th>
+      <th>Execution Clarity</th><th>Risk Coverage</th><th>Standards/Gate</th>
+      <th>Decision</th><th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude</td><td>strong</td><td>4/5</td><td>4/5</td><td>5/5</td>
+      <td>4/5</td><td>5/5</td><td>kept-core</td><td>Best execution sequencing.</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+Data source:
+- Preferred: `assets/WRK-<id>/evidence/plan-quality-eval.yaml`
+- Fallback: explicit WRK body section when authored manually
+- If absent: render `Not applicable.` as the section body
+
+Minimum rubric fields:
+- completeness
+- test/eval quality
+- execution clarity
+- risk coverage
+- standards/gate alignment
 
 ---
 
@@ -532,8 +573,8 @@ def render_wrk_html(
 
 | `artifact_type` | Required sections (§ numbers) |
 |-----------------|-------------------------------|
-| `plan-draft`    | 1–3, 4–10 |
-| `plan-final`    | 1–3, 4–13 |
+| `plan-draft`    | 1–3, 4–11 |
+| `plan-final`    | 1–3, 4–14 |
 | `implementation`| 1–3, 14–20 |
 | `close`         | 1–3, 14–25 |
 
@@ -600,6 +641,13 @@ Before handing an HTML artifact to the user, verify:
 ---
 
 ## Version History
+
+- **1.3.0** (2026-03-05): Plan-artifact synthesis improvements (WRK-1011)
+  - Added `.panel` primitive for context/comparison sections
+  - `Prompt Start Context` now allows synthesized fallback from WRK title + `## What`
+  - Added first-class `Plan Quality Eval Comparison` section for plan artifacts
+  - Documented evidence-driven source: `assets/WRK-<id>/evidence/plan-quality-eval.yaml`
+  - Reduced hero H1 scale and removed duplicate body H1 when it matches the WRK title
 
 - **1.2.0** (2026-03-05): Gate-pass section integration
   - Added `Gate-Pass Stage Status` as a required user-review section for stages 5/7/17 artifacts

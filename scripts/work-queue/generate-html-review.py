@@ -48,12 +48,14 @@ code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
 pre code{background:none;padding:0;}
 pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
   padding:14px 16px;overflow-x:auto;font-size:.88rem;}
+.panel,.artifact-box{background:#fff;padding:16px;border-radius:10px;
+  border:1px solid var(--line);}
 .hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
   background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
 .hero-inner,.content{max-width:1180px;margin:0 auto;}
 .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
   color:var(--accent);font-weight:700;}
-h1{margin:10px 0 12px;font-size:clamp(2rem,4vw,3.8rem);line-height:.95;}
+h1{margin:10px 0 12px;font-size:clamp(1.75rem,3.2vw,3rem);line-height:1.02;}
 .lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
 .content{padding:28px 24px 56px;}
 .card{background:var(--panel);padding:26px;border-radius:18px;
@@ -68,8 +70,6 @@ h3{color:var(--ink);margin-top:18px;}
   border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
   border-radius:10px;}
 .exec-summary h2{margin-top:0;border:none;color:var(--accent);}
-.artifact-box{background:#fff;padding:16px;border-radius:10px;
-  border:1px solid var(--line);}
 table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem;}
 th,td{border-top:1px solid var(--line);padding:10px 8px;
   text-align:left;vertical-align:top;}
@@ -197,6 +197,7 @@ KEY_SECTIONS_BY_ARTIFACT = {
         "Why",
         "Acceptance Criteria",
         "Plan",
+        "Plan Quality Eval Comparison",
         "Resource Intelligence",
         "Open Questions",
     ],
@@ -206,6 +207,7 @@ KEY_SECTIONS_BY_ARTIFACT = {
         "Why",
         "Acceptance Criteria",
         "Plan",
+        "Plan Quality Eval Comparison",
         "Resource Intelligence",
         "Open Questions",
         "Cross-Review Summary",
@@ -478,6 +480,94 @@ def collect_stage_gatepass(assets_dir: str) -> dict:
     return {"present": True, "stages": stages, "summary": summary, "autonomy": autonomy}
 
 
+def collect_prompt_start_context(body_md: str, fm: dict) -> dict:
+    patterns = [
+        r'(?ms)^\*Source:\s*"(?P<text>.*?)"\s*\*$',
+        r'(?ms)^Source:\s*"(?P<text>.*?)"\s*$',
+        r'(?ms)^\*Source:\s*(?P<text>.*?)\s*\*$',
+        r'(?ms)^Source:\s*(?P<text>.*?)\s*$',
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, body_md)
+        if match:
+            text = " ".join(match.group("text").split())
+            if text:
+                return {
+                    "present": True,
+                    "text": text,
+                    "source": "body_source",
+                    "synthesized": False,
+                }
+
+    title = " ".join(str(fm.get("title", "")).split())
+    what_match = re.search(r"## (?:What|Objective|Goal)\n(.*?)(?=\n##|\Z)", body_md, re.DOTALL)
+    what_text = ""
+    if what_match:
+        what_text = " ".join(what_match.group(1).split())
+    fallback = " — ".join(part for part in [title, what_text] if part)
+    if fallback:
+        return {
+            "present": True,
+            "text": fallback,
+            "source": "title_plus_what",
+            "synthesized": True,
+        }
+
+    return {
+        "present": False,
+        "text": "",
+        "source": "none",
+        "synthesized": False,
+    }
+
+
+def collect_plan_quality_eval(assets_dir: str) -> dict:
+    candidate_paths = [
+        Path(assets_dir) / "evidence" / "plan-quality-eval.yaml",
+        Path(assets_dir) / "plan-quality-eval.yaml",
+    ]
+    for path in candidate_paths:
+        if not path.exists():
+            continue
+        try:
+            data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        except Exception:
+            continue
+        if not isinstance(data, dict):
+            continue
+        plans = data.get("plans", [])
+        if not isinstance(plans, list):
+            plans = []
+        rows = []
+        for item in plans:
+            if not isinstance(item, dict):
+                continue
+            rows.append({
+                "plan": str(item.get("plan", item.get("name", "Unknown"))).strip() or "Unknown",
+                "rating": str(item.get("rating", "pending")).strip() or "pending",
+                "decision": str(item.get("decision", "pending")).strip() or "pending",
+                "notes": str(item.get("notes", "Not applicable.")).strip() or "Not applicable.",
+                "completeness": str(item.get("completeness", "n/a")).strip() or "n/a",
+                "test_eval_quality": str(item.get("test_eval_quality", "n/a")).strip() or "n/a",
+                "execution_clarity": str(item.get("execution_clarity", "n/a")).strip() or "n/a",
+                "risk_coverage": str(item.get("risk_coverage", "n/a")).strip() or "n/a",
+                "standards_gate_alignment": str(item.get("standards_gate_alignment", "n/a")).strip() or "n/a",
+            })
+        return {
+            "present": bool(rows),
+            "plans": rows,
+            "decision_summary": str(data.get("decision_summary", "Not applicable.")).strip() or "Not applicable.",
+            "artifact_ref": str(data.get("artifact_ref", path)).strip() or str(path),
+        }
+
+    return {
+        "present": False,
+        "plans": [],
+        "decision_summary": "Not applicable.",
+        "artifact_ref": "Not applicable.",
+    }
+
+
 # ── HTML section builders ─────────────────────────────────────────────────────
 
 def render_meta_grid(fm: dict) -> str:
@@ -605,6 +695,46 @@ def render_gatepass_section(gp: dict) -> str:
 </table>"""
 
 
+def render_prompt_start_context(ctx: dict) -> str:
+    if not ctx.get("present"):
+        return ""
+    label = "Synthesized from WRK title + What section" if ctx.get("synthesized") else "Captured from Source note"
+    text = html_escape(str(ctx.get("text", "Not applicable.")), quote=True)
+    label_text = html_escape(label, quote=True)
+    return f"""<h2>Prompt Start Context</h2>
+<div class="panel">
+  <p>{text}</p>
+  <p style="font-size:.82rem;color:var(--muted)"><strong>Source:</strong> {label_text}</p>
+</div>"""
+
+
+def render_plan_quality_eval_section(plan_eval: dict) -> str:
+    if not plan_eval.get("present"):
+        return ""
+    rows = ""
+    for item in plan_eval.get("plans", []):
+        rows += (
+            f"<tr><td>{html_escape(item['plan'], quote=True)}</td>"
+            f"<td>{html_escape(item['rating'], quote=True)}</td>"
+            f"<td>{html_escape(item['completeness'], quote=True)}</td>"
+            f"<td>{html_escape(item['test_eval_quality'], quote=True)}</td>"
+            f"<td>{html_escape(item['execution_clarity'], quote=True)}</td>"
+            f"<td>{html_escape(item['risk_coverage'], quote=True)}</td>"
+            f"<td>{html_escape(item['standards_gate_alignment'], quote=True)}</td>"
+            f"<td>{html_escape(item['decision'], quote=True)}</td>"
+            f"<td>{html_escape(item['notes'], quote=True)}</td></tr>\n"
+        )
+    summary = html_escape(str(plan_eval.get("decision_summary", "Not applicable.")), quote=True)
+    artifact_ref = html_escape(str(plan_eval.get("artifact_ref", "Not applicable.")), quote=True)
+    return f"""<h2>Plan Quality Eval Comparison</h2>
+<p><strong>Combine-step decision:</strong> {summary}</p>
+<table>
+  <thead><tr><th>Plan</th><th>Rating</th><th>Completeness</th><th>Test/Eval</th><th>Execution Clarity</th><th>Risk Coverage</th><th>Standards/Gate</th><th>Decision</th><th>Notes</th></tr></thead>
+  <tbody>{rows}</tbody>
+</table>
+<p style="font-size:.82rem;color:var(--muted)"><strong>Source:</strong> <code>{artifact_ref}</code></p>"""
+
+
 # ── Main HTML renderer ────────────────────────────────────────────────────────
 
 def _extract_h2_titles(html: str) -> set[str]:
@@ -638,6 +768,18 @@ def _normalize_close_section_names(body_md: str, artifact_type: str) -> str:
     return re.sub(r"(?mi)^##\s*Future\s+Work\s*$", "## Next Work", body_md)
 
 
+def _strip_duplicate_body_title(body_html: str, wrk_title: str) -> str:
+    match = re.match(r"^\s*<h1>(.*?)</h1>\s*", body_html, flags=re.IGNORECASE | re.DOTALL)
+    if not match:
+        return body_html
+    first_heading = re.sub(r"<[^>]+>", "", match.group(1)).strip()
+    normalized_heading = " ".join(first_heading.split()).casefold()
+    normalized_title = " ".join(str(wrk_title).split()).casefold()
+    if normalized_heading != normalized_title:
+        return body_html
+    return body_html[match.end():].lstrip()
+
+
 def _suppress_duplicate_generated_sections(
     body_html: str,
     skill_manifest_html: str,
@@ -656,6 +798,50 @@ def _suppress_duplicate_generated_sections(
     if "Gate-Pass Stage Status" in titles:
         gatepass_html = ""
     return skill_manifest_html, test_evidence_html, reviewer_html, gatepass_html
+
+
+def _insert_after_first_h1(body_html: str, section_html: str) -> str:
+    if not section_html.strip():
+        return body_html
+    match = re.search(r"</h1>", body_html, flags=re.IGNORECASE)
+    if not match:
+        return f"{section_html}\n{body_html}"
+    return f"{body_html[:match.end()]}\n{section_html}\n{body_html[match.end():]}"
+
+
+def _insert_before_first_matching_h2(body_html: str, section_html: str, section_titles: list[str]) -> str:
+    if not section_html.strip():
+        return body_html
+    for title in section_titles:
+        pattern = rf"<h2[^>]*>\s*{re.escape(title)}\s*</h2>"
+        match = re.search(pattern, body_html, flags=re.IGNORECASE)
+        if match:
+            return f"{body_html[:match.start()]}\n{section_html}\n{body_html[match.start():]}"
+    return f"{body_html}\n{section_html}"
+
+
+def _inject_generated_plan_sections(
+    body_html: str,
+    artifact_type: str,
+    prompt_start_context_html: str,
+    plan_quality_eval_html: str,
+) -> str:
+    if artifact_type not in {"plan-draft", "plan-final"}:
+        return body_html
+
+    titles = _extract_h2_titles(body_html)
+    if "Prompt Start Context" not in titles and prompt_start_context_html.strip():
+        body_html = _insert_after_first_h1(body_html, prompt_start_context_html)
+        titles.add("Prompt Start Context")
+
+    if "Plan Quality Eval Comparison" not in titles and plan_quality_eval_html.strip():
+        body_html = _insert_before_first_matching_h2(
+            body_html,
+            plan_quality_eval_html,
+            ["Resource Intelligence", "Open Questions", "Changes from Draft", "Cross-Review Summary", "User Review - Plan (Final)"],
+        )
+
+    return body_html
 
 def render_wrk_html(
     wrk_meta: dict,
@@ -786,17 +972,28 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
     exec_summary_html = md.convert(exec_md)
     md.reset()
     body_html = md.convert(body)
+    body_html = _strip_duplicate_body_title(body_html, fm.get("title", wrk_id))
 
     assets_dir = os.path.join(queue_dir, "assets", wrk_id)
     skill_manifest = collect_skill_manifest(workspace_root, fm, assets_dir)
     test_evidence = collect_test_evidence(assets_dir)
     reviewers = collect_reviewers(assets_dir, wrk_id)
     gatepass = collect_stage_gatepass(assets_dir)
+    prompt_start_context = collect_prompt_start_context(body, fm)
+    plan_quality_eval = collect_plan_quality_eval(assets_dir)
 
     skill_manifest_html = render_skill_manifest(skill_manifest)
     test_evidence_html = render_test_evidence(test_evidence)
     reviewer_html = render_reviewer_synthesis(reviewers)
     gatepass_html = render_gatepass_section(gatepass)
+    prompt_start_context_html = render_prompt_start_context(prompt_start_context)
+    plan_quality_eval_html = render_plan_quality_eval_section(plan_quality_eval)
+    body_html = _inject_generated_plan_sections(
+        body_html,
+        artifact_type,
+        prompt_start_context_html,
+        plan_quality_eval_html,
+    )
     skill_manifest_html, test_evidence_html, reviewer_html, gatepass_html = _suppress_duplicate_generated_sections(
         body_html,
         skill_manifest_html,

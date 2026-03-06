@@ -160,6 +160,10 @@ def test_h1_contains_title(mod, minimal_meta, minimal_sections):
     assert "test: verify canonical HTML template" in html
 
 
+def test_css_uses_smaller_h1_scale(mod):
+    assert "clamp(1.75rem,3.2vw,3rem)" in mod.CSS
+
+
 def test_lede_present(mod, minimal_meta, minimal_sections):
     html = mod.render_wrk_html(minimal_meta, "plan-draft", minimal_sections)
     assert "Minimal test artifact." in html
@@ -405,6 +409,107 @@ def test_render_gatepass_section_escapes_html(mod):
     assert "&lt;b&gt;1&lt;/b&gt;" in html
     assert "&lt;Stage&gt;" in html
     assert "1 &lt; 2 &amp; risky" in html
+
+
+def test_collect_prompt_start_context_reads_source_quote(mod, minimal_meta):
+    body = '# Title\n\n## What\nDetails.\n\n*Source: "Original user request text."*\n'
+    ctx = mod.collect_prompt_start_context(body, minimal_meta)
+    assert ctx["present"] is True
+    assert ctx["synthesized"] is False
+    assert ctx["text"] == "Original user request text."
+
+
+def test_collect_prompt_start_context_falls_back_to_title_and_what(mod, minimal_meta):
+    body = "# Title\n\n## What\nPlan artifact summary.\n"
+    ctx = mod.collect_prompt_start_context(body, minimal_meta)
+    assert ctx["present"] is True
+    assert ctx["synthesized"] is True
+    assert "test: verify canonical HTML template" in ctx["text"]
+    assert "Plan artifact summary." in ctx["text"]
+
+
+def test_strip_duplicate_body_title_removes_matching_h1(mod):
+    html = "<h1>test: verify canonical HTML template</h1><h2>What</h2><p>Body.</p>"
+    stripped = mod._strip_duplicate_body_title(html, "test: verify canonical HTML template")
+    assert stripped.startswith("<h2>What</h2>")
+    assert stripped.count("<h1>") == 0
+
+
+def test_strip_duplicate_body_title_keeps_non_matching_h1(mod):
+    html = "<h1>Different heading</h1><h2>What</h2><p>Body.</p>"
+    stripped = mod._strip_duplicate_body_title(html, "test: verify canonical HTML template")
+    assert stripped == html
+
+
+def test_collect_plan_quality_eval_reads_yaml(tmp_path: Path):
+    mod = _load_html_module()
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "plan-quality-eval.yaml").write_text(
+        """
+decision_summary: Keep Claude sequencing, Codex validation checks, Gemini risk notes.
+artifact_ref: .claude/work-queue/assets/WRK-9999/combined-plan.md
+plans:
+  - plan: Claude
+    rating: strong
+    completeness: 4/5
+    test_eval_quality: 4/5
+    execution_clarity: 5/5
+    risk_coverage: 4/5
+    standards_gate_alignment: 5/5
+    decision: kept-core
+    notes: Best sequencing.
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    plan_eval = mod.collect_plan_quality_eval(str(tmp_path))
+    assert plan_eval["present"] is True
+    assert plan_eval["decision_summary"].startswith("Keep Claude sequencing")
+    assert plan_eval["plans"][0]["plan"] == "Claude"
+    assert plan_eval["plans"][0]["rating"] == "strong"
+
+
+def test_render_plan_quality_eval_section_renders_table(mod):
+    html = mod.render_plan_quality_eval_section({
+        "present": True,
+        "decision_summary": "Use merged plan.",
+        "artifact_ref": ".claude/work-queue/assets/WRK-1/combined-plan.md",
+        "plans": [
+            {
+                "plan": "Claude",
+                "rating": "strong",
+                "decision": "kept-core",
+                "notes": "Best sequencing.",
+                "completeness": "4/5",
+                "test_eval_quality": "4/5",
+                "execution_clarity": "5/5",
+                "risk_coverage": "4/5",
+                "standards_gate_alignment": "5/5",
+            }
+        ],
+    })
+    assert "Plan Quality Eval Comparison" in html
+    assert "Use merged plan." in html
+    assert "kept-core" in html
+    assert "Best sequencing." in html
+
+
+def test_inject_generated_plan_sections_places_sections_in_plan_artifacts(mod):
+    body_html = "<h1>Title</h1><h2>What</h2><p>Why now.</p><h2>Open Questions</h2><p>None.</p>"
+    prompt_html = "<h2>Prompt Start Context</h2><div class='panel'><p>Original request.</p></div>"
+    plan_eval_html = "<h2>Plan Quality Eval Comparison</h2><p>Comparison.</p>"
+    result = mod._inject_generated_plan_sections(body_html, "plan-draft", prompt_html, plan_eval_html)
+
+    assert result.index("Prompt Start Context") > result.index("</h1>")
+    assert result.index("Plan Quality Eval Comparison") < result.index("Open Questions")
+
+
+def test_append_missing_key_sections_adds_plan_quality_eval_placeholder(mod):
+    body_html = "<h2>Plan</h2><p>Step 1.</p>"
+    result = mod._append_missing_key_sections(body_html, "plan-draft")
+    assert "Plan Quality Eval Comparison" in result
+    assert "Not applicable." in result
 
 
 def test_render_wrk_html_does_not_emit_empty_gatepass_card(mod, minimal_meta, minimal_sections):

@@ -1,0 +1,166 @@
+wrk_id: WRK-1017
+generated_at: "2026-03-06T01:06:26Z"
+reviewed_by: "agent"
+autonomy_maturity_level: "L2"
+human_steers_agents_execute: true
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: WRK created in pending queue with baseline metadata.
+    evidence: .claude/work-queue/pending/WRK-1017.md
+  - order: 2
+    stage: Resource Intelligence
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Resource intelligence artifact pack not yet created for this WRK.
+    evidence: .claude/work-queue/assets/WRK-1017/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Route, priority, complexity, and workstations are set in frontmatter.
+    evidence: .claude/work-queue/pending/WRK-1017.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Draft plan exists and draft HTML has been generated.
+    evidence: .claude/work-queue/assets/WRK-1017/plan-draft-review.html
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: working
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: User decisions captured; rerun in progress to refresh draft artifact and complete remaining Stage 5 evidence.
+    evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
+  - order: 6
+    stage: Cross-Review
+    status: pending
+    human_decision_required: "no"
+    owner: agents
+    blocker: "yes"
+    comment: Blocked until Stage 5 draft review is closed.
+    evidence: scripts/review/results/wrk-1017-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: pending
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "yes"
+    comment: Awaits cross-review and final-plan artifact generation.
+    evidence: .claude/work-queue/assets/WRK-1017/plan-final-review.html
+  - order: 8
+    stage: Claim / Activation
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "yes"
+    comment: Cannot claim before plan gates pass.
+    evidence: .claude/work-queue/assets/WRK-1017/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "yes"
+    comment: Awaiting claim/activation.
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: pending
+    human_decision_required: "no"
+    owner: agents
+    blocker: "yes"
+    comment: Not started.
+    evidence: .claude/work-queue/assets/WRK-1017/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: pending
+    human_decision_required: "no"
+    owner: agents
+    blocker: "yes"
+    comment: Not started.
+    evidence: .claude/work-queue/assets/WRK-1017/implementation-review.html
+  - order: 12
+    stage: TDD / Eval
+    status: pending
+    human_decision_required: "no"
+    owner: agents
+    blocker: "yes"
+    comment: Not started.
+    evidence: .claude/work-queue/assets/WRK-1017/evidence/test-results.md
+  - order: 13
+    stage: Agent Cross-Review
+    status: pending
+    human_decision_required: "no"
+    owner: agents
+    blocker: "yes"
+    comment: Not started.
+    evidence: .claude/work-queue/assets/WRK-1017/cross-review-package.md
+  - order: 14
+    stage: Verify Gate Evidence
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "yes"
+    comment: Not started.
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 15
+    stage: Future Work Synthesis
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "yes"
+    comment: Not started.
+    evidence: .claude/work-queue/assets/WRK-1017/evidence/future-work.yaml
+  - order: 16
+    stage: Resource Intelligence Update
+    status: pending
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "yes"
+    comment: Not started.
+    evidence: .claude/work-queue/assets/WRK-1017/evidence/resource-intelligence-update.yaml
+  - order: 17
+    stage: User Review - Implementation
+    status: pending
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "yes"
+    comment: Not started.
+    evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-close.yaml
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Not applicable unless continuity breaks during execution.
+    evidence: .claude/work-queue/assets/WRK-1017/evidence/reclaim.yaml
+  - order: 19
+    stage: Close
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "yes"
+    comment: Not started.
+    evidence: scripts/work-queue/close-item.sh
+  - order: 20
+    stage: Archive
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "yes"
+    comment: Not started.
+    evidence: scripts/work-queue/archive-item.sh

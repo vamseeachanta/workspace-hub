@@ -1,0 +1,46 @@
+wrk_id: WRK-1017
+stage: plan_draft
+reviewed_at: "2026-03-06T01:06:26Z"
+reviewed_by: user
+interactive_session: true
+tough_questions_asked:
+  - question: "Should WRK-1017 update only work-queue-workflow, or all workflow contract skills together?"
+    outcome: "User chose all three workflow contract files to avoid drift."
+  - question: "Should combined-plan.md become the canonical execution plan, or should Route B keep the inline WRK plan authoritative?"
+    outcome: "User kept the Route B inline plan authoritative and retained combined-plan.md as a supporting artifact."
+assumptions_challenged:
+  - assumption: "Only work-queue-workflow/SKILL.md needs to change."
+    disposition: "Rejected"
+    note: "User directed that work-queue-workflow, workflow-gatepass, and work-queue all be updated together."
+  - assumption: "document and prepare to exit can be a lightweight note only."
+    disposition: "Rejected"
+    note: "User required mandatory session-log/evidence update for traceability after each model pass."
+  - assumption: "Numeric plan scoring is required."
+    disposition: "Rejected"
+    note: "User approved a simpler strong|adequate|weak overall quality scale."
+tradeoffs_decided:
+  - decision: "Update all three workflow contract files in the same WRK."
+    rationale: "Prevents Stage 5 wording drift across the workflow harness."
+  - decision: "Use strong|adequate|weak as the overall plan-quality rating scale."
+    rationale: "Keeps the comparison readable during combine-step review."
+  - decision: "Require mandatory session-log/evidence updates after each model pass."
+    rationale: "Improves traceability for the document-and-exit substeps."
+tests_evals_proposed_from_intelligence:
+  sources:
+    - workflow_contract_docs
+    - plan_draft_html_review
+  proposed:
+    - "Verify all three workflow contract skills use the same Stage 5 substep ordering."
+    - "Verify each model pass requires a saved handoff note plus session-log/evidence update."
+    - "Verify plan-review HTML includes Plan Quality Eval Comparison and Gate-Pass Stage Status."
+user_test_eval_changes:
+  added:
+    - "All-three-skills alignment check"
+    - "Mandatory session-log/evidence traceability check after each model pass"
+  removed: []
+  modified:
+    - "Overall plan-quality scale simplified to strong|adequate|weak"
+gatepass_section_reviewed_with_user: false
+gatepass_summary_at_review: "Not yet reviewed in the refreshed draft artifact."
+approval_decision: revise_and_rerun
+notes: "Plan decisions captured. Revise WRK-1017 plan text, regenerate draft HTML, review Gate-Pass Stage Status with user, and log publish evidence before Stage 5 can close."
