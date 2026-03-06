@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Draft Review: WRK-1021 — Audit and migrate scheduled jobs to claude code schedule tas</title>
+  <style>
+:root {
+  --bg:       #f3efe6;
+  --panel:    #fffdf8;
+  --ink:      #172126;
+  --muted:    #55636b;
+  --accent:   #0f766e;
+  --accent-2: #8a5a2b;
+  --line:     #d9d0c0;
+  --shadow:   0 16px 40px rgba(20,33,38,0.08);
+  --good:     #166534;
+  --warn:     #b45309;
+  --bad:      #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.5;margin:0;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.05);padding:.2em .4em;border-radius:3px;}
+pre code{background:none;padding:0;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.88rem;}
+.panel,.artifact-box{background:#fff;padding:16px;border-radius:10px;
+  border:1px solid var(--line);}
+.hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
+.hero-inner,.content{max-width:1180px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
+  color:var(--accent);font-weight:700;}
+h1{margin:10px 0 12px;font-size:clamp(1.75rem,3.2vw,3rem);line-height:1.02;}
+.lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
+.content{padding:28px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
+  color:var(--accent-2);letter-spacing:.02em;}
+h2[data-collapsed="true"]{margin-bottom:4px;}
+h2 .section-summary-chip{max-width:min(70ch,70vw);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
+h3{color:var(--ink);margin-top:18px;}
+.exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
+  border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
+  border-radius:10px;}
+.exec-summary h2{margin-top:0;border:none;color:var(--accent);}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem;}
+th,td{border-top:1px solid var(--line);padding:10px 8px;
+  text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.86rem;color:var(--ink);}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:.9rem;}
+.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-warn{background:#fef3c7;color:var(--warn);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-info{background:#dbeafe;color:#1d4ed8;}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:900px){.split{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}
+  tr,td,th{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-1021 &middot; Plan Draft Review</div>
+    <h1>Audit and migrate scheduled jobs to claude code schedule tasks on all workstations</h1>
+    <p class="lede">**Review all expected cron jobs across every workstation (ace-linux-1, ace-linux-2, acma-ansys05, acma-ws014, gali-linux-compute-1) and convert them into Claude Code scheduled tasks where appropriate; out of scope: changing the logic of existing jobs.**</p>
+  </div>
+</header>
+
+<main class="content">
+  <div class="meta">
+  <div class="pill"><strong>WRK ID</strong>WRK-1021</div>
+  <div class="pill"><strong>Status</strong><span class="badge badge-info">PENDING</span></div>
+  <div class="pill"><strong>Route</strong>medium</div>
+  <div class="pill"><strong>Orchestrator</strong>—</div>
+  <div class="pill"><strong>Computer</strong>ace-linux-1</div>
+  <div class="pill"><strong>Created</strong>2026-03-05</div>
+  <div class="pill"><strong>Commit</strong><code>n/a</code></div>
+  <div class="pill"><strong>% Done</strong>0%</div>
+</div>
+
+  <div class="card">
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <p>Audit the current cron/Task Scheduler entries on all workstations, compare against the expected schedule documented in the workstations SKILL.md (<code>cron_variants</code>), identify gaps or drift, and convert the canonical jobs into Claude Code schedule tasks (using the Claude Code scheduling API or config) so they are version-controlled, visible, and provider-agnostic.</p>
+    </div>
+
+    <h2>Skill Manifest</h2>
+<table>
+  <thead><tr><th>Category</th><th>Skill</th></tr></thead>
+  <tbody><tr><td colspan='2' style='color:var(--muted)'>Not applicable.</td></tr></tbody>
+</table>
+<p style="font-size:.82rem;color:var(--muted)">Source: <code>none</code></p>
+  </div>
+
+  <div class="card">
+    <h2>Prompt Start Context</h2>
+<div class="panel">
+  <p>add scheduled jobs on all workstations - review expected cron jobs on all machines - convert them into claude code schedule tasks</p>
+  <p style="font-size:.82rem;color:var(--muted)"><strong>Source:</strong> Captured from Source note</p>
+</div>
+<h2>Mission</h2>
+<p><strong>Review all expected cron jobs across every workstation (ace-linux-1, ace-linux-2, acma-ansys05, acma-ws014, gali-linux-compute-1) and convert them into Claude Code scheduled tasks where appropriate; out of scope: changing the logic of existing jobs.</strong></p>
+<blockquote>
+<p>Read this at the start of every execution stage. If a task, file change, or decision is
+not directly in service of this mission, stop and capture it as a new WRK item instead.</p>
+</blockquote>
+<h2>What</h2>
+<p>Audit the current cron/Task Scheduler entries on all workstations, compare against the expected schedule documented in the workstations SKILL.md (<code>cron_variants</code>), identify gaps or drift, and convert the canonical jobs into Claude Code schedule tasks (using the Claude Code scheduling API or config) so they are version-controlled, visible, and provider-agnostic.</p>
+<h2>Why</h2>
+<p>Cron jobs are currently defined per-machine with no single source of truth. Migrating to Claude Code scheduled tasks provides visibility in the workspace-hub, unified management, and makes the harness self-describing.</p>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] All workstations audited: ace-linux-1, ace-linux-2, acma-ansys05, acma-ws014, gali-linux-compute-1</li>
+<li>[ ] Inventory document listing every existing cron/Task Scheduler job per machine (schedule, command, owner, purpose)</li>
+<li>[ ] Gap analysis: expected jobs (from workstations SKILL.md <code>cron_variants</code>) vs actual jobs found</li>
+<li>[ ] Claude Code schedule task definitions created for all jobs that can run via Claude Code</li>
+<li>[ ] Jobs that cannot migrate (hardware-specific, GUI, license-bound) documented with rationale</li>
+<li>[ ] Version-controlled schedule config committed to workspace-hub</li>
+<li>[ ] Tests: verify schedule task files parse correctly; dry-run each task definition</li>
+</ul>
+<h2>Agentic AI Horizon</h2>
+<ul>
+<li>This directly boosts agentic AI capability: scheduled tasks drive the nightly harness (comprehensive-learning, repo-sync, AI readiness checks).</li>
+<li>Converting from bare cron to Claude Code scheduled tasks means agents can introspect and modify the schedule — a key capability unlock for self-managing workflows.</li>
+<li>Invest now: the groundwork (inventory + migration) is well-defined and worth doing before the harness grows further.</li>
+</ul>
+<h2>Plan</h2>
+<p><strong>Route B (medium) — inline plan</strong></p>
+<h3>Findings summary (from Resource Intelligence)</h3>
+<table>
+<thead>
+<tr>
+<th>Machine</th>
+<th>Variant</th>
+<th>Actual jobs</th>
+<th>Template says</th>
+<th>Key drift</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ace-linux-1</td>
+<td>full</td>
+<td>6 jobs</td>
+<td>5 jobs</td>
+<td><code>ai-tools-status</code> missing from template; 3 wrong script paths</td>
+</tr>
+<tr>
+<td>ace-linux-2</td>
+<td>contribute</td>
+<td>4 jobs</td>
+<td>1 job (repo-sync)</td>
+<td>repo-sync itself ABSENT; 4 extra jobs matching ace-linux-1</td>
+</tr>
+<tr>
+<td>acma-ansys05</td>
+<td>contribute-minimal</td>
+<td>unknown</td>
+<td>Windows Task Sched</td>
+<td>needs on-machine audit</td>
+</tr>
+<tr>
+<td>acma-ws014</td>
+<td>contribute-minimal</td>
+<td>unknown</td>
+<td>Windows Task Sched</td>
+<td>needs on-machine audit</td>
+</tr>
+<tr>
+<td>gali-linux-compute-1</td>
+<td>full</td>
+<td>not provisioned</td>
+<td>—</td>
+<td>deferred</td>
+</tr>
+</tbody>
+</table>
+<h3>What "Claude Code schedule tasks" means here</h3>
+<p>The existing <code>claude --dangerously-skip-permissions --skill &lt;skill-name&gt;</code> invocations
+in cron ARE Claude Code scheduled tasks. The deliverable is a canonical
+<code>config/scheduled-tasks/schedule-tasks.yaml</code> that declares every task (schedule,
+machine, command, purpose) and becomes the single source of truth that <code>setup-cron.sh</code>
+reads, replacing its hardcoded ENTRIES arrays.</p>
+<h3>Phase 1 — Create <code>schedule-tasks.yaml</code> source of truth</h3>
+<ul>
+<li><strong>File</strong>: <code>config/scheduled-tasks/schedule-tasks.yaml</code> (new directory)</li>
+<li><strong>Schema</strong>: one entry per task — <code>id</code>, <code>label</code>, <code>schedule</code>, <code>machines[]</code>, <code>command</code>,
+  <code>log</code>, <code>is_claude_task</code>, <code>description</code></li>
+<li>Include all 6 known jobs from ace-linux-1; mark ace-linux-2 scope; flag Windows stubs</li>
+<li>Run: manual file creation</li>
+</ul>
+<h3>Phase 2 — Fix <code>setup-cron.sh</code> to read from YAML</h3>
+<ul>
+<li><strong>File</strong>: <code>scripts/cron/setup-cron.sh</code> (edit)</li>
+<li>Replace hardcoded <code>ENTRIES=()</code> arrays with <code>uv run --no-project python</code> reader of
+  <code>schedule-tasks.yaml</code> filtered by <code>machines</code> + current hostname</li>
+<li>Keep <code>--dry-run</code> flag</li>
+<li>Test: <code>bash scripts/cron/setup-cron.sh --dry-run</code> on ace-linux-1</li>
+</ul>
+<h3>Phase 3 — Fix script path drift in actual crontabs</h3>
+<ul>
+<li>ace-linux-1: update 3 wrong-path entries in live crontab to match
+  <code>schedule-tasks.yaml</code> canonical paths</li>
+<li>ace-linux-2: add missing repo-sync; remove jobs that should only be on ace-linux-1
+  (or promote ace-linux-2 to <code>full</code> role and document rationale)</li>
+<li>Create wrapper <code>scripts/cron/skills-curation.sh</code> (tiny <code>exec claude ...</code> wrapper)</li>
+</ul>
+<h3>Phase 4 — Document Windows tasks + tests</h3>
+<ul>
+<li>Append Windows Task Scheduler YAML stubs to <code>schedule-tasks.yaml</code></li>
+<li>Write <code>scripts/cron/validate-schedule.py</code> — parses <code>schedule-tasks.yaml</code> and
+  validates cron expressions + required fields (unit test)</li>
+<li>Tests: 1 test per task entry; 1 dry-run smoke test on ace-linux-1</li>
+</ul>
+<h3>Acceptance criteria mapping</h3>
+<ul>
+<li>[ ] Inventory: <code>resource-intelligence.yaml</code> + <code>schedule-tasks.yaml</code></li>
+<li>[ ] Gap analysis: complete (see resource-intelligence.yaml)</li>
+<li>[ ] Claude Code task definitions: <code>schedule-tasks.yaml</code> with <code>is_claude_task: true</code> entries</li>
+<li>[ ] Non-migratable jobs documented: Windows entries with <code>scheduler: windows-task-scheduler</code></li>
+<li>[ ] Version-controlled: <code>schedule-tasks.yaml</code> committed to workspace-hub</li>
+<li>[ ] Tests: <code>validate-schedule.py</code> + <code>setup-cron.sh --dry-run</code> smoke test</li>
+</ul>
+<h3>Files</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>config/scheduled-tasks/schedule-tasks.yaml</code></td>
+<td>new — canonical source of truth</td>
+</tr>
+<tr>
+<td><code>scripts/cron/setup-cron.sh</code></td>
+<td>edit — read YAML instead of hardcoded arrays</td>
+</tr>
+<tr>
+<td><code>scripts/cron/skills-curation.sh</code></td>
+<td>new — thin wrapper for claude skill invocation</td>
+</tr>
+<tr>
+<td><code>scripts/cron/validate-schedule.py</code></td>
+<td>new — parse + validate schedule-tasks.yaml</td>
+</tr>
+<tr>
+<td><code>scripts/cron/crontab-template.sh</code></td>
+<td>edit — add header pointing to schedule-tasks.yaml</td>
+</tr>
+</tbody>
+</table>
+<h3>Verify</h3>
+<div class="codehilite"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>--no-project<span class="w"> </span>python<span class="w"> </span>scripts/cron/validate-schedule.py
+bash<span class="w"> </span>scripts/cron/setup-cron.sh<span class="w"> </span>--dry-run
+</code></pre></div>
+
+<hr />
+<p><em>Source: "add scheduled jobs on all workstations - review expected cron jobs on all machines - convert them into claude code schedule tasks"</em></p>
+<h2>Plan Quality Eval Comparison</h2><p>Not applicable.</p><h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p>
+  </div>
+
+  <div class="card">
+    <h2>Gate-Pass Stage Status</h2><p><span class="badge badge-fail">FAIL</span> <strong>Missing stage-evidence.yaml</strong> — stage-evidence.yaml missing</p>
+  </div>
+
+  <div class="card">
+    <h2>Test Summary</h2>
+<table>
+  <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Example Pack</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1021/example-pack.md</code></td></tr>
+    <tr><td>Variation Tests</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1021/variation-test-results.md</code></td></tr>
+    <tr><td>Integrated Repo Tests</td><td><span class="badge badge-warn">0 tests — outside 3-5</span> <span class="badge badge-info">not all pass</span></td>
+        <td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1021/execute-evidence.yaml</code></td></tr>
+  </tbody>
+</table>
+<p><strong>Variation summary:</strong> No variation-test summary available.</p>
+    <h2>Cross-Review Summary</h2><p>Not applicable.</p>
+  </div>
+
+</main>
+
+<script>
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+/* Collapsible cards with summary preview */
+document.querySelectorAll('.card h2').forEach(h2=>{
+  h2.style.cursor='pointer';
+  h2.title='Click to collapse/expand';
+  function buildSummary(sibs){
+    const badges=[];
+    sibs.forEach(s=>s.querySelectorAll('.badge').forEach(b=>badges.push(b.outerHTML)));
+    const bHtml=badges.slice(0,4).join(' ');
+    let text='';
+    for(const s of sibs){
+      if(s.tagName==='UL'||s.tagName==='OL'){
+        const n=s.querySelectorAll('li').length;
+        text=n+' item'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='TABLE'){
+        const n=s.querySelectorAll('tbody tr').length;
+        text=n+' row'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='P'&&s.textContent.trim()){
+        text=s.textContent.trim().slice(0,80)+(s.textContent.length>80?'\u2026':'');break;
+      }
+    }
+    const parts=[bHtml,text].filter(Boolean).join(' &nbsp;&middot;&nbsp; ');
+    return parts||'&nbsp;';
+  }
+  const sibs=[];let el=h2.nextElementSibling;
+  while(el){sibs.push(el);el=el.nextElementSibling;}
+  const chip=document.createElement('span');
+  chip.style.cssText='display:inline-block;margin-left:12px;font-size:.8rem;font-weight:400;'+
+    'color:#55636b;vertical-align:middle;pointer-events:none;';
+  chip.className='section-summary-chip';
+  chip.innerHTML=buildSummary(sibs);h2.appendChild(chip);
+  const arrow=document.createElement('span');
+  arrow.style.cssText='float:right;font-size:.8rem;color:#0f766e;user-select:none;margin-top:2px;';
+  arrow.textContent='▾';h2.appendChild(arrow);
+  h2.addEventListener('click',()=>{
+    const col=h2.dataset.collapsed==='true';
+    sibs.forEach(s=>s.style.display=col?'':'none');
+    h2.dataset.collapsed=col?'false':'true';
+    h2.style.borderBottomColor=col?'':'transparent';
+    chip.style.opacity=col?'0.75':'1';
+    arrow.textContent=col?'▾':'▸';
+  });
+});
+
+/* Sticky auto-TOC */
+(function(){
+  const hs=[...document.querySelectorAll('.content .card h2')];
+  if(hs.length<4)return;
+  const nav=document.createElement('nav');
+  nav.id='toc';
+  nav.style.cssText='position:sticky;top:0;z-index:100;background:rgba(255,253,248,.95);'+
+    'border-bottom:1px solid #d9d0c0;padding:8px 24px;font-size:.82rem;'+
+    'display:flex;flex-wrap:wrap;gap:6px 18px;';
+  hs.forEach((h,i)=>{
+    if(!h.id)h.id='sec-'+i;
+    const a=document.createElement('a');
+    a.href='#'+h.id;a.textContent=h.textContent.replace('▾','').replace('▸','').trim();
+    a.style.cssText='color:#0f766e;text-decoration:none;white-space:nowrap;';
+    a.onmouseenter=()=>a.style.textDecoration='underline';
+    a.onmouseleave=()=>a.style.textDecoration='none';
+    nav.appendChild(a);
+  });
+  document.body.insertBefore(nav,document.querySelector('.content'));
+})();
+
+/* Back-to-top */
+const btn=document.createElement('button');
+btn.textContent='↑ Top';
+btn.style.cssText='position:fixed;bottom:28px;right:28px;padding:8px 14px;'+
+  'background:#0f766e;color:#fff;border:none;border-radius:8px;cursor:pointer;'+
+  'font-size:.85rem;opacity:0;transition:opacity .2s;z-index:200;';
+document.body.appendChild(btn);
+window.addEventListener('scroll',()=>btn.style.opacity=scrollY>300?'1':'0');
+btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>

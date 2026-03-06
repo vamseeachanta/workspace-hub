@@ -1,0 +1,140 @@
+---
+wrk_id: WRK-1021
+stage: resource-intelligence
+created_at: 2026-03-05
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - workstations
+    - work-queue
+    - comprehensive-learning
+
+# ── Actual cron jobs per machine ────────────────────────────────────────────
+
+machines:
+  ace-linux-1:
+    variant: full
+    actual_jobs:
+      - schedule: "0 2 * * *"
+        command: bash scripts/cron/comprehensive-learning-nightly.sh
+        label: comprehensive-learning
+        matches_template: true
+      - schedule: "0 3 * * *"
+        command: bash scripts/analysis/session-analysis.sh
+        label: session-analysis
+        matches_template: false
+        template_expects: scripts/cron/session-analysis-nightly.sh
+        note: path differs; template script does not exist
+      - schedule: "30 3 * * 0"
+        command: bash scripts/maintenance/update-model-ids.sh --hub-only
+        label: model-ids
+        matches_template: false
+        template_expects: scripts/cron/update-model-ids.sh
+        note: path differs; template script does not exist
+      - schedule: "0 4 * * 1"
+        command: "claude --dangerously-skip-permissions --skill skills-curation"
+        label: skills-curation
+        matches_template: false
+        template_expects: scripts/cron/skills-curation.sh
+        note: direct claude invocation; wrapper script does not exist
+      - schedule: "0 */4 * * *"
+        command: bash scripts/cron-repository-sync.sh
+        label: repository-sync
+        matches_template: false
+        template_expects: scripts/repository-sync-auto
+        note: different script; both exist but different behaviour
+      - schedule: "0 * * * *"
+        command: bash scripts/maintenance/ai-tools-status.sh --quiet
+        label: ai-tools-status
+        matches_template: false
+        note: not in crontab-template.sh at all
+
+  ace-linux-2:
+    variant: contribute
+    actual_jobs:
+      - schedule: "0 3 * * *"
+        command: bash /mnt/workspace-hub/scripts/analysis/session-analysis.sh
+        label: session-analysis
+        expected_by_template: false
+        note: template only defines repo-sync for contribute variant
+      - schedule: "30 3 * * 0"
+        command: bash /mnt/workspace-hub/scripts/maintenance/update-model-ids.sh --hub-only
+        label: model-ids
+        expected_by_template: false
+      - schedule: "0 4 * * 1"
+        command: "claude --dangerously-skip-permissions --skill skills-curation"
+        label: skills-curation
+        expected_by_template: false
+      - schedule: "30 * * * *"
+        command: bash /mnt/workspace-hub/scripts/maintenance/ai-tools-status.sh --quiet
+        label: ai-tools-status
+        expected_by_template: false
+      # NOTE: repo-sync (0 */4 * * *) is MISSING from ace-linux-2 actual crontab
+      # despite being the only expected job for 'contribute' variant
+
+  acma-ansys05:
+    variant: contribute-minimal
+    actual_jobs: unknown  # cannot SSH; Windows Task Scheduler not inspectable remotely
+    note: requires manual audit on the machine
+
+  acma-ws014:
+    variant: contribute-minimal
+    actual_jobs: unknown  # cannot SSH; Windows Task Scheduler not inspectable remotely
+    note: requires manual audit on the machine
+
+  gali-linux-compute-1:
+    variant: full
+    actual_jobs: unknown  # not yet provisioned
+
+# ── Gap analysis ────────────────────────────────────────────────────────────
+
+gaps:
+  template_path_drift:
+    - scripts/cron/session-analysis-nightly.sh  # referenced in template, doesn't exist
+    - scripts/cron/update-model-ids.sh          # referenced in template, doesn't exist
+    - scripts/cron/skills-curation.sh           # referenced in template, doesn't exist
+
+  ace_linux_1_extra_jobs_not_in_template:
+    - ai-tools-status (hourly)
+
+  ace_linux_2_missing_from_actual:
+    - repository-sync (0 */4 * * *) -- the ONE job the template expects is absent
+
+  ace_linux_2_has_jobs_beyond_contribute_role:
+    - session-analysis, model-ids, skills-curation, ai-tools-status
+    - These match ace-linux-1's job set minus comprehensive-learning
+
+  crontab_template_outdated:
+    - setup-cron.sh uses hardcoded ENTRIES arrays
+    - crontab-template.sh CRON: comments are not parsed by setup-cron.sh
+    - No single YAML source of truth exists
+
+# ── Scripts inventory ────────────────────────────────────────────────────────
+
+existing_scripts:
+  scripts_cron:
+    - comprehensive-learning-nightly.sh   # exists, used
+    - crontab-template.sh                 # canonical reference (outdated)
+    - setup-cron.sh                       # installer (hardcoded, outdated)
+  scripts_analysis:
+    - session-analysis.sh                 # exists, used
+  scripts_maintenance:
+    - update-model-ids.sh                 # exists, used
+    - ai-tools-status.sh                  # exists, used
+  scripts_root:
+    - cron-repository-sync.sh             # exists (different from repository-sync-auto)
+    - repository-sync-auto                # exists, referenced in template
+  missing:
+    - scripts/cron/session-analysis-nightly.sh
+    - scripts/cron/update-model-ids.sh
+    - scripts/cron/skills-curation.sh
+
+# ── Claude Code task pattern ────────────────────────────────────────────────
+
+claude_code_tasks_observed:
+  - "claude --dangerously-skip-permissions --skill skills-curation"
+  # This IS the Claude Code scheduled task invocation pattern.
+  # "Claude Code schedule tasks" in this context = tasks that invoke claude CLI
+  # directly, running a skill under scheduled (cron) execution.
+  # No native claude CLI --schedule flag was found; cron remains the scheduler.
+  # The output deliverable is a YAML task registry that drives setup-cron.sh.

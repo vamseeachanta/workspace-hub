@@ -1,6 +1,6 @@
 wrk_id: WRK-1017
 stage: plan_draft
-reviewed_at: "2026-03-06T01:06:26Z"
+reviewed_at: "2026-03-06T03:37:11Z"
 reviewed_by: user
 interactive_session: true
 tough_questions_asked:
@@ -40,7 +40,7 @@ user_test_eval_changes:
   removed: []
   modified:
     - "Overall plan-quality scale simplified to strong|adequate|weak"
-gatepass_section_reviewed_with_user: false
-gatepass_summary_at_review: "Not yet reviewed in the refreshed draft artifact."
-approval_decision: revise_and_rerun
-notes: "Plan decisions captured. Revise WRK-1017 plan text, regenerate draft HTML, review Gate-Pass Stage Status with user, and log publish evidence before Stage 5 can close."
+gatepass_section_reviewed_with_user: true
+gatepass_summary_at_review: "3 pass · 0 fail · 16 pending/warn · 1 n/a"
+approval_decision: approve_as_is
+notes: "User approved the revised draft plan for WRK-1017. Stage 5 content review is complete locally; origin-publish evidence is still required before Stage 6 can open."

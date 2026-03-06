@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-05T20:06:53Z by generate-index.py -->
+<!-- Generated: 2026-03-06T03:35:47Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-05T20:06:53Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-06T03:35:47Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 447
+**Total items:** 448
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 203 |
+| pending | 204 |
 | working | 5 |
 | blocked | 9 |
 | archived | 230 |
@@ -23,7 +23,7 @@
 | Priority | Count |
 |----------|-------|
 | high | 210 |
-| medium | 195 |
+| medium | 196 |
 | low | 41 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 74 |
-| medium | 213 |
+| medium | 214 |
 | complex | 93 |
 
 ### By Category
@@ -43,7 +43,7 @@
 | harness | 41 |
 | engineering | 117 |
 | data | 26 |
-| platform | 12 |
+| platform | 13 |
 | business | 7 |
 | maintenance | 6 |
 | personal | 4 |
@@ -69,7 +69,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 140 |
+| workspace-hub | 141 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,9 +77,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 167 / 447 |
+| Plans exist | 169 / 448 |
 | Plans cross-reviewed | 65 |
-| Plans approved | 84 |
+| Plans approved | 85 |
 | Brochure pending | 7 |
 | Brochure updated/synced | 8 |
 
@@ -89,9 +89,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 447 |
+| Total captured | 448 |
 | Total archived | 230 |
-| Completion rate | 230/447 (51%) |
+| Completion rate | 230/448 (51%) |
 | Monthly rate (current month) | 5 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -99,9 +99,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 57 / 203 | 28% |
-| Plans cross-reviewed | 10 | 15% |
-| Plans user-approved | 10 | 15% |
+| Pending items with plans | 58 / 204 | 28% |
+| Plans cross-reviewed | 10 | 14% |
+| Plans user-approved | 11 | 16% |
 
 ### Aging
 
@@ -117,7 +117,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 98 | 2 | 7 |
-| Medium   | 77  | 3  | 1  |
+| Medium   | 78  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## By Category
@@ -404,7 +404,7 @@
 |----|----------|-------|--------|
 | WRK-069 | HIGH | Acquire USCG MISLE bulk dataset | blocked |
 
-### platform (12 items — 4 high, 3 medium, 5 low)
+### platform (13 items — 4 high, 4 medium, 5 low)
 
 #### platform / ai-tools
 
@@ -414,6 +414,7 @@
 | WRK-050 | MEDIUM | Hardware consolidation — inventory, assess, repurpose devices + dev environment readiness | pending |
 | WRK-227 | MEDIUM | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | pending |
 | WRK-389 | MEDIUM | fix(ace-linux-2): switch Claude install from sudo-npm to native installer | pending |
+| WRK-1021 | MEDIUM | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending |
 
 #### platform / uncategorised
 
@@ -953,16 +954,17 @@
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ░░░ 30% | n/a | - |
 | WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 85% | n/a | - |
+| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 85% | n/a | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 20% | n/a | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1019 |
+| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1173,6 +1175,7 @@
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | medium | simple | workspace-hub | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | high | complex | workspace-hub | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | medium | medium | workspace-hub | - |
+| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | medium | medium | workspace-hub | - |
 
 ### Working
 
@@ -1921,6 +1924,7 @@
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | - |
+| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | - |
 
 ### worldenergydata
 
@@ -2432,6 +2436,7 @@
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | workspace-hub | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | simple | workspace-hub | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | workspace-hub | - |
+| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -2777,6 +2782,7 @@
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | workspace-hub | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | workspace-hub | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | workspace-hub | - |
+| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -2878,7 +2884,7 @@
 
 ## By Computer
 
-### ace-linux-1 (153 active / 170 total)
+### ace-linux-1 (154 active / 171 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3052,6 +3058,7 @@
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | workspace-hub |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | workspace-hub |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | workspace-hub |
+| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 
