@@ -38,19 +38,19 @@ stages:
     evidence: .claude/work-queue/assets/WRK-1017/plan-draft-review.html
   - order: 5
     stage: User Review - Plan (Draft)
-    status: done
+    status: in_progress
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: Restored explicit draft is approved and published to origin with refreshed Stage 5 evidence.
+    comment: Post-cross-review revision now includes entry-point audit, explicit evidence definitions, and migration/test-matrix updates; another user review and approval cycle is required.
     evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
     status: pending
     human_decision_required: "no"
     owner: agents
-    blocker: "no"
-    comment: Latest Stage 6 rerun still requested changes; rerun against the restored explicit draft published at a70047e1 is now ready.
+    blocker: "yes"
+    comment: Stage 6 rerun at 20260306T133625Z returned REQUEST_CHANGES from claude and codex; another rerun is required after the revised draft is approved and published.
     evidence: scripts/review/results/wrk-1017-review.md
   - order: 7
     stage: User Review - Plan (Final)

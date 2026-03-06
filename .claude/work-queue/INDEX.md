@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-06T10:55:43Z by generate-index.py -->
+<!-- Generated: 2026-03-06T13:36:12Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-06T10:55:43Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-06T13:36:12Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 449
+**Total items:** 451
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 205 |
+| pending | 207 |
 | working | 5 |
 | blocked | 9 |
 | archived | 230 |
@@ -23,14 +23,14 @@
 | Priority | Count |
 |----------|-------|
 | high | 210 |
-| medium | 197 |
+| medium | 199 |
 | low | 41 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 75 |
+| simple | 77 |
 | medium | 214 |
 | complex | 93 |
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 42 |
+| harness | 44 |
 | engineering | 117 |
 | data | 26 |
 | platform | 13 |
@@ -69,7 +69,7 @@
 | frontierdeepwater | 10 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 142 |
+| workspace-hub | 144 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,7 +77,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 170 / 449 |
+| Plans exist | 170 / 451 |
 | Plans cross-reviewed | 65 |
 | Plans approved | 86 |
 | Brochure pending | 7 |
@@ -89,9 +89,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 449 |
+| Total captured | 451 |
 | Total archived | 230 |
-| Completion rate | 230/449 (51%) |
+| Completion rate | 230/451 (51%) |
 | Monthly rate (current month) | 5 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -99,7 +99,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 59 / 205 | 29% |
+| Pending items with plans | 59 / 207 | 29% |
 | Plans cross-reviewed | 10 | 14% |
 | Plans user-approved | 12 | 17% |
 
@@ -117,20 +117,32 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 98 | 2 | 7 |
-| Medium   | 79  | 3  | 1  |
+| Medium   | 81  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (42 items — 14 high, 23 medium, 5 low)
+### harness (44 items — 14 high, 25 medium, 5 low)
 
 #### harness / agent-ux
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1022 | MEDIUM | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending |
+
+#### harness / ai-config
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1024 | MEDIUM | chore(harness): increase context window limits for Claude and Codex | pending |
+
+#### harness / daily-report
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1023 | MEDIUM | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending |
 
 #### harness / hooks
 
@@ -970,8 +982,10 @@
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1019 |
-| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - 15% | n/a | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1184,6 +1198,8 @@
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | medium | medium | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | medium | medium | workspace-hub | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
+| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | medium | simple | workspace-hub | - |
+| WRK-1024 | chore(harness): increase context window limits for Claude and Codex | medium | simple | workspace-hub | - |
 
 ### Working
 
@@ -1934,6 +1950,8 @@
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | - |
+| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | - |
+| WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | - |
 
 ### worldenergydata
 
@@ -2447,6 +2465,8 @@
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | simple | workspace-hub | - |
+| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | simple | workspace-hub | - |
+| WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | simple | workspace-hub | - |
 
 ### Low
 
@@ -2575,6 +2595,8 @@
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | workspace-hub | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | workspace-hub | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | workspace-hub | - |
+| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | workspace-hub | - |
+| WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2895,7 +2917,7 @@
 
 ## By Computer
 
-### ace-linux-1 (155 active / 172 total)
+### ace-linux-1 (157 active / 174 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3071,6 +3093,8 @@
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | workspace-hub |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | workspace-hub |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | workspace-hub |
+| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | workspace-hub |
+| WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 

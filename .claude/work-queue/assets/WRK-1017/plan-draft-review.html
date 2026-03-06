@@ -145,14 +145,19 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <h2>Acceptance Criteria</h2>
 <ul>
 <li>[ ] Root cause is documented as diagnosis plus remediation, including the difference between unclear Stage 5 wording and tool-call momentum that skips the stop point.</li>
+<li>[ ] Stage 5→6 entry-point audit is documented before implementation. Minimum audit targets: <code>scripts/agents/plan.sh</code>, <code>scripts/review/cross-review.sh</code>, <code>scripts/work-queue/verify-gate-evidence.py</code>, <code>scripts/work-queue/claim-item.sh</code>, and the limitation of direct manual frontmatter edits is explicitly noted.</li>
 <li>[ ] Core fix implemented in the executable Stage 5→6 path, not only in policy text. Minimum target: <code>scripts/agents/plan.sh</code>; shared helper changes in <code>scripts/agents/lib/workflow-guards.sh</code> are allowed if needed.</li>
 <li>[ ] Fix applied to the three workflow contract files: <code>work-queue-workflow/SKILL.md</code>, <code>workflow-gatepass/SKILL.md</code>, and <code>work-queue/SKILL.md</code>, and those files stay aligned with the executable gate behavior.</li>
 <li>[ ] Stage 6 is blocked when required Stage 5 evidence is missing. Runtime enforcement may key off <code>user-review-plan-draft.yaml</code> first, but the workflow contract for this WRK preserves both <code>user-review-common-draft.yaml</code> and <code>user-review-plan-draft.yaml</code>.</li>
+<li>[ ] <code>browser-open evidence</code> and <code>origin-publish evidence</code> are defined explicitly with file paths, producer scripts, and required fields rather than being named only in prose.</li>
 <li>[ ] TDD order is explicit: write failing Stage 5 gate tests first, then implement the gate, then rerun tests.</li>
 <li>[ ] Behavioral verification includes both negative and positive coverage:</li>
 <li>negative: Stage 6 remains blocked without required Stage 5 evidence</li>
 <li>positive: Stage 6 becomes eligible only after required Stage 5 evidence is present</li>
 <li>[ ] The Stage 5 decision table for <code>approve | revise | reject | no-response</code> is explicitly documented and machine-checkable for the implemented gate path.</li>
+<li>[ ] Test coverage includes every decision-table branch plus malformed YAML, WRK-id mismatch, stale evidence, and partial-evidence states.</li>
+<li>[ ] Template existence and compatibility are verified for <code>specs/templates/user-review-plan-draft-template.yaml</code> and <code>specs/templates/user-review-publish-template.yaml</code>.</li>
+<li>[ ] A migration/backfill policy is documented for in-flight WRKs that predate the new Stage 5 evidence requirements.</li>
 <li>[ ] Full Stage 5 target-flow design from <code>## Locked Decisions</code> remains in scope for this WRK, with only terminal-tab ergonomics allowed to move to optional follow-up if needed.</li>
 </ul>
 <h2>Plan</h2>
@@ -163,8 +168,15 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
   <code>.claude/skills/coordination/workspace/work-queue/SKILL.md</code>,
   <code>scripts/agents/plan.sh</code>,
   <code>scripts/agents/lib/workflow-guards.sh</code>,
+  <code>scripts/review/cross-review.sh</code>,
+  <code>scripts/work-queue/verify-gate-evidence.py</code>,
+  <code>scripts/work-queue/log-user-review-browser-open.sh</code>,
+  <code>scripts/work-queue/log-user-review-publish.sh</code>,
+  <code>scripts/work-queue/claim-item.sh</code>,
   <code>scripts/agents/tests/test-plan-gate.sh</code>,
-  <code>tests/unit/test_verify_gate_evidence.py</code></li>
+  <code>tests/unit/test_verify_gate_evidence.py</code>,
+  <code>specs/templates/user-review-plan-draft-template.yaml</code>,
+  <code>specs/templates/user-review-publish-template.yaml</code></li>
 <li><strong>Stage 5 design artifacts created during this WRK</strong>:</li>
 <li><code>.claude/work-queue/assets/WRK-1017/common-plan-draft.md</code></li>
 <li><code>.claude/work-queue/assets/WRK-1017/claude-plan.md</code></li>
@@ -174,7 +186,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-common-draft.yaml</code></li>
 <li><strong>Bootstrap note for this WRK</strong>:</li>
 <li><code>WRK-1017</code> itself completed Stage 5 under the pre-fix workflow contract.</li>
-<li>Earlier draft approvals were recorded explicitly, and the current restored explicit draft is now approved locally.</li>
+<li>Earlier draft approvals and publishes were recorded explicitly, but this new post-cross-review revision reopens Stage 5 and resets <code>plan_approved</code> to <code>false</code> until the revised draft is approved again.</li>
 <li><code>plan_reviewed</code> remains the Stage 6 cross-review state and should stay <code>false</code> until plan cross-review clears; this matches the current Route B contract.</li>
 <li>The bootstrap evidence for this WRK is captured in:<ul>
 <li><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-common-draft.yaml</code></li>
@@ -182,7 +194,15 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 </ul>
 </li>
 <li><strong>Execution sequence inside this WRK</strong>:</li>
-<li>diagnosis first: isolate the exact runtime component that currently allows Stage 6 to start without Stage 5 evidence</li>
+<li>diagnosis first: perform a Stage 5→6 entry-point audit and isolate the exact runtime components that currently allow Stage 6 to start without Stage 5 evidence</li>
+<li>audit the following paths explicitly:<ul>
+<li><code>scripts/agents/plan.sh</code></li>
+<li><code>scripts/review/cross-review.sh</code></li>
+<li><code>scripts/work-queue/verify-gate-evidence.py</code></li>
+<li><code>scripts/work-queue/claim-item.sh</code></li>
+<li>manual frontmatter edits as an out-of-band limitation that the runtime gate cannot prevent directly</li>
+</ul>
+</li>
 <li>test first: add failing gate tests for the Stage 5→6 transition in:<ul>
 <li><code>scripts/agents/tests/test-plan-gate.sh</code></li>
 <li><code>tests/unit/test_verify_gate_evidence.py</code></li>
@@ -251,9 +271,9 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 </li>
 <li>Required Stage 5 evidence:<ul>
 <li><code>user-review-common-draft.yaml</code></li>
-<li><code>user-review-plan-draft.yaml</code></li>
-<li>browser-open evidence</li>
-<li>origin-publish evidence</li>
+<li><code>user-review-plan-draft.yaml</code> using <code>specs/templates/user-review-plan-draft-template.yaml</code></li>
+<li>browser-open evidence at <code>assets/WRK-&lt;id&gt;/evidence/user-review-browser-open.yaml</code>, produced by <code>scripts/work-queue/log-user-review-browser-open.sh</code></li>
+<li>origin-publish evidence at <code>assets/WRK-&lt;id&gt;/evidence/user-review-publish.yaml</code>, produced by <code>scripts/work-queue/log-user-review-publish.sh</code> and aligned with <code>specs/templates/user-review-publish-template.yaml</code></li>
 <li>explicit user response captured in review YAML</li>
 </ul>
 </li>
@@ -286,18 +306,26 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>Preserve existing Stage 5 evidence requirements already in scope for the core fix:<ul>
 <li><code>user-review-common-draft.yaml</code></li>
 <li><code>user-review-plan-draft.yaml</code></li>
-<li>browser-open evidence</li>
-<li>origin-publish evidence</li>
+<li><code>user-review-browser-open.yaml</code></li>
+<li><code>user-review-publish.yaml</code></li>
 <li>explicit user response captured in the review YAML</li>
 </ul>
 </li>
 <li>Preserve the explicit Stage 5 review sequence above in the inline Route B plan so the review HTML does not rely on implied behavior.</li>
 <li>Add explicit wording that <code>plan_reviewed: true</code> is not a Stage 5 action for Route B.</li>
 <li>Clarify that <code>plan_approved</code> and <code>plan_reviewed</code> are independent: user approval closes Stage 5 draft review; cross-review verdicts set <code>plan_reviewed</code>.</li>
-<li>Make the Stage 5 decision table explicit in the workflow contract text and in the runtime gate behavior.</li>
-<li>Use <code>specs/templates/user-review-plan-draft-template.yaml</code> as the evidence schema source rather than defining a new YAML format in prose.</li>
+<li>Make the Stage 5 decision table explicit in the workflow contract text and in the runtime gate behavior, including field-level predicates for <code>approval_decision</code>.</li>
+<li>Define the minimum runtime predicate set explicitly:<ul>
+<li><code>approve_as_is</code>: eligible to proceed only when required evidence files are present and valid</li>
+<li><code>revise_and_rerun</code>: remain blocked at Stage 5</li>
+<li><code>reject</code>: remain blocked at Stage 5</li>
+<li><code>no-response</code>: missing artifact, blank <code>approval_decision</code>, or missing required review metadata keeps the WRK blocked</li>
+</ul>
+</li>
+<li>Use <code>specs/templates/user-review-plan-draft-template.yaml</code> as the decision artifact schema source and <code>specs/templates/user-review-publish-template.yaml</code> as the publish evidence schema source rather than defining new YAML formats in prose.</li>
 <li>Preserve the Stage 5 workflow design from <code>## Locked Decisions</code> in the three workflow contract files rather than treating it as disposable planning residue.</li>
 <li>Keep degraded-mode fallback policy in scope because it is part of making the preserved 3-provider workflow operable.</li>
+<li>Document an in-flight WRK migration/backfill rule so items already in Stage 5 or later are not silently trapped by the new gate.</li>
 <li><strong>Combine decisions adopted</strong>:</li>
 <li>use <code>claude</code> as the primary structural source</li>
 <li>keep <code>codex</code> refinements on stage transitions, <code>plan_reviewed</code> separation, and verification discipline</li>
@@ -330,6 +358,10 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li><strong>Verify</strong>:</li>
 <li><code>uv run --no-project pytest -q tests/unit/test_verify_gate_evidence.py</code></li>
 <li><code>bash scripts/agents/tests/test-plan-gate.sh</code></li>
+<li><code>test -f specs/templates/user-review-plan-draft-template.yaml</code></li>
+<li><code>test -f specs/templates/user-review-publish-template.yaml</code></li>
+<li><code>rg -n "user-review-browser-open.yaml|user-review-publish.yaml" scripts/work-queue/verify-gate-evidence.py scripts/work-queue/log-user-review-browser-open.sh scripts/work-queue/log-user-review-publish.sh</code></li>
+<li><code>rg -n "cross-review.sh|verify-gate-evidence.py|claim-item.sh|plan.sh" scripts/agents scripts/review scripts/work-queue</code></li>
 <li><code>rg -n "HARD GATE|BLOCKING|user-review-plan-draft.yaml|silence is not approval|plan_reviewed|plan_approved" .claude/skills/workspace-hub/work-queue-workflow/SKILL.md .claude/skills/workspace-hub/workflow-gatepass/SKILL.md .claude/skills/coordination/workspace/work-queue/SKILL.md scripts/agents/plan.sh</code></li>
 <li><code>uv run --no-project python scripts/work-queue/generate-html-review.py WRK-1017 --type plan-draft</code></li>
 <li><strong>Deferred follow-up notes</strong>:</li>
@@ -400,15 +432,15 @@ in <code>assets/WRK-1017/evidence/plan-quality-eval.yaml</code>.</p>
 
   <div class="card">
     <h2>Gate-Pass Stage Status</h2>
-<p><strong>Summary:</strong> 4 pass · 0 fail · 15 pending/warn · 1 n/a &nbsp; <span class="badge badge-info">Autonomy: L2</span></p>
+<p><strong>Summary:</strong> 3 pass · 0 fail · 16 pending/warn · 1 n/a &nbsp; <span class="badge badge-info">Autonomy: L2</span></p>
 <table>
   <thead><tr><th>Order</th><th>Stage</th><th>Stage Status</th><th>Gate-Pass</th><th>Human Decision</th><th>Owner</th><th>Blocker?</th><th>Comment</th><th>Evidence</th></tr></thead>
   <tbody><tr><td>1</td><td>Capture</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>orchestrator</td><td>no</td><td>WRK created in pending queue with baseline metadata.</td><td><code>.claude/work-queue/pending/WRK-1017.md</code></td></tr>
 <tr><td>2</td><td>Resource Intelligence</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Resource intelligence artifact pack not yet created for this WRK.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/resource-intelligence.yaml</code></td></tr>
 <tr><td>3</td><td>Triage</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>orchestrator</td><td>no</td><td>Route, priority, complexity, and workstations are set in frontmatter.</td><td><code>.claude/work-queue/pending/WRK-1017.md</code></td></tr>
 <tr><td>4</td><td>Plan Draft</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Draft plan exists and draft HTML has been generated.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-draft-review.html</code></td></tr>
-<tr><td>5</td><td>User Review - Plan (Draft)</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>user + orchestrator</td><td>no</td><td>Restored explicit draft is approved and published to origin with refreshed Stage 5 evidence.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml</code></td></tr>
-<tr><td>6</td><td>Cross-Review</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>no</td><td>Latest Stage 6 rerun still requested changes; rerun against the restored explicit draft published at a70047e1 is now ready.</td><td><code>scripts/review/results/wrk-1017-review.md</code></td></tr>
+<tr><td>5</td><td>User Review - Plan (Draft)</td><td><span class="badge badge-info">IN_PROGRESS</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>no</td><td>Post-cross-review revision now includes entry-point audit, explicit evidence definitions, and migration/test-matrix updates; another user review and approval cycle is required.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml</code></td></tr>
+<tr><td>6</td><td>Cross-Review</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Stage 6 rerun at 20260306T133625Z returned REQUEST_CHANGES from claude and codex; another rerun is required after the revised draft is approved and published.</td><td><code>scripts/review/results/wrk-1017-review.md</code></td></tr>
 <tr><td>7</td><td>User Review - Plan (Final)</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>yes</td><td>Awaits cross-review and final-plan artifact generation.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-final-review.html</code></td></tr>
 <tr><td>8</td><td>Claim / Activation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Cannot claim before plan gates pass.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/claim.yaml</code></td></tr>
 <tr><td>9</td><td>Work-Queue Routing Skill</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Awaiting claim/activation.</td><td><code>/work</code></td></tr>
