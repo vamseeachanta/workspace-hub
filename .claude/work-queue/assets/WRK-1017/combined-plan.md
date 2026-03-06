@@ -21,6 +21,22 @@ planning passes produced from `common-plan-draft.md`.
   - new YAML status fields such as `approved: true` or `revised: true`
   - a new `Dialogue Log` HTML section for this WRK
 
+## Locked Decisions
+
+- Preserve the full Stage 5 target flow:
+  - common draft
+  - user approval on common draft
+  - independent `claude` / `codex` / `gemini` human-in-loop passes
+  - combine + rate
+  - user approval on combined plan
+- Preserve `user-review-common-draft.yaml` and `user-review-plan-draft.yaml` as first-class Stage 5 evidence.
+- Preserve assistive terminal orchestration as allowed workflow behavior, while keeping the review conversation manual.
+- Preserve model-specific effort wording and mandatory per-pass session-log/evidence updates.
+- Preserve `Plan Quality Eval Comparison` as part of the intended review flow.
+- Preserve degraded-mode fallback policy as part of the operational 3-provider workflow.
+- Only terminal-tab orchestration ergonomics may be treated as optional follow-up.
+- These decisions must not be narrowed without explicit user approval.
+
 ## Plan Quality Eval Comparison
 
 | Plan | Overall | Completeness | Test-Eval Quality | Execution Clarity | Risk Coverage | Standards/Gate Alignment | Combine Decision |
