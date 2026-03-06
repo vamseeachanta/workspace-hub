@@ -38,19 +38,19 @@ stages:
     evidence: .claude/work-queue/assets/WRK-1017/plan-draft-review.html
   - order: 5
     stage: User Review - Plan (Draft)
-    status: in_progress
+    status: done
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: Latest local revision with autonomous Stage 6 and Stage 7 delta review was approved by the user on 2026-03-06T23:01:20Z. Stage 5 remains open until refreshed publish evidence is logged for this newly approved draft state.
+    comment: Latest local revision with autonomous Stage 6 and Stage 7 delta review was approved by the user on 2026-03-06T23:01:20Z and published to origin at 5e2679a0 on 2026-03-06T23:04:08Z. Refreshed Stage 5 evidence is complete for the current draft state.
     evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
     status: pending
     human_decision_required: "no"
     owner: agents
-    blocker: "yes"
-    comment: Blocked pending refreshed publish evidence for the user-approved draft revision that allows autonomous Stage 6 progression to Stage 7 and adds on-screen Stage 5 delta review at Stage 7.
+    blocker: "no"
+    comment: Latest published draft package at 5e2679a0 is ready for a fresh autonomous Stage 6 rerun with Stage 7 delta review requirements.
     evidence: scripts/review/results/wrk-1017-review.md
   - order: 7
     stage: User Review - Plan (Final)
