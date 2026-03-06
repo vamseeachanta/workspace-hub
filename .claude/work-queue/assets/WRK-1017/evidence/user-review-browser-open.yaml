@@ -11,3 +11,9 @@ events:
   html_ref: .claude/work-queue/assets/WRK-1017/plan-draft-review.html
   opened_at: '2026-03-06T01:08:52Z'
   reviewer: user
+- stage: plan_draft
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1017/plan-draft-review.html
+  opened_at: '2026-03-06T15:49:37Z'
+  reviewer: user

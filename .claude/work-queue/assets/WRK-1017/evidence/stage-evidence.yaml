@@ -42,7 +42,7 @@ stages:
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: Post-cross-review revision now includes entry-point audit, explicit evidence definitions, and migration/test-matrix updates; another user review and approval cycle is required.
+    comment: Post-cross-review revised draft is approved locally; refreshed publish evidence is still required before Stage 6 can reopen.
     evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
@@ -50,7 +50,7 @@ stages:
     human_decision_required: "no"
     owner: agents
     blocker: "yes"
-    comment: Stage 6 rerun at 20260306T133625Z returned REQUEST_CHANGES from claude and codex; another rerun is required after the revised draft is approved and published.
+    comment: Stage 6 rerun at 20260306T133625Z returned REQUEST_CHANGES from claude and codex; another rerun is required after the revised draft is published.
     evidence: scripts/review/results/wrk-1017-review.md
   - order: 7
     stage: User Review - Plan (Final)
