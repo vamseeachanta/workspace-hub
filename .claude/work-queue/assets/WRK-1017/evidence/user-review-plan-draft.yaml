@@ -1,6 +1,6 @@
 wrk_id: WRK-1017
 stage: plan_draft
-reviewed_at: "2026-03-06T11:38:26Z"
+reviewed_at: "2026-03-06T12:15:34Z"
 reviewed_by: user
 interactive_session: true
 tough_questions_asked:
@@ -43,4 +43,4 @@ user_test_eval_changes:
 gatepass_section_reviewed_with_user: true
 gatepass_summary_at_review: "3 pass · 0 fail · 16 pending/warn · 1 n/a"
 approval_decision: approve_as_is
-notes: "User approved the revised draft plan for WRK-1017. The revised draft is locked and the refreshed Stage 5 draft package was published to origin at commit f9f1d998055a01ecb7506d8d1ed5d71387c8518f. A fresh Stage 6 cross-review run is still required because the prior cross-review requested changes. A Stage 10 follow-up recommendation was also recorded in future-work.yaml to review the Work Execution skill and any needed improvements."
+notes: "User approved the restored explicit draft plan for WRK-1017 on 2026-03-06T12:15:34Z after the Stage 5 review sequence was made fully explicit in the authoritative inline plan and refreshed HTML. Earlier approvals remain historical context only. The current draft is approved locally, but Stage 5 remains open until refreshed publish evidence is logged for the current HTML/package. Stage 6 cross-review must not rerun until that publish step is complete. A Stage 10 follow-up recommendation was also recorded in future-work.yaml to review the Work Execution skill and any needed improvements."

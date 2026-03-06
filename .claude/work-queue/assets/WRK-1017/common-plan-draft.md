@@ -23,6 +23,20 @@ Rules:
 - Route: `B`
 - Canonical execution plan location: inline `## Plan` in `WRK-1017.md`
 
+## Locked Decisions
+- Full Stage 5 target flow is in scope:
+  - common draft
+  - user approval on common draft
+  - independent `claude` / `codex` / `gemini` human-in-loop planning passes
+  - combine + rate
+  - user approval on combined plan
+- `user-review-common-draft.yaml` and `user-review-plan-draft.yaml` are both first-class Stage 5 evidence artifacts.
+- Assistive terminal orchestration is allowed workflow behavior; automated review is not.
+- Model-specific effort wording and mandatory per-pass session-log/evidence updates are preserved.
+- `Plan Quality Eval Comparison` remains part of the intended review flow.
+- Degraded-mode fallback policy remains in scope for the 3-provider workflow.
+- Only terminal-tab orchestration ergonomics may be treated as optional follow-up.
+
 ## Problem Frame
 - Stage 5 is defined as an interactive agent-user planning session, not a
   one-way HTML drop.
