@@ -42,7 +42,7 @@ stages:
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: Stage 6 rerun at 20260306T155402Z returned REQUEST_CHANGES from claude and codex, so the revised local draft has reopened Stage 5 and now awaits fresh approval and publish evidence.
+    comment: Latest revised draft was approved locally on 2026-03-06T20:49:00Z after the 20260306T155402Z Stage 6 rerun findings were reconciled, but refreshed publish evidence is still required before Stage 5 can close.
     evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
@@ -50,7 +50,7 @@ stages:
     human_decision_required: "no"
     owner: agents
     blocker: "yes"
-    comment: Latest Stage 6 rerun at 20260306T155402Z returned REQUEST_CHANGES from claude and codex. Cross-review is blocked until the newly revised draft is approved and republished.
+    comment: Latest Stage 6 rerun at 20260306T155402Z returned REQUEST_CHANGES from claude and codex. Cross-review remains blocked until the newly approved revised draft is republished.
     evidence: scripts/review/results/wrk-1017-review.md
   - order: 7
     stage: User Review - Plan (Final)
