@@ -38,19 +38,19 @@ stages:
     evidence: .claude/work-queue/assets/WRK-1017/plan-draft-review.html
   - order: 5
     stage: User Review - Plan (Draft)
-    status: done
+    status: in_progress
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: Latest local draft revision was approved by the user on 2026-03-06T22:32:41Z and published to origin at 1e23291e on 2026-03-06T22:37:53Z. Refreshed Stage 5 evidence is complete for the current draft state.
+    comment: Latest local revision with the Stage 6 user-choice checkpoint was approved by the user on 2026-03-06T22:50:10Z. Stage 5 remains open until refreshed publish evidence is logged for this newly approved draft state.
     evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
     status: pending
     human_decision_required: "no"
     owner: agents
-    blocker: "no"
-    comment: Latest published draft package at 1e23291e is ready for a fresh Stage 6 rerun after the 20260306T211954Z findings.
+    blocker: "yes"
+    comment: Blocked pending refreshed publish evidence for the user-approved draft revision that adds the explicit Stage 6 user-choice checkpoint after cross-review findings.
     evidence: scripts/review/results/wrk-1017-review.md
   - order: 7
     stage: User Review - Plan (Final)
