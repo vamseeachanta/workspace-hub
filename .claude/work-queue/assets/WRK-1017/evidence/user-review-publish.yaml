@@ -1,0 +1,26 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: c5e25a92ca9cb4a56a5fbbd5138552bc124da9df
+  documents:
+  - .claude/work-queue/assets/WRK-1017/plan-draft-review.html
+  - .claude/work-queue/assets/WRK-1017/combined-plan.md
+  - .claude/work-queue/pending/WRK-1017.md
+  published_at: '2026-03-06T10:56:44Z'
+  reviewer: user
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: f9f1d998055a01ecb7506d8d1ed5d71387c8518f
+  documents:
+  - .claude/work-queue/assets/WRK-1017/plan-draft-review.html
+  - .claude/work-queue/assets/WRK-1017/common-plan-draft.md
+  - .claude/work-queue/assets/WRK-1017/combined-plan.md
+  - .claude/work-queue/assets/WRK-1017/evidence/user-review-common-draft.yaml
+  - .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
+  - .claude/work-queue/pending/WRK-1017.md
+  published_at: '2026-03-06T11:41:12Z'
+  reviewer: user
