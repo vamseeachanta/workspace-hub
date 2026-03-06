@@ -10,6 +10,8 @@ planning passes produced from `common-plan-draft.md`.
   separation of `plan_approved` vs `plan_reviewed`, and lightweight verification.
 - Keep `gemini` root-cause framing around plan-mode speed-to-implementation bias
   and artifact-lock progression as supporting rationale.
+- Add explicit `deep think` / `ultra think` wording for each independent model
+  planning pass, paired with a direct quality-over-speed instruction.
 - Reject non-canonical additions that introduce tool-specific or schema-specific
   drift, including:
   - `ask_user` as a mandatory mechanism
@@ -80,11 +82,11 @@ momentum.
 2. Preserve the same Stage 5 substep ordering across the three workflow
    contracts:
    1. create common draft
-   2. `claude` plan
+   2. `claude` plan with `deep think` / `ultra think` and quality-over-speed instruction
    3. document and prepare to exit
-   4. `codex` plan
+   4. `codex` plan with `deep think` / `ultra think` and quality-over-speed instruction
    5. document and prepare to exit
-   6. `gemini` plan
+   6. `gemini` plan with `deep think` / `ultra think` and quality-over-speed instruction
    7. document and prepare to exit
    8. combine plans
    9. rate each plan
@@ -124,7 +126,13 @@ momentum.
 9. Add explicit wording that `plan_reviewed: true` is not a Stage 5 action for
    Route B. User approval and cross-review remain separate gates.
 
-10. Preserve Route B plan authority:
+10. Add a planning-effort instruction for all model passes:
+   - use `deep think` and `ultra think` wording
+   - explicitly ask for the highest-effort planning pass available
+   - prioritize best-plan quality over speed
+   - stress-test assumptions and compare alternatives before concluding
+
+11. Preserve Route B plan authority:
    - `combined-plan.md` is the saved synthesis artifact for review
    - the authoritative execution plan remains the inline `## Plan` in
      `WRK-1017.md`
