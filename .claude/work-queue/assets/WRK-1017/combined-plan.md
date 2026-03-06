@@ -13,6 +13,8 @@ planning passes produced from `common-plan-draft.md`.
 - Replace one-size-fits-all `deep think` / `ultra think` wording with
   model-specific effort cues, paired with one shared quality-over-speed
   instruction.
+- Adopt Stage 6 review recommendations that tighten the plan around enforceable
+  stop conditions, behavioral verification, and provider fallback.
 - Reject non-canonical additions that introduce tool-specific or schema-specific
   drift, including:
   - `ask_user` as a mandatory mechanism
@@ -60,6 +62,16 @@ planning passes produced from `common-plan-draft.md`.
 - Adding a new `Dialogue Log` HTML section in this WRK:
   - Useful idea, but outside the minimal scope needed to fix the Stage 5 skip.
 
+### Clarified from Stage 6 Review
+
+- Do not change Route B `plan_reviewed` semantics to mean Stage 5 user approval:
+  - existing workflow contracts define `plan_reviewed` as the cross-review verdict
+  - the fix is to clarify the semantics, not to collapse `plan_approved` and
+    `plan_reviewed` into one field
+- Do not rely on text-only proof:
+  - the implementation must include behavioral verification with existing gate
+    and lifecycle test harnesses
+
 ## Synthesized Execution Plan
 
 ### Files
@@ -82,6 +94,8 @@ momentum.
    - Stage 6 must not start until Stage 5 is complete
    - presenting HTML alone is insufficient
    - silence is not approval
+   - if required Stage 5 evidence or explicit user response is missing, Stage 6
+     must stop and remain blocked
 
 2. Preserve the same Stage 5 substep ordering across the three workflow
    contracts:
@@ -90,15 +104,29 @@ momentum.
    - in Claude CLI:
      - independent `claude` plan pass with synthesis-heavy effort wording and
        quality-over-speed instruction
-     - document and prepare to exit
+     - user review in progress
+     - assist the user during the live review
+     - save `claude-plan.md`
+     - complete the mandatory session-log/evidence update before closing the tab
    - in Codex CLI:
      - independent `codex` plan pass with execution-heavy effort wording and
        quality-over-speed instruction
-     - document and prepare to exit
+     - user review in progress
+     - assist the user during the live review
+     - save `codex-plan.md`
+     - complete the mandatory session-log/evidence update before closing the tab
    - in Gemini CLI:
      - independent `gemini` plan pass with exploration-heavy effort wording and
        quality-over-speed instruction
-     - document and prepare to exit
+     - user review in progress
+     - assist the user during the live review
+     - save `gemini-plan.md`
+     - complete the mandatory session-log/evidence update before closing the tab
+   - if one model CLI is unavailable, auth-blocked, or quota-blocked:
+     - record the blocked provider in evidence
+     - pause the ensemble by default
+     - continue in degraded mode only after explicit user approval naming the
+       missing provider
    - combine plans using the orchestrator agent
    - rate each plan
    - user review and approval
@@ -125,10 +153,12 @@ momentum.
    - `gemini-plan.md`
    - `combined-plan.md`
 
-7. Require each `document and prepare to exit` substep to leave a short handoff
-   note plus session-log/evidence traceability.
+7. Require each model-specific CLI planning pass to stay in an assistive state
+   during the live review and to leave session-log/evidence traceability before
+   the tab is closed.
 
 8. Preserve existing Stage 5 evidence requirements:
+   - `user-review-common-draft.yaml`
    - `user-review-plan-draft.yaml`
    - browser-open evidence
    - origin-publish evidence
@@ -170,14 +200,35 @@ Recommended review wording to carry into the plan text:
 13. Allow assistive tooling only where it reduces operator friction without
     replacing user interaction:
    - prepare prompt/context files
+   - open 3 terminal tabs or windows for `Claude CLI`, `Codex CLI`, and
+     `Gemini CLI` after common-draft approval
    - print or open the next manual CLI command
+   - prepare each tab for the live review
+   - show where that model's plan artifact should be saved
+   - remind the reviewer to complete the session-log/evidence update during the
+     review
    - scaffold evidence files
    - regenerate HTML after manual review steps
    - validate artifact completeness after manual work
 
-14. Validate the manual-review workflow by committing the current work, rerunning
-    the appropriate assistive script if introduced, and checking that the review
-    process still produces the required artifacts to a good standard using test/eval.
+14. Add a Stage 5 decision table for `approve | revise | reject | no-response`:
+   - `approve`: update review evidence and allow the next planned stage
+   - `revise`: update artifacts, regenerate HTML if needed, and stay in the
+     current review stage
+   - `reject`: stop progression and keep the WRK blocked at the current review stage
+   - `no-response`: do not infer approval; remain blocked
+
+15. Validate the manual-review workflow with existing gate/lifecycle harnesses:
+   - negative coverage: verify Stage 6 remains blocked when Stage 5 evidence is
+     missing
+   - positive coverage: verify Stage 6 only becomes eligible after explicit
+     Stage 5 evidence and user response are present
+   - supporting coverage: regenerate HTML and verify supporting artifacts still
+     render correctly
+
+16. Treat plan-quality comparison and HTML/reporting as supporting outputs:
+   - keep them because they help the human review
+   - do not count them as proof that the hard gate works
 
 ## Manual Interaction Issues
 
@@ -192,6 +243,7 @@ Recommended review wording to carry into the plan text:
 3. Repeated terminal/context setup is still cumbersome:
    - switching across Claude, Codex, and Gemini manually can create avoidable
      friction and missed evidence steps
+   - assistive tab/window setup can reduce this without automating the reviews
 
 4. Rerun validation needs a manual-review-friendly definition:
    - success should mean artifacts and evidence are reproduced correctly after a
@@ -201,6 +253,10 @@ Recommended review wording to carry into the plan text:
    - common draft review
    - combined plan review
    - these must not be conflated
+
+6. Behavioral proof was underspecified:
+   - string checks and HTML regeneration are not enough by themselves
+   - the plan must show how existing lifecycle/gate tests will prove the stop condition
 
 ## Suggested Improvements
 
@@ -212,6 +268,7 @@ Recommended review wording to carry into the plan text:
    - do not add a second HTML artifact unless it becomes necessary
 
 3. If tooling is added, make it assistive-only:
+   - open the required terminal tabs or windows
    - prepare the next CLI command
    - open the relevant artifact path
    - scaffold the next evidence file
@@ -225,7 +282,7 @@ Recommended review wording to carry into the plan text:
    - artifact existence/content checks
    - evidence presence checks
    - HTML regeneration checks
-   - gate-verification checks where applicable
+   - gate-verification negative and positive checks where applicable
 
 ## Verification Plan
 
@@ -239,7 +296,7 @@ rg -n "HARD GATE|BLOCKING|user-review-plan-draft.yaml|publish evidence|Gate-Pass
   .claude/skills/coordination/workspace/work-queue/SKILL.md
 
 # Ordered Stage 5 substep references
-rg -n "common-plan-draft|claude-plan|codex-plan|gemini-plan|combined-plan|document and prepare to exit" \
+rg -n "common-plan-draft|claude-plan|codex-plan|gemini-plan|combined-plan|user-review-common-draft.yaml|user review in progress|assist the user during the live review" \
   .claude/skills/workspace-hub/work-queue-workflow/SKILL.md \
   .claude/skills/workspace-hub/workflow-gatepass/SKILL.md \
   .claude/skills/coordination/workspace/work-queue/SKILL.md
@@ -251,6 +308,11 @@ rg -n "plan_reviewed|plan_approved" \
 
 # Regenerate draft HTML after updates
 uv run --no-project python scripts/work-queue/generate-html-review.py WRK-1017 --type plan-draft
+
+# Behavioral gate checks
+uv run --no-project pytest -q tests/unit/test_verify_gate_evidence.py
+uv run --no-project pytest -q tests/unit/test_generate_html_review.py
+bash tests/work-queue/test-lifecycle-gates.sh
 ```
 
 ## Risks To Watch During Implementation
@@ -260,12 +322,14 @@ uv run --no-project python scripts/work-queue/generate-html-review.py WRK-1017 -
 - Treating the combine artifact as the execution source of truth.
 - Adding new fields or tooling that the existing gate system does not recognize.
 - Leaving `plan_reviewed` semantics ambiguous.
+- Leaving the Stage 6 stop rule descriptive rather than enforceable.
 - Assuming existing cross-review scripts can be reused even though they are
   wired for implementation review, not Stage 5 planning orchestration.
 - Automating too much and accidentally bypassing the two required user review
   checkpoints.
 - Failing to define what counts as a successful rerun when validating the new
   planning runner.
+- Letting a missing provider silently collapse the three-provider review design.
 
 ## Recommended User Review Focus
 

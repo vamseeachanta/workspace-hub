@@ -1,6 +1,6 @@
 wrk_id: WRK-1017
 stage: plan_draft
-reviewed_at: "2026-03-06T10:50:24Z"
+reviewed_at: "2026-03-06T11:38:26Z"
 reviewed_by: user
 interactive_session: true
 tough_questions_asked:
@@ -43,4 +43,4 @@ user_test_eval_changes:
 gatepass_section_reviewed_with_user: true
 gatepass_summary_at_review: "3 pass · 0 fail · 16 pending/warn · 1 n/a"
 approval_decision: approve_as_is
-notes: "User approved the current revised draft plan for WRK-1017 and asked to lock the Stage 5 draft. The draft is locked locally for implementation against this approved plan state; origin-publish evidence is still required before Stage 6 can open."
+notes: "User approved the revised draft plan for WRK-1017. The revised draft is locked locally against this approved plan state; refreshed publish evidence and a fresh Stage 6 cross-review run are still required because the plan changed after the earlier published draft. A Stage 10 follow-up recommendation was also recorded in future-work.yaml to review the Work Execution skill and any needed improvements."

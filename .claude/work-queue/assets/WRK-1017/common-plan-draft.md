@@ -48,18 +48,33 @@ Rules:
   - do not automate the review conversation
   - do not auto-capture approval
   - do not auto-advance the workflow after review
+- Assistive setup allowed after approval:
+  - the orchestrator agent may open 3 terminal tabs or windows for `Claude CLI`,
+    `Codex CLI`, and `Gemini CLI`
+  - it may preload context, prompt text, artifact targets, and handoff/evidence
+    reminders
+  - it must not replace the human review interaction in any CLI
 - In Claude CLI:
   - independent `claude` plan pass using synthesis-heavy effort wording and
     explicit quality-over-speed instruction
-  - document and prepare to exit with mandatory session-log/evidence update
+  - user review in progress
+  - assist the user during the live review
+  - save `claude-plan.md`
+  - complete the mandatory session-log/evidence update before closing the tab
 - In Codex CLI:
   - independent `codex` plan pass using execution-heavy effort wording and
     explicit quality-over-speed instruction
-  - document and prepare to exit with mandatory session-log/evidence update
+  - user review in progress
+  - assist the user during the live review
+  - save `codex-plan.md`
+  - complete the mandatory session-log/evidence update before closing the tab
 - In Gemini CLI:
   - independent `gemini` plan pass using exploration-heavy effort wording and
     explicit quality-over-speed instruction
-  - document and prepare to exit with mandatory session-log/evidence update
+  - user review in progress
+  - assist the user during the live review
+  - save `gemini-plan.md`
+  - complete the mandatory session-log/evidence update before closing the tab
 - Combine the individual plans into one synthesized plan using the orchestrator
   agent.
 - Rate each model plan during the combine step.
@@ -78,16 +93,21 @@ Rules:
 - `.claude/work-queue/assets/WRK-1017/codex-plan.md`
 - `.claude/work-queue/assets/WRK-1017/gemini-plan.md`
 - `.claude/work-queue/assets/WRK-1017/combined-plan.md`
+- `.claude/work-queue/assets/WRK-1017/evidence/user-review-common-draft.yaml`
 - `.claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml`
 
 ## Required Contract Changes
 - Make Stage 5 visibly blocking in the workflow contract text.
+- Make Stage 6 stop explicitly when Stage 5 evidence or explicit user response is missing.
 - Express Stage 5 as ordered planning-and-synthesis substeps.
 - Require saved artifacts for each model-specific planning pass.
+- Require `user-review-common-draft.yaml` for the common-draft checkpoint.
 - Require a mandatory session-log/evidence update after each model pass.
 - Preserve browser-open and origin-publish requirements.
 - Preserve the `user-review-plan-draft.yaml` evidence requirement.
 - Preserve explicit user response as a prerequisite for Stage 6.
+- Document degraded-mode fallback if one planning provider is unavailable.
+- Keep plan-quality comparison and HTML/reporting as supporting artifacts, not gate proof.
 
 ## HTML and Review Requirements
 - The plan-review HTML must include `Plan Quality Eval Comparison`.
@@ -99,10 +119,13 @@ Rules:
 
 ## Verification Targets
 - Verify all three workflow contract files reflect the same Stage 5 ordering.
+- Verify the common-draft checkpoint has its own required evidence artifact.
 - Verify each model pass requires a saved handoff note plus session-log/evidence
   update.
 - Verify the plan-review HTML renders `Plan Quality Eval Comparison`.
 - Verify the gate text still blocks Stage 6 until user review is completed.
+- Verify a negative case where Stage 6 remains blocked when Stage 5 evidence is missing.
+- Verify a positive case where Stage 6 becomes eligible only after Stage 5 evidence and explicit user response are present.
 - Verify no Stage 5 checklist requirement is removed while adding the new
   substeps.
 
@@ -118,10 +141,12 @@ Rules:
 ## Risks and Failure Modes
 - Contract drift across the three workflow files.
 - Weak wording that still allows agents to interpret Stage 5 as optional.
+- Text-only enforcement that still fails under tool-call momentum.
 - A model-specific plan that changes structure and makes synthesis harder.
 - Loss of existing gate requirements while adding new substeps.
 - Treating saved model plans as the canonical execution plan instead of evidence
   inputs.
+- A provider outage that silently collapses the three-model planning design.
 
 ## Decisions Already Fixed
 - Update all three workflow contract files in the same WRK.
@@ -131,8 +156,13 @@ Rules:
 - Use `claude`, then `codex`, then `gemini` ordering.
 - Use model-specific effort wording rather than assuming `deep think` /
   `ultra think` are interpreted identically by all models.
+- Allow assistive terminal orchestration by the orchestrator agent, but keep all
+  actual review steps human-in-the-loop.
 - Keep user review explicit at two points: common draft approval and combined
   plan approval.
+- Require a dedicated common-draft review evidence file.
+- Treat plan-quality comparison and HTML/reporting as supporting outputs rather
+  than proof that the gate itself works.
 
 ## Combine-Step Expectations
 - Produce one synthesized plan in `combined-plan.md`.
@@ -145,7 +175,9 @@ Rules:
 - Where should the substep list live in each of the three workflow contracts?
 - What is the minimal additional wording needed to avoid redundant or conflicting
   gate language?
-- What verification commands best prove the new requirements without adding new
-  tooling?
+- What verification commands best prove the new requirements with existing gate
+  and lifecycle test harnesses?
+- What is the most portable enforcement point for the Stage 6 stop condition:
+  gate verifier, hook, or workflow harness check?
 - Should the Stage 5 automation live in a new orchestrator-facing script or as
   an extension of `scripts/agents/plan.sh`?

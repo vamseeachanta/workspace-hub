@@ -1,0 +1,17 @@
+wrk_id: WRK-1017
+generated_at: "2026-03-06T11:38:26Z"
+stage: 15
+
+recommendations:
+  - title: "review Stage 10 Work Execution skill and improve execution-stage guidance"
+    description: >
+      Review the primary skill and scripts used for Stage 10 Work Execution,
+      including the execution flow and any assistive orchestration around that
+      stage, then identify any improvements needed for clarity, enforcement, or
+      ergonomics.
+    source: "WRK-1017 planning follow-up note"
+    disposition: spun-off-new
+    status: pending
+    captured: false
+    priority: medium
+    required_for_signoff: false

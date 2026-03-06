@@ -1,0 +1,7 @@
+wrk_id: WRK-1017
+stage: plan_draft_common
+reviewed_at: "2026-03-06T11:38:26Z"
+reviewed_by: user
+interactive_session: true
+approval_decision: approve_as_is
+notes: "Captured from the live Stage 5 session after the shared common draft was created. The user explicitly directed the workflow to continue from the common draft into the model-specific planning passes, which served as the approval to proceed past the common-draft checkpoint."

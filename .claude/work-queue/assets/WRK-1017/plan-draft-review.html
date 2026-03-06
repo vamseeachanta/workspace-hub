@@ -124,11 +124,13 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <p>Stage 5 is where scope in/out, acceptance criteria adjustments, risks, and constraints are collaboratively resolved. Skipping it means plans proceed with unvalidated assumptions, leading to implementation drift, rework, and scope creep — exactly the problems the lifecycle was designed to prevent.</p>
 <h2>Acceptance Criteria</h2>
 <ul>
-<li>[ ] Root cause identified: which part of the skill text is being misread/skipped</li>
-<li>[ ] Fix applied to <code>work-queue-workflow/SKILL.md</code> Stage 5 definition to make skipping harder</li>
-<li>[ ] Fix applied to <code>work-queue/SKILL.md</code> Stage Contract Stage 5 if needed</li>
-<li>[ ] Verification: a Stage 5 session with the user leaves a <code>user-review-plan-draft.yaml</code> evidence artifact</li>
-<li>[ ] Workflow guard or reminder added to prevent jump-from-stage-4-to-stage-6</li>
+<li>[ ] Root cause is documented as diagnosis plus remediation, including the difference between unclear Stage 5 wording and tool-call momentum that skips the stop point.</li>
+<li>[ ] Fix applied to all three workflow contract files: <code>work-queue-workflow/SKILL.md</code>, <code>workflow-gatepass/SKILL.md</code>, and <code>work-queue/SKILL.md</code>.</li>
+<li>[ ] Stage 5 defines an enforceable Stage 6 stop condition: Stage 6 must stop when required Stage 5 evidence or explicit user response is missing; a reminder-only outcome is insufficient.</li>
+<li>[ ] Route B Stage 5 requires both <code>user-review-common-draft.yaml</code> and <code>user-review-plan-draft.yaml</code> before Stage 6 may open.</li>
+<li>[ ] Behavioral verification includes both negative and positive coverage using existing gate/lifecycle test harnesses.</li>
+<li>[ ] Provider fallback policy is documented for unavailable <code>claude</code>, <code>codex</code>, or <code>gemini</code> planning passes.</li>
+<li>[ ] Plan-quality comparison and HTML/reporting remain supporting artifacts and are not treated as proof of gate enforcement.</li>
 </ul>
 <h2>Plan</h2>
 <ul>
@@ -142,6 +144,12 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li><code>.claude/work-queue/assets/WRK-1017/codex-plan.md</code></li>
 <li><code>.claude/work-queue/assets/WRK-1017/gemini-plan.md</code></li>
 <li><code>.claude/work-queue/assets/WRK-1017/combined-plan.md</code></li>
+<li><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-common-draft.yaml</code></li>
+<li><strong>Execution sequence inside this WRK</strong>:</li>
+<li>diagnosis first: isolate why Stage 5 is skipped and which existing gate or hook points can actually stop the transition</li>
+<li>remediation second: update the three workflow contracts with the same enforceable stop condition</li>
+<li>verification third: prove the stop condition works with negative and positive behavioral checks</li>
+<li>reporting last: regenerate HTML and supporting artifacts after the blocking behavior is in place</li>
 <li><strong>Stage 5 protocol to enforce</strong>:</li>
 <li>create one common draft</li>
 <li>seek user review and approval on the common draft plan in a live user-interactive review session</li>
@@ -155,17 +163,32 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 </li>
 <li>In Claude CLI:<ul>
 <li>independent <code>claude</code> plan pass using synthesis-heavy effort wording and explicit quality-over-speed instruction</li>
-<li>document and prepare to exit with mandatory session-log/evidence update</li>
+<li>user review in progress</li>
+<li>assist the user during the live review</li>
+<li>save <code>claude-plan.md</code></li>
+<li>complete the mandatory session-log/evidence update before closing the tab</li>
 </ul>
 </li>
 <li>In Codex CLI:<ul>
 <li>independent <code>codex</code> plan pass using execution-heavy effort wording and explicit quality-over-speed instruction</li>
-<li>document and prepare to exit with mandatory session-log/evidence update</li>
+<li>user review in progress</li>
+<li>assist the user during the live review</li>
+<li>save <code>codex-plan.md</code></li>
+<li>complete the mandatory session-log/evidence update before closing the tab</li>
 </ul>
 </li>
 <li>In Gemini CLI:<ul>
 <li>independent <code>gemini</code> plan pass using exploration-heavy effort wording and explicit quality-over-speed instruction</li>
-<li>document and prepare to exit with mandatory session-log/evidence update</li>
+<li>user review in progress</li>
+<li>assist the user during the live review</li>
+<li>save <code>gemini-plan.md</code></li>
+<li>complete the mandatory session-log/evidence update before closing the tab</li>
+</ul>
+</li>
+<li>if one model CLI is unavailable, auth-blocked, or quota-blocked:<ul>
+<li>record the blocked provider in evidence</li>
+<li>pause the ensemble by default</li>
+<li>continue in degraded mode only after explicit user approval naming the missing provider</li>
 </ul>
 </li>
 <li>combine the three model plans using the orchestrator agent</li>
@@ -181,14 +204,17 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 </li>
 <li><strong>Contract decisions to implement</strong>:</li>
 <li>Put explicit hard-gate Stage 5 wording in all three files: Stage 5 is blocking, Stage 6 must not start until Stage 5 is complete, presenting HTML alone is insufficient, and silence is not approval.</li>
+<li>Make the blocking rule executable in contract language: if required Stage 5 evidence or explicit user response is missing, Stage 6 must stop and stay blocked.</li>
 <li>Preserve the same 10-step Stage 5 ordering across all three workflow contracts.</li>
 <li>Keep <code>work-queue-workflow/SKILL.md</code> as the most detailed procedural definition of Stage 5.</li>
 <li>Keep <code>work-queue/SKILL.md</code> aligned as the queue-stage contract with the same ordering and checklist semantics.</li>
 <li>Keep <code>workflow-gatepass/SKILL.md</code> aligned at the policy/no-bypass level with the same ordering and explicit block on Stage 6 progression.</li>
 <li>Require saved artifacts for <code>common-plan-draft.md</code>, <code>claude-plan.md</code>, <code>codex-plan.md</code>, <code>gemini-plan.md</code>, and <code>combined-plan.md</code>.</li>
-<li>Require each <code>document and prepare to exit</code> substep to leave a handoff note plus session-log/evidence traceability.</li>
+<li>Require <code>user-review-common-draft.yaml</code> for the common-draft checkpoint and <code>user-review-plan-draft.yaml</code> for the combined-plan checkpoint.</li>
+<li>Require each model-specific CLI planning pass to stay in an assistive state during the live review and to leave session-log/evidence traceability before the tab is closed.</li>
 <li>Preserve existing Stage 5 evidence requirements: <code>user-review-plan-draft.yaml</code>, browser-open evidence, origin-publish evidence, and explicit user response.</li>
 <li>Add explicit wording that <code>plan_reviewed: true</code> is not a Stage 5 action for Route B.</li>
+<li>Clarify that <code>plan_approved</code> and <code>plan_reviewed</code> are independent: user approval closes Stage 5 draft review; cross-review verdicts set <code>plan_reviewed</code>.</li>
 <li>Add model-specific planning-effort instructions for all three model passes rather than assuming <code>deep think</code> / <code>ultra think</code> are treated identically:<ul>
 <li><code>claude</code>: synthesis-heavy cues such as <code>deep think</code>, <code>ultra think</code>, <code>challenge assumptions</code>, <code>surface tradeoffs</code></li>
 <li><code>codex</code>: execution-heavy cues such as <code>be precise</code>, <code>minimize ambiguity</code>, <code>mechanically verify transitions</code></li>
@@ -196,9 +222,23 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>shared requirement across all three: optimize for plan quality over speed, compare alternatives, and seek the best plan rather than the fastest output</li>
 </ul>
 </li>
+<li>Keep provider fallback explicit: all three providers are the default target; any degraded-mode run requires explicit user approval and evidence of the missing provider.</li>
+<li>Allow assistive terminal orchestration by the orchestrator agent after common-draft approval:<ul>
+<li>open 3 terminal tabs or windows for <code>Claude CLI</code>, <code>Codex CLI</code>, and <code>Gemini CLI</code></li>
+<li>support Windows Terminal or Linux terminal ecosystems where available</li>
+<li><code>cd</code> into the repo, preload the common-draft context, and show the model-specific prompt/instructions</li>
+<li>prepare each tab for the live review</li>
+<li>show where that model's plan artifact should be saved</li>
+<li>remind the reviewer to complete the session-log/evidence update during the review</li>
+<li>keep the tabs ready for human-led interaction</li>
+<li>do not automate the review conversation, approval capture, or stage advancement</li>
+</ul>
+</li>
 <li>Do not automate the Stage 5 review sessions. Common-draft review, each model-specific planning pass, and combined-plan review remain user-interactive checkpoints.</li>
 <li>If tooling is added, keep it assistive-only: prepare prompt/context files, print or open the next manual CLI command, scaffold evidence files, regenerate HTML after manual work, and validate artifact completeness.</li>
 <li>Keep user-gated steps explicit and manual: common draft approval, combined plan approval, browser-open review, and publish evidence.</li>
+<li>Add a Stage 5 decision table for <code>approve | revise | reject | no-response</code> and require each path to update evidence before the next transition.</li>
+<li>Treat plan-quality comparison, HTML polish, and other reporting/UI artifacts as supporting outputs, not as proof that the gate itself works.</li>
 <li>Validate the manual-review workflow by committing the current work, rerunning any assistive script if introduced, and checking that it reproduces the required artifacts with targeted test/eval.</li>
 <li><strong>Combine decisions adopted</strong>:</li>
 <li>use <code>claude</code> as the primary structural source</li>
@@ -217,20 +257,32 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>Generate the draft HTML from this combined plan state.</li>
 <li>Walk the combined plan with the user after all three model plans are captured and rated.</li>
 <li>Review the <code>Plan Quality Eval Comparison</code> section with the user during the Stage 5 walkthrough.</li>
+<li>Record common-draft approval in <code>user-review-common-draft.yaml</code>.</li>
 <li>Record approval or revision decisions in <code>user-review-plan-draft.yaml</code>.</li>
+<li>Apply this decision table at every user checkpoint:<ul>
+<li><code>approve</code>: update the corresponding review evidence and allow the next planned stage</li>
+<li><code>revise</code>: update the plan artifacts, regenerate HTML if needed, and stay in the current review stage</li>
+<li><code>reject</code>: stop progression and keep the WRK blocked at the current review stage</li>
+<li><code>no-response</code>: do not infer approval; remain blocked</li>
+</ul>
+</li>
 <li>Only after user approval closure and publish evidence may the plan proceed to Stage 6 cross-review.</li>
 <li><strong>Verify</strong>:</li>
 <li><code>rg -n "HARD GATE|BLOCKING|user-review-plan-draft.yaml|publish evidence|Gate-Pass Stage Status" .claude/skills/workspace-hub/work-queue-workflow/SKILL.md .claude/skills/workspace-hub/workflow-gatepass/SKILL.md .claude/skills/coordination/workspace/work-queue/SKILL.md</code></li>
-<li><code>rg -n "common-plan-draft|claude-plan|codex-plan|gemini-plan|combined-plan|document and prepare to exit" .claude/skills/workspace-hub/work-queue-workflow/SKILL.md .claude/skills/workspace-hub/workflow-gatepass/SKILL.md .claude/skills/coordination/workspace/work-queue/SKILL.md</code></li>
+<li><code>rg -n "common-plan-draft|claude-plan|codex-plan|gemini-plan|combined-plan|user-review-common-draft.yaml|user review in progress|assist the user during the live review" .claude/skills/workspace-hub/work-queue-workflow/SKILL.md .claude/skills/workspace-hub/workflow-gatepass/SKILL.md .claude/skills/coordination/workspace/work-queue/SKILL.md</code></li>
 <li><code>rg -n "plan_reviewed|plan_approved" .claude/skills/coordination/workspace/work-queue/SKILL.md .claude/skills/workspace-hub/work-queue-workflow/SKILL.md</code></li>
+<li><code>uv run --no-project pytest -q tests/unit/test_verify_gate_evidence.py</code></li>
+<li><code>uv run --no-project pytest -q tests/unit/test_generate_html_review.py</code></li>
+<li><code>bash tests/work-queue/test-lifecycle-gates.sh</code></li>
 <li><code>uv run --no-project python scripts/work-queue/generate-html-review.py WRK-1017 --type plan-draft</code></li>
 <li><strong>Manual-review issues and improvements</strong>:</li>
-<li>Add a dedicated common-draft review evidence file, recommended:
+<li>Add a dedicated common-draft review evidence file:
     <code>assets/WRK-1017/evidence/user-review-common-draft.yaml</code></li>
-<li>Keep common-draft review lightweight at first: markdown + YAML approval, no second HTML artifact unless needed.</li>
+<li>Keep common-draft review lightweight: markdown + YAML approval, no second HTML artifact unless needed.</li>
 <li>Make any new tooling assistive-only rather than review-automating.</li>
+<li>If terminal orchestration is added, make it open tabs/windows and preload context only; the human still performs the review in each CLI.</li>
 <li>Prefer overwriting canonical plan artifacts in place on rerun to keep the manual workflow simple.</li>
-<li>Validate with manual-review-aware checks: artifact existence/content, evidence presence, HTML regeneration, and gate-verification where applicable.</li>
+<li>Validate with manual-review-aware checks: artifact existence/content, evidence presence, HTML regeneration, negative gate blocking, and positive gate progression where applicable.</li>
 </ul>
 <h2>Plan Quality Eval Comparison</h2>
 <p>This section is populated from the completed combine-plans substep and mirrored
@@ -304,8 +356,8 @@ in <code>assets/WRK-1017/evidence/plan-quality-eval.yaml</code>.</p>
 <tr><td>2</td><td>Resource Intelligence</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Resource intelligence artifact pack not yet created for this WRK.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/resource-intelligence.yaml</code></td></tr>
 <tr><td>3</td><td>Triage</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>orchestrator</td><td>no</td><td>Route, priority, complexity, and workstations are set in frontmatter.</td><td><code>.claude/work-queue/pending/WRK-1017.md</code></td></tr>
 <tr><td>4</td><td>Plan Draft</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Draft plan exists and draft HTML has been generated.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-draft-review.html</code></td></tr>
-<tr><td>5</td><td>User Review - Plan (Draft)</td><td><span class="badge badge-info">WORKING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>no</td><td>Current revised draft plan is approved and locked locally for implementation against this plan state; origin publish evidence is still missing, so Stage 5 remains open.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml</code></td></tr>
-<tr><td>6</td><td>Cross-Review</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Blocked until Stage 5 draft review is closed.</td><td><code>scripts/review/results/wrk-1017-review.md</code></td></tr>
+<tr><td>5</td><td>User Review - Plan (Draft)</td><td><span class="badge badge-info">IN_PROGRESS</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>no</td><td>Revised draft plan is approved and locked locally; refreshed publish evidence is still required before Stage 6 can reopen on the revised draft.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml</code></td></tr>
+<tr><td>6</td><td>Cross-Review</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Prior plan cross-review requested changes; rerun against the revised published draft is still pending.</td><td><code>scripts/review/results/wrk-1017-review.md</code></td></tr>
 <tr><td>7</td><td>User Review - Plan (Final)</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>yes</td><td>Awaits cross-review and final-plan artifact generation.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-final-review.html</code></td></tr>
 <tr><td>8</td><td>Claim / Activation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Cannot claim before plan gates pass.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/claim.yaml</code></td></tr>
 <tr><td>9</td><td>Work-Queue Routing Skill</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Awaiting claim/activation.</td><td><code>/work</code></td></tr>
