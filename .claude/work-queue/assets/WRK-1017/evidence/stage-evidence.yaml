@@ -38,19 +38,19 @@ stages:
     evidence: .claude/work-queue/assets/WRK-1017/plan-draft-review.html
   - order: 5
     stage: User Review - Plan (Draft)
-    status: in_progress
+    status: done
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: Post-cross-review revised draft is approved locally; refreshed publish evidence is still required before Stage 6 can reopen.
+    comment: Post-cross-review revised draft is approved and published to origin with refreshed Stage 5 evidence.
     evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
     status: pending
     human_decision_required: "no"
     owner: agents
-    blocker: "yes"
-    comment: Stage 6 rerun at 20260306T133625Z returned REQUEST_CHANGES from claude and codex; another rerun is required after the revised draft is published.
+    blocker: "no"
+    comment: Stage 6 rerun at 20260306T133625Z returned REQUEST_CHANGES from claude and codex; rerun against the revised draft published at 3b506afb is now ready.
     evidence: scripts/review/results/wrk-1017-review.md
   - order: 7
     stage: User Review - Plan (Final)
