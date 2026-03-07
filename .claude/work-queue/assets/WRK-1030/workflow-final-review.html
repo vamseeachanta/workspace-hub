@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1030 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1030 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Add /resume slash command for WRK checkpoint resumption</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — Add a `.claude/commands/workspace-hub/resume.md` slash command that: 1. Reads `.claude/work-queue/assets/WRK-NNN/checkpoint.yaml` 2. Prints ...</summary><div class="panel"><p>Add a <code>.claude/commands/workspace-hub/resume.md</code> slash command that:
+1. Reads <code>.claude/work-queue/assets/WRK-NNN/checkpoint.yaml</code>
+2. Prints stage, <code>next_action</code>, and <code>context_summary</code> to orient the agent
+3. Lists <code>entry_reads</code> files so they can be @-mentioned or read immediately</p></div></details>
+
+  <details open><summary><strong>Why</strong> — Currently resuming a WRK item is a manual process — find checkpoint.yaml, read it, read entry_reads files, remember the next_action. A `/res...</summary><div class="panel"><p>Currently resuming a WRK item is a manual process — find checkpoint.yaml, read it, read entry_reads files, remember the next_action. A <code>/resume WRK-NNN</code> command makes this a single step and reduces context-restore friction between sessions.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] `.claude/commands/workspace-hub/resume.md` exists and loads via `/resume WRK-NNN` - [ ] Command prints current stage, next_action, and...</summary><div class="panel"><ul>
+<li>[ ] <code>.claude/commands/workspace-hub/resume.md</code> exists and loads via <code>/resume WRK-NNN</code></li>
+<li>[ ] Command prints current stage, next_action, and context_summary from checkpoint.yaml</li>
+<li>[ ] Command reads and displays content of each file in entry_reads</li>
+<li>[ ] Graceful error when checkpoint.yaml does not exist (suggests running checkpoint.sh first)</li>
+<li>[ ] Command documented in checkpoint.sh header comment</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — # Plan Final — WRK-1030 /resume WRK-NNN slash command. Route A inline plan approved by user. confirmed_by: user confirmed_at: 2026-03-07T00:...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><h1>Plan Final — WRK-1030</h1>
+<p>/resume WRK-NNN slash command. Route A inline plan approved by user.</p>
+<p>confirmed_by: user
+confirmed_at: 2026-03-07T00:00:00Z
+decision: passed</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 4 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>resume command file exists</td><td>repo</td><td>pass</td><td><code>ls .claude/commands/workspace-hub/resume.md</code></td><td>.claude/commands/workspace-hub/resume.md</td></tr><tr><td>2</td><td>happy path — checkpoint loaded and printed</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python .claude/commands/workspace-hub/resume.md (logic inline)</code></td><td>.claude/work-queue/assets/WRK-1030/checkpoint.yaml</td></tr><tr><td>3</td><td>missing checkpoint error path</td><td>integrated</td><td>pass</td><td><code>bash -c &#x27;test ! -f .claude/work-queue/assets/WRK-9999/checkpoint.yaml &amp;&amp; echo OK&#x27;</code></td><td>.claude/commands/workspace-hub/resume.md</td></tr><tr><td>4</td><td>checkpoint.sh header updated</td><td>repo</td><td>pass</td><td><code>grep &#x27;Resume:&#x27; scripts/work-queue/checkpoint.sh</code></td><td>scripts/work-queue/checkpoint.sh</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1030, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1030, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=missing, execution_workstations=missing</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_wrapper_complete'], plan:['plan_wrapper_complete'], execute:['execute_wrapper_complete'], cross-review:['review_wrapper_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1030/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['test-results.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=4 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1030/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>PASS</td>
+<td>claim-evidence.yaml: version=1, owner=unknown, quota=available(null)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=2</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=2</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1030 synthesized_at: &quot;2026-03-07T00:00:00Z&quot; recommendations: - id: fw-01 title: Auto-fill next_action in checkpoint.sh from stag...</summary><div class="panel"><p>wrk_id: WRK-1030
+synthesized_at: "2026-03-07T00:00:00Z"
+recommendations:
+  - id: fw-01
+    title: Auto-fill next_action in checkpoint.sh from stage-evidence.yaml
+    disposition: spun-off-new
+    status: candidate
+    captured: true
+    rationale: next_action is always empty on auto-checkpoint; could infer from current stage
+  - id: fw-02
+    title: Hook checkpoint.sh into session Stop hook for automatic end-of-session checkpointing
+    disposition: spun-off-new
+    status: candidate
+    captured: true
+    rationale: user must remember to run checkpoint.sh — automating it removes friction</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1030 generated_at: &quot;2026-03-07T23:03:13Z&quot; reviewed_by: &quot;agent&quot; autonomy_maturity_level: &quot;L2&quot; human_steers_agents_execute: true s...</summary><div class="panel"><p>wrk_id: WRK-1030
+generated_at: "2026-03-07T23:03:13Z"
+reviewed_by: "agent"
+autonomy_maturity_level: "L2"
+human_steers_agents_execute: true
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: WRK created with baseline metadata.
+    evidence: .claude/work-queue/working/WRK-1030.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Resource/document intelligence pack captured.
+    evidence: .claude/work-queue/assets/WRK-1030/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Route, priority, complexity, and workstations set.
+    evidence: .claude/work-queue/working/WRK-1030.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Draft plan and artifact generated.
+    evidence: specs/wrk/WRK-1030/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Tough questions, tradeoffs, and test/eval updates reviewed.
+    evidence: .claude/work-queue/assets/WRK-1030/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Multi-provider review completed.
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Final plan reviewed with gate-pass section.
+    evidence: .claude/work-queue/assets/WRK-1030/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Claim evidence and active WRK set.
+    evidence: .claude/work-queue/assets/WRK-1030/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Entered canonical /work route.
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Implementation completed under active claim.
+    evidence: .claude/work-queue/assets/WRK-1030/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Review artifacts generated.
+    evidence: .claude/work-queue/assets/WRK-1030/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Tests/evals completed and recorded.
+    evidence: .claude/work-queue/assets/WRK-1030/evidence/test-results.md
+  - order: 13
+    stage: Agent Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Implementation cross-review package complete.
+    evidence: .claude/work-queue/assets/WRK-1030/cross-review-package.md
+  - order: 14
+    stage: Verify Gate Evidence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Gate verifier passed.
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 15
+    stage: Future Work Synthesis
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Follow-up disposition captured.
+    evidence: .claude/work-queue/assets/WRK-1030/evidence/future-work.yaml
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: New resources captured post execution.
+    evidence: .claude/work-queue/assets/WRK-1030/evidence/resource-intelligence-update.yaml
+  - order: 17
+    stage: User Review - Implementation
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Close package reviewed including gate-pass section.
+    evidence: .claude/work-queue/assets/WRK-1030/evidence/user-review-close.yaml
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Not needed in this run.
+    evidence: .claude/work-queue/assets/WRK-1030/evidence/reclaim.yaml
+  - order: 19
+    stage: Close
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Awaiting final close operation.
+    evidence: scripts/work-queue/close-item.sh
+  - order: 20
+    stage: Archive
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Awaiting merge/sync completion.
+    evidence: scripts/work-queue/archive-item.sh</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 22 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1030-lifecycle.html</code></li><li><code>checkpoint.yaml</code></li><li><code>claim-evidence.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/cross-review.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-draft-review.html</code></li><li><code>plan-html-review-final.md</code></li><li><code>review.md</code></li><li><code>stage-2-prompt.md</code></li><li><code>test-results.md</code></li></ul></div></details>
+</body>
+</html>

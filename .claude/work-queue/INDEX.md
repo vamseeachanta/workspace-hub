@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-07T22:58:28Z by generate-index.py -->
+<!-- Generated: 2026-03-07T23:21:44Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-07T22:58:28Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-07T23:21:44Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,10 +13,10 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 208 |
-| working | 6 |
+| pending | 206 |
+| working | 7 |
 | blocked | 9 |
-| archived | 236 |
+| archived | 237 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 46 |
+| harness | 45 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -78,8 +78,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 174 / 459 |
-| Plans cross-reviewed | 72 |
-| Plans approved | 93 |
+| Plans cross-reviewed | 73 |
+| Plans approved | 94 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -90,16 +90,16 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 459 |
-| Total archived | 236 |
-| Completion rate | 236/459 (51%) |
-| Monthly rate (current month) | 11 archived |
+| Total archived | 237 |
+| Completion rate | 237/459 (52%) |
+| Monthly rate (current month) | 12 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 59 / 208 | 28% |
+| Pending items with plans | 58 / 206 | 28% |
 | Plans cross-reviewed | 11 | 15% |
 | Plans user-approved | 12 | 17% |
 
@@ -116,15 +116,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 96 | 2 | 7 |
-| Medium   | 84  | 4  | 1  |
+| High     | 95 | 3 | 7 |
+| Medium   | 83  | 4  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (46 items — 13 high, 28 medium, 5 low)
+### harness (45 items — 13 high, 27 medium, 5 low)
 
 #### harness / agent-ux
 
@@ -208,7 +208,6 @@
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
 | WRK-693 | MEDIUM | fix(scripts): audit and replace bare python3 with uv across all hub scripts | pending |
-| WRK-1030 | MEDIUM | Add /resume slash command for WRK checkpoint resumption | pending |
 
 #### harness / workflow
 
@@ -220,7 +219,7 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1031 | HIGH | Single lifecycle HTML: embed full plan content inline, retire snapshot files | pending |
+| WRK-1031 | HIGH | Single lifecycle HTML: embed full plan content inline, retire snapshot files | working |
 
 ### engineering (117 items — 68 high, 38 medium, 11 low)
 
@@ -999,8 +998,8 @@
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
-| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1214,8 +1213,6 @@
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | medium | simple | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | medium | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | medium | simple | digitalmodel | - |
-| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | medium | simple | workspace-hub | - |
-| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | high | medium | workspace-hub | - |
 
 ### Working
 
@@ -1227,6 +1224,7 @@
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | medium | medium | workspace-hub | - |
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | medium | medium | workspace-hub | - |
+| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | high | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -1482,6 +1480,7 @@
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | high | complex | workspace-hub | - |
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | medium | simple | workspace-hub | - |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | high | complex | workspace-hub | - |
+| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | medium | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -1983,8 +1982,8 @@
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | simple | - |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | archived | high | complex | - |
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | working | medium | medium | - |
-| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | pending | medium | simple | - |
-| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | pending | high | medium | - |
+| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | - |
+| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | working | high | medium | - |
 
 ### worldenergydata
 
@@ -2298,7 +2297,7 @@
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | workspace-hub | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | complex | workspace-hub | - |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | archived | complex | workspace-hub | - |
-| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | pending | medium | workspace-hub | - |
+| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | working | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2507,7 +2506,7 @@
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | simple | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | simple | digitalmodel | - |
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | working | medium | workspace-hub | - |
-| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | pending | simple | workspace-hub | - |
+| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | simple | workspace-hub | - |
 
 ### Low
 
@@ -2641,7 +2640,7 @@
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | workspace-hub | - |
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | digitalmodel | - |
-| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | pending | medium | workspace-hub | - |
+| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2862,7 +2861,7 @@
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | workspace-hub | - |
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | working | medium | workspace-hub | - |
-| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | pending | high | workspace-hub | - |
+| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | working | high | workspace-hub | - |
 
 ### Complex
 
@@ -2966,7 +2965,7 @@
 
 ## By Computer
 
-### ace-linux-1 (160 active / 183 total)
+### ace-linux-1 (159 active / 183 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3151,8 +3150,8 @@
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | simple | digitalmodel |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | archived | high | complex | workspace-hub |
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | working | medium | medium | workspace-hub |
-| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | pending | medium | simple | workspace-hub |
-| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | pending | high | medium | workspace-hub |
+| WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | workspace-hub |
+| WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | working | high | medium | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 
