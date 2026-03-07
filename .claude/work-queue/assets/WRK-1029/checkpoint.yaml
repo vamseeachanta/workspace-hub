@@ -1,0 +1,46 @@
+wrk_id: WRK-1029
+title: "resource-intelligence skill v1.1.0 — align with Stage 2 micro-skill contract"
+checkpointed_at: "2026-03-07T00:00:00Z"
+checkpointed_by: claude
+commit: 95ca596a
+
+current_stage: 11
+stage_status:
+  1_capture: done
+  2_resource_intelligence: done
+  3_triage: done
+  4_plan_draft: done
+  5_user_review_plan_draft: done
+  6_cross_review: done — Codex REQUEST_CHANGES → all findings resolved
+  7_user_review_plan_final: done — approved
+  8_claim: done
+  9_routing: done
+  10_work_execution: done — Phase 1 + Phase 2 both complete (commit 95ca596a)
+  11_artifact_generation: next
+  12_tdd_eval: pending
+  13_agent_cross_review: pending
+  14_verify_gate_evidence: pending
+  15_future_work_synthesis: pending
+  16_resource_intelligence_update: pending
+  17_user_review_implementation: pending
+  19_close: pending
+  20_archive: pending
+
+files_changed:
+  - .claude/skills/workspace-hub/resource-intelligence/SKILL.md  # v1.0.0 → v1.1.0
+  - .claude/skills/workspace-hub/resource-intelligence/templates/resource-intelligence-template.yaml  # new
+
+key_decisions:
+  - "domain.problem + domain.architecture_decision: required in schema, WARN in gatepass"
+  - "Stop guard: separate per stage (Stage 2 → resource-intelligence.yaml; Stage 16 → resource-intelligence-update.yaml)"
+  - "resource-intelligence-summary.md: stays required companion, consumers unchanged (Option A)"
+  - "SKILL.md: combined contract, separate Stage 2 / Stage 16 sections"
+  - "Route B: Phase 1 (schema+checklist) → Codex cross-review → Phase 2 (mining intelligence)"
+
+resume_instructions: >
+  Resume at Stage 11 (Artifact Generation).
+  Run: verify-gate-evidence.py WRK-1029 to confirm gate status.
+  Then Stage 12 (TDD/Eval): validate-resource-pack.sh + grep checks.
+  Then Stage 13 (Agent Cross-Review): Codex + Gemini on full implementation.
+  Then Stages 14-20 to close.
+  Open lifecycle HTML: .claude/work-queue/assets/WRK-1029/WRK-1029-lifecycle.html
