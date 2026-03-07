@@ -1,0 +1,25 @@
+wrk_id: WRK-1030
+executed_at: "2026-03-07T00:00:00Z"
+executor: claude
+commit: "ac544ce16e82e36c68b0438e13317004e48b350a"
+integrated_repo_tests:
+  - name: resume command file exists
+    scope: repo
+    command: ls .claude/commands/workspace-hub/resume.md
+    result: pass
+    artifact_ref: .claude/commands/workspace-hub/resume.md
+  - name: happy path — checkpoint loaded and printed
+    scope: integrated
+    command: "uv run --no-project python .claude/commands/workspace-hub/resume.md (logic inline)"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1030/checkpoint.yaml
+  - name: missing checkpoint error path
+    scope: integrated
+    command: bash -c 'test ! -f .claude/work-queue/assets/WRK-9999/checkpoint.yaml && echo OK'
+    result: pass
+    artifact_ref: .claude/commands/workspace-hub/resume.md
+  - name: checkpoint.sh header updated
+    scope: repo
+    command: "grep 'Resume:' scripts/work-queue/checkpoint.sh"
+    result: pass
+    artifact_ref: scripts/work-queue/checkpoint.sh

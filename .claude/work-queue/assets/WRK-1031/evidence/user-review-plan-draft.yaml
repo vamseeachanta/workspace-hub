@@ -1,0 +1,33 @@
+wrk_id: WRK-1031
+stage: plan_draft
+reviewed_at: 2026-03-07
+reviewed_by: user
+decision: approved
+
+decisions:
+  Q1_implementation_review_migration:
+    answer: migrate_then_delete
+    notes: >
+      Migrate implementation-review.html content (files-changed, test summary, gate evidence)
+      into lifecycle Stages 10/11 before deleting. Do not delete without content migration.
+  Q2_stage_strip_chip:
+    answer: auto_update
+    notes: >
+      --stage N --update must automatically update the stage strip chip status
+      (pending→active→done) as part of the same operation. No manual step.
+  Q3_type_flags:
+    answer: deprecate_entirely
+    notes: >
+      --type plan-draft|plan-final|implementation|close flags deprecated entirely after
+      this WRK. Remove from generate-html-review.py CLI and update all skill references.
+      No parallel "standalone snapshot" path retained.
+
+scope_confirmed:
+  - generate-html-review.py --stage N --update mode
+  - stage strip chip auto-update
+  - stage-content renderers for stages 4/5/7/11/17
+  - WRK-1029 lifecycle: embed Stage 4 plan + Stage 10/11 impl content, delete snapshots
+  - WRK-1028: delete plan-draft-review.html
+  - workflow-html SKILL.md §6 updated
+  - work-queue SKILL.md Stage Matrix updated
+  - --type flags deprecated and removed

@@ -310,7 +310,7 @@ flowchart TD
 
 ### 19. Close
 - Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--commit]`.
-- Close script auto-generates `assets/WRK-NNN/workflow-final-review.html` when `--html-output` is not passed.
+- Close script regenerates `assets/WRK-NNN/WRK-NNN-lifecycle.html` via `generate-html-review.py WRK-NNN --lifecycle`.
 - Require gate evidence verification, integrated/repo tests (3-5 pass records), user-review evidence, and `stage_evidence_ref` (stages 1-20).
 
 ### 20. Archive
@@ -325,21 +325,21 @@ flowchart TD
 | 2. Resource Intelligence | `resource-intelligence` | `scripts/init-resource-pack.sh` (as needed) | `resource-intelligence.yaml` |
 | 3. Triage | `/work` triage step | `scripts/work-queue/assign-workstations.py` | WRK frontmatter triage fields |
 | 4. Plan Draft | `plan` flow | `scripts/agents/plan.sh` | Draft plan + HTML artifact |
-| 5. User Review - Plan (Draft) | user review gate + **`workflow-html`** | `generate-html-review.py --type plan-draft`, `log-user-review-browser-open.sh`, `log-user-review-publish.sh` | canonical plan-draft HTML opened in default browser + origin publish evidence |
+| 5. User Review - Plan (Draft) | user review gate + **`workflow-html`** | `generate-html-review.py WRK-NNN --lifecycle`, `log-user-review-browser-open.sh`, `log-user-review-publish.sh` | lifecycle HTML opened in default browser + origin publish evidence |
 | 6. Cross-Review | `cross-review` flow | `scripts/review/cross-review.sh`, `submit-to-*.sh` | Multi-provider review outputs |
-| 7. User Review - Plan (Final) | user review gate + **`workflow-html`** | `generate-html-review.py --type plan-final`, `log-user-review-browser-open.sh`, `log-user-review-publish.sh` | canonical plan-final HTML opened in default browser + origin publish evidence |
+| 7. User Review - Plan (Final) | user review gate + **`workflow-html`** | `generate-html-review.py WRK-NNN --lifecycle`, `log-user-review-browser-open.sh`, `log-user-review-publish.sh` | lifecycle HTML opened in default browser + origin publish evidence |
 | 8. Claim / Activation | claim gate | `scripts/work-queue/claim-item.sh`, `set-active-wrk.sh` | `claim.yaml` + `activation.yaml` + active WRK state |
 | 9. Work-Queue Routing Skill | `/work` | `scripts/agents/work.sh` | Routing evidence in logs |
 | 10. Work Execution | execute flow | `scripts/agents/execute.sh` | Execution changes + examples |
-| 11. Artifact Generation | review/output flow + **`workflow-html`** | `generate-html-review.py --type implementation` | canonical implementation HTML + evidence artifacts |
+| 11. Artifact Generation | review/output flow + **`workflow-html`** | `generate-html-review.py WRK-NNN --lifecycle` | lifecycle HTML + evidence artifacts |
 | 12. TDD / Eval | test/eval flow | `uv run --no-project pytest ...` | Test/eval outputs |
 | 13. Agent Cross-Review | implementation review | `cross-review-package.md` | provider verdicts + finding closure |
 | 14. Verify Gate Evidence | gate verifier | `scripts/work-queue/verify-gate-evidence.py` | PASS/WARN/FAIL gate ledger + `gate-evidence-summary.{md,json}` |
 | 15. Future Work Synthesis | future-work planning | n/a | `future-work.yaml` / follow-up WRKs |
 | 16. Resource Intelligence Update | resource update | n/a | `resource-intelligence-update.yaml` |
-| 17. User Review - Implementation | close review gate + **`workflow-html`** | `generate-html-review.py --type close`, `log-user-review-browser-open.sh`, `log-user-review-publish.sh` | canonical close HTML opened in default browser + `user-review-close.yaml` + publish evidence |
+| 17. User Review - Implementation | close review gate + **`workflow-html`** | `generate-html-review.py WRK-NNN --lifecycle`, `log-user-review-browser-open.sh`, `log-user-review-publish.sh` | lifecycle HTML opened in default browser + `user-review-close.yaml` + publish evidence |
 | 18. Reclaim | continuity recovery | n/a | `reclaim.yaml` when triggered |
-| 19. Close | close gate + **`workflow-html`** | `scripts/work-queue/close-item.sh` | auto-generates close HTML via `generate-html-review.py --type close` + validated evidence |
+| 19. Close | close gate + **`workflow-html`** | `scripts/work-queue/close-item.sh` | auto-regenerates lifecycle HTML via `generate-html-review.py WRK-NNN --lifecycle` + validated evidence |
 | 20. Archive | archive gate | `scripts/work-queue/archive-item.sh` | archived state + regenerated index |
 
 Template for per-WRK stage ledger:

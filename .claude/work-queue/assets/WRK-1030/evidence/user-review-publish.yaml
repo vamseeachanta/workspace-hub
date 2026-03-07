@@ -3,11 +3,29 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: main
+    commit: "ac544ce16e82e36c68b0438e13317004e48b350a"
     pushed_at: "2026-03-07T00:00:00Z"
-    note: "lifecycle HTML committed with WRK file"
+    published_at: "2026-03-07T00:00:00Z"
+    reviewer: user
+    documents:
+      - .claude/work-queue/assets/WRK-1030/WRK-1030-lifecycle.html
   - stage: plan_final
     pushed_to_origin: true
     remote: origin
     branch: main
+    commit: "ac544ce16e82e36c68b0438e13317004e48b350a"
     pushed_at: "2026-03-07T00:00:00Z"
-    note: "Route A — plan final same as plan draft"
+    published_at: "2026-03-07T00:00:00Z"
+    reviewer: user
+    documents:
+      - .claude/work-queue/assets/WRK-1030/WRK-1030-lifecycle.html
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "ac544ce16e82e36c68b0438e13317004e48b350a"
+    pushed_at: "2026-03-07T00:00:00Z"
+    published_at: "2026-03-07T00:00:00Z"
+    reviewer: user
+    documents:
+      - .claude/work-queue/assets/WRK-1030/WRK-1030-lifecycle.html

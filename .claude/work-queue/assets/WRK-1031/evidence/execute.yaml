@@ -1,0 +1,33 @@
+wrk_id: WRK-1031
+executed_at: 2026-03-07
+executor: claude
+
+phases_completed:
+  - id: P1
+    name: Stateless lifecycle generator
+    summary: >
+      Added generate_lifecycle(), detect_stage_statuses(), render_lifecycle_stage_body()
+      to scripts/work-queue/generate-html-review.py. Added --lifecycle CLI flag.
+      --type flags deprecated and removed. 5 new tests (63 total pass).
+
+  - id: P2
+    name: Migration and skill updates
+    summary: >
+      Regenerated WRK-1028 and WRK-1029 lifecycle HTMLs via --lifecycle.
+      Deleted 5 snapshot HTML files (plan-draft-review.html, plan-final-review.html,
+      implementation-review.html, workflow-final-review.html).
+      Rewrote workflow-html SKILL.md v1.5.0 (§2 JS, §3-6 lifecycle model).
+      Updated coordination/work-queue SKILL.md Stage Skills Matrix.
+
+files_changed:
+  - scripts/work-queue/generate-html-review.py
+  - tests/unit/test_generate_html_review.py
+  - .claude/skills/workspace-hub/workflow-html/SKILL.md
+  - .claude/skills/coordination/workspace/work-queue/SKILL.md
+  - .claude/work-queue/assets/WRK-1028/WRK-1028-lifecycle.html
+  - .claude/work-queue/assets/WRK-1029/WRK-1029-lifecycle.html
+  - "[DELETED] .claude/work-queue/assets/WRK-1028/plan-draft-review.html"
+  - "[DELETED] .claude/work-queue/assets/WRK-1028/workflow-final-review.html"
+  - "[DELETED] .claude/work-queue/assets/WRK-1029/plan-draft-review.html"
+  - "[DELETED] .claude/work-queue/assets/WRK-1029/plan-final-review.html"
+  - "[DELETED] .claude/work-queue/assets/WRK-1029/implementation-review.html"

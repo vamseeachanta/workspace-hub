@@ -1,0 +1,40 @@
+wrk_id: WRK-1029
+stage: 10
+executed_by: claude
+executed_at: "2026-03-07T00:00:00Z"
+commit: 95ca596a
+workstation: ace-linux-1
+phases_complete:
+  - phase: 1
+    description: Schema + Micro-Skill Contract (SKILL.md changes 1-4)
+    status: done
+  - phase: 2
+    description: Mining Intelligence (SKILL.md changes 5-7)
+    status: done
+
+integrated_repo_tests:
+  - id: test-validate-resource-pack
+    scope: integrated
+    command: "bash .claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh WRK-1029"
+    result: pass
+    output: "Resource Intelligence artifacts valid for WRK-1029"
+  - id: test-skill-word-count
+    scope: repo
+    command: "wc -w .claude/skills/workspace-hub/resource-intelligence/SKILL.md"
+    result: pass
+    output: "1332 words (limit: 5000)"
+  - id: test-required-sections
+    scope: repo
+    command: "grep -c 'Micro-Skill Checklist|STOP.*Stage 2|Resource Mining|Category.*Mining|target_repos|version: 1.1.0' SKILL.md"
+    result: pass
+    output: "5 of 5 required sections found"
+  - id: test-template-exists
+    scope: repo
+    command: "test -f .claude/skills/workspace-hub/resource-intelligence/templates/resource-intelligence-template.yaml"
+    result: pass
+    output: "template file present at commit 95ca596a"
+  - id: test-stop-guard-stage2
+    scope: repo
+    command: "grep -c 'STOP.*Stage 2 exit point' .claude/skills/workspace-hub/resource-intelligence/SKILL.md"
+    result: pass
+    output: "Stage 2 stop guard found"

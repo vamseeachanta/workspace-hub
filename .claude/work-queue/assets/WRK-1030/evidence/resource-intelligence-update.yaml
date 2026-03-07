@@ -1,0 +1,9 @@
+wrk_id: WRK-1030
+updated_at: "2026-03-07T00:00:00Z"
+additions:
+  - path: .claude/commands/workspace-hub/resume.md
+    type: slash-command
+    purpose: resume WRK from checkpoint — reads checkpoint.yaml, loads entry_reads
+  - path: .claude/work-queue/assets/WRK-NNN/checkpoint.yaml
+    type: schema-note
+    purpose: next_action + context_summary must be filled manually before /clear

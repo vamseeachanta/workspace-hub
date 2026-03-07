@@ -3,29 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WRK-1029 Lifecycle — resource-intelligence skill v1.1.0</title>
+  <title>WRK-1029 Lifecycle — Align resource-intelligence skill with Stage 2 micro-skill c</title>
   <style>
-:root {
-  --bg:#f3efe6; --panel:#fffdf8; --ink:#172126; --muted:#55636b;
-  --accent:#0f766e; --accent-2:#8a5a2b; --line:#d9d0c0;
+:root{--bg:#f3efe6;--panel:#fffdf8;--ink:#172126;--muted:#55636b;
+  --accent:#0f766e;--accent-2:#8a5a2b;--line:#d9d0c0;
   --shadow:0 12px 32px rgba(20,33,38,0.07);
-  --done:#166534; --done-bg:#dcfce7;
-  --active:#92400e; --active-bg:#fef3c7;
-  --pending:#55636b; --pending-bg:#f1f5f9;
-  --blocked:#991b1b; --blocked-bg:#fee2e2;
-  --na:#6b7280; --na-bg:#f3f4f6;
-}
+  --done:#166534;--done-bg:#dcfce7;--active:#92400e;--active-bg:#fef3c7;
+  --pending:#55636b;--pending-bg:#f1f5f9;--na:#6b7280;--na-bg:#f3f4f6;}
 *{box-sizing:border-box;}
 body{font-family:Georgia,"Times New Roman",serif;
   background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
   color:var(--ink);line-height:1.55;margin:0;}
-a{color:var(--accent);text-decoration:none;}
-a:hover{text-decoration:underline;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
 code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;
   background:rgba(27,31,35,0.06);padding:.15em .35em;border-radius:3px;font-size:.86em;}
 pre{background:#f6f8fa;border:1px solid var(--line);border-radius:7px;
   padding:12px 14px;overflow-x:auto;font-size:.82rem;margin:10px 0;}
-
 .hero{padding:36px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
   background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
 .hero-inner{max-width:1100px;margin:0 auto;}
@@ -38,7 +31,6 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   padding:5px 10px;font-size:.8rem;}
 .pill strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
   color:var(--accent-2);display:block;margin-bottom:1px;}
-
 .stage-strip{background:var(--panel);border-bottom:1px solid var(--line);
   padding:12px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
 .stage-strip-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
@@ -53,10 +45,9 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   box-shadow:0 0 0 2px var(--active);animation:pulse 2s infinite;}
 .sc-pending{background:var(--pending-bg);color:var(--pending);}
 .sc-na{background:var(--na-bg);color:var(--na);}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--active);}50%{box-shadow:0 0 0 4px rgba(146,64,14,0.3);}}
-
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--active);}
+  50%{box-shadow:0 0 0 4px rgba(146,64,14,0.3);}}
 .content{max-width:1100px;margin:0 auto;padding:24px 24px 64px;}
-
 .stage-section{margin-bottom:16px;border-radius:14px;border:1px solid var(--line);
   background:var(--panel);box-shadow:var(--shadow);overflow:hidden;}
 .stage-header{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;
@@ -82,49 +73,44 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
 .chevron{font-size:.75rem;color:var(--muted);transition:transform .2s;}
 .stage-body{padding:0 18px 16px;border-top:1px solid var(--line);}
 .stage-body.collapsed{display:none;}
-
 .schema{background:#f8f9fa;border:1px solid var(--line);border-radius:8px;
   padding:12px 14px;font-size:.82rem;margin:12px 0;}
-.schema-row{display:grid;grid-template-columns:130px 1fr;gap:4px 10px;margin:3px 0;}
+.schema-row{display:grid;grid-template-columns:160px 1fr;gap:4px 10px;margin:3px 0;}
 .schema-key{color:var(--accent);font-family:monospace;font-weight:600;}
 .schema-val{color:var(--ink);}
-.schema-val.empty{color:var(--muted);font-style:italic;}
-
 .section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
   color:var(--accent-2);font-weight:700;margin:14px 0 6px;}
 .item-list{margin:0;padding:0 0 0 18px;font-size:.87rem;}
 .item-list li{margin:3px 0;color:var(--muted);}
 .item-list li strong{color:var(--ink);}
-.divider{border:none;border-top:1px solid var(--line);margin:14px 0;}
+.ac-list{margin:0;padding:0 0 0 18px;font-size:.85rem;}
+.ac-list li{margin:4px 0;color:var(--muted);}
+.ac-list li strong{color:var(--ink);}
 .awaiting{background:var(--active-bg);border:1px solid #fcd34d;border-radius:8px;
   padding:10px 14px;font-size:.86rem;color:var(--active);margin:12px 0;}
-.pending-note{background:var(--pending-bg);border:1px solid var(--line);border-radius:8px;
-  padding:10px 14px;font-size:.86rem;color:var(--pending);margin:12px 0;}
-.open-q{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;
-  padding:10px 14px;font-size:.86rem;color:#1e40af;margin:12px 0;}
-
-@media(max-width:700px){
-  .stage-header{grid-template-columns:36px 1fr;}.sbadges{display:none;}
-  .schema-row{grid-template-columns:1fr;}
-}
-@media print{body{background:#fff;}.stage-strip{position:static;}.stage-body.collapsed{display:block;}}
-  </style>
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.84rem;}
+th,td{border-top:1px solid var(--line);padding:8px 7px;text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.74rem;color:var(--ink);}
+td{color:var(--muted);}td strong{color:var(--ink);}
+@media(max-width:700px){.stage-header{grid-template-columns:36px 1fr;}.sbadges{display:none;}
+  .schema-row{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.stage-strip{position:static;}
+  .stage-body.collapsed{display:block;}}
+</style>
 </head>
 <body>
 
 <header class="hero">
   <div class="hero-inner">
-    <p class="eyebrow">Lifecycle Tracker · Route B · workspace-hub</p>
-    <h1>WRK-1029 — resource-intelligence skill v1.1.0</h1>
-    <p class="lede">Align the resource-intelligence skill with the Stage 2 micro-skill contract: exit artifact schema, mining checklist, category→mining map, target_repos→paths map, and stop guard.</p>
+    <p class="eyebrow">Lifecycle Tracker &middot; Route  &middot; harness</p>
+    <h1>WRK-1029 — Align resource-intelligence skill with Stage 2 micro-skill contract</h1>
+    <p class="lede">Single lifecycle document tracking all 20 stages from capture to archive.</p>
     <div class="meta-row">
-      <div class="pill"><strong>Priority</strong>Medium</div>
-      <div class="pill"><strong>Complexity</strong>Medium · Route B</div>
+      <div class="pill"><strong>Priority</strong>medium</div>
       <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
-      <div class="pill"><strong>Orchestrator</strong>Claude</div>
-      <div class="pill"><strong>Category</strong>harness / skills</div>
+      <div class="pill"><strong>Orchestrator</strong>claude</div>
+      <div class="pill"><strong>Category</strong>harness</div>
       <div class="pill"><strong>Created</strong>2026-03-07</div>
-      <div class="pill"><strong>Related</strong>WRK-1028 · WRK-1030</div>
     </div>
   </div>
 </header>
@@ -132,517 +118,392 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
 <nav class="stage-strip">
   <div class="stage-strip-inner">
     <span class="stage-strip-label">Stages</span>
-    <a href="#s1"  class="sc sc-done"    title="01 Capture">1</a>
-    <a href="#s2"  class="sc sc-done"    title="02 Resource Intelligence">2</a>
-    <a href="#s3"  class="sc sc-done"    title="03 Triage">3</a>
-    <a href="#s4"  class="sc sc-done"    title="04 Plan Draft">4</a>
-    <a href="#s5"  class="sc sc-done"    title="05 User Review — Plan Draft">5</a>
-    <a href="#s6"  class="sc sc-done"    title="06 Cross-Review">6</a>
-    <a href="#s7"  class="sc sc-active"  title="07 User Review — Plan Final (ACTIVE)">7</a>
-    <a href="#s8"  class="sc sc-pending" title="08 Claim / Activation">8</a>
-    <a href="#s9"  class="sc sc-pending" title="09 Work-Queue Routing">9</a>
-    <a href="#s10" class="sc sc-pending" title="10 Work Execution — Phase 1">10</a>
-    <a href="#s11" class="sc sc-pending" title="11 Artifact Generation">11</a>
-    <a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a>
-    <a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a>
-    <a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a>
-    <a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a>
-    <a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a>
-    <a href="#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a>
-    <a href="#s18" class="sc sc-na"      title="18 Reclaim (N/A unless continuity breaks)">18</a>
-    <a href="#s19" class="sc sc-pending" title="19 Close">19</a>
-    <a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
+    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-active" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-done" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-pending" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-done" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-done" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-done" title="10 Work Execution">10</a><a href="#s11" class="sc sc-done" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-done" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-pending" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
   </div>
 </nav>
 
 <div class="content">
 
-<!-- ════ STAGE 1 ════ -->
 <section class="stage-section" id="s1">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">1</div>
     <div>
       <div class="stitle">Capture</div>
-      <div class="smeta">2026-03-07 · human_session · light</div>
+      <div class="smeta">human_session · light</div>
     </div>
     <div class="sbadges">
       <span class="badge b-done">done</span>
       <span class="badge b-human">human_session</span>
-      <span class="badge b-light">light</span>
+      
       <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T00:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">WRK captured after skill maturity audit for WRK-1028 dependencies. resource-intelligence skill (v1.0.0) identified with exit artifact schema mismatch vs Stage 2 contract.</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>pending/WRK-1029.md</code> — frontmatter complete: id, title, mission, category=harness, subcategory=skills</li>
-    </ul>
-    <div class="section-label">Summary</div>
-    <p style="font-size:.87rem;color:var(--muted);">
-      Skill audit found resource-intelligence v1.0.0 documents <code>resource-intelligence-summary.md</code> as exit artifact,
-      but <code>verify-gate-evidence.py</code> checks for <code>evidence/resource-intelligence.yaml</code> with
-      <code>completion_status</code> and <code>skills.core_used ≥3</code>. Skill also missing micro-skill checklist and stop guard for task_agent invocation.
-    </p>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">Align resource-intelligence skill with Stage 2 micro-skill contract</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val"></span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">medium</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>pending/WRK-1029.md</code></li></ul>
   </div>
 </section>
-
-<!-- ════ STAGE 2 ════ -->
 <section class="stage-section" id="s2">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">2</div>
     <div>
       <div class="stitle">Resource Intelligence</div>
-      <div class="smeta">2026-03-07 · chained_agent · medium</div>
+      <div class="smeta">chained_agent · medium</div>
     </div>
     <div class="sbadges">
       <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
-      <span class="badge b-medium">medium</span>
+      
       <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T00:30:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">continue_to_planning</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">No P1 gaps. P2: no template for evidence/resource-intelligence.yaml (agents invent schema each run). Existing skill infra confirmed: SKILL.md, templates/, scripts/, tests/.</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>evidence/resource-intelligence.yaml</code> — domain.problem, domain.architecture_decision, existing_files, skills.core_used ≥3, constraints, completion_status: continue_to_planning</li>
-    </ul>
-    <div class="section-label">Key findings</div>
-    <ul class="item-list">
-      <li><strong>Real schema:</strong> confirmed from WRK-1015/WRK-570/WRK-690 passing examples — wrk_id, generated_at, stage, existing_files[], skills.core_used[], completion_status, top_p1_gaps[]</li>
-      <li><strong>Existing infra:</strong> SKILL.md v1.0.0, init-resource-pack.sh, validate-resource-pack.sh, sync-maturity-summary.py, templates/, tests/</li>
-      <li><strong>Mining gap discovered:</strong> SKILL.md doesn't define what categories of resources to mine or how WRK fields (category, subcategory, target_repos) drive mining — agents invent this logic each run</li>
-      <li><strong>Constraints:</strong> SKILL.md &lt;5000 words; no README.md in skill folder; backward-compat with passing examples</li>
-    </ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">completion_status</span><span class="schema-val">continue_to_planning</span></div><div class="schema-row"><span class="schema-key">domain.problem</span><span class="schema-val">resource-intelligence SKILL.md v1.0.0 documents resource-pack.md + resource-intelligence-summary.md as exit artifacts, b</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">Update SKILL.md in-place (no new files except one template). Add evidence/resource-intelligence.yaml as the primary exit</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
   </div>
 </section>
-
-<!-- ════ STAGE 3 ════ -->
 <section class="stage-section" id="s3">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">3</div>
     <div>
       <div class="stitle">Triage</div>
-      <div class="smeta">2026-03-07 · chained_agent · light</div>
+      <div class="smeta">chained_agent · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-done">done</span>
+      <span class="badge b-active">active</span>
       <span class="badge b-chain">chained_agent</span>
-      <span class="badge b-light">light</span>
-      <span class="chevron">▲</span>
+      
+      <span class="chevron">▼</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T00:35:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">upgraded — simple→medium, Route A→B</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">User expanded scope to include 3 new additions (mining checklist, category→mining map, target_repos→paths). Route B adopted: 2 implementation phases + Codex cross-review between phases.</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>working/WRK-1029.md</code> frontmatter — complexity: medium, route: B, workstations confirmed</li>
-    </ul>
+    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">ace-linux-1</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
   </div>
 </section>
-
-<!-- ════ STAGE 4 ════ -->
 <section class="stage-section" id="s4">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">4</div>
     <div>
       <div class="stitle">Plan Draft</div>
-      <div class="smeta">2026-03-07 · chained_agent · medium</div>
+      <div class="smeta">chained_agent · medium</div>
     </div>
     <div class="sbadges">
       <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
-      <span class="badge b-medium">medium</span>
+      
       <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T00:40:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">draft complete — awaiting Stage 5 user review</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">Inline plan (Route B). 2 files: SKILL.md edit + templates/resource-intelligence-template.yaml (new). 7 SKILL.md changes across 2 phases. 2 open questions for user at Stage 5.</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>plan-draft-review.html</code> — inline plan with Phase 1 + Phase 2 breakdown</li>
-      <li><code>WRK-1029-lifecycle.html</code> (this file)</li>
-    </ul>
-    <div class="section-label">Plan summary</div>
-    <ul class="item-list">
-      <li><strong>Phase 1 — Schema + Micro-Skill Contract:</strong> primary exit artifact → <code>evidence/resource-intelligence.yaml</code>; schema inline; 6-item checklist + stop guard; template file; version → 1.1.0</li>
-      <li><strong>Phase 2 — Mining Intelligence:</strong> Resource Mining Checklist (9 categories); Category→Mining Map (WRK category → mining priorities); target_repos→Paths (repo names → src/scripts/specs paths)</li>
-      <li><strong>Cross-review:</strong> Codex reviews Phase 1 before Phase 2 proceeds</li>
-      <li><strong>Tests:</strong> verify-gate-evidence.py WRK-1029 → PASS; validate-resource-pack.sh → exit 0</li>
-    </ul>
-    <div class="section-label">Open questions for Stage 5</div>
-    <div class="open-q">
-      <strong>Q1.</strong> Should <code>domain.problem</code> and <code>domain.architecture_decision</code> be <em>required</em> fields in the schema, or <em>optional</em>? (Real passing examples from WRK-1015 don't have them.)<br><br>
-      <strong>Q2.</strong> Should the stop guard apply to Stage 16 (Resource Intelligence Update) as well, or Stage 2 only?
-    </div>
+    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ `SKILL.md` documents `evidence/resource-intelligence.yaml` as the primary gate-passing exit artifact with full inline schema (`wrk_id`, `generated_at`, `stage`, `domain.problem`, `domain.architecture_decision`, `existing_files[]`, `skills.core_used[]` ≥3, `constraints[]`, `completion_status`, `top_p1_gaps[]`)</li><li>☐ `resource-intelligence-summary.md` demoted to optional companion (not removed)</li><li>☐ `templates/resource-intelligence-template.yaml` created with all fields pre-filled and inline comments</li><li>☐ `## Resource Mining Checklist` section in SKILL.md — ordered table of 9 categories (Skills, Prior WRKs, Memory, Existing code/scripts, Specs/plans, Workspace docs, Document index, Mounted sources, Online/additive) with `Where to look` and `When relevant` columns</li><li>☐ `## Category→Mining Map` section — table mapping WRK `category` values (harness, engineering, data, platform, business, maintenance, personal) to which mining categories to prioritize and which to skip</li><li>☐ `## target_repos→Paths` section — table mapping repo names to the `src/`, `scripts/`, `specs/` paths to inventory during mining</li><li>☐ `## Micro-Skill Checklist (Stage 2)` — 6-item ordered checklist ending with stop guard</li><li>☐ Stop guard callout block: &quot;do NOT start implementation — exit after writing evidence/resource-intelligence.yaml&quot;</li><li>☐ `version: 1.0.0` → `1.1.0` with changelog entry</li><li>☐ `verify-gate-evidence.py WRK-1029` passes on Stage 2 evidence already written</li><li>☐ `validate-resource-pack.sh` runs without error on a minimal test asset dir</li></ul><div class="section-label">Plan</div><ul class="item-list"><li>Route B — two phases, cross-review between phases.</li><li>**Files:**</li><li>- `.claude/skills/workspace-hub/resource-intelligence/SKILL.md` (edit)</li><li>- `.claude/skills/workspace-hub/resource-intelligence/templates/resource-intelligence-template.yaml` (new)</li><li>**Phase 1 — Schema + Micro-Skill Contract** (SKILL.md changes 1-2):</li><li>1. Replace `Required Outputs` — `evidence/resource-intelligence.yaml` becomes gate-passing primary artifact; document full schema inline; demote `resource-pack.md`/`resource-intelligence-summary.md` to optional companions</li><li>2. Add `## Micro-Skill Checklist (Stage 2)` — 6-item ordered checklist + stop guard callout</li><li>3. Add `templates/resource-intelligence-template.yaml` — all required fields pre-filled with comments</li><li>4. Bump version → `1.1.0`, add changelog</li><li>**Phase 2 — Mining Intelligence*</li></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-1029.md</code></li></ul>
   </div>
 </section>
-
-<!-- ════ STAGE 5 — ACTIVE ════ -->
 <section class="stage-section" id="s5">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">5</div>
     <div>
       <div class="stitle">User Review — Plan Draft</div>
-      <div class="smeta">2026-03-07 · human_session · heavy · GATE</div>
+      <div class="smeta">human_session · heavy · GATE</div>
     </div>
     <div class="sbadges">
       <span class="badge b-done">done</span>
       <span class="badge b-human">human_session</span>
-      <span class="badge b-heavy">heavy</span>
       <span class="badge b-gate">gate</span>
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div>
-      <div class="schema-row"><span class="schema-key">Q1 — domain fields</span><span class="schema-val">Required in schema + template; WARN in gatepass; follow-up WRK to upgrade to FAIL after 3 production runs</span></div>
-      <div class="schema-row"><span class="schema-key">Q2 — stop guard</span><span class="schema-val">Both Stage 2 and Stage 16</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>evidence/user-review-plan-draft.yaml</code> — decision: approved, Q1+Q2 decisions, scope confirmations ✓</li>
-    </ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
   </div>
 </section>
-
-<!-- ════ STAGE 6 ════ -->
 <section class="stage-section" id="s6">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">6</div>
     <div>
-      <div class="stitle">Cross-Review (Codex)</div>
-      <div class="smeta">pending · task_agent · medium</div>
+      <div class="stitle">Cross-Review</div>
+      <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-active">active</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
-      <span class="badge b-medium">medium</span>
-      <span class="chevron">▼</span>
+      
+      <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewer</span><span class="schema-val">Codex</span></div>
-      <div class="schema-row"><span class="schema-key">verdict</span><span class="schema-val">REQUEST_CHANGES → all findings resolved</span></div>
-      <div class="schema-row"><span class="schema-key">H1 resolved</span><span class="schema-val">Separate stop guards per stage (Stage 2 → resource-intelligence.yaml; Stage 16 → resource-intelligence-update.yaml)</span></div>
-      <div class="schema-row"><span class="schema-key">H2 resolved</span><span class="schema-val">Option A — resource-intelligence-summary.md stays required; consumers unchanged</span></div>
-      <div class="schema-row"><span class="schema-key">M1 resolved</span><span class="schema-val">SKILL.md will distinguish gate-verified vs recommended fields</span></div>
-      <div class="schema-row"><span class="schema-key">M2 resolved</span><span class="schema-val">2 checklist items added: create evidence/ path; prohibit plan/spec/code edits</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>evidence/cross-review-phase1.md</code> — Codex verdict + all finding resolutions ✓</li>
-    </ul>
-    <div class="section-label">Scope</div>
-    <ul class="item-list">
-      <li>Phase 1 only: exit artifact schema, micro-skill checklist, stop guard, template</li>
-      <li>Focus: schema completeness vs verify-gate-evidence.py expectations; stop-guard language precision</li>
-    </ul>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>evidence/cross-review-phase1.md</code> — Codex verdict (APPROVE / MINOR / MAJOR) + findings</li>
-    </ul>
+    <div class="section-label">Cross-review summary</div><p style="font-size:.85rem;color:var(--muted);">wrk_id: WRK-1029
+stage: 6
+phase: 1
+reviewer: codex
+verdict: REQUEST_CHANGES
+reviewed_at: &quot;2026-03-07T00:00:00Z&quot;
+
+findings:
+  - id: H1
+    severity: high
+    status: resolved
+    finding: &quot;Stop guard w</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li></ul>
   </div>
 </section>
-
-<!-- ════ STAGE 7 ════ -->
 <section class="stage-section" id="s7">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">7</div>
     <div>
       <div class="stitle">User Review — Plan Final</div>
-      <div class="smeta">pending · human_session · heavy · GATE</div>
+      <div class="smeta">human_session · heavy · GATE</div>
     </div>
     <div class="sbadges">
       <span class="badge b-pending">pending</span>
       <span class="badge b-human">human_session</span>
-      <span class="badge b-heavy">heavy</span>
       <span class="badge b-gate">gate</span>
       <span class="chevron">▼</span>
     </div>
   </div>
-  <div class="stage-body">
-    <div class="awaiting">⏳ <strong>Awaiting user approval.</strong> Review final plan before implementation begins.</div>
-    <div class="section-label">Final plan — what will be implemented</div>
-    <ul class="item-list">
-      <li><strong>File 1 (edit):</strong> <code>SKILL.md</code> — combined Stage 2 + Stage 16 contract, separate sections per stage</li>
-      <li><strong>File 2 (new):</strong> <code>templates/resource-intelligence-template.yaml</code></li>
-    </ul>
-    <div class="section-label">Key decisions incorporated from Stage 5 + Stage 6</div>
-    <ul class="item-list">
-      <li>Stage 2 exit → <code>evidence/resource-intelligence.yaml</code>; Stage 16 exit → <code>evidence/resource-intelligence-update.yaml</code></li>
-      <li><code>resource-intelligence-summary.md</code> stays required companion; consumers unchanged</li>
-      <li>Gate-verified fields (completion_status, top_p1_gaps, skills.core_used) distinguished from recommended WARN fields (domain.problem, domain.architecture_decision)</li>
-      <li>Stage 2 checklist: 8 items including path setup + hard stop on artifacts</li>
-      <li>Phase 2: Resource Mining Checklist + Category→Mining Map + target_repos→Paths</li>
-    </ul>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
   </div>
 </section>
-
-<!-- ════ STAGE 8 ════ -->
 <section class="stage-section" id="s8">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">8</div>
     <div>
       <div class="stitle">Claim / Activation</div>
-      <div class="smeta">pending · chained_agent · light</div>
+      <div class="smeta">chained_agent · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
-      <span class="badge b-light">light</span>
-      <span class="chevron">▼</span>
+      
+      <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="pending-note">Blocked by Stage 7. Quota check → write claim.yaml → set active WRK.</div>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">claimed_by</span><span class="schema-val">claude</span></div><div class="schema-row"><span class="schema-key">claimed_at</span><span class="schema-val">2026-03-07T00:00:00Z</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/claim.yaml</code></li></ul>
   </div>
 </section>
-
-<!-- ════ STAGE 9 ════ -->
 <section class="stage-section" id="s9">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">9</div>
     <div>
       <div class="stitle">Work-Queue Routing</div>
-      <div class="smeta">pending · chained_agent · light</div>
+      <div class="smeta">chained_agent · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
-      <span class="badge b-light">light</span>
-      <span class="chevron">▼</span>
+      
+      <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="pending-note">Route B — no compound delegation. Proceed directly to Stage 10 Phase 1.</div>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">claimed_by</span><span class="schema-val">claude</span></div><div class="schema-row"><span class="schema-key">claimed_at</span><span class="schema-val">2026-03-07T00:00:00Z</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/claim.yaml</code></li></ul>
   </div>
 </section>
-
-<!-- ════ STAGE 10 ════ -->
 <section class="stage-section" id="s10">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">10</div>
     <div>
-      <div class="stitle">Work Execution — Phase 1 + Phase 2</div>
-      <div class="smeta">pending · task_agent · heavy</div>
+      <div class="stitle">Work Execution</div>
+      <div class="smeta">task_agent · heavy</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
-      <span class="badge b-heavy">heavy</span>
-      <span class="chevron">▼</span>
+      
+      <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="pending-note">Blocked by Stage 9.</div>
-    <div class="section-label">Phase 1 — Schema + Micro-Skill Contract</div>
-    <ul class="item-list">
-      <li>Edit <code>SKILL.md</code>: replace Required Outputs; document evidence/resource-intelligence.yaml schema inline</li>
-      <li>Edit <code>SKILL.md</code>: add Micro-Skill Checklist (6 items) + stop guard callout</li>
-      <li>Edit <code>SKILL.md</code>: bump version → 1.1.0 + changelog</li>
-      <li>Create <code>templates/resource-intelligence-template.yaml</code></li>
-      <li>→ Codex cross-review of Phase 1 before Phase 2</li>
-    </ul>
-    <div class="section-label">Phase 2 — Mining Intelligence</div>
-    <ul class="item-list">
-      <li>Edit <code>SKILL.md</code>: add Resource Mining Checklist (9 categories ordered table)</li>
-      <li>Edit <code>SKILL.md</code>: add Category→Mining Map (WRK category → mining priorities)</li>
-      <li>Edit <code>SKILL.md</code>: add target_repos→Paths (repo names → src/scripts/specs inventory paths)</li>
-    </ul>
+    <div class="section-label">Execution record</div><p style="color:var(--muted);font-size:.85rem;">Execution evidence present.</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/execute.yaml</code></li></ul>
   </div>
 </section>
-
-<!-- ════ STAGE 11 ════ -->
 <section class="stage-section" id="s11">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">11</div>
     <div>
       <div class="stitle">Artifact Generation</div>
-      <div class="smeta">pending · task_agent · medium</div>
+      <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
-      <span class="badge b-medium">medium</span>
-      <span class="chevron">▼</span>
+      
+      <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="pending-note">Update lifecycle HTML + generate implementation HTML after Stage 10 completes.</div>
+    <div class="section-label">Gate evidence</div><div class="schema"><div class="schema-row"><span class="schema-key">gates</span><span class="schema-val">0/0 gates PASS</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-???-lifecycle.html</code></li></ul>
   </div>
 </section>
-
-<!-- ════ STAGE 12 ════ -->
 <section class="stage-section" id="s12">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">12</div>
     <div>
       <div class="stitle">TDD / Eval</div>
-      <div class="smeta">pending · task_agent · heavy</div>
+      <div class="smeta">task_agent · heavy</div>
     </div>
     <div class="sbadges">
       <span class="badge b-pending">pending</span>
       <span class="badge b-agent">task_agent</span>
-      <span class="badge b-heavy">heavy</span>
+      
       <span class="chevron">▼</span>
     </div>
   </div>
-  <div class="stage-body">
-    <div class="pending-note">Blocked by Stage 10.</div>
-    <div class="section-label">Tests</div>
-    <ul class="item-list">
-      <li><code>uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-1029</code> → all gates PASS</li>
-      <li><code>bash .claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh</code> on test dir → exit 0</li>
-      <li>Grep: <code>evidence/resource-intelligence.yaml</code> contains all required schema fields</li>
-      <li>Grep: SKILL.md contains mining checklist, category map, target_repos map, stop guard</li>
-    </ul>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
   </div>
 </section>
-
-<!-- ════ STAGES 13-16 ════ -->
 <section class="stage-section" id="s13">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">13</div>
-    <div><div class="stitle">Agent Cross-Review</div><div class="smeta">pending · task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
+    <div>
+      <div class="stitle">Agent Cross-Review</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
   </div>
-  <div class="stage-body"><div class="pending-note">Claude + Codex + Gemini review implementation outputs post TDD. Route B: multi-provider.</div></div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
 </section>
-
 <section class="stage-section" id="s14">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">14</div>
-    <div><div class="stitle">Verify Gate Evidence</div><div class="smeta">pending · task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
+    <div>
+      <div class="stitle">Verify Gate Evidence</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▲</span>
+    </div>
   </div>
-  <div class="stage-body"><div class="pending-note">Run <code>verify-gate-evidence.py WRK-1029</code> — all gates must PASS before Stage 15.</div></div>
+  <div class="stage-body">
+    <p style="color:var(--muted);font-size:.85rem;">Gate evidence verified.</p>
+  </div>
 </section>
-
 <section class="stage-section" id="s15">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">15</div>
-    <div><div class="stitle">Future Work Synthesis</div><div class="smeta">pending · task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
+    <div>
+      <div class="stitle">Future Work Synthesis</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
   </div>
-  <div class="stage-body">
-    <div class="pending-note">Generate future-work.yaml. Known candidates: WRK-1030 (skill registry) already captured; validate-resource-pack.sh extension to check evidence/resource-intelligence.yaml schema.</div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
   </div>
 </section>
-
 <section class="stage-section" id="s16">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">16</div>
-    <div><div class="stitle">Resource Intelligence Update</div><div class="smeta">pending · task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
+    <div>
+      <div class="stitle">Resource Intelligence Update</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
   </div>
-  <div class="stage-body"><div class="pending-note">Record any post-execution discoveries in evidence/resource-intelligence-update.yaml.</div></div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
 </section>
-
-<!-- ════ STAGE 17 ════ -->
 <section class="stage-section" id="s17">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">17</div>
     <div>
       <div class="stitle">User Review — Implementation</div>
-      <div class="smeta">pending · human_session · heavy · GATE</div>
+      <div class="smeta">human_session · heavy · GATE</div>
     </div>
     <div class="sbadges">
       <span class="badge b-pending">pending</span>
       <span class="badge b-human">human_session</span>
-      <span class="badge b-heavy">heavy</span>
       <span class="badge b-gate">gate</span>
       <span class="chevron">▼</span>
     </div>
   </div>
-  <div class="stage-body"><div class="pending-note">User reviews implementation HTML + future work + resource updates. Approves before close.</div></div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
 </section>
-
-<!-- ════ STAGE 18 — N/A ════ -->
 <section class="stage-section" id="s18">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">18</div>
-    <div><div class="stitle">Reclaim</div><div class="smeta">n/a unless continuity breaks</div></div>
-    <div class="sbadges"><span class="badge b-na">n/a</span><span class="chevron">▼</span></div>
+    <div>
+      <div class="stitle">Reclaim</div>
+      <div class="smeta">task_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-na">na</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
   </div>
-  <div class="stage-body"><div class="pending-note">Triggered only if session continuity breaks after Stage 8 claim. Not expected for Route B.</div></div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Not applicable for this WRK.</p>
+  </div>
 </section>
-
-<!-- ════ STAGES 19-20 ════ -->
 <section class="stage-section" id="s19">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">19</div>
-    <div><div class="stitle">Close</div><div class="smeta">pending · chained_agent · light</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-chain">chained_agent</span><span class="badge b-light">light</span><span class="chevron">▼</span></div>
+    <div>
+      <div class="stitle">Close</div>
+      <div class="smeta">task_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
   </div>
-  <div class="stage-body"><div class="pending-note">Run <code>close-item.sh WRK-1029 &lt;commit-hash&gt;</code> after Stage 17 approval + all gate evidence verified.</div></div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
 </section>
-
 <section class="stage-section" id="s20">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">20</div>
-    <div><div class="stitle">Archive</div><div class="smeta">pending · chained_agent · light</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-chain">chained_agent</span><span class="badge b-light">light</span><span class="chevron">▼</span></div>
+    <div>
+      <div class="stitle">Archive</div>
+      <div class="smeta">task_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
   </div>
-  <div class="stage-body"><div class="pending-note">Run <code>archive-item.sh WRK-1029</code> after merge-to-main confirmed. Triggers brochure_status: n/a (internal harness skill, no marketing relevance).</div></div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
 </section>
-
-</div><!-- /content -->
+</div>
 
 <script>
 function toggle(header) {
   const body = header.nextElementSibling;
   const chevron = header.querySelector('.chevron');
   const collapsed = body.classList.toggle('collapsed');
-  chevron.textContent = collapsed ? '▼' : '▲';
+  chevron.textContent = collapsed ? '\u25bc' : '\u25b2';
 }
-// Collapse all pending/na stages on load, expand done+active
-document.querySelectorAll('.stage-section').forEach(sec => {
-  const body = sec.querySelector('.stage-body');
-  const chevron = sec.querySelector('.chevron');
-  const isPending = sec.querySelector('.b-pending, .b-na');
-  const isDoneOrActive = sec.querySelector('.b-done, .b-active');
-  if (isPending && !isDoneOrActive) {
-    body.classList.add('collapsed');
-    if (chevron) chevron.textContent = '▼';
-  }
-});
 </script>
 </body>
 </html>

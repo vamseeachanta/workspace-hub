@@ -1,0 +1,7 @@
+wrk_id: WRK-1031
+activated_at: 2026-03-07
+activated_by: claude
+provider: claude
+route: B
+complexity: medium
+claim_type: implementation

@@ -3,30 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WRK-1028 Lifecycle — Stage-isolated WRK lifecycle</title>
+  <title>WRK-1028 Lifecycle — Stage-isolated WRK lifecycle: per-stage skills + fresh-conte</title>
   <style>
-:root {
-  --bg:#f3efe6; --panel:#fffdf8; --ink:#172126; --muted:#55636b;
-  --accent:#0f766e; --accent-2:#8a5a2b; --line:#d9d0c0;
+:root{--bg:#f3efe6;--panel:#fffdf8;--ink:#172126;--muted:#55636b;
+  --accent:#0f766e;--accent-2:#8a5a2b;--line:#d9d0c0;
   --shadow:0 12px 32px rgba(20,33,38,0.07);
-  --done:#166534; --done-bg:#dcfce7;
-  --active:#92400e; --active-bg:#fef3c7;
-  --pending:#55636b; --pending-bg:#f1f5f9;
-  --blocked:#991b1b; --blocked-bg:#fee2e2;
-  --na:#6b7280; --na-bg:#f3f4f6;
-}
+  --done:#166534;--done-bg:#dcfce7;--active:#92400e;--active-bg:#fef3c7;
+  --pending:#55636b;--pending-bg:#f1f5f9;--na:#6b7280;--na-bg:#f3f4f6;}
 *{box-sizing:border-box;}
 body{font-family:Georgia,"Times New Roman",serif;
   background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
   color:var(--ink);line-height:1.55;margin:0;}
-a{color:var(--accent);text-decoration:none;}
-a:hover{text-decoration:underline;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
 code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;
   background:rgba(27,31,35,0.06);padding:.15em .35em;border-radius:3px;font-size:.86em;}
 pre{background:#f6f8fa;border:1px solid var(--line);border-radius:7px;
   padding:12px 14px;overflow-x:auto;font-size:.82rem;margin:10px 0;}
-
-/* ── Header ── */
 .hero{padding:36px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
   background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
 .hero-inner{max-width:1100px;margin:0 auto;}
@@ -39,8 +31,6 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   padding:5px 10px;font-size:.8rem;}
 .pill strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
   color:var(--accent-2);display:block;margin-bottom:1px;}
-
-/* ── Stage strip ── */
 .stage-strip{background:var(--panel);border-bottom:1px solid var(--line);
   padding:12px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
 .stage-strip-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
@@ -55,12 +45,9 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   box-shadow:0 0 0 2px var(--active);animation:pulse 2s infinite;}
 .sc-pending{background:var(--pending-bg);color:var(--pending);}
 .sc-na{background:var(--na-bg);color:var(--na);}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--active);}50%{box-shadow:0 0 0 4px rgba(146,64,14,0.3);}}
-
-/* ── Content ── */
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--active);}
+  50%{box-shadow:0 0 0 4px rgba(146,64,14,0.3);}}
 .content{max-width:1100px;margin:0 auto;padding:24px 24px 64px;}
-
-/* ── Stage sections ── */
 .stage-section{margin-bottom:16px;border-radius:14px;border:1px solid var(--line);
   background:var(--panel);box-shadow:var(--shadow);overflow:hidden;}
 .stage-header{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;
@@ -86,667 +73,430 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
 .chevron{font-size:.75rem;color:var(--muted);transition:transform .2s;}
 .stage-body{padding:0 18px 16px;border-top:1px solid var(--line);}
 .stage-body.collapsed{display:none;}
-
-/* ── Schema block ── */
 .schema{background:#f8f9fa;border:1px solid var(--line);border-radius:8px;
   padding:12px 14px;font-size:.82rem;margin:12px 0;}
-.schema-row{display:grid;grid-template-columns:130px 1fr;gap:4px 10px;margin:3px 0;}
+.schema-row{display:grid;grid-template-columns:160px 1fr;gap:4px 10px;margin:3px 0;}
 .schema-key{color:var(--accent);font-family:monospace;font-weight:600;}
 .schema-val{color:var(--ink);}
-.schema-val.empty{color:var(--muted);font-style:italic;}
-
-/* ── Stage body content ── */
 .section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
   color:var(--accent-2);font-weight:700;margin:14px 0 6px;}
 .item-list{margin:0;padding:0 0 0 18px;font-size:.87rem;}
 .item-list li{margin:3px 0;color:var(--muted);}
 .item-list li strong{color:var(--ink);}
-.divider{border:none;border-top:1px solid var(--line);margin:14px 0;}
+.ac-list{margin:0;padding:0 0 0 18px;font-size:.85rem;}
+.ac-list li{margin:4px 0;color:var(--muted);}
+.ac-list li strong{color:var(--ink);}
 .awaiting{background:var(--active-bg);border:1px solid #fcd34d;border-radius:8px;
   padding:10px 14px;font-size:.86rem;color:var(--active);margin:12px 0;}
-.pending-note{background:var(--pending-bg);border:1px solid var(--line);border-radius:8px;
-  padding:10px 14px;font-size:.86rem;color:var(--pending);margin:12px 0;}
-
-@media(max-width:700px){
-  .stage-header{grid-template-columns:36px 1fr;}.sbadges{display:none;}
-  .schema-row{grid-template-columns:1fr;}
-}
-@media print{body{background:#fff;}.stage-strip{position:static;}.stage-body.collapsed{display:block;}}
-  </style>
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.84rem;}
+th,td{border-top:1px solid var(--line);padding:8px 7px;text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.74rem;color:var(--ink);}
+td{color:var(--muted);}td strong{color:var(--ink);}
+@media(max-width:700px){.stage-header{grid-template-columns:36px 1fr;}.sbadges{display:none;}
+  .schema-row{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.stage-strip{position:static;}
+  .stage-body.collapsed{display:block;}}
+</style>
 </head>
 <body>
 
-<!-- ── Header ────────────────────────────────────────────── -->
 <header class="hero">
   <div class="hero-inner">
-    <p class="eyebrow">Lifecycle Tracker · Route C · workspace-hub</p>
-    <h1>WRK-1028 — Stage-isolated WRK lifecycle</h1>
-    <p class="lede">Per-stage skills + fresh-context entry + exit artifacts. Single document tracking all 20 stages from capture to archive.</p>
+    <p class="eyebrow">Lifecycle Tracker &middot; Route C &middot; harness</p>
+    <h1>WRK-1028 — Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts</h1>
+    <p class="lede">Single lifecycle document tracking all 20 stages from capture to archive.</p>
     <div class="meta-row">
-      <div class="pill"><strong>Priority</strong>High</div>
+      <div class="pill"><strong>Priority</strong>high</div>
       <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
-      <div class="pill"><strong>Orchestrator</strong>Claude</div>
-      <div class="pill"><strong>Category</strong>harness / workflow-enforcement</div>
+      <div class="pill"><strong>Orchestrator</strong>claude</div>
+      <div class="pill"><strong>Category</strong>harness</div>
       <div class="pill"><strong>Created</strong>2026-03-07</div>
     </div>
   </div>
 </header>
 
-<!-- ── Stage Strip ────────────────────────────────────────── -->
 <nav class="stage-strip">
   <div class="stage-strip-inner">
     <span class="stage-strip-label">Stages</span>
-    <a href="#s1"  class="sc sc-done"    title="01 Capture">1</a>
-    <a href="#s2"  class="sc sc-done"    title="02 Resource Intelligence">2</a>
-    <a href="#s3"  class="sc sc-done"    title="03 Triage">3</a>
-    <a href="#s4"  class="sc sc-done"    title="04 Plan Draft (revised post Stage 6)">4</a>
-    <a href="#s5"  class="sc sc-done"    title="05 User Review — Plan Draft">5</a>
-    <a href="#s6"  class="sc sc-done"    title="06 Cross-Review — REVISE">6</a>
-    <a href="#s7"  class="sc sc-done"    title="07 User Review — Plan Final — PASSED">7</a>
-    <a href="#s8"  class="sc sc-done"    title="08 Claim / Activation">8</a>
-    <a href="#s9"  class="sc sc-done"    title="09 Work-Queue Routing">9</a>
-    <a href="#s10" class="sc sc-done"    title="10 Work Execution — DONE">10</a>
-    <a href="#s11" class="sc sc-done"    title="11 Artifact Generation — DONE">11</a>
-    <a href="#s12" class="sc sc-done"    title="12 TDD / Eval — DONE">12</a>
-    <a href="#s13" class="sc sc-done"    title="13 Agent Cross-Review — DONE">13</a>
-    <a href="#s14" class="sc sc-done"    title="14 Verify Gate Evidence — DONE">14</a>
-    <a href="#s15" class="sc sc-done"    title="15 Future Work Synthesis — DONE">15</a>
-    <a href="#s16" class="sc sc-done"    title="16 Resource Intelligence Update — DONE">16</a>
-    <a href="#s17" class="sc sc-done"    title="17 User Review — Implementation — DONE">17</a>
-    <a href="#s18" class="sc sc-done"    title="18 Reclaim — N/A">18</a>
-    <a href="#s19" class="sc sc-active"  title="19 Close — ACTIVE">19</a>
-    <a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
+    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-active" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-done" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-pending" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-pending" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-pending" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-done" title="10 Work Execution">10</a><a href="#s11" class="sc sc-done" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-done" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-done" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-done" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-done" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-done" title="19 Close">19</a><a href="#s20" class="sc sc-done" title="20 Archive">20</a>
   </div>
 </nav>
 
 <div class="content">
 
-<!-- ════════════════════════════════════════════════════════
-     STAGE 1 — Capture
-════════════════════════════════════════════════════════ -->
 <section class="stage-section" id="s1">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">1</div>
     <div>
       <div class="stitle">Capture</div>
-      <div class="smeta">2026-03-07 · human_session · light</div>
+      <div class="smeta">human_session · light</div>
     </div>
     <div class="sbadges">
       <span class="badge b-done">done</span>
       <span class="badge b-human">human_session</span>
-      <span class="badge b-light">light</span>
+      
       <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T14:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T14:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">WRK created with full mission, AC list, and design notes from brainstorming session.</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>pending/WRK-1028.md</code> — frontmatter complete: id, title, mission, category, route C</li>
-    </ul>
-    <div class="section-label">Summary</div>
-    <p style="font-size:.87rem;color:var(--muted);">
-      Brainstorming session identified 5 root causes of WRK lifecycle drift (context compaction, context rot,
-      stage jumping, format miss, quality drift). Stage-isolation model proposed: each stage starts fresh
-      from previous stage's exit artifacts — same model as CI/CD job isolation.
-    </p>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">C</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">complex</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">high</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>pending/WRK-1028.md</code></li></ul>
   </div>
 </section>
-
-<!-- ════════════════════════════════════════════════════════
-     STAGE 2 — Resource Intelligence
-════════════════════════════════════════════════════════ -->
 <section class="stage-section" id="s2">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">2</div>
     <div>
       <div class="stitle">Resource Intelligence</div>
-      <div class="smeta">2026-03-07 · chained_agent · medium</div>
+      <div class="smeta">chained_agent · medium</div>
     </div>
     <div class="sbadges">
       <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
-      <span class="badge b-medium">medium</span>
+      
       <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T14:30:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T14:30:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">completion_status: continue_to_planning. All domain questions answered.</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>evidence/resource-intelligence.yaml</code> — domain analysis, architecture decision, constraints, open questions</li>
-    </ul>
-    <div class="section-label">Key findings</div>
-    <ul class="item-list">
-      <li><strong>Architecture decision:</strong> Stage-isolation model — task_agent for autonomous stages, human_session for gates</li>
-      <li><strong>Stage classification:</strong> light (1,3,8,9,18-20), medium (2,4,6,11,13-16), heavy (5,7,10,12,17)</li>
-      <li><strong>Execution flow:</strong> Human(1) → Agent(2,3,4) → Human(5) → Agent(6) → Human(7) → Agent(8-16) → Human(17) → Agent(19,20)</li>
-      <li><strong>Existing infrastructure:</strong> hookify, start/exit scripts pattern, verify-gate-evidence.py, workflow-gatepass, workflow-html</li>
-      <li><strong>Open questions:</strong> hookify content inspection, context_budget enforcement, chaining config, Stage 18 branching</li>
-    </ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">completion_status</span><span class="schema-val">continue_to_planning</span></div><div class="schema-row"><span class="schema-key">domain.problem</span><span class="schema-val">Agents routinely drift from the 20-stage WRK lifecycle. Root causes: (1) context compaction removes hard-stop text mid-s</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">Stage-isolation model. Each stage is independently executable from previous stage&#x27;s exit artifacts. Two invocation types</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
   </div>
 </section>
-
-<!-- ════════════════════════════════════════════════════════
-     STAGE 3 — Triage
-════════════════════════════════════════════════════════ -->
 <section class="stage-section" id="s3">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">3</div>
     <div>
       <div class="stitle">Triage</div>
-      <div class="smeta">2026-03-07 · chained_agent · light</div>
+      <div class="smeta">chained_agent · light</div>
     </div>
     <div class="sbadges">
       <span class="badge b-done">done</span>
       <span class="badge b-chain">chained_agent</span>
-      <span class="badge b-light">light</span>
+      
       <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T14:35:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T14:35:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">Route C confirmed. Workstation: ace-linux-1. Orchestrator: claude. Staged delivery P1→P4 confirmed.</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>pending/WRK-1028.md</code> frontmatter updated — route: C, workstations: [ace-linux-1], orchestrator: claude</li>
-    </ul>
+    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">C</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">complex</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">ace-linux-1</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
   </div>
 </section>
-
-<!-- ════════════════════════════════════════════════════════
-     STAGE 4 — Plan Draft
-════════════════════════════════════════════════════════ -->
 <section class="stage-section" id="s4">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">4</div>
     <div>
       <div class="stitle">Plan Draft</div>
-      <div class="smeta">2026-03-07 · chained_agent · medium</div>
+      <div class="smeta">chained_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-done">done</span>
+      <span class="badge b-active">active</span>
       <span class="badge b-chain">chained_agent</span>
-      <span class="badge b-medium">medium</span>
-      <span class="chevron">▲</span>
+      
+      <span class="chevron">▼</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T15:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T15:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">revised — Stage 6 cross-review findings incorporated (2026-03-07)</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">Revised post Stage 6 REVISE verdict. 4 P1 fixes: Gate 7 predicate → plan-final-review.yaml; Gate 17 → blocks done/WRK-NNN.md; gate-check.py supplemental only; AC-15 process.md added. 5 P2 fixes: chained_agent path; Write-only rule; prompt-package model; section-selector; 7→14 tests.</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>plan-draft-review.html</code> — revised plan (all Stage 6 findings addressed); ready for Stage 7 final review</li>
-      <li><code>WRK-1028-lifecycle.html</code> (this file) — lifecycle tracker</li>
-    </ul>
-    <div class="section-label">Revised plan summary</div>
-    <ul class="item-list">
-      <li><strong>Core design:</strong> Single <code>WRK-NNN-lifecycle.html</code> per WRK; updated at every stage exit; every stage has reviewed_by / confirmed_by / decision schema</li>
-      <li><strong>Invocation:</strong> task_agent (prompt-package → work.sh dispatch), human_session (gates 1/5/7/17), chained_agent (combined prompt for light groups)</li>
-      <li><strong>P1:</strong> gate-check.py supplemental hook (Write-tool only; Gates 5→6/7→8/17→18); canonical authority = verify-gate-evidence.py</li>
-      <li><strong>P2:</strong> start-stage.sh (prompt-package + section-selector) + exit-stage.sh + stage-state.yaml</li>
-      <li><strong>P3:</strong> 20 YAML contracts (≤15 lines) + 20 micro-skills (≤20 lines, Write-only rule in all) + process.md update</li>
-      <li><strong>P4:</strong> Heavy-stage depth enforcement (TDD check, context budget 70% hard-stop)</li>
-      <li><strong>Tests:</strong> 14 unit tests — Gate 5/7/17 block+allow, chained_agent routing, false-positive suppression, claim/close compat</li>
-      <li><strong>Gate 7 artifact:</strong> <code>evidence/plan-final-review.yaml</code> (confirmed_by + confirmed_at + decision: passed) — matches verify-gate-evidence.py G-07</li>
-    </ul>
+    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ 20 per-stage YAML contracts at `scripts/work-queue/stages/stage-NN-&lt;slug&gt;.yaml`</li><li>☐ Each contract: `order`, `name`, `weight`, `invocation` (task_agent|human_session|chained_agent), `human_gate`, `skills_required[]`, `entry_reads[]`, `exit_artifacts[]`, `blocking_condition`, `log_action`, `context_budget_kb`</li><li>☐ `start-stage.sh WRK-NNN &lt;N&gt;`: reads contract → if `invocation=task_agent` spawns Task agent with constructed prompt (contract + entry_reads + micro-skill); if `invocation=human_session` loads artifacts into current session and emits checklist</li><li>☐ `exit-stage.sh WRK-NNN &lt;N&gt;`: validates `exit_artifacts[]`, checks human_gate artifact if `human_gate=true`, writes stage log (`log_action`), updates `stage-state.yaml`, commits, prints Stage N+1 summary</li><li>☐ `stage-state.yaml` at `.claude/state/stage-state.yaml`: `wrk_id`, `current_stage`, `invocation_model`, `entered_at`, `human_gate_pending`, `exit_artifacts_ok`</li><li>☐ 20 micro-skills at `.claude/skills/workspace-hub/stages/stage-NN-&lt;slug&gt;.md` (≤20 lines each)</li><li>☐ Each micro-skill: purpose (1 line), entry artifacts to read, checklist (≤8 items), exit conditions, sub-skills to invoke for heavy stages</li><li>☐ Stage 10: `start-stage.sh` prompt includes TDD micro-skill; `exit-stage.sh` checks ≥1 test file present</li><li>☐ Stage 12: `exit-stage.sh` checks ≥3 test pass records in execute.yaml `integrated_repo_tests`</li><li>☐ Stage 17: `exit-stage.sh` checks `user-review-close.yaml` exists with `decision: approved`</li><li>☐ Gate 5→6: block write of cross-review/execute artifacts until `user-review-plan-draft.yaml` has `decision: approved`</li><li>☐ Gate 7→8: block claim/activation artifacts until `plan-final-review.html` has confirmed_by at line-start</li><li>☐ Gate 17→18: block close/archive artifacts until `user-review-close.yaml` has `decision: approved`</li><li>☐ ≥5 unit tests: happy advance, blocked-by-missing-artifact, human-gate stop, log write, task_agent vs human_session routing</li><li>☐ `verify-gate-evidence.py` reads `stage-state.yaml` as corroborating signal (warn-only for legacy)</li><li>☐ `workflow-gatepass/SKILL.md` + `work-queue-workflow/SKILL.md` reference `start-stage.sh` / `exit-stage.sh`</li></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-1028.md</code></li></ul>
   </div>
 </section>
-
-<!-- ════════════════════════════════════════════════════════
-     STAGE 5 — User Review: Plan Draft  ← ACTIVE
-════════════════════════════════════════════════════════ -->
 <section class="stage-section" id="s5">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">5</div>
     <div>
       <div class="stitle">User Review — Plan Draft</div>
-      <div class="smeta">2026-03-07 · human_session · heavy · GATE</div>
+      <div class="smeta">human_session · heavy · GATE</div>
     </div>
     <div class="sbadges">
       <span class="badge b-done">done</span>
       <span class="badge b-human">human_session</span>
-      <span class="badge b-heavy">heavy</span>
       <span class="badge b-gate">gate</span>
       <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T16:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T16:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">All plan sections reviewed and approved. 10 decisions confirmed. No open questions remaining.</span></div>
-    </div>
-    <hr class="divider">
-    <div class="section-label">Review dialogue — in progress</div>
-    <ul class="item-list">
-      <li><strong>Confirmed:</strong> Single lifecycle HTML per WRK; updated at every stage exit — no separate plan-draft / implementation HTML files</li>
-      <li><strong>Confirmed:</strong> Every stage has reviewed_by / confirmed_by / decision schema — autonomous stages use agent name, human gates require human name</li>
-      <li><strong>Confirmed:</strong> Stage 3 Triage chained with 2+4 as agent-proposed (no separate human session)</li>
-      <li><strong>Confirmed:</strong> Stage 5 Route C = 3 parallel terminals (Claude + Codex + Gemini simultaneously); user switches freely between sessions; each saves plan variant + session log; orchestrator synthesizes combined-plan.md; user approves combined plan</li>
-      <li><strong>Confirmed:</strong> Stage weights — light (4 KB), medium (8 KB), heavy (16 KB)</li>
-      <li><strong>Confirmed:</strong> 4-phase delivery order — P1 gate-check hook → P2 scripts → P3 contracts+micro-skills → P4 heavy enforcement</li>
-      <li><strong>Confirmed:</strong> Gate enforcement = custom <code>.claude/hooks/gate-check.py</code> PreToolUse hook (not hookify markdown); content-checks gate file scoped to active WRK via <code>active-wrk</code> state — no cross-stage approval confusion</li>
-      <li><strong>Confirmed:</strong> /checkpoint and /resume auto-suggested at every stage exit; GATE PASSED banner + strong checkpoint prompt at human gate stages (5, 7, 17); start-stage.sh checks for checkpoint.yaml at human_session entry</li>
-      <li><strong>WRK-1027 consolidation:</strong> generate-html-review.py <code>--stage N --update</code> mode incorporated into WRK-1028 scope — pending final confirmation</li>
-      <li><strong>Confirmed:</strong> context_budget_kb = HARD STOP at 70% (not warn). start-stage.sh + exit-stage.sh both measure entry_reads size; if ≥70% → hard stop + mandatory /checkpoint + new session /resume. Prevents autocompact from silently removing gate instructions.</li>
-      <li><strong>Confirmed:</strong> WRK-1027 absorbed into WRK-1028 scope; Stage 18 auto-writes reclaim.yaml n/a when no checkpoint found; Stages 2+3+4 always chained</li>
-      <li><strong>Confirmed:</strong> Stage 6 + Stage 13 cross-review mandatory with all 3 providers (Claude/Codex/Gemini) for ALL routes — Route A self-review exception removed. Override only if user explicitly states quota unavailable AND explicitly instructs to continue; agent may not self-decide to skip a provider. Override recorded in cross-review.yaml.</li>
-      <li><strong>All open questions resolved. Plan approved — ready for Stage 6.</strong></li>
-    </ul>
-    <div class="section-label">Gate exit artifact</div>
-    <ul class="item-list">
-      <li><code>evidence/user-review-plan-draft.yaml</code> — will be written with <code>decision: approved</code> when Stage 5 concludes</li>
-    </ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
   </div>
 </section>
-
-<!-- ════════════════════════════════════════════════════════
-     STAGES 6–20 — Pending
-════════════════════════════════════════════════════════ -->
-
-<!-- Template for pending stages — collapsed by default -->
 <section class="stage-section" id="s6">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">6</div>
-    <div><div class="stitle">Cross-Review</div><div class="smeta">task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
-  </div>
-  <div class="stage-body collapsed">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude + codex + gemini</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">claude (orchestrator)</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T18:45:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T18:45:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">REVISE — returning to Stage 4 for plan revision</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">4 P1: Gate 7 predicate mismatch, Gate 17 wrong artifact, split-brain enforcement, process.md missing. 5 P2: chained_agent unspecified, Bash bypass, spawn underspecified, section-selector needed, insufficient tests.</span></div>
+    <div>
+      <div class="stitle">Cross-Review</div>
+      <div class="smeta">task_agent · medium</div>
     </div>
-    <div class="section-label">P1 findings (must fix before Stage 7)</div>
-    <ul class="item-list">
-      <li><strong>P1-01:</strong> Gate 7→8 predicate conflicts with verify-gate-evidence.py — use plan_html_review_final_ref artifact</li>
-      <li><strong>P1-02:</strong> Gate 17→18 wrong artifact — block close-item.sh, not reclaim.yaml</li>
-      <li><strong>P1-03:</strong> gate-check.py creates split-brain vs canonical verify-gate-evidence.py; Bash tool bypasses it</li>
-      <li><strong>P1-04:</strong> process.md missing from deliverables — still shows 10-stage lifecycle (governance break)</li>
-    </ul>
-    <div class="section-label">P2 findings</div>
-    <ul class="item-list">
-      <li><strong>P2-01:</strong> chained_agent path unspecified in start-stage.sh</li>
-      <li><strong>P2-02:</strong> Write-only rule for evidence files needed in all micro-skills</li>
-      <li><strong>P2-03:</strong> start-stage.sh produces prompt package; does not own agent instantiation</li>
-      <li><strong>P2-04:</strong> Section-selector needed in entry_reads for lifecycle HTML slicing</li>
-      <li><strong>P2-05:</strong> Tests must cover Gate 7/17 + claim/close/archive compatibility (≥12 total)</li>
-    </ul>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>evidence/cross-review.yaml</code> — verdict: REVISE</li>
-      <li><code>gemini-review.md</code>, <code>codex-review.md</code></li>
-    </ul>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Cross-review summary</div><p style="font-size:.85rem;color:var(--muted);"># WRK-1028 Implementation Cross-Review (Stage 13)
+
+**Review scope**: gate_check.py, start_stage.py, exit_stage.py, 20 stage contracts, 20 micro-skills, tests
+**Date**: 2026-03-07
+**Final verdict**: AP</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li></ul>
   </div>
 </section>
-
 <section class="stage-section" id="s7">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">7</div>
-    <div><div class="stitle">User Review — Plan Final</div><div class="smeta">human_session · heavy · GATE</div></div>
-    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-human">human_session</span><span class="badge b-heavy">heavy</span><span class="badge b-gate">gate ✓ PASSED</span><span class="chevron">▲</span></div>
+    <div>
+      <div class="stitle">User Review — Plan Final</div>
+      <div class="smeta">human_session · heavy · GATE</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-human">human_session</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▼</span>
+    </div>
   </div>
-  <div class="stage-body">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T20:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T20:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">passed</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">All 9 cross-review revisions confirmed. Parallelism indicators added to all 20 stages. Single lifecycle HTML confirmed as the going-forward model (plan folds into Stage 4 section for future WRKs). Stage 8 unlocked.</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>evidence/plan-final-review.yaml</code> — required fields: <code>confirmed_by</code>, <code>confirmed_at</code>, <code>decision: passed</code> (matches verify-gate-evidence.py gate G-07 / plan_html_review_final_ref)</li>
-      <li>Lifecycle HTML Stage 7 section updated with review outcome</li>
-    </ul>
-    <div class="section-label">GATE — Awaiting human review</div>
-    <div class="gate-block" style="background:#fff3cd;border-left-color:#b45309;padding:10px 14px;margin:8px 0;border-radius:0 8px 8px 0;">
-      Review <code>plan-draft-review.html</code> (revised). Confirm all 7 revision items above. Then write <code>evidence/plan-final-review.yaml</code> with <code>decision: passed</code> to unlock Stage 8.
-    </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
   </div>
 </section>
-
 <section class="stage-section" id="s8">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">8</div>
-    <div><div class="stitle">Claim / Activation</div><div class="smeta">chained_agent · light</div></div>
-    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-chain">chained_agent</span><span class="badge b-light">light</span><span class="chevron">▼</span></div>
+    <div>
+      <div class="stitle">Claim / Activation</div>
+      <div class="smeta">chained_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-chain">chained_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
   </div>
   <div class="stage-body collapsed">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T20:05:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T20:05:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">proceed — quota adequate (Claude Max / Codex 54% / Gemini 100%)</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">WRK-1028 moved to working/. claim-evidence.yaml + activation.yaml written. active-wrk set to WRK-1028 on ace-linux-1.</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>evidence/claim-evidence.yaml</code> — quota snapshot + proceed decision</li>
-      <li><code>evidence/activation.yaml</code> — activation timestamp + gate pass confirmation</li>
-      <li><code>working/WRK-1028.md</code> — status: working, percent_complete: 35</li>
-    </ul>
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
   </div>
 </section>
-
 <section class="stage-section" id="s9">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">9</div>
-    <div><div class="stitle">Work-Queue Routing</div><div class="smeta">chained_agent · light</div></div>
-    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-chain">chained_agent</span><span class="badge b-light">light</span><span class="chevron">▼</span></div>
+    <div>
+      <div class="stitle">Work-Queue Routing</div>
+      <div class="smeta">chained_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-chain">chained_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
   </div>
   <div class="stage-body collapsed">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">claude</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T20:06:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T20:06:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">proceed — all skills loaded; 4-phase delivery confirmed</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">Skills: work-queue-workflow, workflow-gatepass, brainstorming, TDD, workflow-html. Delivery: P1→P2→P3→P4. Stage 10 next.</span></div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>logs/WRK-1028-routing.log</code> — skills loaded, routing decision, stage sequence</li>
-    </ul>
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
   </div>
 </section>
-
 <section class="stage-section" id="s10">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">10</div>
-    <div><div class="stitle">Work Execution</div><div class="smeta">task_agent · heavy (TDD mandatory)</div></div>
-    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-heavy">heavy</span><span class="chevron">▼</span></div>
+    <div>
+      <div class="stitle">Work Execution</div>
+      <div class="smeta">task_agent · heavy</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▲</span>
+    </div>
   </div>
-  <div class="stage-body collapsed">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">executed_by</span><span class="schema-val">claude-sonnet-4-6</span></div>
-      <div class="schema-row"><span class="schema-key">executed_at</span><span class="schema-val">2026-03-07T21:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">commit</span><span class="schema-val">db8ec64d</span></div>
-    </div>
-    <div class="section-label">Deliverables</div>
-    <ul class="item-list">
-      <li><code>scripts/work-queue/gate_check.py</code> — PreToolUse Write hook (gates 5/7/17)</li>
-      <li><code>scripts/work-queue/start_stage.py</code> — stage orchestrator (task_agent/human_session/chained_agent)</li>
-      <li><code>scripts/work-queue/exit_stage.py</code> — exit validator with P4 heavy checks</li>
-      <li><code>scripts/work-queue/stages/stage-01 … stage-20</code> — 20 YAML contracts</li>
-      <li><code>.claude/skills/workspace-hub/stages/stage-01 … stage-20</code> — 20 micro-skills</li>
-      <li><code>tests/work-queue/test_stage_lifecycle.py</code> — 17 tests, all PASS</li>
-      <li><code>.claude/work-queue/process.md</code> — updated to 20-stage model (AC-15)</li>
-      <li><code>.claude/settings.json</code> — gate_check.py registered as PreToolUse Write hook</li>
-      <li><code>workflow-gatepass/SKILL.md</code> v1.0.6 + <code>work-queue-workflow/SKILL.md</code> v1.2.0 (AC-13)</li>
-    </ul>
-    <div class="section-label">Exit gate</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">exit_stage.py WRK-1028 10</span><span class="schema-val">✓ PASS — evidence/execute.yaml present, 17 tests pass</span></div>
-    </div>
+  <div class="stage-body">
+    <div class="section-label">Execution record</div><div class="schema"><div class="schema-row"><span class="schema-key">summary</span><span class="schema-val">Implemented stage-isolated WRK lifecycle enforcement system: gate_check.py (PreToolUse Write hook), start_stage.py (stage orchestrator), exit_stage.py (exit validator with P4 heavy-stage enforcement for stages 10/12), 20 YAML stage contracts, 20 micro-skills, process.md updated to 20-stage model, settings.json hook registered, workflow-gatepass + work-queue-workflow SKILL.md updated.
+</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/execute.yaml</code></li></ul>
   </div>
 </section>
-
 <section class="stage-section" id="s11">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">11</div>
-    <div><div class="stitle">Artifact Generation</div><div class="smeta">task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-active">in-progress</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▲</span></div>
-  </div>
-  <div class="stage-body">
-    <div class="section-note">Lifecycle HTML (Stage 10 filled, Stage 11 closed). ac-test-matrix.md written (23/23 PASS).</div>
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">artifacts_generated</span><span class="schema-val">WRK-1028-lifecycle.html (Stage 10 filled, Stage 11 active), ac-test-matrix.md</span></div>
+    <div>
+      <div class="stitle">Artifact Generation</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▲</span>
     </div>
   </div>
+  <div class="stage-body">
+    <div class="section-label">Gate evidence</div><div class="schema"><div class="schema-row"><span class="schema-key">gates</span><span class="schema-val">0/0 gates PASS</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-???-lifecycle.html</code></li></ul>
+  </div>
 </section>
-
 <section class="stage-section" id="s12">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">12</div>
-    <div><div class="stitle">TDD / Eval</div><div class="smeta">task_agent · heavy</div></div>
-    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-heavy">heavy</span><span class="chevron">▼</span></div>
-  </div>
-  <div class="stage-body collapsed">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">ac_matrix</span><span class="schema-val">ac-test-matrix.md — 23/23 PASS, 0 FAIL</span></div>
-      <div class="schema-row"><span class="schema-key">test_runner</span><span class="schema-val">uv run --no-project python -m pytest tests/work-queue/test_stage_lifecycle.py -v → 17 passed</span></div>
-      <div class="schema-row"><span class="schema-key">exit_gate</span><span class="schema-val">exit_stage.py WRK-1028 12 → PASS</span></div>
+    <div>
+      <div class="stitle">TDD / Eval</div>
+      <div class="smeta">task_agent · heavy</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
     </div>
   </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  </div>
 </section>
-
 <section class="stage-section" id="s13">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">13</div>
-    <div><div class="stitle">Agent Cross-Review</div><div class="smeta">task_agent · medium · Codex mandatory</div></div>
-    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
+    <div>
+      <div class="stitle">Agent Cross-Review</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
+    </div>
   </div>
   <div class="stage-body collapsed">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">Claude + Gemini (parallel); Codex deferred</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">orchestrator</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">Provisional APPROVE (Claude APPROVE, Gemini REVISE→APPROVE after P1 fixes)</span></div>
-    </div>
-    <div class="section-label">Review results</div>
-    <ul class="item-list">
-      <li><strong>Claude:</strong> APPROVE — architecture sound, gate_check.py supplemental role clear, 17 tests pass</li>
-      <li><strong>Gemini:</strong> REVISE → APPROVE — 2 P1 findings resolved: (1) gate_check.py path resolved against repo_root not CWD; (2) wrk_id validated against <code>^WRK-\d+$</code> regex before path operations</li>
-      <li><strong>Codex:</strong> Deferred — requires interactive terminal session; captured as FW-03</li>
-    </ul>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li><code>review.md</code> — Provisional APPROVE; gate_check.py line count unchanged; 17 tests still pass</li></ul>
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
   </div>
 </section>
-
 <section class="stage-section" id="s14">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">14</div>
-    <div><div class="stitle">Verify Gate Evidence</div><div class="smeta">task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
-  </div>
-  <div class="stage-body collapsed">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">orchestrator</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">orchestrator</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">11/16 OK — 3 Stage-17-dependent gates pending (expected pre-Stage-17 state)</span></div>
+    <div>
+      <div class="stitle">Verify Gate Evidence</div>
+      <div class="smeta">task_agent · medium</div>
     </div>
-    <div class="section-label">Gate summary</div>
-    <ul class="item-list">
-      <li><strong>11 OK:</strong> plan-draft-review, cross-review, plan-final-review, triage, claim, workstation, stage-evidence, legal-scan, execute (integrated tests), ac-test-matrix, future-work</li>
-      <li><strong>2 WARN:</strong> claim (legacy field), reclaim (absent file — absent = WARN per spec)</li>
-      <li><strong>3 pending Stage 17:</strong> close_review, user-review-close.yaml, stage-evidence stages 17–20</li>
-    </ul>
-    <div class="section-label">Script</div>
-    <ul class="item-list"><li><code>scripts/work-queue/verify-gate-evidence.py WRK-1028</code></li></ul>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <p style="color:var(--muted);font-size:.85rem;">Gate evidence verified.</p>
   </div>
 </section>
-
 <section class="stage-section" id="s15">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">15</div>
-    <div><div class="stitle">Future Work Synthesis</div><div class="smeta">task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
-  </div>
-  <div class="stage-body collapsed">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">orchestrator</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">orchestrator</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">3 recommendations captured; all spun-off-new items have captured: true</span></div>
+    <div>
+      <div class="stitle">Future Work Synthesis</div>
+      <div class="smeta">task_agent · medium</div>
     </div>
-    <div class="section-label">Recommendations</div>
-    <ul class="item-list">
-      <li><strong>FW-01</strong> stage-state.yaml schema + verify-gate-evidence.py corroborating signal (priority: medium)</li>
-      <li><strong>FW-02</strong> generate-html-review.py --update flag for per-stage HTML updates (priority: low, captured: true)</li>
-      <li><strong>FW-03</strong> Codex implementation cross-review for WRK-1028 via interactive terminal (priority: high)</li>
-    </ul>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li><code>evidence/future-work.yaml</code> — all spun-off-new items captured: true</li></ul>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Future work</div><table><tr><th>Title</th><th>Disposition</th><th>Captured</th></tr><tr><td>stage-state.yaml schema + verify-gate-evidence.py corroborating signal</td><td>spun-off-new</td><td>True</td></tr><tr><td>generate-html-review.py --stage N --update mode</td><td>spun-off-new</td><td>True</td></tr><tr><td>Codex implementation cross-review (Stage 13) for WRK-1028</td><td>existing-updated</td><td>True</td></tr></table>
   </div>
 </section>
-
 <section class="stage-section" id="s16">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">16</div>
-    <div><div class="stitle">Resource Intelligence Update</div><div class="smeta">task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
-  </div>
-  <div class="stage-body collapsed">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">orchestrator</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">orchestrator</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">3 patterns documented</span></div>
+    <div>
+      <div class="stitle">Resource Intelligence Update</div>
+      <div class="smeta">task_agent · medium</div>
     </div>
-    <div class="section-label">Patterns captured</div>
-    <ul class="item-list">
-      <li><strong>stage-isolation YAML contract format:</strong> entry_reads/exit_artifacts arrays with file + description; invocation_type/parallelism metadata</li>
-      <li><strong>Path normalization for stage contracts:</strong> strip <code>assets/WRK-NNN/</code> prefix before joining with stage_dir (contracts use full relative path; stage_dir already points there)</li>
-      <li><strong>YAML timestamp quote quirk:</strong> <code>confirmed_at: "2026-..."</code> fails verify's <code>^confirmed_at:\s+[0-9]</code> regex — timestamps must be unquoted in YAML</li>
-    </ul>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li><code>evidence/resource-intelligence-update.yaml</code> — 3 additions</li></ul>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Additions</div><ul class="item-list"><li>{&#x27;type&#x27;: &#x27;pattern&#x27;, &#x27;title&#x27;: &#x27;stage-isolation YAML contract format&#x27;, &#x27;description&#x27;: &#x27;Each stage defined as YAML contract with: order, name, weight, invocation, human_gate, parallelism, skills_required[], entry_reads[], exit_artifacts[], blocking_condition, log_action, context_budget_kb. Gate stages also have: gate_file, gate_field, gate_value. Chained stages have: chained_stages[].\n&#x27;, &#x27;artifact&#x27;: &#x27;scripts/work-queue/stages/&#x27;}</li><li>{&#x27;type&#x27;: &#x27;pattern&#x27;, &#x27;title&#x27;: &#x27;path normalization for stage contracts&#x27;, &#x27;description&#x27;: &quot;Stage contracts use &#x27;assets/WRK-NNN/&#x27; prefix in exit_artifacts, but exit_stage.py stage_dir already points to assets/WRK-NNN. Must strip prefix before os.path.join. Also: done/ paths are queue_root-relative, not stage_dir-relative.\n&quot;, &#x27;artifact&#x27;: &#x27;scripts/work-queue/exit_stage.py&#x27;}</li><li>{&#x27;type&#x27;: &#x27;pattern&#x27;, &#x27;title&#x27;: &#x27;YAML numeric field regex quirk&#x27;, &#x27;description&#x27;: &#x27;verify-gate-evidence.py uses regex r\&#x27;^confirmed_at:\\s+[0-9]\&#x27; which FAILS when value is quoted: \&#x27;confirmed_at: &quot;2026-...&quot;\&#x27;. YAML values must be unquoted dates for this check to pass. Standard: omit quotes for ISO 8601 timestamps.\n&#x27;, &#x27;artifact&#x27;: &#x27;scripts/work-queue/verify-gate-evidence.py&#x27;}</li></ul>
   </div>
 </section>
-
 <section class="stage-section" id="s17">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">17</div>
-    <div><div class="stitle">User Review — Implementation</div><div class="smeta">human_session · heavy · GATE</div></div>
-    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-human">human_session</span><span class="badge b-heavy">heavy</span><span class="badge b-gate">gate</span><span class="chevron">▼</span></div>
-  </div>
-  <div class="stage-body collapsed">
-    <div class="section-label">Review scope</div>
-    <ul class="item-list">
-      <li>Stage 10 — Work Execution: gate_check.py, start_stage.py, exit_stage.py (P4 heavy checks), 20 stage contracts, 20 micro-skills, process.md (AC-15), settings.json hook, SKILL.md refs (AC-13); 17 tests pass</li>
-      <li>Stage 11 — Artifact Generation: lifecycle HTML stages 10–12 updated; ac-test-matrix.md (23/23 PASS)</li>
-      <li>Stage 12 — TDD / Eval: 23/23 ACs PASS; exit_stage.py WRK-1028 12 → PASS</li>
-      <li>Stage 13 — Agent Cross-Review: Claude APPROVE + Gemini REVISE→APPROVE (2 P1 fixes); Codex deferred (FW-03)</li>
-      <li>Stage 14 — Verify Gate Evidence: 11/16 OK; 3 Stage-17-dependent gates pending (expected)</li>
-      <li>Stage 15 — Future Work Synthesis: 3 recommendations captured (FW-01/02/03)</li>
-      <li>Stage 16 — Resource Intelligence Update: 3 patterns documented</li>
-    </ul>
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T22:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T22:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">All stages 10–16 reviewed and approved. 23/23 ACs PASS. 17 tests pass.</span></div>
+    <div>
+      <div class="stitle">User Review — Implementation</div>
+      <div class="smeta">human_session · heavy · GATE</div>
     </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li><code>evidence/user-review-close.yaml</code> — decision: approved</li></ul>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-human">human_session</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-close.yaml</code></li></ul>
   </div>
 </section>
-
 <section class="stage-section" id="s18">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">18</div>
-    <div><div class="stitle">Reclaim</div><div class="smeta">task_agent · light</div></div>
-    <div class="sbadges"><span class="badge b-done">n/a</span><span class="badge b-agent">task_agent</span><span class="badge b-light">light</span><span class="chevron">▼</span></div>
-  </div>
-  <div class="stage-body collapsed">
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">orchestrator</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">orchestrator</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">n/a — no reclaim triggered; execution completed without session loss</span></div>
+    <div>
+      <div class="stitle">Reclaim</div>
+      <div class="smeta">task_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-na">na</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▼</span>
     </div>
   </div>
+  <div class="stage-body collapsed">
+    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Not applicable for this WRK.</p>
+  </div>
 </section>
-
 <section class="stage-section" id="s19">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">19</div>
-    <div><div class="stitle">Close</div><div class="smeta">task_agent · light</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-light">light</span><span class="chevron">▼</span></div>
-  </div>
-  <div class="stage-body collapsed">
-    <div class="pending-note">Not started.</div>
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">—</span></div>
+    <div>
+      <div class="stitle">Close</div>
+      <div class="smeta">task_agent · light</div>
     </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li><code>done/WRK-1028.md</code>, <code>logs/WRK-1028-close.log</code></li></ul>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">status</span><span class="schema-val">archived</span></div><div class="schema-row"><span class="schema-key">commit</span><span class="schema-val">None</span></div></div>
   </div>
 </section>
-
 <section class="stage-section" id="s20">
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">20</div>
-    <div><div class="stitle">Archive</div><div class="smeta">task_agent · light</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-light">light</span><span class="chevron">▼</span></div>
-  </div>
-  <div class="stage-body collapsed">
-    <div class="pending-note">Not started.</div>
-    <div class="section-label">Stage record</div>
-    <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">—</span></div>
+    <div>
+      <div class="stitle">Archive</div>
+      <div class="smeta">task_agent · light</div>
     </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li><code>archive/WRK-1028.md</code>, updated <code>INDEX.md</code></li></ul>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+      
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">status</span><span class="schema-val">archived</span></div><div class="schema-row"><span class="schema-key">commit</span><span class="schema-val">None</span></div></div>
   </div>
 </section>
-
-</div><!-- .content -->
+</div>
 
 <script>
 function toggle(header) {
   const body = header.nextElementSibling;
   const chevron = header.querySelector('.chevron');
   const collapsed = body.classList.toggle('collapsed');
-  chevron.textContent = collapsed ? '▼' : '▲';
+  chevron.textContent = collapsed ? '\u25bc' : '\u25b2';
 }
 </script>
 </body>

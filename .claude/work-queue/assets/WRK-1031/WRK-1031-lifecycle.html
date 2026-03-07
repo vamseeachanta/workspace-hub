@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-1031 Lifecycle — Single lifecycle HTML consolidation</title>
+  <style>
+:root {
+  --bg:#f3efe6; --panel:#fffdf8; --ink:#172126; --muted:#55636b;
+  --accent:#0f766e; --accent-2:#8a5a2b; --line:#d9d0c0;
+  --shadow:0 12px 32px rgba(20,33,38,0.07);
+  --done:#166534; --done-bg:#dcfce7;
+  --active:#92400e; --active-bg:#fef3c7;
+  --pending:#55636b; --pending-bg:#f1f5f9;
+  --blocked:#991b1b; --blocked-bg:#fee2e2;
+  --na:#6b7280; --na-bg:#f3f4f6;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.55;margin:0;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;
+  background:rgba(27,31,35,0.06);padding:.15em .35em;border-radius:3px;font-size:.86em;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:7px;
+  padding:12px 14px;overflow-x:auto;font-size:.82rem;margin:10px 0;}
+
+.hero{padding:36px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;
+  color:var(--accent);font-weight:700;margin:0 0 6px;}
+h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
+.lede{color:var(--muted);font-size:.92rem;margin:0 0 14px;max-width:72ch;}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:5px 10px;font-size:.8rem;}
+.pill strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--accent-2);display:block;margin-bottom:1px;}
+
+.stage-strip{background:var(--panel);border-bottom:1px solid var(--line);
+  padding:12px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.stage-strip-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+.stage-strip-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);margin-right:6px;white-space:nowrap;}
+.sc{display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;font-size:.75rem;font-weight:700;
+  text-decoration:none;transition:transform .15s;}
+.sc:hover{transform:scale(1.15);}
+.sc-done{background:var(--done-bg);color:var(--done);}
+.sc-active{background:var(--active-bg);color:var(--active);
+  box-shadow:0 0 0 2px var(--active);animation:pulse 2s infinite;}
+.sc-pending{background:var(--pending-bg);color:var(--pending);}
+.sc-na{background:var(--na-bg);color:var(--na);}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--active);}50%{box-shadow:0 0 0 4px rgba(146,64,14,0.3);}}
+
+.content{max-width:1100px;margin:0 auto;padding:24px 24px 64px;}
+.stage-section{margin-bottom:16px;border-radius:14px;border:1px solid var(--line);
+  background:var(--panel);box-shadow:var(--shadow);overflow:hidden;}
+.stage-header{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;
+  padding:14px 18px;cursor:pointer;user-select:none;}
+.stage-header:hover{background:rgba(15,118,110,0.03);}
+.snum{font-size:1.5rem;font-weight:800;color:var(--line);text-align:center;line-height:1;}
+.stitle{font-size:.95rem;font-weight:700;color:var(--ink);margin:0;}
+.smeta{font-size:.76rem;color:var(--muted);margin:2px 0 0;}
+.sbadges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.7rem;
+  font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+.b-done{background:var(--done-bg);color:var(--done);}
+.b-active{background:var(--active-bg);color:var(--active);}
+.b-pending{background:var(--pending-bg);color:var(--pending);}
+.b-na{background:var(--na-bg);color:var(--na);}
+.b-human{background:#ede9fe;color:#6d28d9;}
+.b-agent{background:#d1fae5;color:#065f46;}
+.b-chain{background:#dbeafe;color:#1e40af;}
+.b-light{background:#f0fdf4;color:#166534;}
+.b-medium{background:#fef9c3;color:#854d0e;}
+.b-heavy{background:#fee2e2;color:#991b1b;}
+.b-gate{background:#fce7f3;color:#9d174d;}
+.chevron{font-size:.75rem;color:var(--muted);transition:transform .2s;}
+.stage-body{padding:0 18px 16px;border-top:1px solid var(--line);}
+.stage-body.collapsed{display:none;}
+.schema{background:#f8f9fa;border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;font-size:.82rem;margin:12px 0;}
+.schema-row{display:grid;grid-template-columns:160px 1fr;gap:4px 10px;margin:3px 0;}
+.schema-key{color:var(--accent);font-family:monospace;font-weight:600;}
+.schema-val{color:var(--ink);}
+.schema-val.empty{color:var(--muted);font-style:italic;}
+.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--accent-2);font-weight:700;margin:14px 0 6px;}
+.item-list{margin:0;padding:0 0 0 18px;font-size:.87rem;}
+.item-list li{margin:3px 0;color:var(--muted);}
+.item-list li strong{color:var(--ink);}
+.awaiting{background:var(--active-bg);border:1px solid #fcd34d;border-radius:8px;
+  padding:10px 14px;font-size:.86rem;color:var(--active);margin:12px 0;}
+.ac-list{margin:0;padding:0 0 0 18px;font-size:.85rem;}
+.ac-list li{margin:4px 0;color:var(--muted);}
+.ac-list li strong{color:var(--ink);}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.84rem;}
+th,td{border-top:1px solid var(--line);padding:8px 7px;text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.74rem;color:var(--ink);}
+@media(max-width:700px){.stage-header{grid-template-columns:36px 1fr;}.sbadges{display:none;}
+  .schema-row{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.stage-strip{position:static;}.stage-body.collapsed{display:block;}}
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Lifecycle Tracker · Route B · workspace-hub</p>
+    <h1>WRK-1031 — Single lifecycle HTML consolidation</h1>
+    <p class="lede">Add <code>--stage N --update</code> mode to generate-html-review.py so the lifecycle HTML embeds full plan content inline — making separate snapshot files redundant.</p>
+    <div class="meta-row">
+      <div class="pill"><strong>Priority</strong>High</div>
+      <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
+      <div class="pill"><strong>Orchestrator</strong>Claude</div>
+      <div class="pill"><strong>Category</strong>harness / workflow-html</div>
+      <div class="pill"><strong>Created</strong>2026-03-07</div>
+    </div>
+  </div>
+</header>
+
+<nav class="stage-strip">
+  <div class="stage-strip-inner">
+    <span class="stage-strip-label">Stages</span>
+    <a href="#s1"  class="sc sc-done"    title="01 Capture">1</a>
+    <a href="#s2"  class="sc sc-done"    title="02 Resource Intelligence">2</a>
+    <a href="#s3"  class="sc sc-done"    title="03 Triage">3</a>
+    <a href="#s4"  class="sc sc-done"    title="04 Plan Draft">4</a>
+    <a href="#s5"  class="sc sc-done"    title="05 User Review — Plan Draft (APPROVED)">5</a>
+    <a href="#s6"  class="sc sc-done"    title="06 Cross-Review — REVISE (resolved)">6</a>
+    <a href="#s7"  class="sc sc-done"    title="07 User Review — Plan Final (APPROVED)">7</a>
+    <a href="#s8"  class="sc sc-done"    title="08 Claim / Activation">8</a>
+    <a href="#s9"  class="sc sc-pending" title="09 Work-Queue Routing">9</a>
+    <a href="#s10" class="sc sc-pending" title="10 Work Execution">10</a>
+    <a href="#s11" class="sc sc-pending" title="11 Artifact Generation">11</a>
+    <a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a>
+    <a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a>
+    <a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a>
+    <a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a>
+    <a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a>
+    <a href="#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a>
+    <a href="#s18" class="sc sc-na"      title="18 Reclaim — N/A">18</a>
+    <a href="#s19" class="sc sc-pending" title="19 Close">19</a>
+    <a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
+  </div>
+</nav>
+
+<div class="content">
+
+<!-- ════ STAGE 1 ════ -->
+<section class="stage-section" id="s1">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">1</div>
+    <div>
+      <div class="stitle">Capture</div>
+      <div class="smeta">2026-03-07 · human_session · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-human">human_session</span>
+      <span class="badge b-light">light</span>
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div>
+    <div class="schema">
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div>
+      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">Identified during user session comparing WRK-1028/1029 lifecycle HTML vs snapshot files. Data loss confirmed if snapshots deleted. Root cause: generator lacks --stage N --update mode.</span></div>
+    </div>
+    <div class="section-label">Exit artifacts</div>
+    <ul class="item-list">
+      <li><code>pending/WRK-1031.md</code> — frontmatter + mission + ACs + Route B plan</li>
+    </ul>
+    <div class="section-label">Problem context</div>
+    <ul class="item-list">
+      <li><strong>Data loss confirmed:</strong> WRK-1029 plan-draft-review.html has full ACs + phase steps not in lifecycle Stage 4</li>
+      <li><strong>Root cause:</strong> <code>generate-html-review.py</code> has no <code>--stage N --update</code> mode; agents generate snapshots as workaround</li>
+      <li><strong>Design intent violated:</strong> workflow-html SKILL v1.4.0 specifies one lifecycle HTML per WRK; generator doesn't support it yet</li>
+      <li><strong>Affected WRKs:</strong> WRK-1028 (plan-draft snapshot), WRK-1029 (plan-draft + implementation snapshots)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════ STAGE 2 ════ -->
+<section class="stage-section" id="s2">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">2</div>
+    <div>
+      <div class="stitle">Resource Intelligence</div>
+      <div class="smeta">2026-03-07 · chained_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+      <span class="badge b-medium">medium</span>
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div>
+    <div class="schema">
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">claude</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">continue_to_planning</span></div>
+      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">Generator is 1188 lines. render_wrk_html() + generate_review() are clean entry points. Lifecycle HTML uses <section id="sN"> with stage-body div — parseable with html.parser. No P1 blockers.</span></div>
+    </div>
+    <div class="section-label">Exit artifacts</div>
+    <ul class="item-list">
+      <li><code>evidence/resource-intelligence.yaml</code> — domain analysis, existing files, constraints</li>
+    </ul>
+    <div class="section-label">Key findings</div>
+    <ul class="item-list">
+      <li><strong>Generator entry point:</strong> <code>generate_review(wrk_id, artifact_type, output_path)</code> at line 1033 — new <code>update_stage(wrk_id, stage_n, lifecycle_path)</code> function needed alongside it</li>
+      <li><strong>HTML structure:</strong> <code>&lt;section class="stage-section" id="sN"&gt;</code> → <code>&lt;div class="stage-body"&gt;</code> — Python <code>html.parser</code> can locate and replace</li>
+      <li><strong>Stage content gap:</strong> Stage 4 in lifecycle has 4 summary bullets; plan-draft snapshot has ~200 lines including full ACs, numbered phases, gate-pass table</li>
+      <li><strong>Skill updates needed:</strong> workflow-html §6 + work-queue Stage Skills Matrix both reference <code>--type</code> flags that must be replaced with <code>--stage N --update</code></li>
+      <li><strong>Parse library:</strong> stdlib <code>html.parser</code> sufficient; no new deps needed</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════ STAGE 3 ════ -->
+<section class="stage-section" id="s3">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">3</div>
+    <div>
+      <div class="stitle">Triage</div>
+      <div class="smeta">2026-03-07 · chained_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+      <span class="badge b-light">light</span>
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div>
+    <div class="schema">
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">claude</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">Route B · medium · high priority</span></div>
+      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">Route B: Phase 1 = generator, Phase 2 = migrate WRK-1028/1029 + update skills. Single repo (workspace-hub). ace-linux-1 only.</span></div>
+    </div>
+    <div class="section-label">Exit artifacts</div>
+    <ul class="item-list">
+      <li><code>pending/WRK-1031.md</code> frontmatter — complexity: medium, route: B, computer: ace-linux-1</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════ STAGE 4 ════ -->
+<section class="stage-section" id="s4">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">4</div>
+    <div>
+      <div class="stitle">Plan Draft</div>
+      <div class="smeta">2026-03-07 · chained_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+      <span class="badge b-medium">medium</span>
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div>
+    <div class="schema">
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">claude</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">claude</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">draft complete — awaiting Stage 5 user review</span></div>
+    </div>
+    <div class="section-label">Acceptance Criteria</div>
+    <ul class="ac-list">
+      <li><strong>Generator:</strong> <code>--stage N --update</code> mode implemented; stage N section updated/appended with full content</li>
+      <li><strong>Stage 4 content:</strong> ACs as checklist, phase steps as ordered list, open questions</li>
+      <li><strong>Stage 5 content:</strong> user approval record, Q&amp;A decisions, gate-pass status</li>
+      <li><strong>Stage 7 content:</strong> cross-review summary, changes from draft, final approval</li>
+      <li><strong>Stage 11/17 content:</strong> files-changed table, test summary, gate evidence</li>
+      <li><strong>WRK-1029 lifecycle:</strong> Stage 4 embedded with full plan content; plan-draft-review.html + implementation-review.html deleted</li>
+      <li><strong>WRK-1028:</strong> plan-draft-review.html deleted (lifecycle already has equivalent)</li>
+      <li><strong>workflow-html SKILL §6:</strong> updated — snapshot <code>--type</code> flags replaced by <code>--stage N --update</code></li>
+      <li><strong>work-queue SKILL Stage Matrix:</strong> updated columns 5/7/11/17/19</li>
+      <li><strong>Tests:</strong> existing 29 unit tests pass; 2+ new tests for update mode</li>
+    </ul>
+    <div class="section-label">Plan — Phase 1 (generator)</div>
+    <ul class="item-list">
+      <li>1. Add <code>update_lifecycle_stage(lifecycle_html_path, stage_n, content_html)</code> function — parse HTML with <code>html.parser</code>, locate <code>&lt;section id="sN"&gt;</code>, replace <code>stage-body</code> div content</li>
+      <li>2. Add stage-content renderers: <code>render_stage4_body(fm, body_md)</code>, <code>render_stage5_body(approval_yaml)</code>, <code>render_stage11_body(evidence)</code></li>
+      <li>3. Wire <code>--stage N --update [--lifecycle path]</code> CLI flag to these renderers</li>
+      <li>4. Update stage-strip chip status (done/active/pending) to match stage N</li>
+      <li>5. Unit tests: round-trip parse→update→serialize; stage body content coverage</li>
+    </ul>
+    <div class="section-label">Plan — Phase 2 (migrate + skills)</div>
+    <ul class="item-list">
+      <li>1. Run <code>--stage 4 --update</code> on WRK-1029 lifecycle using plan-draft content</li>
+      <li>2. Verify Stage 4 now matches plan-draft-review.html — then delete snapshot</li>
+      <li>3. Delete <code>implementation-review.html</code> from WRK-1029 (no unique content vs lifecycle)</li>
+      <li>4. Delete <code>plan-draft-review.html</code> from WRK-1028</li>
+      <li>5. Update <code>workflow-html/SKILL.md</code> §6 + <code>work-queue/SKILL.md</code> Stage Matrix</li>
+      <li>6. Fix WRK-1027 migration note in workflow-html SKILL §0 → WRK-1031</li>
+    </ul>
+    <div class="section-label">Open questions for Stage 5</div>
+    <div style="background:var(--active-bg);border:1px solid #fcd34d;border-radius:8px;padding:10px 14px;font-size:.86rem;color:var(--active);margin:12px 0;">
+      <strong>Q1.</strong> Should <code>implementation-review.html</code> for WRK-1029 be migrated into lifecycle Stage 10/11 sections before deletion, or is it already covered by the existing lifecycle stage summaries?<br><br>
+      <strong>Q2.</strong> Should <code>--stage N --update</code> also update the stage strip chip status automatically, or leave that as a separate manual step?<br><br>
+      <strong>Q3.</strong> After this WRK, should the <code>--type plan-draft|plan-final|implementation|close</code> flags be deprecated entirely, or kept as a parallel "standalone snapshot" path for special cases?
+    </div>
+    <div class="section-label">Exit artifacts</div>
+    <ul class="item-list">
+      <li><code>WRK-1031-lifecycle.html</code> (this file)</li>
+      <li><code>pending/WRK-1031.md</code> — full plan inline</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════ STAGE 5 — APPROVED ════ -->
+<section class="stage-section" id="s5">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">5</div>
+    <div>
+      <div class="stitle">User Review — Plan Draft</div>
+      <div class="smeta">2026-03-07 · human_session · heavy · GATE</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">approved</span>
+      <span class="badge b-human">human_session</span>
+      <span class="badge b-heavy">heavy</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div>
+    <div class="schema">
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div>
+    </div>
+    <div class="section-label">Q&amp;A decisions</div>
+    <div class="schema">
+      <div class="schema-row"><span class="schema-key">Q1 — impl migration</span><span class="schema-val">Migrate implementation-review.html content into lifecycle Stages 10/11 before deleting</span></div>
+      <div class="schema-row"><span class="schema-key">Q2 — chip update</span><span class="schema-val">Auto-update stage strip chip as part of --stage N --update operation</span></div>
+      <div class="schema-row"><span class="schema-key">Q3 — --type flags</span><span class="schema-val">Deprecate entirely — remove from generator and all skill references</span></div>
+    </div>
+    <div class="section-label">Exit artifacts</div>
+    <ul class="item-list">
+      <li><code>evidence/user-review-plan-draft.yaml</code> — decision: approved, Q1–Q3 locked</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════ STAGES 6–20 — PENDING ════ -->
+<section class="stage-section" id="s6">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">6</div>
+    <div><div class="stitle">Cross-Review — REVISE (resolved)</div><div class="smeta">2026-03-07 · task_agent · medium</div></div>
+    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="chevron">▲</span></div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Reviewers</div>
+    <table>
+      <tr><th>Provider</th><th>Verdict</th><th>Key findings</th><th>Resolved</th></tr>
+      <tr><td>Gemini</td><td><span class="badge b-active">MAJOR</span></td><td>H1: stateful HTML mutation fragile — use stateless regen. M1: html.parser insufficient. M2: no --stage flag needed with regen. L1: migrate from YAML not HTML.</td><td>H1✓ M1✓ M2✓ L1✓</td></tr>
+      <tr><td>Claude</td><td><span class="badge b-active">MAJOR</span></td><td>H1: same as Gemini — stateless regen is canonical pattern already used. M1/M2/L1 same.</td><td>All resolved via plan revision</td></tr>
+    </table>
+    <div class="section-label">Plan revision (resolves H1)</div>
+    <ul class="item-list">
+      <li><strong>Architecture change:</strong> Drop stateful HTML mutation. Add <code>generate_lifecycle(wrk_id)</code> — fully regenerates lifecycle HTML from evidence files on disk, same pattern as existing generator</li>
+      <li><strong>CLI simplified:</strong> <code>--stage N --update</code> → <code>--lifecycle</code>. No HTML parsing needed.</li>
+      <li><strong>Stage detection:</strong> each stage status inferred from canonical evidence file presence (20-stage map defined in plan)</li>
+      <li><strong>Content sources:</strong> stage renderers read YAML/MD only — never scrape HTML snapshots</li>
+    </ul>
+    <div class="section-label">Exit artifacts</div>
+    <ul class="item-list">
+      <li><code>evidence/cross-review-plan.md</code> — Gemini MAJOR + Claude MAJOR, all findings resolved via plan revision</li>
+    </ul>
+  </div>
+</section>
+
+<section class="stage-section" id="s7">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">7</div>
+    <div><div class="stitle">User Review — Plan Final</div><div class="smeta">2026-03-07 · human_session · heavy · GATE</div></div>
+    <div class="sbadges"><span class="badge b-done">approved</span><span class="badge b-human">human_session</span><span class="badge b-gate">gate</span><span class="chevron">▲</span></div>
+  </div>
+  <div class="stage-body">
+    <div class="awaiting">
+      <strong>Awaiting final approval.</strong> Two changes since Stage 5 draft:
+      (1) stateless regeneration replaces HTML mutation — CLI becomes <code>--lifecycle</code>;
+      (2) workflow-html SKILL.md §2–§6 rewritten to remove all snapshot-model content.
+    </div>
+    <div class="section-label">Changes from draft (Stage 5 → Stage 7)</div>
+    <ul class="item-list">
+      <li><strong>Architecture:</strong> Stateful HTML mutation → stateless regeneration from evidence files (resolves cross-review H1)</li>
+      <li><strong>CLI:</strong> <code>--stage N --update</code> → <code>--lifecycle</code> (simpler, no stage flag needed)</li>
+      <li><strong>SKILL audit added:</strong> workflow-html SKILL.md §2–§6 rewritten — snapshot-model sections replaced with lifecycle-model content (~6 sections impacted)</li>
+      <li><strong>Migration Phase 2 step 5 expanded:</strong> full SKILL rewrite, not just §6 patch</li>
+    </ul>
+  </div>
+</section>
+
+<section class="stage-section" id="s8">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">8</div><div><div class="stitle">Claim / Activation</div><div class="smeta">pending</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s9">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">9</div><div><div class="stitle">Work-Queue Routing</div><div class="smeta">pending</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s10">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">10</div><div><div class="stitle">Work Execution</div><div class="smeta">pending</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s11">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">11</div><div><div class="stitle">Artifact Generation</div><div class="smeta">pending</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s12">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">12</div><div><div class="stitle">TDD / Eval</div><div class="smeta">pending</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s13">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">13</div><div><div class="stitle">Agent Cross-Review</div><div class="smeta">pending</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s14">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">14</div><div><div class="stitle">Verify Gate Evidence</div><div class="smeta">pending</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s15">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">15</div><div><div class="stitle">Future Work Synthesis</div><div class="smeta">pending</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s16">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">16</div><div><div class="stitle">Resource Intelligence Update</div><div class="smeta">pending</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s17">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">17</div><div><div class="stitle">User Review — Implementation</div><div class="smeta">pending · GATE</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-gate">gate</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s18">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">18</div><div><div class="stitle">Reclaim</div><div class="smeta">n/a</div></div>
+    <div class="sbadges"><span class="badge b-na">n/a</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s19">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">19</div><div><div class="stitle">Close</div><div class="smeta">pending</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+<section class="stage-section" id="s20">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">20</div><div><div class="stitle">Archive</div><div class="smeta">pending</div></div>
+    <div class="sbadges"><span class="badge b-pending">pending</span><span class="chevron">▼</span></div>
+  </div>
+  <div class="stage-body collapsed"></div>
+</section>
+
+</div><!-- .content -->
+
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  const collapsed = body.classList.toggle('collapsed');
+  chevron.textContent = collapsed ? '▼' : '▲';
+}
+</script>
+</body>
+</html>

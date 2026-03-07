@@ -1,0 +1,11 @@
+wrk_id: WRK-1029
+no_external_sources: false
+sources:
+  - id: workspace-hub-skills
+    source_type: additive
+    origin: .claude/skills/workspace-hub/resource-intelligence/SKILL.md
+    license_access: internal
+    retrieval_date: "2026-03-07"
+    canonical_storage_path: .claude/skills/workspace-hub/resource-intelligence/SKILL.md
+    duplicate_status: canonical
+    status: available

@@ -1,0 +1,66 @@
+wrk_id: WRK-1031
+generated_at: 2026-03-07T00:00:00Z
+stage: 2
+completion_status: continue_to_planning
+
+domain:
+  problem: >
+    generate-html-review.py only generates full standalone HTML files (--type plan-draft|plan-final|
+    implementation|close). It has no mode to update a single lifecycle HTML stage section.
+    This forces agents to produce separate snapshot files alongside the lifecycle HTML,
+    creating redundancy and user confusion about which file is canonical.
+  architecture_decision: >
+    Add --stage N --update mode to generate-html-review.py. The mode parses the existing
+    lifecycle HTML, locates <section id="sN">, and replaces/appends the stage-body content
+    with fully rendered stage content. After this, snapshot files become redundant and can
+    be deleted. Route B: Phase 1 = generator, Phase 2 = migrate WRK-1028/1029 + update skills.
+
+existing_files:
+  - path: scripts/work-queue/generate-html-review.py
+    notes: >
+      1188 lines. Polyglot bash/python. render_wrk_html() is the canonical render entry point.
+      generate_review() is the main orchestrator. 29 unit tests (per session memory).
+      Key functions: collect_*, render_*, _append_missing_key_sections(), _suppress_duplicate_generated_sections().
+      No --stage N --update flag exists yet. argparse has --type and --output only.
+  - path: .claude/work-queue/assets/WRK-1028/WRK-1028-lifecycle.html
+    notes: >
+      Reference lifecycle HTML. Structure: hero > stage-strip (20 numbered chips) > content div
+      with <section class="stage-section" id="sN"> blocks. Each section has stage-header (onclick toggle)
+      and stage-body div. stage-body contains: section-label divs, schema key-value rows, item-list ULs.
+  - path: .claude/work-queue/assets/WRK-1029/WRK-1029-lifecycle.html
+    notes: >
+      Same structure as WRK-1028. Stage 4 has brief plan summary bullets only. Stage 5 has user
+      approval record. Missing from Stage 4: full ACs, numbered phase steps, resource intelligence details.
+  - path: .claude/work-queue/assets/WRK-1029/plan-draft-review.html
+    notes: >
+      Has full plan content missing from lifecycle Stage 4: ACs as checkboxes, Phase 1+2 numbered steps,
+      Agentic AI Horizon, gate-pass status table, test summary table. ~200 lines of content.
+  - path: .claude/skills/workspace-hub/workflow-html/SKILL.md
+    notes: >
+      v1.4.0. §6 Mandatory Usage lists stages 5/7/11/17/19 with --type flags. These need updating
+      to --stage N --update after generator is implemented. Migration note in §0 references WRK-1027
+      (now a different WRK) - needs correction to WRK-1031.
+  - path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    notes: >
+      Stage Skills Matrix at stages 5/7/11/17/19 references generate-html-review.py --type flags.
+      Needs updating after generator change.
+
+skills:
+  core_used:
+    - workspace-hub/workflow-html
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/work-queue
+
+constraints:
+  - Existing 29 unit tests must still pass after generator changes
+  - Lifecycle HTML parse/update must be idempotent (re-running --stage N --update replaces, not duplicates)
+  - Stage section HTML structure in lifecycle HTML uses specific CSS classes (stage-body, schema, item-list)
+    - must preserve these for CSS compatibility
+  - SKILL.md files must stay under 5000 words
+  - WRK-1028/1029 lifecycle HTMLs must have equivalent content before deleting snapshots
+  - plan-draft-review.html for WRK-1029 has content NOT yet in lifecycle (ACs, phase steps)
+
+top_p1_gaps:
+  - No --stage N --update mode in generate-html-review.py
+  - No HTML parse+update library used (need html.parser or BeautifulSoup)
+  - Stage-to-content mapping not yet defined (what content goes in each stage's body)

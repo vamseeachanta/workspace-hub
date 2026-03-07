@@ -1,0 +1,19 @@
+wrk_id: WRK-1029
+stage: 5
+artifact: user-review-common-draft
+reviewed_by: user
+confirmed_by: user
+reviewed_at: "2026-03-07T00:00:00Z"
+confirmed_at: "2026-03-07T00:00:00Z"
+approval_decision: approve_as_is
+review_cycle_id: "v1"
+
+scope_decisions:
+  in_scope:
+    - Update SKILL.md to v1.1.0 with evidence/resource-intelligence.yaml as primary gate artifact
+    - Add micro-skill checklist + stop guard for Stage 2 and Stage 16
+    - Add Resource Mining Checklist, Category→Mining Map, target_repos→Paths sections
+    - Add templates/resource-intelligence-template.yaml
+  out_of_scope:
+    - Changes to validate-resource-pack.sh consumers (backward compat preserved)
+    - Changes to verify-gate-evidence.py schema enforcement (follow-up WRK)

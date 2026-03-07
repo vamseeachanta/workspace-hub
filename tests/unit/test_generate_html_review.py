@@ -730,3 +730,103 @@ def test_generate_review_plan_final_has_changes_since_stage5(tmp_path: Path, mon
     mod.generate_review("WRK-2", "plan-final", str(out))
     html = out.read_text(encoding="utf-8")
     assert "Changes Since Stage 5" in html
+
+
+# ── Lifecycle HTML generation (WRK-1031) ─────────────────────────────────────
+
+
+def _make_wrk_file(queue: Path, wrk_id: str, extra_fm: str = "", body: str = "") -> None:
+    (queue / "working").mkdir(parents=True, exist_ok=True)
+    (queue / "working" / f"{wrk_id}.md").write_text(
+        f"---\nid: {wrk_id}\ntitle: Lifecycle test\nstatus: working\n"
+        f"route: B\ncomplexity: medium\norchestrator: claude\n"
+        f"computer: ace-linux-1\ncreated_at: 2026-03-07\npercent_complete: 10\n"
+        f"{extra_fm}---\n\n{body}",
+        encoding="utf-8",
+    )
+
+
+def test_detect_stage_statuses_bare_wrk(tmp_path: Path):
+    """With no evidence files, only S1 is done; S2 is active; rest pending."""
+    mod = _load_html_module()
+    assets = tmp_path / "assets"
+    (assets / "evidence").mkdir(parents=True)
+    fm = {"complexity": "", "route": ""}
+    statuses = mod.detect_stage_statuses("WRK-T1", str(assets), fm, "", str(tmp_path))
+    assert statuses[1] == "done"
+    assert statuses[2] == "active"
+    assert statuses[3] == "pending"
+    assert statuses[4] == "pending"
+    assert statuses[18] == "na"  # reclaim.yaml absent → na
+
+
+def test_detect_stage_statuses_evidence_advances_done(tmp_path: Path):
+    """Presence of evidence files marks corresponding stages done."""
+    mod = _load_html_module()
+    assets = tmp_path / "assets"
+    ev = assets / "evidence"
+    ev.mkdir(parents=True)
+    (ev / "resource-intelligence.yaml").write_text("completion_status: continue_to_planning\n")
+    (ev / "user-review-plan-draft.yaml").write_text("decision: approved\n")
+    fm = {"complexity": "medium", "route": "B"}
+    body = "## Plan\nDo the thing.\n"
+    statuses = mod.detect_stage_statuses("WRK-T2", str(assets), fm, body, str(tmp_path))
+    assert statuses[1] == "done"
+    assert statuses[2] == "done"
+    assert statuses[3] == "done"
+    assert statuses[4] == "done"
+    assert statuses[5] == "done"
+    assert statuses[6] == "active"  # no cross-review file yet
+
+
+def test_generate_lifecycle_creates_html(tmp_path: Path, monkeypatch):
+    """generate_lifecycle() produces an HTML file with stage strip and 20 sections."""
+    mod = _load_html_module()
+    repo = tmp_path / "repo"
+    queue = repo / ".claude" / "work-queue"
+    _make_wrk_file(queue, "WRK-T3")
+    (queue / "assets" / "WRK-T3" / "evidence").mkdir(parents=True)
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    out = queue / "assets" / "WRK-T3" / "WRK-T3-lifecycle.html"
+    mod.generate_lifecycle("WRK-T3", str(out))
+    assert out.exists()
+    html = out.read_text(encoding="utf-8")
+    assert "WRK-T3" in html
+    assert "Lifecycle test" in html
+    # 20 stage sections present
+    for n in range(1, 21):
+        assert f'id="s{n}"' in html
+    # stage strip chips present
+    assert 'class="sc ' in html
+
+
+def test_generate_lifecycle_stage1_renders_frontmatter(tmp_path: Path, monkeypatch):
+    """Stage 1 body shows title, route, complexity from frontmatter."""
+    mod = _load_html_module()
+    repo = tmp_path / "repo"
+    queue = repo / ".claude" / "work-queue"
+    _make_wrk_file(queue, "WRK-T4")
+    (queue / "assets" / "WRK-T4" / "evidence").mkdir(parents=True)
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    out = queue / "assets" / "WRK-T4" / "WRK-T4-lifecycle.html"
+    mod.generate_lifecycle("WRK-T4", str(out))
+    html = out.read_text(encoding="utf-8")
+    assert "medium" in html
+    assert "route" in html.lower()
+    assert "pending/" in html  # exit artifact path shown
+
+
+def test_generate_lifecycle_idempotent(tmp_path: Path, monkeypatch):
+    """Running generate_lifecycle twice produces identical output (stateless)."""
+    mod = _load_html_module()
+    repo = tmp_path / "repo"
+    queue = repo / ".claude" / "work-queue"
+    _make_wrk_file(queue, "WRK-T5")
+    (queue / "assets" / "WRK-T5" / "evidence").mkdir(parents=True)
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    out = queue / "assets" / "WRK-T5" / "WRK-T5-lifecycle.html"
+    mod.generate_lifecycle("WRK-T5", str(out))
+    html1 = out.read_text(encoding="utf-8")
+    mod.generate_lifecycle("WRK-T5", str(out))
+    html2 = out.read_text(encoding="utf-8")
+    assert html1 == html2

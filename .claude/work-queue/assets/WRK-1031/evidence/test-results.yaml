@@ -1,0 +1,19 @@
+wrk_id: WRK-1031
+test_run_at: 2026-03-07
+command: uv run --no-project python -m pytest tests/unit/test_generate_html_review.py -q
+
+result:
+  total: 63
+  passed: 63
+  failed: 0
+  skipped: 0
+
+new_tests:
+  - test_detect_stage_statuses_bare_wrk
+  - test_detect_stage_statuses_evidence_advances_done
+  - test_generate_lifecycle_creates_html
+  - test_generate_lifecycle_stage1_renders_frontmatter
+  - test_generate_lifecycle_idempotent
+
+existing_tests_still_pass: true
+regression: none

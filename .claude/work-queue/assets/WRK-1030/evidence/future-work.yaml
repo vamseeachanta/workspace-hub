@@ -1,0 +1,15 @@
+wrk_id: WRK-1030
+synthesized_at: "2026-03-07T00:00:00Z"
+recommendations:
+  - id: fw-01
+    title: Auto-fill next_action in checkpoint.sh from stage-evidence.yaml
+    disposition: spun-off-new
+    status: candidate
+    captured: true
+    rationale: next_action is always empty on auto-checkpoint; could infer from current stage
+  - id: fw-02
+    title: Hook checkpoint.sh into session Stop hook for automatic end-of-session checkpointing
+    disposition: spun-off-new
+    status: candidate
+    captured: true
+    rationale: user must remember to run checkpoint.sh — automating it removes friction

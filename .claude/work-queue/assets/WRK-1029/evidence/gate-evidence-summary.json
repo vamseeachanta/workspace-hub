@@ -1,6 +1,6 @@
 {
   "wrk_id": "WRK-1029",
-  "phase": "close",
+  "phase": "claim",
   "summary_file": "assets/WRK-1029/evidence/gate-evidence-summary.json",
   "gates": [
     {
@@ -16,13 +16,6 @@
       "ok": true,
       "warn": false,
       "details": "plan_workstations=missing, execution_workstations=missing"
-    },
-    {
-      "name": "Stage evidence gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "stage_evidence_ref missing in WRK frontmatter"
     },
     {
       "name": "Resource-intelligence gate",
@@ -43,7 +36,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log"
+      "details": "routing:missing-log ; plan:missing-log"
     },
     {
       "name": "User-review HTML-open gate",
@@ -67,53 +60,11 @@
       "details": "artifact=none"
     },
     {
-      "name": "TDD gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "none"
-    },
-    {
-      "name": "Integrated test gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "execute evidence missing (required: evidence/execute.yaml)"
-    },
-    {
-      "name": "Legal gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "artifact=missing, none"
-    },
-    {
       "name": "Claim gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "claim.yaml: session_owner missing; best_fit_provider missing; claim_expires_at missing"
-    },
-    {
-      "name": "Future-work gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "future-work evidence absent (legacy item \u2014 WARN)"
-    },
-    {
-      "name": "Resource-intelligence update gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "resource-intelligence-update.yaml missing"
-    },
-    {
-      "name": "User-review close gate",
-      "status": "FAIL",
-      "ok": false,
-      "warn": false,
-      "details": "user-review-close.yaml missing"
+      "details": "claim.yaml: canonical claim evidence OK"
     },
     {
       "name": "Reclaim gate",

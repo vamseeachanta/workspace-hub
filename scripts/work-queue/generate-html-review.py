@@ -1156,33 +1156,666 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
     print(f"✔ HTML generated ({artifact_type}): {output_file}")
 
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# LIFECYCLE HTML — single-file per WRK, stateless regeneration (WRK-1031)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+LIFECYCLE_CSS = """
+:root{--bg:#f3efe6;--panel:#fffdf8;--ink:#172126;--muted:#55636b;
+  --accent:#0f766e;--accent-2:#8a5a2b;--line:#d9d0c0;
+  --shadow:0 12px 32px rgba(20,33,38,0.07);
+  --done:#166534;--done-bg:#dcfce7;--active:#92400e;--active-bg:#fef3c7;
+  --pending:#55636b;--pending-bg:#f1f5f9;--na:#6b7280;--na-bg:#f3f4f6;}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.55;margin:0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;
+  background:rgba(27,31,35,0.06);padding:.15em .35em;border-radius:3px;font-size:.86em;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:7px;
+  padding:12px 14px;overflow-x:auto;font-size:.82rem;margin:10px 0;}
+.hero{padding:36px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;
+  color:var(--accent);font-weight:700;margin:0 0 6px;}
+h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
+.lede{color:var(--muted);font-size:.92rem;margin:0 0 14px;max-width:72ch;}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:5px 10px;font-size:.8rem;}
+.pill strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--accent-2);display:block;margin-bottom:1px;}
+.stage-strip{background:var(--panel);border-bottom:1px solid var(--line);
+  padding:12px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.stage-strip-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+.stage-strip-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);margin-right:6px;white-space:nowrap;}
+.sc{display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;font-size:.75rem;font-weight:700;
+  text-decoration:none;transition:transform .15s;}
+.sc:hover{transform:scale(1.15);}
+.sc-done{background:var(--done-bg);color:var(--done);}
+.sc-active{background:var(--active-bg);color:var(--active);
+  box-shadow:0 0 0 2px var(--active);animation:pulse 2s infinite;}
+.sc-pending{background:var(--pending-bg);color:var(--pending);}
+.sc-na{background:var(--na-bg);color:var(--na);}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--active);}
+  50%{box-shadow:0 0 0 4px rgba(146,64,14,0.3);}}
+.content{max-width:1100px;margin:0 auto;padding:24px 24px 64px;}
+.stage-section{margin-bottom:16px;border-radius:14px;border:1px solid var(--line);
+  background:var(--panel);box-shadow:var(--shadow);overflow:hidden;}
+.stage-header{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;
+  padding:14px 18px;cursor:pointer;user-select:none;}
+.stage-header:hover{background:rgba(15,118,110,0.03);}
+.snum{font-size:1.5rem;font-weight:800;color:var(--line);text-align:center;line-height:1;}
+.stitle{font-size:.95rem;font-weight:700;color:var(--ink);margin:0;}
+.smeta{font-size:.76rem;color:var(--muted);margin:2px 0 0;}
+.sbadges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.7rem;
+  font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+.b-done{background:var(--done-bg);color:var(--done);}
+.b-active{background:var(--active-bg);color:var(--active);}
+.b-pending{background:var(--pending-bg);color:var(--pending);}
+.b-na{background:var(--na-bg);color:var(--na);}
+.b-human{background:#ede9fe;color:#6d28d9;}
+.b-agent{background:#d1fae5;color:#065f46;}
+.b-chain{background:#dbeafe;color:#1e40af;}
+.b-light{background:#f0fdf4;color:#166534;}
+.b-medium{background:#fef9c3;color:#854d0e;}
+.b-heavy{background:#fee2e2;color:#991b1b;}
+.b-gate{background:#fce7f3;color:#9d174d;}
+.chevron{font-size:.75rem;color:var(--muted);transition:transform .2s;}
+.stage-body{padding:0 18px 16px;border-top:1px solid var(--line);}
+.stage-body.collapsed{display:none;}
+.schema{background:#f8f9fa;border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;font-size:.82rem;margin:12px 0;}
+.schema-row{display:grid;grid-template-columns:160px 1fr;gap:4px 10px;margin:3px 0;}
+.schema-key{color:var(--accent);font-family:monospace;font-weight:600;}
+.schema-val{color:var(--ink);}
+.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--accent-2);font-weight:700;margin:14px 0 6px;}
+.item-list{margin:0;padding:0 0 0 18px;font-size:.87rem;}
+.item-list li{margin:3px 0;color:var(--muted);}
+.item-list li strong{color:var(--ink);}
+.ac-list{margin:0;padding:0 0 0 18px;font-size:.85rem;}
+.ac-list li{margin:4px 0;color:var(--muted);}
+.ac-list li strong{color:var(--ink);}
+.awaiting{background:var(--active-bg);border:1px solid #fcd34d;border-radius:8px;
+  padding:10px 14px;font-size:.86rem;color:var(--active);margin:12px 0;}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.84rem;}
+th,td{border-top:1px solid var(--line);padding:8px 7px;text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.74rem;color:var(--ink);}
+td{color:var(--muted);}td strong{color:var(--ink);}
+@media(max-width:700px){.stage-header{grid-template-columns:36px 1fr;}.sbadges{display:none;}
+  .schema-row{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.stage-strip{position:static;}
+  .stage-body.collapsed{display:block;}}
+"""
+
+LIFECYCLE_JS = """
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  const collapsed = body.classList.toggle('collapsed');
+  chevron.textContent = collapsed ? '\\u25bc' : '\\u25b2';
+}
+"""
+
+STAGE_NAMES = {
+    1: "Capture", 2: "Resource Intelligence", 3: "Triage", 4: "Plan Draft",
+    5: "User Review \u2014 Plan Draft", 6: "Cross-Review",
+    7: "User Review \u2014 Plan Final", 8: "Claim / Activation",
+    9: "Work-Queue Routing", 10: "Work Execution", 11: "Artifact Generation",
+    12: "TDD / Eval", 13: "Agent Cross-Review", 14: "Verify Gate Evidence",
+    15: "Future Work Synthesis", 16: "Resource Intelligence Update",
+    17: "User Review \u2014 Implementation", 18: "Reclaim",
+    19: "Close", 20: "Archive",
+}
+STAGE_INVOCATION = {
+    1: "human_session", 2: "chained_agent", 3: "chained_agent", 4: "chained_agent",
+    5: "human_session", 6: "task_agent", 7: "human_session", 8: "chained_agent",
+    9: "chained_agent", 10: "task_agent", 11: "task_agent", 12: "task_agent",
+    13: "task_agent", 14: "task_agent", 15: "task_agent", 16: "task_agent",
+    17: "human_session", 18: "task_agent", 19: "task_agent", 20: "task_agent",
+}
+STAGE_WEIGHT = {
+    1: "light", 2: "medium", 3: "light", 4: "medium", 5: "heavy", 6: "medium",
+    7: "heavy", 8: "light", 9: "light", 10: "heavy", 11: "medium", 12: "heavy",
+    13: "medium", 14: "medium", 15: "medium", 16: "medium", 17: "heavy",
+    18: "light", 19: "light", 20: "light",
+}
+STAGE_IS_GATE = {5, 7, 17}
+
+
+def _read_yaml_safe(path) -> dict:
+    try:
+        data = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def _esc(s: str) -> str:
+    """HTML-escape a plain string for inline display."""
+    from html import escape
+    return escape(str(s))
+
+
+def detect_stage_statuses(
+    wrk_id: str, assets_dir: str, fm: dict, body_md: str, queue_dir: str
+) -> dict:
+    """Return {stage_n (int): 'done'|'active'|'pending'|'na'}."""
+    ev = Path(assets_dir) / "evidence"
+    ad = Path(assets_dir)
+
+    def ev_exists(*names):
+        return any((ev / n).exists() for n in names)
+
+    completions = {
+        1: True,  # WRK file found → S1 done
+        2: ev_exists("resource-intelligence.yaml"),
+        3: bool(fm.get("complexity") and fm.get("route")),
+        4: "## Plan" in body_md,
+        5: ev_exists("user-review-plan-draft.yaml"),
+        6: (ev_exists("cross-review-phase1.md", "cross-review-plan.md")
+            or (ad / "review.md").exists()
+            or bool(list(ev.glob("cross-review*.md")))),
+        7: ev_exists("user-review-plan-final.yaml"),
+        8: ev_exists("claim.yaml"),
+        9: ev_exists("claim.yaml"),  # routing follows claim
+        10: ev_exists("execute.yaml"),
+        11: ev_exists("gate-evidence-summary.json"),
+        12: ((ad / "variation-test-results.md").exists()
+             or ev_exists("test-results.yaml")),
+        13: ev_exists("cross-review-impl.md"),
+        14: ev_exists("gate-evidence-summary.json"),
+        15: ev_exists("future-work.yaml"),
+        16: ev_exists("resource-intelligence-update.yaml"),
+        17: ev_exists("user-review-close.yaml"),
+        19: fm.get("status") in ("done", "archived"),
+        20: bool(list(Path(queue_dir).glob(f"archive/**/{wrk_id}.md"))),
+    }
+
+    statuses: dict = {}
+    found_active = False
+    for n in range(1, 21):
+        if n == 18:
+            statuses[18] = "done" if ev_exists("reclaim.yaml") else "na"
+            continue
+        done = completions.get(n, False)
+        if done:
+            statuses[n] = "done"
+        elif not found_active:
+            statuses[n] = "active"
+            found_active = True
+        else:
+            statuses[n] = "pending"
+    return statuses
+
+
+def _render_schema_block(pairs: list[tuple[str, str]]) -> str:
+    rows = "".join(
+        f'<div class="schema-row">'
+        f'<span class="schema-key">{_esc(k)}</span>'
+        f'<span class="schema-val">{_esc(v)}</span>'
+        f'</div>'
+        for k, v in pairs
+    )
+    return f'<div class="schema">{rows}</div>'
+
+
+def _render_yaml_schema(data: dict, keys: list[str]) -> str:
+    pairs = [(k, str(data.get(k, ""))) for k in keys if data.get(k) is not None]
+    return _render_schema_block(pairs) if pairs else ""
+
+
+def _render_exit_artifacts(paths: list[str]) -> str:
+    items = "".join(f'<li><code>{_esc(p)}</code></li>' for p in paths)
+    return (
+        f'<div class="section-label">Exit artifacts</div>'
+        f'<ul class="item-list">{items}</ul>'
+    )
+
+
+def render_lifecycle_stage_body(
+    stage_n: int, status: str, assets_dir: str, fm: dict, body_md: str
+) -> str:
+    """Return HTML body content for a single stage section."""
+    ev = Path(assets_dir) / "evidence"
+    ad = Path(assets_dir)
+
+    if status == "pending":
+        return '<p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>'
+    if status == "na":
+        return '<p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Not applicable for this WRK.</p>'
+
+    # ── S1 Capture ───────────────────────────────────────────────────────────
+    if stage_n == 1:
+        source = str(fm.get("id", "")) + ".md"
+        pairs = [
+            ("title", str(fm.get("title", ""))),
+            ("route", str(fm.get("route", ""))),
+            ("complexity", str(fm.get("complexity", ""))),
+            ("priority", str(fm.get("priority", ""))),
+        ]
+        return (
+            '<div class="section-label">Stage record</div>'
+            + _render_schema_block(pairs)
+            + _render_exit_artifacts([f"pending/{source}"])
+        )
+
+    # ── S2 Resource Intelligence ─────────────────────────────────────────────
+    if stage_n == 2:
+        data = _read_yaml_safe(ev / "resource-intelligence.yaml")
+        parts = ""
+        if data:
+            dom = data.get("domain", {})
+            pairs = [
+                ("completion_status", str(data.get("completion_status", ""))),
+                ("domain.problem", str(dom.get("problem", ""))[:120] if dom else ""),
+                ("decision", str(dom.get("architecture_decision", ""))[:120] if dom else ""),
+            ]
+            parts += '<div class="section-label">Stage record</div>' + _render_schema_block(
+                [(k, v) for k, v in pairs if v]
+            )
+            gaps = data.get("top_p1_gaps", [])
+            if gaps:
+                items = "".join(f"<li>{_esc(g)}</li>" for g in gaps[:5])
+                parts += (
+                    '<div class="section-label">P1 gaps</div>'
+                    f'<ul class="item-list">{items}</ul>'
+                )
+        parts += _render_exit_artifacts(["evidence/resource-intelligence.yaml"])
+        return parts or '<p style="color:var(--muted);font-size:.85rem;">Evidence present.</p>'
+
+    # ── S3 Triage ────────────────────────────────────────────────────────────
+    if stage_n == 3:
+        pairs = [
+            ("route", str(fm.get("route", ""))),
+            ("complexity", str(fm.get("complexity", ""))),
+            ("computer", str(fm.get("computer", ""))),
+            ("orchestrator", str(fm.get("orchestrator", ""))),
+        ]
+        return (
+            '<div class="section-label">Triage decisions</div>'
+            + _render_schema_block([(k, v) for k, v in pairs if v])
+        )
+
+    # ── S4 Plan Draft ─────────────────────────────────────────────────────────
+    if stage_n == 4:
+        parts = ""
+        # Acceptance criteria from WRK body
+        ac_match = re.search(r"## Acceptance Criteria\n(.*?)(?=\n##|\Z)", body_md, re.DOTALL)
+        if ac_match:
+            ac_lines = [
+                l.strip() for l in ac_match.group(1).splitlines()
+                if l.strip().startswith("- [")
+            ]
+            if ac_lines:
+                items = "".join(
+                    f'<li>{"☑" if l.startswith("- [x]") else "☐"} '
+                    f'{_esc(l[5:].strip())}</li>'
+                    for l in ac_lines[:20]
+                )
+                parts += (
+                    '<div class="section-label">Acceptance Criteria</div>'
+                    f'<ul class="ac-list">{items}</ul>'
+                )
+        # Plan phases
+        plan_match = re.search(r"## Plan\n(.*?)(?=\n##|\Z)", body_md, re.DOTALL)
+        if plan_match:
+            plan_text = plan_match.group(1).strip()[:800]
+            lines = [l.strip() for l in plan_text.splitlines() if l.strip()][:15]
+            items = "".join(f"<li>{_esc(l)}</li>" for l in lines)
+            parts += (
+                '<div class="section-label">Plan</div>'
+                f'<ul class="item-list">{items}</ul>'
+            )
+        parts += _render_exit_artifacts([f"working/{fm.get('id', 'WRK-???')}.md"])
+        return parts
+
+    # ── S5 User Review — Plan Draft ───────────────────────────────────────────
+    if stage_n == 5:
+        data = _read_yaml_safe(ev / "user-review-plan-draft.yaml")
+        pairs = [
+            ("reviewed_by", str(data.get("reviewed_by", ""))),
+            ("decision", str(data.get("decision", ""))),
+        ]
+        decisions = data.get("decisions", {})
+        for k, v in decisions.items():
+            if isinstance(v, dict):
+                pairs.append((k, str(v.get("answer", ""))))
+            else:
+                pairs.append((k, str(v)))
+        return (
+            '<div class="section-label">Stage record</div>'
+            + _render_schema_block([(k, v) for k, v in pairs if v])
+            + _render_exit_artifacts(["evidence/user-review-plan-draft.yaml"])
+        )
+
+    # ── S6 Cross-Review ───────────────────────────────────────────────────────
+    if stage_n == 6:
+        # Try to find any cross-review file
+        candidates = list(ev.glob("cross-review*.md")) + [ad / "review.md"]
+        review_text = ""
+        for c in candidates:
+            if c.exists():
+                review_text = c.read_text(encoding="utf-8")[:400]
+                break
+        snippet = _esc(review_text[:200]) if review_text else "Cross-review evidence present."
+        return (
+            '<div class="section-label">Cross-review summary</div>'
+            f'<p style="font-size:.85rem;color:var(--muted);">{snippet}</p>'
+            + _render_exit_artifacts(["evidence/cross-review-*.md"])
+        )
+
+    # ── S7 User Review — Plan Final ───────────────────────────────────────────
+    if stage_n == 7:
+        data = _read_yaml_safe(ev / "user-review-plan-final.yaml")
+        pairs = [
+            ("reviewed_by", str(data.get("reviewed_by", ""))),
+            ("confirmed_by", str(data.get("confirmed_by", ""))),
+            ("decision", str(data.get("decision", ""))),
+        ]
+        return (
+            '<div class="section-label">Stage record</div>'
+            + _render_schema_block([(k, v) for k, v in pairs if v])
+            + _render_exit_artifacts(["evidence/user-review-plan-final.yaml"])
+        )
+
+    # ── S8/S9 Claim / Routing ─────────────────────────────────────────────────
+    if stage_n in (8, 9):
+        data = _read_yaml_safe(ev / "claim.yaml")
+        pairs = [(k, str(data.get(k, ""))) for k in ("claimed_by", "claimed_at", "quota_ok")
+                 if data.get(k) is not None]
+        return (
+            '<div class="section-label">Stage record</div>'
+            + (_render_schema_block(pairs) if pairs else "")
+            + _render_exit_artifacts(["evidence/claim.yaml"])
+        )
+
+    # ── S10 Work Execution ────────────────────────────────────────────────────
+    if stage_n == 10:
+        data = _read_yaml_safe(ev / "execute.yaml")
+        pairs = [(k, str(data.get(k, ""))) for k in
+                 ("files_changed", "commits", "tests_run", "summary")
+                 if data.get(k) is not None]
+        return (
+            '<div class="section-label">Execution record</div>'
+            + (_render_schema_block(pairs) if pairs else
+               '<p style="color:var(--muted);font-size:.85rem;">Execution evidence present.</p>')
+            + _render_exit_artifacts(["evidence/execute.yaml"])
+        )
+
+    # ── S11 Artifact Generation ───────────────────────────────────────────────
+    if stage_n == 11:
+        gep = ev / "gate-evidence-summary.json"
+        summary = ""
+        if gep.exists():
+            try:
+                import json
+                ge = json.loads(gep.read_text(encoding="utf-8"))
+                passed = sum(1 for v in ge.values() if isinstance(v, dict)
+                             and v.get("status") == "PASS")
+                total = len([v for v in ge.values() if isinstance(v, dict)])
+                summary = f"{passed}/{total} gates PASS"
+            except Exception:
+                summary = "Gate evidence present"
+        return (
+            '<div class="section-label">Gate evidence</div>'
+            + _render_schema_block([("gates", summary)] if summary else [])
+            + _render_exit_artifacts(["evidence/gate-evidence-summary.json",
+                                      f"WRK-???-lifecycle.html"])
+        )
+
+    # ── S14 Verify Gate Evidence ──────────────────────────────────────────────
+    if stage_n == 14:
+        gep = ev / "gate-evidence-summary.json"
+        if gep.exists():
+            try:
+                import json
+                ge = json.loads(gep.read_text(encoding="utf-8"))
+                rows = ""
+                for gate, val in list(ge.items())[:12]:
+                    if isinstance(val, dict):
+                        st = val.get("status", "?")
+                        cls = "b-done" if st == "PASS" else ("b-active" if st == "WARN" else "b-pending")
+                        rows += (f'<tr><td>{_esc(gate)}</td>'
+                                 f'<td><span class="badge {cls}">{_esc(st)}</span></td></tr>')
+                if rows:
+                    return (
+                        '<div class="section-label">Gate results</div>'
+                        f'<table><tr><th>Gate</th><th>Status</th></tr>{rows}</table>'
+                    )
+            except Exception:
+                pass
+        return '<p style="color:var(--muted);font-size:.85rem;">Gate evidence verified.</p>'
+
+    # ── S15 Future Work ────────────────────────────────────────────────────────
+    if stage_n == 15:
+        data = _read_yaml_safe(ev / "future-work.yaml")
+        recs = data.get("recommendations", [])
+        if recs:
+            rows = "".join(
+                f'<tr><td>{_esc(r.get("title",""))}</td>'
+                f'<td>{_esc(r.get("disposition",""))}</td>'
+                f'<td>{_esc(str(r.get("captured","")))}</td></tr>'
+                for r in recs[:8] if isinstance(r, dict)
+            )
+            return (
+                '<div class="section-label">Future work</div>'
+                f'<table><tr><th>Title</th><th>Disposition</th><th>Captured</th></tr>'
+                f'{rows}</table>'
+            )
+        return '<p style="color:var(--muted);font-size:.85rem;">Future work recorded.</p>'
+
+    # ── S16 Resource Intelligence Update ─────────────────────────────────────
+    if stage_n == 16:
+        data = _read_yaml_safe(ev / "resource-intelligence-update.yaml")
+        additions = data.get("additions", [])
+        if additions:
+            items = "".join(f"<li>{_esc(str(a))}</li>" for a in additions[:6])
+            return (
+                '<div class="section-label">Additions</div>'
+                f'<ul class="item-list">{items}</ul>'
+            )
+        return '<p style="color:var(--muted);font-size:.85rem;">Resource intelligence updated.</p>'
+
+    # ── S17 User Review — Implementation ─────────────────────────────────────
+    if stage_n == 17:
+        data = _read_yaml_safe(ev / "user-review-close.yaml")
+        pairs = [
+            ("reviewed_by", str(data.get("reviewed_by", ""))),
+            ("decision", str(data.get("decision", ""))),
+        ]
+        return (
+            '<div class="section-label">Stage record</div>'
+            + _render_schema_block([(k, v) for k, v in pairs if v])
+            + _render_exit_artifacts(["evidence/user-review-close.yaml"])
+        )
+
+    # ── S19 Close / S20 Archive ───────────────────────────────────────────────
+    if stage_n in (19, 20):
+        status_val = str(fm.get("status", ""))
+        commit = str(fm.get("commit", ""))
+        pairs = [("status", status_val), ("commit", commit)]
+        return (
+            '<div class="section-label">Stage record</div>'
+            + _render_schema_block([(k, v) for k, v in pairs if v])
+        )
+
+    # Default: active stage with awaiting note, done stage with generic note
+    if status == "active":
+        return '<div class="awaiting">In progress — evidence pending.</div>'
+    return '<p style="color:var(--muted);font-size:.85rem;">Stage completed.</p>'
+
+
+def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
+    """Generate single lifecycle HTML for WRK-NNN from evidence files on disk."""
+    workspace_root = os.popen("git rev-parse --show-toplevel").read().strip()
+    queue_dir = os.path.join(workspace_root, ".claude/work-queue")
+
+    # Find WRK file
+    wrk_file = ""
+    for folder in ["working", "pending", "done", "archived"]:
+        path = os.path.join(queue_dir, folder, f"{wrk_id}.md")
+        if os.path.exists(path):
+            wrk_file = path
+            break
+    if not wrk_file:
+        for p in Path(queue_dir).glob(f"archive/**/{wrk_id}.md"):
+            wrk_file = str(p)
+            break
+    if not wrk_file:
+        print(f"Error: Could not find {wrk_id}.md")
+        return
+
+    content = Path(wrk_file).read_text(encoding="utf-8")
+    fm_match = re.match(r"^---\s*\n(.*?)\n---\s*\n", content, re.DOTALL)
+    fm: dict = {}
+    if fm_match:
+        try:
+            fm = yaml.safe_load(fm_match.group(1)) or {}
+        except Exception:
+            pass
+    body_md = content[fm_match.end():] if fm_match else content
+
+    assets_dir = os.path.join(queue_dir, "assets", wrk_id)
+    os.makedirs(assets_dir, exist_ok=True)
+
+    statuses = detect_stage_statuses(wrk_id, assets_dir, fm, body_md, queue_dir)
+
+    title = _esc(str(fm.get("title", wrk_id)))
+    route = str(fm.get("route", ""))
+    category = str(fm.get("category", ""))
+    computer = str(fm.get("computer", ""))
+    orchestrator = str(fm.get("orchestrator", ""))
+    priority = str(fm.get("priority", ""))
+    created = str(fm.get("created_at", ""))[:10]
+
+    # Stage strip chips
+    strip_chips = ""
+    for n in range(1, 21):
+        st = statuses.get(n, "pending")
+        cls = {"done": "sc-done", "active": "sc-active", "na": "sc-na"}.get(st, "sc-pending")
+        name = STAGE_NAMES.get(n, str(n))
+        strip_chips += (
+            f'<a href="#s{n}" class="sc {cls}" title="{_esc(str(n).zfill(2))} {_esc(name)}">'
+            f'{n}</a>'
+        )
+
+    # Stage sections
+    stage_sections_html = ""
+    for n in range(1, 21):
+        st = statuses.get(n, "pending")
+        name = STAGE_NAMES.get(n, f"Stage {n}")
+        inv = STAGE_INVOCATION.get(n, "")
+        wt = STAGE_WEIGHT.get(n, "")
+        is_gate = n in STAGE_IS_GATE
+
+        badge_cls = {"done": "b-done", "active": "b-active", "na": "b-na"}.get(st, "b-pending")
+        badge_label = st
+        inv_cls = {"human_session": "b-human", "chained_agent": "b-chain"}.get(inv, "b-agent")
+        wt_cls = {"light": "b-light", "medium": "b-medium", "heavy": "b-heavy"}.get(wt, "")
+        chevron = "▲" if st == "done" else "▼"
+        collapsed_cls = "" if st in ("done", "active") else " collapsed"
+
+        gate_badge = '<span class="badge b-gate">gate</span>' if is_gate else ""
+        smeta_parts = [p for p in [inv, wt] if p]
+        smeta = " · ".join(smeta_parts)
+        if is_gate:
+            smeta += " · GATE"
+
+        body_html = render_lifecycle_stage_body(n, st, assets_dir, fm, body_md)
+
+        stage_sections_html += f"""
+<section class="stage-section" id="s{n}">
+  <div class="stage-header" onclick="toggle(this)">
+    <div class="snum">{n}</div>
+    <div>
+      <div class="stitle">{_esc(name)}</div>
+      <div class="smeta">{_esc(smeta)}</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge {badge_cls}">{_esc(badge_label)}</span>
+      <span class="badge {inv_cls}">{_esc(inv)}</span>
+      {gate_badge}
+      <span class="chevron">{chevron}</span>
+    </div>
+  </div>
+  <div class="stage-body{collapsed_cls}">
+    {body_html}
+  </div>
+</section>"""
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{wrk_id} Lifecycle \u2014 {title[:60]}</title>
+  <style>{LIFECYCLE_CSS}</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Lifecycle Tracker &middot; Route {_esc(route)} &middot; {_esc(category)}</p>
+    <h1>{wrk_id} \u2014 {title}</h1>
+    <p class="lede">Single lifecycle document tracking all 20 stages from capture to archive.</p>
+    <div class="meta-row">
+      <div class="pill"><strong>Priority</strong>{_esc(priority)}</div>
+      <div class="pill"><strong>Workstation</strong>{_esc(computer)}</div>
+      <div class="pill"><strong>Orchestrator</strong>{_esc(orchestrator)}</div>
+      <div class="pill"><strong>Category</strong>{_esc(category)}</div>
+      <div class="pill"><strong>Created</strong>{_esc(created)}</div>
+    </div>
+  </div>
+</header>
+
+<nav class="stage-strip">
+  <div class="stage-strip-inner">
+    <span class="stage-strip-label">Stages</span>
+    {strip_chips}
+  </div>
+</nav>
+
+<div class="content">
+{stage_sections_html}
+</div>
+
+<script>{LIFECYCLE_JS}</script>
+</body>
+</html>
+"""
+
+    if not output_file:
+        output_file = os.path.join(assets_dir, f"{wrk_id}-lifecycle.html")
+
+    Path(output_file).write_text(html, encoding="utf-8")
+    print(f"\u2714 Lifecycle HTML generated: {output_file}")
+
+
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Generate canonical WRK HTML review (workflow-html SKILL v1.0.0)"
+        description="Generate canonical WRK lifecycle HTML (workflow-html SKILL v1.4.0)"
     )
     parser.add_argument("wrk_id")
-    # New canonical flag
     parser.add_argument(
-        "--type",
-        default="plan-draft",
-        choices=["plan-draft", "plan-final", "implementation", "close",
-                 # legacy values
-                 "plan", "governance"],
-        help="Artifact type",
+        "--lifecycle",
+        action="store_true",
+        help="Generate single lifecycle HTML (canonical mode)",
     )
     parser.add_argument("--output", default=None)
-    # Legacy compat
-    parser.add_argument("--stage", default=None,
-                        help="Legacy: draft|final (maps to plan-draft|plan-final)")
     args = parser.parse_args()
 
-    # Map legacy --type plan + --stage draft/final → canonical names
-    artifact_type = args.type
-    if artifact_type == "plan":
-        artifact_type = "plan-final" if args.stage == "final" else "plan-draft"
-    elif artifact_type == "governance":
-        artifact_type = "close"
-
-    generate_review(args.wrk_id, artifact_type, args.output)
+    if args.lifecycle:
+        generate_lifecycle(args.wrk_id, args.output)
+    else:
+        # --type removed: print deprecation notice and generate lifecycle
+        print("Note: --type snapshot mode removed. Generating lifecycle HTML instead.")
+        generate_lifecycle(args.wrk_id, args.output)

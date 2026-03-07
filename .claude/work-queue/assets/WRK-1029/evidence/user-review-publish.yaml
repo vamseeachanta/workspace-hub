@@ -1,0 +1,19 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 95ca596a
+  documents:
+  - .claude/work-queue/assets/WRK-1029/plan-draft-review.html
+  published_at: '2026-03-07T22:47:32Z'
+  reviewer: user
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 95ca596a
+  documents:
+  - .claude/work-queue/assets/WRK-1029/plan-final-review.html
+  published_at: '2026-03-07T22:47:33Z'
+  reviewer: user

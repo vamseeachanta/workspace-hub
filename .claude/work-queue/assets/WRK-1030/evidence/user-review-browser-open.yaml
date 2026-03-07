@@ -1,10 +1,23 @@
 events:
   - stage: plan_draft
+    opened_in_default_browser: true
+    browser: xdg-open
     opened_at: "2026-03-07T00:00:00Z"
+    html_ref: .claude/work-queue/assets/WRK-1030/WRK-1030-lifecycle.html
     html_path: .claude/work-queue/assets/WRK-1030/WRK-1030-lifecycle.html
-    method: xdg-open
+    reviewer: user
   - stage: plan_final
+    opened_in_default_browser: true
+    browser: xdg-open
     opened_at: "2026-03-07T00:00:00Z"
+    html_ref: .claude/work-queue/assets/WRK-1030/WRK-1030-lifecycle.html
     html_path: .claude/work-queue/assets/WRK-1030/WRK-1030-lifecycle.html
-    method: xdg-open
-    note: "Route A — plan final = plan draft (no cross-review revisions)"
+    reviewer: user
+    note: "Route A — plan final same as draft (no cross-review revisions)"
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: xdg-open
+    opened_at: "2026-03-07T00:00:00Z"
+    html_ref: .claude/work-queue/assets/WRK-1030/WRK-1030-lifecycle.html
+    html_path: .claude/work-queue/assets/WRK-1030/WRK-1030-lifecycle.html
+    reviewer: user

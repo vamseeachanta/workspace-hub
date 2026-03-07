@@ -1,7 +1,10 @@
 wrk_id: WRK-1029
 stage: 8
 claimed_by: claude
+session_owner: claude
+best_fit_provider: claude
 claimed_at: "2026-03-07T00:00:00Z"
+claim_expires_at: "2026-03-08T00:00:00Z"
 orchestrator: claude
 route: B
 workstation: ace-linux-1
