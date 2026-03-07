@@ -1,0 +1,14 @@
+wrk_id: WRK-1028
+stage: 8
+activated_at: "2026-03-07T20:05:00Z"
+status: active
+moved_to: working/WRK-1028.md
+orchestrator: claude
+workstation: ace-linux-1
+plan_final_ref: .claude/work-queue/assets/WRK-1028/evidence/plan-final-review.yaml
+gate_passed:
+  gate_5_6: true   # user-review-plan-draft.yaml decision: approved
+  gate_7_8: true   # plan-final-review.yaml decision: passed
+next_stage: 9
+next_stage_name: "Work-Queue Routing"
+next_invocation: chained_agent

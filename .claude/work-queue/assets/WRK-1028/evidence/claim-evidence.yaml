@@ -1,0 +1,24 @@
+wrk_id: WRK-1028
+stage: 8
+claimed_at: "2026-03-07T20:05:00Z"
+orchestrator: claude
+workstation: ace-linux-1
+quota_snapshot:
+  claude:
+    tier: max
+    weekly_limit: 20000
+    pct_remaining: null
+    note: "Usage API unavailable; Max plan — sufficient for complex WRK"
+  codex:
+    tier: subscription
+    weekly_limit: 1400
+    week_messages: 657
+    pct_remaining: 54
+  gemini:
+    tier: google_login
+    daily_limit: 1000
+    today_messages: 0
+    pct_remaining: 100
+quota_assessment: proceed
+quota_note: "Claude Max has ample headroom. Codex at 54% — adequate for cross-review (Stage 13). Gemini at 100%."
+active_wrk_set: "ace-linux-1"

@@ -87,20 +87,24 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1028/evidence/plan-final-review.yaml
 - order: 8
   stage: Claim / Activation
-  status: pending
+  status: done
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Not started.
+  comment: >
+    Quota assessed — Claude Max adequate, Codex 54%, Gemini 100%. WRK moved to
+    working/. claim-evidence.yaml + activation.yaml written. Gates 5→6 + 7→8 confirmed.
   evidence: .claude/work-queue/assets/WRK-1028/evidence/activation.yaml
 - order: 9
   stage: Work-Queue Routing Skill
-  status: pending
+  status: done
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Not started.
-  evidence: .claude/work-queue/logs/WRK-1028-routing.log
+  comment: >
+    Skills loaded: work-queue-workflow, workflow-gatepass, brainstorming, TDD,
+    workflow-html. Delivery P1→P2→P3→P4 confirmed. Stage 10 next.
+  evidence: .claude/work-queue/assets/WRK-1028/routing.yaml
 - order: 10
   stage: Work Execution
   status: pending
