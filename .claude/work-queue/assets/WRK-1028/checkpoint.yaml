@@ -1,38 +1,54 @@
 wrk_id: WRK-1028
 title: "Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts"
-checkpointed_at: "2026-03-07T18:19:36Z"
-current_stage: 5
-stage_name: "User Review - Plan (Draft)"
+checkpointed_at: "2026-03-07T20:10:00Z"
+current_stage: 10
+stage_name: "Work Execution"
 entry_reads:
-  - .claude/work-queue/assets/WRK-1028/evidence/stage-evidence.yaml
-  - .claude/work-queue/assets/WRK-1028/evidence/resource-intelligence.yaml
   - .claude/work-queue/assets/WRK-1028/WRK-1028-lifecycle.html
-  - .claude/work-queue/pending/WRK-1028.md
-decisions_this_session:
-  - "Single WRK-NNN-lifecycle.html per WRK; updated at every stage exit — no separate plan/implementation HTML files"
-  - "Every stage has reviewed_by/confirmed_by/decision schema; autonomous=agent name, human gates=human name"
-  - "Stage 5 Route C: 3 parallel terminals (Claude/Codex/Gemini); orchestrator synthesizes combined-plan.md"
-  - "Stage 3 chained with 2+4 as agent-proposed (not a separate human session)"
-  - "Gate enforcement: custom gate-check.py PreToolUse hook; WRK-scoped via active-wrk; content-checks gate files"
-  - "Checkpoint/resume auto-suggested at every stage exit; GATE PASSED banner + mandatory prompt at human gates 5/7/17"
-  - "Context budget: HARD STOP at 70% — mandatory /checkpoint + new session /resume; prevents autocompact disruption"
-  - "WRK-1027 (generate-html-review.py --stage --update) absorbed into WRK-1028 scope"
-  - "Stage 18 auto-writes reclaim.yaml status: n/a when no checkpoint found"
-  - "Stages 2+3+4 always chained; Stages 8+9 always chained"
-  - "Stage 6 + Stage 13 cross-review mandatory 3-provider (Claude/Codex/Gemini) for ALL routes; Route A self-review exception removed; override only if user explicitly states quota unavailable AND explicitly instructs to continue — agent may not self-decide to skip a provider"
-artifacts_written:
   - .claude/work-queue/assets/WRK-1028/evidence/stage-evidence.yaml
-  - .claude/work-queue/assets/WRK-1028/evidence/resource-intelligence.yaml
-  - .claude/work-queue/assets/WRK-1028/evidence/user-review-plan-draft.yaml
   - .claude/work-queue/assets/WRK-1028/plan-draft-review.html
+  - .claude/work-queue/working/WRK-1028.md
+decisions_this_session:
+  - "Stage 6 cross-review: REVISE (4 P1 + 5 P2 findings) — all resolved in plan revision"
+  - "Gate 7→8: evidence/plan-final-review.yaml with confirmed_by+decision:passed (not lifecycle HTML line-start)"
+  - "Gate 17→18: blocks done/WRK-NNN.md (not reclaim.yaml)"
+  - "gate-check.py supplemental only; canonical = verify-gate-evidence.py"
+  - "AC-15 added: process.md update to 20-stage lifecycle"
+  - "chained_agent path in start-stage.sh: combined prompt, single agent exits after all stages"
+  - "start-stage.sh produces stage-N-prompt.md; human/orchestrator dispatches via work.sh"
+  - "Section-selector for entry_reads: WRK-NNN-lifecycle.html#sN-sM syntax"
+  - "Test suite 7→14 tests (Gate 7/17 + false-positive + claim/close compat)"
+  - "Parallelism model: parallel (5/6/13), parallel-optional (10/12), single-thread (all others)"
+  - "Single lifecycle HTML confirmed: plan content folds into Stage 4 section for future WRKs"
+  - "routing.log must use .yaml extension (*.log gitignored globally)"
+artifacts_written:
+  - .claude/work-queue/assets/WRK-1028/evidence/cross-review.yaml
+  - .claude/work-queue/assets/WRK-1028/evidence/plan-final-review.yaml
+  - .claude/work-queue/assets/WRK-1028/evidence/claim-evidence.yaml
+  - .claude/work-queue/assets/WRK-1028/evidence/activation.yaml
+  - .claude/work-queue/assets/WRK-1028/evidence/stage-evidence.yaml
+  - .claude/work-queue/assets/WRK-1028/gemini-review.md
+  - .claude/work-queue/assets/WRK-1028/codex-review.md
+  - .claude/work-queue/assets/WRK-1028/routing.yaml
   - .claude/work-queue/assets/WRK-1028/WRK-1028-lifecycle.html
-  - .claude/work-queue/pending/WRK-1028.md
-  - .claude/skills/workspace-hub/checkpoint/SKILL.md
-  - scripts/work-queue/checkpoint.sh
-next_action: "Stage 6 cross-review — Route C: Codex (mandatory hard gate) + Gemini independently review plan-draft-review.html; synthesize into evidence/cross-review.yaml (verdict: APPROVE|REVISE)"
+  - .claude/work-queue/assets/WRK-1028/plan-draft-review.html
+  - .claude/work-queue/working/WRK-1028.md
+next_action: >
+  Stage 10 Work Execution — 4-phase TDD delivery.
+  START with P1 tests first (TDD), then implement:
+  P1: gate-check.py at .claude/hooks/gate-check.py (Gates 5→6, 7→8, 17→18)
+  P2: scripts/work-queue/start-stage.sh + exit-stage.sh + .claude/state/stage-state.yaml
+  P3: 20 YAML contracts at scripts/work-queue/stages/ + 20 micro-skills at
+      .claude/skills/workspace-hub/stages/ + process.md update
+  P4: Heavy-stage enforcement + generate-html-review.py --stage N --update mode
+  Tests: tests/work-queue/test_stage_lifecycle.py (≥14 tests all pass)
 context_summary:
-  - "WRK-1028 at Stage 5 DONE — plan fully approved by user; Stage 6 gate cleared"
-  - "Core design: stage-isolation model; task_agent for autonomous stages; human_session at gates 1/5/7/17; chained_agent for light groups"
-  - "Lifecycle HTML (WRK-1028-lifecycle.html) is single tracking document; stage strip shows 1-5 done, 6 active, 7-20 pending"
-  - "10 key decisions confirmed this session — all captured in user-review-plan-draft.yaml and lifecycle HTML Stage 5 section"
-  - "gate-check.py (P1), start/exit-stage.sh (P2), 20 YAML contracts + 20 micro-skills (P3), heavy-stage enforcement + 70% context hard-stop (P4)"
+  - "Stages 1-9 all DONE. WRK-1028 is in working/ at percent_complete: 35"
+  - "Plan fully approved (Stage 7 PASSED) — all 9 cross-review revisions incorporated"
+  - "Core design: stage-isolation model; single WRK-NNN-lifecycle.html; 3 human gates"
+  - "gate-check.py is supplemental Write-tool hook; canonical gate = verify-gate-evidence.py"
+  - "Gate 7 artifact: evidence/plan-final-review.yaml (confirmed_by+decision:passed)"
+  - "Gate 17 blocks done/WRK-NNN.md; reclaim.yaml is conditional continuity artifact"
+  - "Invocation: task_agent (prompt-package→work.sh), human_session (gates 1/5/7/17), chained_agent (combined prompt)"
+  - "14 unit tests required; parallelism: parallel=5/6/13, optional=10/12, single=rest"
+  - "AC-15: process.md must reflect 20-stage lifecycle"
