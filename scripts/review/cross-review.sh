@@ -43,7 +43,12 @@ esac
 # Both exit 1 (predicate failure) and exit 2 (infrastructure failure) are fail-closed.
 WS_HUB_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 STAGE5_CHECKER="${WS_HUB_ROOT}/scripts/work-queue/verify-gate-evidence.py"
-if [[ "$REVIEW_TYPE" == "plan" && -n "$WRK_ID" && -f "$STAGE5_CHECKER" ]]; then
+if [[ "$REVIEW_TYPE" == "plan" && -n "$WRK_ID" ]]; then
+  if [[ ! -f "$STAGE5_CHECKER" ]]; then
+    echo "✖ Stage 5 checker not found: ${STAGE5_CHECKER}" >&2
+    echo "Repair the Stage 5 gate infrastructure before proceeding." >&2
+    exit 2
+  fi
   stage5_exit=0
   stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
       --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?

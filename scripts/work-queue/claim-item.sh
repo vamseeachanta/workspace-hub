@@ -39,21 +39,24 @@ mkdir -p "$EVIDENCE_DIR"
 # claim-item.sh is an official Stage 6 downstream validator. Both exit 1 (predicate
 # failure) and exit 2 (infrastructure failure) are fail-closed blocking outcomes.
 STAGE5_CHECKER="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
-if [[ -f "$STAGE5_CHECKER" ]]; then
-    stage5_exit=0
-    stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
-        --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?
-    if [[ "$stage5_exit" -eq 1 ]]; then
-        echo "✖ Stage 5 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
-        echo "$stage5_output" >&2
-        echo "Complete Stage 5 interactive review and evidence before claiming." >&2
-        exit 1
-    elif [[ "$stage5_exit" -eq 2 ]]; then
-        echo "✖ Stage 5 evidence gate FAILED (infrastructure failure) for ${WRK_ID}:" >&2
-        echo "$stage5_output" >&2
-        echo "Repair the Stage 5 gate infrastructure before claiming." >&2
-        exit 2
-    fi
+if [[ ! -f "$STAGE5_CHECKER" ]]; then
+    echo "✖ Stage 5 checker not found: ${STAGE5_CHECKER}" >&2
+    echo "Repair the Stage 5 gate infrastructure before claiming." >&2
+    exit 2
+fi
+stage5_exit=0
+stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
+    --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?
+if [[ "$stage5_exit" -eq 1 ]]; then
+    echo "✖ Stage 5 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
+    echo "$stage5_output" >&2
+    echo "Complete Stage 5 interactive review and evidence before claiming." >&2
+    exit 1
+elif [[ "$stage5_exit" -eq 2 ]]; then
+    echo "✖ Stage 5 evidence gate FAILED (infrastructure failure) for ${WRK_ID}:" >&2
+    echo "$stage5_output" >&2
+    echo "Repair the Stage 5 gate infrastructure before claiming." >&2
+    exit 2
 fi
 
 echo "Checking quota..."

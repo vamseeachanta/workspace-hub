@@ -146,6 +146,11 @@ def check_stage5_evidence_gate(
     if activation == "disabled":
         return True, "stage5-gate-config.yaml: activation=disabled (no enforcement)"
 
+    # TODO(WRK-1017 deferred): canary_plan_cross_review and canary_claim_close modes are
+    # documented in stage5-gate-config.yaml but not yet implemented. Any non-disabled
+    # activation currently falls through to full enforcement. Implement canary scoping
+    # (restrict check to specific entrypoints) before enabling canary modes in production.
+
     evidence_dir = assets_dir / "evidence"
 
     # 3. Check migration exemption (before artifact checks)
@@ -721,18 +726,21 @@ def check_agent_log_gate(workspace_root: Path, wrk_id: str, phase: str) -> tuple
     if not log_dir.exists():
         return False, "work-queue log directory missing"
 
+    # Only require PRE-PHASE log entries — excluding the current phase's terminal
+    # signals (verify_gate_evidence_pass, claim_evidence, close_item) because those
+    # are written by claim-item.sh / close-item.sh AFTER this function returns.
+    # Requiring the current-phase terminal signal would create a circular dependency
+    # where the gate can never pass on first invocation. (WRK-1017 P1 fix, Codex review)
     required_by_phase: dict[str, list[tuple[str, set[str]]]] = {
         "claim": [
             ("routing", {"work_wrapper_complete", "work_queue_skill"}),
             ("plan", {"plan_wrapper_complete", "plan_draft_complete"}),
-            ("claim", {"verify_gate_evidence_pass", "claim_evidence"}),
         ],
         "close": [
             ("routing", {"work_wrapper_complete", "work_queue_skill"}),
             ("plan", {"plan_wrapper_complete", "plan_draft_complete"}),
             ("execute", {"execute_wrapper_complete", "tdd_eval"}),
             ("cross-review", {"review_wrapper_complete", "agent_cross_review"}),
-            ("close", {"verify_gate_evidence_pass", "close_item"}),
         ],
     }
     requirements = required_by_phase[phase]

@@ -155,6 +155,13 @@ if [[ -z "$FILTER_GROUP" || "$FILTER_GROUP" == "2" ]]; then
     else
       fail "2.${bname}.uv_invocation"
     fi
+
+    # 2.x.7 fail-closed: guard uses ! -f (not fail-open -f pattern)
+    if grep -q '! -f.*STAGE5_CHECKER\|STAGE5_CHECKER.*! -f' "$fpath"; then
+      pass "2.${bname}.fail_closed"
+    else
+      fail "2.${bname}.fail_closed (entrypoint is fail-open when checker missing)"
+    fi
   done
 
   # 2.cross-review: --wrk-id parameter present
