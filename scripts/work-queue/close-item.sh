@@ -95,6 +95,27 @@ if [[ -z "$FILE_PATH" ]]; then
   exit 1
 fi
 
+# --- Stage 5 evidence gate (canonical checker — Phase 1B guard) ---------------
+# close-item.sh is an official Stage 6 downstream validator. Both exit 1 and exit 2
+# are fail-closed blocking outcomes.
+STAGE5_CHECKER="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
+if [[ -f "$STAGE5_CHECKER" ]]; then
+  stage5_exit=0
+  stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
+      --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?
+  if [[ "$stage5_exit" -eq 1 ]]; then
+    echo "✖ Stage 5 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
+    echo "$stage5_output" >&2
+    echo "Complete Stage 5 interactive review and evidence before closing." >&2
+    exit 1
+  elif [[ "$stage5_exit" -eq 2 ]]; then
+    echo "✖ Stage 5 evidence gate FAILED (infrastructure failure) for ${WRK_ID}:" >&2
+    echo "$stage5_output" >&2
+    echo "Repair the Stage 5 gate infrastructure before closing." >&2
+    exit 2
+  fi
+fi
+
 COMPLETED_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
 # Ensure final HTML review exists for this WRK; default path is auto-generated.

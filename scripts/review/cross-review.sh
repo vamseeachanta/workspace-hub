@@ -19,12 +19,14 @@ trap cleanup EXIT
 FILE_OR_DIFF="${1:?Usage: cross-review.sh <file_or_diff_or_sha> <reviewer> [--type plan|implementation|commit]}"
 REVIEWER="${2:?Specify reviewer: claude, codex, gemini, or all}"
 REVIEW_TYPE="implementation"
+WRK_ID=""
 
 # Parse optional args
 shift 2
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --type) REVIEW_TYPE="$2"; shift 2 ;;
+    --type)   REVIEW_TYPE="$2"; shift 2 ;;
+    --wrk-id) WRK_ID="$2";     shift 2 ;;
     *) echo "Unknown arg: $1" >&2; exit 1 ;;
   esac
 done
@@ -34,6 +36,29 @@ case "$REVIEW_TYPE" in
   plan|implementation|commit) ;;
   *) echo "Invalid review type: $REVIEW_TYPE (must be plan, implementation, or commit)" >&2; exit 1 ;;
 esac
+
+# --- Stage 5 evidence gate (canonical checker — Phase 1B guard) ----------------
+# cross-review.sh is an official Stage 6 entrypoint for plan reviews.
+# When --type plan and --wrk-id are supplied, enforce Stage 5 gate.
+# Both exit 1 (predicate failure) and exit 2 (infrastructure failure) are fail-closed.
+WS_HUB_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+STAGE5_CHECKER="${WS_HUB_ROOT}/scripts/work-queue/verify-gate-evidence.py"
+if [[ "$REVIEW_TYPE" == "plan" && -n "$WRK_ID" && -f "$STAGE5_CHECKER" ]]; then
+  stage5_exit=0
+  stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
+      --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?
+  if [[ "$stage5_exit" -eq 1 ]]; then
+    echo "✖ Stage 5 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
+    echo "$stage5_output" >&2
+    echo "Complete Stage 5 interactive review and evidence before Stage 6 cross-review." >&2
+    exit 1
+  elif [[ "$stage5_exit" -eq 2 ]]; then
+    echo "✖ Stage 5 evidence gate FAILED (infrastructure failure) for ${WRK_ID}:" >&2
+    echo "$stage5_output" >&2
+    echo "Repair the Stage 5 gate infrastructure before proceeding." >&2
+    exit 2
+  fi
+fi
 
 # Determine input mode: file, commit SHA, git range, or inline
 CONTENT_FILE=""
