@@ -1,12 +1,12 @@
-generated: '2026-03-06'
-total_specs: 1543
+generated: '2026-03-07'
+total_specs: 1547
 by_category:
   archive: 10
   data-sources: 13
   modules: 117
   other: 24
   repos: 1344
-  templates: 11
+  templates: 15
   wrk: 24
 by_repo:
   OGManufacturing: 16
@@ -26,10 +26,10 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 182
+  workspace-hub: 186
   worldenergydata: 216
 by_wrk:
-  WRK-0: 5
+  WRK-0: 8
   WRK-5: 1
   WRK-9: 1
   WRK-10: 1
@@ -19840,6 +19840,45 @@ specs:
   wrk_refs:
   - WRK-0
   mtime: '2026-03-05'
+- path: specs/templates/stage5-evidence-contract.yaml
+  title: Stage5 Evidence Contract
+  description: ''
+  category: templates
+  repo: workspace-hub
+  tags:
+  - stage5-evidence-contract
+  wrk_refs: []
+  mtime: '2026-03-07'
+- path: specs/templates/stage5-migration-exemption-template.yaml
+  title: Stage5 Migration Exemption Template
+  description: ''
+  category: templates
+  repo: workspace-hub
+  tags:
+  - stage5-migration-exemption-template
+  wrk_refs:
+  - WRK-0
+  mtime: '2026-03-07'
+- path: specs/templates/user-review-browser-open-template.yaml
+  title: User Review Browser Open Template
+  description: ''
+  category: templates
+  repo: workspace-hub
+  tags:
+  - user-review-browser-open-template
+  wrk_refs:
+  - WRK-0
+  mtime: '2026-03-07'
+- path: specs/templates/user-review-common-draft-template.yaml
+  title: User Review Common Draft Template
+  description: ''
+  category: templates
+  repo: workspace-hub
+  tags:
+  - user-review-common-draft-template
+  wrk_refs:
+  - WRK-0
+  mtime: '2026-03-07'
 - path: specs/templates/user-review-plan-draft-template.yaml
   title: User Review Plan Draft Template
   description: ''
@@ -19849,7 +19888,7 @@ specs:
   - user-review-plan-draft-template
   wrk_refs:
   - WRK-0
-  mtime: '2026-03-05'
+  mtime: '2026-03-07'
 - path: specs/templates/user-review-publish-template.yaml
   title: User Review Publish Template
   description: ''
@@ -19859,7 +19898,7 @@ specs:
   - user-review-publish-template
   wrk_refs:
   - WRK-0
-  mtime: '2026-03-04'
+  mtime: '2026-03-07'
 - path: specs/wrk/WRK-1003/plan.md
   title: WRK-1003 Execution Plan
   description: ''
