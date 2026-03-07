@@ -594,3 +594,139 @@ stages:
     mod.generate_review("WRK-1", "plan-draft", str(out))
     html = out.read_text(encoding="utf-8")
     assert html.count("<h2>Gate-Pass Stage Status</h2>") == 1
+
+
+# ── Phase 2: Changes Since Stage 5 (AC-21, AC-21b, WRK-1017) ─────────────────
+
+def test_collect_changes_since_stage5_no_publish_yaml(tmp_path: Path):
+    mod = _load_html_module()
+    result = mod.collect_changes_since_stage5(str(tmp_path), str(tmp_path))
+    assert result["present"] is False
+    assert "not found" in result["reason"]
+
+
+def test_collect_changes_since_stage5_no_plan_draft_event(tmp_path: Path):
+    mod = _load_html_module()
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir()
+    publish = evidence_dir / "user-review-publish.yaml"
+    publish.write_text(
+        "events:\n  - stage: plan_final\n    commit: abc1234\n    pushed_to_origin: true\n",
+        encoding="utf-8",
+    )
+    result = mod.collect_changes_since_stage5(str(tmp_path), str(tmp_path))
+    assert result["present"] is False
+    assert "plan_draft" in result["reason"]
+
+
+def test_collect_changes_since_stage5_unresolvable_commit(tmp_path: Path):
+    mod = _load_html_module()
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir()
+    publish = evidence_dir / "user-review-publish.yaml"
+    publish.write_text(
+        "events:\n  - stage: plan_draft\n    commit: deadbeefdeadbeef00000000\n    pushed_to_origin: true\n",
+        encoding="utf-8",
+    )
+    # Use tmp_path as workspace_root so git rev-parse fails (not a real git repo with that commit)
+    result = mod.collect_changes_since_stage5(str(tmp_path), str(tmp_path))
+    assert result["present"] is False
+
+
+def test_collect_changes_since_stage5_with_fixture(tmp_path: Path, monkeypatch):
+    """AC-21b: fixture-backed test with known delta content."""
+    mod = _load_html_module()
+    evidence_dir = tmp_path / "evidence"
+    evidence_dir.mkdir()
+    publish = evidence_dir / "user-review-publish.yaml"
+    publish.write_text(
+        "events:\n  - stage: plan_draft\n    commit: abc1234abcd\n    pushed_to_origin: true\n",
+        encoding="utf-8",
+    )
+
+    # Patch subprocess.run to simulate known git output
+    import subprocess as _subprocess
+    known_stat = (
+        " scripts/work-queue/verify-gate-evidence.py | 85 ++++++++\n"
+        " specs/templates/stage5-evidence-contract.yaml | 20 ++\n"
+        " 2 files changed, 105 insertions(+)\n"
+    )
+    known_log = (
+        "abc1235 feat(WRK-1017): Phase 1A canonical checker\n"
+        "abc1236 feat(WRK-1017): add bootstrap script\n"
+    )
+
+    call_count = {"n": 0}
+
+    def fake_run(cmd, **kwargs):
+        call_count["n"] += 1
+        result = _subprocess.CompletedProcess(cmd, 0)
+        if "rev-parse" in cmd:
+            result.stdout = "abc1234abcd\n"
+            result.stderr = ""
+            return result
+        if "--stat" in cmd:
+            result.stdout = known_stat
+            result.stderr = ""
+            return result
+        if "--oneline" in cmd:
+            result.stdout = known_log
+            result.stderr = ""
+            return result
+        return result
+
+    monkeypatch.setattr(mod.subprocess, "run", fake_run)
+
+    result = mod.collect_changes_since_stage5(str(tmp_path), str(tmp_path))
+    assert result["present"] is True
+    assert result["baseline_commit"] == "abc1234abcd"
+    assert result["commit_count"] == 2
+    assert "verify-gate-evidence.py" in result["stat_text"]
+    assert "stage5-evidence-contract.yaml" in result["stat_text"]
+    assert any("Phase 1A canonical checker" in c for c in result["commits"])
+
+
+def test_render_changes_since_stage5_absent(mod):
+    html = mod.render_changes_since_stage5({"present": False, "reason": "no publish yaml"})
+    assert "Changes Since Stage 5" in html
+    assert "no publish yaml" in html
+
+
+def test_render_changes_since_stage5_present(mod):
+    delta = {
+        "present": True,
+        "baseline_commit": "abc1234",
+        "stat_text": "scripts/foo.py | 5 ++\n1 file changed",
+        "commits": ["abc1235 feat: add foo", "abc1236 fix: fix bar"],
+        "commit_count": 2,
+    }
+    html = mod.render_changes_since_stage5(delta)
+    assert "Changes Since Stage 5" in html
+    assert "abc1234" in html
+    assert "abc1235 feat: add foo" in html
+    assert "abc1236 fix: fix bar" in html
+    assert "scripts/foo.py" in html
+
+
+def test_generate_review_plan_final_has_changes_since_stage5(tmp_path: Path, monkeypatch):
+    """Integration: plan-final HTML must contain Changes Since Stage 5 section."""
+    mod = _load_html_module()
+    repo = tmp_path / "repo"
+    queue = repo / ".claude" / "work-queue"
+    working = queue / "working"
+    assets = queue / "assets" / "WRK-2"
+    evidence = assets / "evidence"
+    working.mkdir(parents=True)
+    evidence.mkdir(parents=True)
+    (working / "WRK-2.md").write_text(
+        "---\nid: WRK-2\ntitle: Phase 2 Test\nstatus: working\nroute: C\n"
+        "complexity: complex\norchestrator: claude\ncomputer: ace-linux-1\n"
+        "created_at: 2026-03-07\npercent_complete: 60\n---\n\n## What\nTest plan.\n",
+        encoding="utf-8",
+    )
+    # No publish.yaml → section should render with absent message
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    out = assets / "plan-final-review.html"
+    mod.generate_review("WRK-2", "plan-final", str(out))
+    html = out.read_text(encoding="utf-8")
+    assert "Changes Since Stage 5" in html

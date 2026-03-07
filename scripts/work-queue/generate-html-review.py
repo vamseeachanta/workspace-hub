@@ -18,6 +18,7 @@ Legacy positional args still accepted: WRK-NNN [--stage draft] [--type plan]
 """
 import os
 import re
+import subprocess
 import sys
 from html import escape as html_escape
 import yaml
@@ -210,6 +211,7 @@ KEY_SECTIONS_BY_ARTIFACT = {
         "Plan Quality Eval Comparison",
         "Resource Intelligence",
         "Open Questions",
+        "Changes Since Stage 5",
         "Cross-Review Summary",
         "User Review - Plan (Final)",
     ],
@@ -568,6 +570,71 @@ def collect_plan_quality_eval(assets_dir: str) -> dict:
     }
 
 
+def collect_changes_since_stage5(assets_dir: str, workspace_root: str) -> dict:
+    """Return git delta between approved Stage 5 baseline commit and HEAD.
+
+    Baseline commit is the last plan_draft event in user-review-publish.yaml
+    (AC-12: authoritative current published draft commit).
+    """
+    publish_path = Path(assets_dir) / "evidence" / "user-review-publish.yaml"
+    if not publish_path.exists():
+        return {"present": False, "reason": "user-review-publish.yaml not found"}
+    try:
+        data = yaml.safe_load(publish_path.read_text(encoding="utf-8")) or {}
+    except Exception as e:
+        return {"present": False, "reason": f"YAML parse error: {e}"}
+
+    events = data.get("events") if isinstance(data, dict) else None
+    if not isinstance(events, list):
+        return {"present": False, "reason": "no events in user-review-publish.yaml"}
+
+    baseline_commit = None
+    for ev in reversed(events):
+        if isinstance(ev, dict) and ev.get("stage") == "plan_draft":
+            baseline_commit = str(ev.get("commit", "") or "").strip()
+            break
+
+    if not baseline_commit or baseline_commit == "unknown":
+        return {"present": False, "reason": "no plan_draft event with commit in publish log"}
+
+    # Verify commit exists in repo
+    try:
+        subprocess.run(
+            ["git", "rev-parse", "--verify", baseline_commit],
+            cwd=workspace_root, capture_output=True, check=True, timeout=8,
+        )
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError):
+        return {"present": False, "reason": f"baseline commit not resolvable: {baseline_commit}"}
+
+    # Get changed files since baseline
+    try:
+        stat_result = subprocess.run(
+            ["git", "diff", "--stat", f"{baseline_commit}..HEAD"],
+            cwd=workspace_root, capture_output=True, text=True, timeout=8,
+        )
+        stat_text = stat_result.stdout.strip()
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        stat_text = "(git diff timed out)"
+
+    # Get commit log since baseline (one-line, newest first)
+    try:
+        log_result = subprocess.run(
+            ["git", "log", "--oneline", f"{baseline_commit}..HEAD"],
+            cwd=workspace_root, capture_output=True, text=True, timeout=8,
+        )
+        commits = [c for c in log_result.stdout.strip().splitlines() if c.strip()]
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        commits = []
+
+    return {
+        "present": True,
+        "baseline_commit": baseline_commit,
+        "stat_text": stat_text or "(no changes since Stage 5 baseline)",
+        "commits": commits,
+        "commit_count": len(commits),
+    }
+
+
 # ── HTML section builders ─────────────────────────────────────────────────────
 
 def render_meta_grid(fm: dict) -> str:
@@ -735,6 +802,35 @@ def render_plan_quality_eval_section(plan_eval: dict) -> str:
 <p style="font-size:.82rem;color:var(--muted)"><strong>Source:</strong> <code>{artifact_ref}</code></p>"""
 
 
+def render_changes_since_stage5(delta: dict) -> str:
+    if not delta.get("present"):
+        reason = html_escape(str(delta.get("reason", "Not applicable.")), quote=True)
+        return f"""<h2>Changes Since Stage 5</h2>
+<div class="panel">
+  <p style="color:var(--muted)">{reason}</p>
+</div>"""
+    baseline = html_escape(str(delta.get("baseline_commit", "unknown")), quote=True)
+    stat = html_escape(str(delta.get("stat_text", "(no changes)")), quote=True)
+    commit_count = int(delta.get("commit_count", 0))
+    commits = delta.get("commits", [])
+    commit_list = "".join(
+        f"<li><code>{html_escape(c, quote=True)}</code></li>" for c in commits[:30]
+    )
+    if len(commits) > 30:
+        commit_list += f"<li style='color:var(--muted)'>…and {len(commits)-30} more</li>"
+    commits_html = f"<ul>{commit_list}</ul>" if commits else "<p style='color:var(--muted)'>No commits since baseline.</p>"
+    return f"""<h2>Changes Since Stage 5</h2>
+<div class="panel">
+  <p><strong>Stage 5 approved baseline:</strong> <code>{baseline}</code></p>
+  <p><strong>Commits since baseline:</strong> {commit_count}</p>
+  {commits_html}
+  <details>
+    <summary><strong>Git diff stat</strong></summary>
+    <pre style="white-space:pre-wrap;font-size:.82rem">{stat}</pre>
+  </details>
+</div>"""
+
+
 # ── Main HTML renderer ────────────────────────────────────────────────────────
 
 def _extract_h2_titles(html: str) -> set[str]:
@@ -825,6 +921,7 @@ def _inject_generated_plan_sections(
     artifact_type: str,
     prompt_start_context_html: str,
     plan_quality_eval_html: str,
+    changes_since_stage5_html: str = "",
 ) -> str:
     if artifact_type not in {"plan-draft", "plan-final"}:
         return body_html
@@ -838,7 +935,14 @@ def _inject_generated_plan_sections(
         body_html = _insert_before_first_matching_h2(
             body_html,
             plan_quality_eval_html,
-            ["Resource Intelligence", "Open Questions", "Changes from Draft", "Cross-Review Summary", "User Review - Plan (Final)"],
+            ["Resource Intelligence", "Open Questions", "Changes from Draft", "Changes Since Stage 5", "Cross-Review Summary", "User Review - Plan (Final)"],
+        )
+
+    if artifact_type == "plan-final" and "Changes Since Stage 5" not in titles and changes_since_stage5_html.strip():
+        body_html = _insert_before_first_matching_h2(
+            body_html,
+            changes_since_stage5_html,
+            ["Cross-Review Summary", "User Review - Plan (Final)"],
         )
 
     return body_html
@@ -981,6 +1085,11 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
     gatepass = collect_stage_gatepass(assets_dir)
     prompt_start_context = collect_prompt_start_context(body, fm)
     plan_quality_eval = collect_plan_quality_eval(assets_dir)
+    changes_since_stage5 = (
+        collect_changes_since_stage5(assets_dir, workspace_root)
+        if artifact_type == "plan-final"
+        else {"present": False, "reason": "only rendered for plan-final"}
+    )
 
     skill_manifest_html = render_skill_manifest(skill_manifest)
     test_evidence_html = render_test_evidence(test_evidence)
@@ -988,11 +1097,17 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
     gatepass_html = render_gatepass_section(gatepass)
     prompt_start_context_html = render_prompt_start_context(prompt_start_context)
     plan_quality_eval_html = render_plan_quality_eval_section(plan_quality_eval)
+    changes_since_stage5_html = (
+        render_changes_since_stage5(changes_since_stage5)
+        if artifact_type == "plan-final"
+        else ""
+    )
     body_html = _inject_generated_plan_sections(
         body_html,
         artifact_type,
         prompt_start_context_html,
         plan_quality_eval_html,
+        changes_since_stage5_html,
     )
     skill_manifest_html, test_evidence_html, reviewer_html, gatepass_html = _suppress_duplicate_generated_sections(
         body_html,
@@ -1004,7 +1119,13 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
     body_html = _append_missing_key_sections(
         body_html,
         artifact_type,
-        extra_html=[skill_manifest_html, test_evidence_html, reviewer_html, gatepass_html],
+        extra_html=[
+            skill_manifest_html,
+            test_evidence_html,
+            reviewer_html,
+            gatepass_html,
+            changes_since_stage5_html,
+        ],
     )
 
     sections = {
@@ -1015,6 +1136,7 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
         "gatepass_html": gatepass_html,
         "test_evidence_html": test_evidence_html,
         "reviewer_html": reviewer_html,
+        "changes_since_stage5_html": changes_since_stage5_html,
     }
 
     html = render_wrk_html(fm, artifact_type, sections)
