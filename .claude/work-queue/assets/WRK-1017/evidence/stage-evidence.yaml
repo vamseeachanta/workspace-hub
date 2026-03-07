@@ -85,23 +85,22 @@ stages:
             (run3-P2) human-authority identity format: DEFERRED — Phase 1B implementation detail; exact allowlist entry format and legacy normalization rules defined when the canonical checker implements the allowlist check.
   - order: 7
     stage: User Review - Plan (Final)
-    status: ready
+    status: done
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
     comment: >
-      Stage 6 complete. Stage 7 is now the next required human checkpoint.
-      The final-plan HTML must be generated and opened in browser for user review.
-      Changes Since Stage 5 section is required in the HTML per Phase 2 packaging.
-      Stage 7 will confirm plan_reviewed: true and enable Stage 8 claim.
+      User approved final plan on 2026-03-07. plan-final-review.html opened and reviewed.
+      Stage 6 dispositions reviewed. User decision: approve_as_is.
+      plan_reviewed: true already set. Stage 8 claim now unblocked.
     evidence: .claude/work-queue/assets/WRK-1017/plan-final-review.html
   - order: 8
     stage: Claim / Activation
-    status: pending
+    status: ready
     human_decision_required: "no"
     owner: orchestrator
-    blocker: "yes"
-    comment: Cannot claim before plan gates pass.
+    blocker: "no"
+    comment: Plan gates passed (plan_approved + plan_reviewed both true). Ready to claim.
     evidence: .claude/work-queue/assets/WRK-1017/evidence/claim.yaml
   - order: 9
     stage: Work-Queue Routing Skill
