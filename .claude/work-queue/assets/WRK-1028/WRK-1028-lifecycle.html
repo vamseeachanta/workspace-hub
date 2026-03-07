@@ -152,9 +152,9 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
     <a href="#s14" class="sc sc-done"    title="14 Verify Gate Evidence — DONE">14</a>
     <a href="#s15" class="sc sc-done"    title="15 Future Work Synthesis — DONE">15</a>
     <a href="#s16" class="sc sc-done"    title="16 Resource Intelligence Update — DONE">16</a>
-    <a href="#s17" class="sc sc-active"  title="17 User Review — Implementation — ACTIVE">17</a>
+    <a href="#s17" class="sc sc-done"    title="17 User Review — Implementation — DONE">17</a>
     <a href="#s18" class="sc sc-done"    title="18 Reclaim — N/A">18</a>
-    <a href="#s19" class="sc sc-pending" title="19 Close">19</a>
+    <a href="#s19" class="sc sc-active"  title="19 Close — ACTIVE">19</a>
     <a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
   </div>
 </nav>
@@ -658,10 +658,9 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">17</div>
     <div><div class="stitle">User Review — Implementation</div><div class="smeta">human_session · heavy · GATE</div></div>
-    <div class="sbadges"><span class="badge b-active">active</span><span class="badge b-human">human_session</span><span class="badge b-heavy">heavy</span><span class="badge b-gate">gate</span><span class="chevron">▼</span></div>
+    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-human">human_session</span><span class="badge b-heavy">heavy</span><span class="badge b-gate">gate</span><span class="chevron">▼</span></div>
   </div>
-  <div class="stage-body">
-    <div class="pending-note" style="background:#fff3cd;border-color:#ffc107;color:#856404;">⏳ HUMAN GATE — Awaiting user review and approval of Stages 10–16.</div>
+  <div class="stage-body collapsed">
     <div class="section-label">Review scope</div>
     <ul class="item-list">
       <li>Stage 10 — Work Execution: gate_check.py, start_stage.py, exit_stage.py (P4 heavy checks), 20 stage contracts, 20 micro-skills, process.md (AC-15), settings.json hook, SKILL.md refs (AC-13); 17 tests pass</li>
@@ -674,15 +673,15 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
     </ul>
     <div class="section-label">Stage record</div>
     <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val empty">—</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T22:00:00Z</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T22:00:00Z</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div>
+      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">All stages 10–16 reviewed and approved. 23/23 ACs PASS. 17 tests pass.</span></div>
     </div>
     <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li><code>evidence/user-review-close.yaml</code> (decision: approved)</li></ul>
+    <ul class="item-list"><li><code>evidence/user-review-close.yaml</code> — decision: approved</li></ul>
   </div>
 </section>
 

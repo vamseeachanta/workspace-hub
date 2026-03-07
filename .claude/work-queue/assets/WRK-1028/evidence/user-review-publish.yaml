@@ -23,3 +23,14 @@ events:
     published_at: 2026-03-07T20:00:00Z
     reviewer: user
     notes: "plan-final-review.yaml + lifecycle HTML pushed before Stage 7 user review"
+
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: f80b8d6f
+    documents:
+      - .claude/work-queue/assets/WRK-1028/WRK-1028-lifecycle.html
+    published_at: 2026-03-07T22:00:00Z
+    reviewer: user
+    notes: "Lifecycle HTML stages 13-18 pushed before Stage 17 user review"

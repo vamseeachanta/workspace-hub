@@ -863,7 +863,7 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
 
     # Claim gate — WARN for legacy items (no metadata_version), FAIL for hardened items
     claim_ok, claim_details = check_claim_gate(assets_dir)
-    gates.append({"name": "Claim gate", "ok": bool(claim_ok), "details": claim_details})
+    gates.append({"name": "Claim gate", "ok": bool(claim_ok), "warn": claim_ok is None, "details": claim_details})
 
     if phase == "close":
         fw_ok, fw_details = check_future_work_gate(assets_dir)
