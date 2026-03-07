@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-07T15:43:20Z by generate-index.py -->
+<!-- Generated: 2026-03-07T16:15:01Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-07T15:43:20Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-07T16:15:01Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 456
+**Total items:** 458
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 208 |
+| pending | 210 |
 | working | 5 |
 | blocked | 9 |
 | archived | 234 |
@@ -22,15 +22,15 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 212 |
-| medium | 202 |
+| high | 213 |
+| medium | 203 |
 | low | 41 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 80 |
+| simple | 82 |
 | medium | 214 |
 | complex | 95 |
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 44 |
+| harness | 46 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -69,7 +69,7 @@
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 149 |
+| workspace-hub | 151 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,7 +77,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 172 / 456 |
+| Plans exist | 172 / 458 |
 | Plans cross-reviewed | 69 |
 | Plans approved | 90 |
 | Brochure pending | 8 |
@@ -89,9 +89,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 456 |
+| Total captured | 458 |
 | Total archived | 234 |
-| Completion rate | 234/456 (51%) |
+| Completion rate | 234/458 (51%) |
 | Monthly rate (current month) | 9 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -99,7 +99,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 208 | 28% |
+| Pending items with plans | 58 / 210 | 28% |
 | Plans cross-reviewed | 10 | 14% |
 | Plans user-approved | 11 | 16% |
 
@@ -116,15 +116,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 97 | 2 | 7 |
-| Medium   | 83  | 3  | 1  |
+| High     | 98 | 2 | 7 |
+| Medium   | 84  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (44 items — 13 high, 26 medium, 5 low)
+### harness (46 items — 14 high, 27 medium, 5 low)
 
 #### harness / agent-ux
 
@@ -174,6 +174,7 @@
 | WRK-667 | HIGH | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending |
 | WRK-692 | HIGH | feat(session): interactive session analysis — codex-orchestrator variant | pending |
 | WRK-1005 | HIGH | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working |
+| WRK-1030 | HIGH | Skill name→path registry for start-stage.sh skill loading | pending |
 | WRK-230 | MEDIUM | Untitled | pending |
 | WRK-578 | MEDIUM | feat(skills): audit MCP registry for engineering-domain servers | pending |
 | WRK-579 | MEDIUM | feat(skills): install Semantic Scholar MCP server for literature search | pending |
@@ -188,6 +189,7 @@
 | WRK-1013 | MEDIUM | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending |
 | WRK-1016 | MEDIUM | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending |
 | WRK-1025 | MEDIUM | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending |
+| WRK-1029 | MEDIUM | Align resource-intelligence skill with Stage 2 micro-skill contract | pending |
 | WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
 | WRK-639 | LOW | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending |
 
@@ -997,6 +999,8 @@
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1030 | Skill name→path registry for start-stage.sh skill loading | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1028 |
 
 ## By Status
 
@@ -1212,6 +1216,8 @@
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | medium | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | medium | simple | digitalmodel | - |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | high | complex | workspace-hub | - |
+| WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | medium | simple | workspace-hub | - |
+| WRK-1030 | Skill name→path registry for start-stage.sh skill loading | high | simple | workspace-hub | - |
 
 ### Working
 
@@ -1975,6 +1981,8 @@
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | - |
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | simple | - |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | pending | high | complex | - |
+| WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | pending | medium | simple | - |
+| WRK-1030 | Skill name→path registry for start-stage.sh skill loading | pending | high | simple | - |
 
 ### worldenergydata
 
@@ -2288,6 +2296,7 @@
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | workspace-hub | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | complex | workspace-hub | - |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | pending | complex | workspace-hub | - |
+| WRK-1030 | Skill name→path registry for start-stage.sh skill loading | pending | simple | workspace-hub | - |
 
 ### Medium
 
@@ -2495,6 +2504,7 @@
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | workspace-hub | - |
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | simple | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | simple | digitalmodel | - |
+| WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | pending | simple | workspace-hub | - |
 
 ### Low
 
@@ -2628,6 +2638,8 @@
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | workspace-hub | - |
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | digitalmodel | - |
+| WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | pending | medium | workspace-hub | - |
+| WRK-1030 | Skill name→path registry for start-stage.sh skill loading | pending | high | workspace-hub | - |
 
 ### Medium
 
@@ -2950,7 +2962,7 @@
 
 ## By Computer
 
-### ace-linux-1 (159 active / 180 total)
+### ace-linux-1 (161 active / 182 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3134,6 +3146,8 @@
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | simple | workspace-hub |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | simple | digitalmodel |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | pending | high | complex | workspace-hub |
+| WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | pending | medium | simple | workspace-hub |
+| WRK-1030 | Skill name→path registry for start-stage.sh skill loading | pending | high | simple | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 
@@ -3500,4 +3514,5 @@
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | WRK-683 | - | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | WRK-691 | - | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | WRK-1019 | - | - |
+| WRK-1030 | Skill name→path registry for start-stage.sh skill loading | WRK-1028 | - | - |
 
