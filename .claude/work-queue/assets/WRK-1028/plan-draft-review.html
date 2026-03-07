@@ -484,12 +484,14 @@ Checklist:
 7. DO NOT proceed to Stage 6 until decision: approved is confirmed
 Exit: evidence/user-review-plan-draft.yaml (decision: approved)</code></pre>
 
-  <div class="phase-block"><strong>P4 — Heavy-Stage Depth Enforcement</strong></div>
+  <div class="phase-block"><strong>P4 — Heavy-Stage Depth Enforcement + Context Hard Stop</strong></div>
   <ul>
     <li>Stage 10: start-stage.sh prompt includes TDD micro-skill as first item; exit-stage.sh checks ≥1 test file in tests/</li>
     <li>Stage 12: exit-stage.sh checks ≥3 test pass records in execute.yaml <code>integrated_repo_tests</code></li>
     <li>Stage 17: exit-stage.sh checks decision: approved in user-review-close.yaml</li>
-    <li>context_budget_kb: start-stage.sh measures entry_reads total size; warns if over budget (non-blocking initially)</li>
+    <li><strong>Context hard stop at 70%:</strong> start-stage.sh measures total size of entry_reads artifacts. If ≥70% of <code>context_budget_kb</code> → HARD STOP before any work begins. exit-stage.sh re-checks after writing artifacts. Both print:<br>
+      <code>"CONTEXT AT 70% — HARD STOP. Run: /checkpoint WRK-NNN  →  start new session  →  /resume WRK-NNN"</code><br>
+      Prevents autocompact from silently removing gate instructions mid-session. Deliberate clean restart is always preferable to chaotic compaction.</li>
   </ul>
 </div>
 

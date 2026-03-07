@@ -140,8 +140,8 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
     <a href="#s2"  class="sc sc-done"    title="02 Resource Intelligence">2</a>
     <a href="#s3"  class="sc sc-done"    title="03 Triage">3</a>
     <a href="#s4"  class="sc sc-done"    title="04 Plan Draft">4</a>
-    <a href="#s5"  class="sc sc-active"  title="05 User Review — Plan Draft">5</a>
-    <a href="#s6"  class="sc sc-pending" title="06 Cross-Review">6</a>
+    <a href="#s5"  class="sc sc-done"    title="05 User Review — Plan Draft">5</a>
+    <a href="#s6"  class="sc sc-active"  title="06 Cross-Review">6</a>
     <a href="#s7"  class="sc sc-pending" title="07 User Review — Plan Final">7</a>
     <a href="#s8"  class="sc sc-pending" title="08 Claim / Activation">8</a>
     <a href="#s9"  class="sc sc-pending" title="09 Work-Queue Routing">9</a>
@@ -341,7 +341,7 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
       <div class="smeta">2026-03-07 · human_session · heavy · GATE</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-active">in-progress</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-human">human_session</span>
       <span class="badge b-heavy">heavy</span>
       <span class="badge b-gate">gate</span>
@@ -349,18 +349,14 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
     </div>
   </div>
   <div class="stage-body">
-    <div class="awaiting">
-      <strong>Awaiting human review.</strong> Open <code>plan-draft-review.html</code> and review each section.
-      Feedback is being incorporated in real time. Stage advances only when <code>decision: approved</code> is recorded below.
-    </div>
-    <div class="section-label">Stage record — to be filled on approval</div>
+    <div class="section-label">Stage record</div>
     <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">— awaiting —</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">— awaiting —</span></div>
-      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val empty">— awaiting —</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val empty">— awaiting —</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">— awaiting —</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val empty">— awaiting —</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">user</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T16:00:00Z</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T16:00:00Z</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div>
+      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">All plan sections reviewed and approved. 10 decisions confirmed. No open questions remaining.</span></div>
     </div>
     <hr class="divider">
     <div class="section-label">Review dialogue — in progress</div>
@@ -374,7 +370,9 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
       <li><strong>Confirmed:</strong> Gate enforcement = custom <code>.claude/hooks/gate-check.py</code> PreToolUse hook (not hookify markdown); content-checks gate file scoped to active WRK via <code>active-wrk</code> state — no cross-stage approval confusion</li>
       <li><strong>Confirmed:</strong> /checkpoint and /resume auto-suggested at every stage exit; GATE PASSED banner + strong checkpoint prompt at human gate stages (5, 7, 17); start-stage.sh checks for checkpoint.yaml at human_session entry</li>
       <li><strong>WRK-1027 consolidation:</strong> generate-html-review.py <code>--stage N --update</code> mode incorporated into WRK-1028 scope — pending final confirmation</li>
-      <li><strong>Open:</strong> remaining open questions; test plan; ACs — then ready for approval</li>
+      <li><strong>Confirmed:</strong> context_budget_kb = HARD STOP at 70% (not warn). start-stage.sh + exit-stage.sh both measure entry_reads size; if ≥70% → hard stop + mandatory /checkpoint + new session /resume. Prevents autocompact from silently removing gate instructions.</li>
+      <li><strong>Confirmed:</strong> WRK-1027 absorbed into WRK-1028 scope; Stage 18 auto-writes reclaim.yaml n/a when no checkpoint found; Stages 2+3+4 always chained</li>
+      <li><strong>All open questions resolved. Plan approved — ready for Stage 6.</strong></li>
     </ul>
     <div class="section-label">Gate exit artifact</div>
     <ul class="item-list">
@@ -392,10 +390,10 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">6</div>
     <div><div class="stitle">Cross-Review</div><div class="smeta">task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
+    <div class="sbadges"><span class="badge b-active">in-progress</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
   </div>
   <div class="stage-body collapsed">
-    <div class="pending-note">Not started. Begins after Stage 5 gate is cleared.</div>
+    <div class="awaiting"><strong>Stage 5 gate cleared.</strong> Route C cross-review: Codex (mandatory) + Gemini. Ready to proceed.</div>
     <div class="section-label">Stage record</div>
     <div class="schema">
       <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>

@@ -1,0 +1,34 @@
+wrk_id: WRK-1028
+stage: 5
+reviewer: user
+reviewed_at: "2026-03-07T16:00:00Z"
+decision: approved
+feedback:
+  - item: Single lifecycle HTML model
+    decision: approved
+    notes: One file per WRK, updated at every stage exit. No separate plan/implementation HTML files.
+  - item: Per-stage reviewed_by / confirmed_by / decision schema
+    decision: approved
+    notes: Every stage uses consistent schema. Autonomous stages use agent name; human gates require human name.
+  - item: Stage 5 Route C — 3 parallel terminals (Claude/Codex/Gemini)
+    decision: approved
+    notes: All 3 providers simultaneously; user switches freely; orchestrator synthesizes combined-plan.md.
+  - item: Stage 3 chained with 2+4 as agent-proposed
+    decision: approved
+  - item: Stage weights (light/medium/heavy)
+    decision: approved
+  - item: 4-phase delivery order (P1 gate-check → P2 scripts → P3 contracts+skills → P4 heavy)
+    decision: approved
+  - item: Gate enforcement via custom gate-check.py PreToolUse hook
+    decision: approved
+    notes: WRK-scoped via active-wrk. Content-checks gate files. No cross-stage approval confusion.
+  - item: Checkpoint/resume auto-suggested at every stage exit; GATE PASSED banner at human gates
+    decision: approved
+  - item: Context budget hard stop at 70% — mandatory checkpoint + new session
+    decision: approved
+    notes: Prevents autocompact from silently removing gate instructions. Deliberate restart beats chaotic compaction.
+  - item: WRK-1027 absorbed into WRK-1028 scope
+    decision: approved
+  - item: Stage 18 auto-writes reclaim.yaml n/a when no checkpoint found
+    decision: approved
+open_questions: none
