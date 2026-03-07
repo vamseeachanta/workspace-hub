@@ -1,0 +1,11 @@
+wrk_id: WRK-1024
+exemption_version: "1.0"
+approved_by: user
+approved_at: "2026-03-07T00:00:00Z"
+approval_scope: full_stage5_evidence_set
+rationale: >
+  WRK-1024 (increase context window limits) was captured and approved before Stage 5
+  evidence requirements were introduced (gate_activation_commit is not yet set;
+  activation=disabled). No stage-evidence.yaml exists because claim has not been run.
+  This exemption classifies WRK-1024 as pre-gate-activation legacy for bootstrap purposes.
+remediation_attempted: exemption_granted_pre_activation

@@ -1,0 +1,11 @@
+wrk_id: WRK-1011
+exemption_version: "1.0"
+approved_by: user
+approved_at: "2026-03-07T00:00:00Z"
+approval_scope: full_stage5_evidence_set
+rationale: >
+  WRK-1011 (workflow-html skill) was planned and approved before Stage 5 evidence
+  requirements were introduced (gate_activation_commit not yet set; activation=disabled).
+  Stage-evidence.yaml was not created at claim time. This exemption classifies WRK-1011
+  as pre-gate-activation legacy for bootstrap purposes.
+remediation_attempted: exemption_granted_pre_activation
