@@ -1,0 +1,34 @@
+# stage5-migration-exemption-template.yaml — Stage 5 migration exemption for legacy WRKs
+#
+# Canonical save path: .claude/work-queue/assets/WRK-<id>/evidence/stage5-migration-exemption.yaml
+# Usage: grant an explicit exemption for a WRK that predates Stage 5 evidence requirements
+#   and cannot have its missing artifacts reconstructed deterministically.
+#
+# Exemption approval process:
+#   1. Orchestrator creates this artifact from template and fills all fields
+#   2. User reviews and confirms approved_by field (must be a human authority value)
+#   3. Canonical checker validates authority against human_authority_allowlist in stage5-gate-config.yaml
+#   4. If approved_by is an agent identity or unknown value, checker fails closed
+#
+# IMPORTANT: migration exemptions require explicit user approval; they are never auto-authorized.
+# First-gated markers (stage5-first-gated.yaml) are auto-authorized for legacy classification
+# only and never satisfy missing approval evidence.
+
+wrk_id: WRK-000
+exemption_version: "1.0"
+approved_by: user
+approved_at: "2026-03-07T00:00:00Z"
+approval_scope: "full_stage5_evidence_set"
+rationale: >
+  WRK-000 was created and completed before Stage 5 evidence requirements were introduced
+  (gate_activation_commit: <commit>). A fresh live review capture is not possible because
+  the WRK is already archived/closed. Deterministic backfill of approval artifacts is not
+  possible without falsifying review history. This exemption classifies WRK-000 as
+  pre-gate-activation legacy and treats it as compliant for the purposes of Stage 5 checking.
+missing_artifacts:
+  - user-review-common-draft.yaml
+  - user-review-plan-draft.yaml
+remediation_attempted: backfill_not_possible
+exemption_scope_note: >
+  This exemption covers only WRK-000 and does not grant exemption to any other WRK.
+  A new WRK started after gate_activation_commit must have complete Stage 5 evidence.

@@ -623,3 +623,335 @@ def test_agent_log_gate_passes_for_close_when_wrapper_logs_exist(tmp_path: Path)
     ok, detail = mod.check_agent_log_gate(tmp_path, "WRK-999", "close")
     assert ok is True
     assert "matched routing" in detail
+
+
+# ---------------------------------------------------------------------------
+# Stage 5 evidence gate tests (Phase 1A TDD)
+# ---------------------------------------------------------------------------
+
+_FULL_CONFIG = """\
+schema_version: "1.0"
+major_version: 1
+supported_major_versions:
+  - 1
+activation: full
+gate_activation_commit: "aabbccdd"
+checker_timeout_seconds: 30
+git_history_timeout_seconds: 8
+emergency_bypass_until: ""
+emergency_bypass_reason: ""
+emergency_bypass_approved_by: ""
+human_authority_allowlist:
+  - user
+  - vamsee
+"""
+
+_DISABLED_CONFIG = """\
+schema_version: "1.0"
+major_version: 1
+supported_major_versions:
+  - 1
+activation: disabled
+gate_activation_commit: ""
+checker_timeout_seconds: 30
+git_history_timeout_seconds: 8
+emergency_bypass_until: ""
+emergency_bypass_reason: ""
+emergency_bypass_approved_by: ""
+human_authority_allowlist:
+  - user
+"""
+
+_COMMON_DRAFT_PASS = """\
+wrk_id: WRK-999
+stage: plan_draft
+review_checkpoint: common_draft
+review_cycle_id: "stage5-20260307"
+draft_commit: "abc123"
+approval_decision: approve_as_is
+reviewed_at: "2026-03-07T00:00:00Z"
+reviewed_by: user
+capture_method: manual_live_review
+generated_at_commit: "abc123"
+"""
+
+_PLAN_DRAFT_PASS = """\
+wrk_id: WRK-999
+stage: plan_draft
+review_checkpoint: combined_plan
+review_cycle_id: "stage5-20260307"
+approval_decision: approve_as_is
+approved_draft_commit: "def456"
+reviewed_at: "2026-03-07T00:00:01Z"
+reviewed_by: user
+capture_method: manual_live_review
+generated_at_commit: "def456"
+"""
+
+_BROWSER_OPEN_PASS = """\
+events:
+  - stage: plan_draft
+    review_checkpoint: common_draft
+    review_cycle_id: "stage5-20260307"
+    wrk_id: WRK-999
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-999/plan-draft-review.html"
+    opened_at: "2026-03-07T00:00:00Z"
+    reviewer: user
+  - stage: plan_draft
+    review_checkpoint: combined_plan
+    review_cycle_id: "stage5-20260307"
+    wrk_id: WRK-999
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-999/plan-draft-review.html"
+    opened_at: "2026-03-07T00:00:01Z"
+    reviewer: user
+"""
+
+_PUBLISH_PASS = """\
+events:
+  - stage: plan_draft
+    review_checkpoint: common_draft
+    review_cycle_id: "stage5-20260307"
+    wrk_id: WRK-999
+    pushed_to_origin: true
+    commit: "abc123"
+    published_at: "2026-03-07T00:00:00Z"
+    reviewer: user
+  - stage: plan_draft
+    review_checkpoint: combined_plan
+    review_cycle_id: "stage5-20260307"
+    wrk_id: WRK-999
+    pushed_to_origin: true
+    commit: "def456"
+    published_at: "2026-03-07T00:00:01Z"
+    reviewer: user
+"""
+
+
+def _write_stage5_fixtures(
+    tmp_path: Path,
+    *,
+    config: str = _FULL_CONFIG,
+    common_draft: str | None = _COMMON_DRAFT_PASS,
+    plan_draft: str | None = _PLAN_DRAFT_PASS,
+    browser_open: str | None = _BROWSER_OPEN_PASS,
+    publish: str | None = _PUBLISH_PASS,
+) -> tuple[Path, Path]:
+    """Write Stage 5 fixture files; return (assets_dir, workspace_root)."""
+    # workspace_root = tmp_path; config lives at scripts/work-queue/stage5-gate-config.yaml
+    config_dir = tmp_path / "scripts" / "work-queue"
+    config_dir.mkdir(parents=True)
+    (config_dir / "stage5-gate-config.yaml").write_text(config, encoding="utf-8")
+
+    assets_dir = tmp_path / ".claude" / "work-queue" / "assets" / "WRK-999"
+    evidence_dir = assets_dir / "evidence"
+    evidence_dir.mkdir(parents=True)
+
+    if common_draft is not None:
+        (evidence_dir / "user-review-common-draft.yaml").write_text(
+            common_draft, encoding="utf-8"
+        )
+    if plan_draft is not None:
+        (evidence_dir / "user-review-plan-draft.yaml").write_text(
+            plan_draft, encoding="utf-8"
+        )
+    if browser_open is not None:
+        (evidence_dir / "user-review-browser-open.yaml").write_text(
+            browser_open, encoding="utf-8"
+        )
+    if publish is not None:
+        (evidence_dir / "user-review-publish.yaml").write_text(
+            publish, encoding="utf-8"
+        )
+
+    return assets_dir, tmp_path
+
+
+def test_stage5_gate_disabled_returns_ok(tmp_path: Path):
+    """When activation=disabled, gate should return True (no enforcement)."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage5_fixtures(
+        tmp_path, config=_DISABLED_CONFIG,
+        common_draft=None, plan_draft=None, browser_open=None, publish=None,
+    )
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is True
+    assert "disabled" in detail.lower()
+
+
+def test_stage5_gate_config_missing_returns_exit2(tmp_path: Path):
+    """Missing stage5-gate-config.yaml should return None (exit 2)."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir = tmp_path / ".claude" / "work-queue" / "assets" / "WRK-999"
+    (assets_dir / "evidence").mkdir(parents=True)
+    # No config file written
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, tmp_path)
+    assert ok is None
+    assert "stage5-gate-config" in detail.lower() or "config" in detail.lower()
+
+
+def test_stage5_gate_malformed_config_returns_exit2(tmp_path: Path):
+    """Malformed YAML in stage5-gate-config.yaml should return None (exit 2)."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage5_fixtures(
+        tmp_path, config="activation: [invalid\n  yaml: {\n",
+        common_draft=None, plan_draft=None, browser_open=None, publish=None,
+    )
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is None
+
+
+def test_stage5_gate_full_missing_common_draft_blocks(tmp_path: Path):
+    """activation=full + missing common-draft → gate returns False."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage5_fixtures(
+        tmp_path, common_draft=None
+    )
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "common" in detail.lower() or "missing" in detail.lower()
+
+
+def test_stage5_gate_full_common_draft_revise_blocks(tmp_path: Path):
+    """Common-draft with revise_and_rerun → gate returns False."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    revise_draft = _COMMON_DRAFT_PASS.replace(
+        "approval_decision: approve_as_is",
+        "approval_decision: revise_and_rerun",
+    )
+    assets_dir, workspace_root = _write_stage5_fixtures(
+        tmp_path, common_draft=revise_draft
+    )
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "approve_as_is" in detail or "common" in detail.lower()
+
+
+def test_stage5_gate_full_missing_plan_draft_blocks(tmp_path: Path):
+    """activation=full + missing combined-plan draft → gate returns False."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage5_fixtures(
+        tmp_path, plan_draft=None
+    )
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "plan" in detail.lower() or "missing" in detail.lower()
+
+
+def test_stage5_gate_full_plan_draft_revise_blocks(tmp_path: Path):
+    """Combined-plan draft with revise_and_rerun → gate returns False."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    revise_draft = _PLAN_DRAFT_PASS.replace(
+        "approval_decision: approve_as_is",
+        "approval_decision: revise_and_rerun",
+    )
+    assets_dir, workspace_root = _write_stage5_fixtures(
+        tmp_path, plan_draft=revise_draft
+    )
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+
+
+def test_stage5_gate_full_both_approve_as_is_passes(tmp_path: Path):
+    """Both approval artifacts with approve_as_is → gate returns True."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage5_fixtures(tmp_path)
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is True
+    assert "approve_as_is" in detail or "pass" in detail.lower()
+
+
+def test_stage5_gate_mismatched_review_cycle_id_blocks(tmp_path: Path):
+    """Mismatched review_cycle_id between common-draft and plan-draft blocks gate."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    mismatched_plan = _PLAN_DRAFT_PASS.replace(
+        'review_cycle_id: "stage5-20260307"',
+        'review_cycle_id: "stage5-DIFFERENT"',
+    )
+    assets_dir, workspace_root = _write_stage5_fixtures(
+        tmp_path, plan_draft=mismatched_plan
+    )
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "review_cycle_id" in detail or "mismatch" in detail.lower()
+
+
+def test_stage5_gate_wrk_id_mismatch_blocks(tmp_path: Path):
+    """wrk_id mismatch between artifact and requested WRK → gate returns False."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    wrong_wrk = _COMMON_DRAFT_PASS.replace("wrk_id: WRK-999", "wrk_id: WRK-111")
+    assets_dir, workspace_root = _write_stage5_fixtures(
+        tmp_path, common_draft=wrong_wrk
+    )
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "wrk_id" in detail or "mismatch" in detail.lower()
+
+
+def test_stage5_gate_migration_exemption_allows_legacy(tmp_path: Path):
+    """WRK with approved migration exemption passes even without approval artifacts."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage5_fixtures(
+        tmp_path, common_draft=None, plan_draft=None, browser_open=None, publish=None
+    )
+    exemption = """\
+wrk_id: WRK-999
+exemption_version: "1.0"
+approved_by: user
+approved_at: "2026-03-07T00:00:00Z"
+approval_scope: full_stage5_evidence_set
+rationale: "Legacy WRK predates gate activation."
+"""
+    (assets_dir / "evidence" / "stage5-migration-exemption.yaml").write_text(
+        exemption, encoding="utf-8"
+    )
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is True
+    assert "exemption" in detail.lower() or "legacy" in detail.lower()
+
+
+def test_stage5_gate_exemption_with_agent_authority_blocks(tmp_path: Path):
+    """Migration exemption with agent identity as approved_by → gate returns False."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage5_fixtures(
+        tmp_path, common_draft=None, plan_draft=None, browser_open=None, publish=None
+    )
+    bad_exemption = """\
+wrk_id: WRK-999
+exemption_version: "1.0"
+approved_by: claude
+approved_at: "2026-03-07T00:00:00Z"
+approval_scope: full_stage5_evidence_set
+rationale: "Agent-approved exemption (invalid)."
+"""
+    (assets_dir / "evidence" / "stage5-migration-exemption.yaml").write_text(
+        bad_exemption, encoding="utf-8"
+    )
+    ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "authority" in detail.lower() or "approved_by" in detail.lower() or "allowlist" in detail.lower()

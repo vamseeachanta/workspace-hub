@@ -105,6 +105,137 @@ def check_claim_gate(assets_dir: Path) -> tuple[bool | None, str]:
     return True, f"{claim_file.name}: version=1, owner={owner}, {quota_note}"
 
 
+def _load_stage5_config(workspace_root: Path) -> tuple[dict | None, str]:
+    """Load stage5-gate-config.yaml; return (data, error_msg) or (None, err)."""
+    config_path = workspace_root / "scripts" / "work-queue" / "stage5-gate-config.yaml"
+    if not config_path.exists():
+        return None, f"stage5-gate-config.yaml not found at {config_path}"
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot load stage5-gate-config.yaml"
+    try:
+        data = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        return None, f"stage5-gate-config.yaml parse error: {exc}"
+    if not isinstance(data, dict):
+        return None, "stage5-gate-config.yaml root is not a mapping"
+    return data, ""
+
+
+def check_stage5_evidence_gate(
+    wrk_id: str, assets_dir: Path, workspace_root: Path
+) -> tuple[bool | None, str]:
+    """Check Stage 5 evidence gate (canonical checker — Phase 1A).
+
+    Returns:
+        (True,  detail) — gate passes
+        (False, detail) — predicate failure / Stage 5 incomplete
+        (None,  detail) — infrastructure/path failure (exit 2 semantics)
+    """
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot validate Stage 5 evidence"
+
+    # 1. Load activation config
+    config, config_err = _load_stage5_config(workspace_root)
+    if config is None:
+        return None, config_err
+
+    activation = str(config.get("activation", "disabled")).strip()
+    human_allowlist = set(config.get("human_authority_allowlist") or [])
+
+    # 2. If gate is disabled, no enforcement
+    if activation == "disabled":
+        return True, "stage5-gate-config.yaml: activation=disabled (no enforcement)"
+
+    evidence_dir = assets_dir / "evidence"
+
+    # 3. Check migration exemption (before artifact checks)
+    exemption_path = evidence_dir / "stage5-migration-exemption.yaml"
+    if exemption_path.exists():
+        try:
+            ex = yaml.safe_load(exemption_path.read_text(encoding="utf-8")) or {}
+        except Exception as exc:
+            return None, f"stage5-migration-exemption.yaml parse error: {exc}"
+        if not isinstance(ex, dict):
+            return None, "stage5-migration-exemption.yaml root is not a mapping"
+        approved_by = str(ex.get("approved_by", "")).strip()
+        approval_scope = str(ex.get("approval_scope", "")).strip()
+        if not approved_by:
+            return False, "stage5-migration-exemption.yaml: approved_by missing"
+        if approved_by not in human_allowlist:
+            return (
+                False,
+                f"stage5-migration-exemption.yaml: approved_by='{approved_by}' not in "
+                f"human_authority_allowlist; agent identities are not permitted",
+            )
+        if not approval_scope:
+            return False, "stage5-migration-exemption.yaml: approval_scope missing"
+        ex_wrk = str(ex.get("wrk_id", "")).strip()
+        if ex_wrk and ex_wrk != wrk_id:
+            return (
+                False,
+                f"stage5-migration-exemption.yaml: wrk_id mismatch ({ex_wrk} != {wrk_id})",
+            )
+        return True, f"stage5-migration-exemption.yaml: legacy exemption approved by {approved_by}"
+
+    # 4. Validate common-draft artifact
+    common_draft_path = evidence_dir / "user-review-common-draft.yaml"
+    if not common_draft_path.exists():
+        return False, "user-review-common-draft.yaml missing — Stage 5 common-draft review required"
+    try:
+        cd = yaml.safe_load(common_draft_path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        return None, f"user-review-common-draft.yaml parse error: {exc}"
+    if not isinstance(cd, dict):
+        return None, "user-review-common-draft.yaml root is not a mapping"
+    cd_wrk = str(cd.get("wrk_id", "")).strip()
+    if cd_wrk and cd_wrk != wrk_id:
+        return False, f"user-review-common-draft.yaml: wrk_id mismatch ({cd_wrk} != {wrk_id})"
+    cd_decision = str(cd.get("approval_decision", "")).strip()
+    if cd_decision != "approve_as_is":
+        return (
+            False,
+            f"user-review-common-draft.yaml: approval_decision='{cd_decision}'; "
+            f"Stage 6 requires approve_as_is",
+        )
+    cd_cycle = str(cd.get("review_cycle_id", "")).strip()
+
+    # 5. Validate combined-plan artifact
+    plan_draft_path = evidence_dir / "user-review-plan-draft.yaml"
+    if not plan_draft_path.exists():
+        return False, "user-review-plan-draft.yaml missing — Stage 5 combined-plan review required"
+    try:
+        pd = yaml.safe_load(plan_draft_path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        return None, f"user-review-plan-draft.yaml parse error: {exc}"
+    if not isinstance(pd, dict):
+        return None, "user-review-plan-draft.yaml root is not a mapping"
+    pd_wrk = str(pd.get("wrk_id", "")).strip()
+    if pd_wrk and pd_wrk != wrk_id:
+        return False, f"user-review-plan-draft.yaml: wrk_id mismatch ({pd_wrk} != {wrk_id})"
+    pd_decision = str(pd.get("approval_decision", "")).strip()
+    if pd_decision != "approve_as_is":
+        return (
+            False,
+            f"user-review-plan-draft.yaml: approval_decision='{pd_decision}'; "
+            f"Stage 6 requires approve_as_is",
+        )
+    pd_cycle = str(pd.get("review_cycle_id", "")).strip()
+
+    # 6. Cross-artifact review_cycle_id consistency
+    if cd_cycle and pd_cycle and cd_cycle != pd_cycle:
+        return (
+            False,
+            f"review_cycle_id mismatch: common-draft='{cd_cycle}' vs plan-draft='{pd_cycle}'; "
+            f"artifacts from different review cycles may not satisfy the gate together",
+        )
+
+    return (
+        True,
+        f"stage5 gate passed: common-draft=approve_as_is, "
+        f"plan-draft=approve_as_is, review_cycle_id='{pd_cycle or cd_cycle}'",
+    )
+
+
 def check_resource_intelligence_gate(assets_dir: Path) -> tuple[bool | None, str]:
     """Check resource intelligence evidence with canonical + legacy compatibility."""
     ri_file = evidence_file(assets_dir, "resource-intelligence.yaml", ["resource-intelligence-summary.md"])
@@ -758,17 +889,54 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
     return 0
 
 
+def _run_stage5_check(args: list[str]) -> int:
+    """Handle --stage5-check <WRK-id> invocation from plan.sh / cross-review.sh.
+
+    Exit codes:
+        0 = Stage 5 gate passes (or disabled)
+        1 = predicate failure (Stage 5 incomplete)
+        2 = infrastructure/path failure
+    """
+    if len(args) < 1:
+        print("Usage: verify-gate-evidence.py --stage5-check WRK-<id>", file=sys.stderr)
+        return 2
+    wrk_id = args[0]
+    workspace_root = Path(__file__).resolve().parents[2]
+    queue_dir = workspace_root / ".claude" / "work-queue"
+    assets_dir = queue_dir / "assets" / wrk_id
+    if not assets_dir.is_dir():
+        print(
+            f"✖ Stage 5 check: assets directory not found for {wrk_id}: {assets_dir}",
+            file=sys.stderr,
+        )
+        return 2
+    ok, detail = check_stage5_evidence_gate(wrk_id, assets_dir, workspace_root)
+    if ok is None:
+        print(f"✖ Stage 5 gate infrastructure failure for {wrk_id}: {detail}", file=sys.stderr)
+        return 2
+    if not ok:
+        print(f"✖ Stage 5 gate predicate failure for {wrk_id}: {detail}", file=sys.stderr)
+        return 1
+    print(f"✔ Stage 5 gate passed for {wrk_id}: {detail}")
+    return 0
+
+
 def main() -> None:
-    if len(sys.argv) not in {2, 4}:
+    args = sys.argv[1:]
+    # Stage 5 check mode (called by plan.sh, cross-review.sh, etc.)
+    if args and args[0] == "--stage5-check":
+        sys.exit(_run_stage5_check(args[1:]))
+
+    if len(args) not in {1, 3}:
         print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close]")
         sys.exit(1)
-    wrk_id = sys.argv[1]
+    wrk_id = args[0]
     phase = "close"
-    if len(sys.argv) == 4:
-        if sys.argv[2] != "--phase" or sys.argv[3] not in {"claim", "close"}:
+    if len(args) == 3:
+        if args[1] != "--phase" or args[2] not in {"claim", "close"}:
             print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close]")
             sys.exit(1)
-        phase = sys.argv[3]
+        phase = args[2]
     code = run_checks(wrk_id, phase=phase)
     sys.exit(code)
 

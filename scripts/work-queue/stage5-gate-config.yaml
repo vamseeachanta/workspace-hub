@@ -1,0 +1,47 @@
+# stage5-gate-config.yaml — Stage 5 gate activation and operational settings
+#
+# OWNERSHIP: This file is owned by WRK-1017 and requires paired-WRK change control.
+# Any modification to gate_activation_commit, activation, or human_authority_allowlist
+# must reference a WRK item in the change note and be approved by a human authority.
+#
+# COMPATIBILITY: All runtime callers (plan.sh, cross-review.sh, claim-item.sh,
+# close-item.sh) must read activation state from this file. No caller may invent
+# a private enablement flag outside this config.
+
+schema_version: "1.0"
+owned_by_wrk: WRK-1017
+last_updated: "2026-03-07T00:00:00Z"
+change_note: "Initial config; activation=disabled pending Phase 1B hard-gate delivery"
+
+# Activation enum: disabled | canary_plan_cross_review | canary_claim_close | full
+# - disabled: no Stage 5 check enforced at any entrypoint
+# - canary_plan_cross_review: plan.sh and cross-review.sh enforce the gate; others warn only
+# - canary_claim_close: plan.sh, cross-review.sh, claim-item.sh, close-item.sh all enforce
+# - full: all entrypoints enforce; repo is considered fully Stage-5-hardened
+activation: disabled
+
+# gate_activation_commit: immutable reference that marks when the gate was first activated.
+# Legacy WRKs (first-introduced before this commit) are classified via stage5-first-gated.yaml
+# or git-history lookup. Do NOT change this value after first live activation.
+gate_activation_commit: ""
+
+# Checker timeout (seconds): maximum wall-clock time wrappers may spend waiting for
+# the canonical checker. Wrappers may not use a shorter timeout than this value.
+checker_timeout_seconds: 30
+
+# git-history lookup circuit-breaker timeout (seconds). Must be 8s per AC-15.
+git_history_timeout_seconds: 8
+
+# Emergency bypass: set only with human approval for transient infrastructure outages.
+# Bypass is operational-override only; it does NOT satisfy Stage 5 evidence requirements.
+# ALL bypass events must be logged; bypass is never treated as evidence success.
+emergency_bypass_until: ""
+emergency_bypass_reason: ""
+emergency_bypass_approved_by: ""
+
+# Human authority allowlist: identities allowed as approved_by, reviewed_by, and
+# emergency_bypass_approved_by values in approval artifacts. Agent identities and
+# free-text aliases are not permitted. Unknown values fail closed.
+human_authority_allowlist:
+  - user
+  - vamsee
