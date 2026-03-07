@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-07T07:48:03Z by generate-index.py -->
+<!-- Generated: 2026-03-07T14:07:27Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-07T07:48:03Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-07T14:07:27Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 455
+**Total items:** 456
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
 | pending | 209 |
-| working | 5 |
+| working | 6 |
 | blocked | 9 |
 | archived | 232 |
 
@@ -23,16 +23,16 @@
 | Priority | Count |
 |----------|-------|
 | high | 212 |
-| medium | 201 |
+| medium | 202 |
 | low | 41 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 79 |
+| simple | 80 |
 | medium | 214 |
-| complex | 94 |
+| complex | 95 |
 
 ### By Category
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 44 |
+| harness | 45 |
 | engineering | 117 |
 | data | 26 |
 | platform | 13 |
@@ -69,7 +69,7 @@
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 148 |
+| workspace-hub | 149 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,9 +77,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 171 / 455 |
-| Plans cross-reviewed | 67 |
-| Plans approved | 88 |
+| Plans exist | 172 / 456 |
+| Plans cross-reviewed | 68 |
+| Plans approved | 89 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -89,9 +89,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 455 |
+| Total captured | 456 |
 | Total archived | 232 |
-| Completion rate | 232/455 (51%) |
+| Completion rate | 232/456 (51%) |
 | Monthly rate (current month) | 7 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -100,8 +100,8 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | Pending items with plans | 58 / 209 | 28% |
-| Plans cross-reviewed | 10 | 14% |
-| Plans user-approved | 11 | 16% |
+| Plans cross-reviewed | 11 | 16% |
+| Plans user-approved | 12 | 17% |
 
 ### Aging
 
@@ -117,14 +117,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 98 | 2 | 7 |
-| Medium   | 83  | 3  | 1  |
+| Medium   | 83  | 4  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (44 items — 12 high, 27 medium, 5 low)
+### harness (45 items — 13 high, 27 medium, 5 low)
 
 #### harness / agent-ux
 
@@ -188,7 +188,7 @@
 | WRK-1013 | MEDIUM | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending |
 | WRK-1016 | MEDIUM | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending |
 | WRK-1025 | MEDIUM | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending |
-| WRK-1026 | MEDIUM | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | pending |
+| WRK-1026 | MEDIUM | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working |
 | WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
 | WRK-639 | LOW | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending |
 
@@ -215,14 +215,20 @@
 |----|----------|-------|--------|
 | WRK-1014 | MEDIUM | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending |
 
-### engineering (117 items — 69 high, 37 medium, 11 low)
+#### harness / workflow-enforcement
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1028 | HIGH | Stage-aware WRK workflow enforcement: per-stage contracts + advance-stage.sh + hookify backstop | pending |
+
+### engineering (117 items — 68 high, 38 medium, 11 low)
 
 #### engineering / cathodic-protection
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-478 | HIGH | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending |
 | WRK-496 | HIGH | feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen | pending |
+| WRK-1027 | MEDIUM | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending |
 
 #### engineering / drilling
 
@@ -820,7 +826,6 @@
 | WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending | medium | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | marine_ops/marine_analysis | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-476 | feat(worldenergydata): create ESG/Carbon Emissions module | pending | high | moderate | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | esg_carbon | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | medium | simple | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | safety_analysis/geohazard | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending | high | moderate | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | subsea/cp_analysis | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | pending | medium | moderate | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | sodir | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | medium | moderate | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | metocean | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | subsea | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
@@ -991,7 +996,9 @@
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | - | n/a | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
+| WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1028 | Stage-aware WRK workflow enforcement: per-stage contracts + advance-stage.sh + hookify backstop | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1049,7 +1056,6 @@
 | WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | medium | simple | digitalmodel | marine_ops/marine_analysis |
 | WRK-476 | feat(worldenergydata): create ESG/Carbon Emissions module | high | moderate | worldenergydata | esg_carbon |
 | WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | medium | simple | worldenergydata | safety_analysis/geohazard |
-| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | high | moderate | digitalmodel | subsea/cp_analysis |
 | WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | medium | moderate | worldenergydata | sodir |
 | WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | medium | moderate | worldenergydata | metocean |
 | WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | high | moderate | digitalmodel | subsea |
@@ -1207,7 +1213,8 @@
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | medium | simple | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | medium | simple | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | medium | medium | workspace-hub | - |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | medium | simple | workspace-hub | - |
+| WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | medium | simple | digitalmodel | - |
+| WRK-1028 | Stage-aware WRK workflow enforcement: per-stage contracts + advance-stage.sh + hookify backstop | high | complex | workspace-hub | - |
 
 ### Working
 
@@ -1218,6 +1225,7 @@
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | medium | medium | workspace-hub | - |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | medium | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -1693,7 +1701,6 @@
 | WRK-473 | feat(hydrodynamics): integrate wavespectra library for spectral processing | pending | medium | simple | hydrodynamics/wave_spectra |
 | WRK-474 | feat(subsea): integrate MoorDyn + MoorPy for mooring analysis | pending | medium | moderate | subsea/mooring_analysis |
 | WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending | medium | simple | marine_ops/marine_analysis |
-| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending | high | moderate | subsea/cp_analysis |
 | WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | subsea |
 | WRK-483 | feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho | pending | medium | low | - |
 | WRK-484 | feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo | pending | medium | low | - |
@@ -1759,6 +1766,7 @@
 | WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | complex | - |
 | WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | low | medium | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | medium | - |
+| WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | simple | - |
 
 ### doris
 
@@ -1967,7 +1975,8 @@
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | - |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | pending | medium | simple | - |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working | medium | simple | - |
+| WRK-1028 | Stage-aware WRK workflow enforcement: per-stage contracts + advance-stage.sh + hookify backstop | pending | high | complex | - |
 
 ### worldenergydata
 
@@ -2184,7 +2193,6 @@
 | WRK-470 | feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | pending | medium | workspace-hub | - |
 | WRK-471 | fix(ace-linux-2): gemini CLI fails on Node 18 with /v regex flag | archived | simple | workspace-hub | - |
 | WRK-476 | feat(worldenergydata): create ESG/Carbon Emissions module | pending | moderate | worldenergydata | esg_carbon |
-| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending | moderate | digitalmodel | subsea/cp_analysis |
 | WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | moderate | digitalmodel | subsea |
 | WRK-488 | feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR | pending | medium | digitalmodel | - |
 | WRK-489 | feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al | pending | medium | digitalmodel | - |
@@ -2281,6 +2289,7 @@
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | simple | workspace-hub | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | workspace-hub | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | complex | workspace-hub | - |
+| WRK-1028 | Stage-aware WRK workflow enforcement: per-stage contracts + advance-stage.sh + hookify backstop | pending | complex | workspace-hub | - |
 
 ### Medium
 
@@ -2486,7 +2495,8 @@
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | simple | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | simple | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | workspace-hub | - |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | pending | simple | workspace-hub | - |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working | simple | workspace-hub | - |
+| WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | simple | digitalmodel | - |
 
 ### Low
 
@@ -2618,7 +2628,8 @@
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | workspace-hub | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | workspace-hub | - |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | pending | medium | workspace-hub | - |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working | medium | workspace-hub | - |
+| WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | digitalmodel | - |
 
 ### Medium
 
@@ -2937,10 +2948,11 @@
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | frontierdeepwater, TBD-client2-repo | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | workspace-hub | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | workspace-hub | - |
+| WRK-1028 | Stage-aware WRK workflow enforcement: per-stage contracts + advance-stage.sh + hookify backstop | pending | high | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (159 active / 178 total)
+### ace-linux-1 (161 active / 180 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3121,7 +3133,9 @@
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | workspace-hub |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | workspace-hub |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | workspace-hub |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | pending | medium | simple | workspace-hub |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working | medium | simple | workspace-hub |
+| WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | simple | digitalmodel |
+| WRK-1028 | Stage-aware WRK workflow enforcement: per-stage contracts + advance-stage.sh + hookify backstop | pending | high | complex | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 
@@ -3158,7 +3172,7 @@
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | workspace-hub, client_projects, digitalmodel |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | workspace-hub, digitalmodel |
 
-### (unassigned) (23 active / 229 total)
+### (unassigned) (22 active / 228 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3382,7 +3396,6 @@
 | WRK-475 | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending | medium | simple | digitalmodel |
 | WRK-476 | feat(worldenergydata): create ESG/Carbon Emissions module | pending | high | moderate | worldenergydata |
 | WRK-477 | feat(worldenergydata): create Offshore Geohazard Feed module using USGS API | pending | medium | simple | worldenergydata |
-| WRK-478 | feat(subsea): create Cathodic Protection module (DNV-RP-B401) | pending | high | moderate | digitalmodel |
 | WRK-479 | feat(worldenergydata): wire SODIR FactPages OData API | pending | medium | moderate | worldenergydata |
 | WRK-480 | feat(worldenergydata): integrate CMEMS Wave Multi-Year Product | pending | medium | moderate | worldenergydata |
 | WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | digitalmodel |
