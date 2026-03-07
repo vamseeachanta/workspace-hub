@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Draft Review: WRK-1028 — Stage-isolated WRK lifecycle</title>
+  <style>
+:root {
+  --bg:       #f3efe6;
+  --panel:    #fffdf8;
+  --ink:      #172126;
+  --muted:    #55636b;
+  --accent:   #0f766e;
+  --accent-2: #8a5a2b;
+  --line:     #d9d0c0;
+  --shadow:   0 16px 40px rgba(20,33,38,0.08);
+  --good:     #166534;
+  --warn:     #b45309;
+  --bad:      #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.6;margin:0;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.05);padding:.2em .4em;border-radius:3px;font-size:.88em;}
+pre code{background:none;padding:0;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.85rem;}
+.hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
+.hero-inner,.content{max-width:1180px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
+  color:var(--accent);font-weight:700;}
+h1{margin:10px 0 12px;font-size:clamp(1.6rem,2.8vw,2.6rem);line-height:1.05;}
+.lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
+.content{padding:28px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:24px;}
+h2{border-bottom:2px solid var(--line);padding-bottom:.4em;margin-top:28px;
+  color:var(--accent-2);letter-spacing:.02em;}
+h3{color:var(--ink);margin-top:18px;font-size:1.05rem;}
+h4{color:var(--muted);margin-top:14px;font-size:.95rem;text-transform:uppercase;letter-spacing:.06em;}
+.exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
+  border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
+  border-radius:10px;}
+.exec-summary h2{margin-top:0;border:none;color:var(--accent);}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.9rem;}
+th,td{border-top:1px solid var(--line);padding:9px 8px;text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;color:var(--ink);}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.88rem;}
+.pill strong{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-warn{background:#fef3c7;color:var(--warn);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-info{background:#dbeafe;color:#1d4ed8);}
+.badge-human{background:#ede9fe;color:#6d28d9;}
+.badge-agent{background:#d1fae5;color:#065f46;}
+.badge-light{background:#f0fdf4;color:#166534;}
+.badge-medium{background:#fef3c7;color:#92400e;}
+.badge-heavy{background:#fee2e2;color:#991b1b;}
+.stage-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px;}
+.stage-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;}
+.stage-card h4{margin-top:0;color:var(--accent);}
+.stage-num{font-size:1.8rem;font-weight:800;color:var(--line);float:right;margin-top:-4px;}
+.flow{font-family:monospace;font-size:.82rem;background:#f6f8fa;border:1px solid var(--line);
+  border-radius:8px;padding:14px;white-space:pre;overflow-x:auto;}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.gate-block{border-left:4px solid var(--bad);padding:12px 16px;background:#fff5f5;border-radius:0 8px 8px 0;margin:12px 0;}
+.gate-block strong{color:var(--bad);}
+.phase-block{border-left:4px solid var(--accent);padding:12px 16px;background:#f0fdf4;border-radius:0 8px 8px 0;margin:12px 0;}
+.phase-block strong{color:var(--accent);}
+.approval-block{margin-top:28px;padding:20px;border:2px dashed var(--accent-2);border-radius:10px;background:#fffbf5;}
+.approval-block h3{margin-top:0;color:var(--accent-2);}
+@media(max-width:900px){.split,.stage-grid{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}}
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Plan Draft · Route C · Stage 4</p>
+    <h1>WRK-1028 — Stage-isolated WRK lifecycle</h1>
+    <p class="lede">Per-stage skills + fresh-context entry + exit artifacts. Make every WRK stage independently executable from its predecessor's exit artifacts, with mechanical gates preventing stage-jumping, context rot, and quality drift.</p>
+    <div class="meta">
+      <div class="pill"><strong>WRK ID</strong>WRK-1028</div>
+      <div class="pill"><strong>Route</strong>C (Complex)</div>
+      <div class="pill"><strong>Priority</strong>High</div>
+      <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
+      <div class="pill"><strong>Orchestrator</strong>Claude</div>
+      <div class="pill"><strong>Category</strong>harness / workflow-enforcement</div>
+      <div class="pill"><strong>Stage</strong>4 — Plan Draft</div>
+      <div class="pill"><strong>Drafted</strong>2026-03-07</div>
+    </div>
+  </div>
+</header>
+
+<div class="content">
+
+<!-- ─── EXECUTIVE SUMMARY ─────────────────────────────────────────────────── -->
+<div class="exec-summary card">
+  <h2>Executive Summary</h2>
+  <p>The current 20-stage WRK lifecycle runs as a single long conversation, causing <strong>context compaction</strong> (hard-stop instructions compressed away), <strong>context rot</strong> (accumulated noise from earlier stages pollutes later stages), <strong>stage jumping</strong> (no mechanical barrier between stages), and <strong>quality drift</strong> (heavy stages get same treatment as light stages).</p>
+  <p>The fix is a <strong>stage-isolation architecture</strong>: each stage starts fresh from the previous stage's exit artifacts — exactly the same model as CI/CD job isolation. Autonomous stages run as Task agents (fresh context window). Human-in-loop stages run in the current session (human IS the new context). Each stage has its own micro-skill, YAML contract, and entry/exit scripts.</p>
+  <p><strong>Delivery order (P1 highest impact → P4):</strong><br>
+  P1: Hookify backstops (3 human gates) → P2: start/exit-stage.sh + stage-state.yaml → P3: 20 YAML contracts + 20 micro-skills → P4: heavy-stage depth enforcement</p>
+</div>
+
+<!-- ─── ROOT CAUSE ANALYSIS ───────────────────────────────────────────────── -->
+<div class="card">
+  <h2>Root Cause Analysis</h2>
+  <table>
+    <tr><th>Failure Mode</th><th>Root Cause</th><th>Fix</th></tr>
+    <tr><td>Stage 5 gate missed</td><td>Context compaction removes hard-stop text mid-session</td><td>Hookify backstop blocks advancement until artifact present</td></tr>
+    <tr><td>Stage 10 execution uses stale planning context</td><td>Context rot — 10 stages of accumulated noise</td><td>Task agent with fresh context; only entry_reads[] loaded</td></tr>
+    <tr><td>Stage 6 runs before Stage 5 approval</td><td>Tool-call momentum; no mechanical barrier</td><td>start-stage.sh checks gate artifact before spawning agent</td></tr>
+    <tr><td>Artifact format mismatches</td><td>Contracts buried in verify-gate-evidence.py source, invisible to agents</td><td>Per-stage YAML contracts: field names, paths, and values explicit at entry</td></tr>
+    <tr><td>TDD skipped on Stage 10</td><td>All stages treated uniformly; heavy stages have no mandatory sub-skill chain</td><td>start-stage.sh prompt for Stage 10 includes TDD micro-skill; exit checks test presence</td></tr>
+  </table>
+</div>
+
+<!-- ─── ARCHITECTURE ──────────────────────────────────────────────────────── -->
+<div class="card">
+  <h2>Architecture: Stage Isolation Model</h2>
+  <p>Each stage is a stateless function: <code>f(stage_contract, prev_exit_artifacts) → exit_artifacts</code></p>
+  <p>Two invocation types:</p>
+  <ul>
+    <li><strong>task_agent</strong> — spawns a Task agent with a constructed prompt (contract + entry_reads + micro-skill). Fresh context window. Zero context rot. Zero compaction risk.</li>
+    <li><strong>human_session</strong> — loads artifacts into current session and emits checklist. Human IS the new context. Natural session boundary. Gates enforced interactively.</li>
+    <li><strong>chained_agent</strong> — light stages grouped in one Task agent invocation (e.g. Stages 2+3+4 or Stages 8+9).</li>
+  </ul>
+
+  <h3>Execution Flow</h3>
+  <div class="flow">Human(1) → TaskAgent(2,3,4) → Human(5) → TaskAgent(6) → Human(7)
+       → TaskAgent(8,9) → TaskAgent(10) → TaskAgent(11) → TaskAgent(12)
+       → TaskAgent(13,14,15,16) → Human(17) → TaskAgent(19,20)</div>
+
+  <h3>Stage Weight Classification</h3>
+  <table>
+    <tr><th>Weight</th><th>Stages</th><th>Invocation</th><th>Skills at Entry</th><th>context_budget_kb</th></tr>
+    <tr><td><span class="badge badge-light">Light</span></td><td>1, 3, 8, 9, 18, 19, 20</td><td>human_session / chained_agent</td><td>work-queue-workflow</td><td>4</td></tr>
+    <tr><td><span class="badge badge-medium">Medium</span></td><td>2, 4, 6, 11, 13, 14, 15, 16</td><td>task_agent</td><td>work-queue-workflow + domain skill</td><td>8</td></tr>
+    <tr><td><span class="badge badge-heavy">Heavy</span></td><td>5, 7, 10, 12, 17</td><td>human_session (5/7/17) or dedicated agent (10/12)</td><td>work-queue-workflow + brainstorming/TDD/systematic-debugging/workflow-html</td><td>16</td></tr>
+  </table>
+
+  <h3>Human Gates</h3>
+  <div class="gate-block">
+    <strong>Gate 5→6:</strong> Hookify blocks execution/cross-review artifacts until <code>evidence/user-review-plan-draft.yaml</code> has <code>decision: approved</code>
+  </div>
+  <div class="gate-block">
+    <strong>Gate 7→8:</strong> Hookify blocks claim/activation artifacts until <code>plan-final-review.html</code> has <code>confirmed_by:</code> at line-start
+  </div>
+  <div class="gate-block">
+    <strong>Gate 17→18:</strong> Hookify blocks close/archive artifacts until <code>evidence/user-review-close.yaml</code> has <code>decision: approved</code>
+  </div>
+</div>
+
+<!-- ─── PER-STAGE BRAINSTORM ─────────────────────────────────────────────── -->
+<div class="card">
+  <h2>Per-Stage Brainstorm — All 20 Stages</h2>
+  <p>Each stage definition captures: invocation, weight, entry artifacts, activities, exit artifacts, skills, and micro-skill checklist. These definitions are the source of truth for the YAML contracts and micro-skill files.</p>
+
+  <!-- Stage 1 -->
+  <div class="stage-card">
+    <span class="stage-num">01</span>
+    <h4>Stage 1 · Capture <span class="badge badge-human">human_session</span> <span class="badge badge-light">light</span></h4>
+    <p><strong>Entry:</strong> Nothing (human initiates)</p>
+    <p><strong>Activities:</strong> Human describes item; agent formats WRK file with id, title, mission, category, route hint, workstations, created_at</p>
+    <p><strong>Exit artifacts:</strong> <code>pending/WRK-NNN.md</code> with valid frontmatter (id, title, status: pending, created_at set)</p>
+    <p><strong>Skills:</strong> work-queue-workflow</p>
+    <p><strong>Micro-skill checklist (≤8):</strong> extract title+mission from user message; assign next WRK ID; fill required frontmatter fields; write to pending/; do NOT set route/workstations yet (that is Stage 3 triage); confirm with user</p>
+  </div>
+
+  <!-- Stage 2 -->
+  <div class="stage-card">
+    <span class="stage-num">02</span>
+    <h4>Stage 2 · Resource Intelligence <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+    <p><strong>Entry:</strong> <code>pending/WRK-NNN.md</code></p>
+    <p><strong>Activities:</strong> Research domain; assess complexity; identify existing infrastructure; define constraints; write resource-intelligence.yaml</p>
+    <p><strong>Exit artifacts:</strong> <code>evidence/resource-intelligence.yaml</code> (completion_status, domain.problem, domain.architecture_decision, skills.core_used ≥3, constraints)</p>
+    <p><strong>Skills:</strong> work-queue-workflow + domain skill (e.g. brainstorming for complex domains)</p>
+    <p><strong>Micro-skill checklist:</strong> read WRK mission; identify existing infrastructure in scripts/ + .claude/skills/; assess complexity (simple/medium/complex); record completion_status (continue_to_planning | pause_and_revise); write resource-intelligence.yaml; do NOT start implementation</p>
+  </div>
+
+  <!-- Stage 3 -->
+  <div class="stage-card">
+    <span class="stage-num">03</span>
+    <h4>Stage 3 · Triage <span class="badge badge-human">human_session</span> <span class="badge badge-light">light</span></h4>
+    <p><strong>Entry:</strong> <code>pending/WRK-NNN.md</code>, <code>evidence/resource-intelligence.yaml</code></p>
+    <p><strong>Activities:</strong> Confirm/set route (A/B/C), workstations, orchestrator, plan_ensemble in frontmatter; surface any open questions from Stage 2</p>
+    <p><strong>Exit artifacts:</strong> <code>pending/WRK-NNN.md</code> frontmatter updated (route, workstations, orchestrator, plan_ensemble set)</p>
+    <p><strong>Skills:</strong> work-queue-workflow</p>
+    <p><strong>Micro-skill checklist:</strong> present resource-intelligence summary; ask human to confirm or adjust route/workstations; update WRK frontmatter fields; surface open_questions from resource-intelligence.yaml; confirm complexity matches route; do NOT start plan</p>
+  </div>
+
+  <!-- Stage 4 -->
+  <div class="stage-card">
+    <span class="stage-num">04</span>
+    <h4>Stage 4 · Plan Draft <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+    <p><strong>Entry:</strong> <code>pending/WRK-NNN.md</code>, <code>evidence/resource-intelligence.yaml</code></p>
+    <p><strong>Activities:</strong> Per-domain brainstorm; write implementation plan; build plan-draft-review.html (single lifecycle HTML, Section 0 model)</p>
+    <p><strong>Exit artifacts:</strong> <code>plan-draft-review.html</code> (all AC sections present; pseudocode for key functions; test plan with ≥3 entries or N/A+reason)</p>
+    <p><strong>Skills:</strong> work-queue-workflow + workflow-html (Route C: also brainstorming)</p>
+    <p><strong>Micro-skill checklist:</strong> read WRK mission + resource-intelligence; use EnterPlanMode for thinking (no file writes in plan mode); define acceptance criteria; write pseudocode for key algorithms; write test plan (≥3 entries); generate plan-draft-review.html; do NOT implement</p>
+  </div>
+
+  <!-- Stage 5 -->
+  <div class="stage-card">
+    <span class="stage-num">05</span>
+    <h4>Stage 5 · User Review — Plan Draft <span class="badge badge-human">human_session</span> <span class="badge badge-heavy">heavy</span></h4>
+    <p><strong>Entry:</strong> <code>plan-draft-review.html</code></p>
+    <p><strong>Activities (Route A):</strong> Human reviews plan; agent answers questions; human decides approve/revise. Single interactive session.<br>
+    <strong>Activities (Route B/C):</strong> Same but after human decision, agent saves human response to markdown + spawns 3 independent drafting agents for ensemble consensus</p>
+    <p><strong>Exit artifacts:</strong> <code>evidence/user-review-plan-draft.yaml</code> (decision: approved, reviewer, reviewed_at, feedback[])</p>
+    <p><strong>Skills:</strong> work-queue-workflow + brainstorming + workflow-html</p>
+    <p><strong>HARD GATE:</strong> <code>user-review-plan-draft.yaml</code> with <code>decision: approved</code> MUST exist before Stage 6. Hookify backstop enforces this.</p>
+    <p><strong>Micro-skill checklist:</strong> open plan-draft-review.html; section-by-section review; present each section; wait for human comment per section; capture feedback; apply revisions; ask for final approval; write user-review-plan-draft.yaml; DO NOT proceed to Stage 6 until decision: approved confirmed</p>
+  </div>
+
+  <!-- Stage 6 -->
+  <div class="stage-card">
+    <span class="stage-num">06</span>
+    <h4>Stage 6 · Cross-Review <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+    <p><strong>Entry:</strong> <code>plan-draft-review.html</code>, <code>evidence/user-review-plan-draft.yaml</code> (decision: approved)</p>
+    <p><strong>Activities (Route A):</strong> Single self-review pass. <br>
+    <strong>Activities (Route B/C):</strong> Codex cross-review (HARD GATE) + Gemini review; synthesize findings</p>
+    <p><strong>Exit artifacts:</strong> <code>evidence/cross-review.yaml</code> (verdict: APPROVE | REVISE; findings[], reviewer)</p>
+    <p><strong>Skills:</strong> work-queue-workflow</p>
+    <p><strong>Micro-skill checklist:</strong> verify user-review-plan-draft.yaml decision=approved; run cross-review.sh or manual review; write cross-review.yaml; if REVISE → return to Stage 4 with findings; if APPROVE → proceed to Stage 7</p>
+  </div>
+
+  <!-- Stage 7 -->
+  <div class="stage-card">
+    <span class="stage-num">07</span>
+    <h4>Stage 7 · User Review — Plan Final <span class="badge badge-human">human_session</span> <span class="badge badge-heavy">heavy</span></h4>
+    <p><strong>Entry:</strong> <code>plan-draft-review.html</code>, <code>evidence/cross-review.yaml</code></p>
+    <p><strong>Activities:</strong> Generate plan-final-review.html incorporating cross-review findings; human confirms via confirmation block</p>
+    <p><strong>Exit artifacts:</strong> <code>plan-final-review.html</code> (confirmed_by: [name] at line-start in confirmation block)</p>
+    <p><strong>Skills:</strong> work-queue-workflow + workflow-html</p>
+    <p><strong>HARD GATE:</strong> <code>plan-final-review.html</code> with <code>confirmed_by:</code> at line-start MUST exist before Stage 8. Hookify backstop enforces this.</p>
+    <p><strong>Micro-skill checklist:</strong> incorporate cross-review findings into updated plan; generate plan-final-review.html; present confirmation block to human; record confirmed_by; do NOT proceed to Stage 8 until human confirms</p>
+  </div>
+
+  <!-- Stage 8 -->
+  <div class="stage-card">
+    <span class="stage-num">08</span>
+    <h4>Stage 8 · Claim / Activation <span class="badge badge-agent">chained_agent</span> <span class="badge badge-light">light</span></h4>
+    <p><strong>Entry:</strong> <code>plan-final-review.html</code> (confirmed_by present)</p>
+    <p><strong>Activities:</strong> Check quota availability; write claim-evidence.yaml; write activation.yaml; move WRK file to working/</p>
+    <p><strong>Exit artifacts:</strong> <code>evidence/claim-evidence.yaml</code>, <code>evidence/activation.yaml</code>, <code>working/WRK-NNN.md</code></p>
+    <p><strong>Skills:</strong> work-queue-workflow</p>
+    <p><strong>Micro-skill checklist:</strong> verify plan-final-review.html confirmed_by present; check agent-quota-latest.json for capacity; write claim-evidence.yaml (quota_snapshot, claimed_at); write activation.yaml (activated_at, provider, workstation); move pending/WRK-NNN.md → working/WRK-NNN.md; set active-wrk state file</p>
+  </div>
+
+  <!-- Stage 9 -->
+  <div class="stage-card">
+    <span class="stage-num">09</span>
+    <h4>Stage 9 · Work-Queue Routing <span class="badge badge-agent">chained_agent</span> <span class="badge badge-light">light</span></h4>
+    <p><strong>Entry:</strong> <code>evidence/activation.yaml</code></p>
+    <p><strong>Activities:</strong> Write routing log; confirm skills loaded; update stage-state.yaml</p>
+    <p><strong>Exit artifacts:</strong> <code>logs/WRK-NNN-routing.log</code> (work_queue_skill + work_wrapper_complete signals)</p>
+    <p><strong>Skills:</strong> work-queue-workflow</p>
+    <p><strong>Micro-skill checklist:</strong> confirm all plan-required skills are available; write routing log with work_queue_skill + work_wrapper_complete; update stage-state.yaml (current_stage: 9, invocation_model: chained_agent); proceed to Stage 10</p>
+  </div>
+
+  <!-- Stage 10 -->
+  <div class="stage-card">
+    <span class="stage-num">10</span>
+    <h4>Stage 10 · Work Execution <span class="badge badge-agent">task_agent</span> <span class="badge badge-heavy">heavy</span></h4>
+    <p><strong>Entry:</strong> <code>plan-final-review.html</code>, <code>logs/WRK-NNN-routing.log</code></p>
+    <p><strong>Activities:</strong> TDD cycle (red→green→refactor); implement all ACs; run tests; write execute.yaml with integrated_repo_tests</p>
+    <p><strong>Exit artifacts:</strong> <code>evidence/execute.yaml</code> (integrated_repo_tests[] with name/scope/command/result/artifact_ref ≥3 entries; execution_summary with files_changed/lines_edited)</p>
+    <p><strong>Skills:</strong> work-queue-workflow + TDD (mandatory) + systematic-debugging</p>
+    <p><strong>Heavy-stage check:</strong> exit-stage.sh verifies ≥1 test file exists; execute.yaml must have ≥3 integrated_repo_tests entries</p>
+    <p><strong>Micro-skill checklist:</strong> load plan + micro-skill ONLY; write failing tests first; implement to pass; no scope creep; run full test suite; write execute.yaml with correct field names (name/scope/command/result/artifact_ref); write execution summary (files changed, lines edited, code excerpts); DO NOT generate HTML artifact in this stage</p>
+  </div>
+
+  <!-- Stage 11 -->
+  <div class="stage-card">
+    <span class="stage-num">11</span>
+    <h4>Stage 11 · Artifact Generation <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+    <p><strong>Entry:</strong> <code>evidence/execute.yaml</code></p>
+    <p><strong>Activities:</strong> Run generate-html-review.py to produce implementation-review.html</p>
+    <p><strong>Exit artifacts:</strong> <code>implementation-review.html</code></p>
+    <p><strong>Skills:</strong> work-queue-workflow + workflow-html</p>
+    <p><strong>Micro-skill checklist:</strong> run <code>uv run --no-project python scripts/work-queue/generate-html-review.py WRK-NNN --type implementation</code>; verify file exists and is non-empty; check required sections present (Mission, AC list, Execution Summary, Test Results); do NOT add new implementation in this stage</p>
+  </div>
+
+  <!-- Stage 12 -->
+  <div class="stage-card">
+    <span class="stage-num">12</span>
+    <h4>Stage 12 · TDD / Eval <span class="badge badge-agent">task_agent</span> <span class="badge badge-heavy">heavy</span></h4>
+    <p><strong>Entry:</strong> <code>evidence/execute.yaml</code>, <code>implementation-review.html</code></p>
+    <p><strong>Activities:</strong> Run full test suite; verify all ACs; write ac-test-matrix.md</p>
+    <p><strong>Exit artifacts:</strong> <code>ac-test-matrix.md</code> (each AC: PASS/FAIL/N/A+reason); execute.yaml must have ≥3 test pass records</p>
+    <p><strong>Skills:</strong> work-queue-workflow + TDD</p>
+    <p><strong>Heavy-stage check:</strong> exit-stage.sh checks ≥3 test pass records in execute.yaml <code>integrated_repo_tests</code>; ac-test-matrix.md must exist with all ACs evaluated</p>
+    <p><strong>Micro-skill checklist:</strong> re-run full test suite; for each AC: grep/run verification → record PASS/FAIL/N/A+reason; write ac-test-matrix.md; if any FAIL → fix before proceeding; if pure-doc WRK → N/A+reason for runtime tests acceptable; do NOT skip ACs silently</p>
+  </div>
+
+  <!-- Stage 13 -->
+  <div class="stage-card">
+    <span class="stage-num">13</span>
+    <h4>Stage 13 · Agent Cross-Review <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+    <p><strong>Entry:</strong> <code>implementation-review.html</code>, <code>ac-test-matrix.md</code></p>
+    <p><strong>Activities (Route A):</strong> Self-review pass at Stage 6 counts; place review.md. <br>
+    <strong>Activities (Route C):</strong> Multi-provider review (Codex mandatory); synthesize findings into review.md</p>
+    <p><strong>Exit artifacts:</strong> <code>review.md</code> (verdict: APPROVE | REVISE; P1/P2 findings if any)</p>
+    <p><strong>Skills:</strong> work-queue-workflow</p>
+    <p><strong>Micro-skill checklist:</strong> run <code>scripts/review/cross-review.sh</code> or manual review; look for P1/P2 issues (security, correctness, missing ACs); write review.md with verdict; if REVISE → return to Stage 10; if APPROVE → proceed; Route C Codex review = hard gate</p>
+  </div>
+
+  <!-- Stage 14 -->
+  <div class="stage-card">
+    <span class="stage-num">14</span>
+    <h4>Stage 14 · Verify Gate Evidence <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+    <p><strong>Entry:</strong> All previous gate artifacts</p>
+    <p><strong>Activities:</strong> Run verify-gate-evidence.py; fix any FAIL gates; confirm all 16 gates PASS</p>
+    <p><strong>Exit artifacts:</strong> verify-gate-evidence.py exit code 0 (all PASS) — no new file; stage log records run</p>
+    <p><strong>Skills:</strong> work-queue-workflow</p>
+    <p><strong>Micro-skill checklist:</strong> run <code>uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-NNN</code>; for each FAIL gate → fix the artifact; re-run until all PASS; write stage log with gate results; do NOT close WRK until all 16 gates PASS</p>
+  </div>
+
+  <!-- Stage 15 -->
+  <div class="stage-card">
+    <span class="stage-num">15</span>
+    <h4>Stage 15 · Future Work Synthesis <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+    <p><strong>Entry:</strong> <code>evidence/execute.yaml</code>, <code>review.md</code></p>
+    <p><strong>Activities:</strong> Capture deferred ideas as new WRK items; write future-work.yaml with captured=true for all spun-off-new items</p>
+    <p><strong>Exit artifacts:</strong> <code>evidence/future-work.yaml</code> (recommendations[] each with disposition/status/captured)</p>
+    <p><strong>Skills:</strong> work-queue-workflow</p>
+    <p><strong>Micro-skill checklist:</strong> review execute.yaml open_questions + deferred items; create WRK items for spun-off-new ideas; write future-work.yaml; all disposition:spun-off-new items must have captured:true; disposition options: spun-off-new | existing-updated | deferred | rejected</p>
+  </div>
+
+  <!-- Stage 16 -->
+  <div class="stage-card">
+    <span class="stage-num">16</span>
+    <h4>Stage 16 · Resource Intelligence Update <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+    <p><strong>Entry:</strong> <code>evidence/future-work.yaml</code>, <code>evidence/execute.yaml</code></p>
+    <p><strong>Activities:</strong> Update resource intelligence with 3 lessons learned; note any new external resources discovered</p>
+    <p><strong>Exit artifacts:</strong> <code>evidence/resource-intelligence-update.yaml</code> (additions[] or no_additions_rationale; lessons[])</p>
+    <p><strong>Skills:</strong> work-queue-workflow</p>
+    <p><strong>Micro-skill checklist:</strong> review what was learned during execution; write resource-intelligence-update.yaml; record ≥3 lessons (what worked, what failed, what was discovered); record new tools/packages/patterns found; note no_additions_rationale if no new external resources</p>
+  </div>
+
+  <!-- Stage 17 -->
+  <div class="stage-card">
+    <span class="stage-num">17</span>
+    <h4>Stage 17 · User Review — Implementation <span class="badge badge-human">human_session</span> <span class="badge badge-heavy">heavy</span></h4>
+    <p><strong>Entry:</strong> <code>implementation-review.html</code></p>
+    <p><strong>Activities:</strong> Human reviews implementation; agent answers questions and applies feedback</p>
+    <p><strong>Exit artifacts:</strong> <code>evidence/user-review-close.yaml</code> (decision: approved, reviewer, reviewed_at)</p>
+    <p><strong>Skills:</strong> work-queue-workflow + workflow-html</p>
+    <p><strong>HARD GATE:</strong> <code>user-review-close.yaml</code> with <code>decision: approved</code> MUST exist before Stage 18. Hookify backstop enforces this.</p>
+    <p><strong>Micro-skill checklist:</strong> open implementation-review.html; section-by-section review; present each section to human; wait for response; apply feedback; ask for final approval; write user-review-close.yaml; DO NOT close WRK until decision: approved confirmed</p>
+  </div>
+
+  <!-- Stage 18 -->
+  <div class="stage-card">
+    <span class="stage-num">18</span>
+    <h4>Stage 18 · Reclaim <span class="badge badge-agent">task_agent</span> <span class="badge badge-light">light</span></h4>
+    <p><strong>Entry:</strong> <code>evidence/user-review-close.yaml</code> (decision: approved) + optionally <code>checkpoint.yaml</code> if continuity break</p>
+    <p><strong>Activities:</strong> If continuity break occurred: re-orient from checkpoint. Otherwise: mark n/a and pass through.</p>
+    <p><strong>Exit artifacts:</strong> <code>evidence/reclaim.yaml</code> (status: n/a | reclaimed; reason)</p>
+    <p><strong>Skills:</strong> work-queue-workflow + checkpoint (if reclaiming)</p>
+    <p><strong>Micro-skill checklist:</strong> check if checkpoint.yaml exists; if no continuity break → write reclaim.yaml with status: n/a; if continuity break → load checkpoint → re-orient → write reclaim.yaml with status: reclaimed + context_restored_from</p>
+  </div>
+
+  <!-- Stage 19 -->
+  <div class="stage-card">
+    <span class="stage-num">19</span>
+    <h4>Stage 19 · Close <span class="badge badge-agent">task_agent</span> <span class="badge badge-light">light</span></h4>
+    <p><strong>Entry:</strong> All gate artifacts; <code>evidence/user-review-close.yaml</code> (decision: approved)</p>
+    <p><strong>Activities:</strong> Run close-item.sh; move WRK to done/; write close log; update frontmatter (percent_complete: 100)</p>
+    <p><strong>Exit artifacts:</strong> <code>done/WRK-NNN.md</code>, <code>logs/WRK-NNN-close.log</code></p>
+    <p><strong>Skills:</strong> work-queue-workflow</p>
+    <p><strong>Micro-skill checklist:</strong> run <code>bash scripts/work-queue/close-item.sh WRK-NNN</code>; verify all gate artifacts present (via verify-gate-evidence.py exit 0); confirm working/WRK-NNN.md → done/WRK-NNN.md; update percent_complete: 100; write close log</p>
+  </div>
+
+  <!-- Stage 20 -->
+  <div class="stage-card">
+    <span class="stage-num">20</span>
+    <h4>Stage 20 · Archive <span class="badge badge-agent">task_agent</span> <span class="badge badge-light">light</span></h4>
+    <p><strong>Entry:</strong> <code>done/WRK-NNN.md</code></p>
+    <p><strong>Activities:</strong> Run archive-item.sh; move assets to archive/; update INDEX.md; commit</p>
+    <p><strong>Exit artifacts:</strong> <code>archive/WRK-NNN.md</code>, updated <code>INDEX.md</code></p>
+    <p><strong>Skills:</strong> work-queue-workflow</p>
+    <p><strong>Micro-skill checklist:</strong> run <code>bash scripts/work-queue/archive-item.sh WRK-NNN</code>; verify done/WRK-NNN.md → archive/WRK-NNN.md; regenerate INDEX.md; commit with <code>chore(WRK-NNN): archive</code>; clear active-wrk state file</p>
+  </div>
+
+</div><!-- .card per-stage brainstorm -->
+
+<!-- ─── DELIVERABLES ───────────────────────────────────────────────────────── -->
+<div class="card">
+  <h2>Deliverables — 4-Phase Delivery</h2>
+
+  <div class="phase-block">
+    <strong>P1 — Hookify Backstops (immediate, highest impact)</strong><br>
+    3 hookify rules preventing premature stage advancement. No scripts needed — pure pattern matching on artifact writes.
+  </div>
+  <table>
+    <tr><th>Gate</th><th>Block Pattern</th><th>Allow Condition</th></tr>
+    <tr><td>5→6</td><td>Write to <code>evidence/cross-review.yaml</code> or any <code>evidence/execute*.yaml</code> without WRK assets path</td><td><code>evidence/user-review-plan-draft.yaml</code> exists with <code>decision: approved</code></td></tr>
+    <tr><td>7→8</td><td>Write to <code>evidence/claim-evidence.yaml</code> or <code>evidence/activation.yaml</code></td><td><code>plan-final-review.html</code> exists with <code>confirmed_by:</code> at line-start</td></tr>
+    <tr><td>17→18</td><td>Write to <code>evidence/reclaim.yaml</code> or run <code>close-item.sh</code></td><td><code>evidence/user-review-close.yaml</code> exists with <code>decision: approved</code></td></tr>
+  </table>
+  <pre><code># Example hookify rule (Gate 5→6)
+name: gate-5-to-6
+description: Block cross-review/execute artifacts until plan-draft approved
+trigger: Write
+condition: |
+  file_path matches ".claude/work-queue/assets/WRK-.*/evidence/(cross-review|execute).*\.yaml"
+  AND NOT file_exists(".claude/work-queue/assets/{WRK_ID}/evidence/user-review-plan-draft.yaml", contains="decision: approved")
+action: block
+message: "GATE 5→6 BLOCKED: evidence/user-review-plan-draft.yaml must have decision: approved before cross-review or execution artifacts can be written."</code></pre>
+
+  <div class="phase-block">
+    <strong>P2 — Scripts + stage-state.yaml</strong>
+  </div>
+  <h3>start-stage.sh WRK-NNN &lt;N&gt;</h3>
+  <pre><code>#!/usr/bin/env bash
+# start-stage.sh WRK-NNN N — bootstrap fresh context for stage N
+set -euo pipefail
+WRK_ID=$1; STAGE_N=$2
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+CONTRACT="$REPO_ROOT/scripts/work-queue/stages/stage-$(printf '%02d' $STAGE_N)-*.yaml"
+# 1. Read contract (entry_reads, invocation, skills_required, context_budget_kb)
+# 2. If invocation=task_agent: construct prompt from contract + entry_reads; spawn Task agent
+# 3. If invocation=human_session: load entry_reads into current session; emit checklist
+# 4. Update stage-state.yaml (current_stage, invocation_model, entered_at)
+# 5. Check gate artifacts if human_gate=true in previous stage contract</code></pre>
+
+  <h3>exit-stage.sh WRK-NNN &lt;N&gt;</h3>
+  <pre><code>#!/usr/bin/env bash
+# exit-stage.sh WRK-NNN N — validate exit artifacts, write log, advance
+set -euo pipefail
+WRK_ID=$1; STAGE_N=$2
+# 1. Read stage-N contract exit_artifacts[]
+# 2. For each exit artifact: verify file exists; if human_gate=true, check gate field value
+# 3. If any missing: print which artifact is missing; exit 1 (do NOT advance)
+# 4. Write stage log ($REPO_ROOT/.claude/work-queue/logs/WRK-NNN-stage-N.log)
+# 5. Update stage-state.yaml (exit_artifacts_ok: true, exited_at)
+# 6. git add + commit stage log
+# 7. Print Stage N+1 summary (contract for next stage)</code></pre>
+
+  <h3>stage-state.yaml schema</h3>
+  <pre><code># .claude/state/stage-state.yaml (gitignored runtime state)
+wrk_id: WRK-NNN
+current_stage: 4
+invocation_model: task_agent
+entered_at: "2026-03-07T15:00:00Z"
+human_gate_pending: false
+exit_artifacts_ok: false</code></pre>
+
+  <div class="phase-block">
+    <strong>P3 — 20 YAML Contracts + 20 Micro-skills</strong>
+  </div>
+  <h3>Per-Stage YAML Contract Schema (≤15 lines)</h3>
+  <pre><code># scripts/work-queue/stages/stage-05-user-review-plan-draft.yaml
+order: 5
+name: User Review - Plan Draft
+weight: heavy
+invocation: human_session
+human_gate: true
+skills_required:
+  - workspace-hub/work-queue-workflow
+  - superpowers/brainstorming
+  - workspace-hub/workflow-html
+entry_reads:
+  - plan-draft-review.html
+exit_artifacts:
+  - evidence/user-review-plan-draft.yaml
+blocking_condition: "evidence/user-review-plan-draft.yaml missing or decision != approved"
+log_action: plan_draft_reviewed
+context_budget_kb: 16</code></pre>
+
+  <h3>Per-Stage Micro-Skill Schema (≤20 lines)</h3>
+  <pre><code># .claude/skills/workspace-hub/stages/stage-05-user-review-plan-draft.md
+---
+name: stage-05-user-review-plan-draft
+stage: 5
+weight: heavy
+invocation: human_session
+---
+**Entry:** plan-draft-review.html must exist.
+**Checklist:**
+1. Open plan-draft-review.html
+2. Present each section to human; wait for response before moving on
+3. Apply all requested revisions
+4. Ask for explicit final approval
+5. Write evidence/user-review-plan-draft.yaml with decision: approved|revise
+6. DO NOT proceed to Stage 6 until decision: approved is written
+**Hard stop:** If human requests changes, revise plan and restart review.
+**Exit:** evidence/user-review-plan-draft.yaml with decision: approved</code></pre>
+
+  <div class="phase-block">
+    <strong>P4 — Heavy-Stage Depth Enforcement</strong>
+  </div>
+  <ul>
+    <li>Stage 10: <code>start-stage.sh</code> prompt includes TDD micro-skill as mandatory first step; <code>exit-stage.sh</code> checks ≥1 test file in tests/ directory</li>
+    <li>Stage 12: <code>exit-stage.sh</code> checks ≥3 test pass records in execute.yaml <code>integrated_repo_tests</code></li>
+    <li>Stage 17: <code>exit-stage.sh</code> checks <code>user-review-close.yaml</code> exists with <code>decision: approved</code></li>
+    <li>context_budget_kb enforcement: <code>start-stage.sh</code> measures total size of entry_reads artifacts; warns if exceeding budget</li>
+  </ul>
+</div>
+
+<!-- ─── ACCEPTANCE CRITERIA ───────────────────────────────────────────────── -->
+<div class="card">
+  <h2>Acceptance Criteria Verification Plan</h2>
+  <table>
+    <tr><th>#</th><th>Acceptance Criterion</th><th>Verification</th></tr>
+    <tr><td>AC-01</td><td>20 per-stage YAML contracts at <code>scripts/work-queue/stages/stage-NN-slug.yaml</code></td><td><code>ls scripts/work-queue/stages/ | wc -l</code> == 20</td></tr>
+    <tr><td>AC-02</td><td>Each contract has all required fields (order, name, weight, invocation, human_gate, skills_required, entry_reads, exit_artifacts, blocking_condition, log_action, context_budget_kb)</td><td>Python validator script checks all 20 files for all fields</td></tr>
+    <tr><td>AC-03</td><td><code>start-stage.sh WRK-NNN N</code> reads contract → spawns task_agent or loads human_session</td><td>Unit test: mock contract with invocation=task_agent → verify Task spawn prompt; mock invocation=human_session → verify checklist output</td></tr>
+    <tr><td>AC-04</td><td><code>exit-stage.sh WRK-NNN N</code> validates exit_artifacts, checks human_gate, writes log, updates stage-state.yaml</td><td>Unit test: missing artifact → exit 1; all present → log written; stage-state.yaml updated</td></tr>
+    <tr><td>AC-05</td><td>stage-state.yaml written at .claude/state/ (gitignored)</td><td>Verify .gitignore includes <code>.claude/state/</code> or <code>stage-state.yaml</code>; verify file not tracked</td></tr>
+    <tr><td>AC-06</td><td>20 micro-skills at <code>.claude/skills/workspace-hub/stages/stage-NN-slug.md</code>, ≤20 lines each</td><td><code>wc -l .claude/skills/workspace-hub/stages/*.md</code> all ≤20</td></tr>
+    <tr><td>AC-07</td><td>Stage 10 start prompt includes TDD micro-skill; exit checks ≥1 test file</td><td>Mock start-stage.sh output for N=10 → contains TDD skill reference; mock exit-stage.sh → fails when no test file found</td></tr>
+    <tr><td>AC-08</td><td>Stage 12 exit checks ≥3 test pass records in execute.yaml</td><td>Mock execute.yaml with 2 entries → exit 1; with 3 entries → exit 0</td></tr>
+    <tr><td>AC-09</td><td>Hookify Gate 5→6 blocks execution artifacts until user-review-plan-draft.yaml approved</td><td>Hookify rule eval: missing yaml → blocked; yaml present with decision:approved → allowed</td></tr>
+    <tr><td>AC-10</td><td>Hookify Gate 7→8 blocks claim/activation until plan-final-review.html confirmed_by present</td><td>Hookify rule eval: confirmed_by missing → blocked; present → allowed</td></tr>
+    <tr><td>AC-11</td><td>Hookify Gate 17→18 blocks close/archive until user-review-close.yaml approved</td><td>Hookify rule eval: missing yaml → blocked; yaml present with decision:approved → allowed</td></tr>
+    <tr><td>AC-12</td><td>≥5 unit tests covering happy-advance, blocked-by-missing-artifact, human-gate stop, log write, task_agent vs human_session routing</td><td>Run test suite → ≥5 tests pass</td></tr>
+    <tr><td>AC-13</td><td>verify-gate-evidence.py reads stage-state.yaml as corroborating signal</td><td>verify-gate-evidence.py updated; grep for stage-state.yaml reference</td></tr>
+    <tr><td>AC-14</td><td>workflow-gatepass/SKILL.md + work-queue-workflow/SKILL.md reference start/exit-stage.sh</td><td>grep for start-stage.sh in both SKILL.md files</td></tr>
+  </table>
+</div>
+
+<!-- ─── TEST PLAN ─────────────────────────────────────────────────────────── -->
+<div class="card">
+  <h2>Test Plan</h2>
+  <p>Location: <code>tests/work-queue/test_stage_lifecycle.py</code> (uv run --no-project python -m pytest)</p>
+
+  <h3>Pseudocode</h3>
+  <pre><code>function test_start_stage_task_agent(contract_fixture) → void
+  # Given: contract with invocation=task_agent
+  # When: start_stage(wrk_id, stage=6, contract=contract_fixture)
+  # Then: task_agent_prompt contains contract fields + entry_reads paths
+
+function test_start_stage_human_session(contract_fixture) → void
+  # Given: contract with invocation=human_session
+  # When: start_stage(wrk_id, stage=5, contract=contract_fixture)
+  # Then: output contains checklist items from micro-skill; no Task spawn
+
+function test_exit_stage_missing_artifact(tmp_path) → void
+  # Given: exit_artifacts=[evidence/foo.yaml] but file does not exist
+  # When: exit_stage(wrk_id, stage=4, assets_dir=tmp_path)
+  # Then: raises SystemExit(1); log NOT written; stage-state.yaml NOT updated
+
+function test_exit_stage_happy_advance(tmp_path) → void
+  # Given: all exit_artifacts present; no human_gate
+  # When: exit_stage(wrk_id, stage=4, assets_dir=tmp_path)
+  # Then: stage log written; stage-state.yaml updated to stage=5; exit 0
+
+function test_exit_stage_human_gate_stop(tmp_path) → void
+  # Given: human_gate=true; exit artifact exists but decision field != approved
+  # When: exit_stage(wrk_id, stage=5, assets_dir=tmp_path)
+  # Then: raises SystemExit(1) with message about human gate; blocks advancement
+
+function test_hookify_gate5_blocked(tmp_path) → void
+  # Given: no user-review-plan-draft.yaml in assets
+  # When: hookify_check(write_path="evidence/cross-review.yaml", wrk_assets=tmp_path)
+  # Then: returns blocked=True with gate message
+
+function test_hookify_gate5_allowed(tmp_path) → void
+  # Given: user-review-plan-draft.yaml exists with decision: approved
+  # When: hookify_check(write_path="evidence/cross-review.yaml", wrk_assets=tmp_path)
+  # Then: returns blocked=False</code></pre>
+
+  <table>
+    <tr><th>Test</th><th>AC</th><th>Type</th><th>Expected</th></tr>
+    <tr><td>test_start_stage_task_agent</td><td>AC-03</td><td>unit</td><td>Task agent prompt contains contract + entry_reads</td></tr>
+    <tr><td>test_start_stage_human_session</td><td>AC-03</td><td>unit</td><td>Checklist emitted; no Task spawn</td></tr>
+    <tr><td>test_exit_stage_missing_artifact</td><td>AC-04</td><td>unit</td><td>SystemExit(1); no log written</td></tr>
+    <tr><td>test_exit_stage_happy_advance</td><td>AC-04</td><td>unit</td><td>Log written; stage-state.yaml updated</td></tr>
+    <tr><td>test_exit_stage_human_gate_stop</td><td>AC-04</td><td>unit</td><td>SystemExit(1) on missing/unapproved gate artifact</td></tr>
+    <tr><td>test_hookify_gate5_blocked</td><td>AC-09</td><td>unit</td><td>blocked=True when user-review-plan-draft.yaml missing</td></tr>
+    <tr><td>test_hookify_gate5_allowed</td><td>AC-09</td><td>unit</td><td>blocked=False when decision: approved present</td></tr>
+  </table>
+</div>
+
+<!-- ─── OPEN QUESTIONS ────────────────────────────────────────────────────── -->
+<div class="card">
+  <h2>Open Questions for Review</h2>
+  <ol>
+    <li><strong>Hookify pattern matching capability:</strong> Can hookify inspect file path + read content of Write calls reliably? Need to confirm before writing Gate 5→6 rule that checks YAML content, not just file existence.</li>
+    <li><strong>context_budget enforcement:</strong> Should start-stage.sh measure and warn (non-blocking) or truncate (blocking) when entry_reads exceed context_budget_kb? Recommend: warn-only initially.</li>
+    <li><strong>Chained agents (Stages 2+3+4):</strong> Should chaining always occur or be a per-WRK config flag? Recommendation: always chain 2+3+4 and 8+9 — these are consistently light together.</li>
+    <li><strong>Stage 18 (Reclaim) branching:</strong> stage-state.yaml is runtime state. How does it handle continuity breaks cleanly? Recommendation: checkpoint.yaml (from /checkpoint skill) is the reclaim entry artifact; reclaim.yaml records what was restored.</li>
+    <li><strong>Stage 3 (Triage) automation:</strong> Currently human_session. Could be chained with Stage 2 for Route A (simple items where triage is trivial). Keep as-is for now to preserve human control point.</li>
+  </ol>
+</div>
+
+<!-- ─── PLAN KEY SKILLS ────────────────────────────────────────────────────── -->
+<div class="card">
+  <h2>Key Planning Skills Used</h2>
+  <ul>
+    <li><code>workspace-hub/work-queue-workflow</code> — WRK lifecycle protocol</li>
+    <li><code>workspace-hub/workflow-gatepass</code> — 20-stage gate contract</li>
+    <li><code>superpowers/brainstorming</code> — per-stage activity brainstorm</li>
+    <li><code>workspace-hub/checkpoint</code> — save/resume for context handoff</li>
+    <li><code>workspace-hub/workflow-html</code> — plan draft HTML generation</li>
+  </ul>
+</div>
+
+<!-- ─── APPROVAL BLOCK ────────────────────────────────────────────────────── -->
+<div class="card approval-block">
+  <h3>Stage 5 — Human Review Gate</h3>
+  <p>This plan draft requires human approval before Stage 6 (Cross-Review) can proceed.</p>
+  <p><strong>Please review the following sections and confirm or request changes:</strong></p>
+  <ol>
+    <li>Stage isolation architecture and invocation model (task_agent vs human_session)</li>
+    <li>Per-stage brainstorm definitions (all 20 stages) — activities, entry/exit artifacts correct?</li>
+    <li>4-phase delivery order (P1 hookify → P2 scripts → P3 contracts+micro-skills → P4 heavy)</li>
+    <li>Hookify backstop specs (3 gates) — blocking conditions correct?</li>
+    <li>Script designs (start-stage.sh / exit-stage.sh) — logic correct?</li>
+    <li>Test plan (7 tests covering all ACs) — sufficient coverage?</li>
+    <li>Open questions — any that need resolution before implementation?</li>
+  </ol>
+  <p><strong>Approval:</strong></p>
+  <pre>confirmed_by: [your name]
+confirmed_at: [ISO8601 timestamp]
+verdict: approved | revise
+notes: ""</pre>
+</div>
+
+</div><!-- .content -->
+</body>
+</html>

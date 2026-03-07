@@ -1,0 +1,174 @@
+wrk_id: WRK-1028
+generated_at: '2026-03-07T15:00:00Z'
+reviewed_by: orchestrator
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK-1028 created in pending queue with full mission, AC list, and design notes.
+  evidence: .claude/work-queue/pending/WRK-1028.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: >
+    resource-intelligence.yaml created. Architecture decision: stage-isolation model.
+    Stage classification (light/medium/heavy), invocation model (task_agent vs human_session),
+    execution flow, key components, open questions, and constraints all captured.
+  evidence: .claude/work-queue/assets/WRK-1028/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: >
+    Route C confirmed (complex, architectural, multi-deliverable). Workstation: ace-linux-1.
+    Orchestrator: claude. No blockers. plan_ensemble: false.
+    Staged delivery confirmed: P1(hookify) → P2(scripts) → P3(contracts+micro-skills) → P4(heavy).
+  evidence: .claude/work-queue/pending/WRK-1028.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: >
+    Plan draft HTML written. Covers per-stage brainstorm (all 20 stages), 4-phase
+    delivery, script designs, hookify backstop specs, micro-skill template, test plan.
+  evidence: .claude/work-queue/assets/WRK-1028/plan-draft-review.html
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: pending
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'yes'
+  comment: Awaiting human review and approval of plan-draft-review.html.
+  evidence: .claude/work-queue/assets/WRK-1028/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: pending
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1028/evidence/cross-review.yaml
+- order: 7
+  stage: User Review - Plan (Final)
+  status: pending
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'yes'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1028/plan-final-review.html
+- order: 8
+  stage: Claim / Activation
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1028/evidence/activation.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not started.
+  evidence: .claude/work-queue/logs/WRK-1028-routing.log
+- order: 10
+  stage: Work Execution
+  status: pending
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1028/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: pending
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1028/implementation-review.html
+- order: 12
+  stage: TDD / Eval
+  status: pending
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1028/ac-test-matrix.md
+- order: 13
+  stage: Agent Cross-Review
+  status: pending
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1028/review.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not started.
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1028/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1028/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: pending
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'yes'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1028/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1028/evidence/reclaim.yaml
+- order: 19
+  stage: Close
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'yes'
+  comment: Not started.
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'yes'
+  comment: Not started.
+  evidence: scripts/work-queue/archive-item.sh
