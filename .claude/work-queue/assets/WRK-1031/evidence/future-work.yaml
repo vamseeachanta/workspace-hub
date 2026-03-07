@@ -1,0 +1,24 @@
+wrk_id: WRK-1031
+generated_at: 2026-03-07
+
+recommendations:
+  - id: FW-01
+    title: Richer stage body renderers for stages 10-16
+    description: >
+      Stages 10-16 currently show minimal schema rows. Could be enriched to display
+      more evidence fields (e.g., execute.yaml phase summaries, gate pass/fail tables
+      from gate-evidence-summary.json, cross-review verdict tables).
+    disposition: captured_new_wrk
+    status: deferred
+    captured: false
+    priority: low
+
+  - id: FW-02
+    title: close-item.sh integration for --lifecycle auto-call
+    description: >
+      close-item.sh currently references --type close. Should be updated to call
+      generate-html-review.py WRK-NNN --lifecycle at Stage 19.
+    disposition: captured_new_wrk
+    status: deferred
+    captured: false
+    priority: medium

@@ -5,16 +5,15 @@ export UV_CACHE_DIR="${UV_CACHE_DIR:-$REPO_ROOT/.claude/state/uv-cache}"
 mkdir -p "$UV_CACHE_DIR"
 exec uv run --no-project --with markdown --with PyYAML python "$0" "$@"
 ":"""
-"""Generate canonical WRK HTML review artifacts.
+"""Generate canonical WRK lifecycle HTML artifact.
 
-Conforms to workflow-html SKILL v1.0.0 (warm-parchment design system,
-collapsible cards, sticky TOC, back-to-top button).
+Conforms to workflow-html SKILL v1.5.0 (single lifecycle HTML per WRK).
 
 Usage:
-    generate-html-review.py WRK-NNN [--type plan-draft|plan-final|implementation|close]
-                                     [--output <path>]
+    generate-html-review.py WRK-NNN [--lifecycle] [--output <path>]
 
-Legacy positional args still accepted: WRK-NNN [--stage draft] [--type plan]
+--type flags (plan-draft|plan-final|implementation|close) are deprecated and removed.
+All invocations now generate lifecycle HTML regardless of flags passed.
 """
 import os
 import re
@@ -1802,7 +1801,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Generate canonical WRK lifecycle HTML (workflow-html SKILL v1.4.0)"
+        description="Generate canonical WRK lifecycle HTML (workflow-html SKILL v1.5.0)"
     )
     parser.add_argument("wrk_id")
     parser.add_argument(
@@ -1811,11 +1810,14 @@ if __name__ == "__main__":
         help="Generate single lifecycle HTML (canonical mode)",
     )
     parser.add_argument("--output", default=None)
+    # --type is suppressed so legacy invocations don't crash; all modes now generate lifecycle HTML
+    import argparse as _argparse
+    parser.add_argument("--type", default=None, help=_argparse.SUPPRESS)
     args = parser.parse_args()
 
-    if args.lifecycle:
-        generate_lifecycle(args.wrk_id, args.output)
-    else:
-        # --type removed: print deprecation notice and generate lifecycle
-        print("Note: --type snapshot mode removed. Generating lifecycle HTML instead.")
-        generate_lifecycle(args.wrk_id, args.output)
+    if args.type:
+        print(
+            f"Note: --type {args.type!r} is deprecated and ignored."
+            " Generating lifecycle HTML instead."
+        )
+    generate_lifecycle(args.wrk_id, args.output)
