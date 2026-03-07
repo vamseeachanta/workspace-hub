@@ -118,7 +118,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.78re
     <tr><td>3</td><td>Triage</td><td>Route/workstation/orchestrator confirmed; open questions</td></tr>
     <tr><td>4</td><td>Plan Draft</td><td>Implementation plan: ACs, pseudocode, test plan, phase delivery</td></tr>
     <tr><td>5</td><td>User Review — Plan Draft</td><td><strong>Route C:</strong> 3 parallel terminals (Claude/Codex/Gemini) → 3 plan variants → orchestrator combines → user approves combined-plan.md. <strong>Route A:</strong> single human+agent review.</td></tr>
-    <tr><td>6</td><td>Cross-Review</td><td>Cross-provider findings; verdict (APPROVE/REVISE)</td></tr>
+    <tr><td>6</td><td>Cross-Review</td><td><strong>ALL routes mandatory:</strong> Claude + Codex + Gemini. Override only if user explicitly states quota unavailable + explicitly instructs to continue. Agent may not self-decide to skip a provider.</td></tr>
     <tr><td>7</td><td>User Review — Plan Final</td><td>Final plan confirmation block; confirmed_by field</td></tr>
     <tr><td>8</td><td>Claim / Activation</td><td>Quota snapshot; activation timestamp</td></tr>
     <tr><td>9</td><td>Routing</td><td>Skills loaded; routing log reference</td></tr>
@@ -267,8 +267,9 @@ notes: ""</code></pre>
     <div class="stage-content">
       <h4>Cross-Review <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
       <p><strong>Entry:</strong> Lifecycle HTML, <code>evidence/user-review-plan-draft.yaml</code> (decision: approved)</p>
-      <p><strong>Activities:</strong> Route A: self-review. Route C: Codex (hard gate) + Gemini cross-review; synthesize findings</p>
-      <p><strong>Exit:</strong> <code>evidence/cross-review.yaml</code> (verdict: APPROVE|REVISE) + lifecycle HTML Stage 6 section</p>
+      <p><strong>Activities — ALL routes, mandatory:</strong> Claude + Codex + Gemini independently review the plan. Codex is a hard gate. Route has no bearing — 3-provider review is universal.</p>
+      <p><strong>Override (narrow exception only):</strong> User must explicitly state <em>both</em>: (1) quota/credit unavailable for a provider, AND (2) explicit instruction to continue without it. Override recorded in <code>cross-review.yaml</code> as <code>override_reason: quota_unavailable</code> + <code>override_confirmed_by: [user]</code>. Agent may NOT self-decide to skip a provider.</p>
+      <p><strong>Exit:</strong> <code>evidence/cross-review.yaml</code> (verdict: APPROVE|REVISE; reviewers[]; override if applicable) + lifecycle HTML Stage 6 section</p>
     </div>
   </div>
 
@@ -340,8 +341,8 @@ notes: ""</code></pre>
     <div class="stage-content">
       <h4>Agent Cross-Review <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
       <p><strong>Entry:</strong> Lifecycle HTML (Stages 10–12 sections), <code>ac-test-matrix.md</code></p>
-      <p><strong>Activities:</strong> Route C: Codex (mandatory) + Gemini review; check P1/P2 issues; synthesize into review.md</p>
-      <p><strong>Exit:</strong> <code>review.md</code> (verdict: APPROVE|REVISE) + lifecycle HTML Stage 13 section</p>
+      <p><strong>Activities — ALL routes, mandatory:</strong> Claude + Codex + Gemini independently review implementation; check P1/P2 issues (security, correctness, missing ACs); synthesize into review.md. Same override rule as Stage 6: user must explicitly state quota unavailable AND explicitly instruct to continue — agent may not self-decide to skip a provider.</p>
+      <p><strong>Exit:</strong> <code>review.md</code> (verdict: APPROVE|REVISE; reviewers[]; override if applicable) + lifecycle HTML Stage 13 section</p>
     </div>
   </div>
 

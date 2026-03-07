@@ -19,6 +19,7 @@ decisions_this_session:
   - "WRK-1027 (generate-html-review.py --stage --update) absorbed into WRK-1028 scope"
   - "Stage 18 auto-writes reclaim.yaml status: n/a when no checkpoint found"
   - "Stages 2+3+4 always chained; Stages 8+9 always chained"
+  - "Stage 6 + Stage 13 cross-review mandatory 3-provider (Claude/Codex/Gemini) for ALL routes; Route A self-review exception removed; override only if user explicitly states quota unavailable AND explicitly instructs to continue — agent may not self-decide to skip a provider"
 artifacts_written:
   - .claude/work-queue/assets/WRK-1028/evidence/stage-evidence.yaml
   - .claude/work-queue/assets/WRK-1028/evidence/resource-intelligence.yaml

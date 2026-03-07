@@ -372,6 +372,7 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
       <li><strong>WRK-1027 consolidation:</strong> generate-html-review.py <code>--stage N --update</code> mode incorporated into WRK-1028 scope — pending final confirmation</li>
       <li><strong>Confirmed:</strong> context_budget_kb = HARD STOP at 70% (not warn). start-stage.sh + exit-stage.sh both measure entry_reads size; if ≥70% → hard stop + mandatory /checkpoint + new session /resume. Prevents autocompact from silently removing gate instructions.</li>
       <li><strong>Confirmed:</strong> WRK-1027 absorbed into WRK-1028 scope; Stage 18 auto-writes reclaim.yaml n/a when no checkpoint found; Stages 2+3+4 always chained</li>
+      <li><strong>Confirmed:</strong> Stage 6 + Stage 13 cross-review mandatory with all 3 providers (Claude/Codex/Gemini) for ALL routes — Route A self-review exception removed. Override only if user explicitly states quota unavailable AND explicitly instructs to continue; agent may not self-decide to skip a provider. Override recorded in cross-review.yaml.</li>
       <li><strong>All open questions resolved. Plan approved — ready for Stage 6.</strong></li>
     </ul>
     <div class="section-label">Gate exit artifact</div>
@@ -393,7 +394,7 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
     <div class="sbadges"><span class="badge b-active">in-progress</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
   </div>
   <div class="stage-body collapsed">
-    <div class="awaiting"><strong>Stage 5 gate cleared.</strong> Route C cross-review: Codex (mandatory) + Gemini. Ready to proceed.</div>
+    <div class="awaiting"><strong>Stage 5 gate cleared.</strong> 3-provider cross-review mandatory (Claude + Codex + Gemini). Override only if user explicitly states quota unavailable AND explicitly instructs to continue. Ready to proceed.</div>
     <div class="section-label">Stage record</div>
     <div class="schema">
       <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
