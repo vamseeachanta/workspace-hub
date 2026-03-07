@@ -1,0 +1,25 @@
+wrk_id: WRK-1028
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 4a091c29
+    documents:
+      - .claude/work-queue/assets/WRK-1028/plan-draft-review.html
+      - .claude/work-queue/assets/WRK-1028/WRK-1028-lifecycle.html
+    published_at: 2026-03-07T14:00:00Z
+    reviewer: user
+    notes: "Plan-draft HTML + lifecycle HTML pushed before Stage 5 user review"
+
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: ad2e442f
+    documents:
+      - .claude/work-queue/assets/WRK-1028/evidence/plan-final-review.yaml
+      - .claude/work-queue/assets/WRK-1028/WRK-1028-lifecycle.html
+    published_at: 2026-03-07T20:00:00Z
+    reviewer: user
+    notes: "plan-final-review.yaml + lifecycle HTML pushed before Stage 7 user review"

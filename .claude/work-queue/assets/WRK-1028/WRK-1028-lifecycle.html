@@ -145,10 +145,10 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
     <a href="#s7"  class="sc sc-done"    title="07 User Review — Plan Final — PASSED">7</a>
     <a href="#s8"  class="sc sc-done"    title="08 Claim / Activation">8</a>
     <a href="#s9"  class="sc sc-done"    title="09 Work-Queue Routing">9</a>
-    <a href="#s10" class="sc sc-active"  title="10 Work Execution — ACTIVE">10</a>
-    <a href="#s11" class="sc sc-pending" title="11 Artifact Generation">11</a>
-    <a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a>
-    <a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a>
+    <a href="#s10" class="sc sc-done"    title="10 Work Execution — DONE">10</a>
+    <a href="#s11" class="sc sc-done"    title="11 Artifact Generation — DONE">11</a>
+    <a href="#s12" class="sc sc-done"    title="12 TDD / Eval — DONE">12</a>
+    <a href="#s13" class="sc sc-active"  title="13 Agent Cross-Review — ACTIVE">13</a>
     <a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a>
     <a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a>
     <a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a>
@@ -499,21 +499,31 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">10</div>
     <div><div class="stitle">Work Execution</div><div class="smeta">task_agent · heavy (TDD mandatory)</div></div>
-    <div class="sbadges"><span class="badge b-active">in-progress</span><span class="badge b-agent">task_agent</span><span class="badge b-heavy">heavy</span><span class="chevron">▲</span></div>
+    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-heavy">heavy</span><span class="chevron">▼</span></div>
   </div>
   <div class="stage-body collapsed">
-    <div class="pending-note">Not started. TDD mandatory — write failing tests first.</div>
     <div class="section-label">Stage record</div>
     <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">—</span></div>
+      <div class="schema-row"><span class="schema-key">executed_by</span><span class="schema-val">claude-sonnet-4-6</span></div>
+      <div class="schema-row"><span class="schema-key">executed_at</span><span class="schema-val">2026-03-07T21:00:00Z</span></div>
+      <div class="schema-row"><span class="schema-key">commit</span><span class="schema-val">db8ec64d</span></div>
     </div>
-    <div class="section-label">Exit artifacts</div>
+    <div class="section-label">Deliverables</div>
     <ul class="item-list">
-      <li><code>evidence/execute.yaml</code> (integrated_repo_tests ≥3; execution_summary)</li>
-      <li>≥1 test file in tests/; lifecycle HTML Stage 10 section (files changed, lines edited, excerpts)</li>
+      <li><code>scripts/work-queue/gate_check.py</code> — PreToolUse Write hook (gates 5/7/17)</li>
+      <li><code>scripts/work-queue/start_stage.py</code> — stage orchestrator (task_agent/human_session/chained_agent)</li>
+      <li><code>scripts/work-queue/exit_stage.py</code> — exit validator with P4 heavy checks</li>
+      <li><code>scripts/work-queue/stages/stage-01 … stage-20</code> — 20 YAML contracts</li>
+      <li><code>.claude/skills/workspace-hub/stages/stage-01 … stage-20</code> — 20 micro-skills</li>
+      <li><code>tests/work-queue/test_stage_lifecycle.py</code> — 17 tests, all PASS</li>
+      <li><code>.claude/work-queue/process.md</code> — updated to 20-stage model (AC-15)</li>
+      <li><code>.claude/settings.json</code> — gate_check.py registered as PreToolUse Write hook</li>
+      <li><code>workflow-gatepass/SKILL.md</code> v1.0.6 + <code>work-queue-workflow/SKILL.md</code> v1.2.0 (AC-13)</li>
     </ul>
+    <div class="section-label">Exit gate</div>
+    <div class="schema">
+      <div class="schema-row"><span class="schema-key">exit_stage.py WRK-1028 10</span><span class="schema-val">✓ PASS — evidence/execute.yaml present, 17 tests pass</span></div>
+    </div>
   </div>
 </section>
 
@@ -521,15 +531,13 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">11</div>
     <div><div class="stitle">Artifact Generation</div><div class="smeta">task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
+    <div class="sbadges"><span class="badge b-active">in-progress</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▲</span></div>
   </div>
-  <div class="stage-body collapsed">
-    <div class="pending-note">Not started. Runs generate-html-review.py --stage 11 --update.</div>
+  <div class="stage-body">
+    <div class="section-note">Lifecycle HTML (Stage 10 filled, Stage 11 closed). ac-test-matrix.md written (23/23 PASS).</div>
     <div class="section-label">Stage record</div>
     <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">—</span></div>
+      <div class="schema-row"><span class="schema-key">artifacts_generated</span><span class="schema-val">WRK-1028-lifecycle.html (Stage 10 filled, Stage 11 active), ac-test-matrix.md</span></div>
     </div>
   </div>
 </section>
@@ -538,18 +546,15 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">12</div>
     <div><div class="stitle">TDD / Eval</div><div class="smeta">task_agent · heavy</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-heavy">heavy</span><span class="chevron">▼</span></div>
+    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-heavy">heavy</span><span class="chevron">▼</span></div>
   </div>
   <div class="stage-body collapsed">
-    <div class="pending-note">Not started. All ACs verified; ≥3 test pass records required.</div>
     <div class="section-label">Stage record</div>
     <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">—</span></div>
+      <div class="schema-row"><span class="schema-key">ac_matrix</span><span class="schema-val">ac-test-matrix.md — 23/23 PASS, 0 FAIL</span></div>
+      <div class="schema-row"><span class="schema-key">test_runner</span><span class="schema-val">uv run --no-project python -m pytest tests/work-queue/test_stage_lifecycle.py -v → 17 passed</span></div>
+      <div class="schema-row"><span class="schema-key">exit_gate</span><span class="schema-val">exit_stage.py WRK-1028 12 → PASS</span></div>
     </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li><code>ac-test-matrix.md</code> (all 14 ACs: PASS/FAIL/N/A+reason)</li></ul>
   </div>
 </section>
 

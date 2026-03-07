@@ -1,0 +1,29 @@
+wrk_id: WRK-1028
+stage: 16
+updated_at: 2026-03-07T21:30:00Z
+
+additions:
+  - type: pattern
+    title: "stage-isolation YAML contract format"
+    description: >
+      Each stage defined as YAML contract with: order, name, weight, invocation,
+      human_gate, parallelism, skills_required[], entry_reads[], exit_artifacts[],
+      blocking_condition, log_action, context_budget_kb. Gate stages also have:
+      gate_file, gate_field, gate_value. Chained stages have: chained_stages[].
+    artifact: scripts/work-queue/stages/
+
+  - type: pattern
+    title: "path normalization for stage contracts"
+    description: >
+      Stage contracts use 'assets/WRK-NNN/' prefix in exit_artifacts, but exit_stage.py
+      stage_dir already points to assets/WRK-NNN. Must strip prefix before os.path.join.
+      Also: done/ paths are queue_root-relative, not stage_dir-relative.
+    artifact: scripts/work-queue/exit_stage.py
+
+  - type: pattern
+    title: "YAML numeric field regex quirk"
+    description: >
+      verify-gate-evidence.py uses regex r'^confirmed_at:\s+[0-9]' which FAILS when
+      value is quoted: 'confirmed_at: "2026-..."'. YAML values must be unquoted dates
+      for this check to pass. Standard: omit quotes for ISO 8601 timestamps.
+    artifact: scripts/work-queue/verify-gate-evidence.py

@@ -20,9 +20,12 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 from pathlib import Path
 from typing import Optional
+
+_WRK_ID_RE = re.compile(r"^WRK-\d+$")
 
 
 # ── gate predicates ─────────────────────────────────────────────────────────
@@ -122,6 +125,14 @@ def check_gate(
     # No active WRK — never block
     if not wrk_id:
         return {"blocked": False, "reason": ""}
+
+    # Validate wrk_id to prevent path traversal via malformed active-wrk file
+    if not _WRK_ID_RE.match(wrk_id):
+        return {"blocked": False, "reason": ""}
+
+    # Resolve relative file_path against queue_root to avoid CWD dependency
+    if not os.path.isabs(file_path):
+        file_path = os.path.join(queue_root or os.getcwd(), file_path)
 
     # Normalise queue_root
     if queue_root is None:

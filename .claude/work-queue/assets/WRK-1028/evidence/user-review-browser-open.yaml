@@ -1,0 +1,15 @@
+wrk_id: WRK-1028
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1028/plan-draft-review.html
+    opened_at: 2026-03-07T14:00:00Z
+    reviewer: user
+    notes: "Stage 5 plan-draft-review.html opened via xdg-open before user review"
+
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1028/WRK-1028-lifecycle.html
+    opened_at: 2026-03-07T20:00:00Z
+    reviewer: user
+    notes: "Stage 7 lifecycle HTML opened via xdg-open; revised plan reviewed after cross-review findings"

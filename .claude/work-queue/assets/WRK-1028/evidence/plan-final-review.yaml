@@ -2,7 +2,7 @@ wrk_id: WRK-1028
 stage: 7
 artifact_type: plan_html_review_final_ref
 confirmed_by: user
-confirmed_at: "2026-03-07T20:00:00Z"
+confirmed_at: 2026-03-07T20:00:00Z
 decision: passed
 revisions_incorporated:
   - P1-01: Gate 7 predicate → evidence/plan-final-review.yaml (confirmed_by+decision:passed)

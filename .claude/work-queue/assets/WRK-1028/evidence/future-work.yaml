@@ -1,0 +1,39 @@
+wrk_id: WRK-1028
+synthesized_at: 2026-03-07T21:30:00Z
+
+recommendations:
+  - id: FW-01
+    title: "stage-state.yaml schema + verify-gate-evidence.py corroborating signal"
+    description: >
+      Create .claude/state/stage-state.yaml (wrk_id, current_stage, entered_at,
+      human_gate_pending, exit_artifacts_ok). Add warn-only check in verify-gate-evidence.py
+      for legacy WRKs. Mentioned in AC-12 as planned but deferred.
+    disposition: spun-off-new
+    status: open
+    captured: true
+    priority: medium
+    related_wrk: WRK-1028
+
+  - id: FW-02
+    title: "generate-html-review.py --stage N --update mode"
+    description: >
+      Add --update flag to generate-html-review.py to update a specific stage section
+      in the lifecycle HTML when a stage completes, rather than requiring manual Edit tool calls.
+    disposition: spun-off-new
+    status: open
+    captured: true
+    priority: low
+    related_wrk: WRK-1028
+    notes: "Low priority; will be captured as new WRK when needed"
+
+  - id: FW-03
+    title: "Codex implementation cross-review (Stage 13) for WRK-1028"
+    description: >
+      Codex cross-review of gate_check.py/exit_stage.py is deferred (requires interactive
+      terminal). Complete via scripts/review/cross-review.sh in next Codex session.
+    disposition: existing-updated
+    status: open
+    captured: true
+    priority: high
+    related_wrk: WRK-1028
+    notes: "Gemini review complete + P1 fixes applied. Codex deferred."
