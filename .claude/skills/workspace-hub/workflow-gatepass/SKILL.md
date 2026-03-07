@@ -3,7 +3,7 @@ name: workflow-gatepass
 description: >
   Enforce WRK lifecycle gatepass from session start through close/archive with
   machine-checkable evidence requirements and explicit no-bypass rules.
-version: 1.0.4
+version: 1.0.5
 updated: 2026-03-05
 category: workspace-hub
 triggers:
@@ -49,6 +49,10 @@ Operating principle: **humans steer, agents execute**.
    - seek user review of proposed tests/evals and ask user to add/adjust
      tests/evals before progression,
    - open completed HTML in default browser and push review docs to `origin`.
+   - **HARD GATE**: Stage 5→6 is enforced by canonical checker (WRK-1017):
+     `uv run --no-project python scripts/work-queue/verify-gate-evidence.py --stage5-check WRK-NNN`
+     All official Stage 6 entrypoints call this checker. Activation controlled by
+     `scripts/work-queue/stage5-gate-config.yaml`.
 6. Cross-Review.
 7. User Review - Plan (Final) with completed HTML opened in default browser and review docs pushed to `origin`.
 8. Claim / Activation.

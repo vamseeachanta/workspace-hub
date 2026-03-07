@@ -52,6 +52,15 @@ jobs:
           echo "Running shell-based routing tests..."
           bash scripts/agents/tests/test-task-agents-routing.sh
 
+      - name: Run Stage 5 gate integration tests (WRK-1017)
+        run: |
+          echo "Running Stage 5 gate integration tests..."
+          # Groups 1-3 only (no --sim; activation-sim requires config swap)
+          bash scripts/agents/tests/test-plan-gate.sh --group 1
+          bash scripts/agents/tests/test-plan-gate.sh --group 2
+          bash scripts/agents/tests/test-plan-gate.sh --group 3
+          bash scripts/work-queue/tests/test-user-review-evidence-writers.sh
+
       - name: Run Python tests
         run: |
           # Hub-level Python tests (no PYTHONPATH manipulation needed)

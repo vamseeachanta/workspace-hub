@@ -72,6 +72,15 @@ Every stage should explicitly track whether a human decision is required.
    - [ ] `user-review-plan-draft.yaml` written with decision log
    - [ ] Plan artifacts updated from user decisions
 
+   Stage 5→6 transition is enforced by the canonical checker (WRK-1017):
+   ```bash
+   uv run --no-project python scripts/work-queue/verify-gate-evidence.py --stage5-check WRK-NNN
+   ```
+   Activation is controlled by `scripts/work-queue/stage5-gate-config.yaml`.
+   All four official Stage 6 entrypoints (`plan.sh`, `cross-review.sh`, `claim-item.sh`,
+   `close-item.sh`) call this checker and block on exit 1 (predicate fail) or exit 2
+   (infra fail). Policy text and executable gate must stay aligned.
+
    User-review checkpoints (stages 5/7/17) must include explicit review of the
    HTML **Gate-Pass Stage Status** section (stage-by-stage table + summary) before
    presenting final recommendations to the user.
@@ -91,6 +100,9 @@ must always resolve to the canonical 20-stage chain.
 
 ## Version History
 
+- **1.0.4** (2026-03-07): Contract alignment — link Stage 5 policy to canonical checker (WRK-1017)
+  - Added executable gate reference: `verify-gate-evidence.py --stage5-check`
+  - All four official Stage 6 entrypoints now listed as callers
 - **1.0.3** (2026-03-05): Stage 5 enforced as hard blocking gate (WRK-1017)
   - Added STOP — BLOCK marker and explicit blocking language for Stage 5
   - Added Stage 5 checklist (6 items, all required before Stage 6)

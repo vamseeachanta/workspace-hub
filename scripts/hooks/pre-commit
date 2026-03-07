@@ -41,6 +41,33 @@ while IFS= read -r file; do
   esac
 done <<< "$STAGED_FILES"
 
+# WRK-1017: Stage 5 gate entrypoint guard consistency check
+# Fires when any of the four official Stage 6 entrypoints are staged
+STAGE5_ENTRYPOINTS_CHANGED=0
+while IFS= read -r file; do
+  [[ -z "$file" ]] && continue
+  case "$file" in
+    scripts/agents/plan.sh|\
+    scripts/review/cross-review.sh|\
+    scripts/work-queue/claim-item.sh|\
+    scripts/work-queue/close-item.sh|\
+    scripts/work-queue/verify-gate-evidence.py|\
+    scripts/work-queue/stage5-gate-config.yaml)
+      STAGE5_ENTRYPOINTS_CHANGED=1
+      ;;
+  esac
+done <<< "$STAGED_FILES"
+
+if [[ "$STAGE5_ENTRYPOINTS_CHANGED" -eq 1 ]]; then
+  echo "Running Stage 5 gate guard checks (entrypoint wiring)..."
+  if [[ -f "${REPO_ROOT}/scripts/agents/tests/test-plan-gate.sh" ]]; then
+    bash "${REPO_ROOT}/scripts/agents/tests/test-plan-gate.sh" --group 2 || {
+      echo "✖ Stage 5 gate guard check failed — all four entrypoints must be guarded." >&2
+      exit 1
+    }
+  fi
+fi
+
 if [[ "$needs_skills_summary_check" -eq 1 ]]; then
   echo "Running skills summary sync check..."
   UV_CACHE_DIR="${REPO_ROOT}/.uv-cache" \
