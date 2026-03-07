@@ -1,0 +1,22 @@
+wrk_id: WRK-1026
+synthesized_at: "2026-03-07T13:33:00Z"
+synthesizer: claude
+recommendations:
+  - id: WRK-1027
+    title: "generate-html-review.py rewrite: single lifecycle HTML --stage N --update mode"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: >
+      generate-html-review.py currently creates separate plan-draft/plan-final/implementation/close
+      snapshot files. WRK-1026 defines the single lifecycle HTML model; WRK-1027 will rewrite
+      the generator to support --stage N --update mode so a single WRK-NNN-lifecycle.html
+      is created at Stage 1 and updated incrementally at each stage gate.
+      Also: verify-gate-evidence.py needs updates to read the single file + stage sections.
+  - id: WRK-1014
+    title: "EnterPlanMode before Stage 4a plan artifact creation"
+    disposition: existing-updated
+    status: captured
+    captured: true
+    notes: >
+      Already captured. No additional action from WRK-1026.

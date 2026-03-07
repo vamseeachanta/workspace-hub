@@ -1,0 +1,41 @@
+wrk_id: WRK-1026
+executed_at: "2026-03-07T13:30:00Z"
+executor: claude
+route: A
+execution_type: pure-doc
+description: >
+  Pure-doc skill edit — both SKILL.md files modified in-place.
+  No code execution required; verification via grep/line-count checks.
+files_changed:
+  - path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    edit_type: edit
+    purpose: Stage 5 route-split, pseudocode req, tests/evals req, key-skills blocks, exit checklist v2
+  - path: .claude/skills/workspace-hub/workflow-html/SKILL.md
+    edit_type: edit
+    purpose: Single lifecycle HTML model, gate artifact format table, approval block schema
+integrated_repo_tests:
+  - name: Route split present in work-queue-workflow SKILL.md
+    scope: repo
+    command: "grep -c 'Route A' .claude/skills/workspace-hub/work-queue-workflow/SKILL.md"
+    result: pass
+    artifact_ref: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+  - name: Pseudocode requirement in Stage 5
+    scope: repo
+    command: "grep 'function_name(inputs)' .claude/skills/workspace-hub/work-queue-workflow/SKILL.md"
+    result: pass
+    artifact_ref: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+  - name: Tests/Evals subsection present
+    scope: repo
+    command: "grep 'Tests/Evals' .claude/skills/workspace-hub/work-queue-workflow/SKILL.md"
+    result: pass
+    artifact_ref: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+  - name: Single lifecycle HTML model in workflow-html SKILL.md
+    scope: repo
+    command: "grep 'Single Lifecycle HTML Model' .claude/skills/workspace-hub/workflow-html/SKILL.md"
+    result: pass
+    artifact_ref: .claude/skills/workspace-hub/workflow-html/SKILL.md
+  - name: Gate artifact format reference table in workflow-html
+    scope: repo
+    command: "grep 'Gate artifact format' .claude/skills/workspace-hub/workflow-html/SKILL.md"
+    result: pass
+    artifact_ref: .claude/skills/workspace-hub/workflow-html/SKILL.md

@@ -3,8 +3,8 @@ name: work-queue-workflow
 description: >
   Explicit entrypoint skill for the WRK work-queue lifecycle workflow. Points to
   the canonical work-queue process and gatepass enforcement sequence.
-version: 1.0.3
-updated: 2026-03-05
+version: 1.1.0
+updated: 2026-03-07
 category: workspace-hub
 triggers:
   - work-queue workflow
@@ -40,52 +40,79 @@ Every stage should explicitly track whether a human decision is required.
 3. Ensure plan exists and user approval explicitly names WRK ID.
 4. Run the canonical **20-stage lifecycle** (Capture -> Archive) from
    `workflow-gatepass`.
-   At **stages 5, 7, 11, 17, 19** run `generate-html-review.py --type <artifact_type>`
-   (see `workflow-html` SKILL for artifact types and section catalog).
-   **STOP — Stage 5 is a BLOCKING interactive gate. Do NOT call `cross-review`
-   (Stage 6), do NOT set `plan_reviewed: true`, and do NOT progress to Stage 7
-   until the user has responded in this session with explicit approval or revision
-   requests. Presenting the HTML artifact and waiting silently is NOT sufficient —
-   the user must actively respond.**
+   See `workflow-html` SKILL for the single lifecycle HTML model — one file per WRK
+   updated at every stage gate (not separate snapshots per stage).
+   Update the lifecycle HTML and underlying stage docs after EACH stage completes.
 
-   Stage 5 is an agent-user interactive plan-mode session:
-   - Open the plan-draft HTML in the default browser (`xdg-open <html-path>`) AND
-     push to origin BEFORE presenting any recommendation to the user.
-   - Walk the draft plan section-by-section with the user — this is a dialogue,
-     not a one-way artifact drop.
-   - Ask tough clarifying questions; do not accept silence as approval.
-   - Challenge weak assumptions and surface tradeoffs explicitly.
-   - Think hard and research hard before allowing progression to stage 6.
-   - Research tests/evals from available Resource Intelligence and Document
-     Intelligence artifacts.
-   - Seek user review of proposed tests/evals and ask user to add/adjust
-     tests/evals before moving forward.
-   - Write `assets/WRK-<id>/evidence/user-review-plan-draft.yaml` capturing all
-     user decisions (scope in/out, acceptance-criteria changes, risks, approve-
-     as-is vs revise-and-rerun). This artifact is required for gate verification.
+   **STOP — Stage 5 is a BLOCKING interactive gate. Do NOT advance to cross-review
+   (Stage 6), do NOT set `plan_reviewed: true`, and do NOT generate plan-final HTML
+   until the user explicitly approves in this session. Silence is not approval.**
 
-   **Stage 5 checklist — ALL must be true before advancing to Stage 6:**
-   - [ ] Plan HTML opened in browser (`xdg-open`)
-   - [ ] HTML pushed to origin and publish evidence logged
+   ### Stage 5 — Plan Draft (Human-in-Loop Interactive)
+
+   **Key Planning Skills — invoke before drafting:**
+   - `brainstorming` → before any creative or design decision
+   - `resource-intelligence` → before stating facts or dependencies
+   - `superpowers:test-driven-development` → spec tests before pseudocode
+   - `workflow-html` → update the single lifecycle HTML after Stage 5 completes
+
+   **Route A (simple):** Human-in-loop interactive only. Agent drafts, human reviews
+   inline. No scripts during Stage 5. Human must explicitly approve before markdown is
+   saved. Cross-review (Stage 6) is a single self-review pass only.
+
+   **Route B/C (medium/complex):** Same human-in-loop interactive as Route A for
+   Stage 5 itself. After the user finishes and plan markdown is saved, ALL THREE agents
+   (Claude, Codex, Gemini) independently draft their own plan version. Synthesis of all
+   three outputs is produced and saved before proceeding to Stage 6 cross-review.
+
+   **Pseudocode requirement** (for non-trivial logic — ≥3 steps or branching):
+   Produce function-level pseudocode before user review.
+   Format: `function_name(inputs) → output  # objective in one line`
+   N/A allowed with explicit reason: `n/a_reason: "pure-doc skill edit — no logic"`
+
+   **Tests/Evals requirement:**
+   List ≥3 test or verification cases before implementation begins.
+   Format: `what | scenario (happy/edge/error) | expected result`
+   N/A allowed with reason for pure-doc WRKs (skill/rule edits).
+
+   **Stage 5 process:**
+   - Open the plan-draft HTML in default browser (`xdg-open`) AND push to origin
+     BEFORE presenting any recommendation. Update lifecycle HTML for Stage 5.
+   - Walk the draft plan section-by-section — this is a dialogue, not a drop.
+   - Ask tough clarifying questions; challenge weak assumptions; surface tradeoffs.
+   - Write `assets/WRK-<id>/evidence/user-review-plan-draft.yaml` with full
+     decision log (scope in/out, AC changes, risks, approve-as-is vs revise).
+
+   **Stage 5 exit checklist — ALL must be true before Stage 6:**
+   - [ ] Plan HTML opened in browser (`xdg-open`) and pushed to origin
+   - [ ] Lifecycle HTML updated with Stage 5 evidence and approval block
    - [ ] Interactive walk-through completed section-by-section with user
-   - [ ] User has responded (not just "ok" — explicit scope/criteria/risk decisions)
+   - [ ] User has explicitly approved (not just "ok" — scope/criteria/risk decisions)
    - [ ] `user-review-plan-draft.yaml` written with decision log
    - [ ] Plan artifacts updated from user decisions
+   - [ ] Pseudocode produced for all non-trivial logic (or N/A with reason)
+   - [ ] Tests/Evals list written (≥3 entries or N/A with reason) and reviewed
+   - [ ] (Route B/C only) All 3 agents independently drafted plan; synthesis saved
 
-   Stage 5→6 transition is enforced by the canonical checker (WRK-1017):
-   ```bash
-   uv run --no-project python scripts/work-queue/verify-gate-evidence.py --stage5-check WRK-NNN
-   ```
-   Activation is controlled by `scripts/work-queue/stage5-gate-config.yaml`.
-   All four official Stage 6 entrypoints (`plan.sh`, `cross-review.sh`, `claim-item.sh`,
-   `close-item.sh`) call this checker and block on exit 1 (predicate fail) or exit 2
-   (infra fail). Policy text and executable gate must stay aligned.
+   Stage 5→6 enforced by checker (WRK-1017):
+   `uv run --no-project python scripts/work-queue/verify-gate-evidence.py --stage5-check WRK-NNN`
 
-   User-review checkpoints (stages 5/7/17) must include explicit review of the
-   HTML **Gate-Pass Stage Status** section (stage-by-stage table + summary) before
-   presenting final recommendations to the user.
-   User-review checkpoints (stages 5/7/17) must include default-browser open and
-   origin publish evidence for the canonical warm-parchment HTML artifact.
+   ### Stage 10 — Work Execution
+
+   **Key Execution Skills — invoke before writing code:**
+   - `file-taxonomy` → understand file placement rules before touching any file
+   - `coding-style` → verify naming, size, and style rules before writing
+   - `superpowers:test-driven-development` → red → green → refactor cycle
+   - `superpowers:systematic-debugging` → invoke on test failure before guessing fixes
+
+   **Execution summary — produce after implementation:**
+   Document in the lifecycle HTML Stage 10 section:
+   - Functionality added or updated (what changed and why)
+   - Key files changed: path, edit type (new/edit/delete), purpose
+   - Key lines or sections edited: include script/code excerpts showing the change
+
+   User-review checkpoints (stages 5/7/17): open lifecycle HTML in default browser,
+   review the Gate-Pass Stage Status section, push to origin before presenting to user.
 5. Verify close gate evidence and integrated/repo tests (3-5 pass records).
 6. Close and archive using queue scripts.
 
@@ -100,6 +127,14 @@ must always resolve to the canonical 20-stage chain.
 
 ## Version History
 
+- **1.1.0** (2026-03-07): Stage 5 route-split, pseudocode/tests-evals, key-skills blocks, single-HTML model (WRK-1026)
+  - Route A: human-in-loop inline only; Route B/C: 3-agent independent planning after markdown saved
+  - Pseudocode requirement: function-level, N/A+reason allowed
+  - Tests/Evals requirement: ≥3 entries, N/A+reason for pure-doc WRKs
+  - Stage 5 exit checklist expanded to 9 items; hard stop before cross-review enforced
+  - Stage 10: Key Execution Skills block + execution summary requirement (files, lines, excerpts)
+  - Single lifecycle HTML model: one file per WRK, updated after each stage (workflow-html)
+  - Doc-after-each-stage rule: lifecycle HTML and docs updated immediately, not deferred
 - **1.0.4** (2026-03-07): Contract alignment — link Stage 5 policy to canonical checker (WRK-1017)
   - Added executable gate reference: `verify-gate-evidence.py --stage5-check`
   - All four official Stage 6 entrypoints now listed as callers

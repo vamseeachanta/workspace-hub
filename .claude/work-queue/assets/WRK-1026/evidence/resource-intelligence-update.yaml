@@ -1,0 +1,16 @@
+wrk_id: WRK-1026
+updated_at: "2026-03-07T13:34:00Z"
+updater: claude
+additions: []
+no_additions_rationale: >
+  Pure-doc WRK targeting workspace-internal skills only. No new external
+  resources, libraries, or APIs were identified or consulted during execution.
+  All reference material was drawn from existing workspace docs and the
+  verify-gate-evidence.py source code (internal).
+lessons_learned:
+  - lesson: Gate artifact format contracts should be surfaced to agents in skill files, not buried in checker source
+    applied_in: workflow-html/SKILL.md Section 0 gate artifact format reference table
+  - lesson: Single lifecycle HTML model eliminates snapshot fragmentation and simplifies gate confirmation
+    applied_in: workflow-html/SKILL.md Section 0 single lifecycle HTML model
+  - lesson: Stage 5 route-split (A vs B/C) clarifies when 3-agent independent planning applies
+    applied_in: work-queue-workflow/SKILL.md Stage 5 section

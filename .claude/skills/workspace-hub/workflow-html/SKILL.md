@@ -5,8 +5,8 @@ description: >
   design system, complete section catalog, interactivity layer, and rendering rules so every
   draft-plan, final-plan, implementation-review, and close-review HTML looks and behaves
   identically regardless of which agent or session generated it.
-version: 1.3.0
-updated: 2026-03-05
+version: 1.4.0
+updated: 2026-03-07
 category: workspace-hub
 type: skill
 trigger: manual
@@ -16,6 +16,7 @@ capabilities:
   - wrk_review_rendering
   - section_catalog
   - design_system
+  - single_lifecycle_html
 related_skills:
   - workspace-hub/workflow-gatepass
   - workspace-hub/work-queue-workflow
@@ -30,7 +31,110 @@ see_also:
 # Workflow HTML Skill
 
 > Canonical HTML template and design system for all WRK review artifacts.
-> **Mandatory** at stages 5 (plan draft), 7 (plan final), 11 (artifact gen), 17 (close review), 19 (close).
+> One file per WRK, updated progressively from Stage 1 to Stage 20.
+
+---
+
+## 0. Single Lifecycle HTML Model
+
+**One HTML file per WRK.** Named `WRK-NNN-lifecycle.html`, stored in
+`.claude/work-queue/assets/WRK-NNN/`. It is created at Stage 1 and updated
+after every stage gate through to Stage 20.
+
+### Why single-file?
+
+- One URL for the entire lifecycle — share it at any point and it shows current state
+- Approvals are recorded inline at the stage that required them
+- Gate-pass status visible in context alongside the work that produced it
+- Gate checkers read one file, agents update one file, users review one file
+
+### File lifecycle
+
+| When | What happens |
+|------|-------------|
+| Stage 1 (Capture) | Create file with HERO + METADATA + Stage 1 section (status: done) |
+| Each stage completion | Append or update `<section id="stage-N">` with evidence + status badge |
+| Stage 5 / 7 / 17 (human gates) | Add `<div class="approval-block">` inside the section before advancing |
+| Stage 20 (Archive) | File is complete; all 20 sections populated |
+
+### Stage section schema
+
+Each stage is one `<section>` block inside the main card:
+
+```html
+<section id="stage-N-slug" class="stage-section">
+  <h2>Stage N — {{stage_name}}</h2>
+  <div class="stage-meta">
+    <span class="badge badge-pass">done</span>
+    <span class="muted">Owner: orchestrator · Human decision: no</span>
+  </div>
+  <div class="stage-body">
+    <!-- What was done this stage: narrative, outputs, evidence paths -->
+    <p>{{summary}}</p>
+    <ul>
+      <li><strong>Evidence:</strong> <code>{{evidence_path}}</code></li>
+    </ul>
+  </div>
+  <!-- Only present when human_decision_required=yes -->
+  <div class="approval-block">
+    <strong>Approved by:</strong> {{approver}} &nbsp;|&nbsp;
+    <strong>At:</strong> {{approved_at}} &nbsp;|&nbsp;
+    <strong>Decision:</strong> <span class="badge badge-pass">passed</span>
+    <p class="approval-notes">{{notes}}</p>
+  </div>
+</section>
+```
+
+Gate-checker-readable confirmation fields (in Stage 7 section):
+```
+confirmed_by: user
+confirmed_at: 2026-03-07T12:35:00Z
+decision: passed
+```
+These must appear at line-start (no HTML comment wrapping) so `check_plan_confirmation()` can parse them.
+
+### Approval block CSS
+
+```css
+.approval-block {
+  margin-top: 16px; padding: 14px 18px;
+  background: #f0fdf4; border-left: 4px solid var(--good);
+  border-radius: 8px; font-size: 0.92rem;
+}
+.approval-notes { margin: 8px 0 0; color: var(--muted); }
+.stage-section   { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 16px; }
+.stage-meta      { margin: 6px 0 10px; font-size: 0.88rem; }
+```
+
+### Update rule
+
+After every stage completes:
+1. Update `<section id="stage-N">` status badge to `done` (or `warn`/`fail`).
+2. Fill `stage-body` with what was done, outputs, and evidence paths.
+3. If human decision required: add `approval-block` with approver, timestamp, decision.
+4. Push the updated file to origin and log publish evidence.
+
+**Do not defer HTML updates to close time.** The file must reflect current state at all times.
+
+### Gate artifact format reference
+
+Agents frequently produce wrong file names or formats. Use this table:
+
+| Gate | Expected file | Path | Key fields |
+|------|--------------|------|-----------|
+| Plan confirmation | `WRK-NNN-lifecycle.html` (Stage 7 section) | assets root | `confirmed_by:`, `confirmed_at:`, `decision: passed` at line-start |
+| Browser-open | `evidence/user-review-browser-open.yaml` | assets/evidence/ | `stage: plan_draft\|plan_final\|close_review` |
+| Publish | `evidence/user-review-publish.yaml` | assets/evidence/ | `stage: plan_draft\|plan_final\|close_review` |
+| Cross-review | `review.md` or `review.html` | assets root | verdict field |
+| Stage evidence | `evidence/stage-evidence.yaml` | assets/evidence/ | all 20 stages with status |
+| Resource intelligence | `evidence/resource-intelligence.yaml` | assets/evidence/ | `completion_status`, `skills.core_used` (≥3) |
+| Future work | `evidence/future-work.yaml` | assets/evidence/ | `recommendations[]` with `captured: true` |
+
+### Migration from snapshot model
+
+Existing WRKs with separate snapshot files (`plan-draft-review.html`, etc.) are
+grandfathered. New WRKs from WRK-1026 onward use the single lifecycle file.
+The generator rewrite to support `--stage N --update` mode is tracked in WRK-1027.
 
 ---
 
@@ -642,6 +746,13 @@ Before handing an HTML artifact to the user, verify:
 
 ## Version History
 
+- **1.4.0** (2026-03-07): Single lifecycle HTML model (WRK-1026)
+  - Single `WRK-NNN-lifecycle.html` per WRK, updated at every stage gate (not separate snapshots)
+  - Stage section schema: `<section id="stage-N">` with status badge, stage-body, approval-block
+  - Approval block CSS + gate-checker-readable confirmation fields at line-start
+  - Gate artifact format reference table: expected file name, path, and key fields per gate
+  - Update rule: update HTML after each stage, push to origin — no batch-at-close
+  - Migration path: existing WRKs grandfathered; generator rewrite tracked in WRK-1027
 - **1.3.0** (2026-03-05): Plan-artifact synthesis improvements (WRK-1011)
   - Added `.panel` primitive for context/comparison sections
   - `Prompt Start Context` now allows synthesized fallback from WRK title + `## What`

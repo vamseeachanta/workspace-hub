@@ -1,0 +1,35 @@
+reviewer: user
+reviewed_at: "2026-03-07T12:25:00Z"
+wrk_id: WRK-1026
+stage: 5
+decision: approved
+scope_decisions:
+  pseudocode_format: >
+    Function-level pseudocode showing high-level functions and their objectives.
+    Format: function_name(inputs) → output  # objective in one line.
+    N/A allowed with explicit reason (n/a_reason field).
+  tests_evals_na: >
+    N/A with reason is accepted for pure-doc WRKs (skill/rule edits).
+    Reason must be stated inline.
+  scope_expansion_approved:
+    - Stage 5 key-skills block (brainstorming, resource-intelligence, TDD, workflow-html)
+    - Stage 10 key-skills block (file-taxonomy, coding-style, systematic-debugging, TDD)
+    - Both additions stay in work-queue-workflow/SKILL.md only
+  spin_out_decision: >
+    Enhance now (this WRK). Spin-out to dedicated stage-specific sub-skills
+    deferred to a future WRK once file size warrants it.
+  stage5_route_split:
+    route_a: "Human-in-loop interactive only. No scripts at Stage 5. Human approves inline."
+    route_bc: >
+      Human-in-loop interactive (same as A). After user finishes and plan markdown is
+      saved: all 3 agents independently draft their own plan version. Synthesis of all
+      3 outputs. Then proceed to Stage 6. Scripts not used during Stage 5 itself.
+risks_reviewed:
+  - SKILL.md line count headroom confirmed (127 current; ~60 lines added; stays under 200)
+  - No automation impact (checklist is documentation-only; gate checker unchanged)
+open_questions_resolved:
+  - "Route A: human inline only (confirmed)"
+  - "Route B/C: 3-agent independent planning after Stage 5 markdown saved (confirmed)"
+  - "Scripts not used during Stage 5 itself (confirmed)"
+revision_at: "2026-03-07T12:35:00Z"
+notes: "Revised approval with Stage 5 route-split and 3-agent planning for B/C confirmed."

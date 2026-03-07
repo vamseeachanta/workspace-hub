@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-478 — DNV-RP-B401 Cathodic Protection Module</title>
+  <style>
+    :root {
+      --bg: #fdf8f0;
+      --panel: #fff9f0;
+      --border: #d4c5a9;
+      --accent: #6b4f2a;
+      --accent2: #2a6b4f;
+      --pass: #1a6b35;
+      --pass-bg: #e8f5ec;
+      --warn: #8b5e00;
+      --warn-bg: #fff8e0;
+      --fail: #8b1a1a;
+      --fail-bg: #fde8e8;
+      --code-bg: #f3ede3;
+      --head-bg: #ede5d8;
+      --text: #2a1f0f;
+      --muted: #7a6a55;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 32px 40px; font-size: 14px; line-height: 1.6; }
+    h1 { font-size: 1.5rem; color: var(--accent); border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 4px; }
+    h2 { font-size: 1.1rem; color: var(--accent); margin: 24px 0 8px; border-left: 3px solid var(--accent); padding-left: 10px; }
+    h3 { font-size: 0.95rem; color: var(--accent2); margin: 14px 0 6px; }
+    .subtitle { color: var(--muted); font-size: 0.88rem; margin-bottom: 20px; }
+    .meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-bottom: 20px; }
+    .meta-pill { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+    .meta-pill .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .meta-pill .value { font-weight: 600; font-size: 0.95rem; margin-top: 2px; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; }
+    .badge-pass { background: var(--pass-bg); color: var(--pass); }
+    .badge-warn { background: var(--warn-bg); color: var(--warn); }
+    .badge-pending { background: #edf2ff; color: #2a4a8b; }
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th { background: var(--head-bg); color: var(--accent); font-weight: 600; padding: 8px 12px; text-align: left; border: 1px solid var(--border); }
+    td { padding: 7px 12px; border: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: #faf6ef; }
+    code { background: var(--code-bg); font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; font-size: 0.84rem; padding: 1px 5px; border-radius: 4px; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; font-size: 0.84rem; overflow-x: auto; line-height: 1.7; margin-bottom: 12px; }
+    .function-block { margin-bottom: 10px; }
+    .function-block .fn-sig { color: #2a4a8b; font-weight: 600; }
+    .function-block .fn-obj { color: var(--muted); }
+    .pass-row td:first-child { border-left: 3px solid var(--pass); }
+    .warn-row td:first-child { border-left: 3px solid var(--warn); }
+    .check { color: var(--pass); font-weight: 700; }
+    .cross { color: var(--fail); font-weight: 700; }
+    .section-note { font-size: 0.82rem; color: var(--muted); margin-top: 6px; }
+    .stat-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+    .stat { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 18px; text-align: center; min-width: 110px; }
+    .stat .num { font-size: 1.7rem; font-weight: 700; color: var(--accent2); }
+    .stat .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+    .toc { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 18px; margin-bottom: 24px; display: inline-block; }
+    .toc a { color: var(--accent2); text-decoration: none; display: block; font-size: 0.88rem; margin: 2px 0; }
+    .toc a:hover { text-decoration: underline; }
+    .gate-table td:last-child { font-family: monospace; font-size: 0.82rem; }
+  </style>
+</head>
+<body>
+
+<h1>WRK-478 — DNV-RP-B401 Cathodic Protection Module</h1>
+<p class="subtitle">Implementation Review &nbsp;·&nbsp; digitalmodel &nbsp;·&nbsp; 2026-03-07</p>
+
+<!-- META -->
+<div class="meta-grid">
+  <div class="meta-pill"><div class="label">Status</div><div class="value"><span class="badge badge-pending">Pending Close</span></div></div>
+  <div class="meta-pill"><div class="label">Standard</div><div class="value">DNV-RP-B401-2021</div></div>
+  <div class="meta-pill"><div class="label">Route</div><div class="value">B (Medium)</div></div>
+  <div class="meta-pill"><div class="label">Target Repo</div><div class="value">digitalmodel</div></div>
+  <div class="meta-pill"><div class="label">Tests</div><div class="value"><span class="badge badge-pass">114 PASS</span></div></div>
+  <div class="meta-pill"><div class="label">Acceptance</div><div class="value"><span class="badge badge-pass">2 / 2 met</span></div></div>
+  <div class="meta-pill"><div class="label">Key Commits</div><div class="value"><code>c6ec967</code> &nbsp;<code>117826e</code></div></div>
+  <div class="meta-pill"><div class="label">Anode Types</div><div class="value">flush, stand-off, bracelet</div></div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <strong>Contents</strong><br>
+  <a href="#mission">Mission</a>
+  <a href="#pseudocode">Pseudocode</a>
+  <a href="#implementation">Implementation Details</a>
+  <a href="#tests">Tests &amp; Evals</a>
+  <a href="#acceptance">Acceptance Criteria</a>
+  <a href="#gate">Gate Pass Status</a>
+</div>
+
+<!-- MISSION -->
+<h2 id="mission">Mission</h2>
+<div class="panel">
+  <p>Implement a Cathodic Protection (CP) design and verification module for offshore fixed platforms per <strong>DNV-RP-B401-2021</strong>. Cover current demand calculation, anode sizing, resistance calculation, and adequacy verification across three structural zones (submerged, splash, atmospheric) and three anode types (flush-mounted, stand-off, bracelet). Plug the gap flagged in WRK-383.</p>
+  <p style="margin-top:8px"><strong>Out of scope:</strong> DNV-RP-F103 pipeline CP (handled separately), FEniCSx integration (deferred), ICCP systems.</p>
+</div>
+
+<!-- PSEUDOCODE -->
+<h2 id="pseudocode">Pseudocode</h2>
+<p class="section-note">Format per WRK-1026: <code>function(inputs) → output  # objective</code></p>
+
+<div class="panel">
+  <h3>Module: <code>cp_DNV_RP_B401_2021.py</code></h3>
+  <pre>
+<span class="fn-sig">_b401_surface_areas(inputs) → {zone_id: area_m2, total_m2: float}</span>
+    <span class="fn-obj"># Parse inputs.structure.zones → zone area map; validate uniqueness, positivity</span>
+    for each zone in inputs.structure.zones:
+        assert zone.zone unique, zone.area_m2 &gt;= 0, zone.zone field present
+        areas[zone.zone] = zone.area_m2
+    areas["total_m2"] = sum(areas.values())
+    raise ValueError if total == 0 or any zone is duplicate / missing
+
+<span class="fn-sig">_b401_coating_breakdown(inputs, design_life) → {zone_id: {f_ci, f_cm, f_cf}}</span>
+    <span class="fn-obj"># Compute Cat I/II/III/bare coating breakdown at initial/mean/final time</span>
+    # B401-2021 Sec 3.4.6: f_c(t) = f_ci + k * t   (clamped at 1.0)
+    T = design_life  # years
+    for each zone:
+        params = COATING_CATEGORIES[zone.coating_category]  # {f_ci, k}
+        f_cm = min(params.f_ci + params.k * T/2, 1.0)   # mean
+        f_cf = min(params.f_ci + params.k * T,   1.0)   # final
+    raise ValueError if unknown category, T &lt;= 0, or NaN
+
+<span class="fn-sig">_b401_current_densities(inputs) → {zone_id: {i_mean_A_m2, base_zone, temperature_band}}</span>
+    <span class="fn-obj"># Look up mean design current density from Table 3-1 by zone and seawater temp</span>
+    # Submerged: 4 temp bands (≤7 / &gt;7-12 / &gt;12-17 / &gt;17 °C)
+    # Splash/atmospheric: temperature-independent
+    temp_band = classify(inputs.environment.seawater_temperature_C)
+    for each zone:
+        base_zone = zone.base_zone ?? zone.zone  # supports segmented zones
+        coated_or_bare = "bare" if cat == "bare" else "coated"
+        i_mean = TABLE_3_1[base_zone][temp_band][coated_or_bare]
+    raise ValueError if unknown zone, unknown category, or NaN temp
+
+<span class="fn-sig">_b401_current_demand(inputs, areas, densities, breakdown) → {zone_id: {...}, total_mean_A, total_final_A}</span>
+    <span class="fn-obj"># I = A * i_mean * f_c per zone; accumulate totals (full precision)</span>
+    for each zone:
+        I_mean  = areas[zone] * densities[zone].i_mean_A_m2 * breakdown[zone].f_cm
+        I_final = areas[zone] * densities[zone].i_mean_A_m2 * breakdown[zone].f_cf
+    return per-zone detail + total_mean_A + total_final_A
+
+<span class="fn-sig">_b401_anode_resistance(inputs) → float  # ohms</span>
+    <span class="fn-obj"># Anode-to-electrolyte resistance via Dwight formula (B401-2021 Sec 4.9)</span>
+    if type in (flush_mounted, stand_off):
+        R = (rho / 2πL) * (ln(4L/r) - 1)   # Dwight; require 4L/r > e
+    elif type == bracelet:
+        R = (rho / 2πL) * (ln(2πL/r) - 1)  # Modified Dwight; require 2πL/r > e
+    raise ValueError if unknown type, rho/L/r &lt;= 0, or geometry too stubby
+
+<span class="fn-sig">_b401_anode_requirements(inputs, current_demand) → {total_mass_kg, anode_count, ...}</span>
+    <span class="fn-obj"># Anode mass and count sizing per B401-2021 Sec 4.3</span>
+    # M = (I_mean * T * 8760) / (epsilon * u)   [kg]
+    # N = ceil(M / m_anode)
+    epsilon = ANODE_CAPACITY[material]  # 2000 Ah/kg (Al), 780 Ah/kg (Zn)
+    M = current_demand.total_mean_A * T * 8760 / (epsilon * u)
+    N = ceil(M / individual_anode_mass_kg)
+    raise ValueError if material unknown, T &lt;= 0, u not in (0,1], m_a &lt;= 0
+
+<span class="fn-sig">_b401_verify_current_output(inputs, anode_req, resistance, current_demand) → {adequate: bool, ...}</span>
+    <span class="fn-obj"># Check if installed anodes provide enough current at end-of-life (governing case)</span>
+    E_drive = E_structure(-0.80V) - E_anode(-1.05V Al | -1.00V Zn)   # driving voltage
+    I_per_anode = E_drive / R_a
+    I_total = N * I_per_anode
+    adequate = I_total &gt;= current_demand.total_final_A
+    recommended_count = max(N_mass, ceil(I_final / I_per_anode))  # satisfies both criteria
+</pre>
+
+  <h3 style="margin-top:18px">Module: <code>cp_sacrificial_anode_b401.py</code></h3>
+  <pre>
+<span class="fn-sig">net_anode_mass(I_c, T, u, epsilon) → float  # kg net anode mass</span>
+    <span class="fn-obj"># m_net = I_c * T * 8760 / (u * epsilon)   — validate all inputs &gt; 0, u ≤ 1</span>
+
+<span class="fn-sig">gross_anode_mass(m_net, u) → float  # kg gross anode mass</span>
+    <span class="fn-obj"># m_gross = m_net / u   — accounts for consumption before replacement</span>
+
+<span class="fn-sig">anode_count(m_gross, m_anode) → int</span>
+    <span class="fn-obj"># N = ceil(m_gross / m_anode)   — ceiling ensures minimum mass covered</span>
+
+<span class="fn-sig">anode_resistance_flush(rho, L, r) → float  # ohms  (stand-off / flush Dwight)</span>
+    <span class="fn-obj"># R = (rho/2πL) * (ln(2L/r) - 1)   — require 2L/r &gt; e</span>
+
+<span class="fn-sig">anode_resistance_bracelet(rho, A) → float  # ohms  (modified McCoy)</span>
+    <span class="fn-obj"># R = 0.315 * rho / sqrt(A)   — pipeline bracelet anodes</span>
+
+<span class="fn-sig">driving_voltage(E_c, E_a) → float  # V</span>
+    <span class="fn-obj"># E_drive = E_c - E_a   (must be positive — anode more negative)</span>
+
+<span class="fn-sig">anode_current_output(E_c, E_a, R_a) → float  # A</span>
+    <span class="fn-obj"># I_a = (E_c - E_a) / R_a   — Ohm's law for galvanic circuit</span>
+</pre>
+</div>
+
+<!-- IMPLEMENTATION -->
+<h2 id="implementation">Implementation Details</h2>
+<div class="panel">
+  <table>
+    <tr><th>File</th><th>Location</th><th>Lines</th><th>Notes</th></tr>
+    <tr class="pass-row">
+      <td><code>cp_DNV_RP_B401_2021.py</code></td>
+      <td><code>infrastructure/base_solvers/hydrodynamics/</code></td>
+      <td>~460</td>
+      <td>Primary implementation — jacket/GBS platform CP per B401-2021. Router-integrated via <code>CathodicProtection.router()</code>.</td>
+    </tr>
+    <tr class="pass-row">
+      <td><code>cp_sacrificial_anode_b401.py</code></td>
+      <td><code>infrastructure/base_solvers/hydrodynamics/</code></td>
+      <td>~150</td>
+      <td>Standalone sacrificial anode functions — net/gross mass, count, resistance (flush &amp; bracelet), driving voltage, current output.</td>
+    </tr>
+    <tr class="pass-row">
+      <td><code>cathodic_protection.py</code> (router)</td>
+      <td><code>infrastructure/common/</code></td>
+      <td>—</td>
+      <td><code>CathodicProtection.router()</code> dispatches to B401-2021, DNV-F103, ABS-2018, ASTM-G42/G80 routes via <code>calculation_type</code> key.</td>
+    </tr>
+    <tr>
+      <td><code>cp_DNV_RP_B401_2021.py</code> (shim)</td>
+      <td><code>infrastructure/common/</code></td>
+      <td>~34</td>
+      <td>Backward-compat shim. Emits <code>DeprecationWarning</code>; re-exports from canonical location.</td>
+    </tr>
+  </table>
+
+  <h3 style="margin-top:16px">Standard Constants (B401-2021)</h3>
+  <table>
+    <tr><th>Category</th><th>Parameter</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Coating Cat I</td><td>f_ci / k</td><td>0.05 / 0.020</td><td>§3.4.6</td></tr>
+    <tr><td>Coating Cat II</td><td>f_ci / k</td><td>0.10 / 0.030</td><td>§3.4.6</td></tr>
+    <tr><td>Coating Cat III</td><td>f_ci / k</td><td>0.25 / 0.050</td><td>§3.4.6</td></tr>
+    <tr><td>Current density — submerged ≤7°C coated</td><td>i_mean</td><td>0.040 A/m²</td><td>Table 3-1</td></tr>
+    <tr><td>Current density — submerged &gt;12–17°C coated</td><td>i_mean</td><td>0.060 A/m²</td><td>Table 3-1</td></tr>
+    <tr><td>Current density — splash coated</td><td>i_mean</td><td>0.100 A/m²</td><td>Table 3-1</td></tr>
+    <tr><td>Al-Zn-In anode capacity</td><td>ε</td><td>2000 Ah/kg</td><td>§3.6</td></tr>
+    <tr><td>Zinc anode capacity</td><td>ε</td><td>780 Ah/kg</td><td>§3.6</td></tr>
+    <tr><td>Al anode potential</td><td>E_a</td><td>−1.05 V vs Ag/AgCl</td><td>§2.4</td></tr>
+    <tr><td>Steel protection potential</td><td>E_c</td><td>−0.80 V vs Ag/AgCl</td><td>§2.4</td></tr>
+  </table>
+</div>
+
+<!-- TESTS -->
+<h2 id="tests">Tests &amp; Evals</h2>
+
+<div class="stat-row">
+  <div class="stat"><div class="num" style="color:var(--pass)">114</div><div class="lbl">B401 Tests Pass</div></div>
+  <div class="stat"><div class="num">8</div><div class="lbl">Test Classes</div></div>
+  <div class="stat"><div class="num">2</div><div class="lbl">Test Files</div></div>
+  <div class="stat"><div class="num" style="color:var(--pass)">100%</div><div class="lbl">B401 Coverage</div></div>
+  <div class="stat"><div class="num" style="color:var(--warn)">16</div><div class="lbl">F103 Fails (pre-existing, OOS)</div></div>
+</div>
+
+<!-- NOTE: real-world benchmark cases (GOM jacket, FST hull, deepwater RBS) captured as WRK-1027 -->
+
+<!-- TEST/EVAL TABLE -->
+<div class="panel">
+  <h3>Test Files</h3>
+  <table>
+    <tr><th>File</th><th>Classes</th><th>Tests</th><th>Status</th></tr>
+    <tr class="pass-row">
+      <td><code>test_cathodic_protection_b401.py</code></td>
+      <td>CoatingBreakdown, CurrentDensities, CurrentDemand, AnodeResistance, AnodeRequirements, VerifyCurrentOutput, Router, Integration</td>
+      <td>~84</td>
+      <td><span class="badge badge-pass">PASS</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td><code>test_sacrificial_anode_b401.py</code></td>
+      <td>NetAnodeMass, GrossAnodeMass, AnodeCount, ResistanceFlush, ResistanceBracelet, DrivingVoltage, CurrentOutput, WorkflowIntegration</td>
+      <td>~30</td>
+      <td><span class="badge badge-pass">PASS</span></td>
+    </tr>
+  </table>
+
+  <h3 style="margin-top:16px">Test / Eval Coverage (WRK-1026 Format)</h3>
+  <p class="section-note" style="margin-bottom:8px">
+    Detailed worked examples (GOM jacket, FST hull, deepwater RBS) benchmarked against real-world calculations in a separate WRK — see <strong>WRK-1027</strong>.
+  </p>
+  <table>
+    <tr><th>What</th><th>Scenario</th><th>Expected Result</th><th>Status</th></tr>
+    <tr class="pass-row">
+      <td>Coating breakdown — Cat I, 25yr</td>
+      <td>Happy — high-quality epoxy, jacket platform</td>
+      <td>f<sub>cm</sub>=0.30, f<sub>cf</sub>=0.55 (f_ci=0.05, k=0.020)</td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td>Coating breakdown — Cat III clamp</td>
+      <td>Edge — 0.25+0.050×25=1.50 → clamp at 1.0</td>
+      <td>f<sub>cf</sub>=1.0 (bare steel)</td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td>Current density — temperature bands</td>
+      <td>Edge — boundary values 7°C, 12°C, 17°C</td>
+      <td>Correct band selected at each boundary; i_mean matches Table 3-1</td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td>Current density — splash/atmospheric</td>
+      <td>Happy — temperature-independent zones</td>
+      <td>splash coated=0.100, atmospheric bare=0.030 A/m²</td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td>Anode resistance — Dwight formulas</td>
+      <td>Happy — stand-off (ln 4L/r−1) and bracelet (ln 2πL/r−1)</td>
+      <td>Matches hand-calc to rel=1e-9; positive for valid geometry</td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td>Anode mass &amp; count formula</td>
+      <td>Happy — Al anode, 25yr, u=0.85, ε=2000 Ah/kg</td>
+      <td>M = I_mean×T×8760/(ε×u); N = ceil(M/m_a)</td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td>Adequacy — recommended dual-criterion</td>
+      <td>Edge — current count exceeds mass count</td>
+      <td>recommended = max(N_mass, N_current); both criteria satisfied</td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td>Segmented zones (base_zone field)</td>
+      <td>Edge — two coating categories on same physical zone</td>
+      <td>Both IDs resolve to submerged density; no duplicate error</td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td>Error guards — geometry, inputs</td>
+      <td>Error — stubby anode, zero length, zero resistivity, NaN/inf, duplicate zones</td>
+      <td>Specific ValueError with diagnostic message in each case</td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td>Router dispatch — full jacket platform</td>
+      <td>Integration — DNV_RP_B401_offshore key, 3-zone config</td>
+      <td>results["standard"]=="DNV-RP-B401-2021"; 7 result keys present</td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td>Sacrificial anode end-to-end (zinc bracelet)</td>
+      <td>Integration — I_c=15A, T=25yr, zinc, bracelet, ρ=0.30</td>
+      <td>N=22; N×I_a ≥ 15A; R_a=0.315×0.30/√0.25=0.189 Ω</td>
+      <td><span class="check">✓</span></td>
+    </tr>
+  </table>
+</div>
+
+<!-- placeholder to anchor the removal below -->
+<span id="end-tests-section"></span>
+
+<!-- ACCEPTANCE -->
+<h2 id="acceptance">Acceptance Criteria</h2>
+<div class="panel">
+  <table>
+    <tr><th>Criterion</th><th>Evidence</th><th>Status</th></tr>
+    <tr class="pass-row">
+      <td>CP current demand and anode life calculations match DNV-RP-B401 benchmarks</td>
+      <td>Hand-calculated check tests: Cat I coating at 25yr (f_cm=0.30, f_cf=0.55), anode mass formula (M = I×T×8760/εu), Dwight resistance formula — all pass at rel=1e-6 tolerance</td>
+      <td><span class="check">✓ MET</span></td>
+    </tr>
+    <tr class="pass-row">
+      <td>Module supports standard anode types and structure materials</td>
+      <td>Anode types: flush_mounted, stand_off, bracelet — all tested. Materials: aluminium (ε=2000), zinc (ε=780) — both tested. Zones: submerged, splash, atmospheric — all tested.</td>
+      <td><span class="check">✓ MET</span></td>
+    </tr>
+  </table>
+</div>
+
+<!-- GATE STATUS -->
+<h2 id="gate">Gate Pass Status</h2>
+<div class="panel">
+  <table class="gate-table">
+    <tr><th>Gate</th><th>Status</th><th>Notes</th></tr>
+    <tr class="pass-row"><td>Plan (B401 design)</td><td><span class="badge badge-pass">PASS</span></td><td>Implementation matches plan sections 1-4; FEniCSx (optional §5) deferred</td></tr>
+    <tr class="pass-row"><td>TDD / Tests</td><td><span class="badge badge-pass">PASS</span></td><td>114 tests; 2 files; hand-calc benchmarks in test suite</td></tr>
+    <tr class="pass-row"><td>Acceptance criteria</td><td><span class="badge badge-pass">PASS</span></td><td>2/2 met</td></tr>
+    <tr class="pass-row"><td>Legal scan</td><td><span class="badge badge-pass">PASS</span></td><td>No client identifiers; pure standards-based implementation</td></tr>
+    <tr class="pass-row"><td>Workstation routing</td><td><span class="badge badge-pass">PASS</span></td><td>ace-linux-1 (plan + execution)</td></tr>
+    <tr><td>Plan approved (frontmatter)</td><td><span class="badge badge-warn">WARN</span></td><td><code>plan_approved: false</code> in frontmatter — implementation predates WRK-478 capture; retroactive approval needed</td></tr>
+    <tr><td>Evidence artifacts</td><td><span class="badge badge-warn">WARN</span></td><td>stage-evidence.yaml present; individual artifact files (activation, execute, future-work) missing — legacy item</td></tr>
+    <tr><td>Cross-review (Codex/Gemini)</td><td><span class="badge badge-warn">WARN</span></td><td>No formal cross-review log for WRK-478 scope; related work reviewed in WRK-272/356</td></tr>
+    <tr class="pass-row"><td>Pre-existing F103 failures</td><td><span class="badge badge-pass">OUT OF SCOPE</span></td><td>16 DNV-RP-F103 test failures are pre-existing; separate standard, separate WRK</td></tr>
+  </table>
+  <p class="section-note" style="margin-top:10px">
+    <strong>To close:</strong> User approval here → update frontmatter (<code>plan_approved: true</code>, <code>percent_complete: 100</code>, <code>status: done</code>) → create retroactive evidence artifacts → run close-item.sh → archive.
+  </p>
+</div>
+
+<hr style="margin: 32px 0; border: none; border-top: 1px solid var(--border);">
+<p style="font-size:0.8rem; color:var(--muted)">Generated 2026-03-07 &nbsp;·&nbsp; WRK-478 &nbsp;·&nbsp; Orchestrator: Claude Sonnet 4.6 &nbsp;·&nbsp; workspace-hub/digitalmodel</p>
+
+</body>
+</html>

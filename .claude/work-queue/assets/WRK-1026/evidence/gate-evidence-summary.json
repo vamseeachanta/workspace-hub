@@ -1,0 +1,126 @@
+{
+  "wrk_id": "WRK-1026",
+  "phase": "close",
+  "summary_file": "assets/WRK-1026/evidence/gate-evidence-summary.json",
+  "gates": [
+    {
+      "name": "Plan gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "reviewed=True, approved=True, artifact=plan-final-review.html, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
+    },
+    {
+      "name": "Workstation contract gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "plan_workstations=missing, execution_workstations=missing"
+    },
+    {
+      "name": "Stage evidence gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "stage-evidence.yaml: stages=20, contract=20-stage"
+    },
+    {
+      "name": "Resource-intelligence gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3"
+    },
+    {
+      "name": "Activation gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "activation.yaml: activation evidence OK"
+    },
+    {
+      "name": "Agent log gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']"
+    },
+    {
+      "name": "User-review HTML-open gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
+    },
+    {
+      "name": "User-review publish gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
+    },
+    {
+      "name": "Cross-review gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1026/review.md"
+    },
+    {
+      "name": "TDD gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "test files=['ac-test-matrix.md']"
+    },
+    {
+      "name": "Integrated test gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "execute.yaml: integrated_repo_tests=5 (all passing)"
+    },
+    {
+      "name": "Legal gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1026/legal-scan.md, result=pass"
+    },
+    {
+      "name": "Claim gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "claim-evidence.yaml: version=1, owner=unknown, quota=available(null)"
+    },
+    {
+      "name": "Future-work gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "future-work.yaml: recommendations=2"
+    },
+    {
+      "name": "Resource-intelligence update gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "resource-intelligence-update.yaml: no_additions_rationale=present"
+    },
+    {
+      "name": "User-review close gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "user-review-close.yaml: decision=approved"
+    },
+    {
+      "name": "Reclaim gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+    }
+  ]
+}
