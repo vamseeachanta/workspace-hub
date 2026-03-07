@@ -75,14 +75,15 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1028/evidence/cross-review.yaml
 - order: 7
   stage: User Review - Plan (Final)
-  status: in-progress
+  status: done
   human_decision_required: 'yes'
   owner: user + orchestrator
-  blocker: 'yes'
+  blocker: 'no'
   comment: >
-    Awaiting human review of revised plan (plan-draft-review.html updated with all
-    Stage 6 cross-review findings). Exit artifact: evidence/plan-final-review.yaml
-    with confirmed_by + confirmed_at + decision: passed.
+    User confirmed all 9 cross-review revisions. Added parallelism indicators to all
+    20 stages (parallel/parallel-optional/single-thread). Confirmed single lifecycle HTML
+    model — plan content folds into Stage 4 section for future WRKs.
+    plan-final-review.yaml written with decision: passed. Stage 8 unlocked.
   evidence: .claude/work-queue/assets/WRK-1028/evidence/plan-final-review.yaml
 - order: 8
   stage: Claim / Activation

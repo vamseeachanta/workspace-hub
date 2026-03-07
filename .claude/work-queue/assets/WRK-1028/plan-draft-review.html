@@ -54,6 +54,9 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.78re
 .badge-medium{background:#fef3c7;color:#92400e;}
 .badge-heavy{background:#fee2e2;color:#991b1b;}
 .badge-gate{background:#fee2e2;color:#991b1b;}
+.badge-parallel{background:#ede9fe;color:#5b21b6;}
+.badge-parallel-opt{background:#f3e8ff;color:#7e22ce;border:1px dashed #a855f7;}
+.badge-single{background:#f1f5f9;color:#334155;}
 .flow{font-family:monospace;font-size:.8rem;background:#f6f8fa;border:1px solid var(--line);
   border-radius:8px;padding:12px;white-space:pre;overflow-x:auto;}
 .gate-block{border-left:4px solid var(--bad);padding:10px 14px;background:#fff5f5;border-radius:0 8px 8px 0;margin:10px 0;}
@@ -193,6 +196,27 @@ notes: ""</code></pre>
     <tr><td><span class="badge badge-heavy">Heavy</span></td><td>5, 7, 10, 12, 17</td><td>16</td><td>work-queue-workflow + brainstorming / TDD / systematic-debugging / workflow-html</td></tr>
   </table>
 
+  <h3>Parallelism model — where agent teams can accelerate</h3>
+  <table>
+    <tr><th>Mode</th><th>Meaning</th><th>Stages</th></tr>
+    <tr>
+      <td><span class="badge badge-parallel">parallel</span></td>
+      <td>Multiple agents/providers run <em>simultaneously</em> by design — outputs synthesized before proceeding</td>
+      <td><strong>5</strong> (Route C: 3 terminals), <strong>6</strong> (Claude+Codex+Gemini review), <strong>13</strong> (Claude+Codex+Gemini review)</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-parallel-opt">parallel-optional</span></td>
+      <td>Single-thread by default; can dispatch parallel Task agents for independent sub-tasks within the stage</td>
+      <td><strong>10</strong> (Work Execution — parallel per-file/per-module tasks), <strong>12</strong> (TDD/Eval — parallel test suite runs)</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-single">single-thread</span></td>
+      <td>Strictly sequential — one agent or one human; parallelism adds no benefit or requires human-in-loop</td>
+      <td>1, 2, 3, 4, 7, 8, 9, 11, 14, 15, 16, 17, 18, 19, 20</td>
+    </tr>
+  </table>
+  <p style="font-size:.85rem;color:var(--muted);">Parallelism target: stages 5+6+13 always use 3 providers simultaneously. Stage 10 uses <code>superpowers/dispatching-parallel-agents</code> skill when independent file sets are identified. This is the fastest path through the lifecycle for complex WRKs.</p>
+
   <h3>Human gates (3 hard stops)</h3>
   <div class="gate-block"><strong>Gate 5→6:</strong> Hookify blocks Stage 6 agent spawn until <code>evidence/user-review-plan-draft.yaml</code> has <code>decision: approved</code></div>
   <div class="gate-block"><strong>Gate 7→8:</strong> gate-check.py blocks Stage 8 writes (claim-evidence / activation) until <code>evidence/plan-final-review.yaml</code> contains <code>confirmed_by</code>, <code>confirmed_at</code>, and <code>decision: passed</code> — aligning with <code>verify-gate-evidence.py</code> canonical gate G-07 (<code>plan_html_review_final_ref</code>)</div>
@@ -207,7 +231,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">01</div>
     <div class="stage-content">
-      <h4>Capture <span class="badge badge-human">human_session</span> <span class="badge badge-light">light</span></h4>
+      <h4>Capture <span class="badge badge-human">human_session</span> <span class="badge badge-light">light</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> Nothing (human initiates)</p>
       <p><strong>Activities:</strong> Human describes item → agent fills WRK file (id, title, mission, category) → creates lifecycle HTML stub with Stage 1 section</p>
       <p><strong>Exit:</strong> <code>pending/WRK-NNN.md</code> (valid frontmatter) + lifecycle HTML created (Stage 1 done chip)</p>
@@ -217,7 +241,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">02</div>
     <div class="stage-content">
-      <h4>Resource Intelligence <span class="badge badge-chain">chained_agent</span> <span class="badge badge-medium">medium</span></h4>
+      <h4>Resource Intelligence <span class="badge badge-chain">chained_agent</span> <span class="badge badge-medium">medium</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> <code>pending/WRK-NNN.md</code></p>
       <p><strong>Activities:</strong> Research domain; assess complexity; identify existing infrastructure; write resource-intelligence.yaml</p>
       <p><strong>Exit:</strong> <code>evidence/resource-intelligence.yaml</code> (completion_status, domain, skills.core_used ≥3) + lifecycle HTML Stage 2 section</p>
@@ -227,7 +251,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">03</div>
     <div class="stage-content">
-      <h4>Triage <span class="badge badge-chain">chained_agent</span> <span class="badge badge-light">light</span></h4>
+      <h4>Triage <span class="badge badge-chain">chained_agent</span> <span class="badge badge-light">light</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> <code>evidence/resource-intelligence.yaml</code></p>
       <p><strong>Activities:</strong> Confirm route (A/B/C), workstations, orchestrator; surface open questions; update WRK frontmatter</p>
       <p><strong>Exit:</strong> <code>pending/WRK-NNN.md</code> (route/workstations/orchestrator set) + lifecycle HTML Stage 3 section</p>
@@ -237,7 +261,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">04</div>
     <div class="stage-content">
-      <h4>Plan Draft <span class="badge badge-chain">chained_agent</span> <span class="badge badge-medium">medium</span></h4>
+      <h4>Plan Draft <span class="badge badge-chain">chained_agent</span> <span class="badge badge-medium">medium</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> <code>pending/WRK-NNN.md</code>, <code>evidence/resource-intelligence.yaml</code></p>
       <p><strong>Activities:</strong> EnterPlanMode for thinking; define ACs; write pseudocode for key functions; write test plan (≥3 entries or N/A+reason)</p>
       <p><strong>Exit:</strong> Lifecycle HTML Stage 4 section (Plan Draft: mission, ACs, pseudocode, test plan) — this is the plan draft reviewable by human at Stage 5</p>
@@ -247,7 +271,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">05</div>
     <div class="stage-content">
-      <h4>User Review — Plan Draft <span class="badge badge-human">human_session</span> <span class="badge badge-heavy">heavy</span> <span class="badge badge-gate">GATE</span></h4>
+      <h4>User Review — Plan Draft <span class="badge badge-human">human_session</span> <span class="badge badge-heavy">heavy</span> <span class="badge badge-gate">GATE</span> <span class="badge badge-parallel">parallel (Route C)</span></h4>
       <p><strong>Entry:</strong> Lifecycle HTML (Stage 4 section present)</p>
       <p><strong>Activities (Route A):</strong> Single human+agent session; section-by-section review; revisions applied; human approves.</p>
       <p><strong>Activities (Route C):</strong></p>
@@ -266,7 +290,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">06</div>
     <div class="stage-content">
-      <h4>Cross-Review <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+      <h4>Cross-Review <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span> <span class="badge badge-parallel">parallel — 3 providers</span></h4>
       <p><strong>Entry:</strong> Lifecycle HTML, <code>evidence/user-review-plan-draft.yaml</code> (decision: approved)</p>
       <p><strong>Activities — ALL routes, mandatory:</strong> Claude + Codex + Gemini independently review the plan. Codex is a hard gate. Route has no bearing — 3-provider review is universal.</p>
       <p><strong>Override (narrow exception only):</strong> User must explicitly state <em>both</em>: (1) quota/credit unavailable for a provider, AND (2) explicit instruction to continue without it. Override recorded in <code>cross-review.yaml</code> as <code>override_reason: quota_unavailable</code> + <code>override_confirmed_by: [user]</code>. Agent may NOT self-decide to skip a provider.</p>
@@ -277,7 +301,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">07</div>
     <div class="stage-content">
-      <h4>User Review — Plan Final <span class="badge badge-human">human_session</span> <span class="badge badge-heavy">heavy</span> <span class="badge badge-gate">GATE</span></h4>
+      <h4>User Review — Plan Final <span class="badge badge-human">human_session</span> <span class="badge badge-heavy">heavy</span> <span class="badge badge-gate">GATE</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> Lifecycle HTML, <code>evidence/cross-review.yaml</code></p>
       <p><strong>Activities:</strong> Incorporate cross-review findings; agent updates lifecycle HTML Stage 7 section; human confirms</p>
       <p><strong>Exit:</strong> <code>evidence/plan-final-review.yaml</code> with fields <code>confirmed_by</code>, <code>confirmed_at</code>, <code>decision: passed</code> (matches <code>plan_html_review_final_ref</code> artifact expected by verify-gate-evidence.py) + lifecycle HTML Stage 7 section</p>
@@ -288,7 +312,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">08</div>
     <div class="stage-content">
-      <h4>Claim / Activation <span class="badge badge-chain">chained_agent</span> <span class="badge badge-light">light</span></h4>
+      <h4>Claim / Activation <span class="badge badge-chain">chained_agent</span> <span class="badge badge-light">light</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> Lifecycle HTML (Stage 7 confirmed_by present)</p>
       <p><strong>Activities:</strong> Check quota; write claim-evidence.yaml + activation.yaml; move WRK to working/</p>
       <p><strong>Exit:</strong> <code>evidence/claim-evidence.yaml</code>, <code>evidence/activation.yaml</code>, <code>working/WRK-NNN.md</code> + lifecycle HTML Stage 8 section</p>
@@ -298,7 +322,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">09</div>
     <div class="stage-content">
-      <h4>Work-Queue Routing <span class="badge badge-chain">chained_agent</span> <span class="badge badge-light">light</span></h4>
+      <h4>Work-Queue Routing <span class="badge badge-chain">chained_agent</span> <span class="badge badge-light">light</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> <code>evidence/activation.yaml</code></p>
       <p><strong>Activities:</strong> Confirm skills loaded; write routing log; update stage-state.yaml</p>
       <p><strong>Exit:</strong> <code>logs/WRK-NNN-routing.log</code> (work_queue_skill + work_wrapper_complete) + lifecycle HTML Stage 9 section</p>
@@ -308,7 +332,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">10</div>
     <div class="stage-content">
-      <h4>Work Execution <span class="badge badge-agent">task_agent</span> <span class="badge badge-heavy">heavy</span></h4>
+      <h4>Work Execution <span class="badge badge-agent">task_agent</span> <span class="badge badge-heavy">heavy</span> <span class="badge badge-parallel-opt">parallel-optional</span></h4>
       <p><strong>Entry:</strong> Lifecycle HTML (plan section), <code>logs/WRK-NNN-routing.log</code></p>
       <p><strong>Activities:</strong> TDD cycle mandatory (write failing tests first); implement all ACs; run full test suite; write execute.yaml</p>
       <p><strong>Exit:</strong> <code>evidence/execute.yaml</code> (integrated_repo_tests[] ≥3 entries with name/scope/command/result/artifact_ref; execution_summary) + lifecycle HTML Stage 10 section (files changed, lines edited, test results, code excerpts)</p>
@@ -319,7 +343,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">11</div>
     <div class="stage-content">
-      <h4>Artifact Generation <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+      <h4>Artifact Generation <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> <code>evidence/execute.yaml</code></p>
       <p><strong>Activities:</strong> Run generate-html-review.py to update lifecycle HTML with execution summary + Stage 10 section completeness check</p>
       <p><strong>Exit:</strong> Lifecycle HTML Stage 11 section (generation confirmed; required sections present)</p>
@@ -329,7 +353,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">12</div>
     <div class="stage-content">
-      <h4>TDD / Eval <span class="badge badge-agent">task_agent</span> <span class="badge badge-heavy">heavy</span></h4>
+      <h4>TDD / Eval <span class="badge badge-agent">task_agent</span> <span class="badge badge-heavy">heavy</span> <span class="badge badge-parallel-opt">parallel-optional</span></h4>
       <p><strong>Entry:</strong> <code>evidence/execute.yaml</code>, lifecycle HTML (Stage 10 section)</p>
       <p><strong>Activities:</strong> Run full test suite; verify each AC; write ac-test-matrix.md; fix any FAILs before proceeding</p>
       <p><strong>Exit:</strong> <code>ac-test-matrix.md</code> (all ACs: PASS/FAIL/N/A+reason) + lifecycle HTML Stage 12 section (AC matrix summary)</p>
@@ -340,7 +364,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">13</div>
     <div class="stage-content">
-      <h4>Agent Cross-Review <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+      <h4>Agent Cross-Review <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span> <span class="badge badge-parallel">parallel — 3 providers</span></h4>
       <p><strong>Entry:</strong> Lifecycle HTML (Stages 10–12 sections), <code>ac-test-matrix.md</code></p>
       <p><strong>Activities — ALL routes, mandatory:</strong> Claude + Codex + Gemini independently review implementation; check P1/P2 issues (security, correctness, missing ACs); synthesize into review.md. Same override rule as Stage 6: user must explicitly state quota unavailable AND explicitly instruct to continue — agent may not self-decide to skip a provider.</p>
       <p><strong>Exit:</strong> <code>review.md</code> (verdict: APPROVE|REVISE; reviewers[]; override if applicable) + lifecycle HTML Stage 13 section</p>
@@ -350,7 +374,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">14</div>
     <div class="stage-content">
-      <h4>Verify Gate Evidence <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+      <h4>Verify Gate Evidence <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> All gate artifacts (full asset tree)</p>
       <p><strong>Activities:</strong> Run verify-gate-evidence.py; fix any FAIL gates; all 16 gates must PASS</p>
       <p><strong>Exit:</strong> verify-gate-evidence.py exit 0 + lifecycle HTML Stage 14 section (16-gate checklist)</p>
@@ -360,7 +384,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">15</div>
     <div class="stage-content">
-      <h4>Future Work Synthesis <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+      <h4>Future Work Synthesis <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> <code>evidence/execute.yaml</code>, <code>review.md</code></p>
       <p><strong>Activities:</strong> Capture deferred ideas as new WRK items; all spun-off-new items must have captured: true</p>
       <p><strong>Exit:</strong> <code>evidence/future-work.yaml</code> (recommendations[] with disposition/status/captured) + lifecycle HTML Stage 15 section</p>
@@ -370,7 +394,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">16</div>
     <div class="stage-content">
-      <h4>Resource Intelligence Update <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span></h4>
+      <h4>Resource Intelligence Update <span class="badge badge-agent">task_agent</span> <span class="badge badge-medium">medium</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> <code>evidence/future-work.yaml</code>, <code>evidence/execute.yaml</code></p>
       <p><strong>Activities:</strong> Write ≥3 lessons learned; note new tools/patterns discovered</p>
       <p><strong>Exit:</strong> <code>evidence/resource-intelligence-update.yaml</code> (lessons[], additions[] or no_additions_rationale) + lifecycle HTML Stage 16 section</p>
@@ -380,7 +404,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">17</div>
     <div class="stage-content">
-      <h4>User Review — Implementation <span class="badge badge-human">human_session</span> <span class="badge badge-heavy">heavy</span> <span class="badge badge-gate">GATE</span></h4>
+      <h4>User Review — Implementation <span class="badge badge-human">human_session</span> <span class="badge badge-heavy">heavy</span> <span class="badge badge-gate">GATE</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> Lifecycle HTML (all Stage 10–16 sections present)</p>
       <p><strong>Activities:</strong> Human reviews implementation in lifecycle HTML; agent answers questions + applies feedback</p>
       <p><strong>Exit:</strong> <code>evidence/user-review-close.yaml</code> (decision: approved) + lifecycle HTML Stage 17 section updated with review outcome</p>
@@ -391,7 +415,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">18</div>
     <div class="stage-content">
-      <h4>Reclaim <span class="badge badge-agent">task_agent</span> <span class="badge badge-light">light</span></h4>
+      <h4>Reclaim <span class="badge badge-agent">task_agent</span> <span class="badge badge-light">light</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> <code>evidence/user-review-close.yaml</code> (decision: approved) + optionally <code>checkpoint.yaml</code> if continuity break</p>
       <p><strong>Activities:</strong> If continuity break: re-orient from checkpoint. Otherwise: mark n/a.</p>
       <p><strong>Exit:</strong> <code>evidence/reclaim.yaml</code> (status: n/a | reclaimed) + lifecycle HTML Stage 18 section</p>
@@ -401,7 +425,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">19</div>
     <div class="stage-content">
-      <h4>Close <span class="badge badge-agent">task_agent</span> <span class="badge badge-light">light</span></h4>
+      <h4>Close <span class="badge badge-agent">task_agent</span> <span class="badge badge-light">light</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> All gate artifacts; <code>evidence/user-review-close.yaml</code> (decision: approved)</p>
       <p><strong>Activities:</strong> Run close-item.sh; move WRK to done/; update percent_complete: 100</p>
       <p><strong>Exit:</strong> <code>done/WRK-NNN.md</code>, <code>logs/WRK-NNN-close.log</code> + lifecycle HTML Stage 19 section (close timestamp, final gate summary)</p>
@@ -411,7 +435,7 @@ notes: ""</code></pre>
   <div class="stage-row">
     <div class="stage-num-col">20</div>
     <div class="stage-content">
-      <h4>Archive <span class="badge badge-agent">task_agent</span> <span class="badge badge-light">light</span></h4>
+      <h4>Archive <span class="badge badge-agent">task_agent</span> <span class="badge badge-light">light</span> <span class="badge badge-single">single-thread</span></h4>
       <p><strong>Entry:</strong> <code>done/WRK-NNN.md</code></p>
       <p><strong>Activities:</strong> Run archive-item.sh; move assets to archive/; regenerate INDEX.md; clear active-wrk</p>
       <p><strong>Exit:</strong> <code>archive/WRK-NNN.md</code>, updated <code>INDEX.md</code> + lifecycle HTML Stage 20 section (archive path)</p>

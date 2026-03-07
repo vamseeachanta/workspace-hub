@@ -1,0 +1,20 @@
+wrk_id: WRK-1028
+stage: 7
+artifact_type: plan_html_review_final_ref
+confirmed_by: user
+confirmed_at: "2026-03-07T20:00:00Z"
+decision: passed
+revisions_incorporated:
+  - P1-01: Gate 7 predicate → evidence/plan-final-review.yaml (confirmed_by+decision:passed)
+  - P1-02: Gate 17 target → done/WRK-NNN.md (not reclaim.yaml)
+  - P1-03: gate-check.py supplemental only; canonical = verify-gate-evidence.py
+  - P1-04: process.md update added as deliverable + AC-15
+  - P2-01: chained_agent path in start-stage.sh (combined prompt, single agent)
+  - P2-02: Write-only rule in all micro-skills; Bash bypass documented
+  - P2-03: start-stage.sh produces stage-N-prompt.md; work.sh dispatches
+  - P2-04: Section-selector for entry_reads (lifecycle HTML#sN-sM)
+  - P2-05: Test suite 7→14 tests (Gate 7/17 + false-positive + claim/close compat)
+  - parallelism: per-stage parallel/parallel-optional/single-thread indicators added
+  - single_lifecycle_html: confirmed — plan content folds into lifecycle HTML Stage 4 section
+                            for future WRKs; plan-draft-review.html is transitional for WRK-1028
+notes: "All cross-review findings resolved. Plan final approved. Stage 8 unlocked."
