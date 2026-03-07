@@ -24,6 +24,7 @@ done
     exit 2
 }
 assert_provider "$provider"
+log_gate_event_if_available "$wrk_id" "execute" "execute_wrapper_start" "$provider" "execution gate entered"
 assert_plan_approved_or_fail "$wrk_id"
 wrk_claim "$wrk_id" || exit $?
 
@@ -100,6 +101,7 @@ fi
 if [[ -x "$gate_logger" ]]; then
     bash "$gate_logger" "$wrk_id" "execute" "tdd_eval" "$assigned" "provider dispatch completed"
 fi
+log_gate_event_if_available "$wrk_id" "execute" "execute_wrapper_complete" "$assigned" "provider dispatch completed"
 
 # If dual-agent mode, also dispatch alt provider
 alt=$(wrk_get_frontmatter_value "$wrk_file" "provider_alt")

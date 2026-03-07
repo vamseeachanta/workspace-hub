@@ -1,80 +1,88 @@
 wrk_id: WRK-691
-generated_at: "2026-03-03T22:04:48Z"
-reviewed_by: "agent"
+generated_at: '2026-03-06T00:00:00Z'
+reviewed_by: agent
 stages:
-  - order: 1
-    stage: Capture
-    status: done
-    evidence: .claude/work-queue/working/WRK-691.md
-  - order: 2
-    stage: Resource Intelligence
-    status: done
-    evidence: .claude/work-queue/assets/WRK-691/evidence/resource-intelligence.yaml
-  - order: 3
-    stage: Triage
-    status: done
-    evidence: .claude/work-queue/working/WRK-691.md
-  - order: 4
-    stage: Plan Draft
-    status: done
-    evidence: specs/wrk/WRK-691/plan.md
-  - order: 5
-    stage: User Review - Plan (Draft)
-    status: done
-    evidence: .claude/work-queue/assets/WRK-691/plan-html-review-draft.md
-  - order: 6
-    stage: Cross-Review
-    status: done
-    evidence: scripts/review/results/wrk-000-review.md
-  - order: 7
-    stage: User Review - Plan (Final)
-    status: done
-    evidence: .claude/work-queue/assets/WRK-691/plan-html-review-final.md
-  - order: 8
-    stage: Claim / Activation
-    status: done
-    evidence: .claude/work-queue/assets/WRK-691/evidence/claim.yaml
-  - order: 9
-    stage: Work-Queue Routing Skill
-    status: done
-    evidence: /work
-  - order: 10
-    stage: Work Execution
-    status: done
-    evidence: .claude/work-queue/assets/WRK-691/evidence/execute.yaml
-  - order: 11
-    stage: Artifact Generation
-    status: done
-    evidence: .claude/work-queue/assets/WRK-691/review.html
-  - order: 12
-    stage: TDD / Eval
-    status: done
-    evidence: .claude/work-queue/assets/WRK-691/evidence/test-results.md
-  - order: 13
-    stage: Verify Gate Evidence
-    status: done
-    evidence: scripts/work-queue/verify-gate-evidence.py
-  - order: 14
-    stage: Future Work Synthesis
-    status: done
-    evidence: .claude/work-queue/assets/WRK-691/evidence/future-work.yaml
-  - order: 15
-    stage: Resource Intelligence Update
-    status: done
-    evidence: .claude/work-queue/assets/WRK-691/evidence/resource-intelligence-update.yaml
-  - order: 16
-    stage: User Review
-    status: done
-    evidence: .claude/work-queue/assets/WRK-691/evidence/user-review-close.yaml
-  - order: 17
-    stage: Reclaim
-    status: n/a
-    evidence: .claude/work-queue/assets/WRK-691/evidence/reclaim.yaml
-  - order: 18
-    stage: Close
-    status: pending
-    evidence: scripts/work-queue/close-item.sh
-  - order: 19
-    stage: Archive
-    status: pending
-    evidence: scripts/work-queue/archive-item.sh
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/pending/WRK-691.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-691/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  evidence: .claude/work-queue/pending/WRK-691.md
+  notes: priority=high, complexity=medium, route=B, computer=ace-linux-1
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: .claude/work-queue/pending/WRK-691.md
+  notes: Inline Plan section added to WRK-691.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  evidence: .claude/work-queue/assets/WRK-691/plan-draft-review.html
+  notes: 'Option C approved by user 2026-03-06: split prevention+analytics, all 3
+    drift-risk files'
+- order: 6
+  stage: Cross-Review
+  status: pending
+  evidence: scripts/review/results/wrk-691-review.md
+- order: 7
+  stage: User Review - Plan (Final)
+  status: pending
+  evidence: .claude/work-queue/assets/WRK-691/plan-html-review-final.md
+- order: 8
+  stage: Claim / Activation
+  status: pending
+  evidence: .claude/work-queue/assets/WRK-691/evidence/claim.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: pending
+  evidence: /work
+- order: 10
+  stage: Work Execution
+  status: pending
+  evidence: .claude/work-queue/assets/WRK-691/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: pending
+  evidence: .claude/work-queue/assets/WRK-691/implementation-review.html
+- order: 12
+  stage: TDD / Eval
+  status: pending
+  evidence: .claude/work-queue/assets/WRK-691/evidence/variation-test-results.md
+- order: 13
+  stage: Agent Cross-Review
+  status: pending
+  evidence: .claude/work-queue/assets/WRK-691/evidence/cross-review-package.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: pending
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: pending
+  evidence: .claude/work-queue/assets/WRK-691/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: pending
+  evidence: .claude/work-queue/assets/WRK-691/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: pending
+  evidence: .claude/work-queue/assets/WRK-691/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: pending
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  evidence: scripts/work-queue/archive-item.sh

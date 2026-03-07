@@ -589,3 +589,37 @@ events:
     )
     assert ok is True
     assert "stages=" in detail
+
+
+def test_agent_log_gate_requires_required_stage_logs_for_claim(tmp_path: Path):
+    mod = _load_verify_module()
+    log_dir = tmp_path / ".claude" / "work-queue" / "logs"
+    log_dir.mkdir(parents=True)
+    (log_dir / "WRK-999-plan.log").write_text(
+        "timestamp: 2026-03-06T00:00:00Z\naction: plan_wrapper_complete\nprovider: codex\n\n",
+        encoding="utf-8",
+    )
+    ok, detail = mod.check_agent_log_gate(tmp_path, "WRK-999", "claim")
+    assert ok is False
+    assert "routing:missing-log" in detail
+
+
+def test_agent_log_gate_passes_for_close_when_wrapper_logs_exist(tmp_path: Path):
+    mod = _load_verify_module()
+    log_dir = tmp_path / ".claude" / "work-queue" / "logs"
+    log_dir.mkdir(parents=True)
+    fixtures = {
+        "routing": "work_wrapper_complete",
+        "plan": "plan_wrapper_complete",
+        "execute": "execute_wrapper_complete",
+        "cross-review": "review_wrapper_complete",
+        "close": "verify_gate_evidence_pass",
+    }
+    for stage, action in fixtures.items():
+        (log_dir / f"WRK-999-{stage}.log").write_text(
+            f"timestamp: 2026-03-06T00:00:00Z\naction: {action}\nprovider: codex\n\n",
+            encoding="utf-8",
+        )
+    ok, detail = mod.check_agent_log_gate(tmp_path, "WRK-999", "close")
+    assert ok is True
+    assert "matched routing" in detail

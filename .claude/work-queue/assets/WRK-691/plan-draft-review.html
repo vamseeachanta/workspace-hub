@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Draft Review: WRK-691 — feat(session): interactive session analysis — assess loaded </title>
+  <style>
+:root {
+  --bg:       #f3efe6;
+  --panel:    #fffdf8;
+  --ink:      #172126;
+  --muted:    #55636b;
+  --accent:   #0f766e;
+  --accent-2: #8a5a2b;
+  --line:     #d9d0c0;
+  --shadow:   0 16px 40px rgba(20,33,38,0.08);
+  --good:     #166534;
+  --warn:     #b45309;
+  --bad:      #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.5;margin:0;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.05);padding:.2em .4em;border-radius:3px;}
+pre code{background:none;padding:0;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.88rem;}
+.panel,.artifact-box{background:#fff;padding:16px;border-radius:10px;
+  border:1px solid var(--line);}
+.hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
+.hero-inner,.content{max-width:1180px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
+  color:var(--accent);font-weight:700;}
+h1{margin:10px 0 12px;font-size:clamp(1.75rem,3.2vw,3rem);line-height:1.02;}
+.lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
+.content{padding:28px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
+  color:var(--accent-2);letter-spacing:.02em;}
+h2[data-collapsed="true"]{margin-bottom:4px;}
+h2 .section-summary-chip{max-width:min(70ch,70vw);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
+h3{color:var(--ink);margin-top:18px;}
+.exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
+  border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
+  border-radius:10px;}
+.exec-summary h2{margin-top:0;border:none;color:var(--accent);}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem;}
+th,td{border-top:1px solid var(--line);padding:10px 8px;
+  text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.86rem;color:var(--ink);}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:.9rem;}
+.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-warn{background:#fef3c7;color:var(--warn);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-info{background:#dbeafe;color:#1d4ed8;}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:900px){.split{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}
+  tr,td,th{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-691 &middot; Plan Draft Review</div>
+    <h1>feat(session): interactive session analysis — assess loaded rules, skills, and context at session start</h1>
+    <p class="lede">Enhance `/session-start` with an interactive analysis phase that assesses — at session</p>
+  </div>
+</header>
+
+<main class="content">
+  <div class="meta">
+  <div class="pill"><strong>WRK ID</strong>WRK-691</div>
+  <div class="pill"><strong>Status</strong><span class="badge badge-info">PENDING</span></div>
+  <div class="pill"><strong>Route</strong>B — medium</div>
+  <div class="pill"><strong>Orchestrator</strong>claude</div>
+  <div class="pill"><strong>Computer</strong>ace-linux-1</div>
+  <div class="pill"><strong>Created</strong>2026-03-03</div>
+  <div class="pill"><strong>Commit</strong><code>n/a</code></div>
+  <div class="pill"><strong>% Done</strong>0%</div>
+</div>
+
+  <div class="card">
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <p>Enhance <code>/session-start</code> with an interactive analysis phase that assesses — at session
+open — whether the key rules, skills, and context files are loaded and acknowledged.
+If proactive hook-based session logging has not fired, trigger it interactively.</p>
+<p>This replaces the current "surface and move on" briefing with a structured
+<strong>load assessment → gap surfacing → user confirmation → log</strong> loop.</p>
+    </div>
+
+    <h2>Skill Manifest</h2>
+<table>
+  <thead><tr><th>Category</th><th>Skill</th></tr></thead>
+  <tbody><tr><td colspan='2' style='color:var(--muted)'>Not applicable.</td></tr></tbody>
+</table>
+<p style="font-size:.82rem;color:var(--muted)">Source: <code>none</code></p>
+  </div>
+
+  <div class="card">
+    <h1>feat(session): Interactive Session Analysis</h1>
+<h2>Prompt Start Context</h2>
+<div class="panel">
+  <p>feat(session): interactive session analysis — assess loaded rules, skills, and context at session start — Enhance `/session-start` with an interactive analysis phase that assesses — at session open — whether the key rules, skills, and context files are loaded and acknowledged. If proactive hook-based session logging has not fired, trigger it interactively. This replaces the current &quot;surface and move on&quot; briefing with a structured **load assessment → gap surfacing → user confirmation → log** loop.</p>
+  <p style="font-size:.82rem;color:var(--muted)"><strong>Source:</strong> Synthesized from WRK title + What section</p>
+</div>
+
+<h2>What</h2>
+<p>Enhance <code>/session-start</code> with an interactive analysis phase that assesses — at session
+open — whether the key rules, skills, and context files are loaded and acknowledged.
+If proactive hook-based session logging has not fired, trigger it interactively.</p>
+<p>This replaces the current "surface and move on" briefing with a structured
+<strong>load assessment → gap surfacing → user confirmation → log</strong> loop.</p>
+<h2>Why</h2>
+<p>Agents (Claude, Codex, Gemini) drift from rules because they rely on training knowledge
+rather than reading the canonical rule files. A session-start inventory that <em>confirms</em>
+each critical rule is in scope — and logs that confirmation — creates an audit trail
+and forces the agent to load the file before starting work.</p>
+<p>Examples surfaced this session (2026-03-03):
+- <code>python-runtime.md</code> rule: agents used <code>python3</code> / <code>.venv/bin/python</code> instead of <code>uv run</code>
+- File-structure skills: agents placed files without consulting <code>file-taxonomy</code> or
+  <code>repo-structure</code> — because neither was explicitly loaded</p>
+<h2>Scope</h2>
+<h3>1. Session Load Assessment (new phase in <code>/session-start</code>)</h3>
+<p>At session open, check and report:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Check</th>
+<th>Pass Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Runtime rule</strong></td>
+<td><code>.claude/rules/python-runtime.md</code> loaded</td>
+<td>File read + key phrase "uv run" acknowledged</td>
+</tr>
+<tr>
+<td><strong>Git rule</strong></td>
+<td><code>.claude/rules/git-workflow.md</code> loaded</td>
+<td>File in context</td>
+</tr>
+<tr>
+<td><strong>File placement</strong></td>
+<td><code>file-taxonomy/SKILL.md</code> version current</td>
+<td>version ≥ 1.6.0</td>
+</tr>
+<tr>
+<td><strong>Skill map</strong></td>
+<td><code>.claude/docs/file-structure-skills-map.md</code> accessible</td>
+<td>File exists</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td><code>MEMORY.md</code> &lt; 200 lines</td>
+<td><code>wc -l</code> check</td>
+</tr>
+<tr>
+<td><strong>Active WRK</strong></td>
+<td><code>.claude/state/active-wrk</code> set or empty</td>
+<td>Surfaced to user</td>
+</tr>
+<tr>
+<td><strong>Quota</strong></td>
+<td><code>config/ai-tools/agent-quota-latest.json</code> fresh</td>
+<td>modified ≤ 7 days ago</td>
+</tr>
+</tbody>
+</table>
+<h3>2. Interactive Gap Resolution</h3>
+<p>For each CHECK that fails, prompt the user:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">⚠</span><span class="w"> </span><span class="n">python</span><span class="o">-</span><span class="n">runtime</span><span class="o">.</span><span class="n">md</span><span class="w"> </span><span class="err">—</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">loaded</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">session</span>
+<span class="w">  </span><span class="err">→</span><span class="w"> </span><span class="n">Read</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">now</span><span class="err">?</span><span class="w"> </span><span class="p">[</span><span class="n">y</span><span class="o">/</span><span class="n">n</span><span class="p">]</span><span class="w">  </span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">log</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">skip</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">warning</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Do not block session startup on gaps — surface and let user decide.</p>
+<h3>3. Session Logging (if hooks have not fired)</h3>
+<p>Check whether <code>logs/orchestrator/claude/session_YYYYMMDD.jsonl</code> has entries
+from the last 60 seconds (i.e., hook fired at session open).</p>
+<p>If <strong>not</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Write a session-open marker manually</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;{&quot;event&quot;:&quot;session_open&quot;,&quot;ts&quot;:&quot;&lt;ISO&gt;&quot;,&quot;machine&quot;:&quot;&lt;hostname&gt;&quot;,&quot;wrk&quot;:&quot;&lt;active-wrk&gt;&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&gt;&gt;<span class="w"> </span>logs/orchestrator/claude/session_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d<span class="k">)</span>.jsonl
+</code></pre></div>
+
+<p>Log the load assessment result too:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;event&quot;</span><span class="p">:</span><span class="s2">&quot;load_assessment&quot;</span><span class="p">,</span><span class="nt">&quot;ts&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;ISO&gt;&quot;</span><span class="p">,</span><span class="nt">&quot;rules_loaded&quot;</span><span class="p">:[</span><span class="s2">&quot;python-runtime&quot;</span><span class="p">,</span><span class="s2">&quot;git-workflow&quot;</span><span class="p">],</span>
+<span class="w"> </span><span class="nt">&quot;rules_missing&quot;</span><span class="p">:[],</span><span class="nt">&quot;active_wrk&quot;</span><span class="p">:</span><span class="s2">&quot;WRK-NNN&quot;</span><span class="p">,</span><span class="nt">&quot;quota_fresh&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">}</span>
+</code></pre></div>
+
+<h3>4. Skill: <code>/session-interactive-analysis</code></h3>
+<p>New standalone skill (can also be called mid-session after <code>/clear</code>):
+- File: <code>.claude/skills/workspace-hub/session-interactive-analysis/SKILL.md</code>
+- Runs the load assessment + gap resolution loop without the full session-start briefing
+- Useful when returning from context wipe or switching WRK scope mid-session</p>
+<h3>5. Session Learnings Integration</h3>
+<p>After each session end, comprehensive-learning Phase 1 reads the load assessment log
+entries and:
+- Tracks which rules were <strong>not loaded</strong> most often → promotes those rules to "always
+  pre-load" list in <code>python-runtime.md</code> / <code>git-workflow.md</code> <code>## Session Learnings</code> sections
+- Flags skills that were frequently consulted but not listed in load assessment → adds them
+  to the next session's check table</p>
+<h2>Design Decision (2026-03-06): Option C — Split Prevention + Analytics</h2>
+<p><strong>Session start (non-interactive)</strong>: Auto-read 3 drift-risk files into context — no prompts, no checks, &lt; 2s.
+<strong>Post-session (comprehensive-learning Phase 1)</strong>: Scan logs for actual violations → trend tracking.</p>
+<p>Drift-risk files (all 3):
+- <code>.claude/rules/python-runtime.md</code> — prevents bare <code>python3</code> (silent failure)
+- <code>.claude/rules/git-workflow.md</code> — prevents non-conventional commits
+- <code>.claude/skills/workspace-hub/file-taxonomy/SKILL.md</code> — prevents wrong file placement</p>
+<h2>Deliverables</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.claude/skills/workspace-hub/session-start/SKILL.md</code></td>
+<td>EDIT — add Step 0: auto-read 3 drift-risk files (non-interactive)</td>
+</tr>
+<tr>
+<td><code>.claude/skills/workspace-hub/comprehensive-learning/SKILL.md</code></td>
+<td>EDIT — Phase 1 adds drift detection scan</td>
+</tr>
+<tr>
+<td><code>scripts/session/detect-drift.sh</code></td>
+<td>CREATE — scans session logs for 3 violation patterns; outputs YAML drift summary</td>
+</tr>
+<tr>
+<td><code>tests/unit/test_detect_drift.sh</code></td>
+<td>CREATE — unit tests for detect-drift.sh</td>
+</tr>
+</tbody>
+</table>
+<h2>Plan</h2>
+<ul>
+<li><strong>Files</strong>:</li>
+<li><code>.claude/skills/workspace-hub/session-start/SKILL.md</code> (EDIT) — insert Step 0 before readiness report: read <code>python-runtime.md</code>, <code>git-workflow.md</code>, <code>file-taxonomy/SKILL.md</code> into context; log <code>drift_rules_loaded</code> event to <code>logs/orchestrator/claude/session_YYYYMMDD.jsonl</code></li>
+<li><code>scripts/session/detect-drift.sh</code> (CREATE) — grep session JSONL/log for: <code>python3</code> (bare), non-<code>feat|fix|chore|docs|refactor|test|style</code> commit prefixes, files created in <code>src/*/tests/</code>; output <code>drift-summary.yaml</code> with violation counts per pattern</li>
+<li><code>tests/unit/test_detect_drift.sh</code> (CREATE) — fixture log files with known violations; assert correct YAML output</li>
+<li><code>.claude/skills/workspace-hub/comprehensive-learning/SKILL.md</code> (EDIT) — Phase 1 calls <code>detect-drift.sh</code>; adds drift counts to session-quality signals; trends <code>python_runtime_violations</code>, <code>git_workflow_violations</code>, <code>file_placement_violations</code> over 30-day window</li>
+<li><strong>Change</strong>: session-start reads (not checks) the 3 files — agent has them in context before any task begins; no user interaction required; detect-drift.sh runs nightly via comprehensive-learning</li>
+<li><strong>Test</strong>: fixture-based — <code>test_detect_drift.sh</code> creates synthetic log with known patterns, runs script, asserts YAML counts</li>
+<li><strong>Verify</strong>: <code>bash tests/unit/test_detect_drift.sh</code> → all pass; open new session → confirm 3 files appear in session-start output</li>
+</ul>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] <code>session-start/SKILL.md</code> Step 0 reads all 3 drift-risk files before readiness report</li>
+<li>[ ] <code>drift_rules_loaded</code> event written to orchestrator log at session open</li>
+<li>[ ] <code>scripts/session/detect-drift.sh</code> detects all 3 violation patterns from log fixtures</li>
+<li>[ ] <code>detect-drift.sh</code> outputs valid <code>drift-summary.yaml</code> (pattern → count)</li>
+<li>[ ] <code>comprehensive-learning/SKILL.md</code> Phase 1 calls detect-drift.sh and tracks 30-day trend</li>
+<li>[ ] <code>tests/unit/test_detect_drift.sh</code> passes (fixture-based, 3 patterns × pass+fail cases)</li>
+<li>[ ] No interactive prompts added to session start</li>
+</ul>
+<h2>Work Done This Session (2026-03-03) — Pre-conditions Now Met</h2>
+<p>The following deliverables that this skill will check were completed in this session:</p>
+<table>
+<thead>
+<tr>
+<th>Rule / Skill</th>
+<th>Status</th>
+<th>Commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.claude/rules/python-runtime.md</code></td>
+<td>✓ created</td>
+<td>d293df13</td>
+</tr>
+<tr>
+<td><code>.claude/docs/file-structure-skills-map.md</code></td>
+<td>✓ created</td>
+<td>e11d76f8</td>
+</tr>
+<tr>
+<td><code>file-taxonomy/SKILL.md</code> v1.6.0 (AI log locations)</td>
+<td>✓ updated</td>
+<td>e11d76f8</td>
+</tr>
+<tr>
+<td>AGENTS.md uv rule</td>
+<td>✓ updated</td>
+<td>d293df13</td>
+</tr>
+</tbody>
+</table>
+<h2>Notes</h2>
+<ul>
+<li><code>load-assessment.sh</code> must complete in &lt; 3 seconds (no git operations, no network)</li>
+<li>Designed for claude-orchestrator; codex variant in WRK-692</li>
+<li>Interactive prompts use <code>read -r</code> with 5-second timeout — auto-skip if non-interactive shell</li>
+</ul>
+<h2>Plan Quality Eval Comparison</h2><p>Not applicable.</p><h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p>
+  </div>
+
+  <div class="card">
+    <h2>Gate-Pass Stage Status</h2>
+<p><strong>Summary:</strong> 4 pass · 0 fail · 15 pending/warn · 1 n/a &nbsp; <span class="badge badge-info">Autonomy: Not applicable.</span></p>
+<table>
+  <thead><tr><th>Order</th><th>Stage</th><th>Stage Status</th><th>Gate-Pass</th><th>Human Decision</th><th>Owner</th><th>Blocker?</th><th>Comment</th><th>Evidence</th></tr></thead>
+  <tbody><tr><td>1</td><td>Capture</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/pending/WRK-691.md</code></td></tr>
+<tr><td>2</td><td>Resource Intelligence</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/assets/WRK-691/evidence/resource-intelligence.yaml</code></td></tr>
+<tr><td>3</td><td>Triage</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/pending/WRK-691.md</code></td></tr>
+<tr><td>4</td><td>Plan Draft</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/pending/WRK-691.md</code></td></tr>
+<tr><td>5</td><td>User Review - Plan (Draft)</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/assets/WRK-691/plan-draft-review.html</code></td></tr>
+<tr><td>6</td><td>Cross-Review</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>scripts/review/results/wrk-691-review.md</code></td></tr>
+<tr><td>7</td><td>User Review - Plan (Final)</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/assets/WRK-691/plan-html-review-final.md</code></td></tr>
+<tr><td>8</td><td>Claim / Activation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/assets/WRK-691/evidence/claim.yaml</code></td></tr>
+<tr><td>9</td><td>Work-Queue Routing Skill</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>/work</code></td></tr>
+<tr><td>10</td><td>Work Execution</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/assets/WRK-691/evidence/execute.yaml</code></td></tr>
+<tr><td>11</td><td>Artifact Generation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/assets/WRK-691/implementation-review.html</code></td></tr>
+<tr><td>12</td><td>TDD / Eval</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/assets/WRK-691/evidence/variation-test-results.md</code></td></tr>
+<tr><td>13</td><td>Agent Cross-Review</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/assets/WRK-691/evidence/cross-review-package.md</code></td></tr>
+<tr><td>14</td><td>Verify Gate Evidence</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>scripts/work-queue/verify-gate-evidence.py</code></td></tr>
+<tr><td>15</td><td>Future Work Synthesis</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/assets/WRK-691/evidence/future-work.yaml</code></td></tr>
+<tr><td>16</td><td>Resource Intelligence Update</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/assets/WRK-691/evidence/resource-intelligence-update.yaml</code></td></tr>
+<tr><td>17</td><td>User Review - Implementation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>.claude/work-queue/assets/WRK-691/evidence/user-review-close.yaml</code></td></tr>
+<tr><td>18</td><td>Reclaim</td><td><span class="badge badge-info">N/A</span></td><td><span class="badge badge-info">N/A</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>n/a</code></td></tr>
+<tr><td>19</td><td>Close</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>scripts/work-queue/close-item.sh</code></td></tr>
+<tr><td>20</td><td>Archive</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td>Not applicable.</td><td><code>scripts/work-queue/archive-item.sh</code></td></tr>
+</tbody>
+</table>
+  </div>
+
+  <div class="card">
+    <h2>Test Summary</h2>
+<table>
+  <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Example Pack</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-691/example-pack.md</code></td></tr>
+    <tr><td>Variation Tests</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-691/variation-test-results.md</code></td></tr>
+    <tr><td>Integrated Repo Tests</td><td><span class="badge badge-warn">0 tests — outside 3-5</span> <span class="badge badge-info">not all pass</span></td>
+        <td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-691/execute-evidence.yaml</code></td></tr>
+  </tbody>
+</table>
+<p><strong>Variation summary:</strong> No variation-test summary available.</p>
+    <h2>Cross-Review Summary</h2><p>Not applicable.</p>
+  </div>
+
+</main>
+
+<script>
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+/* Collapsible cards with summary preview */
+document.querySelectorAll('.card h2').forEach(h2=>{
+  h2.style.cursor='pointer';
+  h2.title='Click to collapse/expand';
+  function buildSummary(sibs){
+    const badges=[];
+    sibs.forEach(s=>s.querySelectorAll('.badge').forEach(b=>badges.push(b.outerHTML)));
+    const bHtml=badges.slice(0,4).join(' ');
+    let text='';
+    for(const s of sibs){
+      if(s.tagName==='UL'||s.tagName==='OL'){
+        const n=s.querySelectorAll('li').length;
+        text=n+' item'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='TABLE'){
+        const n=s.querySelectorAll('tbody tr').length;
+        text=n+' row'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='P'&&s.textContent.trim()){
+        text=s.textContent.trim().slice(0,80)+(s.textContent.length>80?'\u2026':'');break;
+      }
+    }
+    const parts=[bHtml,text].filter(Boolean).join(' &nbsp;&middot;&nbsp; ');
+    return parts||'&nbsp;';
+  }
+  const sibs=[];let el=h2.nextElementSibling;
+  while(el){sibs.push(el);el=el.nextElementSibling;}
+  const chip=document.createElement('span');
+  chip.style.cssText='display:inline-block;margin-left:12px;font-size:.8rem;font-weight:400;'+
+    'color:#55636b;vertical-align:middle;pointer-events:none;';
+  chip.className='section-summary-chip';
+  chip.innerHTML=buildSummary(sibs);h2.appendChild(chip);
+  const arrow=document.createElement('span');
+  arrow.style.cssText='float:right;font-size:.8rem;color:#0f766e;user-select:none;margin-top:2px;';
+  arrow.textContent='▾';h2.appendChild(arrow);
+  h2.addEventListener('click',()=>{
+    const col=h2.dataset.collapsed==='true';
+    sibs.forEach(s=>s.style.display=col?'':'none');
+    h2.dataset.collapsed=col?'false':'true';
+    h2.style.borderBottomColor=col?'':'transparent';
+    chip.style.opacity=col?'0.75':'1';
+    arrow.textContent=col?'▾':'▸';
+  });
+});
+
+/* Sticky auto-TOC */
+(function(){
+  const hs=[...document.querySelectorAll('.content .card h2')];
+  if(hs.length<4)return;
+  const nav=document.createElement('nav');
+  nav.id='toc';
+  nav.style.cssText='position:sticky;top:0;z-index:100;background:rgba(255,253,248,.95);'+
+    'border-bottom:1px solid #d9d0c0;padding:8px 24px;font-size:.82rem;'+
+    'display:flex;flex-wrap:wrap;gap:6px 18px;';
+  hs.forEach((h,i)=>{
+    if(!h.id)h.id='sec-'+i;
+    const a=document.createElement('a');
+    a.href='#'+h.id;a.textContent=h.textContent.replace('▾','').replace('▸','').trim();
+    a.style.cssText='color:#0f766e;text-decoration:none;white-space:nowrap;';
+    a.onmouseenter=()=>a.style.textDecoration='underline';
+    a.onmouseleave=()=>a.style.textDecoration='none';
+    nav.appendChild(a);
+  });
+  document.body.insertBefore(nav,document.querySelector('.content'));
+})();
+
+/* Back-to-top */
+const btn=document.createElement('button');
+btn.textContent='↑ Top';
+btn.style.cssText='position:fixed;bottom:28px;right:28px;padding:8px 14px;'+
+  'background:#0f766e;color:#fff;border:none;border-radius:8px;cursor:pointer;'+
+  'font-size:.85rem;opacity:0;transition:opacity .2s;z-index:200;';
+document.body.appendChild(btn);
+window.addEventListener('scroll',()=>btn.style.opacity=scrollY>300?'1':'0');
+btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>

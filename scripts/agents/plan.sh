@@ -34,6 +34,8 @@ done
 assert_provider "$provider"
 assert_orchestrator_or_fail "$provider"
 
+log_gate_event_if_available "$wrk_id" "plan" "plan_wrapper_start" "$provider" "plan gate entered"
+
 file="$(resolve_wrk_file "$wrk_id")" || { echo "ERROR: work item not found: $wrk_id" >&2; exit 2; }
 
 # --- Ensemble gate (runs BEFORE ## Plan check) -------------------------------
@@ -54,6 +56,7 @@ else
         0)
             echo "Ensemble complete. Read synthesis, resolve any SPLIT decisions,"
             echo "then write ## Plan in ${file} and re-run plan.sh."
+            log_gate_event_if_available "$wrk_id" "plan" "plan_wrapper_blocked" "$provider" "ensemble complete; write plan and re-run"
             exit 4
             ;;
         3)
@@ -75,6 +78,7 @@ if ! grep -q "## Plan" "$file"; then
     else
         echo "ERROR: ${wrk_id} has no ## Plan section" >&2
     fi
+    log_gate_event_if_available "$wrk_id" "plan" "plan_wrapper_blocked" "$provider" "missing ## Plan section"
     exit 3
 fi
 
@@ -90,4 +94,5 @@ gate_logger="${WS_HUB}/scripts/work-queue/log-gate-event.sh"
 if [[ -x "$gate_logger" ]]; then
     bash "$gate_logger" "$wrk_id" "plan" "plan_draft_complete" "$provider" "plan gate passed"
 fi
+log_gate_event_if_available "$wrk_id" "plan" "plan_wrapper_complete" "$provider" "plan gate passed"
 echo "Plan gate passed for ${wrk_id} under orchestrator '${provider}'."

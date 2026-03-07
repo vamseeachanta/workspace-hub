@@ -88,7 +88,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
   <div class="meta">
   <div class="pill"><strong>WRK ID</strong>WRK-1017</div>
   <div class="pill"><strong>Status</strong><span class="badge badge-info">PENDING</span></div>
-  <div class="pill"><strong>Route</strong>B — medium</div>
+  <div class="pill"><strong>Route</strong>B — high</div>
   <div class="pill"><strong>Orchestrator</strong>claude</div>
   <div class="pill"><strong>Computer</strong>ace-linux-1</div>
   <div class="pill"><strong>Created</strong>2026-03-05</div>
@@ -113,7 +113,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
   <div class="card">
     <h2>Prompt Start Context</h2>
 <div class="panel">
-  <p>session observation — Stage 5 user-agent interactive planning was missed during WRK-1015 execution</p>
+  <p>session observation and archived artifact replay — Stage 5 user-agent interactive planning was missed during WRK-1015 execution; replay evidence is recorded in `.claude/work-queue/assets/WRK-1017/evidence/root-cause-replay.md`.</p>
   <p style="font-size:.82rem;color:var(--muted)"><strong>Source:</strong> Captured from Source note</p>
 </div>
 <h2>Mission</h2>
@@ -122,6 +122,12 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <p>Stage 5 of the 20-stage work-queue lifecycle is defined as an <strong>interactive agent-user plan session</strong> (not a one-way artifact drop). Agents routinely skip the interactive walk-through and jump straight from plan creation to Stage 6 cross-review or Stage 7, bypassing the collaborative review and decision-capture that Stage 5 requires.</p>
 <h2>Why</h2>
 <p>Stage 5 is where scope in/out, acceptance criteria adjustments, risks, and constraints are collaboratively resolved. Skipping it means plans proceed with unvalidated assumptions, leading to implementation drift, rework, and scope creep — exactly the problems the lifecycle was designed to prevent.</p>
+<h2>Status</h2>
+<ul>
+<li>Stage 5 user approval is complete for the current published baseline.</li>
+<li>Stage 6 cross-review is still in progress.</li>
+<li>In this WRK, <code>plan_approved: true</code> with <code>plan_reviewed: false</code> means the Stage 5 baseline is approved and published, but the plan is not yet cleared by Stage 6.</li>
+</ul>
 <h2>Locked Decisions</h2>
 <ul>
 <li>Preserve the full Stage 5 target flow in this WRK:</li>
@@ -145,6 +151,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <h2>Acceptance Criteria</h2>
 <ul>
 <li>[ ] Root cause is documented as diagnosis plus remediation, including the difference between unclear Stage 5 wording and tool-call momentum that skips the stop point.</li>
+<li>[ ] Before implementation commits begin, diagnosis replays at least one observed Stage 5 skip artifact/session trail and records the confirmed bypass mode. If the replay cannot distinguish official entrypoint use from direct manual mutation, that ambiguity must be stated explicitly and the fix must cover both paths.</li>
 <li>[ ] Stage 5→6 entry-point audit is documented before implementation. The audit must classify each path as either:</li>
 <li>official Stage 6 entrypoint: <code>scripts/agents/plan.sh</code>, <code>scripts/review/cross-review.sh</code></li>
 <li>downstream validator, not a Stage 6 entrypoint: <code>scripts/work-queue/verify-gate-evidence.py</code>, <code>scripts/work-queue/claim-item.sh</code></li>
@@ -157,23 +164,53 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li><code>user-review-browser-open.yaml</code></li>
 <li><code>user-review-publish.yaml</code></li>
 <li>[ ] The canonical Stage 5 evidence predicate is implemented as one executable source of truth, with all shell/runtime entrypoints calling that same checker rather than re-implementing rule logic.</li>
-<li>[ ] One machine-readable gate configuration source defines <code>gate_activation_commit</code>, its ownership, and update rule so all runtime callers derive legacy/backfill decisions from the same file.</li>
+<li>[ ] One machine-readable gate configuration source defines <code>gate_activation_commit</code>, its ownership, paired-change control, and update rule so all runtime callers derive legacy/backfill decisions from the same file.</li>
+<li>[ ] Validation precedence is explicit and testable:</li>
+<li><code>specs/templates/stage5-evidence-contract.yaml</code> defines schema version and shared cross-artifact invariants</li>
+<li>per-artifact templates define field-level schema</li>
+<li>the canonical checker enforces both, failing closed if they diverge</li>
 <li>[ ] <code>browser-open evidence</code> and <code>origin-publish evidence</code> are defined explicitly with file paths, producer scripts, and required fields rather than being named only in prose.</li>
-<li>[ ] Stale-evidence detection is deterministic and machine-checkable using immutable commit references, not file modification times or inferred timestamps.</li>
-<li>[ ] The authoritative "current published draft commit" is defined explicitly and does not depend on repository <code>HEAD</code>.</li>
+<li>[ ] Required machine-checkable field sets are enumerated explicitly for the Stage 5 evidence that official scripts must trust:</li>
+<li><code>user-review-common-draft.yaml</code>: <code>wrk_id</code>, <code>draft_commit</code>, <code>approval_decision</code>, <code>reviewed_at</code>, <code>reviewer</code>, <code>generated_at_commit</code></li>
+<li><code>user-review-plan-draft.yaml</code>: <code>approval_decision</code>, <code>approved_draft_commit</code>, <code>reviewed_at</code>, and when degraded mode is used <code>approved_by</code>, <code>approval_scope</code>, <code>missing_providers</code></li>
+<li><code>user-review-browser-open.yaml</code>: <code>stage</code>, <code>html_ref</code>, <code>opened_at</code>, <code>reviewer</code>, <code>opened_in_default_browser</code>, <code>generated_by_script</code>, <code>generated_at_commit</code></li>
+<li><code>user-review-publish.yaml</code>: append-only <code>events[]</code> entries with <code>stage</code>, <code>commit</code> or <code>published_draft_commit</code>, <code>documents</code>, <code>published_at</code>, <code>reviewer</code>, <code>generated_by_script</code>, <code>generated_at_commit</code></li>
+<li>[ ] Stage 5 evidence schemas share one versioned contract source so templates, log scripts, checker logic, and tests cannot drift independently.</li>
+<li>[ ] Stale-evidence detection is deterministic and machine-checkable using immutable commit references and append-only publish-log order, not file modification times, inferred timestamps, or repository <code>HEAD</code>.</li>
+<li>[ ] The authoritative current published draft commit is the last <code>plan_draft</code> event entry in <code>user-review-publish.yaml</code>; no timestamp tie-break or <code>HEAD</code> fallback is allowed.</li>
 <li>[ ] <code>cross-review.sh</code> fail-closed behavior is defined for isolated environments and missing asset paths, including explicit path-resolution rules and user-facing error guidance.</li>
+<li>[ ] Runtime git-history lookups in the canonical checker use a bounded timeout/circuit-breaker and fail closed with exit <code>2</code> plus repair guidance instead of hanging official Stage 6 entrypoints.</li>
+<li>[ ] The bounded git-history timeout value is explicit and consistent across code and tests: <code>8s</code>.</li>
+<li>[ ] If the first-introduced WRK commit cannot be resolved and no persisted <code>stage5-first-gated.yaml</code> marker exists, the checker returns exit <code>2</code> with repair guidance rather than guessing legacy status.</li>
+<li>[ ] Before any live entrypoint is wired, a bootstrap inventory identifies active Stage 5+ WRKs and either confirms their required evidence set or prepares the required migration/backfill path so the first rollout does not mass-fail on unresolved history.</li>
+<li>[ ] Before any live entrypoint is wired, run a named dry-run bootstrap procedure across active Stage 5+ WRKs; if unresolved-history <code>exit 2</code> affects more than the greater of <code>2</code> WRKs or <code>20%</code> of the active Stage 5+ population, abort rollout and pre-seed the required first-gated markers or migration exemptions before enabling guarded entrypoints.</li>
+<li>[ ] The bootstrap dry-run produces one authoritative go/no-go report with machine-checkable fields for <code>eligible_wrk_count</code>, <code>unresolved_history_count</code>, <code>unresolved_history_ratio</code>, <code>proposed_first_gated_writes</code>, <code>proposed_exemptions</code>, and <code>decision</code>; the orchestrator produces the report and user approval remains required for migration exemptions.</li>
 <li>[ ] TDD order is explicit: write failing Stage 5 gate tests first, then implement the gate, then rerun tests.</li>
 <li>[ ] Behavioral verification includes both negative and positive coverage:</li>
 <li>negative: Stage 6 remains blocked without required Stage 5 evidence</li>
 <li>positive: Stage 6 becomes eligible only after required Stage 5 evidence is present</li>
-<li>[ ] Stage 6 may continue autonomously through additional reconciliation/rerun cycles until Stage 7 is ready.</li>
-<li>[ ] Stage 7 final-plan review must show on screen the changes made since the approved Stage 5 draft so the user can review the delta easily.</li>
-<li>[ ] The Stage 5 decision table for <code>approve | revise | reject | no-response</code> is explicitly documented and machine-checkable for the implemented gate path.</li>
+<li>[ ] Once the approved-and-published Stage 5 baseline exists, Stage 6 may execute, reconcile, rerun, and complete autonomously without additional user intervention; the next required human checkpoint is Stage 7.</li>
+<li>[ ] Stage 7 final-plan review must show on screen a visible <code>Changes Since Stage 5</code> section sourced from the approved Stage 5 baseline commit so the user can review the delta easily.</li>
+<li>[ ] Stage 7 delta rendering has a positive fixture-backed test that asserts known delta content against a known Stage 5 baseline commit, not just section presence.</li>
+<li>[ ] Phase boundaries are explicit and enforceable:</li>
+<li>Phase 1 is the hard-gate delivery path</li>
+<li>Phase 2 remains in this WRK because Stage 7 delta presentation is a required acceptance criterion</li>
+<li>Phase 2 does not reopen Stage 5, but it must be complete before Stage 7 review and WRK closure</li>
+<li>[ ] The Stage 5 decision table is explicitly documented and machine-checkable for the implemented gate path using one canonical enum:</li>
+<li><code>approve_as_is</code></li>
+<li><code>revise_and_rerun</code></li>
+<li><code>reject</code></li>
+<li><code>no_response</code></li>
+<li>[ ] The decision-table semantics are explicit:</li>
+<li>common-draft <code>revise_and_rerun</code> iterates from the common-draft checkpoint</li>
+<li>combined-plan <code>revise_and_rerun</code> iterates from the combine/rating checkpoint without forcing a new three-provider planning pass</li>
+<li><code>reject</code> blocks the current review stage and does not auto-restart planning</li>
+<li><code>no_response</code> remains blocked and is never inferred as approval</li>
 <li>[ ] The root-cause documentation explicitly answers all five Investigation Questions in this WRK, not just a subset.</li>
 <li>[ ] The root-cause answers are stored in a named location inside the authoritative WRK record so reviewers do not need to infer where those answers live.</li>
 <li>[ ] Test coverage includes every decision-table branch plus malformed YAML, WRK-id mismatch, stale evidence, and partial-evidence states.</li>
 <li>[ ] Test coverage includes malformed or missing <code>stage5-gate-config.yaml</code> and asserts the defined exit-2 behavior.</li>
-<li>[ ] Test coverage includes concurrent-access and publish-log tie cases, plus wrapper-level assertions that shell callers preserve checker exit-code semantics and messages.</li>
+<li>[ ] Test coverage includes concurrent-access, append-only publish-log ordering, and timezone/clock-skew edge cases, plus wrapper-level assertions that shell callers preserve checker exit-code semantics and messages.</li>
 <li>[ ] Test coverage includes degraded-mode and manual-edit risk paths:</li>
 <li>degraded mode without explicit user approval remains blocked</li>
 <li>degraded mode with explicit machine-checkable approval can proceed</li>
@@ -186,7 +223,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li><code>scripts/work-queue/claim-item.sh</code></li>
 <li><code>scripts/work-queue/close-item.sh</code></li>
 <li>[ ] <code>scripts/work-queue/close-item.sh</code> runtime is made compatible with the canonical checker before integration; known bare-<code>python3</code> execution paths must be removed or wrapped with <code>uv run --no-project python</code>.</li>
-<li>[ ] Template existence and compatibility are verified for <code>specs/templates/user-review-plan-draft-template.yaml</code> and <code>specs/templates/user-review-publish-template.yaml</code>.</li>
+<li>[ ] Template existence and compatibility are verified for <code>specs/templates/user-review-common-draft-template.yaml</code>, <code>specs/templates/user-review-plan-draft-template.yaml</code>, and <code>specs/templates/user-review-publish-template.yaml</code>.</li>
 <li>[ ] Prerequisite inventory is completed before implementation:</li>
 <li>confirm <code>log-user-review-browser-open.sh</code></li>
 <li>confirm <code>log-user-review-publish.sh</code></li>
@@ -199,24 +236,49 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>backfill path</li>
 <li>explicit exemption path</li>
 <li>runtime behavior for non-compliant legacy WRKs</li>
+<li>[ ] The normative runtime check order is fixed in one deterministic algorithm block, including precedence between config cutoff, first-gated marker, migration exemption, publish log, and the decision table.</li>
 <li>[ ] A named migration-exemption schema and artifact path are defined so legacy exceptions are validated by runtime checks rather than justified only in prose.</li>
 <li>[ ] Legacy candidate determination is fully deterministic from immutable sources:</li>
 <li>WRK first-introduced git commit for the active WRK file</li>
 <li><code>gate_activation_commit</code> from <code>scripts/work-queue/stage5-gate-config.yaml</code></li>
 <li>a persisted machine-readable first-gated marker in <code>assets/WRK-&lt;id&gt;/evidence/stage5-first-gated.yaml</code></li>
-<li>[ ] <code>scripts/work-queue/stage5-gate-config.yaml</code> has explicit ownership and compatibility rules so activation-cutoff changes cannot drift silently across entrypoints.</li>
+<li>[ ] <code>scripts/work-queue/stage5-gate-config.yaml</code> has explicit ownership, paired-WRK change-control, and compatibility rules so activation-cutoff changes cannot drift silently across entrypoints.</li>
+<li>[ ] <code>stage5-first-gated.yaml</code> first-write creation is atomic and concurrency-safe; simultaneous checker invocations must not corrupt or duplicate the marker.</li>
+<li>[ ] Append-only review evidence writes and <code>stage5-first-gated.yaml</code> writes use one concrete locking strategy (<code>lockfile + atomic rename</code>), and lock-acquisition failure is treated as exit <code>2</code>.</li>
+<li>[ ] Lockfile cleanup uses an explicit stale-lock heuristic: remove a lock only when its recorded PID is no longer live and its age exceeds the configured timeout window; otherwise fail with exit <code>2</code>.</li>
 <li>[ ] Rollout is staged across entrypoints with an explicit rollback note so a checker defect cannot silently trap all active WRKs without recovery guidance.</li>
+<li>[ ] Rollout stages have explicit fail-closed triggers: any infrastructure <code>exit 2</code>, malformed evidence, or failing compatibility test blocks the next entrypoint integration step.</li>
 <li>[ ] The checker exit-code contract is explicit and stable for automation assertions:</li>
 <li>exit <code>1</code> = predicate failure / Stage 5 incomplete</li>
 <li>exit <code>2</code> = infrastructure or path failure</li>
 <li>[ ] Git-history dependent checks define concrete fail-closed repair guidance for shallow clones, detached HEAD contexts, and unresolved assets paths at each affected entrypoint.</li>
+<li>[ ] The canonical checker has a documented latency budget with an enforcement harness:</li>
+<li>isolated-fixture repo target: <code>&lt;= 3s</code> cold / <code>&lt;= 1s</code> warm</li>
+<li>live-workspace timing is recorded as informational smoke output, not the sole blocking metric</li>
 <li>[ ] An end-to-end lifecycle harness test proves normal and degraded-mode progression into Stage 6 in addition to branch/unit coverage.</li>
 <li>[ ] The canonical checker exits <code>0</code> against <code>WRK-1017</code> bootstrap evidence after migration/backfill support and the WRK's own exemption/first-gated bootstrap path are in place, so this WRK does not self-invalidate after delivery.</li>
 <li>[ ] Full Stage 5 target-flow design from <code>## Locked Decisions</code> remains in scope for this WRK, with only terminal-tab ergonomics allowed to move to optional follow-up if needed.</li>
+<li>[ ] Official entrypoints treat both checker exit <code>1</code> and exit <code>2</code> as fail-closed blocking outcomes and emit a user-visible blocking message that distinguishes predicate failure from infrastructure failure.</li>
+<li>[ ] Shell entrypoints preserve canonical checker diagnostics as the authoritative error text: wrappers may prefix entrypoint context, but they must not reinterpret schema failures, legacy/bootstrap failures, or predicate failures into different verdict logic.</li>
+<li>[ ] Official scripts must not treat <code>plan_approved: true</code> alone as sufficient to start Stage 6; if frontmatter suggests approval but the canonical checker fails, the script must emit an auditable blocking signal.</li>
+<li>[ ] Automated backstop is specified and wired: per-commit automation runs checker/renderer unit coverage, and pre-merge automation runs shell lifecycle/gate tests.</li>
+<li>[ ] A concise AC-to-test traceability matrix exists before implementation begins, maps each acceptance criterion to unit, integration, or end-to-end coverage, and phase-tags each row as <code>1A</code>, <code>1B</code>, or <code>2</code>.</li>
+<li>[ ] <code>plan_quality-eval.yaml</code> has a single machine-readable schema source so renderer and tests do not drift on field names.</li>
+<li>[ ] Provider-unavailable handling is standardized: one explicit launch/auth/quota failure or a bounded no-response timeout of <code>60s</code> from provider launch to first response token or structured error marks the provider blocked and requires degraded-mode approval to continue.</li>
+<li>[ ] Stage 7 may begin only when the latest Stage 6 review set has no unresolved <code>REQUEST_CHANGES</code>, or every remaining <code>REQUEST_CHANGES</code> item has an explicit disposition recorded in stage evidence with rationale for why it is resolved or intentionally deferred.</li>
+<li>[ ] Unsupported major versions in <code>specs/templates/stage5-evidence-contract.yaml</code> cause the canonical checker to exit <code>2</code>, and that behavior is acceptance-tested.</li>
+<li>[ ] The authoritative commit comparison target is explicit at every stage:</li>
+<li>Stage 5 approval/publish defines the approved-and-published Stage 5 baseline commit</li>
+<li>Stage 6 autonomous reconciliation compares evidence against that Stage 5 baseline commit, not the latest local draft</li>
+<li>Stage 7 delta presentation is sourced from that same Stage 5 baseline commit</li>
+<li>[ ] Published-baseline authority is singular:</li>
+<li><code>user-review-publish.yaml</code> last <code>plan_draft</code> event is the sole authoritative source of the published Stage 5 baseline commit</li>
+<li><code>user-review-plan-draft.yaml</code> must record that same commit in <code>approved_draft_commit</code></li>
+<li>mismatch between those artifacts is a fail-closed error</li>
 </ul>
 <h2>Plan</h2>
 <ul>
-<li><strong>Core implementation targets</strong>:
+<li><strong>Core implementation targets</strong> (renderer work stays limited to schema support and the required Stage 7 delta-display path):
   <code>.claude/skills/workspace-hub/work-queue-workflow/SKILL.md</code>,
   <code>.claude/skills/workspace-hub/workflow-gatepass/SKILL.md</code>,
   <code>.claude/skills/coordination/workspace/work-queue/SKILL.md</code>,
@@ -224,20 +286,28 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
   <code>scripts/agents/lib/workflow-guards.sh</code>,
   <code>scripts/review/cross-review.sh</code>,
   <code>scripts/work-queue/verify-gate-evidence.py</code>,
+  <code>scripts/work-queue/bootstrap-stage5-gate.sh</code>,
   <code>scripts/work-queue/stage5-gate-config.yaml</code>,
   <code>scripts/work-queue/close-item.sh</code>,
   <code>scripts/work-queue/generate-html-review.py</code>,
   <code>scripts/work-queue/log-user-review-browser-open.sh</code>,
   <code>scripts/work-queue/log-user-review-publish.sh</code>,
   <code>scripts/work-queue/claim-item.sh</code>,
-  <code>.claude/MEMORY.md</code>,
   <code>scripts/agents/tests/test-plan-gate.sh</code>,
   <code>tests/unit/test_generate_html_review.py</code>,
   <code>tests/unit/test_verify_gate_evidence.py</code>,
   <code>tests/work-queue/test-lifecycle-gates.sh</code>,
+  <code>.github/workflows/baseline-check.yml</code>,
+  <code>scripts/hooks/pre-commit</code>,
+  <code>specs/templates/stage5-evidence-contract.yaml</code>,
+  <code>specs/templates/user-review-common-draft-template.yaml</code>,
   <code>specs/templates/user-review-plan-draft-template.yaml</code>,
   <code>specs/templates/user-review-publish-template.yaml</code>,
+  <code>specs/templates/plan-quality-eval-template.yaml</code>,
   <code>specs/templates/stage5-migration-exemption-template.yaml</code></li>
+<li><strong>Verification support artifacts created during this WRK</strong>:</li>
+<li><code>.claude/work-queue/assets/WRK-1017/ac-test-matrix.md</code></li>
+<li><code>.claude/work-queue/assets/WRK-1017/evidence/root-cause-replay.md</code></li>
 <li><strong>Stage 5 design artifacts created during this WRK</strong>:</li>
 <li><code>.claude/work-queue/assets/WRK-1017/common-plan-draft.md</code></li>
 <li><code>.claude/work-queue/assets/WRK-1017/claude-plan.md</code></li>
@@ -245,6 +315,67 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li><code>.claude/work-queue/assets/WRK-1017/gemini-plan.md</code></li>
 <li><code>.claude/work-queue/assets/WRK-1017/combined-plan.md</code></li>
 <li><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-common-draft.yaml</code></li>
+<li><strong>Execution phases inside this WRK</strong>:</li>
+<li>Phase 1A required before any additional hardening:<ul>
+<li>canonical checker core algorithm</li>
+<li>bootstrap dry-run inventory with unresolved-history abort threshold</li>
+<li><code>stage5-gate-config.yaml</code></li>
+<li>deterministic timeout/circuit-breaker behavior for live git lookups</li>
+<li>concrete locking strategy for append-only evidence and first-gated writes</li>
+<li>one official entrypoint (<code>scripts/agents/plan.sh</code>)</li>
+<li>core negative/positive tests</li>
+<li>preliminary AC-to-test matrix skeleton</li>
+</ul>
+</li>
+<li>Phase 1B required before Stage 7:<ul>
+<li>canonical checker in <code>verify-gate-evidence.py</code></li>
+<li>named bootstrap/backfill procedure for in-flight WRKs</li>
+<li>minimum evidence schema and provenance fields</li>
+<li>logging-script field upgrades if needed</li>
+<li>remaining official entrypoint enforcement</li>
+<li><code>close-item.sh</code> Python compatibility fix</li>
+<li>test isolation harness and blocking tests</li>
+<li>CI/hook backstop wiring</li>
+<li>workflow-contract alignment</li>
+</ul>
+</li>
+<li>Phase 2 required before Stage 7 review packaging:<ul>
+<li>visible <code>Changes Since Stage 5</code> presentation</li>
+<li>only the minimum renderer or HTML changes still required after Phase 1 is green</li>
+<li>Phase 2 is packaging, not core gate logic, but it remains mandatory because Stage 7 on-screen delta review is a required acceptance criterion</li>
+</ul>
+</li>
+<li><strong>Phase gates</strong>:</li>
+<li>Core fix completion bar:<ul>
+<li>the WRK is not considered delivered at <code>Phase 1A</code></li>
+<li>the minimum delivered gate fix is <code>Phase 1 hard gate</code></li>
+</ul>
+</li>
+<li>Phase 1 hard gate must ship first:<ul>
+<li>canonical checker</li>
+<li>deterministic precedence and legacy classification</li>
+<li>timeout/circuit-breaker behavior</li>
+<li>concrete locking and atomic write strategy</li>
+<li><code>plan.sh</code> and <code>cross-review.sh</code> enforcement</li>
+<li>blocking unit/integration coverage</li>
+<li>operator recovery + rollback runbook</li>
+<li>Phase 1 may be the first guarded rollout milestone, but it does not close the WRK while required Stage 7 packaging remains unfinished</li>
+<li>Phase 1 rollout may proceed before Phase 2 renderer/package work is finished, but Stage 7 review and WRK closure remain blocked until Phase 2 is complete</li>
+</ul>
+</li>
+<li>Phase 1B hardening may follow once Phase 1 is green:<ul>
+<li><code>claim-item.sh</code> and <code>close-item.sh</code> rollout</li>
+<li>migration/backfill hardening</li>
+<li>CI/hook wiring</li>
+<li>close-item compatibility stabilization</li>
+</ul>
+</li>
+<li>Phase 2 is required packaging:<ul>
+<li>Stage 7 <code>Changes Since Stage 5</code> presentation</li>
+<li>minimal renderer work, only if still required after Phase 1/1B</li>
+<li>required before Stage 7 review and WRK closure, but not a reason to reopen Stage 5</li>
+</ul>
+</li>
 <li><strong>Bootstrap note for this WRK</strong>:</li>
 <li><code>WRK-1017</code> itself completed Stage 5 under the pre-fix workflow contract.</li>
 <li>Earlier draft approvals and publishes were recorded explicitly, including the last published approved draft package at commit <code>1e72f611d8311c520d6316cad85c48a14c02723c</code>.</li>
@@ -254,21 +385,35 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>The user approved the next local revision with explicit Stage 6 user-choice behavior, and that draft package was published to origin at commit <code>847cb51579d17c1922560a90bc313e86d0b74252</code> on <code>2026-03-06T22:52:24Z</code>.</li>
 <li>The latest Stage 6 rerun at <code>20260306T225401Z</code> completed against that published draft and is now historical review input for this newest revision.</li>
 <li>This newest local revision changes the workflow again:<ul>
-<li>Stage 6 may continue autonomously until Stage 7</li>
+<li>Stage 6 may execute, reconcile, rerun, complete, and auto-prepare the Stage 7 package without additional user intervention</li>
+<li>Stage 7 is the next required human-in-the-loop checkpoint</li>
 <li>Stage 7 must show on screen the changes made since the approved Stage 5 draft</li>
 </ul>
 </li>
-<li>The user has now approved this latest local revision; <code>plan_approved: true</code> reflects that local approval, while Stage 5 remains open until refreshed publish evidence is logged for this newest draft state.</li>
+<li>The user approved this latest local revision, and the refreshed draft package was published to origin at commit <code>5e2679a0db4acce20eec59e6c38de8f7b96badf6</code> on <code>2026-03-06T23:04:08Z</code>.</li>
+<li><code>plan_approved: true</code> reflects that approved and published draft state, so Stage 6 may rerun against this exact published revision.</li>
+<li>The latest Stage 6 rerun at <code>20260306T230338Z</code> approved from <code>claude</code> and <code>gemini</code> and returned <code>REQUEST_CHANGES</code> from <code>codex</code>.</li>
+<li>The latest Stage 6 rerun at <code>20260307T014636Z</code> returned <code>REQUEST_CHANGES</code> from <code>claude</code>, <code>APPROVE</code> from <code>gemini</code>, and a compulsory codex hard-gate failure (<code>exit 1</code>).</li>
+<li>The current local draft is an autonomous Stage 6 reconciliation against the approved Stage 5 baseline at commit <code>5e2679a0db4acce20eec59e6c38de8f7b96badf6</code>; it does not reopen Stage 5 automatically.</li>
+<li>Stage 6 may continue autonomously from that baseline until the plan is Stage 7-ready; no additional user intervention is required at Stage 6 completion.</li>
+<li>While Stage 6 is reconciling locally, <code>plan_approved: true</code> continues to refer to that approved Stage 5 baseline. Stage 7 must review the delta from that baseline before implementation begins.</li>
 <li><code>plan_reviewed</code> remains the Stage 6 cross-review state and should stay <code>false</code> until plan cross-review clears; this matches the current Route B contract.</li>
 <li><code>plan_ensemble: false</code> remains correct for this WRK because that frontmatter flag tracks automated <code>scripts/planning/ensemble-plan.sh</code> execution, not the manual multi-model Stage 5 planning flow used here.</li>
 <li>The bootstrap evidence for this WRK is captured in:<ul>
 <li><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-common-draft.yaml</code></li>
 <li><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml</code></li>
+<li><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-browser-open.yaml</code></li>
+<li><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-publish.yaml</code></li>
 </ul>
 </li>
+<li><code>.github/workflows/baseline-check.yml</code> already exists in this repository and is therefore update scope, not net-new CI infrastructure creation.</li>
+<li><code>.claude/work-queue/assets/WRK-1017/ac-test-matrix.md</code> now exists and is part of the planning gate for this WRK.</li>
 <li><strong>Execution sequence inside this WRK</strong>:</li>
+<li>planning gate zero: finalize <code>.claude/work-queue/assets/WRK-1017/ac-test-matrix.md</code> before any implementation commit, with every acceptance criterion mapped to a test tier and phase</li>
 <li>diagnosis first: perform a Stage 5→6 entry-point audit and isolate the exact runtime components that currently allow Stage 6 to start without Stage 5 evidence</li>
+<li>diagnosis first-a: inspect at least one observed skip session/log and record whether the bypass path used an official Stage 6 entrypoint or direct evidence/manual mutation; do not start implementation commits until this is written into <code>## Investigation Answers</code></li>
 <li>prerequisite inventory second: confirm the logging scripts, templates, and known runtime preconditions actually exist and are usable:<ul>
+<li><code>specs/templates/user-review-common-draft-template.yaml</code></li>
 <li><code>scripts/work-queue/log-user-review-browser-open.sh</code></li>
 <li><code>scripts/work-queue/log-user-review-publish.sh</code></li>
 <li><code>specs/templates/user-review-plan-draft-template.yaml</code></li>
@@ -277,6 +422,22 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>known <code>close-item.sh</code> bare-<code>python3</code> runtime defect</li>
 </ul>
 </li>
+<li>bootstrap inventory second-a: enumerate active/in-flight WRKs at Stage 5 or later, confirm which of the four required Stage 5 artifacts they already possess, and prepare the required migration exemption or backfill path before any live gate wiring</li>
+<li>bootstrap procedure second-b:<ul>
+<li>run <code>scripts/work-queue/bootstrap-stage5-gate.sh --dry-run</code></li>
+<li>emit one authoritative go/no-go report with <code>eligible_wrk_count</code>, <code>unresolved_history_count</code>, <code>unresolved_history_ratio</code>, <code>proposed_first_gated_writes</code>, <code>proposed_exemptions</code>, and <code>decision</code></li>
+<li>for each eligible legacy WRK, either prepare the template-backed migration exemption or run the checker/migration tool to create the first-gated marker</li>
+<li>if unresolved-history <code>exit 2</code> affects more than the greater of <code>2</code> WRKs or <code>20%</code> of the active Stage 5+ population, abort rollout and pre-seed the required first-gated markers or validated migration exemptions first</li>
+<li>do not wire the next live entrypoint until every inventoried WRK has a deterministic bootstrap path</li>
+</ul>
+</li>
+<li>bootstrap interface second-c:<ul>
+<li><code>scripts/work-queue/bootstrap-stage5-gate.sh --dry-run --report &lt;path&gt;</code> is the required planning/rollout interface</li>
+<li><code>--wrk-id &lt;id&gt;</code> is the single-WRK debugging form</li>
+<li>exit <code>0</code> = go, exit <code>1</code> = no-go, exit <code>2</code> = infrastructure failure</li>
+</ul>
+</li>
+<li>checkpoint after diagnosis and prerequisite inventory: record the updated effort estimate, confirm <code>complexity: high</code>, and explicitly mark renderer/template targets as either <code>required</code> or <code>no-change</code> before remediation begins</li>
 <li>audit the following paths explicitly:<ul>
 <li>official Stage 6 entrypoints:</li>
 <li><code>scripts/agents/plan.sh</code></li>
@@ -304,15 +465,24 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li><code>tests/work-queue/test-lifecycle-gates.sh</code></li>
 </ul>
 </li>
+<li>test-design fourth-a: define deterministic test isolation before implementation:<ul>
+<li>use isolated temporary git fixture repos for history-dependent tests</li>
+<li>generate deterministic commit graphs and append-only publish logs inside the fixtures</li>
+<li>simulate shallow-clone and detached-HEAD cases inside the fixture repos rather than depending on the live workspace state</li>
+<li>exercise concurrent-log writes with an explicit lock/atomic-write harness rather than relying on undefined live races</li>
+<li>keep <code>.claude/work-queue/assets/WRK-1017/ac-test-matrix.md</code> updated as the authoritative AC-to-phase/test map rather than producing it later in execution</li>
+</ul>
+</li>
 <li>remediation fifth: implement the stop condition with one canonical checker in <code>scripts/work-queue/verify-gate-evidence.py</code>, define deterministic migration/first-gated state sources, fix the known <code>close-item.sh</code> runtime defect, and make all selected shell entrypoints delegate to that checker</li>
 <li>rollout sixth: integrate entrypoints in this order so failures are bounded:<ul>
 <li><code>scripts/agents/plan.sh</code></li>
 <li><code>scripts/review/cross-review.sh</code></li>
 <li><code>scripts/work-queue/claim-item.sh</code></li>
-<li><code>scripts/work-queue/close-item.sh</code></li>
+<li><code>scripts/work-queue/close-item.sh</code> Python compatibility fix plus its dedicated compatibility test</li>
+<li><code>scripts/work-queue/close-item.sh</code> gate integration only after the compatibility fix is green</li>
 </ul>
 </li>
-<li>verification seventh: rerun negative and positive gate tests, then regenerate review artifacts</li>
+<li>verification seventh: rerun negative and positive gate tests, run the timing harness, then regenerate review artifacts</li>
 <li><strong>Detailed Stage 5 review sequence to preserve explicitly in the authoritative plan and review HTML</strong>:</li>
 <li>Create one common draft.</li>
 <li>Seek user review and approval on the common draft plan in a live user-interactive review session.</li>
@@ -431,14 +601,15 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>Reuse existing scripts <code>scripts/work-queue/log-user-review-browser-open.sh</code> and <code>scripts/work-queue/log-user-review-publish.sh</code>; do not treat them as new dependencies for this WRK.</li>
 <li>Audit those logging scripts during diagnosis; if required commit or authority fields are missing, modify them in this WRK rather than treating them as untouchable.</li>
 <li>Fix <code>scripts/work-queue/close-item.sh</code> runtime compatibility before integrating the gate there; bare <code>python3</code> execution is not acceptable in this repository.</li>
-<li>Keep <code>scripts/work-queue/generate-html-review.py</code> in scope for this WRK so the <code>Plan Quality Eval Comparison</code> section remains first-class and reviewable if gate-driven field changes require renderer updates.</li>
+<li>Keep <code>scripts/work-queue/generate-html-review.py</code> in scope only for the minimum changes needed to preserve <code>Plan Quality Eval Comparison</code> and add the Stage 7 <code>Changes Since Stage 5</code> review section; if gate-driven schema changes do not require renderer edits, leave the renderer untouched.</li>
 <li>Preserve the explicit Stage 5 review sequence above in the inline Route B plan so the review HTML does not rely on implied behavior.</li>
-<li>Require machine-checkable provenance fields on the required Stage 5 artifacts, such as:<ul>
-<li><code>generated_by_script</code></li>
-<li><code>actor</code></li>
-<li><code>generated_at_commit</code></li>
-<li>callers must reject artifacts missing those fields rather than trusting manual YAML edits</li>
-<li>callers must cross-check declared commit fields against git history and publish-log ordering where available</li>
+<li>Require explicit machine-checkable field sets on the Stage 5 artifacts:<ul>
+<li><code>user-review-common-draft.yaml</code> must include <code>wrk_id</code>, <code>draft_commit</code>, <code>approval_decision</code>, <code>reviewed_at</code>, <code>reviewer</code>, and <code>generated_at_commit</code></li>
+<li><code>user-review-plan-draft.yaml</code> must include <code>approval_decision</code>, <code>approved_draft_commit</code>, and <code>reviewed_at</code>; degraded mode must additionally include <code>approved_by</code>, <code>approval_scope</code>, and <code>missing_providers</code></li>
+<li><code>user-review-browser-open.yaml</code> event entries must include <code>stage</code>, <code>html_ref</code>, <code>opened_at</code>, <code>reviewer</code>, <code>opened_in_default_browser</code>, <code>generated_by_script</code>, and <code>generated_at_commit</code></li>
+<li><code>user-review-publish.yaml</code> event entries must include <code>stage</code>, <code>documents</code>, <code>published_at</code>, <code>reviewer</code>, <code>generated_by_script</code>, <code>generated_at_commit</code>, and one authoritative draft-commit field (<code>published_draft_commit</code> or canonicalized <code>commit</code>)</li>
+<li>official callers must reject artifacts missing required fields rather than trusting manual YAML edits</li>
+<li>official callers must cross-check declared commit fields against git history and append-only publish-log order where available</li>
 </ul>
 </li>
 <li>Add explicit wording that <code>plan_reviewed: true</code> is not a Stage 5 action for Route B.</li>
@@ -447,15 +618,28 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>Define the minimum runtime predicate set explicitly:<ul>
 <li><code>approve_as_is</code>: eligible to proceed only when the canonical Stage 5 artifact predicate passes</li>
 <li><code>revise_and_rerun</code>: remain blocked at Stage 5</li>
-<li><code>reject</code>: remain blocked at Stage 5</li>
-<li><code>no-response</code>: missing artifact, blank <code>approval_decision</code>, or missing required review metadata keeps the WRK blocked</li>
+<li><code>reject</code>: remain blocked at Stage 5 and do not auto-restart from the common draft</li>
+<li><code>no_response</code>: missing artifact, blank <code>approval_decision</code>, or missing required review metadata keeps the WRK blocked</li>
 </ul>
 </li>
-<li>Use <code>specs/templates/user-review-plan-draft-template.yaml</code> as the decision artifact schema source, <code>specs/templates/user-review-publish-template.yaml</code> as the publish evidence schema source, and <code>specs/templates/stage5-migration-exemption-template.yaml</code> as the legacy exemption schema source rather than defining new YAML formats in prose.</li>
+<li>Use <code>specs/templates/user-review-common-draft-template.yaml</code> as the common-draft schema source, <code>specs/templates/user-review-plan-draft-template.yaml</code> as the decision artifact schema source, <code>specs/templates/user-review-publish-template.yaml</code> as the publish evidence schema source, and <code>specs/templates/stage5-migration-exemption-template.yaml</code> as the legacy exemption schema source rather than defining new YAML formats in prose.</li>
+<li>Use <code>specs/templates/stage5-evidence-contract.yaml</code> as the versioned umbrella contract for Stage 5 evidence so the Stage 5 templates, log scripts, checker, and tests share one compatibility source.</li>
+<li>Define schema/validation precedence explicitly:<ul>
+<li><code>specs/templates/stage5-evidence-contract.yaml</code> is normative for schema version and cross-artifact invariants</li>
+<li>per-artifact templates are normative for field-level schema</li>
+<li>the canonical checker validates umbrella-contract compatibility first, then per-artifact schema, and exits <code>2</code> if they diverge</li>
+</ul>
+</li>
 <li>Preserve the Stage 5 workflow design from <code>## Locked Decisions</code> in the three workflow contract files rather than treating it as disposable planning residue.</li>
 <li>Keep degraded-mode fallback policy in scope because it is part of making the preserved 3-provider workflow operable.</li>
 <li>Add machine-checkable degraded-mode approval fields to <code>user-review-plan-draft-template.yaml</code> so missing-provider continuation can be enforced automatically.</li>
 <li>Define degraded-mode authority explicitly in schema fields such as <code>approved_by: user</code>, <code>approval_scope: degraded_mode</code>, and <code>missing_providers</code>.</li>
+<li>Standardize provider-unavailable detection for the preserved 3-provider Stage 5 flow:<ul>
+<li>one explicit CLI launch/auth/quota failure marks the provider blocked immediately</li>
+<li>a bounded no-response timeout of <code>60s</code> from provider launch to first response token or structured error also marks the provider blocked</li>
+<li>once blocked, the provider may participate again only after a new explicit user decision or a fresh Stage 5 run</li>
+</ul>
+</li>
 <li>Define migration determinism explicitly:<ul>
 <li>derive WRK legacy status from the WRK file first-introduced git commit compared against <code>gate_activation_commit</code></li>
 <li>do not use <code>created_at</code> as the legacy/runtime authority</li>
@@ -464,8 +648,37 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>do not rely on mutable runtime state outside the repository evidence pack</li>
 </ul>
 </li>
+<li>Define the normative checker order explicitly:<ul>
+<li>load <code>stage5-gate-config.yaml</code></li>
+<li>resolve WRK paths, assets paths, and required template/schema files</li>
+<li>resolve legacy state from <code>stage5-first-gated.yaml</code> if present; otherwise perform a bounded git-history lookup</li>
+<li>if legacy state cannot be resolved deterministically, exit <code>2</code></li>
+<li>validate migration exemption/backfill eligibility only after deterministic legacy classification</li>
+<li>validate evidence schema and required provenance fields</li>
+<li>compute authoritative published draft commit from the last <code>plan_draft</code> publish event</li>
+<li>apply stale-evidence checks and the Stage 5 decision table</li>
+<li>return only canonical exit codes and messages to callers</li>
+</ul>
+</li>
+<li>Define the authoritative commit comparison target explicitly:<ul>
+<li>the Stage 5 baseline is the last approved-and-published <code>plan_draft</code> commit from <code>user-review-publish.yaml</code></li>
+<li><code>user-review-plan-draft.yaml</code> must store that same commit in <code>approved_draft_commit</code> as a secondary assertion</li>
+<li>Stage 6 local draft edits do not replace that baseline until Stage 7 user review accepts the final-plan package</li>
+<li>stale-evidence checks for Stage 6 eligibility compare against the Stage 5 baseline only</li>
+<li>Stage 7 renderer deltas compare the final-plan package against that same Stage 5 baseline</li>
+</ul>
+</li>
+<li>Define precedence explicitly when runtime signals disagree:<ul>
+<li><code>stage5-first-gated.yaml</code> is authoritative for persisted first-gated state if present and valid</li>
+<li>otherwise use bounded git-history lookup plus <code>gate_activation_commit</code> for legacy classification</li>
+<li>migration exemption is considered only after legacy classification says the WRK is eligible</li>
+<li>publish-log authority affects stale-evidence checks only; it never overrides legacy classification</li>
+<li>decision-table outcome is evaluated only after schema, provenance, legacy, and stale-evidence checks pass</li>
+</ul>
+</li>
 <li>Define <code>scripts/work-queue/stage5-gate-config.yaml</code> governance explicitly:<ul>
-<li>changes require the same WRK to update workflow contracts and tests together</li>
+<li>it is owned by the workflow-governance contract and may change only through a paired WRK that updates config, contracts, and tests together</li>
+<li>lifecycle and unit tests must fail if config behavior changes without paired contract/test updates</li>
 <li>compatibility notes must document rollout impact on in-flight WRKs</li>
 <li>silent cutoff changes without paired tests are not allowed</li>
 </ul>
@@ -473,14 +686,26 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>Choose and document the compensating control for out-of-band manual frontmatter edits:<ul>
 <li>official workflow scripts revalidate Stage 5 evidence independently of frontmatter edits before Stage 6 or downstream claim progression</li>
 <li>direct file edits remain an operator-trust boundary, but they must not be sufficient to bypass official gates</li>
+<li>when frontmatter claims approval but the checker fails, emit an explicit blocking message/signal rather than silently proceeding</li>
+</ul>
+</li>
+<li>Preserve append-only evidence integrity under concurrency:<ul>
+<li><code>user-review-browser-open.yaml</code>, <code>user-review-publish.yaml</code>, and <code>stage5-first-gated.yaml</code> writes must use the same concrete <code>lockfile + atomic rename</code> strategy</li>
+<li>for <code>stage5-first-gated.yaml</code>, acquire the lock before the git-history lookup so only one checker invocation can perform first-write classification for a WRK</li>
+<li>use lock files under the WRK evidence directory with names <code>.&lt;artifact&gt;.lock</code></li>
+<li>use temp files under the same directory with names <code>.&lt;artifact&gt;.tmp.&lt;pid&gt;</code></li>
+<li>record PID and timestamp in each lock file</li>
+<li>on startup, remove stale temp files only after verifying no live lock owner remains and the stale-lock heuristic passes; otherwise fail with exit <code>2</code></li>
+<li>concurrent-access tests must prove the evidence log remains parseable and ordered after simultaneous writes</li>
 </ul>
 </li>
 <li>Define stale evidence explicitly using immutable commit fields:<ul>
 <li>review evidence must record <code>approved_draft_commit</code></li>
 <li>publish evidence must record <code>published_draft_commit</code></li>
 <li><code>user-review-publish.yaml</code> is an append-only <code>events[]</code> log matching <code>specs/templates/user-review-publish-template.yaml</code></li>
-<li>the authoritative current published draft commit is the <code>published_draft_commit</code> or <code>commit</code> field from the most recent <code>plan_draft</code> event in <code>user-review-publish.yaml</code></li>
-<li>"most recent" means greatest <code>published_at</code>; ties are broken by last array position in file order</li>
+<li>the authoritative current published draft commit is the <code>published_draft_commit</code> or <code>commit</code> field from the last <code>plan_draft</code> event entry in <code>user-review-publish.yaml</code></li>
+<li>array order is authoritative; do not use timestamp tie-breakers to determine the current published draft</li>
+<li>timezone or clock skew must not change authority because timestamps are diagnostic, not authoritative</li>
 <li>evidence is stale when <code>approved_draft_commit</code> does not match that authoritative published draft commit</li>
 </ul>
 </li>
@@ -488,16 +713,34 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>the canonical checker must fail closed if the WRK assets directory cannot be resolved</li>
 <li><code>cross-review.sh</code> must pass an explicit assets path or emit a blocking error with corrective guidance</li>
 <li>shallow-clone or detached-history contexts must emit an explicit repair message rather than silently misclassifying legacy or stale evidence</li>
+<li>live-workspace git-history calls must use a bounded <code>8s</code> timeout/circuit-breaker; timeout is an exit <code>2</code> infrastructure failure, not a silent hang</li>
+<li>before enabling the first guarded live entrypoint, run <code>scripts/work-queue/bootstrap-stage5-gate.sh --dry-run</code></li>
+<li>the dry-run report is the authoritative go/no-go output for rollout and must include <code>eligible_wrk_count</code>, <code>unresolved_history_count</code>, <code>unresolved_history_ratio</code>, <code>proposed_first_gated_writes</code>, <code>proposed_exemptions</code>, and <code>decision</code></li>
+<li>if unresolved-history <code>exit 2</code> affects more than the greater of <code>2</code> WRKs or <code>20%</code> of the active Stage 5+ population, abort rollout and pre-seed the missing first-gated markers or validated migration exemptions</li>
+<li>if repeated exit <code>2</code> persists because git history cannot be resolved, the operator recovery path is:</li>
+<li>fetch or repair history and rerun first</li>
+<li>if the WRK is truly legacy/in-flight, create a validated migration exemption using the template-backed artifact</li>
+<li>do not create <code>stage5-first-gated.yaml</code> manually; only the checker or a dedicated migration tool may write it</li>
+<li>migration exemption artifacts may be authored only by the orchestrator after explicit user approval; the checker validates but never authors exemptions</li>
+<li>before Phase 1 live rollout, pre-seed any required first-gated markers or exemptions for known active WRKs so entrypoints do not all hit the same exit-2 bootstrap failure</li>
 </ul>
 </li>
 <li>Define the checker exit-code contract explicitly:<ul>
 <li>exit <code>1</code> for predicate failure / incomplete Stage 5 evidence</li>
 <li>exit <code>2</code> for infrastructure or path failure such as unreadable assets, YAML parse failure, or unresolved WRK assets path</li>
+<li>official callers must treat both exit codes as fail-closed and surface the distinction in their error output</li>
+<li>shell callers may prefix entrypoint context but must preserve canonical checker diagnostics verbatim as the authoritative failure text</li>
+</ul>
+</li>
+<li>Define the rollback note concretely for the first guarded entrypoints:<ul>
+<li>if the newly added <code>plan.sh</code> or <code>cross-review.sh</code> guard causes unexpected live trapping, use <code>git revert --no-commit &lt;guard-commit&gt;</code> followed by a focused revert commit to remove the entrypoint guard while keeping the evidence artifacts for diagnosis</li>
 </ul>
 </li>
 <li>Implement and test an in-flight WRK migration/backfill rule so items already in Stage 5 or later are not silently trapped by the new gate.</li>
 <li>Define the legacy runtime predicate explicitly:<ul>
-<li>legacy candidate means <code>created_at</code> predates the gate-activation commit for this WRK</li>
+<li>legacy candidate means the WRK file first-introduced git commit predates <code>gate_activation_commit</code></li>
+<li><code>created_at</code> is informational metadata only and must never drive runtime legacy classification</li>
+<li>if <code>stage5-first-gated.yaml</code> already exists, its persisted first-gated state stabilizes later reruns</li>
 <li>legacy candidates already at Stage 5 or later on first gated invocation may use backfill or exemption</li>
 <li>legacy candidates below Stage 5 on first gated invocation must backfill and may not claim exemption</li>
 <li>non-legacy WRKs must satisfy the canonical predicate with no exemption path</li>
@@ -505,7 +748,16 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 </li>
 <li>Validate legacy exemptions against <code>specs/templates/stage5-migration-exemption-template.yaml</code> rather than allowing ad hoc self-exemption claims.</li>
 <li>Add a rollback note for deployment safety:<ul>
+<li>if any staged entrypoint emits exit <code>2</code> in rollout validation or fails its compatibility/test gate, do not wire the next entrypoint</li>
 <li>if staged entrypoint rollout traps active WRKs unexpectedly, revert the new entrypoint guard calls and route affected in-flight WRKs through the migration exemption path while fixing the checker</li>
+<li>before <code>close-item.sh</code> receives the new guard, its rollout window continues using the pre-existing close behavior plus upstream Stage 5 enforcement from earlier entrypoints; no partial close-item integration is allowed</li>
+<li>keep each entrypoint guard call in a small isolated patch so rollback can revert the affected entrypoint without reverting the checker or schema work</li>
+</ul>
+</li>
+<li>Define a simple checker-performance guardrail:<ul>
+<li>measure the checker with a shell timing harness against an isolated fixture repo and assert <code>&lt;= 3s</code> cold / <code>&lt;= 1s</code> warm</li>
+<li>record live-workspace timing as informational smoke output so pack-file slowness is visible without making the live repo the only deterministic test oracle</li>
+<li>if the fixture budget is missed, treat it as a regression and fix before rollout</li>
 </ul>
 </li>
 <li>Document the canonical <code>plan-quality-eval.yaml</code> field set used by the renderer and tests:<ul>
@@ -514,6 +766,36 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>rubric dimensions</li>
 <li>combine decision</li>
 <li>keep/reject rationale</li>
+<li>source the field names from <code>specs/templates/plan-quality-eval-template.yaml</code></li>
+</ul>
+</li>
+<li>Wire an automated backstop using existing repo automation points:<ul>
+<li><code>.github/workflows/baseline-check.yml</code> runs the checker/renderer unit tests on push and pull request</li>
+<li><code>scripts/hooks/pre-commit</code> runs fast local coverage for changed gate files before commit</li>
+<li>shell lifecycle/gate tests run in the pre-merge automation tier rather than remaining manual-only</li>
+</ul>
+</li>
+<li>Keep <code>plan_reviewed</code> semantics deterministic:<ul>
+<li><code>plan_reviewed: true</code> requires a Stage 6 cross-review pass with no unresolved <code>REQUEST_CHANGES</code></li>
+<li>no majority-quorum shortcut is in scope for this WRK</li>
+</ul>
+</li>
+<li>Estimate execution effort for drift detection:<ul>
+<li>Phase 1A target: 2 focused implementation sessions</li>
+<li>Phase 1B target: 3-4 implementation sessions</li>
+<li>Phase 2 target: 0-1 session once Phase 1/1B are green and before Stage 7 review</li>
+</ul>
+</li>
+<li>Distinguish blocking vs informational verification:<ul>
+<li>blocking merge gates: <code>tests/unit/test_verify_gate_evidence.py</code>, <code>tests/unit/test_generate_html_review.py</code> when renderer changes, <code>scripts/agents/tests/test-plan-gate.sh</code>, and <code>tests/work-queue/test-lifecycle-gates.sh</code></li>
+<li>informational smoke checks: live-workspace timing, extra <code>rg</code> audits, and non-blocking drift scans</li>
+</ul>
+</li>
+<li>Version the umbrella Stage 5 schema contract explicitly:<ul>
+<li><code>specs/templates/stage5-evidence-contract.yaml</code> starts at <code>schema_version: 1.0.0</code></li>
+<li>breaking field changes require a major-version bump and paired WRK</li>
+<li>additive compatible changes require a minor-version bump</li>
+<li>the checker exits <code>2</code> on unsupported schema major versions</li>
 </ul>
 </li>
 <li><strong>Combine decisions adopted</strong>:</li>
@@ -540,21 +822,23 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li>Ensure browser-open evidence and origin-publish evidence are present before treating Stage 5 as complete.</li>
 <li>During Stage 6 cross-review:<ul>
 <li>autonomous plan reconciliation and reruns are allowed until Stage 7 is ready</li>
-<li>do not stop for user approval between Stage 6 reruns</li>
+<li>Stage 6 may complete and auto-prepare the Stage 7 final-plan package without pausing for user approval</li>
+<li>do not stop for user approval between Stage 6 reruns or at Stage 6 completion</li>
+<li>the next required user checkpoint is Stage 7 final-plan review</li>
 <li>keep the Stage 6 findings available for later Stage 7 presentation</li>
 </ul>
 </li>
 <li>During Stage 7 final-plan review:<ul>
-<li>show on screen the changes made since the approved Stage 5 draft</li>
-<li>present the Stage 6-driven final-plan delta in a review-friendly format</li>
+<li>show on screen a visible <code>Changes Since Stage 5</code> section sourced from the approved Stage 5 baseline commit</li>
+<li>present the Stage 6-driven final-plan delta in a review-friendly format even if it spans multiple Stage 6 reconciliation cycles</li>
 <li>ask the user to review that delta before implementation begins</li>
 </ul>
 </li>
 <li>Apply this decision table at every user checkpoint:<ul>
-<li><code>approve</code>: update the corresponding review evidence and allow the next planned stage</li>
-<li><code>revise</code>: update the plan artifacts, regenerate HTML if needed, and stay in the current review stage</li>
-<li><code>reject</code>: stop progression and keep the WRK blocked at the current review stage</li>
-<li><code>no-response</code>: do not infer approval; remain blocked</li>
+<li>human <code>approve</code> maps to machine <code>approve_as_is</code>: update the corresponding review evidence and allow the next planned stage</li>
+<li>human <code>revise</code> maps to machine <code>revise_and_rerun</code>: update the plan artifacts, regenerate HTML if needed, and stay in the current review stage</li>
+<li>human <code>reject</code> maps to machine <code>reject</code>: stop progression and keep the WRK blocked at the current review stage</li>
+<li>human <code>no-response</code> maps to machine <code>no_response</code>: do not infer approval; remain blocked</li>
 </ul>
 </li>
 <li>Only after user approval closure and publish evidence may the plan proceed to Stage 6 cross-review.</li>
@@ -563,12 +847,16 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <li><code>uv run --no-project pytest -q tests/unit/test_generate_html_review.py</code></li>
 <li><code>bash scripts/agents/tests/test-plan-gate.sh</code></li>
 <li><code>bash tests/work-queue/test-lifecycle-gates.sh</code></li>
+<li><code>test -f specs/templates/user-review-common-draft-template.yaml</code></li>
 <li><code>test -f specs/templates/user-review-plan-draft-template.yaml</code></li>
 <li><code>test -f specs/templates/user-review-publish-template.yaml</code></li>
+<li><code>test -f .claude/work-queue/assets/WRK-1017/ac-test-matrix.md</code></li>
+<li><code>test -f .claude/work-queue/assets/WRK-1017/evidence/root-cause-replay.md</code></li>
 <li><code>test -f specs/templates/stage5-migration-exemption-template.yaml</code></li>
 <li><code>test -f scripts/work-queue/stage5-gate-config.yaml</code></li>
 <li><code>rg -n "Plan Quality Eval Comparison" scripts/work-queue/generate-html-review.py</code></li>
-<li><code>rg -n "user-review-browser-open.yaml|user-review-publish.yaml" scripts/work-queue/verify-gate-evidence.py scripts/work-queue/log-user-review-browser-open.sh scripts/work-queue/log-user-review-publish.sh</code></li>
+<li><code>rg -n "approved_draft_commit|approved_by|approval_scope|missing_providers" specs/templates/user-review-plan-draft-template.yaml scripts/work-queue/verify-gate-evidence.py</code></li>
+<li><code>rg -n "user-review-browser-open.yaml|user-review-publish.yaml|generated_by_script|generated_at_commit|published_draft_commit|events" scripts/work-queue/verify-gate-evidence.py scripts/work-queue/log-user-review-browser-open.sh scripts/work-queue/log-user-review-publish.sh specs/templates/user-review-publish-template.yaml</code></li>
 <li><code>rg -n "cross-review.sh|verify-gate-evidence.py|claim-item.sh|plan.sh" scripts/agents scripts/review scripts/work-queue</code></li>
 <li><code>rg -n "close-item.sh|stage5-gate-config.yaml|generated_by_script|generated_at_commit" scripts/work-queue scripts/agents</code></li>
 <li><code>rg -n "Changes Since Stage 5|Plan Quality Eval Comparison" scripts/work-queue/generate-html-review.py</code></li>
@@ -695,7 +983,7 @@ in <code>assets/WRK-1017/evidence/plan-quality-eval.yaml</code>.</p>
     A --> B
     B -->|approve| C[Assistive setup allowed]
     B -->|revise| A
-    B -->|reject| A
+    B -->|reject| N
     B -->|no response| N[Remain in Stage 5 blocked]
 
     C --> D1[Claude CLI plan pass plus evidence update]
@@ -713,7 +1001,7 @@ in <code>assets/WRK-1017/evidence/plan-quality-eval.yaml</code>.</p>
 
     E --> F[Human-in-the-loop review and approval on combined plan]
     F -->|approve| H[Capture four Stage 5 artifacts and publish reviewed draft]
-    F -->|revise| A
+    F -->|revise| E
     F -->|reject| N
     F -->|no response| N
 
@@ -734,28 +1022,36 @@ in <code>assets/WRK-1017/evidence/plan-quality-eval.yaml</code>.</p>
 <li>Does Stage 5 produce a required evidence artifact (<code>user-review-plan-draft.yaml</code>) that gate verification checks?</li>
 <li>Is there a "show me the HTML" path that bypasses the interactive walk-through?</li>
 </ol>
+<h2>Investigation Answers (Working Diagnosis)</h2>
+<ol>
+<li>Partially. Stage 5 is marked as blocking in workflow prose, but not yet enforced uniformly at every executable Stage 6 entrypoint.</li>
+<li>Partially. The skills say active user response is required, but the runtime gate is not yet consistently machine-checking that requirement.</li>
+<li>Confirmed at the evidence layer. The <code>WRK-1015</code> artifact replay in <code>.claude/work-queue/assets/WRK-1017/evidence/root-cause-replay.md</code> shows Stage 5 was marked done with browser-open evidence plus free-text/session notes and without <code>user-review-plan-draft.yaml</code>. That proves missing machine-enforced evidence validation is a real bypass path. Artifact replay alone does not prove whether the stage advancement was triggered by an official entrypoint or direct manual mutation, so implementation must harden both the canonical checker and official entrypoints.</li>
+<li>Partially. The required evidence artifact exists, but the canonical checker and entrypoints do not yet enforce a single field-level predicate across all callers.</li>
+<li>Yes, or close to yes. HTML presentation and publish can currently occur without a single canonical predicate stopping progression when approval/provenance evidence is incomplete.</li>
+</ol>
 <h2>Agentic AI Horizon</h2>
 <ul>
 <li>Stage 5 skipping is symptomatic of agents treating the lifecycle as a checklist rather than a dialog — a fundamental alignment problem for any multi-stage agentic workflow.</li>
 <li>Strengthening Stage 5 now builds the correct habit before evals (WRK-1009) instrument it.</li>
 </ul>
 <hr />
-<p><em>Source: session observation — Stage 5 user-agent interactive planning was missed during WRK-1015 execution</em></p>
+<p><em>Source: session observation and archived artifact replay — Stage 5 user-agent interactive planning was missed during WRK-1015 execution; replay evidence is recorded in <code>.claude/work-queue/assets/WRK-1017/evidence/root-cause-replay.md</code>.</em></p>
 <h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p>
   </div>
 
   <div class="card">
     <h2>Gate-Pass Stage Status</h2>
-<p><strong>Summary:</strong> 3 pass · 0 fail · 16 pending/warn · 1 n/a &nbsp; <span class="badge badge-info">Autonomy: L2</span></p>
+<p><strong>Summary:</strong> 4 pass · 0 fail · 15 pending/warn · 1 n/a &nbsp; <span class="badge badge-info">Autonomy: L2</span></p>
 <table>
   <thead><tr><th>Order</th><th>Stage</th><th>Stage Status</th><th>Gate-Pass</th><th>Human Decision</th><th>Owner</th><th>Blocker?</th><th>Comment</th><th>Evidence</th></tr></thead>
   <tbody><tr><td>1</td><td>Capture</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>orchestrator</td><td>no</td><td>WRK created in pending queue with baseline metadata.</td><td><code>.claude/work-queue/pending/WRK-1017.md</code></td></tr>
 <tr><td>2</td><td>Resource Intelligence</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Resource intelligence artifact pack not yet created for this WRK.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/resource-intelligence.yaml</code></td></tr>
 <tr><td>3</td><td>Triage</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>orchestrator</td><td>no</td><td>Route, priority, complexity, and workstations are set in frontmatter.</td><td><code>.claude/work-queue/pending/WRK-1017.md</code></td></tr>
 <tr><td>4</td><td>Plan Draft</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Draft plan exists and draft HTML has been generated.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-draft-review.html</code></td></tr>
-<tr><td>5</td><td>User Review - Plan (Draft)</td><td><span class="badge badge-info">IN_PROGRESS</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>no</td><td>Latest local revision with autonomous Stage 6 and Stage 7 delta review was approved by the user on 2026-03-06T23:01:20Z. Stage 5 remains open until refreshed publish evidence is logged for this newly approved draft state.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml</code></td></tr>
-<tr><td>6</td><td>Cross-Review</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Blocked pending refreshed publish evidence for the user-approved draft revision that allows autonomous Stage 6 progression to Stage 7 and adds on-screen Stage 5 delta review at Stage 7.</td><td><code>scripts/review/results/wrk-1017-review.md</code></td></tr>
-<tr><td>7</td><td>User Review - Plan (Final)</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>yes</td><td>Awaits cross-review and final-plan artifact generation.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-final-review.html</code></td></tr>
+<tr><td>5</td><td>User Review - Plan (Draft)</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>user + orchestrator</td><td>no</td><td>Latest local revision with autonomous Stage 6 and Stage 7 delta review was approved by the user on 2026-03-06T23:01:20Z and published to origin at 5e2679a0 on 2026-03-06T23:04:08Z. Refreshed Stage 5 evidence is complete for the current draft state.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml</code></td></tr>
+<tr><td>6</td><td>Cross-Review</td><td><span class="badge badge-info">WORKING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>no</td><td>Autonomous Stage 6 reconciliation is in progress against the approved Stage 5 baseline at 5e2679a0. Stage 6 may execute, rerun, reconcile, and complete without additional user intervention, then auto-prepare the Stage 7 final-plan package. The latest completed rerun at 20260307T014636Z returned REQUEST_CHANGES from claude, APPROVE from gemini, and a compulsory codex hard-gate failure (exit 1), so Stage 6 remains blocked on both plan tightening and codex reviewer availability without reopening Stage 5.</td><td><code>scripts/review/results/wrk-1017-review.md</code></td></tr>
+<tr><td>7</td><td>User Review - Plan (Final)</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>yes</td><td>This is the next required human checkpoint after autonomous Stage 6 completion. It awaits a Stage 6-cleared final-plan package with a visible Changes Since Stage 5 section for on-screen user review.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-final-review.html</code></td></tr>
 <tr><td>8</td><td>Claim / Activation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Cannot claim before plan gates pass.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/claim.yaml</code></td></tr>
 <tr><td>9</td><td>Work-Queue Routing Skill</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Awaiting claim/activation.</td><td><code>/work</code></td></tr>
 <tr><td>10</td><td>Work Execution</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/execute.yaml</code></td></tr>

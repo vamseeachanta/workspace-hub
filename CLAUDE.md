@@ -6,7 +6,7 @@
 3. **TDD mandatory** — tests before implementation; no exceptions
 4. **WRK gate** — every task maps to WRK-* in `.claude/work-queue/`; never execute multi-step without approval
 5. **Retrieval first** — consult `.claude/docs/`, `.claude/rules/`, memory before training knowledge
-6. **Gate evidence verification** — run `scripts/work-queue/verify-gate-evidence.py WRK-xxx` before claiming or closing a WRK so every cross-review (Claude/Codex/Gemini), plan approval, TDD, and legal gate artifact is recorded.
+6. **Gate evidence verification** — run `scripts/work-queue/verify-gate-evidence.py WRK-xxx` before claiming or closing a WRK so every cross-review (Claude/Codex/Gemini), plan approval, TDD, legal artifact, and required `.claude/work-queue/logs/WRK-*-<stage>.log` audit signal is recorded.
 ## Quick Reference
 - Skills: `/skills` — on-demand only | Session start: `/session-start` before any work request
 - Git: `.claude/rules/git-workflow.md` | Python: `.claude/rules/python-runtime.md` (uv always) | Plans: `specs/modules/`

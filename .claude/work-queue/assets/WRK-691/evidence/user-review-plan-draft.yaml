@@ -1,0 +1,29 @@
+wrk_id: WRK-691
+stage: plan-draft
+reviewed_at: "2026-03-06T00:00:00Z"
+confirmed_by: user
+decision: passed
+
+decisions:
+  - topic: design_approach
+    decision: Option C — split prevention + analytics
+    rationale: Start-hook without interaction prevents drift; post-session analysis tracks patterns without friction
+  - topic: drift_risk_files
+    decision: All 3 — python-runtime.md, git-workflow.md, file-taxonomy/SKILL.md
+    rationale: User confirmed all three; python-runtime highest risk (silent failure), git-workflow visible at commit, file-taxonomy caught by validate-file-placement
+  - topic: interactive_prompts
+    decision: Removed — no interactive prompts at session start
+    rationale: Auto-read is sufficient; prompts add friction without enforcement value
+  - topic: post_session_scope
+    decision: comprehensive-learning Phase 1 drift scan via detect-drift.sh
+    rationale: Aligns with session design principle (analysis in cron, not in session hooks)
+
+scope_confirmed:
+  in:
+    - session-start Step 0 auto-read (3 files)
+    - detect-drift.sh + tests
+    - comprehensive-learning Phase 1 drift detection
+  out:
+    - interactive load-assessment.sh (removed)
+    - session-interactive-analysis standalone skill (removed)
+    - codex variant (WRK-692, separate item)

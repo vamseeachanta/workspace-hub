@@ -1,0 +1,68 @@
+wrk_id: WRK-691
+generated_at: "2026-03-06T00:00:00Z"
+completion_status: continue_to_planning
+
+context:
+  problem: >
+    Agents drift from rules (uv run, file placement, git workflow) because they rely
+    on training knowledge rather than loading canonical rule files. Session start has
+    no structured check that rules were actually read. Hooks may not fire in all
+    environments, leaving load events unlogged.
+  scope_boundary: >
+    Claude-orchestrator only (WRK-692 covers Codex variant). No changes to session-end
+    or comprehensive-learning Phase 1 internals — only adds load_assessment event
+    that Phase 1 already reads.
+
+existing_files:
+  session_start_skill:
+    path: .claude/skills/workspace-hub/session-start/SKILL.md
+    lines: 134
+    version: 1.0.0
+    notes: Has readiness, snapshot, quota, work-queue steps — no load assessment phase
+  session_scripts:
+    path: scripts/session/
+    files:
+      - capture-harness-version.sh
+      - refresh-context.sh
+      - subagent-checkpoint.py
+      - write-wrk-state.py
+    notes: No load-assessment.sh exists yet
+  rules_to_check:
+    - .claude/rules/python-runtime.md
+    - .claude/rules/git-workflow.md
+    - .claude/rules/coding-style.md
+  skills_to_check:
+    - .claude/skills/workspace-hub/file-taxonomy/SKILL.md
+    - .claude/docs/file-structure-skills-map.md
+  state_files:
+    - .claude/state/active-wrk
+    - config/ai-tools/agent-quota-latest.json
+    - MEMORY.md
+
+deliverables:
+  - path: scripts/session/load-assessment.sh
+    action: CREATE
+    notes: Shell script — 7 checks, exit 0/1, < 3s runtime
+  - path: tests/unit/test_load_assessment.sh
+    action: CREATE
+    notes: 7 unit tests (pass + gap cases)
+  - path: .claude/skills/workspace-hub/session-start/SKILL.md
+    action: EDIT
+    notes: Add Load Assessment phase (Step 0) + interactive gap resolution
+  - path: .claude/skills/workspace-hub/session-interactive-analysis/SKILL.md
+    action: CREATE
+    notes: Standalone mid-session skill (post-/clear use)
+
+risks:
+  - risk: load-assessment.sh > 3s on cold start
+    mitigation: No git/network ops; file existence checks only (stat, wc -l)
+  - risk: Interactive prompts block non-interactive sessions
+    mitigation: read -r with 5-second timeout; auto-skip if not tty
+  - risk: log write fails if orchestrator/claude/ dir missing
+    mitigation: mkdir -p before write; || true on failure
+
+skills:
+  core_used:
+    - workspace-hub/work-queue
+    - workspace-hub/session-start
+    - workspace-hub/file-taxonomy

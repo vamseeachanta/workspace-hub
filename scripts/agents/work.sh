@@ -21,10 +21,10 @@ assert_orchestrator_or_fail "$provider"
 case "$subcmd" in
     run|"" )
         active_wrk="$(session_get active_wrk 2>/dev/null || true)"
-        if [[ -x "$gate_logger" && -n "$active_wrk" ]]; then
-            bash "$gate_logger" "$active_wrk" "routing" "work_queue_skill" "$provider" "/work routing invoked"
-        fi
+        log_gate_event_if_available "$active_wrk" "routing" "work_wrapper_start" "$provider" "/work routing invoked"
+        log_gate_event_if_available "$active_wrk" "routing" "work_queue_skill" "$provider" "/work routing invoked"
         echo "Workflow orchestrator '$provider' acknowledged /work run contract."
+        log_gate_event_if_available "$active_wrk" "routing" "work_wrapper_complete" "$provider" "/work routing acknowledged"
         ;;
     list)
         echo "── pending/ ──"

@@ -8,6 +8,18 @@ source "$AGENTS_LIB_DIR/session-store.sh"
 
 WORK_ITEM_ROOT="${WORK_ITEM_ROOT:-$WS_HUB/.claude/work-queue}"
 
+log_gate_event_if_available() {
+    local wrk_id="${1:-}"
+    local stage="${2:-}"
+    local action="${3:-}"
+    local provider="${4:-}"
+    local notes="${5:-}"
+    local gate_logger="${WS_HUB}/scripts/work-queue/log-gate-event.sh"
+    [[ -z "$wrk_id" || -z "$stage" || -z "$action" || -z "$provider" ]] && return 0
+    [[ -x "$gate_logger" ]] || return 0
+    bash "$gate_logger" "$wrk_id" "$stage" "$action" "$provider" "$notes"
+}
+
 resolve_wrk_file() {
     local wrk_id="$1"
     for d in working pending blocked archive; do

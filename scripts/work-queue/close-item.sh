@@ -125,12 +125,19 @@ fi
 
 VALIDATOR="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
 echo "Running gate evidence validator for ${WRK_ID} before close..."
+if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence_start" "orchestrator" "phase=close"
+fi
 if ! uv run --no-project python "$VALIDATOR" "$WRK_ID" --phase close; then
+  if [[ -x "$GATE_LOGGER" ]]; then
+    bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence_fail" "orchestrator" "phase=close"
+  fi
   echo "✖ Gate evidence verification failed for ${WRK_ID}; gather the missing artifacts before closing." >&2
   exit 1
 fi
 
 if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence_pass" "orchestrator" "phase=close"
   bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence" "orchestrator" "close gate verified"
 fi
 

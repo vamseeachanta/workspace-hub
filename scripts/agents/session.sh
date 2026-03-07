@@ -52,7 +52,9 @@ case "$cmd" in
 
         echo "Initialized session '$sid' with orchestrator '$provider'."
         if [[ -x "$GATE_LOGGER" ]]; then
+            bash "$GATE_LOGGER" "WRK-SESSION" "session" "session_wrapper_start" "$provider" "session_id=${sid}"
             bash "$GATE_LOGGER" "WRK-SESSION" "session" "init" "$provider" "session_id=${sid}"
+            bash "$GATE_LOGGER" "WRK-SESSION" "session" "session_wrapper_complete" "$provider" "session_id=${sid}"
         fi
 
         # Register in pipeline state (WRK-161)

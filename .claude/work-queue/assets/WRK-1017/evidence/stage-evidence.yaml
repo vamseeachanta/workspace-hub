@@ -46,11 +46,11 @@ stages:
     evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
-    status: pending
+    status: working
     human_decision_required: "no"
     owner: agents
     blocker: "no"
-    comment: Latest published draft package at 5e2679a0 is ready for a fresh autonomous Stage 6 rerun with Stage 7 delta review requirements.
+    comment: Autonomous Stage 6 reconciliation is in progress against the approved Stage 5 baseline at 5e2679a0. Stage 6 may execute, rerun, reconcile, and complete without additional user intervention, then auto-prepare the Stage 7 final-plan package. The latest completed rerun at 20260307T014636Z returned REQUEST_CHANGES from claude, APPROVE from gemini, and a compulsory codex hard-gate failure (exit 1), so Stage 6 remains blocked on both plan tightening and codex reviewer availability without reopening Stage 5.
     evidence: scripts/review/results/wrk-1017-review.md
   - order: 7
     stage: User Review - Plan (Final)
@@ -58,7 +58,7 @@ stages:
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "yes"
-    comment: Awaits cross-review and final-plan artifact generation.
+    comment: This is the next required human checkpoint after autonomous Stage 6 completion. It awaits a Stage 6-cleared final-plan package with a visible Changes Since Stage 5 section for on-screen user review.
     evidence: .claude/work-queue/assets/WRK-1017/plan-final-review.html
   - order: 8
     stage: Claim / Activation

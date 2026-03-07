@@ -50,12 +50,19 @@ fi
 
 # 4. Gate evidence check (close phase contract must pass before archive)
 VALIDATOR="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
+if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_start" "orchestrator" "phase=close"
+fi
 if ! uv run --no-project python "$VALIDATOR" "$ITEM_ID" --phase close; then
+  if [[ -x "$GATE_LOGGER" ]]; then
+    bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_fail" "orchestrator" "phase=close"
+  fi
   echo "✖ Gate evidence verification failed for ${ITEM_ID}; cannot archive." >&2
   exit 1
 fi
 
 if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence_pass" "orchestrator" "phase=close"
   bash "$GATE_LOGGER" "$ITEM_ID" "archive" "verify_gate_evidence" "orchestrator" "archive gate verified"
 fi
 

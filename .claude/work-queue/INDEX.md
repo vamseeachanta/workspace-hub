@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-06T13:36:12Z by generate-index.py -->
+<!-- Generated: 2026-03-06T23:33:09Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-06T13:36:12Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-06T23:33:09Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 451
+**Total items:** 453
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 207 |
+| pending | 209 |
 | working | 5 |
 | blocked | 9 |
 | archived | 230 |
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 210 |
+| high | 212 |
 | medium | 199 |
 | low | 41 |
 
@@ -30,9 +30,9 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 77 |
-| medium | 214 |
-| complex | 93 |
+| simple | 78 |
+| medium | 213 |
+| complex | 94 |
 
 ### By Category
 
@@ -47,7 +47,7 @@
 | business | 7 |
 | maintenance | 6 |
 | personal | 4 |
-| uncategorised | 4 |
+| uncategorised | 6 |
 
 ### By Repository
 
@@ -55,7 +55,7 @@
 |------------|-------|
 | CAD-DEVELOPMENTS | 2 |
 | OGManufacturing | 10 |
-| TBD-client2-repo | 4 |
+| TBD-client2-repo | 5 |
 | aceengineer-admin | 4 |
 | aceengineer-strategy | 1 |
 | aceengineer-website | 14 |
@@ -66,10 +66,10 @@
 | client_projects | 1 |
 | digitalmodel | 167 |
 | doris | 21 |
-| frontierdeepwater | 10 |
+| frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 144 |
+| workspace-hub | 146 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,10 +77,10 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 170 / 451 |
+| Plans exist | 170 / 453 |
 | Plans cross-reviewed | 65 |
-| Plans approved | 86 |
-| Brochure pending | 7 |
+| Plans approved | 87 |
+| Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
 ## Metrics
@@ -89,9 +89,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 451 |
+| Total captured | 453 |
 | Total archived | 230 |
-| Completion rate | 230/451 (51%) |
+| Completion rate | 230/453 (51%) |
 | Monthly rate (current month) | 5 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -99,7 +99,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 59 / 207 | 29% |
+| Pending items with plans | 59 / 209 | 28% |
 | Plans cross-reviewed | 10 | 14% |
 | Plans user-approved | 12 | 17% |
 
@@ -116,7 +116,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 98 | 2 | 7 |
+| High     | 100 | 2 | 7 |
 | Medium   | 81  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
 
@@ -520,13 +520,15 @@
 | WRK-006 | LOW | Upload videos from iPhone to YouTube | blocked |
 | WRK-008 | LOW | Upload photos from multiple devices to achantas-media | pending |
 
-### uncategorised (4 items — 1 high, 1 medium, 2 low)
+### uncategorised (6 items — 3 high, 1 medium, 2 low)
 
 #### uncategorised / uncategorised
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-476 | HIGH | feat(worldenergydata): create ESG/Carbon Emissions module | pending |
+| WRK-624 | HIGH | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending |
+| WRK-634 | HIGH | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending |
 | WRK-475 | MEDIUM | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending |
 | WRK-581 | LOW | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending |
 | WRK-TEST-ENSEMBLE | LOW | Smoke test for ensemble planning | pending |
@@ -928,6 +930,7 @@
 | WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | pending | medium | medium | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
 | WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | complex | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618, WRK-619 |
 | WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | low | medium | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | ace-linux-1, ace-linux-2 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-618 |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | high | complex | ace-linux-1 | - | - | codex+gemini | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex+gemini | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | ░░░ 30% | n/a | - |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | frontierdeepwater | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-625 |
@@ -938,6 +941,7 @@
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-627, WRK-630 |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | ace-linux-1 | - | - | claude | workspace-hub, frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | █░░ 50% | ⏳ pending | WRK-632 |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | medium | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | medium | small | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-635 |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -978,14 +982,14 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | - | n/a | - |
+| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | - | n/a | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1019 |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - 15% | n/a | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | - | n/a | - |
 
 ## By Status
 
@@ -1151,6 +1155,7 @@
 | WRK-621 | feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat) | medium | medium | digitalmodel | - |
 | WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | medium | complex | digitalmodel | - |
 | WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | low | medium | digitalmodel | - |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | high | complex | workspace-hub | - |
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | high | medium | frontierdeepwater | - |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | high | medium | frontierdeepwater | - |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | high | complex | frontierdeepwater | - |
@@ -1160,6 +1165,7 @@
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | medium | complex | frontierdeepwater, TBD-client2-repo | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | high | simple | frontierdeepwater, TBD-client2-repo | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | high | medium | workspace-hub | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | high | simple | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | medium | medium | workspace-hub | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | medium | small | workspace-hub | - |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | high | medium | workspace-hub | - |
@@ -1192,7 +1198,7 @@
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | medium | medium | workspace-hub | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | medium | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | medium | medium | workspace-hub | - |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | high | medium | workspace-hub | - |
+| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | high | high | workspace-hub | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | medium | simple | workspace-hub | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | high | complex | workspace-hub | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | medium | medium | workspace-hub | - |
@@ -1492,6 +1498,7 @@
 | WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | high | complex | - |
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | - |
 
 ### aceengineer-admin
 
@@ -1789,6 +1796,7 @@
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | complex | - |
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | - |
 
 ### sabithaandkrishnaestates
 
@@ -1906,8 +1914,10 @@
 | WRK-604 | chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records) | pending | low | low | - |
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | high | complex | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | high | complex | - |
 | WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | archived | high | complex | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | medium | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | medium | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | medium | small | - |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | - |
@@ -1944,7 +1954,7 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | - |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | - |
+| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | high | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | - |
@@ -2236,6 +2246,7 @@
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | complex | workspace-hub, CAD-DEVELOPMENTS | - |
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | simple | CAD-DEVELOPMENTS | - |
 | WRK-618 | feat(geotechnical): soil profile models, CPT correlation, shared types | pending | medium | digitalmodel | - |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | complex | workspace-hub | - |
 | WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | archived | complex | workspace-hub | - |
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | pending | medium | frontierdeepwater | - |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | medium | frontierdeepwater | - |
@@ -2245,6 +2256,7 @@
 | WRK-630 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package | pending | complex | TBD-client2-repo | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | simple | frontierdeepwater, TBD-client2-repo | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | medium | workspace-hub | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | simple | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | medium | workspace-hub | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | small | workspace-hub | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | medium | workspace-hub | - |
@@ -2261,7 +2273,7 @@
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | medium | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working | medium | workspace-hub | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | simple | workspace-hub | - |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | medium | workspace-hub | - |
+| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | workspace-hub | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | complex | workspace-hub | - |
 
 ### Medium
@@ -2586,6 +2598,7 @@
 | WRK-586 | feat(skills): auto-fetch IACS Blue Book UR updates | pending | low | workspace-hub | - |
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | CAD-DEVELOPMENTS | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | frontierdeepwater, TBD-client2-repo | - |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working | medium | workspace-hub | - |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | workspace-hub | - |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | pending | medium | workspace-hub | - |
@@ -2813,7 +2826,6 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | workspace-hub | - |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | workspace-hub | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
 
@@ -2907,6 +2919,7 @@
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | high | workspace-hub, CAD-DEVELOPMENTS | - |
 | WRK-619 | feat(geotechnical): pile axial/lateral capacity, p-y/t-z/q-z curves | pending | medium | digitalmodel | - |
 | WRK-622 | feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA | pending | medium | digitalmodel | - |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | high | workspace-hub | - |
 | WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | archived | high | workspace-hub | - |
 | WRK-627 | feat(frontierdeepwater): engineering AI demo — workflows + BSEE data + demo package (Days 4-5) | pending | high | frontierdeepwater | - |
 | WRK-628 | feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme | pending | high | frontierdeepwater, aceengineer-website | - |
@@ -2917,7 +2930,7 @@
 
 ## By Computer
 
-### ace-linux-1 (157 active / 174 total)
+### ace-linux-1 (159 active / 176 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3045,6 +3058,7 @@
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | digitalmodel, OGManufacturing |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | digitalmodel, OGManufacturing |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | workspace-hub, digitalmodel, worldenergydata, assetutilities |
+| WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending | high | complex | workspace-hub |
 | WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | archived | high | complex | workspace-hub |
 | WRK-625 | feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1) | pending | high | medium | frontierdeepwater |
 | WRK-626 | feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | pending | high | medium | frontierdeepwater |
@@ -3055,6 +3069,7 @@
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | medium | complex | frontierdeepwater, TBD-client2-repo |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | frontierdeepwater, TBD-client2-repo |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | medium | workspace-hub |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | workspace-hub, frontierdeepwater, TBD-client2-repo |
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | workspace-hub |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | workspace-hub |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | workspace-hub |
@@ -3087,7 +3102,7 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | workspace-hub |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | workspace-hub |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | workspace-hub |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | medium | workspace-hub |
+| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | pending | high | high | workspace-hub |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | workspace-hub |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | workspace-hub |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | workspace-hub |
@@ -3456,6 +3471,7 @@
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | WRK-627, WRK-630 | - | WRK-628 |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | - | - | WRK-628 |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | - | - | WRK-628 |
+| WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | WRK-632 | - | WRK-628 |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | WRK-635 | - | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | WRK-637 | - | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | WRK-638 | - | - |

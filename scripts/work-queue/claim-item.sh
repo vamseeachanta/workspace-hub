@@ -251,12 +251,19 @@ fi
 
 VERIFY_SCRIPT="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
 echo "Running gate evidence validator for ${WRK_ID}..."
+if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$WRK_ID" "claim" "verify_gate_evidence_start" "$ORCH_AGENT" "phase=claim"
+fi
 if ! uv run --no-project python "$VERIFY_SCRIPT" "$WRK_ID" --phase claim; then
+  if [[ -x "$GATE_LOGGER" ]]; then
+    bash "$GATE_LOGGER" "$WRK_ID" "claim" "verify_gate_evidence_fail" "$ORCH_AGENT" "phase=claim"
+  fi
   echo "✖ Gate evidence verification failed for ${WRK_ID}; fix the missing artifacts before claiming." >&2
   exit 1
 fi
 
 if [[ -x "$GATE_LOGGER" ]]; then
+  bash "$GATE_LOGGER" "$WRK_ID" "claim" "verify_gate_evidence_pass" "$ORCH_AGENT" "phase=claim"
   bash "$GATE_LOGGER" "$WRK_ID" "claim" "claim_evidence" "$ORCH_AGENT" "claim gate verified"
 fi
 

@@ -80,7 +80,11 @@ stages:
   stage: User Review - Implementation
   status: pending
   evidence: .claude/work-queue/assets/WRK-1005/evidence/user-review-close.yaml
-  notes: Awaiting user review of orchestrator-assessment.html
+  notes: >
+    DEFERRED 2026-03-06 — resume ~2026-03-11. Prerequisite: review recent
+    provider session logs to enrich assessment before final sign-off.
+    Parse logs from WRK-1002/1003/1004 sessions + any intervening sessions
+    to validate routing rules hold up against more data points.
 - order: 18
   stage: Reclaim
   status: n/a

@@ -567,6 +567,66 @@ def load_yaml(path: Path) -> tuple[dict | None, str | None]:
     return data, None
 
 
+def parse_gate_log(log_path: Path) -> list[dict[str, str]]:
+    entries: list[dict[str, str]] = []
+    current: dict[str, str] = {}
+    for line in log_path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            if current:
+                entries.append(current)
+                current = {}
+            continue
+        if ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        current[key.strip()] = value.strip()
+    if current:
+        entries.append(current)
+    return entries
+
+
+def check_agent_log_gate(workspace_root: Path, wrk_id: str, phase: str) -> tuple[bool, str]:
+    log_dir = workspace_root / ".claude" / "work-queue" / "logs"
+    if not log_dir.exists():
+        return False, "work-queue log directory missing"
+
+    required_by_phase: dict[str, list[tuple[str, set[str]]]] = {
+        "claim": [
+            ("routing", {"work_wrapper_complete", "work_queue_skill"}),
+            ("plan", {"plan_wrapper_complete", "plan_draft_complete"}),
+            ("claim", {"verify_gate_evidence_pass", "claim_evidence"}),
+        ],
+        "close": [
+            ("routing", {"work_wrapper_complete", "work_queue_skill"}),
+            ("plan", {"plan_wrapper_complete", "plan_draft_complete"}),
+            ("execute", {"execute_wrapper_complete", "tdd_eval"}),
+            ("cross-review", {"review_wrapper_complete", "agent_cross_review"}),
+            ("close", {"verify_gate_evidence_pass", "close_item"}),
+        ],
+    }
+    requirements = required_by_phase[phase]
+    missing: list[str] = []
+    matched: list[str] = []
+    for stage, accepted_actions in requirements:
+        log_path = log_dir / f"{wrk_id}-{stage}.log"
+        if not log_path.exists():
+            missing.append(f"{stage}:missing-log")
+            continue
+        entries = parse_gate_log(log_path)
+        provider_entries = [e for e in entries if str(e.get("provider", "")).strip()]
+        if not provider_entries:
+            missing.append(f"{stage}:missing-provider")
+            continue
+        actions = {str(e.get("action", "")).strip() for e in provider_entries}
+        if not (actions & accepted_actions):
+            missing.append(f"{stage}:missing-actions={sorted(accepted_actions)}")
+            continue
+        matched.append(f"{stage}:{sorted(actions & accepted_actions)}")
+    if missing:
+        return False, " ; ".join(missing)
+    return True, "matched " + ", ".join(matched)
+
+
 def run_checks(wrk_id: str, phase: str = "close") -> int:
     workspace_root = Path(__file__).resolve().parents[2]
     queue_dir = workspace_root / ".claude" / "work-queue"
@@ -625,6 +685,8 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
     gates.append({"name": "Resource-intelligence gate", "ok": bool(ri_ok), "details": ri_details})
     activation_ok, activation_details = check_activation_gate(assets_dir, wrk_id)
     gates.append({"name": "Activation gate", "ok": activation_ok, "details": activation_details})
+    log_ok, log_details = check_agent_log_gate(workspace_root, wrk_id, phase)
+    gates.append({"name": "Agent log gate", "ok": log_ok, "details": log_details})
     html_open_required = ["plan_draft", "plan_final"]
     if phase == "close":
         html_open_required.append("close_review")
