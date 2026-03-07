@@ -76,6 +76,16 @@
             "command": "echo '📝 Edit: '$(cat | jq -r '.tool_input.file_path // .tool_input.path // \"unknown\"')"
           }
         ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | uv run --no-project python \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/scripts/work-queue/gate_check.py\"",
+            "statusMessage": "WRK stage gate check"
+          }
+        ]
       }
     ],
     "PostToolUse": [

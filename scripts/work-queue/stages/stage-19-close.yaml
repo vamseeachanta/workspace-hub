@@ -1,0 +1,16 @@
+order: 19
+name: Close
+weight: light
+invocation: task_agent
+human_gate: false
+parallelism: single-thread
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads:
+  - assets/WRK-NNN/evidence/user-review-close.yaml
+  - assets/WRK-NNN/evidence/gate-evidence-summary.yaml
+exit_artifacts:
+  - done/WRK-NNN.md
+blocking_condition: "done/WRK-NNN.md missing after close-item.sh"
+log_action: wrk_closed
+context_budget_kb: 4

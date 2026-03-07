@@ -1,0 +1,16 @@
+order: 9
+name: Work-Queue Routing
+weight: light
+invocation: chained_agent
+human_gate: false
+parallelism: single-thread
+chained_stages: [8, 9]
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads:
+  - assets/WRK-NNN/evidence/activation.yaml
+exit_artifacts:
+  - assets/WRK-NNN/routing.yaml
+blocking_condition: "routing.yaml missing"
+log_action: routing_complete
+context_budget_kb: 4

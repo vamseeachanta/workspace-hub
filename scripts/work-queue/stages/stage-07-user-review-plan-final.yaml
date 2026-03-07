@@ -1,0 +1,19 @@
+order: 7
+name: User Review - Plan Final
+weight: heavy
+invocation: human_session
+human_gate: true
+parallelism: single-thread
+gate_file: evidence/plan-final-review.yaml
+gate_field: decision
+gate_value: passed
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads:
+  - assets/WRK-NNN/WRK-NNN-lifecycle.html#s1-s6
+  - assets/WRK-NNN/evidence/cross-review.yaml
+exit_artifacts:
+  - assets/WRK-NNN/evidence/plan-final-review.yaml
+blocking_condition: "plan-final-review.yaml missing confirmed_by/confirmed_at/decision:passed"
+log_action: plan_final_reviewed
+context_budget_kb: 16

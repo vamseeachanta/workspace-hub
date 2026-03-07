@@ -1,0 +1,72 @@
+stage: 10
+wrk_id: WRK-1028
+executed_at: "2026-03-07T21:00:00Z"
+executed_by: claude-sonnet-4-6
+route: C
+
+summary: >
+  Implemented stage-isolated WRK lifecycle enforcement system:
+  gate_check.py (PreToolUse Write hook), start_stage.py (stage orchestrator),
+  exit_stage.py (exit validator with P4 heavy-stage enforcement for stages 10/12),
+  20 YAML stage contracts, 20 micro-skills, process.md updated to 20-stage model,
+  settings.json hook registered, workflow-gatepass + work-queue-workflow SKILL.md updated.
+
+deliverables:
+  - path: scripts/work-queue/gate_check.py
+    type: new
+    purpose: "PreToolUse Write hook; blocks evidence writes if upstream gate not met"
+  - path: scripts/work-queue/start_stage.py
+    type: new
+    purpose: "Stage orchestrator: builds prompt package, routes task_agent/human_session/chained_agent"
+  - path: scripts/work-queue/exit_stage.py
+    type: new
+    purpose: "Stage exit validator with P4 heavy-stage checks (stages 10/12)"
+  - path: scripts/work-queue/stages/
+    type: new
+    purpose: "20 YAML stage contracts (stage-01 through stage-20)"
+  - path: .claude/skills/workspace-hub/stages/
+    type: new
+    purpose: "20 micro-skills (stage-01 through stage-20, ≤20 lines each)"
+  - path: tests/work-queue/test_stage_lifecycle.py
+    type: new
+    purpose: "17 unit tests covering gates 5/7/17 + start_stage + exit_stage"
+  - path: .claude/work-queue/process.md
+    type: edit
+    purpose: "Updated to 20-stage lifecycle with correct names/invocation types (AC-15)"
+  - path: .claude/settings.json
+    type: edit
+    purpose: "Registered gate_check.py as PreToolUse Write hook"
+  - path: .claude/skills/workspace-hub/workflow-gatepass/SKILL.md
+    type: edit
+    purpose: "Added start_stage.py/exit_stage.py/gate_check.py to requires + scripts table (AC-13)"
+  - path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    type: edit
+    purpose: "Added stage orchestration scripts to Source of Truth (AC-13)"
+
+test_count: 17
+test_files:
+  - tests/work-queue/test_stage_lifecycle.py
+
+test_results:
+  - suite: test_stage_lifecycle
+    passed: 17
+    failed: 0
+    command: "uv run --no-project python -m pytest tests/work-queue/test_stage_lifecycle.py -v"
+
+integrated_repo_tests:
+  - scope: repo
+    file: tests/work-queue/test_stage_lifecycle.py
+    passed: 17
+    failed: 0
+  - scope: integrated
+    description: "gate_check.py registered in settings.json PreToolUse hook — validated via manual Write operation"
+    status: pass
+  - scope: integrated
+    description: "exit_stage.py stage-10 heavy check verified: executes without error when execute.yaml present"
+    status: pass
+  - scope: integrated
+    description: "exit_stage.py stage-12 heavy check verified: blocks when ac-test-matrix.md has <3 PASS rows"
+    status: pass
+  - scope: integrated
+    description: "20 stage contracts readable by start_stage.py and exit_stage.py CLI"
+    status: pass

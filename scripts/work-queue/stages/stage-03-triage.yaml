@@ -1,0 +1,16 @@
+order: 3
+name: Triage
+weight: light
+invocation: chained_agent
+human_gate: false
+parallelism: single-thread
+chained_stages: [2, 3, 4]
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads:
+  - assets/WRK-NNN/evidence/resource-intelligence.yaml
+exit_artifacts:
+  - pending/WRK-NNN.md
+blocking_condition: "pending/WRK-NNN.md missing route/workstations/orchestrator fields"
+log_action: triage_complete
+context_budget_kb: 4

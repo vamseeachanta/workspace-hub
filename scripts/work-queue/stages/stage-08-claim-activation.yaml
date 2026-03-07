@@ -1,0 +1,18 @@
+order: 8
+name: Claim / Activation
+weight: light
+invocation: chained_agent
+human_gate: false
+parallelism: single-thread
+chained_stages: [8, 9]
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads:
+  - assets/WRK-NNN/evidence/plan-final-review.yaml
+exit_artifacts:
+  - assets/WRK-NNN/evidence/claim-evidence.yaml
+  - assets/WRK-NNN/evidence/activation.yaml
+  - working/WRK-NNN.md
+blocking_condition: "claim-evidence.yaml or activation.yaml missing"
+log_action: wrk_claimed
+context_budget_kb: 4

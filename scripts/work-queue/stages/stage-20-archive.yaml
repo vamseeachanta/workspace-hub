@@ -1,0 +1,15 @@
+order: 20
+name: Archive
+weight: light
+invocation: task_agent
+human_gate: false
+parallelism: single-thread
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads:
+  - done/WRK-NNN.md
+exit_artifacts:
+  - archive/WRK-NNN.md
+blocking_condition: "archive/WRK-NNN.md missing after archive-item.sh"
+log_action: wrk_archived
+context_budget_kb: 4

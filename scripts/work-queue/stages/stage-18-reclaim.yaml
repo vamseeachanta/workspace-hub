@@ -1,0 +1,16 @@
+order: 18
+name: Reclaim
+weight: light
+invocation: task_agent
+human_gate: false
+parallelism: single-thread
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads:
+  - assets/WRK-NNN/evidence/user-review-close.yaml
+exit_artifacts:
+  - assets/WRK-NNN/evidence/reclaim.yaml
+blocking_condition: "reclaim.yaml missing"
+log_action: reclaim_complete
+context_budget_kb: 4
+notes: "Auto-write status:n/a when no checkpoint.yaml found (common case)."

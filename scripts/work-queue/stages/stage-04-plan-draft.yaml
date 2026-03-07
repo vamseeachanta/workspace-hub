@@ -1,0 +1,18 @@
+order: 4
+name: Plan Draft
+weight: medium
+invocation: chained_agent
+human_gate: false
+parallelism: single-thread
+chained_stages: [2, 3, 4]
+skills_required:
+  - workspace-hub/work-queue-workflow
+  - superpowers/brainstorming
+entry_reads:
+  - pending/WRK-NNN.md
+  - assets/WRK-NNN/evidence/resource-intelligence.yaml
+exit_artifacts:
+  - assets/WRK-NNN/WRK-NNN-lifecycle.html
+blocking_condition: "lifecycle HTML Stage 4 section absent"
+log_action: plan_draft_complete
+context_budget_kb: 8

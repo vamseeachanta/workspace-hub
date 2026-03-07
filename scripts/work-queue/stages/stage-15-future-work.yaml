@@ -1,0 +1,16 @@
+order: 15
+name: Future Work Synthesis
+weight: medium
+invocation: task_agent
+human_gate: false
+parallelism: single-thread
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads:
+  - assets/WRK-NNN/evidence/execute.yaml
+  - assets/WRK-NNN/review.md
+exit_artifacts:
+  - assets/WRK-NNN/evidence/future-work.yaml
+blocking_condition: "future-work.yaml missing or spun-off-new items with captured:false"
+log_action: future_work_synthesized
+context_budget_kb: 8

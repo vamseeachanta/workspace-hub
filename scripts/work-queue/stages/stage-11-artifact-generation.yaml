@@ -1,0 +1,16 @@
+order: 11
+name: Artifact Generation
+weight: medium
+invocation: task_agent
+human_gate: false
+parallelism: single-thread
+skills_required:
+  - workspace-hub/work-queue-workflow
+  - workspace-hub/workflow-html
+entry_reads:
+  - assets/WRK-NNN/evidence/execute.yaml
+exit_artifacts:
+  - assets/WRK-NNN/WRK-NNN-lifecycle.html
+blocking_condition: "lifecycle HTML Stage 11 section absent"
+log_action: artifacts_generated
+context_budget_kb: 8

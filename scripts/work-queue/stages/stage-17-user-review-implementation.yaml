@@ -1,0 +1,18 @@
+order: 17
+name: User Review - Implementation
+weight: heavy
+invocation: human_session
+human_gate: true
+parallelism: single-thread
+gate_file: evidence/user-review-close.yaml
+gate_field: decision
+gate_value: approved
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads:
+  - assets/WRK-NNN/WRK-NNN-lifecycle.html#s10-s16
+exit_artifacts:
+  - assets/WRK-NNN/evidence/user-review-close.yaml
+blocking_condition: "user-review-close.yaml missing or decision != approved"
+log_action: implementation_reviewed
+context_budget_kb: 16

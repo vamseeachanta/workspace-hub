@@ -1,0 +1,17 @@
+order: 6
+name: Cross-Review
+weight: medium
+invocation: task_agent
+human_gate: false
+parallelism: parallel
+skills_required:
+  - workspace-hub/work-queue-workflow
+  - workspace-hub/workflow-gatepass
+entry_reads:
+  - assets/WRK-NNN/WRK-NNN-lifecycle.html#s1-s5
+  - assets/WRK-NNN/evidence/user-review-plan-draft.yaml
+exit_artifacts:
+  - assets/WRK-NNN/evidence/cross-review.yaml
+blocking_condition: "cross-review.yaml missing or not all 3 providers reviewed"
+log_action: cross_review_complete
+context_budget_kb: 8

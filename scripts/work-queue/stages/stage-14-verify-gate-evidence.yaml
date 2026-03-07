@@ -1,0 +1,15 @@
+order: 14
+name: Verify Gate Evidence
+weight: medium
+invocation: task_agent
+human_gate: false
+parallelism: single-thread
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads:
+  - assets/WRK-NNN/review.md
+exit_artifacts:
+  - assets/WRK-NNN/evidence/gate-evidence-summary.yaml
+blocking_condition: "verify-gate-evidence.py exits non-zero (any gate FAIL)"
+log_action: gate_evidence_verified
+context_budget_kb: 8

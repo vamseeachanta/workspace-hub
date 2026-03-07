@@ -3,7 +3,7 @@ name: work-queue-workflow
 description: >
   Explicit entrypoint skill for the WRK work-queue lifecycle workflow. Points to
   the canonical work-queue process and gatepass enforcement sequence.
-version: 1.1.0
+version: 1.2.0
 updated: 2026-03-07
 category: workspace-hub
 triggers:
@@ -124,6 +124,10 @@ must always resolve to the canonical 20-stage chain.
 - Process contract: `.claude/work-queue/process.md`
 - Execution workflow: `coordination/workspace/work-queue/SKILL.md`
 - Gate enforcement: `workspace-hub/workflow-gatepass/SKILL.md`
+- Stage orchestration: `scripts/work-queue/start_stage.py` / `scripts/work-queue/exit_stage.py`
+- Stage contracts (20): `scripts/work-queue/stages/stage-NN-*.yaml`
+- Stage micro-skills (20): `.claude/skills/workspace-hub/stages/stage-NN-*.md`
+- Gate hook: `scripts/work-queue/gate_check.py` (Write PreToolUse, supplemental)
 
 ## Version History
 

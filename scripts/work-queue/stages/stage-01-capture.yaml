@@ -1,0 +1,15 @@
+order: 1
+name: Capture
+weight: light
+invocation: human_session
+human_gate: false
+parallelism: single-thread
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads: []
+exit_artifacts:
+  - pending/WRK-NNN.md
+  - assets/WRK-NNN/WRK-NNN-lifecycle.html
+blocking_condition: "pending/WRK-NNN.md missing or invalid frontmatter"
+log_action: wrk_captured
+context_budget_kb: 4

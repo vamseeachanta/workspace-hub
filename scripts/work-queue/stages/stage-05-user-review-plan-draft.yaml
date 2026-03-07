@@ -1,0 +1,19 @@
+order: 5
+name: User Review - Plan Draft
+weight: heavy
+invocation: human_session
+human_gate: true
+parallelism: parallel
+gate_file: evidence/user-review-plan-draft.yaml
+gate_field: decision
+gate_value: approved
+skills_required:
+  - workspace-hub/work-queue-workflow
+  - superpowers/brainstorming
+entry_reads:
+  - assets/WRK-NNN/WRK-NNN-lifecycle.html#s1-s4
+exit_artifacts:
+  - assets/WRK-NNN/evidence/user-review-plan-draft.yaml
+blocking_condition: "user-review-plan-draft.yaml missing or decision != approved"
+log_action: plan_draft_reviewed
+context_budget_kb: 16

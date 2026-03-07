@@ -1,0 +1,16 @@
+order: 16
+name: Resource Intelligence Update
+weight: medium
+invocation: task_agent
+human_gate: false
+parallelism: single-thread
+skills_required:
+  - workspace-hub/work-queue-workflow
+entry_reads:
+  - assets/WRK-NNN/evidence/future-work.yaml
+  - assets/WRK-NNN/evidence/execute.yaml
+exit_artifacts:
+  - assets/WRK-NNN/evidence/resource-intelligence-update.yaml
+blocking_condition: "resource-intelligence-update.yaml missing lessons[] or additions[]"
+log_action: resource_intelligence_updated
+context_budget_kb: 8

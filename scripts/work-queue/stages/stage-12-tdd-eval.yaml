@@ -1,0 +1,17 @@
+order: 12
+name: TDD / Eval
+weight: heavy
+invocation: task_agent
+human_gate: false
+parallelism: parallel-optional
+skills_required:
+  - workspace-hub/work-queue-workflow
+  - superpowers/test-driven-development
+entry_reads:
+  - assets/WRK-NNN/evidence/execute.yaml
+  - assets/WRK-NNN/WRK-NNN-lifecycle.html#s10
+exit_artifacts:
+  - assets/WRK-NNN/ac-test-matrix.md
+blocking_condition: "ac-test-matrix.md missing or any AC in FAIL state"
+log_action: tdd_eval_complete
+context_budget_kb: 16

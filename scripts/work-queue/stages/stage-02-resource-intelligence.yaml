@@ -1,0 +1,17 @@
+order: 2
+name: Resource Intelligence
+weight: medium
+invocation: chained_agent
+human_gate: false
+parallelism: single-thread
+chained_stages: [2, 3, 4]
+skills_required:
+  - workspace-hub/work-queue-workflow
+  - workspace-hub/resource-intelligence
+entry_reads:
+  - pending/WRK-NNN.md
+exit_artifacts:
+  - assets/WRK-NNN/evidence/resource-intelligence.yaml
+blocking_condition: "resource-intelligence.yaml missing completion_status or skills.core_used"
+log_action: resource_intelligence_complete
+context_budget_kb: 8

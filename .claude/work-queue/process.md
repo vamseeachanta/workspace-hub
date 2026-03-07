@@ -5,7 +5,17 @@
 
 ## Overview
 
-The work queue tracks features, bugs, and tasks across all workspace-hub repositories. Items flow through a ten-stage lifecycle: **Capture, Resource Intelligence, Triage, Plan, Claim, Execute, Reclaim, Future Work Synthesis, Close, Archive**. The workspace-hub queue is the master; repo-local WRK copies are deprecated and should not be created.
+The work queue tracks features, bugs, and tasks across all workspace-hub repositories. Items flow through a **twenty-stage lifecycle**:
+
+1. Capture → 2. Resource Intelligence → 3. Triage → 4. Plan Draft → 5. User Review (Plan Draft) → 6. Cross-Review → 7. User Review (Plan Final) → 8. Claim / Activation → 9. Work-Queue Routing → 10. Work Execution → 11. Artifact Generation → 12. TDD / Eval → 13. Agent Cross-Review → 14. Verify Gate Evidence → 15. Future Work Synthesis → 16. Resource Intelligence Update → 17. User Review (Implementation) → 18. Reclaim → 19. Close → 20. Archive
+
+The workspace-hub queue is the master; repo-local WRK copies are deprecated and should not be created.
+
+**Stage invocation types**: `task_agent` (automated), `human_session` (interactive gate, requires explicit approval), `chained_agent` (single agent handles multiple sequential stages). Stages 5, 7, and 17 are human gates; stages 2-4 and 8-9 may be chained.
+
+**Parallelism tiers**: `parallel` (multiple providers simultaneously — stages 5, 6, 13), `parallel-optional` (agent swarm for independent subtasks — stages 10, 12), `single-thread` (all others).
+
+**Per-stage contracts**: `scripts/work-queue/stages/stage-NN-*.yaml` | **Per-stage micro-skills**: `.claude/skills/workspace-hub/stages/stage-NN-*.md`
 
 State is tracked in `state.yaml` (counters), individual `WRK-NNN.md` files (item detail), and `INDEX.md` (generated listing).
 
@@ -54,23 +64,25 @@ flowchart TD
 Operating principle: **humans steer, agents execute**.
 Use mechanical checks (scripts/linters/tests) as primary enforcement.
 
-### 1. Capture
+For the full contract fields (weight, parallelism, entry_reads, exit_artifacts, blocking_condition), see `scripts/work-queue/stages/stage-NN-*.yaml`. For per-stage guidance, invoke the micro-skill `.claude/skills/workspace-hub/stages/stage-NN-*.md`.
+
+### Stage 1. Capture
 - Create WRK in `pending/`.
 - Record problem statement, criteria, and scope.
 - Assign `orchestrator`, `provider`, `provider_alt`, and initial route.
 
-### 2. Resource Intelligence
+### Stage 2. Resource Intelligence
 - Mandatory for every WRK before planning.
 - Create modular artifact set in `assets/WRK-<id>/`: `resource-pack.md`, `sources.md`, `constraints.md`, `domain-notes.md`, `open-questions.md`, `resources.yaml`.
 - Use minimum viable core skills by default: `work-queue`, `engineering-context-loader`, `document-inventory`, `legal-sanity`.
 - Optional extensions (only when needed): `document-rag-pipeline`, `knowledge-manager`, `agent-router`, `agent-usage-optimizer`, `comprehensive-learning`.
 - Record machine-checkable stage evidence in `assets/WRK-<id>/evidence/resource-intelligence.yaml`.
 
-### 3. Triage
+### Stage 3. Triage
 - Assign `priority`, `complexity`, `route`, `computer`, `plan_workstations`, `execution_workstations`, `resource_needs`.
 - `plan_workstations` and `execution_workstations` must be non-empty and may include multiple machines.
 
-### 4. Plan
+### Stage 4. Plan Draft
 - Route A/B: Inline in body. Route C: `specs/wrk/WRK-<id>/`.
 - Must produce HTML review artifact.
 - Every generated HTML review artifact must include a `Test Summary` section showing example-pack and variation-test presence.
@@ -94,39 +106,76 @@ Use mechanical checks (scripts/linters/tests) as primary enforcement.
 - User reviews Final HTML and records a pass/fail decision.
 - Only a passed final HTML review may proceed to plan approval and claim.
 
-### 5. Claim
+### Stage 5. User Review — Plan Draft
+- **Human gate** (`human_session`). Interactive review of plan HTML section-by-section.
+- HARD GATE: Stage 6 blocked until `evidence/user-review-plan-draft.yaml` has `decision: approved`.
+- Write evidence via Write tool only — never Bash echo/sed/cat.
+
+### Stage 6. Cross-Review
+- ALL three providers (Claude + Codex + Gemini) independently review the plan.
+- Verdict: APPROVE or REVISE. If REVISE, return to Stage 4.
+- Exit artifact: `evidence/cross-review.yaml`.
+
+### Stage 7. User Review — Plan Final
+- **Human gate** (`human_session`). Review revised plan after cross-review findings resolved.
+- HARD GATE: Stage 8 blocked until `evidence/plan-final-review.yaml` has `decision: passed`.
+- Exit artifact: `evidence/plan-final-review.yaml` with `confirmed_by` + `confirmed_at`.
+
+### Stage 8. Claim / Activation
+- Check unblocked. Agent-capability and quota check.
+- Write `evidence/claim-evidence.yaml` + `evidence/activation.yaml`.
+- Chained with Stage 9.
+
+### Stage 9. Work-Queue Routing
+- Load skills, select route (A/B/C), write `routing.yaml`.
+- Chained with Stage 8.
+
+### Stage 10. Work Execution (formerly Stage 6 Execute)
 - Check unblocked.
 - Agent-capability check.
 - Quota check (`config/ai-tools/agent-quota-latest.json`).
 - Write structured claim evidence.
 - Record claim expiry and reclaim policy in `assets/WRK-<id>/evidence/claim.yaml` (legacy `claim-evidence.yaml` tolerated during migration).
 
-### 6. Execute
 - Implementation under claimed session.
-- Define 5-10 real examples.
-- Include variation tests.
-- Generate HTML review artifact.
+- TDD MANDATORY: write failing tests before implementation.
+- Define 5-10 real examples. Include variation tests. Generate HTML review artifact.
 - Record execute-stage evidence in `assets/WRK-<id>/evidence/execute.yaml`.
 - Execute evidence must include `integrated_repo_tests` with `3-5` passing entries (`scope: integrated|repo`) before close can pass.
+- Exit enforced by `exit_stage.py WRK-NNN 10` (heavy check: execute.yaml required).
 
-### 7. Reclaim
+### Stage 11. Artifact Generation
+- Generate lifecycle HTML review sections for stages 10 onward.
+- Exit artifact: updated `WRK-NNN-lifecycle.html`.
+
+### Stage 12. TDD / Eval
+- Verify TDD coverage: all ACs must pass. Exit artifact: `ac-test-matrix.md`.
+- Heavy exit check: ac-test-matrix.md must have ≥3 PASS entries, no FAIL.
+- Exit enforced by `exit_stage.py WRK-NNN 12`.
+
+### Stage 13. Agent Cross-Review
+- All three providers independently review implementation. Record findings in `evidence/impl-cross-review.yaml`.
+
+### Stage 14. Verify Gate Evidence
+- Run `verify-gate-evidence.py WRK-NNN`. All 16 gates must PASS.
+
+### Stage 15. Future Work Synthesis
+- Capture deferred work in `evidence/future-work.yaml`. All spun-off-new items must have `captured: true`.
+
+### Stage 16. Resource Intelligence Update
+- Update `evidence/resource-intelligence-update.yaml` with new sources/tools discovered during execution.
+
+### Stage 17. User Review — Implementation
+- **Human gate** (`human_session`). Review full lifecycle HTML (stages 10-16).
+- HARD GATE: Stage 18 blocked until `evidence/user-review-close.yaml` has `decision: approved`.
+
+### Stage 18. Reclaim (formerly Stage 7)
 - Trigger when execute continuity breaks (session loss, claim expiry, invalidated evidence).
 - Revalidate claim freshness, blockers, and prior stage evidence.
 - Write `assets/WRK-<id>/evidence/reclaim.yaml`.
-- Resume flow only after successful reclaim, then return to `Claim`.
+- Resume flow only after successful reclaim, then return to Stage 8 (Claim).
 
-### 8. Future Work Synthesis
-- Triggered after execution review passes and before close.
-- Generate recommended follow-up WRKs automatically from:
-  - unresolved review findings
-  - deferred improvements
-  - tooling/automation gaps discovered during execution
-  - learning outputs that require independent backlog delivery
-- Record outputs in close evidence as `followup_wrks`.
-- Close is blocked until required follow-up WRKs exist.
-- Canonical stage evidence file: `assets/WRK-<id>/evidence/future-work.yaml` (with companion `future-work-recommendations.md`).
-
-### 9. Close
+### Stage 19. Close (formerly Stage 9)
 **Trigger**: Implementation complete and verified.
 - Script: `scripts/work-queue/close-item.sh WRK-NNN <commit-hash> [--html-output <path>] [--html-verification <path>] [--commit]`
 - `close-item.sh` auto-generates `assets/WRK-NNN/workflow-final-review.html` when `--html-output` is omitted.
@@ -137,11 +186,19 @@ Use mechanical checks (scripts/linters/tests) as primary enforcement.
 - Record merge/sync status and follow-up/learning outputs where applicable.
 - Canonical stage evidence file: `assets/WRK-<id>/evidence/close.yaml`.
 
-### 10. Archive
+### Stage 20. Archive (formerly Stage 10)
 - Script: `scripts/work-queue/archive-item.sh WRK-NNN`
 - Blocked until merge-to-main and sync complete.
 - Moves to `archive/YYYY-MM/`.
 - Canonical stage evidence file: `assets/WRK-<id>/evidence/archive.yaml`.
+
+## Stage Orchestration Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/work-queue/start_stage.py WRK-NNN N` | Build stage-N-prompt.md; route task_agent/human_session/chained_agent |
+| `scripts/work-queue/exit_stage.py WRK-NNN N` | Validate stage exit artifacts + human gate; SystemExit(1) on failure |
+| `scripts/work-queue/gate_check.py` | PreToolUse hook: block Write if stage gate not met (supplemental; canonical = verify-gate-evidence.py) |
 
 ## Evidence Contract
 

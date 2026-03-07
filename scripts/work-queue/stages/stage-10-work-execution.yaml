@@ -1,0 +1,18 @@
+order: 10
+name: Work Execution
+weight: heavy
+invocation: task_agent
+human_gate: false
+parallelism: parallel-optional
+skills_required:
+  - workspace-hub/work-queue-workflow
+  - superpowers/test-driven-development
+  - superpowers/systematic-debugging
+entry_reads:
+  - assets/WRK-NNN/WRK-NNN-lifecycle.html#s7-s9
+  - assets/WRK-NNN/routing.yaml
+exit_artifacts:
+  - assets/WRK-NNN/evidence/execute.yaml
+blocking_condition: "execute.yaml missing or integrated_repo_tests < 3 entries"
+log_action: work_executed
+context_budget_kb: 16

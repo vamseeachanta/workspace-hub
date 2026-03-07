@@ -3,8 +3,8 @@ name: workflow-gatepass
 description: >
   Enforce WRK lifecycle gatepass from session start through close/archive with
   machine-checkable evidence requirements and explicit no-bypass rules.
-version: 1.0.5
-updated: 2026-03-05
+version: 1.0.6
+updated: 2026-03-07
 category: workspace-hub
 triggers:
   - workflow gatepass
@@ -25,6 +25,10 @@ requires:
   - scripts/work-queue/verify-gate-evidence.py
   - scripts/work-queue/parse-session-logs.sh
   - scripts/review/orchestrator-variation-check.sh
+  - scripts/work-queue/start_stage.py
+  - scripts/work-queue/exit_stage.py
+  - scripts/work-queue/gate_check.py
+  - scripts/work-queue/stages/stage-NN-*.yaml
 invoke: workflow-gatepass
 ---
 # Workflow Gatepass
@@ -167,7 +171,10 @@ Recommended files:
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/work-queue/verify-gate-evidence.py WRK-NNN` | Check all gates pass before close |
+| `scripts/work-queue/start_stage.py WRK-NNN N` | Build stage-N-prompt.md; route task_agent/human_session/chained_agent |
+| `scripts/work-queue/exit_stage.py WRK-NNN N` | Validate stage exit artifacts + human gate; SystemExit(1) on failure |
+| `scripts/work-queue/gate_check.py` | PreToolUse Write hook; blocks evidence writes if upstream gate not met |
+| `scripts/work-queue/verify-gate-evidence.py WRK-NNN` | Check all gates pass before close (canonical authority) |
 | `scripts/work-queue/parse-session-logs.sh WRK-NNN ...` | Read Claude/Codex/Gemini logs; emit session-log-review.md |
 | `scripts/review/orchestrator-variation-check.sh --wrk WRK-NNN --orchestrator <provider> --scripts "..."` | Run scripts and emit variation-test-results.md |
 | `scripts/work-queue/claim-item.sh WRK-NNN` | Atomic claim + stage-8 auto-progress |
