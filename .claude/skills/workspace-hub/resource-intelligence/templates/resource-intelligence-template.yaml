@@ -1,0 +1,51 @@
+# Template: evidence/resource-intelligence.yaml
+# Copy to: .claude/work-queue/assets/WRK-NNN/evidence/resource-intelligence.yaml
+# Stage: 2 (Resource Intelligence)
+# Gate-checked by: scripts/work-queue/verify-gate-evidence.py
+
+wrk_id: WRK-NNN                          # replace with actual WRK ID
+generated_at: "YYYY-MM-DDTHH:MM:SSZ"     # ISO 8601 timestamp
+generated_by: claude                      # claude | codex | gemini
+stage: 2
+
+target_repos:
+  - repo-name                             # from WRK frontmatter target_repos
+
+# ── Gate-verified fields ──────────────────────────────────────────────────────
+# verify-gate-evidence.py enforces: skills.core_used ≥3, completion_status,
+# top_p1_gaps present.
+
+skills:
+  core_used:                              # REQUIRED: minimum 3 entries
+    - coordination/workspace/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/resource-intelligence
+  related:                               # optional: other skills consulted
+    - workspace-hub/workflow-gatepass
+
+completion_status: continue_to_planning  # continue_to_planning | pause_and_revise
+top_p1_gaps: []                          # list blocking gaps; empty = no blockers
+
+# ── Recommended fields (WARN if missing) ─────────────────────────────────────
+# domain fields will become FAIL-level gates after 3 production runs confirm
+# agents fill them correctly.
+
+domain:
+  problem: >
+    REPLACE: One sentence describing what is broken or missing that this WRK fixes.
+  architecture_decision: >
+    REPLACE: One sentence describing the approach chosen and why (key tradeoffs).
+
+# ── Documentation fields (not gate-checked today) ────────────────────────────
+
+existing_files:
+  - path: path/to/relevant/file.py
+    status: existing                      # existing | new | modified | reference
+    notes: "Brief description of relevance"
+
+constraints:
+  - "REPLACE: constraint 1"
+  - "REPLACE: constraint 2"
+
+top_p2_gaps: []                           # gaps that weaken planning but don't block
+top_p3_gaps: []                           # enhancement-only gaps

@@ -1,0 +1,11 @@
+wrk_id: WRK-1029
+stage: 8
+claimed_by: claude
+claimed_at: "2026-03-07T00:00:00Z"
+orchestrator: claude
+route: B
+workstation: ace-linux-1
+quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
+unblocked: true
+capability_check: pass
+decision: claimed

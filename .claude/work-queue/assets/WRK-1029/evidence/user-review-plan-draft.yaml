@@ -1,0 +1,41 @@
+wrk_id: WRK-1029
+stage: 5
+artifact: user-review-plan-draft
+reviewed_by: user
+confirmed_by: user
+reviewed_at: "2026-03-07T00:00:00Z"
+confirmed_at: "2026-03-07T00:00:00Z"
+decision: approved
+
+decisions:
+  q1_domain_fields:
+    question: >
+      Should domain.problem and domain.architecture_decision be required or optional
+      in evidence/resource-intelligence.yaml?
+    decision: >
+      Required in schema and template. WARN (not FAIL) in verify-gate-evidence.py.
+      Capture follow-up WRK to upgrade to FAIL after 3 production runs confirm
+      agents fill them correctly.
+    rationale: >
+      Optional fields regress — agents skip them when gatepass doesn't enforce.
+      Required in schema + template forces active completion; WARN phase collects
+      real evidence before hard-gating.
+
+  q2_stop_guard_scope:
+    question: >
+      Should the stop guard apply to Stage 2 only, or also Stage 16
+      (Resource Intelligence Update)?
+    decision: Both Stage 2 and Stage 16.
+    rationale: >
+      Same risk in Stage 16 — agent discovers new resources mid-execution and
+      starts refactoring instead of recording. Stop guard at both exit points.
+
+scope_decisions:
+  - complexity upgraded from simple to medium (Route A → Route B)
+  - 3 additions confirmed in scope: mining checklist, category→mining map, target_repos→paths
+  - phase structure confirmed: Phase 1 (schema + micro-skill) → Codex cross-review → Phase 2 (mining intelligence)
+
+follow_up_wrks_to_capture:
+  - description: "Upgrade domain.problem + domain.architecture_decision from WARN to FAIL in verify-gate-evidence.py after 3 production runs"
+    priority: low
+    blocked_by: WRK-1029

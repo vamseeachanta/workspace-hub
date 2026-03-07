@@ -1,0 +1,59 @@
+wrk_id: WRK-1029
+generated_at: "2026-03-07T00:00:00Z"
+generated_by: claude
+stage: 2
+
+target_repos:
+  - workspace-hub
+
+domain:
+  problem: >
+    resource-intelligence SKILL.md v1.0.0 documents resource-pack.md + resource-intelligence-summary.md
+    as exit artifacts, but verify-gate-evidence.py checks for evidence/resource-intelligence.yaml with
+    completion_status and skills.core_used ≥3. The skill also lacks a micro-skill checklist and
+    task_agent stop guard needed by WRK-1028 stage isolation.
+  architecture_decision: >
+    Update SKILL.md in-place (no new files except one template). Add evidence/resource-intelligence.yaml
+    as the primary exit artifact; retain resource-intelligence-summary.md as optional human-readable
+    companion. Bump to v1.1.0. Add template under templates/resource-intelligence-template.yaml.
+
+existing_files:
+  - path: .claude/skills/workspace-hub/resource-intelligence/SKILL.md
+    status: existing
+    notes: "v1.0.0 — documents wrong exit artifact set; missing micro-skill checklist and stop guard"
+  - path: .claude/skills/workspace-hub/resource-intelligence/templates/resource-intelligence-summary.md
+    status: existing
+    notes: "Prose summary template — retained as optional companion artifact"
+  - path: .claude/work-queue/assets/WRK-1015/evidence/resource-intelligence.yaml
+    status: reference
+    notes: "Real passing example — schema: wrk_id, generated_at, stage, existing_files, skills.core_used, completion_status, top_p1_gaps"
+  - path: scripts/work-queue/verify-gate-evidence.py
+    status: reference
+    notes: "Reads completion_status and skills.core_used count; p1_count from top_p1_gaps[]"
+
+related_scripts:
+  - scripts/work-queue/verify-gate-evidence.py
+  - .claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh
+  - .claude/skills/workspace-hub/resource-intelligence/scripts/init-resource-pack.sh
+
+skills:
+  core_used:
+    - coordination/workspace/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/resource-intelligence
+  related:
+    - workspace-hub/workflow-gatepass
+    - workspace-hub/workflow-html
+
+constraints:
+  - SKILL.md must stay under 5000 words (Anthropic guide limit)
+  - No README.md in skill folder (Anthropic guide rule)
+  - resource-intelligence-summary.md retained for backward compat (existing WRK assets reference it)
+  - Schema must remain backward-compatible with WRK-1015/WRK-570/WRK-690 passing examples
+
+completion_status: continue_to_planning
+top_p1_gaps: []
+top_p2_gaps:
+  - No template file exists for evidence/resource-intelligence.yaml (agents must invent schema each time)
+top_p3_gaps:
+  - scripts/validate-resource-pack.sh could be extended to also validate evidence/resource-intelligence.yaml
