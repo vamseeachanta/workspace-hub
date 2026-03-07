@@ -139,10 +139,10 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
     <a href="#s1"  class="sc sc-done"    title="01 Capture">1</a>
     <a href="#s2"  class="sc sc-done"    title="02 Resource Intelligence">2</a>
     <a href="#s3"  class="sc sc-done"    title="03 Triage">3</a>
-    <a href="#s4"  class="sc sc-done"    title="04 Plan Draft">4</a>
+    <a href="#s4"  class="sc sc-done"    title="04 Plan Draft (revised post Stage 6)">4</a>
     <a href="#s5"  class="sc sc-done"    title="05 User Review — Plan Draft">5</a>
     <a href="#s6"  class="sc sc-done"    title="06 Cross-Review — REVISE">6</a>
-    <a href="#s7"  class="sc sc-pending" title="07 User Review — Plan Final">7</a>
+    <a href="#s7"  class="sc sc-active"  title="07 User Review — Plan Final — ACTIVE">7</a>
     <a href="#s8"  class="sc sc-pending" title="08 Claim / Activation">8</a>
     <a href="#s9"  class="sc sc-pending" title="09 Work-Queue Routing">9</a>
     <a href="#s10" class="sc sc-pending" title="10 Work Execution">10</a>
@@ -301,31 +301,24 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
       <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">claude</span></div>
       <div class="schema-row"><span class="schema-key">reviewed_at</span><span class="schema-val">2026-03-07T15:00:00Z</span></div>
       <div class="schema-row"><span class="schema-key">confirmed_at</span><span class="schema-val">2026-03-07T15:00:00Z</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">draft — pending human review at Stage 5</span></div>
-      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">All 20 stages defined. 4-phase delivery. Single lifecycle HTML model adopted. Per-stage reviewed_by/confirmed_by schema added.</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">revised — Stage 6 cross-review findings incorporated (2026-03-07)</span></div>
+      <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val">Revised post Stage 6 REVISE verdict. 4 P1 fixes: Gate 7 predicate → plan-final-review.yaml; Gate 17 → blocks done/WRK-NNN.md; gate-check.py supplemental only; AC-15 process.md added. 5 P2 fixes: chained_agent path; Write-only rule; prompt-package model; section-selector; 7→14 tests.</span></div>
     </div>
     <div class="section-label">Exit artifacts</div>
     <ul class="item-list">
-      <li><code>plan-draft-review.html</code> — full plan with 20 stage definitions, ACs, test plan, open questions</li>
-      <li><code>WRK-1028-lifecycle.html</code> (this file) — lifecycle tracker initialised</li>
+      <li><code>plan-draft-review.html</code> — revised plan (all Stage 6 findings addressed); ready for Stage 7 final review</li>
+      <li><code>WRK-1028-lifecycle.html</code> (this file) — lifecycle tracker</li>
     </ul>
-    <div class="section-label">Plan summary</div>
+    <div class="section-label">Revised plan summary</div>
     <ul class="item-list">
       <li><strong>Core design:</strong> Single <code>WRK-NNN-lifecycle.html</code> per WRK; updated at every stage exit; every stage has reviewed_by / confirmed_by / decision schema</li>
-      <li><strong>Invocation:</strong> task_agent (autonomous), human_session (gates 1/5/7/17), chained_agent (light groups)</li>
-      <li><strong>P1:</strong> 3 hookify backstops (Gates 5→6, 7→8, 17→18)</li>
-      <li><strong>P2:</strong> start-stage.sh + exit-stage.sh + stage-state.yaml</li>
-      <li><strong>P3:</strong> 20 YAML contracts (≤15 lines) + 20 micro-skills (≤20 lines)</li>
-      <li><strong>P4:</strong> Heavy-stage depth enforcement (TDD check, context budget)</li>
-      <li><strong>Also in scope:</strong> generate-html-review.py <code>--stage N --update</code> mode (WRK-1027 consolidation)</li>
-      <li><strong>Tests:</strong> 7 unit tests covering happy-advance, blocked-by-missing, human-gate-stop, log-write, task_agent vs human_session routing, hookify gate block/allow</li>
-    </ul>
-    <div class="section-label">Open questions (to resolve at Stage 5)</div>
-    <ul class="item-list">
-      <li>Can hookify inspect file content (not just path) in Write call hooks?</li>
-      <li>WRK-1027 consolidation: incorporate into WRK-1028 Stage 10, or keep separate?</li>
-      <li>context_budget_kb: warn-only or hard-stop?</li>
-      <li>Stage 18 (Reclaim): auto-write n/a when no checkpoint.yaml found?</li>
+      <li><strong>Invocation:</strong> task_agent (prompt-package → work.sh dispatch), human_session (gates 1/5/7/17), chained_agent (combined prompt for light groups)</li>
+      <li><strong>P1:</strong> gate-check.py supplemental hook (Write-tool only; Gates 5→6/7→8/17→18); canonical authority = verify-gate-evidence.py</li>
+      <li><strong>P2:</strong> start-stage.sh (prompt-package + section-selector) + exit-stage.sh + stage-state.yaml</li>
+      <li><strong>P3:</strong> 20 YAML contracts (≤15 lines) + 20 micro-skills (≤20 lines, Write-only rule in all) + process.md update</li>
+      <li><strong>P4:</strong> Heavy-stage depth enforcement (TDD check, context budget 70% hard-stop)</li>
+      <li><strong>Tests:</strong> 14 unit tests — Gate 5/7/17 block+allow, chained_agent routing, false-positive suppression, claim/close compat</li>
+      <li><strong>Gate 7 artifact:</strong> <code>evidence/plan-final-review.yaml</code> (confirmed_by + confirmed_at + decision: passed) — matches verify-gate-evidence.py G-07</li>
     </ul>
   </div>
 </section>
@@ -430,10 +423,10 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">7</div>
     <div><div class="stitle">User Review — Plan Final</div><div class="smeta">human_session · heavy · GATE</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-human">human_session</span><span class="badge b-heavy">heavy</span><span class="badge b-gate">gate</span><span class="chevron">▼</span></div>
+    <div class="sbadges"><span class="badge b-active">in-progress</span><span class="badge b-human">human_session</span><span class="badge b-heavy">heavy</span><span class="badge b-gate">gate</span><span class="chevron">▲</span></div>
   </div>
-  <div class="stage-body collapsed">
-    <div class="pending-note">Not started.</div>
+  <div class="stage-body">
+    <div class="pending-note" style="background:#fff3cd;border-color:#b45309;color:#7c4a00;">Awaiting human review of revised plan. See plan-draft-review.html (revised post Stage 6).</div>
     <div class="section-label">Stage record</div>
     <div class="schema">
       <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
@@ -444,7 +437,14 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
       <div class="schema-row"><span class="schema-key">notes</span><span class="schema-val empty">—</span></div>
     </div>
     <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li>Lifecycle HTML Stage 7 section with <code>confirmed_by:</code> at line-start</li></ul>
+    <ul class="item-list">
+      <li><code>evidence/plan-final-review.yaml</code> — required fields: <code>confirmed_by</code>, <code>confirmed_at</code>, <code>decision: passed</code> (matches verify-gate-evidence.py gate G-07 / plan_html_review_final_ref)</li>
+      <li>Lifecycle HTML Stage 7 section updated with review outcome</li>
+    </ul>
+    <div class="section-label">GATE — Awaiting human review</div>
+    <div class="gate-block" style="background:#fff3cd;border-left-color:#b45309;padding:10px 14px;margin:8px 0;border-radius:0 8px 8px 0;">
+      Review <code>plan-draft-review.html</code> (revised). Confirm all 7 revision items above. Then write <code>evidence/plan-final-review.yaml</code> with <code>decision: passed</code> to unlock Stage 8.
+    </div>
   </div>
 </section>
 

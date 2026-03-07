@@ -41,8 +41,11 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: >
-    Plan draft HTML written. Covers per-stage brainstorm (all 20 stages), 4-phase
-    delivery, script designs, hookify backstop specs, micro-skill template, test plan.
+    Plan draft HTML written and REVISED (post Stage 6 cross-review). All 4 P1 + 5 P2
+    findings addressed: Gate 7 predicate fixed (plan-final-review.yaml), Gate 17 target
+    corrected (done/WRK-NNN.md), gate-check.py repositioned as supplemental, process.md
+    added as deliverable (AC-15), chained_agent path added, section-selector for lifecycle
+    HTML entry_reads, test suite expanded 7→14 tests.
   evidence: .claude/work-queue/assets/WRK-1028/plan-draft-review.html
 - order: 5
   stage: User Review - Plan (Draft)
@@ -72,12 +75,15 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1028/evidence/cross-review.yaml
 - order: 7
   stage: User Review - Plan (Final)
-  status: pending
+  status: in-progress
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'yes'
-  comment: Not started.
-  evidence: .claude/work-queue/assets/WRK-1028/plan-final-review.html
+  comment: >
+    Awaiting human review of revised plan (plan-draft-review.html updated with all
+    Stage 6 cross-review findings). Exit artifact: evidence/plan-final-review.yaml
+    with confirmed_by + confirmed_at + decision: passed.
+  evidence: .claude/work-queue/assets/WRK-1028/evidence/plan-final-review.yaml
 - order: 8
   stage: Claim / Activation
   status: pending
