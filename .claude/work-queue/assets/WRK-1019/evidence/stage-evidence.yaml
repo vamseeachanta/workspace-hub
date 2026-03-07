@@ -42,16 +42,18 @@ stages:
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: Tough questions, tradeoffs, and test/eval updates reviewed.
-    evidence: .claude/work-queue/assets/WRK-1019/plan-html-review-draft.md
+    comment: >
+      3 decisions confirmed: L3 deferred to WRK-1020 (D-01), portfolio-signals.yaml
+      committed (D-02), 30-day lookback (D-03). Plan updated. Stage 6 unlocked.
+    evidence: .claude/work-queue/assets/WRK-1019/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
-    status: done
+    status: pending
     human_decision_required: "no"
     owner: agents
     blocker: "no"
-    comment: Multi-provider review completed.
-    evidence: scripts/review/results/wrk-000-review.md
+    comment: Not started. Claude + Codex + Gemini parallel review of plan.md.
+    evidence: scripts/review/results/wrk-1019-plan-review.md
   - order: 7
     stage: User Review - Plan (Final)
     status: done

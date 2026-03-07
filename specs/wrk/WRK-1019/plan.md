@@ -53,7 +53,7 @@ Brochure-ready engineering repos:
    - `engineering_pct = engineering_count / total_active * 100`
    - Table: category → count → % → trend indicator
 
-2. **Harness Saturation Signal** — multi-layer check:
+2. **Harness Saturation Signal** — 2-layer check (Layer 3 deferred to WRK-1020):
 
    **Layer 1 — Queue balance** (static):
    - Default threshold: 30% (configurable via `HARNESS_THRESHOLD` in skill frontmatter)
@@ -61,24 +61,21 @@ Brochure-ready engineering repos:
    - Recommendation: "Run X harness items max before returning to engineering"
 
    **Layer 2 — Agentic activity by provider** (from `.claude/state/portfolio-signals.yaml`):
-   - Per-provider (claude / codex / gemini) breakdown of WRK items closed in last 7 days
+   - Per-provider (claude / codex / gemini) breakdown of WRK items closed in **last 30 days**
      by category: harness vs engineering vs other
    - Shows whether a specific provider is drifting toward harness-only work
    - Example output:
      ```
-     Provider   | Harness (7d) | Engineering (7d) | Harness%
-     claude     | 4            | 3                | 57% ⚠ OVER
-     codex      | 1            | 5                | 17% ✓
-     gemini     | 0            | 2                | 0%  ✓
+     Provider   | Harness (30d) | Engineering (30d) | Harness%
+     claude     | 4             | 3                 | 57% ⚠ OVER
+     codex      | 1             | 5                 | 17% ✓
+     gemini     | 0             | 2                 | 0%  ✓
      ```
-   - Source: `portfolio-signals.yaml` `provider_activity` section (see Cron Signal below)
+   - Source: `portfolio-signals.yaml` `provider_activity` section (committed to git — auditable)
 
-   **Layer 3 — Agentic capability research signal** (from `.claude/state/portfolio-signals.yaml`):
-   - Daily cron (comprehensive-learning Phase 1 or dedicated `update-portfolio-signals.sh`)
-     discovers new Claude/Codex/Gemini capability releases relevant to engineering work:
-     new model capabilities, tool updates, API changes that could unlock faster engineering
-   - Surfaced as: "New: [capability] — potential impact on [engineering domain]"
-   - Keeps the signal fresh without requiring manual research per session
+   **Layer 3 — deferred to WRK-1020**: capability research cron will update
+   `portfolio-signals.yaml` with new AI capability signals; skill reads the file
+   but Layer 3 display section is omitted until WRK-1020 delivers the cron.
 
 3. **GTM-Ready Technical Capabilities** — rank engineering modules by demo-readiness:
    - Inputs: `brochure_status` field in WRK frontmatter + test coverage proxy (test count in execute.yaml)
@@ -125,7 +122,7 @@ Phase in `comprehensive-learning`). Schema:
 
 ```yaml
 generated_at: "2026-03-05T06:00:00Z"
-lookback_days: 7
+lookback_days: 30
 
 # Layer 2: per-provider WRK activity by category
 provider_activity:
@@ -161,13 +158,12 @@ capability_signals:
     source: "https://platform.openai.com/..."
 ```
 
-**Update mechanism:**
-- `update-portfolio-signals.sh` runs as part of `comprehensive-learning-nightly.sh`
-  (new Phase 0.5 before Phase 1, or appended to Phase 1)
-- Provider activity: parsed from closed WRK YAML files archived in last 7 days
+**Update mechanism (WRK-1019 scope — Layer 2 only):**
+- Provider activity: parsed from closed WRK YAML files archived in last **30 days**
   (reads `category:` and `orchestrator:` fields from archive files)
-- Capability research: web search via gemini CLI or curated RSS feeds
-  (conservative — only high-confidence, official source signals)
+- Written to `.claude/state/portfolio-signals.yaml` — **committed to git** (auditable history)
+- Capability research (Layer 3): deferred to WRK-1020; `capability_signals:` key will be
+  added to the schema by WRK-1020 cron work without breaking the existing L1+L2 skill
 
 ### Session-Start Integration
 

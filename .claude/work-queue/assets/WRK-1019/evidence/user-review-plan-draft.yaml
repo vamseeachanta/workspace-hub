@@ -1,0 +1,56 @@
+wrk_id: WRK-1019
+stage: 5
+reviewed_by: user
+confirmed_by: user
+reviewed_at: 2026-03-07T22:30:00Z
+confirmed_at: 2026-03-07T22:30:00Z
+decision: approved_with_decisions
+
+decisions:
+  - id: D-01
+    topic: Layer 3 capability research (L3)
+    options_presented:
+      - "A: gemini CLI automated search"
+      - "B: curated RSS feeds"
+      - "C: skip L3 entirely for now, defer to WRK-1020"
+    decision: C
+    rationale: L1+L2 provide sufficient steering signal. L3 adds complexity without
+      clear reliability. WRK-1020 will deliver the cron + capability_signals schema
+      as a follow-on; skill is designed to read the key if present.
+
+  - id: D-02
+    topic: portfolio-signals.yaml git tracking
+    options_presented:
+      - "gitignored (ephemeral state)"
+      - "committed (auditable history)"
+    decision: committed
+    rationale: Auditable history of provider activity drift is valuable for
+      retrospective steering analysis.
+
+  - id: D-03
+    topic: Provider activity lookback window
+    options_presented:
+      - "7 days (tight weekly signal)"
+      - "30 days (smoother, less noisy)"
+    decision: 30 days
+    rationale: 30 days provides a smoother trend, less sensitive to single-session
+      bursts. Aligns better with monthly GTM planning cadence.
+
+plan_changes_applied:
+  - "Layer 3 removed from Harness Saturation Signal; deferred note added"
+  - "Lookback window changed from 7 to 30 days in plan.md and schema example"
+  - "portfolio-signals.yaml described as committed (not gitignored)"
+  - "Layer 2 example table updated: 7d → 30d column headers"
+
+scope_confirmed:
+  in_scope:
+    - SKILL.md at .claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md
+    - compute-balance.py (L1 queue balance + L2 provider activity, 30-day)
+    - portfolio-signals.yaml schema (L1+L2 only; capability_signals key reserved for WRK-1020)
+    - 11-12 TDD tests (test_capability_signals_surfaced tests graceful missing)
+    - session-start weekly mode integration point (documented, not embedded)
+  out_of_scope:
+    - L3 capability research cron (WRK-1020)
+    - update-portfolio-signals.sh full implementation (WRK-1020)
+
+stage_6_unlocked: true
