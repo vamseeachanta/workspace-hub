@@ -421,12 +421,13 @@ notes: ""</code></pre>
 <div class="card">
   <h2>Deliverables — 4-Phase Delivery</h2>
 
-  <div class="phase-block"><strong>P1 — Hookify Backstops (3 gates, immediate)</strong></div>
+  <div class="phase-block"><strong>P1 — Custom gate-check hook (3 gates, immediate)</strong></div>
+  <p>Implemented as a single <code>.claude/hooks/gate-check.py</code> PreToolUse hook — not hookify markdown rules. Hookify markdown supports path/content regex on the <em>current</em> operation only; checking a separate gate file's content requires a custom hook script. All 3 gates scoped to the active WRK via <code>.claude/state/active-wrk</code> — no cross-stage approval confusion.</p>
   <table>
-    <tr><th>Gate</th><th>Block when</th><th>Allow when</th></tr>
-    <tr><td>5→6</td><td>Writing cross-review or execute artifacts</td><td><code>evidence/user-review-plan-draft.yaml</code> contains <code>decision: approved</code></td></tr>
-    <tr><td>7→8</td><td>Writing claim-evidence or activation artifacts</td><td>Lifecycle HTML Stage 7 section contains <code>confirmed_by:</code> at line-start</td></tr>
-    <tr><td>17→18</td><td>Writing reclaim.yaml or running close-item.sh</td><td><code>evidence/user-review-close.yaml</code> contains <code>decision: approved</code></td></tr>
+    <tr><th>Gate</th><th>Block when</th><th>Allow when</th><th>Gate file scoped to</th></tr>
+    <tr><td>5→6</td><td>Writing cross-review or execute artifacts</td><td><code>evidence/user-review-plan-draft.yaml</code> contains <code>decision: approved</code></td><td><code>assets/{active-WRK}/evidence/</code></td></tr>
+    <tr><td>7→8</td><td>Writing claim-evidence or activation artifacts</td><td>Lifecycle HTML Stage 7 section contains <code>confirmed_by:</code> at line-start</td><td><code>assets/{active-WRK}/</code></td></tr>
+    <tr><td>17→18</td><td>Writing reclaim.yaml or running close-item.sh</td><td><code>evidence/user-review-close.yaml</code> contains <code>decision: approved</code></td><td><code>assets/{active-WRK}/evidence/</code></td></tr>
   </table>
 
   <div class="phase-block"><strong>P2 — start-stage.sh + exit-stage.sh + stage-state.yaml</strong></div>
@@ -445,7 +446,13 @@ notes: ""</code></pre>
 # 5. Write .claude/work-queue/logs/WRK-NNN-stage-N.log
 # 6. Update stage-state.yaml (exit_artifacts_ok: true, exited_at)
 # 7. git add + commit log + lifecycle HTML
-# 8. Print Stage N+1 contract summary (what's coming next)</code></pre>
+# 8. If human_gate=true (stages 5, 7, 17): print GATE PASSED banner + checkpoint prompt:
+#      "GATE PASSED. Stage N+1 starts in a new session. Run: /checkpoint WRK-NNN"
+# 9. Otherwise: print "Stage N complete → Stage N+1: [name]. Tip: /checkpoint WRK-NNN before new session"
+
+# start-stage.sh WRK-NNN N (human_session stages only — 1, 5, 7, 17)
+# Bonus step: check if assets/WRK-NNN/checkpoint.yaml exists
+# If yes → print "Checkpoint found (Stage X, date). Run /resume WRK-NNN to reload context."</code></pre>
 
   <div class="phase-block"><strong>P3 — 20 YAML Contracts + 20 Micro-skills</strong></div>
   <pre><code># scripts/work-queue/stages/stage-05-user-review-plan-draft.yaml (≤15 lines)

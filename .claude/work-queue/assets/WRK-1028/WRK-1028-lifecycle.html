@@ -370,8 +370,11 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
       <li><strong>Confirmed:</strong> Stage 3 Triage chained with 2+4 as agent-proposed (no separate human session)</li>
       <li><strong>Confirmed:</strong> Stage 5 Route C = 3 parallel terminals (Claude + Codex + Gemini simultaneously); user switches freely between sessions; each saves plan variant + session log; orchestrator synthesizes combined-plan.md; user approves combined plan</li>
       <li><strong>Confirmed:</strong> Stage weights — light (4 KB), medium (8 KB), heavy (16 KB)</li>
-      <li><strong>WRK-1027 consolidation:</strong> generate-html-review.py <code>--stage N --update</code> mode incorporated into WRK-1028 scope — decision pending user confirmation</li>
-      <li><strong>Open:</strong> 4-phase delivery order; hookify backstop specs; open questions resolution</li>
+      <li><strong>Confirmed:</strong> 4-phase delivery order — P1 gate-check hook → P2 scripts → P3 contracts+micro-skills → P4 heavy enforcement</li>
+      <li><strong>Confirmed:</strong> Gate enforcement = custom <code>.claude/hooks/gate-check.py</code> PreToolUse hook (not hookify markdown); content-checks gate file scoped to active WRK via <code>active-wrk</code> state — no cross-stage approval confusion</li>
+      <li><strong>Confirmed:</strong> /checkpoint and /resume auto-suggested at every stage exit; GATE PASSED banner + strong checkpoint prompt at human gate stages (5, 7, 17); start-stage.sh checks for checkpoint.yaml at human_session entry</li>
+      <li><strong>WRK-1027 consolidation:</strong> generate-html-review.py <code>--stage N --update</code> mode incorporated into WRK-1028 scope — pending final confirmation</li>
+      <li><strong>Open:</strong> remaining open questions; test plan; ACs — then ready for approval</li>
     </ul>
     <div class="section-label">Gate exit artifact</div>
     <ul class="item-list">
