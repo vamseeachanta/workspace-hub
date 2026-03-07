@@ -1,0 +1,37 @@
+wrk_id: WRK-1028
+title: "Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts"
+checkpointed_at: "2026-03-07T18:19:36Z"
+current_stage: 5
+stage_name: "User Review - Plan (Draft)"
+entry_reads:
+  - .claude/work-queue/assets/WRK-1028/evidence/stage-evidence.yaml
+  - .claude/work-queue/assets/WRK-1028/evidence/resource-intelligence.yaml
+  - .claude/work-queue/assets/WRK-1028/WRK-1028-lifecycle.html
+  - .claude/work-queue/pending/WRK-1028.md
+decisions_this_session:
+  - "Single WRK-NNN-lifecycle.html per WRK; updated at every stage exit — no separate plan/implementation HTML files"
+  - "Every stage has reviewed_by/confirmed_by/decision schema; autonomous=agent name, human gates=human name"
+  - "Stage 5 Route C: 3 parallel terminals (Claude/Codex/Gemini); orchestrator synthesizes combined-plan.md"
+  - "Stage 3 chained with 2+4 as agent-proposed (not a separate human session)"
+  - "Gate enforcement: custom gate-check.py PreToolUse hook; WRK-scoped via active-wrk; content-checks gate files"
+  - "Checkpoint/resume auto-suggested at every stage exit; GATE PASSED banner + mandatory prompt at human gates 5/7/17"
+  - "Context budget: HARD STOP at 70% — mandatory /checkpoint + new session /resume; prevents autocompact disruption"
+  - "WRK-1027 (generate-html-review.py --stage --update) absorbed into WRK-1028 scope"
+  - "Stage 18 auto-writes reclaim.yaml status: n/a when no checkpoint found"
+  - "Stages 2+3+4 always chained; Stages 8+9 always chained"
+artifacts_written:
+  - .claude/work-queue/assets/WRK-1028/evidence/stage-evidence.yaml
+  - .claude/work-queue/assets/WRK-1028/evidence/resource-intelligence.yaml
+  - .claude/work-queue/assets/WRK-1028/evidence/user-review-plan-draft.yaml
+  - .claude/work-queue/assets/WRK-1028/plan-draft-review.html
+  - .claude/work-queue/assets/WRK-1028/WRK-1028-lifecycle.html
+  - .claude/work-queue/pending/WRK-1028.md
+  - .claude/skills/workspace-hub/checkpoint/SKILL.md
+  - scripts/work-queue/checkpoint.sh
+next_action: "Stage 6 cross-review — Route C: Codex (mandatory hard gate) + Gemini independently review plan-draft-review.html; synthesize into evidence/cross-review.yaml (verdict: APPROVE|REVISE)"
+context_summary:
+  - "WRK-1028 at Stage 5 DONE — plan fully approved by user; Stage 6 gate cleared"
+  - "Core design: stage-isolation model; task_agent for autonomous stages; human_session at gates 1/5/7/17; chained_agent for light groups"
+  - "Lifecycle HTML (WRK-1028-lifecycle.html) is single tracking document; stage strip shows 1-5 done, 6 active, 7-20 pending"
+  - "10 key decisions confirmed this session — all captured in user-review-plan-draft.yaml and lifecycle HTML Stage 5 section"
+  - "gate-check.py (P1), start/exit-stage.sh (P2), 20 YAML contracts + 20 micro-skills (P3), heavy-stage enforcement + 70% context hard-stop (P4)"

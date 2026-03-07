@@ -46,11 +46,15 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1028/plan-draft-review.html
 - order: 5
   stage: User Review - Plan (Draft)
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: user + orchestrator
-  blocker: 'yes'
-  comment: Awaiting human review and approval of plan-draft-review.html.
+  blocker: 'no'
+  comment: >
+    Section-by-section review completed. 10 decisions confirmed: single lifecycle HTML,
+    per-stage reviewed_by/confirmed_by/decision schema, Stage 5 Route C 3-provider parallel
+    review, gate-check.py custom hook, checkpoint/resume at stage transitions, context
+    hard-stop at 70%, WRK-1027 absorbed, Stage 18 auto n/a, Stages 2+3+4 always chained.
   evidence: .claude/work-queue/assets/WRK-1028/evidence/user-review-plan-draft.yaml
 - order: 6
   stage: Cross-Review
