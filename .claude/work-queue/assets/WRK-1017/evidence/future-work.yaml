@@ -12,6 +12,7 @@ recommendations:
     source: "WRK-1017 planning follow-up note"
     disposition: spun-off-new
     status: pending
-    captured: false
+    captured: true
+    wrk_id: WRK-1025
     priority: medium
     required_for_signoff: false

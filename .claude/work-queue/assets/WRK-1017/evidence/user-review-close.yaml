@@ -1,4 +1,9 @@
 reviewer: user
-reviewed_at: ""
-decision: pending
-notes: "Populate at close-stage user review."
+reviewed_at: "2026-03-07T07:45:00Z"
+decision: approved
+notes: >
+  Implementation review complete for WRK-1017. Stage 5 hard gate enforcement
+  delivered across all 4 official Stage 6 entrypoints. Fail-closed when checker
+  missing. Canary mode TODO documented. 158 tests pass. Codex APPROVE (3 rounds,
+  commit 6601d80c). Gemini APPROVE. Ready for close and archive.
+html_ref: .claude/work-queue/assets/WRK-1017/workflow-final-review.html

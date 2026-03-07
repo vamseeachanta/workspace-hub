@@ -1,0 +1,47 @@
+wrk_id: "WRK-1017"
+execution_started_at: "2026-03-07T00:00:00Z"
+execution_completed_at: "2026-03-07T12:00:00Z"
+phases_completed:
+  - name: "Phase 1A"
+    description: "Canonical Stage 5 checker + plan.sh guard + bootstrap"
+    commit: "9e8eee25"
+  - name: "Phase 1B — Entrypoint guards"
+    description: "cross-review.sh, claim-item.sh, close-item.sh guarded"
+    commit: "adeb639f"
+  - name: "Phase 1B — Hardening"
+    description: "test-plan-gate.sh (41 tests), producer tests (23 tests), CI, pre-commit, contract alignment"
+    commit: "5d7bd405"
+  - name: "Phase 2"
+    description: "Changes Since Stage 5 section in plan-final HTML (8 fixture tests)"
+    commit: "11cf2cfb"
+test_counts:
+  unit_verify_gate: 36
+  unit_generate_html: 58
+  integration_plan_gate: 41
+  integration_producer_scripts: 23
+  total: 158
+integrated_repo_tests:
+  - name: "test-plan-gate.sh groups 1-3"
+    scope: integrated
+    command: "bash scripts/agents/tests/test-plan-gate.sh --group 1 && bash scripts/agents/tests/test-plan-gate.sh --group 2 && bash scripts/agents/tests/test-plan-gate.sh --group 3"
+    result: pass
+    count: 42
+    artifact_ref: scripts/agents/tests/test-plan-gate.sh
+  - name: "test-user-review-evidence-writers.sh"
+    scope: integrated
+    command: "bash scripts/work-queue/tests/test-user-review-evidence-writers.sh"
+    result: pass
+    count: 23
+    artifact_ref: scripts/work-queue/tests/test-user-review-evidence-writers.sh
+  - name: "pytest test_generate_html_review.py"
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/unit/test_generate_html_review.py -q --noconftest"
+    result: pass
+    count: 58
+    artifact_ref: tests/unit/test_generate_html_review.py
+  - name: "test-task-agents-routing.sh"
+    scope: integrated
+    command: "bash scripts/agents/tests/test-task-agents-routing.sh"
+    result: pass
+    count: 12
+    artifact_ref: scripts/agents/tests/test-task-agents-routing.sh

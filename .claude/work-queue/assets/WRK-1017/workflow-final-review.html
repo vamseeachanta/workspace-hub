@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plan Final Review: WRK-1017 — bug: investigate why work-queue-workflow skill Stage 5 inter</title>
+  <title>Close Review: WRK-1017 — bug: investigate why work-queue-workflow skill Stage 5 inter</title>
   <style>
 :root {
   --bg:       #f3efe6;
@@ -78,7 +78,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 
 <header class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">WRK-1017 &middot; Plan Final Review</div>
+    <div class="eyebrow">WRK-1017 &middot; Close Review</div>
     <h1>bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed</h1>
     <p class="lede">Identify why agents skip the Stage 5 user-agent interactive planning session and enforce it as a hard gate.</p>
   </div>
@@ -87,7 +87,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
 <main class="content">
   <div class="meta">
   <div class="pill"><strong>WRK ID</strong>WRK-1017</div>
-  <div class="pill"><strong>Status</strong><span class="badge badge-info">PENDING</span></div>
+  <div class="pill"><strong>Status</strong><span class="badge badge-warn">WORKING</span></div>
   <div class="pill"><strong>Route</strong>B — high</div>
   <div class="pill"><strong>Orchestrator</strong>claude</div>
   <div class="pill"><strong>Computer</strong>ace-linux-1</div>
@@ -111,12 +111,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
   </div>
 
   <div class="card">
-    <h2>Prompt Start Context</h2>
-<div class="panel">
-  <p>session observation and archived artifact replay — Stage 5 user-agent interactive planning was missed during WRK-1015 execution; replay evidence is recorded in `.claude/work-queue/assets/WRK-1017/evidence/root-cause-replay.md`.</p>
-  <p style="font-size:.82rem;color:var(--muted)"><strong>Source:</strong> Captured from Source note</p>
-</div>
-<h2>Mission</h2>
+    <h2>Mission</h2>
 <p>Identify why agents skip the Stage 5 user-agent interactive planning session and enforce it as a hard gate.</p>
 <p>Scope note: this WRK is intentionally a multi-deliverable workflow-governance refactor, not a narrow one-file bug fix. Closure requires both the Stage 5 hard-gate rollout and the Stage 7 review-packaging obligations already accepted into scope.</p>
 <h2>What</h2>
@@ -1493,27 +1488,27 @@ git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </sp
 </ul>
 <hr />
 <p><em>Source: session observation and archived artifact replay — Stage 5 user-agent interactive planning was missed during WRK-1015 execution; replay evidence is recorded in <code>.claude/work-queue/assets/WRK-1017/evidence/root-cause-replay.md</code>.</em></p>
-<h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p><h2>User Review - Plan (Final)</h2><p>Not applicable.</p>
+<h2>Prompt Start Context</h2><p>Not applicable.</p><h2>Execution Brief</h2><p>Not applicable.</p><h2>Gate Evidence Summary</h2><p>Not applicable.</p><h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Problem Context</h2><p>Not applicable.</p><h2>Relevant Documents/Data</h2><p>Not applicable.</p><h2>Constraints</h2><p>Not applicable.</p><h2>Assumptions</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p><h2>Domain Notes</h2><p>Not applicable.</p><h2>Source Paths</h2><p>Not applicable.</p><h2>Resource Intelligence Update</h2><p>Not applicable.</p><h2>Next Work</h2><p>Not applicable.</p><h2>Lifecycle Enforcement Progress</h2><p>Not applicable.</p><h2>Stage Evidence Ledger</h2><p>Not applicable.</p><h2>Asset Index</h2><p>Not applicable.</p><h2>User Review - Plan (Draft)</h2><p>Not applicable.</p><h2>User Review - Plan (Final)</h2><p>Not applicable.</p><h2>User Review - Implementation</h2><p>Not applicable.</p>
   </div>
 
   <div class="card">
     <h2>Gate-Pass Stage Status</h2>
-<p><strong>Summary:</strong> 5 pass · 0 fail · 14 pending/warn · 1 n/a &nbsp; <span class="badge badge-info">Autonomy: L2</span></p>
+<p><strong>Summary:</strong> 13 pass · 0 fail · 6 pending/warn · 1 n/a &nbsp; <span class="badge badge-info">Autonomy: L2</span></p>
 <table>
   <thead><tr><th>Order</th><th>Stage</th><th>Stage Status</th><th>Gate-Pass</th><th>Human Decision</th><th>Owner</th><th>Blocker?</th><th>Comment</th><th>Evidence</th></tr></thead>
   <tbody><tr><td>1</td><td>Capture</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>orchestrator</td><td>no</td><td>WRK created in pending queue with baseline metadata.</td><td><code>.claude/work-queue/pending/WRK-1017.md</code></td></tr>
-<tr><td>2</td><td>Resource Intelligence</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Resource intelligence artifact pack not yet created for this WRK.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/resource-intelligence.yaml</code></td></tr>
+<tr><td>2</td><td>Resource Intelligence</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>orchestrator</td><td>no</td><td>resource-intelligence.yaml created; completion_status=continue_to_planning; gate PASS.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/resource-intelligence.yaml</code></td></tr>
 <tr><td>3</td><td>Triage</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>orchestrator</td><td>no</td><td>Route, priority, complexity, and workstations are set in frontmatter.</td><td><code>.claude/work-queue/pending/WRK-1017.md</code></td></tr>
 <tr><td>4</td><td>Plan Draft</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Draft plan exists and draft HTML has been generated.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-draft-review.html</code></td></tr>
 <tr><td>5</td><td>User Review - Plan (Draft)</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>user + orchestrator</td><td>no</td><td>Latest local revision with autonomous Stage 6 and Stage 7 delta review was approved by the user on 2026-03-06T23:01:20Z and published to origin at 5e2679a0 on 2026-03-06T23:04:08Z. Refreshed Stage 5 evidence is complete for the current draft state.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml</code></td></tr>
 <tr><td>6</td><td>Cross-Review</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>agents</td><td>no</td><td>Stage 6 complete 2026-03-07. Four Codex runs; Claude (inline) and Gemini both APPROVE. All P1 findings resolved in compact bundle and ac-test-matrix. P2 findings dispositioned as implementation details or Phase 2 scope. Stage 7 is the next human checkpoint.</td><td><code>scripts/review/results/20260307T043807Z-stage6-review-compact.md-plan-codex.md</code></td></tr>
-<tr><td>7</td><td>User Review - Plan (Final)</td><td><span class="badge badge-info">READY</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>no</td><td>Stage 6 complete. Stage 7 is now the next required human checkpoint. The final-plan HTML must be generated and opened in browser for user review. Changes Since Stage 5 section is required in the HTML per Phase 2 packaging. Stage 7 will confirm plan_reviewed: true and enable Stage 8 claim.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-final-review.html</code></td></tr>
-<tr><td>8</td><td>Claim / Activation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Cannot claim before plan gates pass.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/claim.yaml</code></td></tr>
-<tr><td>9</td><td>Work-Queue Routing Skill</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Awaiting claim/activation.</td><td><code>/work</code></td></tr>
-<tr><td>10</td><td>Work Execution</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/execute.yaml</code></td></tr>
-<tr><td>11</td><td>Artifact Generation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1017/implementation-review.html</code></td></tr>
-<tr><td>12</td><td>TDD / Eval</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/test-results.md</code></td></tr>
-<tr><td>13</td><td>Agent Cross-Review</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1017/cross-review-package.md</code></td></tr>
+<tr><td>7</td><td>User Review - Plan (Final)</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>user + orchestrator</td><td>no</td><td>User approved final plan on 2026-03-07. plan-final-review.html opened and reviewed. Stage 6 dispositions reviewed. User decision: approve_as_is. plan_reviewed: true already set. Stage 8 claim now unblocked.</td><td><code>.claude/work-queue/assets/WRK-1017/plan-final-review.html</code></td></tr>
+<tr><td>8</td><td>Claim / Activation</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Plan gates passed (plan_approved + plan_reviewed both true). Ready to claim.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/claim.yaml</code></td></tr>
+<tr><td>9</td><td>Work-Queue Routing Skill</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Awaiting claim/activation.</td><td><code>/work</code></td></tr>
+<tr><td>10</td><td>Work Execution</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/execute.yaml</code></td></tr>
+<tr><td>11</td><td>Artifact Generation</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1017/implementation-review.html</code></td></tr>
+<tr><td>12</td><td>TDD / Eval</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/test-results.md</code></td></tr>
+<tr><td>13</td><td>Agent Cross-Review</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>agents</td><td>yes</td><td>Implementation cross-review complete 2026-03-07. Three Codex runs + Gemini APPROVE (from previous session). Codex final verdict: APPROVE (commit 6601d80c). P1-1 fix (circular agent log gate): removed current-phase terminal signals from check_agent_log_gate(). P1-2 fix (fail-open): all 4 entrypoints now fail-closed when checker absent. Canary mode TODO comment added. P2 over-fix reverted (pre-phase log coupling broke archive-item.sh + standalone invocations). All issues resolved. 65 integration tests pass, 58 unit tests pass.</td><td><code>.claude/work-queue/assets/WRK-1017/cross-review-package.md</code></td></tr>
 <tr><td>14</td><td>Verify Gate Evidence</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Not started.</td><td><code>scripts/work-queue/verify-gate-evidence.py</code></td></tr>
 <tr><td>15</td><td>Future Work Synthesis</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>orchestrator</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/future-work.yaml</code></td></tr>
 <tr><td>16</td><td>Resource Intelligence Update</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1017/evidence/resource-intelligence-update.yaml</code></td></tr>
@@ -1532,8 +1527,8 @@ git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </sp
   <tbody>
     <tr><td>Example Pack</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1017/example-pack.md</code></td></tr>
     <tr><td>Variation Tests</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1017/variation-test-results.md</code></td></tr>
-    <tr><td>Integrated Repo Tests</td><td><span class="badge badge-warn">0 tests — outside 3-5</span> <span class="badge badge-info">not all pass</span></td>
-        <td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1017/execute-evidence.yaml</code></td></tr>
+    <tr><td>Integrated Repo Tests</td><td><span class="badge badge-pass">4 tests — valid range</span> <span class="badge badge-pass">all pass</span></td>
+        <td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1017/evidence/execute.yaml</code></td></tr>
   </tbody>
 </table>
 <p><strong>Variation summary:</strong> No variation-test summary available.</p>
@@ -1629,9 +1624,3 @@ btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 </script>
 </body>
 </html>
-<!-- Plan confirmation block (required for Plan gate) -->
-<!--
-confirmed_by: user
-confirmed_at: 2026-03-07T01:00:00Z
-decision: passed
--->
