@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-06T23:33:09Z by generate-index.py -->
+<!-- Generated: 2026-03-07T04:10:38Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-06T23:33:09Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-07T04:10:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 453
+**Total items:** 454
 
 ### By Status
 
@@ -16,14 +16,14 @@
 | pending | 209 |
 | working | 5 |
 | blocked | 9 |
-| archived | 230 |
+| archived | 231 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 212 |
-| medium | 199 |
+| medium | 200 |
 | low | 41 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 78 |
-| medium | 213 |
+| medium | 214 |
 | complex | 94 |
 
 ### By Category
@@ -69,7 +69,7 @@
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 146 |
+| workspace-hub | 147 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,9 +77,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 170 / 453 |
-| Plans cross-reviewed | 65 |
-| Plans approved | 87 |
+| Plans exist | 171 / 454 |
+| Plans cross-reviewed | 66 |
+| Plans approved | 88 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -89,10 +89,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 453 |
-| Total archived | 230 |
-| Completion rate | 230/453 (51%) |
-| Monthly rate (current month) | 5 archived |
+| Total captured | 454 |
+| Total archived | 231 |
+| Completion rate | 231/454 (51%) |
+| Monthly rate (current month) | 6 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -116,15 +116,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 100 | 2 | 7 |
-| Medium   | 81  | 3  | 1  |
+| High     | 99 | 2 | 7 |
+| Medium   | 82  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (44 items — 14 high, 25 medium, 5 low)
+### harness (44 items — 13 high, 26 medium, 5 low)
 
 #### harness / agent-ux
 
@@ -172,7 +172,6 @@
 | WRK-638 | HIGH | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending |
 | WRK-658 | HIGH | fix(workflow): enforce gate+logging contract for every AI agent | pending |
 | WRK-667 | HIGH | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending |
-| WRK-691 | HIGH | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending |
 | WRK-692 | HIGH | feat(session): interactive session analysis — codex-orchestrator variant | pending |
 | WRK-1005 | HIGH | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working |
 | WRK-230 | MEDIUM | Untitled | pending |
@@ -188,6 +187,7 @@
 | WRK-1011 | MEDIUM | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working |
 | WRK-1013 | MEDIUM | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending |
 | WRK-1016 | MEDIUM | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending |
+| WRK-1025 | MEDIUM | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending |
 | WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
 | WRK-639 | LOW | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending |
 
@@ -963,7 +963,7 @@
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | WRK-683 |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-691 |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-694 | Per-session log files in session-logger.sh | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -990,6 +990,7 @@
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | - | n/a | - |
+| WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1185,7 +1186,6 @@
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | medium | simple | workspace-hub | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | high | medium | workspace-hub | - |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | medium | medium | worldenergydata | - |
-| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | high | medium | workspace-hub | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | high | medium | workspace-hub | - |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | medium | simple | workspace-hub | - |
 | WRK-694 | Per-session log files in session-logger.sh | medium | simple | workspace-hub | - |
@@ -1206,6 +1206,7 @@
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | medium | simple | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | medium | simple | workspace-hub | - |
+| WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | medium | medium | workspace-hub | - |
 
 ### Working
 
@@ -1461,6 +1462,7 @@
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | high | complex | workspace-hub, CAD-DEVELOPMENTS | - |
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | high | simple | CAD-DEVELOPMENTS | - |
 | WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | high | complex | workspace-hub | - |
+| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | high | medium | workspace-hub | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
@@ -1935,7 +1937,7 @@
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working | medium | simple | - |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | simple | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | high | medium | - |
-| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | high | medium | - |
+| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | archived | high | medium | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | high | medium | - |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | pending | medium | simple | - |
 | WRK-694 | Per-session log files in session-logger.sh | pending | medium | simple | - |
@@ -1962,6 +1964,7 @@
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | - |
+| WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | - |
 
 ### worldenergydata
 
@@ -2266,7 +2269,7 @@
 | WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | medium | workspace-hub | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | medium | workspace-hub | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | medium | workspace-hub | - |
-| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | medium | workspace-hub | - |
+| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | archived | medium | workspace-hub | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | medium | workspace-hub | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | medium | workspace-hub | - |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | medium | workspace-hub | - |
@@ -2479,6 +2482,7 @@
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | simple | workspace-hub | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | simple | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | simple | workspace-hub | - |
+| WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -2812,7 +2816,7 @@
 | WRK-681 | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending | medium | workspace-hub | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | high | workspace-hub | - |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | worldenergydata | - |
-| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | high | workspace-hub | - |
+| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | archived | high | workspace-hub | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | high | workspace-hub | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | workspace-hub | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | workspace-hub | - |
@@ -2828,6 +2832,7 @@
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | workspace-hub | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
+| WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -2930,7 +2935,7 @@
 
 ## By Computer
 
-### ace-linux-1 (159 active / 176 total)
+### ace-linux-1 (159 active / 177 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3085,7 +3090,7 @@
 | WRK-681 | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending | medium | medium | workspace-hub |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | high | medium | workspace-hub |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | medium | worldenergydata |
-| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | pending | high | medium | workspace-hub |
+| WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | archived | high | medium | workspace-hub |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | pending | high | medium | workspace-hub |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | pending | medium | simple | workspace-hub |
 | WRK-694 | Per-session log files in session-logger.sh | pending | medium | simple | workspace-hub |
@@ -3110,6 +3115,7 @@
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | workspace-hub |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | workspace-hub |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | workspace-hub |
+| WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 
