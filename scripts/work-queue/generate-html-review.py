@@ -1329,7 +1329,10 @@ def detect_stage_statuses(
         12: ((ad / "variation-test-results.md").exists()
              or ev_exists("test-results.yaml")),
         13: ev_exists("cross-review-impl.md"),
-        14: ev_exists("gate-evidence-summary.json"),
+        # S14 Verify Gate Evidence: gate summary AND cross-review-impl must both exist
+        # so S14 doesn't prematurely show 'done' when only S11 (artifact gen) is complete
+        14: (ev_exists("gate-evidence-summary.json")
+             and ev_exists("cross-review-impl.md")),
         15: ev_exists("future-work.yaml"),
         16: ev_exists("resource-intelligence-update.yaml"),
         17: ev_exists("user-review-close.yaml"),

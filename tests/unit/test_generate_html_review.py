@@ -816,6 +816,20 @@ def test_generate_lifecycle_stage1_renders_frontmatter(tmp_path: Path, monkeypat
     assert "pending/" in html  # exit artifact path shown
 
 
+def test_detect_stage14_not_done_without_cross_review(tmp_path: Path):
+    """Stage 14 must NOT be done when gate-evidence-summary.json exists but cross-review-impl.md is absent."""
+    mod = _load_html_module()
+    assets = tmp_path / "assets"
+    ev = assets / "evidence"
+    ev.mkdir(parents=True)
+    (ev / "gate-evidence-summary.json").write_text('{"wrk_id":"WRK-T"}')
+    # No cross-review-impl.md → Stage 13 not done → Stage 14 must not be done
+    fm = {"complexity": "medium", "route": "B"}
+    statuses = mod.detect_stage_statuses("WRK-T", str(assets), fm, "", str(tmp_path))
+    assert statuses[11] == "done"   # gate-evidence-summary.json present → S11 done
+    assert statuses[14] != "done"   # cross-review-impl.md absent → S14 NOT done
+
+
 def test_generate_lifecycle_idempotent(tmp_path: Path, monkeypatch):
     """Running generate_lifecycle twice produces identical output (stateless)."""
     mod = _load_html_module()
