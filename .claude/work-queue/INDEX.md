@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-07T14:07:27Z by generate-index.py -->
+<!-- Generated: 2026-03-07T14:09:49Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-07T14:07:27Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-07T14:09:49Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -14,9 +14,9 @@
 | Status | Count |
 |--------|-------|
 | pending | 209 |
-| working | 6 |
+| working | 5 |
 | blocked | 9 |
-| archived | 232 |
+| archived | 233 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 45 |
+| harness | 44 |
 | engineering | 117 |
 | data | 26 |
 | platform | 13 |
@@ -90,9 +90,9 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 456 |
-| Total archived | 232 |
-| Completion rate | 232/456 (51%) |
-| Monthly rate (current month) | 7 archived |
+| Total archived | 233 |
+| Completion rate | 233/456 (51%) |
+| Monthly rate (current month) | 8 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -100,8 +100,8 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | Pending items with plans | 58 / 209 | 28% |
-| Plans cross-reviewed | 11 | 16% |
-| Plans user-approved | 12 | 17% |
+| Plans cross-reviewed | 10 | 14% |
+| Plans user-approved | 11 | 16% |
 
 ### Aging
 
@@ -117,14 +117,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 98 | 2 | 7 |
-| Medium   | 83  | 4  | 1  |
+| Medium   | 83  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (45 items — 13 high, 27 medium, 5 low)
+### harness (44 items — 13 high, 26 medium, 5 low)
 
 #### harness / agent-ux
 
@@ -188,7 +188,6 @@
 | WRK-1013 | MEDIUM | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending |
 | WRK-1016 | MEDIUM | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending |
 | WRK-1025 | MEDIUM | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending |
-| WRK-1026 | MEDIUM | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working |
 | WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
 | WRK-639 | LOW | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending |
 
@@ -996,7 +995,7 @@
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | - | n/a | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1028 | Stage-aware WRK workflow enforcement: per-stage contracts + advance-stage.sh + hookify backstop | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
@@ -1225,7 +1224,6 @@
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | medium | medium | workspace-hub | - |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | medium | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -1477,6 +1475,7 @@
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | medium | medium | workspace-hub | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | high | high | workspace-hub | - |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | medium | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -1975,7 +1974,7 @@
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | - |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working | medium | simple | - |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | simple | - |
 | WRK-1028 | Stage-aware WRK workflow enforcement: per-stage contracts + advance-stage.sh + hookify backstop | pending | high | complex | - |
 
 ### worldenergydata
@@ -2495,7 +2494,7 @@
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | simple | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | simple | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | workspace-hub | - |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working | simple | workspace-hub | - |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | simple | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | simple | digitalmodel | - |
 
 ### Low
@@ -2628,7 +2627,7 @@
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | workspace-hub | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | workspace-hub | - |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working | medium | workspace-hub | - |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | digitalmodel | - |
 
 ### Medium
@@ -2952,7 +2951,7 @@
 
 ## By Computer
 
-### ace-linux-1 (161 active / 180 total)
+### ace-linux-1 (160 active / 180 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3133,7 +3132,7 @@
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | workspace-hub |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | workspace-hub |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | workspace-hub |
-| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | working | medium | simple | workspace-hub |
+| WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | simple | workspace-hub |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | simple | digitalmodel |
 | WRK-1028 | Stage-aware WRK workflow enforcement: per-stage contracts + advance-stage.sh + hookify backstop | pending | high | complex | workspace-hub |
 
