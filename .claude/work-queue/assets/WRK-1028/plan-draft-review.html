@@ -117,7 +117,7 @@ th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.78re
     <tr><td>2</td><td>Resource Intelligence</td><td>Domain analysis: problem, architecture decision, constraints</td></tr>
     <tr><td>3</td><td>Triage</td><td>Route/workstation/orchestrator confirmed; open questions</td></tr>
     <tr><td>4</td><td>Plan Draft</td><td>Implementation plan: ACs, pseudocode, test plan, phase delivery</td></tr>
-    <tr><td>5</td><td>User Review — Plan Draft</td><td>Review dialogue: human feedback + agent responses; decision (approved/revise)</td></tr>
+    <tr><td>5</td><td>User Review — Plan Draft</td><td><strong>Route C:</strong> 3 parallel terminals (Claude/Codex/Gemini) → 3 plan variants → orchestrator combines → user approves combined-plan.md. <strong>Route A:</strong> single human+agent review.</td></tr>
     <tr><td>6</td><td>Cross-Review</td><td>Cross-provider findings; verdict (APPROVE/REVISE)</td></tr>
     <tr><td>7</td><td>User Review — Plan Final</td><td>Final plan confirmation block; confirmed_by field</td></tr>
     <tr><td>8</td><td>Claim / Activation</td><td>Quota snapshot; activation timestamp</td></tr>
@@ -248,9 +248,17 @@ notes: ""</code></pre>
     <div class="stage-content">
       <h4>User Review — Plan Draft <span class="badge badge-human">human_session</span> <span class="badge badge-heavy">heavy</span> <span class="badge badge-gate">GATE</span></h4>
       <p><strong>Entry:</strong> Lifecycle HTML (Stage 4 section present)</p>
-      <p><strong>Activities:</strong> Section-by-section review; human comments per section; agent applies revisions; final approval</p>
-      <p><strong>Exit:</strong> <code>evidence/user-review-plan-draft.yaml</code> (decision: approved) + lifecycle HTML Stage 5 section updated with review outcome</p>
-      <p><strong>HARD GATE:</strong> Stage 6 cannot start until <code>decision: approved</code> in this file.</p>
+      <p><strong>Activities (Route A):</strong> Single human+agent session; section-by-section review; revisions applied; human approves.</p>
+      <p><strong>Activities (Route C):</strong></p>
+      <ol style="font-size:.86rem;margin:4px 0 6px;padding-left:18px;">
+        <li>Orchestrator opens <strong>3 parallel terminals</strong> — Claude, Codex, Gemini simultaneously</li>
+        <li>Each agent reviews the plan draft independently with the user (user switches freely between terminals)</li>
+        <li>Each session saves its plan variant (<code>claude-plan.md</code>, <code>codex-plan.md</code>, <code>gemini-plan.md</code>) + session log</li>
+        <li>Orchestrator synthesizes all 3 variants → <code>combined-plan.md</code></li>
+        <li>User reviews combined plan in lifecycle HTML → final approval</li>
+      </ol>
+      <p><strong>Exit:</strong> <code>evidence/user-review-plan-draft.yaml</code> (decision: approved) + <code>combined-plan.md</code> (Route C only) + lifecycle HTML Stage 5 section</p>
+      <p><strong>HARD GATE:</strong> Stage 6 cannot start until <code>decision: approved</code> in <code>user-review-plan-draft.yaml</code>.</p>
     </div>
   </div>
 

@@ -365,10 +365,13 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
     <hr class="divider">
     <div class="section-label">Review dialogue — in progress</div>
     <ul class="item-list">
-      <li><strong>Design confirmed:</strong> Single lifecycle HTML per WRK; updated at every stage exit</li>
-      <li><strong>Schema confirmed:</strong> Every stage has reviewed_by / confirmed_by / decision — autonomous stages use agent name, human gates require human name</li>
-      <li><strong>WRK-1027 consolidation:</strong> incorporate generate-html-review.py <code>--stage N --update</code> into WRK-1028 scope — decision pending</li>
-      <li><strong>Open:</strong> remaining plan sections to review (hookify specs, script designs, test plan)</li>
+      <li><strong>Confirmed:</strong> Single lifecycle HTML per WRK; updated at every stage exit — no separate plan-draft / implementation HTML files</li>
+      <li><strong>Confirmed:</strong> Every stage has reviewed_by / confirmed_by / decision schema — autonomous stages use agent name, human gates require human name</li>
+      <li><strong>Confirmed:</strong> Stage 3 Triage chained with 2+4 as agent-proposed (no separate human session)</li>
+      <li><strong>Confirmed:</strong> Stage 5 Route C = 3 parallel terminals (Claude + Codex + Gemini simultaneously); user switches freely between sessions; each saves plan variant + session log; orchestrator synthesizes combined-plan.md; user approves combined plan</li>
+      <li><strong>Confirmed:</strong> Stage weights — light (4 KB), medium (8 KB), heavy (16 KB)</li>
+      <li><strong>WRK-1027 consolidation:</strong> generate-html-review.py <code>--stage N --update</code> mode incorporated into WRK-1028 scope — decision pending user confirmation</li>
+      <li><strong>Open:</strong> 4-phase delivery order; hookify backstop specs; open questions resolution</li>
     </ul>
     <div class="section-label">Gate exit artifact</div>
     <ul class="item-list">
