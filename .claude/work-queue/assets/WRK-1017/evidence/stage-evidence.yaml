@@ -1,200 +1,218 @@
 wrk_id: WRK-1017
-generated_at: "2026-03-06T01:06:26Z"
-reviewed_by: "agent"
-autonomy_maturity_level: "L2"
+generated_at: '2026-03-07T06:35:43Z'
+reviewed_by: claude
+autonomy_maturity_level: L2
 human_steers_agents_execute: true
 stages:
-  - order: 1
-    stage: Capture
-    status: done
-    human_decision_required: "yes"
-    owner: orchestrator
-    blocker: "no"
-    comment: WRK created in pending queue with baseline metadata.
-    evidence: .claude/work-queue/pending/WRK-1017.md
-  - order: 2
-    stage: Resource Intelligence
-    status: pending
-    human_decision_required: "no"
-    owner: orchestrator
-    blocker: "no"
-    comment: Resource intelligence artifact pack not yet created for this WRK.
-    evidence: .claude/work-queue/assets/WRK-1017/evidence/resource-intelligence.yaml
-  - order: 3
-    stage: Triage
-    status: done
-    human_decision_required: "yes"
-    owner: orchestrator
-    blocker: "no"
-    comment: Route, priority, complexity, and workstations are set in frontmatter.
-    evidence: .claude/work-queue/pending/WRK-1017.md
-  - order: 4
-    stage: Plan Draft
-    status: done
-    human_decision_required: "no"
-    owner: orchestrator
-    blocker: "no"
-    comment: Draft plan exists and draft HTML has been generated.
-    evidence: .claude/work-queue/assets/WRK-1017/plan-draft-review.html
-  - order: 5
-    stage: User Review - Plan (Draft)
-    status: done
-    human_decision_required: "yes"
-    owner: user + orchestrator
-    blocker: "no"
-    comment: Latest local revision with autonomous Stage 6 and Stage 7 delta review was approved by the user on 2026-03-06T23:01:20Z and published to origin at 5e2679a0 on 2026-03-06T23:04:08Z. Refreshed Stage 5 evidence is complete for the current draft state.
-    evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
-  - order: 6
-    stage: Cross-Review
-    status: done
-    human_decision_required: "no"
-    owner: agents
-    blocker: "no"
-    comment: >
-      Stage 6 complete 2026-03-07. Four Codex runs; Claude (inline) and Gemini both APPROVE.
-      All P1 findings resolved in compact bundle and ac-test-matrix. P2 findings dispositioned
-      as implementation details or Phase 2 scope. Stage 7 is the next human checkpoint.
-    evidence: scripts/review/results/20260307T043807Z-stage6-review-compact.md-plan-codex.md
-    stage6_review_dispositions:
-      latest_run_id: "20260307T043807Z"
-      baseline_commit: "5e2679a0"
-      providers:
-        - provider: claude
-          verdict: APPROVE
-          review_ref: "inline-claude-review-20260307"
-          disposition: accepted
-          rationale: "APPROVE with P2/P3 findings. P2 (matrix authority precedence rule): compact bundle already states matrix is authoritative; explicit precedence note added during Phase 1A. P3 (close-item.sh callout, done/ scoping): informational; both are explicit in authoritative WRK and ac-test-matrix."
-        - provider: gemini
-          verdict: APPROVE
-          review_ref: "20260307T042949Z-stage6-review-compact.md-plan-gemini.md"
-          disposition: accepted
-          rationale: "APPROVE with P2/P3 findings. P2 (consolidate state transition logic): design preference; Python checker + shell wrapper separation is intentional. P3 (missing_providers population): informational; field is explicit in compact bundle and WRK."
-        - provider: codex
-          verdict: REQUEST_CHANGES
-          review_ref: "20260307T043807Z-stage6-review-compact.md-plan-codex.md"
-          disposition: resolved
-          rationale: >
-            Four Codex runs completed with iterative fixes after each. All P1 issues resolved:
-            (run1-P1) Phase semantics contradiction: FIXED — ac-test-matrix notes corrected; Phase 1A scope now explicit in compact bundle.
-            (run2-P1) Stage 6 disposition locking: FIXED — locking contract added to compact bundle Stage 6 disposition section.
-            (run3-P1) wrk_id missing from browser-open/publish schemas: FIXED — wrk_id added to both artifact field lists in compact bundle.
-            (run3-P2) commit field inconsistency: FIXED — published_draft_commit is canonical; legacy commit field normalized to it during backfill only.
-            Remaining P2 dispositions:
-            (run2-P2) automation-only AC coverage (AC-18/23/24): DEFERRED — CI/hook checks are backstops; primary semantic coverage is unit+integration tests; automation-only tier is intentional for process-level ACs.
-            (run2-P2) Stage 7 diff normalization: DEFERRED — Phase 2 implementation detail; normalization rules and fixture tests defined during Phase 2 renderer work.
-            (run3-P2) human-authority identity format: DEFERRED — Phase 1B implementation detail; exact allowlist entry format and legacy normalization rules defined when the canonical checker implements the allowlist check.
-  - order: 7
-    stage: User Review - Plan (Final)
-    status: done
-    human_decision_required: "yes"
-    owner: user + orchestrator
-    blocker: "no"
-    comment: >
-      User approved final plan on 2026-03-07. plan-final-review.html opened and reviewed.
-      Stage 6 dispositions reviewed. User decision: approve_as_is.
-      plan_reviewed: true already set. Stage 8 claim now unblocked.
-    evidence: .claude/work-queue/assets/WRK-1017/plan-final-review.html
-  - order: 8
-    stage: Claim / Activation
-    status: ready
-    human_decision_required: "no"
-    owner: orchestrator
-    blocker: "no"
-    comment: Plan gates passed (plan_approved + plan_reviewed both true). Ready to claim.
-    evidence: .claude/work-queue/assets/WRK-1017/evidence/claim.yaml
-  - order: 9
-    stage: Work-Queue Routing Skill
-    status: pending
-    human_decision_required: "no"
-    owner: orchestrator
-    blocker: "yes"
-    comment: Awaiting claim/activation.
-    evidence: /work
-  - order: 10
-    stage: Work Execution
-    status: pending
-    human_decision_required: "no"
-    owner: agents
-    blocker: "yes"
-    comment: Not started.
-    evidence: .claude/work-queue/assets/WRK-1017/evidence/execute.yaml
-  - order: 11
-    stage: Artifact Generation
-    status: pending
-    human_decision_required: "no"
-    owner: agents
-    blocker: "yes"
-    comment: Not started.
-    evidence: .claude/work-queue/assets/WRK-1017/implementation-review.html
-  - order: 12
-    stage: TDD / Eval
-    status: pending
-    human_decision_required: "no"
-    owner: agents
-    blocker: "yes"
-    comment: Not started.
-    evidence: .claude/work-queue/assets/WRK-1017/evidence/test-results.md
-  - order: 13
-    stage: Agent Cross-Review
-    status: pending
-    human_decision_required: "no"
-    owner: agents
-    blocker: "yes"
-    comment: Not started.
-    evidence: .claude/work-queue/assets/WRK-1017/cross-review-package.md
-  - order: 14
-    stage: Verify Gate Evidence
-    status: pending
-    human_decision_required: "no"
-    owner: orchestrator
-    blocker: "yes"
-    comment: Not started.
-    evidence: scripts/work-queue/verify-gate-evidence.py
-  - order: 15
-    stage: Future Work Synthesis
-    status: pending
-    human_decision_required: "yes"
-    owner: orchestrator
-    blocker: "yes"
-    comment: Not started.
-    evidence: .claude/work-queue/assets/WRK-1017/evidence/future-work.yaml
-  - order: 16
-    stage: Resource Intelligence Update
-    status: pending
-    human_decision_required: "no"
-    owner: orchestrator
-    blocker: "yes"
-    comment: Not started.
-    evidence: .claude/work-queue/assets/WRK-1017/evidence/resource-intelligence-update.yaml
-  - order: 17
-    stage: User Review - Implementation
-    status: pending
-    human_decision_required: "yes"
-    owner: user + orchestrator
-    blocker: "yes"
-    comment: Not started.
-    evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-close.yaml
-  - order: 18
-    stage: Reclaim
-    status: n/a
-    human_decision_required: "no"
-    owner: orchestrator
-    blocker: "no"
-    comment: Not applicable unless continuity breaks during execution.
-    evidence: .claude/work-queue/assets/WRK-1017/evidence/reclaim.yaml
-  - order: 19
-    stage: Close
-    status: pending
-    human_decision_required: "yes"
-    owner: orchestrator
-    blocker: "yes"
-    comment: Not started.
-    evidence: scripts/work-queue/close-item.sh
-  - order: 20
-    stage: Archive
-    status: pending
-    human_decision_required: "yes"
-    owner: orchestrator
-    blocker: "yes"
-    comment: Not started.
-    evidence: scripts/work-queue/archive-item.sh
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created in pending queue with baseline metadata.
+  evidence: .claude/work-queue/pending/WRK-1017.md
+- order: 2
+  stage: Resource Intelligence
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource intelligence artifact pack not yet created for this WRK.
+  evidence: .claude/work-queue/assets/WRK-1017/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route, priority, complexity, and workstations are set in frontmatter.
+  evidence: .claude/work-queue/pending/WRK-1017.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Draft plan exists and draft HTML has been generated.
+  evidence: .claude/work-queue/assets/WRK-1017/plan-draft-review.html
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Latest local revision with autonomous Stage 6 and Stage 7 delta review
+    was approved by the user on 2026-03-06T23:01:20Z and published to origin at 5e2679a0
+    on 2026-03-06T23:04:08Z. Refreshed Stage 5 evidence is complete for the current
+    draft state.
+  evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: 'Stage 6 complete 2026-03-07. Four Codex runs; Claude (inline) and Gemini
+    both APPROVE. All P1 findings resolved in compact bundle and ac-test-matrix. P2
+    findings dispositioned as implementation details or Phase 2 scope. Stage 7 is
+    the next human checkpoint.
+
+    '
+  evidence: scripts/review/results/20260307T043807Z-stage6-review-compact.md-plan-codex.md
+  stage6_review_dispositions:
+    latest_run_id: 20260307T043807Z
+    baseline_commit: 5e2679a0
+    providers:
+    - provider: claude
+      verdict: APPROVE
+      review_ref: inline-claude-review-20260307
+      disposition: accepted
+      rationale: 'APPROVE with P2/P3 findings. P2 (matrix authority precedence rule):
+        compact bundle already states matrix is authoritative; explicit precedence
+        note added during Phase 1A. P3 (close-item.sh callout, done/ scoping): informational;
+        both are explicit in authoritative WRK and ac-test-matrix.'
+    - provider: gemini
+      verdict: APPROVE
+      review_ref: 20260307T042949Z-stage6-review-compact.md-plan-gemini.md
+      disposition: accepted
+      rationale: 'APPROVE with P2/P3 findings. P2 (consolidate state transition logic):
+        design preference; Python checker + shell wrapper separation is intentional.
+        P3 (missing_providers population): informational; field is explicit in compact
+        bundle and WRK.'
+    - provider: codex
+      verdict: REQUEST_CHANGES
+      review_ref: 20260307T043807Z-stage6-review-compact.md-plan-codex.md
+      disposition: resolved
+      rationale: "Four Codex runs completed with iterative fixes after each. All P1\
+        \ issues resolved: (run1-P1) Phase semantics contradiction: FIXED \u2014 ac-test-matrix\
+        \ notes corrected; Phase 1A scope now explicit in compact bundle. (run2-P1)\
+        \ Stage 6 disposition locking: FIXED \u2014 locking contract added to compact\
+        \ bundle Stage 6 disposition section. (run3-P1) wrk_id missing from browser-open/publish\
+        \ schemas: FIXED \u2014 wrk_id added to both artifact field lists in compact\
+        \ bundle. (run3-P2) commit field inconsistency: FIXED \u2014 published_draft_commit\
+        \ is canonical; legacy commit field normalized to it during backfill only.\
+        \ Remaining P2 dispositions: (run2-P2) automation-only AC coverage (AC-18/23/24):\
+        \ DEFERRED \u2014 CI/hook checks are backstops; primary semantic coverage\
+        \ is unit+integration tests; automation-only tier is intentional for process-level\
+        \ ACs. (run2-P2) Stage 7 diff normalization: DEFERRED \u2014 Phase 2 implementation\
+        \ detail; normalization rules and fixture tests defined during Phase 2 renderer\
+        \ work. (run3-P2) human-authority identity format: DEFERRED \u2014 Phase 1B\
+        \ implementation detail; exact allowlist entry format and legacy normalization\
+        \ rules defined when the canonical checker implements the allowlist check.\n"
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: 'User approved final plan on 2026-03-07. plan-final-review.html opened
+    and reviewed. Stage 6 dispositions reviewed. User decision: approve_as_is. plan_reviewed:
+    true already set. Stage 8 claim now unblocked.
+
+    '
+  evidence: .claude/work-queue/assets/WRK-1017/plan-final-review.html
+- order: 8
+  stage: Claim / Activation
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Plan gates passed (plan_approved + plan_reviewed both true). Ready to claim.
+  evidence: .claude/work-queue/assets/WRK-1017/evidence/claim.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'yes'
+  comment: Awaiting claim/activation.
+  evidence: /work
+- order: 10
+  stage: Work Execution
+  status: pending
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'yes'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1017/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: pending
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'yes'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1017/implementation-review.html
+- order: 12
+  stage: TDD / Eval
+  status: pending
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'yes'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1017/evidence/test-results.md
+- order: 13
+  stage: Agent Cross-Review
+  status: pending
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'yes'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1017/cross-review-package.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'yes'
+  comment: Not started.
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'yes'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1017/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: pending
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'yes'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1017/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: pending
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'yes'
+  comment: Not started.
+  evidence: .claude/work-queue/assets/WRK-1017/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not applicable unless continuity breaks during execution.
+  evidence: .claude/work-queue/assets/WRK-1017/evidence/reclaim.yaml
+- order: 19
+  stage: Close
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'yes'
+  comment: Not started.
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'yes'
+  comment: Not started.
+  evidence: scripts/work-queue/archive-item.sh
