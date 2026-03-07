@@ -1,0 +1,74 @@
+wrk_id: WRK-691
+session_date: '2026-03-06'
+session_logs:
+  - path: logs/orchestrator/claude/session_20260306.jsonl
+    events: 826
+    size_bytes: 174137
+    note: Primary session log — full tool-call stream for WRK-691 execution + cross-review
+  - path: logs/orchestrator/claude/session_20260305.jsonl
+    note: Prior session — plan draft, Option C design decision, Stages 1-7
+preserve: true
+preserve_reason: >
+  Retained for human-intervention audit: review which stages required explicit user
+  prompting vs autonomous agent execution. Feeds WRK-1017 (stop-gate improvement)
+  and WRK-1025 (execution analytics) analysis.
+
+human_intervention_points:
+  - stage: 5
+    label: "User Review — Plan Draft"
+    trigger: "Agent presented Option C design with 3 drift-risk files"
+    user_action: "Approved 'looks good, implement option C with all 3 drift files'"
+    autonomous: false
+
+  - stage: 6
+    label: "Cross-Review Amendments"
+    trigger: "Codex + Gemini produced 6 REQUEST_CHANGES findings"
+    user_action: "Confirmed 'yes' to all 6 amendments"
+    autonomous: false
+
+  - stage: 7
+    label: "User Review — Plan Final"
+    trigger: "Agent presented revised plan with all cross-review findings resolved"
+    user_action: "Said 'approved'"
+    autonomous: false
+
+  - stage: 10
+    label: "Work Execution (mid-session gate gap)"
+    trigger: "Agent pre-created Stage 17 evidence before user approval"
+    user_action: >
+      User flagged: 'user review is a mandatory human in the loop stop — did not pause
+      at certain stages'. Also asked about cross-review status and requested WRK-1025
+      future work item for Stage 10 execution analytics.
+    autonomous: false
+    note: Process violation — agent drifted past Stage 17 gate; evidence pre-created before approval
+
+  - stage: 11
+    label: "Artifact Generation — HTML open"
+    trigger: "User asked to open implementation HTML for review"
+    user_action: "Said 'open the work item final html for review'"
+    autonomous: false
+
+  - stage: 11b
+    label: "HTML update with future work"
+    trigger: "User requested HTML update with stage status and future work items"
+    user_action: "Said 'update the html for all stages done accordingly, show next/future work item'"
+    autonomous: false
+
+  - stage: 17
+    label: "User Review — Implementation (PENDING)"
+    trigger: "Agent awaiting explicit approval to close"
+    user_action: "PENDING — 'yes WRK-691' not yet received"
+    autonomous: false
+
+autonomous_stages:
+  - stages: [1, 2, 3, 4]
+    label: Capture / Resource Intelligence / Triage / Plan Draft
+    note: Fully autonomous — no user prompting required
+
+  - stages: [8, 9, 10]
+    label: Claim / Routing / Execution
+    note: Autonomous execution of all 5 deliverables
+
+  - stages: [12, 13, 14, 15, 16]
+    label: TDD / Cross-Review / Gate Verify / Future Work / RI Update
+    note: Autonomous — agent executed detect-drift.sh cross-review and fixed all findings without prompting

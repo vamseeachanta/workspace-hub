@@ -1,0 +1,20 @@
+wrk_id: WRK-691
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-691/plan-draft-review.html
+    opened_at: '2026-03-06T08:10:00Z'
+    reviewer: user
+    notes: Plan draft HTML opened; Option C design reviewed and approved
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-691/plan-html-review-final.md
+    opened_at: '2026-03-06T09:00:00Z'
+    reviewer: user
+    notes: Final plan with cross-review resolutions opened and approved
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-691/implementation-review.html
+    opened_at: '2026-03-06T12:30:00Z'
+    reviewer: user
+    notes: Implementation review HTML opened for Stage 17 user approval

@@ -142,6 +142,35 @@ If a signal is absent for a check, skip the check and log
 
 ---
 
+### Phase 1b — Drift Detection  *(non-mandatory, ace-linux-1 only)*
+
+After Phase 1 completes, run `scripts/session/detect-drift.sh` against the previous
+day's session log to detect rule violations from the prior session.
+
+```bash
+YESTERDAY=$(date -d "yesterday" +%Y%m%d)
+LAST_LOG="logs/orchestrator/claude/session_${YESTERDAY}.jsonl"
+bash scripts/session/detect-drift.sh --log "$LAST_LOG" --since "$YESTERDAY"
+```
+
+**Detection patterns:**
+
+| Pattern | Method | Output field |
+|---------|--------|-------------|
+| `python_runtime` | grep `cmd` fields for bare `python3` not preceded by `uv run` | `python_runtime_violations` |
+| `file_placement` | grep `path` fields for `src/*/tests/` write events | `file_placement_violations` |
+| `git_workflow` | `git log --since=<YYYYMMDD>` on real commits; filter against conventional-commit regex | `git_workflow_violations` |
+
+Git workflow sub-categories: `non_conventional`, `missing_wrk_ref`, `exempt_type`.
+
+**Output:** Appends a dated entry to `.claude/state/drift-summary.yaml` (gitignored).
+30-day rolling aggregate tracks which rules are drifted most often → informs
+`python-runtime.md` and `git-workflow.md` `## Session Learnings` updates.
+
+If the session log for yesterday is absent, Phase 1b logs `SKIP` (non-fatal).
+
+---
+
 ### Phase 2 — Reflect  *(non-mandatory)*
 
 Invoke `/reflect`. Sources:

@@ -1,0 +1,26 @@
+wrk_id: WRK-691
+synthesized_at: '2026-03-06T12:00:00Z'
+recommendations:
+  - id: WRK-1025
+    title: "feat(session): execution-stage analytics — structured signals from Stage 10 work execution"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    notes: >
+      WRK-691 adds post-session drift detection for session-level violations. A parallel
+      item should instrument Stage 10 itself: emit per-WRK execution signals (tool call
+      counts, file-change scope, WRK scope adherence) into session-signals/ during
+      execution, then analyze in comprehensive-learning Phase 5-6. Mirrors the
+      Option C split for execution: prevention (scope guards) + analytics (phase signals).
+  - id: WRK-692
+    title: "feat(session): codex orchestrator variant of detect-drift + session-start Step 0"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    notes: WRK-692 already captured — blocked on WRK-691 completion
+  - id: WRK-693
+    title: "fix: audit and fix bare python3 in all scripts/*.sh"
+    disposition: existing-updated
+    status: pending
+    captured: true
+    notes: WRK-693 already captured — independent of WRK-691

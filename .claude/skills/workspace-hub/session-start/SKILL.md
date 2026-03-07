@@ -40,6 +40,22 @@ and orients the orchestrator before any work begins.
 
 ## Steps Claude Follows
 
+### 0. Auto-Load Drift-Risk Rules (non-interactive, < 2s)
+
+Read these three files into context before any other step. No prompts. No checks.
+The goal is to have the canonical rules in context before any task begins.
+
+- `.claude/rules/python-runtime.md` — hard rule: `uv run` always, never bare `python3`
+- `.claude/rules/git-workflow.md` — conventional commits, branch naming, submodule order
+- `.claude/skills/workspace-hub/file-taxonomy/SKILL.md` — where files belong in each repo
+
+After reading, append a best-effort log event (create dir if missing, skip silently on failure):
+```bash
+mkdir -p logs/orchestrator/claude/
+echo "{\"event\":\"drift_rules_loaded\",\"ts\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"files\":[\"python-runtime\",\"git-workflow\",\"file-taxonomy\"]}" \
+  >> logs/orchestrator/claude/session_$(date +%Y%m%d).jsonl || true
+```
+
 ### 1. Readiness Report (from last session's stop hook)
 
 Read `.claude/state/readiness-report.md`. If it contains `## Warnings`, surface each

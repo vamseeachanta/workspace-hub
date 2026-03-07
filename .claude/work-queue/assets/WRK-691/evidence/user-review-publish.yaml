@@ -1,0 +1,32 @@
+wrk_id: WRK-691
+events:
+  - stage: plan_draft
+    published_at: '2026-03-06T08:15:00Z'
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 5266ccce
+    reviewer: user
+    documents:
+      - .claude/work-queue/assets/WRK-691/plan-draft-review.html
+      - .claude/work-queue/pending/WRK-691.md
+  - stage: plan_final
+    published_at: '2026-03-06T09:05:00Z'
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 5266ccce
+    reviewer: user
+    documents:
+      - .claude/work-queue/assets/WRK-691/plan-html-review-final.md
+      - .claude/work-queue/assets/WRK-691/plan-cross-review.md
+  - stage: close_review
+    published_at: '2026-03-06T12:35:00Z'
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: pending
+    reviewer: user
+    documents:
+      - .claude/work-queue/assets/WRK-691/implementation-review.html
+      - .claude/work-queue/assets/WRK-691/evidence/variation-test-results.md

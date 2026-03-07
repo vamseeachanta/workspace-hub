@@ -1,0 +1,3 @@
+{"event":"tool_use","ts":"2026-03-06T10:00:00Z","tool":"Bash","cmd":"python3 scripts/foo.py"}
+{"event":"tool_use","ts":"2026-03-06T10:01:00Z","tool":"Bash","cmd":"git commit -m 'updated stuff'"}
+{"event":"file_write","ts":"2026-03-06T10:02:00Z","path":"src/digitalmodel/tests/test_foo.py"}

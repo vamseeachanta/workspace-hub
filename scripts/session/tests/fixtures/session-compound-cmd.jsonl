@@ -1,0 +1,2 @@
+{"event":"tool_use","ts":"2026-03-06T10:00:00Z","tool":"Bash","cmd":"uv run something && python3 scripts/foo.py"}
+{"event":"file_write","ts":"2026-03-06T10:01:00Z","path":"scripts/session/detect-drift.sh"}

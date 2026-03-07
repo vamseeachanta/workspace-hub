@@ -1,0 +1,12 @@
+wrk_id: WRK-691
+stage: claim
+claimed_at: '2026-03-06T08:00:00Z'
+claim_expires_at: '2026-03-13T08:00:00Z'
+session_owner: claude
+best_fit_provider: claude
+quota_snapshot_ref: config/ai-tools/agent-quota-latest.json
+machine: ace-linux-1
+blocking_state:
+  blocked: false
+  blocked_by: []
+notes: Claude orchestrator on ace-linux-1; quota available; no blockers

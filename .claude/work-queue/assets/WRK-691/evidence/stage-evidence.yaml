@@ -28,52 +28,67 @@ stages:
     drift-risk files'
 - order: 6
   stage: Cross-Review
-  status: pending
+  status: done
   evidence: scripts/review/results/wrk-691-review.md
+  notes: Gemini REQUEST_CHANGES + Codex REQUEST_CHANGES; 3 HIGH + 3 MEDIUM findings;
+    all resolved in plan revision 2026-03-06
 - order: 7
   stage: User Review - Plan (Final)
-  status: pending
+  status: done
   evidence: .claude/work-queue/assets/WRK-691/plan-html-review-final.md
+  notes: User approved final plan 2026-03-06
 - order: 8
   stage: Claim / Activation
-  status: pending
+  status: done
   evidence: .claude/work-queue/assets/WRK-691/evidence/claim.yaml
 - order: 9
   stage: Work-Queue Routing Skill
-  status: pending
-  evidence: /work
+  status: done
+  evidence: /work run WRK-691
+  notes: Routed via coordination/workspace/work-queue skill
 - order: 10
   stage: Work Execution
-  status: pending
+  status: done
   evidence: .claude/work-queue/assets/WRK-691/evidence/execute.yaml
+  notes: >
+    5 deliverables implemented: session-start/SKILL.md (Step 0 auto-load),
+    detect-drift.sh (3 patterns), test_detect_drift.sh (6/6 pass),
+    comprehensive-learning.sh (Phase 1b), comprehensive-learning/SKILL.md (Phase 1b docs)
 - order: 11
   stage: Artifact Generation
-  status: pending
+  status: done
   evidence: .claude/work-queue/assets/WRK-691/implementation-review.html
+  notes: Implementation review HTML generated
 - order: 12
   stage: TDD / Eval
-  status: pending
+  status: done
   evidence: .claude/work-queue/assets/WRK-691/evidence/variation-test-results.md
+  notes: 6/6 tests pass; 8/8 analytical checks pass; legal scan PASS
 - order: 13
   stage: Agent Cross-Review
-  status: pending
-  evidence: .claude/work-queue/assets/WRK-691/evidence/cross-review-package.md
+  status: done
+  evidence: .claude/work-queue/assets/WRK-691/evidence/implementation-cross-review.md
+  notes: Codex REQUEST_CHANGES (3 HIGH + 3 MEDIUM) + Gemini REQUEST_CHANGES (2 issues); all 8 findings resolved; 9/9 tests pass post-fix
 - order: 14
   stage: Verify Gate Evidence
-  status: pending
+  status: done
   evidence: scripts/work-queue/verify-gate-evidence.py
+  notes: 14/17 gates PASS; 1 WARN (reclaim n/a); 2 pending Stage 17 (user-review-close)
 - order: 15
   stage: Future Work Synthesis
-  status: pending
+  status: done
   evidence: .claude/work-queue/assets/WRK-691/evidence/future-work.yaml
+  notes: 3 items — WRK-692, WRK-693, future multi-provider extension
 - order: 16
   stage: Resource Intelligence Update
-  status: pending
+  status: done
   evidence: .claude/work-queue/assets/WRK-691/evidence/resource-intelligence-update.yaml
+  notes: 5 new files, 3 modified files documented
 - order: 17
   stage: User Review - Implementation
-  status: pending
+  status: done
   evidence: .claude/work-queue/assets/WRK-691/evidence/user-review-close.yaml
+  notes: User approved 2026-03-06 — "yes WRK-691"; decision=approved
 - order: 18
   stage: Reclaim
   status: n/a

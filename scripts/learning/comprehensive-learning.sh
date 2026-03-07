@@ -125,6 +125,29 @@ else
     exit 1
 fi
 
+# --- Phase 1b: Drift Detection ---
+DETECT_DRIFT="${WS_HUB}/scripts/session/detect-drift.sh"
+YESTERDAY=$(date -d "yesterday" +%Y%m%d 2>/dev/null || date -v-1d +%Y%m%d 2>/dev/null || true)
+LAST_LOG="${WS_HUB}/logs/orchestrator/claude/session_${YESTERDAY}.jsonl"
+if [[ -f "$DETECT_DRIFT" && -f "$LAST_LOG" ]]; then
+    if bash "$DETECT_DRIFT" --log "$LAST_LOG" --since "$YESTERDAY" > /tmp/cl_drift.log 2>&1; then
+        log_phase "1b Drift Detection" "DONE" "Drift summary appended to .claude/state/drift-summary.yaml"
+        # Append drift violation counts to session-quality signals YAML
+        SIGNALS_DIR="${WS_HUB}/.claude/state/session-signals"
+        mkdir -p "$SIGNALS_DIR"
+        py_viol=$(grep "^python_runtime:" /tmp/cl_drift.log | awk '{print $2}' || echo 0)
+        fp_viol=$(grep "^file_placement:" /tmp/cl_drift.log | awk '{print $2}' || echo 0)
+        gw_viol=$(grep "^git_workflow:" /tmp/cl_drift.log | awk '{print $2}' || echo 0)
+        printf -- '{"event":"drift_counts","ts":"%s","date":"%s","python_runtime_violations":%s,"file_placement_violations":%s,"git_workflow_violations":%s}\n' \
+          "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$YESTERDAY" "$py_viol" "$fp_viol" "$gw_viol" \
+          >> "${SIGNALS_DIR}/drift-counts.jsonl" || true
+    else
+        log_phase "1b Drift Detection" "WARN" "detect-drift.sh failed (non-fatal)"
+    fi
+else
+    log_phase "1b Drift Detection" "SKIP" "No session log for ${YESTERDAY} or detect-drift.sh missing"
+fi
+
 # --- Phase 2: Reflect (non-mandatory) ---
 echo "--- Phase 2: Reflect ---"
 REFLECT_SCRIPT="${WS_HUB}/.claude/skills/coordination/workspace/claude-reflect/scripts/daily-reflect.sh"

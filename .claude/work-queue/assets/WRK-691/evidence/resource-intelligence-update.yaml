@@ -1,0 +1,23 @@
+wrk_id: WRK-691
+updated_at: '2026-03-06T12:00:00Z'
+additions:
+  - file: scripts/session/detect-drift.sh
+    description: New drift detection script — 3 patterns, git log --since, flock-safe YAML append
+  - file: scripts/session/tests/test_detect_drift.sh
+    description: 9-test fixture suite for detect-drift.sh
+  - file: scripts/session/tests/fixtures/
+    description: 3 JSONL fixtures (violations, clean, compound-cmd)
+  - file: .claude/state/drift-summary.yaml
+    description: New gitignored state file — appended by detect-drift.sh nightly
+  - file: .claude/state/session-signals/drift-counts.jsonl
+    description: Drift violation counts emitted by comprehensive-learning Phase 1b
+changes:
+  - file: .claude/skills/workspace-hub/session-start/SKILL.md
+    change: Step 0 added — 3 drift-risk files auto-loaded at session start
+  - file: scripts/learning/comprehensive-learning.sh
+    change: Phase 1b added — nightly drift detection + session-signals emission
+  - file: .claude/skills/workspace-hub/comprehensive-learning/SKILL.md
+    change: Phase 1b documented
+skills_updated:
+  - session-start v1.0.0 → v1.1.0 (Step 0 added)
+  - comprehensive-learning v2.0.0 (Phase 1b added)
