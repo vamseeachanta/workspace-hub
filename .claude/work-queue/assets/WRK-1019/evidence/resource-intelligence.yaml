@@ -1,0 +1,66 @@
+wrk_id: WRK-1019
+completion_status: continue_to_planning
+researched_at: "2026-03-05T06:30:00Z"
+researcher: claude
+p1_count: 0
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - workspace-hub/workflow-html
+  supporting_used:
+    - superpowers/brainstorming
+
+domain:
+  problem: >
+    No periodic steering check on harness vs engineering investment ratio.
+    Sessions drift toward harness refinement while engineering repos stagnate.
+    GTM objectives require specific technical capabilities to be demonstrable.
+
+  architecture_decision: >
+    Thin workspace-specific orchestration skill (SKILL.md) referencing official
+    plugins. Reads INDEX.md category view (L1) and portfolio-signals.yaml (L2)
+    to produce a one-page actionable steering report with 5 output sections.
+    L3 (capability research cron) deferred to WRK-1020.
+
+  queue_state:
+    total_active: 215
+    harness: 40
+    harness_pct: 18.5
+    engineering: 117
+    engineering_pct: 54
+    data: 26
+    platform: 12
+    business: 7
+    maintenance: 10
+    personal: 3
+    harness_status: healthy
+
+  gtm_candidates:
+    - domain: subsea pipeline / DNV RP F105
+      repo: digitalmodel
+      status: brochure_ready
+    - domain: cathodic protection
+      repo: digitalmodel
+      status: brochure_ready
+    - domain: drilling / BourgoineYoung ROP
+      repo: digitalmodel
+      status: brochure_ready
+    - domain: production forecasting / Arps decline
+      repo: worldenergydata
+      status: brochure_ready
+    - domain: net lease CRE
+      repo: assethold
+      status: brochure_ready
+
+  open_questions:
+    - "Q1: L3 capability research — gemini CLI vs RSS vs skip?"
+    - "Q2: portfolio-signals.yaml — git-tracked vs gitignored?"
+    - "Q3: lookback window — 7 vs 30 days?"
+
+constraints:
+  - workspace-hub only (no submodule changes)
+  - scripts must use uv run --no-project python
+  - compute-balance.py stdlib only, ~50 lines
+  - SKILL.md references official plugins by name — no logic copy

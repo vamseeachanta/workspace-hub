@@ -1,0 +1,22 @@
+wrk_id: WRK-1019
+stage: 8
+claimed_at: "2026-03-07T22:35:00Z"
+session_owner: claude
+best_fit_provider: claude
+orchestrator: claude
+workstation: ace-linux-1
+quota_snapshot:
+  timestamp: "2026-03-07T22:35:00Z"
+  claude:
+    tier: max
+    pct_remaining: null
+    note: "Max plan — sufficient for complex WRK"
+  codex:
+    tier: subscription
+    pct_remaining: 60
+  gemini:
+    tier: google_login
+    pct_remaining: 100
+quota_snapshot_ref: .claude/work-queue/assets/WRK-1019/evidence/claim.yaml
+claim_expires_at: "2026-03-08T06:35:00Z"
+quota_assessment: proceed

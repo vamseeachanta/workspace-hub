@@ -1,0 +1,55 @@
+wrk_id: WRK-1019
+stage: 6
+reviewed_at: "2026-03-07T22:30:00Z"
+verdict: APPROVE
+reviewers:
+  - provider: claude
+    verdict: APPROVE
+    log: scripts/review/results/wrk-1019-plan-review.md
+  - provider: gemini
+    verdict: APPROVE
+    log: scripts/review/results/wrk-1019-plan-review.md
+  - provider: codex
+    verdict: REQUEST_CHANGES
+    final_verdict: APPROVE
+    log: scripts/review/results/wrk-1019-plan-review.md
+
+p1_findings:
+  - id: F-01
+    source: codex
+    severity: high
+    title: AC#8 references L3 despite L3 being deferred scope
+    fix: Renamed to test_capability_signals_compat_no_crash — compat only, no L3 rendering
+
+p2_findings:
+  - id: F-02
+    source: codex
+    severity: medium
+    title: compute-balance.py scope blurs L1/L2 boundary
+    fix: Clarified — L1 only (INDEX.md); L2 reads pre-computed portfolio-signals.yaml; does NOT write
+
+  - id: F-03
+    source: codex
+    severity: medium
+    title: Next 3 to Fund ranking heuristic undefined
+    fix: Added — percent_complete desc → priority score desc → ID asc; absent percent_complete = 0
+
+  - id: F-04
+    source: codex
+    severity: low
+    title: Test count drift — AC table=11, execution step=8
+    fix: Aligned — all references now say 11 tests; TDD block has 1:1 AC mapping
+
+observations:
+  - "L1+L2 design is clean — harness balance + per-provider drift in one read"
+  - "Domain mapping table is well-structured for GTM use"
+  - "SKILL.md thin orchestration layer pattern is correct"
+  - "session-start integration point documented without embedding logic — correct scope"
+
+revisions_applied:
+  - plan.md AC#8 renamed; description now L3 compat only
+  - plan.md Execution Step 3 bounded (L1+L2 read, no write)
+  - plan.md Execution Step 4 test count 8→11
+  - plan.md TDD block AC-N labels added
+  - plan.md Next 3 Actions to Fund ranking heuristic specified
+  - plan.md update-portfolio-signals.sh correctly marked WRK-1020 scope only

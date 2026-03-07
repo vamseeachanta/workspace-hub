@@ -1,0 +1,17 @@
+wrk_id: WRK-1019
+stage: 8
+activated_at: "2026-03-07T22:35:00Z"
+status: active
+moved_to: working/WRK-1019.md
+set_active_wrk: true
+session_id: session-20260307-wrk1019
+orchestrator_agent: claude-sonnet-4-6
+orchestrator: claude
+workstation: ace-linux-1
+plan_final_ref: .claude/work-queue/assets/WRK-1019/evidence/plan-final-review.yaml
+gate_passed:
+  gate_5_6: true
+  gate_7_8: true
+next_stage: 9
+next_stage_name: Work-Queue Routing Skill
+next_invocation: chained_agent

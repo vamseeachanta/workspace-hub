@@ -1,0 +1,29 @@
+wrk_id: WRK-1019
+synthesized_at: 2026-03-07T23:30:00Z
+
+recommendations:
+  - id: FW-01
+    title: "WRK-1020: update-portfolio-signals.sh + L3 capability_signals cron"
+    description: >
+      Implement the nightly cron that parses archived WRK YAML files (last 30 days)
+      to compute provider_activity, and adds capability_signals entries from provider
+      research. Updates .claude/state/portfolio-signals.yaml automatically.
+    disposition: spun-off-new
+    status: open
+    captured: true
+    priority: medium
+    related_wrk: WRK-1020
+    notes: "WRK-1020 captured and unblocked by WRK-1019 close"
+
+  - id: FW-02
+    title: "Session-start weekly steering mode integration"
+    description: >
+      Wire /repo-portfolio-steering as a delegate from /session-start --mode weekly.
+      session-start/SKILL.md related_skills reference already documented.
+      No code embedding needed — skill is invoked as delegate.
+    disposition: existing-updated
+    status: open
+    captured: true
+    priority: low
+    related_wrk: WRK-1019
+    notes: "Integration point documented in SKILL.md; no additional WRK needed until session-start v2 rewrite"

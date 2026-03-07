@@ -1,0 +1,15 @@
+wrk_id: WRK-1019
+stage: 7
+artifact_type: plan_html_review_final_ref
+confirmed_by: user
+confirmed_at: 2026-03-07T22:30:00Z
+decision: passed
+revisions_incorporated:
+  - F-01: AC#8 renamed to test_capability_signals_compat_no_crash (L3 compat only)
+  - F-02: compute-balance.py bounded to L1+L2 read; does NOT write portfolio-signals.yaml
+  - F-03: Next 3 to Fund ranking heuristic defined (percent_complete desc → priority desc → ID asc)
+  - F-04: Test count aligned 8→11 everywhere; TDD block has 1:1 AC-N labels
+  - D-01: L3 capability research deferred to WRK-1020
+  - D-02: portfolio-signals.yaml committed (auditable history)
+  - D-03: lookback_days set to 30
+notes: "All cross-review findings resolved. Final plan approved. Stage 8 unlocked."

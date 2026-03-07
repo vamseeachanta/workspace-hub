@@ -1,0 +1,32 @@
+wrk_id: WRK-1019
+stage: 16
+updated_at: "2026-03-07T23:25:00Z"
+updater: claude
+
+additions:
+  - id: ADD-01
+    type: pattern
+    title: "portfolio-signals.yaml schema — L1+L2 committed file"
+    detail: >
+      .claude/state/portfolio-signals.yaml is committed (not gitignored).
+      Schema: generated_at, lookback_days, provider_activity.{claude,codex,gemini}.{category: count}.
+      capability_signals key reserved for WRK-1020 cron (graceful missing handled by compute-balance.py).
+    path: .claude/state/portfolio-signals.yaml
+
+  - id: ADD-02
+    type: pattern
+    title: "compute-balance.py L1/L2 boundary enforcement"
+    detail: >
+      compute-balance.py reads INDEX.md (L1) and portfolio-signals.yaml (L2) but does NOT write.
+      Writing portfolio-signals.yaml is exclusively WRK-1020 scope (update-portfolio-signals.sh).
+      This boundary prevents circular dependency and keeps the skill read-only at runtime.
+    path: scripts/skills/repo-portfolio-steering/compute-balance.py
+
+  - id: ADD-03
+    type: skill
+    title: "repo-portfolio-steering skill registered"
+    detail: >
+      .claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md added.
+      Trigger phrases: portfolio steering, balance harness, GTM, what to fund next, project funding.
+      session-start related_skills updated to reference this skill.
+    path: .claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md

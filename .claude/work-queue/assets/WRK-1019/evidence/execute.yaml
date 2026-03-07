@@ -1,0 +1,62 @@
+stage: 10
+wrk_id: WRK-1019
+executed_at: "2026-03-07T23:00:00Z"
+executed_by: claude-sonnet-4-6
+route: C
+
+summary: >
+  Implemented repo-portfolio-steering skill: SKILL.md (5 output sections, domain
+  mapping table, session-start integration point), compute-balance.py (L1 INDEX.md
+  parser + L2 portfolio-signals.yaml reader, stdlib only), 11 TDD tests passing,
+  .claude/state/portfolio-signals.yaml initial seed committed.
+
+deliverables:
+  - path: .claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md
+    type: new
+    purpose: "Orchestration skill: Balance Snapshot, Harness Signal L1+L2, GTM Capabilities, Next 3 to Fund, Harness Budget"
+  - path: scripts/skills/repo-portfolio-steering/compute-balance.py
+    type: new
+    purpose: "L1 INDEX.md parser + L2 portfolio-signals.yaml reader (stdlib only, ~50 lines)"
+  - path: tests/skills/test_repo_portfolio_steering.py
+    type: new
+    purpose: "11 unit tests, 1:1 with acceptance criteria AC-1 through AC-11"
+  - path: .claude/state/portfolio-signals.yaml
+    type: new
+    purpose: "Initial seed file with L1+L2 schema; committed for auditable history"
+
+test_count: 11
+test_files:
+  - tests/skills/test_repo_portfolio_steering.py
+
+test_results:
+  - suite: test_repo_portfolio_steering
+    passed: 11
+    failed: 0
+    command: "uv run --no-project python -m pytest tests/skills/test_repo_portfolio_steering.py -v"
+
+integrated_repo_tests:
+  - name: skill_file_exists
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/skills/test_repo_portfolio_steering.py::test_skill_file_exists -v"
+    result: passed
+    artifact_ref: .claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md
+  - name: balance_snapshot_parses_index
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/skills/test_repo_portfolio_steering.py::test_balance_snapshot_parses_index -v"
+    result: passed
+    artifact_ref: scripts/skills/repo-portfolio-steering/compute-balance.py
+  - name: provider_activity_parsed
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/skills/test_repo_portfolio_steering.py::test_provider_activity_parsed -v"
+    result: passed
+    artifact_ref: .claude/state/portfolio-signals.yaml
+  - name: portfolio_signals_missing_graceful
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/skills/test_repo_portfolio_steering.py::test_portfolio_signals_missing_graceful -v"
+    result: passed
+    artifact_ref: scripts/skills/repo-portfolio-steering/compute-balance.py
+  - name: full_suite
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/skills/test_repo_portfolio_steering.py -v"
+    result: passed
+    artifact_ref: tests/skills/test_repo_portfolio_steering.py
