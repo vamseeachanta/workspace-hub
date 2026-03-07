@@ -85,7 +85,11 @@ Brochure-ready engineering repos:
 
 4. **Next 3 Actions to Fund** — map high-maturity engineering items to GTM opportunities:
    - Domain → Client Persona → Project Type mapping (see Domain Mapping table below)
-   - Select top 3 HIGH-priority engineering WRK items closest to completion
+   - Select top 3 HIGH-priority engineering WRK items ranked by:
+     1. `percent_complete` descending (higher = closer to done)
+     2. Fallback: `priority` score (high=3, medium=2, low=1) descending
+     3. Fallback: WRK ID ascending (lower ID = older, more considered)
+   - When `percent_complete` is absent or 0, treat as 0 in ranking
    - Output: WRK-NNN | domain | client_persona | project_type | recommended_action
 
 5. **Recommended Harness Budget** — spend-rate formula:
@@ -183,7 +187,7 @@ The skill registers an optional **weekly steering mode** for `/session-start`:
 | 5 | Next 3 to fund section maps domains to personas | `test_next3_fund_mapping` |
 | 6 | Recommended harness budget outputs spend-rate | `test_harness_budget_formula` |
 | 7 | Harness saturation signal includes per-provider agentic activity (Layer 2) | `test_provider_activity_parsed` |
-| 8 | Capability research signal surfaced from portfolio-signals.yaml (Layer 3) | `test_capability_signals_surfaced` |
+| 8 | portfolio-signals.yaml with `capability_signals` key present does not crash skill (L3 compat, WRK-1019 scope only) | `test_capability_signals_compat_no_crash` |
 | 9 | Missing portfolio-signals.yaml handled gracefully (no crash) | `test_portfolio_signals_missing_graceful` |
 | 10 | Session-start integration point documented | `test_session_start_trigger_documented` |
 | 11 | Skill description triggers on correct phrases | `test_description_trigger_phrases` |
@@ -201,12 +205,14 @@ The skill registers an optional **weekly steering mode** for `/session-start`:
    - Session-start integration section
    - Acceptance criteria checklist
 3. Write `scripts/skills/repo-portfolio-steering/compute-balance.py`:
-   - Parses `INDEX.md` `## By Category` section
-   - Returns JSON: `{category: count, ...}`, `harness_pct`, `engineering_pct`
+   - **L1 only**: parses `INDEX.md` `## By Category` section
+   - Returns JSON: `{category: count, ...}`, `harness_pct`, `engineering_pct`, `total`
+   - Also reads `portfolio-signals.yaml` (L2, pre-computed) and returns `provider_activity` dict
+   - Does NOT write or update `portfolio-signals.yaml` — that is WRK-1020 scope
    - Used by the skill at runtime and in tests
 4. Write TDD tests `tests/skills/test_repo_portfolio_steering.py`:
-   - 8 tests (one per acceptance criterion above)
-   - Tests run against real INDEX.md state + fixture SKILL.md
+   - 11 tests (one per acceptance criterion above)
+   - Tests run against real INDEX.md state + fixture SKILL.md + fixture portfolio-signals.yaml
 5. Run TDD cycle: red → green → refactor
 6. Agent cross-review (Codex + Gemini) on SKILL.md + compute-balance.py
 7. Update related skills: session-start `related_skills` + skill-creator `related_skills`
@@ -218,24 +224,25 @@ The skill registers an optional **weekly steering mode** for `/session-start`:
 Tests in `tests/skills/test_repo_portfolio_steering.py`:
 
 ```python
-# 11 tests targeting acceptance criteria
-test_skill_file_exists()                        # path + name + version in frontmatter
-test_balance_snapshot_parses_index()            # compute-balance.py against real INDEX.md
-test_harness_threshold_default()                # default 30% fires correctly
-test_harness_threshold_custom()                 # HARNESS_THRESHOLD override
-test_provider_activity_parsed()                 # portfolio-signals.yaml provider_activity read
-test_provider_activity_over_threshold_flagged() # per-provider harness% > 30 → ⚠ OVER
-test_capability_signals_surfaced()              # capability_signals entries appear in report
-test_portfolio_signals_missing_graceful()       # missing yaml → Layer 2/3 skipped, no crash
-test_gtm_readiness_ranking()                    # brochure_status sort order
-test_next3_fund_mapping()                       # domain → persona mapping table present
-test_harness_budget_formula()                   # all 3 spend-rate tiers correct
-test_description_trigger_phrases()              # required phrases in description field
+# 11 tests targeting acceptance criteria (1:1 with AC table above)
+test_skill_file_exists()                        # AC-1: path + name + version in frontmatter
+test_balance_snapshot_parses_index()            # AC-2: compute-balance.py L1 against real INDEX.md
+test_harness_threshold_default()                # AC-3a: default 30% fires correctly
+test_harness_threshold_custom()                 # AC-3b: HARNESS_THRESHOLD override
+test_gtm_readiness_ranking()                    # AC-4: brochure_status sort order
+test_next3_fund_mapping()                       # AC-5: domain → persona mapping table present
+                                                #        ranking: percent_complete desc → priority desc → ID asc
+test_harness_budget_formula()                   # AC-6: all 3 spend-rate tiers correct
+test_provider_activity_parsed()                 # AC-7: portfolio-signals.yaml provider_activity read
+test_capability_signals_compat_no_crash()       # AC-8: capability_signals key present → no crash (L3 compat)
+test_portfolio_signals_missing_graceful()       # AC-9: missing yaml → Layer 2 skipped, L1 still works
+test_session_start_trigger_documented()         # AC-10: session-start integration point in SKILL.md
+test_description_trigger_phrases()              # AC-11: required phrases in description field
 ```
 
 Scripts under test:
-- `scripts/skills/repo-portfolio-steering/compute-balance.py` — queue + provider parsing
-- `scripts/cron/update-portfolio-signals.sh` — signal file update (tested via dry-run flag)
+- `scripts/skills/repo-portfolio-steering/compute-balance.py` — L1 INDEX.md parsing + L2 portfolio-signals.yaml read
+- `scripts/cron/update-portfolio-signals.sh` — **WRK-1020 scope only**; not tested here
 
 ## Output Files
 

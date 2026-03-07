@@ -48,11 +48,14 @@ stages:
     evidence: .claude/work-queue/assets/WRK-1019/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
-    status: pending
+    status: done
     human_decision_required: "no"
     owner: agents
     blocker: "no"
-    comment: Not started. Claude + Codex + Gemini parallel review of plan.md.
+    comment: >
+      Claude APPROVE, Gemini APPROVE, Codex REQUEST_CHANGES → APPROVE after 4 fixes.
+      F-01: AC#8 renamed (L3 compat only). F-02: compute-balance.py scope clarified.
+      F-03: Next 3 ranking heuristic defined. F-04: test count aligned (8→11).
     evidence: scripts/review/results/wrk-1019-plan-review.md
   - order: 7
     stage: User Review - Plan (Final)
