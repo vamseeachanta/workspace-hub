@@ -1,0 +1,90 @@
+wrk_id: WRK-1028
+completion_status: continue_to_planning
+researched_at: "2026-03-07T14:30:00Z"
+researcher: claude
+p1_count: 0
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - workspace-hub/workflow-html
+  supporting_used:
+    - superpowers/brainstorming
+
+domain:
+  problem: >
+    Agents routinely drift from the 20-stage WRK lifecycle. Root causes:
+    (1) context compaction removes hard-stop text mid-session,
+    (2) context rot — later stages carry irrelevant earlier-stage noise,
+    (3) tool-call momentum bypasses human gates,
+    (4) artifact format contracts buried in verify-gate-evidence.py not visible to agents,
+    (5) quality drift — heavy stages treated same as light stages.
+
+  architecture_decision: >
+    Stage-isolation model. Each stage is independently executable from
+    previous stage's exit artifacts. Two invocation types:
+    - autonomous → Task agent (fresh context per stage, spawn-and-exit)
+    - human-in-loop → current session (human IS the new context; no isolation needed)
+    Natural session boundaries occur at human-in-loop stages (1, 5, 7, 17).
+
+  stage_classification:
+    human_in_loop: [1, 5, 7, 17]
+    autonomous_light: [3, 8, 9, 18, 19, 20]
+    autonomous_medium: [2, 4, 6, 11, 13, 14, 15, 16]
+    autonomous_heavy: [10, 12]
+    chained_light: "stages 2+3+4 can chain in one agent; stages 8+9 can chain"
+
+  execution_flow: >
+    Human(1) → TaskAgent(2,3,4) → Human(5) → TaskAgent(6) → Human(7)
+    → TaskAgent(8,9) → TaskAgent(10) → TaskAgent(11) → TaskAgent(12)
+    → TaskAgent(13,14,15,16) → Human(17) → TaskAgent(19,20)
+
+  key_components:
+    - start-stage.sh: reads contract + entry_reads; spawns Task agent OR loads human session
+    - exit-stage.sh: validates exit_artifacts; writes log; updates stage-state.yaml; commits; prints N+1 summary
+    - stage-state.yaml: wrk_id, current_stage, invocation_model, entered_at, human_gate_pending
+    - per-stage YAML contracts: 20 files, each ≤15 lines, at scripts/work-queue/stages/stage-NN-slug.yaml
+    - per-stage micro-skills: 20 files, each ≤20 lines, at .claude/skills/workspace-hub/stages/stage-NN.md
+    - hookify backstops: 3 rules blocking Stage 6+/8+/18+ artifacts until human gate artifacts present
+    - context_budget_kb: per-stage context limit enforced by start-stage.sh
+
+  stage_weights:
+    light:
+      stages: [1, 3, 8, 9, 18, 19, 20]
+      skills: [work-queue]
+      context_budget_kb: 4
+    medium:
+      stages: [2, 4, 6, 11, 13, 14, 15, 16]
+      skills: [work-queue, domain-skill]
+      context_budget_kb: 8
+    heavy:
+      stages: [5, 7, 10, 12, 17]
+      skills: [work-queue, brainstorming-or-TDD, workflow-html, systematic-debugging]
+      context_budget_kb: 16
+
+  existing_infrastructure:
+    - verify-gate-evidence.py: close-gate checker; needs stage-state.yaml as corroborating signal
+    - workflow-gatepass/SKILL.md: 20-stage contract; needs start/exit-stage.sh references
+    - work-queue-workflow/SKILL.md v1.1.0: Stage 5 route-split + pseudocode/tests-evals (WRK-1026)
+    - workflow-html/SKILL.md v1.4.0: single lifecycle HTML + gate artifact format table (WRK-1026)
+    - hookify: plugin system for pre-tool-call rules; confirm pattern matching capability before building
+    - scripts/agents/{session,work,plan,execute,review}.sh: existing wrappers; stage scripts extend these
+
+  open_questions:
+    - hookify pattern matching: can it inspect file path + content of Write calls reliably?
+    - context_budget enforcement: can start-stage.sh measure and truncate artifact content?
+    - chained agents: should 2+3+4 always chain or have a config flag per WRK route?
+    - stage 18 (reclaim): conditional — how does stage-state.yaml handle branches?
+
+  next_step: >
+    Stage 3 triage (confirm route/workstations), then per-stage brainstorm sessions
+    (one session per stage or stage group) to define activities, skills, and exit
+    artifacts for each of the 20 stages. That output IS the Stage 4 plan draft.
+
+constraints:
+  - workspace-hub only (no submodule changes)
+  - scripts must use uv run --no-project python for any Python
+  - hookify rules must not false-positive on non-WRK writes
+  - stage-state.yaml is .claude/state/ (gitignored runtime state)
+  - micro-skills ≤20 lines; contracts ≤15 lines (context budget discipline)
