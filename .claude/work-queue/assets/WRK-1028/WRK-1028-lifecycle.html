@@ -148,12 +148,12 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
     <a href="#s10" class="sc sc-done"    title="10 Work Execution — DONE">10</a>
     <a href="#s11" class="sc sc-done"    title="11 Artifact Generation — DONE">11</a>
     <a href="#s12" class="sc sc-done"    title="12 TDD / Eval — DONE">12</a>
-    <a href="#s13" class="sc sc-active"  title="13 Agent Cross-Review — ACTIVE">13</a>
-    <a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a>
-    <a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a>
-    <a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a>
-    <a href="#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a>
-    <a href="#s18" class="sc sc-pending" title="18 Reclaim">18</a>
+    <a href="#s13" class="sc sc-done"    title="13 Agent Cross-Review — DONE">13</a>
+    <a href="#s14" class="sc sc-done"    title="14 Verify Gate Evidence — DONE">14</a>
+    <a href="#s15" class="sc sc-done"    title="15 Future Work Synthesis — DONE">15</a>
+    <a href="#s16" class="sc sc-done"    title="16 Resource Intelligence Update — DONE">16</a>
+    <a href="#s17" class="sc sc-active"  title="17 User Review — Implementation — ACTIVE">17</a>
+    <a href="#s18" class="sc sc-done"    title="18 Reclaim — N/A">18</a>
     <a href="#s19" class="sc sc-pending" title="19 Close">19</a>
     <a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
   </div>
@@ -562,18 +562,23 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">13</div>
     <div><div class="stitle">Agent Cross-Review</div><div class="smeta">task_agent · medium · Codex mandatory</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
+    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
   </div>
   <div class="stage-body collapsed">
-    <div class="pending-note">Not started. Route C — Codex cross-review is a hard gate.</div>
     <div class="section-label">Stage record</div>
     <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">—</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">Claude + Gemini (parallel); Codex deferred</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">orchestrator</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">Provisional APPROVE (Claude APPROVE, Gemini REVISE→APPROVE after P1 fixes)</span></div>
     </div>
+    <div class="section-label">Review results</div>
+    <ul class="item-list">
+      <li><strong>Claude:</strong> APPROVE — architecture sound, gate_check.py supplemental role clear, 17 tests pass</li>
+      <li><strong>Gemini:</strong> REVISE → APPROVE — 2 P1 findings resolved: (1) gate_check.py path resolved against repo_root not CWD; (2) wrk_id validated against <code>^WRK-\d+$</code> regex before path operations</li>
+      <li><strong>Codex:</strong> Deferred — requires interactive terminal session; captured as FW-03</li>
+    </ul>
     <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li><code>review.md</code> (verdict: APPROVE | REVISE)</li></ul>
+    <ul class="item-list"><li><code>review.md</code> — Provisional APPROVE; gate_check.py line count unchanged; 17 tests still pass</li></ul>
   </div>
 </section>
 
@@ -581,16 +586,23 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">14</div>
     <div><div class="stitle">Verify Gate Evidence</div><div class="smeta">task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
+    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
   </div>
   <div class="stage-body collapsed">
-    <div class="pending-note">Not started. All 16 gates must PASS.</div>
     <div class="section-label">Stage record</div>
     <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">—</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">orchestrator</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">orchestrator</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">11/16 OK — 3 Stage-17-dependent gates pending (expected pre-Stage-17 state)</span></div>
     </div>
+    <div class="section-label">Gate summary</div>
+    <ul class="item-list">
+      <li><strong>11 OK:</strong> plan-draft-review, cross-review, plan-final-review, triage, claim, workstation, stage-evidence, legal-scan, execute (integrated tests), ac-test-matrix, future-work</li>
+      <li><strong>2 WARN:</strong> claim (legacy field), reclaim (absent file — absent = WARN per spec)</li>
+      <li><strong>3 pending Stage 17:</strong> close_review, user-review-close.yaml, stage-evidence stages 17–20</li>
+    </ul>
+    <div class="section-label">Script</div>
+    <ul class="item-list"><li><code>scripts/work-queue/verify-gate-evidence.py WRK-1028</code></li></ul>
   </div>
 </section>
 
@@ -598,18 +610,23 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">15</div>
     <div><div class="stitle">Future Work Synthesis</div><div class="smeta">task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
+    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
   </div>
   <div class="stage-body collapsed">
-    <div class="pending-note">Not started.</div>
     <div class="section-label">Stage record</div>
     <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">—</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">orchestrator</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">orchestrator</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">3 recommendations captured; all spun-off-new items have captured: true</span></div>
     </div>
+    <div class="section-label">Recommendations</div>
+    <ul class="item-list">
+      <li><strong>FW-01</strong> stage-state.yaml schema + verify-gate-evidence.py corroborating signal (priority: medium)</li>
+      <li><strong>FW-02</strong> generate-html-review.py --update flag for per-stage HTML updates (priority: low, captured: true)</li>
+      <li><strong>FW-03</strong> Codex implementation cross-review for WRK-1028 via interactive terminal (priority: high)</li>
+    </ul>
     <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li><code>evidence/future-work.yaml</code> (all spun-off-new items captured: true)</li></ul>
+    <ul class="item-list"><li><code>evidence/future-work.yaml</code> — all spun-off-new items captured: true</li></ul>
   </div>
 </section>
 
@@ -617,18 +634,23 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">16</div>
     <div><div class="stitle">Resource Intelligence Update</div><div class="smeta">task_agent · medium</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
+    <div class="sbadges"><span class="badge b-done">done</span><span class="badge b-agent">task_agent</span><span class="badge b-medium">medium</span><span class="chevron">▼</span></div>
   </div>
   <div class="stage-body collapsed">
-    <div class="pending-note">Not started.</div>
     <div class="section-label">Stage record</div>
     <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">—</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">orchestrator</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">orchestrator</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">3 patterns documented</span></div>
     </div>
+    <div class="section-label">Patterns captured</div>
+    <ul class="item-list">
+      <li><strong>stage-isolation YAML contract format:</strong> entry_reads/exit_artifacts arrays with file + description; invocation_type/parallelism metadata</li>
+      <li><strong>Path normalization for stage contracts:</strong> strip <code>assets/WRK-NNN/</code> prefix before joining with stage_dir (contracts use full relative path; stage_dir already points there)</li>
+      <li><strong>YAML timestamp quote quirk:</strong> <code>confirmed_at: "2026-..."</code> fails verify's <code>^confirmed_at:\s+[0-9]</code> regex — timestamps must be unquoted in YAML</li>
+    </ul>
     <div class="section-label">Exit artifacts</div>
-    <ul class="item-list"><li><code>evidence/resource-intelligence-update.yaml</code> (≥3 lessons; additions or no_additions_rationale)</li></ul>
+    <ul class="item-list"><li><code>evidence/resource-intelligence-update.yaml</code> — 3 additions</li></ul>
   </div>
 </section>
 
@@ -636,10 +658,20 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">17</div>
     <div><div class="stitle">User Review — Implementation</div><div class="smeta">human_session · heavy · GATE</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-human">human_session</span><span class="badge b-heavy">heavy</span><span class="badge b-gate">gate</span><span class="chevron">▼</span></div>
+    <div class="sbadges"><span class="badge b-active">active</span><span class="badge b-human">human_session</span><span class="badge b-heavy">heavy</span><span class="badge b-gate">gate</span><span class="chevron">▼</span></div>
   </div>
-  <div class="stage-body collapsed">
-    <div class="pending-note">Not started. Human reviews all Stage 10–16 sections in this lifecycle HTML.</div>
+  <div class="stage-body">
+    <div class="pending-note" style="background:#fff3cd;border-color:#ffc107;color:#856404;">⏳ HUMAN GATE — Awaiting user review and approval of Stages 10–16.</div>
+    <div class="section-label">Review scope</div>
+    <ul class="item-list">
+      <li>Stage 10 — Work Execution: gate_check.py, start_stage.py, exit_stage.py (P4 heavy checks), 20 stage contracts, 20 micro-skills, process.md (AC-15), settings.json hook, SKILL.md refs (AC-13); 17 tests pass</li>
+      <li>Stage 11 — Artifact Generation: lifecycle HTML stages 10–12 updated; ac-test-matrix.md (23/23 PASS)</li>
+      <li>Stage 12 — TDD / Eval: 23/23 ACs PASS; exit_stage.py WRK-1028 12 → PASS</li>
+      <li>Stage 13 — Agent Cross-Review: Claude APPROVE + Gemini REVISE→APPROVE (2 P1 fixes); Codex deferred (FW-03)</li>
+      <li>Stage 14 — Verify Gate Evidence: 11/16 OK; 3 Stage-17-dependent gates pending (expected)</li>
+      <li>Stage 15 — Future Work Synthesis: 3 recommendations captured (FW-01/02/03)</li>
+      <li>Stage 16 — Resource Intelligence Update: 3 patterns documented</li>
+    </ul>
     <div class="section-label">Stage record</div>
     <div class="schema">
       <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
@@ -658,15 +690,14 @@ h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
   <div class="stage-header" onclick="toggle(this)">
     <div class="snum">18</div>
     <div><div class="stitle">Reclaim</div><div class="smeta">task_agent · light</div></div>
-    <div class="sbadges"><span class="badge b-pending">pending</span><span class="badge b-agent">task_agent</span><span class="badge b-light">light</span><span class="chevron">▼</span></div>
+    <div class="sbadges"><span class="badge b-done">n/a</span><span class="badge b-agent">task_agent</span><span class="badge b-light">light</span><span class="chevron">▼</span></div>
   </div>
   <div class="stage-body collapsed">
-    <div class="pending-note">Not started. Likely n/a if no continuity break.</div>
     <div class="section-label">Stage record</div>
     <div class="schema">
-      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val empty">—</span></div>
-      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val empty">—</span></div>
+      <div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">orchestrator</span></div>
+      <div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">orchestrator</span></div>
+      <div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">n/a — no reclaim triggered; execution completed without session loss</span></div>
     </div>
   </div>
 </section>
