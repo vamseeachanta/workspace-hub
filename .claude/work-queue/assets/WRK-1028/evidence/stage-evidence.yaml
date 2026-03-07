@@ -58,11 +58,17 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1028/evidence/user-review-plan-draft.yaml
 - order: 6
   stage: Cross-Review
-  status: pending
+  status: done
+  verdict: REVISE
   human_decision_required: 'no'
   owner: agents
   blocker: 'no'
-  comment: Not started.
+  comment: >
+    3-provider cross-review complete (Claude + Codex + Gemini), all returned REVISE.
+    4 P1 findings: Gate 7 predicate mismatch, Gate 17 wrong artifact, split-brain enforcement,
+    process.md governance break. 5 P2 findings: chained_agent unspecified, Bash bypass,
+    spawn underspecified, section-selector needed, test suite insufficient (7→≥12).
+    return_to_stage: 4 for plan revision before Stage 7.
   evidence: .claude/work-queue/assets/WRK-1028/evidence/cross-review.yaml
 - order: 7
   stage: User Review - Plan (Final)

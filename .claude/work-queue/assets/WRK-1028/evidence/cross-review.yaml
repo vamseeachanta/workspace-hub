@@ -1,0 +1,136 @@
+wrk_id: WRK-1028
+stage: 6
+reviewed_at: "2026-03-07T18:45:00Z"
+verdict: REVISE
+reviewers:
+  - provider: gemini
+    verdict: REVISE
+    log: assets/WRK-1028/gemini-review.md
+  - provider: codex
+    verdict: REVISE
+    log: assets/WRK-1028/codex-review.md
+  - provider: claude
+    verdict: REVISE
+    log: synthesized inline below
+
+p1_findings:
+  - id: P1-01
+    source: codex + claude
+    title: Stage 7 gate contract mismatch with verify-gate-evidence.py
+    detail: >
+      Plan gates Stage 7→8 on confirmed_by: in lifecycle HTML Stage 7 section.
+      verify-gate-evidence.py requires plan_html_review_final_ref artifact with
+      confirmed_by, confirmed_at, decision: passed fields. If implemented as planned,
+      Stage 7 passes locally but WRK cannot close. Gate predicate must align with
+      verify-gate-evidence.py canonical check.
+    fix: Change Gate 7→8 to check plan-final-review artifact (referenced by plan_html_review_final_ref)
+         with required fields, not lifecycle HTML section alone.
+
+  - id: P1-02
+    source: codex
+    title: Stage 17→18 gate attached to wrong artifact
+    detail: >
+      Plan blocks writes to evidence/reclaim.yaml until user-review-close.yaml approved.
+      Reclaim is a conditional continuity recovery stage — not the main post-review path.
+      Close readiness should gate close-item.sh output (done/WRK-NNN.md), not reclaim.
+      This hardwires the wrong control point.
+    fix: Gate 17→18 should block writing done/WRK-NNN.md or running close-item.sh,
+         not reclaim.yaml. Reclaim has its own entry condition (continuity break detected).
+
+  - id: P1-03
+    source: codex + gemini
+    title: Split-brain gate enforcement — gate-check.py vs canonical verify-gate-evidence.py
+    detail: >
+      Plan introduces gate-check.py as a competing enforcement authority. Current repo
+      policy uses verify-gate-evidence.py + stage5-gate-config.yaml as the canonical gate
+      plane. A hook-only blocker risks split-brain enforcement across agents and wrappers
+      (claim-item.sh, close-item.sh still use the canonical path). Also, gate-check.py
+      only intercepts Write tool — Bash tool (echo/sed/cat) bypasses it entirely.
+    fix: gate-check.py must be supplemental, not primary. Extend verify-gate-evidence.py
+         and stage5-gate-config.yaml as the canonical source. gate-check.py adds a
+         convenience block for Write tool only; canonical scripts remain the hard gate.
+         Document Bash bypass limitation; enforce Write-only evidence writes in micro-skills.
+
+  - id: P1-04
+    source: codex
+    title: process.md not updated — governance break
+    detail: >
+      process.md still declares a 10-stage lifecycle with different stage names.
+      Updating only workflow-gatepass/SKILL.md + work-queue-workflow/SKILL.md leaves
+      the canonical process document inconsistent. Any agent loading process.md gets
+      contradictory instructions.
+    fix: Add process.md update to deliverables and ACs. AC-15: process.md reflects
+         20-stage lifecycle with correct stage names and invocation types.
+
+p2_findings:
+  - id: P2-01
+    source: gemini + claude
+    title: chained_agent logic unspecified in start-stage.sh
+    detail: >
+      start-stage.sh spec only defines task_agent and human_session paths.
+      No technical description of how chained stages (2+3+4, 8+9) are grouped,
+      prompted, or transitioned without spawn overhead between them.
+    fix: Add chained_agent path to start-stage.sh spec — produces a combined
+         prompt (all chained stage contracts + micro-skills in sequence); single
+         Task agent receives combined prompt and exits after all chained stages complete.
+
+  - id: P2-02
+    source: gemini
+    title: Gate bypass via Bash tool
+    detail: >
+      gate-check.py intercepts Write tool only. Agents using Bash (echo, sed, cat
+      heredoc) to write evidence files bypass the hook entirely. This is the most
+      common write pattern in existing scripts.
+    fix: Document in all micro-skills: evidence files MUST be written via Write tool
+         only, never Bash. gate-check.py adds Bash pattern monitoring for evidence paths
+         as a secondary check. Primary enforcement remains verify-gate-evidence.py.
+
+  - id: P2-03
+    source: codex
+    title: Task agent spawn underspecified — no provider-agnostic runner
+    detail: >
+      start-stage.sh cannot instantiate Claude/Codex/Gemini sessions directly from bash.
+      "Spawn Task agent" needs a concrete mechanism — prompt package output for human/
+      orchestrator dispatch, or a wrapper around scripts/agents/work.sh.
+    fix: start-stage.sh produces a prompt package file (stage-N-prompt.md) with
+         contract + entry_reads + micro-skill content. Human or orchestrator runs
+         scripts/agents/work.sh with that package. Script does not own agent instantiation.
+
+  - id: P2-04
+    source: codex
+    title: Context budget file-size proxy is brittle for large lifecycle HTML
+    detail: >
+      entry_reads will include WRK-NNN-lifecycle.html which grows to 50-100KB.
+      Raw file-size gating will trigger 70% stop prematurely for stages that only
+      need to read 1-2 sections of the HTML, not the whole file.
+    fix: Add section-selector to entry_reads in contracts — e.g., entry_reads specifies
+         WRK-NNN-lifecycle.html#s4-s6 (stages 4-6 only). start-stage.sh extracts only
+         specified sections. Reduces effective entry size significantly.
+
+  - id: P2-05
+    source: codex + claude
+    title: Test coverage incomplete — Gate 7/17 and claim/close compatibility untested
+    detail: >
+      Current 7 tests only cover Gate 5 hook behavior. No coverage for Gate 7,
+      Gate 17, non-WRK false-positive suppression, or compatibility with
+      claim-item.sh / close-item.sh / archive-item.sh.
+    fix: Expand test suite to ≥12 tests: add Gate 7 block/allow, Gate 17 block/allow,
+         false-positive (non-WRK write allowed), claim-item.sh compatibility (exit 0
+         after all gates pass), close-item.sh compatibility.
+
+observations:
+  - "Single lifecycle HTML model is well-designed and user-friendly — strong approval"
+  - "Context hard-stop at 70% is a smart defensive measure — keep, but add section-selector"
+  - "Per-stage reviewed_by/confirmed_by/decision schema is clean and consistent"
+  - "Stage isolation model (CI/CD analogy) is architecturally sound"
+
+return_to_stage: 4
+reason: "4 P1 issues require plan revision before Stage 7 can proceed"
+revisions_required:
+  - Gate 7 predicate aligned with verify-gate-evidence.py canonical check
+  - Gate 17 predicate moved to correct artifact (close, not reclaim)
+  - gate-check.py repositioned as supplemental; canonical enforcement via verify-gate-evidence.py
+  - process.md update added to deliverables + AC-15
+  - chained_agent path added to start-stage.sh spec
+  - Section-selector added to entry_reads for lifecycle HTML
+  - Test suite expanded to ≥12 tests covering Gate 7/17 + claim/close compatibility

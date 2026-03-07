@@ -1,0 +1,18 @@
+**VERDICT: REVISE**
+
+The stage-isolated workflow is a strong architectural approach to solving context rot and stage jumping. However, there are critical gaps in the enforcement mechanisms and missing details in the execution models that need to be addressed before implementation.
+
+### P1 Findings (Critical Risks)
+1. **Gate Bypass via `run_shell_command`:** `gate-check.py` is described as a PreToolUse hook that blocks writes to specific files (e.g., `evidence/cross-review.yaml`). If this hook only monitors a `write_file` tool, agents can easily bypass it by using `run_shell_command` (e.g., `echo "..." > evidence/cross-review.yaml`, `sed -i`, or `cat << 'EOF' > ...`). The hook must either reliably parse shell command intents (which is fragile) or the system must enforce a strict rule that evidence files can *only* be modified via `write_file` (which needs to be documented in the prompt/skill).
+2. **Missing `chained_agent` Logic:** The Architecture Decision section introduces a `chained_agent` model for light stage groups (2+3+4, 8+9). However, the `start-stage.sh` logic only defines behavior for `invocation=task_agent` and `invocation=human_session`. There is no technical description of how `start-stage.sh` groups, prompts, or chains these stages together without triggering the exit/start overhead between them.
+3. **Singleton State Concurrency (`active-wrk`):** Relying on `.claude/state/active-wrk` and `.claude/state/stage-state.yaml` introduces a singleton state. If a user switches branches or attempts to work on two WRKs simultaneously in different terminals, the global state will clobber. State should ideally be namespaced by WRK ID (e.g., `.claude/state/WRK-NNN-state.yaml`).
+
+### P2 Findings (Significant Risks & Gaps)
+1. **Superficial AC-08 Validation:** AC-08 requires "Stage 12 exit checks >=3 test pass records". The `exit-stage.sh` logic generically states "Read contract exit_artifacts[] — verify each exists". Checking that a `test_results.log` file *exists* does not verify that the tests actually *passed* or that there are >=3 records. `exit-stage.sh` needs a mechanism to evaluate the *content* or *status* of specific artifacts, perhaps via a `validation_script` field in the YAML contract.
+2. **3-Provider Orchestration Complexity:** "Stage 5 Route C: 3 parallel terminals Claude/Codex/Gemini simultaneously; orchestrator synthesizes". If this is meant to be automated by `start-stage.sh`, managing 3 parallel, asynchronous CLI instances and synthesizing their outputs is highly complex for a bash script. The plan needs to clarify if this is a manual user instruction or provide the technical design for the orchestrator.
+3. **Overly Restrictive Line Constraints:** Limiting micro-skills to `≤20 lines` and contracts to `≤15 lines` is an excellent goal for context preservation, but may be too restrictive in practice—especially if micro-skills require a checklist, entry/exit mappings, and specific prompting instructions. Consider a byte-size limit (e.g., `< 500 bytes`) rather than a strict line count to allow for readable formatting.
+
+### Observations
+- **HTML Lifecycle Document:** Using a single `WRK-NNN-lifecycle.html` that updates at every stage is a great, user-friendly way to track progress without cluttering the workspace with markdown files.
+- **Context Hard-Stops:** The 70% context budget hard-stop is a very smart defensive measure against context compaction, ensuring Heavy stages get the attention they need.
+- **Clear Human Gates:** Explicitly requiring `decision: approved` or `confirmed_by:` in specific files makes gate enforcement empirical and easily testable.
