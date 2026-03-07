@@ -726,26 +726,25 @@ def check_agent_log_gate(workspace_root: Path, wrk_id: str, phase: str) -> tuple
     if not log_dir.exists():
         return False, "work-queue log directory missing"
 
-    # Require PRE-PHASE log entries. Terminal signals (verify_gate_evidence_pass,
-    # claim_evidence, close_item, close_or_archive) are intentionally excluded because
-    # they are written by claim-item.sh / close-item.sh AFTER this function returns —
-    # requiring them creates a circular dependency. Instead we require the start-of-phase
-    # signal (set_active_wrk / verify_gate_evidence_start) which is written BEFORE the
-    # validator is invoked. (WRK-1017 P1 fix, Codex review)
+    # Only require PRIOR-PHASE log entries (routing, plan, execute, cross-review).
+    # Current-phase signals are intentionally excluded for two reasons:
+    # 1. Terminal signals (verify_gate_evidence_pass, claim_evidence, close_item) are
+    #    circular: they are written AFTER this function returns, so the gate could never
+    #    pass on first invocation. (WRK-1017 P1 fix, Codex review round 1)
+    # 2. Pre-phase signals (set_active_wrk, verify_gate_evidence_start) couple the
+    #    validator to specific wrappers and break: (a) archive-item.sh which logs to
+    #    WRK-*-archive.log not WRK-*-close.log, and (b) standalone/CI invocations that
+    #    have no wrapper pre-log. (WRK-1017 revert of P2 over-fix, Codex review round 2)
     required_by_phase: dict[str, list[tuple[str, set[str]]]] = {
         "claim": [
             ("routing", {"work_wrapper_complete", "work_queue_skill"}),
             ("plan", {"plan_wrapper_complete", "plan_draft_complete"}),
-            # set_active_wrk and verify_gate_evidence_start are logged before validator runs
-            ("claim", {"set_active_wrk", "verify_gate_evidence_start"}),
         ],
         "close": [
             ("routing", {"work_wrapper_complete", "work_queue_skill"}),
             ("plan", {"plan_wrapper_complete", "plan_draft_complete"}),
             ("execute", {"execute_wrapper_complete", "tdd_eval"}),
             ("cross-review", {"review_wrapper_complete", "agent_cross_review"}),
-            # verify_gate_evidence_start is logged before validator runs in close-item.sh
-            ("close", {"verify_gate_evidence_start"}),
         ],
     }
     requirements = required_by_phase[phase]
