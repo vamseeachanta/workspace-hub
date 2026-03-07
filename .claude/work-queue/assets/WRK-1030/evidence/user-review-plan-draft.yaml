@@ -1,0 +1,21 @@
+wrk_id: WRK-1030
+stage: 5
+reviewed_by: user
+approved_by: user
+reviewed_at: "2026-03-07T00:00:00Z"
+decision: approved
+scope_confirmed:
+  in:
+    - .claude/commands/workspace-hub/resume.md (new slash command)
+    - scripts/work-queue/checkpoint.sh header comment update
+  out:
+    - no resume script (bash) — slash command only
+    - no changes to checkpoint.sh logic
+ac_changes: none
+risks_accepted:
+  - next_action field empty edge case — warn user only, no enforcement
+open_questions_resolved:
+  - command uses $ARGUMENTS for WRK-NNN input
+  - entry_reads displayed via @-mention style read in command body
+approve_as_is: true
+notes: "User approved with 'Continue'. Plan scope, AC, and approach confirmed as-is."

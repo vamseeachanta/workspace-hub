@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Draft Review: WRK-1030 — Add /resume slash command for WRK checkpoint resumption</title>
+  <style>
+:root {
+  --bg:       #f3efe6;
+  --panel:    #fffdf8;
+  --ink:      #172126;
+  --muted:    #55636b;
+  --accent:   #0f766e;
+  --accent-2: #8a5a2b;
+  --line:     #d9d0c0;
+  --shadow:   0 16px 40px rgba(20,33,38,0.08);
+  --good:     #166534;
+  --warn:     #b45309;
+  --bad:      #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.5;margin:0;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.05);padding:.2em .4em;border-radius:3px;}
+pre code{background:none;padding:0;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.88rem;}
+.panel,.artifact-box{background:#fff;padding:16px;border-radius:10px;
+  border:1px solid var(--line);}
+.hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
+.hero-inner,.content{max-width:1180px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
+  color:var(--accent);font-weight:700;}
+h1{margin:10px 0 12px;font-size:clamp(1.75rem,3.2vw,3rem);line-height:1.02;}
+.lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
+.content{padding:28px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
+  color:var(--accent-2);letter-spacing:.02em;}
+h2[data-collapsed="true"]{margin-bottom:4px;}
+h2 .section-summary-chip{max-width:min(70ch,70vw);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
+h3{color:var(--ink);margin-top:18px;}
+.exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
+  border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
+  border-radius:10px;}
+.exec-summary h2{margin-top:0;border:none;color:var(--accent);}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem;}
+th,td{border-top:1px solid var(--line);padding:10px 8px;
+  text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.86rem;color:var(--ink);}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:.9rem;}
+.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-warn{background:#fef3c7;color:var(--warn);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-info{background:#dbeafe;color:#1d4ed8;}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:900px){.split{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}
+  tr,td,th{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-1030 &middot; Plan Draft Review</div>
+    <h1>Add /resume slash command for WRK checkpoint resumption</h1>
+    <p class="lede">**Create a `/resume WRK-NNN` slash command that reads `checkpoint.yaml` and loads the `entry_reads` files into context, so a new session can pick up exactly where the previous one left off — without manual file hunting.**</p>
+  </div>
+</header>
+
+<main class="content">
+  <div class="meta">
+  <div class="pill"><strong>WRK ID</strong>WRK-1030</div>
+  <div class="pill"><strong>Status</strong><span class="badge badge-info">PENDING</span></div>
+  <div class="pill"><strong>Route</strong>simple</div>
+  <div class="pill"><strong>Orchestrator</strong>—</div>
+  <div class="pill"><strong>Computer</strong>ace-linux-1</div>
+  <div class="pill"><strong>Created</strong>2026-03-07</div>
+  <div class="pill"><strong>Commit</strong><code>n/a</code></div>
+  <div class="pill"><strong>% Done</strong>0%</div>
+</div>
+
+  <div class="card">
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <p>Add a <code>.claude/commands/workspace-hub/resume.md</code> slash command that:
+1. Reads <code>.claude/work-queue/assets/WRK-NNN/checkpoint.yaml</code>
+2. Prints stage, <code>next_action</code>, and <code>context_summary</code> to orient the agent
+3. Lists <code>entry_reads</code> files so they can be @-mentioned or read immediately</p>
+    </div>
+
+    <h2>Skill Manifest</h2>
+<table>
+  <thead><tr><th>Category</th><th>Skill</th></tr></thead>
+  <tbody><tr><td colspan='2' style='color:var(--muted)'>Not applicable.</td></tr></tbody>
+</table>
+<p style="font-size:.82rem;color:var(--muted)">Source: <code>none</code></p>
+  </div>
+
+  <div class="card">
+    <h2>Prompt Start Context</h2>
+<div class="panel">
+  <p>user request 2026-03-07 — /resume WRK-NNN slash command for checkpoint resumption</p>
+  <p style="font-size:.82rem;color:var(--muted)"><strong>Source:</strong> Captured from Source note</p>
+</div>
+<h2>Mission</h2>
+<p><strong>Create a <code>/resume WRK-NNN</code> slash command that reads <code>checkpoint.yaml</code> and loads the <code>entry_reads</code> files into context, so a new session can pick up exactly where the previous one left off — without manual file hunting.</strong></p>
+<blockquote>
+<p>Read this at the start of every execution stage. If a task, file change, or decision is
+not directly in service of this mission, stop and capture it as a new WRK item instead.</p>
+</blockquote>
+<h2>What</h2>
+<p>Add a <code>.claude/commands/workspace-hub/resume.md</code> slash command that:
+1. Reads <code>.claude/work-queue/assets/WRK-NNN/checkpoint.yaml</code>
+2. Prints stage, <code>next_action</code>, and <code>context_summary</code> to orient the agent
+3. Lists <code>entry_reads</code> files so they can be @-mentioned or read immediately</p>
+<h2>Why</h2>
+<p>Currently resuming a WRK item is a manual process — find checkpoint.yaml, read it, read entry_reads files, remember the next_action. A <code>/resume WRK-NNN</code> command makes this a single step and reduces context-restore friction between sessions.</p>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] <code>.claude/commands/workspace-hub/resume.md</code> exists and loads via <code>/resume WRK-NNN</code></li>
+<li>[ ] Command prints current stage, next_action, and context_summary from checkpoint.yaml</li>
+<li>[ ] Command reads and displays content of each file in entry_reads</li>
+<li>[ ] Graceful error when checkpoint.yaml does not exist (suggests running checkpoint.sh first)</li>
+<li>[ ] Command documented in checkpoint.sh header comment</li>
+</ul>
+<h2>Agentic AI Horizon</h2>
+<ul>
+<li>Directly boosts session-resumption speed for any agent or human picking up an in-progress WRK</li>
+<li>Low agentic-ceiling risk — this is a simple file-read command with no external dependencies</li>
+<li>No reason to wait; straightforward and high daily-use value</li>
+</ul>
+<hr />
+<p><em>Source: user request 2026-03-07 — /resume WRK-NNN slash command for checkpoint resumption</em></p>
+<h2>Plan</h2><p>Not applicable.</p><h2>Plan Quality Eval Comparison</h2><p>Not applicable.</p><h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p>
+  </div>
+
+  <div class="card">
+    <h2>Gate-Pass Stage Status</h2><p><span class="badge badge-fail">FAIL</span> <strong>Missing stage-evidence.yaml</strong> — stage-evidence.yaml missing</p>
+  </div>
+
+  <div class="card">
+    <h2>Test Summary</h2>
+<table>
+  <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Example Pack</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1030/example-pack.md</code></td></tr>
+    <tr><td>Variation Tests</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1030/variation-test-results.md</code></td></tr>
+    <tr><td>Integrated Repo Tests</td><td><span class="badge badge-warn">0 tests — outside 3-5</span> <span class="badge badge-info">not all pass</span></td>
+        <td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1030/execute-evidence.yaml</code></td></tr>
+  </tbody>
+</table>
+<p><strong>Variation summary:</strong> No variation-test summary available.</p>
+    <h2>Cross-Review Summary</h2><p>Not applicable.</p>
+  </div>
+
+</main>
+
+<script>
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+/* Collapsible cards with summary preview */
+document.querySelectorAll('.card h2').forEach(h2=>{
+  h2.style.cursor='pointer';
+  h2.title='Click to collapse/expand';
+  function buildSummary(sibs){
+    const badges=[];
+    sibs.forEach(s=>s.querySelectorAll('.badge').forEach(b=>badges.push(b.outerHTML)));
+    const bHtml=badges.slice(0,4).join(' ');
+    let text='';
+    for(const s of sibs){
+      if(s.tagName==='UL'||s.tagName==='OL'){
+        const n=s.querySelectorAll('li').length;
+        text=n+' item'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='TABLE'){
+        const n=s.querySelectorAll('tbody tr').length;
+        text=n+' row'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='P'&&s.textContent.trim()){
+        text=s.textContent.trim().slice(0,80)+(s.textContent.length>80?'\u2026':'');break;
+      }
+    }
+    const parts=[bHtml,text].filter(Boolean).join(' &nbsp;&middot;&nbsp; ');
+    return parts||'&nbsp;';
+  }
+  const sibs=[];let el=h2.nextElementSibling;
+  while(el){sibs.push(el);el=el.nextElementSibling;}
+  const chip=document.createElement('span');
+  chip.style.cssText='display:inline-block;margin-left:12px;font-size:.8rem;font-weight:400;'+
+    'color:#55636b;vertical-align:middle;pointer-events:none;';
+  chip.className='section-summary-chip';
+  chip.innerHTML=buildSummary(sibs);h2.appendChild(chip);
+  const arrow=document.createElement('span');
+  arrow.style.cssText='float:right;font-size:.8rem;color:#0f766e;user-select:none;margin-top:2px;';
+  arrow.textContent='▾';h2.appendChild(arrow);
+  h2.addEventListener('click',()=>{
+    const col=h2.dataset.collapsed==='true';
+    sibs.forEach(s=>s.style.display=col?'':'none');
+    h2.dataset.collapsed=col?'false':'true';
+    h2.style.borderBottomColor=col?'':'transparent';
+    chip.style.opacity=col?'0.75':'1';
+    arrow.textContent=col?'▾':'▸';
+  });
+});
+
+/* Sticky auto-TOC */
+(function(){
+  const hs=[...document.querySelectorAll('.content .card h2')];
+  if(hs.length<4)return;
+  const nav=document.createElement('nav');
+  nav.id='toc';
+  nav.style.cssText='position:sticky;top:0;z-index:100;background:rgba(255,253,248,.95);'+
+    'border-bottom:1px solid #d9d0c0;padding:8px 24px;font-size:.82rem;'+
+    'display:flex;flex-wrap:wrap;gap:6px 18px;';
+  hs.forEach((h,i)=>{
+    if(!h.id)h.id='sec-'+i;
+    const a=document.createElement('a');
+    a.href='#'+h.id;a.textContent=h.textContent.replace('▾','').replace('▸','').trim();
+    a.style.cssText='color:#0f766e;text-decoration:none;white-space:nowrap;';
+    a.onmouseenter=()=>a.style.textDecoration='underline';
+    a.onmouseleave=()=>a.style.textDecoration='none';
+    nav.appendChild(a);
+  });
+  document.body.insertBefore(nav,document.querySelector('.content'));
+})();
+
+/* Back-to-top */
+const btn=document.createElement('button');
+btn.textContent='↑ Top';
+btn.style.cssText='position:fixed;bottom:28px;right:28px;padding:8px 14px;'+
+  'background:#0f766e;color:#fff;border:none;border-radius:8px;cursor:pointer;'+
+  'font-size:.85rem;opacity:0;transition:opacity .2s;z-index:200;';
+document.body.appendChild(btn);
+window.addEventListener('scroll',()=>btn.style.opacity=scrollY>300?'1':'0');
+btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>

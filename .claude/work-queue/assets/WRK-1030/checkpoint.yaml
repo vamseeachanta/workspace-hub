@@ -1,0 +1,13 @@
+wrk_id: WRK-1030
+title: "Add /resume slash command for WRK checkpoint resumption"
+checkpointed_at: "2026-03-07T23:05:22Z"
+current_stage: 17
+stage_name: "User Review - Implementation"
+entry_reads:
+  - .claude/work-queue/assets/WRK-1030/evidence/stage-evidence.yaml
+  - .claude/work-queue/assets/WRK-1030/evidence/resource-intelligence.yaml
+  - .claude/work-queue/working/WRK-1030.md
+decisions_this_session: []
+artifacts_written: []
+next_action: ""
+context_summary: []

@@ -1,0 +1,55 @@
+wrk_id: WRK-1030
+completion_status: continue_to_planning
+researched_at: "2026-03-07T00:00:00Z"
+researcher: claude
+p1_count: 0
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - coordination/workspace/work-queue
+    - workspace-hub/workflow-gatepass
+  supporting_used: []
+
+domain:
+  problem: >
+    Resuming a WRK item across sessions requires manually reading checkpoint.yaml,
+    identifying entry_reads files, and reconstructing next_action — multi-step
+    friction with no automation.
+
+  existing_assets:
+    - path: scripts/work-queue/checkpoint.sh
+      role: writes checkpoint.yaml; header is the right place to document /resume
+    - path: .claude/work-queue/assets/WRK-NNN/checkpoint.yaml
+      role: the file /resume must read; fields — wrk_id, title, current_stage, stage_name, next_action, context_summary, entry_reads
+    - path: .claude/commands/workspace-hub/work.md
+      role: pattern reference for slash command frontmatter + @skill-ref structure
+    - path: .claude/commands/workspace-hub/reflect.md
+      role: pattern reference for simple workspace-hub commands
+    - path: .claude/commands/today.md
+      role: pattern reference for commands with bash output blocks
+
+  command_pattern: >
+    Slash commands in .claude/commands/ are markdown files with YAML frontmatter
+    (name, aliases, description, category) and a body that the skill executor runs.
+    They support @file references, bash blocks, and argument substitution via $ARGUMENTS.
+
+  checkpoint_yaml_fields:
+    wrk_id: string
+    title: string
+    checkpointed_at: ISO8601
+    current_stage: integer
+    stage_name: string
+    entry_reads: list of relative paths from repo root
+    decisions_this_session: list (may be empty)
+    artifacts_written: list (may be empty)
+    next_action: string (may be empty — warn user)
+    context_summary: list of strings (may be empty)
+
+  no_external_deps: true
+  risk: low
+
+tests_evals:
+  - what: checkpoint.yaml exists | happy | command prints stage+next_action+context_summary and reads entry_reads files
+  - what: checkpoint.yaml missing | error | command prints clear error with suggestion to run checkpoint.sh first
+  - what: next_action empty | edge | command warns field is empty and prompts user to fill it before ending sessions

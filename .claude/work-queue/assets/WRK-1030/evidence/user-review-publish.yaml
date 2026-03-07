@@ -1,0 +1,13 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    pushed_at: "2026-03-07T00:00:00Z"
+    note: "lifecycle HTML committed with WRK file"
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    pushed_at: "2026-03-07T00:00:00Z"
+    note: "Route A — plan final same as plan draft"

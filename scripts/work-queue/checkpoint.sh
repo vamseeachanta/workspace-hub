@@ -3,6 +3,7 @@
 # Usage: bash scripts/work-queue/checkpoint.sh            # auto: active-wrk + all working/
 #        bash scripts/work-queue/checkpoint.sh WRK-NNN   # single WRK
 #        bash scripts/work-queue/checkpoint.sh WRK-A WRK-B  # multiple explicit
+# Resume: /resume WRK-NNN  — reads checkpoint.yaml and loads entry_reads into context
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
