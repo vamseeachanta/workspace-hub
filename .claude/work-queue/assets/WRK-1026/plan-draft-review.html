@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Draft Review: WRK-1026 — work-queue-workflow Stage 5: add pseudocode requirement and </title>
+  <style>
+:root {
+  --bg:       #f3efe6;
+  --panel:    #fffdf8;
+  --ink:      #172126;
+  --muted:    #55636b;
+  --accent:   #0f766e;
+  --accent-2: #8a5a2b;
+  --line:     #d9d0c0;
+  --shadow:   0 16px 40px rgba(20,33,38,0.08);
+  --good:     #166534;
+  --warn:     #b45309;
+  --bad:      #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.5;margin:0;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.05);padding:.2em .4em;border-radius:3px;}
+pre code{background:none;padding:0;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.88rem;}
+.panel,.artifact-box{background:#fff;padding:16px;border-radius:10px;
+  border:1px solid var(--line);}
+.hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
+.hero-inner,.content{max-width:1180px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
+  color:var(--accent);font-weight:700;}
+h1{margin:10px 0 12px;font-size:clamp(1.75rem,3.2vw,3rem);line-height:1.02;}
+.lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
+.content{padding:28px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
+  color:var(--accent-2);letter-spacing:.02em;}
+h2[data-collapsed="true"]{margin-bottom:4px;}
+h2 .section-summary-chip{max-width:min(70ch,70vw);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
+h3{color:var(--ink);margin-top:18px;}
+.exec-summary{background:linear-gradient(180deg,#fff,#fcf8ef);
+  border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
+  border-radius:10px;}
+.exec-summary h2{margin-top:0;border:none;color:var(--accent);}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem;}
+th,td{border-top:1px solid var(--line);padding:10px 8px;
+  text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.86rem;color:var(--ink);}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:.9rem;}
+.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-warn{background:#fef3c7;color:var(--warn);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-info{background:#dbeafe;color:#1d4ed8;}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:900px){.split{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}
+  tr,td,th{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-1026 &middot; Plan Draft Review</div>
+    <h1>work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage</h1>
+    <p class="lede">**Update `work-queue-workflow/SKILL.md` Stage 5 (Plan Draft) to require pseudocode during planning and tests/evals specification before the user review gate.**</p>
+  </div>
+</header>
+
+<main class="content">
+  <div class="meta">
+  <div class="pill"><strong>WRK ID</strong>WRK-1026</div>
+  <div class="pill"><strong>Status</strong><span class="badge badge-info">PENDING</span></div>
+  <div class="pill"><strong>Route</strong>A — simple</div>
+  <div class="pill"><strong>Orchestrator</strong>claude</div>
+  <div class="pill"><strong>Computer</strong>ace-linux-1</div>
+  <div class="pill"><strong>Created</strong>2026-03-07</div>
+  <div class="pill"><strong>Commit</strong><code>n/a</code></div>
+  <div class="pill"><strong>% Done</strong>0%</div>
+</div>
+
+  <div class="card">
+    <div class="exec-summary">
+      <h2>Executive Summary</h2>
+      <p>Stage 5 of the work-queue-workflow skill currently produces a plan artifact but does not explicitly require:
+1. Pseudocode for non-trivial logic steps in the plan
+2. A tests/evals section specifying how the implementation will be verified</p>
+<p>Add both as mandatory elements of the Stage 5 plan draft output so that agents produce richer, more testable plans before user review.</p>
+    </div>
+
+    <h2>Skill Manifest</h2>
+<table>
+  <thead><tr><th>Category</th><th>Skill</th></tr></thead>
+  <tbody><tr><td colspan='2' style='color:var(--muted)'>Not applicable.</td></tr></tbody>
+</table>
+<p style="font-size:.82rem;color:var(--muted)">Source: <code>none</code></p>
+  </div>
+
+  <div class="card">
+    <h1>WRK-1026 — work-queue-workflow Stage 5: pseudocode + tests/evals in planning</h1>
+<h2>Prompt Start Context</h2>
+<div class="panel">
+  <p>add for work-queue-workflow, for stage 5, add pseudocode during planning stage; also add tests/evals</p>
+  <p style="font-size:.82rem;color:var(--muted)"><strong>Source:</strong> Captured from Source note</p>
+</div>
+
+<h2>Mission</h2>
+<p><strong>Update <code>work-queue-workflow/SKILL.md</code> Stage 5 (Plan Draft) to require pseudocode during planning and tests/evals specification before the user review gate.</strong></p>
+<p>Scope: <code>work-queue-workflow/SKILL.md</code> only. Not in scope: changes to <code>work-queue/SKILL.md</code> or <code>workflow-gatepass/SKILL.md</code> (unless trivially needed for cross-reference).</p>
+<h2>What</h2>
+<p>Stage 5 of the work-queue-workflow skill currently produces a plan artifact but does not explicitly require:
+1. Pseudocode for non-trivial logic steps in the plan
+2. A tests/evals section specifying how the implementation will be verified</p>
+<p>Add both as mandatory elements of the Stage 5 plan draft output so that agents produce richer, more testable plans before user review.</p>
+<h2>Why</h2>
+<p>Plans without pseudocode often result in implementation drift — the agent interprets ambiguous steps differently than intended. Plans without tests/evals leave the acceptance criteria vague, making Stage 12 (TDD/Eval) harder to execute. Adding these two elements at Stage 5 aligns with TDD-first principles and reduces rework.</p>
+<h2>Acceptance Criteria</h2>
+<ul>
+<li>[ ] <code>work-queue-workflow/SKILL.md</code> Stage 5 section includes a "Pseudocode" requirement for non-trivial logic (with format guidance)</li>
+<li>[ ] Stage 5 section includes a "Tests/Evals" subsection specifying what tests must be defined before implementation</li>
+<li>[ ] Both requirements are reflected in the Stage 5 exit checklist (alongside existing HTML/publish/user-response items)</li>
+<li>[ ] Language is imperative/blocking (consistent with WRK-1017 Stage 5 hardening style)</li>
+<li>[ ] At least one example of acceptable pseudocode format is included (inline or referenced)</li>
+</ul>
+<h2>Agentic AI Horizon</h2>
+<ul>
+<li>Pseudocode + tests/evals at plan time = machine-readable specification that future agents can directly execute; investing now builds the scaffold for fully autonomous WRK execution</li>
+<li>Shape it as structured YAML-embeddable pseudocode so a future eval harness can parse and auto-generate test stubs</li>
+</ul>
+<h2>Plan</h2>
+<p><strong>Files</strong>
+- <code>.claude/skills/workspace-hub/work-queue-workflow/SKILL.md</code> (EDIT) — single file</p>
+<p><strong>Changes</strong> (all within the Stage 5 interactive plan-mode session block):</p>
+<ol>
+<li>After the existing "Seek user review of proposed tests/evals…" bullet, insert a
+   <strong>Pseudocode requirement</strong> block:</li>
+<li>If the plan contains non-trivial logic (≥3 sequential steps or branching),
+     produce a pseudocode block for each such step before user review.</li>
+<li>Format: fenced code block with language tag <code>pseudocode</code> or <code>yaml</code>.</li>
+<li>
+<p>Example guidance inline (2-3 lines max).</p>
+</li>
+<li>
+<p>After the pseudocode block, insert a <strong>Tests/Evals subsection</strong>:</p>
+</li>
+<li>List at least 3 test cases (unit or integration) that must be written BEFORE
+     implementation begins.</li>
+<li>Each entry: <code>what to test | happy-path / edge / error | expected result</code>.</li>
+<li>
+<p>For pure-doc WRKs (skill/rule edits): list verification steps instead of tests.</p>
+</li>
+<li>
+<p>Add two items to the Stage 5 exit checklist:</p>
+</li>
+<li><code>[ ] Pseudocode produced for all non-trivial logic steps (or N/A for pure-doc WRKs)</code></li>
+<li>
+<p><code>[ ] Tests/Evals list written (≥3 entries) and reviewed with user</code></p>
+</li>
+<li>
+<p>Bump version in SKILL.md frontmatter from <code>1.0.3</code> → <code>1.1.0</code> and add a
+   Version History entry.</p>
+</li>
+</ol>
+<p><strong>Verification</strong>
+- Read the modified SKILL.md and confirm all 5 ACs are met (grep for key phrases).
+- Confirm SKILL.md total line count stays under 200 lines (current: 127).
+- Route A: single inline self-review pass; no multi-provider cross-review required.</p>
+<p><em>Approved by user: (pending Stage 5 gate)</em></p>
+<hr />
+<p><em>Source: add for work-queue-workflow, for stage 5, add pseudocode during planning stage; also add tests/evals</em></p>
+<h2>Plan Quality Eval Comparison</h2><p>Not applicable.</p><h2>Resource Intelligence</h2><p>Not applicable.</p><h2>Open Questions</h2><p>Not applicable.</p>
+  </div>
+
+  <div class="card">
+    <h2>Gate-Pass Stage Status</h2>
+<p><strong>Summary:</strong> 4 pass · 0 fail · 15 pending/warn · 1 n/a &nbsp; <span class="badge badge-info">Autonomy: L2</span></p>
+<table>
+  <thead><tr><th>Order</th><th>Stage</th><th>Stage Status</th><th>Gate-Pass</th><th>Human Decision</th><th>Owner</th><th>Blocker?</th><th>Comment</th><th>Evidence</th></tr></thead>
+  <tbody><tr><td>1</td><td>Capture</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>orchestrator</td><td>no</td><td>WRK created in pending queue with baseline metadata.</td><td><code>.claude/work-queue/pending/WRK-1026.md</code></td></tr>
+<tr><td>2</td><td>Resource Intelligence</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>orchestrator</td><td>no</td><td>resource-intelligence.yaml created; single-file skill edit; completion_status=continue_to_planning.</td><td><code>.claude/work-queue/assets/WRK-1026/evidence/resource-intelligence.yaml</code></td></tr>
+<tr><td>3</td><td>Triage</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>yes</td><td>orchestrator</td><td>no</td><td>Route A, simple, ace-linux-1, orchestrator=claude set in frontmatter.</td><td><code>.claude/work-queue/pending/WRK-1026.md</code></td></tr>
+<tr><td>4</td><td>Plan Draft</td><td><span class="badge badge-info">DONE</span></td><td><span class="badge badge-pass">PASS</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Inline</td><td><code>.claude/work-queue/assets/WRK-1026/plan-draft-review.html</code></td></tr>
+<tr><td>5</td><td>User Review - Plan (Draft)</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>yes</td><td>Awaiting user review and approval.</td><td><code>.claude/work-queue/assets/WRK-1026/evidence/user-review-plan-draft.yaml</code></td></tr>
+<tr><td>6</td><td>Cross-Review</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Route A — single self-review pass after implementation; no multi-provider review required.</td><td><code>.claude/work-queue/assets/WRK-1026/evidence/cross-review.yaml</code></td></tr>
+<tr><td>7</td><td>User Review - Plan (Final)</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1026/plan-final-review.html</code></td></tr>
+<tr><td>8</td><td>Claim / Activation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1026/evidence/claim.yaml</code></td></tr>
+<tr><td>9</td><td>Work-Queue Routing Skill</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Not started.</td><td><code>/work</code></td></tr>
+<tr><td>10</td><td>Work Execution</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1026/evidence/execute.yaml</code></td></tr>
+<tr><td>11</td><td>Artifact Generation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1026/implementation-review.html</code></td></tr>
+<tr><td>12</td><td>TDD / Eval</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1026/evidence/test-results.md</code></td></tr>
+<tr><td>13</td><td>Agent Cross-Review</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>agents</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1026/cross-review-package.md</code></td></tr>
+<tr><td>14</td><td>Verify Gate Evidence</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Not started.</td><td><code>scripts/work-queue/verify-gate-evidence.py</code></td></tr>
+<tr><td>15</td><td>Future Work Synthesis</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>orchestrator</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1026/evidence/future-work.yaml</code></td></tr>
+<tr><td>16</td><td>Resource Intelligence Update</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>no</td><td>orchestrator</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1026/evidence/resource-intelligence-update.yaml</code></td></tr>
+<tr><td>17</td><td>User Review - Implementation</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>user + orchestrator</td><td>yes</td><td>Not started.</td><td><code>.claude/work-queue/assets/WRK-1026/evidence/user-review-close.yaml</code></td></tr>
+<tr><td>18</td><td>Reclaim</td><td><span class="badge badge-info">N/A</span></td><td><span class="badge badge-info">N/A</span></td><td>no</td><td>orchestrator</td><td>no</td><td>Not applicable unless continuity breaks during execution.</td><td><code>.claude/work-queue/assets/WRK-1026/evidence/reclaim.yaml</code></td></tr>
+<tr><td>19</td><td>Close</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>orchestrator</td><td>yes</td><td>Not started.</td><td><code>scripts/work-queue/close-item.sh</code></td></tr>
+<tr><td>20</td><td>Archive</td><td><span class="badge badge-info">PENDING</span></td><td><span class="badge badge-warn">WARN</span></td><td>yes</td><td>orchestrator</td><td>yes</td><td>Not started.</td><td><code>scripts/work-queue/archive-item.sh</code></td></tr>
+</tbody>
+</table>
+  </div>
+
+  <div class="card">
+    <h2>Test Summary</h2>
+<table>
+  <thead><tr><th>Check</th><th>Result</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Example Pack</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1026/example-pack.md</code></td></tr>
+    <tr><td>Variation Tests</td><td><span class="badge badge-warn">missing</span></td><td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1026/variation-test-results.md</code></td></tr>
+    <tr><td>Integrated Repo Tests</td><td><span class="badge badge-warn">0 tests — outside 3-5</span> <span class="badge badge-info">not all pass</span></td>
+        <td><code>/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1026/execute-evidence.yaml</code></td></tr>
+  </tbody>
+</table>
+<p><strong>Variation summary:</strong> No variation-test summary available.</p>
+    <h2>Cross-Review Summary</h2><p>Not applicable.</p>
+  </div>
+
+</main>
+
+<script>
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+/* Collapsible cards with summary preview */
+document.querySelectorAll('.card h2').forEach(h2=>{
+  h2.style.cursor='pointer';
+  h2.title='Click to collapse/expand';
+  function buildSummary(sibs){
+    const badges=[];
+    sibs.forEach(s=>s.querySelectorAll('.badge').forEach(b=>badges.push(b.outerHTML)));
+    const bHtml=badges.slice(0,4).join(' ');
+    let text='';
+    for(const s of sibs){
+      if(s.tagName==='UL'||s.tagName==='OL'){
+        const n=s.querySelectorAll('li').length;
+        text=n+' item'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='TABLE'){
+        const n=s.querySelectorAll('tbody tr').length;
+        text=n+' row'+(n!==1?'s':'');break;
+      }
+      if(s.tagName==='P'&&s.textContent.trim()){
+        text=s.textContent.trim().slice(0,80)+(s.textContent.length>80?'\u2026':'');break;
+      }
+    }
+    const parts=[bHtml,text].filter(Boolean).join(' &nbsp;&middot;&nbsp; ');
+    return parts||'&nbsp;';
+  }
+  const sibs=[];let el=h2.nextElementSibling;
+  while(el){sibs.push(el);el=el.nextElementSibling;}
+  const chip=document.createElement('span');
+  chip.style.cssText='display:inline-block;margin-left:12px;font-size:.8rem;font-weight:400;'+
+    'color:#55636b;vertical-align:middle;pointer-events:none;';
+  chip.className='section-summary-chip';
+  chip.innerHTML=buildSummary(sibs);h2.appendChild(chip);
+  const arrow=document.createElement('span');
+  arrow.style.cssText='float:right;font-size:.8rem;color:#0f766e;user-select:none;margin-top:2px;';
+  arrow.textContent='▾';h2.appendChild(arrow);
+  h2.addEventListener('click',()=>{
+    const col=h2.dataset.collapsed==='true';
+    sibs.forEach(s=>s.style.display=col?'':'none');
+    h2.dataset.collapsed=col?'false':'true';
+    h2.style.borderBottomColor=col?'':'transparent';
+    chip.style.opacity=col?'0.75':'1';
+    arrow.textContent=col?'▾':'▸';
+  });
+});
+
+/* Sticky auto-TOC */
+(function(){
+  const hs=[...document.querySelectorAll('.content .card h2')];
+  if(hs.length<4)return;
+  const nav=document.createElement('nav');
+  nav.id='toc';
+  nav.style.cssText='position:sticky;top:0;z-index:100;background:rgba(255,253,248,.95);'+
+    'border-bottom:1px solid #d9d0c0;padding:8px 24px;font-size:.82rem;'+
+    'display:flex;flex-wrap:wrap;gap:6px 18px;';
+  hs.forEach((h,i)=>{
+    if(!h.id)h.id='sec-'+i;
+    const a=document.createElement('a');
+    a.href='#'+h.id;a.textContent=h.textContent.replace('▾','').replace('▸','').trim();
+    a.style.cssText='color:#0f766e;text-decoration:none;white-space:nowrap;';
+    a.onmouseenter=()=>a.style.textDecoration='underline';
+    a.onmouseleave=()=>a.style.textDecoration='none';
+    nav.appendChild(a);
+  });
+  document.body.insertBefore(nav,document.querySelector('.content'));
+})();
+
+/* Back-to-top */
+const btn=document.createElement('button');
+btn.textContent='↑ Top';
+btn.style.cssText='position:fixed;bottom:28px;right:28px;padding:8px 14px;'+
+  'background:#0f766e;color:#fff;border:none;border-radius:8px;cursor:pointer;'+
+  'font-size:.85rem;opacity:0;transition:opacity .2s;z-index:200;';
+document.body.appendChild(btn);
+window.addEventListener('scroll',()=>btn.style.opacity=scrollY>300?'1':'0');
+btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>

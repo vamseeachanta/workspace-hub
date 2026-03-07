@@ -1,0 +1,50 @@
+wrk_id: WRK-1026
+generated_at: "2026-03-07T12:10:00Z"
+completion_status: continue_to_planning
+summary: >
+  Single-file skill edit. Target is work-queue-workflow/SKILL.md Stage 5 section.
+  No new libraries, external APIs, or infrastructure required. The skill already
+  contains a 6-item Stage 5 checklist and interactive-plan-session guidance;
+  WRK-1026 adds two missing elements (pseudocode requirement + tests/evals spec)
+  inline to the existing Stage 5 block.
+
+target_files:
+  - path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    type: skill
+    current_version: "1.0.3"
+    lines: 127
+    relevant_section: "Stage 5 interactive plan-mode session (lines 51-88)"
+    notes: >
+      Stage 5 currently mentions researching tests/evals from Resource Intelligence
+      artifacts but has no mandatory pseudocode block or structured tests/evals
+      subsection in the plan artifact. Both must be added as blocking checklist items.
+
+skills:
+  core_used:
+    - workspace-hub:work-queue
+    - workspace-hub:work-queue-workflow
+    - workspace-hub:workflow-gatepass
+  adjacent:
+    - workspace-hub:workflow-html
+
+related_wrks:
+  - id: WRK-1017
+    relation: parent context — Stage 5 hardening that prompted this follow-up
+  - id: WRK-1014
+    relation: plan-mode ideation (EnterPlanMode before plan artifact creation)
+
+risks:
+  - description: >
+      Pseudocode format guidance must be short enough not to push SKILL.md over
+      the 5000-word limit (Anthropic guide constraint). Current file is ~127 lines;
+      addition of ~20-30 lines leaves ample headroom.
+    severity: low
+  - description: >
+      Checklist items added to Stage 5 will trigger the Stage 5 gate checker
+      (verify-gate-evidence.py --stage5-check) only if the gate reads the checklist.
+      The gate currently reads user-review-plan-draft.yaml, not the skill checklist
+      text itself — so checklist additions are documentation-only and do not break
+      any automation.
+    severity: low
+
+open_questions: []
