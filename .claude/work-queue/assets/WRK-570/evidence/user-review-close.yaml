@@ -1,0 +1,14 @@
+reviewer: user
+reviewed_at: "2026-03-07T10:05:00Z"
+decision: approved
+
+summary: >
+  User reviewed Option B scope revision. Approved closing WRK-570 against the
+  asset_integrity/assessment/ framework (commit 9753a3f57). 70 tests pass. Legal scan
+  PASS. The more comprehensive Level 2 RSF framework supersedes the original MATLAB
+  Level 1 iterative port scope.
+
+notes:
+  - User selected Option B from three presented choices
+  - Original MATLAB iterative algorithm scope acknowledged as not implemented
+  - Future WRK may be captured for Level 1 iterative port if needed

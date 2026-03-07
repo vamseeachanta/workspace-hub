@@ -1,0 +1,20 @@
+wrk_id: WRK-570
+updated_at: "2026-03-07T10:04:00Z"
+
+additions:
+  - resource: API 579-1/ASME FFS-1 2021 Edition
+    location: digitalmodel/src/digitalmodel/asset_integrity/assessment/level2_engine.py
+    notes: >
+      RSF + Folias factor implemented per Part 4 §4.4 (GML) and Part 5 §5.4 (LML).
+      Level 2 framework supersedes the iterative MATLAB assessment-length approach.
+  - resource: MATLAB source files
+    location: /mnt/ace/docs/disciplines/drilling/projects/0168_python_support/00_inbox/0168_Python_Support/018 FFS/REF/API579/Ref/
+    notes: >
+      API579GML.m and API579LML.m implement iterative assessment-length convergence
+      (Level 1 sliding-window algorithm). Not ported in this WRK — captured as future
+      enhancement if iterative approach needed.
+
+scope_note: >
+  Original MATLAB iterative algorithm (assessment-length convergence with smoothing,
+  GMLassessLengthEvaluation) is a Level 1 approach distinct from the Level 2 RSF
+  framework implemented. Both are valid per API 579-1.

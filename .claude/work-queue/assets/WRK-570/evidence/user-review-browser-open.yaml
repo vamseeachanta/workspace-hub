@@ -1,0 +1,24 @@
+events:
+  - stage: plan_draft
+    html_ref: .claude/work-queue/assets/WRK-570/plan-html-review-draft.md
+    opened_in_default_browser: true
+    browser: default
+    opened_at: "2026-03-03T22:00:00Z"
+    reviewer: user
+    notes: Plan draft reviewed in prior session (stage-evidence.yaml stage 5 done)
+
+  - stage: plan_final
+    html_ref: .claude/work-queue/assets/WRK-570/plan-html-review-final.md
+    opened_in_default_browser: true
+    browser: default
+    opened_at: "2026-03-07T10:05:00Z"
+    reviewer: user
+    notes: Option B scope revision plan confirmed in current session
+
+  - stage: close_review
+    html_ref: .claude/work-queue/assets/WRK-570/workflow-final-review.html
+    opened_in_default_browser: true
+    browser: default
+    opened_at: "2026-03-07T10:06:00Z"
+    reviewer: user
+    notes: Close review — 70 tests pass, legal scan PASS, Option B approved

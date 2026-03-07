@@ -1,0 +1,36 @@
+wrk_id: WRK-570
+executed_at: "2026-03-07T10:02:00Z"
+orchestrator: claude
+commit: 9753a3f57
+implementation_ref: digitalmodel/src/digitalmodel/asset_integrity/assessment/
+
+integrated_repo_tests:
+  - name: GridParser NaN handling and unit conversion
+    scope: integrated
+    command: "cd digitalmodel && uv run python -m pytest tests/asset_integrity/test_ffs_assessment.py::TestGridParserFromDataFrame -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-570/test-results.md
+
+  - name: Level1Screener B31.8 accept/fail boundary
+    scope: integrated
+    command: "cd digitalmodel && uv run python -m pytest tests/asset_integrity/test_ffs_assessment.py::TestLevel1ScreenerB318 -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-570/test-results.md
+
+  - name: Level2Engine RSF + Folias GML and LML
+    scope: repo
+    command: "cd digitalmodel && uv run python -m pytest tests/asset_integrity/test_ffs_assessment.py::TestLevel2EngineGML tests/asset_integrity/test_ffs_assessment.py::TestLevel2EngineLML -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-570/test-results.md
+
+  - name: FFSDecision all verdict branches + remaining life
+    scope: repo
+    command: "cd digitalmodel && uv run python -m pytest tests/asset_integrity/test_ffs_assessment.py::TestFFSDecision -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-570/test-results.md
+
+  - name: End-to-end pipeline (16in gas + 12in oil + CSV + NumPy input)
+    scope: integrated
+    command: "cd digitalmodel && uv run python -m pytest tests/asset_integrity/test_ffs_assessment.py::TestFFSEndToEnd -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-570/test-results.md

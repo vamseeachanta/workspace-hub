@@ -1,0 +1,33 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: f580dd18a608
+    documents:
+      - .claude/work-queue/assets/WRK-570/plan-html-review-draft.md
+    published_at: "2026-03-03T22:00:00Z"
+    reviewer: user
+    notes: Plan draft published in prior session
+
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: f580dd18a608
+    documents:
+      - .claude/work-queue/assets/WRK-570/plan-html-review-final.md
+    published_at: "2026-03-07T10:05:00Z"
+    reviewer: user
+    notes: Option B scope revision plan published
+
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: f580dd18a608
+    documents:
+      - .claude/work-queue/assets/WRK-570/workflow-final-review.html
+    published_at: "2026-03-07T10:06:00Z"
+    reviewer: user
+    notes: Close review package published

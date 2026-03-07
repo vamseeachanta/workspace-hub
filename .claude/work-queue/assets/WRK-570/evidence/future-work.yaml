@@ -1,0 +1,12 @@
+wrk_id: WRK-570
+generated_at: "2026-03-07T10:04:00Z"
+
+no_follow_ups_rationale: >
+  The Level 2 RSF framework (asset_integrity/assessment/) supersedes the original
+  MATLAB Level 1 iterative scope. The MATLAB iterative assessment-length convergence
+  algorithm (GMLassessLengthEvaluation with sliding-window convergence) could be a
+  future enhancement to structural/ffs/gml.py if project-specific Level 1 output
+  format is ever required, but this is not a current need. Capturing as a low-priority
+  future work note rather than a required WRK.
+
+recommendations: []

@@ -1,0 +1,17 @@
+wrk_id: WRK-570
+generated_at: "2026-03-03T20:00:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+
+skills:
+  core_used:
+    - work-queue
+    - workflow-gatepass
+    - structural-analysis
+
+notes: >
+  Source files located at /mnt/ace/docs/disciplines/drilling/projects/0168_python_support/.
+  API 579-1 standard freely reimplementable (public standard). Target module:
+  digitalmodel/src/digitalmodel/asset_integrity/assessment/. MATLAB source provides
+  reference algorithm for Level 1 GML/LML assessment with iterative assessment-length
+  convergence. Legal: no client identifiers to be included in ported code.

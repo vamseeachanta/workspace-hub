@@ -1,0 +1,10 @@
+wrk_id: WRK-570
+stage: claim
+session_owner: claude
+best_fit_provider: claude
+claimed_at: "2026-03-07T10:00:00Z"
+claim_expires_at: "2026-03-07T18:00:00Z"
+quota_snapshot_ref: config/ai_agents/usage-budget.yaml
+notes: >
+  Claimed for Option B close — scope revision against existing asset_integrity/assessment/
+  framework. Commit 9753a3f57.

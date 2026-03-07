@@ -1,0 +1,8 @@
+wrk_id: WRK-570
+set_active_wrk: true
+session_id: session-2026-03-07-wrk570-close
+orchestrator_agent: claude
+activated_at: "2026-03-07T10:00:00Z"
+notes: >
+  Activated for close — Option B scope revision. Blocker WRK-568 confirmed done.
+  Session initiated via /work run WRK-570.
