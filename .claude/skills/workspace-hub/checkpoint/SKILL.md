@@ -58,15 +58,27 @@ Run as the FIRST action in a new session — before any other work.
 **If WRK-NNN is omitted:**
 1. List all `assets/WRK-*/checkpoint.yaml` files that exist.
 2. If exactly one → load it automatically.
-3. If multiple → print the list (WRK-ID, stage, checkpointed_at, next_action) and ask: "Which WRK would you like to resume?"
+3. If multiple → print the list in this format and ask which to resume:
+   ```
+   1. WRK-1028 — Stage-isolated WRK lifecycle    Stage 2  (2026-03-07T14:30Z)
+   2. WRK-1005 — Cross-provider orchestrator     Stage 17 (2026-03-06T09:00Z)
+   Which WRK would you like to resume? (1/2/...)
+   ```
 4. Wait for user selection before loading anything.
 
 **Once WRK is identified:**
 1. Read `assets/WRK-NNN/checkpoint.yaml` — nothing else yet.
 2. Read ONLY the files in `entry_reads[]` (max 3). Stop there.
-3. Print a 10-line summary (WRK, Stage, Checkpointed, Decisions, Artifacts, Next action, Context).
-4. Ask: "Ready to continue from Stage N — [next_action]. Shall I proceed?"
-5. Do NOT load any other skill or file until user confirms. Context is fresh — preserve it.
+3. Print summary in this format:
+   ```
+   WRK-1028 — Stage-isolated WRK lifecycle
+   Stage 2 (Resource Intelligence) · Checkpointed 2026-03-07T14:30Z
+   Decisions: [list]
+   Artifacts written: [list]
+   Next action: Stage 3 triage → per-stage brainstorm → Stage 4 plan draft
+   ```
+4. Ask: "Ready to continue? Shall I proceed with [next_action]?"
+5. Do NOT load any other skill or file until user confirms.
 
 ---
 

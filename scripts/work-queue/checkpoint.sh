@@ -97,8 +97,8 @@ next_action: ""
 context_summary: []
 YAML
 
-echo "checkpoint.yaml written -> $OUT_DIR/checkpoint.yaml"
-echo "Stage: $CURRENT_STAGE -- $STAGE_NAME"
+echo "✓ $WRK_ID — $WRK_TITLE"
+echo "  Stage $CURRENT_STAGE ($STAGE_NAME) · checkpoint.yaml → $OUT_DIR/checkpoint.yaml"
 } # end checkpoint_one
 
 # ── Run for each WRK ─────────────────────────────────────────────────────────
