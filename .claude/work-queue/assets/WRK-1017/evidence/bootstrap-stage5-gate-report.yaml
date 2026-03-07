@@ -1,0 +1,18 @@
+# bootstrap-stage5-gate-report.yaml — go/no-go report for Stage 5 gate rollout
+generated_at: "2026-03-07T06:53:00Z"
+mode: "dry_run"
+decision: "go"
+eligible_wrk_count: 1
+go_count: 1
+nogo_count: 0
+unresolved_history_count: 0
+unresolved_history_ratio: 0.000
+over_threshold: false
+proposed_first_gated_writes: []
+proposed_exemptions: []
+go_wrks:
+  - WRK-1011
+nogo_wrks:
+
+bootstrap_incomplete_wrks:
+

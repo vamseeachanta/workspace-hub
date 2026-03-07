@@ -1,5 +1,5 @@
 wrk_id: WRK-1017
-generated_at: '2026-03-07T07:16:12Z'
+generated_at: '2026-03-07T07:48:02Z'
 reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
@@ -18,7 +18,8 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: resource-intelligence.yaml created; completion_status=continue_to_planning; gate PASS.
+  comment: resource-intelligence.yaml created; completion_status=continue_to_planning;
+    gate PASS.
   evidence: .claude/work-queue/assets/WRK-1017/evidence/resource-intelligence.yaml
 - order: 3
   stage: Triage
@@ -158,13 +159,13 @@ stages:
   human_decision_required: 'no'
   owner: agents
   blocker: 'yes'
-  comment: "Implementation cross-review complete 2026-03-07. Three Codex runs + Gemini\
-    \ APPROVE (from previous session). Codex final verdict: APPROVE (commit 6601d80c).\
-    \ P1-1 fix (circular agent log gate): removed current-phase terminal signals from\
-    \ check_agent_log_gate(). P1-2 fix (fail-open): all 4 entrypoints now fail-closed\
-    \ when checker absent. Canary mode TODO comment added. P2 over-fix reverted (pre-phase\
-    \ log coupling broke archive-item.sh + standalone invocations). All issues resolved.\
-    \ 65 integration tests pass, 58 unit tests pass."
+  comment: 'Implementation cross-review complete 2026-03-07. Three Codex runs + Gemini
+    APPROVE (from previous session). Codex final verdict: APPROVE (commit 6601d80c).
+    P1-1 fix (circular agent log gate): removed current-phase terminal signals from
+    check_agent_log_gate(). P1-2 fix (fail-open): all 4 entrypoints now fail-closed
+    when checker absent. Canary mode TODO comment added. P2 over-fix reverted (pre-phase
+    log coupling broke archive-item.sh + standalone invocations). All issues resolved.
+    65 integration tests pass, 58 unit tests pass.'
   evidence: .claude/work-queue/assets/WRK-1017/cross-review-package.md
   stage13_review_dispositions:
     final_commit: 6601d80c
@@ -179,7 +180,8 @@ stages:
       p1_fixes_applied:
       - P1-1: removed circular claim/close terminal signals from check_agent_log_gate
       - P1-2: fail-closed guard (! -f) on all 4 entrypoints
-      p2_disposition: canary TODO added; pre-phase coupling reverted (broke archive path)
+      p2_disposition: canary TODO added; pre-phase coupling reverted (broke archive
+        path)
 - order: 14
   stage: Verify Gate Evidence
   status: done
@@ -222,7 +224,7 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1017/evidence/reclaim.yaml
 - order: 19
   stage: Close
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'yes'
@@ -230,7 +232,7 @@ stages:
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'yes'

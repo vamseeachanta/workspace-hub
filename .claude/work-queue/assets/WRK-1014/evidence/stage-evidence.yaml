@@ -1,0 +1,166 @@
+wrk_id: WRK-1014
+generated_at: "2026-03-07T06:49:59Z"
+reviewed_by: "agent"
+autonomy_maturity_level: "L2"
+human_steers_agents_execute: true
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: WRK created with baseline metadata.
+    evidence: .claude/work-queue/working/WRK-1014.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Resource/document intelligence pack captured.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Route, priority, complexity, and workstations set.
+    evidence: .claude/work-queue/working/WRK-1014.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Draft plan and artifact generated.
+    evidence: specs/wrk/WRK-1014/plan.md
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Tough questions, tradeoffs, and test/eval updates reviewed.
+    evidence: .claude/work-queue/assets/WRK-1014/plan-html-review-draft.md
+  - order: 6
+    stage: Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Multi-provider review completed.
+    evidence: scripts/review/results/wrk-000-review.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Final plan reviewed with gate-pass section.
+    evidence: .claude/work-queue/assets/WRK-1014/plan-html-review-final.md
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Claim evidence and active WRK set.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Entered canonical /work route.
+    evidence: /work
+  - order: 10
+    stage: Work Execution
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Implementation completed under active claim.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Review artifacts generated.
+    evidence: .claude/work-queue/assets/WRK-1014/review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Tests/evals completed and recorded.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/test-results.md
+  - order: 13
+    stage: Agent Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Implementation cross-review package complete.
+    evidence: .claude/work-queue/assets/WRK-1014/cross-review-package.md
+  - order: 14
+    stage: Verify Gate Evidence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Gate verifier passed.
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 15
+    stage: Future Work Synthesis
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Follow-up disposition captured.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/future-work.yaml
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: New resources captured post execution.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/resource-intelligence-update.yaml
+  - order: 17
+    stage: User Review - Implementation
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Close package reviewed including gate-pass section.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/user-review-close.yaml
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Not needed in this run.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/reclaim.yaml
+  - order: 19
+    stage: Close
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Awaiting final close operation.
+    evidence: scripts/work-queue/close-item.sh
+  - order: 20
+    stage: Archive
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Awaiting merge/sync completion.
+    evidence: scripts/work-queue/archive-item.sh

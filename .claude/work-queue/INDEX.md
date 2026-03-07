@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-07T06:37:37Z by generate-index.py -->
+<!-- Generated: 2026-03-07T07:48:03Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-07T06:37:37Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-07T07:48:03Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -14,9 +14,9 @@
 | Status | Count |
 |--------|-------|
 | pending | 209 |
-| working | 6 |
+| working | 5 |
 | blocked | 9 |
-| archived | 231 |
+| archived | 232 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 45 |
+| harness | 44 |
 | engineering | 117 |
 | data | 26 |
 | platform | 13 |
@@ -90,9 +90,9 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 455 |
-| Total archived | 231 |
-| Completion rate | 231/455 (51%) |
-| Monthly rate (current month) | 6 archived |
+| Total archived | 232 |
+| Completion rate | 232/455 (51%) |
+| Monthly rate (current month) | 7 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -100,8 +100,8 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | Pending items with plans | 58 / 209 | 28% |
-| Plans cross-reviewed | 11 | 16% |
-| Plans user-approved | 12 | 17% |
+| Plans cross-reviewed | 10 | 14% |
+| Plans user-approved | 11 | 16% |
 
 ### Aging
 
@@ -116,7 +116,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 98 | 3 | 7 |
+| High     | 98 | 2 | 7 |
 | Medium   | 83  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
 
@@ -124,7 +124,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (45 items — 13 high, 27 medium, 5 low)
+### harness (44 items — 12 high, 27 medium, 5 low)
 
 #### harness / agent-ux
 
@@ -213,7 +213,6 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1017 | HIGH | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | working |
 | WRK-1014 | MEDIUM | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending |
 
 ### engineering (117 items — 69 high, 37 medium, 11 low)
@@ -983,7 +982,7 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | working | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
+| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1019 |
@@ -1219,7 +1218,6 @@
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | medium | medium | workspace-hub | - |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | high | high | workspace-hub | - |
 
 ### Blocked
 
@@ -1470,6 +1468,7 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | medium | medium | workspace-hub | - |
+| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | high | high | workspace-hub | - |
 
 ## By Repository
 
@@ -1959,7 +1958,7 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | - |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | working | high | high | - |
+| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | high | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | - |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | - |
@@ -2280,7 +2279,7 @@
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | medium | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working | medium | workspace-hub | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | simple | workspace-hub | - |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | working | high | workspace-hub | - |
+| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | workspace-hub | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | complex | workspace-hub | - |
 
 ### Medium
@@ -2941,7 +2940,7 @@
 
 ## By Computer
 
-### ace-linux-1 (160 active / 178 total)
+### ace-linux-1 (159 active / 178 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3113,7 +3112,7 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | workspace-hub |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | workspace-hub |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | workspace-hub |
-| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | working | high | high | workspace-hub |
+| WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | high | workspace-hub |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | workspace-hub |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | pending | high | complex | workspace-hub |
 | WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | workspace-hub |

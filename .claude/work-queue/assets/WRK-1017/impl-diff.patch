@@ -1,0 +1,698 @@
+diff --git a/scripts/agents/plan.sh b/scripts/agents/plan.sh
+index 32e0201d..5f333ada 100644
+--- a/scripts/agents/plan.sh
++++ b/scripts/agents/plan.sh
+@@ -34,8 +34,34 @@ done
+ assert_provider "$provider"
+ assert_orchestrator_or_fail "$provider"
+ 
++log_gate_event_if_available "$wrk_id" "plan" "plan_wrapper_start" "$provider" "plan gate entered"
++
+ file="$(resolve_wrk_file "$wrk_id")" || { echo "ERROR: work item not found: $wrk_id" >&2; exit 2; }
+ 
++# --- Stage 5 evidence gate (canonical checker — Phase 1A guard) ---------------
++# plan.sh is an official Stage 6 entrypoint. Both exit 1 (predicate failure) and
++# exit 2 (infrastructure failure) are fail-closed blocking outcomes.
++STAGE5_CHECKER="${WS_HUB}/scripts/work-queue/verify-gate-evidence.py"
++if [[ -f "$STAGE5_CHECKER" ]]; then
++    stage5_exit=0
++    stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
++        --stage5-check "$wrk_id" 2>&1)" || stage5_exit=$?
++    if [[ "$stage5_exit" -eq 1 ]]; then
++        echo "✖ Stage 5 evidence gate FAILED (predicate failure) for ${wrk_id}:" >&2
++        echo "$stage5_output" >&2
++        echo "Complete Stage 5 interactive review and evidence before entering Stage 6." >&2
++        log_gate_event_if_available "$wrk_id" "plan" "stage5_gate_fail" "$provider" "predicate failure"
++        exit 1
++    elif [[ "$stage5_exit" -eq 2 ]]; then
++        echo "✖ Stage 5 evidence gate FAILED (infrastructure failure) for ${wrk_id}:" >&2
++        echo "$stage5_output" >&2
++        echo "Repair the Stage 5 gate infrastructure before proceeding." >&2
++        log_gate_event_if_available "$wrk_id" "plan" "stage5_gate_infra_fail" "$provider" "infrastructure failure"
++        exit 2
++    fi
++    # exit 0 = gate passes or disabled; continue
++fi
++
+ # --- Ensemble gate (runs BEFORE ## Plan check) -------------------------------
+ ENSEMBLE_SCRIPT="${AGENTS_DIR}/../planning/ensemble-plan.sh"
+ plan_ensemble="$(wrk_get_frontmatter_value "$file" "plan_ensemble" 2>/dev/null || echo "")"
+@@ -54,6 +80,7 @@ else
+         0)
+             echo "Ensemble complete. Read synthesis, resolve any SPLIT decisions,"
+             echo "then write ## Plan in ${file} and re-run plan.sh."
++            log_gate_event_if_available "$wrk_id" "plan" "plan_wrapper_blocked" "$provider" "ensemble complete; write plan and re-run"
+             exit 4
+             ;;
+         3)
+@@ -75,6 +102,7 @@ if ! grep -q "## Plan" "$file"; then
+     else
+         echo "ERROR: ${wrk_id} has no ## Plan section" >&2
+     fi
++    log_gate_event_if_available "$wrk_id" "plan" "plan_wrapper_blocked" "$provider" "missing ## Plan section"
+     exit 3
+ fi
+ 
+@@ -90,4 +118,5 @@ gate_logger="${WS_HUB}/scripts/work-queue/log-gate-event.sh"
+ if [[ -x "$gate_logger" ]]; then
+     bash "$gate_logger" "$wrk_id" "plan" "plan_draft_complete" "$provider" "plan gate passed"
+ fi
++log_gate_event_if_available "$wrk_id" "plan" "plan_wrapper_complete" "$provider" "plan gate passed"
+ echo "Plan gate passed for ${wrk_id} under orchestrator '${provider}'."
+diff --git a/scripts/review/cross-review.sh b/scripts/review/cross-review.sh
+index 0b16f82b..74b68b60 100644
+--- a/scripts/review/cross-review.sh
++++ b/scripts/review/cross-review.sh
+@@ -19,12 +19,14 @@ trap cleanup EXIT
+ FILE_OR_DIFF="${1:?Usage: cross-review.sh <file_or_diff_or_sha> <reviewer> [--type plan|implementation|commit]}"
+ REVIEWER="${2:?Specify reviewer: claude, codex, gemini, or all}"
+ REVIEW_TYPE="implementation"
++WRK_ID=""
+ 
+ # Parse optional args
+ shift 2
+ while [[ $# -gt 0 ]]; do
+   case "$1" in
+-    --type) REVIEW_TYPE="$2"; shift 2 ;;
++    --type)   REVIEW_TYPE="$2"; shift 2 ;;
++    --wrk-id) WRK_ID="$2";     shift 2 ;;
+     *) echo "Unknown arg: $1" >&2; exit 1 ;;
+   esac
+ done
+@@ -35,6 +37,29 @@ case "$REVIEW_TYPE" in
+   *) echo "Invalid review type: $REVIEW_TYPE (must be plan, implementation, or commit)" >&2; exit 1 ;;
+ esac
+ 
++# --- Stage 5 evidence gate (canonical checker — Phase 1B guard) ----------------
++# cross-review.sh is an official Stage 6 entrypoint for plan reviews.
++# When --type plan and --wrk-id are supplied, enforce Stage 5 gate.
++# Both exit 1 (predicate failure) and exit 2 (infrastructure failure) are fail-closed.
++WS_HUB_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
++STAGE5_CHECKER="${WS_HUB_ROOT}/scripts/work-queue/verify-gate-evidence.py"
++if [[ "$REVIEW_TYPE" == "plan" && -n "$WRK_ID" && -f "$STAGE5_CHECKER" ]]; then
++  stage5_exit=0
++  stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
++      --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?
++  if [[ "$stage5_exit" -eq 1 ]]; then
++    echo "✖ Stage 5 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
++    echo "$stage5_output" >&2
++    echo "Complete Stage 5 interactive review and evidence before Stage 6 cross-review." >&2
++    exit 1
++  elif [[ "$stage5_exit" -eq 2 ]]; then
++    echo "✖ Stage 5 evidence gate FAILED (infrastructure failure) for ${WRK_ID}:" >&2
++    echo "$stage5_output" >&2
++    echo "Repair the Stage 5 gate infrastructure before proceeding." >&2
++    exit 2
++  fi
++fi
++
+ # Determine input mode: file, commit SHA, git range, or inline
+ CONTENT_FILE=""
+ COMMIT_SHA=""
+diff --git a/scripts/work-queue/claim-item.sh b/scripts/work-queue/claim-item.sh
+index 6fb7505e..ab582a6b 100644
+--- a/scripts/work-queue/claim-item.sh
++++ b/scripts/work-queue/claim-item.sh
+@@ -35,6 +35,27 @@ CLAIM_FILE="${CLAIM_DIR}/claim-evidence.yaml"
+ EVIDENCE_DIR="${CLAIM_DIR}/evidence"
+ mkdir -p "$EVIDENCE_DIR"
+ 
++# --- Stage 5 evidence gate (canonical checker — Phase 1B guard) ---------------
++# claim-item.sh is an official Stage 6 downstream validator. Both exit 1 (predicate
++# failure) and exit 2 (infrastructure failure) are fail-closed blocking outcomes.
++STAGE5_CHECKER="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
++if [[ -f "$STAGE5_CHECKER" ]]; then
++    stage5_exit=0
++    stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
++        --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?
++    if [[ "$stage5_exit" -eq 1 ]]; then
++        echo "✖ Stage 5 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
++        echo "$stage5_output" >&2
++        echo "Complete Stage 5 interactive review and evidence before claiming." >&2
++        exit 1
++    elif [[ "$stage5_exit" -eq 2 ]]; then
++        echo "✖ Stage 5 evidence gate FAILED (infrastructure failure) for ${WRK_ID}:" >&2
++        echo "$stage5_output" >&2
++        echo "Repair the Stage 5 gate infrastructure before claiming." >&2
++        exit 2
++    fi
++fi
++
+ echo "Checking quota..."
+ QUOTA_STATUS="missing"
+ if [[ -f "$QUOTA_FILE" ]]; then
+@@ -251,12 +272,19 @@ fi
+ 
+ VERIFY_SCRIPT="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
+ echo "Running gate evidence validator for ${WRK_ID}..."
++if [[ -x "$GATE_LOGGER" ]]; then
++  bash "$GATE_LOGGER" "$WRK_ID" "claim" "verify_gate_evidence_start" "$ORCH_AGENT" "phase=claim"
++fi
+ if ! uv run --no-project python "$VERIFY_SCRIPT" "$WRK_ID" --phase claim; then
++  if [[ -x "$GATE_LOGGER" ]]; then
++    bash "$GATE_LOGGER" "$WRK_ID" "claim" "verify_gate_evidence_fail" "$ORCH_AGENT" "phase=claim"
++  fi
+   echo "✖ Gate evidence verification failed for ${WRK_ID}; fix the missing artifacts before claiming." >&2
+   exit 1
+ fi
+ 
+ if [[ -x "$GATE_LOGGER" ]]; then
++  bash "$GATE_LOGGER" "$WRK_ID" "claim" "verify_gate_evidence_pass" "$ORCH_AGENT" "phase=claim"
+   bash "$GATE_LOGGER" "$WRK_ID" "claim" "claim_evidence" "$ORCH_AGENT" "claim gate verified"
+ fi
+ 
+diff --git a/scripts/work-queue/close-item.sh b/scripts/work-queue/close-item.sh
+index 29dd1839..7b5c4725 100644
+--- a/scripts/work-queue/close-item.sh
++++ b/scripts/work-queue/close-item.sh
+@@ -95,6 +95,27 @@ if [[ -z "$FILE_PATH" ]]; then
+   exit 1
+ fi
+ 
++# --- Stage 5 evidence gate (canonical checker — Phase 1B guard) ---------------
++# close-item.sh is an official Stage 6 downstream validator. Both exit 1 and exit 2
++# are fail-closed blocking outcomes.
++STAGE5_CHECKER="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
++if [[ -f "$STAGE5_CHECKER" ]]; then
++  stage5_exit=0
++  stage5_output="$(uv run --no-project python "$STAGE5_CHECKER" \
++      --stage5-check "$WRK_ID" 2>&1)" || stage5_exit=$?
++  if [[ "$stage5_exit" -eq 1 ]]; then
++    echo "✖ Stage 5 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
++    echo "$stage5_output" >&2
++    echo "Complete Stage 5 interactive review and evidence before closing." >&2
++    exit 1
++  elif [[ "$stage5_exit" -eq 2 ]]; then
++    echo "✖ Stage 5 evidence gate FAILED (infrastructure failure) for ${WRK_ID}:" >&2
++    echo "$stage5_output" >&2
++    echo "Repair the Stage 5 gate infrastructure before closing." >&2
++    exit 2
++  fi
++fi
++
+ COMPLETED_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+ 
+ # Ensure final HTML review exists for this WRK; default path is auto-generated.
+@@ -125,12 +146,19 @@ fi
+ 
+ VALIDATOR="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
+ echo "Running gate evidence validator for ${WRK_ID} before close..."
++if [[ -x "$GATE_LOGGER" ]]; then
++  bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence_start" "orchestrator" "phase=close"
++fi
+ if ! uv run --no-project python "$VALIDATOR" "$WRK_ID" --phase close; then
++  if [[ -x "$GATE_LOGGER" ]]; then
++    bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence_fail" "orchestrator" "phase=close"
++  fi
+   echo "✖ Gate evidence verification failed for ${WRK_ID}; gather the missing artifacts before closing." >&2
+   exit 1
+ fi
+ 
+ if [[ -x "$GATE_LOGGER" ]]; then
++  bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence_pass" "orchestrator" "phase=close"
+   bash "$GATE_LOGGER" "$WRK_ID" "close" "verify_gate_evidence" "orchestrator" "close gate verified"
+ fi
+ 
+diff --git a/scripts/work-queue/generate-html-review.py b/scripts/work-queue/generate-html-review.py
+index d622b2be..2e7a1d9e 100644
+--- a/scripts/work-queue/generate-html-review.py
++++ b/scripts/work-queue/generate-html-review.py
+@@ -18,6 +18,7 @@ Legacy positional args still accepted: WRK-NNN [--stage draft] [--type plan]
+ """
+ import os
+ import re
++import subprocess
+ import sys
+ from html import escape as html_escape
+ import yaml
+@@ -210,6 +211,7 @@ KEY_SECTIONS_BY_ARTIFACT = {
+         "Plan Quality Eval Comparison",
+         "Resource Intelligence",
+         "Open Questions",
++        "Changes Since Stage 5",
+         "Cross-Review Summary",
+         "User Review - Plan (Final)",
+     ],
+@@ -568,6 +570,71 @@ def collect_plan_quality_eval(assets_dir: str) -> dict:
+     }
+ 
+ 
++def collect_changes_since_stage5(assets_dir: str, workspace_root: str) -> dict:
++    """Return git delta between approved Stage 5 baseline commit and HEAD.
++
++    Baseline commit is the last plan_draft event in user-review-publish.yaml
++    (AC-12: authoritative current published draft commit).
++    """
++    publish_path = Path(assets_dir) / "evidence" / "user-review-publish.yaml"
++    if not publish_path.exists():
++        return {"present": False, "reason": "user-review-publish.yaml not found"}
++    try:
++        data = yaml.safe_load(publish_path.read_text(encoding="utf-8")) or {}
++    except Exception as e:
++        return {"present": False, "reason": f"YAML parse error: {e}"}
++
++    events = data.get("events") if isinstance(data, dict) else None
++    if not isinstance(events, list):
++        return {"present": False, "reason": "no events in user-review-publish.yaml"}
++
++    baseline_commit = None
++    for ev in reversed(events):
++        if isinstance(ev, dict) and ev.get("stage") == "plan_draft":
++            baseline_commit = str(ev.get("commit", "") or "").strip()
++            break
++
++    if not baseline_commit or baseline_commit == "unknown":
++        return {"present": False, "reason": "no plan_draft event with commit in publish log"}
++
++    # Verify commit exists in repo
++    try:
++        subprocess.run(
++            ["git", "rev-parse", "--verify", baseline_commit],
++            cwd=workspace_root, capture_output=True, check=True, timeout=8,
++        )
++    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError):
++        return {"present": False, "reason": f"baseline commit not resolvable: {baseline_commit}"}
++
++    # Get changed files since baseline
++    try:
++        stat_result = subprocess.run(
++            ["git", "diff", "--stat", f"{baseline_commit}..HEAD"],
++            cwd=workspace_root, capture_output=True, text=True, timeout=8,
++        )
++        stat_text = stat_result.stdout.strip()
++    except (subprocess.TimeoutExpired, FileNotFoundError):
++        stat_text = "(git diff timed out)"
++
++    # Get commit log since baseline (one-line, newest first)
++    try:
++        log_result = subprocess.run(
++            ["git", "log", "--oneline", f"{baseline_commit}..HEAD"],
++            cwd=workspace_root, capture_output=True, text=True, timeout=8,
++        )
++        commits = [c for c in log_result.stdout.strip().splitlines() if c.strip()]
++    except (subprocess.TimeoutExpired, FileNotFoundError):
++        commits = []
++
++    return {
++        "present": True,
++        "baseline_commit": baseline_commit,
++        "stat_text": stat_text or "(no changes since Stage 5 baseline)",
++        "commits": commits,
++        "commit_count": len(commits),
++    }
++
++
+ # ── HTML section builders ─────────────────────────────────────────────────────
+ 
+ def render_meta_grid(fm: dict) -> str:
+@@ -735,6 +802,35 @@ def render_plan_quality_eval_section(plan_eval: dict) -> str:
+ <p style="font-size:.82rem;color:var(--muted)"><strong>Source:</strong> <code>{artifact_ref}</code></p>"""
+ 
+ 
++def render_changes_since_stage5(delta: dict) -> str:
++    if not delta.get("present"):
++        reason = html_escape(str(delta.get("reason", "Not applicable.")), quote=True)
++        return f"""<h2>Changes Since Stage 5</h2>
++<div class="panel">
++  <p style="color:var(--muted)">{reason}</p>
++</div>"""
++    baseline = html_escape(str(delta.get("baseline_commit", "unknown")), quote=True)
++    stat = html_escape(str(delta.get("stat_text", "(no changes)")), quote=True)
++    commit_count = int(delta.get("commit_count", 0))
++    commits = delta.get("commits", [])
++    commit_list = "".join(
++        f"<li><code>{html_escape(c, quote=True)}</code></li>" for c in commits[:30]
++    )
++    if len(commits) > 30:
++        commit_list += f"<li style='color:var(--muted)'>…and {len(commits)-30} more</li>"
++    commits_html = f"<ul>{commit_list}</ul>" if commits else "<p style='color:var(--muted)'>No commits since baseline.</p>"
++    return f"""<h2>Changes Since Stage 5</h2>
++<div class="panel">
++  <p><strong>Stage 5 approved baseline:</strong> <code>{baseline}</code></p>
++  <p><strong>Commits since baseline:</strong> {commit_count}</p>
++  {commits_html}
++  <details>
++    <summary><strong>Git diff stat</strong></summary>
++    <pre style="white-space:pre-wrap;font-size:.82rem">{stat}</pre>
++  </details>
++</div>"""
++
++
+ # ── Main HTML renderer ────────────────────────────────────────────────────────
+ 
+ def _extract_h2_titles(html: str) -> set[str]:
+@@ -825,6 +921,7 @@ def _inject_generated_plan_sections(
+     artifact_type: str,
+     prompt_start_context_html: str,
+     plan_quality_eval_html: str,
++    changes_since_stage5_html: str = "",
+ ) -> str:
+     if artifact_type not in {"plan-draft", "plan-final"}:
+         return body_html
+@@ -838,7 +935,14 @@ def _inject_generated_plan_sections(
+         body_html = _insert_before_first_matching_h2(
+             body_html,
+             plan_quality_eval_html,
+-            ["Resource Intelligence", "Open Questions", "Changes from Draft", "Cross-Review Summary", "User Review - Plan (Final)"],
++            ["Resource Intelligence", "Open Questions", "Changes from Draft", "Changes Since Stage 5", "Cross-Review Summary", "User Review - Plan (Final)"],
++        )
++
++    if artifact_type == "plan-final" and "Changes Since Stage 5" not in titles and changes_since_stage5_html.strip():
++        body_html = _insert_before_first_matching_h2(
++            body_html,
++            changes_since_stage5_html,
++            ["Cross-Review Summary", "User Review - Plan (Final)"],
+         )
+ 
+     return body_html
+@@ -981,6 +1085,11 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
+     gatepass = collect_stage_gatepass(assets_dir)
+     prompt_start_context = collect_prompt_start_context(body, fm)
+     plan_quality_eval = collect_plan_quality_eval(assets_dir)
++    changes_since_stage5 = (
++        collect_changes_since_stage5(assets_dir, workspace_root)
++        if artifact_type == "plan-final"
++        else {"present": False, "reason": "only rendered for plan-final"}
++    )
+ 
+     skill_manifest_html = render_skill_manifest(skill_manifest)
+     test_evidence_html = render_test_evidence(test_evidence)
+@@ -988,11 +1097,17 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
+     gatepass_html = render_gatepass_section(gatepass)
+     prompt_start_context_html = render_prompt_start_context(prompt_start_context)
+     plan_quality_eval_html = render_plan_quality_eval_section(plan_quality_eval)
++    changes_since_stage5_html = (
++        render_changes_since_stage5(changes_since_stage5)
++        if artifact_type == "plan-final"
++        else ""
++    )
+     body_html = _inject_generated_plan_sections(
+         body_html,
+         artifact_type,
+         prompt_start_context_html,
+         plan_quality_eval_html,
++        changes_since_stage5_html,
+     )
+     skill_manifest_html, test_evidence_html, reviewer_html, gatepass_html = _suppress_duplicate_generated_sections(
+         body_html,
+@@ -1004,7 +1119,13 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
+     body_html = _append_missing_key_sections(
+         body_html,
+         artifact_type,
+-        extra_html=[skill_manifest_html, test_evidence_html, reviewer_html, gatepass_html],
++        extra_html=[
++            skill_manifest_html,
++            test_evidence_html,
++            reviewer_html,
++            gatepass_html,
++            changes_since_stage5_html,
++        ],
+     )
+ 
+     sections = {
+@@ -1015,6 +1136,7 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
+         "gatepass_html": gatepass_html,
+         "test_evidence_html": test_evidence_html,
+         "reviewer_html": reviewer_html,
++        "changes_since_stage5_html": changes_since_stage5_html,
+     }
+ 
+     html = render_wrk_html(fm, artifact_type, sections)
+diff --git a/scripts/work-queue/verify-gate-evidence.py b/scripts/work-queue/verify-gate-evidence.py
+index 76d3d953..b48a1c54 100644
+--- a/scripts/work-queue/verify-gate-evidence.py
++++ b/scripts/work-queue/verify-gate-evidence.py
+@@ -105,6 +105,137 @@ def check_claim_gate(assets_dir: Path) -> tuple[bool | None, str]:
+     return True, f"{claim_file.name}: version=1, owner={owner}, {quota_note}"
+ 
+ 
++def _load_stage5_config(workspace_root: Path) -> tuple[dict | None, str]:
++    """Load stage5-gate-config.yaml; return (data, error_msg) or (None, err)."""
++    config_path = workspace_root / "scripts" / "work-queue" / "stage5-gate-config.yaml"
++    if not config_path.exists():
++        return None, f"stage5-gate-config.yaml not found at {config_path}"
++    if yaml is None:
++        return None, "PyYAML unavailable — cannot load stage5-gate-config.yaml"
++    try:
++        data = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
++    except Exception as exc:
++        return None, f"stage5-gate-config.yaml parse error: {exc}"
++    if not isinstance(data, dict):
++        return None, "stage5-gate-config.yaml root is not a mapping"
++    return data, ""
++
++
++def check_stage5_evidence_gate(
++    wrk_id: str, assets_dir: Path, workspace_root: Path
++) -> tuple[bool | None, str]:
++    """Check Stage 5 evidence gate (canonical checker — Phase 1A).
++
++    Returns:
++        (True,  detail) — gate passes
++        (False, detail) — predicate failure / Stage 5 incomplete
++        (None,  detail) — infrastructure/path failure (exit 2 semantics)
++    """
++    if yaml is None:
++        return None, "PyYAML unavailable — cannot validate Stage 5 evidence"
++
++    # 1. Load activation config
++    config, config_err = _load_stage5_config(workspace_root)
++    if config is None:
++        return None, config_err
++
++    activation = str(config.get("activation", "disabled")).strip()
++    human_allowlist = set(config.get("human_authority_allowlist") or [])
++
++    # 2. If gate is disabled, no enforcement
++    if activation == "disabled":
++        return True, "stage5-gate-config.yaml: activation=disabled (no enforcement)"
++
++    evidence_dir = assets_dir / "evidence"
++
++    # 3. Check migration exemption (before artifact checks)
++    exemption_path = evidence_dir / "stage5-migration-exemption.yaml"
++    if exemption_path.exists():
++        try:
++            ex = yaml.safe_load(exemption_path.read_text(encoding="utf-8")) or {}
++        except Exception as exc:
++            return None, f"stage5-migration-exemption.yaml parse error: {exc}"
++        if not isinstance(ex, dict):
++            return None, "stage5-migration-exemption.yaml root is not a mapping"
++        approved_by = str(ex.get("approved_by", "")).strip()
++        approval_scope = str(ex.get("approval_scope", "")).strip()
++        if not approved_by:
++            return False, "stage5-migration-exemption.yaml: approved_by missing"
++        if approved_by not in human_allowlist:
++            return (
++                False,
++                f"stage5-migration-exemption.yaml: approved_by='{approved_by}' not in "
++                f"human_authority_allowlist; agent identities are not permitted",
++            )
++        if not approval_scope:
++            return False, "stage5-migration-exemption.yaml: approval_scope missing"
++        ex_wrk = str(ex.get("wrk_id", "")).strip()
++        if ex_wrk and ex_wrk != wrk_id:
++            return (
++                False,
++                f"stage5-migration-exemption.yaml: wrk_id mismatch ({ex_wrk} != {wrk_id})",
++            )
++        return True, f"stage5-migration-exemption.yaml: legacy exemption approved by {approved_by}"
++
++    # 4. Validate common-draft artifact
++    common_draft_path = evidence_dir / "user-review-common-draft.yaml"
++    if not common_draft_path.exists():
++        return False, "user-review-common-draft.yaml missing — Stage 5 common-draft review required"
++    try:
++        cd = yaml.safe_load(common_draft_path.read_text(encoding="utf-8")) or {}
++    except Exception as exc:
++        return None, f"user-review-common-draft.yaml parse error: {exc}"
++    if not isinstance(cd, dict):
++        return None, "user-review-common-draft.yaml root is not a mapping"
++    cd_wrk = str(cd.get("wrk_id", "")).strip()
++    if cd_wrk and cd_wrk != wrk_id:
++        return False, f"user-review-common-draft.yaml: wrk_id mismatch ({cd_wrk} != {wrk_id})"
++    cd_decision = str(cd.get("approval_decision", "")).strip()
++    if cd_decision != "approve_as_is":
++        return (
++            False,
++            f"user-review-common-draft.yaml: approval_decision='{cd_decision}'; "
++            f"Stage 6 requires approve_as_is",
++        )
++    cd_cycle = str(cd.get("review_cycle_id", "")).strip()
++
++    # 5. Validate combined-plan artifact
++    plan_draft_path = evidence_dir / "user-review-plan-draft.yaml"
++    if not plan_draft_path.exists():
++        return False, "user-review-plan-draft.yaml missing — Stage 5 combined-plan review required"
++    try:
++        pd = yaml.safe_load(plan_draft_path.read_text(encoding="utf-8")) or {}
++    except Exception as exc:
++        return None, f"user-review-plan-draft.yaml parse error: {exc}"
++    if not isinstance(pd, dict):
++        return None, "user-review-plan-draft.yaml root is not a mapping"
++    pd_wrk = str(pd.get("wrk_id", "")).strip()
++    if pd_wrk and pd_wrk != wrk_id:
++        return False, f"user-review-plan-draft.yaml: wrk_id mismatch ({pd_wrk} != {wrk_id})"
++    pd_decision = str(pd.get("approval_decision", "")).strip()
++    if pd_decision != "approve_as_is":
++        return (
++            False,
++            f"user-review-plan-draft.yaml: approval_decision='{pd_decision}'; "
++            f"Stage 6 requires approve_as_is",
++        )
++    pd_cycle = str(pd.get("review_cycle_id", "")).strip()
++
++    # 6. Cross-artifact review_cycle_id consistency
++    if cd_cycle and pd_cycle and cd_cycle != pd_cycle:
++        return (
++            False,
++            f"review_cycle_id mismatch: common-draft='{cd_cycle}' vs plan-draft='{pd_cycle}'; "
++            f"artifacts from different review cycles may not satisfy the gate together",
++        )
++
++    return (
++        True,
++        f"stage5 gate passed: common-draft=approve_as_is, "
++        f"plan-draft=approve_as_is, review_cycle_id='{pd_cycle or cd_cycle}'",
++    )
++
++
+ def check_resource_intelligence_gate(assets_dir: Path) -> tuple[bool | None, str]:
+     """Check resource intelligence evidence with canonical + legacy compatibility."""
+     ri_file = evidence_file(assets_dir, "resource-intelligence.yaml", ["resource-intelligence-summary.md"])
+@@ -567,6 +698,66 @@ def load_yaml(path: Path) -> tuple[dict | None, str | None]:
+     return data, None
+ 
+ 
++def parse_gate_log(log_path: Path) -> list[dict[str, str]]:
++    entries: list[dict[str, str]] = []
++    current: dict[str, str] = {}
++    for line in log_path.read_text(encoding="utf-8").splitlines():
++        if not line.strip():
++            if current:
++                entries.append(current)
++                current = {}
++            continue
++        if ":" not in line:
++            continue
++        key, value = line.split(":", 1)
++        current[key.strip()] = value.strip()
++    if current:
++        entries.append(current)
++    return entries
++
++
++def check_agent_log_gate(workspace_root: Path, wrk_id: str, phase: str) -> tuple[bool, str]:
++    log_dir = workspace_root / ".claude" / "work-queue" / "logs"
++    if not log_dir.exists():
++        return False, "work-queue log directory missing"
++
++    required_by_phase: dict[str, list[tuple[str, set[str]]]] = {
++        "claim": [
++            ("routing", {"work_wrapper_complete", "work_queue_skill"}),
++            ("plan", {"plan_wrapper_complete", "plan_draft_complete"}),
++            ("claim", {"verify_gate_evidence_pass", "claim_evidence"}),
++        ],
++        "close": [
++            ("routing", {"work_wrapper_complete", "work_queue_skill"}),
++            ("plan", {"plan_wrapper_complete", "plan_draft_complete"}),
++            ("execute", {"execute_wrapper_complete", "tdd_eval"}),
++            ("cross-review", {"review_wrapper_complete", "agent_cross_review"}),
++            ("close", {"verify_gate_evidence_pass", "close_item"}),
++        ],
++    }
++    requirements = required_by_phase[phase]
++    missing: list[str] = []
++    matched: list[str] = []
++    for stage, accepted_actions in requirements:
++        log_path = log_dir / f"{wrk_id}-{stage}.log"
++        if not log_path.exists():
++            missing.append(f"{stage}:missing-log")
++            continue
++        entries = parse_gate_log(log_path)
++        provider_entries = [e for e in entries if str(e.get("provider", "")).strip()]
++        if not provider_entries:
++            missing.append(f"{stage}:missing-provider")
++            continue
++        actions = {str(e.get("action", "")).strip() for e in provider_entries}
++        if not (actions & accepted_actions):
++            missing.append(f"{stage}:missing-actions={sorted(accepted_actions)}")
++            continue
++        matched.append(f"{stage}:{sorted(actions & accepted_actions)}")
++    if missing:
++        return False, " ; ".join(missing)
++    return True, "matched " + ", ".join(matched)
++
++
+ def run_checks(wrk_id: str, phase: str = "close") -> int:
+     workspace_root = Path(__file__).resolve().parents[2]
+     queue_dir = workspace_root / ".claude" / "work-queue"
+@@ -625,6 +816,8 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
+     gates.append({"name": "Resource-intelligence gate", "ok": bool(ri_ok), "details": ri_details})
+     activation_ok, activation_details = check_activation_gate(assets_dir, wrk_id)
+     gates.append({"name": "Activation gate", "ok": activation_ok, "details": activation_details})
++    log_ok, log_details = check_agent_log_gate(workspace_root, wrk_id, phase)
++    gates.append({"name": "Agent log gate", "ok": log_ok, "details": log_details})
+     html_open_required = ["plan_draft", "plan_final"]
+     if phase == "close":
+         html_open_required.append("close_review")
+@@ -696,17 +889,54 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
+     return 0
+ 
+ 
++def _run_stage5_check(args: list[str]) -> int:
++    """Handle --stage5-check <WRK-id> invocation from plan.sh / cross-review.sh.
++
++    Exit codes:
++        0 = Stage 5 gate passes (or disabled)
++        1 = predicate failure (Stage 5 incomplete)
++        2 = infrastructure/path failure
++    """
++    if len(args) < 1:
++        print("Usage: verify-gate-evidence.py --stage5-check WRK-<id>", file=sys.stderr)
++        return 2
++    wrk_id = args[0]
++    workspace_root = Path(__file__).resolve().parents[2]
++    queue_dir = workspace_root / ".claude" / "work-queue"
++    assets_dir = queue_dir / "assets" / wrk_id
++    if not assets_dir.is_dir():
++        print(
++            f"✖ Stage 5 check: assets directory not found for {wrk_id}: {assets_dir}",
++            file=sys.stderr,
++        )
++        return 2
++    ok, detail = check_stage5_evidence_gate(wrk_id, assets_dir, workspace_root)
++    if ok is None:
++        print(f"✖ Stage 5 gate infrastructure failure for {wrk_id}: {detail}", file=sys.stderr)
++        return 2
++    if not ok:
++        print(f"✖ Stage 5 gate predicate failure for {wrk_id}: {detail}", file=sys.stderr)
++        return 1
++    print(f"✔ Stage 5 gate passed for {wrk_id}: {detail}")
++    return 0
++
++
+ def main() -> None:
+-    if len(sys.argv) not in {2, 4}:
++    args = sys.argv[1:]
++    # Stage 5 check mode (called by plan.sh, cross-review.sh, etc.)
++    if args and args[0] == "--stage5-check":
++        sys.exit(_run_stage5_check(args[1:]))
++
++    if len(args) not in {1, 3}:
+         print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close]")
+         sys.exit(1)
+-    wrk_id = sys.argv[1]
++    wrk_id = args[0]
+     phase = "close"
+-    if len(sys.argv) == 4:
+-        if sys.argv[2] != "--phase" or sys.argv[3] not in {"claim", "close"}:
++    if len(args) == 3:
++        if args[1] != "--phase" or args[2] not in {"claim", "close"}:
+             print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close]")
+             sys.exit(1)
+-        phase = sys.argv[3]
++        phase = args[2]
+     code = run_checks(wrk_id, phase=phase)
+     sys.exit(code)
+ 
