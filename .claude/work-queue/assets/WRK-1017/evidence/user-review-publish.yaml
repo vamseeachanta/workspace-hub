@@ -139,7 +139,7 @@ events:
 - stage: plan_final
   review_checkpoint: plan_final
   review_cycle_id: stage7-2026-03-07
-  pushed_to_origin: false
+  pushed_to_origin: true
   remote: origin
   branch: main
   published_draft_commit: b9b4c52bd8a2bc1a6f6e35fbc9525eeca7f06445
