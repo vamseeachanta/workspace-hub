@@ -43,7 +43,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete'], close:['verify_gate_evidence_pass']"
+      "details": "matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete'], close:['close_item', 'verify_gate_evidence_pass']"
     },
     {
       "name": "User-review HTML-open gate",
