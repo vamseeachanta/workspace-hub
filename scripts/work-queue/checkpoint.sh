@@ -1,19 +1,43 @@
 #!/usr/bin/env bash
-# checkpoint.sh WRK-NNN — writes checkpoint.yaml for context handoff
-# Usage: bash scripts/work-queue/checkpoint.sh WRK-NNN
+# checkpoint.sh [WRK-NNN ...] — writes checkpoint.yaml for context handoff
+# Usage: bash scripts/work-queue/checkpoint.sh            # auto: active-wrk + all working/
+#        bash scripts/work-queue/checkpoint.sh WRK-NNN   # single WRK
+#        bash scripts/work-queue/checkpoint.sh WRK-A WRK-B  # multiple explicit
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-[[ $# -lt 1 ]] && { echo "Usage: checkpoint.sh WRK-NNN" >&2; exit 1; }
-WRK_ID="$1"
+ACTIVE_WRK_FILE="$REPO_ROOT/.claude/state/active-wrk"
+QUEUE_DIR="$REPO_ROOT/.claude/work-queue"
 
+# ── Resolve WRK ID list ───────────────────────────────────────────────────────
+declare -a WRK_IDS=()
+if [[ $# -gt 0 ]]; then
+  WRK_IDS=("$@")
+else
+  # Auto-detect: active-wrk + all items currently in working/
+  [[ -f "$ACTIVE_WRK_FILE" ]] && {
+    active="$(cat "$ACTIVE_WRK_FILE" | tr -d '[:space:]')"
+    [[ -n "$active" ]] && WRK_IDS+=("$active")
+  }
+  for f in "$QUEUE_DIR/working"/WRK-*.md; do
+    [[ -f "$f" ]] || continue
+    id="$(basename "$f" .md)"
+    # Avoid duplicates
+    already=0; for x in "${WRK_IDS[@]:-}"; do [[ "$x" == "$id" ]] && already=1; done
+    [[ $already -eq 0 ]] && WRK_IDS+=("$id")
+  done
+  [[ ${#WRK_IDS[@]} -eq 0 ]] && { echo "No active WRK found. Pass WRK-NNN as argument or set active-wrk." >&2; exit 1; }
+fi
+
+checkpoint_one() {
+local WRK_ID="$1"
 # ── Locate WRK file ──────────────────────────────────────────────────────────
 WRK_FILE=""
 for dir in pending working; do
-  candidate="$REPO_ROOT/.claude/work-queue/$dir/$WRK_ID.md"
+  candidate="$QUEUE_DIR/$dir/$WRK_ID.md"
   [[ -f "$candidate" ]] && WRK_FILE="$candidate" && break
 done
-[[ -z "$WRK_FILE" ]] && { echo "ERROR: $WRK_ID.md not found in pending/ or working/" >&2; exit 1; }
+[[ -z "$WRK_FILE" ]] && { echo "ERROR: $WRK_ID.md not found in pending/ or working/" >&2; return 1; }
 
 # ── Parse title + stage via single Python call ────────────────────────────────
 EVIDENCE_FILE="$REPO_ROOT/.claude/work-queue/assets/$WRK_ID/evidence/stage-evidence.yaml"
@@ -75,3 +99,11 @@ YAML
 
 echo "checkpoint.yaml written -> $OUT_DIR/checkpoint.yaml"
 echo "Stage: $CURRENT_STAGE -- $STAGE_NAME"
+} # end checkpoint_one
+
+# ── Run for each WRK ─────────────────────────────────────────────────────────
+for WRK_ID in "${WRK_IDS[@]}"; do
+  echo "=== Checkpointing $WRK_ID ==="
+  checkpoint_one "$WRK_ID"
+done
+echo "Done. ${#WRK_IDS[@]} checkpoint(s) written."
