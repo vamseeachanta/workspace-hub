@@ -1,0 +1,43 @@
+wrk_id: WRK-1036
+stage: 12
+completed_at: 2026-03-08T02:10:00Z
+
+test_suite: scripts/hooks/tests/test-tidy-agent-teams.sh
+
+tests:
+  - id: T1
+    description: dry-run on clean state produces deleted=0 tasks_purged=0
+    result: pass
+  - id: T2
+    description: live run on clean state exits 0
+    result: pass
+  - id: T3
+    description: archived WRK team detected in dry-run
+    result: pass
+  - id: T4
+    description: archived WRK team deleted in live run
+    result: pass
+  - id: T5
+    description: non-conforming team name preserved (not deleted)
+    result: pass
+  - id: T6
+    description: fresh empty UUID dir preserved (<7 days)
+    result: pass
+  - id: T7
+    description: spawn-team.sh no-args exits non-zero
+    result: pass
+  - id: T8
+    description: spawn-team.sh bad WRK_ID rejected
+    result: pass
+  - id: T9
+    description: spawn-team.sh bad slug rejected
+    result: pass
+  - id: T10
+    description: spawn-team.sh valid input prints recipe with mkdir -p
+    result: pass
+
+summary:
+  total: 10
+  pass: 10
+  fail: 0
+  coverage: tidy+spawn happy path + all rejection paths

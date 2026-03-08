@@ -1,0 +1,14 @@
+wrk_id: WRK-1036
+stage: 16
+completed_at: 2026-03-08T02:40:00Z
+
+additions:
+  - item: "tidy-agent-teams.sh accepts CLAUDE_TEAMS_DIR/CLAUDE_TASKS_DIR env injection for test isolation"
+    type: pattern
+    relevant_skills: [work-queue-workflow]
+
+  - item: "session-start SKILL.md Step 3b added — agent teams visibility + spawn-team.sh recipe hint"
+    type: skill-update
+    relevant_skills: [session-start]
+
+no_additions_rationale: null

@@ -1,0 +1,19 @@
+wrk_id: WRK-1036
+stage: 5
+artifact: user-review-common-draft
+reviewed_by: vamsee
+confirmed_by: vamsee
+reviewed_at: 2026-03-08T00:30:00Z
+confirmed_at: 2026-03-08T00:30:00Z
+approval_decision: approve_as_is
+review_cycle_id: rc-1036-plan-draft
+
+scope_decisions:
+  in_scope:
+    - Phase 1: audit + cleanup of 3 stale teams and 76 UUID task dirs
+    - Phase 2: session-start Step 3b + spawn-team.sh (Option A)
+    - Phase 3: tidy-agent-teams.sh Stop hook, archive-only, uniform across stages 1-20
+    - TDD: tidy-agent-teams.sh as living test harness run at every stage gate
+  out_of_scope:
+    - WRK-1008 P1 findings (captured as WRK-1037)
+    - Changes to CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS settings

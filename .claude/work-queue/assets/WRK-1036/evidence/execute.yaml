@@ -1,0 +1,48 @@
+wrk_id: WRK-1036
+stage: 10
+completed_at: 2026-03-08T02:00:00Z
+executor: claude
+
+phases:
+  - phase: 1
+    name: audit_and_cleanup
+    artifacts:
+      - evidence/phase1-audit-summary.md
+    actions:
+      - "tidy-agent-teams.sh live: deleted wrk-272-b401 (WRK-272 archived)"
+      - "manual delete: doc-intel-wave2 (non-conforming, WRK-1037 captured)"
+      - "manual delete: engineering-standards (non-conforming, stale)"
+      - "manual delete: c915cd54 UUID task dir (DISCARD — no matching WRK)"
+    result: pass
+
+  - phase: 2
+    name: session_start_visibility
+    artifacts:
+      - .claude/skills/workspace-hub/session-start/SKILL.md (Step 3b added)
+      - scripts/work-queue/spawn-team.sh
+    result: pass
+
+  - phase: 3
+    name: stop_hook_tidy
+    artifacts:
+      - scripts/hooks/tidy-agent-teams.sh
+      - .claude/settings.json (Stop hook entry added)
+    timing_ms: 501
+    result: pass
+
+integrated_repo_tests:
+  - name: tidy dry-run idempotent
+    scope: integrated
+    command: bash scripts/hooks/tidy-agent-teams.sh --dry-run
+    result: pass
+    artifact_ref: evidence/execute.yaml
+  - name: tidy live run timing <5s
+    scope: integrated
+    command: bash scripts/hooks/tidy-agent-teams.sh
+    result: pass
+    artifact_ref: evidence/execute.yaml
+  - name: full TDD suite 13/13
+    scope: integrated
+    command: bash scripts/hooks/tests/test-tidy-agent-teams.sh
+    result: pass
+    artifact_ref: evidence/tdd-evidence.yaml

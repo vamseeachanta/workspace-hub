@@ -1,0 +1,64 @@
+wrk_id: WRK-1036
+generated_at: 2026-03-08T00:00:00Z
+stage: 2
+completion_status: continue_to_planning
+
+domain:
+  problem: >
+    Agent teams feature is enabled but has no lifecycle management: no session-start
+    visibility, no naming convention, no session-exit cleanup. Ghost teams and orphaned
+    task dirs accumulate over time. 3 stale named teams + 76 orphaned UUID task dirs
+    currently exist with no automated tidy mechanism.
+  architecture_decision: >
+    Three-phase approach: (1) one-time audit + cleanup of existing ghost state,
+    (2) add agent-teams step to session-start SKILL.md + spawn-team.sh helper for
+    zero-friction team creation with WRK-traceable naming, (3) new tidy-agent-teams.sh
+    Stop hook that auto-deletes teams whose WRK is archived and purges empty/stale
+    UUID task dirs — wired into existing Stop hook chain in settings.json.
+
+existing_files:
+  - path: .claude/settings.json
+    relevance: >
+      Lines 9-10: CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1, MAX_TEAMMATES=10 already set.
+      Lines 144-160: Stop hook chain — tidy-agent-teams.sh will be added here alongside
+      emit-session-quality-signals.sh.
+  - path: .claude/skills/workspace-hub/session-start/SKILL.md
+    relevance: >
+      150 lines. Steps 0-6 defined. New Step 3b (agent-teams status, ≤10 lines) inserts
+      after Step 3 (Quota Status, line ~80). Must stay under 5000-word skill limit.
+  - path: .claude/hooks/emit-session-quality-signals.sh
+    relevance: >
+      Existing Stop hook. tidy-agent-teams.sh added as a sibling entry in settings.json
+      Stop hooks array — not embedded inside this script (keeps hooks lean).
+  - path: ~/.claude/teams/
+    relevance: >
+      3 stale named teams: wrk-272-b401 (WRK-272 done, properly shut down Feb 21),
+      engineering-standards (WRK-497 completion unread, WRK archived), doc-intel-wave2
+      (unread Codex P1 review of WRK-1008 — needs separate WRK capture).
+  - path: ~/.claude/tasks/
+    relevance: >
+      76 UUID dirs total. 71 empty (safe to purge). 5 non-empty with stale task JSON
+      from past teams: WRK-044/096/051/272 (all have WRK items), 1 unknown WAR extractor
+      work (c915cd54 — needs investigation before purge).
+
+skills:
+  core_used:
+    - work-queue-workflow
+    - workflow-gatepass
+    - session-start
+
+constraints:
+  - Stop hooks must complete in <5s — tidy script: shell+jq only, no Python
+  - session-start SKILL.md must stay ≤5000 words; new section ≤10 lines
+  - tidy-agent-teams.sh must use rm -rf on team dirs (no TeamDelete CLI available)
+  - naming convention wrk-NNN-<slug> required so tidy can map team → WRK ID
+  - UUID task dirs: only purge if empty OR older than 7 days AND no live team reference
+  - WRK-1008 P1 findings (renderer fallback + hard-gate bypass) must be captured as
+    a separate WRK before doc-intel-wave2 team is deleted
+  - c915cd54 UUID dir (WAR extractor, partial work) needs investigation before purge
+
+top_p1_gaps: []
+
+p1_gaps_resolved:
+  - WRK-1008 Codex P1 findings captured as WRK-1037 (plan stage)
+  - c915cd54 WAR-extractor work to be investigated in Phase 1 execution (in-scope)

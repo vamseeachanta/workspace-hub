@@ -1,0 +1,9 @@
+wrk_id: WRK-1036
+stage: 9
+completed_at: 2026-03-08T01:15:00Z
+route: B
+orchestrator: claude
+provider: claude
+provider_alt: codex
+execution_workstations: [ace-linux-1]
+skill_invoked: work-queue-workflow

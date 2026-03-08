@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1036 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1036 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Agent teams lifecycle — audit logs, session-start availability, session-exit tidy</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — Three phases: **Phase 1 — Audit (one-time)** - 3 stale named teams (`doc-intel-wave2`, `engineering-standards`, `wrk-272-b401`, last active ...</summary><div class="panel"><p>Three phases:</p>
+<p><strong>Phase 1 — Audit (one-time)</strong>
+- 3 stale named teams (<code>doc-intel-wave2</code>, <code>engineering-standards</code>, <code>wrk-272-b401</code>, last active Feb 20–27 2026)
+- 76 orphaned UUID task dirs under <code>~/.claude/tasks/</code>
+- Read inboxes + task files to reconstruct what each team attempted/completed/abandoned
+- Capture any unrecorded follow-up as new WRK items; then clean up</p>
+<p><strong>Phase 2 — Session-start availability</strong>
+- Add an <code>agent-teams</code> section to <code>session-start</code> SKILL.md so every new session knows:
+  - Teams feature is active (<code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code>, <code>MAX_TEAMMATES=10</code>)
+  - How to spawn a team for the current WRK (one-liner recipe)
+  - Naming convention: <code>wrk-NNN-&lt;slug&gt;</code> so teams are traceable
+- Add a helper script <code>scripts/work-queue/spawn-team.sh WRK-NNN &lt;slug&gt;</code> that creates the team, sets the name, and prints the spawn recipe — zero-friction team creation</p>
+<p><strong>Phase 3 — Session-exit tidy</strong>
+- Extend the existing Stop hook (<code>emit-session-quality-signals.sh</code> or a new <code>tidy-agent-teams.sh</code>) to:
+  1. Detect any teams whose WRK is now archived/closed → <code>TeamDelete</code> them
+  2. Detect task UUID dirs older than 7 days with no active team reference → purge
+  3. Emit a one-line summary signal: <code>agent_teams_tidied: N_deleted, M_tasks_purged</code>
+- Keep the hook fast (&lt;5s): use shell+jq only, no Python</p></div></details>
+
+  <details open><summary><strong>Why</strong> — Agent teams are wired up but effectively invisible at session start — leading to underuse and ghost accumulation. A lightweight lifecycle (s...</summary><div class="panel"><p>Agent teams are wired up but effectively invisible at session start — leading to underuse and ghost accumulation. A lightweight lifecycle (spawn recipe at start + auto-tidy at exit) closes the loop and makes teams a first-class execution tool instead of an afterthought.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — ### Phase 1 - [ ] Session logs/task files read for all 3 named teams - [ ] Per-team summary written: attempted / completed / abandoned - [ ]...</summary><div class="panel"><h3>Phase 1</h3>
+<ul>
+<li>[ ] Session logs/task files read for all 3 named teams</li>
+<li>[ ] Per-team summary written: attempted / completed / abandoned</li>
+<li>[ ] Any uncaptured follow-up captured as new WRK items</li>
+<li>[ ] Stale teams deleted; orphaned UUID task dirs purged</li>
+</ul>
+<h3>Phase 2</h3>
+<ul>
+<li>[ ] <code>session-start</code> SKILL.md updated with agent-teams section (≤10 lines)</li>
+<li>[ ] <code>scripts/work-queue/spawn-team.sh WRK-NNN &lt;slug&gt;</code> created and tested</li>
+<li>[ ] Naming convention <code>wrk-NNN-&lt;slug&gt;</code> documented in session-start</li>
+</ul>
+<h3>Phase 3</h3>
+<ul>
+<li>[ ] <code>scripts/hooks/tidy-agent-teams.sh</code> created (&lt;50 lines, &lt;5s runtime)</li>
+<li>[ ] Hook wired into Stop hook in <code>.claude/settings.json</code></li>
+<li>[ ] Hook tested: creates a dummy team, verifies tidy detects and removes it</li>
+<li>[ ] Signal <code>agent_teams_tidied</code> emitted to session quality signals</li>
+</ul>
+<h3>Overall</h3>
+<ul>
+<li>[ ] No new ghost teams accumulate after a normal session end</li>
+<li>[ ] INDEX regenerated after any WRK additions from Phase 1</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — - **Phase 1**: Read `~/.claude/teams/*/` inboxes + `~/.claude/tasks/&lt;uuid&gt;/` task JSON files; summarise per team; capture WRKs; delete stale...</summary><div class="panel"><ul>
+<li><strong>Phase 1</strong>: Read <code>~/.claude/teams/*/</code> inboxes + <code>~/.claude/tasks/&lt;uuid&gt;/</code> task JSON files; summarise per team; capture WRKs; delete stale</li>
+<li><strong>Phase 2</strong>: Edit <code>session-start/SKILL.md</code> §Quick Reference; write <code>spawn-team.sh</code> (TeamCreate wrapper + prints recipe)</li>
+<li><strong>Phase 3</strong>: Write <code>tidy-agent-teams.sh</code>; wire into Stop hook alongside <code>emit-session-quality-signals.sh</code>; smoke test</li>
+<li><strong>Test</strong>: <code>bash scripts/hooks/tidy-agent-teams.sh --dry-run</code> shows correct candidates; live run deletes dummy team</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — &lt;!DOCTYPE html&gt; &lt;html lang=&quot;en&quot;&gt; &lt;head&gt; &lt;meta charset=&quot;utf-8&quot;&gt; &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt; &lt;title...</summary><div class="panel"><h4>Draft</h4>
+
+
+  
+  
+  WRK-1036 Lifecycle — Agent teams lifecycle — audit logs, session-start availabili
+  
+:root{--bg:#f3efe6;--panel:#fffdf8;--ink:#172126;--muted:#55636b;
+  --accent:#0f766e;--accent-2:#8a5a2b;--line:#d9d0c0;
+  --shadow:0 12px 32px rgba(20,33,38,0.07);
+  --done:#166534;--done-bg:#dcfce7;--active:#92400e;--active-bg:#fef3c7;
+  --pending:#55636b;--pending-bg:#f1f5f9;--na:#6b7280;--na-bg:#f3f4f6;}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.55;margin:0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;
+  background:rgba(27,31,35,0.06);padding:.15em .35em;border-radius:3px;font-size:.86em;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:7px;
+  padding:12px 14px;overflow-x:auto;font-size:.82rem;margin:10px 0;}
+.hero{padding:36px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;
+  color:var(--accent);font-weight:700;margin:0 0 6px;}
+h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
+.lede{color:var(--muted);font-size:.92rem;margin:0 0 14px;max-width:72ch;}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:5px 10px;font-size:.8rem;}
+.pill strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--accent-2);display:block;margin-bottom:1px;}
+.stage-strip{background:var(--panel);border-bottom:1px solid var(--line);
+  padding:12px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.stage-strip-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+.stage-strip-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);margin-right:6px;white-space:nowrap;}
+.sc{display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;font-size:.75rem;font-weight:700;
+  text-decoration:none;transition:transform .15s;}
+.sc:hover{transform:scale(1.15);}
+.sc-done{background:var(--done-bg);color:var(--done);}
+.sc-active{background:var(--active-bg);color:var(--active);
+  box-shadow:0 0 0 2px var(--active);animation:pulse 2s infinite;}
+.sc-pending{background:var(--pending-bg);color:var(--pending);}
+.sc-na{background:var(--na-bg);color:var(--na);}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--active);}
+  50%{box-shadow:0 0 0 4px rgba(146,64,14,0.3);}}
+.content{max-width:1100px;margin:0 auto;padding:24px 24px 64px;}
+.stage-section{margin-bottom:16px;border-radius:14px;border:1px solid var(--line);
+  background:var(--panel);box-shadow:var(--shadow);overflow:hidden;}
+.stage-header{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;
+  padding:14px 18px;cursor:pointer;user-select:none;}
+.stage-header:hover{background:rgba(15,118,110,0.03);}
+.snum{font-size:1.5rem;font-weight:800;color:var(--line);text-align:center;line-height:1;}
+.stitle{font-size:.95rem;font-weight:700;color:var(--ink);margin:0;}
+.smeta{font-size:.76rem;color:var(--muted);margin:2px 0 0;}
+.sbadges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.7rem;
+  font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+.b-done{background:var(--done-bg);color:var(--done);}
+.b-active{background:var(--active-bg);color:var(--active);}
+.b-pending{background:var(--pending-bg);color:var(--pending);}
+.b-na{background:var(--na-bg);color:var(--na);}
+.b-human{background:#ede9fe;color:#6d28d9;}
+.b-agent{background:#d1fae5;color:#065f46;}
+.b-chain{background:#dbeafe;color:#1e40af;}
+.b-light{background:#f0fdf4;color:#166534;}
+.b-medium{background:#fef9c3;color:#854d0e;}
+.b-heavy{background:#fee2e2;color:#991b1b;}
+.b-gate{background:#fce7f3;color:#9d174d;}
+.chevron{font-size:.75rem;color:var(--muted);transition:transform .2s;}
+.stage-body{padding:0 18px 16px;border-top:1px solid var(--line);}
+.stage-body.collapsed{display:none;}
+.schema{background:#f8f9fa;border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;font-size:.82rem;margin:12px 0;}
+.schema-row{display:grid;grid-template-columns:160px 1fr;gap:4px 10px;margin:3px 0;}
+.schema-key{color:var(--accent);font-family:monospace;font-weight:600;}
+.schema-val{color:var(--ink);}
+.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--accent-2);font-weight:700;margin:14px 0 6px;}
+.item-list{margin:0;padding:0 0 0 18px;font-size:.87rem;}
+.item-list li{margin:3px 0;color:var(--muted);}
+.item-list li strong{color:var(--ink);}
+.ac-list{margin:0;padding:0 0 0 18px;font-size:.85rem;}
+.ac-list li{margin:4px 0;color:var(--muted);}
+.ac-list li strong{color:var(--ink);}
+.awaiting{background:var(--active-bg);border:1px solid #fcd34d;border-radius:8px;
+  padding:10px 14px;font-size:.86rem;color:var(--active);margin:12px 0;}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.84rem;}
+th,td{border-top:1px solid var(--line);padding:8px 7px;text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.74rem;color:var(--ink);}
+td{color:var(--muted);}td strong{color:var(--ink);}
+@media(max-width:700px){.stage-header{grid-template-columns:36px 1fr;}.sbadges{display:none;}
+  .schema-row{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.stage-strip{position:static;}
+  .stage-body.collapsed{display:block;}}
+
+
+
+
+
+
+  <div class="hero-inner">
+    <p>Lifecycle Tracker &middot; Route B &middot; harness</p>
+    <h1>WRK-1036 — Agent teams lifecycle — audit logs, session-start availability, session-exit tidy</h1>
+    <p>Single lifecycle document tracking all 20 stages from capture to archive.</p>
+    <div class="meta-row">
+      <div class="pill"><strong>Priority</strong>medium</div>
+      <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
+      <div class="pill"><strong>Orchestrator</strong>claude</div>
+      <div class="pill"><strong>Category</strong>harness</div>
+      <div class="pill"><strong>Created</strong>2026-03-08</div>
+    </div>
+  </div>
+
+
+
+
+  <div class="stage-strip-inner">
+    <span class="stage-strip-label">Stages</span>
+    <a href="#s1" title="01 Capture">1</a><a href="#s2" title="02 Resource Intelligence">2</a><a href="#s3" title="03 Triage">3</a><a href="#s4" title="04 Plan Draft">4</a><a href="#s5" title="05 User Review — Plan Draft">5</a><a href="#s6" title="06 Cross-Review">6</a><a href="#s7" title="07 User Review — Plan Final">7</a><a href="#s8" title="08 Claim / Activation">8</a><a href="#s9" title="09 Work-Queue Routing">9</a><a href="#s10" title="10 Work Execution">10</a><a href="#s11" title="11 Artifact Generation">11</a><a href="#s12" title="12 TDD / Eval">12</a><a href="#s13" title="13 Agent Cross-Review">13</a><a href="#s14" title="14 Verify Gate Evidence">14</a><a href="#s15" title="15 Future Work Synthesis">15</a><a href="#s16" title="16 Resource Intelligence Update">16</a><a href="#s17" title="17 User Review — Implementation">17</a><a href="#s18" title="18 Reclaim">18</a><a href="#s19" title="19 Close">19</a><a href="#s20" title="20 Archive">20</a>
+  </div>
+
+
+<div class="content">
+
+
+
+  <div class="stage-header">
+    <div class="snum">1</div>
+    <div>
+      <div class="stitle">Capture</div>
+      <div class="smeta">human_session · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-human">human_session</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">Agent teams lifecycle — audit logs, session-start availability, session-exit tidy</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">medium</span></div></div><div class="section-label">Exit artifacts</div><ul><li><code>pending/WRK-1036.md</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">2</div>
+    <div>
+      <div class="stitle">Resource Intelligence</div>
+      <div class="smeta">chained_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">completion_status</span><span class="schema-val">continue_to_planning</span></div><div class="schema-row"><span class="schema-key">domain.problem</span><span class="schema-val">Agent teams feature is enabled but has no lifecycle management: no session-start visibility, no naming convention, no se</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">Three-phase approach: (1) one-time audit + cleanup of existing ghost state, (2) add agent-teams step to session-start SK</span></div></div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/resource-intelligence.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">3</div>
+    <div>
+      <div class="stitle">Triage</div>
+      <div class="smeta">chained_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">ace-linux-1</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">4</div>
+    <div>
+      <div class="stitle">Plan Draft</div>
+      <div class="smeta">chained_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Plan</div><ul><li>- **Phase 1**: Read `~/.claude/teams/*/` inboxes + `~/.claude/tasks/&lt;uuid&gt;/` task JSON files; summarise per team; capture WRKs; delete stale</li><li>- **Phase 2**: Edit `session-start/SKILL.md` §Quick Reference; write `spawn-team.sh` (TeamCreate wrapper + prints recipe)</li><li>- **Phase 3**: Write `tidy-agent-teams.sh`; wire into Stop hook alongside `emit-session-quality-signals.sh`; smoke test</li><li>- **Test**: `bash scripts/hooks/tidy-agent-teams.sh --dry-run` shows correct candidates; live run deletes dummy team</li></ul><div class="section-label">Exit artifacts</div><ul><li><code>working/WRK-1036.md</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">5</div>
+    <div>
+      <div class="stitle">User Review — Plan Draft</div>
+      <div class="smeta">human_session · heavy · GATE</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-human">human_session</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div><div class="schema-row"><span class="schema-key">scope_in</span><span class="schema-val">[{&#x27;Phase 1&#x27;: &#x27;audit + cleanup of 3 stale named teams and 76 UUID task dirs&#x27;}, {&#x27;Phase 2&#x27;: &#x27;session-start SKILL.md Step 3b + spawn-team.sh (Option A — print recipe)&#x27;}, {&#x27;Phase 3&#x27;: &#x27;tidy-agent-teams.sh Stop hook, archive-only check, uniform across stages 1-20&#x27;}, {&#x27;TDD&#x27;: &#x27;tidy-agent-teams.sh written first as living test harness, run at every stage gate&#x27;}]</span></div><div class="schema-row"><span class="schema-key">scope_out</span><span class="schema-val">[&#x27;WRK-1008 P1 findings → captured as WRK-1037 (separate item)&#x27;, &#x27;Changes to MAX_TEAMMATES or CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS settings&#x27;]</span></div><div class="schema-row"><span class="schema-key">acceptance_criteria_changes</span><span class="schema-val">[&#x27;Added TDD stage-gate verification matrix (tidy script runs at each phase)&#x27;, &#x27;Stage 20 (Archive) confirmed as non-special — same Stop hook tidy logic applies uniformly&#x27;]</span></div><div class="schema-row"><span class="schema-key">risks_confirmed</span><span class="schema-val">[&#x27;tidy only deletes teams whose WRK is in archive/ — active/pending WRKs are safe&#x27;, &#x27;c915cd54 UUID dir (WAR extractor) to be investigated before purge&#x27;]</span></div><div class="schema-row"><span class="schema-key">open_questions_resolved</span><span class="schema-val">[{&#x27;Q1&#x27;: &#x27;WRK-1037 captured for WRK-1008 P1 findings&#x27;}, {&#x27;Q2&#x27;: &#x27;spawn-team.sh prints naming recipe + paste-ready TeamCreate call (Option A)&#x27;}, {&#x27;Q3&#x27;: &#x27;tidy fires at Stop hook after every stage; archive-only check; Stage 20 not special&#x27;}, {&#x27;TDD&#x27;: &#x27;Phase 3 tidy script is the living test harness for all phases of this WRK&#x27;}]</span></div></div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">6</div>
+    <div>
+      <div class="stitle">Cross-Review</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Cross-review summary</div><p># WRK-1036 Stage 13 — Implementation Cross-Review
+
+**Date**: 2026-03-08
+**Files reviewed**: scripts/hooks/tidy-agent-teams.sh, scripts/work-queue/spawn-team.sh,
+scripts/hooks/tests/test-tidy-agent-teams.sh
+
+## Verdicts (Round 1)
+
+| Provider | Verdict |
+|----------|---------|
+| Claude   | REQUEST_CHA</p><div class="section-label">Exit artifacts</div><ul><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">7</div>
+    <div>
+      <div class="stitle">User Review — Plan Final</div>
+      <div class="smeta">human_session · heavy · GATE</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-human">human_session</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">vamsee</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">passed</span></div></div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/plan-final-review.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">8</div>
+    <div>
+      <div class="stitle">Claim / Activation</div>
+      <div class="smeta">chained_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/claim.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">9</div>
+    <div>
+      <div class="stitle">Work-Queue Routing</div>
+      <div class="smeta">chained_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/claim.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">10</div>
+    <div>
+      <div class="stitle">Work Execution</div>
+      <div class="smeta">task_agent · heavy</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Execution record</div><p>Execution evidence present.</p><div class="section-label">Exit artifacts</div><ul><li><code>evidence/execute.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">11</div>
+    <div>
+      <div class="stitle">Artifact Generation</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Gate evidence</div><div class="schema"><div class="schema-row"><span class="schema-key">gates</span><span class="schema-val">0/0 gates PASS</span></div></div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-???-lifecycle.html</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">12</div>
+    <div>
+      <div class="stitle">TDD / Eval</div>
+      <div class="smeta">task_agent · heavy</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <p>Stage completed.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">13</div>
+    <div>
+      <div class="stitle">Agent Cross-Review</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <p>Stage completed.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">14</div>
+    <div>
+      <div class="stitle">Verify Gate Evidence</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <p>Gate evidence verified.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">15</div>
+    <div>
+      <div class="stitle">Future Work Synthesis</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Future work</div><table><tbody><tr><th>Title</th><th>Disposition</th><th>Captured</th></tr><tr><td>Extend tidy to handle non-conforming team names via sentinel file</td><td>spun-off-new</td><td>True</td></tr><tr><td>Add acma-ansys05 / ace-linux-2 Stop hook wiring for tidy</td><td>spun-off-new</td><td>True</td></tr><tr><td>WRK-1037: cross-review hardening (uv readiness + Codex-missing gate)</td><td>existing-updated</td><td>True</td></tr></tbody></table>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">16</div>
+    <div>
+      <div class="stitle">Resource Intelligence Update</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Additions</div><ul><li>{&#x27;item&#x27;: &#x27;tidy-agent-teams.sh accepts CLAUDE_TEAMS_DIR/CLAUDE_TASKS_DIR env injection for test isolation&#x27;, &#x27;type&#x27;: &#x27;pattern&#x27;, &#x27;relevant_skills&#x27;: [&#x27;work-queue-workflow&#x27;]}</li><li>{&#x27;item&#x27;: &#x27;session-start SKILL.md Step 3b added — agent teams visibility + spawn-team.sh recipe hint&#x27;, &#x27;type&#x27;: &#x27;skill-update&#x27;, &#x27;relevant_skills&#x27;: [&#x27;session-start&#x27;]}</li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">17</div>
+    <div>
+      <div class="stitle">User Review — Implementation</div>
+      <div class="smeta">human_session · heavy · GATE</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-active">active</span>
+      <span class="badge b-human">human_session</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/user-review-close.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">18</div>
+    <div>
+      <div class="stitle">Reclaim</div>
+      <div class="smeta">task_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-na">na</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Not applicable for this WRK.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">19</div>
+    <div>
+      <div class="stitle">Close</div>
+      <div class="smeta">task_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">20</div>
+    <div>
+      <div class="stitle">Archive</div>
+      <div class="smeta">task_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+</div>
+
+
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  const collapsed = body.classList.toggle('collapsed');
+  chevron.textContent = collapsed ? '\u25bc' : '\u25b2';
+}
+
+
+<h4>Final</h4><p>wrk_id: WRK-1036
+stage: 7
+confirmed_by: vamsee
+confirmed_at: 2026-03-08T01:10:00Z
+decision: passed
+approval_decision: approve_as_is
+review_cycle_id: rc-1036-plan-final</p>
+<p>cross_review_summary:
+  codex_verdict: APPROVE
+  gemini_verdict: APPROVE
+  claude_verdict: APPROVE
+  conflicts_resolved: 0
+  improvements_adopted: 8
+  deferred: 2</p>
+<p>changes_since_stage_5:
+  - Added skipped=K to tidy signal line
+  - Removed jq dependency — bash+coreutils only
+  - Strict UUID regex anchored full pattern
+  - Missing-dir guards added — zero-state exit 0
+  - Archive set built once via glob not per-team find
+  - Slug validation rejects uppercase/empty/unsafe chars
+  - Removed MAX_TEAMMATES from spawn output (out of scope)
+  - Hook resolves repo root via SCRIPT_DIR not PWD</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 3 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>tidy dry-run idempotent</td><td>integrated</td><td>pass</td><td><code>bash scripts/hooks/tidy-agent-teams.sh --dry-run</code></td><td>evidence/execute.yaml</td></tr><tr><td>2</td><td>tidy live run timing &lt;5s</td><td>integrated</td><td>pass</td><td><code>bash scripts/hooks/tidy-agent-teams.sh</code></td><td>evidence/execute.yaml</td></tr><tr><td>3</td><td>full TDD suite 13/13</td><td>integrated</td><td>pass</td><td><code>bash scripts/hooks/tests/test-tidy-agent-teams.sh</code></td><td>evidence/tdd-evidence.yaml</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1036, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1036, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-final-review.yaml, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill'], plan:['plan_draft_complete'], execute:['execute_wrapper_complete'], cross-review:['agent_cross_review']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1036/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['test-summary.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=3 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1036/legal-scan.md, result=pass</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>PASS</td>
+<td>claim-evidence.yaml: version=1, owner=claude, quota=available(null)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=3</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=2</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1036 stage: 15 completed_at: 2026-03-08T02:40:00Z recommendations: - id: FW-01 title: &quot;Extend tidy to handle non-conforming team...</summary><div class="panel"><p>wrk_id: WRK-1036
+stage: 15
+completed_at: 2026-03-08T02:40:00Z</p>
+<p>recommendations:
+  - id: FW-01
+    title: "Extend tidy to handle non-conforming team names via sentinel file"
+    description: |
+      Currently non-conforming team names (e.g. doc-intel-wave2) must be deleted
+      manually. A sentinel file inside the team dir (e.g. <code>.wrk-id</code>) would let tidy
+      handle these automatically regardless of naming convention.
+    disposition: spun-off-new
+    wrk_ref: WRK-1042
+    status: captured
+    captured: true
+    priority: low</p>
+<ul>
+<li>
+<p>id: FW-02
+    title: "Add acma-ansys05 / ace-linux-2 Stop hook wiring for tidy"
+    description: |
+      The Stop hook was wired in the hub settings.json which covers ace-linux-1.
+      ace-linux-2 and acma-ansys05 use separate settings; tidy should fire there too.
+    disposition: spun-off-new
+    wrk_ref: WRK-1043
+    status: captured
+    captured: true
+    priority: low</p>
+</li>
+<li>
+<p>id: FW-03
+    title: "WRK-1037: cross-review hardening (uv readiness + Codex-missing gate)"
+    description: |
+      Already captured as WRK-1037 (HIGH priority, Route A). Unblocked.
+    disposition: existing-updated
+    wrk_ref: WRK-1037
+    status: captured
+    captured: true</p>
+</li>
+</ul></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1036 generated_at: &#x27;2026-03-08T11:30:41Z&#x27; reviewed_by: claude autonomy_maturity_level: L2 human_steers_agents_execute: true stag...</summary><div class="panel"><p>wrk_id: WRK-1036
+generated_at: '2026-03-08T11:30:41Z'
+reviewed_by: claude
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created with baseline metadata.
+  evidence: .claude/work-queue/working/WRK-1036.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource/document intelligence pack captured.
+  evidence: .claude/work-queue/assets/WRK-1036/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route, priority, complexity, and workstations set.
+  evidence: .claude/work-queue/working/WRK-1036.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Draft plan and artifact generated.
+  evidence: specs/wrk/WRK-1036/plan.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Tough questions, tradeoffs, and test/eval updates reviewed.
+  evidence: .claude/work-queue/assets/WRK-1036/plan-html-review-draft.md
+- order: 6
+  stage: Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Multi-provider review completed.
+  evidence: scripts/review/results/wrk-000-review.md
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Final plan reviewed with gate-pass section.
+  evidence: .claude/work-queue/assets/WRK-1036/plan-html-review-final.md
+- order: 8
+  stage: Claim / Activation
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Claim evidence and active WRK set.
+  evidence: .claude/work-queue/assets/WRK-1036/evidence/claim.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Entered canonical /work route.
+  evidence: /work
+- order: 10
+  stage: Work Execution
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Implementation completed under active claim.
+  evidence: .claude/work-queue/assets/WRK-1036/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Review artifacts generated.
+  evidence: .claude/work-queue/assets/WRK-1036/review.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Tests/evals completed and recorded.
+  evidence: .claude/work-queue/assets/WRK-1036/evidence/test-results.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Implementation cross-review package complete.
+  evidence: .claude/work-queue/assets/WRK-1036/cross-review-package.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Gate verifier passed.
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Follow-up disposition captured.
+  evidence: .claude/work-queue/assets/WRK-1036/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: New resources captured post execution.
+  evidence: .claude/work-queue/assets/WRK-1036/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Close package reviewed including gate-pass section.
+  evidence: .claude/work-queue/assets/WRK-1036/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not needed in this run.
+  evidence: .claude/work-queue/assets/WRK-1036/evidence/reclaim.yaml
+- order: 19
+  stage: Close
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting final close operation.
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting merge/sync completion.
+  evidence: scripts/work-queue/archive-item.sh</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 31 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1036-lifecycle.html</code></li><li><code>claim-evidence.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/cross-review-implementation.md</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/phase1-audit-summary.md</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/tdd-evidence.yaml</code></li><li><code>evidence/test-results.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan_claude.md</code></li><li><code>plan_codex.md</code></li><li><code>plan_gemini.md</code></li><li><code>review.md</code></li><li><code>routing.yaml</code></li><li><code>stage-2-prompt.md</code></li><li><code>stage-3-prompt.md</code></li><li><code>stage-4-prompt.md</code></li><li><code>stage-state.yaml</code></li><li><code>test-summary.md</code></li></ul></div></details>
+</body>
+</html>

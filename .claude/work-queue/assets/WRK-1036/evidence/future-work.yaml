@@ -1,0 +1,36 @@
+wrk_id: WRK-1036
+stage: 15
+completed_at: 2026-03-08T02:40:00Z
+
+recommendations:
+  - id: FW-01
+    title: "Extend tidy to handle non-conforming team names via sentinel file"
+    description: |
+      Currently non-conforming team names (e.g. doc-intel-wave2) must be deleted
+      manually. A sentinel file inside the team dir (e.g. `.wrk-id`) would let tidy
+      handle these automatically regardless of naming convention.
+    disposition: spun-off-new
+    wrk_ref: WRK-1042
+    status: captured
+    captured: true
+    priority: low
+
+  - id: FW-02
+    title: "Add acma-ansys05 / ace-linux-2 Stop hook wiring for tidy"
+    description: |
+      The Stop hook was wired in the hub settings.json which covers ace-linux-1.
+      ace-linux-2 and acma-ansys05 use separate settings; tidy should fire there too.
+    disposition: spun-off-new
+    wrk_ref: WRK-1043
+    status: captured
+    captured: true
+    priority: low
+
+  - id: FW-03
+    title: "WRK-1037: cross-review hardening (uv readiness + Codex-missing gate)"
+    description: |
+      Already captured as WRK-1037 (HIGH priority, Route A). Unblocked.
+    disposition: existing-updated
+    wrk_ref: WRK-1037
+    status: captured
+    captured: true

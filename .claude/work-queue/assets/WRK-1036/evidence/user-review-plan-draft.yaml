@@ -1,0 +1,27 @@
+wrk_id: WRK-1036
+stage: 5
+confirmed_by: vamsee
+confirmed_at: 2026-03-08T00:30:00Z
+decision: approved
+approval_decision: approve_as_is
+
+decisions:
+  scope_in:
+    - Phase 1: audit + cleanup of 3 stale named teams and 76 UUID task dirs
+    - Phase 2: session-start SKILL.md Step 3b + spawn-team.sh (Option A — print recipe)
+    - Phase 3: tidy-agent-teams.sh Stop hook, archive-only check, uniform across stages 1-20
+    - TDD: tidy-agent-teams.sh written first as living test harness, run at every stage gate
+  scope_out:
+    - WRK-1008 P1 findings → captured as WRK-1037 (separate item)
+    - Changes to MAX_TEAMMATES or CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS settings
+  acceptance_criteria_changes:
+    - Added TDD stage-gate verification matrix (tidy script runs at each phase)
+    - Stage 20 (Archive) confirmed as non-special — same Stop hook tidy logic applies uniformly
+  risks_confirmed:
+    - tidy only deletes teams whose WRK is in archive/ — active/pending WRKs are safe
+    - c915cd54 UUID dir (WAR extractor) to be investigated before purge
+  open_questions_resolved:
+    - Q1: WRK-1037 captured for WRK-1008 P1 findings
+    - Q2: spawn-team.sh prints naming recipe + paste-ready TeamCreate call (Option A)
+    - Q3: tidy fires at Stop hook after every stage; archive-only check; Stage 20 not special
+    - TDD: Phase 3 tidy script is the living test harness for all phases of this WRK
