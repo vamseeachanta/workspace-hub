@@ -1321,18 +1321,20 @@ def detect_stage_statuses(
         6: (ev_exists("cross-review-phase1.md", "cross-review-plan.md")
             or (ad / "review.md").exists()
             or bool(list(ev.glob("cross-review*.md")))),
-        7: ev_exists("user-review-plan-final.yaml"),
+        7: ev_exists("user-review-plan-final.yaml", "plan-final-review.yaml"),
         8: ev_exists("claim.yaml"),
         9: ev_exists("claim.yaml"),  # routing follows claim
         10: ev_exists("execute.yaml"),
         11: ev_exists("gate-evidence-summary.json"),
         12: ((ad / "variation-test-results.md").exists()
              or ev_exists("test-results.yaml")),
-        13: ev_exists("cross-review-impl.md"),
+        13: (ev_exists("cross-review-impl.md")
+             or bool(list(ev.glob("cross-review-implementation*.md")))),
         # S14 Verify Gate Evidence: gate summary AND cross-review-impl must both exist
         # so S14 doesn't prematurely show 'done' when only S11 (artifact gen) is complete
         14: (ev_exists("gate-evidence-summary.json")
-             and ev_exists("cross-review-impl.md")),
+             and (ev_exists("cross-review-impl.md")
+                  or bool(list(ev.glob("cross-review-implementation*.md"))))),
         15: ev_exists("future-work.yaml"),
         16: ev_exists("resource-intelligence-update.yaml"),
         17: ev_exists("user-review-close.yaml"),
@@ -1520,7 +1522,8 @@ def render_lifecycle_stage_body(
 
     # ── S7 User Review — Plan Final ───────────────────────────────────────────
     if stage_n == 7:
-        data = _read_yaml_safe(ev / "user-review-plan-final.yaml")
+        _s7_path = (ev / "plan-final-review.yaml") if (ev / "plan-final-review.yaml").exists() else (ev / "user-review-plan-final.yaml")
+        data = _read_yaml_safe(_s7_path)
         pairs = [
             ("reviewed_by", str(data.get("reviewed_by", ""))),
             ("confirmed_by", str(data.get("confirmed_by", ""))),
@@ -1529,7 +1532,7 @@ def render_lifecycle_stage_body(
         return (
             '<div class="section-label">Stage record</div>'
             + _render_schema_block([(k, v) for k, v in pairs if v])
-            + _render_exit_artifacts(["evidence/user-review-plan-final.yaml"])
+            + _render_exit_artifacts([f"evidence/{_s7_path.name}"])
         )
 
     # ── S8/S9 Claim / Routing ─────────────────────────────────────────────────
