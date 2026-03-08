@@ -1,0 +1,92 @@
+wrk_id: WRK-1020
+stage: cross_review_plan
+reviewed_at: "2026-03-07T23:35:00Z"
+
+reviewers:
+  - provider: claude
+    verdict: APPROVE
+    p1_count: 0
+    p2_count: 3
+    notes: "P2: carry-forward TTL, dedup guard, recursive glob — all addressed in plan update"
+
+  - provider: codex
+    verdict: REQUEST_CHANGES
+    p1_count: 3
+    p2_count: 5
+    findings:
+      - id: C-P1-1
+        severity: P1
+        summary: "Lookback 7 vs 30 days mismatch — WRK body vs plan"
+        resolution: "FIXED — WRK body updated to 30 days; AC-2 updated"
+      - id: C-P1-2
+        severity: P1
+        summary: "Step 3a label collision in comprehensive-learning-nightly.sh"
+        resolution: "FIXED — exact anchor specified; Step 3 → Step 3c rename"
+      - id: C-P1-3
+        severity: P1
+        summary: "other bucket has no test coverage for unknown categories"
+        resolution: "FIXED — test_other_bucket_categories added; AC-2 explicit"
+      - id: C-P2-4
+        severity: P2
+        summary: "L3 carry-forward accumulates without TTL"
+        resolution: "FIXED — AC-3: prune signals >30 days on carry-forward"
+      - id: C-P2-5
+        severity: P2
+        summary: "capability_signals no deduplication guard"
+        resolution: "FIXED — AC-3: dedup by hash(provider+capability+date)"
+      - id: C-P2-6
+        severity: P2
+        summary: "Archive glob should be recursive"
+        resolution: "FIXED — AC-2: archive/**/*.md specified"
+      - id: C-P2-7
+        severity: P2
+        summary: "bare python3 in script violates uv run rule"
+        resolution: "FIXED — AC-5: uv run --no-project python required"
+      - id: C-P2-8
+        severity: P2
+        summary: "L2 no source provenance"
+        resolution: "ADDRESSED — l2_meta provenance block added to schema"
+    final_verdict: APPROVE
+
+  - provider: gemini
+    verdict: REQUEST_CHANGES
+    p1_count: 3
+    p2_count: 5
+    findings:
+      - id: G-P1-A
+        severity: P1
+        summary: "Lookback 7 vs 30 days mismatch (same as C-P1-1)"
+        resolution: "FIXED — same fix as C-P1-1"
+      - id: G-P1-B
+        severity: P1
+        summary: "Archive field coverage near-empty — many files lack orchestrator/category"
+        resolution: "FIXED — AC-2: missing orchestrator→skip, missing category→other; l2_meta provenance tracks skipped files; test added"
+      - id: G-P1-C
+        severity: P1
+        summary: "L3 gemini output parsing unspecified — free-form text not parseable"
+        resolution: "FIXED — structured-output YAML prompt specified; parse with yaml.safe_load(); fallback on parse failure"
+      - id: G-P2-1
+        severity: P2
+        summary: "Step numbering in nightly is confusing"
+        resolution: "NOTED — Step 3→Step 3c rename in implementation"
+      - id: G-P2-2
+        severity: P2
+        summary: "Carry-forward accumulates stale signals"
+        resolution: "FIXED — same as C-P2-4"
+      - id: G-P2-3
+        severity: P2
+        summary: "gitignore test should use git check-ignore -v not grep"
+        resolution: "FIXED — AC-6 updated to specify git check-ignore -v"
+      - id: G-P2-4
+        severity: P2
+        summary: "Dual-mode prompt tie-break when L2 sparse"
+        resolution: "FIXED — AC-3: default to general AI news when no clear category dominates"
+      - id: G-P2-5
+        severity: P2
+        summary: "--lookback N flag has no AC"
+        resolution: "FIXED — AC-4b added; test_lookback_flag added"
+    final_verdict: APPROVE
+
+overall_verdict: APPROVE
+all_p1_resolved: true
+plan_updated: true

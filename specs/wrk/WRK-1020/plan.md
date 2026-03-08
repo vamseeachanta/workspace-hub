@@ -13,7 +13,7 @@ Build `scripts/cron/update-portfolio-signals.sh` that writes
 - **L2**: per-provider WRK activity counts from last-30-day archive files
 - **L3**: gemini capability research query (≤5 high-confidence signals, official sources)
 
-Integrate into `comprehensive-learning-nightly.sh` as Step 3a (before exec pipeline).
+Integrate into `comprehensive-learning-nightly.sh` — insert after rsync block (~lines 27/32), before `# Step 3b: AI agent readiness` (~line 35). Rename existing mislabelled `# Step 3:` → `# Step 3c:` to resolve label collision. Best-effort (`|| true`).
 
 ## What Exists (from WRK-1019)
 
@@ -45,17 +45,35 @@ Integrate into `comprehensive-learning-nightly.sh` as Step 3a (before exec pipel
 
 **L2 block** (provider activity):
 ```python
-# Parse archive/*.md frontmatter for orchestrator + category
-# Count by (orchestrator, category) for items archived in last N days
+# Recursive glob: archive/**/*.md
+# Date window: read completed_at: frontmatter field (not directory path)
+# Missing orchestrator: → skip file (do not count toward any provider)
+# Missing category: → treat as "other"
+# Category mapping: harness→harness, engineering→engineering, data→data
+#   platform/maintenance/business/personal/uncategorised → other
 # Output: provider_activity.{claude,codex,gemini}.{harness,engineering,data,other}
+# Add l2_meta: {files_scanned: N, files_with_orchestrator: N, files_skipped_no_orchestrator: N}
 ```
 
-**L3 block** (capability research):
+**L3 block** (capability research — structured-output prompt):
 ```bash
-# Run gemini query for new AI capabilities in last 7 days
-# Parse output for provider/capability/impact/source entries
-# Deduplicate against existing entries by date+provider+capability hash
-# Append up to 5 new entries, preserve existing entries (max 20 total)
+# Dual-mode prompt based on harness_pct from L2:
+#   If engineering dominates (engineering_count >= harness_count): engineering-focused prompt
+#   Default / tie: general AI capability news
+# Structured-output prompt (ask gemini to respond ONLY in YAML):
+PROMPT_ENG="List up to 5 AI capabilities announced in last 7 days relevant to
+engineering computation (subsea, structural, drilling, reservoir). Respond ONLY in
+YAML list format:
+- date: YYYY-MM-DD
+  provider: claude|codex|gemini
+  capability: brief name
+  engineering_domains: [domain1]
+  impact: low|medium|high
+  source: https://...
+Output ONLY the YAML list, no prose."
+# Parse gemini output with yaml.safe_load(); on parse failure → carry-forward
+# Dedup by hash(provider+capability+date); prune entries older than 30 days
+# Append up to 5 new entries; max 20 total retained
 ```
 
 **Output**:
@@ -77,31 +95,41 @@ bash scripts/cron/update-portfolio-signals.sh || \
 
 File: `tests/skills/test_update_portfolio_signals.py`
 
-| Test | AC |
-|---|---|
-| `test_script_exists` | AC-1 |
-| `test_provider_activity_counts` | AC-1 fixture test |
-| `test_dry_run_no_write` | AC-4 |
-| `test_gemini_query_skipped_no_gemini` | AC-2 graceful fallback |
-| `test_output_schema_valid` | AC-1 + AC-3 |
-| `test_integrated_in_nightly` | AC-5 |
-| `test_gitignore_covers_signals` | AC-6 |
+| Test | AC | Notes |
+|---|---|---|
+| `test_script_exists` | AC-1 | path + shebang check |
+| `test_provider_activity_counts` | AC-2 | fixture archive files; 30-day window; uses `completed_at:` |
+| `test_other_bucket_categories` | AC-2 | platform/maintenance/business/personal → `other` bucket |
+| `test_dry_run_no_write` | AC-4 | stdout only, no file written |
+| `test_gemini_query_skipped_no_gemini` | AC-3 | graceful fallback; L2 still written |
+| `test_carry_forward_on_failure` | AC-3 | existing signals preserved when gemini fails |
+| `test_output_schema_valid` | AC-1+AC-3 | required keys present |
+| `test_integrated_in_nightly` | AC-5 | grep for script call in nightly sh |
+| `test_gitignore_covers_signals` | AC-6 | .gitignore covers .claude/state/ |
+| `test_missing_orchestrator_field_skipped` | AC-2 | file without orchestrator: not counted |
+| `test_missing_category_field_to_other` | AC-2 | file without category: → other bucket |
+| `test_l2_meta_provenance_written` | AC-2 | l2_meta block present in output |
+| `test_structured_prompt_yaml_parsed` | AC-3 | mock gemini YAML response parsed correctly |
+| `test_lookback_flag` | AC-4b | --lookback 7 vs --lookback 30 differ |
+| `test_idempotent_no_duplicate_signals` | P2 | run twice same day → same signal count |
+| `test_archive_recursive_glob` | P2 | finds files in both archive/ and archive/2026-03/ |
 
 ## Acceptance Criteria
 
-- [ ] `update-portfolio-signals.sh` generates valid portfolio-signals.yaml from archive
-- [ ] Provider activity counts match manual count of last-30-day archive files
-- [ ] Capability research: gemini query runs; ≤5 signals written; source URLs included
-  - Graceful fallback if gemini CLI absent or query fails (L2 still written)
-- [ ] `--dry-run` flag prints without writing file
-- [ ] Script integrated into `comprehensive-learning-nightly.sh`
-- [ ] `.claude/state/portfolio-signals.yaml` confirmed gitignored
-
-## Open Questions for User (Stage 5)
-
-1. **L3 prompt strategy**: Should the gemini query ask for general AI capability news, or focus specifically on Claude/Codex/Gemini CLI tool improvements relevant to engineering computation?
-2. **L3 fail strategy**: If gemini query fails (quota, network), should (a) L3 block be omitted from output entirely, or (b) carry forward previous `capability_signals` from existing file?
-3. **Integration placement**: Before AI readiness check (Step 3b) or at very end of nightly (Step 8+)?
+- [ ] AC-1: `update-portfolio-signals.sh` generates valid portfolio-signals.yaml from archive
+- [ ] AC-2: Provider activity counts match last-30-day archive
+  - Recursive glob (`archive/**/*.md`); date from `completed_at:` field
+  - Missing `orchestrator:` → skip (not counted); missing `category:` → `other`
+  - `l2_meta` provenance block written: files_scanned, files_with_orchestrator, files_skipped
+  - Script does NOT produce all-zero tables silently when fields are absent
+- [ ] AC-3: Gemini capability research: structured-output YAML prompt; ≤5 new signals per run
+  - Carry-forward existing signals on gemini failure; prune entries >30 days old
+  - Dedup by hash(provider+capability+date); max 20 retained total
+  - Dual-mode: engineering-focused when engineering≥harness; general AI news otherwise
+- [ ] AC-4: `--dry-run` prints to stdout, no file written
+- [ ] AC-4b: `--lookback N` overrides default 30-day window; `--lookback 7` produces different count than `--lookback 30` when archive coverage differs
+- [ ] AC-5: Integrated as Step 3a in nightly; `uv run --no-project python`; step labels fixed (`# Step 3:` → `# Step 3c:`)
+- [ ] AC-6: `git check-ignore -v .claude/state/portfolio-signals.yaml` exits 0
 
 ## Workstation
 
