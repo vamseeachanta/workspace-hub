@@ -1,0 +1,12 @@
+wrk_id: WRK-1031
+stage: close_review
+reviewed_at: 2026-03-07
+reviewed_by: user
+reviewer: user
+decision: approved
+notes: >
+  User approved implementation. All ACs delivered — generate_lifecycle(),
+  --lifecycle flag, snapshot files deleted, SKILL.md v1.5.0 complete.
+
+confirmed_by: user
+confirmed_at: 2026-03-07

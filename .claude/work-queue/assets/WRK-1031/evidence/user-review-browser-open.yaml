@@ -1,0 +1,22 @@
+wrk_id: WRK-1031
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1031/WRK-1031-lifecycle.html
+    opened_at: 2026-03-07T10:00:00Z
+    reviewer: user
+    notes: "Stage 5 lifecycle HTML opened via xdg-open before user review"
+
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1031/WRK-1031-lifecycle.html
+    opened_at: 2026-03-07T12:00:00Z
+    reviewer: user
+    notes: "Stage 7 lifecycle HTML opened after cross-review revision"
+
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1031/WRK-1031-lifecycle.html
+    opened_at: 2026-03-07T20:00:00Z
+    reviewer: user
+    notes: "Stage 17 lifecycle HTML opened for implementation review"

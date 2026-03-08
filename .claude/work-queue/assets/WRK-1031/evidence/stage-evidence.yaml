@@ -1,0 +1,83 @@
+wrk_id: WRK-1031
+autonomy_maturity_level: L2
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: .claude/work-queue/working/WRK-1031.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    evidence: WRK-1031.md frontmatter (complexity=medium, route=B)
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: WRK-1031.md body (## Plan section)
+  - order: 5
+    stage: User Review — Plan Draft
+    status: done
+    evidence: evidence/user-review-plan-draft.yaml
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: review.md (Gemini MINOR → APPROVE)
+  - order: 7
+    stage: User Review — Plan Final
+    status: done
+    evidence: evidence/user-review-plan-final.yaml
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    evidence: evidence/activation.yaml
+  - order: 9
+    stage: Work-Queue Routing
+    status: done
+    evidence: evidence/activation.yaml (route B → claude)
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: evidence/gate-evidence-summary.json
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: test-summary.md (64 pass)
+  - order: 13
+    stage: Agent Cross-Review
+    status: done
+    evidence: evidence/cross-review-impl.md (Gemini MINOR → APPROVE)
+  - order: 14
+    stage: Verify Gate Evidence
+    status: done
+    evidence: evidence/gate-evidence-summary.json
+  - order: 15
+    stage: Future Work Synthesis
+    status: done
+    evidence: evidence/future-work.yaml
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    evidence: evidence/resource-intelligence-update.yaml
+  - order: 17
+    stage: User Review — Implementation
+    status: done
+    evidence: evidence/user-review-close.yaml
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    evidence: not triggered — no rework required
+  - order: 19
+    stage: Close
+    status: done
+    evidence: WRK-1031.md moved to done/
+  - order: 20
+    stage: Archive
+    status: done
+    evidence: WRK-1031.md copied to archive/

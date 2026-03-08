@@ -60,7 +60,8 @@ constraints:
   - WRK-1028/1029 lifecycle HTMLs must have equivalent content before deleting snapshots
   - plan-draft-review.html for WRK-1029 has content NOT yet in lifecycle (ACs, phase steps)
 
-top_p1_gaps:
-  - No --stage N --update mode in generate-html-review.py
-  - No HTML parse+update library used (need html.parser or BeautifulSoup)
-  - Stage-to-content mapping not yet defined (what content goes in each stage's body)
+top_p1_gaps: []
+# Gaps identified and resolved during planning/implementation:
+# - --lifecycle mode added to generate-html-review.py (stateless regeneration)
+# - No HTML parsing needed (stateless approach avoids html.parser/BeautifulSoup)
+# - Stage-to-content mapping defined in detect_stage_statuses() and render_lifecycle_stage_body()

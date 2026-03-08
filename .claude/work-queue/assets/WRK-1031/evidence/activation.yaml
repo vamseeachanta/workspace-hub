@@ -1,7 +1,16 @@
 wrk_id: WRK-1031
-activated_at: 2026-03-07
+stage: 8
+activated_at: 2026-03-07T10:00:00Z
 activated_by: claude
 provider: claude
 route: B
 complexity: medium
 claim_type: implementation
+set_active_wrk: true
+moved_to: working/WRK-1031.md
+orchestrator: claude
+session_id: session-20260307-wrk1031
+orchestrator_agent: claude
+workstation: ace-linux-1
+next_stage: 9
+next_stage_name: Work-Queue Routing

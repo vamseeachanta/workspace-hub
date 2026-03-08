@@ -19,6 +19,25 @@ phases_completed:
       Rewrote workflow-html SKILL.md v1.5.0 (§2 JS, §3-6 lifecycle model).
       Updated coordination/work-queue SKILL.md Stage Skills Matrix.
 
+integrated_repo_tests:
+  - name: generator unit tests
+    command: uv run --no-project python -m pytest tests/unit/test_generate_html_review.py -q
+    result: passed
+    scope: repo
+    artifact_ref: tests/unit/test_generate_html_review.py
+
+  - name: legal sanity scan
+    command: bash scripts/legal/legal-sanity-scan.sh
+    result: passed
+    scope: repo
+    artifact_ref: .claude/work-queue/assets/WRK-1031/legal-scan.md
+
+  - name: lifecycle HTML smoke test (WRK-1031)
+    command: uv run --no-project python scripts/work-queue/generate-html-review.py WRK-1031 --lifecycle
+    result: passed
+    scope: integrated
+    artifact_ref: .claude/work-queue/assets/WRK-1031/WRK-1031-lifecycle.html
+
 files_changed:
   - scripts/work-queue/generate-html-review.py
   - tests/unit/test_generate_html_review.py

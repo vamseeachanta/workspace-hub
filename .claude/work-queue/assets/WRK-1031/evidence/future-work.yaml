@@ -8,9 +8,10 @@ recommendations:
       Stages 10-16 currently show minimal schema rows. Could be enriched to display
       more evidence fields (e.g., execute.yaml phase summaries, gate pass/fail tables
       from gate-evidence-summary.json, cross-review verdict tables).
-    disposition: captured_new_wrk
+    disposition: spun-off-new
     status: deferred
-    captured: false
+    captured: true
+    wrk_ref: WRK-1032
     priority: low
 
   - id: FW-02
@@ -18,7 +19,8 @@ recommendations:
     description: >
       close-item.sh currently references --type close. Should be updated to call
       generate-html-review.py WRK-NNN --lifecycle at Stage 19.
-    disposition: captured_new_wrk
+    disposition: spun-off-new
     status: deferred
-    captured: false
+    captured: true
+    wrk_ref: WRK-1033
     priority: medium
