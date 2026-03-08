@@ -1,0 +1,33 @@
+# stage7-gate-config.yaml — Stage 7 gate activation and operational settings
+#
+# OWNERSHIP: This file is owned by WRK-1034 and requires paired-WRK change control.
+# Any modification to gate_activation_commit, activation, or human_authority_allowlist
+# must reference a WRK item in the change note and be approved by a human authority.
+#
+# COMPATIBILITY: claim-item.sh reads activation state from this file via --stage7-check.
+# No caller may invent a private enablement flag outside this config.
+
+schema_version: "1.0"
+owned_by_wrk: WRK-1034
+last_updated: "2026-03-08T00:00:00Z"
+change_note: "Initial config; activation=full — immediate enforcement (WRK-1034)"
+
+# Activation enum: disabled | full
+# - disabled: no Stage 7 check enforced
+# - full: claim-item.sh enforces plan-final-review.yaml gate before advancing
+activation: full
+
+gate_activation_commit: ""
+
+checker_timeout_seconds: 30
+git_history_timeout_seconds: 8
+
+emergency_bypass_until: ""
+emergency_bypass_reason: ""
+emergency_bypass_approved_by: ""
+
+# Human authority allowlist: only these identities are accepted as confirmed_by in
+# plan-final-review.yaml. Agent identities (claude, codex, gemini) are not permitted.
+human_authority_allowlist:
+  - user
+  - vamsee

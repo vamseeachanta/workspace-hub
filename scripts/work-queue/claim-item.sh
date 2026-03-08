@@ -59,6 +59,25 @@ elif [[ "$stage5_exit" -eq 2 ]]; then
     exit 2
 fi
 
+# --- Stage 7 evidence gate (plan-final review required before claiming) -------
+# claim-item.sh advances work past Stage 6 cross-review. The user must have
+# confirmed plan-final-review.yaml before AI agents can proceed to execution.
+# Both exit 1 (predicate failure) and exit 2 (infrastructure failure) are fail-closed.
+stage7_exit=0
+stage7_output="$(uv run --no-project python "$STAGE5_CHECKER" \
+    --stage7-check "$WRK_ID" 2>&1)" || stage7_exit=$?
+if [[ "$stage7_exit" -eq 1 ]]; then
+    echo "✖ Stage 7 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
+    echo "$stage7_output" >&2
+    echo "Complete Stage 7 plan-final review (evidence/plan-final-review.yaml) before claiming." >&2
+    exit 1
+elif [[ "$stage7_exit" -eq 2 ]]; then
+    echo "✖ Stage 7 evidence gate FAILED (infrastructure failure) for ${WRK_ID}:" >&2
+    echo "$stage7_output" >&2
+    echo "Repair the Stage 7 gate infrastructure before claiming." >&2
+    exit 2
+fi
+
 echo "Checking quota..."
 QUOTA_STATUS="missing"
 if [[ -f "$QUOTA_FILE" ]]; then
@@ -260,10 +279,11 @@ fi
 # Bootstrap close user-review evidence files so all WRKs start with required artifacts.
 if [[ ! -f "${EVIDENCE_DIR}/user-review-close.yaml" ]]; then
   cat > "${EVIDENCE_DIR}/user-review-close.yaml" <<EOF
-reviewer: user
+reviewer: ""
 reviewed_at: ""
+confirmed_at: ""
 decision: pending
-notes: "Populate at close-stage user review."
+notes: "Populate at Stage 17 user review before closing."
 EOF
 fi
 

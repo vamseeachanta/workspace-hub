@@ -1,0 +1,7 @@
+wrk_id: WRK-684
+approved_by: user
+approval_scope: >
+  Pre-gate WRK — entered working/ before Stage 5 hard gate was activated (WRK-1034).
+  Exempt from stage5 evidence requirements.
+approved_at: 2026-03-08T00:00:00Z
+exemption_ref: WRK-1034

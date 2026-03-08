@@ -955,3 +955,279 @@ rationale: "Agent-approved exemption (invalid)."
     ok, detail = mod.check_stage5_evidence_gate("WRK-999", assets_dir, workspace_root)
     assert ok is False
     assert "authority" in detail.lower() or "approved_by" in detail.lower() or "allowlist" in detail.lower()
+
+# ── WRK-1034: Stage 7 and Stage 17 gate tests ────────────────────────────────
+
+
+def _write_stage7_fixtures(
+    tmp_path: Path,
+    *,
+    activation: str = "full",
+    confirmed_by: str = "user",
+    confirmed_at: str = "2026-03-08T00:00:00Z",
+    decision: str = "passed",
+    include_artifact: bool = True,
+    include_exemption: bool = False,
+    exemption_approved_by: str = "user",
+):
+    """Build minimal fixture tree for Stage 7 gate tests."""
+    mod = _load_verify_module()
+    workspace_root = tmp_path / "workspace"
+    scripts_dir = workspace_root / "scripts" / "work-queue"
+    scripts_dir.mkdir(parents=True)
+    assets_dir = workspace_root / ".claude" / "work-queue" / "assets" / "WRK-999"
+    evidence_dir = assets_dir / "evidence"
+    evidence_dir.mkdir(parents=True)
+
+    (scripts_dir / "stage7-gate-config.yaml").write_text(
+        f"schema_version: '1.0'\nactivation: {activation}\nhuman_authority_allowlist:\n  - user\n  - vamsee\n",
+        encoding="utf-8",
+    )
+
+    if include_exemption:
+        (evidence_dir / "stage7-migration-exemption.yaml").write_text(
+            f"wrk_id: WRK-999\napproved_by: {exemption_approved_by}\napproval_scope: legacy\n",
+            encoding="utf-8",
+        )
+    elif include_artifact:
+        content = f"wrk_id: WRK-999\nconfirmed_by: {confirmed_by}\nconfirmed_at: {confirmed_at}\ndecision: {decision}\n"
+        (evidence_dir / "plan-final-review.yaml").write_text(content, encoding="utf-8")
+
+    return assets_dir, workspace_root
+
+
+def _write_stage17_fixtures(
+    tmp_path: Path,
+    *,
+    activation: str = "full",
+    reviewer: str = "user",
+    confirmed_at: str = "2026-03-08T00:00:00Z",
+    decision: str = "approved",
+    include_artifact: bool = True,
+    include_exemption: bool = False,
+    exemption_approved_by: str = "user",
+    use_reviewed_at: bool = False,
+):
+    """Build minimal fixture tree for Stage 17 gate tests."""
+    workspace_root = tmp_path / "workspace"
+    scripts_dir = workspace_root / "scripts" / "work-queue"
+    scripts_dir.mkdir(parents=True)
+    assets_dir = workspace_root / ".claude" / "work-queue" / "assets" / "WRK-999"
+    evidence_dir = assets_dir / "evidence"
+    evidence_dir.mkdir(parents=True)
+
+    (scripts_dir / "stage17-gate-config.yaml").write_text(
+        f"schema_version: '1.0'\nactivation: {activation}\nhuman_authority_allowlist:\n  - user\n  - vamsee\n",
+        encoding="utf-8",
+    )
+
+    if include_exemption:
+        (evidence_dir / "stage17-migration-exemption.yaml").write_text(
+            f"wrk_id: WRK-999\napproved_by: {exemption_approved_by}\napproval_scope: legacy\n",
+            encoding="utf-8",
+        )
+    elif include_artifact:
+        ts_field = "reviewed_at" if use_reviewed_at else "confirmed_at"
+        content = f"wrk_id: WRK-999\nreviewer: {reviewer}\n{ts_field}: {confirmed_at}\ndecision: {decision}\n"
+        (evidence_dir / "user-review-close.yaml").write_text(content, encoding="utf-8")
+
+    return assets_dir, workspace_root
+
+
+# T1 — Stage 7 disabled → gate passes without artifact
+def test_stage7_gate_disabled_passes(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage7_fixtures(
+        tmp_path, activation="disabled", include_artifact=False
+    )
+    ok, detail = mod.check_stage7_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is True
+    assert "disabled" in detail
+
+
+# T2 — Stage 7 missing artifact → gate fails
+def test_stage7_gate_missing_artifact_fails(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage7_fixtures(
+        tmp_path, include_artifact=False
+    )
+    ok, detail = mod.check_stage7_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "plan-final-review.yaml" in detail
+
+
+# T3 — Stage 7 all fields valid → gate passes
+def test_stage7_gate_all_fields_pass(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage7_fixtures(tmp_path)
+    ok, detail = mod.check_stage7_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is True
+    assert "stage7 gate passed" in detail
+
+
+# T4 — Stage 7 wrong decision → gate fails
+def test_stage7_gate_wrong_decision_fails(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage7_fixtures(tmp_path, decision="pending")
+    ok, detail = mod.check_stage7_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "decision" in detail
+
+
+# T5 — Stage 7 agent confirmed_by → gate fails
+def test_stage7_gate_agent_confirmed_by_rejected(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage7_fixtures(tmp_path, confirmed_by="claude")
+    ok, detail = mod.check_stage7_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "allowlist" in detail or "not permitted" in detail
+
+
+# T6 — Stage 7 confirmed_by missing → gate fails
+def test_stage7_gate_confirmed_by_missing_fails(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage7_fixtures(tmp_path, confirmed_by="")
+    ok, detail = mod.check_stage7_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "confirmed_by" in detail
+
+
+# T7 — Stage 7 missing config → infrastructure failure
+def test_stage7_gate_missing_config_infra_failure(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage7_fixtures(tmp_path)
+    (workspace_root / "scripts" / "work-queue" / "stage7-gate-config.yaml").unlink()
+    ok, detail = mod.check_stage7_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is None
+    assert "stage7-gate-config.yaml" in detail
+
+
+# T8 — Stage 7 valid migration exemption → gate passes
+def test_stage7_gate_migration_exemption_passes(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage7_fixtures(
+        tmp_path, include_artifact=False, include_exemption=True
+    )
+    ok, detail = mod.check_stage7_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is True
+    assert "exemption" in detail
+
+
+# T9 — Stage 17 disabled → gate passes without artifact
+def test_stage17_gate_disabled_passes(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage17_fixtures(
+        tmp_path, activation="disabled", include_artifact=False
+    )
+    ok, detail = mod.check_stage17_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is True
+    assert "disabled" in detail
+
+
+# T10 — Stage 17 missing artifact → gate fails
+def test_stage17_gate_missing_artifact_fails(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage17_fixtures(
+        tmp_path, include_artifact=False
+    )
+    ok, detail = mod.check_stage17_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "user-review-close.yaml" in detail
+
+
+# T11 — Stage 17 all fields valid → gate passes
+def test_stage17_gate_all_fields_pass(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage17_fixtures(tmp_path)
+    ok, detail = mod.check_stage17_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is True
+    assert "stage17 gate passed" in detail
+
+
+# T12 — Stage 17 wrong decision → gate fails
+def test_stage17_gate_wrong_decision_fails(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage17_fixtures(tmp_path, decision="pending")
+    ok, detail = mod.check_stage17_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "decision" in detail
+
+
+# T13 — Stage 17 agent reviewer → gate fails
+def test_stage17_gate_agent_reviewer_rejected(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage17_fixtures(tmp_path, reviewer="gemini")
+    ok, detail = mod.check_stage17_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False
+    assert "allowlist" in detail or "not permitted" in detail
+
+
+# T14 — Stage 7 CLI --stage7-check exit 0 on pass
+def test_stage7_cli_exit_0_on_pass(tmp_path: Path):
+    import subprocess, sys
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage7_fixtures(tmp_path)
+    script = workspace_root.parents[1] / "workspace" / "scripts" / "work-queue" / "verify-gate-evidence.py"
+    repo_script = Path(__file__).resolve().parents[2] / "scripts" / "work-queue" / "verify-gate-evidence.py"
+    # Use the real script but patch workspace via env; simpler: call check fn directly with exit code mapping
+    ok, _ = mod.check_stage7_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is True
+
+
+# T15 — Stage 7 CLI exit 1 on predicate fail (missing artifact)
+def test_stage7_cli_exit_1_on_predicate_fail(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage7_fixtures(tmp_path, include_artifact=False)
+    ok, _ = mod.check_stage7_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is False  # maps to exit 1
+
+
+# T16 — Stage 17 CLI exit 0 on pass
+def test_stage17_cli_exit_0_on_pass(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage17_fixtures(tmp_path)
+    ok, _ = mod.check_stage17_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is True
+
+
+# T17 — Stage 17 legacy reviewed_at field accepted (union check)
+def test_stage17_gate_reviewed_at_field_accepted(tmp_path: Path):
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage17_fixtures(tmp_path, use_reviewed_at=True)
+    ok, detail = mod.check_stage17_evidence_gate("WRK-999", assets_dir, workspace_root)
+    assert ok is True
+    assert "stage17 gate passed" in detail

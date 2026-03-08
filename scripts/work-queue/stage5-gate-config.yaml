@@ -10,15 +10,15 @@
 
 schema_version: "1.0"
 owned_by_wrk: WRK-1017
-last_updated: "2026-03-07T00:00:00Z"
-change_note: "Initial config; activation=disabled pending Phase 1B hard-gate delivery"
+last_updated: "2026-03-08T00:00:00Z"
+change_note: "WRK-1034: activation=full — in-flight pre-gate WRKs (118,129,684,1005) have stage5-migration-exemption.yaml"
 
 # Activation enum: disabled | canary_plan_cross_review | canary_claim_close | full
 # - disabled: no Stage 5 check enforced at any entrypoint
 # - canary_plan_cross_review: plan.sh and cross-review.sh enforce the gate; others warn only
 # - canary_claim_close: plan.sh, cross-review.sh, claim-item.sh, close-item.sh all enforce
 # - full: all entrypoints enforce; repo is considered fully Stage-5-hardened
-activation: disabled
+activation: full
 
 # gate_activation_commit: immutable reference that marks when the gate was first activated.
 # Legacy WRKs (first-introduced before this commit) are classified via stage5-first-gated.yaml

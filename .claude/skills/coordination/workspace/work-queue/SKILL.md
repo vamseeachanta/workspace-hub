@@ -1,7 +1,7 @@
 ---
 name: work-queue
 description: Maintains a queue of work items (features, bugs, tasks) across workspace-hub repositories with two-phase capture and process pipeline
-version: 1.6.4
+version: 1.7.0
 category: workspace-hub
 type: skill
 trigger: manual
@@ -259,10 +259,24 @@ flowchart TD
 - Resolve MAJOR findings before progressing.
 
 ### 7. User Review - Plan (Final)
+
+> **HARD GATE — BLOCKING**: Do NOT advance to Stage 8 (Claim) until the user has
+> explicitly approved the final plan. Agents must NOT call `claim-item.sh` without a
+> verified `evidence/plan-final-review.yaml` signed by a human. The `claim-item.sh`
+> script enforces this gate via `--stage7-check` and will exit 1 if the artifact is
+> absent, incomplete, or signed by an agent identity.
+
 - User reviews final plan HTML and approves.
 - Review the HTML `Gate-Pass Stage Status` section (table + summary) with the user before final recommendation.
 - Mandatory: open completed final HTML in default browser (`xdg-open <html-path>`).
 - Mandatory: push final review artifacts to `origin` and log publish evidence.
+- Stage 7 exit checklist (ALL must be true before Stage 8):
+  - [ ] Lifecycle HTML opened in browser (`xdg-open`) and pushed to origin
+  - [ ] Interactive walk-through of plan changes since Stage 5 completed with user
+  - [ ] User has explicitly approved (not assumed from silence)
+  - [ ] `evidence/plan-final-review.yaml` written: `confirmed_by` (human identity), `confirmed_at` (ISO-8601), `decision: passed`
+  - [ ] `confirmed_by` value is in `human_authority_allowlist` (agent self-confirmation is rejected)
+  - [ ] `claim-item.sh --stage7-check` output shows: `✔ Stage 7 gate passed`
 
 ### 8. Claim / Activation
 - Check unblocked and agent capability.
@@ -299,10 +313,24 @@ flowchart TD
 - Add post-work resource-intelligence updates discovered during execution.
 
 ### 17. User Review - Implementation
+
+> **HARD GATE — BLOCKING**: Do NOT advance to Stage 19 (Close) until the user has
+> explicitly reviewed the implementation. Agents must NOT call `close-item.sh` without a
+> verified `evidence/user-review-close.yaml` signed by a human. The `close-item.sh`
+> script enforces this gate via `--stage17-check` and will exit 1 if the artifact is
+> absent, incomplete, or signed by an agent identity.
+
 - User reviews closure package (future work + resource updates + completion state).
 - Review the HTML `Gate-Pass Stage Status` section (table + summary) with the user before closure recommendation.
 - Mandatory: open completed close HTML in default browser (`xdg-open <html-path>`).
 - Mandatory: push implementation review artifacts to `origin` and log publish evidence.
+- Stage 17 exit checklist (ALL must be true before Stage 19):
+  - [ ] Lifecycle HTML opened in browser (`xdg-open`) and pushed to origin
+  - [ ] Interactive walk-through of implementation, test results, and future work presented to user
+  - [ ] User has explicitly approved closure (not assumed from silence)
+  - [ ] `evidence/user-review-close.yaml` written: `reviewer` (human identity), `confirmed_at` (ISO-8601), `decision: approved|passed`
+  - [ ] `reviewer` value is in `human_authority_allowlist` (agent self-review is rejected)
+  - [ ] `close-item.sh --stage17-check` output shows: `✔ Stage 17 gate passed`
 
 ### 18. Reclaim
 - Trigger reclaim when claim/session continuity is broken.

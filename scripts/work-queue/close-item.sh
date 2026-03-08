@@ -119,6 +119,25 @@ elif [[ "$stage5_exit" -eq 2 ]]; then
   exit 2
 fi
 
+# --- Stage 17 evidence gate (implementation review required before closing) ----
+# close-item.sh advances work to Stage 19 (Close/Archive). The user must have
+# reviewed user-review-close.yaml before AI agents can close the WRK.
+# Both exit 1 (predicate failure) and exit 2 (infrastructure failure) are fail-closed.
+stage17_exit=0
+stage17_output="$(uv run --no-project python "$STAGE5_CHECKER" \
+    --stage17-check "$WRK_ID" 2>&1)" || stage17_exit=$?
+if [[ "$stage17_exit" -eq 1 ]]; then
+  echo "✖ Stage 17 evidence gate FAILED (predicate failure) for ${WRK_ID}:" >&2
+  echo "$stage17_output" >&2
+  echo "Complete Stage 17 implementation review (evidence/user-review-close.yaml) before closing." >&2
+  exit 1
+elif [[ "$stage17_exit" -eq 2 ]]; then
+  echo "✖ Stage 17 evidence gate FAILED (infrastructure failure) for ${WRK_ID}:" >&2
+  echo "$stage17_output" >&2
+  echo "Repair the Stage 17 gate infrastructure before closing." >&2
+  exit 2
+fi
+
 COMPLETED_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
 # Ensure final HTML review exists for this WRK; default path is auto-generated.

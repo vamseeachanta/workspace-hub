@@ -1,0 +1,22 @@
+wrk_id: WRK-1034
+stage: 5
+artifact: user-review-common-draft
+reviewed_by: user
+confirmed_by: user
+reviewed_at: 2026-03-07T22:30:00Z
+confirmed_at: 2026-03-07T22:30:00Z
+approval_decision: approve_as_is
+review_cycle_id: rc-1034-plan-draft
+
+scope_decisions:
+  in_scope:
+    - Stage 7 hard gate in verify-gate-evidence.py (check_stage7_evidence_gate)
+    - Stage 17 hard gate in verify-gate-evidence.py (check_stage17_evidence_gate)
+    - stage7-gate-config.yaml and stage17-gate-config.yaml (activation=full)
+    - claim-item.sh Stage 7 guard
+    - close-item.sh Stage 17 guard
+    - work-queue/SKILL.md HARD GATE notices + exit checklists (v1.7.0)
+    - Flip Stage 5 activation disabled → full
+  out_of_scope:
+    - Consolidating 3 gate configs into one file (follow-up WRK)
+    - Interactive planning session enforcement (separate WRK)

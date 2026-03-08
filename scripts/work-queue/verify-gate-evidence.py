@@ -105,20 +105,59 @@ def check_claim_gate(assets_dir: Path) -> tuple[bool | None, str]:
     return True, f"{claim_file.name}: version=1, owner={owner}, {quota_note}"
 
 
-def _load_stage5_config(workspace_root: Path) -> tuple[dict | None, str]:
-    """Load stage5-gate-config.yaml; return (data, error_msg) or (None, err)."""
-    config_path = workspace_root / "scripts" / "work-queue" / "stage5-gate-config.yaml"
+def _load_gate_config(workspace_root: Path, filename: str) -> tuple[dict | None, str]:
+    """Load a stage gate config YAML by filename.
+
+    Returns (data, "") on success or (None, error_message) on failure.
+    """
+    config_path = workspace_root / "scripts" / "work-queue" / filename
     if not config_path.exists():
-        return None, f"stage5-gate-config.yaml not found at {config_path}"
+        return None, f"{filename} not found at {config_path}"
     if yaml is None:
-        return None, "PyYAML unavailable — cannot load stage5-gate-config.yaml"
+        return None, f"PyYAML unavailable — cannot load {filename}"
     try:
         data = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
     except Exception as exc:
-        return None, f"stage5-gate-config.yaml parse error: {exc}"
+        return None, f"{filename} parse error: {exc}"
     if not isinstance(data, dict):
-        return None, "stage5-gate-config.yaml root is not a mapping"
+        return None, f"{filename} root is not a mapping"
     return data, ""
+
+
+def _load_stage5_config(workspace_root: Path) -> tuple[dict | None, str]:
+    """Load stage5-gate-config.yaml; return (data, error_msg) or (None, err)."""
+    return _load_gate_config(workspace_root, "stage5-gate-config.yaml")
+
+
+def _validate_exemption(
+    exemption_path: Path, wrk_id: str, human_allowlist: set[str]
+) -> tuple[str | None, str]:
+    """Validate a migration exemption YAML.
+
+    Returns (approved_by, "") on success or (None, error_msg) on failure.
+    """
+    try:
+        ex = yaml.safe_load(exemption_path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        return None, f"{exemption_path.name} parse error: {exc}"
+    if not isinstance(ex, dict):
+        return None, f"{exemption_path.name} root is not a mapping"
+    approved_by = str(ex.get("approved_by", "")).strip()
+    if not approved_by:
+        return None, f"{exemption_path.name}: approved_by missing"
+    if human_allowlist and approved_by not in human_allowlist:
+        return (
+            None,
+            f"{exemption_path.name}: approved_by='{approved_by}' not in "
+            f"human_authority_allowlist; agent identities are not permitted",
+        )
+    approval_scope = str(ex.get("approval_scope", "")).strip()
+    if not approval_scope:
+        return None, f"{exemption_path.name}: approval_scope missing"
+    ex_wrk = str(ex.get("wrk_id", "")).strip()
+    if ex_wrk and ex_wrk != wrk_id:
+        return None, f"{exemption_path.name}: wrk_id mismatch ({ex_wrk} != {wrk_id})"
+    return approved_by, ""
 
 
 def check_stage5_evidence_gate(
@@ -156,30 +195,9 @@ def check_stage5_evidence_gate(
     # 3. Check migration exemption (before artifact checks)
     exemption_path = evidence_dir / "stage5-migration-exemption.yaml"
     if exemption_path.exists():
-        try:
-            ex = yaml.safe_load(exemption_path.read_text(encoding="utf-8")) or {}
-        except Exception as exc:
-            return None, f"stage5-migration-exemption.yaml parse error: {exc}"
-        if not isinstance(ex, dict):
-            return None, "stage5-migration-exemption.yaml root is not a mapping"
-        approved_by = str(ex.get("approved_by", "")).strip()
-        approval_scope = str(ex.get("approval_scope", "")).strip()
-        if not approved_by:
-            return False, "stage5-migration-exemption.yaml: approved_by missing"
-        if approved_by not in human_allowlist:
-            return (
-                False,
-                f"stage5-migration-exemption.yaml: approved_by='{approved_by}' not in "
-                f"human_authority_allowlist; agent identities are not permitted",
-            )
-        if not approval_scope:
-            return False, "stage5-migration-exemption.yaml: approval_scope missing"
-        ex_wrk = str(ex.get("wrk_id", "")).strip()
-        if ex_wrk and ex_wrk != wrk_id:
-            return (
-                False,
-                f"stage5-migration-exemption.yaml: wrk_id mismatch ({ex_wrk} != {wrk_id})",
-            )
+        approved_by, ex_err = _validate_exemption(exemption_path, wrk_id, human_allowlist)
+        if ex_err:
+            return False, ex_err
         return True, f"stage5-migration-exemption.yaml: legacy exemption approved by {approved_by}"
 
     # 4. Validate common-draft artifact
@@ -238,6 +256,165 @@ def check_stage5_evidence_gate(
         True,
         f"stage5 gate passed: common-draft=approve_as_is, "
         f"plan-draft=approve_as_is, review_cycle_id='{pd_cycle or cd_cycle}'",
+    )
+
+
+def check_stage7_evidence_gate(
+    wrk_id: str, assets_dir: Path, workspace_root: Path
+) -> tuple[bool | None, str]:
+    """Check Stage 7 evidence gate (User Review — Plan Final).
+
+    Canonical artifact: evidence/plan-final-review.yaml
+    Required fields:   confirmed_by (human in allowlist), confirmed_at, decision=passed
+
+    Returns:
+        (True,  detail) — gate passes
+        (False, detail) — predicate failure
+        (None,  detail) — infrastructure failure (exit 2 semantics)
+    """
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot validate Stage 7 evidence"
+
+    config, config_err = _load_gate_config(workspace_root, "stage7-gate-config.yaml")
+    if config is None:
+        return None, config_err
+
+    activation = str(config.get("activation", "disabled")).strip()
+    human_allowlist = set(config.get("human_authority_allowlist") or [])
+
+    if activation == "disabled":
+        return True, "stage7-gate-config.yaml: activation=disabled (no enforcement)"
+
+    evidence_dir = assets_dir / "evidence"
+
+    # Migration exemption (escape hatch for in-flight WRKs that predate the gate)
+    exemption_path = evidence_dir / "stage7-migration-exemption.yaml"
+    if exemption_path.exists():
+        approved_by, ex_err = _validate_exemption(exemption_path, wrk_id, human_allowlist)
+        if ex_err:
+            return False, ex_err
+        return True, f"stage7-migration-exemption.yaml: legacy exemption approved by {approved_by}"
+
+    artifact_path = evidence_dir / "plan-final-review.yaml"
+    if not artifact_path.exists():
+        return False, "plan-final-review.yaml missing — Stage 7 plan-final review required"
+
+    data, yaml_err = load_yaml(artifact_path)
+    if yaml_err:
+        return None, f"plan-final-review.yaml parse error: {yaml_err}"
+    assert data is not None
+
+    artifact_wrk = str(data.get("wrk_id", "")).strip()
+    if artifact_wrk and artifact_wrk != wrk_id:
+        return False, f"plan-final-review.yaml: wrk_id mismatch ({artifact_wrk} != {wrk_id})"
+
+    confirmed_by = str(data.get("confirmed_by", "")).strip()
+    if not confirmed_by:
+        return False, "plan-final-review.yaml: confirmed_by missing"
+    if human_allowlist and confirmed_by not in human_allowlist:
+        return (
+            False,
+            f"plan-final-review.yaml: confirmed_by='{confirmed_by}' not in "
+            f"human_authority_allowlist; agent identities are not permitted",
+        )
+
+    confirmed_at = str(data.get("confirmed_at", "")).strip()
+    if not confirmed_at:
+        return False, "plan-final-review.yaml: confirmed_at missing"
+
+    decision = str(data.get("decision", "")).strip().lower()
+    if decision != "passed":
+        return (
+            False,
+            f"plan-final-review.yaml: decision='{decision}'; Stage 8+ requires decision=passed",
+        )
+
+    return (
+        True,
+        f"stage7 gate passed: confirmed_by={confirmed_by}, confirmed_at={confirmed_at}, "
+        f"decision={decision}",
+    )
+
+
+def check_stage17_evidence_gate(
+    wrk_id: str, assets_dir: Path, workspace_root: Path
+) -> tuple[bool | None, str]:
+    """Check Stage 17 evidence gate (User Review — Implementation).
+
+    Canonical artifact: evidence/user-review-close.yaml
+    Required fields:   reviewer (human in allowlist), confirmed_at|reviewed_at,
+                       decision in {approved, accepted, passed}
+
+    Returns:
+        (True,  detail) — gate passes
+        (False, detail) — predicate failure
+        (None,  detail) — infrastructure failure (exit 2 semantics)
+    """
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot validate Stage 17 evidence"
+
+    config, config_err = _load_gate_config(workspace_root, "stage17-gate-config.yaml")
+    if config is None:
+        return None, config_err
+
+    activation = str(config.get("activation", "disabled")).strip()
+    human_allowlist = set(config.get("human_authority_allowlist") or [])
+
+    if activation == "disabled":
+        return True, "stage17-gate-config.yaml: activation=disabled (no enforcement)"
+
+    evidence_dir = assets_dir / "evidence"
+
+    # Migration exemption
+    exemption_path = evidence_dir / "stage17-migration-exemption.yaml"
+    if exemption_path.exists():
+        approved_by, ex_err = _validate_exemption(exemption_path, wrk_id, human_allowlist)
+        if ex_err:
+            return False, ex_err
+        return True, f"stage17-migration-exemption.yaml: legacy exemption approved by {approved_by}"
+
+    artifact_path = evidence_dir / "user-review-close.yaml"
+    if not artifact_path.exists():
+        return False, "user-review-close.yaml missing — Stage 17 implementation review required"
+
+    data, yaml_err = load_yaml(artifact_path)
+    if yaml_err:
+        return None, f"user-review-close.yaml parse error: {yaml_err}"
+    assert data is not None
+
+    artifact_wrk = str(data.get("wrk_id", "")).strip()
+    if artifact_wrk and artifact_wrk != wrk_id:
+        return False, f"user-review-close.yaml: wrk_id mismatch ({artifact_wrk} != {wrk_id})"
+
+    reviewer = str(data.get("reviewer", "")).strip()
+    if not reviewer:
+        return False, "user-review-close.yaml: reviewer missing"
+    if human_allowlist and reviewer not in human_allowlist:
+        return (
+            False,
+            f"user-review-close.yaml: reviewer='{reviewer}' not in "
+            f"human_authority_allowlist; agent identities are not permitted",
+        )
+
+    # Accept either confirmed_at (new) or reviewed_at (legacy soft-gate field name)
+    confirmed_at = (
+        str(data.get("confirmed_at", "")).strip()
+        or str(data.get("reviewed_at", "")).strip()
+    )
+    if not confirmed_at:
+        return False, "user-review-close.yaml: confirmed_at (or reviewed_at) missing"
+
+    decision = str(data.get("decision", "")).strip().lower()
+    if decision not in {"approved", "accepted", "passed"}:
+        return (
+            False,
+            f"user-review-close.yaml: decision='{decision}'; must be approved|accepted|passed",
+        )
+
+    return (
+        True,
+        f"stage17 gate passed: reviewer={reviewer}, confirmed_at={confirmed_at}, "
+        f"decision={decision}",
     )
 
 
@@ -933,11 +1110,79 @@ def _run_stage5_check(args: list[str]) -> int:
     return 0
 
 
+def _run_stage7_check(args: list[str]) -> int:
+    """Handle --stage7-check <WRK-id> invocation from claim-item.sh.
+
+    Exit codes:
+        0 = Stage 7 gate passes (or disabled)
+        1 = predicate failure (plan-final review incomplete / not by human)
+        2 = infrastructure/path failure
+    """
+    if len(args) < 1:
+        print("Usage: verify-gate-evidence.py --stage7-check WRK-<id>", file=sys.stderr)
+        return 2
+    wrk_id = args[0]
+    workspace_root = Path(__file__).resolve().parents[2]
+    queue_dir = workspace_root / ".claude" / "work-queue"
+    assets_dir = queue_dir / "assets" / wrk_id
+    if not assets_dir.is_dir():
+        print(
+            f"✖ Stage 7 check: assets directory not found for {wrk_id}: {assets_dir}",
+            file=sys.stderr,
+        )
+        return 2
+    ok, detail = check_stage7_evidence_gate(wrk_id, assets_dir, workspace_root)
+    if ok is None:
+        print(f"✖ Stage 7 gate infrastructure failure for {wrk_id}: {detail}", file=sys.stderr)
+        return 2
+    if not ok:
+        print(f"✖ Stage 7 gate predicate failure for {wrk_id}: {detail}", file=sys.stderr)
+        return 1
+    print(f"✔ Stage 7 gate passed for {wrk_id}: {detail}")
+    return 0
+
+
+def _run_stage17_check(args: list[str]) -> int:
+    """Handle --stage17-check <WRK-id> invocation from close-item.sh.
+
+    Exit codes:
+        0 = Stage 17 gate passes (or disabled)
+        1 = predicate failure (impl review incomplete / not by human)
+        2 = infrastructure/path failure
+    """
+    if len(args) < 1:
+        print("Usage: verify-gate-evidence.py --stage17-check WRK-<id>", file=sys.stderr)
+        return 2
+    wrk_id = args[0]
+    workspace_root = Path(__file__).resolve().parents[2]
+    queue_dir = workspace_root / ".claude" / "work-queue"
+    assets_dir = queue_dir / "assets" / wrk_id
+    if not assets_dir.is_dir():
+        print(
+            f"✖ Stage 17 check: assets directory not found for {wrk_id}: {assets_dir}",
+            file=sys.stderr,
+        )
+        return 2
+    ok, detail = check_stage17_evidence_gate(wrk_id, assets_dir, workspace_root)
+    if ok is None:
+        print(f"✖ Stage 17 gate infrastructure failure for {wrk_id}: {detail}", file=sys.stderr)
+        return 2
+    if not ok:
+        print(f"✖ Stage 17 gate predicate failure for {wrk_id}: {detail}", file=sys.stderr)
+        return 1
+    print(f"✔ Stage 17 gate passed for {wrk_id}: {detail}")
+    return 0
+
+
 def main() -> None:
     args = sys.argv[1:]
     # Stage 5 check mode (called by plan.sh, cross-review.sh, etc.)
     if args and args[0] == "--stage5-check":
         sys.exit(_run_stage5_check(args[1:]))
+    if args and args[0] == "--stage7-check":
+        sys.exit(_run_stage7_check(args[1:]))
+    if args and args[0] == "--stage17-check":
+        sys.exit(_run_stage17_check(args[1:]))
 
     if len(args) not in {1, 3}:
         print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close]")
