@@ -1,0 +1,6 @@
+stage: 7
+wrk_id: WRK-SIM-GEMINI
+confirmed_by: sim-user
+confirmed_at: "2026-03-08T15:32:00Z"
+decision: passed
+notes: "P3 finding noted for future WRK"

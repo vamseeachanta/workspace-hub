@@ -3,7 +3,7 @@ start_stage.py — Stage entry orchestrator (P2, WRK-1028)
 
 Reads a stage YAML contract and either:
   task_agent    → writes stage-N-prompt.md (human/orchestrator dispatches via work.sh)
-  human_session → emits checklist to stdout; checks for checkpoint
+  human_interactive → emits checklist to stdout; checks for checkpoint
   chained_agent → writes combined prompt for all chained stages
 
 Usage:
@@ -145,6 +145,84 @@ def build_prompt(
     return out_path
 
 
+# ── checkpoint resume block ───────────────────────────────────────────────────
+
+def _read_checkpoint(assets_dir: str, wrk_id: str) -> dict:
+    """Read checkpoint.yaml from assets_dir/checkpoint.yaml. Returns {} if absent."""
+    cp_path = os.path.join(assets_dir, "checkpoint.yaml")
+    if not os.path.exists(cp_path):
+        return {}
+    data: dict = {}
+    try:
+        with open(cp_path) as f:
+            content = f.read()
+        # Simple scalar parsing
+        for line in content.splitlines():
+            if line.startswith("#") or not line.strip():
+                continue
+            if ":" in line and not line.startswith(" "):
+                k, _, v = line.partition(":")
+                v = v.strip().strip('"').strip("'")
+                if v:
+                    data[k.strip()] = v
+        # Parse entry_reads list
+        entry_reads: list[str] = []
+        in_list = False
+        for line in content.splitlines():
+            if line.startswith("entry_reads:"):
+                in_list = True
+                continue
+            if in_list:
+                stripped = line.strip()
+                if stripped.startswith("- "):
+                    entry_reads.append(stripped[2:].strip())
+                elif stripped and not line.startswith(" "):
+                    in_list = False
+        if entry_reads:
+            data["entry_reads"] = entry_reads
+    except OSError:
+        pass
+    return data
+
+
+def _print_checkpoint_resume(wrk_id: str, stage: int, output_dir: str) -> None:
+    """
+    Print resume block if checkpoint.yaml exists and stage matches.
+    Informational only — never blocks if checkpoint is absent.
+    """
+    cp = _read_checkpoint(output_dir, wrk_id)
+    if not cp:
+        return
+
+    cp_stage_raw = cp.get("stage") or cp.get("current_stage", "")
+    try:
+        cp_stage = int(cp_stage_raw)
+    except (ValueError, TypeError):
+        cp_stage = None
+
+    if cp_stage is None or cp_stage != stage:
+        return  # Checkpoint is for a different stage; skip
+
+    stage_name = cp.get("stage_name", f"Stage {stage}")
+    next_action = cp.get("next_action", "(not set)")
+    context_raw = cp.get("context_summary", "(not set)")
+    context_str = str(context_raw)[:200]
+    entry_reads = cp.get("entry_reads", [])
+    if isinstance(entry_reads, str):
+        entry_reads = [entry_reads]
+
+    border = "\u2550" * 55
+    print(f"\n{border}")
+    print(f"  {wrk_id}  Resume \u00b7 Stage {stage} \u2014 {stage_name}")
+    print(f"  Last action: {next_action}")
+    print(f"  Context: {context_str}")
+    if entry_reads:
+        print(f"  Entry reads:")
+        for er in entry_reads:
+            print(f"    \u2022 {er}")
+    print(f"{border}\n")
+
+
 # ── route_stage ───────────────────────────────────────────────────────────────
 
 def route_stage(
@@ -160,26 +238,24 @@ def route_stage(
     invocation = contract.get("invocation", "task_agent")
 
     if invocation == "task_agent":
+        _print_checkpoint_resume(wrk_id, stage, output_dir)
         out = build_prompt(contract, wrk_id, stage, output_dir, assets_root)
         print(f"Prompt package ready: {out}")
         print("Run: scripts/agents/work.sh with the prompt package above.")
 
-    elif invocation == "human_session":
+    elif invocation == "human_interactive":
         print(f"\n=== Stage {stage}: {contract.get('name')} ===")
+        # Auto-load checkpoint if present and stage matches
+        _print_checkpoint_resume(wrk_id, stage, output_dir)
         print("Checklist:")
         for i, artifact in enumerate(contract.get("exit_artifacts", []), 1):
             print(f"  {i}. Produce: {artifact}")
         if contract.get("human_gate"):
             print(f"\n  GATE: Verify blocking_condition before advancing:")
             print(f"    {contract.get('blocking_condition', 'check gate artifact')}")
-        # Check for existing checkpoint
-        checkpoint = os.path.join(
-            output_dir, "..", "checkpoint.yaml"
-        )
-        if os.path.exists(checkpoint):
-            print(f"\n  Checkpoint found. Run /wrk-resume {wrk_id} to reload context.")
 
     elif invocation == "chained_agent":
+        _print_checkpoint_resume(wrk_id, stage, output_dir)
         chained = contract.get("chained_stages", [stage])
         out = build_prompt(contract, wrk_id, stage, output_dir, assets_root)
         print(f"Chained prompt package ready: {out}")
@@ -189,6 +265,24 @@ def route_stage(
     else:
         print(f"Unknown invocation type: {invocation}", file=sys.stderr)
         sys.exit(1)
+
+
+# ── lifecycle HTML helper ─────────────────────────────────────────────────────
+
+def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
+    """Regenerate lifecycle HTML as a standard stage-start action."""
+    import subprocess
+    script = os.path.join(repo_root, "scripts", "work-queue", "generate-html-review.py")
+    if not os.path.exists(script):
+        return
+    result = subprocess.run(
+        ["uv", "run", "--no-project", "python", script, wrk_id, "--lifecycle"],
+        capture_output=True, text=True, cwd=repo_root,
+    )
+    if result.returncode == 0:
+        print(f"✔ Lifecycle HTML updated ({wrk_id})")
+    else:
+        print(f"⚠ Lifecycle HTML update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
 
 
 # ── CLI entrypoint ────────────────────────────────────────────────────────────
@@ -219,6 +313,9 @@ def _main() -> None:
     output_dir = os.path.join(assets_root, wrk_id)
 
     route_stage(contract, wrk_id, stage, output_dir, assets_root)
+
+    # Auto-regenerate lifecycle HTML so user always sees current state
+    _regenerate_lifecycle_html(wrk_id, repo_root)
 
 
 if __name__ == "__main__":

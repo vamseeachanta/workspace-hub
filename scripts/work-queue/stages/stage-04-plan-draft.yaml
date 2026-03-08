@@ -16,3 +16,8 @@ exit_artifacts:
 blocking_condition: "lifecycle HTML Stage 4 section absent"
 log_action: plan_draft_complete
 context_budget_kb: 8
+lm_judgment_required:
+  - id: N2
+    rule: "Pseudocode is semantically correct for the algorithm described"
+    why_not_scriptable: "Correctness of logic requires understanding algorithm intent"
+    mitigation: "D9 script checks ≥3 test/eval rows exist (deterministic); correctness review is human/LLM at Stage 5"

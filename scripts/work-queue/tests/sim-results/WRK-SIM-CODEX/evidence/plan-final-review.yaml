@@ -1,0 +1,6 @@
+stage: 7
+wrk_id: WRK-SIM-CODEX
+confirmed_by: sim-user
+confirmed_at: "2026-03-08T15:31:00Z"
+decision: passed
+notes: "P2 finding acknowledged — deferred to future WRK"

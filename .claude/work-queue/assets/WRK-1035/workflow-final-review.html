@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1035 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1035 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Beef up user-review stages in work-queue-workflow SKILL from recent session learnings</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>C</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — Two inputs drive this work: **1. WRK-1034 specific learning (retroactive approval gap)** Stage 5 and Stage 7 approval artifacts were written...</summary><div class="panel"><p>Two inputs drive this work:</p>
+<p><strong>1. WRK-1034 specific learning (retroactive approval gap)</strong>
+Stage 5 and Stage 7 approval artifacts were written with fabricated timestamps by the agent before the user had actually responded in-conversation. Only Stage 17 had a genuine real-time approval. The skill must explicitly forbid this pattern.</p>
+<p><strong>2. Recent session audit (last 24-48 hours)</strong>
+Review the Claude orchestrator session logs and WRK evidence artifacts from the last 24-48 hours to surface any additional compliance failures at user-review stages — missed approvals, missing interactive walk-throughs, HTML not opened, publish evidence not logged, or timestamps written before user response.</p>
+<p>Synthesise all findings into concrete skill improvements.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — The Stage 7 and 17 hard gates (WRK-1034) are machine-enforceable but cannot detect retroactive self-fill — a future timestamp in the artifac...</summary><div class="panel"><p>The Stage 7 and 17 hard gates (WRK-1034) are machine-enforceable but cannot detect retroactive self-fill — a future timestamp in the artifact looks valid. The skill is the only enforcement layer that can require the agent to pause, wait for the user's response, and only then record the timestamp. Without this fix, the gate is bypassable by a compliant-looking-but-fabricated artifact.</p>
+<p>Route B (not A) because the session audit step introduces exploration work that could surface additional unknown gaps beyond the WRK-1034 finding.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — ### Stage 5 hardening - [ ] `work-queue-workflow/SKILL.md` Stage 5 contract adds explicit rule: **&quot;Do NOT write `user-review-plan-draft.yaml...</summary><div class="panel"><h3>Stage 5 hardening</h3>
+<ul>
+<li>[ ] <code>work-queue-workflow/SKILL.md</code> Stage 5 contract adds explicit rule: <strong>"Do NOT write <code>user-review-plan-draft.yaml</code> until the user has responded in this conversation with explicit approval. The <code>confirmed_at</code> timestamp must be taken from the moment of the user's response — not from plan creation time."</strong></li>
+<li>[ ] Negative example added: ❌ Agent writes artifact with pre-filled timestamp before user responds.</li>
+<li>[ ] Positive example added: ✅ Agent presents plan, user says "approve" / explicit decision, agent writes artifact immediately after with current timestamp.</li>
+</ul>
+<h3>Stage 7 hardening</h3>
+<ul>
+<li>[ ] Same prohibition added to Stage 7 contract for <code>plan-final-review.yaml</code> (<code>confirmed_by</code>, <code>confirmed_at</code>).</li>
+<li>[ ] Negative + positive examples matching Stage 5 pattern.</li>
+</ul>
+<h3>Stage 17 hardening</h3>
+<ul>
+<li>[ ] Stage 17 contract confirms same rule for <code>user-review-close.yaml</code> (<code>reviewer</code>, <code>confirmed_at</code>/<code>reviewed_at</code>).</li>
+</ul>
+<h3>Stage 17 live validation (7-day hold)</h3>
+<ul>
+<li>[ ] Stage 17 user review remains <strong>open for 7 days</strong> after implementation is complete.</li>
+<li>[ ] Daily session log analysis run against the hardened lifecycle for each of those 7 days.</li>
+<li>[ ] Each daily analysis checks: did any retroactive approval, stage-skip, or sentinel value slip through the new gates?</li>
+<li>[ ] Analysis written to <code>assets/WRK-1035/evidence/live-validation/day-N.md</code> (N = 1–7).</li>
+<li>[ ] Stage 17 closes only after all 7 daily analyses show zero HIGH-severity violations.</li>
+<li>[ ] If a violation is found during the 7-day window: fix → re-start the 7-day clock.</li>
+<li>[ ] Any new compliance failure patterns discovered during the 7-day window are rolled into WRK-1035 for implementation — not spun off as separate WRKs. WRK-1035 scope stays open until the window closes clean.</li>
+</ul>
+<h3>Session audit learnings</h3>
+<ul>
+<li>[ ] Claude session logs from last 24-48 hours reviewed (<code>.claude/work-queue/logs/</code> + <code>logs/orchestrator/claude/</code>).</li>
+<li>[ ] WRK evidence artifacts from recently closed WRKs checked for compliance at stages 5, 7, 17.</li>
+<li>[ ] Findings synthesised: each gap becomes either a skill rule addition or a captured follow-up WRK.</li>
+<li>[ ] Audit summary written to <code>assets/WRK-1035/evidence/session-audit.md</code>.</li>
+</ul>
+<h3>Skill version</h3>
+<ul>
+<li>[ ] <code>work-queue-workflow/SKILL.md</code> version bumped; change note references WRK-1034 + WRK-1035.</li>
+<li>[ ] If <code>work-queue/SKILL.md</code> also needs updates (duplicate Stage 5/7/17 contracts), update in sync.</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — # WRK-1035 Plan Draft Review Record wrk_id: WRK-1035 stage: 5 reviewed_by: vamsee reviewed_at: 2026-03-08T13:10:00Z decision: passed html_re...</summary><div class="panel"><h4>Draft</h4><h1>WRK-1035 Plan Draft Review Record</h1>
+<p>wrk_id: WRK-1035
+stage: 5
+reviewed_by: vamsee
+reviewed_at: 2026-03-08T13:10:00Z
+decision: passed
+html_ref: .claude/work-queue/assets/WRK-1035/WRK-1035-lifecycle.html
+notes: "Stage 5 user review — plan draft walked section by section; explicit approval received."</p><h4>Final</h4><h1>WRK-1035 Plan Final Review</h1>
+<p>Plan reviewed in browser at Stage 7 (HARD GATE).
+Full plan.md rendered: all 6 phases, 50 tests, 722 lines.
+Changes since Stage 5 (F1-F10) reviewed and confirmed.</p>
+<p>confirmed_by: vamsee
+confirmed_at: 2026-03-08T08:35:00Z
+decision: passed</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 5 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>WRK-1035 gate verifier hardening tests</td><td>integrated</td><td>passed</td><td><code>uv run --no-project python -m pytest scripts/work-queue/tests/test_gate_verifier_hardening.py -v</code></td><td>scripts/work-queue/tests/test_gate_verifier_hardening.py</td></tr><tr><td>2</td><td>WRK-1035 retroactive approval prevention tests</td><td>integrated</td><td>passed</td><td><code>uv run --no-project python -m pytest scripts/work-queue/tests/test_retroactive_approval.py -v</code></td><td>scripts/work-queue/tests/test_retroactive_approval.py</td></tr><tr><td>3</td><td>WRK-1035 Stage 1 gate tests</td><td>integrated</td><td>passed</td><td><code>uv run --no-project python -m pytest scripts/work-queue/tests/test_stage1_gate.py -v</code></td><td>scripts/work-queue/tests/test_stage1_gate.py</td></tr><tr><td>4</td><td>WRK-1035 skill line count enforcement tests</td><td>integrated</td><td>passed</td><td><code>uv run --no-project python -m pytest scripts/work-queue/tests/test_skill_line_counts.py -v</code></td><td>scripts/work-queue/tests/test_skill_line_counts.py</td></tr><tr><td>5</td><td>WRK-1035 spawn-team Stage 1 gate tests</td><td>repo</td><td>passed</td><td><code>uv run --no-project python -m pytest scripts/work-queue/tests/test_spawn_team.py -v</code></td><td>scripts/work-queue/tests/test_spawn_team.py</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1035, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1035, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=missing, execution_workstations=missing</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=5</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete'], execute:['execute_wrapper_complete'], cross-review:['agent_cross_review']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1035/review-synthesis.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['test-summary.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=5 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1035/legal-scan.md, result=PASS — no violations found</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>PASS</td>
+<td>claim-evidence.yaml: version=1, owner=vamsee, quota=available(75%)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=6</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=3</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>codex keyword found in review artifacts (5 file(s) checked)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>WARN</td>
+<td>plan_draft and plan_final share commit 'd966a91a' — possible placeholder (WARN)</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>plan publish ordering OK (published=2026-03-08T13:12:11+00:00, reviewed=2026-03-08 13:12:11+00:00)</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — stage: 15 captured_at: 2026-03-08T10:50:00Z recommendations: - id: FW-01 title: WRK-1039 — Gate verifier hardening (14 additional gaps from ...</summary><div class="panel"><p>stage: 15
+captured_at: 2026-03-08T10:50:00Z
+recommendations:
+  - id: FW-01
+    title: WRK-1039 — Gate verifier hardening (14 additional gaps from session audit)
+    description: Blocked by WRK-1035; now unblocked; implement remaining gaps not covered by Phase 3
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: WRK-1039</p>
+<ul>
+<li>
+<p>id: FW-02
+    title: WRK-1041 — Lifecycle HTML auto-refresh + /work html command
+    description: on-demand lifecycle HTML regeneration + browser auto-refresh
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: WRK-1041</p>
+</li>
+<li>
+<p>id: FW-03
+    title: Stage 17 live validation — comprehensive-learning nightly integration
+    description: Wire day-N.md generation into comprehensive-learning pipeline on ace-linux-1
+    disposition: existing-updated
+    status: pending
+    captured: true</p>
+</li>
+<li>
+<p>id: FW-04
+    title: human_session → human_interactive rename
+    description: Phase 4 deferred — rename across 20 stage YAMLs + start_stage.py
+    disposition: spun-off-new
+    status: pending
+    captured: true</p>
+</li>
+<li>
+<p>id: FW-05
+    title: WRK-1044 — Deterministic gate enforcement D1–D15 (scripts &gt; LLM prose)
+    description: |
+      15 deterministic checks replacing LLM-only prose enforcement, surfaced by:
+      (1) 3-agent parallel simulation (WRK-SIM-CLAUDE/CODEX/GEMINI) — Gemini near-miss
+          at Stage 5 proved skill prose alone is insufficient;
+      (2) Full skill audit mapping deterministic vs. non-deterministic rules.
+      D1-D15 cover: Stage 1 capture gate, hard gate artifact checks, human allowlist
+      validation, integrated test count range, future-work disposition, stage ledger
+      completeness, browser-open timestamp ordering, route-based cross-review count,
+      sentinel value blocking, P1 finding pause, gate verifier JSON exit code, legal scan.
+      Non-deterministic N1-N5 documented in stage contract YAMLs (lm_judgment_required).
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: WRK-1044
+    source: 3-agent simulation + skill audit (WRK-1035 session 2026-03-08)</p>
+</li>
+<li>
+<p>id: FW-06
+    title: WRK-1045 — Live session compliance audit (1-week holdback from 2026-03-15)
+    description: |
+      Parse real Claude/Codex/Gemini session logs from 2026-03-08 to 2026-03-15 to
+      validate that WRK-1035/1044 hardening holds in live (non-simulated) sessions.
+      Measures: Stage 5/7/17 hard gate adherence, P1 pause triggers, browser-open
+      enforcement, gate verifier --json adoption. Compares live compliance scores
+      against simulation baseline (Claude=100, Codex=100, Gemini=95, avg=98.3%).
+      not_before: 2026-03-15. blocked_by: WRK-1044.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: WRK-1045
+    not_before: "2026-03-15"
+    source: 3-agent simulation follow-up (WRK-1035 session 2026-03-08)</p>
+</li>
+</ul></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1035 generated_at: &#x27;2026-03-08T14:06:01Z&#x27; reviewed_by: claude autonomy_maturity_level: L2 human_steers_agents_execute: true stag...</summary><div class="panel"><p>wrk_id: WRK-1035
+generated_at: '2026-03-08T14:06:01Z'
+reviewed_by: claude
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created with baseline metadata.
+  evidence: .claude/work-queue/working/WRK-1035.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource/document intelligence pack captured.
+  evidence: .claude/work-queue/assets/WRK-1035/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route, priority, complexity, and workstations set.
+  evidence: .claude/work-queue/working/WRK-1035.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Draft plan and artifact generated.
+  evidence: specs/wrk/WRK-1035/plan.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Tough questions, tradeoffs, and test/eval updates reviewed.
+  evidence: .claude/work-queue/assets/WRK-1035/plan-html-review-draft.md
+- order: 6
+  stage: Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Multi-provider review completed.
+  evidence: .claude/work-queue/assets/WRK-1035/evidence/cross-review-claude.md
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Final plan reviewed with gate-pass section.
+  evidence: .claude/work-queue/assets/WRK-1035/plan-html-review-final.md
+- order: 8
+  stage: Claim / Activation
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Claim evidence and active WRK set.
+  evidence: .claude/work-queue/assets/WRK-1035/evidence/claim-evidence.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Entered canonical /work route.
+  evidence: .claude/work-queue/working/WRK-1035.md
+- order: 10
+  stage: Work Execution
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Implementation completed under active claim.
+  evidence: .claude/work-queue/assets/WRK-1035/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Review artifacts generated.
+  evidence: .claude/work-queue/assets/WRK-1035/WRK-1035-lifecycle.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Tests/evals completed and recorded.
+  evidence: .claude/work-queue/assets/WRK-1035/test-summary.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Implementation cross-review package complete.
+  evidence: .claude/work-queue/assets/WRK-1035/review-synthesis.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Gate verifier passed.
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Follow-up disposition captured.
+  evidence: .claude/work-queue/assets/WRK-1035/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: New resources captured post execution.
+  evidence: .claude/work-queue/assets/WRK-1035/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Close package reviewed including gate-pass section.
+  evidence: .claude/work-queue/assets/WRK-1035/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not needed in this run.
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting final close operation.
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting merge/sync completion.
+  evidence: scripts/work-queue/archive-item.sh</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 45 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1035-lifecycle.html</code></li><li><code>checkpoint.yaml</code></li><li><code>claim-evidence.yaml</code></li><li><code>evidence/WRK-1040-findings.md</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/audit-WRK-0570.md</code></li><li><code>evidence/audit-WRK-1019.md</code></li><li><code>evidence/audit-WRK-1020.md</code></li><li><code>evidence/audit-WRK-1026.md</code></li><li><code>evidence/audit-WRK-1028.md</code></li><li><code>evidence/audit-WRK-1029.md</code></li><li><code>evidence/audit-WRK-1030.md</code></li><li><code>evidence/audit-WRK-1031.md</code></li><li><code>evidence/audit-WRK-1034.md</code></li><li><code>evidence/audit-WRK-1036.md</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review-claude.md</code></li><li><code>evidence/cross-review-codex.md</code></li><li><code>evidence/cross-review-gemini.md</code></li><li><code>evidence/cross-review-implementation.md</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/session-audit-master.md</code></li><li><code>evidence/session-audit.md</code></li><li><code>evidence/skill-pruning-scorecard.md</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/triage.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-plan-final.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-final-review.html</code></li><li><code>plan-html-review-draft.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review-synthesis.md</code></li><li><code>test-summary.md</code></li></ul></div></details>
+</body>
+</html>

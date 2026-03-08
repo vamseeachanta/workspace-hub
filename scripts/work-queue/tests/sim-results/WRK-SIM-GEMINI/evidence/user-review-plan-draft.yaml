@@ -1,0 +1,7 @@
+stage: 5
+wrk_id: WRK-SIM-GEMINI
+reviewer: sim-user
+confirmed_at: "2026-03-08T15:17:00Z"
+approval_decision: approve_as_is
+review_cycle_id: stage5-sim-gemini
+notes: "Gemini sim Stage 5 approval — near-miss caught by gate check"

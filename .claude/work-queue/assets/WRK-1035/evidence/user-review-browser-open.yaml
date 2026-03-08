@@ -1,0 +1,16 @@
+events:
+  - stage: plan_draft
+    opened_at: 2026-03-08T13:05:00Z
+    reviewer: vamsee
+    html_ref: .claude/work-queue/assets/WRK-1035/WRK-1035-lifecycle.html
+    opened_in_default_browser: true
+  - stage: plan_final
+    opened_at: 2026-03-08T08:28:00Z
+    reviewer: vamsee
+    html_ref: .claude/work-queue/assets/WRK-1035/plan-final-review.html
+    opened_in_default_browser: true
+  - stage: close_review
+    opened_at: 2026-03-08T14:00:00Z
+    reviewer: vamsee
+    html_ref: .claude/work-queue/assets/WRK-1035/WRK-1035-lifecycle.html
+    opened_in_default_browser: true

@@ -34,6 +34,10 @@ publish a machine-readable stage gate policy, and surface the policy table in th
   to Evidence Locations list; add Stage 1 to Required Lifecycle Chain; add no-bypass rule for
   Stage 1 gate
 
+**Route A exemption:** Route A WRKs may set `user-review-capture.yaml` to `n/a: true`
+(configurable in `stage-gate-policy.yaml` per route). The gate verifier accepts `n/a` for
+Route A. Route B/C require explicit approval artifact with `scope_approved: true`.
+
 **Rolling scope intake policy:**
 
 - Scope additions and refinements are handled ad-hoc when prompted by the user — no formal
@@ -99,9 +103,9 @@ and scope-revision flow.
   - Add `stage:` field requirement to all three approval artifact templates (R-10)
   - Add stage-field cross-stage re-use prohibition: "An existing approval artifact with
     `stage: 5` MUST NOT be treated as satisfying Stage 7 or Stage 17"
-  - Add stale-artifact detection rule (R-11 user thought): stage-start must log and ignore
-    artifacts from prior runs found in future-stage directories; never treat stale artifact
-    as satisfying current gate
+  - Add future-stage artifact detection rule (R-11 user thought): stage-start must warn on ANY
+    future-stage artifact presence, regardless of session boundary — simpler and stricter; never
+    treat any future-stage artifact as satisfying the current gate
   - Add scope-revision rule (R-20): if scope substitution accepted during plan review, agent
     must produce a new Stage 4 plan before requesting Stage 5 approval; prior plan is invalidated
   - Add ISO 8601 datetime requirement (R-19): all `reviewed_at` / `confirmed_at` fields must
@@ -118,6 +122,18 @@ and scope-revision flow.
     after `execute.executed_at` — exit 1 with diagnostic if any condition fails
   - Replace inline heredoc Stage 17 bootstrap with copy from canonical template
 
+- `scripts/work-queue/claim-item.sh` — add sentinel value blocking at claim time:
+  - When writing `claim-evidence.yaml`, validate that `session_id` is NOT `"unknown"` and
+    `confirmed_at` is NOT `T00:00:00Z` before writing the artifact
+  - Read `$CLAUDE_SESSION_ID` env variable as primary source for session_id; exit 1 with
+    diagnostic if env var absent rather than writing sentinel value
+  - This closes the gap where sentinel values bypass gap 5 rejection at the earliest point
+
+**Approval artifact bypass field:** All three approval artifact templates support an optional
+`review_bypass_reason` field. When populated by an allowlisted reviewer, the 300s elapsed-time
+check downgrades from FAIL to WARN (not blocking). The verifier logs the bypass reason. This
+field is restricted to allowlisted reviewers only (same allowlist as Stage 7/17 hard gates).
+
 **Tests:**
 
 - `scripts/work-queue/tests/test_retroactive_approval.py`
@@ -127,6 +143,7 @@ and scope-revision flow.
   - T8: `close-item.sh` exits 1 when `confirmed_at` predates `executed_at`
   - T9: Approval artifact template includes `stage:` field for stages 5, 7, 17
   - T10: `user-review-close-template.yaml` renders all required fields correctly
+  - T10b: `claim-item.sh` blocks when `activation.yaml` contains sentinel `session_id: "unknown"`
 
 **Acceptance criteria:**
 
@@ -136,7 +153,9 @@ and scope-revision flow.
 - [ ] `user-review-close-template.yaml` exists at `scripts/work-queue/templates/`
 - [ ] `close-item.sh` shell-blocks (exit 1) on absent/future `executed_at` and timestamp
   ordering violations before invoking the gate verifier
-- [ ] T5–T10 pass
+- [ ] `claim-item.sh` blocks sentinel `session_id: "unknown"` and reads `$CLAUDE_SESSION_ID`
+  as primary source; exits 1 with diagnostic when env var absent
+- [ ] T5–T10 and T10b pass
 
 ---
 
@@ -160,7 +179,9 @@ test for each new check.
     component exactly `T00:00:00Z` in Stage 5/7/17 artifacts
   - Browser-open to approval elapsed time (gap 3): delta between `opened_at` (browser-open
     YAML) and `reviewed_at` (approval YAML) must be ≥ 300s for all human-gate stages
-    (Stages 5, 7, and 17); all violations → FAIL (not WARN)
+    (Stages 5, 7, and 17); all violations → FAIL (not WARN). Exception: if approval artifact
+    contains a populated `review_bypass_reason` field from an allowlisted reviewer, downgrade
+    from FAIL to WARN (non-blocking); verifier logs the bypass reason with reviewer identity
   - Codex keyword check (gap 4): FAIL when "codex" (case-insensitive) absent from
     `review.md` / `cross-review.yaml` / `cross-review-impl.md`
   - Sentinel value rejection (gap 5): FAIL when `activation.yaml` fields `session_id` or
@@ -181,8 +202,10 @@ test for each new check.
     `plan_workstations` or `execution_workstations` absent or empty
   - Reclaim gate n/a (gap 11): emit `n/a` (not WARN) when Stage 18 stage-evidence is `n/a`
     and no reclaim log present; WARN only when reclaim log exists but `reclaim.yaml` absent
-  - Claim artifact canonical path (gap 12): check `<assets_root>/claim-evidence.yaml`; retire
-    legacy WARN exemption — all WRKs after WRK-285 produce PASS or FAIL on claim gate
+  - Claim artifact canonical path (gap 12): 3-state model: (1) `claim-evidence.yaml` at
+    assets root → PASS; (2) `evidence/claim.yaml` → WARN (preserve legacy path, do not break
+    existing archived WRKs); (3) neither present → FAIL. Legacy path warn is not upgraded to
+    FAIL until WRK-1035's migration window (≤ WRK-1035) expires
   - ISO datetime with time component (gap 13): FAIL on date-only values (`2026-03-07`) in
     any approval artifact timestamp field; require full ISO 8601 with UTC offset
   - Stage 1 user-review-capture.yaml presence check (Phase 1 cross-dependency, gap 14-related):
@@ -220,7 +243,8 @@ test for each new check.
   - T26: plan publish predates approval → FAIL
   - T27: workstation fields absent → FAIL (not PASS)
   - T28: Stage 18 n/a + no reclaim log → `n/a` (not WARN)
-  - T29: claim artifact at legacy path → FAIL; at canonical path → PASS
+  - T29: claim artifact at canonical path → PASS; at legacy `evidence/claim.yaml` → WARN;
+    neither present → FAIL (3-state model)
   - T30: date-only timestamp value → FAIL
 
 **Acceptance criteria:**
@@ -230,7 +254,7 @@ test for each new check.
 - [ ] Sentinel value `"unknown"` causes FAIL on activation and claim gates
 - [ ] Workstation gate is hard FAIL (not PASS-with-missing)
 - [ ] Reclaim gate emits `n/a` when Stage 18 is correctly marked `n/a`
-- [ ] Claim artifact canonical path is `claim-evidence.yaml` at assets root
+- [ ] Claim artifact uses 3-state model: canonical path PASS, legacy path WARN, neither FAIL
 - [ ] T11–T30 pass (20 new tests)
 
 ---
@@ -257,8 +281,9 @@ significant architectural change.
     to stdout so the agent does not rely on memory from session open (R-28)
   - For stages with human gate (1, 5, 7, 17): emit explicit WAIT instruction to stdout:
     "STOP — this is a human gate. Do NOT write approval artifact until user responds."
-  - Scan for stale future-stage artifacts (any artifact in stages N+1..N+5 directories
-    written in the current session); emit WARNING log entry for each found
+  - Scan for future-stage artifacts (any artifact present in stages N+1..N+5 directories,
+    regardless of when it was written — no session boundary check); emit WARNING log entry for
+    each found; simpler and stricter than session-boundary detection
   - Regenerate lifecycle HTML at stage entry (`generate-html-review.py --lifecycle WRK-NNN`)
     marking current stage as `in_progress`
 
@@ -288,18 +313,27 @@ significant architectural change.
   - T37: `exit_stage.py` Stage 17 blocks on `decision: pending`
   - T38: `exit_stage.py` Stage 17 passes when all required fields populated
   - T39: `exit_stage.py` blocks `status: done` when done+pending-comment contradiction found
+  - T39b: `exit_stage.py` blocks exit when `checkpoint.yaml` is missing or fails schema
+    validation (invalid/incomplete checkpoint prevents stage exit)
+  - T39c: `/work run` auto-loads `checkpoint.yaml` and passes it to `start_stage.py` when
+    present; stage starts with checkpoint context pre-populated
 
 **Acceptance criteria:**
 
 - [ ] `start_stage.py` prints canonical stage name, prior-stage prerequisite check, stage
   contract text, and WAIT instruction for hard-gate stages on every invocation
-- [ ] `start_stage.py` scans for and logs stale future-stage artifacts
+- [ ] `start_stage.py` scans for and logs future-stage artifacts (session-boundary-agnostic)
 - [ ] `start_stage.py` regenerates lifecycle HTML at stage entry
 - [ ] `exit_stage.py` Stage 17 blocks exit when approval fields empty or `decision: pending`
 - [ ] `exit_stage.py` blocks done+pending-comment contradictions in stage-evidence
 - [ ] `exit_stage.py` regenerates lifecycle HTML at stage exit
+- [ ] `exit_stage.py` validates `checkpoint.yaml` schema before allowing stage exit; invalid
+  or missing checkpoint blocks the exit gate
+- [ ] `/work run` auto-loads `checkpoint.yaml` if present before calling `start_stage.py`
+- [ ] `/wrk-resume` command is repurposed as diagnostic-only: reads checkpoint, prints current
+  stage/next_action/context_summary — no execution side effects
 - [ ] `work-queue-workflow/SKILL.md` mandates `start_stage.py` and `exit_stage.py` calls
-- [ ] T31–T39 pass (9 new tests)
+- [ ] T31–T39 pass, plus T39b and T39c (11 new tests)
 
 ---
 
@@ -311,7 +345,7 @@ across skills using the skill-creator evaluation framework.
 
 **Files to change:**
 
-- `.claude/skills/coordination/workspace/work-queue/SKILL.md` (985 → ≤400 lines):
+- `.claude/skills/coordination/workspace/work-queue/SKILL.md` (985 → ≤250 lines):
   - Sections to KEEP: stage contract table (condensed), routing rules, file placement map,
     cross-reference pointers to process.md and scripts
   - Sections to MIGRATE to `scripts/work-queue/references/work-queue-reference.md`:
@@ -350,9 +384,12 @@ across skills using the skill-creator evaluation framework.
   - Add `version:` field to frontmatter
   - Add step: read and surface `stage-evidence.yaml` on resume (stage status visible to agent)
   - Add step: check stage gate policy context on resume (agent resumes knowing current gate)
-  - Add distinction: `/wrk-resume` = session-level context restore; `/work run` = execute
-    next stage; both complement each other; resume is always a pre-step before `/work run`
-    when resuming a broken session
+  - Repurpose as diagnostic-only: `/wrk-resume` reads `checkpoint.yaml`, prints
+    stage/next_action/context_summary — no execution side effects; it NEVER calls `start_stage.py`
+    or advances state
+  - Add distinction: `/wrk-resume` = diagnostic context read (safe, no side effects);
+    `/work run` = execute next stage (requires explicit intent); resume is always a pre-step
+    before `/work run` when resuming a broken session
 
 **Skill pruning rules:**
   - Redundant content (duplicated verbatim in another authoritative location): delete outright
@@ -372,7 +409,7 @@ across skills using the skill-creator evaluation framework.
 **Tests:**
 
 - `scripts/work-queue/tests/test_skill_line_counts.py`
-  - T40: `work-queue/SKILL.md` ≤ 400 lines
+  - T40: `work-queue/SKILL.md` ≤ 250 lines
   - T41: `work-queue-workflow/SKILL.md` ≤ 200 lines
   - T42: `workflow-gatepass/SKILL.md` ≤ 200 lines
   - T43: `workflow-html/SKILL.md` ≤ 400 lines
@@ -380,7 +417,7 @@ across skills using the skill-creator evaluation framework.
 
 **Acceptance criteria:**
 
-- [ ] `work-queue/SKILL.md` ≤ 400 lines; includes nomenclature table (session/stage/phase/step)
+- [ ] `work-queue/SKILL.md` ≤ 250 lines; includes nomenclature table (session/stage/phase/step)
 - [ ] `work-queue-workflow/SKILL.md` ≤ 200 lines; includes Stage Gate Policy table, hard
   contracts for Stages 1/5/7/17, mandatory script calls, Orchestrator Team Mandate
 - [ ] `workflow-gatepass/SKILL.md` ≤ 200 lines; no-bypass rules updated
@@ -427,6 +464,32 @@ the scope-discovery-first and conditional-pause triggers, and accurately describ
     `scope_approved: true` — exit 1 with diagnostic if absent
   - This closes the earliest spawn vector for teams on WRKs that haven't been scope-approved
 
+**Stage 17 rolling scope convergence guard:**
+
+Rolling scope intake during Stage 17 validation is capped to HIGH-severity violations directly
+caused by WRK-1035's own new gates. LOW/MEDIUM severity violations and pre-existing patterns
+discovered incidentally during live validation are NOT absorbed into WRK-1035 — they are
+captured as new WRK items instead. This prevents infinite scope expansion during the live
+validation phase. Specifically: if `verify-gate-evidence.py` surfaces a pre-existing pattern
+that was not introduced by WRK-1035 gates, record it in `assets/WRK-1035/evidence/deferred-findings.yaml`
+with `disposition: new-wrk` and do not expand WRK-1035 acceptance criteria to cover it.
+
+**7-Day Live Validation Protocol:**
+
+After implementation is merged, WRK-1035 enters a 7-day live validation window before Stage 17
+sign-off. Protocol:
+
+- **Daily check**: run `verify-gate-evidence.py` across all WRKs closed or active in the last
+  24h; check for HIGH-severity violations matching the 10 audit patterns introduced by this WRK
+- **Output**: `assets/WRK-1035/evidence/live-validation/day-N.md` — auto-generated by the
+  comprehensive-learning nightly pipeline on ace-linux-1
+- **Human sign-off**: user reviews `day-N.md` each morning; signs off by posting "Day N clean"
+  in the WRK conversation
+- **Fix path**: if a HIGH-severity violation is found → fix it → day counter resets → restart
+  from Day 1 (partial-day credit is not carried over)
+- **Close condition**: 7 consecutive days of user sign-off with zero HIGH-severity violations
+  and no outstanding new learnings that would change the gate logic
+
 **Tests:**
 
 - `scripts/work-queue/tests/test_spawn_team.py`
@@ -462,6 +525,14 @@ Phase 1 (Stage 1 gate + policy table)
     → Phase 6 (orchestrator team mandate)
         [can be drafted in parallel with Phase 5; merge into SKILL.md in same editing pass]
 ```
+
+**Deployment ordering constraint (hard prerequisite):**
+
+Phase 3 verifier check for `user-review-capture.yaml` MUST be deployed before Phase 1 gate is
+activated. Deployment order: Phase 3 first (add verifier check to `verify-gate-evidence.py`),
+then Phase 1 (create artifact template + update SKILL). Never activate a gate without the
+verifier check already in place — gates without corresponding verifier logic are invisible and
+provide false assurance.
 
 **Parallelisation notes:**
 - Phases 3 Priority 2 and Phase 4 may proceed in parallel (separate files, no conflicts)
@@ -559,6 +630,7 @@ Phase 1 (Stage 1 gate + policy table)
 | T8 | test_retroactive_approval.py | close-item pre-check | `confirmed_at` < `executed_at` | exit 1 |
 | T9 | test_retroactive_approval.py | Approval template | `stage:` field present | PASS |
 | T10 | test_retroactive_approval.py | Close template | All fields render | PASS |
+| T10b | test_retroactive_approval.py | `claim-item.sh` sentinel block | `activation.yaml` has `session_id: "unknown"` | exit 1 |
 | T11 | test_gate_verifier_hardening.py | `check_approval_ordering` | Inverted claim/execute | FAIL |
 | T12 | test_gate_verifier_hardening.py | `check_approval_ordering` | Correct order | PASS |
 | T13 | test_gate_verifier_hardening.py | Midnight UTC rejection | `T00:00:00Z` in Stage 5 | FAIL |
@@ -577,7 +649,7 @@ Phase 1 (Stage 1 gate + policy table)
 | T26 | test_gate_verifier_hardening.py | Publish pre-dates approval | `published_at` < `reviewed_at` | FAIL |
 | T27 | test_gate_verifier_hardening.py | Workstation hard fail | Fields absent | FAIL |
 | T28 | test_gate_verifier_hardening.py | Reclaim n/a | Stage 18 n/a, no reclaim log | `n/a` |
-| T29 | test_gate_verifier_hardening.py | Claim path | Canonical path | PASS; legacy → FAIL |
+| T29 | test_gate_verifier_hardening.py | Claim path | 3-state: canonical → PASS; legacy path → WARN; neither → FAIL | 3-state |
 | T30 | test_gate_verifier_hardening.py | ISO datetime | Date-only value | FAIL |
 | T31 | test_stage_scripts.py | `start_stage.py` | Prints stage name | PASS |
 | T32 | test_stage_scripts.py | `start_stage.py` | Prior-stage artifact missing | FAIL |
@@ -588,7 +660,9 @@ Phase 1 (Stage 1 gate + policy table)
 | T37 | test_stage_scripts.py | `exit_stage.py` Stage 17 | `decision: pending` | exit 1 |
 | T38 | test_stage_scripts.py | `exit_stage.py` Stage 17 | All fields populated | PASS |
 | T39 | test_stage_scripts.py | `exit_stage.py` | Done+pending-comment | FAIL |
-| T40 | test_skill_line_counts.py | `work-queue/SKILL.md` | Line count | ≤ 400 |
+| T39b | test_stage_scripts.py | `exit_stage.py` checkpoint gate | Missing/invalid `checkpoint.yaml` | exit 1 |
+| T39c | test_stage_scripts.py | `/work run` checkpoint load | `checkpoint.yaml` present | Auto-loaded before stage start |
+| T40 | test_skill_line_counts.py | `work-queue/SKILL.md` | Line count | ≤ 250 |
 | T41 | test_skill_line_counts.py | `work-queue-workflow/SKILL.md` | Line count | ≤ 200 |
 | T42 | test_skill_line_counts.py | `workflow-gatepass/SKILL.md` | Line count | ≤ 200 |
 | T43 | test_skill_line_counts.py | `workflow-html/SKILL.md` | Line count | ≤ 400 |
@@ -597,7 +671,7 @@ Phase 1 (Stage 1 gate + policy table)
 | T46 | test_spawn_team.py | `spawn-team.sh` | `scope_approved: true` | exit 0 |
 | T47 | test_spawn_team.py | `spawn-team.sh` | `scope_approved: false` | exit 1 |
 
-**Total: 47 new tests across 5 test files.**
+**Total: 50 new tests across 5 test files** (T1–T47 plus T10b, T39b, T39c).
 
 ### Integration eval (post-implementation, human-run)
 

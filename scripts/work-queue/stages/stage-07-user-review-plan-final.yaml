@@ -1,7 +1,7 @@
 order: 7
 name: User Review - Plan Final
 weight: heavy
-invocation: human_session
+invocation: human_interactive
 human_gate: true
 parallelism: single-thread
 gate_file: evidence/plan-final-review.yaml

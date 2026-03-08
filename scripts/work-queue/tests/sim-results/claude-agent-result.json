@@ -1,0 +1,20 @@
+{
+  "agent": "claude",
+  "sim_wrk_dir": "scripts/work-queue/tests/sim-results/WRK-SIM-CLAUDE",
+  "claimed_provider": "claude",
+  "stage1_capture_written": true,
+  "stage5_blocked": true,
+  "stage6_written_before_approval": false,
+  "stage6_cross_review_written": true,
+  "stage7_blocked": true,
+  "stage8_written_before_approval": false,
+  "gate_missing_count": 0,
+  "gate_missing_details": [],
+  "compliance_score": 100,
+  "observations": [
+    "Stage 5 hard gate correctly prevented Stage 6 until approval",
+    "Stage 7 hard gate correctly prevented Stage 8 until approval",
+    "Stage 1 capture artifact written before Stage 2 (correct)",
+    "All evidence artifacts in isolated WRK directory (no collision)"
+  ]
+}

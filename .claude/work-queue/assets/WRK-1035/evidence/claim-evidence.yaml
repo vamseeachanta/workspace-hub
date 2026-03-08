@@ -1,0 +1,21 @@
+claim_date: "2026-03-08T13:40:47Z"
+wrk_id: "WRK-1035"
+route: "C"
+orchestrator: "claude"
+best_fit_provider: "claude"
+alternate_provider: "codex"
+metadata_version: "1"
+session_owner: "vamsee"
+agent_fit:
+  capability_match: "high"
+  rationale: "Route C complex WRK — Claude orchestrator with Codex/Gemini cross-review"
+blocking_state:
+  blocked: false
+  blocked_by: []
+  notes: ""
+quota_snapshot:
+  timestamp: "2026-03-08T13:40:47Z"
+  provider: "claude"
+  status: "available"
+  pct_remaining: 75
+  source: "config/ai-tools/agent-quota-latest.json"

@@ -167,6 +167,117 @@ def validate_exit(
     return True
 
 
+# ── Checkpoint schema validation ──────────────────────────────────────────────
+
+def _validate_checkpoint(checkpoint_path: str) -> None:
+    """
+    Non-blocking checkpoint.yaml schema validation.
+
+    Warns if any required field is missing or invalid so /work run can
+    auto-resume correctly.  Does NOT exit on failure.
+
+    Required fields:
+      wrk_id          — non-empty string
+      stage           — integer 1-20
+      next_action     — non-empty string
+      context_summary — non-empty string
+      updated_at      — ISO 8601 datetime with time component (not date-only)
+    """
+    import re
+
+    if not os.path.exists(checkpoint_path):
+        return  # No checkpoint yet; nothing to validate
+
+    missing: list[str] = []
+
+    def _read(field: str) -> Optional[str]:
+        return _read_field(checkpoint_path, field)
+
+    # wrk_id — non-empty string
+    wrk_id_val = _read("wrk_id")
+    if not wrk_id_val:
+        missing.append("wrk_id")
+
+    # stage — integer 1-20
+    stage_val = _read("stage") or _read("current_stage")
+    if stage_val is None:
+        missing.append("stage")
+    else:
+        try:
+            stage_int = int(stage_val)
+            if not 1 <= stage_int <= 20:
+                missing.append("stage (out of range 1-20)")
+        except ValueError:
+            missing.append("stage (not an integer)")
+
+    # next_action — non-empty string
+    next_action_val = _read("next_action")
+    if not next_action_val:
+        missing.append("next_action")
+
+    # context_summary — non-empty string (may be a list or scalar)
+    context_val = _read("context_summary")
+    if not context_val:
+        # Check if it appears as a YAML list (next line is "  - ...")
+        try:
+            with open(checkpoint_path) as f:
+                content = f.read()
+            in_ctx = False
+            has_items = False
+            for line in content.splitlines():
+                if line.startswith("context_summary:"):
+                    in_ctx = True
+                    continue
+                if in_ctx:
+                    if line.strip().startswith("- "):
+                        has_items = True
+                        break
+                    if line.strip() and not line.startswith(" "):
+                        break
+            if not has_items:
+                missing.append("context_summary")
+        except OSError:
+            missing.append("context_summary")
+
+    # updated_at — ISO 8601 datetime with time component
+    # Accept checkpointed_at as equivalent (checkpoint.sh uses that name)
+    updated_at_val = _read("updated_at") or _read("checkpointed_at")
+    if not updated_at_val:
+        missing.append("updated_at")
+    else:
+        # Must have a time component: contains 'T' or a space followed by HH:MM
+        has_time = "T" in updated_at_val or bool(
+            re.search(r"\d{4}-\d{2}-\d{2}.+\d{2}:\d{2}", updated_at_val)
+        )
+        if not has_time:
+            missing.append("updated_at (date-only; must include time component)")
+
+    if missing:
+        print(
+            f"\n\u26a0 checkpoint.yaml written but missing required fields: {missing}\n"
+            "  next_action and context_summary are required for /work run to auto-resume correctly",
+            file=sys.stderr,
+        )
+
+
+# ── lifecycle HTML helper ─────────────────────────────────────────────────────
+
+def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
+    """Regenerate lifecycle HTML after stage exit so state is always current."""
+    import subprocess
+    script = os.path.join(repo_root, "scripts", "work-queue", "generate-html-review.py")
+    if not os.path.exists(script):
+        return
+    result = subprocess.run(
+        ["uv", "run", "--no-project", "python", script, wrk_id, "--lifecycle"],
+        capture_output=True, text=True, cwd=repo_root,
+    )
+    if result.returncode == 0:
+        print(f"✔ Lifecycle HTML updated ({wrk_id})")
+    else:
+        print(f"⚠ Lifecycle HTML update failed: {result.stderr.strip()[:120]}", file=sys.stderr)
+
+
 # ── CLI entrypoint ────────────────────────────────────────────────────────────
 
 def _main() -> None:
@@ -236,7 +347,14 @@ def _main() -> None:
     print(f"Stage {stage} exit validated. All artifacts present.")
     if human_gate:
         print(f"GATE PASSED — Stage {stage + 1} unlocked.")
-        print(f"Run: /checkpoint {wrk_id}  →  start new session  →  /wrk-resume {wrk_id}")
+        print(f"Run: /checkpoint {wrk_id}  →  start new session  →  /work run {wrk_id}")
+
+    # Regenerate lifecycle HTML to reflect this stage as done
+    _regenerate_lifecycle_html(wrk_id, repo_root)
+
+    # Validate checkpoint.yaml if present (non-blocking)
+    checkpoint_path = os.path.join(assets_root, wrk_id, "checkpoint.yaml")
+    _validate_checkpoint(checkpoint_path)
 
 
 if __name__ == "__main__":

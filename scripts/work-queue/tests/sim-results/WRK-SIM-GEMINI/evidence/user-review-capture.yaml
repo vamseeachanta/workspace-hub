@@ -1,0 +1,6 @@
+stage: 1
+wrk_id: WRK-SIM-GEMINI
+reviewer: sim-user
+confirmed_at: "2026-03-08T15:02:00Z"
+scope_approved: true
+notes: "Gemini sim — document stage-gate-policy.yaml"

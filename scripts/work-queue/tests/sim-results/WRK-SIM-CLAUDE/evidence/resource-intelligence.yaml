@@ -1,0 +1,5 @@
+wrk_id: WRK-SIM-CLAUDE
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used: [work-queue-workflow, workflow-gatepass, file-taxonomy, coding-style, resource-intelligence]

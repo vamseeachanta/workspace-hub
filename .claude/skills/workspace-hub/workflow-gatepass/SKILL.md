@@ -40,7 +40,8 @@ Operating principle: **humans steer, agents execute**.
 
 ## Required Lifecycle Chain
 
-1. Capture.
+1. Capture. **Stage 1 exit gate:** `user-review-capture.yaml` with `scope_approved: true`
+   required before Stage 2. Route A may use `n/a: true` with non-empty `n/a_reason`.
 2. Resource Intelligence.
 3. Triage.
 4. Plan Draft.
@@ -114,6 +115,8 @@ When documenting next work in markdown artifacts, use a table with an explicit
 
 ## No-Bypass Rules
 
+- Stage 1 exit gate (`user-review-capture.yaml`) may not be bypassed; Route A may use
+  `n/a: true` with non-empty `reason` field (`n/a_reason`). Route B/C: field required.
 - No implementation before WRK item + plan + explicit WRK approval.
 - No user-review acceptance unless the completed HTML was opened in the default browser.
 - No stage-5 completion unless the interactive question-and-decision loop is
@@ -155,6 +158,7 @@ All stage evidence is stored under:
 `assets/WRK-<id>/evidence/`
 
 Recommended files:
+- `user-review-capture.yaml`
 - `resource-intelligence.yaml`
 - `resource-intelligence-update.yaml`
 - `claim.yaml`
@@ -171,7 +175,7 @@ Recommended files:
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/work-queue/start_stage.py WRK-NNN N` | Build stage-N-prompt.md; route task_agent/human_session/chained_agent |
+| `scripts/work-queue/start_stage.py WRK-NNN N` | Build stage-N-prompt.md; route task_agent/human_interactive/chained_agent |
 | `scripts/work-queue/exit_stage.py WRK-NNN N` | Validate stage exit artifacts + human gate; SystemExit(1) on failure |
 | `scripts/work-queue/gate_check.py` | PreToolUse Write hook; blocks evidence writes if upstream gate not met |
 | `scripts/work-queue/verify-gate-evidence.py WRK-NNN` | Check all gates pass before close (canonical authority) |
@@ -190,16 +194,7 @@ reflects this value for cross-provider comparisons.
 
 ## Operational Lessons (WRK-690)
 
-- Gatepass compliance requires **explicit signal emission**, not only artifact
-  presence. Shared scripts must log lifecycle signals as they execute.
-- Inferred signals are **not** measured signals. Only explicit, machine-logged
-  stage signals count toward coverage and gatepass metrics.
-- User-review stages must emit both stage signal and browser-open signal; do not
-  collapse these into one event.
-- Keep close/archive signals distinct (`close_item`, `archive_item`) and also
-  emit terminal aggregation (`close_or_archive`) for weekly reporting.
-- Validate signal logging with both unit tests and shell smoke tests before
-  trusting weekly analytics.
-- In multi-agent parallel repos, out-of-scope side effects from other agents are
-  non-blocking for the active WRK. Do not revert them unless directed; document
-  them in the active WRK under `Out-of-Scope Side Effects`.
+- Explicit signal emission required (not just artifact presence); shared scripts must log lifecycle signals.
+- User-review stages emit both stage signal AND browser-open signal (not collapsed).
+- Keep close/archive signals distinct; emit `close_or_archive` aggregation for weekly reporting.
+- Multi-agent: out-of-scope side effects are non-blocking; document under `Out-of-Scope Side Effects`.

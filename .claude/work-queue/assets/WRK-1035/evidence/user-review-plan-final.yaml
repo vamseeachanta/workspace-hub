@@ -1,0 +1,19 @@
+stage: 7
+reviewer: vamsee
+confirmed_at: 2026-03-08T08:35:00Z
+decision: approved
+plan_ref: specs/wrk/WRK-1035/plan.md
+html_opened: true
+html_path: .claude/work-queue/assets/WRK-1035/plan-final-review.html
+changes_since_stage5:
+  - F1: 300s elapsed-time minimum universally applied
+  - F2: stage-tagged approval artifacts (stage field required)
+  - F3: stale artifact detection on stage entry
+  - F4: claim-item.sh sentinel block for future-stage artifacts
+  - F5: Codex identity check in gate verifier
+  - F6: Route A n/a exemption for Stage 1 exit gate
+  - F7: review_bypass_reason field for 300s false-positive mitigation
+  - F8: /wrk-resume deprecated to diagnostic-only; /work run auto-loads checkpoint
+  - F9: Phase 3 verifier deploys before Phase 1 gate activates
+  - F10: work-queue/SKILL.md target 250 lines (not 400)
+notes: Full plan.md rendered in browser prior to approval (new rule confirmed)

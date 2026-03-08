@@ -1,0 +1,24 @@
+wrk_id: WRK-1035
+stage: 5
+approval_decision: approve_as_is
+review_cycle_id: stage5-2026-03-08
+reviewer: vamsee
+confirmed_at: 2026-03-08T13:12:11Z
+decision: approved
+plan_ref: specs/wrk/WRK-1035/plan.md
+html_opened: true
+walk_through_completed: true
+decisions_logged:
+  - elapsed_time_minimum: 300s for all hard-gate stages (5, 7, 17)
+  - stage_17_wait: seek user for all WRKs; user may bypass with "No WAIT"
+  - skill_pruning: redundant→delete; script-converted→reference note
+  - rolling_scope: ad-hoc when prompted
+  - agent_teams: on-demand TaskCreate default; spawn-team.sh not mandated
+  - stage_scripts: extend start_stage.py/exit_stage.py if scope fits
+  - wrk_1040: completed in parallel; findings integrated
+  - checkpoint_schema: exit_stage.py validates checkpoint; /work run auto-loads; /wrk-resume deprecated to diagnostic-only
+  - wrk_1035_scope: living hardening WRK; 7-day live validation; rolling learnings absorbed
+notes: >
+  All 7 open questions resolved. 18 user thoughts captured. Plan covers 6 phases,
+  47 tests. Stage 17 held open 7 days for live validation with daily analysis.
+  New learnings rolled into WRK-1035 throughout validation window.

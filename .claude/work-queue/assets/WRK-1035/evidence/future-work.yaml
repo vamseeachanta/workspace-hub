@@ -1,0 +1,66 @@
+stage: 15
+captured_at: 2026-03-08T10:50:00Z
+recommendations:
+  - id: FW-01
+    title: WRK-1039 — Gate verifier hardening (14 additional gaps from session audit)
+    description: Blocked by WRK-1035; now unblocked; implement remaining gaps not covered by Phase 3
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: WRK-1039
+
+  - id: FW-02
+    title: WRK-1041 — Lifecycle HTML auto-refresh + /work html command
+    description: on-demand lifecycle HTML regeneration + browser auto-refresh
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: WRK-1041
+
+  - id: FW-03
+    title: Stage 17 live validation — comprehensive-learning nightly integration
+    description: Wire day-N.md generation into comprehensive-learning pipeline on ace-linux-1
+    disposition: existing-updated
+    status: pending
+    captured: true
+
+  - id: FW-04
+    title: human_session → human_interactive rename
+    description: Phase 4 deferred — rename across 20 stage YAMLs + start_stage.py
+    disposition: spun-off-new
+    status: pending
+    captured: true
+
+  - id: FW-05
+    title: WRK-1044 — Deterministic gate enforcement D1–D15 (scripts > LLM prose)
+    description: |
+      15 deterministic checks replacing LLM-only prose enforcement, surfaced by:
+      (1) 3-agent parallel simulation (WRK-SIM-CLAUDE/CODEX/GEMINI) — Gemini near-miss
+          at Stage 5 proved skill prose alone is insufficient;
+      (2) Full skill audit mapping deterministic vs. non-deterministic rules.
+      D1-D15 cover: Stage 1 capture gate, hard gate artifact checks, human allowlist
+      validation, integrated test count range, future-work disposition, stage ledger
+      completeness, browser-open timestamp ordering, route-based cross-review count,
+      sentinel value blocking, P1 finding pause, gate verifier JSON exit code, legal scan.
+      Non-deterministic N1-N5 documented in stage contract YAMLs (lm_judgment_required).
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: WRK-1044
+    source: 3-agent simulation + skill audit (WRK-1035 session 2026-03-08)
+
+  - id: FW-06
+    title: WRK-1045 — Live session compliance audit (1-week holdback from 2026-03-15)
+    description: |
+      Parse real Claude/Codex/Gemini session logs from 2026-03-08 to 2026-03-15 to
+      validate that WRK-1035/1044 hardening holds in live (non-simulated) sessions.
+      Measures: Stage 5/7/17 hard gate adherence, P1 pause triggers, browser-open
+      enforcement, gate verifier --json adoption. Compares live compliance scores
+      against simulation baseline (Claude=100, Codex=100, Gemini=95, avg=98.3%).
+      not_before: 2026-03-15. blocked_by: WRK-1044.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: WRK-1045
+    not_before: "2026-03-15"
+    source: 3-agent simulation follow-up (WRK-1035 session 2026-03-08)

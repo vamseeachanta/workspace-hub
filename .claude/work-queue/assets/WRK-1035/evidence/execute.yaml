@@ -1,0 +1,48 @@
+stage: 10
+executed_at: 2026-03-08T10:30:00Z
+orchestrator: claude
+
+integrated_repo_tests:
+  - name: WRK-1035 gate verifier hardening tests
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_gate_verifier_hardening.py -v"
+    result: passed
+    artifact_ref: scripts/work-queue/tests/test_gate_verifier_hardening.py
+  - name: WRK-1035 retroactive approval prevention tests
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_retroactive_approval.py -v"
+    result: passed
+    artifact_ref: scripts/work-queue/tests/test_retroactive_approval.py
+  - name: WRK-1035 Stage 1 gate tests
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_stage1_gate.py -v"
+    result: passed
+    artifact_ref: scripts/work-queue/tests/test_stage1_gate.py
+  - name: WRK-1035 skill line count enforcement tests
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_skill_line_counts.py -v"
+    result: passed
+    artifact_ref: scripts/work-queue/tests/test_skill_line_counts.py
+  - name: WRK-1035 spawn-team Stage 1 gate tests
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_spawn_team.py -v"
+    result: passed
+    artifact_ref: scripts/work-queue/tests/test_spawn_team.py
+
+key_changes:
+  - scripts/work-queue/stage-gate-policy.yaml (new — Phase 1)
+  - specs/templates/user-review-capture.yaml (new — Phase 1)
+  - scripts/work-queue/templates/ (3 new templates — Phase 2)
+  - scripts/work-queue/close-item.sh (hardened — Phase 2)
+  - scripts/work-queue/claim-item.sh (hardened — Phase 2)
+  - scripts/work-queue/verify-gate-evidence.py (14 new checks — Phase 3)
+  - scripts/work-queue/exit_stage.py (checkpoint validation — Phase 4)
+  - scripts/work-queue/start_stage.py (resume banner — Phase 4)
+  - .claude/skills/coordination/workspace/work-queue/SKILL.md (985→237 lines — Phase 5)
+  - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md (Stage 4/6/Orchestrator — Phase 5/6)
+  - scripts/work-queue/spawn-team.sh (Stage 1 gate — Phase 6)
+
+test_summary:
+  total: 45
+  passed: 45
+  failed: 0

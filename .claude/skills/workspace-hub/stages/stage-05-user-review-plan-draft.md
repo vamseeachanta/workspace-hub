@@ -1,4 +1,4 @@
-Stage 5 · User Review — Plan Draft | human_session | heavy | parallel (Route B/C)
+Stage 5 · User Review — Plan Draft | human_interactive | heavy | parallel (Route B/C)
 Entry: WRK-NNN-lifecycle.html#s1-s4 (sections 1-4 only)
 IMPORTANT: Write evidence files via Write tool only — never Bash echo/sed/cat.
 

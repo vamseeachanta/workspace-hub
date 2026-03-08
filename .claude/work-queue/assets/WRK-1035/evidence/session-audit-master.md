@@ -604,3 +604,22 @@ new learnings. This makes WRK-1035 a living hardening WRK, not a fixed-scope del
 5. **spawn-team.sh / agent teams**: On-demand TaskCreate is sufficient default; TeamCreate/spawn-team.sh mandate removed from Phase 6 scope; confirm if edge case emerges
 6. **Stage-start/end scripts**: Review current `start_stage.py`/`exit_stage.py` scope — extend if makes sense, new scripts only if current scope doesn't fit
 7. **WRK-1040**: Spin off to subagent to complete in parallel; return findings to WRK-1035
+
+---
+
+## Addendum — Checkpoint Schema + /wrk-resume Deprecation (user instruction 2026-03-08)
+
+**Recommended path (Phase 4 candidate — same files already in scope):**
+
+1. **Enforce checkpoint schema** — `exit_stage.py` validates the checkpoint.yaml before
+   allowing stage exit; invalid or missing checkpoint blocks the exit gate.
+2. **`/work run` auto-loads checkpoint** — if a checkpoint.yaml exists for the active WRK,
+   `/work run` loads it automatically before calling `start_stage.py`; no manual resume step.
+3. **Deprecate `/wrk-resume` as an execution command** — it becomes a diagnostic-only tool:
+   "show me checkpoint state without running anything". The resume-before-run pattern is
+   absorbed into `/work run` itself.
+
+**Implication:** `/wrk-resume WRK-NNN` → read-only inspector. `/work run WRK-NNN` → always
+resumes correctly whether or not a checkpoint exists. Simpler mental model for users and agents.
+
+**WRK-1035 Phase 4 scope addition:** add to Phase 4 acceptance criteria.

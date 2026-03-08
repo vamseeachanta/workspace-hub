@@ -1,4 +1,4 @@
-Stage 17 · User Review — Implementation | human_session | heavy | single-thread
+Stage 17 · User Review — Implementation | human_interactive | heavy | single-thread
 Entry: WRK-NNN-lifecycle.html#s10-s16
 IMPORTANT: Write evidence files via Write tool only — never Bash echo/sed/cat.
 Checklist:

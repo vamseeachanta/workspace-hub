@@ -1,7 +1,7 @@
 order: 17
 name: User Review - Implementation
 weight: heavy
-invocation: human_session
+invocation: human_interactive
 human_gate: true
 parallelism: single-thread
 gate_file: evidence/user-review-close.yaml

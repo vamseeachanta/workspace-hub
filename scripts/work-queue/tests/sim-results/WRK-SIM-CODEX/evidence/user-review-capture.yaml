@@ -1,0 +1,6 @@
+stage: 1
+wrk_id: WRK-SIM-CODEX
+reviewer: sim-user
+confirmed_at: "2026-03-08T15:01:00Z"
+scope_approved: true
+notes: "Simulated Stage 1 capture — exit-code tests for gate verifier"

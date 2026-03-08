@@ -1,4 +1,4 @@
-Stage 7 · User Review — Plan Final | human_session | heavy | single-thread
+Stage 7 · User Review — Plan Final | human_interactive | heavy | single-thread
 Entry: WRK-NNN-lifecycle.html#s1-s6, evidence/cross-review.yaml
 IMPORTANT: Write evidence files via Write tool only — never Bash echo/sed/cat.
 Checklist:

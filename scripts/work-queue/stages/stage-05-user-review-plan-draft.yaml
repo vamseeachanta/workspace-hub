@@ -1,7 +1,7 @@
 order: 5
 name: User Review - Plan Draft
 weight: heavy
-invocation: human_session
+invocation: human_interactive
 human_gate: true
 parallelism: parallel
 gate_file: evidence/user-review-plan-draft.yaml
@@ -21,3 +21,12 @@ exit_artifacts:
 blocking_condition: "user-review-plan-draft.yaml missing or decision != approved"
 log_action: plan_draft_reviewed
 context_budget_kb: 16
+lm_judgment_required:
+  - id: N1
+    rule: "Section-by-section plan dialogue was thorough (not drop-and-approve)"
+    why_not_scriptable: "Quality of conversation — no artifact captures dialogue depth"
+    mitigation: "Agent must log each section discussed in user-review-plan-draft.yaml decision_log"
+  - id: N4
+    rule: "Multi-agent plan synthesis (Route B/C) merged all 3 agents views fairly"
+    why_not_scriptable: "Content comparison requires semantic judgment"
+    mitigation: "Synthesis diff table required in plan.md before approval"

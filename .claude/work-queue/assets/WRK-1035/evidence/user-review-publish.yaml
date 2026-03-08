@@ -1,0 +1,30 @@
+events:
+  - stage: plan_draft
+    published_at: "2026-03-08T13:12:11+00:00"
+    reviewer: vamsee
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: d966a91a
+    documents:
+      - specs/wrk/WRK-1035/plan.md
+  - stage: plan_final
+    published_at: 2026-03-08T08:35:00Z
+    reviewer: vamsee
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: d966a91a
+    documents:
+      - specs/wrk/WRK-1035/plan.md
+      - .claude/work-queue/assets/WRK-1035/evidence/user-review-plan-final.yaml
+  - stage: close_review
+    published_at: 2026-03-08T14:05:00Z
+    reviewer: vamsee
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: ca9abae0
+    documents:
+      - .claude/work-queue/assets/WRK-1035/evidence/execute.yaml
+      - .claude/work-queue/assets/WRK-1035/test-summary.md

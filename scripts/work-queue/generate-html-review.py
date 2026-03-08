@@ -1062,6 +1062,11 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
         fm = {}
 
     body = content[fm_match.end():]
+    # For plan-draft / plan-final: use spec_ref (plan.md) as the body when available
+    if artifact_type in {"plan-draft", "plan-final"} and fm.get("spec_ref"):
+        spec_path = Path(workspace_root) / str(fm["spec_ref"])
+        if spec_path.exists():
+            body = spec_path.read_text(encoding="utf-8")
     body = _normalize_close_section_names(body, artifact_type)
     md = markdown.Markdown(extensions=["extra", "codehilite", "tables"])
 
@@ -1273,11 +1278,11 @@ STAGE_NAMES = {
     19: "Close", 20: "Archive",
 }
 STAGE_INVOCATION = {
-    1: "human_session", 2: "chained_agent", 3: "chained_agent", 4: "chained_agent",
-    5: "human_session", 6: "task_agent", 7: "human_session", 8: "chained_agent",
+    1: "human_interactive", 2: "chained_agent", 3: "chained_agent", 4: "chained_agent",
+    5: "human_interactive", 6: "task_agent", 7: "human_interactive", 8: "chained_agent",
     9: "chained_agent", 10: "task_agent", 11: "task_agent", 12: "task_agent",
     13: "task_agent", 14: "task_agent", 15: "task_agent", 16: "task_agent",
-    17: "human_session", 18: "task_agent", 19: "task_agent", 20: "task_agent",
+    17: "human_interactive", 18: "task_agent", 19: "task_agent", 20: "task_agent",
 }
 STAGE_WEIGHT = {
     1: "light", 2: "medium", 3: "light", 4: "medium", 5: "heavy", 6: "medium",
@@ -1328,13 +1333,14 @@ def detect_stage_statuses(
         10: ev_exists("execute.yaml"),
         11: ev_exists("gate-evidence-summary.json"),
         12: ((ad / "variation-test-results.md").exists()
-             or ev_exists("test-results.yaml")),
-        13: (ev_exists("cross-review-impl.md")
+             or (ad / "test-summary.md").exists()
+             or ev_exists("test-results.yaml", "ac-test-matrix.md")),
+        13: (ev_exists("cross-review-impl.md", "cross-review-implementation.md")
              or bool(list(ev.glob("cross-review-implementation*.md")))),
         # S14 Verify Gate Evidence: gate summary AND cross-review-impl must both exist
         # so S14 doesn't prematurely show 'done' when only S11 (artifact gen) is complete
         14: (ev_exists("gate-evidence-summary.json")
-             and (ev_exists("cross-review-impl.md")
+             and (ev_exists("cross-review-impl.md", "cross-review-implementation.md")
                   or bool(list(ev.glob("cross-review-implementation*.md"))))),
         15: ev_exists("future-work.yaml"),
         16: ev_exists("resource-intelligence-update.yaml"),
@@ -1796,7 +1802,7 @@ def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
 
         badge_cls = {"done": "b-done", "active": "b-active", "na": "b-na"}.get(st, "b-pending")
         badge_label = st
-        inv_cls = {"human_session": "b-human", "chained_agent": "b-chain"}.get(inv, "b-agent")
+        inv_cls = {"human_interactive": "b-human", "chained_agent": "b-chain"}.get(inv, "b-agent")
         wt_cls = {"light": "b-light", "medium": "b-medium", "heavy": "b-heavy"}.get(wt, "")
         chevron = "▲" if st == "done" else "▼"
         collapsed_cls = "" if st in ("done", "active") else " collapsed"

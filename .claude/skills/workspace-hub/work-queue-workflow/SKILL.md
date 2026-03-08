@@ -3,7 +3,7 @@ name: work-queue-workflow
 description: >
   Explicit entrypoint skill for the WRK work-queue lifecycle workflow. Points to
   the canonical work-queue process and gatepass enforcement sequence.
-version: 1.6.0
+version: 1.7.0
 updated: 2026-03-08
 category: workspace-hub
 triggers:
@@ -66,6 +66,63 @@ Violations to avoid:
    (Stage 6), do NOT set `plan_reviewed: true`, and do NOT generate plan-final HTML
    until the user explicitly approves in this session. Silence is not approval.**
 
+   ### Stage Gate Policy
+
+   | Stage | Name | Gate Type | Exit Artifact |
+   |-------|------|-----------|---------------|
+   | 1 | Capture | **HARD** | `user-review-capture.yaml` |
+   | 2 | Triage | auto | — (pause on conflict) |
+   | 3 | Resource Intelligence | auto | — (pause on very-high-risk gap) |
+   | 4 | Plan Draft | auto | — (pause on scope change) |
+   | 5 | User Review Plan Draft | **HARD** | `user-review-plan-draft.yaml` |
+   | 6 | Cross Review Plan | auto | — (pause on P1 finding) |
+   | 7 | User Review Plan Final | **HARD** | `plan-final-review.yaml` |
+   | 8–16 | Execution stages | auto | — |
+   | 17 | User Review Close | **HARD** | `user-review-close.yaml` |
+   | 18–20 | Archive stages | auto | — |
+
+   **Hard gate rule (R-25):** Stages 1, 5, 7, 17 are hard gates. Agent must STOP and wait for
+   explicit user approval. Silence is not approval. Do NOT advance until user responds.
+
+   **Auto-proceed rule (R-26):** All other stages proceed automatically UNLESS a
+   `conditional_pause_trigger` is met (see `scripts/work-queue/stage-gate-policy.yaml`).
+
+   **Conditional pause rule (R-27):** If an auto-proceed stage encounters very-high-risk
+   conditions (P1 finding, scope change, blocked dependency), the agent must pause, describe
+   the risk to the user, and await direction before continuing.
+
+   **Stage 1 contract:** After capturing a WRK item, write `assets/WRK-NNN/evidence/user-review-capture.yaml`
+   (template at `specs/templates/user-review-capture.yaml`) with `scope_approved: true` and the
+   user's explicit confirmation. Route A WRKs may set `n/a: true` with `n/a_reason` to bypass.
+   Stage 2 entry is blocked until this artifact is present and valid.
+
+   ### Stage 4 — Plan Draft Creation
+
+   Produce the plan artifact (`specs/wrk/WRK-NNN/plan.md`) before Stage 5 review.
+
+   **Pseudocode requirement** (for non-trivial logic — ≥3 steps or branching):
+   Include function-level pseudocode blocks inside the plan for every significant
+   algorithm, gate check, or decision workflow.
+   Format:
+   ```
+   function_name(inputs) → output  # objective in one line
+     1. step one
+     2. step two (branch: if X then A, else B)
+     3. return result
+   ```
+   N/A allowed with explicit reason: `n/a_reason: "pure-doc WRK — no logic"`
+
+   **Tests/Evals requirement:**
+   List ≥3 test or verification cases in the plan before Stage 5 review.
+   Format: `test_name | scenario (happy/edge/error) | expected result`
+
+   **Plan sections required** (Route B/C minimum):
+   - Mission / What / Why
+   - Phases with numbered steps
+   - Pseudocode blocks for each phase with non-trivial logic
+   - Tests and Evals list
+   - Risks and Out of Scope
+
    ### Stage 5 — Plan Draft (Human-in-Loop Interactive)
 
    **Key Planning Skills — invoke before drafting:**
@@ -74,60 +131,14 @@ Violations to avoid:
    - `superpowers:test-driven-development` → spec tests before pseudocode
    - `workflow-html` → update the single lifecycle HTML after Stage 5 completes
 
-   **Route A (simple) — Single-Agent Interactive Planning:**
-   Agent and human walk the plan section-by-section in a live dialogue — this is NOT
-   a drop-and-approve. Agent drafts, challenges its own assumptions, asks clarifying
-   questions, surfaces tradeoffs. Human responds and guides. No scripts during Stage 5.
-   Human must explicitly approve before plan markdown is saved.
-   Output: single `specs/wrk/WRK-NNN/plan.md`.
-   Cross-review (Stage 6) is a single self-review pass only.
+   **Route A (simple):** Section-by-section dialogue (not drop-and-approve). Agent challenges assumptions, surfaces tradeoffs. Human approves before `specs/wrk/WRK-NNN/plan.md` is saved. Stage 6 = single self-review.
 
-   **Route B/C (medium/complex) — Multi-Agent Interactive Planning:**
+   **Route B/C (medium/complex):** (1) Claude produces draft + opens in browser. (2) `bash scripts/work-queue/stage5-plan-dispatch.sh WRK-NNN` dispatches Codex+Gemini in parallel → `assets/WRK-NNN/plan_{claude,codex,gemini}.md`. (3) Synthesis: Claude presents diff table (topic|Claude|Codex|Gemini|recommended) section-by-section — user decides every conflict before final `plan.md` is written.
 
-   1. **Shared draft first**: Claude produces the initial plan draft (`specs/wrk/WRK-NNN/plan.md`)
-      and opens it in the browser for user review.
-   2. **3-agent interactive planning**: User sends the same draft plan to all three agents
-      (Claude, Codex, Gemini) in separate interactive planning sessions. Each agent walks
-      the plan section-by-section, surfaces gaps, and produces its own refined version.
-      Each agent saves its output as:
-      - `plan_claude.md` → `.claude/work-queue/assets/WRK-NNN/plan_claude.md`
-      - `plan_codex.md` → `.claude/work-queue/assets/WRK-NNN/plan_codex.md`
-      - `plan_gemini.md` → `.claude/work-queue/assets/WRK-NNN/plan_gemini.md`
-   3. **Synthesize interactively with user**: Claude reads all three plans and presents
-      differences and conflicts section-by-section to the user. User decides on each
-      conflict. Claude does NOT auto-merge — every non-trivial difference is surfaced.
-      Synthesis prompt structure:
-      - Read plan_claude.md, plan_codex.md, plan_gemini.md
-      - Present a diff table: topic | Claude | Codex | Gemini | recommended
-      - For each conflict: ask user to decide before writing the merged section
-      - After user approves all sections: write final `specs/wrk/WRK-NNN/plan.md`
-      - Ask for explicit final approval before Stage 6
+   **Pseudocode** (non-trivial logic ≥3 steps): `function_name(inputs) → output  # objective`; N/A+reason allowed for pure-doc WRKs.
+   **Tests/Evals:** ≥3 entries (`what | happy/edge/error | expected`) before implementation; N/A+reason for pure-doc WRKs.
 
-   **Parallel dispatch** (Route B/C — after Claude draft is ready):
-   ```bash
-   bash scripts/work-queue/stage5-plan-dispatch.sh WRK-NNN
-   ```
-   Dispatches Codex and Gemini in parallel (background processes); waits for both.
-   Outputs: `assets/WRK-NNN/plan_codex.md`, `assets/WRK-NNN/plan_gemini.md`.
-   After both land, trigger synthesis session with Claude (interactive with user).
-
-   **Pseudocode requirement** (for non-trivial logic — ≥3 steps or branching):
-   Produce function-level pseudocode before user review.
-   Format: `function_name(inputs) → output  # objective in one line`
-   N/A allowed with explicit reason: `n/a_reason: "pure-doc skill edit — no logic"`
-
-   **Tests/Evals requirement:**
-   List ≥3 test or verification cases before implementation begins.
-   Format: `what | scenario (happy/edge/error) | expected result`
-   N/A allowed with reason for pure-doc WRKs (skill/rule edits).
-
-   **Stage 5 process:**
-   - Open the plan-draft HTML in default browser (`xdg-open`) AND push to origin
-     BEFORE presenting any recommendation. Update lifecycle HTML for Stage 5.
-   - Walk the draft plan section-by-section — this is a dialogue, not a drop.
-   - Ask tough clarifying questions; challenge weak assumptions; surface tradeoffs.
-   - Write `assets/WRK-<id>/evidence/user-review-plan-draft.yaml` with full
-     decision log (scope in/out, AC changes, risks, approve-as-is vs revise).
+   **Stage 5 process:** Open lifecycle HTML (`xdg-open`) + push to origin BEFORE presenting any recommendation. Walk plan section-by-section. Write `evidence/user-review-plan-draft.yaml` with decision log.
 
    **Stage 5 exit checklist — ALL must be true before Stage 6:**
    - [ ] Plan HTML opened in browser (`xdg-open`) and pushed to origin
@@ -145,27 +156,59 @@ Violations to avoid:
    Stage 5→6 enforced by checker (WRK-1017):
    `uv run --no-project python scripts/work-queue/verify-gate-evidence.py --stage5-check WRK-NNN`
 
+   ### Stage 6 — Cross-Review
+
+   Each reviewer (Claude, Codex, Gemini) produces `cross-review-<provider>.md` in
+   `assets/WRK-NNN/evidence/`. Route A: single self-review pass.
+
+   **Pseudocode review checklist** (each cross-review artifact must include): pseudocode present (or N/A+reason); matches ACs; ≤10 sub-steps per step; explicit branching; edge/error paths covered.
+
+   Output format: `## Verdict: APPROVE|MINOR|REQUEST_CHANGES` + `### Pseudocode Review` ([PASS|FAIL] per phase) + `### Findings` ([P1|P2|P3]).
+   Dispatch (Route B/C): `bash scripts/review/cross-review.sh specs/wrk/WRK-NNN/plan.md all`
+
    ### Stage 10 — Work Execution
 
-   **Key Execution Skills — invoke before writing code:**
-   - `file-taxonomy` → understand file placement rules before touching any file
-   - `coding-style` → verify naming, size, and style rules before writing
-   - `superpowers:test-driven-development` → red → green → refactor cycle
-   - `superpowers:systematic-debugging` → invoke on test failure before guessing fixes
-
-   **Execution summary — produce after implementation:**
-   Document in the lifecycle HTML Stage 10 section:
-   - Functionality added or updated (what changed and why)
-   - Key files changed: path, edit type (new/edit/delete), purpose
-   - Key lines or sections edited: include script/code excerpts showing the change
-
-   User-review checkpoints (stages 5/7/17): open lifecycle HTML in default browser,
-   review the Gate-Pass Stage Status section, push to origin before presenting to user.
+   Skills: `file-taxonomy` → `coding-style` → `superpowers:test-driven-development` → `superpowers:systematic-debugging`.
+   Execution summary (in lifecycle HTML S10): what changed + why; key files (path/edit-type/purpose); key lines with excerpts.
+   User-review checkpoints (5/7/17): open lifecycle HTML, review Gate-Pass section, push to origin before presenting to user.
 5. Verify close gate evidence and integrated/repo tests (3-5 pass records).
 6. Close and archive using queue scripts.
 
 Do not use shortened lifecycle variants for execution governance. This entrypoint
 must always resolve to the canonical 20-stage chain.
+
+## Orchestrator Team Pattern
+
+**Hard rule:** No WRK may be fully executed in a single Claude conversation (Stage 1→20).
+Each stage (or closely-related stage group) must be a separate agent task to prevent context rot.
+
+**Default — on-demand TaskCreate:**
+- Orchestrator reads checkpoints, makes decisions, delegates heavy work via TaskCreate
+- Any subtask requiring >3 file reads or >50 lines of output → delegate via TaskCreate
+- Orchestrator accumulates summaries, pass/fail signals — never raw file content
+- Minimum granularity: one agent per stage; sub-stage splits allowed when stage exceeds ~200 output lines
+
+**TeamCreate / spawn-team.sh:**
+- Available for pre-planned parallel-phase execution when the full task set is known upfront
+- NOT mandated — use when parallel spawning gives clear throughput benefit
+- `spawn-team.sh WRK-NNN <slug>` prints a recipe and pre-flight checklist; it is a convenience
+  tool, not a required entrypoint
+- Requires Stage 1 exit gate (`user-review-capture.yaml` with `scope_approved: true`) before
+  team recipe is printed
+
+**Scope-discovery-first rule (R-28):**
+Find N items FIRST, decide grouping, then spawn all agents at once.
+Do NOT incrementally spawn additional agents without first knowing the full scope.
+
+**Conditional pause triggers (R-27) for any auto-proceed stage:**
+routing conflict, scope conflict, risk spike, gate verifier failure,
+evidence contradiction, resource conflict, irreversible state risk.
+When triggered: pause, describe the risk, await direction before continuing.
+
+**Stage 17 rolling scope cap:**
+During live validation, only HIGH-severity violations caused by WRK-NNN's own gates are
+absorbed. Pre-existing patterns → capture as new WRK items in
+`assets/WRK-NNN/evidence/deferred-findings.yaml` (`disposition: new-wrk`).
 
 ## Source of Truth
 
@@ -179,54 +222,39 @@ must always resolve to the canonical 20-stage chain.
 
 ## Version History
 
-- **1.6.0** (2026-03-08): Canonical terminology table added (WRK-1040)
-  - Definitions for WRK session, stage, phase, step, checkpoint, resume added after operating principle
-  - Anti-patterns documented to prevent session/stage/phase confusion
-- **1.5.0** (2026-03-07): Stage 5 dispatch uses batch script — required in skill/contract (WRK-1020)
-  - `scripts/work-queue/stage5-plan-dispatch.sh WRK-NNN` runs Codex+Gemini in parallel
-  - Mirrors cross-review.sh pattern; background processes + wait; outputs to assets/WRK-NNN/
-  - Referenced in SKILL.md, stage-05 micro-skill; dispatch is now a documented requirement
-- **1.4.0** (2026-03-07): Stage 5 synthesis is interactive with user (WRK-1020)
-  - Route B/C synthesis: Claude presents diff table section-by-section; user decides conflicts
-  - No auto-merge — every non-trivial difference surfaced before writing final plan.md
-  - Synthesis prompt structure: diff table (topic|Claude|Codex|Gemini|recommended) per section
-- **1.3.0** (2026-03-07): Stage 5 interactive planning clarified for all routes (WRK-1020)
-  - Route A: single-agent interactive planning (section-by-section dialogue, not drop-and-approve)
-  - Route B/C: 3-step — shared draft → 3 interactive planning sessions → combine
-  - Named artifacts: `plan_claude.md`, `plan_codex.md`, `plan_gemini.md` in assets/WRK-NNN/
-  - Exit checklist updated with artifact naming and merge requirement
-- **1.1.0** (2026-03-07): Stage 5 route-split, pseudocode/tests-evals, key-skills blocks, single-HTML model (WRK-1026)
-  - Route A: human-in-loop inline only; Route B/C: 3-agent independent planning after markdown saved
-  - Pseudocode requirement: function-level, N/A+reason allowed
-  - Tests/Evals requirement: ≥3 entries, N/A+reason for pure-doc WRKs
-  - Stage 5 exit checklist expanded to 9 items; hard stop before cross-review enforced
-  - Stage 10: Key Execution Skills block + execution summary requirement (files, lines, excerpts)
-  - Single lifecycle HTML model: one file per WRK, updated after each stage (workflow-html)
-  - Doc-after-each-stage rule: lifecycle HTML and docs updated immediately, not deferred
-- **1.0.4** (2026-03-07): Contract alignment — link Stage 5 policy to canonical checker (WRK-1017)
-  - Added executable gate reference: `verify-gate-evidence.py --stage5-check`
-  - All four official Stage 6 entrypoints now listed as callers
-- **1.0.3** (2026-03-05): Stage 5 enforced as hard blocking gate (WRK-1017)
-  - Added STOP — BLOCK marker and explicit blocking language for Stage 5
-  - Added Stage 5 checklist (6 items, all required before Stage 6)
-  - Documented `user-review-plan-draft.yaml` as required gate-verification artifact
-- **1.0.2** (2026-03-05): Initial captured version
+- **1.8.0** (2026-03-08): Deliverables section in lifecycle HTML at close; stage-evidence path update rule on close; D/N classification → WRK-1044 (WRK-1035)
+- **1.7.0** (2026-03-08): Stage 4 pseudocode req + Stage 6 cross-review pseudocode checklist; browser-open-before-approve rule (WRK-1035)
+- **1.6.0** (2026-03-08): Canonical terminology table: WRK session/stage/phase/step/checkpoint/resume (WRK-1040)
+- **1.5.0** (2026-03-07): Stage 5 dispatch via `stage5-plan-dispatch.sh`; Codex+Gemini parallel (WRK-1020)
+- **1.4.0** (2026-03-07): Stage 5 synthesis interactive with user — diff table, no auto-merge (WRK-1020)
+- **1.3.0** (2026-03-07): Stage 5 route-split; named plan artifacts; exit checklist expanded to 9 items (WRK-1020)
 
 ## Practical Lessons (WRK-690)
 
-- Stages 8 (Claim), 19 (Close), and 20 (Archive) are **autonomous** — never ask user
-  permission before running `claim-item.sh`, `close-item.sh`, or `archive-item.sh`.
-  Only stages explicitly tagged `HUMAN_SESSION` in the stage contract require a user gate.
-- Always run the workflow through shared scripts (`session.sh`, `work.sh`,
-  `plan.sh`, `execute.sh`, `review.sh`, close/archive scripts) so signal logs are
-  consistent across orchestrators.
-- Refresh weekly gate-analysis before presenting coverage conclusions:
-  1) `build-session-gate-analysis.py` 2) `audit-session-signal-coverage.py`.
-- Treat per-agent coverage gaps as workflow defects even if aggregate metrics pass.
-- In multi-agent parallel execution, keep WRK boundaries strict: unrelated changes
-  from other active agents are non-blocking and must be documented (not reverted)
-  in the current WRK as out-of-scope side effects.
-- Keep AGENTS concise and map-like; use repo-local docs as system-of-record.
+- Stages 8, 19, 20 (Claim/Close/Archive) are **autonomous** — run scripts without asking permission.
+- Use shared scripts (`session.sh`, `work.sh`, `plan.sh`, `execute.sh`, `review.sh`) for consistent signal logs.
+- Per-agent coverage gaps are workflow defects even if aggregate metrics pass.
+- Multi-agent: keep WRK scope strict; out-of-scope side effects are non-blocking — document, don't revert.
 - Favor mechanical enforcement (scripts/linters/tests) over prose-only rules.
-- Throughput policy: fast merges are acceptable only with bounded-risk controls
-  (rollback path, follow-up WRK capture, recurring cleanup/refactor runs).
+
+## Lifecycle HTML — Deliverables Section (WRK-1035)
+
+At Stage 17/18 (Close), regenerate lifecycle HTML with a **Deliverables** section appended at the end:
+
+```
+## Deliverables
+| Artifact | Type | Path |
+|----------|------|------|
+| <file> | <script|skill|test|yaml|...> | <relative path> |
+```
+
+Source: `exit_artifacts` fields across all completed stage contracts + the WRK body's `## What` section.
+Purpose: makes the HTML a self-contained record of what the WRK produced; reviewers see outcomes without reading evidence files.
+Implementation target: `generate-html-review.py --lifecycle` → append deliverables table from `future-work.yaml` + stage-evidence exit_artifacts. (WRK-1041 scope)
+
+## Stage-Evidence Path After Close (WRK-1035)
+
+`stage-evidence.yaml` stage[1/2/9] evidence paths reference `working/WRK-NNN.md`.
+After `close-item.sh` moves the WRK to `done/`, those paths become stale and fail `archive-item.sh`.
+
+**Rule**: When `close-item.sh` moves a WRK from `working/` to `done/`, update any `stage-evidence.yaml` entries whose `evidence:` field references `working/WRK-NNN.md` → `done/WRK-NNN.md`. Add this as a step in `close-item.sh` after the `mv` command. (WRK-1044 D-scope)

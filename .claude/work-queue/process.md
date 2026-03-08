@@ -11,7 +11,7 @@ The work queue tracks features, bugs, and tasks across all workspace-hub reposit
 
 The workspace-hub queue is the master; repo-local WRK copies are deprecated and should not be created.
 
-**Stage invocation types**: `task_agent` (automated), `human_session` (interactive gate, requires explicit approval), `chained_agent` (single agent handles multiple sequential stages). Stages 5, 7, and 17 are human gates; stages 2-4 and 8-9 may be chained.
+**Stage invocation types**: `task_agent` (automated), `human_interactive` (interactive gate, requires explicit approval), `chained_agent` (single agent handles multiple sequential stages). Stages 5, 7, and 17 are human gates; stages 2-4 and 8-9 may be chained.
 
 **Parallelism tiers**: `parallel` (multiple providers simultaneously — stages 5, 6, 13), `parallel-optional` (agent swarm for independent subtasks — stages 10, 12), `single-thread` (all others).
 
@@ -107,7 +107,7 @@ For the full contract fields (weight, parallelism, entry_reads, exit_artifacts, 
 - Only a passed final HTML review may proceed to plan approval and claim.
 
 ### Stage 5. User Review — Plan Draft
-- **Human gate** (`human_session`). Interactive review of plan HTML section-by-section.
+- **Human gate** (`human_interactive`). Interactive review of plan HTML section-by-section.
 - HARD GATE: Stage 6 blocked until `evidence/user-review-plan-draft.yaml` has `decision: approved`.
 - Write evidence via Write tool only — never Bash echo/sed/cat.
 
@@ -117,7 +117,7 @@ For the full contract fields (weight, parallelism, entry_reads, exit_artifacts, 
 - Exit artifact: `evidence/cross-review.yaml`.
 
 ### Stage 7. User Review — Plan Final
-- **Human gate** (`human_session`). Review revised plan after cross-review findings resolved.
+- **Human gate** (`human_interactive`). Review revised plan after cross-review findings resolved.
 - HARD GATE: Stage 8 blocked until `evidence/plan-final-review.yaml` has `decision: passed`.
 - Exit artifact: `evidence/plan-final-review.yaml` with `confirmed_by` + `confirmed_at`.
 
@@ -166,7 +166,7 @@ For the full contract fields (weight, parallelism, entry_reads, exit_artifacts, 
 - Update `evidence/resource-intelligence-update.yaml` with new sources/tools discovered during execution.
 
 ### Stage 17. User Review — Implementation
-- **Human gate** (`human_session`). Review full lifecycle HTML (stages 10-16).
+- **Human gate** (`human_interactive`). Review full lifecycle HTML (stages 10-16).
 - HARD GATE: Stage 18 blocked until `evidence/user-review-close.yaml` has `decision: approved`.
 
 ### Stage 18. Reclaim (formerly Stage 7)
@@ -196,7 +196,7 @@ For the full contract fields (weight, parallelism, entry_reads, exit_artifacts, 
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/work-queue/start_stage.py WRK-NNN N` | Build stage-N-prompt.md; route task_agent/human_session/chained_agent |
+| `scripts/work-queue/start_stage.py WRK-NNN N` | Build stage-N-prompt.md; route task_agent/human_interactive/chained_agent |
 | `scripts/work-queue/exit_stage.py WRK-NNN N` | Validate stage exit artifacts + human gate; SystemExit(1) on failure |
 | `scripts/work-queue/gate_check.py` | PreToolUse hook: block Write if stage gate not met (supplemental; canonical = verify-gate-evidence.py) |
 

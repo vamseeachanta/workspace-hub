@@ -1,12 +1,30 @@
 wrk_id: WRK-1035
-title: "Beef up user-review stages in work-queue-workflow SKILL from recent session learnings"
-checkpointed_at: "2026-03-08T10:24:26Z"
-current_stage: 1
-stage_name: "Capture"
+stage: 9
+stage_name: Execute (pre-work)
+next_action: >
+  Begin Phase 1 implementation: stage gate policy enforcement scripts.
+  Tasks: (1) write tests for start_stage.py/exit_stage.py Stage 1 exit gate,
+  (2) add check_stage1_exit_gate() to verify-gate-evidence.py,
+  (3) add R-25/R-26/R-27 to work-queue/SKILL.md and workflow-gatepass/SKILL.md.
+context_summary: >
+  WRK-1035 Stage 7 hard gate passed (vamsee approved 2026-03-08T08:35Z). Plan has 6
+  phases: (1) stage gate policy, (2) retroactive approval prevention, (3) gate verifier
+  hardening, (4) start/exit_stage.py extension, (5) skill pruning, (6) orchestrator team
+  pattern. 7-day live validation at Stage 17. SKILL updated: v1.7.0 with Stage 4+6 pseudocode.
+  New rule: show plan in browser before approval prompt (Stages 5, 7, 17).
+updated_at: 2026-03-08T09:10:00Z
+key_decisions:
+  elapsed_time_minimum: 300s for all hard-gate stages (5, 7, 17)
+  stage_gate_policy: hard gates at 1,5,7,17; auto-proceed elsewhere; pause on very-high-risk
+  stage_17_live_validation: 7-day hold; daily analysis; rolling scope (HIGH-severity WRK-1035-caused only)
+  wrk_resume_deprecation: /wrk-resume diagnostic-only; /work run auto-loads checkpoint
+  skill_pruning_target: work-queue/SKILL.md 985→250 lines
+  agent_teams: on-demand TaskCreate per stage (not TeamCreate); scope-discovery-first
+  show_plan_before_approval: open browser BEFORE printing approval prompt at Stages 5,7,17
 entry_reads:
-  - .claude/work-queue/assets/WRK-1035/evidence/stage-evidence.yaml
-  - .claude/work-queue/pending/WRK-1035.md
-decisions_this_session: []
-artifacts_written: []
-next_action: ""
-context_summary: []
+  - specs/wrk/WRK-1035/plan.md
+  - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+  - scripts/work-queue/verify-gate-evidence.py
+  - scripts/work-queue/start_stage.py
+  - scripts/work-queue/exit_stage.py
+  - .claude/skills/coordination/workspace/work-queue/SKILL.md

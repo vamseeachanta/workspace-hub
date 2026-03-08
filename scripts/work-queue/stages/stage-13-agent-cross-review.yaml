@@ -15,3 +15,12 @@ exit_artifacts:
 blocking_condition: "review.md missing or not all 3 providers reviewed"
 log_action: implementation_cross_reviewed
 context_budget_kb: 8
+lm_judgment_required:
+  - id: N3
+    rule: "Implementation cross-review finding correctly classified P1 vs P2 vs P3"
+    why_not_scriptable: "Severity is semantic — depends on runtime risk and business impact"
+    mitigation: "Reviewer must justify severity; P1 triggers R-27 conditional pause (D12 script detects [P1] tag)"
+  - id: N5
+    rule: "Scope creep in implementation is material (not incidental side-effect)"
+    why_not_scriptable: "Requires comparing implementation to approved plan intent"
+    mitigation: "Reviewer flags scope_change: true; D12 script detects and pauses"

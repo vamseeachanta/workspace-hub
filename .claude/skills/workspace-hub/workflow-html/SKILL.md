@@ -141,161 +141,26 @@ HTML, regenerated statlessly from evidence files. Completed in WRK-1031.
 
 ## 1. Design System
 
-All WRK HTML artifacts share one design system. Never deviate; never mix styles.
+Warm-parchment design system — all WRK HTML artifacts share it; never deviate. Key tokens:
+`--bg:#f3efe6` (parchment), `--panel:#fffdf8`, `--ink:#172126`, `--accent:#0f766e` (teal),
+`--accent-2:#8a5a2b` (amber), `--good:#166534`, `--warn:#b45309`, `--bad:#b91c1c`.
 
-### 1.1 CSS Custom Properties
+Body: Georgia serif, radial-gradient background. Code: SFMono monospace, 0.2em/0.4em padding.
+Layout primitives: `.hero` (48px padding, gradient), `.card` (border-radius 18px, shadow),
+`.exec-summary` (accent left-border callout), `.split` (2-col CSS grid, 1-col ≤900px).
+Badge classes: `.badge-pass` (green), `.badge-warn` (amber), `.badge-fail` (red), `.badge-info` (blue).
+Stage chip classes: `sc-done` (teal), `sc-active` (amber), `sc-pending` (grey), `sc-na` (light grey).
+Status badge classes: `b-done`, `b-active`, `b-pending`, `b-na`.
 
-```css
-:root {
-  --bg:       #f3efe6;   /* warm parchment page background */
-  --panel:    #fffdf8;   /* card / panel fill */
-  --ink:      #172126;   /* primary text */
-  --muted:    #55636b;   /* secondary text, table cells */
-  --accent:   #0f766e;   /* teal — links, eyebrow, exec-summary border */
-  --accent-2: #8a5a2b;   /* amber — h2 headings */
-  --line:     #d9d0c0;   /* borders, table rules */
-  --shadow:   0 16px 40px rgba(20, 33, 38, 0.08);
-  /* status badge colors */
-  --good:     #166534;   /* PASS / done */
-  --warn:     #b45309;   /* WARN / in-progress */
-  --bad:      #b91c1c;   /* FAIL / blocked */
-}
-```
-
-### 1.2 Typography
-
-```css
-body {
-  font-family: Georgia, "Times New Roman", serif;
-  background: radial-gradient(circle at top, #fffaf0 0, var(--bg) 48%, #ebe5d7 100%);
-  color: var(--ink);
-  line-height: 1.5;
-  margin: 0;
-}
-code {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-  background: rgba(27,31,35,0.05);
-  padding: 0.2em 0.4em;
-  border-radius: 3px;
-}
-```
-
-### 1.3 Layout Primitives
-
-```css
-/* Hero header */
-.hero          { padding: 48px 24px 28px; border-bottom: 1px solid rgba(23,33,38,0.08);
-                 background: linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10)); }
-.hero-inner,
-.content       { max-width: 1180px; margin: 0 auto; }
-
-/* Eyebrow (WRK-ID + artifact type above H1) */
-.eyebrow       { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.72rem;
-                 color: var(--accent); font-weight: 700; }
-
-/* H1 */
-h1             { margin: 10px 0 12px; font-size: clamp(1.75rem,3.2vw,3rem);
-                 line-height: 1.02; }
-
-/* Lede (subtitle below H1) */
-.lede          { max-width: 78ch; color: var(--muted); font-size: 1.05rem; }
-
-/* Content wrapper */
-.content       { padding: 28px 24px 56px; }
-
-/* Card — main container for each major section */
-.card          { background: var(--panel); padding: 26px; border-radius: 18px;
-                 box-shadow: var(--shadow); border: 1px solid var(--line);
-                 margin-bottom: 20px; }
-
-/* Section headings inside cards */
-h2             { border-bottom: 1px solid var(--line); padding-bottom: 0.3em;
-                 margin-top: 24px; color: var(--accent-2); letter-spacing: 0.02em; }
-h3             { color: var(--ink); margin-top: 18px; }
-
-/* Exec-summary callout */
-.exec-summary  { background: linear-gradient(180deg,#fff,#fcf8ef);
-                 border-left: 6px solid var(--accent); padding: 20px;
-                 margin-bottom: 30px; border-radius: 10px; }
-.exec-summary h2 { margin-top: 0; border: none; color: var(--accent); }
-
-/* Context / comparison panels */
-.panel         { background: #fff; padding: 16px; border-radius: 10px;
-                 border: 1px solid var(--line); }
-
-/* Artifact / asset link box */
-.artifact-box  { background: #fff; padding: 16px; border-radius: 10px;
-                 border: 1px solid var(--line); }
-
-/* Tables */
-table          { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.95rem; }
-th, td         { border-top: 1px solid var(--line); padding: 10px 8px;
-                 text-align: left; vertical-align: top; }
-th             { font-weight: 700; text-transform: uppercase;
-                 letter-spacing: 0.06em; font-size: 0.86rem; color: var(--ink); }
-
-/* Muted text inside cards */
-.card p, .card li, .card td, .card th { color: var(--muted); }
-.card strong, .card code              { color: var(--ink); }
-
-/* Two-column responsive split */
-.split         { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-@media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
-
-/* Collapsible h2 — collapsed state */
-h2[data-collapsed="true"]  { margin-bottom: 4px; }
-
-/* Print */
-@media print {
-  body  { background: #fff; }
-  .card { box-shadow: none; border: 1px solid #ccc; }
-  tr, td, th { page-break-inside: avoid; }
-}
-```
-
-### 1.4 Metadata Pills Grid
-
-```css
-.meta          { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr));
-                 gap: 10px; margin: 14px 0 20px; }
-.pill          { background: var(--panel); border: 1px solid var(--line);
-                 border-radius: 10px; padding: 10px 14px; font-size: 0.9rem; }
-.pill strong   { display: block; font-size: 0.72rem; text-transform: uppercase;
-                 letter-spacing: 0.08em; color: var(--accent-2); margin-bottom: 2px; }
-```
-
-### 1.5 Status Badges
-
-```css
-.badge         { display: inline-block; padding: 2px 8px; border-radius: 999px;
-                 font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
-                 letter-spacing: 0.06em; }
-.badge-pass    { background: #dcfce7; color: var(--good); }
-.badge-warn    { background: #fef3c7; color: var(--warn); }
-.badge-fail    { background: #fee2e2; color: var(--bad); }
-.badge-info    { background: #dbeafe; color: #1d4ed8; }
-```
+Full CSS inline in `generate-html-review.py` — do not duplicate or hand-edit HTML output.
 
 ---
 
 ## 2. Interactivity Layer
 
-The lifecycle HTML uses a stage-toggle JavaScript block. Stage sections start expanded when
-`done` or `active`, collapsed when `pending` or `na`. Click the stage header to toggle.
-
-```html
-<script>
-function toggle(header) {
-  const body = header.nextElementSibling;
-  const chevron = header.querySelector('.chevron');
-  const collapsed = body.classList.toggle('collapsed');
-  chevron.textContent = collapsed ? '▼' : '▲';
-}
-</script>
-```
-
-The `toggle()` function is called via `onclick` on each `.stage-header` element. The
-`.stage-body.collapsed` CSS class hides the body content.
+Stage sections collapse/expand via `toggle(header)` JS function called `onclick` on `.stage-header`.
+Done/active stages start expanded; pending/na start collapsed (`.stage-body.collapsed` = `display:none`).
+Chevron shows `▲` (expanded) or `▼` (collapsed). Full JS embedded in generator output.
 
 ---
 
@@ -354,7 +219,7 @@ Each of the 20 stages is a `<section>` block:
       <span class="badge b-done">done</span>         <!-- status badge -->
       <span class="badge b-gate">gate</span>         <!-- only for stages 5, 7, 17 -->
     </div>
-    <div class="stage-smeta">human_session · heavy · GATE</div>
+    <div class="stage-smeta">human_interactive · heavy · GATE</div>
     <span class="chevron">▲</span>
   </div>
   <div class="stage-body">
@@ -527,46 +392,8 @@ Before presenting lifecycle HTML to the user:
 
 ## Version History
 
-- **1.5.0** (2026-03-07): Stateless lifecycle generator + snapshot model removal (WRK-1031)
-  - `generate_lifecycle()` / `--lifecycle` flag: fully regenerates HTML from evidence files on disk
-  - `detect_stage_statuses()`: infers stage status from canonical evidence file presence
-  - `--type` flags (`plan-draft`, `plan-final`, `implementation`, `close`) deprecated and removed
-  - Snapshot files (`plan-draft-review.html`, etc.) deleted from WRK-1028 and WRK-1029
-  - §2 JS replaced with stage-toggle; §3–6 rewritten for lifecycle model
-  - 5 new tests: `test_detect_stage_statuses_*`, `test_generate_lifecycle_*` (63 total pass)
-
-- **1.4.0** (2026-03-07): Single lifecycle HTML model (WRK-1026)
-  - Single `WRK-NNN-lifecycle.html` per WRK, updated at every stage gate (not separate snapshots)
-  - Stage section schema: `<section id="stage-N">` with status badge, stage-body, approval-block
-  - Approval block CSS + gate-checker-readable confirmation fields at line-start
-  - Gate artifact format reference table: expected file name, path, and key fields per gate
-  - Update rule: update HTML after each stage, push to origin — no batch-at-close
-  - Migration path: existing WRKs grandfathered; generator rewrite tracked in WRK-1027
-- **1.3.0** (2026-03-05): Plan-artifact synthesis improvements (WRK-1011)
-  - Added `.panel` primitive for context/comparison sections
-  - `Prompt Start Context` now allows synthesized fallback from WRK title + `## What`
-  - Added first-class `Plan Quality Eval Comparison` section for plan artifacts
-  - Documented evidence-driven source: `assets/WRK-<id>/evidence/plan-quality-eval.yaml`
-  - Reduced hero H1 scale and removed duplicate body H1 when it matches the WRK title
-
-- **1.2.0** (2026-03-05): Gate-pass section integration
-  - Added `Gate-Pass Stage Status` as a required user-review section for stages 5/7/17 artifacts
-  - Requires table + summary view and explicit review before user-facing recommendation
-  - Synced generator behavior to include stage/gate table from `evidence/stage-evidence.yaml`
-
-- **1.1.0** (2026-03-04): Generator enhancements (WRK-1011)
-  - `_suppress_duplicate_generated_sections()`: avoids double Skill Manifest / Test Summary / Cross-Review when body already contains them
-  - `_append_missing_key_sections()`: stubs missing canonical sections as "Not applicable."
-  - `_normalize_close_section_names()`: maps "Future Work" → "Next Work" in close artifacts
-  - `KEY_SECTIONS_BY_ARTIFACT` map with 4 artifact types
-  - Archive subdirectory search (`archive/**/*.md`)
-  - Chip opacity toggle (always visible, dims when expanded; `.section-summary-chip` CSS class)
-  - 29 unit tests pass
-
-- **1.0.0** (2026-03-04): Initial release (WRK-1011)
-  - Warm-parchment design system from WRK-624/WRK-690 reference
-  - 25-section catalog across 4 artifact types
-  - Interactivity: collapsible cards with summary/status chips, auto-TOC, back-to-top, smooth scroll
-  - Status badge system (PASS/WARN/FAIL/INFO)
-  - Generator script integration spec (`render_wrk_html()`)
-  - Mandatory stage wiring (5, 7, 11, 17, 19)
+- **1.5.0** (2026-03-07): Stateless lifecycle generator; `--lifecycle` flag; `detect_stage_statuses()`; `--type` deprecated; snapshot files removed; 63 tests (WRK-1031)
+- **1.4.0** (2026-03-07): Single lifecycle HTML model; stage section schema; approval-block CSS; gate artifact format table (WRK-1026)
+- **1.3.0** (2026-03-05): `.panel` primitive; Plan Quality Eval Comparison section; evidence-driven plan source (WRK-1011)
+- **1.2.0** (2026-03-05): Gate-Pass Stage Status required for stages 5/7/17; stage-evidence.yaml integration
+- **1.1.0** (2026-03-04): `_suppress_duplicate_generated_sections()`; `_append_missing_key_sections()`; 29 unit tests (WRK-1011)

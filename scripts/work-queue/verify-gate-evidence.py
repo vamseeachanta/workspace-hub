@@ -424,6 +424,702 @@ def check_stage17_evidence_gate(
     )
 
 
+def _parse_iso_timestamp(value: str) -> float | None:
+    """Parse an ISO-8601 timestamp string to a POSIX epoch float.
+
+    Returns None if the value cannot be parsed or is date-only.
+    """
+    import datetime
+
+    value = value.strip()
+    if not value:
+        return None
+    # date-only values have no time component — skip them (not a valid timestamp)
+    if re.match(r"^\d{4}-\d{2}-\d{2}$", value):
+        return None
+    # Try multiple formats (including space-separator from YAML datetime auto-parse)
+    for fmt in (
+        "%Y-%m-%dT%H:%M:%SZ",
+        "%Y-%m-%dT%H:%M:%S+00:00",
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%dT%H:%M:%S.%fZ",
+        "%Y-%m-%dT%H:%M:%S.%f+00:00",
+        "%Y-%m-%dT%H:%M:%S.%f",
+        "%Y-%m-%d %H:%M:%S+00:00",
+        "%Y-%m-%d %H:%M:%S",
+    ):
+        try:
+            dt = datetime.datetime.strptime(value, fmt)
+            return dt.timestamp()
+        except ValueError:
+            continue
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Gap 1 — Approval ordering
+# ---------------------------------------------------------------------------
+
+
+def check_approval_ordering(assets_dir: Path, phase: str = "close") -> tuple[bool | None, str]:
+    """Assert chronological ordering of approval timestamps across lifecycle stages.
+
+    Checks:
+        plan-final-review.yaml confirmed_at  <  claim-evidence.yaml claimed_at
+        claim-evidence.yaml claimed_at       <  execute.yaml executed_at          (close only)
+        execute.yaml executed_at             <  user-review-close.yaml confirmed_at (close only)
+
+    Returns:
+        (True,  detail) — ordering correct or not enough data to compare
+        (False, detail) — ordering violation detected
+        (None,  detail) — infrastructure/parse failure
+    """
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot check approval ordering"
+
+    evidence_dir = assets_dir / "evidence"
+
+    def _read_ts(filepath: Path, *fields: str) -> tuple[float | None, str]:
+        if not filepath.exists():
+            return None, ""
+        data, err = load_yaml(filepath)
+        if err or data is None:
+            return None, f"parse error: {err}"
+        for field in fields:
+            val = str(data.get(field, "")).strip()
+            if val:
+                ts = _parse_iso_timestamp(val)
+                if ts is not None:
+                    return ts, val
+        return None, ""
+
+    plan_final_path = evidence_dir / "plan-final-review.yaml"
+    claim_path = assets_dir / "evidence" / "claim-evidence.yaml"
+    if not claim_path.exists():
+        claim_path = assets_dir / "claim.yaml"
+    execute_path = evidence_dir / "execute.yaml"
+    close_path = evidence_dir / "user-review-close.yaml"
+
+    plan_ts, plan_val = _read_ts(plan_final_path, "confirmed_at")
+    claim_ts, claim_val = _read_ts(claim_path, "claimed_at", "confirmed_at")
+    execute_ts, execute_val = _read_ts(execute_path, "executed_at", "completed_at")
+    close_ts, close_val = _read_ts(close_path, "confirmed_at", "reviewed_at")
+
+    comparisons = []
+    if phase == "claim":
+        comparisons = [
+            (plan_ts, plan_val, "plan-final-review.confirmed_at", claim_ts, claim_val, "claim-evidence.claimed_at"),
+        ]
+    else:
+        comparisons = [
+            (plan_ts, plan_val, "plan-final-review.confirmed_at", claim_ts, claim_val, "claim-evidence.claimed_at"),
+            (claim_ts, claim_val, "claim-evidence.claimed_at", execute_ts, execute_val, "execute.executed_at"),
+            (execute_ts, execute_val, "execute.executed_at", close_ts, close_val, "user-review-close.confirmed_at"),
+        ]
+
+    for earlier_ts, earlier_val, earlier_name, later_ts, later_val, later_name in comparisons:
+        if earlier_ts is None or later_ts is None:
+            continue
+        if earlier_ts >= later_ts:
+            return (
+                False,
+                f"timestamp ordering violation: {earlier_name} ({earlier_val}) >= {later_name} ({later_val})",
+            )
+
+    return True, f"approval ordering OK (phase={phase})"
+
+
+# ---------------------------------------------------------------------------
+# Gap 2 — Midnight UTC sentinel detection
+# ---------------------------------------------------------------------------
+
+
+def check_midnight_utc_sentinel(assets_dir: Path) -> tuple[bool | None, str]:
+    """FAIL when any approval artifact has a T00:00:00Z sentinel timestamp.
+
+    Checks: user-review-plan-draft.yaml, plan-final-review.yaml, user-review-close.yaml
+    Fields: reviewed_at, confirmed_at
+    """
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot check midnight UTC sentinel"
+
+    evidence_dir = assets_dir / "evidence"
+    sentinel_pattern = re.compile(r"T00:00:00(Z|\+00:00)$")
+    check_files = [
+        evidence_dir / "user-review-plan-draft.yaml",
+        evidence_dir / "plan-final-review.yaml",
+        evidence_dir / "user-review-close.yaml",
+    ]
+    for filepath in check_files:
+        if not filepath.exists():
+            continue
+        data, err = load_yaml(filepath)
+        if err or data is None:
+            continue
+        for field in ("reviewed_at", "confirmed_at"):
+            val = str(data.get(field, "")).strip()
+            if val and sentinel_pattern.search(val):
+                return False, f"midnight UTC sentinel detected in {filepath.name}.{field}: {val}"
+
+    return True, "no midnight UTC sentinel found"
+
+
+# ---------------------------------------------------------------------------
+# Gap 3 — Browser-open elapsed time
+# ---------------------------------------------------------------------------
+
+
+def check_browser_open_elapsed_time(
+    assets_dir: Path, human_allowlist: set[str]
+) -> tuple[bool | None, str]:
+    """FAIL when approval was confirmed within 300 seconds of browser open.
+
+    For each hard-gate stage, computes delta between browser-open and
+    corresponding approval artifact timestamp.  Short delta (<300s) is only
+    accepted when a bypass reason is provided by an allowlisted reviewer.
+    """
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot check browser open elapsed time"
+
+    browser_file = evidence_file(assets_dir, "user-review-browser-open.yaml", [])
+    if browser_file is None:
+        return True, "user-review-browser-open.yaml absent — skip elapsed check"
+
+    data, err = load_yaml(browser_file)
+    if err or data is None:
+        return None, f"could not parse user-review-browser-open.yaml: {err}"
+
+    events = data.get("events") or []
+    if not isinstance(events, list):
+        return True, "events not a list — skip elapsed check"
+
+    evidence_dir = assets_dir / "evidence"
+
+    # Map stage name → approval artifact path + timestamp fields
+    stage_approval_map = {
+        "plan_draft": (evidence_dir / "user-review-plan-draft.yaml", ("reviewed_at", "confirmed_at")),
+        "plan_final": (evidence_dir / "plan-final-review.yaml", ("confirmed_at",)),
+        "close_review": (evidence_dir / "user-review-close.yaml", ("confirmed_at", "reviewed_at")),
+    }
+
+    for event in events:
+        if not isinstance(event, dict):
+            continue
+        stage = str(event.get("stage", "")).strip().lower()
+        if stage not in stage_approval_map:
+            continue
+
+        opened_at_str = str(event.get("opened_at", "")).strip()
+        opened_ts = _parse_iso_timestamp(opened_at_str)
+        if opened_ts is None:
+            continue
+
+        approval_path, fields = stage_approval_map[stage]
+        if not approval_path.exists():
+            continue
+        approval_data, a_err = load_yaml(approval_path)
+        if a_err or approval_data is None:
+            continue
+
+        approval_ts = None
+        for field in fields:
+            val = str(approval_data.get(field, "")).strip()
+            if val:
+                ts = _parse_iso_timestamp(val)
+                if ts is not None:
+                    approval_ts = ts
+                    break
+
+        if approval_ts is None:
+            continue
+
+        delta = approval_ts - opened_ts
+        if delta < 300:
+            # Check for bypass
+            bypass_reason = str(approval_data.get("review_bypass_reason", "")).strip()
+            reviewer = str(approval_data.get("reviewer", approval_data.get("confirmed_by", ""))).strip()
+            if bypass_reason and reviewer in human_allowlist:
+                return None, f"bypass: {bypass_reason} (stage={stage}, delta={delta:.0f}s)"
+            return (
+                False,
+                f"stage={stage}: approval confirmed only {delta:.0f}s after browser open (min 300s required)",
+            )
+
+    return True, "browser open elapsed time OK"
+
+
+# ---------------------------------------------------------------------------
+# Gap 4 — Codex keyword in cross-review artifacts
+# ---------------------------------------------------------------------------
+
+
+def check_codex_keyword_in_review(assets_dir: Path) -> tuple[bool | None, str]:
+    """FAIL when 'codex' is absent from all cross-review artifacts.
+
+    Looks for review files in assets_dir and assets_dir/evidence/.
+    """
+    evidence_dir = assets_dir / "evidence"
+    candidate_patterns = [
+        "review-synthesis.md",
+        "cross-review.yaml",
+        "cross-review-impl.md",
+    ]
+    review_files: list[Path] = []
+    for pattern in candidate_patterns:
+        for search_dir in (assets_dir, evidence_dir):
+            p = search_dir / pattern
+            if p.exists():
+                review_files.append(p)
+    # Also pick up any cross-review-*.md files
+    for search_dir in (assets_dir, evidence_dir):
+        if search_dir.exists():
+            for p in search_dir.glob("cross-review-*.md"):
+                if p not in review_files:
+                    review_files.append(p)
+
+    if not review_files:
+        return True, "no review files found — skip codex keyword check (handled by cross-review gate)"
+
+    codex_found = False
+    for rf in review_files:
+        try:
+            content = rf.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        if re.search(r"codex", content, re.IGNORECASE):
+            codex_found = True
+            break
+
+    # Also check cross-review.yaml reviewer field
+    if not codex_found:
+        cr_yaml = evidence_dir / "cross-review.yaml"
+        if not cr_yaml.exists():
+            cr_yaml = assets_dir / "cross-review.yaml"
+        if cr_yaml.exists() and yaml is not None:
+            data, _ = load_yaml(cr_yaml)
+            if data:
+                reviewer = str(data.get("reviewer", "")).strip().lower()
+                if reviewer and reviewer != "claude" and "codex" not in reviewer:
+                    pass  # reviewer present but not claude-only — might be ok
+                if reviewer == "claude":
+                    return False, "cross-review.yaml: reviewer=claude only (no codex)"
+
+    if not codex_found:
+        return False, "cross-review artifacts present but none mention 'codex'"
+
+    return True, f"codex keyword found in review artifacts ({len(review_files)} file(s) checked)"
+
+
+# ---------------------------------------------------------------------------
+# Gap 5 — Sentinel values in activation / claim artifacts
+# ---------------------------------------------------------------------------
+
+
+def check_sentinel_values(assets_dir: Path) -> tuple[bool | None, str]:
+    """FAIL when sentinel placeholder values are present in activation or claim artifacts."""
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot check sentinel values"
+
+    errors: list[str] = []
+
+    # Check activation.yaml
+    activation_path = assets_dir / "evidence" / "activation.yaml"
+    if activation_path.exists():
+        data, err = load_yaml(activation_path)
+        if data and not err:
+            if str(data.get("session_id", "")).strip() == "unknown":
+                errors.append("activation.yaml: session_id='unknown'")
+            if str(data.get("orchestrator_agent", "")).strip() == "unknown":
+                errors.append("activation.yaml: orchestrator_agent='unknown'")
+
+    # Check claim-evidence.yaml (canonical path)
+    claim_path = assets_dir / "evidence" / "claim-evidence.yaml"
+    if not claim_path.exists():
+        claim_path = assets_dir / "claim.yaml"
+    if claim_path.exists():
+        data, err = load_yaml(claim_path)
+        if data and not err:
+            if str(data.get("best_fit_provider", "")).strip() == "unknown":
+                errors.append(f"{claim_path.name}: best_fit_provider='unknown'")
+            if str(data.get("session_owner", "")).strip() == "unknown":
+                errors.append(f"{claim_path.name}: session_owner='unknown'")
+            route = str(data.get("route", "")).strip()
+            if route == "":
+                errors.append(f"{claim_path.name}: route='' (empty)")
+            qs = data.get("quota_snapshot") or {}
+            if isinstance(qs, dict):
+                qs_status = str(qs.get("status", "")).strip().lower()
+                pct = qs.get("pct_remaining")
+                if qs_status == "available" and pct is None:
+                    errors.append(f"{claim_path.name}: quota_snapshot.pct_remaining=null when status=available")
+
+    if errors:
+        return False, "; ".join(errors)
+    return True, "no sentinel values found"
+
+
+# ---------------------------------------------------------------------------
+# Gap 6 — Publish commit uniqueness
+# ---------------------------------------------------------------------------
+
+
+def check_publish_commit_uniqueness(assets_dir: Path) -> tuple[bool | None, str]:
+    """FAIL when all three publish stages share the same commit hash (placeholder)."""
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot check publish commit uniqueness"
+
+    publish_file = evidence_file(assets_dir, "user-review-publish.yaml", [])
+    if publish_file is None:
+        return True, "user-review-publish.yaml absent — skip commit uniqueness check"
+
+    data, err = load_yaml(publish_file)
+    if err or data is None:
+        return None, f"could not parse user-review-publish.yaml: {err}"
+
+    events = data.get("events") or []
+    if not isinstance(events, list):
+        return True, "events not a list — skip commit uniqueness check"
+
+    stage_commits: dict[str, str] = {}
+    for event in events:
+        if not isinstance(event, dict):
+            continue
+        stage = str(event.get("stage", "")).strip().lower()
+        commit = str(event.get("commit", "")).strip()
+        if stage and commit:
+            stage_commits[stage] = commit
+
+    pd_commit = stage_commits.get("plan_draft")
+    pf_commit = stage_commits.get("plan_final")
+    cr_commit = stage_commits.get("close_review")
+
+    all_commits = [c for c in (pd_commit, pf_commit, cr_commit) if c]
+    if len(all_commits) < 2:
+        return True, "insufficient commit data — skip uniqueness check"
+
+    if pd_commit and pf_commit and cr_commit and pd_commit == pf_commit == cr_commit:
+        return False, f"all three publish stages share commit {pd_commit!r} (likely placeholder)"
+
+    if pd_commit and pf_commit and pd_commit == pf_commit:
+        return None, f"plan_draft and plan_final share commit {pd_commit!r} — possible placeholder (WARN)"
+
+    return True, f"publish commits appear unique across stages"
+
+
+# ---------------------------------------------------------------------------
+# Gap 7 — Stage evidence paths exist on disk
+# ---------------------------------------------------------------------------
+
+
+def check_stage_evidence_paths(assets_dir: Path, workspace_root: Path) -> tuple[bool | None, str]:
+    """FAIL when stage-evidence.yaml references a path that does not exist on disk."""
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot check stage evidence paths"
+
+    # Find stage-evidence.yaml in evidence/ subdir
+    se_path = assets_dir / "evidence" / "stage-evidence.yaml"
+    if not se_path.exists():
+        return True, "stage-evidence.yaml absent — skip path existence check"
+
+    data, err = load_yaml(se_path)
+    if err or data is None:
+        return None, f"could not parse stage-evidence.yaml: {err}"
+
+    stages = data.get("stages") or []
+    if not isinstance(stages, list):
+        return True, "stages not a list — skip"
+
+    for idx, row in enumerate(stages, start=1):
+        if not isinstance(row, dict):
+            continue
+        ev_ref = str(row.get("evidence", "")).strip()
+        if not ev_ref or ev_ref.lower() in {"n/a", "none", "-", ""}:
+            continue
+        # Only check if it looks like a file path (contains / or .)
+        if "/" not in ev_ref and "." not in ev_ref:
+            continue
+        candidate = abs_path(workspace_root, ev_ref)
+        if not candidate.exists():
+            return False, f"stage-evidence.yaml: stage[{idx}] evidence path not found: {ev_ref}"
+
+    return True, "all stage evidence paths verified"
+
+
+# ---------------------------------------------------------------------------
+# Gap 8 — Done+pending contradiction
+# ---------------------------------------------------------------------------
+
+
+def check_done_pending_contradiction(assets_dir: Path) -> tuple[bool | None, str]:
+    """FAIL when a stage marked 'done' has a comment containing 'pending', 'not started', or 'TBD'."""
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot check done/pending contradiction"
+
+    se_path = assets_dir / "evidence" / "stage-evidence.yaml"
+    if not se_path.exists():
+        return True, "stage-evidence.yaml absent — skip done/pending check"
+
+    data, err = load_yaml(se_path)
+    if err or data is None:
+        return None, f"could not parse stage-evidence.yaml: {err}"
+
+    stages = data.get("stages") or []
+    contradiction_pattern = re.compile(r"\b(pending|not started|TBD)\b", re.IGNORECASE)
+
+    for idx, row in enumerate(stages, start=1):
+        if not isinstance(row, dict):
+            continue
+        status = str(row.get("status", "")).strip().lower()
+        if status != "done":
+            continue
+        comment = str(row.get("comment", "") or row.get("notes", "") or "").strip()
+        if comment and contradiction_pattern.search(comment):
+            return (
+                False,
+                f"stage-evidence.yaml: stage[{idx}] (order={row.get('order', '?')}) "
+                f"status=done but comment contains contradiction: {comment!r}",
+            )
+
+    return True, "no done/pending contradictions found"
+
+
+# ---------------------------------------------------------------------------
+# Gap 9 — Plan publish predates approval
+# ---------------------------------------------------------------------------
+
+
+def check_plan_publish_predates_approval(assets_dir: Path) -> tuple[bool | None, str]:
+    """FAIL when plan_draft was published before user approved the plan draft."""
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot check plan publish ordering"
+
+    evidence_dir = assets_dir / "evidence"
+    publish_file = evidence_file(assets_dir, "user-review-publish.yaml", [])
+    if publish_file is None:
+        return True, "user-review-publish.yaml absent — skip"
+
+    pub_data, pub_err = load_yaml(publish_file)
+    if pub_err or pub_data is None:
+        return None, f"could not parse user-review-publish.yaml: {pub_err}"
+
+    events = pub_data.get("events") or []
+    published_at_str = None
+    for event in events:
+        if not isinstance(event, dict):
+            continue
+        if str(event.get("stage", "")).strip().lower() == "plan_draft":
+            published_at_str = str(event.get("published_at", "")).strip()
+            break
+
+    if not published_at_str:
+        return True, "plan_draft publish event not found — skip"
+
+    published_ts = _parse_iso_timestamp(published_at_str)
+    if published_ts is None:
+        return None, f"cannot parse published_at: {published_at_str!r}"
+
+    review_path = evidence_dir / "user-review-plan-draft.yaml"
+    if not review_path.exists():
+        return True, "user-review-plan-draft.yaml absent — skip ordering check"
+
+    review_data, r_err = load_yaml(review_path)
+    if r_err or review_data is None:
+        return None, f"could not parse user-review-plan-draft.yaml: {r_err}"
+
+    reviewed_at_str = (
+        str(review_data.get("reviewed_at", "")).strip()
+        or str(review_data.get("confirmed_at", "")).strip()
+    )
+    if not reviewed_at_str:
+        return True, "reviewed_at missing in user-review-plan-draft.yaml — skip"
+
+    reviewed_ts = _parse_iso_timestamp(reviewed_at_str)
+    if reviewed_ts is None:
+        return None, f"cannot parse reviewed_at: {reviewed_at_str!r}"
+
+    if published_ts < reviewed_ts:
+        return (
+            False,
+            f"plan_draft published_at ({published_at_str}) < reviewed_at ({reviewed_at_str}): publish predates approval",
+        )
+
+    return True, f"plan publish ordering OK (published={published_at_str}, reviewed={reviewed_at_str})"
+
+
+# ---------------------------------------------------------------------------
+# Gap 10 — Workstation contract (strict variant for close phase)
+# ---------------------------------------------------------------------------
+
+
+def check_workstation_contract_strict(front: str) -> tuple[bool | None, str]:
+    """FAIL (strict) when plan_workstations or execution_workstations are absent.
+
+    Used as a hard gate in the close phase (complements the existing soft gate in run_checks).
+    """
+    missing = []
+    if not has_nonempty_field(front, "plan_workstations"):
+        missing.append("plan_workstations")
+    if not has_nonempty_field(front, "execution_workstations"):
+        missing.append("execution_workstations")
+    if missing:
+        return False, f"workstation contract fields missing in WRK frontmatter: {missing}"
+    return True, "workstation contract fields present"
+
+
+# ---------------------------------------------------------------------------
+# Gap 11 — Reclaim gate n/a
+# ---------------------------------------------------------------------------
+
+
+def check_reclaim_gate_na(assets_dir: Path) -> tuple[bool | None, str]:
+    """Validate Stage 18 reclaim n/a handling.
+
+    - Stage 18 status n/a AND no reclaim.yaml → WARN (expected, no reclaim triggered)
+    - reclaim log exists but reclaim.yaml absent → WARN
+    - reclaim.yaml present → defer to existing check_reclaim_gate
+    """
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot check reclaim gate n/a"
+
+    reclaim_yaml = assets_dir / "evidence" / "reclaim.yaml"
+
+    # Check stage-evidence.yaml for Stage 18 status
+    se_path = assets_dir / "evidence" / "stage-evidence.yaml"
+    stage18_na = False
+    if se_path.exists():
+        data, _ = load_yaml(se_path)
+        if data:
+            stages = data.get("stages") or []
+            for row in stages:
+                if isinstance(row, dict) and row.get("order") == 18:
+                    if str(row.get("status", "")).strip().lower() == "n/a":
+                        stage18_na = True
+                    break
+
+    if stage18_na and not reclaim_yaml.exists():
+        return None, "n/a: Stage 18 is n/a and no reclaim log exists"
+
+    # Check for reclaim log without reclaim.yaml
+    if not reclaim_yaml.exists():
+        # Look for any reclaim log file
+        reclaim_log = assets_dir / "evidence" / "reclaim-log.yaml"
+        if reclaim_log.exists():
+            return None, "reclaim log exists but reclaim.yaml absent — WARN"
+        return None, "reclaim.yaml absent (no reclaim triggered — WARN)"
+
+    # Defer to existing gate logic
+    return check_reclaim_gate(assets_dir)
+
+
+# ---------------------------------------------------------------------------
+# Gap 12 — Claim artifact path (3-state)
+# ---------------------------------------------------------------------------
+
+
+def check_claim_artifact_path(assets_dir: Path) -> tuple[bool | None, str]:
+    """3-state check for claim artifact location.
+
+    PASS:  assets_dir/evidence/claim-evidence.yaml exists (canonical)
+    WARN:  assets_dir/evidence/claim.yaml exists (legacy path)
+    FAIL:  neither exists
+    """
+    canonical = assets_dir / "evidence" / "claim-evidence.yaml"
+    if canonical.exists():
+        return True, f"canonical claim artifact found: {canonical.name}"
+
+    legacy = assets_dir / "evidence" / "claim.yaml"
+    if legacy.exists():
+        return None, f"legacy claim path: {legacy.name} (should be claim-evidence.yaml)"
+
+    return False, "no claim artifact found (expected evidence/claim-evidence.yaml)"
+
+
+# ---------------------------------------------------------------------------
+# Gap 13 — ISO datetime with time component
+# ---------------------------------------------------------------------------
+
+
+def check_iso_datetime_with_time(assets_dir: Path) -> tuple[bool | None, str]:
+    """FAIL when any approval timestamp field contains a date-only value (YYYY-MM-DD)."""
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot check ISO datetime format"
+
+    date_only_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+    timestamp_fields = {"reviewed_at", "confirmed_at", "confirmed"}
+
+    evidence_dir = assets_dir / "evidence"
+    if not evidence_dir.exists():
+        return True, "evidence/ absent — skip ISO datetime check"
+
+    for yaml_file in evidence_dir.glob("*.yaml"):
+        data, err = load_yaml(yaml_file)
+        if err or data is None:
+            continue
+        for field in timestamp_fields:
+            val = str(data.get(field, "")).strip()
+            if val and date_only_pattern.match(val):
+                return (
+                    False,
+                    f"{yaml_file.name}.{field}: date-only value {val!r} — time component required",
+                )
+
+    return True, "all timestamp fields have time components"
+
+
+# ---------------------------------------------------------------------------
+# Gap 14 — Stage 1 capture gate
+# ---------------------------------------------------------------------------
+
+
+def check_stage1_capture_gate(
+    assets_dir: Path, human_allowlist: set[str]
+) -> tuple[bool | None, str]:
+    """Check user-review-capture.yaml for Stage 1 scope approval.
+
+    Route A bypass: if n/a: true and n/a_reason non-empty → PASS.
+    """
+    if yaml is None:
+        return None, "PyYAML unavailable — cannot check stage1 capture gate"
+
+    capture_file = assets_dir / "evidence" / "user-review-capture.yaml"
+    if not capture_file.exists():
+        return False, "user-review-capture.yaml missing"
+
+    data, err = load_yaml(capture_file)
+    if err or data is None:
+        return None, f"could not parse user-review-capture.yaml: {err}"
+
+    # Route A n/a bypass
+    if data.get("n/a") is True or data.get("na") is True:
+        na_reason = str(data.get("n/a_reason", data.get("na_reason", ""))).strip()
+        if na_reason:
+            return True, f"user-review-capture.yaml: n/a bypass — {na_reason}"
+        return False, "user-review-capture.yaml: n/a=true but n/a_reason missing"
+
+    # scope_approved check
+    if data.get("scope_approved") is not True:
+        return False, f"user-review-capture.yaml: scope_approved must be true (found {data.get('scope_approved')!r})"
+
+    # confirmed_at check
+    confirmed_at = str(data.get("confirmed_at", "")).strip()
+    if not confirmed_at:
+        return False, "user-review-capture.yaml: confirmed_at missing"
+    if re.match(r"^\d{4}-\d{2}-\d{2}$", confirmed_at):
+        return False, f"user-review-capture.yaml: confirmed_at is date-only {confirmed_at!r} — time required"
+
+    # reviewer allowlist check
+    reviewer = str(data.get("reviewer", "")).strip()
+    if not reviewer:
+        return False, "user-review-capture.yaml: reviewer missing"
+    if human_allowlist and reviewer not in human_allowlist:
+        return (
+            False,
+            f"user-review-capture.yaml: reviewer='{reviewer}' not in human_authority_allowlist",
+        )
+
+    return True, f"stage1 capture gate passed: reviewer={reviewer}, confirmed_at={confirmed_at}"
+
+
 def check_resource_intelligence_gate(assets_dir: Path) -> tuple[bool | None, str]:
     """Check resource intelligence evidence with canonical + legacy compatibility."""
     ri_file = evidence_file(assets_dir, "resource-intelligence.yaml", ["resource-intelligence-summary.md"])
@@ -1059,6 +1755,72 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
     # Reclaim gate — WARN when absent (no reclaim triggered), FAIL when present but invalid
     reclaim_ok, reclaim_details = check_reclaim_gate(assets_dir)
     gates.append({"name": "Reclaim gate", "ok": reclaim_ok, "warn": reclaim_ok is None, "details": reclaim_details})
+
+    # -----------------------------------------------------------------------
+    # Hardening gates (WRK-1035 Phase 3) — loaded for both claim and close
+    # -----------------------------------------------------------------------
+
+    # Load human_allowlist from stage7-gate-config.yaml (same source as existing stage gates)
+    _s7_config, _ = _load_gate_config(workspace_root, "stage7-gate-config.yaml")
+    _human_allowlist: set[str] = set((_s7_config or {}).get("human_authority_allowlist") or [])
+
+    # Gap 1 — Approval ordering (both phases)
+    ord_ok, ord_details = check_approval_ordering(assets_dir, phase=phase)
+    gates.append({"name": "Approval ordering gate", "ok": bool(ord_ok), "warn": ord_ok is None, "details": ord_details})
+
+    # Gap 2 — Midnight UTC sentinel (both phases)
+    midnight_ok, midnight_details = check_midnight_utc_sentinel(assets_dir)
+    gates.append({"name": "Midnight UTC sentinel gate", "ok": bool(midnight_ok), "warn": midnight_ok is None, "details": midnight_details})
+
+    # Gap 3 — Browser open elapsed time (both phases)
+    elapsed_ok, elapsed_details = check_browser_open_elapsed_time(assets_dir, _human_allowlist)
+    gates.append({"name": "Browser open elapsed time gate", "ok": bool(elapsed_ok), "warn": elapsed_ok is None, "details": elapsed_details})
+
+    # Gap 5 — Sentinel values (both phases)
+    sentinel_ok, sentinel_details = check_sentinel_values(assets_dir)
+    gates.append({"name": "Sentinel values gate", "ok": bool(sentinel_ok), "warn": sentinel_ok is None, "details": sentinel_details})
+
+    # Gap 12 — Claim artifact path (both phases)
+    cap_ok, cap_details = check_claim_artifact_path(assets_dir)
+    gates.append({"name": "Claim artifact path gate", "ok": bool(cap_ok), "warn": cap_ok is None, "details": cap_details})
+
+    # Gap 13 — ISO datetime with time component (both phases)
+    iso_ok, iso_details = check_iso_datetime_with_time(assets_dir)
+    gates.append({"name": "ISO datetime format gate", "ok": bool(iso_ok), "warn": iso_ok is None, "details": iso_details})
+
+    if phase == "claim":
+        # Gap 14 — Stage 1 capture gate (claim phase entry check)
+        s1_ok, s1_details = check_stage1_capture_gate(assets_dir, _human_allowlist)
+        gates.append({"name": "Stage1 capture gate", "ok": bool(s1_ok), "warn": s1_ok is None, "details": s1_details})
+
+    if phase == "close":
+        # Gap 4 — Codex keyword in cross-review artifacts
+        codex_ok, codex_details = check_codex_keyword_in_review(assets_dir)
+        gates.append({"name": "Codex keyword in review gate", "ok": bool(codex_ok), "warn": codex_ok is None, "details": codex_details})
+
+        # Gap 6 — Publish commit uniqueness
+        commit_ok, commit_details = check_publish_commit_uniqueness(assets_dir)
+        gates.append({"name": "Publish commit uniqueness gate", "ok": bool(commit_ok), "warn": commit_ok is None, "details": commit_details})
+
+        # Gap 7 — Stage evidence paths exist on disk
+        sep_ok, sep_details = check_stage_evidence_paths(assets_dir, workspace_root)
+        gates.append({"name": "Stage evidence paths gate", "ok": bool(sep_ok), "warn": sep_ok is None, "details": sep_details})
+
+        # Gap 8 — Done/pending contradiction
+        dp_ok, dp_details = check_done_pending_contradiction(assets_dir)
+        gates.append({"name": "Done/pending contradiction gate", "ok": bool(dp_ok), "warn": dp_ok is None, "details": dp_details})
+
+        # Gap 9 — Plan publish predates approval
+        ppa_ok, ppa_details = check_plan_publish_predates_approval(assets_dir)
+        gates.append({"name": "Plan publish predates approval gate", "ok": bool(ppa_ok), "warn": ppa_ok is None, "details": ppa_details})
+
+        # Gap 10 — Workstation contract (strict)
+        ws_ok, ws_details = check_workstation_contract_strict(front)
+        gates.append({"name": "Workstation contract (strict) gate", "ok": bool(ws_ok), "warn": ws_ok is None, "details": ws_details})
+
+        # Gap 11 — Reclaim gate n/a
+        rna_ok, rna_details = check_reclaim_gate_na(assets_dir)
+        gates.append({"name": "Reclaim n/a gate", "ok": bool(rna_ok), "warn": rna_ok is None, "details": rna_details})
 
     success = True
     print(f"Gate evidence for {wrk_id} (phase={phase}, assets: {assets_dir}):")

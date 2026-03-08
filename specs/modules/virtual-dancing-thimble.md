@@ -1,11 +1,81 @@
-# WRK-1035 — Captured User Thoughts (staging for WRK-1035.md)
+# WRK-1035 — Stage 7 Plan Final Review (HARD GATE)
 
-> **Action on exit**: Append `## User Notes` section to `.claude/work-queue/pending/WRK-1035.md`
-> containing all 15 thoughts below. No other files to edit. No commits required.
+> **Context**: WRK-1035 is at Stage 7. User wants full plan.md rendered in browser plus
+> "Changes Since Stage 5" delta. Hard gate — no Stage 8 until explicit user approval.
+>
+> **New rule confirmed by user**: Always show plan content BEFORE asking for user-review approval.
+> This applies to Stage 5, Stage 7, and Stage 17 hard gates universally.
 
 ---
 
-## Captured thoughts — 2026-03-08
+## Stage 7 Execution Plan
+
+### Root cause found
+`generate_review()` reads the WRK body (`.claude/work-queue/pending/WRK-1035.md`),
+NOT the plan.md at `specs/wrk/WRK-1035/plan.md`. So plan sections don't appear in HTML.
+
+### Fix — one-line change to `generate_review()` in `scripts/work-queue/generate-html-review.py`
+
+After line 1060 (where `body = content[fm_match.end():]` is assigned), add:
+```python
+# For plan-final: if spec_ref exists, render the spec file as the main body
+if artifact_type in {"plan-draft", "plan-final"} and fm.get("spec_ref"):
+    spec_path = Path(workspace_root) / fm["spec_ref"]
+    if spec_path.exists():
+        body = spec_path.read_text(encoding="utf-8")
+```
+
+This makes plan-final (and plan-draft) render the plan.md file instead of the WRK body.
+
+Critical file: `scripts/work-queue/generate-html-review.py` lines ~1058–1064
+
+### Step 1 — Patch generate-html-review.py
+Insert 4 lines after `body = content[fm_match.end():]` assignment (line ~1060).
+
+### Step 2 — Verify WRK-1035.md has spec_ref
+Check `spec_ref:` field in WRK-1035.md frontmatter → should be `specs/wrk/WRK-1035/plan.md`
+
+### Step 3 — Re-generate plan-final HTML
+```bash
+uv run --no-project python - <<'PY'
+# (call generate_review with patched module)
+PY
+```
+Output: `.claude/work-queue/assets/WRK-1035/plan-final-review.html`
+
+HTML will render:
+- Full plan.md body (6 phases, 50 tests, 722 lines)
+- "Changes Since Stage 5" section (F1–F10 P2 fixes listed manually since no publish.yaml)
+
+### Step 4 — Open in browser + print gate prompt
+```bash
+xdg-open .claude/work-queue/assets/WRK-1035/plan-final-review.html
+```
+
+Then print:
+```
+═══════════════════════════════════════════════════════
+  WRK-1035 · Stage 7 · USER REVIEW — PLAN FINAL
+  HARD GATE: explicit approval required to proceed
+  Review the browser tab, then reply:
+    APPROVE  — to proceed to Stage 8 (Claim)
+    REJECT   — to iterate on the plan
+═══════════════════════════════════════════════════════
+```
+
+### Step 4 — Wait for user response
+Do NOT write any Stage 8 artifacts until user says APPROVE.
+
+### New universal rule (user confirmed 2026-03-08)
+> **Show plan content in browser BEFORE asking for approval at Stages 5, 7, 17.**
+> The approval prompt must follow the browser-open, never precede it.
+> Add this to WRK-1035 Phase 5 skill pruning work + Stage 7 contract.
+
+---
+
+## Original plan file content (stale — superseded by WRK-1035.md)
+
+### Captured thoughts — 2026-03-08
 
 ### 1. Stage jumping problem
 Work item stages are jumping ahead into future stages without satisfying current stage gates.

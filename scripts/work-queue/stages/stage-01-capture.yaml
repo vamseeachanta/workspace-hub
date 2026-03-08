@@ -1,7 +1,7 @@
 order: 1
 name: Capture
 weight: light
-invocation: human_session
+invocation: human_interactive
 human_gate: false
 parallelism: single-thread
 skills_required:

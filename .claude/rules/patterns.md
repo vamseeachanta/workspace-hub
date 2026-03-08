@@ -2,6 +2,21 @@
 
 > Use patterns intentionally. Prefer simplicity over cleverness.
 
+## Scripts Over LLM Judgment (Hard Rule)
+
+**Deterministic scripts and code are superior to LLM prose.**
+
+- When a script exists for a decision, gate check, or enforcement action → **call the script**
+- Never substitute LLM reasoning where a verifiable, repeatable script can run
+- LLM judgment is only the fallback when no script exists yet
+- Corollary: if a rule matters, encode it in a script/hook — skill prose is context-rot prone
+
+Examples:
+- Gate verification → `verify-gate-evidence.py WRK-NNN` (not LLM judgment)
+- Lifecycle HTML → `generate-html-review.py WRK-NNN --lifecycle` (not ad-hoc generation)
+- Stage exit → `exit_stage.py WRK-NNN N` (not LLM checklist)
+- Legal scan → `legal-sanity-scan.sh` (not LLM review)
+
 ## Allowed Patterns
 
 ### Dependency Injection

@@ -15,3 +15,12 @@ exit_artifacts:
 blocking_condition: "cross-review.yaml missing or not all 3 providers reviewed"
 log_action: cross_review_complete
 context_budget_kb: 8
+lm_judgment_required:
+  - id: N3
+    rule: "Cross-review finding correctly classified as P1 vs P2 vs P3"
+    why_not_scriptable: "Severity of a finding is semantic — depends on business impact"
+    mitigation: "Reviewer must justify severity in finding rationale field"
+  - id: N5
+    rule: "Scope change identified in cross-review is material (not cosmetic)"
+    why_not_scriptable: "Materiality judgment requires understanding of WRK intent"
+    mitigation: "Reviewer must flag scope_change: true with description if detected; triggers R-27 pause"

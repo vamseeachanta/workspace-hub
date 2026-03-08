@@ -1,4 +1,4 @@
-Stage 1 · Capture | human_session | light | single-thread
+Stage 1 · Capture | human_interactive | light | single-thread
 Entry: nothing (human initiates)
 IMPORTANT: Write evidence files via Write tool only — never Bash echo/sed/cat.
 Checklist:
