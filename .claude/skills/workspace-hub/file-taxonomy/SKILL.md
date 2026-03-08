@@ -232,6 +232,18 @@ orchestrator/   → cross-review invocation logs (sparse — only on cross-revie
 derived state   → processed analysis output (git-tracked, crosses machines)
 ```
 
+### Verbose Output Setting — Does NOT Affect Logs
+
+**Verified 2026-03-08 (live test):**
+
+- `--verbose` / "Verbose Output" in the Claude Code config dialog is a **terminal display flag only** — it controls what you see in the terminal, not what gets written to logs.
+- There is **no `verbose` field in `settings.json`**; the setting is CLI-only and not persisted.
+- `logs/orchestrator/claude/session_YYYYMMDD.jsonl` is written by `session-logger.sh` hook (pre/post every tool call) — **completely independent of verbose**.
+- `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl` (~296K per session) is written by codex CLI itself — also independent of Claude Code verbose.
+- **Comprehensive-learning signal quality is unaffected by verbose=false.**
+
+Test method: ran `scripts/review/submit-to-codex.sh` before/after; codex session file count grew 3→4, Claude hook log grew 694→700 lines, both independent of verbose flag.
+
 ### acma-ansys05 (Windows)
 
 Paths follow the same convention but under `%USERPROFILE%` / `C:\Users\<user>\`:

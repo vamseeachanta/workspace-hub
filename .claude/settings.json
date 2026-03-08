@@ -154,6 +154,11 @@
             "type": "command",
             "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/emit-session-quality-signals.sh\" 2>/dev/null || true",
             "statusMessage": "Emitting session quality signals"
+          },
+          {
+            "type": "command",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/scripts/hooks/tidy-agent-teams.sh\" 2>/dev/null || true",
+            "statusMessage": "Tidying stale agent teams"
           }
         ]
       }
