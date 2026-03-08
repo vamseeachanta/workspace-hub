@@ -1,0 +1,47 @@
+wrk_id: WRK-1020
+stage: resource_intelligence
+generated_at: "2026-03-07T23:15:00Z"
+completion_status: continue_to_planning
+
+queue_state:
+  total_active: 459
+  harness_pct: 9.8
+  note: "WRK-1019 (repo-portfolio-steering) archived — L2 provider activity reading works; L3 capability_signals field present but empty"
+
+existing_infrastructure:
+  - path: scripts/skills/repo-portfolio-steering/compute-balance.py
+    status: committed
+    note: "L1+L2 reader — reads INDEX.md + portfolio-signals.yaml; does NOT write signals"
+  - path: .claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md
+    status: committed
+    note: "Orchestration skill; Layer 3 display deferred pending WRK-1020 cron"
+  - path: scripts/cron/comprehensive-learning-nightly.sh
+    status: committed
+    note: "8-step nightly script; integration point is before Step 3 (pipeline exec)"
+  - path: .claude/work-queue/archive/2026-03/
+    status: active
+    note: "10 archived WRK items with orchestrator+category frontmatter for L2 parsing"
+
+dependency_check:
+  - WRK-1019: archived ✓
+  - portfolio-signals.yaml schema: defined in WRK-1019 plan.md ✓
+  - gemini CLI: available on ace-linux-1 (version 0.27.3)
+  - PyYAML: available (preflight in comprehensive-learning-nightly.sh confirms)
+
+open_questions:
+  - id: Q1
+    question: "For L3 capability research, should gemini query be run on every nightly run or throttled (e.g., weekly)?"
+    default: "Daily — cheap, idempotent; dedup by date field in capability_signals"
+  - id: Q2
+    question: "Should portfolio-signals.yaml be committed to git (auditable history) or remain a gitignored state file?"
+    default: "Gitignored — it's written by cron; committing would create noisy daily churn"
+    note: ".gitignore already ignores .claude/state/ by default"
+  - id: Q3
+    question: "Lookback window: 7 days (WRK body) vs 30 days (WRK-1019 plan)?"
+    default: "30 days — more stable signal; 7-day window too volatile with low WRK throughput"
+
+skills:
+  core_used:
+    - work-queue
+    - repo-portfolio-steering
+    - comprehensive-learning

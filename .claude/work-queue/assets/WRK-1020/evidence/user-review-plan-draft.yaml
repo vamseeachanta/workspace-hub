@@ -1,0 +1,30 @@
+wrk_id: WRK-1020
+stage: user_review_plan_draft
+reviewer: user
+reviewed_at: "2026-03-07T23:20:00Z"
+decision: approved
+
+decisions:
+  - id: D-01
+    question: L3 prompt scope
+    decision: "Dual-mode: harness/general categories → general AI capability news; engineering category → engineering computation (subsea, structural, drilling, reservoir)"
+    impact: L3 gemini query will vary by target category context
+
+  - id: D-02
+    question: L3 fail strategy
+    decision: "carry_forward — preserve existing capability_signals from current file when gemini query fails"
+    impact: No data loss on gemini outage; signals accumulate over time
+
+  - id: D-03
+    question: Integration placement in nightly
+    decision: "Step 3a — before AI readiness checks; || true (non-blocking)"
+    impact: Runs early in nightly; failure does not block subsequent steps
+
+scope_confirmed:
+  - "update-portfolio-signals.sh: L2 provider activity + L3 capability research"
+  - "comprehensive-learning-nightly.sh: Step 3a integration"
+  - "7 TDD tests in tests/skills/test_update_portfolio_signals.py"
+  - "30-day lookback, portfolio-signals.yaml gitignored"
+
+plan_artifacts_updated: true
+html_opened: true
