@@ -3,7 +3,7 @@ name: work-queue-workflow
 description: >
   Explicit entrypoint skill for the WRK work-queue lifecycle workflow. Points to
   the canonical work-queue process and gatepass enforcement sequence.
-version: 1.2.0
+version: 1.3.0
 updated: 2026-03-07
 category: workspace-hub
 triggers:
@@ -56,14 +56,32 @@ Every stage should explicitly track whether a human decision is required.
    - `superpowers:test-driven-development` → spec tests before pseudocode
    - `workflow-html` → update the single lifecycle HTML after Stage 5 completes
 
-   **Route A (simple):** Human-in-loop interactive only. Agent drafts, human reviews
-   inline. No scripts during Stage 5. Human must explicitly approve before markdown is
-   saved. Cross-review (Stage 6) is a single self-review pass only.
+   **Route A (simple) — Single-Agent Interactive Planning:**
+   Agent and human walk the plan section-by-section in a live dialogue — this is NOT
+   a drop-and-approve. Agent drafts, challenges its own assumptions, asks clarifying
+   questions, surfaces tradeoffs. Human responds and guides. No scripts during Stage 5.
+   Human must explicitly approve before plan markdown is saved.
+   Output: single `specs/wrk/WRK-NNN/plan.md`.
+   Cross-review (Stage 6) is a single self-review pass only.
 
-   **Route B/C (medium/complex):** Same human-in-loop interactive as Route A for
-   Stage 5 itself. After the user finishes and plan markdown is saved, ALL THREE agents
-   (Claude, Codex, Gemini) independently draft their own plan version. Synthesis of all
-   three outputs is produced and saved before proceeding to Stage 6 cross-review.
+   **Route B/C (medium/complex) — Multi-Agent Interactive Planning:**
+
+   1. **Shared draft first**: Claude produces the initial plan draft (`specs/wrk/WRK-NNN/plan.md`)
+      and opens it in the browser for user review.
+   2. **3-agent interactive planning**: User sends the same draft plan to all three agents
+      (Claude, Codex, Gemini) in separate interactive planning sessions. Each agent walks
+      the plan section-by-section, surfaces gaps, and produces its own refined version.
+      Each agent saves its output as:
+      - `plan_claude.md` → `.claude/work-queue/assets/WRK-NNN/plan_claude.md`
+      - `plan_codex.md` → `.claude/work-queue/assets/WRK-NNN/plan_codex.md`
+      - `plan_gemini.md` → `.claude/work-queue/assets/WRK-NNN/plan_gemini.md`
+   3. **Combine**: Claude synthesizes all three into a single final `specs/wrk/WRK-NNN/plan.md`,
+      flagging any conflicts to the user for resolution before Stage 6.
+
+   **Prompts for parallel dispatch** (send to Codex + Gemini after Claude draft is ready):
+   - Share the WRK mission, AC, constraints, and Claude draft path
+   - Ask each to draft independently to `plan_<agent>.md`
+   - After both respond, send synthesis prompt to Claude
 
    **Pseudocode requirement** (for non-trivial logic — ≥3 steps or branching):
    Produce function-level pseudocode before user review.
@@ -92,7 +110,9 @@ Every stage should explicitly track whether a human decision is required.
    - [ ] Plan artifacts updated from user decisions
    - [ ] Pseudocode produced for all non-trivial logic (or N/A with reason)
    - [ ] Tests/Evals list written (≥3 entries or N/A with reason) and reviewed
-   - [ ] (Route B/C only) All 3 agents independently drafted plan; synthesis saved
+   - [ ] (Route B/C only) All 3 agents completed interactive planning sessions;
+         `plan_claude.md`, `plan_codex.md`, `plan_gemini.md` saved in assets/WRK-NNN/;
+         synthesis merged into final `specs/wrk/WRK-NNN/plan.md`; conflicts resolved
 
    Stage 5→6 enforced by checker (WRK-1017):
    `uv run --no-project python scripts/work-queue/verify-gate-evidence.py --stage5-check WRK-NNN`
@@ -131,6 +151,11 @@ must always resolve to the canonical 20-stage chain.
 
 ## Version History
 
+- **1.3.0** (2026-03-07): Stage 5 interactive planning clarified for all routes (WRK-1020)
+  - Route A: single-agent interactive planning (section-by-section dialogue, not drop-and-approve)
+  - Route B/C: 3-step — shared draft → 3 interactive planning sessions → combine
+  - Named artifacts: `plan_claude.md`, `plan_codex.md`, `plan_gemini.md` in assets/WRK-NNN/
+  - Exit checklist updated with artifact naming and merge requirement
 - **1.1.0** (2026-03-07): Stage 5 route-split, pseudocode/tests-evals, key-skills blocks, single-HTML model (WRK-1026)
   - Route A: human-in-loop inline only; Route B/C: 3-agent independent planning after markdown saved
   - Pseudocode requirement: function-level, N/A+reason allowed
