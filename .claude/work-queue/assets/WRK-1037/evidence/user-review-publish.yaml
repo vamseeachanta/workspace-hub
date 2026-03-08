@@ -1,0 +1,32 @@
+wrk_id: WRK-1037
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 52948b50
+    documents:
+      - .claude/work-queue/assets/WRK-1037/WRK-1037-lifecycle.html
+    published_at: "2026-03-08T21:32:00Z"
+    reviewer: vamsee
+    close_review: plan_draft
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 9c6a3aef
+    documents:
+      - .claude/work-queue/assets/WRK-1037/WRK-1037-lifecycle.html
+    published_at: "2026-03-08T21:37:00Z"
+    reviewer: vamsee
+    close_review: plan_final
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: dd3b49b1
+    documents:
+      - .claude/work-queue/assets/WRK-1037/WRK-1037-lifecycle.html
+    published_at: "2026-03-08T22:16:00Z"
+    reviewer: vamsee
+    close_review: close_review

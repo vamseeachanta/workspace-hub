@@ -1,0 +1,9 @@
+wrk_id: WRK-1037
+stage: 5
+approval_decision: approve_as_is
+review_cycle_id: stage5-2026-03-08
+reviewer: vamsee
+confirmed_at: "2026-03-08T21:30:00Z"
+notes: >
+  Route A item. Plan reviewed inline in WRK file; inline plan approved.
+  Two P1 hardening items: uv readiness probe + Codex-CLI-missing gate.

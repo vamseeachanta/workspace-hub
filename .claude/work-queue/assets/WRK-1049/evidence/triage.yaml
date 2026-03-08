@@ -1,0 +1,12 @@
+wrk_id: WRK-1049
+route: B
+priority: high
+complexity: simple
+workstations:
+  plan: [ace-linux-1]
+  execution: [ace-linux-1]
+category: harness
+subcategory: work-queue
+notes: >
+  Three targeted fixes: skill prose edit, 5-line start_stage.py addition,
+  3-line claim-item.sh guard. Route B (standard plan + test).

@@ -1,0 +1,6 @@
+wrk_id: WRK-1037
+updated_at: "2026-03-08T22:10:00Z"
+no_additions_rationale: >
+  WRK-1037 modified scripts/review/submit-to-codex.sh and cross-review.sh
+  (both already tracked in resource-intelligence.yaml). No new dependencies added.
+additions: []

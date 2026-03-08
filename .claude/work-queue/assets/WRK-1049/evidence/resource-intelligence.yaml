@@ -1,0 +1,37 @@
+wrk_id: WRK-1049
+generated_at: "2026-03-08T22:20:00Z"
+generated_by: orchestrator
+completion_status: continue_to_planning
+
+primary_files:
+  - path: .claude/skills/coordination/workspace/work-queue/actions/process.md
+    role: P1 target — Step 4 Auto-Claim block to replace with claim-item.sh redirect
+    key_lines: "75-105 Step 4 Auto-Claim (mv pending→working)"
+  - path: scripts/work-queue/claim-item.sh
+    role: P3 target — add working/ pre-check before mv on line 334
+    key_lines: "17-27 file resolution; 334 mv to working/"
+  - path: scripts/work-queue/start_stage.py
+    role: P2 target — Stage 1 write session-lock.yaml; 322 lines total
+    key_lines: "no existing lock logic"
+
+skills:
+  core_used:
+    - work-queue
+    - workflow-gatepass
+    - work-queue-workflow
+  reference_docs:
+    - .claude/rules/coding-style.md
+    - .claude/rules/testing.md
+
+current_state:
+  p1_process_md: >
+    process.md Step 4 does mv pending→working directly. Any /work run call
+    in any terminal triggers this, bypassing claim-item.sh and all gate checks.
+  p2_no_stage_lock: >
+    start_stage.py has no session ownership marker. Stages 1-7 run entirely
+    in pending/ with nothing preventing a second session from claiming the item.
+  p3_claim_no_precheck: >
+    claim-item.sh checks pending/ and blocked/ but NOT working/. A second
+    claim on an already-claimed item would overwrite the working/ copy.
+
+estimated_lines_changed: 25-40

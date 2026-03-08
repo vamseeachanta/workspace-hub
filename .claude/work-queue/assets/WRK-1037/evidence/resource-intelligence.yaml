@@ -1,0 +1,50 @@
+wrk_id: WRK-1037
+generated_at: "2026-03-08T21:30:00Z"
+generated_by: orchestrator
+
+completion_status: continue_to_planning
+
+primary_files:
+  - path: scripts/review/submit-to-codex.sh
+    role: target — run_renderer() uv fallback fix (P1-A)
+    key_lines: "188-196 run_renderer; 254-264 renderer call"
+  - path: scripts/review/cross-review.sh
+    role: target — Codex CLI missing gate enforcement (P1-B)
+    key_lines: "227-232 Codex CLI not found; 291-338 all-mode consensus"
+  - path: scripts/review/tests/test-codex-fallback.sh
+    role: existing test — must still pass
+  - path: scripts/review/tests/test-submit-to-codex-robustness.sh
+    role: existing test — must still pass
+  - path: scripts/review/tests/test-cross-review-path-sanitization.sh
+    role: existing test — must still pass
+
+skills:
+  core_used:
+    - work-queue
+    - workflow-gatepass
+    - cross-review
+  reference_docs:
+    - .claude/rules/testing.md
+    - .claude/rules/coding-style.md
+
+current_state:
+  p1a_run_renderer: >
+    run_renderer() checks `command -v uv` but does NOT verify `uv run` works.
+    Falls through to python3 silently if uv is present but broken. No pre-check.
+  p1b_codex_missing: >
+    Codex CLI not found → sets CODEX_NO_OUTPUT=false, writes HARD GATE comment,
+    but the all-mode consensus block (line 295+) still runs with CODEX_NO_OUTPUT=false
+    meaning it falls through to "Install Codex CLI" warning and exits non-zero.
+    Actually it does exit non-zero (line 337) — but check carefully whether any
+    earlier path allows 2-of-3 to proceed when CLI is absent.
+
+plan_notes:
+  p1a: >
+    Pre-check: run `uv run --no-project python --version` before calling renderer.
+    If exit non-zero → surface error; don't fall back to python3. Test with mock uv.
+  p1b: >
+    Re-verify exact flow when Codex CLI missing. If already non-zero exit, P1-B may be
+    partially addressed. Focus: ensure explicit user-visible warning + non-zero exit,
+    not silent fallback.
+
+estimated_lines_changed: 30-50

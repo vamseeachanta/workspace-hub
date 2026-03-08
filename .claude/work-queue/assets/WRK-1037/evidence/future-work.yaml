@@ -1,0 +1,12 @@
+wrk_id: WRK-1037
+generated_at: "2026-03-08T22:10:00Z"
+recommendations:
+  - id: FW-01
+    title: "Cache uv readiness result across multiple render calls"
+    description: >
+      check_uv_readiness() runs the probe on every render. For scripts that call
+      submit-to-codex.sh in a loop, caching the result would reduce latency.
+    priority: low
+    disposition: spun-off-new
+    captured: true
+    status: deferred

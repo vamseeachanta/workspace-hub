@@ -1,0 +1,8 @@
+wrk_id: WRK-1037
+stage: 17
+reviewer: vamsee
+reviewed_at: "2026-03-08T22:15:00Z"
+decision: approved
+notes: >
+  Route A item. Implementation verified: uv readiness probe in submit-to-codex.sh;
+  --allow-no-codex gate in cross-review.sh. All 61 tests pass.

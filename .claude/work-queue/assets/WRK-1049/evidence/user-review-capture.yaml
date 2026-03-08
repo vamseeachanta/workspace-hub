@@ -1,0 +1,7 @@
+reviewer: vamsee
+reviewed_at: "2026-03-08T22:20:00Z"
+scope_approved: true
+notes: >
+  Observed live: two terminals both picked up WRK-1037. Three root causes
+  identified: stale process.md auto-claim, no stage-1 session lock, claim-item.sh
+  missing working/ pre-check. Fix all three.

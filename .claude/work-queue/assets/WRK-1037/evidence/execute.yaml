@@ -1,0 +1,66 @@
+wrk_id: WRK-1037
+stage: 10
+executed_at: "2026-03-08T22:00:00Z"
+orchestrator: claude
+route: A
+commit: dd3b49b1
+phases:
+  - phase: 1
+    description: "P1-A: submit-to-codex.sh uv readiness probe"
+    files_modified:
+      - scripts/review/submit-to-codex.sh
+    outcome: check_uv_readiness() added; run_renderer() no silent fallback
+  - phase: 2
+    description: "P1-B: cross-review.sh --allow-no-codex gate"
+    files_modified:
+      - scripts/review/cross-review.sh
+    outcome: CODEX_CLI_MISSING flag; explicit gate message; --allow-no-codex escape hatch
+  - phase: 3
+    description: "Tests: test-uv-readiness.sh + hardgate Scenario 4/5"
+    files_modified:
+      - scripts/review/tests/test-uv-readiness.sh
+      - scripts/review/tests/test-cross-review-codex-hardgate.sh
+    outcome: 6 new tests pass; all existing tests pass (2 pre-existing rg failures unchanged)
+test_count: 61
+integrated_repo_tests:
+  - name: test-submit-to-codex-robustness
+    scope: integrated
+    command: bash scripts/review/tests/test-submit-to-codex-robustness.sh
+    result: pass
+    artifact_ref: scripts/review/tests/test-submit-to-codex-robustness.sh
+  - name: test-uv-readiness
+    scope: integrated
+    command: bash scripts/review/tests/test-uv-readiness.sh
+    result: pass
+    artifact_ref: scripts/review/tests/test-uv-readiness.sh
+  - name: test-cross-review-codex-hardgate
+    scope: integrated
+    command: bash scripts/review/tests/test-cross-review-codex-hardgate.sh
+    result: pass
+    artifact_ref: scripts/review/tests/test-cross-review-codex-hardgate.sh
+test_files:
+  - name: test-submit-to-codex-robustness
+    scope: integrated
+    command: bash scripts/review/tests/test-submit-to-codex-robustness.sh
+    result: pass
+    artifact_ref: scripts/review/tests/test-submit-to-codex-robustness.sh
+  - name: test-codex-fallback
+    scope: integrated
+    command: bash scripts/review/tests/test-codex-fallback.sh
+    result: pass
+    artifact_ref: scripts/review/tests/test-codex-fallback.sh
+  - name: test-cross-review-codex-hardgate
+    scope: integrated
+    command: bash scripts/review/tests/test-cross-review-codex-hardgate.sh
+    result: pass
+    artifact_ref: scripts/review/tests/test-cross-review-codex-hardgate.sh
+  - name: test-cross-review-path-sanitization
+    scope: integrated
+    command: bash scripts/review/tests/test-cross-review-path-sanitization.sh
+    result: pass
+    artifact_ref: scripts/review/tests/test-cross-review-path-sanitization.sh
+  - name: test-uv-readiness
+    scope: integrated
+    command: bash scripts/review/tests/test-uv-readiness.sh
+    result: pass
+    artifact_ref: scripts/review/tests/test-uv-readiness.sh
