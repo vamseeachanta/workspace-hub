@@ -85,3 +85,17 @@ PYEOF
 ```
 
 The files listed under **Entry reads** above are now available — ask Claude to read them or @-mention them directly.
+
+---
+
+**Note — `/wrk-resume` vs `/work run`:**
+These two commands operate at different levels of the lifecycle.
+`/wrk-resume WRK-NNN` is a **session-level** context restore: it reads the last
+`checkpoint.yaml` written at the end of a previous WRK session, prints a summary of
+where work left off (current stage, next action, decisions, artifacts), and loads the
+listed `entry_reads` files into the new session's context. It does not advance any
+stage or write any artifacts.
+`/work run` (or `/work WRK-NNN`) is a **stage-level** pipeline action: it executes
+the next pending stage against the work item, invokes the appropriate scripts, and
+produces stage exit artifacts. Always run `/wrk-resume` first when resuming a WRK
+item in a fresh session, then `/work run` to continue execution from the current stage.

@@ -3,8 +3,8 @@ name: work-queue-workflow
 description: >
   Explicit entrypoint skill for the WRK work-queue lifecycle workflow. Points to
   the canonical work-queue process and gatepass enforcement sequence.
-version: 1.5.0
-updated: 2026-03-07
+version: 1.6.0
+updated: 2026-03-08
 category: workspace-hub
 triggers:
   - work-queue workflow
@@ -32,6 +32,24 @@ It delegates to canonical `work-queue` and `workflow-gatepass` contracts.
 
 Operating principle: **humans steer, agents execute**.
 Every stage should explicitly track whether a human decision is required.
+
+## Canonical Terminology
+
+Use these definitions consistently across all skills, scripts, and artifacts:
+
+| Term | Canonical meaning |
+|------|------------------|
+| **WRK session** | Single Claude conversation bounded by `/clear` or context reset |
+| **WRK stage** | One of the 20 numbered lifecycle stages (Stage 1–20) |
+| **Phase** | Sub-unit within a stage (e.g. Stage 6: Claude/Codex/Gemini phases; Stage 10: implementation phases) |
+| **Step** | Numbered checklist action within a phase |
+| **Checkpoint** | Snapshot artifact written at end of a WRK session (`checkpoint.yaml`) |
+| **Resume** | Loading a checkpoint into a new WRK session via `/wrk-resume` before `/work run` |
+
+Violations to avoid:
+- Do NOT use "session" to mean "stage" (a stage spans many sessions; a session may touch many stages).
+- Do NOT use "phase" as a synonym for "stage" (phases are sub-units inside a stage).
+- Do NOT use "step" to mean "stage".
 
 ## Start-to-Finish Chain
 
@@ -161,6 +179,9 @@ must always resolve to the canonical 20-stage chain.
 
 ## Version History
 
+- **1.6.0** (2026-03-08): Canonical terminology table added (WRK-1040)
+  - Definitions for WRK session, stage, phase, step, checkpoint, resume added after operating principle
+  - Anti-patterns documented to prevent session/stage/phase confusion
 - **1.5.0** (2026-03-07): Stage 5 dispatch uses batch script — required in skill/contract (WRK-1020)
   - `scripts/work-queue/stage5-plan-dispatch.sh WRK-NNN` runs Codex+Gemini in parallel
   - Mirrors cross-review.sh pattern; background processes + wait; outputs to assets/WRK-NNN/

@@ -1,0 +1,280 @@
+stage: 3
+completed_at: 2026-03-08T15:00:00Z
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - coordination/workspace/work-queue/SKILL.md
+    - workspace-hub/work-queue-workflow/SKILL.md
+    - workspace-hub/workflow-gatepass/SKILL.md
+    - workspace-hub/workflow-html/SKILL.md
+    - workspace-hub/wrk-lifecycle-testpack/SKILL.md
+
+file_inventory:
+  - path: .claude/skills/coordination/workspace/work-queue/SKILL.md
+    lines: 985
+    version: "1.7.0"
+    gaps:
+      - No Stage 1 exit gate contract (no user-review-capture.yaml requirement)
+      - No stage gate policy table (which stages auto-proceed vs. require user approval)
+      - No conditional pause rule (R-27) for auto-proceed stages
+      - Far exceeds 400-line hard limit (985 lines) — candidate for pruning
+      - No canonical nomenclature section (session/stage/phase terms not defined)
+      - Stage 5/7/17 described in routing context only; gate contracts not embedded here
+
+  - path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    lines: 211
+    version: "1.5.0"
+    gaps:
+      - No Stage 1 exit gate: agent auto-advances to Stage 2 after capture (R-25 missing)
+      - No stage gate policy table (R-25/R-26 addenda not incorporated yet)
+      - No conditional pause rule (R-27) for auto-proceed stages
+      - Stage 5 contract references blocking prompt but does not mandate minimum 120-second
+        delta between plan_draft open and plan_final open (R-15 missing)
+      - No Codex unavailability parking rule (R-06) — only "hard gate" mention at Stage 5
+      - No scope-revision rule (R-20) for plan re-draft after scope substitution
+      - "Practical Lessons" section notes stages 8/19/20 as autonomous but does not
+        address Codex blocking at Stage 6/13
+
+  - path: .claude/skills/workspace-hub/workflow-gatepass/SKILL.md
+    lines: 205
+    version: "1.0.6"
+    gaps:
+      - No Stage 1 exit gate in Required Lifecycle Chain (R-25 missing)
+      - No stage gate policy table distinguishing mandatory user-approval vs. auto-proceed
+      - No conditional pause rule (R-27)
+      - No-bypass rules do not include Codex keyword enforcement (R-05/R-06)
+      - No-bypass rules do not address sentinel value prohibition (R-09)
+      - No-bypass rules do not include timestamp ordering requirement (R-07)
+      - Close Gate Minimum does not enumerate timestamp ordering or Codex provider checks
+      - Evidence Locations list does not include user-review-capture.yaml (Stage 1)
+
+  - path: .claude/skills/workspace-hub/workflow-html/SKILL.md
+    lines: 572
+    version: "1.5.0"
+    gaps:
+      - Exceeds 400-line hard limit (572 lines) — design system CSS is bulk; consider
+        reference-file split
+      - Stage evidence sources table (§3.4) has no Stage 1 user-review-capture.yaml entry
+      - Gate artifact format reference table (§0) has no entry for user-review-capture.yaml
+      - Mandatory usage table (§6) does not include Stage 1 HTML creation trigger
+
+  - path: .claude/skills/workspace-hub/wrk-lifecycle-testpack/SKILL.md
+    lines: 83
+    version: "1.0.1"
+    gaps:
+      - Test Suite Contract (6 items) does not include Stage 1 gate tests
+      - No test cases for timestamp ordering violations (R-07)
+      - No test cases for sentinel value rejection (R-09)
+      - No test cases for Codex keyword requirement (R-05)
+      - No test cases for midnight UTC rejection (R-02) or elapsed-time minimum (R-03)
+      - No test cases for publish commit uniqueness (R-11)
+      - Updated date (2026-03-03) is stale relative to WRK-1034 (2026-03-07)
+
+  - path: .claude/commands/workspace-hub/wrk-resume.md
+    lines: 87
+    version: "unknown"
+    gaps:
+      - No version field in frontmatter
+      - No mention of stage gate policy context on resume (agent resumes blind to gate state)
+      - Does not read or surface stage-evidence.yaml on resume (stage status invisible)
+
+  - path: scripts/work-queue/verify-gate-evidence.py
+    lines: 1208
+    version: "unknown (no version field)"
+    gaps: []  # see gate_verifier section below for the 14 missing checks
+
+  - path: scripts/work-queue/claim-item.sh
+    lines: 326
+    version: "unknown"
+    gaps:
+      - Writes SESSION_ID="unknown" as fallback (line 259-261) — does not block on
+        unresolvable session_id (R-10 missing)
+      - activation.yaml check_activation_gate() in verifier accepts "unknown" as non-empty
+        string — sentinel value not rejected at write time (R-09 gap)
+      - No Stage 1 user-review-capture.yaml pre-check before allowing claim
+      - claim-evidence.yaml written with session_owner fallback "unknown" when provider
+        field absent from frontmatter
+
+  - path: scripts/work-queue/close-item.sh
+    lines: 286
+    version: "unknown"
+    gaps:
+      - No pre-check that execute.yaml exists and executed_at < current time (R-08 missing)
+      - No pre-check that user-review-close.yaml confirmed_at is non-empty and postdates
+        execute.executed_at (R-04 / stage 17 pre-condition — R-14 in gap list)
+      - Stage 17 check delegates entirely to verify-gate-evidence.py --stage17-check;
+        no shell-level blocking on sentinel fields or timestamp ordering
+      - Generates workflow-final-review.html via deprecated generate-final-review.py
+        rather than lifecycle HTML (--lifecycle flag)
+
+  - path: scripts/work-queue/spawn-team.sh
+    lines: 45
+    version: "unknown"
+    gaps:
+      - Does not validate that WRK item has passed Stage 1 exit gate before spawning team
+      - No integration with stage gate policy
+
+gate_verifier:
+  existing_checks:
+    - check_claim_gate: claim-evidence.yaml / claim.yaml presence and field validation
+    - check_stage5_evidence_gate: user-review-plan-draft.yaml presence, reviewed/approved
+      booleans, artifact existence (activation controlled by stage5-gate-config.yaml)
+    - check_stage7_evidence_gate: plan-final-review confirmation block in lifecycle HTML
+    - check_stage17_evidence_gate: user-review-close.yaml reviewer/reviewed_at/confirmed_at
+      non-empty, decision not "pending"
+    - check_resource_intelligence_gate: resource-intelligence.yaml completion_status +
+      skills.core_used list with >=3 entries
+    - check_future_work_gate: future-work.yaml recommendations[] with disposition/captured
+    - check_resource_intelligence_update_gate: resource-intelligence-update.yaml existence
+    - check_user_review_close_gate: reviewer/reviewed_at/confirmed_at/decision fields
+    - check_html_open_default_browser_gate: user-review-browser-open.yaml events per stage
+    - check_user_review_publish_gate: user-review-publish.yaml per-stage published_at/hash
+    - check_activation_gate: activation.yaml wrk_id/set_active_wrk/session_id/orchestrator_agent
+      non-empty (but does NOT reject "unknown" sentinel — gap #5)
+    - check_reclaim_gate: reclaim.yaml with valid reclaim_decision (emits WARN on absence,
+      not n/a — gap #11)
+    - check_execute_integrated_tests_gate: execute.yaml integrated_repo_tests 3-5 count
+      with name/scope/command/result/artifact_ref and scope in integrated|repo
+    - check_plan_confirmation: lifecycle HTML Stage 7 section confirmed_by/confirmed_at/
+      decision fields at line-start
+    - check_stage_evidence_gate: stage_evidence_ref frontmatter field + file existence +
+      stages 1-20 presence with allowed statuses (does NOT verify evidence path existence
+      on disk — gap #7)
+    - check_agent_log_gate: WRK-NNN-*.log presence in logs/
+    - Workstation contract gate: plan_workstations + execution_workstations non-empty
+      (passes with "missing" detail rather than hard FAIL — gap #10)
+    - Cross-review gate: any review.md/review.html artifact presence (no Codex keyword
+      check — gap #4)
+    - TDD gate: test file presence scan
+    - Legal gate: legal-scan.md with PASS content
+    - Integrated test gate: execute.yaml integrated_repo_tests 3-5
+
+  missing_checks:
+    # Directly mapped from session-audit-master.md Gate Verifier Gaps section
+    1: "check_approval_ordering(): assert plan-final.confirmed_at < claim.claimed_at <
+       execute.executed_at < user-review-close.confirmed_at; Stage 6 review log
+       review_wrapper_complete > Stage 5 reviewed_at. Currently absent — retroactive
+       fabrication undetectable."
+    2: "Midnight UTC rejection: FAIL on reviewed_at / confirmed_at with time component
+       exactly T00:00:00Z in Stage 5/7/17 artifacts. Currently absent."
+    3: "Browser-open to approval elapsed time: delta between opened_at and reviewed_at
+       must be >= 60s (plan stages) or >= 300s (close). Currently absent."
+    4: "Codex keyword check in cross-review artifacts: FAIL when 'codex' string absent
+       (case-insensitive) from review.md/cross-review.yaml/cross-review-impl.md.
+       Currently accepts any artifact regardless of provider."
+    5: "Sentinel value rejection in activation/claim: FAIL on session_id or
+       orchestrator_agent == 'unknown'; route == ''; quota_snapshot.pct_remaining null
+       when status available. check_activation_gate() accepts 'unknown' as non-empty."
+    6: "Publish commit uniqueness: WARN when plan_draft and plan_final share commit hash;
+       FAIL when all three stages share. Currently absent."
+    7: "stage-evidence path existence: verify each evidence: path in stage-evidence.yaml
+       exists on disk. Currently absent; stale paths accepted."
+    8: "Done+pending-comment contradiction: FAIL when stage has status: done and comment
+       contains 'pending', 'not started', or 'TBD'. Currently absent."
+    9: "Plan publish pre-dates approval: FAIL when user-review-publish.yaml plan_draft
+       published_at < user-review-plan-draft.yaml reviewed_at. Currently absent."
+    10: "Workstation contract hard fail: currently emits PASS with 'missing' in details
+        when plan_workstations or execution_workstations absent. Must be hard FAIL."
+    11: "Reclaim gate n/a vs WARN: emit n/a (not WARN) when Stage 18 stage-evidence is
+        n/a and no reclaim log present. Currently emits WARN unconditionally."
+    12: "Claim artifact canonical path: check <assets_root>/claim-evidence.yaml not
+        evidence/claim.yaml. Currently causes spurious WARN on correct path."
+    13: "ISO datetime with time component: reject date-only values (2026-03-07) in
+        approval artifact timestamp fields. Currently accepts date-only."
+    14: "Stage 17 pre-condition in close-item.sh: before invoking verifier assert
+        user-review-close.yaml exists, confirmed_at non-empty, confirmed_at after
+        execute.executed_at. Currently absent in close-item.sh shell layer."
+
+stage_start_end_scripts:
+  exist: true
+  notes: >
+    start_stage.py and exit_stage.py both exist at scripts/work-queue/.
+    stage-start.py and stage-end.py (alternate names) do NOT exist.
+    exit_stage.py does NOT yet enforce Stage 17 field validation (R-13 missing):
+    it does not block on user-review-close.yaml having empty reviewer/reviewed_at/
+    confirmed_at or decision == 'pending' before marking Stage 17 done.
+    Stage-evidence incremental update (R-12) — exit_stage.py gating is present but
+    done+pending-comment contradiction check is absent in the verifier (gap #8).
+
+new_artifacts_needed:
+  - name: user-review-capture.yaml
+    stage: 1
+    purpose: Stage 1 exit gate — user confirms WRK scope before Stage 2 entry (R-25)
+    template_exists: false
+    notes: >
+      No template at specs/templates/user-review-capture.yaml. A user-review-capture.yaml
+      file already exists in the WRK-1035 evidence dir (written during session-audit),
+      but no canonical template exists for other WRKs to reference.
+      Required fields: reviewer, confirmed_at, scope_approved (bool), notes.
+      Gate verifier must check this file before allowing Stage 2 entry.
+  - name: stage-gate-policy.yaml
+    stage: cross-cutting
+    purpose: Machine-readable gate classification — which stages require user approval
+      vs. auto-proceed; conditions that trigger conditional pause (R-27)
+    template_exists: false
+    notes: >
+      No such file or template exists anywhere in specs/templates/ or scripts/.
+      Defined in prose in session-audit-master.md addenda. Needs formal YAML artifact
+      at scripts/work-queue/stage-gate-policy.yaml (or specs/) and a corresponding
+      verifier check that can load it at claim/close time.
+  - name: user-review-close-template.yaml
+    stage: 17
+    purpose: Template for user-review-close.yaml (Stage 17 exit artifact)
+    template_exists: false
+    notes: >
+      user-review-common-draft-template.yaml exists but is not Stage 17 specific.
+      A dedicated user-review-close-template.yaml is missing; Stage 17 bootstrap
+      in claim-item.sh writes bare fields inline rather than from a canonical template.
+
+key_findings:
+  - Retroactive approval fabrication is the #1 failure class (9/10 WRKs audited): the
+    gate verifier checks artifact presence but not timestamp ordering, midnight UTC,
+    elapsed-time minimums, or date-only values — all 14 gaps in verify-gate-evidence.py
+    are unimplemented.
+  - Codex hard gate is bypassed in 40% of WRKs: the cross-review gate accepts any
+    review.md regardless of provider — Codex keyword check (gap #4) is entirely absent.
+  - Sentinel value "unknown" in activation.yaml/claim-evidence.yaml passes the verifier
+    because check_activation_gate() checks for non-empty string, which "unknown" satisfies.
+    claim-item.sh falls back to "unknown" when session-state.yaml is unavailable.
+  - Stage 1 has no exit gate: the agent writes the WRK file and auto-advances to Stage 2
+    with no user confirmation of scope. R-25 (user-review-capture.yaml) is defined but
+    not enforced by any script or verifier check.
+  - Stage gate policy exists only as prose in session-audit-master.md addenda (R-26/R-27).
+    No machine-readable stage-gate-policy.yaml exists; work-queue-workflow/SKILL.md does
+    not yet reflect the Stage 1 gate or conditional pause rule.
+  - close-item.sh does not shell-block on execute.yaml absence or timestamp ordering (R-08);
+    it relies entirely on verify-gate-evidence.py --stage17-check, which itself does not
+    check cross-artifact timestamp ordering (gap #1).
+  - workflow-html/SKILL.md and work-queue/SKILL.md both exceed the 400-line hard limit
+    (572 and 985 lines respectively); work-queue/SKILL.md is nearly 2.5x the limit.
+  - No template exists for user-review-capture.yaml (Stage 1) or stage-gate-policy.yaml.
+  - user-review-close-template.yaml is missing; Stage 17 bootstrap in claim-item.sh
+    uses inline heredoc rather than a reusable template.
+  - spawn-team.sh (45 lines, new/untracked) is minimal — recipe-printer only, no gate
+    integration; low risk for WRK-1035 scope.
+  - Positive signals to preserve: gate verifier consistently run (all 10 WRKs), TDD
+    adherence strong, legal scan 100% pass rate, future-work.yaml schema broadly correct,
+    browser-open step not skipped (only the blocking wait is missing).
+
+risks:
+  - Implementing timestamp ordering checks (gap #1) will cause existing WRK assets to
+    fail retrospective verification if ever re-run; plan must not apply new checks to
+    archived items retroactively.
+  - Codex keyword enforcement (gap #4 / R-05) combined with Codex unavailability blocking
+    (R-06) could deadlock WRKs on ace-linux-1 where Codex interactive terminal is
+    unavailable — WRK-1021 (scheduled jobs / cross-review scheduling) is an upstream
+    dependency for a full fix; WRK-1035 should add the check but document the ace-linux-1
+    Codex constraint.
+  - Sentinel value rejection (gap #5) applied to claim-item.sh will cause existing
+    session-state.yaml fallback path to block claims on machines where session-state.yaml
+    is absent; claim-item.sh fix (R-10) needs a graceful fallback or environment variable
+    alternative (CLAUDE_SESSION_ID).
+  - work-queue/SKILL.md at 985 lines is a pruning candidate but is the most-referenced
+    skill in the cluster; any split must preserve all cross-references in dependent skills
+    and CLAUDE.md.
+  - Adding Stage 1 gate (user-review-capture.yaml) changes the WRK creation flow for all
+    future WRKs; existing WRKs in pending/ may not have this file — exemption or migration
+    plan needed (similar to stage5-migration-exemption-template.yaml pattern).
+  - 14 gate verifier gaps are all in one 1208-line file; adding all checks risks
+    exceeding 400-line soft limit further and complicates test coverage — batch by
+    priority (gaps 1-6 first, gaps 7-14 second) as noted in session-audit-master.md.

@@ -1,0 +1,13 @@
+wrk_id: WRK-1038
+generated_at: "2026-03-08T06:30:00Z"
+
+recommendations:
+  - id: fw-01
+    title: "Periodic ecosystem health check for submit-to-codex.sh"
+    rationale: >
+      Live test confirmed submit-to-codex.sh is healthy today. Could be included in
+      nightly comprehensive-learning or a dedicated ecosystem-health script.
+    disposition: existing-updated
+    status: deferred
+    captured: true
+    notes: "WRK-1016 (settings audit) covers this partially. Not capturing new WRK."

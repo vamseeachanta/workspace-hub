@@ -44,7 +44,7 @@ Operating principle: **humans steer, agents execute**.
 2. Resource Intelligence.
 3. Triage.
 4. Plan Draft.
-5. User Review - Plan (Draft) as an agent-user interactive plan-mode session:
+5. User Review - Plan (Draft) as an interactive agent-user plan dialogue within this stage:
    - ask tough clarifying questions,
    - challenge weak assumptions and surface tradeoffs,
    - think hard and research hard before progressing,

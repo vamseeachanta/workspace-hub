@@ -1,0 +1,43 @@
+wrk_id: WRK-1038
+generated_at: "2026-03-08T06:00:00Z"
+completion_status: continue_to_planning
+
+context:
+  question: "Does Claude Code Verbose Output = false reduce session logs and degrade learning?"
+  trigger: ad-hoc user question in session
+
+files_inspected:
+  - path: ~/.claude/settings.json
+    finding: "Contains model, statusLine, enabledPlugins — NO verbose field"
+  - path: .claude/settings.json
+    finding: "Contains hooks, permissions, plugins, env vars — NO verbose field"
+  - path: .claude/hooks/session-logger.sh
+    finding: >
+      Writes logs/orchestrator/claude/session_YYYYMMDD.jsonl on every pre/post tool call.
+      Reads: tool_name, file_path, command from hook stdin. Disable via CLAUDE_SESSION_LOGGING=false.
+  - path: ".claude/skills/workspace-hub/file-taxonomy/SKILL.md"
+    finding: "§AI Agent Log Locations — canonical reference for all AI log paths"
+  - path: ".claude/skills/workspace-hub/comprehensive-learning/SKILL.md"
+    finding: "Phase 1 reads session logs, codex native, gemini native — all hook/CLI-written"
+
+log_structure_verified:
+  claude_hook_log:
+    path: "logs/orchestrator/claude/session_YYYYMMDD.jsonl"
+    fields: [ts, epoch, hook, tool, project, repo, file, cmd]
+    written_by: "session-logger.sh (pre/post tool call hook)"
+    verbose_affected: false
+  codex_native:
+    path: "~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl"
+    typical_size_kb: 296
+    written_by: "codex CLI"
+    verbose_affected: false
+  gemini_native:
+    path: "~/.gemini/tmp/<project>/chats/session-*.json"
+    written_by: "gemini CLI"
+    verbose_affected: false
+
+skills:
+  core_used:
+    - file-taxonomy
+    - comprehensive-learning
+    - claude-code-guide

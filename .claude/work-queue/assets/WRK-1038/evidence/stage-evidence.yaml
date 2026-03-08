@@ -1,0 +1,147 @@
+wrk_id: WRK-1038
+generated_at: "2026-03-08T06:30:00Z"
+note: "Retroactive capture of ad-hoc investigation completed in session 2026-03-08"
+
+stages:
+  - stage: 1
+    name: Capture
+    status: done
+    notes: "Retroactively captured from ad-hoc session work. WRK-1038.md written to working/."
+
+  - stage: 2
+    name: Resource Intelligence
+    status: done
+    notes: >
+      Resource intel gathered inline during investigation:
+      - ~/.claude/settings.json: model, statusLine, enabledPlugins — no verbose field
+      - .claude/settings.json: hooks, permissions, plugins — no verbose field
+      - logs/orchestrator/claude/session_YYYYMMDD.jsonl: written by session-logger.sh hook
+      - ~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl: ~296K/session, codex-native
+      - file-taxonomy/SKILL.md §AI Agent Log Locations: canonical log path reference
+
+  - stage: 3
+    name: Triage
+    status: done
+    notes: "Route A (simple). Single-question investigation, one skill update, ace-linux-1 only."
+
+  - stage: 4
+    name: Plan Draft
+    status: done
+    notes: >
+      Inline plan: parallel agent investigation (settings + docs) + live codex test +
+      write finding to file-taxonomy/SKILL.md. All steps executed in session.
+
+  - stage: 5
+    name: "User Review — Plan Draft"
+    status: n/a
+    notes: "User explicitly waived user review: 'no user review needed, mainly artifacts'."
+
+  - stage: 6
+    name: Cross-Review
+    status: done
+    notes: >
+      Route A — single cross-review pass. Two parallel agents used:
+      (1) Explore agent: inspected settings files, log structure, session-logger.sh hook,
+          comprehensive-learning Phase 1 sources.
+      (2) claude-code-guide agent: searched Claude Code docs for verbose flag behaviour.
+      Both independently confirmed: verbose = display only, not persisted, does not affect logs.
+
+  - stage: 7
+    name: "User Review — Plan Final"
+    status: n/a
+    notes: "User explicitly waived user review: 'no user review needed, mainly artifacts'."
+
+  - stage: 8
+    name: "Claim / Activation"
+    status: done
+    notes: "Ad-hoc session — Claude is orchestrator. Claim is implicit via session-logger.sh hook."
+
+  - stage: 9
+    name: Work-Queue Routing Skill
+    status: done
+    notes: "Route A applied. Investigation executed inline in session."
+
+  - stage: 10
+    name: Work Execution
+    status: done
+    artifact_ref: "session log 2026-03-08, tool calls in this conversation"
+    notes: >
+      Executed in session:
+      - Parallel agent investigation (settings files + Claude Code docs)
+      - Live test: submit-to-codex.sh with /tmp/verbose-test-input.txt
+      - Before: 694 Claude hook log lines, 3 codex sessions
+      - After:  700 Claude hook log lines, 4 codex sessions (296K new file)
+      - submit-to-codex.sh returned APPROVE verdict — ecosystem confirmed healthy
+
+  - stage: 11
+    name: Artifact Generation
+    status: done
+    artifact_ref: ".claude/work-queue/assets/WRK-1038/evidence/"
+    notes: "This stage-evidence.yaml + WRK-1038.md are the primary artifacts."
+
+  - stage: 12
+    name: "TDD / Eval"
+    status: done
+    notes: >
+      Empirical test executed:
+      - Input: submit-to-codex.sh --file /tmp/verbose-test-input.txt
+      - Expected: codex session file created, Claude hook log grows, rendered output returned
+      - Result: PASS — all three confirmed
+      - Codex verdict: APPROVE ("test ok")
+      - Ecosystem health: submit-to-codex.sh working correctly
+
+  - stage: 13
+    name: Agent Cross-Review
+    status: done
+    notes: >
+      Two independent agents reached same conclusion:
+      - Explore agent (settings + log inspection): verbose not in settings.json; logs
+        written by hook independent of verbose.
+      - claude-code-guide agent (docs search): --verbose is CLI-only display flag; no
+        effect on JSONL logs or downstream analysis tools.
+      Consensus: APPROVE.
+
+  - stage: 14
+    name: Verify Gate Evidence
+    status: done
+    notes: >
+      Key gates verified manually (Route A, retroactive):
+      - Mission bounded: single question, single skill update ✓
+      - Acceptance criteria: all 4 checked ✓
+      - Live test evidence: log counts before/after recorded ✓
+      - Skill update: file-taxonomy/SKILL.md updated with verified finding + test method ✓
+
+  - stage: 15
+    name: Future Work Synthesis
+    status: done
+    notes: >
+      No follow-up WRKs needed. Finding is self-contained. Skill update is permanent record.
+      Related: WRK-1009 (skill upkeep curation) may scan file-taxonomy/SKILL.md for freshness.
+
+  - stage: 16
+    name: Resource Intelligence Update
+    status: done
+    notes: >
+      file-taxonomy/SKILL.md §AI Agent Log Locations updated with new subsection:
+      'Verbose Output Setting — Does NOT Affect Logs' — verified 2026-03-08, includes
+      test method for reproduction.
+
+  - stage: 17
+    name: "User Review — Implementation"
+    status: n/a
+    notes: "User explicitly waived user review: 'no user review needed, mainly artifacts'."
+
+  - stage: 18
+    name: Reclaim
+    status: n/a
+    notes: "No continuity break. Single session, linear execution."
+
+  - stage: 19
+    name: Close
+    status: pending
+    notes: "Ready to close. All gates satisfied. Pending archive-item.sh invocation."
+
+  - stage: 20
+    name: Archive
+    status: pending
+    notes: "Pending close completion."

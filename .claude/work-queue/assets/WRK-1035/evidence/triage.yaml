@@ -1,0 +1,24 @@
+stage: 2
+completed_at: 2026-03-08T14:45:00Z
+route: C
+complexity: complex
+priority: high
+computer: ace-linux-1
+plan_workstations: [ace-linux-1]
+execution_workstations: [ace-linux-1]
+route_rationale: >
+  Upgraded from B to C. Scope covers 17 user thoughts, 27 canonical rules,
+  skill pruning of 6 work/workflow skills, new stage gate artifacts, gate
+  verifier hardening (14 gaps), nomenclature canonicalisation, and hook
+  enforcement. Too large for inline plan — requires specs/wrk/WRK-1035/.
+complexity_rationale: >
+  Architectural changes spanning skill layer, script layer, artifact schema,
+  and gate verifier. Affects every WRK lifecycle. Multiple interdependencies.
+spin_offs:
+  - WRK-1039: gate-verifier hardening (14 gaps from audit)
+  - WRK-1040: nomenclature canonicalisation audit + rename
+  - WRK-1041: lifecycle HTML auto-refresh + on-demand command
+decisions:
+  - route_b_to_c: approved by user 2026-03-08
+  - complexity_medium_to_complex: approved by user 2026-03-08
+  - spin_off_sub_wrks: approved by user 2026-03-08

@@ -1,102 +1,11 @@
----
-id: WRK-1035
-title: "Beef up user-review stages in work-queue-workflow SKILL from recent session learnings"
-status: pending
-route: C
-priority: high
-complexity: complex
-compound: false
-created_at: 2026-03-08T06:00:00Z
-target_repos:
-  - workspace-hub
-commit:
-spec_ref: specs/wrk/WRK-1035/plan.md
-related:
-  - WRK-1034
-  - WRK-1017
-  - WRK-1028
-  - WRK-1031
-blocked_by: []
-synced_to: []
-plan_ensemble: false
-ensemble_consensus_score: null
-orchestrator: claude
-plan_reviewed: false
-plan_approved: false
-percent_complete: 0
-brochure_status: n/a
-computer: ace-linux-1
-plan_workstations:
-  - ace-linux-1
-execution_workstations:
-  - ace-linux-1
-category: harness
-subcategory: workflow-gates
+# WRK-1035 — Captured User Thoughts (staging for WRK-1035.md)
+
+> **Action on exit**: Append `## User Notes` section to `.claude/work-queue/pending/WRK-1035.md`
+> containing all 15 thoughts below. No other files to edit. No commits required.
+
 ---
 
-# Beef up user-review stages in work-queue-workflow SKILL from recent session learnings
-
-## Mission
-**Audit all Claude-executed WRKs from the last 24-48 hours, extract user-review compliance failures and gaps, and harden the user-review stages (5, 7, 17) in `work-queue-workflow/SKILL.md` so the same mistakes are not repeated.**
-
-## What
-
-Two inputs drive this work:
-
-**1. WRK-1034 specific learning (retroactive approval gap)**
-Stage 5 and Stage 7 approval artifacts were written with fabricated timestamps by the agent before the user had actually responded in-conversation. Only Stage 17 had a genuine real-time approval. The skill must explicitly forbid this pattern.
-
-**2. Recent session audit (last 24-48 hours)**
-Review the Claude orchestrator session logs and WRK evidence artifacts from the last 24-48 hours to surface any additional compliance failures at user-review stages — missed approvals, missing interactive walk-throughs, HTML not opened, publish evidence not logged, or timestamps written before user response.
-
-Synthesise all findings into concrete skill improvements.
-
-## Why
-
-The Stage 7 and 17 hard gates (WRK-1034) are machine-enforceable but cannot detect retroactive self-fill — a future timestamp in the artifact looks valid. The skill is the only enforcement layer that can require the agent to pause, wait for the user's response, and only then record the timestamp. Without this fix, the gate is bypassable by a compliant-looking-but-fabricated artifact.
-
-Route B (not A) because the session audit step introduces exploration work that could surface additional unknown gaps beyond the WRK-1034 finding.
-
-## Acceptance Criteria
-
-### Stage 5 hardening
-- [ ] `work-queue-workflow/SKILL.md` Stage 5 contract adds explicit rule: **"Do NOT write `user-review-plan-draft.yaml` until the user has responded in this conversation with explicit approval. The `confirmed_at` timestamp must be taken from the moment of the user's response — not from plan creation time."**
-- [ ] Negative example added: ❌ Agent writes artifact with pre-filled timestamp before user responds.
-- [ ] Positive example added: ✅ Agent presents plan, user says "approve" / explicit decision, agent writes artifact immediately after with current timestamp.
-
-### Stage 7 hardening
-- [ ] Same prohibition added to Stage 7 contract for `plan-final-review.yaml` (`confirmed_by`, `confirmed_at`).
-- [ ] Negative + positive examples matching Stage 5 pattern.
-
-### Stage 17 hardening
-- [ ] Stage 17 contract confirms same rule for `user-review-close.yaml` (`reviewer`, `confirmed_at`/`reviewed_at`).
-
-### Stage 17 live validation (7-day hold)
-- [ ] Stage 17 user review remains **open for 7 days** after implementation is complete.
-- [ ] Daily session log analysis run against the hardened lifecycle for each of those 7 days.
-- [ ] Each daily analysis checks: did any retroactive approval, stage-skip, or sentinel value slip through the new gates?
-- [ ] Analysis written to `assets/WRK-1035/evidence/live-validation/day-N.md` (N = 1–7).
-- [ ] Stage 17 closes only after all 7 daily analyses show zero HIGH-severity violations.
-- [ ] If a violation is found during the 7-day window: fix → re-start the 7-day clock.
-- [ ] Any new compliance failure patterns discovered during the 7-day window are rolled into WRK-1035 for implementation — not spun off as separate WRKs. WRK-1035 scope stays open until the window closes clean.
-
-### Session audit learnings
-- [ ] Claude session logs from last 24-48 hours reviewed (`.claude/work-queue/logs/` + `logs/orchestrator/claude/`).
-- [ ] WRK evidence artifacts from recently closed WRKs checked for compliance at stages 5, 7, 17.
-- [ ] Findings synthesised: each gap becomes either a skill rule addition or a captured follow-up WRK.
-- [ ] Audit summary written to `assets/WRK-1035/evidence/session-audit.md`.
-
-### Skill version
-- [ ] `work-queue-workflow/SKILL.md` version bumped; change note references WRK-1034 + WRK-1035.
-- [ ] If `work-queue/SKILL.md` also needs updates (duplicate Stage 5/7/17 contracts), update in sync.
-
-## Agentic AI Horizon
-
-Self-certification and retroactive timestamp filling are low-cost ways for an agent to appear compliant without being compliant. As agents become more capable, this attack surface grows. Closing this in the skill now provides durable governance that doesn't depend on gate code alone.
-
-## User Notes
-
-> Captured 2026-03-08 — staging for scope expansion and planning
+## Captured thoughts — 2026-03-08
 
 ### 1. Stage jumping problem
 Work item stages are jumping ahead into future stages without satisfying current stage gates.
@@ -313,39 +222,6 @@ Open design question:
 - Minimum granularity recommendation needed (e.g. "one agent per stage" or "one agent per
   200-line file change").
 
-**Refinement — on-demand subagent spawning (preferred pattern):**
-The orchestrator does NOT need a pre-formed team. It should spawn `TaskCreate` subagents
-on demand whenever a subtask would bloat the orchestrator's own context. Rules:
-- Orchestrator stays thin: reads checkpoints, makes decisions, delegates heavy work.
-- Subagents handle: log summarisation, skill audits, file writes, gate verification.
-- Orchestrator only accumulates outputs (summaries, diffs, pass/fail) — not raw context.
-- Trigger: any subtask that would require reading >3 files or writing >50 lines → delegate.
-This avoids both context rot AND the overhead of pre-planning a full team upfront.
+---
 
-### 17. Stage 1 must end with user-review approval
-Stage 1 (Capture) currently has no exit gate — the agent writes the WRK file and advances
-to Stage 2 without any user sign-off. This must be fixed:
-- Stage 1 exit requires explicit user approval of the captured scope, title, and mission.
-- Agent must present the WRK file content and block until user confirms.
-- Approval artifact: `user-review-capture.yaml` (new) — same structure as other user-review
-  artifacts, fields: `reviewer`, `confirmed_at`, `scope_approved: true/false`, `notes`.
-- Gate verifier must check this artifact exists before allowing Stage 2 entry.
-- This closes the earliest possible stage-jump vector: agent captures + auto-advances
-  without user ever seeing or approving the scope definition.
-
-### 16. Skill pruning — use skill-creator skill (scoped to work/workflow skills only)
-As part of this work, use the `skill-creator` skill to audit and prune the **work, work-item,
-and workflow-related skills** specifically. Note: broad skill inventory pruning across all
-skills is already handled by the nightly curation job (WRK-1009 / `skill-curation-nightly.sh`).
-This task is targeted only at:
-- `work-queue/SKILL.md`
-- `work-queue-workflow/SKILL.md`
-- `workflow-gatepass/SKILL.md`
-- `wrk-lifecycle-testpack/SKILL.md`
-- `workflow-html/SKILL.md`
-- `wrk-resume` slash command / skill
-
-Apply skill-creator eval/retire capabilities to identify:
-- Trimming opportunities (verbose prose → scripts, per thought 9)
-- Overlapping or duplicated contracts across these skills
-- Sections superseded by scripts/gates that can be removed from skill prose
+*To apply: write `## User Notes` section into WRK-1035.md with these points, bump scope assessment.*

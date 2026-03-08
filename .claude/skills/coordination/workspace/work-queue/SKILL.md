@@ -222,7 +222,7 @@ flowchart TD
 > a one-way drop.
 
 - Session mode:
-  - Run this stage as an interactive agent-user plan-mode session (not a one-way artifact drop).
+  - Run this stage as an interactive agent-user plan dialogue within Stage 5 (not a one-way artifact drop).
 - Interactive review and decisions:
   - Walk the draft plan section-by-section with the user.
   - Capture explicit decisions on:

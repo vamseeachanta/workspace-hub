@@ -1,0 +1,28 @@
+wrk: WRK-1040
+stage: 10
+stage_name: Work Execution
+next_action: >
+  One breaking change pending user decision:
+  rename `invocation: human_session` → `human_interactive` across all 20 stage contract
+  YAMLs + start_stage.py. User asked to document for resume in another terminal.
+context_summary: >
+  WRK-1040 nomenclature canonicalisation is ~80% complete. 4 files edited:
+  work-queue-workflow/SKILL.md (v1.6.0, Canonical Terminology section added),
+  workflow-gatepass/SKILL.md (Stage 5 session→dialogue fix),
+  work-queue/SKILL.md (same fix),
+  wrk-resume.md (/wrk-resume vs /work run note added).
+  Findings report at assets/WRK-1035/evidence/WRK-1040-findings.md.
+  One item deferred to this resume: human_session → human_interactive rename
+  (breaking change, 20 stage YAMLs + start_stage.py). This change is also
+  scoped into WRK-1035 Phase 4 so can be coordinated there.
+pending_decision:
+  question: "Rename invocation: human_session → human_interactive across 20 stage YAMLs + start_stage.py?"
+  options:
+    a: "Rename in WRK-1040 resume (breaking change, do it now)"
+    b: "Defer to WRK-1035 Phase 4 (touches same files anyway — do it once)"
+    c: "Leave as-is, document exception in canonical-terminology section"
+entry_reads:
+  - .claude/work-queue/pending/WRK-1040.md
+  - .claude/work-queue/assets/WRK-1035/evidence/WRK-1040-findings.md
+  - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+  - scripts/work-queue/start_stage.py
