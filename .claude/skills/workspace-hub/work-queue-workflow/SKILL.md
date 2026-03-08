@@ -3,7 +3,7 @@ name: work-queue-workflow
 description: >
   Explicit entrypoint skill for the WRK work-queue lifecycle workflow. Points to
   the canonical work-queue process and gatepass enforcement sequence.
-version: 1.4.0
+version: 1.5.0
 updated: 2026-03-07
 category: workspace-hub
 triggers:
@@ -85,10 +85,13 @@ Every stage should explicitly track whether a human decision is required.
       - After user approves all sections: write final `specs/wrk/WRK-NNN/plan.md`
       - Ask for explicit final approval before Stage 6
 
-   **Prompts for parallel dispatch** (send to Codex + Gemini after Claude draft is ready):
-   - Share the WRK mission, AC, constraints, and Claude draft path
-   - Ask each to draft independently to `plan_<agent>.md`
-   - After both respond, send **synthesis prompt** to Claude (interactive with user)
+   **Parallel dispatch** (Route B/C — after Claude draft is ready):
+   ```bash
+   bash scripts/work-queue/stage5-plan-dispatch.sh WRK-NNN
+   ```
+   Dispatches Codex and Gemini in parallel (background processes); waits for both.
+   Outputs: `assets/WRK-NNN/plan_codex.md`, `assets/WRK-NNN/plan_gemini.md`.
+   After both land, trigger synthesis session with Claude (interactive with user).
 
    **Pseudocode requirement** (for non-trivial logic — ≥3 steps or branching):
    Produce function-level pseudocode before user review.
@@ -158,6 +161,10 @@ must always resolve to the canonical 20-stage chain.
 
 ## Version History
 
+- **1.5.0** (2026-03-07): Stage 5 dispatch uses batch script — required in skill/contract (WRK-1020)
+  - `scripts/work-queue/stage5-plan-dispatch.sh WRK-NNN` runs Codex+Gemini in parallel
+  - Mirrors cross-review.sh pattern; background processes + wait; outputs to assets/WRK-NNN/
+  - Referenced in SKILL.md, stage-05 micro-skill; dispatch is now a documented requirement
 - **1.4.0** (2026-03-07): Stage 5 synthesis is interactive with user (WRK-1020)
   - Route B/C synthesis: Claude presents diff table section-by-section; user decides conflicts
   - No auto-merge — every non-trivial difference surfaced before writing final plan.md

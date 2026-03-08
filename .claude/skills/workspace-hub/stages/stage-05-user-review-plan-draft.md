@@ -13,8 +13,10 @@ Route A (simple): Single-agent interactive planning.
 
 Route B/C (medium/complex): 3-agent interactive planning + interactive synthesis.
   1. Claude produces initial draft (specs/wrk/WRK-NNN/plan.md); opens lifecycle HTML
-  2. User dispatches same draft to Codex and Gemini for independent interactive sessions
-     - Each saves: plan_claude.md / plan_codex.md / plan_gemini.md in assets/WRK-NNN/
+  2. Dispatch Codex and Gemini in parallel using the batch script:
+       bash scripts/work-queue/stage5-plan-dispatch.sh WRK-NNN
+     Script runs both providers as background processes and waits for both to complete.
+     Outputs: plan_codex.md / plan_gemini.md in assets/WRK-NNN/
   3. SYNTHESIS (interactive with user — do NOT auto-merge):
      - Read all 3 plans; build diff table: topic | Claude | Codex | Gemini | recommended
      - Present conflicts section-by-section; wait for user decision on each
