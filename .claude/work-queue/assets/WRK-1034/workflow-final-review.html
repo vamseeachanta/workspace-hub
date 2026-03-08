@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1034 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1034 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Enforce Stage 7 and Stage 17 user-review as hard blocking gates</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — WRK-1017 enforced Stage 5 as a hard gate: agents cannot enter Stage 6 (cross-review) without `user-review-plan-draft.yaml` signed by the use...</summary><div class="panel"><p>WRK-1017 enforced Stage 5 as a hard gate: agents cannot enter Stage 6
+(cross-review) without <code>user-review-plan-draft.yaml</code> signed by the user.</p>
+<p>Stages 7 and 17 have the same intent but no equivalent guard:
+- Stage 7 (User Review — Plan Final): agents advance to Stage 8 (Claim)
+  without a verified <code>user-review-plan-final.yaml</code>
+- Stage 17 (User Review — Implementation): agents advance to Stage 19 (Close)
+  without a verified <code>user-review-close.yaml</code></p>
+<p>This causes agents to self-certify user reviews, log placeholder artifacts,
+and archive WRK items without any actual human interaction — defeating the
+purpose of the human-in-loop gates.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — Observed in WRK-1029, WRK-1030, WRK-1031: Stage 17 evidence artifacts were written by the agent itself and the WRK was closed/archived witho...</summary><div class="panel"><p>Observed in WRK-1029, WRK-1030, WRK-1031: Stage 17 evidence artifacts were
+written by the agent itself and the WRK was closed/archived without interactive
+user review. The problem is structural — without a hard gate, agent momentum
+carries through the stage.</p>
+<p>Stage 5 enforcement (WRK-1017) proved the pattern works. Stage 7 and 17 need
+the same treatment.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] AC-1: `verify-gate-evidence.py` checks Stage 7 evidence: `user-review-plan-final.yaml` must have `reviewer: user` (not agent) and `con...</summary><div class="panel"><ul>
+<li>[ ] AC-1: <code>verify-gate-evidence.py</code> checks Stage 7 evidence: <code>user-review-plan-final.yaml</code>
+  must have <code>reviewer: user</code> (not agent) and <code>confirmed_at</code> present before Stage 8 is
+  reachable</li>
+<li>[ ] AC-2: <code>verify-gate-evidence.py</code> checks Stage 17 evidence: <code>user-review-close.yaml</code>
+  must have <code>reviewer: user</code> and <code>confirmed_at</code> present before Stage 19 is reachable</li>
+<li>[ ] AC-3: <code>claim-item.sh</code> is guarded by Stage 7 evidence check (analogous to how
+  Stage 5 guards <code>cross-review.sh</code>)</li>
+<li>[ ] AC-4: <code>close-item.sh</code> is guarded by Stage 17 evidence check</li>
+<li>[ ] AC-5: Gate config YAML (<code>stage7-gate-config.yaml</code>, <code>stage17-gate-config.yaml</code>)
+  follows the same schema as <code>stage5-gate-config.yaml</code></li>
+<li>[ ] AC-6: Stage contracts in <code>work-queue-workflow/SKILL.md</code> and <code>work-queue/SKILL.md</code>
+  updated with HARD GATE — BLOCKING notices for Stages 7 and 17 (mirrors Stage 5
+  language in v1.6.3)</li>
+<li>[ ] AC-7: Exit checklists for Stages 7 and 17 added to SKILL.md (mirrors Stage 5
+  exit checklist: 6-item list)</li>
+<li>[ ] AC-8: 10+ tests covering gate check logic (pass, fail, missing artifact, wrong
+  reviewer field)</li>
+<li>[ ] AC-9: Codex cross-review APPROVE before close</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — Route B — two phases. **Files:** - `scripts/work-queue/verify-gate-evidence.py` (edit — add check_stage7/17 functions + CLI flags) - `script...</summary><div class="panel"><p>Route B — two phases.</p>
+<p><strong>Files:</strong>
+- <code>scripts/work-queue/verify-gate-evidence.py</code> (edit — add check_stage7/17 functions + CLI flags)
+- <code>scripts/work-queue/stage7-gate-config.yaml</code> (new — mirrors stage5-gate-config.yaml)
+- <code>scripts/work-queue/stage17-gate-config.yaml</code> (new)
+- <code>scripts/work-queue/claim-item.sh</code> (edit — add Stage 7 guard after Stage 5 guard)
+- <code>scripts/work-queue/close-item.sh</code> (edit — add Stage 17 guard after Stage 5 guard)
+- <code>.claude/skills/coordination/workspace/work-queue/SKILL.md</code> (edit — Stage 7 + 17 HARD GATE notices)
+- <code>tests/unit/test_verify_gate_evidence.py</code> (edit — 10+ new tests)</p>
+<p><strong>Q&amp;A decisions (Stage 5 + cross-review H1/H2 fixes):</strong>
+- Q1: All three gates (S5, S7, S17) ship with <code>activation: full</code>; immediate enforcement required
+- Q2: <code>claim-item.sh</code> bootstrap template for <code>user-review-close.yaml</code> must include <code>confirmed_at: ""</code>
+- Q3: Stage 7 checks canonical <code>evidence/plan-final-review.yaml</code> (confirmed by stage-07 micro-skill + YAML;
+  <code>user-review-plan-final.yaml</code> was a WRK-1031 anomaly — all other WRKs use <code>plan-final-review.yaml</code>)
+- H1 fix: Stage 7 artifact = <code>evidence/plan-final-review.yaml</code> (NOT <code>user-review-plan-final.yaml</code>)
+- H2 fix: Stage 7 fields = <code>confirmed_by</code> (not <code>reviewer</code>) + <code>confirmed_at</code> + <code>decision: passed</code>;
+  Stage 17 fields = <code>reviewer</code> + <code>confirmed_at</code> + <code>decision: approved|passed</code>
+- M3 fix: flip Stage 5 to <code>full</code> only after verifying all in-flight <code>working/</code> WRKs have
+  <code>user-review-common-draft.yaml</code> + <code>user-review-plan-draft.yaml</code>; create <code>stage5-migration-exemption.yaml</code>
+  for any pre-gate items before flipping</p>
+<p><strong>3-Agent synthesis:</strong> <code>evidence/plan-synthesis-3agent.md</code> (Claude + Codex + Gemini drafts)</p>
+<p><strong>Synthesis decisions (D1–D7):</strong>
+- D1: Config loader = <code>_load_gate_config(workspace_root, filename)</code> (filename-based; <code>_load_stage5_config</code> becomes thin wrapper)
+- D2: Add <code>_validate_exemption(exemption_path, wrk_id, human_allowlist)</code> helper; refactor Stage 5 to use it
+- D3: Stage 17 timestamp = check <code>confirmed_at</code> first, fall back to <code>reviewed_at</code> (union check; both present in prod artifacts)
+- D4: <code>confirmed_by</code> (Stage 7) and <code>reviewer</code> (Stage 17) must be in <code>human_authority_allowlist</code> — agent identities rejected
+- D5: Add <code>stage7-migration-exemption.yaml</code> and <code>stage17-migration-exemption.yaml</code> support (activation=full requires escape hatch)
+- D6: <code>check_stage17_evidence_gate()</code> is independent (stricter than existing soft gate); does NOT delegate to <code>check_user_review_close_gate()</code>
+- D7: Update <code>stage5-gate-config.yaml</code> <code>change_note</code> + <code>last_updated</code> to reference WRK-1034</p>
+<p><strong>Phase 1 — Gate functions + config files:</strong></p>
+<ol>
+<li>Add <code>_load_gate_config(workspace_root, filename)</code> — generic loader; <code>_load_stage5_config</code> refactored as thin wrapper</li>
+<li>Add <code>_validate_exemption(exemption_path, wrk_id, human_allowlist)</code> — shared helper; refactor Stage 5 inline block</li>
+<li>Add <code>check_stage7_evidence_gate(wrk_id, assets_dir, workspace_root)</code>:</li>
+<li>Loads <code>stage7-gate-config.yaml</code>; checks <code>stage7-migration-exemption.yaml</code> if present</li>
+<li>Checks <code>evidence/plan-final-review.yaml</code>: <code>confirmed_by</code> in human_allowlist, <code>confirmed_at</code> non-empty, <code>decision=passed</code></li>
+<li>Add <code>check_stage17_evidence_gate(wrk_id, assets_dir, workspace_root)</code>:</li>
+<li>Loads <code>stage17-gate-config.yaml</code>; checks <code>stage17-migration-exemption.yaml</code> if present</li>
+<li>Checks <code>evidence/user-review-close.yaml</code>: <code>reviewer</code> in human_allowlist,
+     <code>confirmed_at</code> OR <code>reviewed_at</code> non-empty (union), <code>decision=approved|accepted|passed</code></li>
+<li>Add <code>_run_stage7_check(args)</code> and <code>_run_stage17_check(args)</code> — separate CLI handlers; exit 0/1/2</li>
+<li>Update <code>main()</code>: dispatch <code>--stage7-check</code>, <code>--stage17-check</code></li>
+<li>Create <code>stage7-gate-config.yaml</code> (activation=full, owned_by_wrk=WRK-1034, same schema as stage5)</li>
+<li>Create <code>stage17-gate-config.yaml</code> (same)</li>
+<li>Update <code>stage5-gate-config.yaml</code>: check in-flight WRKs → create exemptions if needed
+   → change <code>activation: disabled</code> → <code>activation: full</code>; update <code>change_note</code> + <code>last_updated</code> (WRK-1034 ref)</li>
+</ol>
+<p><strong>Phase 2 — Shell guards + SKILL updates:</strong></p>
+<ol>
+<li><code>claim-item.sh</code>: add Stage 7 guard block immediately after Stage 5 guard (reuse <code>$STAGE5_CHECKER</code>,
+    prefix STAGE7_, exit 1/2 pattern). Add <code>confirmed_at: ""</code> to bootstrap <code>user-review-close.yaml</code> template</li>
+<li><code>close-item.sh</code>: add Stage 17 guard block immediately after Stage 5 guard (prefix STAGE17_)</li>
+<li><code>work-queue/SKILL.md</code>: add HARD GATE — BLOCKING notices + exit checklists (≥6 items) to
+    Stage 7 and Stage 17 contracts; bump version 1.6.4 → 1.7.0</li>
+</ol>
+<p><strong>Tests (17 — exceeds AC-8):</strong>
+- T1–T8: Stage 7 gate (disabled bypass, missing artifact, all-fields pass, wrong decision, agent
+  confirmed_by rejected, confirmed_by missing, missing config→infra fail, migration exemption valid)
+- T9–T13: Stage 17 gate (disabled bypass, missing artifact, all-fields pass, wrong decision,
+  agent reviewer rejected)
+- T14–T17: CLI (--stage7-check exit 0/1; --stage17-check exit 0/1)</p>
+<p><strong>Cross-review:</strong> Codex after Phase 2 (AC-9).</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — &lt;!DOCTYPE html&gt; &lt;html lang=&quot;en&quot;&gt; &lt;head&gt; &lt;meta charset=&quot;utf-8&quot;&gt; &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt; &lt;title...</summary><div class="panel"><h4>Draft</h4>
+
+
+  
+  
+  WRK-1034 Lifecycle — Enforce Stage 7 and Stage 17 user-review as hard blocking ga
+  
+:root{--bg:#f3efe6;--panel:#fffdf8;--ink:#172126;--muted:#55636b;
+  --accent:#0f766e;--accent-2:#8a5a2b;--line:#d9d0c0;
+  --shadow:0 12px 32px rgba(20,33,38,0.07);
+  --done:#166534;--done-bg:#dcfce7;--active:#92400e;--active-bg:#fef3c7;
+  --pending:#55636b;--pending-bg:#f1f5f9;--na:#6b7280;--na-bg:#f3f4f6;}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.55;margin:0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;
+  background:rgba(27,31,35,0.06);padding:.15em .35em;border-radius:3px;font-size:.86em;}
+pre{background:#f6f8fa;border:1px solid var(--line);border-radius:7px;
+  padding:12px 14px;overflow-x:auto;font-size:.82rem;margin:10px 0;}
+.hero{padding:36px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;
+  color:var(--accent);font-weight:700;margin:0 0 6px;}
+h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
+.lede{color:var(--muted);font-size:.92rem;margin:0 0 14px;max-width:72ch;}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:5px 10px;font-size:.8rem;}
+.pill strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--accent-2);display:block;margin-bottom:1px;}
+.stage-strip{background:var(--panel);border-bottom:1px solid var(--line);
+  padding:12px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.stage-strip-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+.stage-strip-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);margin-right:6px;white-space:nowrap;}
+.sc{display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;font-size:.75rem;font-weight:700;
+  text-decoration:none;transition:transform .15s;}
+.sc:hover{transform:scale(1.15);}
+.sc-done{background:var(--done-bg);color:var(--done);}
+.sc-active{background:var(--active-bg);color:var(--active);
+  box-shadow:0 0 0 2px var(--active);animation:pulse 2s infinite;}
+.sc-pending{background:var(--pending-bg);color:var(--pending);}
+.sc-na{background:var(--na-bg);color:var(--na);}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--active);}
+  50%{box-shadow:0 0 0 4px rgba(146,64,14,0.3);}}
+.content{max-width:1100px;margin:0 auto;padding:24px 24px 64px;}
+.stage-section{margin-bottom:16px;border-radius:14px;border:1px solid var(--line);
+  background:var(--panel);box-shadow:var(--shadow);overflow:hidden;}
+.stage-header{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;
+  padding:14px 18px;cursor:pointer;user-select:none;}
+.stage-header:hover{background:rgba(15,118,110,0.03);}
+.snum{font-size:1.5rem;font-weight:800;color:var(--line);text-align:center;line-height:1;}
+.stitle{font-size:.95rem;font-weight:700;color:var(--ink);margin:0;}
+.smeta{font-size:.76rem;color:var(--muted);margin:2px 0 0;}
+.sbadges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.7rem;
+  font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+.b-done{background:var(--done-bg);color:var(--done);}
+.b-active{background:var(--active-bg);color:var(--active);}
+.b-pending{background:var(--pending-bg);color:var(--pending);}
+.b-na{background:var(--na-bg);color:var(--na);}
+.b-human{background:#ede9fe;color:#6d28d9;}
+.b-agent{background:#d1fae5;color:#065f46;}
+.b-chain{background:#dbeafe;color:#1e40af;}
+.b-light{background:#f0fdf4;color:#166534;}
+.b-medium{background:#fef9c3;color:#854d0e;}
+.b-heavy{background:#fee2e2;color:#991b1b;}
+.b-gate{background:#fce7f3;color:#9d174d;}
+.chevron{font-size:.75rem;color:var(--muted);transition:transform .2s;}
+.stage-body{padding:0 18px 16px;border-top:1px solid var(--line);}
+.stage-body.collapsed{display:none;}
+.schema{background:#f8f9fa;border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;font-size:.82rem;margin:12px 0;}
+.schema-row{display:grid;grid-template-columns:160px 1fr;gap:4px 10px;margin:3px 0;}
+.schema-key{color:var(--accent);font-family:monospace;font-weight:600;}
+.schema-val{color:var(--ink);}
+.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--accent-2);font-weight:700;margin:14px 0 6px;}
+.item-list{margin:0;padding:0 0 0 18px;font-size:.87rem;}
+.item-list li{margin:3px 0;color:var(--muted);}
+.item-list li strong{color:var(--ink);}
+.ac-list{margin:0;padding:0 0 0 18px;font-size:.85rem;}
+.ac-list li{margin:4px 0;color:var(--muted);}
+.ac-list li strong{color:var(--ink);}
+.awaiting{background:var(--active-bg);border:1px solid #fcd34d;border-radius:8px;
+  padding:10px 14px;font-size:.86rem;color:var(--active);margin:12px 0;}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.84rem;}
+th,td{border-top:1px solid var(--line);padding:8px 7px;text-align:left;vertical-align:top;}
+th{font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.74rem;color:var(--ink);}
+td{color:var(--muted);}td strong{color:var(--ink);}
+@media(max-width:700px){.stage-header{grid-template-columns:36px 1fr;}.sbadges{display:none;}
+  .schema-row{grid-template-columns:1fr;}}
+@media print{body{background:#fff;}.stage-strip{position:static;}
+  .stage-body.collapsed{display:block;}}
+
+
+
+
+
+
+  <div class="hero-inner">
+    <p>Lifecycle Tracker &middot; Route B &middot; harness</p>
+    <h1>WRK-1034 — Enforce Stage 7 and Stage 17 user-review as hard blocking gates</h1>
+    <p>Single lifecycle document tracking all 20 stages from capture to archive.</p>
+    <div class="meta-row">
+      <div class="pill"><strong>Priority</strong>high</div>
+      <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
+      <div class="pill"><strong>Orchestrator</strong>claude</div>
+      <div class="pill"><strong>Category</strong>harness</div>
+      <div class="pill"><strong>Created</strong>2026-03-07</div>
+    </div>
+  </div>
+
+
+
+
+  <div class="stage-strip-inner">
+    <span class="stage-strip-label">Stages</span>
+    <a href="#s1" title="01 Capture">1</a><a href="#s2" title="02 Resource Intelligence">2</a><a href="#s3" title="03 Triage">3</a><a href="#s4" title="04 Plan Draft">4</a><a href="#s5" title="05 User Review — Plan Draft">5</a><a href="#s6" title="06 Cross-Review">6</a><a href="#s7" title="07 User Review — Plan Final">7</a><a href="#s8" title="08 Claim / Activation">8</a><a href="#s9" title="09 Work-Queue Routing">9</a><a href="#s10" title="10 Work Execution">10</a><a href="#s11" title="11 Artifact Generation">11</a><a href="#s12" title="12 TDD / Eval">12</a><a href="#s13" title="13 Agent Cross-Review">13</a><a href="#s14" title="14 Verify Gate Evidence">14</a><a href="#s15" title="15 Future Work Synthesis">15</a><a href="#s16" title="16 Resource Intelligence Update">16</a><a href="#s17" title="17 User Review — Implementation">17</a><a href="#s18" title="18 Reclaim">18</a><a href="#s19" title="19 Close">19</a><a href="#s20" title="20 Archive">20</a>
+  </div>
+
+
+<div class="content">
+
+
+
+  <div class="stage-header">
+    <div class="snum">1</div>
+    <div>
+      <div class="stitle">Capture</div>
+      <div class="smeta">human_session · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-human">human_session</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">Enforce Stage 7 and Stage 17 user-review as hard blocking gates</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">high</span></div></div><div class="section-label">Exit artifacts</div><ul><li><code>pending/WRK-1034.md</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">2</div>
+    <div>
+      <div class="stitle">Resource Intelligence</div>
+      <div class="smeta">chained_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">completion_status</span><span class="schema-val">continue_to_planning</span></div><div class="schema-row"><span class="schema-key">domain.problem</span><span class="schema-val">Stage 7 (User Review — Plan Final) and Stage 17 (User Review — Implementation) have no hard-gate enforcement. Agents sel</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">Mirror the Stage 5 gate pattern (WRK-1017): add check_stage7/17_evidence_gate() functions in verify-gate-evidence.py, ga</span></div></div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/resource-intelligence.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">3</div>
+    <div>
+      <div class="stitle">Triage</div>
+      <div class="smeta">chained_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">ace-linux-1</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">4</div>
+    <div>
+      <div class="stitle">Plan Draft</div>
+      <div class="smeta">chained_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Acceptance Criteria</div><ul><li>☐ AC-1: `verify-gate-evidence.py` checks Stage 7 evidence: `user-review-plan-final.yaml`</li><li>☐ AC-2: `verify-gate-evidence.py` checks Stage 17 evidence: `user-review-close.yaml`</li><li>☐ AC-3: `claim-item.sh` is guarded by Stage 7 evidence check (analogous to how</li><li>☐ AC-4: `close-item.sh` is guarded by Stage 17 evidence check</li><li>☐ AC-5: Gate config YAML (`stage7-gate-config.yaml`, `stage17-gate-config.yaml`)</li><li>☐ AC-6: Stage contracts in `work-queue-workflow/SKILL.md` and `work-queue/SKILL.md`</li><li>☐ AC-7: Exit checklists for Stages 7 and 17 added to SKILL.md (mirrors Stage 5</li><li>☐ AC-8: 10+ tests covering gate check logic (pass, fail, missing artifact, wrong</li><li>☐ AC-9: Codex cross-review APPROVE before close</li></ul><div class="section-label">Plan</div><ul><li>Route B — two phases.</li><li>**Files:**</li><li>- `scripts/work-queue/verify-gate-evidence.py` (edit — add check_stage7/17 functions + CLI flags)</li><li>- `scripts/work-queue/stage7-gate-config.yaml` (new — mirrors stage5-gate-config.yaml)</li><li>- `scripts/work-queue/stage17-gate-config.yaml` (new)</li><li>- `scripts/work-queue/claim-item.sh` (edit — add Stage 7 guard after Stage 5 guard)</li><li>- `scripts/work-queue/close-item.sh` (edit — add Stage 17 guard after Stage 5 guard)</li><li>- `.claude/skills/coordination/workspace/work-queue/SKILL.md` (edit — Stage 7 + 17 HARD GATE notices)</li><li>- `tests/unit/test_verify_gate_evidence.py` (edit — 10+ new tests)</li><li>**Q&amp;A decisions (Stage 5 + cross-review H1/H2 fixes):**</li><li>- Q1: All three gates (S5, S7, S17) ship with `activation: full`; immediate enforcement required</li><li>- Q2: `claim-item.sh` bootstrap tem</li></ul><div class="section-label">Exit artifacts</div><ul><li><code>working/WRK-1034.md</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">5</div>
+    <div>
+      <div class="stitle">User Review — Plan Draft</div>
+      <div class="smeta">human_session · heavy · GATE</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-human">human_session</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">reviewed_by</span><span class="schema-val">user</span></div></div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">6</div>
+    <div>
+      <div class="stitle">Cross-Review</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Cross-review summary</div><p># WRK-1034 — Stage 6 Cross-Review (Plan Phase 1)
+
+## Provider: Gemini
+**Date**: 2026-03-07
+**Verdict**: MINOR (approve with fixes)
+
+### HIGH Findings — Resolved
+
+**H1: Wrong Stage 7 artifact filename*</p><div class="section-label">Exit artifacts</div><ul><li><code>evidence/cross-review-*.md</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">7</div>
+    <div>
+      <div class="stitle">User Review — Plan Final</div>
+      <div class="smeta">human_session · heavy · GATE</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-active">active</span>
+      <span class="badge b-human">human_session</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/user-review-plan-final.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">8</div>
+    <div>
+      <div class="stitle">Claim / Activation</div>
+      <div class="smeta">chained_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">claimed_by</span><span class="schema-val">claude</span></div><div class="schema-row"><span class="schema-key">claimed_at</span><span class="schema-val">2026-03-08 02:35:00+00:00</span></div></div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/claim.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">9</div>
+    <div>
+      <div class="stitle">Work-Queue Routing</div>
+      <div class="smeta">chained_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-done">done</span>
+      <span class="badge b-chain">chained_agent</span>
+
+      <span class="chevron">▲</span>
+    </div>
+  </div>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">claimed_by</span><span class="schema-val">claude</span></div><div class="schema-row"><span class="schema-key">claimed_at</span><span class="schema-val">2026-03-08 02:35:00+00:00</span></div></div><div class="section-label">Exit artifacts</div><ul><li><code>evidence/claim.yaml</code></li></ul>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">10</div>
+    <div>
+      <div class="stitle">Work Execution</div>
+      <div class="smeta">task_agent · heavy</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">11</div>
+    <div>
+      <div class="stitle">Artifact Generation</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">12</div>
+    <div>
+      <div class="stitle">TDD / Eval</div>
+      <div class="smeta">task_agent · heavy</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">13</div>
+    <div>
+      <div class="stitle">Agent Cross-Review</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">14</div>
+    <div>
+      <div class="stitle">Verify Gate Evidence</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">15</div>
+    <div>
+      <div class="stitle">Future Work Synthesis</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">16</div>
+    <div>
+      <div class="stitle">Resource Intelligence Update</div>
+      <div class="smeta">task_agent · medium</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">17</div>
+    <div>
+      <div class="stitle">User Review — Implementation</div>
+      <div class="smeta">human_session · heavy · GATE</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-human">human_session</span>
+      <span class="badge b-gate">gate</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">18</div>
+    <div>
+      <div class="stitle">Reclaim</div>
+      <div class="smeta">task_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-na">na</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Not applicable for this WRK.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">19</div>
+    <div>
+      <div class="stitle">Close</div>
+      <div class="smeta">task_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+
+
+  <div class="stage-header">
+    <div class="snum">20</div>
+    <div>
+      <div class="stitle">Archive</div>
+      <div class="smeta">task_agent · light</div>
+    </div>
+    <div class="sbadges">
+      <span class="badge b-pending">pending</span>
+      <span class="badge b-agent">task_agent</span>
+
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="stage-body collapsed">
+    <p>Pending.</p>
+  </div>
+
+</div>
+
+
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  const collapsed = body.classList.toggle('collapsed');
+  chevron.textContent = collapsed ? '\u25bc' : '\u25b2';
+}
+
+
+<h4>Final</h4><p>wrk_id: WRK-1034
+stage: plan_final
+artifact: evidence/plan-final-review.yaml
+confirmed_by: user
+confirmed_at: 2026-03-08T02:30:00Z
+decision: passed
+review_cycle_id: rc-1034-plan-final
+notes: &gt;
+  User approved final plan after 3-agent synthesis (Claude + Codex + Gemini).
+  Synthesis decisions D1-D7 incorporated. Proceed to Stage 8 claim.</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 4 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Stage 7 and Stage 17 gate unit tests</td><td>repo</td><td>passed</td><td><code>uv run --no-project python -m pytest tests/unit/test_verify_gate_evidence.py -k &quot;stage7 or stage17&quot; -q</code></td><td>tests/unit/test_verify_gate_evidence.py</td></tr><tr><td>2</td><td>Full gate evidence test suite</td><td>repo</td><td>passed</td><td><code>uv run --no-project python -m pytest tests/unit/test_verify_gate_evidence.py -q</code></td><td>tests/unit/test_verify_gate_evidence.py</td></tr><tr><td>3</td><td>CLI --stage7-check smoke test</td><td>integrated</td><td>passed</td><td><code>uv run --no-project python scripts/work-queue/verify-gate-evidence.py --stage7-check WRK-1034</code></td><td>scripts/work-queue/verify-gate-evidence.py</td></tr><tr><td>4</td><td>Legal sanity scan</td><td>repo</td><td>passed</td><td><code>bash scripts/legal/legal-sanity-scan.sh</code></td><td>.claude/work-queue/assets/WRK-1034/legal-scan.md</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1034, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1034, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-final-review.yaml, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=missing, execution_workstations=missing</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1034/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['test-results.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=4 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1034/legal-scan.md, result=PASS</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>PASS</td>
+<td>claim.yaml: canonical claim evidence OK</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=3</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: additions=3</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1034 generated_at: 2026-03-08T02:45:00Z recommendations: - id: fw-01 title: Unify S5/S7/S17 gate configs into a single user-revi...</summary><div class="panel"><p>wrk_id: WRK-1034
+generated_at: 2026-03-08T02:45:00Z</p>
+<p>recommendations:
+  - id: fw-01
+    title: Unify S5/S7/S17 gate configs into a single user-review-gates-config.yaml
+    rationale: &gt;
+      Three separate config files share identical schema and human_authority_allowlist.
+      A unified config reduces drift risk and simplifies allowlist maintenance.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: ""
+    priority: low</p>
+<ul>
+<li>
+<p>id: fw-02
+    title: Enforce 3-agent interactive planning session as a hard gate (Route B/C)
+    rationale: &gt;
+      Stage 5 exit checklist item "All 3 agents independently drafted plan; synthesis saved"
+      is documented but not machine-enforced. Agents can skip it. Add checker or shell guard
+      to verify plan-synthesis-3agent.md exists before Stage 6 cross-review.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: ""
+    priority: medium</p>
+</li>
+<li>
+<p>id: fw-03
+    title: Add work-queue-workflow/SKILL.md HARD GATE notices for Stages 7 and 17
+    rationale: &gt;
+      work-queue/SKILL.md v1.7.0 updated but work-queue-workflow/SKILL.md was not updated
+      with matching HARD GATE language in this WRK. The workflow skill should mirror the
+      gate language so both skills are consistent.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: ""
+    priority: low</p>
+</li>
+</ul></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1034 generated_at: 2026-03-08T02:45:00Z reviewed_by: claude stages: - order: 1 stage: Capture status: done human_decision_requir...</summary><div class="panel"><p>wrk_id: WRK-1034
+generated_at: 2026-03-08T02:45:00Z
+reviewed_by: claude</p>
+<p>stages:
+  - order: 1
+    stage: Capture
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: WRK created from /work add request.
+    evidence: .claude/work-queue/working/WRK-1034.md</p>
+<ul>
+<li>
+<p>order: 2
+    stage: Resource Intelligence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: resource-intelligence.yaml captured.
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/resource-intelligence.yaml</p>
+</li>
+<li>
+<p>order: 3
+    stage: Triage
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Route B, medium, ace-linux-1, harness/workflow-gates.
+    evidence: .claude/work-queue/working/WRK-1034.md</p>
+</li>
+<li>
+<p>order: 4
+    stage: Plan Draft
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Phase 1 + Phase 2 plan drafted; 3-agent synthesis (Claude+Codex+Gemini).
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/plan-synthesis-3agent.md</p>
+</li>
+<li>
+<p>order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: User approved plan draft; Q&amp;A decisions recorded; 3-agent synthesis required for Route B.
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/user-review-plan-draft.yaml</p>
+</li>
+<li>
+<p>order: 6
+    stage: Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Gemini MINOR — H1/H2/M3 findings resolved in plan.
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/cross-review-phase1.md</p>
+</li>
+<li>
+<p>order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: User approved final plan after 3-agent synthesis.
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/plan-final-review.yaml</p>
+</li>
+<li>
+<p>order: 8
+    stage: Claim / Activation
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Claimed by claude on ace-linux-1.
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/claim.yaml</p>
+</li>
+<li>
+<p>order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Entered via /work run.
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/activation.yaml</p>
+</li>
+<li>
+<p>order: 10
+    stage: Work Execution
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Phase 1 + Phase 2 complete — 20 files changed, commit 6452214b.
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/execute.yaml</p>
+</li>
+<li>
+<p>order: 11
+    stage: Artifact Generation
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Lifecycle HTML regenerated.
+    evidence: .claude/work-queue/assets/WRK-1034/WRK-1034-lifecycle.html</p>
+</li>
+<li>
+<p>order: 12
+    stage: TDD / Eval
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: 53/53 tests pass (19 new). Stage 7/17 CLI smoke tests pass.
+    evidence: tests/unit/test_verify_gate_evidence.py</p>
+</li>
+<li>
+<p>order: 13
+    stage: Agent Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Codex cross-review APPROVE (round 2) — P1-01/P2-01/P2-03 resolved; 55/55 tests pass.
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/cross-review-implementation.md</p>
+</li>
+<li>
+<p>order: 14
+    stage: Verify Gate Evidence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: 16/17 gates OK; Stage 17 user-review-close pending user signature.
+    evidence: scripts/work-queue/verify-gate-evidence.py</p>
+</li>
+<li>
+<p>order: 15
+    stage: Future Work Synthesis
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: 3 follow-up items captured (fw-01/fw-02/fw-03).
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/future-work.yaml</p>
+</li>
+<li>
+<p>order: 16
+    stage: Resource Intelligence Update
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: 3 new findings documented.
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/resource-intelligence-update.yaml</p>
+</li>
+<li>
+<p>order: 17
+    stage: User Review - Implementation
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: User approved implementation 2026-03-08T03:30:00Z.
+    evidence: .claude/work-queue/assets/WRK-1034/evidence/user-review-close.yaml</p>
+</li>
+<li>
+<p>order: 18
+    stage: Reclaim
+    status: n/a
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: No continuity break in this run.
+    evidence: n/a</p>
+</li>
+<li>
+<p>order: 19
+    stage: Close
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Pending Stage 17 approval.
+    evidence: .claude/work-queue/done/WRK-1034.md</p>
+</li>
+<li>
+<p>order: 20
+    stage: Archive
+    status: pending
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Pending close.
+    evidence: .claude/work-queue/archive/WRK-1034.md</p>
+</li>
+</ul></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 24 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1034-lifecycle.html</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim.yaml</code></li><li><code>evidence/cross-review-implementation.md</code></li><li><code>evidence/cross-review-phase1.md</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/plan-codex-draft.md</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/plan-gemini-draft.md</code></li><li><code>evidence/plan-synthesis-3agent.md</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>review.md</code></li><li><code>test-results.md</code></li></ul></div></details>
+</body>
+</html>
