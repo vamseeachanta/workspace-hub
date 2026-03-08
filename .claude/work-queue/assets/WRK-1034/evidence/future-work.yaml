@@ -1,0 +1,38 @@
+wrk_id: WRK-1034
+generated_at: 2026-03-08T02:45:00Z
+
+recommendations:
+  - id: fw-01
+    title: Unify S5/S7/S17 gate configs into a single user-review-gates-config.yaml
+    rationale: >
+      Three separate config files share identical schema and human_authority_allowlist.
+      A unified config reduces drift risk and simplifies allowlist maintenance.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: ""
+    priority: low
+
+  - id: fw-02
+    title: Enforce 3-agent interactive planning session as a hard gate (Route B/C)
+    rationale: >
+      Stage 5 exit checklist item "All 3 agents independently drafted plan; synthesis saved"
+      is documented but not machine-enforced. Agents can skip it. Add checker or shell guard
+      to verify plan-synthesis-3agent.md exists before Stage 6 cross-review.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: ""
+    priority: medium
+
+  - id: fw-03
+    title: Add work-queue-workflow/SKILL.md HARD GATE notices for Stages 7 and 17
+    rationale: >
+      work-queue/SKILL.md v1.7.0 updated but work-queue-workflow/SKILL.md was not updated
+      with matching HARD GATE language in this WRK. The workflow skill should mirror the
+      gate language so both skills are consistent.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: ""
+    priority: low

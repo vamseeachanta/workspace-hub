@@ -1,0 +1,61 @@
+wrk_id: WRK-1034
+executed_at: 2026-03-08T02:40:00Z
+executor: claude
+commit: 6452214b
+
+summary: |
+  Phase 1: verify-gate-evidence.py extended with _load_gate_config(),
+  _validate_exemption(), check_stage7_evidence_gate(),
+  check_stage17_evidence_gate(), _run_stage7_check(), _run_stage17_check().
+  Stage 5 inline exemption refactored to use shared helper.
+  Phase 2: claim-item.sh Stage 7 guard + bootstrap confirmed_at fix;
+  close-item.sh Stage 17 guard; work-queue/SKILL.md v1.7.0 HARD GATE notices.
+  Stage 5 flipped disabled→full; migration exemptions for WRK-118/129/684/1005.
+
+key_files_changed:
+  - path: scripts/work-queue/verify-gate-evidence.py
+    edit_type: edit
+    purpose: Add Stage 7/17 gate functions + generic helpers
+  - path: scripts/work-queue/stage7-gate-config.yaml
+    edit_type: new
+    purpose: Stage 7 gate config (activation=full)
+  - path: scripts/work-queue/stage17-gate-config.yaml
+    edit_type: new
+    purpose: Stage 17 gate config (activation=full)
+  - path: scripts/work-queue/stage5-gate-config.yaml
+    edit_type: edit
+    purpose: Flip activation disabled → full
+  - path: scripts/work-queue/claim-item.sh
+    edit_type: edit
+    purpose: Stage 7 guard + bootstrap template fix
+  - path: scripts/work-queue/close-item.sh
+    edit_type: edit
+    purpose: Stage 17 guard
+  - path: .claude/skills/coordination/workspace/work-queue/SKILL.md
+    edit_type: edit
+    purpose: v1.7.0 — HARD GATE notices + exit checklists Stages 7 and 17
+  - path: tests/unit/test_verify_gate_evidence.py
+    edit_type: edit
+    purpose: 19 new tests (T1–T17 + 2 legacy stage17); 53/53 pass
+
+integrated_repo_tests:
+  - name: Stage 7 and Stage 17 gate unit tests
+    scope: repo
+    command: uv run --no-project python -m pytest tests/unit/test_verify_gate_evidence.py -k "stage7 or stage17" -q
+    result: passed
+    artifact_ref: tests/unit/test_verify_gate_evidence.py
+  - name: Full gate evidence test suite
+    scope: repo
+    command: uv run --no-project python -m pytest tests/unit/test_verify_gate_evidence.py -q
+    result: passed
+    artifact_ref: tests/unit/test_verify_gate_evidence.py
+  - name: CLI --stage7-check smoke test
+    scope: integrated
+    command: uv run --no-project python scripts/work-queue/verify-gate-evidence.py --stage7-check WRK-1034
+    result: passed
+    artifact_ref: scripts/work-queue/verify-gate-evidence.py
+  - name: Legal sanity scan
+    scope: repo
+    command: bash scripts/legal/legal-sanity-scan.sh
+    result: passed
+    artifact_ref: .claude/work-queue/assets/WRK-1034/legal-scan.md

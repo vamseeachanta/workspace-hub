@@ -1,0 +1,32 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 6452214b
+    published_at: 2026-03-08T02:45:00Z
+    reviewer: user
+    documents:
+      - .claude/work-queue/assets/WRK-1034/WRK-1034-lifecycle.html
+      - .claude/work-queue/assets/WRK-1034/evidence/user-review-plan-draft.yaml
+
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 6452214b
+    published_at: 2026-03-08T02:45:00Z
+    reviewer: user
+    documents:
+      - .claude/work-queue/assets/WRK-1034/WRK-1034-lifecycle.html
+      - .claude/work-queue/assets/WRK-1034/evidence/plan-final-review.yaml
+
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 6452214b
+    published_at: 2026-03-08T02:45:00Z
+    reviewer: user
+    documents:
+      - .claude/work-queue/assets/WRK-1034/WRK-1034-lifecycle.html

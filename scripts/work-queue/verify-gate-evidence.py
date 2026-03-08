@@ -145,7 +145,9 @@ def _validate_exemption(
     approved_by = str(ex.get("approved_by", "")).strip()
     if not approved_by:
         return None, f"{exemption_path.name}: approved_by missing"
-    if human_allowlist and approved_by not in human_allowlist:
+    if not human_allowlist:
+        return None, f"{exemption_path.name}: human_authority_allowlist is empty — gate cannot validate human identity"
+    if approved_by not in human_allowlist:
         return (
             None,
             f"{exemption_path.name}: approved_by='{approved_by}' not in "
@@ -311,7 +313,9 @@ def check_stage7_evidence_gate(
     confirmed_by = str(data.get("confirmed_by", "")).strip()
     if not confirmed_by:
         return False, "plan-final-review.yaml: confirmed_by missing"
-    if human_allowlist and confirmed_by not in human_allowlist:
+    if not human_allowlist:
+        return False, "stage7-gate-config.yaml: human_authority_allowlist is empty — gate cannot validate human identity"
+    if confirmed_by not in human_allowlist:
         return (
             False,
             f"plan-final-review.yaml: confirmed_by='{confirmed_by}' not in "
@@ -389,7 +393,9 @@ def check_stage17_evidence_gate(
     reviewer = str(data.get("reviewer", "")).strip()
     if not reviewer:
         return False, "user-review-close.yaml: reviewer missing"
-    if human_allowlist and reviewer not in human_allowlist:
+    if not human_allowlist:
+        return False, "stage17-gate-config.yaml: human_authority_allowlist is empty — gate cannot validate human identity"
+    if reviewer not in human_allowlist:
         return (
             False,
             f"user-review-close.yaml: reviewer='{reviewer}' not in "

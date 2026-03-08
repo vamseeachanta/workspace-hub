@@ -1231,3 +1231,62 @@ def test_stage17_gate_reviewed_at_field_accepted(tmp_path: Path):
     ok, detail = mod.check_stage17_evidence_gate("WRK-999", assets_dir, workspace_root)
     assert ok is True
     assert "stage17 gate passed" in detail
+
+
+# T18 — _run_stage7_check exit-code mapping: True → 0, False → 1, None → 2
+def test_run_stage7_check_exit_code_mapping(tmp_path: Path, monkeypatch):
+    """Verify _run_stage7_check maps (True→0, False→1, None→2) correctly."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+    assets_dir, workspace_root = _write_stage7_fixtures(tmp_path)
+
+    # Patch workspace resolution to use our tmp_path fixture
+    monkeypatch.setattr(
+        mod, "check_stage7_evidence_gate",
+        lambda wrk_id, assets, root: (True, "mock pass"),
+    )
+    # Also patch assets_dir.is_dir() by pointing to a real dir
+    real_assets = workspace_root / ".claude" / "work-queue" / "assets" / "WRK-999"
+    # _run_stage7_check derives assets_dir from workspace_root; patch Path(__file__) indirectly
+    # by patching the gate function — it is called only if assets_dir.is_dir() passes.
+    # Use WRK-999 which exists in the fixture tree.
+    import unittest.mock
+    with unittest.mock.patch.object(mod, "check_stage7_evidence_gate", return_value=(True, "mock pass")):
+        with unittest.mock.patch("pathlib.Path.is_dir", return_value=True):
+            ret = mod._run_stage7_check(["WRK-999"])
+    assert ret == 0, f"expected 0 (pass), got {ret}"
+
+    with unittest.mock.patch.object(mod, "check_stage7_evidence_gate", return_value=(False, "predicate fail")):
+        with unittest.mock.patch("pathlib.Path.is_dir", return_value=True):
+            ret = mod._run_stage7_check(["WRK-999"])
+    assert ret == 1, f"expected 1 (predicate fail), got {ret}"
+
+    with unittest.mock.patch.object(mod, "check_stage7_evidence_gate", return_value=(None, "infra fail")):
+        with unittest.mock.patch("pathlib.Path.is_dir", return_value=True):
+            ret = mod._run_stage7_check(["WRK-999"])
+    assert ret == 2, f"expected 2 (infra fail), got {ret}"
+
+
+# T19 — _run_stage17_check exit-code mapping: True → 0, False → 1, None → 2
+def test_run_stage17_check_exit_code_mapping(tmp_path: Path, monkeypatch):
+    """Verify _run_stage17_check maps (True→0, False→1, None→2) correctly."""
+    mod = _load_verify_module()
+    if mod.yaml is None:
+        pytest.skip("PyYAML unavailable")
+
+    import unittest.mock
+    with unittest.mock.patch.object(mod, "check_stage17_evidence_gate", return_value=(True, "mock pass")):
+        with unittest.mock.patch("pathlib.Path.is_dir", return_value=True):
+            ret = mod._run_stage17_check(["WRK-999"])
+    assert ret == 0, f"expected 0 (pass), got {ret}"
+
+    with unittest.mock.patch.object(mod, "check_stage17_evidence_gate", return_value=(False, "predicate fail")):
+        with unittest.mock.patch("pathlib.Path.is_dir", return_value=True):
+            ret = mod._run_stage17_check(["WRK-999"])
+    assert ret == 1, f"expected 1 (predicate fail), got {ret}"
+
+    with unittest.mock.patch.object(mod, "check_stage17_evidence_gate", return_value=(None, "infra fail")):
+        with unittest.mock.patch("pathlib.Path.is_dir", return_value=True):
+            ret = mod._run_stage17_check(["WRK-999"])
+    assert ret == 2, f"expected 2 (infra fail), got {ret}"

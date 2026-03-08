@@ -1,0 +1,24 @@
+wrk_id: WRK-1034
+updated_at: 2026-03-08T02:45:00Z
+
+additions:
+  - finding: >
+      _validate_exemption() is the canonical exemption-check helper for all stage gates.
+      Stage 5 was refactored to use it; Stage 7/17 use it directly. Any future gate
+      (Stage N) should use this helper rather than inline exemption logic.
+    domain: harness/workflow-gates
+    skill_ref: scripts/work-queue/verify-gate-evidence.py
+
+  - finding: >
+      union timestamp check (confirmed_at OR reviewed_at) is the correct pattern for
+      Stage 17 because production artifacts use both field names interchangeably.
+      Always accept both rather than enforcing a single canonical name.
+    domain: harness/workflow-gates
+    skill_ref: scripts/work-queue/verify-gate-evidence.py
+
+  - finding: >
+      stage5-gate-config.yaml activation=full is now live. In-flight WRKs that predate
+      the gate need stage5-migration-exemption.yaml (approved_by + approval_scope +
+      optionally wrk_id). Same pattern applies to stage7/17 migration exemptions.
+    domain: harness/workflow-gates
+    skill_ref: scripts/work-queue/stage5-gate-config.yaml

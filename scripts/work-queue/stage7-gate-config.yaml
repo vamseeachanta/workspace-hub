@@ -22,10 +22,6 @@ gate_activation_commit: ""
 checker_timeout_seconds: 30
 git_history_timeout_seconds: 8
 
-emergency_bypass_until: ""
-emergency_bypass_reason: ""
-emergency_bypass_approved_by: ""
-
 # Human authority allowlist: only these identities are accepted as confirmed_by in
 # plan-final-review.yaml. Agent identities (claude, codex, gemini) are not permitted.
 human_authority_allowlist:
