@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-08T01:26:06Z by generate-index.py -->
+<!-- Generated: 2026-03-08T01:27:15Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-08T01:26:06Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-08T01:27:15Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -14,9 +14,9 @@
 | Status | Count |
 |--------|-------|
 | pending | 207 |
-| working | 5 |
+| working | 4 |
 | blocked | 9 |
-| archived | 239 |
+| archived | 240 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 44 |
+| harness | 43 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -90,8 +90,8 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 460 |
-| Total archived | 239 |
-| Completion rate | 239/460 (52%) |
+| Total archived | 240 |
+| Completion rate | 240/460 (52%) |
 | Monthly rate (current month) | 12 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,7 +101,7 @@
 |--------|-------|------------|
 | Pending items with plans | 60 / 207 | 29% |
 | Plans cross-reviewed | 10 | 14% |
-| Plans user-approved | 11 | 15% |
+| Plans user-approved | 10 | 14% |
 
 ### Aging
 
@@ -117,14 +117,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 96 | 2 | 7 |
-| Medium   | 83  | 3  | 1  |
+| Medium   | 83  | 2  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (44 items — 13 high, 26 medium, 5 low)
+### harness (43 items — 13 high, 25 medium, 5 low)
 
 #### harness / agent-ux
 
@@ -184,7 +184,6 @@
 | WRK-1000 | MEDIUM | fix(work-queue): restore /work skill compatibility in Codex CLI | pending |
 | WRK-1009 | MEDIUM | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending |
 | WRK-1010 | MEDIUM | Skill capability assessment for WRK-624 workflow governance skill set | pending |
-| WRK-1011 | MEDIUM | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working |
 | WRK-1013 | MEDIUM | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending |
 | WRK-1016 | MEDIUM | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending |
 | WRK-1025 | MEDIUM | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending |
@@ -978,7 +977,7 @@
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ░░░ 30% | n/a | - |
 | WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 85% | n/a | - |
+| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 85% | n/a | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 20% | n/a | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1223,7 +1222,6 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
-| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | medium | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -1474,6 +1472,7 @@
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
+| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | medium | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | medium | medium | workspace-hub | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | high | high | workspace-hub | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | high | complex | workspace-hub | - |
@@ -1965,7 +1964,7 @@
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working | high | medium | - |
 | WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending | medium | medium | - |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | medium | - |
-| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | medium | - |
+| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | medium | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | medium | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | - |
@@ -2494,7 +2493,7 @@
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | simple | workspace-hub | - |
 | WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending | medium | workspace-hub | - |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | workspace-hub | - |
-| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | workspace-hub | - |
+| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | workspace-hub | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | workspace-hub | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
@@ -2855,7 +2854,7 @@
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working | high | workspace-hub | - |
 | WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending | medium | workspace-hub | - |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | workspace-hub | - |
-| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | workspace-hub | - |
+| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | workspace-hub | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | workspace-hub | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
@@ -2969,7 +2968,7 @@
 
 ## By Computer
 
-### ace-linux-1 (158 active / 184 total)
+### ace-linux-1 (157 active / 184 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3135,7 +3134,7 @@
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working | high | medium | workspace-hub |
 | WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending | medium | medium | workspace-hub |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | medium | workspace-hub |
-| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | working | medium | medium | workspace-hub |
+| WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | medium | workspace-hub |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | workspace-hub |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | medium | workspace-hub |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | workspace-hub |
