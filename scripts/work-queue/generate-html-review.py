@@ -1329,8 +1329,8 @@ def detect_stage_statuses(
             or (ad / "cross-review-plan.md").exists()
             or bool(list(ev.glob("cross-review*.md")))),
         7: ev_exists("user-review-plan-final.yaml", "plan-final-review.yaml"),
-        8: (ev_exists("claim.yaml") or (ad / "claim-evidence.yaml").exists()),
-        9: (ev_exists("claim.yaml") or (ad / "claim-evidence.yaml").exists()),
+        8: (ev_exists("claim.yaml", "claim-evidence.yaml") or (ad / "claim-evidence.yaml").exists()),
+        9: (ev_exists("claim.yaml", "claim-evidence.yaml") or (ad / "claim-evidence.yaml").exists()),
         10: ev_exists("execute.yaml"),
         11: ev_exists("gate-evidence-summary.json"),
         12: ((ad / "variation-test-results.md").exists()
