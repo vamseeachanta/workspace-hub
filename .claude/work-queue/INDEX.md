@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-08T20:53:23Z by generate-index.py -->
+<!-- Generated: 2026-03-08T20:58:34Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-08T20:53:23Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-08T20:58:34Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -14,9 +14,9 @@
 | Status | Count |
 |--------|-------|
 | pending | 211 |
-| working | 5 |
+| working | 4 |
 | blocked | 9 |
-| archived | 249 |
+| archived | 250 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 46 |
+| harness | 45 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -90,9 +90,9 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 474 |
-| Total archived | 249 |
-| Completion rate | 249/474 (53%) |
-| Monthly rate (current month) | 19 archived |
+| Total archived | 250 |
+| Completion rate | 250/474 (53%) |
+| Monthly rate (current month) | 20 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -100,8 +100,8 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | Pending items with plans | 58 / 211 | 27% |
-| Plans cross-reviewed | 11 | 16% |
-| Plans user-approved | 11 | 16% |
+| Plans cross-reviewed | 10 | 15% |
+| Plans user-approved | 10 | 15% |
 
 ### Aging
 
@@ -116,7 +116,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 97 | 3 | 7 |
+| High     | 97 | 2 | 7 |
 | Medium   | 84  | 2  | 1  |
 | Low      | 30  | 0  | 1  |
 
@@ -124,7 +124,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (46 items — 14 high, 25 medium, 7 low)
+### harness (45 items — 13 high, 25 medium, 7 low)
 
 #### harness / agent-teams
 
@@ -224,12 +224,6 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1014 | MEDIUM | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending |
-
-#### harness / workflow-gates
-
-| ID | Priority | Title | Status |
-|----|----------|-------|--------|
-| WRK-1039 | HIGH | Harden gate verifier — 14 gaps from WRK-1035 session audit | working |
 
 #### harness / workflow-html
 
@@ -1021,7 +1015,7 @@
 | WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude+codex | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | archived | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
-| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 80% | n/a | - |
+| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-1035 |
 | WRK-1041 | Lifecycle HTML — auto-refresh + on-demand /work html command | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1035 |
 | WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1258,7 +1252,6 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
-| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | high | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -1523,6 +1516,7 @@
 | WRK-1035 | Beef up user-review stages in work-queue-workflow SKILL from recent session learnings | high | complex | workspace-hub | - |
 | WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | medium | medium | workspace-hub | - |
 | WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | low | simple | workspace-hub | - |
+| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | high | medium | workspace-hub | - |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | medium | medium | workspace-hub | - |
 | WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | high | complex | workspace-hub | - |
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | high | medium | workspace-hub | - |
@@ -2036,7 +2030,7 @@
 | WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | archived | medium | medium | - |
 | WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | pending | high | simple | - |
 | WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | archived | low | simple | - |
-| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | working | high | medium | - |
+| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | archived | high | medium | - |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | archived | medium | medium | - |
 | WRK-1041 | Lifecycle HTML — auto-refresh + on-demand /work html command | pending | medium | simple | - |
 | WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | simple | - |
@@ -2364,7 +2358,7 @@
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | archived | medium | workspace-hub | - |
 | WRK-1035 | Beef up user-review stages in work-queue-workflow SKILL from recent session learnings | archived | complex | workspace-hub | - |
 | WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | pending | simple | workspace-hub | - |
-| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | working | medium | workspace-hub | - |
+| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | archived | medium | workspace-hub | - |
 | WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | archived | complex | workspace-hub | - |
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | archived | medium | workspace-hub | - |
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | medium | workspace-hub | - |
@@ -2947,7 +2941,7 @@
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | workspace-hub | - |
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | archived | high | workspace-hub | - |
 | WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | archived | medium | workspace-hub | - |
-| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | working | high | workspace-hub | - |
+| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | archived | high | workspace-hub | - |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | archived | medium | workspace-hub | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | pending | medium | workspace-hub | - |
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | archived | high | workspace-hub | - |
@@ -3058,7 +3052,7 @@
 
 ## By Computer
 
-### ace-linux-1 (162 active / 198 total)
+### ace-linux-1 (161 active / 198 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3250,7 +3244,7 @@
 | WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | archived | medium | medium | workspace-hub |
 | WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | pending | high | simple | workspace-hub |
 | WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | archived | low | simple | workspace-hub |
-| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | working | high | medium | workspace-hub |
+| WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | archived | high | medium | workspace-hub |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | archived | medium | medium | workspace-hub |
 | WRK-1041 | Lifecycle HTML — auto-refresh + on-demand /work html command | pending | medium | simple | workspace-hub |
 | WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | simple | workspace-hub |

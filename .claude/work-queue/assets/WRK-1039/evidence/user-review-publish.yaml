@@ -22,7 +22,7 @@ events:
   pushed_to_origin: true
   remote: origin
   branch: main
-  commit: 793d73cc
+  commit: ddfb51db
   documents:
   - .claude/work-queue/assets/WRK-1039/WRK-1039-lifecycle.html
   - .claude/work-queue/assets/WRK-1039/evidence/user-review-close.yaml

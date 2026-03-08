@@ -1,6 +1,6 @@
 wrk_id: WRK-1039
-generated_at: '2026-03-08T20:18:16Z'
-reviewed_by: claude
+generated_at: '2026-03-08T20:58:33Z'
+reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
 stages:
@@ -138,7 +138,7 @@ stages:
   human_decision_required: 'yes'
   owner: user + orchestrator
   blocker: 'no'
-  comment: Approved by vamsee 2026-03-08T23:20:00Z.
+  comment: Approved by vamsee 2026-03-08T20:50:00Z.
   evidence: .claude/work-queue/assets/WRK-1039/evidence/user-review-close.yaml
 - order: 18
   stage: Reclaim
@@ -150,7 +150,7 @@ stages:
   evidence: n/a
 - order: 19
   stage: Close
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
@@ -158,7 +158,7 @@ stages:
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'

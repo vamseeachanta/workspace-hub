@@ -18,7 +18,7 @@
 | Future-work gate | PASS | future-work.yaml: recommendations=3 |
 | Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: additions=3 |
 | User-review close gate | PASS | user-review-close.yaml: decision=approved |
-| Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
+| Reclaim gate | WARN | reclaim.yaml: status=n/a (Stage 18 not triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=close) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
 | Browser open elapsed time gate | PASS | browser open elapsed time OK |
@@ -26,9 +26,9 @@
 | Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |
 | Codex keyword in review gate | PASS | codex keyword found in review artifacts (4 file(s) checked) |
-| Publish commit uniqueness gate | FAIL | all three publish stages share commit '793d73cc' (likely placeholder) |
+| Publish commit uniqueness gate | WARN | plan_draft and plan_final share commit '793d73cc' — possible placeholder (WARN) |
 | Stage evidence paths gate | PASS | all stage evidence paths verified |
 | Done/pending contradiction gate | PASS | no done/pending contradictions found |
 | Plan publish predates approval gate | PASS | plan publish ordering OK (published=2026-03-08T21:10:00Z, reviewed=2026-03-08T21:00:00Z) |
 | Workstation contract (strict) gate | PASS | workstation contract fields present |
-| Reclaim n/a gate | WARN | n/a: Stage 18 is n/a and no reclaim log exists |
+| Reclaim n/a gate | WARN | n/a: Stage 18 is n/a; reclaim.yaml is placeholder |
