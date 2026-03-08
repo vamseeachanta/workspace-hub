@@ -14,6 +14,10 @@ entry_reads:
   - assets/WRK-NNN/WRK-NNN-lifecycle.html#s1-s4
 exit_artifacts:
   - assets/WRK-NNN/evidence/user-review-plan-draft.yaml
+  # Route B/C only:
+  - assets/WRK-NNN/plan_claude.md
+  - assets/WRK-NNN/plan_codex.md
+  - assets/WRK-NNN/plan_gemini.md
 blocking_condition: "user-review-plan-draft.yaml missing or decision != approved"
 log_action: plan_draft_reviewed
 context_budget_kb: 16
