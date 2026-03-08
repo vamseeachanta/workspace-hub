@@ -3,6 +3,8 @@ stage: user_review_plan_draft
 reviewer: user
 reviewed_at: "2026-03-08T00:00:00Z"
 decision: approved
+approval_decision: approve_as_is
+review_cycle_id: "2026-03-08-stage5"
 route: B
 synthesis_providers: [claude, codex]
 synthesis_gemini: timeout_300s
