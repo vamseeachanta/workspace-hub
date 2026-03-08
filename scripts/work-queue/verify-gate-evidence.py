@@ -26,6 +26,15 @@ def get_field(front: str, key: str) -> str | None:
     return match.group(1).strip()
 
 
+def get_list_field(front: str, key: str) -> str | None:
+    """Return first list item value for a multi-line YAML list field, or None."""
+    block = re.search(rf"^{re.escape(key)}:\s*\n((?:\s+-[^\n]*\n?)*)", front, re.MULTILINE)
+    if not block:
+        return None
+    first = re.search(r"^\s+-\s+(\S+)", block.group(1), re.MULTILINE)
+    return first.group(1) if first else None
+
+
 def has_nonempty_field(front: str, key: str) -> bool:
     scalar = get_field(front, key)
     if scalar and scalar not in {"[]", "null", "~"}:
@@ -427,6 +436,11 @@ def check_stage17_evidence_gate(
 def _parse_iso_timestamp(value: str) -> float | None:
     """Parse an ISO-8601 timestamp string to a POSIX epoch float.
 
+    All timestamps in work-queue artifacts are UTC.  Formats that include an
+    explicit UTC indicator (Z or +00:00) are parsed as UTC-aware datetimes.
+    Formats without a UTC indicator are also assumed UTC (not local time) to
+    avoid DST-day false positives on machines in non-UTC timezones.
+
     Returns None if the value cannot be parsed or is date-only.
     """
     import datetime
@@ -437,7 +451,9 @@ def _parse_iso_timestamp(value: str) -> float | None:
     # date-only values have no time component — skip them (not a valid timestamp)
     if re.match(r"^\d{4}-\d{2}-\d{2}$", value):
         return None
-    # Try multiple formats (including space-separator from YAML datetime auto-parse)
+    # Try multiple formats (including space-separator from YAML datetime auto-parse).
+    # All formats are treated as UTC regardless of explicit indicator, because all
+    # work-queue timestamps are UTC by convention.
     for fmt in (
         "%Y-%m-%dT%H:%M:%SZ",
         "%Y-%m-%dT%H:%M:%S+00:00",
@@ -449,7 +465,9 @@ def _parse_iso_timestamp(value: str) -> float | None:
         "%Y-%m-%d %H:%M:%S",
     ):
         try:
-            dt = datetime.datetime.strptime(value, fmt)
+            dt = datetime.datetime.strptime(value, fmt).replace(
+                tzinfo=datetime.timezone.utc
+            )
             return dt.timestamp()
         except ValueError:
             continue
@@ -840,6 +858,13 @@ def check_stage_evidence_paths(assets_dir: Path, workspace_root: Path) -> tuple[
             continue
         candidate = abs_path(workspace_root, ev_ref)
         if not candidate.exists():
+            # Queue markdown files (pending/working/done/WRK-*.md) may have moved to
+            # archive/ after the WRK was closed — check there before failing.
+            fname = candidate.name
+            queue_root = workspace_root / ".claude" / "work-queue"
+            archive_matches = list((queue_root / "archive").rglob(fname))
+            if archive_matches:
+                continue  # found in archive — path stale but not fabricated
             return False, f"stage-evidence.yaml: stage[{idx}] evidence path not found: {ev_ref}"
 
     return True, "all stage evidence paths verified"
@@ -1659,7 +1684,12 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
             wrk_path = candidate
             break
     if wrk_path is None:
-        print(f"✖ Work item {wrk_id} not found in pending/ or working/", file=sys.stderr)
+        # Also search archive/ subdirectories (YYYY-MM/ and flat)
+        for archive_candidate in (queue_dir / "archive").rglob(f"{wrk_id}.md"):
+            wrk_path = archive_candidate
+            break
+    if wrk_path is None:
+        print(f"✖ Work item {wrk_id} not found in pending/, working/, done/, or archive/", file=sys.stderr)
         return 2
 
     front = parse_frontmatter(wrk_path.read_text(encoding="utf-8"))
@@ -1695,8 +1725,10 @@ def run_checks(wrk_id: str, phase: str = "close") -> int:
             "name": "Workstation contract gate",
             "ok": has_nonempty_field(front, "plan_workstations") and has_nonempty_field(front, "execution_workstations"),
             "details": (
-                f"plan_workstations={get_field(front, 'plan_workstations') or 'missing'}, "
-                f"execution_workstations={get_field(front, 'execution_workstations') or 'missing'}"
+                f"plan_workstations="
+                f"{get_field(front, 'plan_workstations') or get_list_field(front, 'plan_workstations') or 'missing'}, "
+                f"execution_workstations="
+                f"{get_field(front, 'execution_workstations') or get_list_field(front, 'execution_workstations') or 'missing'}"
             ),
         }
     )

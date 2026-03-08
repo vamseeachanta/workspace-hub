@@ -1,0 +1,27 @@
+wrk_id: WRK-1039
+updated_at: '2026-03-08T23:05:00Z'
+additions:
+  - resource: verify-gate-evidence.py UTC timestamp fix
+    description: >
+      All timestamps must use `.replace(tzinfo=datetime.timezone.utc)` when
+      parsed via strptime to avoid DST false positives. Machine is CST/CDT —
+      March 8 is spring-forward date for 2026.
+    type: pattern
+    relevance: high
+
+  - resource: Stage evidence archive path staleness
+    description: >
+      Stage-evidence.yaml paths like `working/WRK-NNN.md` become stale after
+      archiving. The gate now checks archive/ rglob as a fallback. Future
+      stage-evidence.yaml should use paths that remain valid post-archive
+      (e.g., evidence/ artifacts rather than queue location).
+    type: pattern
+    relevance: medium
+
+  - resource: AC3 sweep confirmed Gate 14 checks are comprehensive
+    description: >
+      All 10 audit WRKs (WRK-570, 1019-1031) exit=1 correctly. WRK-1044
+      (clean) exits=0. The verifier now handles archived WRKs, UTC timezone,
+      and list-style workstation fields reliably.
+    type: finding
+    relevance: high

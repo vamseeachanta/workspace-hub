@@ -152,8 +152,8 @@ def validate_exit(
     missing = []
     for artifact in exit_artifacts:
         rel = _normalize(artifact)
-        if rel.startswith("done/"):
-            # done/ is relative to queue_root, not stage_dir
+        if rel.startswith(("done/", "pending/", "working/")):
+            # queue-relative paths — not inside assets/WRK-NNN/
             queue_root = str(Path(stage_dir).parent.parent)
             full_path = os.path.join(queue_root, rel)
         else:
@@ -190,97 +190,27 @@ def validate_exit(
     return True
 
 
-# ── Checkpoint schema validation ──────────────────────────────────────────────
+# ── Checkpoint schema validation (delegated to checkpoint_writer.py) ──────────
 
 def _validate_checkpoint(checkpoint_path: str) -> None:
-    """
-    Non-blocking checkpoint.yaml schema validation.
+    """Non-blocking checkpoint.yaml schema validation. Delegated to checkpoint_writer."""
+    _write_cp, _print_gate, _log_complete = _load_checkpoint_writer()
+    # Import validate function separately
+    _script_dir = os.path.dirname(os.path.abspath(__file__))
+    if _script_dir not in sys.path:
+        sys.path.insert(0, _script_dir)
+    from checkpoint_writer import validate_checkpoint  # type: ignore[import]
+    validate_checkpoint(checkpoint_path)
 
-    Warns if any required field is missing or invalid so /work run can
-    auto-resume correctly.  Does NOT exit on failure.
 
-    Required fields:
-      wrk_id          — non-empty string
-      stage           — integer 1-20
-      next_action     — non-empty string
-      context_summary — non-empty string
-      updated_at      — ISO 8601 datetime with time component (not date-only)
-    """
-    import re
+# ── checkpoint writer (delegated to checkpoint_writer.py) ─────────────────────
 
-    if not os.path.exists(checkpoint_path):
-        return  # No checkpoint yet; nothing to validate
-
-    missing: list[str] = []
-
-    def _read(field: str) -> Optional[str]:
-        return _read_field(checkpoint_path, field)
-
-    # wrk_id — non-empty string
-    wrk_id_val = _read("wrk_id")
-    if not wrk_id_val:
-        missing.append("wrk_id")
-
-    # stage — integer 1-20
-    stage_val = _read("stage") or _read("current_stage")
-    if stage_val is None:
-        missing.append("stage")
-    else:
-        try:
-            stage_int = int(stage_val)
-            if not 1 <= stage_int <= 20:
-                missing.append("stage (out of range 1-20)")
-        except ValueError:
-            missing.append("stage (not an integer)")
-
-    # next_action — non-empty string
-    next_action_val = _read("next_action")
-    if not next_action_val:
-        missing.append("next_action")
-
-    # context_summary — non-empty string (may be a list or scalar)
-    context_val = _read("context_summary")
-    if not context_val:
-        # Check if it appears as a YAML list (next line is "  - ...")
-        try:
-            with open(checkpoint_path) as f:
-                content = f.read()
-            in_ctx = False
-            has_items = False
-            for line in content.splitlines():
-                if line.startswith("context_summary:"):
-                    in_ctx = True
-                    continue
-                if in_ctx:
-                    if line.strip().startswith("- "):
-                        has_items = True
-                        break
-                    if line.strip() and not line.startswith(" "):
-                        break
-            if not has_items:
-                missing.append("context_summary")
-        except OSError:
-            missing.append("context_summary")
-
-    # updated_at — ISO 8601 datetime with time component
-    # Accept checkpointed_at as equivalent (checkpoint.sh uses that name)
-    updated_at_val = _read("updated_at") or _read("checkpointed_at")
-    if not updated_at_val:
-        missing.append("updated_at")
-    else:
-        # Must have a time component: contains 'T' or a space followed by HH:MM
-        has_time = "T" in updated_at_val or bool(
-            re.search(r"\d{4}-\d{2}-\d{2}.+\d{2}:\d{2}", updated_at_val)
-        )
-        if not has_time:
-            missing.append("updated_at (date-only; must include time component)")
-
-    if missing:
-        print(
-            f"\n\u26a0 checkpoint.yaml written but missing required fields: {missing}\n"
-            "  next_action and context_summary are required for /work run to auto-resume correctly",
-            file=sys.stderr,
-        )
+def _load_checkpoint_writer():
+    _script_dir = os.path.dirname(os.path.abspath(__file__))
+    if _script_dir not in sys.path:
+        sys.path.insert(0, _script_dir)
+    from checkpoint_writer import write_checkpoint, print_stage_gate, log_stage_complete  # type: ignore[import]
+    return write_checkpoint, print_stage_gate, log_stage_complete
 
 
 # ── lifecycle HTML helper ─────────────────────────────────────────────────────
@@ -305,11 +235,22 @@ def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
 
 def _main() -> None:
     if len(sys.argv) < 3:
-        print("Usage: exit_stage.py WRK-NNN N", file=sys.stderr)
+        print("Usage: exit_stage.py WRK-NNN N [--context-summary TEXT]", file=sys.stderr)
         sys.exit(1)
 
     wrk_id = sys.argv[1]
     stage = int(sys.argv[2])
+
+    # Parse optional --context-summary arg
+    context_summary: Optional[str] = None
+    args = sys.argv[3:]
+    i = 0
+    while i < len(args):
+        if args[i] == "--context-summary" and i + 1 < len(args):
+            context_summary = args[i + 1]
+            i += 2
+        else:
+            i += 1
 
     repo_root = os.environ.get(
         "WORKSPACE_HUB",
@@ -370,12 +311,19 @@ def _main() -> None:
     print(f"Stage {stage} exit validated. All artifacts present.")
     if human_gate:
         print(f"GATE PASSED — Stage {stage + 1} unlocked.")
-        print(f"Run: /checkpoint {wrk_id}  →  start new session  →  /work run {wrk_id}")
 
     # Regenerate lifecycle HTML to reflect this stage as done
     _regenerate_lifecycle_html(wrk_id, repo_root)
 
-    # Validate checkpoint.yaml if present (non-blocking)
+    # Write rich checkpoint and emit STAGE_GATE signal
+    _write_cp, _print_gate, _log_complete = _load_checkpoint_writer()
+    cp_info = _write_cp(wrk_id, stage, repo_root, context_summary)
+    _print_gate(wrk_id, stage, cp_info)
+
+    # Emit stage_complete log event (non-blocking)
+    _log_complete(wrk_id, stage, repo_root)
+
+    # Validate written checkpoint (non-blocking)
     checkpoint_path = os.path.join(assets_root, wrk_id, "checkpoint.yaml")
     _validate_checkpoint(checkpoint_path)
 

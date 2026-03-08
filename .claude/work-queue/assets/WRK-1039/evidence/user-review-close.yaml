@@ -1,0 +1,9 @@
+reviewer: vamsee
+reviewed_at: "2026-03-08T23:20:00Z"
+confirmed_at: "2026-03-08T23:20:00Z"
+decision: approved
+notes: >
+  Stage 17 approved. Implementation reviewed: exit_stage.py path fix,
+  workstation display fix, archive search, DST timezone fix, archive path
+  fallback. AC3 sweep correct — 8 fabricated WRKs exit=1, WRK-1044 exits=0.
+  115 tests passing. Proceed to close.

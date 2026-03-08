@@ -1,0 +1,11 @@
+stage: 3
+triaged_at: "2026-03-08T20:45:00Z"
+route: B
+complexity: medium
+priority: high
+category: harness
+subcategory: workflow-gates
+route_rationale: >
+  Medium complexity: 1 repo, 3 targeted fixes (exit_stage.py path bug,
+  verify-gate-evidence.py display fix, AC3 verification run). No architectural
+  changes; implementation absorbed by WRK-1035/1044.

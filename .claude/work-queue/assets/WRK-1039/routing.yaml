@@ -1,0 +1,9 @@
+stage: 9
+routed_at: "2026-03-08T21:15:00Z"
+route: B
+orchestrator: claude
+execution_workstations:
+  - ace-linux-1
+rationale: >
+  Route B medium; single repo (workspace-hub); 3 targeted fixes + verification sweep.
+  Claude handles full execution on ace-linux-1.

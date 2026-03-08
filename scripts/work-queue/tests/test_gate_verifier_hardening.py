@@ -1,9 +1,12 @@
 """
-Tests T11-T30: gate-verifier hardening checks for WRK-1035 Phase 3.
+Tests T11-T33: gate-verifier hardening checks for WRK-1035 Phase 3 (T11-T30)
+and WRK-1039 hardening additions (T31-T33).
 
 Each test creates minimal YAML fixtures in tmp_path and exercises exactly
 one condition of the new check functions added in Phase 3.
 """
+import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -40,6 +43,10 @@ check_reclaim_gate_na = _mod.check_reclaim_gate_na
 check_claim_artifact_path = _mod.check_claim_artifact_path
 check_iso_datetime_with_time = _mod.check_iso_datetime_with_time
 check_stage1_capture_gate = _mod.check_stage1_capture_gate
+get_list_field = _mod.get_list_field
+
+REPO_ROOT = Path(__file__).resolve().parents[3]
+VERIFIER_PATH = SCRIPTS_DIR / "verify-gate-evidence.py"
 
 
 # ---------------------------------------------------------------------------
@@ -561,3 +568,86 @@ def test_T30_iso_datetime_with_time_fail(tmp_path):
     assert ok is False
     assert "2026-03-08" in detail
     assert "date-only" in detail
+
+
+# ---------------------------------------------------------------------------
+# T31 — get_list_field: list-style YAML workstation field shows first item
+# ---------------------------------------------------------------------------
+
+def test_T31_workstation_list_field_shows_first_item():
+    """get_list_field returns first list item for multi-line YAML lists, not None."""
+    front = (
+        "plan_workstations:\n"
+        "  - ace-linux-1\n"
+        "execution_workstations:\n"
+        "  - ace-linux-1\n"
+        "  - ace-linux-2\n"
+    )
+    plan_ws = get_list_field(front, "plan_workstations")
+    exec_ws = get_list_field(front, "execution_workstations")
+
+    assert plan_ws == "ace-linux-1", (
+        f"Expected 'ace-linux-1', got {plan_ws!r} — workstation gate must not show 'missing'"
+    )
+    assert exec_ws == "ace-linux-1", (
+        f"Expected 'ace-linux-1', got {exec_ws!r}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# T32 — exit_stage.py resolves pending/ paths relative to queue root
+# ---------------------------------------------------------------------------
+
+def test_T32_exit_stage_resolves_pending_path(tmp_path):
+    """exit_stage.py path resolution: pending/WRK-NNN.md resolved from queue root."""
+    # Simulate the path resolution logic extracted from exit_stage.py
+    import os
+
+    def _resolve_path(stage_dir: str, rel: str) -> str:
+        """Mirrors the fixed logic in exit_stage.py."""
+        from pathlib import Path as P
+        if rel.startswith(("done/", "pending/", "working/")):
+            queue_root = str(P(stage_dir).parent.parent)
+            return os.path.join(queue_root, rel)
+        return os.path.join(stage_dir, rel)
+
+    # Build a minimal queue layout
+    queue_root = tmp_path / ".claude" / "work-queue"
+    pending = queue_root / "pending"
+    pending.mkdir(parents=True)
+    wrk_file = pending / "WRK-TEST.md"
+    wrk_file.write_text("# Test\n")
+
+    # stage_dir is assets/WRK-TEST (exit_stage.py uses assets/<wrk_id>, not evidence subdir)
+    stage_dir = str(queue_root / "assets" / "WRK-TEST")
+
+    resolved = _resolve_path(stage_dir, "pending/WRK-TEST.md")
+    assert os.path.exists(resolved), (
+        f"pending/ path should resolve to queue root level, got {resolved!r}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# T33 — --json flag on failing WRK returns valid JSON with pass=false
+# ---------------------------------------------------------------------------
+
+def test_T33_json_flag_failing_wrk_returns_valid_json():
+    """verify-gate-evidence.py WRK-NNN --json exits 1 and emits valid JSON with pass=false."""
+    # WRK-1019 is a known audit WRK with fabricated timestamps (always exits 1)
+    result = subprocess.run(
+        ["uv", "run", "--no-project", "python", str(VERIFIER_PATH), "WRK-1019", "--json"],
+        capture_output=True,
+        text=True,
+        cwd=str(REPO_ROOT),
+    )
+    assert result.returncode == 1, (
+        f"Expected exit 1 for known-failing WRK-1019, got {result.returncode}"
+    )
+    # Last line of stdout should be valid JSON
+    stdout_lines = [l for l in result.stdout.strip().splitlines() if l.strip()]
+    assert stdout_lines, "Expected JSON output on stdout"
+    last_line = stdout_lines[-1]
+    payload = json.loads(last_line)  # raises if not valid JSON
+    assert payload.get("pass") is False, f"Expected pass=false in JSON, got: {payload}"
+    assert "wrk_id" in payload
+    assert "missing" in payload

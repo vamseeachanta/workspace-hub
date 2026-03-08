@@ -1,0 +1,36 @@
+wrk_id: WRK-1039
+captured_at: '2026-03-08T23:05:00Z'
+recommendations:
+  - id: FW-01
+    title: Retrofit WRK-1034 and WRK-1036 compliance artifacts
+    description: >
+      WRK-1034 and WRK-1036 exit=1 due to pre-existing compliance issues
+      (browser elapsed 0s, shared commits, sentinel values) detected by the 14
+      Gap checks. Optionally retrofit correct artifacts to make them clean
+      reference WRKs for future AC3 sweeps.
+    priority: low
+    disposition: existing-updated
+    status: captured
+    captured: true
+
+  - id: FW-02
+    title: Add publish commit uniqueness check to close-item.sh
+    description: >
+      The verifier detects shared commits between publish stages (WARN level).
+      Wire a pre-close check in close-item.sh to catch this earlier in the
+      pipeline rather than at gate verification time.
+    priority: medium
+    disposition: spun-off-new
+    status: captured
+    captured: true
+
+  - id: FW-03
+    title: DST timezone awareness documentation
+    description: >
+      Document that _parse_iso_timestamp now uses UTC-aware timestamps and
+      that any future timestamp comparisons in gate checks must use the same
+      convention. Add a note to the verifier docstring.
+    priority: low
+    disposition: existing-updated
+    status: captured
+    captured: true

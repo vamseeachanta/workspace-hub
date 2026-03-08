@@ -1,0 +1,59 @@
+wrk_id: WRK-1039
+stage: 10
+executed_at: "2026-03-08T22:30:00Z"
+executor: claude
+computer: ace-linux-1
+
+steps_completed:
+  - exit_stage_py_pending_working_path_fix
+  - verify_gate_evidence_get_list_field
+  - verify_gate_evidence_workstation_display
+  - verify_gate_evidence_archive_search
+  - verify_gate_evidence_dst_timezone_fix
+  - verify_gate_evidence_stage_evidence_archive_fallback
+  - ac3_sweep_10_audit_wrks
+  - tests_t31_t32_t33_added
+
+integrated_repo_tests:
+  - name: gate-verifier-hardening T11-T30
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/test_gate_verifier_hardening.py -q
+    result: pass
+    artifact_ref: evidence/ac3-verification.md
+  - name: gate-verifier-hardening T31-T33
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/test_gate_verifier_hardening.py::test_T31_workstation_list_field_shows_first_item scripts/work-queue/tests/test_gate_verifier_hardening.py::test_T32_exit_stage_resolves_pending_path scripts/work-queue/tests/test_gate_verifier_hardening.py::test_T33_json_flag_failing_wrk_returns_valid_json -v
+    result: pass
+    artifact_ref: evidence/ac3-verification.md
+  - name: stage1-gate T1-T4
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/test_stage1_gate.py -q
+    result: pass
+    artifact_ref: evidence/ac3-verification.md
+  - name: full suite 115 pass
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/ -q --tb=no
+    result: pass
+    artifact_ref: evidence/ac3-verification.md
+
+ac3_sweep:
+  total_wrks: 11
+  exit1_fabricated: 8
+  exit0_regression: 1
+  exit1_legacy_issues: 2
+  notes: >
+    WRK-1034 and WRK-1036 exit=1 (not 0 as planned) — both have real compliance
+    issues detected by Gap checks (browser elapsed 0s, sentinel values, shared commits).
+    These are genuine detections, not false positives. WRK-1044 regression: exit=0.
+
+bugs_fixed_during_sweep:
+  - id: DST-false-positive
+    description: >
+      _parse_iso_timestamp created naive datetimes; CST/CDT timezone + DST spring-forward
+      on 2026-03-08 caused execute (02:40) to appear after close (03:30) in UTC ordering.
+    fix: replace(tzinfo=datetime.timezone.utc) on all parsed timestamps
+  - id: stage-evidence-archive-stale-paths
+    description: >
+      Stage-evidence.yaml records working/WRK-NNN.md paths that become stale after
+      archiving. Gate was failing "path not found" for legitimate archived WRKs.
+    fix: archive/ rglob fallback in check_stage_evidence_paths

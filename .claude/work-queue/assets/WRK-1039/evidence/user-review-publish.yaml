@@ -1,0 +1,30 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 793d73cc
+  documents:
+  - .claude/work-queue/assets/WRK-1039/plan-html-review-final.md
+  published_at: '2026-03-08T21:10:00Z'
+  reviewer: vamsee
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 793d73cc
+  documents:
+  - .claude/work-queue/working/WRK-1039.md
+  - .claude/work-queue/assets/WRK-1039/WRK-1039-lifecycle.html
+  published_at: '2026-03-08T21:15:00Z'
+  reviewer: vamsee
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 793d73cc
+  documents:
+  - .claude/work-queue/assets/WRK-1039/WRK-1039-lifecycle.html
+  - .claude/work-queue/assets/WRK-1039/evidence/user-review-close.yaml
+  published_at: '2026-03-08T23:22:00Z'
+  reviewer: vamsee

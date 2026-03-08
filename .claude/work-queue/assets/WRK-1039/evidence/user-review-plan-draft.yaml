@@ -1,0 +1,10 @@
+stage: 5
+wrk_id: WRK-1039
+reviewed_at: "2026-03-08T21:00:00Z"
+reviewer: vamsee
+approval_decision: approve_as_is
+confirmed_at: "2026-03-08T21:00:00Z"
+confirmed_by: vamsee
+notes: >
+  Plan approved. Three steps: (1) exit_stage.py path fix already done,
+  (2) workstation display fix, (3) AC3 verification sweep. Tests T31/T32/AC3-sweep.
