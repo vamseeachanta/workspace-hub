@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-08T01:18:53Z by generate-index.py -->
+<!-- Generated: 2026-03-08T01:24:15Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-08T01:18:53Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-08T01:24:15Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 459
+**Total items:** 460
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 206 |
+| pending | 207 |
 | working | 6 |
 | blocked | 9 |
 | archived | 238 |
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 213 |
+| high | 214 |
 | medium | 204 |
 | low | 41 |
 
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 81 |
-| medium | 216 |
+| medium | 217 |
 | complex | 95 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 44 |
+| harness | 45 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -69,7 +69,7 @@
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 152 |
+| workspace-hub | 153 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,7 +77,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 174 / 459 |
+| Plans exist | 176 / 460 |
 | Plans cross-reviewed | 74 |
 | Plans approved | 95 |
 | Brochure pending | 8 |
@@ -89,9 +89,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 459 |
+| Total captured | 460 |
 | Total archived | 238 |
-| Completion rate | 238/459 (52%) |
+| Completion rate | 238/460 (52%) |
 | Monthly rate (current month) | 12 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -99,8 +99,8 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 206 | 28% |
-| Plans cross-reviewed | 11 | 16% |
+| Pending items with plans | 60 / 207 | 29% |
+| Plans cross-reviewed | 11 | 15% |
 | Plans user-approved | 12 | 17% |
 
 ### Aging
@@ -116,7 +116,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 95 | 2 | 7 |
+| High     | 96 | 2 | 7 |
 | Medium   | 83  | 4  | 1  |
 | Low      | 28  | 0  | 1  |
 
@@ -124,7 +124,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (44 items — 12 high, 27 medium, 5 low)
+### harness (45 items — 13 high, 27 medium, 5 low)
 
 #### harness / agent-ux
 
@@ -214,6 +214,12 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1014 | MEDIUM | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending |
+
+#### harness / workflow-gates
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1034 | HIGH | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | pending |
 
 ### engineering (117 items — 68 high, 38 medium, 11 low)
 
@@ -982,7 +988,7 @@
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1019 |
+| WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - 15% | n/a | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -994,6 +1000,7 @@
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | n/a | - |
+| WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1207,6 +1214,7 @@
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | medium | simple | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | medium | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | medium | simple | digitalmodel | - |
+| WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | high | medium | workspace-hub | - |
 
 ### Working
 
@@ -1978,6 +1986,7 @@
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | working | medium | medium | - |
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | medium | - |
+| WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | pending | high | medium | - |
 
 ### worldenergydata
 
@@ -2292,6 +2301,7 @@
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | complex | workspace-hub | - |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | archived | complex | workspace-hub | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | medium | workspace-hub | - |
+| WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2856,6 +2866,7 @@
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | workspace-hub | - |
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | working | medium | workspace-hub | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | workspace-hub | - |
+| WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | pending | high | workspace-hub | - |
 
 ### Complex
 
@@ -2959,7 +2970,7 @@
 
 ## By Computer
 
-### ace-linux-1 (158 active / 183 total)
+### ace-linux-1 (159 active / 184 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3146,6 +3157,7 @@
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | working | medium | medium | workspace-hub |
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | workspace-hub |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | medium | workspace-hub |
+| WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | pending | high | medium | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 
@@ -3511,5 +3523,4 @@
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | WRK-638 | - | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | WRK-683 | - | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | WRK-691 | - | - |
-| WRK-1020 | feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | WRK-1019 | - | - |
 
