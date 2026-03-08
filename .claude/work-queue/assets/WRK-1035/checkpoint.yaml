@@ -1,0 +1,12 @@
+wrk_id: WRK-1035
+title: "Beef up user-review stages in work-queue-workflow SKILL from recent session learnings"
+checkpointed_at: "2026-03-08T10:24:26Z"
+current_stage: 1
+stage_name: "Capture"
+entry_reads:
+  - .claude/work-queue/assets/WRK-1035/evidence/stage-evidence.yaml
+  - .claude/work-queue/pending/WRK-1035.md
+decisions_this_session: []
+artifacts_written: []
+next_action: ""
+context_summary: []
