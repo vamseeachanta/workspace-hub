@@ -15,7 +15,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "plan_workstations=missing, execution_workstations=missing"
+      "details": "plan_workstations=ace-linux-1, execution_workstations=ace-linux-1"
     },
     {
       "name": "Stage evidence gate",
@@ -183,7 +183,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[1] evidence path not found: .claude/work-queue/working/WRK-1029.md"
+      "details": "stage-evidence.yaml: stage[11] evidence path not found: .claude/work-queue/assets/WRK-1029/implementation-review.html"
     },
     {
       "name": "Done/pending contradiction gate",

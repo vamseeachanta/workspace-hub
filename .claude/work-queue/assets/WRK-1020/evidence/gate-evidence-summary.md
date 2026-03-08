@@ -19,3 +19,16 @@
 | Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: additions=2 |
 | User-review close gate | PASS | user-review-close.yaml: decision=approved |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
+| Approval ordering gate | PASS | approval ordering OK (phase=close) |
+| Midnight UTC sentinel gate | FAIL | midnight UTC sentinel detected in user-review-plan-draft.yaml.reviewed_at: 2026-03-08T00:00:00Z |
+| Browser open elapsed time gate | FAIL | stage=plan_draft: approval confirmed only 0s after browser open (min 300s required) |
+| Sentinel values gate | FAIL | activation.yaml: session_id='unknown'; activation.yaml: orchestrator_agent='unknown' |
+| Claim artifact path gate | FAIL | no claim artifact found (expected evidence/claim-evidence.yaml) |
+| ISO datetime format gate | PASS | all timestamp fields have time components |
+| Codex keyword in review gate | PASS | codex keyword found in review artifacts (3 file(s) checked) |
+| Publish commit uniqueness gate | FAIL | all three publish stages share commit '4b992f0b' (likely placeholder) |
+| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[5] evidence path not found: .claude/work-queue/assets/WRK-1020/plan-html-review-draft.md |
+| Done/pending contradiction gate | PASS | no done/pending contradictions found |
+| Plan publish predates approval gate | PASS | plan publish ordering OK (published=2026-03-08T00:00:00Z, reviewed=2026-03-08T00:00:00Z) |
+| Workstation contract (strict) gate | PASS | workstation contract fields present |
+| Reclaim n/a gate | WARN | n/a: Stage 18 is n/a and no reclaim log exists |

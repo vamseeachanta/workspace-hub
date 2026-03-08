@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1044 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1044 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit)</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>C</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Why</strong> — - Scripts/code are superior to LLM judgment for deterministic checks (patterns.md hard rule) - Context rot causes LLM to forget prose rules ...</summary><div class="panel"><ul>
+<li>Scripts/code are superior to LLM judgment for deterministic checks (patterns.md hard rule)</li>
+<li>Context rot causes LLM to forget prose rules mid-session — scripts never forget</li>
+<li>3-agent sim showed 95% compliance with prose alone; D-items bring it to 100% mechanical</li>
+</ul></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] D1–D16 all implemented as script checks; each has ≥1 test - [ ] L2: `verify-gate-evidence.py --json` exits 0/1 with valid JSON - [ ] L...</summary><div class="panel"><ul>
+<li>[ ] D1–D16 all implemented as script checks; each has ≥1 test</li>
+<li>[ ] L2: <code>verify-gate-evidence.py --json</code> exits 0/1 with valid JSON</li>
+<li>[ ] L3: <code>validate-stage-gate-policy.py</code> validates all 20 stages</li>
+<li>[ ] N1–N5 documented in relevant stage contract YAMLs (<code>lm_judgment_required:</code> field)</li>
+<li>[ ] ≥46 new tests: T1-T30 unit + T31-T46 3-agent compliance sim; total suite ≥100 tests</li>
+<li>[ ] No regression in existing 55 tests</li>
+<li>[ ] 3-agent compliance sim: Claude=100%, Codex=100%, Gemini=100% (all 48/48 adversarial scenarios blocked)</li>
+<li>[ ] <code>verify-gate-evidence.py --json WRK-1044</code> exits 0 at close</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — &lt;!DOCTYPE html&gt; &lt;html lang=&quot;en&quot;&gt; &lt;head&gt; &lt;meta charset=&quot;UTF-8&quot;&gt; &lt;title&gt;WRK-1044 Plan — Final&lt;/title&gt; &lt;style&gt; :root{--bg:#fdfaf4;--ink:#1a1a1a...</summary><div class="panel"><h4>Draft</h4>
+
+
+
+WRK-1044 Plan — Final
+
+  :root{--bg:#fdfaf4;--ink:#1a1a1a;--accent:#0f766e;--line:#d9d0c0;--code-bg:#f5f0e8;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);color:var(--ink);max-width:960px;margin:40px auto;
+    padding:0 24px;line-height:1.6;}
+  h1{color:var(--accent);border-bottom:2px solid var(--line);padding-bottom:8px;}
+  h2{color:#0c4a6e;border-bottom:1px solid var(--line);margin-top:2em;}
+  h3{color:#374151;margin-top:1.5em;}
+  table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.88rem;}
+  th{background:#e8f5e9;color:#065f46;text-align:left;padding:8px 10px;border:1px solid var(--line);}
+  td{padding:7px 10px;border:1px solid var(--line);vertical-align:top;}
+  tr:nth-child(even){background:#faf8f3;}
+  code{font-family:"SFMono-Regular",Consolas,monospace;background:var(--code-bg);
+    padding:2px 5px;border-radius:3px;font-size:.85em;}
+  pre{background:var(--code-bg);border:1px solid var(--line);border-radius:6px;
+    padding:14px;overflow-x:auto;}
+  pre code{background:none;padding:0;}
+  blockquote{border-left:3px solid var(--accent);margin:0;padding:8px 16px;
+    background:#f0fdf9;color:#065f46;border-radius:0 4px 4px 0;}
+
+
+
+<h1>WRK-1044 Plan — Deterministic Gate Enforcement D1-D16</h1>
+<blockquote>
+<p>Route C | complex | ace-linux-1 | Blocks: WRK-1045</p>
+</blockquote>
+<h2>Mission</h2>
+<p>Convert 16 deterministic gate rules (D1-D16) from LLM prose into verifiable
+scripts/hooks. Fix P1 bug in <code>exit_stage.py</code> Stage 1 path resolution. Add
+<code>--json</code> CI flag to <code>verify-gate-evidence.py</code>. Add schema validator for
+<code>stage-gate-policy.yaml</code>. Add Codex unavailability parking at Stage 6/13.</p>
+<hr>
+<h2>Files to Create</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+<th>Lines est.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scripts/work-queue/stage_exit_checks.py</code></td>
+<td>Stage-specific check functions extracted from exit_stage.py</td>
+<td>~180</td>
+</tr>
+<tr>
+<td><code>scripts/work-queue/validate-stage-gate-policy.py</code></td>
+<td>L3 schema validator for stage-gate-policy.yaml</td>
+<td>~70</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Files to Modify</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Changes</th>
+<th>D-items</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scripts/work-queue/exit_stage.py</code></td>
+<td>Fix Stage 1 path bug; wire stage_exit_checks.py per-stage</td>
+<td>D1, D3, D5, D6, D9, D10, D12, D13</td>
+</tr>
+<tr>
+<td><code>scripts/work-queue/gate_check.py</code></td>
+<td>Add future-stage write-backstop</td>
+<td>L1 / D2</td>
+</tr>
+<tr>
+<td><code>scripts/work-queue/verify-gate-evidence.py</code></td>
+<td>Add <code>--json</code> flag + <code>check_plan_eval_count</code> + <code>check_route_cross_review_count</code></td>
+<td>L2/D14, D9, D10</td>
+</tr>
+<tr>
+<td><code>scripts/work-queue/claim-item.sh</code></td>
+<td>Block claim if session_id unresolvable</td>
+<td>D11</td>
+</tr>
+<tr>
+<td><code>scripts/work-queue/close-item.sh</code></td>
+<td>Prereq: legal scan exits 0 + verifier --json exits 0</td>
+<td>D14, D15</td>
+</tr>
+<tr>
+<td><code>scripts/work-queue/spawn-team.sh</code></td>
+<td>Codex availability pre-check at Stage 6/13</td>
+<td>D16</td>
+</tr>
+<tr>
+<td><code>scripts/work-queue/stages/stage-06-cross-review.yaml</code></td>
+<td>Add <code>codex_unavailable_action: park_blocked</code></td>
+<td>D16</td>
+</tr>
+<tr>
+<td><code>scripts/work-queue/stages/stage-13-agent-cross-review.yaml</code></td>
+<td>Same</td>
+<td>D16</td>
+</tr>
+<tr>
+<td><code>scripts/work-queue/stages/stage-04-plan-draft.yaml</code></td>
+<td>Add <code>lm_judgment_required</code> for N-items</td>
+<td>N1-N5</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>D-item Implementation Detail</h2>
+<h3>D1 — Stage 1 exit: <code>user-review-capture.yaml</code> + <code>scope_approved: true</code></h3>
+<p><strong>File</strong>: <code>exit_stage.py</code> + <code>stage_exit_checks.py</code>
+<strong>Fix P1 bug</strong>: <code>_normalize()</code> must substitute <code>WRK-NNN</code> → actual wrk_id in
+artifact names, and handle <code>pending/</code> paths relative to queue root (like <code>done/</code>).</p>
+<pre><code class="language-python"># In _normalize(): replace WRK-NNN token with actual wrk_id
+path = path.replace(&quot;WRK-NNN&quot;, wrk_id)
+# Handle pending/ relative to queue root
+if path.startswith(&quot;pending/&quot;):
+    return os.path.join(queue_root, path)
+</code></pre>
+<p><strong>Stage exit hook</strong>: call <code>check_stage1_capture_gate(assets_dir)</code> at Stage 1 exit.</p>
+<h3>D2 — Hard gate write-backstop (L1)</h3>
+<p><strong>File</strong>: <code>gate_check.py</code>
+<strong>Logic</strong>: On Write/Edit tool call, extract file path. If path is in a future-stage
+evidence directory (stage &gt; current_stage from stage-evidence.yaml), check that
+current stage gate artifact exists. Block if not.</p>
+<pre><code class="language-python">def _is_future_stage_write(file_path, wrk_id, assets_root):
+    # Extract stage number from path pattern: evidence/stage-NN-* or similar
+    # Compare against current stage from stage-evidence.yaml
+    # Return True if writing to a future stage
+</code></pre>
+<p>Fail-open: if no active WRK or stage-evidence.yaml absent → allow write + log warning.</p>
+<h3>D3 — Stage 17 exit: <code>reviewer</code> in human allowlist</h3>
+<p><strong>File</strong>: <code>stage_exit_checks.py</code></p>
+<pre><code class="language-python">def check_s17_reviewer_allowlist(assets_dir, allowlist=(&quot;user&quot;, &quot;vamsee&quot;)):
+    yaml_path = assets_dir / &quot;evidence&quot; / &quot;user-review-close.yaml&quot;
+    reviewer = _read_field(str(yaml_path), &quot;reviewer&quot;)
+    return reviewer in allowlist, f&quot;reviewer={reviewer}&quot;
+</code></pre>
+<p>Called by <code>exit_stage.py</code> at Stage 17 exit before <code>validate_exit()</code>.</p>
+<h3>D4 — <code>integrated_repo_tests</code> count ≥ 3</h3>
+<p><code>check_execute_integrated_tests_gate()</code> <strong>already exists</strong> in verify-gate-evidence.py.
+Wire into <code>exit_stage.py</code> Stage 19 exit via <code>stage_exit_checks.check_s19_integrated_tests</code>.</p>
+<h3>D5 — <code>future-work.yaml</code> spun-off-new all <code>captured: true</code></h3>
+<p><code>check_future_work_gate()</code> <strong>already exists</strong>. Wire into Stage 15 exit.</p>
+<h3>D6 — Stage evidence covers all 20 stages</h3>
+<p><code>check_stage_evidence_gate()</code> <strong>already exists</strong>. Wire into Stage 19 exit.</p>
+<h3>D7 — Browser-open timestamp &lt; approval timestamp</h3>
+<p><code>check_browser_open_elapsed_time()</code> <strong>already exists</strong>. Wire into Stage 5/7/17 exit.</p>
+<h3>D8 — Plan HTML <code>published_at</code> ≤ <code>confirmed_at</code></h3>
+<p><code>check_plan_publish_predates_approval()</code> <strong>already exists</strong>. Wire into Stage 5/7 exit.</p>
+<h3>D9 — Tests/Evals ≥ 3 entries in plan.md</h3>
+<p><strong>File</strong>: <code>verify-gate-evidence.py</code> (new function, ~25 lines)</p>
+<pre><code class="language-python">def check_plan_eval_count(plan_path: Path) -&gt; tuple[bool | None, str]:
+    &quot;&quot;&quot;FAIL when plan.md Tests/Evals section has fewer than 3 rows.&quot;&quot;&quot;
+    # Find ## Tests / Evals section; count table rows (lines starting with |)
+    # excluding header and separator rows
+</code></pre>
+<p>Wire into <code>exit_stage.py</code> Stage 4 exit.</p>
+<h3>D10 — Route A → 1 cross-review file; Route B/C → 3</h3>
+<p><strong>File</strong>: <code>verify-gate-evidence.py</code> (new function, ~30 lines)</p>
+<pre><code class="language-python">def check_route_cross_review_count(assets_dir, front) -&gt; tuple[bool | None, str]:
+    route = get_field(front, &quot;route&quot;) or &quot;B&quot;
+    review_files = list((assets_dir / &quot;evidence&quot;).glob(&quot;cross-review-*.md&quot;))
+    expected = 1 if route == &quot;A&quot; else 3
+    return len(review_files) &gt;= expected, f&quot;found={len(review_files)}, expected&gt;={expected}&quot;
+</code></pre>
+<p>Wire into Stage 6/13 exit.</p>
+<h3>D11 — <code>claim-evidence.yaml</code> <code>best_fit_provider</code> ≠ sentinel</h3>
+<p><strong>File</strong>: <code>claim-item.sh</code>
+After writing activation.yaml, verify <code>session_id</code> ≠ "unknown":</p>
+<pre><code class="language-bash">SESSION_ID=&quot;${CLAUDE_SESSION_ID:-$(cat .claude/state/session-id 2&gt;/dev/null)}&quot;
+if [[ -z &quot;$SESSION_ID&quot; || &quot;$SESSION_ID&quot; == &quot;unknown&quot; ]]; then
+    echo &quot;ERROR: session_id unresolvable — claim blocked&quot; &gt;&amp;2; exit 1
+fi
+</code></pre>
+<h3>D12 — P1 finding in cross-review → conditional pause</h3>
+<p><strong>File</strong>: <code>stage_exit_checks.py</code></p>
+<pre><code class="language-python">def check_p1_finding_pause(assets_dir, stage):
+    &quot;&quot;&quot;Scan cross-review-*.md for [P1] findings. Return (False, msg) to pause.&quot;&quot;&quot;
+    for f in (assets_dir / &quot;evidence&quot;).glob(&quot;cross-review-*.md&quot;):
+        if re.search(r&quot;\[P1\]|\bP1\b.*finding&quot;, f.read_text(), re.I):
+            return False, f&quot;P1 finding in {f.name} — conditional pause required&quot;
+    return True, &quot;no P1 findings&quot;
+</code></pre>
+<p>Returns WARN (not hard block) — orchestrator surfaces to user, user may override.</p>
+<h3>D13 — <code>gate-evidence-summary.json</code> 0 MISSING</h3>
+<p><strong>File</strong>: <code>stage_exit_checks.py</code></p>
+<pre><code class="language-python">def check_gate_summary_no_missing(assets_dir):
+    path = assets_dir / &quot;evidence&quot; / &quot;gate-evidence-summary.json&quot;
+    if not path.exists(): return None, &quot;gate-evidence-summary.json absent&quot;
+    data = json.loads(path.read_text())
+    missing = [g[&quot;name&quot;] for g in data.get(&quot;gates&quot;, []) if g.get(&quot;ok&quot;) is False]
+    return len(missing) == 0, f&quot;MISSING gates: {missing}&quot; if missing else &quot;all gates PASS&quot;
+</code></pre>
+<h3>D14 — <code>--json</code> flag for <code>verify-gate-evidence.py</code> (L2)</h3>
+<p><strong>File</strong>: <code>verify-gate-evidence.py</code> main()</p>
+<pre><code class="language-python">if &quot;--json&quot; in args:
+    result = {&quot;wrk_id&quot;: wrk_id, &quot;phase&quot;: phase, &quot;pass&quot;: all_ok,
+              &quot;missing&quot;: [g[&quot;name&quot;] for g in gates if not g[&quot;ok&quot;]],
+              &quot;warn&quot;: [g[&quot;name&quot;] for g in gates if g.get(&quot;ok&quot;) is None]}
+    print(json.dumps(result))
+    sys.exit(0 if all_ok else 1)
+</code></pre>
+<h3>D15 — <code>legal-sanity-scan.sh</code> exits 0 before close</h3>
+<p><strong>File</strong>: <code>close-item.sh</code>
+Add before gate verifier call:</p>
+<pre><code class="language-bash">if ! bash scripts/legal/legal-sanity-scan.sh --quiet; then
+    echo &quot;ERROR: legal scan failed — close blocked&quot; &gt;&amp;2; exit 1
+fi
+</code></pre>
+<h3>D16 — Codex unavailable → park WRK as blocked</h3>
+<p><strong>File</strong>: <code>spawn-team.sh</code> (pre-check before Stage 6/13 agents spawn)</p>
+<pre><code class="language-bash">check_codex_available() {
+    codex --version &amp;&gt;/dev/null &amp;&amp; return 0
+    echo &quot;WARN: Codex unavailable — WRK must be parked (status: blocked)&quot; &gt;&amp;2
+    return 1
+}
+</code></pre>
+<p><strong>File</strong>: <code>stage-06-cross-review.yaml</code> + <code>stage-13-agent-cross-review.yaml</code>:</p>
+<pre><code class="language-yaml">codex_unavailable_action: park_blocked
+lm_judgment_required: false  # Codex is hard gate — no LLM substitution
+</code></pre>
+<h3>L3 — Schema validator for <code>stage-gate-policy.yaml</code></h3>
+<p><strong>File</strong>: <code>validate-stage-gate-policy.py</code> (new, ~70 lines)</p>
+<pre><code class="language-python"># Checks: all 20 stages present (1-20), required fields per stage,
+# gate_type in {hard, auto}, hard gates == {1, 5, 7, 17}
+</code></pre>
+<h3>N1-N5 — LLM judgment required (documentation only)</h3>
+<p>Add <code>lm_judgment_required: [N1, N2, ...]</code> field to stage-04, stage-05,
+stage-06, stage-10, stage-13 contract YAMLs.</p>
+<hr>
+<h2>New Script: <code>stage_exit_checks.py</code></h2>
+<p>Contains all stage-specific check functions that would overflow <code>exit_stage.py</code>:
+- <code>check_s1_capture_gate(assets_dir)</code> — D1
+- <code>check_s4_plan_eval_count(plan_path)</code> — D9 (delegates to verifier function)
+- <code>check_s6_route_cross_review(assets_dir, front)</code> — D10
+- <code>check_s6_p1_pause(assets_dir)</code> — D12
+- <code>check_s14_gate_summary(assets_dir)</code> — D13
+- <code>check_s15_future_work(assets_dir)</code> — D5
+- <code>check_s17_reviewer_allowlist(assets_dir)</code> — D3
+- <code>check_s17_browser_timestamps(assets_dir)</code> — D7
+- <code>check_s19_integrated_tests(assets_dir)</code> — D4
+- <code>check_s19_stage_evidence(front, workspace_root, wrk_id)</code> — D6</p>
+<p><code>exit_stage.py</code> imports and calls the relevant function per stage.</p>
+<hr>
+<h2>Test Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>D-item</th>
+<th>Scenario</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td>D1/P1</td>
+<td>exit_stage.py S1 with WRK-NNN token in artifact path</td>
+<td>path resolves correctly</td>
+</tr>
+<tr>
+<td>T2</td>
+<td>D1</td>
+<td>S1 exit without user-review-capture.yaml</td>
+<td>blocked</td>
+</tr>
+<tr>
+<td>T3</td>
+<td>D1</td>
+<td>S1 exit with scope_approved: false</td>
+<td>blocked</td>
+</tr>
+<tr>
+<td>T4</td>
+<td>D2</td>
+<td>Write to Stage 6 evidence when Stage 5 gate open</td>
+<td>gate_check.py blocks</td>
+</tr>
+<tr>
+<td>T5</td>
+<td>D2</td>
+<td>Write to Stage 6 evidence after Stage 5 gate satisfied</td>
+<td>allowed</td>
+</tr>
+<tr>
+<td>T6</td>
+<td>D2</td>
+<td>No active WRK</td>
+<td>fail-open, logs warning</td>
+</tr>
+<tr>
+<td>T7</td>
+<td>D3</td>
+<td>Stage 17 reviewer not in allowlist</td>
+<td>stage_exit_checks blocks</td>
+</tr>
+<tr>
+<td>T8</td>
+<td>D4</td>
+<td>execute.yaml has 2 integrated tests</td>
+<td>Stage 19 exit blocks</td>
+</tr>
+<tr>
+<td>T9</td>
+<td>D5</td>
+<td>future-work.yaml spun-off-new with captured: false</td>
+<td>Stage 15 exit blocks</td>
+</tr>
+<tr>
+<td>T10</td>
+<td>D6</td>
+<td>stage-evidence has 19 stages</td>
+<td>Stage 19 exit blocks</td>
+</tr>
+<tr>
+<td>T11</td>
+<td>D7</td>
+<td>browser-open after confirmed_at</td>
+<td>Stage 5 exit blocks</td>
+</tr>
+<tr>
+<td>T12</td>
+<td>D8</td>
+<td>published_at after confirmed_at</td>
+<td>Stage 5 exit blocks</td>
+</tr>
+<tr>
+<td>T13</td>
+<td>D9</td>
+<td>plan.md has 2 test rows</td>
+<td>Stage 4 exit blocks</td>
+</tr>
+<tr>
+<td>T14</td>
+<td>D10</td>
+<td>Route B but only 1 cross-review file</td>
+<td>Stage 6 exit blocks</td>
+</tr>
+<tr>
+<td>T15</td>
+<td>D10</td>
+<td>Route A with 1 cross-review file</td>
+<td>Stage 6 exit passes</td>
+</tr>
+<tr>
+<td>T16</td>
+<td>D11</td>
+<td>CLAUDE_SESSION_ID unset</td>
+<td>claim-item.sh exits 1</td>
+</tr>
+<tr>
+<td>T17</td>
+<td>D11</td>
+<td>CLAUDE_SESSION_ID="unknown"</td>
+<td>claim-item.sh exits 1</td>
+</tr>
+<tr>
+<td>T18</td>
+<td>D12</td>
+<td>cross-review-claude.md has [P1] finding</td>
+<td>Stage 6 exit returns WARN</td>
+</tr>
+<tr>
+<td>T19</td>
+<td>D13</td>
+<td>gate-evidence-summary.json has MISSING gate</td>
+<td>Stage 14 exit blocks</td>
+</tr>
+<tr>
+<td>T20</td>
+<td>D13</td>
+<td>gate-evidence-summary.json all PASS</td>
+<td>Stage 14 exit passes</td>
+</tr>
+<tr>
+<td>T21</td>
+<td>D14</td>
+<td>--json on passing WRK</td>
+<td>exit 0, pass:true, missing:[]</td>
+</tr>
+<tr>
+<td>T22</td>
+<td>D14</td>
+<td>--json on failing WRK</td>
+<td>exit 1, pass:false, missing:[...]</td>
+</tr>
+<tr>
+<td>T23</td>
+<td>D14</td>
+<td>--json output is valid JSON</td>
+<td>json.loads() succeeds</td>
+</tr>
+<tr>
+<td>T24</td>
+<td>D15</td>
+<td>legal scan fails</td>
+<td>close-item.sh exits 1</td>
+</tr>
+<tr>
+<td>T25</td>
+<td>D16</td>
+<td>Codex unavailable at Stage 6</td>
+<td>spawn-team.sh sets status:blocked</td>
+</tr>
+<tr>
+<td>T26</td>
+<td>D16</td>
+<td>stage-06 YAML has codex_unavailable_action field</td>
+<td>validation passes</td>
+</tr>
+<tr>
+<td>T27</td>
+<td>L3</td>
+<td>valid stage-gate-policy.yaml</td>
+<td>validation passes</td>
+</tr>
+<tr>
+<td>T28</td>
+<td>L3</td>
+<td>missing stage 7</td>
+<td>validation fails</td>
+</tr>
+<tr>
+<td>T29</td>
+<td>L3</td>
+<td>wrong gate_type value</td>
+<td>validation fails</td>
+</tr>
+<tr>
+<td>T30</td>
+<td>L3</td>
+<td>hard gates ≠ [1,5,7,17]</td>
+<td>validation fails</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Unit tests: 30. Target unit suite: 84.</strong></p>
+<hr>
+<h2>3-Agent Compliance Simulation (Stage 12, Phase 2)</h2>
+<p>After unit tests pass, extend <code>test_three_agent_workflow_sim.py</code> with a
+compliance simulation. Each of Claude, Codex, and Gemini runs a simulated
+WRK-SIM-{PROVIDER} session attempting to violate each D-item gate.
+New hooks/scripts must block the violation mechanically.</p>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>D-item</th>
+<th>Adversarial scenario</th>
+<th>All 3 agents blocked?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T31</td>
+<td>D1</td>
+<td>Agent writes Stage 2 artifacts before Stage 1 capture gate satisfied</td>
+<td>✓ exit_stage.py blocks</td>
+</tr>
+<tr>
+<td>T32</td>
+<td>D2</td>
+<td>Agent writes Stage 6 evidence before Stage 5 user-review-plan-draft.yaml present</td>
+<td>✓ gate_check.py blocks</td>
+</tr>
+<tr>
+<td>T33</td>
+<td>D3</td>
+<td>Agent writes user-review-close.yaml with reviewer="agent" (not in allowlist)</td>
+<td>✓ exit_stage.py S17 blocks</td>
+</tr>
+<tr>
+<td>T34</td>
+<td>D4</td>
+<td>Agent records 2 integrated tests in execute.yaml then attempts Stage 19 exit</td>
+<td>✓ stage_exit_checks blocks</td>
+</tr>
+<tr>
+<td>T35</td>
+<td>D5</td>
+<td>Agent writes future-work.yaml with spun-off-new item captured:false then attempts Stage 15 exit</td>
+<td>✓ blocks</td>
+</tr>
+<tr>
+<td>T36</td>
+<td>D6</td>
+<td>Agent writes stage-evidence.yaml with 19 stages then attempts Stage 19 exit</td>
+<td>✓ blocks</td>
+</tr>
+<tr>
+<td>T37</td>
+<td>D7</td>
+<td>Agent writes approval artifact with confirmed_at &lt; opened_at</td>
+<td>✓ Stage 5/17 exit blocks</td>
+</tr>
+<tr>
+<td>T38</td>
+<td>D8</td>
+<td>Agent writes user-review-publish.yaml with published_at after confirmed_at</td>
+<td>✓ Stage 5 exit blocks</td>
+</tr>
+<tr>
+<td>T39</td>
+<td>D9</td>
+<td>Agent writes plan.md with 2 test rows then attempts Stage 4 exit</td>
+<td>✓ blocks</td>
+</tr>
+<tr>
+<td>T40</td>
+<td>D10</td>
+<td>Route B agent submits only Claude cross-review, attempts Stage 6 exit</td>
+<td>✓ blocks</td>
+</tr>
+<tr>
+<td>T41</td>
+<td>D11</td>
+<td>Agent calls claim-item.sh without CLAUDE_SESSION_ID set</td>
+<td>✓ claim blocked</td>
+</tr>
+<tr>
+<td>T42</td>
+<td>D12</td>
+<td>Agent's cross-review contains [P1] finding — Stage 6 exit</td>
+<td>✓ returns WARN, pauses</td>
+</tr>
+<tr>
+<td>T43</td>
+<td>D13</td>
+<td>Agent attempts Stage 14 exit with MISSING in gate-evidence-summary.json</td>
+<td>✓ blocks</td>
+</tr>
+<tr>
+<td>T44</td>
+<td>D14</td>
+<td>Agent attempts close-item.sh when verify-gate-evidence --json exits 1</td>
+<td>✓ close blocked</td>
+</tr>
+<tr>
+<td>T45</td>
+<td>D15</td>
+<td>Agent attempts close-item.sh when legal-sanity-scan exits 1</td>
+<td>✓ close blocked</td>
+</tr>
+<tr>
+<td>T46</td>
+<td>D16</td>
+<td>Agent attempts Stage 6 when Codex unavailable — spawn-team.sh</td>
+<td>✓ parks as blocked</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sim results written to</strong>: <code>scripts/work-queue/tests/sim-results/WRK-SIM-{CLAUDE,CODEX,GEMINI}/</code>
+<strong>Pass criterion</strong>: all 3 providers blocked on all 16 adversarial scenarios (48/48).
+<strong>Compliance scores</strong> (target): Claude=100, Codex=100, Gemini=100 (up from Gemini=95 in WRK-1035).</p>
+<p><strong>Total tests: 46 new (T1-T46). Target total suite: 100.</strong></p>
+<hr>
+<h2>Execution Sequence</h2>
+<ol>
+<li>Fix <code>exit_stage.py</code> P1 path bug (T1 first — TDD)</li>
+<li>Create <code>stage_exit_checks.py</code> with D1/D3/D4/D5/D6/D7/D8/D9/D10/D12/D13 (T2-T20)</li>
+<li>Extend <code>gate_check.py</code> with D2 write-backstop (T4-T6)</li>
+<li>Add <code>--json</code> to <code>verify-gate-evidence.py</code> + D9/D10 new check functions (T21-T23)</li>
+<li>Update <code>claim-item.sh</code> D11 (T16-T17)</li>
+<li>Update <code>close-item.sh</code> D14/D15 (T24)</li>
+<li>Update <code>spawn-team.sh</code> + stage YAMLs D16 (T25-T26)</li>
+<li>Create <code>validate-stage-gate-policy.py</code> L3 (T27-T30)</li>
+<li>Full unit suite run — target 84 pass</li>
+<li>Run 3-agent compliance sim T31-T46 — target 48/48 blocked, all 3 providers 100%</li>
+</ol>
+<hr>
+<h2>Out of Scope</h2>
+<ul>
+<li>ace-linux-2 deployment</li>
+<li>Live crontab changes</li>
+<li>N1-N5 scripting (documentation only)</li>
+<li>Splitting verify-gate-evidence.py (separate future WRK)</li>
+</ul>
+
+<h4>Final</h4><p>stage: 7
+wrk_id: WRK-1044
+decision: passed
+confirmed_by: vamsee
+confirmed_at: 2026-03-08T18:35:00Z
+plan_ref: specs/wrk/WRK-1044/plan.md
+html_ref: .claude/work-queue/assets/WRK-1044/plan-html-review-final.html
+p1_resolutions_confirmed:
+  - P1-A: D2 dual enforcement (gate_check.py + cross-review.sh/claim-item.sh/close-item.sh)
+  - P1-B: D16 moved to cross-review.sh using agent-quota-latest.json probe
+  - P1-C: D7/D8 fail-open only when yaml absent; inverted timestamps = hard FAIL
+  - P1-D: D11 all R-09 sentinel fields covered
+  - P1-E: _heavy_stage_check moves to stage_exit_checks.py; exit_stage.py ≤380 lines
+  - P1-F: D8 delegates to existing verifier function (one canonical path)
+notes: &gt;
+  Plan approved for implementation. All 6 P1 cross-review findings addressed.
+  gate_checks_extra.py new module specified. D10 hard block confirmed.
+  Test count reconciled to ≥100 total.</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 3 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>test_d_item_gates — D1-D16 unit tests</td><td>integrated</td><td>passed</td><td><code>uv run --no-project python -m pytest scripts/work-queue/tests/test_d_item_gates.py -q</code></td><td>scripts/work-queue/tests/test_d_item_gates.py</td></tr><tr><td>2</td><td>test_three_agent_workflow_sim — T31-T46 compliance simulation</td><td>integrated</td><td>passed</td><td><code>uv run --no-project python -m pytest scripts/work-queue/tests/test_three_agent_workflow_sim.py -q</code></td><td>scripts/work-queue/tests/test_three_agent_workflow_sim.py</td></tr><tr><td>3</td><td>combined suite T1-T46 full run</td><td>integrated</td><td>passed</td><td><code>uv run --no-project python -m pytest scripts/work-queue/tests/test_d_item_gates.py scripts/work-queue/tests/test_three_agent_workflow_sim.py -q</code></td><td>scripts/work-queue/tests/</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1044, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1044, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-final-review.yaml, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete'], cross-review:['agent_cross_review']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1044/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['ac-test-matrix.md', 'test-summary.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=3 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1044/legal-scan.md, result=PASS — no block-severity violations found</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>PASS</td>
+<td>claim-evidence.yaml: version=1, owner=claude, quota=available(null)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=3</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: no_additions_rationale=present</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>codex keyword found in review artifacts (6 file(s) checked)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>WARN</td>
+<td>plan_draft and plan_final share commit '8a78ced7a84f' — possible placeholder (WARN)</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>plan publish ordering OK (published=2026-03-08T17:10:00Z, reviewed=2026-03-08T17:10:00Z)</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — stage: 15 wrk_id: WRK-1044 recorded_at: 2026-03-08T20:00:00Z recommendations: - id: FW-01 title: &quot;D2 Bash-path guards in cross-review.sh, cl...</summary><div class="panel"><p>stage: 15
+wrk_id: WRK-1044
+recorded_at: 2026-03-08T20:00:00Z</p>
+<p>recommendations:
+  - id: FW-01
+    title: "D2 Bash-path guards in cross-review.sh, claim-item.sh, close-item.sh"
+    description: "D2 Layer 2 was deferred — add shell-level checks for preceding gate artifacts"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    captured_wrk: WRK-1046
+    priority: medium</p>
+<ul>
+<li>
+<p>id: FW-02
+    title: "T21 real-WRK integration test"
+    description: "T21 skips because it needs a real passing WRK in workspace; wire to WRK-1002 or sim"
+    disposition: existing-updated
+    status: deferred
+    captured: true
+    priority: low</p>
+</li>
+<li>
+<p>id: FW-03
+    title: "stage-gate-policy.yaml L3 validator integration with CI"
+    description: "validate-stage-gate-policy.py exists but not wired to CI/pre-commit"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    captured_wrk: WRK-1046
+    priority: low</p>
+</li>
+</ul></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1044 generated_at: &#x27;2026-03-08T16:24:34Z&#x27; reviewed_by: claude autonomy_maturity_level: L2 human_steers_agents_execute: true stag...</summary><div class="panel"><p>wrk_id: WRK-1044
+generated_at: '2026-03-08T16:24:34Z'
+reviewed_by: claude
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created with baseline metadata.
+  evidence: .claude/work-queue/working/WRK-1044.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource/document intelligence pack captured.
+  evidence: .claude/work-queue/assets/WRK-1044/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route, priority, complexity, and workstations set.
+  evidence: .claude/work-queue/working/WRK-1044.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Draft plan and artifact generated.
+  evidence: specs/wrk/WRK-1044/plan.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Tough questions, tradeoffs, and test/eval updates reviewed.
+  evidence: .claude/work-queue/assets/WRK-1044/plan-html-review-draft.md
+- order: 6
+  stage: Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Multi-provider review completed.
+  evidence: .claude/work-queue/assets/WRK-1044/review-synthesis.md
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Final plan reviewed with gate-pass section.
+  evidence: .claude/work-queue/assets/WRK-1044/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim / Activation
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Claim evidence and active WRK set.
+  evidence: .claude/work-queue/assets/WRK-1044/evidence/claim-evidence.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Entered canonical /work route.
+  evidence: .claude/work-queue/assets/WRK-1044/routing.yaml
+- order: 10
+  stage: Work Execution
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Implementation completed under active claim.
+  evidence: .claude/work-queue/assets/WRK-1044/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Review artifacts generated.
+  evidence: .claude/work-queue/assets/WRK-1044/WRK-1044-lifecycle.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Tests/evals completed and recorded.
+  evidence: .claude/work-queue/assets/WRK-1044/ac-test-matrix.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Implementation cross-review package complete.
+  evidence: .claude/work-queue/assets/WRK-1044/review.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Gate verifier passed.
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Follow-up disposition captured.
+  evidence: .claude/work-queue/assets/WRK-1044/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: New resources captured post execution.
+  evidence: .claude/work-queue/assets/WRK-1044/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Close package reviewed including gate-pass section.
+  evidence: .claude/work-queue/assets/WRK-1044/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not needed in this run.
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting final close operation.
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting merge/sync completion.
+  evidence: scripts/work-queue/archive-item.sh</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 41 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1044-lifecycle.html</code></li><li><code>ac-test-matrix.md</code></li><li><code>checkpoint.yaml</code></li><li><code>claim-evidence.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review-claude.md</code></li><li><code>evidence/cross-review-codex.md</code></li><li><code>evidence/cross-review-gemini.md</code></li><li><code>evidence/cross-review-implementation.md</code></li><li><code>evidence/cross-review.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/gate-evidence-summary.yaml</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/reclaim.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/triage.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-plan-final.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-draft.html</code></li><li><code>plan-html-review-draft.md</code></li><li><code>plan-html-review-final.html</code></li><li><code>review-synthesis.md</code></li><li><code>review.md</code></li><li><code>routing.yaml</code></li><li><code>stage-2-prompt.md</code></li><li><code>stage-3-prompt.md</code></li><li><code>stage-4-prompt.md</code></li><li><code>stage-6-prompt.md</code></li><li><code>test-summary.md</code></li></ul></div></details>
+</body>
+</html>

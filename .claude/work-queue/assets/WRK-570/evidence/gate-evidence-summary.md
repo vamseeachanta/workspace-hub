@@ -19,3 +19,16 @@
 | Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: additions=2 |
 | User-review close gate | PASS | user-review-close.yaml: decision=approved |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
+| Approval ordering gate | PASS | approval ordering OK (phase=close) |
+| Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
+| Browser open elapsed time gate | FAIL | stage=close_review: approval confirmed only -60s after browser open (min 300s required) |
+| Sentinel values gate | PASS | no sentinel values found |
+| Claim artifact path gate | WARN | legacy claim path: claim.yaml (should be claim-evidence.yaml) |
+| ISO datetime format gate | PASS | all timestamp fields have time components |
+| Codex keyword in review gate | PASS | no review files found — skip codex keyword check (handled by cross-review gate) |
+| Publish commit uniqueness gate | FAIL | all three publish stages share commit 'f580dd18a608' (likely placeholder) |
+| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[4] evidence path not found: specs/wrk/WRK-570/plan.md |
+| Done/pending contradiction gate | PASS | no done/pending contradictions found |
+| Plan publish predates approval gate | PASS | user-review-plan-draft.yaml absent — skip ordering check |
+| Workstation contract (strict) gate | PASS | workstation contract fields present |
+| Reclaim n/a gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |

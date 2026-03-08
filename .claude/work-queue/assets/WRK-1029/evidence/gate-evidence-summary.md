@@ -3,7 +3,7 @@
 | Gate | Status | Details |
 |---|---|---|
 | Plan gate | PASS | reviewed=True, approved=True, artifact=plan-final-review.yaml, confirmation=confirmed_by=present, confirmed_at=present, decision=passed |
-| Workstation contract gate | PASS | plan_workstations=missing, execution_workstations=missing |
+| Workstation contract gate | PASS | plan_workstations=ace-linux-1, execution_workstations=ace-linux-1 |
 | Stage evidence gate | PASS | stage-evidence.yaml: stages=20, contract=20-stage |
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
@@ -27,7 +27,7 @@
 | ISO datetime format gate | PASS | all timestamp fields have time components |
 | Codex keyword in review gate | PASS | codex keyword found in review artifacts (3 file(s) checked) |
 | Publish commit uniqueness gate | WARN | plan_draft and plan_final share commit '95ca596a' — possible placeholder (WARN) |
-| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[1] evidence path not found: .claude/work-queue/working/WRK-1029.md |
+| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[11] evidence path not found: .claude/work-queue/assets/WRK-1029/implementation-review.html |
 | Done/pending contradiction gate | PASS | no done/pending contradictions found |
 | Plan publish predates approval gate | PASS | plan publish ordering OK (published=2026-03-07T22:47:32Z, reviewed=2026-03-07T00:00:00Z) |
 | Workstation contract (strict) gate | PASS | workstation contract fields present |

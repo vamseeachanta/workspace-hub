@@ -15,7 +15,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "plan_workstations=missing, execution_workstations=missing"
+      "details": "plan_workstations=ace-linux-1, execution_workstations=ace-linux-1"
     },
     {
       "name": "Stage evidence gate",
@@ -121,6 +121,97 @@
       "ok": false,
       "warn": true,
       "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+    },
+    {
+      "name": "Approval ordering gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "approval ordering OK (phase=close)"
+    },
+    {
+      "name": "Midnight UTC sentinel gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no midnight UTC sentinel found"
+    },
+    {
+      "name": "Browser open elapsed time gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "stage=plan_draft: approval confirmed only -1099s after browser open (min 300s required)"
+    },
+    {
+      "name": "Sentinel values gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "activation.yaml: session_id='unknown'; activation.yaml: orchestrator_agent='unknown'"
+    },
+    {
+      "name": "Claim artifact path gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+    },
+    {
+      "name": "ISO datetime format gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "all timestamp fields have time components"
+    },
+    {
+      "name": "Codex keyword in review gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "cross-review artifacts present but none mention 'codex'"
+    },
+    {
+      "name": "Publish commit uniqueness gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "plan_draft and plan_final share commit '1b913624dcc9b75dcd7b09e06e4d359d65fd66b5' \u2014 possible placeholder (WARN)"
+    },
+    {
+      "name": "Stage evidence paths gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "stage-evidence.yaml: stage[18] evidence path not found: .claude/work-queue/assets/WRK-1026/evidence/reclaim.yaml"
+    },
+    {
+      "name": "Done/pending contradiction gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "stage-evidence.yaml: stage[1] (order=1) status=done but comment contains contradiction: 'WRK created in pending queue with baseline metadata.'"
+    },
+    {
+      "name": "Plan publish predates approval gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "plan_draft published_at (2026-03-07T12:09:42Z) < reviewed_at (2026-03-07T12:25:00Z): publish predates approval"
+    },
+    {
+      "name": "Workstation contract (strict) gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "workstation contract fields present"
+    },
+    {
+      "name": "Reclaim n/a gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "n/a: Stage 18 is n/a and no reclaim log exists"
     }
   ]
 }

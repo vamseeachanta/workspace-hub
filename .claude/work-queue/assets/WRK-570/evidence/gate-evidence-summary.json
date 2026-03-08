@@ -121,6 +121,97 @@
       "ok": false,
       "warn": true,
       "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+    },
+    {
+      "name": "Approval ordering gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "approval ordering OK (phase=close)"
+    },
+    {
+      "name": "Midnight UTC sentinel gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no midnight UTC sentinel found"
+    },
+    {
+      "name": "Browser open elapsed time gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "stage=close_review: approval confirmed only -60s after browser open (min 300s required)"
+    },
+    {
+      "name": "Sentinel values gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no sentinel values found"
+    },
+    {
+      "name": "Claim artifact path gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "legacy claim path: claim.yaml (should be claim-evidence.yaml)"
+    },
+    {
+      "name": "ISO datetime format gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "all timestamp fields have time components"
+    },
+    {
+      "name": "Codex keyword in review gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no review files found \u2014 skip codex keyword check (handled by cross-review gate)"
+    },
+    {
+      "name": "Publish commit uniqueness gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "all three publish stages share commit 'f580dd18a608' (likely placeholder)"
+    },
+    {
+      "name": "Stage evidence paths gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "stage-evidence.yaml: stage[4] evidence path not found: specs/wrk/WRK-570/plan.md"
+    },
+    {
+      "name": "Done/pending contradiction gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no done/pending contradictions found"
+    },
+    {
+      "name": "Plan publish predates approval gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "user-review-plan-draft.yaml absent \u2014 skip ordering check"
+    },
+    {
+      "name": "Workstation contract (strict) gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "workstation contract fields present"
+    },
+    {
+      "name": "Reclaim n/a gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
     }
   ]
 }

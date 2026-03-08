@@ -110,10 +110,10 @@
     },
     {
       "name": "User-review close gate",
-      "status": "WARN",
-      "ok": false,
-      "warn": true,
-      "details": "user-review-close.yaml: PENDING — awaiting Stage 17 user review (hard gate)"
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",
