@@ -1,0 +1,15 @@
+wrk_id: WRK-1029
+stage: 16
+updated_at: "2026-03-07T00:00:00Z"
+updated_by: claude
+
+additions:
+  - type: finding
+    description: "stage-02-resource-intelligence.yaml had chained_agent invocation contradicting stop guard — discovered during Codex cross-review"
+    path: scripts/work-queue/stages/stage-02-resource-intelligence.yaml
+  - type: finding
+    description: "stage-16 blocking_condition referenced lessons[] which was never in the SKILL schema — schema drift discovered during Codex cross-review"
+    path: scripts/work-queue/stages/stage-16-resource-intelligence-update.yaml
+  - type: skill
+    description: "uncategorised is a live WRK category value (used by generate-index.py) but was absent from Category→Mining Map"
+    path: .claude/work-queue/scripts/generate-index.py

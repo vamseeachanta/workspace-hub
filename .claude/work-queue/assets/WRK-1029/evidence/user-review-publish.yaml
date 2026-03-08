@@ -17,3 +17,12 @@ events:
   - .claude/work-queue/assets/WRK-1029/plan-final-review.html
   published_at: '2026-03-07T22:47:33Z'
   reviewer: user
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: a820bb17
+  documents:
+  - .claude/work-queue/assets/WRK-1029/close-review.html
+  published_at: '2026-03-08T01:15:18Z'
+  reviewer: user

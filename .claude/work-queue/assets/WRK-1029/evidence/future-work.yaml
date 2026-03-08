@@ -1,0 +1,32 @@
+wrk_id: WRK-1029
+stage: 15
+generated_at: "2026-03-07T00:00:00Z"
+generated_by: claude
+
+recommendations:
+  - id: fw-01
+    title: "Upgrade domain.problem/domain.architecture_decision from WARN to FAIL in verify-gate-evidence.py"
+    rationale: "After 3+ production Stage 2 runs confirm agents populate these fields, hard-gate them"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    priority: medium
+    target_wrk: ""
+
+  - id: fw-02
+    title: "Extend validate-resource-pack.sh to also check evidence/resource-intelligence.yaml format"
+    rationale: "Script currently validates old-format files only; new YAML format has no validator"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    priority: low
+    target_wrk: ""
+
+  - id: fw-03
+    title: "Codex cross-review for stage-02 change: confirm task_agent isolation works end-to-end"
+    rationale: "stage-02 changed from chained_agent to task_agent; need production run to verify"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    priority: medium
+    target_wrk: ""

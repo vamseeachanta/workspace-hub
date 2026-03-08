@@ -3,8 +3,8 @@ stage: 7
 artifact: plan-final-review
 reviewed_by: user
 confirmed_by: user
-reviewed_at: "2026-03-07T00:00:00Z"
-confirmed_at: "2026-03-07T00:00:00Z"
+reviewed_at: 2026-03-07T00:00:00Z
+confirmed_at: 2026-03-07T00:00:00Z
 decision: passed
 
 plan_approved: true

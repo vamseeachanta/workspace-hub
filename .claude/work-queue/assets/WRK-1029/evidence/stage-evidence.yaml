@@ -1,0 +1,166 @@
+wrk_id: WRK-1029
+generated_at: "2026-03-07T00:00:00Z"
+reviewed_by: claude
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: WRK created from /work add request.
+    evidence: .claude/work-queue/working/WRK-1029.md
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: resource-intelligence.yaml captured with 3 core skills.
+    evidence: .claude/work-queue/assets/WRK-1029/evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: Route B, medium, ace-linux-1, harness/skills.
+    evidence: .claude/work-queue/working/WRK-1029.md
+  - order: 4
+    stage: Plan Draft
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Route B inline plan — Phase 1 schema/checklist, Phase 2 mining intelligence.
+    evidence: .claude/work-queue/assets/WRK-1029/plan-draft-review.html
+  - order: 5
+    stage: User Review - Plan (Draft)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: User approved plan draft; all 4 Q&A decisions recorded.
+    evidence: .claude/work-queue/assets/WRK-1029/evidence/user-review-plan-draft.yaml
+  - order: 6
+    stage: Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Codex REQUEST_CHANGES — 5 findings resolved (H1x2, M1x2, L1x1).
+    evidence: .claude/work-queue/assets/WRK-1029/evidence/cross-review-phase1.md
+  - order: 7
+    stage: User Review - Plan (Final)
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: User approved final plan.
+    evidence: .claude/work-queue/assets/WRK-1029/evidence/plan-final-review.yaml
+  - order: 8
+    stage: Claim / Activation
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Claimed by claude on ace-linux-1.
+    evidence: .claude/work-queue/assets/WRK-1029/evidence/claim.yaml
+  - order: 9
+    stage: Work-Queue Routing Skill
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Entered via /work resume WRK-1029.
+    evidence: .claude/work-queue/assets/WRK-1029/checkpoint.yaml
+  - order: 10
+    stage: Work Execution
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Phase 1 + Phase 2 complete — SKILL.md v1.1.0 + template created.
+    evidence: .claude/work-queue/assets/WRK-1029/evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: implementation-review.html generated.
+    evidence: .claude/work-queue/assets/WRK-1029/implementation-review.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: validate-resource-pack.sh PASS; word count 1332/5000; 5 required sections present.
+    evidence: .claude/work-queue/assets/WRK-1029/test-results.md
+  - order: 13
+    stage: Agent Cross-Review
+    status: done
+    human_decision_required: "no"
+    owner: agents
+    blocker: "no"
+    comment: Codex H1/M1/M2 resolved in commit a820bb17; Gemini non-actionable.
+    evidence: .claude/work-queue/assets/WRK-1029/evidence/cross-review-implementation.md
+  - order: 14
+    stage: Verify Gate Evidence
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: Gate verifier run after all evidence collected.
+    evidence: scripts/work-queue/verify-gate-evidence.py
+  - order: 15
+    stage: Future Work Synthesis
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: 3 follow-up items captured (fw-01/fw-02/fw-03).
+    evidence: .claude/work-queue/assets/WRK-1029/evidence/future-work.yaml
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: 3 new findings documented from Codex cross-review.
+    evidence: .claude/work-queue/assets/WRK-1029/evidence/resource-intelligence-update.yaml
+  - order: 17
+    stage: User Review - Implementation
+    status: done
+    human_decision_required: "yes"
+    owner: user + orchestrator
+    blocker: "no"
+    comment: Close package presented to user for review.
+    evidence: .claude/work-queue/assets/WRK-1029/evidence/user-review-close.yaml
+  - order: 18
+    stage: Reclaim
+    status: n/a
+    human_decision_required: "no"
+    owner: orchestrator
+    blocker: "no"
+    comment: No continuity break in this run.
+    evidence: n/a
+  - order: 19
+    stage: Close
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: WRK-1029.md moved to done/.
+    evidence: .claude/work-queue/done/WRK-1029.md
+  - order: 20
+    stage: Archive
+    status: done
+    human_decision_required: "yes"
+    owner: orchestrator
+    blocker: "no"
+    comment: WRK-1029.md copied to archive/.
+    evidence: .claude/work-queue/archive/WRK-1029.md

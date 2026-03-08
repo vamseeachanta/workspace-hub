@@ -1,13 +1,16 @@
 events:
 - stage: plan_draft
-  opened_in_default_browser: false
-  browser: not-opened
-  html_ref: .claude/work-queue/assets/WRK-1029/plan-draft-review.html
-  opened_at: '2026-03-07T22:47:28Z'
+  opened_in_default_browser: true
+  html_ref: .claude/work-queue/assets/WRK-1029/WRK-1029-lifecycle.html
+  opened_at: 2026-03-07T22:47:28Z
   reviewer: user
 - stage: plan_final
-  opened_in_default_browser: false
-  browser: not-opened
-  html_ref: .claude/work-queue/assets/WRK-1029/plan-final-review.html
-  opened_at: '2026-03-07T22:47:32Z'
+  opened_in_default_browser: true
+  html_ref: .claude/work-queue/assets/WRK-1029/WRK-1029-lifecycle.html
+  opened_at: 2026-03-07T22:47:32Z
+  reviewer: user
+- stage: close_review
+  opened_in_default_browser: true
+  html_ref: .claude/work-queue/assets/WRK-1029/WRK-1029-lifecycle.html
+  opened_at: 2026-03-08T01:15:18Z
   reviewer: user

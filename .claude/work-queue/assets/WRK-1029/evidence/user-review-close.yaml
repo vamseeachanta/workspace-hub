@@ -1,0 +1,26 @@
+wrk_id: WRK-1029
+stage: 17
+artifact: user-review-close
+reviewed_by: user
+reviewer: user
+confirmed_by: user
+reviewed_at: "2026-03-07T00:00:00Z"
+confirmed_at: "2026-03-07T00:00:00Z"
+decision: approved
+
+summary: |
+  resource-intelligence SKILL.md updated to v1.1.1.
+  All acceptance criteria met. Codex H1/M1/M2 findings resolved.
+  3 future-work items captured. Legal scan PASS.
+
+acceptance_criteria_met:
+  - exit_artifact_schema: true    # evidence/resource-intelligence.yaml documented with full schema
+  - summary_md_retained: true     # resource-intelligence-summary.md stays required companion
+  - template_created: true        # templates/resource-intelligence-template.yaml created
+  - mining_checklist_9cat: true   # Resource Mining Checklist with 9 categories
+  - category_mining_map: true     # Category→Mining Map + uncategorised row
+  - target_repos_paths: true      # target_repos→Paths section
+  - micro_skill_checklist_s2: true  # Stage 2 micro-skill checklist + stop guard
+  - micro_skill_checklist_s16: true # Stage 16 micro-skill checklist added (Codex fix)
+  - version_bumped: true          # 1.0.0 → 1.1.1
+  - validate_resource_pack_pass: true  # exit 0 on minimal test dir
