@@ -1,10 +1,9 @@
 order: 2
 name: Resource Intelligence
 weight: medium
-invocation: chained_agent
+invocation: task_agent
 human_gate: false
 parallelism: single-thread
-chained_stages: [2, 3, 4]
 skills_required:
   - workspace-hub/work-queue-workflow
   - workspace-hub/resource-intelligence

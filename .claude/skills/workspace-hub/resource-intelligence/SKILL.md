@@ -145,6 +145,14 @@ additions:                    # new sources, constraints, or findings discovered
 no_additions_rationale: ""    # populate if additions is empty — explain why nothing new was found
 ```
 
+## Micro-Skill Checklist (Stage 16)
+
+1. Re-read the WRK `## Mission` boundary — only record additions in scope
+2. Review `evidence/execute.yaml` and `evidence/future-work.yaml` for new sources/constraints
+3. Identify any new sources, constraints, findings, or skills discovered during execution
+4. Write `evidence/resource-intelligence-update.yaml` with `additions[]` OR `no_additions_rationale`
+5. Update `evidence/stage-evidence.yaml` — set stage 16 entry to `status: done`
+
 > **⛔ STOP — Stage 16 exit point.**
 > Write `evidence/resource-intelligence-update.yaml` and halt.
 > Do NOT reopen planning, spec, or implementation artifacts.
@@ -183,6 +191,7 @@ Read `category` and `subcategory` from WRK frontmatter. Use this table to select
 | `business` | 3 Memory, 5 Specs, 6 Workspace docs | 7 Document index, 8 Mounted sources |
 | `maintenance` | 2 Prior WRKs, 4 Existing code, 6 Workspace docs | 8 Mounted sources, 9 Online |
 | `personal` | 3 Memory | all others |
+| `uncategorised` | 1 Skills, 2 Prior WRKs, 3 Memory | decide per subcategory |
 
 For any `subcategory` containing `pipeline`, `viv`, `dnv`, `api rp`, `iso`, `fea`, `cfd`, `ansys`, `orcaflex` → always include categories 7 and 8 regardless of `category`.
 
@@ -257,6 +266,11 @@ Run `validate-resource-pack.sh` before treating Stage 2 as passable.
 
 ## Version History
 
+- **1.1.1** (2026-03-07): Codex review fixes (WRK-1029)
+  - stage-02 changed from chained_agent → task_agent (stop guard was contradicted by chained_stages)
+  - Category→Mining Map: added `uncategorised` row
+  - Stage 16 Micro-Skill Checklist added (was missing, only Stage 2 had one)
+  - stage-16 blocking_condition: `lessons[]` → `additions[] and no_additions_rationale`
 - **1.1.0** (2026-03-07): Stage 2/16 alignment with WRK-1028 stage isolation contract (WRK-1029)
   - `evidence/resource-intelligence.yaml` added as primary gate-passing exit artifact for Stage 2
   - `evidence/resource-intelligence-update.yaml` confirmed as Stage 16 gate artifact
