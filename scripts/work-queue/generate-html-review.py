@@ -1326,6 +1326,7 @@ def detect_stage_statuses(
         5: ev_exists("user-review-plan-draft.yaml"),
         6: (ev_exists("cross-review-phase1.md", "cross-review-plan.md")
             or (ad / "review.md").exists()
+            or (ad / "cross-review-plan.md").exists()
             or bool(list(ev.glob("cross-review*.md")))),
         7: ev_exists("user-review-plan-final.yaml", "plan-final-review.yaml"),
         8: (ev_exists("claim.yaml") or (ad / "claim-evidence.yaml").exists()),
@@ -1334,13 +1335,16 @@ def detect_stage_statuses(
         11: ev_exists("gate-evidence-summary.json"),
         12: ((ad / "variation-test-results.md").exists()
              or (ad / "test-summary.md").exists()
+             or (ad / "test-results.md").exists()
              or ev_exists("test-results.yaml", "ac-test-matrix.md")),
-        13: (ev_exists("cross-review-impl.md", "cross-review-implementation.md")
+        13: ((ad / "cross-review-impl.md").exists()
+             or ev_exists("cross-review-impl.md", "cross-review-implementation.md")
              or bool(list(ev.glob("cross-review-implementation*.md")))),
         # S14 Verify Gate Evidence: gate summary AND cross-review-impl must both exist
         # so S14 doesn't prematurely show 'done' when only S11 (artifact gen) is complete
         14: (ev_exists("gate-evidence-summary.json")
-             and (ev_exists("cross-review-impl.md", "cross-review-implementation.md")
+             and ((ad / "cross-review-impl.md").exists()
+                  or ev_exists("cross-review-impl.md", "cross-review-implementation.md")
                   or bool(list(ev.glob("cross-review-implementation*.md"))))),
         15: ev_exists("future-work.yaml"),
         16: ev_exists("resource-intelligence-update.yaml"),
