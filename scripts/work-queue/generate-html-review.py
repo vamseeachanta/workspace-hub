@@ -1486,11 +1486,16 @@ def render_lifecycle_stage_body(
             ("decision", str(data.get("decision", ""))),
         ]
         decisions = data.get("decisions", {})
-        for k, v in decisions.items():
-            if isinstance(v, dict):
-                pairs.append((k, str(v.get("answer", ""))))
-            else:
-                pairs.append((k, str(v)))
+        if isinstance(decisions, list):
+            for item in decisions:
+                if isinstance(item, dict):
+                    pairs.append((item.get("id", ""), item.get("decision", "")))
+        else:
+            for k, v in decisions.items():
+                if isinstance(v, dict):
+                    pairs.append((k, str(v.get("answer", ""))))
+                else:
+                    pairs.append((k, str(v)))
         return (
             '<div class="section-label">Stage record</div>'
             + _render_schema_block([(k, v) for k, v in pairs if v])
