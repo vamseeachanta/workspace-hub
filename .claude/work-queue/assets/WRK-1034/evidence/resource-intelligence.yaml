@@ -1,0 +1,59 @@
+wrk_id: WRK-1034
+generated_at: 2026-03-07T22:00:00Z
+stage: 2
+completion_status: continue_to_planning
+
+domain:
+  problem: >
+    Stage 7 (User Review — Plan Final) and Stage 17 (User Review — Implementation)
+    have no hard-gate enforcement. Agents self-certify these reviews by writing
+    placeholder YAML artifacts and proceeding without any verified human interaction.
+  architecture_decision: >
+    Mirror the Stage 5 gate pattern (WRK-1017): add check_stage7/17_evidence_gate()
+    functions in verify-gate-evidence.py, gated by stage7/17-gate-config.yaml with
+    the same activation=disabled|full schema. Guard claim-item.sh (Stage 7) and
+    close-item.sh (Stage 17) with --stageN-check invocations. Add HARD GATE notices
+    to SKILL.md Stage 7/17 contracts.
+
+existing_files:
+  - path: scripts/work-queue/verify-gate-evidence.py
+    relevance: >
+      Reference implementation. check_stage5_evidence_gate() (lines 124-241) is the
+      model. check_plan_confirmation() (lines 535-554) already validates confirmed_by,
+      confirmed_at, decision=passed in plan-final YAML. The --stage5-check argparse
+      flag (line ~920) drives claim/close guards.
+  - path: scripts/work-queue/stage5-gate-config.yaml
+    relevance: >
+      Config schema to replicate: schema_version, activation (disabled|full),
+      human_authority_allowlist, checker_timeout_seconds, emergency_bypass fields.
+  - path: scripts/work-queue/claim-item.sh
+    relevance: >
+      Lines 38-60: Stage 5 guard pattern. STAGE5_CHECKER invocation with --stage5-check.
+      Exit 1 = predicate failure, exit 2 = infra failure. Add Stage 7 check after S5.
+  - path: scripts/work-queue/close-item.sh
+    relevance: >
+      Lines 98-118: Stage 5 guard pattern. Add Stage 17 check after S5 (for close gate).
+      267 lines total.
+  - path: .claude/skills/coordination/workspace/work-queue/SKILL.md
+    relevance: >
+      Stage 7 and 17 contracts need HARD GATE — BLOCKING notices + exit checklists
+      mirroring Stage 5 text (v1.6.3, lines 219-255).
+
+skills:
+  core_used:
+    - work-queue-workflow
+    - workflow-gatepass
+    - resource-intelligence
+
+constraints:
+  - Stage 5 gate config is activation=disabled; Stage 7/17 configs should default to
+    disabled as well (gradual rollout)
+  - check_plan_confirmation() already validates confirmed_by/confirmed_at in the close-phase
+    plan gate — Stage 7 standalone checker is additive, not a replacement
+  - claim-item.sh and close-item.sh use exit 1/2 convention; Stage 7/17 guards must match
+  - verify-gate-evidence.py is 950+ lines; new functions follow existing style (type hints,
+    tuple[bool|None, str] return, yaml.safe_load pattern)
+  - Tests go in tests/unit/test_verify_gate_evidence.py (or alongside existing test file)
+  - No change to existing Stage 5 gate logic
+
+top_p1_gaps: []

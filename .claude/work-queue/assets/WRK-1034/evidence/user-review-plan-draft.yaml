@@ -1,0 +1,17 @@
+wrk_id: WRK-1034
+stage: plan_draft
+reviewed_at: 2026-03-07T22:30:00Z
+reviewed_by: user
+reviewer: user
+confirmed_by: user
+confirmed_at: 2026-03-07T22:30:00Z
+approval_decision: approve_as_is
+review_cycle_id: rc-1034-plan-draft
+
+decisions:
+  - q: Gate activation — should Stage 7/17 configs default to disabled or full?
+    a: full — all three gates (S5, S7, S17) ship enabled; observed violations require immediate enforcement
+  - q: Should claim-item.sh bootstrap template include confirmed_at?
+    a: yes — include confirmed_at empty string in user-review-close.yaml template
+  - q: Stage 7 fallback — check both plan-final YAML variants or canonical only?
+    a: canonical only — evidence/user-review-plan-final.yaml; no fallback

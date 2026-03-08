@@ -1,0 +1,8 @@
+wrk_id: WRK-1034
+stage: plan_final
+artifact: evidence/plan-final-review.yaml
+confirmed_by: ""
+confirmed_at:
+decision: ""
+review_cycle_id: rc-1034-plan-final
+notes: ""
