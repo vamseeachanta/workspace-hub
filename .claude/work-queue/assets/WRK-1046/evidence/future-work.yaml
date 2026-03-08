@@ -1,0 +1,34 @@
+wrk_id: WRK-1046
+captured_at: 2026-03-08T20:15:00Z
+recommendations:
+  - id: FW-01
+    title: "D2: Bash-layer guards in work.sh and claim-item.sh to block non-gate stage auto-advance"
+    description: >
+      Add bash-level enforcement so work.sh cannot advance past a human-gate stage
+      without an explicit user approval signal. Complements the Python STAGE_GATE signal.
+    priority: medium
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    new_wrk: WRK-1044-FW-D2
+  - id: FW-02
+    title: "Subagent prompt library — per-stage templated prompts stored in stage contracts"
+    description: >
+      Store the Agent() subagent prompt template in each stage-NN-*.yaml contract
+      so the orchestrator can read it directly rather than templating inline.
+    priority: low
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    new_wrk: pending
+  - id: FW-03
+    title: "Chained-stage group validation — test that chained_stages=[2,3,4] subagent gets all 3 stage contracts"
+    description: >
+      T11 tests that chained_stages appears in checkpoint but does not run a full
+      multi-stage subagent simulation. A follow-up test should verify the subagent
+      prompt covers all stages in the chain.
+    priority: low
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    new_wrk: pending

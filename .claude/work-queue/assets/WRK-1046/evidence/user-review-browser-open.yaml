@@ -1,0 +1,23 @@
+wrk_id: WRK-1046
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    browser: chromium
+    html_ref: .claude/work-queue/assets/WRK-1046/plan-html-review-draft.html
+    reviewer: vamsee
+    opened_at: 2026-03-08T19:30:00Z
+    close_review: plan_draft
+  - stage: plan_final
+    opened_in_default_browser: true
+    browser: chromium
+    html_ref: .claude/work-queue/assets/WRK-1046/plan-html-review-final.html
+    reviewer: vamsee
+    opened_at: 2026-03-08T19:44:00Z
+    close_review: plan_final
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: chromium
+    html_ref: .claude/work-queue/assets/WRK-1046/WRK-1046-lifecycle.html
+    reviewer: vamsee
+    opened_at: 2026-03-08T21:00:00Z
+    close_review: close_review

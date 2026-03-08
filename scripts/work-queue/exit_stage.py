@@ -152,10 +152,18 @@ def validate_exit(
     missing = []
     for artifact in exit_artifacts:
         rel = _normalize(artifact)
-        if rel.startswith(("done/", "pending/", "working/")):
+        if rel.startswith(("done/", "pending/", "working/", "archive/")):
             # queue-relative paths — not inside assets/WRK-NNN/
             queue_root = str(Path(stage_dir).parent.parent)
-            full_path = os.path.join(queue_root, rel)
+            # archive/ may have YYYY-MM subdir — search recursively
+            if rel.startswith("archive/"):
+                import glob as _glob
+                fname = os.path.basename(rel)
+                matches = _glob.glob(os.path.join(queue_root, "archive", "**", fname),
+                                     recursive=True)
+                full_path = matches[0] if matches else os.path.join(queue_root, rel)
+            else:
+                full_path = os.path.join(queue_root, rel)
         else:
             full_path = os.path.join(stage_dir, rel)
         if not os.path.exists(full_path):

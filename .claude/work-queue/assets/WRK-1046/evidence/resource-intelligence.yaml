@@ -1,0 +1,56 @@
+stage: 2
+wrk_id: WRK-1046
+captured_at: 2026-03-08T19:15:00Z
+orchestrator_agent: claude
+completion_status: continue_to_planning
+
+key_files:
+  - path: scripts/work-queue/exit_stage.py
+    role: Must write context_summary + entry_reads + stage_complete_at to checkpoint after each stage exit
+    current_gap: Only validates checkpoint if it exists; does not write it
+    lines: 384
+
+  - path: scripts/work-queue/start_stage.py
+    role: Reads checkpoint + prints resume block; reads entry_reads; already well-implemented
+    current_gap: entry_reads paths resolved correctly; minor — needs stage_complete_at field awareness
+    lines: 322
+
+  - path: scripts/agents/work.sh
+    role: Work wrapper; currently a thin routing logger with no stage loop
+    current_gap: No Task agent spawning; no stage-loop; stages are inline in the main conversation
+    lines: 148
+
+  - path: scripts/work-queue/stages/stage-NN-*.yaml
+    role: "Already have entry_reads lists per stage contract; invocation field indicates task_agent"
+    current_gap: "entry_reads paths exist but exit_stage.py never reads/writes them to checkpoint"
+    lines: varies
+
+architecture_assessment:
+  checkpoint_write_gap: >
+    exit_stage.py validates checkpoint.yaml (non-blocking) but NEVER writes it.
+    The checkpoint.sh bash script writes it, but it only captures wrk_id/stage/next_action
+    and is called manually. Phase 1 must make exit_stage.py auto-write a rich checkpoint.
+
+  stage_loop_gap: >
+    work.sh has no stage loop. Each stage is user-triggered inline in the main Claude
+    conversation. Phase 2 would add a loop that spawns Task agents per stage. However,
+    this is complex — the orchestrator (main Claude session) still accumulates context
+    from managing the loop. The lightweight alternative is: after each stage exit,
+    emit a clear "CONTEXT RESET SIGNAL" telling the user to start a new /work run
+    message, which loads the checkpoint fresh.
+
+  recommended_approach: >
+    Phase 1 (high value, low risk): exit_stage.py writes rich checkpoint after each stage exit.
+    Phase 2a (medium value): emit "start new session" prompt at end of each stage exit.
+    Phase 2b (deferred): work.sh Task-agent stage loop — only if Phase 2a proves insufficient.
+    Phase 3 (low effort): confirm all stage-NN-*.yaml have entry_reads lists (most already do).
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - superpowers/test-driven-development
+
+p1_findings: []
+p2_findings:
+  - Phase 2b (full Task-agent stage loop in work.sh) is high complexity; defer to own WRK

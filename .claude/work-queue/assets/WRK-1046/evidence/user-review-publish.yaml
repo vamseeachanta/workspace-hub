@@ -1,0 +1,32 @@
+wrk_id: WRK-1046
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 38af3912
+    documents:
+      - .claude/work-queue/assets/WRK-1046/plan-html-review-draft.html
+    published_at: 2026-03-08T19:32:00Z
+    reviewer: vamsee
+    close_review: plan_draft
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 793d73cc
+    documents:
+      - .claude/work-queue/assets/WRK-1046/plan-html-review-final.html
+    published_at: 2026-03-08T19:46:00Z
+    reviewer: vamsee
+    close_review: plan_final
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: ddfb51db
+    documents:
+      - .claude/work-queue/assets/WRK-1046/WRK-1046-lifecycle.html
+    published_at: 2026-03-08T21:02:00Z
+    reviewer: vamsee
+    close_review: close_review

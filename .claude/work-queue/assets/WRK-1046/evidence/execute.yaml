@@ -1,0 +1,52 @@
+wrk_id: WRK-1046
+executed_at: 2026-03-08T20:10:00Z
+orchestrator_agent: claude
+phases_completed:
+  - phase: 1
+    description: exit_stage.py auto-writes checkpoint after each successful stage exit
+    commits: []
+    key_files:
+      - scripts/work-queue/checkpoint_writer.py
+      - scripts/work-queue/exit_stage.py
+  - phase: 2
+    description: STAGE_GATE signal emitted; bypassPermissions subagent-per-stage auto-loop
+    commits: []
+    key_files:
+      - scripts/work-queue/checkpoint_writer.py
+  - phase: 3
+    description: SKILL.md execution model update (work-queue-workflow + work-queue)
+    commits: []
+    key_files:
+      - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+      - .claude/skills/coordination/workspace/work-queue/SKILL.md
+
+test_count: 13
+test_files:
+  - scripts/work-queue/tests/test_stage_auto_loop.py
+
+integrated_repo_tests:
+  - name: T1 checkpoint written with current_stage=N+1
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_auto_loop.py::test_t1_checkpoint_written_after_stage_exit -q
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_stage_auto_loop.py
+  - name: T6 STAGE_GATE spawn_subagent for non-gate stage
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_auto_loop.py::test_t6_stage_gate_spawn_subagent -q
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_stage_auto_loop.py
+  - name: T7 STAGE_GATE await_user_approval for stage 5
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_auto_loop.py::test_t7_stage_gate_await_approval_stage5 -q
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_stage_auto_loop.py
+  - name: T9 human_gate driven by contract YAML not hardcoded
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_auto_loop.py::test_t9_human_gate_from_contract -q
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_stage_auto_loop.py
+  - name: T12 stage 20 terminal no STAGE_GATE
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/test_stage_auto_loop.py::test_t12_stage20_terminal_no_stage_gate -q
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_stage_auto_loop.py
