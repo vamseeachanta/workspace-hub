@@ -110,3 +110,9 @@ if [[ -x "$GATE_LOGGER" ]]; then
 fi
 
 echo "✔ Archived: ${ITEM_ID} -> archive/$(date +%Y-%m)/${BASENAME}"
+
+# Regenerate lifecycle HTML so Stage 20 shows as done (not stale active/pending)
+LIFECYCLE_HTML="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}/${ITEM_ID}-lifecycle.html"
+if uv run --no-project python "${WORKSPACE_ROOT}/scripts/work-queue/generate-html-review.py" "${ITEM_ID}" --lifecycle 2>/dev/null; then
+  echo "✔ Lifecycle HTML refreshed: ${LIFECYCLE_HTML}"
+fi
