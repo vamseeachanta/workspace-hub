@@ -1,30 +1,68 @@
 wrk_id: WRK-1020
 stage: user_review_plan_draft
 reviewer: user
-reviewed_at: "2026-03-07T23:20:00Z"
+reviewed_at: "2026-03-08T00:00:00Z"
 decision: approved
+route: B
+synthesis_providers: [claude, codex]
+synthesis_gemini: timeout_300s
 
 decisions:
   - id: D-01
-    question: L3 prompt scope
-    decision: "Dual-mode: harness/general categories → general AI capability news; engineering category → engineering computation (subsea, structural, drilling, reservoir)"
-    impact: L3 gemini query will vary by target category context
+    topic: Architecture
+    claude: Inline Python in bash script
+    codex: Thin bash wrapper + Python entrypoint
+    decision: "Codex — wrapper + entrypoint (testable, safe quoting/YAML/subprocess)"
 
   - id: D-02
-    question: L3 fail strategy
-    decision: "carry_forward — preserve existing capability_signals from current file when gemini query fails"
-    impact: No data loss on gemini outage; signals accumulate over time
+    topic: Dual-mode tie-break rule
+    claude: "engineering >= harness → engineering prompt"
+    codex: "engineering strictly > harness → engineering; tie → general"
+    decision: "Claude — keep >= (tie goes to engineering)"
 
   - id: D-03
-    question: Integration placement in nightly
-    decision: "Step 3a — before AI readiness checks; || true (non-blocking)"
-    impact: Runs early in nightly; failure does not block subsequent steps
+    topic: L2 edge cases
+    claude: Not specified
+    codex: "malformed frontmatter, bad completed_at, unknown orchestrator, missing state dir, atomic write"
+    decision: "All 5 Codex additions accepted"
+
+  - id: D-04
+    topic: L3 source filter
+    claude: "high-confidence, official sources (prose)"
+    codex: "Official/vendor sources only — explicitly testable"
+    decision: "Codex — anthropic.com, openai.com, deepmind.google, blog.google, cloud.google.com"
+
+  - id: D-05
+    topic: Carry-forward triggers
+    claude: "gemini failure"
+    codex: "CLI missing, subprocess failure, timeout, parse failure, zero valid results"
+    decision: "Codex expanded triggers accepted"
+
+  - id: D-06
+    topic: l3_meta block
+    claude: Not specified
+    codex: "l3_meta: query_attempted, query_mode, parse_success, signals_added, signals_pruned, carry_forward"
+    decision: "Codex addition accepted — mirrors l2_meta"
+
+  - id: D-07
+    topic: Test count
+    claude: 16 tests
+    codex: 33 tests (expanded edge cases, boundary, atomic write, l3_meta, step labels)
+    decision: "Codex 33-test suite accepted"
+
+  - id: D-08
+    topic: uv enforcement scope
+    claude: "nightly script only"
+    codex: "Both wrapper script AND nightly script"
+    decision: "Codex broader scope accepted"
 
 scope_confirmed:
-  - "update-portfolio-signals.sh: L2 provider activity + L3 capability research"
-  - "comprehensive-learning-nightly.sh: Step 3a integration"
-  - "7 TDD tests in tests/skills/test_update_portfolio_signals.py"
-  - "30-day lookback, portfolio-signals.yaml gitignored"
+  - "update-portfolio-signals.sh (bash wrapper) + update_portfolio_signals.py (Python entrypoint)"
+  - "33 TDD tests in tests/skills/test_update_portfolio_signals.py"
+  - "30-day lookback; completed_at: field; recursive archive/**/*.md glob"
+  - "l2_meta + l3_meta provenance blocks"
+  - "Step 3a integration; monotonic labels 3a/3b/3c"
+  - "portfolio-signals.yaml gitignored; atomic write"
 
 plan_artifacts_updated: true
-html_opened: true
+synthesis_complete: true
