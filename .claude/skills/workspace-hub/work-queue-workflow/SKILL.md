@@ -193,6 +193,9 @@ must always resolve to the canonical 20-stage chain.
 
 ## Practical Lessons (WRK-690)
 
+- Stages 8 (Claim), 19 (Close), and 20 (Archive) are **autonomous** — never ask user
+  permission before running `claim-item.sh`, `close-item.sh`, or `archive-item.sh`.
+  Only stages explicitly tagged `HUMAN_SESSION` in the stage contract require a user gate.
 - Always run the workflow through shared scripts (`session.sh`, `work.sh`,
   `plan.sh`, `execute.sh`, `review.sh`, close/archive scripts) so signal logs are
   consistent across orchestrators.
