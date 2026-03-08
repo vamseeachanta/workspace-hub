@@ -17,12 +17,23 @@ mkdir -p "$STATE_DIR"
 issues=()
 pass_count=0
 fail_count=0
+declare -A check_results=()
+declare -A check_details=()
 
-log_pass() { echo "  OK  $1"; pass_count=$((pass_count + 1)); }
+log_pass() {
+  echo "  OK  $1"
+  pass_count=$((pass_count + 1))
+  local cid="${1%%:*}"
+  check_results["$cid"]="pass"
+  check_details["$cid"]="${1#*: }"
+}
 log_fail() {
   echo "  FAIL $1"
   issues+=("$1")
   fail_count=$((fail_count + 1))
+  local cid="${1%%:*}"
+  check_results["$cid"]="fail"
+  check_details["$cid"]="${1#*: }"
 }
 
 echo "--- Readiness: ${RUN_TS} ---"
@@ -400,16 +411,20 @@ check_r_ux() {
 # WRK-1047: harness readiness checks (R-JQ, R-PLUGINS, R-HOOKS, R-HOOK-STATIC,
 #           R-SETTINGS, R-UV, R-PRECOMMIT; extended R-HARNESS tier-1; R-SKILLS sync)
 # ─────────────────────────────────────────────────────────────────────────────
-HARNESS_CONFIG="${SCRIPT_DIR}/harness-config.yaml"
+HARNESS_CONFIG="${HARNESS_CONFIG:-${SCRIPT_DIR}/harness-config.yaml}"
 
-# Read a scalar from harness-config.yaml without PyYAML
+# Read a scalar from harness-config.yaml without PyYAML (strips inline comments)
 _hc_scalar() {
-  grep -E "^${1}:" "${HARNESS_CONFIG}" 2>/dev/null | head -1 | sed 's/^[^:]*:[[:space:]]*//' | tr -d '"'
+  grep -E "^${1}:" "${HARNESS_CONFIG}" 2>/dev/null | head -1 \
+    | sed 's/^[^:]*:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '"' | tr -d "'"
 }
 # Read a YAML list (one item per line under a key, indented with "  - ")
+# Strips surrounding single/double quotes to support multi-word values like 'git commit'
 _hc_list() {
-  awk "/^${1}:/{found=1;next} found && /^  - /{print \$2} found && /^[^ ]/{exit}" \
-    "${HARNESS_CONFIG}" 2>/dev/null
+  awk "/^${1}:/{found=1;next} \
+       found && /^  - /{sub(/^[[:space:]]*-[[:space:]]*/,\"\"); print; next} \
+       found && /^[^ ]/{exit}" \
+    "${HARNESS_CONFIG}" 2>/dev/null | tr -d "'\""
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -431,11 +446,12 @@ check_r_plugins() {
   command -v claude &>/dev/null || { log_fail "R-PLUGINS: claude CLI not found"; return; }
 
   local plugin_list missing=()
-  plugin_list=$(claude plugin list 2>/dev/null || true)
+  plugin_list=$(timeout 15 claude plugin list 2>/dev/null || true)
 
   while IFS= read -r plugin; do
     [[ -z "$plugin" ]] && continue
-    if ! echo "$plugin_list" | grep -q "${plugin}"; then
+    # Match exact plugin name: "  > plugin-name@..." or "  plugin-name" lines
+    if ! echo "$plugin_list" | grep -qE "(>|^)[[:space:]]*${plugin}(@|[[:space:]]|$)"; then
       missing+=("$plugin")
     fi
   done < <(_hc_list "required_plugins")
@@ -456,15 +472,20 @@ check_r_hooks() {
   command -v jq &>/dev/null || { log_pass "R-HOOKS: jq absent — skip"; return; }
 
   local missing=()
-  # Extract bash script paths from hook commands: grab paths after 'bash '
+  # Extract literal script paths from hook commands (skip variable-expanded paths)
   while IFS= read -r hook_path; do
     [[ -z "$hook_path" ]] && continue
-    # Resolve relative paths against WORKSPACE_HUB
+    # Skip paths containing shell variable expansions — cannot resolve statically
+    [[ "$hook_path" == *'${'* ]] && continue
+    [[ "$hook_path" == *'$('* ]] && continue
     local abs_path="${hook_path}"
     [[ "${hook_path}" != /* ]] && abs_path="${WORKSPACE_HUB}/${hook_path}"
     [[ -f "$abs_path" ]] || missing+=("$hook_path")
-  done < <(jq -r '.. | strings | select(test("^bash ")) | ltrimstr("bash ")
-                   | split(" ")[0]' "$settings" 2>/dev/null | sort -u || true)
+  done < <(jq -r '.. | strings | select(test("bash ")) | split("bash ")[1]
+                   | split(" ")[0] | select(length > 0)
+                   | select(startswith("-") | not)
+                   | select(contains("/") or test("\\.sh$"))' \
+             "$settings" 2>/dev/null | sort -u || true)
 
   if [[ ${#missing[@]} -eq 0 ]]; then
     log_pass "R-HOOKS: all hook scripts present on disk"
@@ -491,12 +512,15 @@ check_r_hook_static() {
     if [[ "$lc" -gt "$max_lines" ]]; then
       violations+=("$(basename "$hook_file"):${lc}L>max${max_lines}")
     fi
-    # Check blocking patterns
-    local blocking_patterns=('git commit' 'git push' '\bcurl\b' '\bwget\b' 'http://' 'https://')
-    for pat in "${blocking_patterns[@]}"; do
-      if grep -qE "$pat" "$hook_file" 2>/dev/null; then
+    # Check blocking patterns from harness-config.yaml (exclude comment lines)
+    local config_patterns=()
+    mapfile -t config_patterns < <(_hc_list "hook_blocking_patterns" 2>/dev/null || true)
+    if [[ ${#config_patterns[@]} -eq 0 ]]; then
+      config_patterns=('git commit' 'git push' '\bcurl\b' '\bwget\b' 'http://' 'https://')
+    fi
+    for pat in "${config_patterns[@]}"; do
+      if grep -vE '^\s*#' "$hook_file" 2>/dev/null | grep -qE "$pat"; then
         violations+=("$(basename "$hook_file"):blocking-pattern:'${pat}'")
-        break
       fi
     done
   done < <(find "$hooks_dir" -name "*.sh" -print0 2>/dev/null)
@@ -671,7 +695,15 @@ _emit_harness_report() {
     echo "overall: ${overall}"
     echo "pass_count: ${pass_count}"
     echo "fail_count: ${fail_count}"
-    echo "checks: {}"
+    echo "checks:"
+    for cid in $(echo "${!check_results[@]}" | tr ' ' '\n' | sort); do
+      local status="${check_results[$cid]}"
+      local detail
+      detail=$(printf '%s' "${check_details[$cid]}" | sed "s/'/\\''/g")
+      echo "  ${cid}:"
+      echo "    status: ${status}"
+      echo "    detail: '${detail}'"
+    done
   } > "$report_path"
 } ; _emit_harness_report || true
 

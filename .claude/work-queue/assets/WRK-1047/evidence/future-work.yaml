@@ -1,0 +1,21 @@
+stage: 15
+captured_at: "2026-03-08T15:30:00Z"
+recommendations:
+  - id: FW-01
+    title: WRK-OPEN — Reduce oversized hooks to ≤200 lines
+    description: "4 hooks exceed 200L: session-review.sh (361L), generate-session-report.sh (261L), session-planner.sh (246L), capture-corrections.sh (201L)"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-02
+    title: WRK-OPEN — Fix false-positive blocking patterns in hooks
+    description: "3 false positives: curl in echo/install instructions, git commit in jq pattern string. Improve R-HOOK-STATIC to exclude string literals."
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-03
+    title: WRK-9999 workflow simulation fixture
+    description: "Phase D: create tests/work-queue/fixtures/WRK-9999/ and test-workflow-simulation.sh for 3-provider simulation in nightly cron"
+    disposition: spun-off-new
+    status: captured
+    captured: true

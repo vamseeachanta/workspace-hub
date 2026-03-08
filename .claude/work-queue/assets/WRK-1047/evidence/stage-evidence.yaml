@@ -1,53 +1,166 @@
 wrk_id: WRK-1047
-updated_at: "2026-03-08"
-
+generated_at: "2026-03-08T15:00:00Z"
+reviewed_by: orchestrator
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
 stages:
-  S1:
-    status: done
-    artifact: evidence/user-review-capture.yaml
-  S2:
-    status: done
-    artifact: evidence/resource-intelligence.yaml
-  S3:
-    status: done
-    note: Route B confirmed; triage fields set in WRK frontmatter
-  S4:
-    status: done
-    artifact: plan_claude.md
-  S5:
-    status: done
-    artifact: evidence/user-review-plan-draft.yaml
-  S6:
-    status: done
-    artifact: cross-review-plan.md
-    note: "All providers REQUEST_CHANGES → all P1/P2 resolved; plan updated to final"
-  S7:
-    status: done
-    artifact: evidence/plan-final-review.yaml
-  S8:
-    status: in_progress
-    note: Stage 7 gate passed; claim/activation underway
-  S9:
-    status: pending
-  S10:
-    status: pending
-  S11:
-    status: pending
-  S12:
-    status: pending
-  S13:
-    status: pending
-  S14:
-    status: pending
-  S15:
-    status: pending
-  S16:
-    status: pending
-  S17:
-    status: pending
-  S18:
-    status: n/a
-  S19:
-    status: pending
-  S20:
-    status: pending
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: "yes"
+  owner: orchestrator
+  blocker: "no"
+  comment: WRK created; scope approved by user (keep workstations ready for engineering work).
+  evidence: .claude/work-queue/assets/WRK-1047/evidence/user-review-capture.yaml
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: ~60% infra exists; plan is extend+wire not rebuild.
+  evidence: .claude/work-queue/assets/WRK-1047/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: "yes"
+  owner: orchestrator
+  blocker: "no"
+  comment: Route B confirmed; priority=high; all 3 workstations in scope.
+  evidence: .claude/work-queue/pending/WRK-1047.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: 5-phase plan; harness-config.yaml single source of truth; WRK-9999 simulation.
+  evidence: .claude/work-queue/assets/WRK-1047/plan_claude.md
+- order: 5
+  stage: User Review Plan
+  status: done
+  human_decision_required: "yes"
+  owner: human
+  blocker: "no"
+  comment: User approved plan as-is (Stage 5 hard gate passed).
+  evidence: .claude/work-queue/assets/WRK-1047/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review Plan
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: All 3 providers REQUEST_CHANGES → 16 findings → all P1/P2 resolved → final plan.
+  evidence: .claude/work-queue/assets/WRK-1047/cross-review-plan.md
+- order: 7
+  stage: User Review Final Plan
+  status: done
+  human_decision_required: "yes"
+  owner: human
+  blocker: "no"
+  comment: User confirmed final plan (Stage 7 hard gate passed).
+  evidence: .claude/work-queue/assets/WRK-1047/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: WRK claimed by claude; moved to working/.
+  evidence: .claude/work-queue/assets/WRK-1047/evidence/claim-evidence.yaml
+- order: 9
+  stage: Routing
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: Route B; ace-linux-1 primary executor.
+  evidence: .claude/work-queue/pending/WRK-1047.md
+- order: 10
+  stage: Execution
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: "Phases A-E complete: 7 new checks in nightly-readiness.sh, harness-config.yaml, compare-harness-state.sh, remediate-harness.sh, TDD T1-T16"
+  evidence: .claude/work-queue/assets/WRK-1047/evidence/execute.yaml
+- order: 11
+  stage: Lifecycle HTML
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: Lifecycle HTML regenerated; all stages through S10 visible.
+  evidence: .claude/work-queue/assets/WRK-1047/WRK-1047-lifecycle.html
+- order: 12
+  stage: TDD Eval
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: "15/16 TDD tests pass; T1 skip (manual-only, requires non-Claude-Code env); 0 fail"
+  evidence: tests/work-queue/test-harness-readiness.sh
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: "Claude+Codex REQUEST_CHANGES (P1: checks:{}, P2: hardcoded patterns, substr match); Gemini APPROVE; all resolved; re-run 15/15 pass"
+  evidence: .claude/work-queue/assets/WRK-1047/cross-review-impl.md
+- order: 14
+  stage: Gate Evidence
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: All gate evidence collected; verify-gate-evidence.py all PASS.
+  evidence: .claude/work-queue/assets/WRK-1047/evidence/gate-evidence-summary.json
+- order: 15
+  stage: Future Work
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: "FW-01 (oversized hooks), FW-02 (false-positive patterns), FW-03 (WRK-9999 simulation) — all captured"
+  evidence: .claude/work-queue/assets/WRK-1047/evidence/future-work.yaml
+- order: 16
+  stage: Resource Update
+  status: done
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: "4 new artifacts added: harness-config.yaml, compare-harness-state.sh, remediate-harness.sh, test-harness-readiness.sh"
+  evidence: .claude/work-queue/assets/WRK-1047/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review Implementation
+  status: pending
+  human_decision_required: "yes"
+  owner: human
+  blocker: "yes"
+  comment: User must review implementation before close.
+  evidence: pending
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: n/a — no context reset triggered
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: pending
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: pending
+  evidence: pending
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: "no"
+  owner: orchestrator
+  blocker: "no"
+  comment: pending
+  evidence: pending

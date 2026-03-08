@@ -1,0 +1,15 @@
+stage: 16
+updated_at: "2026-03-08T15:30:00Z"
+additions:
+  - path: scripts/readiness/harness-config.yaml
+    type: new_config
+    notes: Single source of truth for required plugins, tier-1 repos, hook limits, workstations
+  - path: scripts/readiness/compare-harness-state.sh
+    type: new_script
+    notes: SSH diff ace-linux-1 ↔ ace-linux-2; acma-ansys05 stale-report detection
+  - path: scripts/readiness/remediate-harness.sh
+    type: new_script
+    notes: Print fix commands per FAIL check from harness-readiness report
+  - path: tests/work-queue/test-harness-readiness.sh
+    type: new_tests
+    notes: 16 TDD tests (T1-T16) for all new harness checks

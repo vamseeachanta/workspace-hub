@@ -15,7 +15,7 @@ blocking_state:
   notes: ""
 quota_snapshot:
   timestamp: "2026-03-08T16:47:14Z"
-  provider: "claude"
+  provider: "unknown"
   status: "available"
   pct_remaining: 75
   source: "config/ai-tools/agent-quota-latest.json"

@@ -23,15 +23,28 @@ mk_ws() {
   local ws
   ws=$(mktemp -d)
   # Minimal workspace structure
-  mkdir -p "${ws}/.claude/settings.json" 2>/dev/null || true
+  rm -f "${ws}/.claude/settings.json" 2>/dev/null; mkdir -p "${ws}/.claude"
   mkdir -p "${ws}/.claude/state"
   mkdir -p "${ws}/.claude/skills"
   mkdir -p "${ws}/.claude/commands"
-  echo '{}' > "${ws}/.claude/settings.json" 2>/dev/null || \
-    { rm -rf "${ws}/.claude/settings.json"; echo '{}' > "${ws}/.claude/settings.json"; }
+  echo '{}' > "${ws}/.claude/settings.json"
   # Copy harness-config so checks can read it
-  cp "${HARNESS_CONFIG}" "${ws}/scripts/readiness/harness-config.yaml" 2>/dev/null || \
-    { mkdir -p "${ws}/scripts/readiness"; cp "${HARNESS_CONFIG}" "${ws}/scripts/readiness/harness-config.yaml"; }
+  mkdir -p "${ws}/scripts/readiness"
+  cp "${HARNESS_CONFIG}" "${ws}/scripts/readiness/harness-config.yaml"
+  # Fake claude stub — returns all required plugins so R-PLUGINS passes in tests
+  # that are testing other checks; T2/T3 override this stub with their own.
+  mkdir -p "${ws}/bin"
+  cat > "${ws}/bin/claude" << 'STUB'
+#!/usr/bin/env bash
+if [[ "${1:-} ${2:-}" == "plugin list" ]]; then
+  for p in frontend-design skill-creator code-review pr-review-toolkit feature-dev \
+            playground pyright-lsp claude-md-management hookify superpowers; do
+    echo "  > ${p}@claude-plugins-official"
+    echo "    Status: enabled"
+  done
+fi
+STUB
+  chmod +x "${ws}/bin/claude"
   echo "$ws"
 }
 
@@ -41,10 +54,15 @@ echo "=== WRK-1047 harness readiness tests ==="
 
 # ── T1: All checks pass → exit 0 ─────────────────────────────────────────────
 T1() {
-  # Use the real workspace — if all checks pass on ace-linux-1, exit should be 0
-  # This is a live smoke test; skip if nightly-readiness.sh not yet extended
+  # Smoke test: all required checks present in script
   if ! grep -q "check_r_plugins\|R-PLUGINS" "${READINESS_SCRIPT}" 2>/dev/null; then
     echo "  SKIP  T1: nightly-readiness.sh not yet extended (pre-implementation)"
+    return
+  fi
+  # Running claude plugin list inside a Claude Code session hangs; skip live run.
+  # Run manually on ace-linux-1 (outside Claude Code) to validate the real environment.
+  if [[ "${CLAUDECODE:-0}" == "1" ]]; then
+    echo "  SKIP  T1: inside Claude Code session — run manually outside Claude Code"
     return
   fi
   if WORKSPACE_HUB="${REPO_ROOT}" bash "${READINESS_SCRIPT}" 2>/dev/null | grep -q "FAIL"; then
@@ -123,11 +141,15 @@ T4() {
     return
   fi
   ws=$(mk_ws)
-  mkdir -p "${ws}/assetutilities"
+  # R-HARNESS-TIER1 checks ${WORKSPACE_HUB}/../${repo}; place assetutilities as sibling
+  local ws_parent
+  ws_parent=$(dirname "$ws")
+  mkdir -p "${ws_parent}/assetutilities"
   # Create CLAUDE.md with 25 lines (>20 limit)
-  printf 'line %s\n' {1..25} > "${ws}/assetutilities/CLAUDE.md"
+  printf 'line %s\n' {1..25} > "${ws_parent}/assetutilities/CLAUDE.md"
   local output
-  output=$(WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  rm -rf "${ws_parent}/assetutilities"
   if echo "$output" | grep -q "R-HARNESS.*FAIL\|FAIL.*R-HARNESS"; then
     ok "T4: R-HARNESS FAIL on oversized tier-1 CLAUDE.md"
   else
@@ -154,7 +176,7 @@ T5() {
 }
 EOF
   local output
-  output=$(WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
   if echo "$output" | grep -q "R-HOOKS.*FAIL\|FAIL.*R-HOOKS"; then
     ok "T5: R-HOOKS FAIL on missing hook file"
   else
@@ -178,7 +200,7 @@ echo "stop hook"
 git commit -am "auto commit from hook"
 EOF
   local output
-  output=$(WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
   if echo "$output" | grep -q "R-HOOK-STATIC.*FAIL\|FAIL.*R-HOOK-STATIC"; then
     ok "T6: R-HOOK-STATIC FAIL on 'git commit' pattern in hook"
   else
@@ -198,7 +220,7 @@ T7() {
   mkdir -p "${ws}/.claude/hooks"
   printf '# line %s\n' {1..210} > "${ws}/.claude/hooks/stop.sh"
   local output
-  output=$(WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
   if echo "$output" | grep -q "R-HOOK-STATIC.*FAIL\|FAIL.*R-HOOK-STATIC"; then
     ok "T7: R-HOOK-STATIC FAIL on hook >200 lines"
   else
@@ -218,7 +240,7 @@ T8() {
   mkdir -p "${ws}/.claude"
   echo '{invalid json' > "${ws}/.claude/settings.json"
   local output
-  output=$(WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
   if echo "$output" | grep -q "R-SETTINGS.*FAIL\|FAIL.*R-SETTINGS"; then
     ok "T8: R-SETTINGS FAIL on invalid JSON"
   else
@@ -254,9 +276,12 @@ T10() {
     return
   fi
   ws=$(mk_ws)
-  mkdir -p "${ws}/assetutilities"
+  # R-PRECOMMIT checks ${WORKSPACE_HUB}/../${repo}; place assetutilities as a sibling
+  local ws_parent
+  ws_parent=$(dirname "$ws")
+  mkdir -p "${ws_parent}/assetutilities"
   # pre-commit config present but no legal scan entry
-  cat > "${ws}/assetutilities/.pre-commit-config.yaml" << 'EOF'
+  cat > "${ws_parent}/assetutilities/.pre-commit-config.yaml" << 'EOF'
 repos:
   - repo: local
     hooks:
@@ -266,7 +291,8 @@ repos:
         language: python
 EOF
   local output
-  output=$(WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  rm -rf "${ws_parent}/assetutilities"
   if echo "$output" | grep -q "R-PRECOMMIT.*FAIL\|FAIL.*R-PRECOMMIT"; then
     ok "T10: R-PRECOMMIT FAIL on missing legal-sanity-scan entry"
   else
@@ -288,7 +314,9 @@ T11() {
   sed "s/skill_count_baseline: 0/skill_count_baseline: 100/" \
     "${HARNESS_CONFIG}" > "${ws}/scripts/readiness/harness-config.yaml"
   local output
-  output=$(WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" \
+    HARNESS_CONFIG="${ws}/scripts/readiness/harness-config.yaml" \
+    bash "${READINESS_SCRIPT}" 2>&1 || true)
   if echo "$output" | grep -q "R-SKILLS.*FAIL\|FAIL.*R-SKILLS"; then
     ok "T11: R-SKILLS FAIL when skill count below baseline"
   else
@@ -310,7 +338,9 @@ T12() {
   sed "s/command_count_baseline: 0/command_count_baseline: 100/" \
     "${HARNESS_CONFIG}" > "${ws}/scripts/readiness/harness-config.yaml"
   local output
-  output=$(WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" \
+    HARNESS_CONFIG="${ws}/scripts/readiness/harness-config.yaml" \
+    bash "${READINESS_SCRIPT}" 2>&1 || true)
   if echo "$output" | grep -q "R-SKILLS.*FAIL\|FAIL.*R-SKILLS"; then
     ok "T12: R-SKILLS FAIL when command count below baseline"
   else

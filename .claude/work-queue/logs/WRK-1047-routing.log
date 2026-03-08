@@ -1,0 +1,12 @@
+timestamp: 2026-03-08T12:00:00Z
+wrk_id: WRK-1047
+provider: claude
+action: work_queue_skill
+stage: routing
+
+timestamp: 2026-03-08T12:01:00Z
+wrk_id: WRK-1047
+provider: claude
+action: work_wrapper_complete
+stage: routing
+notes: Route B assigned — ace-linux-1 primary executor

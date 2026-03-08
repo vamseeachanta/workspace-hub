@@ -1,0 +1,60 @@
+wrk_id: WRK-1047
+stage: S10
+executed_at: "2026-03-08T15:00:00Z"
+executor: claude
+
+phases_completed:
+  - phase: A
+    description: "Extend nightly-readiness.sh with 7 new checks"
+    artifacts:
+      - scripts/readiness/nightly-readiness.sh
+      - scripts/readiness/harness-config.yaml
+  - phase: B
+    description: "Emit host-qualified harness-readiness-<hostname>.yaml YAML report"
+    artifacts:
+      - .claude/state/harness-readiness-ace-linux-1.yaml
+  - phase: C
+    description: "compare-harness-state.sh — SSH diff ace-linux-1 ↔ ace-linux-2; stale acma-ansys05 detection"
+    artifacts:
+      - scripts/readiness/compare-harness-state.sh
+  - phase: D
+    description: "TDD test suite T1-T16"
+    artifacts:
+      - tests/work-queue/test-harness-readiness.sh
+  - phase: E
+    description: "remediate-harness.sh — print fix commands per FAIL check"
+    artifacts:
+      - scripts/readiness/remediate-harness.sh
+
+integrated_repo_tests:
+  - name: TDD harness readiness — T2-T16
+    scope: integrated
+    command: bash tests/work-queue/test-harness-readiness.sh
+    result: pass
+    artifact_ref: tests/work-queue/test-harness-readiness.sh
+    detail: "15 pass, 1 skip (T1: manual only outside Claude Code), 0 fail"
+  - name: New nightly checks — R-JQ R-PLUGINS R-SETTINGS R-UV R-HARNESS-TIER1
+    scope: integrated
+    command: bash scripts/readiness/nightly-readiness.sh 2>&1 | grep -E "R-JQ|R-PLUGINS|R-SETTINGS|R-UV|R-HARNESS-TIER1"
+    result: pass
+    artifact_ref: scripts/readiness/nightly-readiness.sh
+    detail: "All 5 checks: OK"
+  - name: compare-harness-state.sh dry-run
+    scope: repo
+    command: bash scripts/readiness/compare-harness-state.sh --dry-run
+    result: pass
+    artifact_ref: scripts/readiness/compare-harness-state.sh
+  - name: remediate-harness.sh — R-PLUGINS FAIL scenario
+    scope: integrated
+    command: "bash -c 'ws=$(mktemp -d); mkdir -p ${ws}/.claude/state; cat > ${ws}/.claude/state/harness-readiness-test.yaml <<EOF\nschema_version: 1\nhost: test\ngenerated_at: \"2026-03-08T02:00:00Z\"\noverall: fail\npass_count: 9\nfail_count: 1\nchecks:\n  R-PLUGINS:\n    status: fail\n    detail: \"missing: pyright-lsp\"\nEOF\nWORKSPACE_HUB=${ws} bash scripts/readiness/remediate-harness.sh --workstation test; rm -rf ${ws}'"
+    result: pass
+    artifact_ref: scripts/readiness/remediate-harness.sh
+    detail: "prints: Fix: claude plugin install pyright-lsp"
+
+known_pre_existing_issues:
+  - check: R-HOOK-STATIC
+    detail: "4 hooks exceed 200L (session-review.sh 361L, generate-session-report.sh 261L, session-planner.sh 246L, capture-corrections.sh 201L); 3 false-positive blocking patterns (curl in echo/install instructions, git commit in jq pattern string)"
+    disposition: "tracked as WRK-OPEN — reduce hook sizes; false positives are acceptable until a separate WRK addresses them"
+  - check: R-SKILLS-SYNC
+    detail: "_diverged/ and incoming/ have unresolved files from prior curation runs"
+    disposition: "pre-existing; run scripts/skills/sync-knowledge-work-plugins.sh to resolve"
