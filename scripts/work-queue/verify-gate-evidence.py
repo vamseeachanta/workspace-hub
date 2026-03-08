@@ -859,12 +859,13 @@ def check_stage_evidence_paths(assets_dir: Path, workspace_root: Path) -> tuple[
         candidate = abs_path(workspace_root, ev_ref)
         if not candidate.exists():
             # Queue markdown files (pending/working/done/WRK-*.md) may have moved to
-            # archive/ after the WRK was closed — check there before failing.
+            # archive/ or done/ after the WRK was closed — check there before failing.
             fname = candidate.name
             queue_root = workspace_root / ".claude" / "work-queue"
             archive_matches = list((queue_root / "archive").rglob(fname))
-            if archive_matches:
-                continue  # found in archive — path stale but not fabricated
+            done_matches = list((queue_root / "done").rglob(fname))
+            if archive_matches or done_matches:
+                continue  # found in archive/done — path stale but not fabricated
             return False, f"stage-evidence.yaml: stage[{idx}] evidence path not found: {ev_ref}"
 
     return True, "all stage evidence paths verified"
@@ -1023,6 +1024,12 @@ def check_reclaim_gate_na(assets_dir: Path) -> tuple[bool | None, str]:
 
     if stage18_na and not reclaim_yaml.exists():
         return None, "n/a: Stage 18 is n/a and no reclaim log exists"
+
+    # Stage 18 n/a with placeholder reclaim.yaml (status:n/a) — accept as WARN
+    if stage18_na and reclaim_yaml.exists():
+        data, _ = load_yaml(reclaim_yaml)
+        if data and str(data.get("status", "")).strip().lower() == "n/a":
+            return None, "n/a: Stage 18 is n/a; reclaim.yaml is placeholder"
 
     # Check for reclaim log without reclaim.yaml
     if not reclaim_yaml.exists():
@@ -1392,6 +1399,9 @@ def check_reclaim_gate(assets_dir: Path) -> tuple[bool | None, str]:
     if yaml_err:
         return False, f"could not parse {reclaim_file.name}: {yaml_err}"
     assert data is not None
+    # Placeholder n/a reclaim (Stage 18 was n/a, file written as documentation)
+    if str(data.get("status", "")).strip().lower() == "n/a":
+        return None, "reclaim.yaml: status=n/a (Stage 18 not triggered — WARN)"
     decision = str(data.get("reclaim_decision", "")).strip().lower()
     if decision not in {"reclaim_and_resume", "pause_and_replan", "block"}:
         return False, f"{reclaim_file.name}: invalid reclaim_decision={decision or 'missing'}"
