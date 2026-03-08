@@ -1,0 +1,11 @@
+stage: 1
+wrk_id: WRK-1044
+reviewer: vamsee
+confirmed_at: "2026-03-08T16:15:00Z"
+scope_approved: true
+notes: >
+  Scope expanded from original L1-L3 (3 simulation learnings) to D1-D16
+  (16 deterministic checks). Includes all enforcement-side gaps identified
+  in session-audit-master.md: R-06 Codex unavailability parking added as D16
+  (kept in single WRK per user decision). Route C, complex. Traceability
+  confirmed against WRK-1035-lifecycle.html.

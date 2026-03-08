@@ -42,6 +42,22 @@ def check_human_gate(
     return val == gate_value
 
 
+def _deterministic_stage_check(stage: int, stage_dir: str, repo_root: str) -> None:
+    """D-item deterministic gate enforcement — delegates to stage_exit_checks."""
+    # Ensure scripts/work-queue is importable
+    _script_dir = os.path.dirname(os.path.abspath(__file__))
+    if _script_dir not in sys.path:
+        sys.path.insert(0, _script_dir)
+
+    try:
+        from stage_dispatch import run_d_item_checks  # type: ignore[import]
+    except ImportError as exc:
+        print(f"WARN: D-item checks unavailable ({exc})", file=sys.stderr)
+        return
+
+    run_d_item_checks(stage, Path(stage_dir), repo_root)
+
+
 def _heavy_stage_check(stage: int, stage_dir: str, repo_root: str) -> None:
     """
     P4 heavy-stage enforcement.
@@ -121,13 +137,16 @@ def validate_exit(
     Returns True on success.
     """
     # Normalize artifact paths: strip "assets/WRK-NNN/" or "assets/<wrk_id>/" prefix
-    # since stage_dir already points to assets/<wrk_id>
+    # since stage_dir already points to assets/<wrk_id>; also substitute WRK-NNN token.
+    _wrk_id = os.path.basename(stage_dir)
+
     def _normalize(path: str) -> str:
-        for prefix in ("assets/WRK-NNN/", f"assets/{os.path.basename(stage_dir)}/"):
-            if path.startswith(prefix):
-                return path[len(prefix):]
+        p = path.replace("WRK-NNN", _wrk_id)
+        for prefix in (f"assets/WRK-NNN/", f"assets/{_wrk_id}/"):
+            if p.startswith(prefix):
+                return p[len(prefix):]
         # Handle done/ paths (Stage 19 exit artifact is done/WRK-NNN.md)
-        return path
+        return p
 
     # Check all exit artifacts exist
     missing = []
@@ -146,6 +165,10 @@ def validate_exit(
         for m in missing:
             print(f"EXIT BLOCKED: missing artifact: {m}", file=sys.stderr)
         sys.exit(1)
+
+    # D-item deterministic gate enforcement (WRK-1044)
+    if stage is not None and repo_root is not None:
+        _deterministic_stage_check(stage, stage_dir, repo_root)
 
     # P4: heavy-stage enforcement for stages 10 and 12
     if stage is not None and repo_root is not None:

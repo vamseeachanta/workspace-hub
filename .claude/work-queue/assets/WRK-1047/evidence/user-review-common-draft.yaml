@@ -1,0 +1,8 @@
+wrk_id: WRK-1047
+stage: user_review_common_draft
+reviewer: vamsee
+reviewed_at: "2026-03-08T12:30:00Z"
+confirmed_at: "2026-03-08T12:30:00Z"
+approval_decision: approve_as_is
+review_cycle_id: "2026-03-08-stage5"
+notes: "Plan approved by user — extend nightly-readiness.sh, WRK-SIM fixture, 3-provider simulation"

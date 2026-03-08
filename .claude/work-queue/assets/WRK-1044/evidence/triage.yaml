@@ -1,0 +1,23 @@
+stage: 3
+completed_at: "2026-03-08T16:30:00Z"
+route: C
+complexity: complex
+priority: high
+computer: ace-linux-1
+plan_workstations: [ace-linux-1]
+execution_workstations: [ace-linux-1]
+route_rationale: >
+  Route C. 16 deterministic checks (D1-D16) spanning 6 existing scripts +
+  2 new scripts (validate-stage-gate-policy.py, stage_exit_checks.py).
+  Changes touch gate enforcement at every lifecycle stage. Requires full
+  spec in specs/wrk/WRK-1044/. 30 new tests target.
+complexity_rationale: >
+  Cross-cutting changes: gate_check.py (PreToolUse hook), exit_stage.py
+  (stage-specific dispatcher), verify-gate-evidence.py (--json flag + 2 new checks),
+  claim-item.sh, close-item.sh, spawn-team.sh, stage contract YAMLs.
+  P1 bug in exit_stage.py Stage 1 path resolution must also be fixed in scope.
+open_questions: []
+decisions:
+  - scope_D1_to_D16: approved by user 2026-03-08 (D16 added for R-06 Codex parking)
+  - single_wrk_not_split: approved by user 2026-03-08
+spin_offs: []

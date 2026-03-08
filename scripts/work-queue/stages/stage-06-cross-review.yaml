@@ -13,6 +13,7 @@ entry_reads:
 exit_artifacts:
   - assets/WRK-NNN/evidence/cross-review.yaml
 blocking_condition: "cross-review.yaml missing or not all 3 providers reviewed"
+codex_unavailable_action: park_blocked
 log_action: cross_review_complete
 context_budget_kb: 8
 lm_judgment_required:

@@ -1,0 +1,12 @@
+wrk_id: WRK-1044
+phase: close
+generated_at: 2026-03-08T21:30:00Z
+stage: 14
+verifier: verify-gate-evidence.py
+result: PASS (1 warn-pending gate)
+gate_pass_count: 25
+gate_warn_count: 4
+gate_fail_count: 0
+note: >
+  User-review close gate is warn-pending (awaiting Stage 17 hard gate).
+  All other gates: PASS. Proceed to Stage 15.

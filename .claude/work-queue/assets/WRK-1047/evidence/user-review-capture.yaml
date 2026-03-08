@@ -1,0 +1,10 @@
+wrk_id: WRK-1047
+stage: 1
+reviewer: vamsee
+scope_approved: true
+captured_at: "2026-03-08T12:00:00Z"
+confirmed_at: "2026-03-08T12:00:00Z"
+notes: >
+  WRK defined across conversation: mission reframed around engineering delivery objective,
+  P1-P6 phases added covering harness checks, skills/commands sync, and 3-provider
+  workflow simulation. User approved proceeding to Stages 2-4.

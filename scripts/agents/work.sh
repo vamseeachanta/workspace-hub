@@ -24,6 +24,15 @@ case "$subcmd" in
         log_gate_event_if_available "$active_wrk" "routing" "work_wrapper_start" "$provider" "/work routing invoked"
         log_gate_event_if_available "$active_wrk" "routing" "work_queue_skill" "$provider" "/work routing invoked"
         echo "Workflow orchestrator '$provider' acknowledged /work run contract."
+        # Auto-load checkpoint if available for active WRK
+        if [[ -n "$active_wrk" ]]; then
+            _cp="${WS_HUB}/.claude/work-queue/assets/${active_wrk}/checkpoint.yaml"
+            if [[ -f "$_cp" ]]; then
+                echo ""
+                echo "$(grep -E '^(wrk_id|stage|stage_name|next_action)' "$_cp" | head -4)"
+                echo "  → Checkpoint found. context loaded via start_stage.py"
+            fi
+        fi
         log_gate_event_if_available "$active_wrk" "routing" "work_wrapper_complete" "$provider" "/work routing acknowledged"
         ;;
     list)

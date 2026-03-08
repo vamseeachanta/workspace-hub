@@ -1,0 +1,116 @@
+stage: 2
+wrk_id: WRK-1044
+assessed_at: "2026-03-08T16:25:00Z"
+completion_status: continue_to_planning
+complexity_confirmed: complex
+route_confirmed: C
+
+domain:
+  area: harness/gate-enforcement
+  description: >
+    Extend the work-queue gate enforcement stack (gate_check.py, exit_stage.py,
+    verify-gate-evidence.py, claim-item.sh, close-item.sh, spawn-team.sh) to
+    implement D1-D16 as deterministic script checks. Add L2 --json flag and L3
+    stage-gate-policy schema validator. 16 checks across 6 scripts + 1 new script.
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - workspace-hub/stages/stage-04-plan-draft
+  referenced:
+    - workspace-hub/wrk-lifecycle-testpack
+
+existing_infrastructure:
+  gate_check.py:
+    path: scripts/work-queue/gate_check.py
+    lines: 225
+    status: extendable
+    note: >
+      Has gates 5→6, 7→8, 17→18. Needs L1 write-backstop: block
+      any file write to a future-stage evidence path when active WRK
+      stage N gate is still open.
+
+  verify_gate_evidence:
+    path: scripts/work-queue/verify-gate-evidence.py
+    lines: 1970
+    status: extendable_minimal
+    note: >
+      Already has check_stage1_capture_gate (D1), check_execute_integrated_tests_gate (D4),
+      check_future_work_gate (D5), check_stage_evidence_gate (D6),
+      check_browser_open_elapsed_time (D7), check_plan_publish_predates_approval (D8),
+      check_sentinel_values (D11), legal gate aggregation (D15). Needs only
+      --json flag (L2/D14) + check_plan_eval_count (D9) + check_route_cross_review_count (D10).
+      FILE ALREADY VIOLATES 400-LINE LIMIT — add no more than 80 lines.
+
+  exit_stage_py:
+    path: scripts/work-queue/exit_stage.py
+    lines: 361
+    status: near_limit
+    note: >
+      Stage-specific logic must be extracted to scripts/work-queue/stage_exit_checks.py
+      helper module to stay within 400-line limit. exit_stage.py becomes thin dispatcher.
+      Needs: D1 (S1), D3 (S17), D5 (S15), D6 (S19), D9 (S4), D10 (S6), D12 (S6/S13),
+      D13 (S14).
+
+  claim_item_sh:
+    path: scripts/work-queue/claim-item.sh
+    lines: 338
+    status: extendable
+    note: D11 — block if session_id unresolvable (write "unknown" currently)
+
+  close_item_sh:
+    path: scripts/work-queue/close-item.sh
+    lines: 322
+    status: extendable
+    note: D14 (verify-gate-evidence --json exits 0) + D15 (legal-sanity-scan.sh) prereqs
+
+  spawn_team_sh:
+    path: scripts/work-queue/spawn-team.sh
+    lines: 74
+    status: extendable
+    note: D16 — Codex availability pre-check at Stage 6/13 entry
+
+  stage_contracts:
+    path: scripts/work-queue/stages/stage-06-cross-review.yaml
+    status: update_needed
+    note: D16 — add lm_judgment_required + codex_unavailable_action=park_blocked
+
+  stage_gate_policy:
+    path: scripts/work-queue/stage-gate-policy.yaml
+    lines: ~60
+    status: validate_target
+    note: L3 — schema validates all 20 stages present, gate_type in {hard,auto}, hard gates=[1,5,7,17]
+
+new_scripts_needed:
+  - path: scripts/work-queue/validate-stage-gate-policy.py
+    purpose: L3 schema validator (~60 lines)
+  - path: scripts/work-queue/stage_exit_checks.py
+    purpose: stage-specific check functions extracted from exit_stage.py (~150 lines)
+
+top_p1_gaps: []
+
+planning_inputs:
+  - id: P1
+    description: >
+      exit_stage.py Stage 1 path bug — WRK-NNN not substituted and
+      pending/ not handled like done/. Causes exit_stage.py Stage 1 to
+      always fail. This is itself a test case for D1 and must be fixed
+      as part of this WRK.
+    status: addressed_in_plan
+    resolution: fix _normalize() to substitute WRK-NNN→actual-id and handle pending/ paths
+
+  - id: P2
+    description: >
+      verify-gate-evidence.py at 1970 lines violates 400-line coding limit.
+      Splitting is out of scope for this WRK; cap additions at 80 new lines.
+      Flag for future refactor WRK.
+    status: addressed_in_plan
+    resolution: D9/D10 moved to gate_checks_extra.py; cap verifier additions at 30 lines
+
+test_baseline:
+  passing: 54
+  failing: 1
+  failing_detail: test_T41_work_queue_workflow_skill_under_250_lines (pre-existing, not in scope)
+  target_new_tests: 30
+  target_total: 84

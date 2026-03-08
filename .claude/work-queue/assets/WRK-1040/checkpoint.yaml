@@ -26,3 +26,9 @@ entry_reads:
   - .claude/work-queue/assets/WRK-1035/evidence/WRK-1040-findings.md
   - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
   - scripts/work-queue/start_stage.py
+
+update_2026_03_08: >
+  WRK-1035 User Note 18 added: /wrk-resume to be deprecated as execution command —
+  becomes diagnostic-only. Resume logic absorbed into /work run. This affects the
+  wrk-resume.md note added by WRK-1040 (already correct — framed /wrk-resume as
+  context-restore, not execution). No change needed to WRK-1040 edits.

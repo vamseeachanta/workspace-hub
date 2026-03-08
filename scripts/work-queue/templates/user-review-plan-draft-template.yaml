@@ -1,0 +1,10 @@
+# Stage 5 exit gate — user review of plan draft
+# Copy to assets/WRK-NNN/evidence/user-review-plan-draft.yaml
+stage: 5
+wrk_id: ""
+reviewer: ""          # must be in human_authority_allowlist
+confirmed_at: ""      # ISO 8601 UTC datetime — taken AT moment user approves
+reviewed_at: ""       # ISO 8601 UTC datetime — same as or after confirmed_at
+decision: ""          # "passed" when approved, "rejected" when changes required
+scope_approved: true
+notes: ""

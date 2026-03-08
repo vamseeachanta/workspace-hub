@@ -397,6 +397,296 @@ check_r_ux() {
 } ; check_r_ux || true
 
 # ─────────────────────────────────────────────────────────────────────────────
+# WRK-1047: harness readiness checks (R-JQ, R-PLUGINS, R-HOOKS, R-HOOK-STATIC,
+#           R-SETTINGS, R-UV, R-PRECOMMIT; extended R-HARNESS tier-1; R-SKILLS sync)
+# ─────────────────────────────────────────────────────────────────────────────
+HARNESS_CONFIG="${SCRIPT_DIR}/harness-config.yaml"
+
+# Read a scalar from harness-config.yaml without PyYAML
+_hc_scalar() {
+  grep -E "^${1}:" "${HARNESS_CONFIG}" 2>/dev/null | head -1 | sed 's/^[^:]*:[[:space:]]*//' | tr -d '"'
+}
+# Read a YAML list (one item per line under a key, indented with "  - ")
+_hc_list() {
+  awk "/^${1}:/{found=1;next} found && /^  - /{print \$2} found && /^[^ ]/{exit}" \
+    "${HARNESS_CONFIG}" 2>/dev/null
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-JQ: jq available (prerequisite for JSON checks)
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_jq() {
+  if command -v jq &>/dev/null; then
+    log_pass "R-JQ: jq available ($(jq --version 2>/dev/null || echo 'unknown version'))"
+  else
+    log_fail "R-JQ: jq not found — install with: sudo apt-get install jq"
+  fi
+} ; check_r_jq || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-PLUGINS: required plugins installed (required-set from harness-config.yaml)
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_plugins() {
+  [[ -f "${HARNESS_CONFIG}" ]] || { log_pass "R-PLUGINS: harness-config.yaml absent — skip"; return; }
+  command -v claude &>/dev/null || { log_fail "R-PLUGINS: claude CLI not found"; return; }
+
+  local plugin_list missing=()
+  plugin_list=$(claude plugin list 2>/dev/null || true)
+
+  while IFS= read -r plugin; do
+    [[ -z "$plugin" ]] && continue
+    if ! echo "$plugin_list" | grep -q "${plugin}"; then
+      missing+=("$plugin")
+    fi
+  done < <(_hc_list "required_plugins")
+
+  if [[ ${#missing[@]} -eq 0 ]]; then
+    log_pass "R-PLUGINS: all required plugins present"
+  else
+    log_fail "R-PLUGINS: missing required plugins: ${missing[*]}"
+  fi
+} ; check_r_plugins || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-HOOKS: all hook paths in settings.json exist on disk
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_hooks() {
+  local settings="${WORKSPACE_HUB}/.claude/settings.json"
+  [[ -f "$settings" ]] || { log_pass "R-HOOKS: settings.json absent — skip"; return; }
+  command -v jq &>/dev/null || { log_pass "R-HOOKS: jq absent — skip"; return; }
+
+  local missing=()
+  # Extract bash script paths from hook commands: grab paths after 'bash '
+  while IFS= read -r hook_path; do
+    [[ -z "$hook_path" ]] && continue
+    # Resolve relative paths against WORKSPACE_HUB
+    local abs_path="${hook_path}"
+    [[ "${hook_path}" != /* ]] && abs_path="${WORKSPACE_HUB}/${hook_path}"
+    [[ -f "$abs_path" ]] || missing+=("$hook_path")
+  done < <(jq -r '.. | strings | select(test("^bash ")) | ltrimstr("bash ")
+                   | split(" ")[0]' "$settings" 2>/dev/null | sort -u || true)
+
+  if [[ ${#missing[@]} -eq 0 ]]; then
+    log_pass "R-HOOKS: all hook scripts present on disk"
+  else
+    log_fail "R-HOOKS: hook scripts missing from disk: ${missing[*]}"
+  fi
+} ; check_r_hooks || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-HOOK-STATIC: hook files ≤200 lines and no blocking patterns
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_hook_static() {
+  local hooks_dir="${WORKSPACE_HUB}/.claude/hooks"
+  [[ -d "$hooks_dir" ]] || { log_pass "R-HOOK-STATIC: no hooks/ dir — skip"; return; }
+
+  local max_lines
+  max_lines=$(_hc_scalar "hook_static_max_lines")
+  max_lines=${max_lines:-200}
+
+  local violations=()
+  while IFS= read -r -d '' hook_file; do
+    local lc
+    lc=$(wc -l < "$hook_file" 2>/dev/null || echo 0)
+    if [[ "$lc" -gt "$max_lines" ]]; then
+      violations+=("$(basename "$hook_file"):${lc}L>max${max_lines}")
+    fi
+    # Check blocking patterns
+    local blocking_patterns=('git commit' 'git push' '\bcurl\b' '\bwget\b' 'http://' 'https://')
+    for pat in "${blocking_patterns[@]}"; do
+      if grep -qE "$pat" "$hook_file" 2>/dev/null; then
+        violations+=("$(basename "$hook_file"):blocking-pattern:'${pat}'")
+        break
+      fi
+    done
+  done < <(find "$hooks_dir" -name "*.sh" -print0 2>/dev/null)
+
+  if [[ ${#violations[@]} -eq 0 ]]; then
+    log_pass "R-HOOK-STATIC: all hooks ≤${max_lines} lines, no blocking patterns"
+  else
+    log_fail "R-HOOK-STATIC: hook violations: ${violations[*]}"
+  fi
+} ; check_r_hook_static || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-SETTINGS: settings.json is valid JSON
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_settings() {
+  local settings="${WORKSPACE_HUB}/.claude/settings.json"
+  [[ -f "$settings" ]] || { log_pass "R-SETTINGS: settings.json absent — skip"; return; }
+  command -v jq &>/dev/null || { log_pass "R-SETTINGS: jq absent — skip"; return; }
+
+  if jq empty "$settings" 2>/dev/null; then
+    log_pass "R-SETTINGS: .claude/settings.json is valid JSON"
+  else
+    log_fail "R-SETTINGS: .claude/settings.json is not valid JSON — run: jq . .claude/settings.json"
+  fi
+} ; check_r_settings || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-UV: uv ≥ 0.5.0 available
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_uv() {
+  if ! command -v uv &>/dev/null; then
+    log_fail "R-UV: uv not found — install: curl -LsSf https://astral.sh/uv/install.sh | sh"
+    return
+  fi
+  local raw_ver parsed_ver
+  raw_ver=$(uv --version 2>/dev/null | head -1 || echo "")
+  parsed_ver=$(printf '%s' "$raw_ver" | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?' | head -1 || echo "")
+  if [[ -z "$parsed_ver" ]]; then
+    log_fail "R-UV: uv installed but version unreadable"
+    return
+  fi
+  local min="0.5.0"
+  local lo
+  lo=$(printf '%s\n%s\n' "$parsed_ver" "$min" | sort -V | head -1)
+  if [[ "$lo" == "$min" ]]; then
+    log_pass "R-UV: uv ${parsed_ver} ≥ ${min}"
+  else
+    log_fail "R-UV: uv ${parsed_ver} below minimum ${min} — run: uv self update"
+  fi
+} ; check_r_uv || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-PRECOMMIT: .pre-commit-config.yaml present + legal-sanity-scan.sh entry
+#              in each tier-1 repo; file must be executable
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_precommit() {
+  [[ -f "${HARNESS_CONFIG}" ]] || { log_pass "R-PRECOMMIT: harness-config.yaml absent — skip"; return; }
+  local issues_local=()
+  while IFS= read -r repo; do
+    [[ -z "$repo" ]] && continue
+    local repo_dir="${WORKSPACE_HUB}/../${repo}"
+    [[ -d "$repo_dir" ]] || continue
+    local pc="${repo_dir}/.pre-commit-config.yaml"
+    if [[ ! -f "$pc" ]]; then
+      issues_local+=("${repo}:.pre-commit-config.yaml missing")
+      continue
+    fi
+    if ! grep -q "legal-sanity-scan" "$pc" 2>/dev/null; then
+      issues_local+=("${repo}:legal-sanity-scan.sh entry missing")
+    fi
+  done < <(_hc_list "tier1_repos")
+
+  if [[ ${#issues_local[@]} -eq 0 ]]; then
+    log_pass "R-PRECOMMIT: all tier-1 repos have .pre-commit-config.yaml with legal scan"
+  else
+    log_fail "R-PRECOMMIT: ${issues_local[*]}"
+  fi
+} ; check_r_precommit || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-HARNESS (extended): hub + tier-1 repos — CLAUDE.md/AGENTS.md ≤ 20 lines
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_harness_extended() {
+  local over=()
+  # Hub harness files (already checked by existing R-HARNESS; this adds tier-1 repos)
+  while IFS= read -r repo; do
+    [[ -z "$repo" ]] && continue
+    local repo_dir="${WORKSPACE_HUB}/../${repo}"
+    [[ -d "$repo_dir" ]] || continue
+    for fname in CLAUDE.md AGENTS.md CODEX.md GEMINI.md; do
+      local fpath="${repo_dir}/${fname}"
+      [[ -f "$fpath" ]] || continue
+      local lc
+      lc=$(wc -l < "$fpath" 2>/dev/null || echo 0)
+      [[ "$lc" -gt 20 ]] && over+=("${repo}/${fname}:${lc}L")
+    done
+  done < <(_hc_list "tier1_repos")
+
+  if [[ ${#over[@]} -eq 0 ]]; then
+    log_pass "R-HARNESS-TIER1: tier-1 repo harness files all ≤ 20 lines"
+  else
+    log_fail "R-HARNESS-TIER1: tier-1 harness files over 20 lines: ${over[*]}"
+  fi
+} ; check_r_harness_extended || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-SKILLS (extended): sync dry-run + SKILL.md count ≥ baseline + command count
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_skills_extended() {
+  [[ -f "${HARNESS_CONFIG}" ]] || { log_pass "R-SKILLS-SYNC: harness-config.yaml absent — skip"; return; }
+  local issues_local=()
+
+  # 1. sync-knowledge-work-plugins.sh --dry-run
+  local sync_script="${WORKSPACE_HUB}/scripts/skills/sync-knowledge-work-plugins.sh"
+  if [[ -f "$sync_script" ]]; then
+    if ! bash "$sync_script" --dry-run &>/dev/null; then
+      issues_local+=("sync-knowledge-work-plugins.sh --dry-run failed (stale skills)")
+    fi
+  fi
+
+  # 2. No _diverged/ or incoming/ leftovers
+  local skills_dir="${WORKSPACE_HUB}/.claude/skills"
+  for leftover_dir in "_diverged" "incoming"; do
+    local ldir="${skills_dir}/${leftover_dir}"
+    if [[ -d "$ldir" ]] && [[ -n "$(ls -A "$ldir" 2>/dev/null)" ]]; then
+      issues_local+=("${leftover_dir}/ has unresolved files — run skill curation")
+    fi
+  done
+
+  # 3. SKILL.md count ≥ baseline (skip if baseline=0)
+  local skill_baseline
+  skill_baseline=$(_hc_scalar "skill_count_baseline")
+  skill_baseline=${skill_baseline:-0}
+  if [[ "$skill_baseline" -gt 0 ]]; then
+    local skill_count
+    skill_count=$(find "${skills_dir}" -name "SKILL.md" 2>/dev/null | wc -l || echo 0)
+    [[ "$skill_count" -lt "$skill_baseline" ]] && \
+      issues_local+=("SKILL.md count=${skill_count} below baseline=${skill_baseline} — run --update-baseline after curation")
+  fi
+
+  # 4. command count ≥ baseline (skip if baseline=0)
+  local cmd_baseline
+  cmd_baseline=$(_hc_scalar "command_count_baseline")
+  cmd_baseline=${cmd_baseline:-0}
+  if [[ "$cmd_baseline" -gt 0 ]]; then
+    local cmd_count
+    cmd_count=$(find "${WORKSPACE_HUB}/.claude/commands" -name "*.md" 2>/dev/null | wc -l || echo 0)
+    [[ "$cmd_count" -lt "$cmd_baseline" ]] && \
+      issues_local+=("command count=${cmd_count} below baseline=${cmd_baseline} — run --update-baseline after curation")
+  fi
+
+  if [[ ${#issues_local[@]} -eq 0 ]]; then
+    log_pass "R-SKILLS-SYNC: plugin sync clean, no leftovers, counts within baseline"
+  else
+    log_fail "R-SKILLS-SYNC: ${issues_local[*]}"
+  fi
+} ; check_r_skills_extended || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Phase B: emit harness-readiness-report.yaml (host-qualified, structured)
+# ─────────────────────────────────────────────────────────────────────────────
+_emit_harness_report() {
+  local hostname_short
+  hostname_short=$(hostname -s 2>/dev/null || hostname | cut -d. -f1)
+  local report_path="${STATE_DIR}/harness-readiness-${hostname_short}.yaml"
+  local overall="pass"
+  [[ "$fail_count" -gt 0 ]] && overall="fail"
+  {
+    echo "schema_version: 1"
+    echo "host: ${hostname_short}"
+    echo "generated_at: \"${RUN_TS}\""
+    echo "overall: ${overall}"
+    echo "pass_count: ${pass_count}"
+    echo "fail_count: ${fail_count}"
+    echo "checks: {}"
+  } > "$report_path"
+} ; _emit_harness_report || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# --update-baseline: set skill/command count baselines in harness-config.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+if [[ "${1:-}" == "--update-baseline" ]]; then
+  skill_count=$(find "${WORKSPACE_HUB}/.claude/skills" -name "SKILL.md" 2>/dev/null | wc -l || echo 0)
+  cmd_count=$(find "${WORKSPACE_HUB}/.claude/commands" -name "*.md" 2>/dev/null | wc -l || echo 0)
+  sed -i "s/^skill_count_baseline: .*/skill_count_baseline: ${skill_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
+  sed -i "s/^command_count_baseline: .*/command_count_baseline: ${cmd_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
+  echo "--- Baseline updated: skills=${skill_count}, commands=${cmd_count} ---"
+fi
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Write issues to readiness-issues.md for Phase 6 to surface
 # ─────────────────────────────────────────────────────────────────────────────
 if [[ ${#issues[@]} -gt 0 ]]; then

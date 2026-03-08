@@ -1,0 +1,9 @@
+events:
+  - stage: plan_draft
+    html_ref: .claude/work-queue/assets/WRK-1047/WRK-1047-lifecycle.html
+    opened_at: "2026-03-08T12:25:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    html_ref: .claude/work-queue/assets/WRK-1047/WRK-1047-lifecycle.html
+    opened_at: "2026-03-08T13:00:00Z"
+    reviewer: vamsee

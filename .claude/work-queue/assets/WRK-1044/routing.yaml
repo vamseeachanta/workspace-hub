@@ -1,0 +1,34 @@
+stage: 9
+wrk_id: WRK-1044
+routed_at: "2026-03-08T18:45:00Z"
+route: C
+orchestrator: claude
+provider: claude
+execution_plan:
+  - phase: 1
+    desc: TDD — write tests first (T1-T30 unit, T31-T46 sim)
+    location: scripts/work-queue/tests/
+  - phase: 2
+    desc: Fix exit_stage.py Stage 1 path bug (D1)
+    location: scripts/work-queue/exit_stage.py
+  - phase: 3
+    desc: Create stage_exit_checks.py (D3-D13) + gate_checks_extra.py (D9-D10)
+    location: scripts/work-queue/
+  - phase: 4
+    desc: Extend gate_check.py write-backstop (D2 Layer 1)
+    location: scripts/work-queue/gate_check.py
+  - phase: 5
+    desc: Add D2/D11/D15/D16 guards to shell scripts
+    location: scripts/work-queue/claim-item.sh, close-item.sh, cross-review.sh
+  - phase: 6
+    desc: Add --json flag to verify-gate-evidence.py (D14)
+    location: scripts/work-queue/verify-gate-evidence.py
+  - phase: 7
+    desc: Create validate-stage-gate-policy.py (L3)
+    location: scripts/work-queue/validate-stage-gate-policy.py
+  - phase: 8
+    desc: Update stage YAML contracts (D16 codex_unavailable_action)
+    location: scripts/work-queue/stages/
+  - phase: 9
+    desc: Run 3-agent compliance sim (T31-T46)
+    location: scripts/work-queue/tests/

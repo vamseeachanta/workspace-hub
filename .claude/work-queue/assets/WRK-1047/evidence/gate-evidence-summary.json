@@ -1,0 +1,126 @@
+{
+  "wrk_id": "WRK-1047",
+  "phase": "claim",
+  "summary_file": "assets/WRK-1047/evidence/gate-evidence-summary.json",
+  "gates": [
+    {
+      "name": "Plan gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
+    },
+    {
+      "name": "Workstation contract gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1, ace-linux-2, acma-ansys05]"
+    },
+    {
+      "name": "Resource-intelligence gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3"
+    },
+    {
+      "name": "Activation gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "activation.yaml: activation evidence OK"
+    },
+    {
+      "name": "Agent log gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "routing:missing-provider ; plan:missing-provider"
+    },
+    {
+      "name": "User-review HTML-open gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "user-review-browser-open.yaml: events[1] must confirm default browser open"
+    },
+    {
+      "name": "User-review publish gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "user-review-publish.yaml: events[1] pushed_to_origin must be true"
+    },
+    {
+      "name": "Cross-review gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "artifact=none"
+    },
+    {
+      "name": "Claim gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "claim-evidence.yaml: version=1, owner=unknown, quota=available(null)"
+    },
+    {
+      "name": "Reclaim gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+    },
+    {
+      "name": "Approval ordering gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "approval ordering OK (phase=claim)"
+    },
+    {
+      "name": "Midnight UTC sentinel gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "no midnight UTC sentinel found"
+    },
+    {
+      "name": "Browser open elapsed time gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "stage=plan_final: approval confirmed only 0s after browser open (min 300s required)"
+    },
+    {
+      "name": "Sentinel values gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "activation.yaml: orchestrator_agent='unknown'"
+    },
+    {
+      "name": "Claim artifact path gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+    },
+    {
+      "name": "ISO datetime format gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "all timestamp fields have time components"
+    },
+    {
+      "name": "Stage1 capture gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-08T12:00:00Z"
+    }
+  ]
+}

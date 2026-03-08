@@ -1,0 +1,92 @@
+# stage-gate-policy.yaml — machine-readable stage gate classification
+# owned_by_wrk: WRK-1035
+schema_version: "1.0"
+stages:
+  1:
+    name: Capture
+    gate_type: hard
+    exit_artifact: user-review-capture.yaml
+    route_a_exemption: true   # Route A may use n/a: true
+    route_bc_required: true
+  2:
+    name: Triage
+    gate_type: auto
+    conditional_pause_triggers:
+      - high_complexity_mismatch  # route assignment conflicts with initial estimate
+      - blocked_dependency_discovered
+  3:
+    name: Resource Intelligence
+    gate_type: auto
+    conditional_pause_triggers:
+      - very_high_risk_gap_found   # P1 gap that changes scope significantly
+  4:
+    name: Plan Draft
+    gate_type: auto
+    conditional_pause_triggers:
+      - scope_change_detected      # user indicated scope revision needed
+  5:
+    name: User Review Plan Draft
+    gate_type: hard
+    exit_artifact: user-review-plan-draft.yaml
+    min_elapsed_seconds: 300       # browser-open to approval minimum
+  6:
+    name: Cross Review Plan
+    gate_type: auto
+    conditional_pause_triggers:
+      - p1_finding_discovered      # any P1 finding requires user decision
+  7:
+    name: User Review Plan Final
+    gate_type: hard
+    exit_artifact: plan-final-review.yaml
+    min_elapsed_seconds: 300
+  8:
+    name: Claim
+    gate_type: auto
+  9:
+    name: Execute Pre-work
+    gate_type: auto
+  10:
+    name: Work Execution
+    gate_type: auto
+    conditional_pause_triggers:
+      - tdd_failing_unexpectedly   # tests fail for reasons unrelated to the change
+      - scope_exceeds_plan         # implementation requires more than planned
+  11:
+    name: TDD Verification
+    gate_type: auto
+  12:
+    name: Integration Tests
+    gate_type: auto
+  13:
+    name: Cross Review Implementation
+    gate_type: auto
+    conditional_pause_triggers:
+      - p1_finding_discovered
+  14:
+    name: Implementation Review
+    gate_type: auto
+  15:
+    name: Future Work Capture
+    gate_type: auto
+  16:
+    name: Close Preparation
+    gate_type: auto
+  17:
+    name: User Review Close
+    gate_type: hard
+    exit_artifact: user-review-close.yaml
+    min_elapsed_seconds: 300
+    live_validation_window_days: 7   # WRK-1035: Stage 17 held open 7 days
+  18:
+    name: Reclaim / Release
+    gate_type: auto
+  19:
+    name: Archive Preparation
+    gate_type: auto
+  20:
+    name: Archive
+    gate_type: auto
+conditional_pause_policy: |
+  For auto-proceed stages: pause and notify user when any trigger_condition is met.
+  "Very high risk" = trigger_conditions met AND impact is scope-change or P1 finding.
+  All other auto-proceed stages: continue without user prompt.

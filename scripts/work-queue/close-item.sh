@@ -166,6 +166,52 @@ if [[ "$HTML_OUTPUT_ABS" == "${WORKSPACE_ROOT}/"* ]]; then
   HTML_OUTPUT="${HTML_OUTPUT_ABS#${WORKSPACE_ROOT}/}"
 fi
 
+# Phase 2 hardening (WRK-1035): assert execute.yaml and timestamp ordering before verifier
+ASSETS_DIR="${WORKSPACE_ROOT}/.claude/work-queue/assets/${WRK_ID}"
+EXECUTE_YAML="${ASSETS_DIR}/evidence/execute.yaml"
+CLOSE_YAML="${ASSETS_DIR}/evidence/user-review-close.yaml"
+
+if [[ ! -f "${EXECUTE_YAML}" ]]; then
+  echo "✖ close-item.sh: execute.yaml missing — Stage 10 execution must be completed before close" >&2
+  exit 1
+fi
+
+# Check executed_at is not in the future (basic sanity)
+_executed_at=$(grep -m1 'executed_at:' "${EXECUTE_YAML}" | sed 's/.*executed_at:[[:space:]]*//' | tr -d '"' || true)
+if [[ -n "${_executed_at}" ]]; then
+  _now=$(date -u +%s)
+  _exec_ts=$(date -u -d "${_executed_at}" +%s 2>/dev/null || echo "0")
+  if [[ "${_exec_ts}" -gt "${_now}" ]]; then
+    echo "✖ close-item.sh: execute.yaml executed_at '${_executed_at}' is in the future — timestamp fabrication detected" >&2
+    exit 1
+  fi
+fi
+
+if [[ ! -f "${CLOSE_YAML}" ]]; then
+  echo "✖ close-item.sh: user-review-close.yaml missing — Stage 17 user review required before close" >&2
+  exit 1
+fi
+
+# Check confirmed_at is after executed_at
+_confirmed_at=$(grep -m1 'confirmed_at:' "${CLOSE_YAML}" | sed 's/.*confirmed_at:[[:space:]]*//' | tr -d '"' || true)
+if [[ -n "${_confirmed_at}" && -n "${_executed_at}" && -n "${_exec_ts:-}" && "${_exec_ts}" -gt 0 ]]; then
+  _confirm_ts=$(date -u -d "${_confirmed_at}" +%s 2>/dev/null || echo "0")
+  if [[ "${_confirm_ts}" -le "${_exec_ts}" ]]; then
+    echo "✖ close-item.sh: user-review-close.yaml confirmed_at '${_confirmed_at}' is not after execute.yaml executed_at '${_executed_at}'" >&2
+    exit 1
+  fi
+fi
+
+# D15 — legal scan prerequisite before close
+LEGAL_SCAN="${WORKSPACE_ROOT}/scripts/legal/legal-sanity-scan.sh"
+if [[ -x "$LEGAL_SCAN" ]]; then
+  echo "Running legal scan before close..."
+  if ! bash "$LEGAL_SCAN" --quiet 2>/dev/null; then
+    echo "✖ legal-sanity-scan.sh failed — close blocked (D15)" >&2
+    exit 1
+  fi
+fi
+
 VALIDATOR="${WORKSPACE_ROOT}/scripts/work-queue/verify-gate-evidence.py"
 echo "Running gate evidence validator for ${WRK_ID} before close..."
 if [[ -x "$GATE_LOGGER" ]]; then

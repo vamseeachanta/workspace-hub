@@ -13,6 +13,7 @@ entry_reads:
 exit_artifacts:
   - assets/WRK-NNN/review.md
 blocking_condition: "review.md missing or not all 3 providers reviewed"
+codex_unavailable_action: park_blocked
 log_action: implementation_cross_reviewed
 context_budget_kb: 8
 lm_judgment_required:

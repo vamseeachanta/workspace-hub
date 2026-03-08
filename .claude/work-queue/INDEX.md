@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-08T15:27:38Z by generate-index.py -->
+<!-- Generated: 2026-03-08T16:25:49Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-08T15:27:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-08T16:25:49Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 471
+**Total items:** 473
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 212 |
-| working | 4 |
+| pending | 213 |
+| working | 5 |
 | blocked | 9 |
 | archived | 246 |
 
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 218 |
+| high | 220 |
 | medium | 208 |
 | low | 44 |
 
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 86 |
-| medium | 221 |
+| medium | 223 |
 | complex | 97 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 46 |
+| harness | 47 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -69,7 +69,7 @@
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 164 |
+| workspace-hub | 166 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,9 +77,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 180 / 471 |
-| Plans cross-reviewed | 78 |
-| Plans approved | 100 |
+| Plans exist | 181 / 473 |
+| Plans cross-reviewed | 79 |
+| Plans approved | 101 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -89,9 +89,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 471 |
+| Total captured | 473 |
 | Total archived | 246 |
-| Completion rate | 246/471 (52%) |
+| Completion rate | 246/473 (52%) |
 | Monthly rate (current month) | 16 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -99,9 +99,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 59 / 212 | 28% |
-| Plans cross-reviewed | 10 | 14% |
-| Plans user-approved | 10 | 14% |
+| Pending items with plans | 59 / 213 | 28% |
+| Plans cross-reviewed | 11 | 16% |
+| Plans user-approved | 11 | 16% |
 
 ### Aging
 
@@ -116,7 +116,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 98 | 2 | 7 |
+| High     | 99 | 3 | 7 |
 | Medium   | 84  | 2  | 1  |
 | Low      | 30  | 0  | 1  |
 
@@ -124,7 +124,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (46 items — 14 high, 25 medium, 7 low)
+### harness (47 items — 15 high, 25 medium, 7 low)
 
 #### harness / agent-teams
 
@@ -143,6 +143,7 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
+| WRK-1047 | HIGH | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending |
 | WRK-1024 | MEDIUM | chore(harness): increase context window limits for Claude and Codex | pending |
 
 #### harness / cross-review
@@ -1000,7 +1001,7 @@
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -1026,8 +1027,10 @@
 | WRK-1041 | Lifecycle HTML — auto-refresh + on-demand /work html command | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-1035 |
 | WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-2, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1044 | Deterministic gate enforcement — D1-D15 script checks replacing LLM prose (3-agent sim learnings + skill audit) | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1044 |
+| WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1245,8 +1248,9 @@
 | WRK-1041 | Lifecycle HTML — auto-refresh + on-demand /work html command | medium | simple | workspace-hub | - |
 | WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | low | simple | workspace-hub | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | low | simple | workspace-hub | - |
-| WRK-1044 | Deterministic gate enforcement — D1-D15 script checks replacing LLM prose (3-agent sim learnings + skill audit) | high | complex | workspace-hub | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | medium | medium | workspace-hub | - |
+| WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | high | medium | workspace-hub | - |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | high | medium | workspace-hub | - |
 
 ### Working
 
@@ -1256,6 +1260,7 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
+| WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | high | complex | workspace-hub | - |
 
 ### Blocked
 
@@ -2034,8 +2039,10 @@
 | WRK-1041 | Lifecycle HTML — auto-refresh + on-demand /work html command | pending | medium | simple | - |
 | WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | simple | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | low | simple | - |
-| WRK-1044 | Deterministic gate enforcement — D1-D15 script checks replacing LLM prose (3-agent sim learnings + skill audit) | pending | high | complex | - |
+| WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | working | high | complex | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | pending | medium | medium | - |
+| WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | pending | high | medium | - |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending | high | medium | - |
 
 ### worldenergydata
 
@@ -2354,7 +2361,9 @@
 | WRK-1035 | Beef up user-review stages in work-queue-workflow SKILL from recent session learnings | archived | complex | workspace-hub | - |
 | WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | pending | simple | workspace-hub | - |
 | WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | pending | medium | workspace-hub | - |
-| WRK-1044 | Deterministic gate enforcement — D1-D15 script checks replacing LLM prose (3-agent sim learnings + skill audit) | pending | complex | workspace-hub | - |
+| WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | working | complex | workspace-hub | - |
+| WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | pending | medium | workspace-hub | - |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2936,6 +2945,8 @@
 | WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | pending | high | workspace-hub | - |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | archived | medium | workspace-hub | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | pending | medium | workspace-hub | - |
+| WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | pending | high | workspace-hub | - |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending | high | workspace-hub | - |
 
 ### Complex
 
@@ -3037,11 +3048,11 @@
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | high | workspace-hub | - |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | archived | high | workspace-hub | - |
 | WRK-1035 | Beef up user-review stages in work-queue-workflow SKILL from recent session learnings | archived | high | workspace-hub | - |
-| WRK-1044 | Deterministic gate enforcement — D1-D15 script checks replacing LLM prose (3-agent sim learnings + skill audit) | pending | high | workspace-hub | - |
+| WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | working | high | workspace-hub | - |
 
 ## By Computer
 
-### ace-linux-1 (162 active / 195 total)
+### ace-linux-1 (164 active / 197 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3238,8 +3249,10 @@
 | WRK-1041 | Lifecycle HTML — auto-refresh + on-demand /work html command | pending | medium | simple | workspace-hub |
 | WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | simple | workspace-hub |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | low | simple | workspace-hub |
-| WRK-1044 | Deterministic gate enforcement — D1-D15 script checks replacing LLM prose (3-agent sim learnings + skill audit) | pending | high | complex | workspace-hub |
+| WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | working | high | complex | workspace-hub |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | pending | medium | medium | workspace-hub |
+| WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | pending | high | medium | workspace-hub |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending | high | medium | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 

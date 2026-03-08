@@ -1,0 +1,53 @@
+wrk_id: WRK-1047
+updated_at: "2026-03-08"
+
+stages:
+  S1:
+    status: done
+    artifact: evidence/user-review-capture.yaml
+  S2:
+    status: done
+    artifact: evidence/resource-intelligence.yaml
+  S3:
+    status: done
+    note: Route B confirmed; triage fields set in WRK frontmatter
+  S4:
+    status: done
+    artifact: plan_claude.md
+  S5:
+    status: done
+    artifact: evidence/user-review-plan-draft.yaml
+  S6:
+    status: done
+    artifact: cross-review-plan.md
+    note: "All providers REQUEST_CHANGES → all P1/P2 resolved; plan updated to final"
+  S7:
+    status: done
+    artifact: evidence/plan-final-review.yaml
+  S8:
+    status: in_progress
+    note: Stage 7 gate passed; claim/activation underway
+  S9:
+    status: pending
+  S10:
+    status: pending
+  S11:
+    status: pending
+  S12:
+    status: pending
+  S13:
+    status: pending
+  S14:
+    status: pending
+  S15:
+    status: pending
+  S16:
+    status: pending
+  S17:
+    status: pending
+  S18:
+    status: n/a
+  S19:
+    status: pending
+  S20:
+    status: pending

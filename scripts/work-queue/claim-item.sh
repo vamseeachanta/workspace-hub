@@ -78,6 +78,18 @@ elif [[ "$stage7_exit" -eq 2 ]]; then
     exit 2
 fi
 
+# Phase 2 hardening (WRK-1035): validate session_id from env, block sentinel values
+_CLAIM_SESSION_ID="${CLAUDE_SESSION_ID:-}"
+if [[ -z "${_CLAIM_SESSION_ID}" ]]; then
+  echo "✖ claim-item.sh: CLAUDE_SESSION_ID env var not set — cannot write valid claim-evidence.yaml" >&2
+  echo "  Set CLAUDE_SESSION_ID before running claim-item.sh" >&2
+  exit 1
+fi
+if [[ "${_CLAIM_SESSION_ID}" == "unknown" ]]; then
+  echo "✖ claim-item.sh: CLAUDE_SESSION_ID is sentinel value 'unknown' — not a valid session ID" >&2
+  exit 1
+fi
+
 echo "Checking quota..."
 QUOTA_STATUS="missing"
 if [[ -f "$QUOTA_FILE" ]]; then
@@ -257,7 +269,7 @@ SESSION_STATE="${WORKSPACE_ROOT}/.claude/state/session-state.yaml"
 SESSION_ID="$(awk -F': ' '/^session_id:/ {gsub(/"/, "", $2); print $2; exit}' "$SESSION_STATE" 2>/dev/null || true)"
 ORCH_AGENT="$(awk -F': ' '/^orchestrator_agent:/ {gsub(/"/, "", $2); print $2; exit}' "$SESSION_STATE" 2>/dev/null || true)"
 if [[ -z "$SESSION_ID" ]]; then
-  SESSION_ID="unknown"
+  SESSION_ID="${_CLAIM_SESSION_ID}"
 fi
 if [[ -z "$ORCH_AGENT" ]]; then
   ORCH_AGENT="${provider:-unknown}"

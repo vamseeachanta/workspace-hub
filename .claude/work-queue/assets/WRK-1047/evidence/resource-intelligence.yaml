@@ -1,0 +1,95 @@
+wrk_id: WRK-1047
+stage: 2
+completion_status: continue_to_planning
+assessed_at: "2026-03-08"
+
+# ── What already exists (reuse, don't rebuild) ────────────────────────────────
+
+existing_assets:
+  - path: scripts/readiness/nightly-readiness.sh
+    relevance: HIGH — 11 checks already running nightly via comprehensive-learning Step 5.
+      R-HARNESS (harness file line counts), R-AI-CLI (delegates to ai-agent-readiness.sh),
+      R-SKILLS (signals freshness + skills committed), R-CODEX (MAX_TEAMMATES sync).
+      EXTEND this file; do NOT create a new harness-readiness-check.sh.
+
+  - path: scripts/readiness/ai-agent-readiness.sh
+    relevance: HIGH — already checks claude/codex/gemini CLI version vs ai-agent-versions.yaml.
+      Emits JSONL to .claude/state/session-signals/ai-readiness.jsonl. P1 AI tools check is done.
+
+  - path: scripts/review/orchestrator-variation-check.sh
+    relevance: HIGH — P6 simulation harness already built. Accepts --wrk, --orchestrator,
+      --scripts flags. Emits variation-test-results.md. Just needs WRK-SIM fixture.
+
+  - path: scripts/work-queue/parse-session-logs.sh
+    relevance: HIGH — handles Claude JSONL + Codex/Gemini text formats. P6 log parsing done.
+
+  - path: scripts/skills/sync-knowledge-work-plugins.sh
+    relevance: HIGH — canonical P5 skills sync tool. --dry-run flag available.
+      Not yet wired into nightly-readiness.sh.
+
+  - path: scripts/session/capture-harness-version.sh
+    relevance: MEDIUM — captures harness version snapshot at session time. Related but separate.
+
+  - path: scripts/readiness/
+    relevance: MEDIUM — R-UX check (check-ux-consistency.sh) exists; shows pattern for
+      delegating sub-checks to dedicated scripts.
+
+# ── Gaps WRK-1047 must fill ───────────────────────────────────────────────────
+
+gaps:
+  - id: G1
+    phase: P1
+    description: >
+      nightly-readiness.sh missing 6 checks: plugins installed (R-PLUGINS),
+      hooks present on disk (R-HOOKS), hook latency <5s (R-HOOK-LATENCY),
+      settings.json valid JSON (R-SETTINGS), uv ≥0.5.0 (R-UV),
+      pre-commit configured in tier-1 repos (R-PRECOMMIT).
+
+  - id: G2
+    phase: P1/P5
+    description: >
+      R-HARNESS only checks hub CLAUDE.md etc.; does not scan tier-1 repos.
+      R-SKILLS only checks signals freshness + recent commits; does not run
+      sync-knowledge-work-plugins.sh --dry-run or compare skill/command counts.
+
+  - id: G3
+    phase: P2
+    description: >
+      nightly-readiness.sh emits readiness-issues.md (human-readable) but no
+      structured harness-readiness-report.yaml for machine consumption /
+      comprehensive-learning Phase 1 signal row.
+
+  - id: G4
+    phase: P3
+    description: >
+      No cross-workstation comparison. nightly-readiness.sh runs on local machine only.
+      compare-harness-state.sh does not exist.
+
+  - id: G5
+    phase: P4
+    description: remediate-harness.sh does not exist.
+
+  - id: G6
+    phase: P6
+    description: >
+      orchestrator-variation-check.sh and parse-session-logs.sh exist but
+      no WRK-SIM fixture exists; simulation never run; not in nightly cron.
+
+# ── Implementation strategy ───────────────────────────────────────────────────
+
+strategy: >
+  EXTEND nightly-readiness.sh rather than create a parallel script.
+  All new checks follow the existing check_rN() function pattern with
+  log_pass / log_fail helpers. Add structured YAML output alongside
+  existing readiness-issues.md. Build compare-harness-state.sh as a
+  thin SSH wrapper around nightly-readiness.sh. WRK-SIM fixture is a
+  minimal pre-populated evidence directory — not a real WRK item lifecycle.
+
+route: B
+complexity: medium
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/wrk-lifecycle-testpack
+    - coordination/workspace/work-queue

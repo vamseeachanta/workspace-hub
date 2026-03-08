@@ -1,0 +1,22 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: false
+    remote: origin
+    branch: main
+    commit: 8a78ced7
+    documents:
+      - .claude/work-queue/assets/WRK-1047/plan_claude.md
+      - .claude/work-queue/assets/WRK-1047/WRK-1047-lifecycle.html
+    published_at: "2026-03-08T12:25:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: false
+    remote: origin
+    branch: main
+    commit: 8a78ced7
+    documents:
+      - .claude/work-queue/assets/WRK-1047/plan_claude.md
+      - .claude/work-queue/assets/WRK-1047/cross-review-plan.md
+      - .claude/work-queue/assets/WRK-1047/WRK-1047-lifecycle.html
+    published_at: "2026-03-08T13:00:00Z"
+    reviewer: vamsee

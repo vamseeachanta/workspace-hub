@@ -1,0 +1,84 @@
+stage: 6
+wrk_id: WRK-1044
+review_type: plan
+reviewed_at: "2026-03-08T17:45:00Z"
+verdict: REVISE
+reviewers:
+  - provider: claude
+    verdict: REVISE
+    p1_count: 4
+    p2_count: 3
+    log: .claude/work-queue/assets/WRK-1044/evidence/cross-review-claude.md
+  - provider: codex
+    verdict: REVISE
+    p1_count: 3
+    p2_count: 5
+    log: .claude/work-queue/assets/WRK-1044/evidence/cross-review-codex.md
+  - provider: gemini
+    verdict: APPROVE
+    p1_count: 0
+    p2_count: 5
+    log: .claude/work-queue/assets/WRK-1044/evidence/cross-review-gemini.md
+
+p1_findings:
+  - id: P1-A
+    sources: [claude, codex]
+    description: >
+      D2 write-backstop enforcement incomplete — gate_check.py only covers Write
+      tool calls. Bash writes bypass entirely. Must also guard cross-review.sh,
+      claim-item.sh, close-item.sh as canonical entrypoints.
+    resolution: Add D2 guard to cross-review.sh + claim-item.sh + close-item.sh
+
+  - id: P1-B
+    sources: [codex]
+    description: >
+      D16 enforcement at spawn-team.sh is wrong. Real Stage 6/13 execution
+      runs through cross-review.sh. Codex unavailability probe must live there.
+    resolution: Move D16 from spawn-team.sh to cross-review.sh
+
+  - id: P1-C
+    sources: [claude]
+    description: >
+      D7/D8 fail-open condition too wide — browser-open yaml is present in all
+      10 audited WRKs. Fail-open only when yaml absent; inverted timestamps =
+      hard FAIL.
+    resolution: Tighten fail-open guard in stage_exit_checks.py D7/D8 logic
+
+  - id: P1-D
+    sources: [claude, codex]
+    description: >
+      D11 sentinel check covers only one field. R-09 requires session_id,
+      orchestrator_agent, best_fit_provider, session_owner all ≠ "unknown",
+      route ≠ "", quota_snapshot.pct_remaining ≠ null when status=available.
+    resolution: Expand D11 claim-item.sh check to all R-09 sentinel fields
+
+  - id: P1-E
+    sources: [claude, codex]
+    description: >
+      exit_stage.py line budget — extraction to stage_exit_checks.py only works
+      if existing functions (incl. _heavy_stage_check) actually move out, not
+      just new code added alongside.
+    resolution: Explicitly list functions moving to stage_exit_checks.py in plan;
+      target exit_stage.py ≤380 lines post-extraction
+
+  - id: P1-F
+    sources: [codex]
+    description: >
+      D8 (published_at ≤ confirmed_at) conflicts with existing
+      check_plan_publish_predates_approval() in verify-gate-evidence.py.
+      Two canonical paths will diverge. Must reconcile into one check.
+    resolution: Remove D8 from exit_stage.py; ensure verifier check is wired
+      at both Stage 5/7 exit time and close time.
+
+p2_findings:
+  - D12 WARN needs escalation artifact (cross-review-p1-override.yaml) not just logging
+  - --json flag interaction with --stage5/7/17-check modes must be specified
+  - D10 Route A warn should be hard block — no justification for warn-only
+  - 3-agent sim harness extension (report schema for 16 D-item scenarios) must be specified
+  - L3 validator callsite must be declared (hook or gate, not standalone diagnostic)
+  - Test count discrepancy (plan ≥84 vs ACs ≥100) must reconcile to ≥100
+
+return_to_stage: 4
+return_reason: >
+  P1-A through P1-F require plan revisions before Stage 7. Revise plan.md
+  to address all 6 P1 findings, then re-run Stage 7 gate.

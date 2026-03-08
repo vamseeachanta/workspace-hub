@@ -1,0 +1,30 @@
+stage: 15
+wrk_id: WRK-1044
+recorded_at: 2026-03-08T20:00:00Z
+
+recommendations:
+  - id: FW-01
+    title: "D2 Bash-path guards in cross-review.sh, claim-item.sh, close-item.sh"
+    description: "D2 Layer 2 was deferred — add shell-level checks for preceding gate artifacts"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    captured_wrk: WRK-1046
+    priority: medium
+
+  - id: FW-02
+    title: "T21 real-WRK integration test"
+    description: "T21 skips because it needs a real passing WRK in workspace; wire to WRK-1002 or sim"
+    disposition: existing-updated
+    status: deferred
+    captured: true
+    priority: low
+
+  - id: FW-03
+    title: "stage-gate-policy.yaml L3 validator integration with CI"
+    description: "validate-stage-gate-policy.py exists but not wired to CI/pre-commit"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    captured_wrk: WRK-1046
+    priority: low

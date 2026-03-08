@@ -1,0 +1,56 @@
+# harness-config.yaml — Single source of truth for harness readiness checks
+# Used by: nightly-readiness.sh, compare-harness-state.sh, remediate-harness.sh
+# Update skill_count_baseline / command_count_baseline via:
+#   bash scripts/readiness/nightly-readiness.sh --update-baseline
+schema_version: 1
+
+required_plugins:
+  - frontend-design
+  - skill-creator
+  - code-review
+  - pr-review-toolkit
+  - feature-dev
+  - playground
+  - pyright-lsp
+  - claude-md-management
+  - hookify
+  - superpowers
+
+skill_count_baseline: 0        # set on first --update-baseline run; 0 = skip count check
+command_count_baseline: 0      # set on first --update-baseline run; 0 = skip count check
+
+tier1_repos:
+  - assetutilities
+  - digitalmodel
+  - worldenergydata
+  - assethold
+
+hook_static_max_lines: 200
+hook_blocking_patterns:
+  - 'git commit'
+  - 'git push'
+  - '\bcurl\b'
+  - '\bwget\b'
+  - 'http://'
+  - 'https://'
+
+workstations:
+  ace-linux-1:
+    ws_hub_path: /mnt/local-analysis/workspace-hub
+    ssh_target: null
+    report_path: .claude/state/harness-readiness-ace-linux-1.yaml
+  ace-linux-2:
+    ws_hub_path: /mnt/workspace-hub
+    ssh_target: ace2
+    report_path: .claude/state/harness-readiness-ace-linux-2.yaml
+  acma-ansys05:
+    ws_hub_path: null
+    ssh_target: null
+    report_path: .claude/state/harness-readiness-acma-ansys05.yaml
+    notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
+
+prerequisites:
+  - jq
+  - git
+  - uv
+  - claude

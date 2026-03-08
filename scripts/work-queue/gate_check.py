@@ -100,6 +100,25 @@ def _is_gate17_target(file_path: str, wrk_id: str, queue_root: str) -> bool:
 
 # ── public API ───────────────────────────────────────────────────────────────
 
+
+
+def _is_future_stage_write(
+    file_path: str, wrk_id: str, assets_root: str
+) -> bool:
+    """D2 write-backstop (Layer 1): return True if write targets a future-stage
+    evidence file whose prerequisite gate is not yet satisfied.
+
+    Fails open (returns False) when wrk_id is empty or file is not in scope.
+    """
+    if not wrk_id or not _WRK_ID_RE.match(wrk_id):
+        return False  # fail-open: no active WRK
+    if _is_gate5_target(file_path, wrk_id, assets_root):
+        return not _gate5_ok(wrk_id, assets_root)
+    if _is_gate7_target(file_path, wrk_id, assets_root):
+        return not _gate7_ok(wrk_id, assets_root)
+    return False
+
+
 def check_gate(
     tool_name: str,
     file_path: str,

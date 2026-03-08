@@ -1942,6 +1942,40 @@ def _run_stage17_check(args: list[str]) -> int:
     return 0
 
 
+def run_checks_json(wrk_id: str, phase: str = "close") -> int:
+    """D14 — JSON-mode gate check. Writes one JSON line to stdout; exit 0/1.
+
+    Compatible with all --phase modes. Does not suppress other output;
+    the JSON summary line is appended after normal output.
+    """
+    import io, contextlib
+    # Capture normal stdout to avoid mixing with JSON
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        code = run_checks(wrk_id, phase=phase)
+    captured = buf.getvalue()
+    # Rebuild gate list from captured output for JSON summary
+    missing: list[str] = []
+    warn: list[str] = []
+    for line in captured.splitlines():
+        if ": MISSING (" in line:
+            name = line.strip().lstrip("- ").split(":")[0].strip()
+            missing.append(name)
+        elif ": WARN (" in line:
+            name = line.strip().lstrip("- ").split(":")[0].strip()
+            warn.append(name)
+    result = {
+        "wrk_id": wrk_id,
+        "phase": phase,
+        "pass": code == 0,
+        "missing": missing,
+        "warn": warn,
+    }
+    print(captured, end="")
+    print(json.dumps(result))
+    return code
+
+
 def main() -> None:
     args = sys.argv[1:]
     # Stage 5 check mode (called by plan.sh, cross-review.sh, etc.)
@@ -1952,17 +1986,25 @@ def main() -> None:
     if args and args[0] == "--stage17-check":
         sys.exit(_run_stage17_check(args[1:]))
 
+    # D14 — --json flag: stdout-only JSON output; compatible with --phase modes
+    use_json = "--json" in args
+    if use_json:
+        args = [a for a in args if a != "--json"]
+
     if len(args) not in {1, 3}:
-        print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close]")
+        print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close] [--json]")
         sys.exit(1)
     wrk_id = args[0]
     phase = "close"
     if len(args) == 3:
         if args[1] != "--phase" or args[2] not in {"claim", "close"}:
-            print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close]")
+            print("Usage: verify-gate-evidence.py WRK-<id> [--phase claim|close] [--json]")
             sys.exit(1)
         phase = args[2]
-    code = run_checks(wrk_id, phase=phase)
+    if use_json:
+        code = run_checks_json(wrk_id, phase=phase)
+    else:
+        code = run_checks(wrk_id, phase=phase)
     sys.exit(code)
 
 
