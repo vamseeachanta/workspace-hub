@@ -1,0 +1,24 @@
+wrk_id: WRK-1020
+captured_at: "2026-03-08T00:00:00Z"
+recommendations:
+  - id: FW-01
+    title: "Gemini timeout: plan draft too large for 300s pipe"
+    description: "Gemini timed out during Stage 5 plan dispatch — consider chunking or summarising plan before dispatch"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    captured_wrk: WRK-1021
+  - id: FW-02
+    title: "Prune stale signals on carry-forward paths"
+    description: "P2 from cross-review: stale signals persist on timeout/failure carry-forward paths; consider pruning prior_signals before returning on all failure branches"
+    disposition: spun-off-new
+    status: deferred
+    captured: true
+    captured_wrk: pending-capture
+  - id: FW-03
+    title: "ace-linux-2 gemini availability"
+    description: "Verify gemini CLI available on ace-linux-2 for nightly script execution"
+    disposition: existing-updated
+    status: deferred
+    captured: true
+    captured_wrk: pending-capture

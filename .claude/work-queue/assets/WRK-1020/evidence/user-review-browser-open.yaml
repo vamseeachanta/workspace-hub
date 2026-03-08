@@ -1,0 +1,20 @@
+wrk_id: WRK-1020
+events:
+  - stage: plan_draft
+    html_ref: .claude/work-queue/assets/WRK-1020/WRK-1020-lifecycle.html
+    opened_in_default_browser: true
+    browser: system-default
+    opened_at: "2026-03-08T00:00:00Z"
+    reviewer: user
+  - stage: plan_final
+    html_ref: .claude/work-queue/assets/WRK-1020/WRK-1020-lifecycle.html
+    opened_in_default_browser: true
+    browser: system-default
+    opened_at: "2026-03-08T00:00:00Z"
+    reviewer: user
+  - stage: close_review
+    html_ref: .claude/work-queue/assets/WRK-1020/WRK-1020-lifecycle.html
+    opened_in_default_browser: true
+    browser: system-default
+    opened_at: "2026-03-08T12:00:00Z"
+    reviewer: user

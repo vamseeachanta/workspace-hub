@@ -1,0 +1,35 @@
+wrk_id: WRK-1020
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "4b992f0b"
+    documents:
+      - specs/wrk/WRK-1020/plan.md
+      - .claude/work-queue/assets/WRK-1020/evidence/user-review-plan-draft.yaml
+    published_at: "2026-03-08T00:00:00Z"
+    reviewer: user
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "4b992f0b"
+    documents:
+      - specs/wrk/WRK-1020/plan.md
+      - .claude/work-queue/assets/WRK-1020/evidence/plan-final-review.yaml
+      - .claude/work-queue/assets/WRK-1020/evidence/cross-review.yaml
+    published_at: "2026-03-08T00:00:00Z"
+    reviewer: user
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "4b992f0b"
+    documents:
+      - scripts/cron/update-portfolio-signals.sh
+      - scripts/cron/update_portfolio_signals.py
+      - tests/skills/test_update_portfolio_signals.py
+      - .claude/work-queue/assets/WRK-1020/evidence/cross-review-impl.md
+    published_at: "2026-03-08T12:00:00Z"
+    reviewer: user

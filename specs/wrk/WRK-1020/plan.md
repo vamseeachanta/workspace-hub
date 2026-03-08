@@ -15,9 +15,9 @@ Build `scripts/cron/update-portfolio-signals.sh` (thin bash wrapper) +
 - **L2**: per-provider WRK activity counts from last-30-day archive files
 - **L3**: gemini capability research query (≤5 high-confidence signals, official sources)
 
-Integrate into `comprehensive-learning-nightly.sh` — insert after rsync block (~lines 27/32),
-before `# Step 3b: AI agent readiness` (~line 35). Rename existing mislabelled
-`# Step 3:` → `# Step 3c:` to resolve label collision. Best-effort (`|| true`).
+Integrate into `comprehensive-learning-nightly.sh` — insert after rsync block (anchor:
+`# Step 3b: AI agent readiness`). Rename existing mislabelled `# Step 3:` → `# Step 3c:`
+to resolve label collision. Best-effort (`|| true`).
 
 ## What Exists (from WRK-1019)
 
@@ -75,31 +75,29 @@ exec uv run --no-project python "${SCRIPT_DIR}/update_portfolio_signals.py" "$@"
 
 **L3 block** (capability research — structured-output prompt):
 ```python
-# Dual-mode: engineering_count >= harness_count → engineering prompt
-# Default/tie: general AI capability news
-# Structured-output YAML prompt (gemini respond ONLY in YAML):
+# Dual-mode: engineering_count >= harness_count → engineering prompt (tie → engineering)
+# Structured-output JSON prompt (gemini respond ONLY in JSON — stdlib json, no PyYAML):
 PROMPT_ENG="List up to 5 AI capabilities announced in last 7 days relevant to
 engineering computation (subsea, structural, drilling, reservoir). Respond ONLY in
-YAML list:
-- date: YYYY-MM-DD
-  provider: claude|codex|gemini
-  capability: brief name
-  engineering_domains: [domain1]
-  impact: low|medium|high
-  source: https://...
-Output ONLY the YAML list, no prose."
+JSON array:
+[{"date": "YYYY-MM-DD", "provider": "claude|codex|gemini",
+  "capability": "brief name", "engineering_domains": ["domain1"],
+  "impact": "low|medium|high", "source": "https://..."}]
+Output ONLY the JSON array, no prose."
 
-# Parse with yaml.safe_load(); strip markdown fences before parse
+# Parse with json.loads(); strip markdown fences + trailing commas before parse
+# Gemini subprocess timeout: 60 seconds (SIGTERM then SIGKILL)
 # Carry-forward existing capability_signals when:
-#   gemini CLI missing, subprocess failure, timeout, parse failure,
+#   gemini CLI missing, subprocess failure, timeout (60s), parse failure,
 #   or zero valid results after source filter
 # Official/vendor source filter: retain only entries whose source URL
 #   matches anthropic.com, openai.com, deepmind.google, blog.google, cloud.google.com
+#   NOTE: source_verified=false — URLs are LLM-asserted, not independently validated
 # Dedup by hash(provider+capability+date)
 # Prune entries older than 30 days on carry-forward
 # Append ≤5 new entries; max 20 total retained
 # l3_meta: {query_attempted, query_mode, parse_success, signals_added,
-#            signals_pruned, carry_forward}
+#            signals_pruned, carry_forward, source_verified: false}
 ```
 
 **Output**:
@@ -115,13 +113,16 @@ Add after Step 2 (rsync), before Step 3b (AI agent readiness):
 
 ```bash
 # Step 3a: portfolio signals update (best-effort — WRK-1020)
+LOG_FILE="logs/portfolio-signals/$(date +%Y-%m-%d).log"
+mkdir -p "$(dirname "$LOG_FILE")"
 echo "--- Portfolio signals update $(date +%Y-%m-%dT%H:%M:%S) ---"
-bash scripts/cron/update-portfolio-signals.sh || \
-  echo "WARNING: portfolio signals update failed — see above"
+bash scripts/cron/update-portfolio-signals.sh 2>&1 | tee -a "$LOG_FILE" || \
+  echo "WARNING: portfolio signals update failed — see $LOG_FILE"
 
 # Step 3b: AI agent readiness
 ```
 
+Insert using sed anchor `# Step 3b: AI agent readiness` (not line numbers — lines shift).
 Also rename existing mislabelled `# Step 3:` → `# Step 3c:` for monotonic labels.
 
 ### Step 3 — TDD Tests
@@ -150,9 +151,9 @@ File: `tests/skills/test_update_portfolio_signals.py`
 | `test_lookback_flag_rejects_invalid_values` | AC-4b | zero, negative, non-integer rejected |
 | `test_gemini_query_skipped_when_cli_missing` | AC-3 | graceful fallback; L2 still written |
 | `test_carry_forward_on_cli_failure` | AC-3 | non-zero subprocess preserves prior signals |
-| `test_carry_forward_on_yaml_parse_failure` | AC-3 | malformed YAML preserves prior signals |
+| `test_carry_forward_on_json_parse_failure` | AC-3 | malformed JSON preserves prior signals |
 | `test_carry_forward_on_all_invalid_items` | AC-3 | valid parse but no usable signals preserves prior |
-| `test_structured_prompt_yaml_parsed_and_validated` | AC-3 | well-formed YAML list accepted |
+| `test_structured_prompt_json_parsed_and_validated` | AC-3 | well-formed JSON array accepted |
 | `test_non_official_sources_rejected` | AC-3 | unofficial sources filtered out |
 | `test_signal_retention_prunes_older_than_30_days` | AC-3 | old entries removed on carry-forward |
 | `test_idempotent_no_duplicate_signals_same_day` | AC-3 | repeat run does not duplicate |
@@ -178,14 +179,15 @@ File: `tests/skills/test_update_portfolio_signals.py`
     files_skipped_malformed
   - Does NOT produce all-zero tables silently when fields are absent
 - [ ] AC-3: Gemini capability research
-  - Structured-output YAML prompt; `yaml.safe_load()`; strip markdown fences before parse
-  - Carry-forward on: CLI missing, failure, timeout, parse failure, zero valid results
+  - Structured-output JSON prompt; `json.loads()` (stdlib only — no PyYAML); strip markdown
+    fences before parse; Gemini subprocess timeout 60s
+  - Carry-forward on: CLI missing, failure, timeout (60s), parse failure, zero valid results
   - Official/vendor sources only (anthropic.com, openai.com, deepmind.google, blog.google,
-    cloud.google.com)
+    cloud.google.com); `source_verified: false` in l3_meta (URLs are LLM-asserted)
   - Prune entries >30 days; dedup by hash(provider+capability+date); max 20 total; ≤5 new/run
-  - Dual-mode: `engineering >= harness` → engineering prompt; else → general AI news
+  - Dual-mode: `engineering >= harness` → engineering prompt (tie → engineering); else → general
   - `l3_meta` block: query_attempted, query_mode, parse_success, signals_added, signals_pruned,
-    carry_forward
+    carry_forward, source_verified
 - [ ] AC-4: `--dry-run` prints to stdout, no file written
 - [ ] AC-4b: `--lookback N` overrides 30-day default; rejects zero/negative/non-integer
 - [ ] AC-5: Integrated as Step 3a in nightly; `uv run --no-project python` in wrapper;

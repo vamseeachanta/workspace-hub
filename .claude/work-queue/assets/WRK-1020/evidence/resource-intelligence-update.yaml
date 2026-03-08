@@ -1,0 +1,10 @@
+wrk_id: WRK-1020
+updated_at: "2026-03-08T00:00:00Z"
+additions:
+  - resource: scripts/cron/update_portfolio_signals.py
+    type: implementation
+    note: "Nightly cron entrypoint for portfolio-signals.yaml L2+L3 update"
+  - resource: tests/skills/test_update_portfolio_signals.py
+    type: test_suite
+    note: "34 TDD tests covering all ACs"
+no_additions_rationale: null

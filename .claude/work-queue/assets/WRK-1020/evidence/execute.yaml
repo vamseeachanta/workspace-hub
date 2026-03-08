@@ -1,0 +1,26 @@
+wrk_id: WRK-1020
+stage: work_execution
+executed_at: "2026-03-08T11:30:00Z"
+orchestrator: claude
+workstation: ace-linux-1
+integrated_repo_tests:
+  - name: test_update_portfolio_signals
+    scope: integrated
+    command: uv run --no-project python -m pytest tests/skills/test_update_portfolio_signals.py -v
+    result: pass
+    artifact_ref: tests/skills/test_update_portfolio_signals.py
+  - name: test_repo_portfolio_steering
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/cron/test_repo_portfolio_steering.py -v
+    result: pass
+    artifact_ref: scripts/cron/test_repo_portfolio_steering.py
+  - name: dry_run_smoke_test
+    scope: integrated
+    command: uv run --no-project python scripts/cron/update_portfolio_signals.py --dry-run
+    result: pass
+    artifact_ref: scripts/cron/update_portfolio_signals.py
+artifacts_created:
+  - scripts/cron/update-portfolio-signals.sh
+  - scripts/cron/update_portfolio_signals.py
+  - tests/skills/test_update_portfolio_signals.py
+nightly_integration: scripts/cron/comprehensive-learning-nightly.sh

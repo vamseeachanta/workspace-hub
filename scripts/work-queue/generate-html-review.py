@@ -1316,14 +1316,15 @@ def detect_stage_statuses(
         1: True,  # WRK file found → S1 done
         2: ev_exists("resource-intelligence.yaml"),
         3: bool(fm.get("complexity") and fm.get("route")),
-        4: "## Plan" in body_md,
+        4: ("## Plan" in body_md
+            or bool(fm.get("spec_ref") and Path(fm["spec_ref"]).exists())),
         5: ev_exists("user-review-plan-draft.yaml"),
         6: (ev_exists("cross-review-phase1.md", "cross-review-plan.md")
             or (ad / "review.md").exists()
             or bool(list(ev.glob("cross-review*.md")))),
         7: ev_exists("user-review-plan-final.yaml", "plan-final-review.yaml"),
-        8: ev_exists("claim.yaml"),
-        9: ev_exists("claim.yaml"),  # routing follows claim
+        8: (ev_exists("claim.yaml") or (ad / "claim-evidence.yaml").exists()),
+        9: (ev_exists("claim.yaml") or (ad / "claim-evidence.yaml").exists()),
         10: ev_exists("execute.yaml"),
         11: ev_exists("gate-evidence-summary.json"),
         12: ((ad / "variation-test-results.md").exists()
@@ -1348,14 +1349,18 @@ def detect_stage_statuses(
         if n == 18:
             statuses[18] = "done" if ev_exists("reclaim.yaml") else "na"
             continue
+        # Once the active stage is found, all subsequent stages are pending
+        # regardless of artifact presence — prevents future artifacts from
+        # jumping ahead of incomplete earlier stages.
+        if found_active:
+            statuses[n] = "pending"
+            continue
         done = completions.get(n, False)
         if done:
             statuses[n] = "done"
-        elif not found_active:
+        else:
             statuses[n] = "active"
             found_active = True
-        else:
-            statuses[n] = "pending"
     return statuses
 
 
@@ -1506,19 +1511,83 @@ def render_lifecycle_stage_body(
 
     # ── S6 Cross-Review ───────────────────────────────────────────────────────
     if stage_n == 6:
-        # Try to find any cross-review file
-        candidates = list(ev.glob("cross-review*.md")) + [ad / "review.md"]
-        review_text = ""
-        for c in candidates:
-            if c.exists():
-                review_text = c.read_text(encoding="utf-8")[:400]
-                break
-        snippet = _esc(review_text[:200]) if review_text else "Cross-review evidence present."
-        return (
-            '<div class="section-label">Cross-review summary</div>'
-            f'<p style="font-size:.85rem;color:var(--muted);">{snippet}</p>'
-            + _render_exit_artifacts(["evidence/cross-review-*.md"])
-        )
+        cr_yaml = ev / "cross-review.yaml"
+        if cr_yaml.exists():
+            cr = _read_yaml_safe(cr_yaml)
+            # Collect all reviewers across rounds
+            all_reviewers: list[dict] = []
+            for round_key in ("round_1", "round_2"):
+                rnd = cr.get(round_key, {})
+                for r in rnd.get("reviewers", []):
+                    all_reviewers.append({**r, "_round": round_key.replace("_", " ").title()})
+            # Fall back to top-level reviewers list (single-round format)
+            if not all_reviewers:
+                for r in cr.get("reviewers", []):
+                    all_reviewers.append({**r, "_round": ""})
+            def _sev_kind(sev: str) -> str:
+                s = sev.upper()
+                return "fail" if s == "P1" else ("warn" if s == "P2" else "info")
+
+            summary_rows = ""
+            findings_html = ""
+            for r in all_reviewers:
+                provider = _esc(str(r.get("provider", "")))
+                v = str(r.get("final_verdict") or r.get("verdict", "")).upper()
+                v_kind = "pass" if v == "APPROVE" else ("fail" if v == "REQUEST_CHANGES" else "info")
+                p1 = r.get("p1_count", "")
+                p2 = r.get("p2_count", "")
+                rnd = _esc(r.get("_round", ""))
+                summary_rows += (f"<tr><td>{rnd}</td><td><strong>{provider}</strong></td>"
+                                 f"<td>{badge(v, v_kind)}</td>"
+                                 f"<td style='text-align:center'>{p1}</td>"
+                                 f"<td style='text-align:center'>{p2}</td></tr>\n")
+                findings = r.get("findings", [])
+                if findings:
+                    frows = ""
+                    for f in findings:
+                        fid = _esc(str(f.get("id", "")))
+                        sev = str(f.get("severity", ""))
+                        summary = _esc(str(f.get("summary", "")))
+                        resolution = _esc(str(f.get("resolution", "")))
+                        frows += (f"<tr><td><code>{fid}</code></td>"
+                                  f"<td>{badge(sev, _sev_kind(sev))}</td>"
+                                  f"<td>{summary}</td>"
+                                  f"<td style='color:var(--done)'>{resolution}</td></tr>\n")
+                    findings_html += (
+                        f'<div class="section-label" style="margin-top:10px">'
+                        f'{rnd} — {provider} findings</div>'
+                        f'<table><thead><tr><th>ID</th><th>Sev</th>'
+                        f'<th>Finding</th><th>Resolution</th></tr></thead>'
+                        f'<tbody>{frows}</tbody></table>'
+                    )
+            overall = str(cr.get("overall_verdict", "")).upper()
+            o_kind = "pass" if overall == "APPROVE" else "fail"
+            p1_resolved = cr.get("all_p1_resolved", False)
+            p1_badge = badge("All P1 resolved", "pass") if p1_resolved else badge("P1 open", "fail")
+            rounds_label = f"{cr.get('review_rounds', 1)} round(s)"
+            html = (
+                '<div class="section-label">Cross-review summary</div>'
+                f'<table><thead><tr><th>Round</th><th>Provider</th><th>Verdict</th>'
+                f'<th>P1</th><th>P2</th></tr></thead><tbody>{summary_rows}</tbody></table>'
+                f'<p style="margin:8px 0 4px">'
+                f'Overall: {badge(overall, o_kind)} &nbsp; {p1_badge} &nbsp;'
+                f'<span style="font-size:.82rem;color:var(--muted)">{rounds_label}</span></p>'
+                + findings_html
+            )
+        else:
+            # Fallback: render text snippet from .md file
+            candidates = list(ev.glob("cross-review*.md")) + [ad / "review.md"]
+            review_text = ""
+            for c in candidates:
+                if c.exists():
+                    review_text = c.read_text(encoding="utf-8")
+                    break
+            snippet = _esc(review_text[:300]) if review_text else "Cross-review evidence present."
+            html = (
+                '<div class="section-label">Cross-review summary</div>'
+                f'<p style="font-size:.85rem;color:var(--muted);">{snippet}</p>'
+            )
+        return html + _render_exit_artifacts(["evidence/cross-review-*.md", "evidence/cross-review.yaml"])
 
     # ── S7 User Review — Plan Final ───────────────────────────────────────────
     if stage_n == 7:

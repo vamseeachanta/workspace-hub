@@ -1,0 +1,12 @@
+wrk_id: WRK-1020
+stage: tdd_eval
+run_at: "2026-03-08T11:30:00Z"
+runner: uv run --no-project python -m pytest tests/skills/test_update_portfolio_signals.py -v
+total: 34
+passed: 34
+failed: 0
+skipped: 0
+result: pass
+artifact: tests/skills/test_update_portfolio_signals.py
+smoke_test: pass
+smoke_test_notes: "dry-run against live archive: 241 files scanned, 12 with orchestrator, output valid"

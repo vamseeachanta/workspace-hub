@@ -1,92 +1,149 @@
 wrk_id: WRK-1020
 stage: cross_review_plan
-reviewed_at: "2026-03-07T23:35:00Z"
+reviewed_at: "2026-03-08T10:10:55Z"
+review_rounds: 2
 
-reviewers:
-  - provider: claude
-    verdict: APPROVE
-    p1_count: 0
-    p2_count: 3
-    notes: "P2: carry-forward TTL, dedup guard, recursive glob — all addressed in plan update"
+# ── Round 1 (2026-03-07) ──────────────────────────────────────────────────────
+round_1:
+  reviewers:
+    - provider: claude
+      verdict: APPROVE
+      p1_count: 0
+      p2_count: 3
+      notes: "P2: carry-forward TTL, dedup guard, recursive glob — all addressed in plan update"
 
-  - provider: codex
-    verdict: REQUEST_CHANGES
-    p1_count: 3
-    p2_count: 5
-    findings:
-      - id: C-P1-1
-        severity: P1
-        summary: "Lookback 7 vs 30 days mismatch — WRK body vs plan"
-        resolution: "FIXED — WRK body updated to 30 days; AC-2 updated"
-      - id: C-P1-2
-        severity: P1
-        summary: "Step 3a label collision in comprehensive-learning-nightly.sh"
-        resolution: "FIXED — exact anchor specified; Step 3 → Step 3c rename"
-      - id: C-P1-3
-        severity: P1
-        summary: "other bucket has no test coverage for unknown categories"
-        resolution: "FIXED — test_other_bucket_categories added; AC-2 explicit"
-      - id: C-P2-4
-        severity: P2
-        summary: "L3 carry-forward accumulates without TTL"
-        resolution: "FIXED — AC-3: prune signals >30 days on carry-forward"
-      - id: C-P2-5
-        severity: P2
-        summary: "capability_signals no deduplication guard"
-        resolution: "FIXED — AC-3: dedup by hash(provider+capability+date)"
-      - id: C-P2-6
-        severity: P2
-        summary: "Archive glob should be recursive"
-        resolution: "FIXED — AC-2: archive/**/*.md specified"
-      - id: C-P2-7
-        severity: P2
-        summary: "bare python3 in script violates uv run rule"
-        resolution: "FIXED — AC-5: uv run --no-project python required"
-      - id: C-P2-8
-        severity: P2
-        summary: "L2 no source provenance"
-        resolution: "ADDRESSED — l2_meta provenance block added to schema"
-    final_verdict: APPROVE
+    - provider: codex
+      verdict: REQUEST_CHANGES
+      p1_count: 3
+      p2_count: 5
+      findings:
+        - id: C-P1-1
+          severity: P1
+          summary: "Lookback 7 vs 30 days mismatch — WRK body vs plan"
+          resolution: "FIXED — WRK body updated to 30 days; AC-2 updated"
+        - id: C-P1-2
+          severity: P1
+          summary: "Step 3a label collision in comprehensive-learning-nightly.sh"
+          resolution: "FIXED — exact anchor specified; Step 3 → Step 3c rename"
+        - id: C-P1-3
+          severity: P1
+          summary: "other bucket has no test coverage for unknown categories"
+          resolution: "FIXED — test_other_bucket_categories added; AC-2 explicit"
+        - id: C-P2-4
+          severity: P2
+          summary: "L3 carry-forward accumulates without TTL"
+          resolution: "FIXED — AC-3: prune signals >30 days on carry-forward"
+        - id: C-P2-5
+          severity: P2
+          summary: "capability_signals no deduplication guard"
+          resolution: "FIXED — AC-3: dedup by hash(provider+capability+date)"
+        - id: C-P2-6
+          severity: P2
+          summary: "Archive glob should be recursive"
+          resolution: "FIXED — AC-2: archive/**/*.md specified"
+        - id: C-P2-7
+          severity: P2
+          summary: "bare python3 in script violates uv run rule"
+          resolution: "FIXED — AC-5: uv run --no-project python required"
+        - id: C-P2-8
+          severity: P2
+          summary: "L2 no source provenance"
+          resolution: "ADDRESSED — l2_meta provenance block added to schema"
+      final_verdict: APPROVE
 
-  - provider: gemini
-    verdict: REQUEST_CHANGES
-    p1_count: 3
-    p2_count: 5
-    findings:
-      - id: G-P1-A
-        severity: P1
-        summary: "Lookback 7 vs 30 days mismatch (same as C-P1-1)"
-        resolution: "FIXED — same fix as C-P1-1"
-      - id: G-P1-B
-        severity: P1
-        summary: "Archive field coverage near-empty — many files lack orchestrator/category"
-        resolution: "FIXED — AC-2: missing orchestrator→skip, missing category→other; l2_meta provenance tracks skipped files; test added"
-      - id: G-P1-C
-        severity: P1
-        summary: "L3 gemini output parsing unspecified — free-form text not parseable"
-        resolution: "FIXED — structured-output YAML prompt specified; parse with yaml.safe_load(); fallback on parse failure"
-      - id: G-P2-1
-        severity: P2
-        summary: "Step numbering in nightly is confusing"
-        resolution: "NOTED — Step 3→Step 3c rename in implementation"
-      - id: G-P2-2
-        severity: P2
-        summary: "Carry-forward accumulates stale signals"
-        resolution: "FIXED — same as C-P2-4"
-      - id: G-P2-3
-        severity: P2
-        summary: "gitignore test should use git check-ignore -v not grep"
-        resolution: "FIXED — AC-6 updated to specify git check-ignore -v"
-      - id: G-P2-4
-        severity: P2
-        summary: "Dual-mode prompt tie-break when L2 sparse"
-        resolution: "FIXED — AC-3: default to general AI news when no clear category dominates"
-      - id: G-P2-5
-        severity: P2
-        summary: "--lookback N flag has no AC"
-        resolution: "FIXED — AC-4b added; test_lookback_flag added"
-    final_verdict: APPROVE
+    - provider: gemini
+      verdict: REQUEST_CHANGES
+      p1_count: 3
+      p2_count: 5
+      findings:
+        - id: G-P1-A
+          severity: P1
+          summary: "Lookback 7 vs 30 days mismatch (same as C-P1-1)"
+          resolution: "FIXED — same fix as C-P1-1"
+        - id: G-P1-B
+          severity: P1
+          summary: "Archive field coverage near-empty — many files lack orchestrator/category"
+          resolution: "FIXED — AC-2: missing orchestrator→skip, missing category→other; l2_meta provenance"
+        - id: G-P1-C
+          severity: P1
+          summary: "L3 gemini output parsing unspecified"
+          resolution: "FIXED — structured-output JSON prompt; json.loads(); fallback on parse failure"
+        - id: G-P2-1
+          severity: P2
+          summary: "Step numbering in nightly is confusing"
+          resolution: "NOTED — Step 3→Step 3c rename in implementation"
+        - id: G-P2-2
+          severity: P2
+          summary: "Carry-forward accumulates stale signals"
+          resolution: "FIXED — same as C-P2-4"
+        - id: G-P2-3
+          severity: P2
+          summary: "gitignore test should use git check-ignore -v not grep"
+          resolution: "FIXED — AC-6 updated to specify git check-ignore -v"
+        - id: G-P2-4
+          severity: P2
+          summary: "Dual-mode prompt tie-break when L2 sparse"
+          resolution: "FIXED — tie → engineering (D2 confirmed)"
+        - id: G-P2-5
+          severity: P2
+          summary: "--lookback N flag has no AC"
+          resolution: "FIXED — AC-4b added; test_lookback_flag added"
+      final_verdict: APPROVE
+
+# ── Round 2 (2026-03-08) ──────────────────────────────────────────────────────
+round_2:
+  trigger: "Round 1 Gemini G-P1-C resolution switched from YAML to JSON prompt — re-review of updated plan"
+  reviewers:
+    - provider: claude
+      verdict: REQUEST_CHANGES
+      p1_count: 1
+      p2_count: 2
+      findings:
+        - id: R2-CL-P1-1
+          severity: P1
+          summary: "L3 source filter cannot prevent hallucinated official-looking URLs"
+          resolution: "FIXED — source_verified: false added to l3_meta; documented in AC-3"
+        - id: R2-CL-P2-1
+          severity: P2
+          summary: "Integration uses ~line 35 reference — lines shift with edits"
+          resolution: "FIXED — replaced with sed anchor '# Step 3b: AI agent readiness'"
+        - id: R2-CL-P2-2
+          severity: P2
+          summary: "No log artifact for Step 3a output"
+          resolution: "FIXED — logs/portfolio-signals/YYYY-MM-DD.log added to Step 2 block"
+      final_verdict: APPROVE
+
+    - provider: codex
+      verdict: REQUEST_CHANGES
+      p1_count: 2
+      p2_count: 1
+      findings:
+        - id: R2-CX-P1-1
+          severity: P1
+          summary: "yaml.safe_load() requires PyYAML — not available under uv run --no-project python"
+          resolution: "FIXED — switched to json.loads() (stdlib); prompt changed to JSON output"
+        - id: R2-CX-P1-2
+          severity: P1
+          summary: "Tie-break text contradicts D2: '>=→engineering' vs 'Default/tie: general AI news'"
+          resolution: "FIXED — contradictory line removed; D2 tie-break (>=→engineering) is sole rule"
+        - id: R2-CX-P2-1
+          severity: P2
+          summary: "No explicit Gemini subprocess timeout in spec"
+          resolution: "FIXED — 60s timeout documented in L3 block and AC-3"
+      final_verdict: APPROVE
+
+    - provider: gemini
+      verdict: REQUEST_CHANGES
+      p1_count: 1
+      p2_count: 0
+      findings:
+        - id: R2-GM-P1-1
+          severity: P1
+          summary: "import yaml / yaml.safe_load() fails under uv run --no-project python (same as R2-CX-P1-1)"
+          resolution: "FIXED — same fix as R2-CX-P1-1 (json.loads stdlib)"
+      final_verdict: APPROVE
 
 overall_verdict: APPROVE
 all_p1_resolved: true
 plan_updated: true
+plan_update_date: "2026-03-08"

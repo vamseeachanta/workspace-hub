@@ -1,37 +1,37 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-08T10:12:56Z by generate-index.py -->
+<!-- Generated: 2026-03-08T11:47:38Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-08T10:12:56Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-08T11:47:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 461
+**Total items:** 464
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
 | pending | 207 |
-| working | 4 |
+| working | 5 |
 | blocked | 9 |
-| archived | 241 |
+| archived | 243 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 215 |
-| medium | 204 |
-| low | 41 |
+| high | 216 |
+| medium | 205 |
+| low | 42 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 82 |
-| medium | 217 |
+| simple | 83 |
+| medium | 219 |
 | complex | 95 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 43 |
+| harness | 44 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -69,7 +69,7 @@
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 154 |
+| workspace-hub | 157 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,9 +77,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 176 / 461 |
-| Plans cross-reviewed | 75 |
-| Plans approved | 96 |
+| Plans exist | 178 / 464 |
+| Plans cross-reviewed | 77 |
+| Plans approved | 99 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -89,19 +89,19 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 461 |
-| Total archived | 241 |
-| Completion rate | 241/461 (52%) |
-| Monthly rate (current month) | 13 archived |
+| Total captured | 464 |
+| Total archived | 243 |
+| Completion rate | 243/464 (52%) |
+| Monthly rate (current month) | 14 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 59 / 207 | 29% |
-| Plans cross-reviewed | 10 | 14% |
-| Plans user-approved | 10 | 14% |
+| Pending items with plans | 58 / 207 | 28% |
+| Plans cross-reviewed | 11 | 16% |
+| Plans user-approved | 11 | 16% |
 
 ### Aging
 
@@ -116,15 +116,21 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 96 | 2 | 7 |
-| Medium   | 83  | 2  | 1  |
+| High     | 97 | 2 | 7 |
+| Medium   | 82  | 3  | 1  |
 | Low      | 28  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (43 items — 13 high, 25 medium, 5 low)
+### harness (44 items — 14 high, 25 medium, 5 low)
+
+#### harness / agent-teams
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1036 | MEDIUM | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | working |
 
 #### harness / agent-ux
 
@@ -137,6 +143,12 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1024 | MEDIUM | chore(harness): increase context window limits for Claude and Codex | pending |
+
+#### harness / cross-review
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1037 | HIGH | cross-review hardening: uv readiness tests + Codex-missing user approval gate | pending |
 
 #### harness / daily-report
 
@@ -157,7 +169,6 @@
 | WRK-207 | MEDIUM | fix(ai): align weekly quota reporting with authoritative Claude source | pending |
 | WRK-636 | MEDIUM | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending |
 | WRK-1018 | MEDIUM | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending |
-| WRK-1020 | MEDIUM | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending |
 | WRK-182 | LOW | Predictive Session Planning | pending |
 
 #### harness / skills
@@ -217,7 +228,7 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1035 | HIGH | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending |
+| WRK-1035 | HIGH | Beef up user-review stages in work-queue-workflow SKILL from recent session learnings | pending |
 
 ### engineering (117 items — 68 high, 38 medium, 11 low)
 
@@ -986,7 +997,7 @@
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | high | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - 15% | n/a | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -999,7 +1010,10 @@
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | n/a | - |
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1035 | Beef up user-review stages in work-queue-workflow SKILL from recent session learnings | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude+codex | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
+| WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | archived | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ███ 100% | n/a | - |
 
 ## By Status
 
@@ -1206,14 +1220,14 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | medium | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | medium | medium | workspace-hub | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | medium | simple | workspace-hub | - |
-| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | medium | medium | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | medium | medium | workspace-hub | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | medium | simple | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | medium | simple | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | medium | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | medium | simple | digitalmodel | - |
-| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | high | simple | workspace-hub | - |
+| WRK-1035 | Beef up user-review stages in work-queue-workflow SKILL from recent session learnings | high | medium | workspace-hub | - |
+| WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | high | simple | workspace-hub | - |
 
 ### Working
 
@@ -1223,6 +1237,7 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
+| WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | medium | medium | workspace-hub | - |
 
 ### Blocked
 
@@ -1477,12 +1492,14 @@
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | medium | medium | workspace-hub | - |
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | high | high | workspace-hub | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | high | complex | workspace-hub | - |
+| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | medium | medium | workspace-hub | - |
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | medium | simple | workspace-hub | - |
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | high | complex | workspace-hub | - |
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | medium | medium | workspace-hub | - |
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | medium | simple | workspace-hub | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | high | medium | workspace-hub | - |
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | high | medium | workspace-hub | - |
+| WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | low | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -1975,7 +1992,7 @@
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | high | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | - |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | high | complex | - |
-| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | - |
+| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | medium | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | - |
@@ -1987,7 +2004,10 @@
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | medium | - |
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | archived | high | medium | - |
-| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending | high | simple | - |
+| WRK-1035 | Beef up user-review stages in work-queue-workflow SKILL from recent session learnings | pending | high | medium | - |
+| WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | working | medium | medium | - |
+| WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | pending | high | simple | - |
+| WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | archived | low | simple | - |
 
 ### worldenergydata
 
@@ -2303,7 +2323,8 @@
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | archived | complex | workspace-hub | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | medium | workspace-hub | - |
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | archived | medium | workspace-hub | - |
-| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending | simple | workspace-hub | - |
+| WRK-1035 | Beef up user-review stages in work-queue-workflow SKILL from recent session learnings | pending | medium | workspace-hub | - |
+| WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | pending | simple | workspace-hub | - |
 
 ### Medium
 
@@ -2503,7 +2524,7 @@
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | workspace-hub | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | simple | workspace-hub | - |
-| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | workspace-hub | - |
+| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | simple | workspace-hub | - |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | simple | workspace-hub | - |
@@ -2513,6 +2534,7 @@
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | simple | digitalmodel | - |
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | archived | medium | workspace-hub | - |
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | simple | workspace-hub | - |
+| WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | working | medium | workspace-hub | - |
 
 ### Low
 
@@ -2559,6 +2581,7 @@
 | WRK-623 | feat(geotechnical): scour prediction per DNV-RP-F107 | pending | medium | digitalmodel | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | simple | workspace-hub | - |
+| WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | archived | simple | workspace-hub | - |
 
 ## By Complexity
 
@@ -2647,7 +2670,8 @@
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | digitalmodel | - |
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | workspace-hub | - |
-| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending | high | workspace-hub | - |
+| WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | pending | high | workspace-hub | - |
+| WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | archived | low | workspace-hub | - |
 
 ### Medium
 
@@ -2864,12 +2888,14 @@
 | WRK-1014 | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending | medium | workspace-hub | - |
 | WRK-1015 | feat(work-queue): category grouping and priority-sorted view for INDEX.md and /work list | archived | medium | workspace-hub | - |
 | WRK-1016 | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending | medium | workspace-hub | - |
-| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | workspace-hub | - |
+| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | workspace-hub | - |
 | WRK-1029 | Align resource-intelligence skill with Stage 2 micro-skill contract | archived | medium | workspace-hub | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | workspace-hub | - |
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | archived | high | workspace-hub | - |
+| WRK-1035 | Beef up user-review stages in work-queue-workflow SKILL from recent session learnings | pending | high | workspace-hub | - |
+| WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | working | medium | workspace-hub | - |
 
 ### Complex
 
@@ -2973,7 +2999,7 @@
 
 ## By Computer
 
-### ace-linux-1 (157 active / 185 total)
+### ace-linux-1 (158 active / 188 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3148,7 +3174,7 @@
 | WRK-1017 | bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed | archived | high | high | workspace-hub |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | simple | workspace-hub |
 | WRK-1019 | feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives | archived | high | complex | workspace-hub |
-| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | pending | medium | medium | workspace-hub |
+| WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | medium | workspace-hub |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | workspace-hub |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | workspace-hub |
 | WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | workspace-hub |
@@ -3161,7 +3187,10 @@
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | workspace-hub |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | medium | workspace-hub |
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | archived | high | medium | workspace-hub |
-| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending | high | simple | workspace-hub |
+| WRK-1035 | Beef up user-review stages in work-queue-workflow SKILL from recent session learnings | pending | high | medium | workspace-hub |
+| WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | working | medium | medium | workspace-hub |
+| WRK-1037 | cross-review hardening: uv readiness tests + Codex-missing user approval gate | pending | high | simple | workspace-hub |
+| WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | archived | low | simple | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 

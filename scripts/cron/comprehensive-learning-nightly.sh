@@ -31,6 +31,13 @@ rsync -az --timeout=30 \
   ACMA-ANSYS05:.claude/state/sessions/ \
   "$WORKSPACE_HUB/.claude/state/sessions-archive/acma-ansys05/" 2>/dev/null || true
 
+# Step 3a: portfolio signals update (best-effort — WRK-1020)
+LOG_FILE="logs/portfolio-signals/$(date +%Y-%m-%d).log"
+mkdir -p "$(dirname "$LOG_FILE")"
+echo "--- Portfolio signals update $(date +%Y-%m-%dT%H:%M:%S) ---"
+bash scripts/cron/update-portfolio-signals.sh 2>&1 | tee -a "$LOG_FILE" || \
+  echo "WARNING: portfolio signals update failed — see $LOG_FILE"
+
 # Step 3b: AI agent readiness — CLI presence + version check (best-effort — WRK-306)
 echo "--- AI agent readiness $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/readiness/ai-agent-readiness.sh || true
@@ -60,6 +67,6 @@ source scripts/lib/python-resolver.sh
 ${PYTHON} scripts/readiness/build-specs-index.py || \
   echo "WARNING: specs index rebuild failed — see above"
 
-# Step 3: run pipeline
+# Step 3c: run pipeline
 # Cron usage: bash scripts/cron/comprehensive-learning-nightly.sh >> /mnt/local-analysis/workspace-hub/.claude/state/learning-reports/cron.log 2>&1
 exec claude --skill comprehensive-learning
