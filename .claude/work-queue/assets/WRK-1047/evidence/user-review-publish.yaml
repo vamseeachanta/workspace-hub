@@ -21,10 +21,10 @@ events:
     published_at: "2026-03-08T13:00:00Z"
     reviewer: vamsee
   - stage: close_review
-    pushed_to_origin: false
+    pushed_to_origin: true
     remote: origin
     branch: main
-    commit: ""
+    commit: bc3dbead
     documents:
       - .claude/work-queue/assets/WRK-1047/WRK-1047-lifecycle.html
       - .claude/work-queue/assets/WRK-1047/cross-review-impl.md

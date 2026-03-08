@@ -74,6 +74,7 @@ TARGET_REPO=""
 SCAN_ALL=false
 DIFF_ONLY=false
 JSON_OUTPUT=false
+QUIET=false
 VIOLATIONS=0
 WARNINGS=0
 
@@ -84,6 +85,7 @@ for arg in "$@"; do
     --all) SCAN_ALL=true ;;
     --diff-only) DIFF_ONLY=true ;;
     --json) JSON_OUTPUT=true ;;
+    --quiet|-q) QUIET=true ;;
     --help|-h)
       echo "Usage: legal-sanity-scan.sh [--repo=<name>] [--all] [--diff-only] [--json]"
       echo ""
@@ -223,7 +225,7 @@ scan_directory() {
 # Main
 # ==========================================================================
 
-if [[ "$JSON_OUTPUT" != "true" ]]; then
+if [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]]; then
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo "  Legal Sanity Scanner"
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -236,7 +238,7 @@ if [[ -n "$TARGET_REPO" ]]; then
     echo "ERROR: Repository not found: $repo_path" >&2
     exit 2
   fi
-  [[ "$JSON_OUTPUT" != "true" ]] && echo "Scanning: $TARGET_REPO"
+  [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $TARGET_REPO"
   scan_directory "$repo_path" "$TARGET_REPO" || true
 
 elif [[ "$SCAN_ALL" == "true" ]]; then
@@ -244,18 +246,18 @@ elif [[ "$SCAN_ALL" == "true" ]]; then
   while IFS= read -r sub; do
     [[ -z "$sub" ]] && continue
     sub_path="$WORKSPACE_ROOT/$sub"
-    [[ "$JSON_OUTPUT" != "true" ]] && echo "Scanning: $sub"
+    [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $sub"
     scan_directory "$sub_path" "$sub" || true
   done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach 'echo $sm_path' 2>/dev/null)
 
 else
   # Scan workspace root (non-submodule files)
-  [[ "$JSON_OUTPUT" != "true" ]] && echo "Scanning: workspace-hub (root)"
+  [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: workspace-hub (root)"
   scan_directory "$WORKSPACE_ROOT" "workspace-hub" || true
 fi
 
 # Summary
-if [[ "$JSON_OUTPUT" != "true" ]]; then
+if [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]]; then
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   if [[ $VIOLATIONS -gt 0 ]]; then
     echo "  RESULT: FAIL — $VIOLATIONS block violation(s) found"

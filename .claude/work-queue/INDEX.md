@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-08T16:25:49Z by generate-index.py -->
+<!-- Generated: 2026-03-08T18:11:23Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-08T16:25:49Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-08T18:11:23Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,10 +13,10 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 213 |
+| pending | 212 |
 | working | 5 |
 | blocked | 9 |
-| archived | 246 |
+| archived | 247 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 47 |
+| harness | 46 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -78,8 +78,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 181 / 473 |
-| Plans cross-reviewed | 79 |
-| Plans approved | 101 |
+| Plans cross-reviewed | 80 |
+| Plans approved | 102 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -90,16 +90,16 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 473 |
-| Total archived | 246 |
-| Completion rate | 246/473 (52%) |
-| Monthly rate (current month) | 16 archived |
+| Total archived | 247 |
+| Completion rate | 247/473 (52%) |
+| Monthly rate (current month) | 17 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 59 / 213 | 28% |
+| Pending items with plans | 58 / 212 | 27% |
 | Plans cross-reviewed | 11 | 16% |
 | Plans user-approved | 11 | 16% |
 
@@ -116,7 +116,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 99 | 3 | 7 |
+| High     | 98 | 3 | 7 |
 | Medium   | 84  | 2  | 1  |
 | Low      | 30  | 0  | 1  |
 
@@ -124,7 +124,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (47 items — 15 high, 25 medium, 7 low)
+### harness (46 items — 14 high, 25 medium, 7 low)
 
 #### harness / agent-teams
 
@@ -143,7 +143,6 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1047 | HIGH | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending |
 | WRK-1024 | MEDIUM | chore(harness): increase context window limits for Claude and Codex | pending |
 
 #### harness / cross-review
@@ -1030,7 +1029,7 @@
 | WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1044 |
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 
 ## By Status
 
@@ -1250,7 +1249,6 @@
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | low | simple | workspace-hub | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | medium | medium | workspace-hub | - |
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | high | medium | workspace-hub | - |
-| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | high | medium | workspace-hub | - |
 
 ### Working
 
@@ -1526,6 +1524,7 @@
 | WRK-1036 | Agent teams lifecycle — audit logs, session-start availability, session-exit tidy | medium | medium | workspace-hub | - |
 | WRK-1038 | Investigate verbose output effect on session logs and log learning to skill | low | simple | workspace-hub | - |
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | medium | medium | workspace-hub | - |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | high | medium | workspace-hub | - |
 
 ## By Repository
 
@@ -2042,7 +2041,7 @@
 | WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | working | high | complex | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | pending | medium | medium | - |
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | pending | high | medium | - |
-| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending | high | medium | - |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | medium | - |
 
 ### worldenergydata
 
@@ -2363,7 +2362,7 @@
 | WRK-1039 | Harden gate verifier — 14 gaps from WRK-1035 session audit | pending | medium | workspace-hub | - |
 | WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | working | complex | workspace-hub | - |
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | pending | medium | workspace-hub | - |
-| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending | medium | workspace-hub | - |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2946,7 +2945,7 @@
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | archived | medium | workspace-hub | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | pending | medium | workspace-hub | - |
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | pending | high | workspace-hub | - |
-| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending | high | workspace-hub | - |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | workspace-hub | - |
 
 ### Complex
 
@@ -3052,7 +3051,7 @@
 
 ## By Computer
 
-### ace-linux-1 (164 active / 197 total)
+### ace-linux-1 (163 active / 197 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3252,7 +3251,7 @@
 | WRK-1044 | Deterministic gate enforcement — D1-D16 script checks replacing LLM prose (3-agent sim learnings + skill audit) | working | high | complex | workspace-hub |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | pending | medium | medium | workspace-hub |
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | pending | high | medium | workspace-hub |
-| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | pending | high | medium | workspace-hub |
+| WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | medium | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 

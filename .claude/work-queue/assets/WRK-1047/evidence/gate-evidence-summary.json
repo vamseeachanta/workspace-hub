@@ -19,10 +19,10 @@
     },
     {
       "name": "Stage evidence gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml: stage order 17 must be done|n/a before close (found pending)"
+      "details": "stage-evidence.yaml: stages=20, contract=20-stage"
     },
     {
       "name": "Resource-intelligence gate",
@@ -54,10 +54,10 @@
     },
     {
       "name": "User-review publish gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml: events[3] pushed_to_origin must be true"
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
@@ -110,10 +110,10 @@
     },
     {
       "name": "User-review close gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at']"
+      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",

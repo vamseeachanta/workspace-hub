@@ -4,12 +4,12 @@
 |---|---|---|
 | Plan gate | PASS | reviewed=True, approved=True, artifact=cross-review-plan.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed |
 | Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1, ace-linux-2, acma-ansys05] |
-| Stage evidence gate | FAIL | stage-evidence.yaml: stage order 17 must be done\|n/a before close (found pending) |
+| Stage evidence gate | PASS | stage-evidence.yaml: stages=20, contract=20-stage |
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
 | Agent log gate | PASS | matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete'] |
 | User-review HTML-open gate | PASS | user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
-| User-review publish gate | FAIL | user-review-publish.yaml: events[3] pushed_to_origin must be true |
+| User-review publish gate | PASS | user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
 | Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1047/review-results.md |
 | TDD gate | PASS | test files=['test-results.md'] |
 | Integrated test gate | PASS | execute.yaml: integrated_repo_tests=4 (all passing) |
@@ -17,7 +17,7 @@
 | Claim gate | PASS | claim-evidence.yaml: version=1, owner=vamsee, quota=available(75%) |
 | Future-work gate | PASS | future-work.yaml: recommendations=3 |
 | Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: additions=4 |
-| User-review close gate | FAIL | user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at'] |
+| User-review close gate | PASS | user-review-close.yaml: decision=approved |
 | Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=close) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
