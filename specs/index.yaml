@@ -1,5 +1,5 @@
-generated: '2026-03-07'
-total_specs: 1547
+generated: '2026-03-08'
+total_specs: 1548
 by_category:
   archive: 10
   data-sources: 13
@@ -7,7 +7,7 @@ by_category:
   other: 24
   repos: 1344
   templates: 15
-  wrk: 24
+  wrk: 25
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 186
+  workspace-hub: 187
   worldenergydata: 216
 by_wrk:
   WRK-0: 8
@@ -249,7 +249,8 @@ by_wrk:
   WRK-1003: 2
   WRK-1004: 1
   WRK-1005: 1
-  WRK-1019: 1
+  WRK-1019: 2
+  WRK-1020: 2
 specs:
 - path: specs/architecture/agent-vision.md
   title: Superintelligent Engineering Agent Architecture Blueprint
@@ -19935,7 +19936,21 @@ specs:
   - wrk-1019
   wrk_refs:
   - WRK-1019
-  mtime: '2026-03-05'
+  - WRK-1020
+  mtime: '2026-03-07'
+- path: specs/wrk/WRK-1020/plan.md
+  title: 'WRK-1020 Plan: portfolio-signals.yaml cron'
+  description: 'date: 2026-03-07 wrk_id: WRK-1020 route: B complexity: medium orchestrator: claude synthesis: claude+codex
+    (gemini timeout)'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1020
+  wrk_refs:
+  - WRK-1019
+  - WRK-1020
+  mtime: '2026-03-08'
 - path: specs/wrk/WRK-118/plan.md
   title: WRK-118 AI Agent Utilization Strategy — Plan
   description: (feature | bugfix | refactor | test-writing | research | docs → primary + rationale)
