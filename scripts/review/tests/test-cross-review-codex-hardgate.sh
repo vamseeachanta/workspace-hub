@@ -124,6 +124,35 @@ rc=0
 assert_eq "codex explicit NO_OUTPUT allows fallback consensus" "0" "$rc"
 assert_eq "fallback file created for codex NO_OUTPUT" "1" "$(find "$TEST_DIR/review/results" -maxdepth 1 -name '*FALLBACK.md' | wc -l | tr -d ' ')"
 
+# Scenario 4: CLI missing without --allow-no-codex exits non-zero (new explicit message)
+cat > "$TEST_DIR/review/submit-to-codex.sh" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+echo "# Codex CLI not found"
+echo "# Install: npm install -g @openai/codex"
+exit 2
+EOF
+chmod +x "$TEST_DIR/review/submit-to-codex.sh"
+
+rm -f "$TEST_DIR/review/results/"*.md 2>/dev/null || true
+rc=0
+"$TEST_DIR/review/cross-review.sh" "inline sample content" all --type implementation \
+  >"$TEST_DIR/out-codex-missing-no-flag.log" 2>"$TEST_DIR/err-codex-missing-no-flag.log" || rc=$?
+assert_eq "codex missing without --allow-no-codex exits non-zero" "1" "$rc"
+assert_eq "specific CLI-missing error shown" "1" \
+  "$(grep -c 'CODEX HARD GATE BLOCKED: Codex CLI not installed' \
+     "$TEST_DIR/err-codex-missing-no-flag.log" || echo 0)"
+
+# Scenario 5: CLI missing with --allow-no-codex + Claude+Gemini APPROVE → should pass
+rm -f "$TEST_DIR/review/results/"*.md 2>/dev/null || true
+rc=0
+"$TEST_DIR/review/cross-review.sh" "inline sample content" all --type implementation \
+  --allow-no-codex \
+  >"$TEST_DIR/out-codex-missing-with-flag.log" 2>"$TEST_DIR/err-codex-missing-with-flag.log" || rc=$?
+assert_eq "codex missing with --allow-no-codex exits 0 via 2-of-3" "0" "$rc"
+assert_eq "fallback file created when --allow-no-codex used" "1" \
+  "$(find "$TEST_DIR/review/results" -maxdepth 1 -name '*FALLBACK.md' | wc -l | tr -d ' ')"
+
 echo ""
 echo "Results: $PASS/$TOTAL passed; $FAIL failed"
 [[ "$FAIL" -eq 0 ]]

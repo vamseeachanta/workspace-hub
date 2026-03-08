@@ -167,6 +167,17 @@ EOF
     fi
   }
 
+  check_uv_readiness() {
+    if command -v uv >/dev/null 2>&1; then
+      if ! uv run --no-project python -c "print(1)" >/dev/null 2>&1; then
+        echo "# ERROR: uv is installed but not functional" >&2
+        echo "# Diagnose: uv run --no-project python -c \"print(1)\"" >&2
+        return 1
+      fi
+    fi
+    return 0
+  }
+
   classify_codex_failure() {
     if [[ -s "$err_file" ]] && grep -Eqi \
       "(insufficient[_ -]?quota|quota (exceeded|reached)|billing (limit|quota)|payment required|hard limit reached|credits? (exhausted|depleted|remaining:[[:space:]]*0))" \
@@ -187,7 +198,9 @@ EOF
 
   run_renderer() {
     if command -v uv >/dev/null 2>&1; then
-      uv run --no-project python "$RENDERER" --provider codex --input "$raw_file" && return
+      # uv present: use it exclusively (no silent python3 fallback)
+      uv run --no-project python "$RENDERER" --provider codex --input "$raw_file"
+      return
     fi
     if command -v python3 >/dev/null 2>&1; then
       python3 "$RENDERER" --provider codex --input "$raw_file" && return
@@ -250,6 +263,8 @@ ${compact_text}
     fi
     exit "$exec_exit"
   fi
+
+  check_uv_readiness || exit 1
 
   if run_renderer > "$rendered_file" 2>/dev/null \
     && [[ "$("$VALIDATOR" "$rendered_file")" == "VALID" ]]; then

@@ -22,11 +22,13 @@ REVIEW_TYPE="implementation"
 WRK_ID=""
 
 # Parse optional args
+ALLOW_NO_CODEX=false
 shift 2
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --type)   REVIEW_TYPE="$2"; shift 2 ;;
-    --wrk-id) WRK_ID="$2";     shift 2 ;;
+    --type)          REVIEW_TYPE="$2"; shift 2 ;;
+    --wrk-id)        WRK_ID="$2";     shift 2 ;;
+    --allow-no-codex) ALLOW_NO_CODEX=true; shift ;;
     *) echo "Unknown arg: $1" >&2; exit 1 ;;
   esac
 done
@@ -130,6 +132,7 @@ RESULT_PREFIX="${RESULTS_DIR}/${TIMESTAMP}-${SOURCE_NAME}-${REVIEW_TYPE}"
 CODEX_PASSED=false
 CODEX_NO_OUTPUT=false
 CODEX_FALLBACK_ALLOWED=false
+CODEX_CLI_MISSING=false
 
 classify_review_result() {
   local result_file="$1"
@@ -227,6 +230,7 @@ submit_review() {
         if grep -q "^# Codex CLI not found" "$result_file" 2>/dev/null; then
           CODEX_NO_OUTPUT=false
           CODEX_FALLBACK_ALLOWED=false
+          CODEX_CLI_MISSING=true
           echo "    (Codex CLI missing — fallback disabled; hard gate enforced)" >&2
           echo "# Codex review failed (exit $codex_exit)" > "$result_file"
           echo "# HARD GATE: Codex CLI not found — install Codex and rerun." >> "$result_file"
@@ -292,6 +296,18 @@ case "$REVIEWER" in
     submit_review "gemini"
     echo "--- All reviews submitted. Results in: ${RESULTS_DIR}/"
     if [[ "$CODEX_PASSED" != "true" ]]; then
+      # Codex CLI missing: require explicit user approval to proceed without Codex
+      if [[ "$CODEX_CLI_MISSING" == "true" ]]; then
+        if [[ "$ALLOW_NO_CODEX" != "true" ]]; then
+          echo ""
+          echo "=== CODEX HARD GATE BLOCKED: Codex CLI not installed ===" >&2
+          echo "Install Codex CLI: npm install -g @openai/codex" >&2
+          echo "Or pass --allow-no-codex to proceed with 2-of-3 consensus (requires explicit approval)." >&2
+          exit 1
+        fi
+        echo "    --allow-no-codex: user approved proceeding without Codex; enabling 2-of-3 fallback" >&2
+        CODEX_FALLBACK_ALLOWED=true
+      fi
       # WRK-160: Codex fallback — attempt 2-of-3 consensus when Codex returns NO_OUTPUT
       if [[ "$CODEX_FALLBACK_ALLOWED" == "true" ]]; then
         echo ""
