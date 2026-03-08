@@ -118,7 +118,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
 <nav class="stage-strip">
   <div class="stage-strip-inner">
     <span class="stage-strip-label">Stages</span>
-    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-done" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-active" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-done" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-done" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-pending" title="10 Work Execution">10</a><a href="#s11" class="sc sc-pending" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-pending" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
+    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-done" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-active" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-done" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-done" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-done" title="10 Work Execution">10</a><a href="#s11" class="sc sc-done" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-done" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-done" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-done" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-done" title="19 Close">19</a><a href="#s20" class="sc sc-done" title="20 Archive">20</a>
   </div>
 </nav>
 
@@ -229,15 +229,12 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Cross-review summary</div><p style="font-size:.85rem;color:var(--muted);"># WRK-1034 — Stage 6 Cross-Review (Plan Phase 1)
+    <div class="section-label">Cross-review summary</div><p style="font-size:.85rem;color:var(--muted);"># WRK-1034 Implementation Cross-Review
 
-## Provider: Gemini
-**Date**: 2026-03-07
-**Verdict**: MINOR (approve with fixes)
-
-### HIGH Findings — Resolved
-
-**H1: Wrong Stage 7 artifact filename*</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li></ul>
+**Stage**: 13 — Agent Cross-Review (Implementation)
+**Date**: 2026-03-08
+**Reviewer**: Codex (via feature-dev:code-reviewer agent)
+**Verdict**: APPROVE (round 2</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s7">
@@ -302,14 +299,21 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · heavy</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Execution record</div><div class="schema"><div class="schema-row"><span class="schema-key">summary</span><span class="schema-val">Phase 1: verify-gate-evidence.py extended with _load_gate_config(),
+_validate_exemption(), check_stage7_evidence_gate(),
+check_stage17_evidence_gate(), _run_stage7_check(), _run_stage17_check().
+Stage 5 inline exemption refactored to use shared helper.
+Phase 2: claim-item.sh Stage 7 guard + bootstrap confirmed_at fix;
+close-item.sh Stage 17 guard; work-queue/SKILL.md v1.7.0 HARD GATE notices.
+Stage 5 flipped disabled→full; migration exemptions for WRK-118/129/684/1005.
+</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/execute.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s11">
@@ -320,14 +324,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Gate evidence</div><div class="schema"><div class="schema-row"><span class="schema-key">gates</span><span class="schema-val">0/0 gates PASS</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-???-lifecycle.html</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s12">
@@ -392,14 +396,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Future work</div><table><tr><th>Title</th><th>Disposition</th><th>Captured</th></tr><tr><td>Unify S5/S7/S17 gate configs into a single user-review-gates-config.yaml</td><td>spun-off-new</td><td>True</td></tr><tr><td>Enforce 3-agent interactive planning session as a hard gate (Route B/C)</td><td>spun-off-new</td><td>True</td></tr><tr><td>Add work-queue-workflow/SKILL.md HARD GATE notices for Stages 7 and 17</td><td>spun-off-new</td><td>True</td></tr></table>
   </div>
 </section>
 <section class="stage-section" id="s16">
@@ -410,14 +414,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Additions</div><ul class="item-list"><li>{&#x27;finding&#x27;: &#x27;_validate_exemption() is the canonical exemption-check helper for all stage gates. Stage 5 was refactored to use it; Stage 7/17 use it directly. Any future gate (Stage N) should use this helper rather than inline exemption logic.\n&#x27;, &#x27;domain&#x27;: &#x27;harness/workflow-gates&#x27;, &#x27;skill_ref&#x27;: &#x27;scripts/work-queue/verify-gate-evidence.py&#x27;}</li><li>{&#x27;finding&#x27;: &#x27;union timestamp check (confirmed_at OR reviewed_at) is the correct pattern for Stage 17 because production artifacts use both field names interchangeably. Always accept both rather than enforcing a single canonical name.\n&#x27;, &#x27;domain&#x27;: &#x27;harness/workflow-gates&#x27;, &#x27;skill_ref&#x27;: &#x27;scripts/work-queue/verify-gate-evidence.py&#x27;}</li><li>{&#x27;finding&#x27;: &#x27;stage5-gate-config.yaml activation=full is now live. In-flight WRKs that predate the gate need stage5-migration-exemption.yaml (approved_by + approval_scope + optionally wrk_id). Same pattern applies to stage7/17 migration exemptions.\n&#x27;, &#x27;domain&#x27;: &#x27;harness/workflow-gates&#x27;, &#x27;skill_ref&#x27;: &#x27;scripts/work-queue/stage5-gate-config.yaml&#x27;}</li></ul>
   </div>
 </section>
 <section class="stage-section" id="s17">
@@ -428,14 +432,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">human_session · heavy · GATE</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-human">human_session</span>
       <span class="badge b-gate">gate</span>
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-close.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s18">
@@ -464,14 +468,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">status</span><span class="schema-val">archived</span></div><div class="schema-row"><span class="schema-key">commit</span><span class="schema-val">6452214b</span></div></div>
   </div>
 </section>
 <section class="stage-section" id="s20">
@@ -482,14 +486,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">status</span><span class="schema-val">archived</span></div><div class="schema-row"><span class="schema-key">commit</span><span class="schema-val">6452214b</span></div></div>
   </div>
 </section>
 </div>
