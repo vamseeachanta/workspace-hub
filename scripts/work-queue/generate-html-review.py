@@ -1336,16 +1336,19 @@ def detect_stage_statuses(
         12: ((ad / "variation-test-results.md").exists()
              or (ad / "test-summary.md").exists()
              or (ad / "test-results.md").exists()
-             or ev_exists("test-results.yaml", "ac-test-matrix.md")),
+             or (ad / "ac-test-matrix.md").exists()
+             or ev_exists("test-results.yaml", "ac-test-matrix.md", "test-summary.md")),
         13: ((ad / "cross-review-impl.md").exists()
              or ev_exists("cross-review-impl.md", "cross-review-implementation.md")
-             or bool(list(ev.glob("cross-review-implementation*.md")))),
+             or bool(list(ev.glob("cross-review-implementation*.md")))
+             or bool(list(ev.glob("cross-review-*.md")))),
         # S14 Verify Gate Evidence: gate summary AND cross-review-impl must both exist
         # so S14 doesn't prematurely show 'done' when only S11 (artifact gen) is complete
         14: (ev_exists("gate-evidence-summary.json")
              and ((ad / "cross-review-impl.md").exists()
                   or ev_exists("cross-review-impl.md", "cross-review-implementation.md")
-                  or bool(list(ev.glob("cross-review-implementation*.md"))))),
+                  or bool(list(ev.glob("cross-review-implementation*.md")))
+                  or bool(list(ev.glob("cross-review-*.md"))))),
         15: ev_exists("future-work.yaml"),
         16: ev_exists("resource-intelligence-update.yaml"),
         17: ev_exists("user-review-close.yaml"),
@@ -1357,7 +1360,16 @@ def detect_stage_statuses(
     found_active = False
     for n in range(1, 21):
         if n == 18:
-            statuses[18] = "done" if ev_exists("reclaim.yaml") else "na"
+            reclaim_path = ev / "reclaim.yaml"
+            if reclaim_path.exists():
+                import yaml as _yaml
+                try:
+                    rdata = _yaml.safe_load(reclaim_path.read_text()) or {}
+                    statuses[18] = "na" if str(rdata.get("status", "")).strip().lower() == "n/a" else "done"
+                except Exception:
+                    statuses[18] = "done"
+            else:
+                statuses[18] = "na"
             continue
         # Once the active stage is found, all subsequent stages are pending
         # regardless of artifact presence — prevents future artifacts from
