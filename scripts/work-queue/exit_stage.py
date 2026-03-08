@@ -236,7 +236,7 @@ def _main() -> None:
     print(f"Stage {stage} exit validated. All artifacts present.")
     if human_gate:
         print(f"GATE PASSED — Stage {stage + 1} unlocked.")
-        print(f"Run: /checkpoint {wrk_id}  →  start new session  →  /resume {wrk_id}")
+        print(f"Run: /checkpoint {wrk_id}  →  start new session  →  /wrk-resume {wrk_id}")
 
 
 if __name__ == "__main__":

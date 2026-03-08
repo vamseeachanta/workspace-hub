@@ -177,7 +177,7 @@ def route_stage(
             output_dir, "..", "checkpoint.yaml"
         )
         if os.path.exists(checkpoint):
-            print(f"\n  Checkpoint found. Run /resume {wrk_id} to reload context.")
+            print(f"\n  Checkpoint found. Run /wrk-resume {wrk_id} to reload context.")
 
     elif invocation == "chained_agent":
         chained = contract.get("chained_stages", [stage])

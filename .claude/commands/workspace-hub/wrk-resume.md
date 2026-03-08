@@ -1,11 +1,11 @@
 ---
-name: resume
+name: wrk-resume
 description: Resume a WRK item from its last checkpoint — reads checkpoint.yaml and loads entry_reads files into context
 category: workspace-hub
 argument-hint: WRK-NNN
 ---
 
-# /resume $ARGUMENTS
+# /wrk-resume $ARGUMENTS
 
 Resume a WRK work item from its last checkpoint.
 
