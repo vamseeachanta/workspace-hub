@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-08T05:42:39Z by generate-index.py -->
+<!-- Generated: 2026-03-08T10:12:56Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-08T05:42:39Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-08T10:12:56Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 460
+**Total items:** 461
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 206 |
+| pending | 207 |
 | working | 4 |
 | blocked | 9 |
 | archived | 241 |
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 214 |
+| high | 215 |
 | medium | 204 |
 | low | 41 |
 
@@ -30,7 +30,7 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 81 |
+| simple | 82 |
 | medium | 217 |
 | complex | 95 |
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 42 |
+| harness | 43 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -69,7 +69,7 @@
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 153 |
+| workspace-hub | 154 |
 | worldenergydata | 89 |
 
 ### Plan Tracking
@@ -77,7 +77,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 176 / 460 |
+| Plans exist | 176 / 461 |
 | Plans cross-reviewed | 75 |
 | Plans approved | 96 |
 | Brochure pending | 8 |
@@ -89,9 +89,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 460 |
+| Total captured | 461 |
 | Total archived | 241 |
-| Completion rate | 241/460 (52%) |
+| Completion rate | 241/461 (52%) |
 | Monthly rate (current month) | 13 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -99,7 +99,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 59 / 206 | 29% |
+| Pending items with plans | 59 / 207 | 29% |
 | Plans cross-reviewed | 10 | 14% |
 | Plans user-approved | 10 | 14% |
 
@@ -107,8 +107,8 @@
 
 | Bucket | Count | Items |
 |--------|-------|-------|
-| Pending > 30 days | 14 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075 |
-| Pending > 14 days | 32 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-149, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-234, WRK-235, WRK-256, WRK-259, WRK-261 |
+| Pending > 30 days | 15 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099 |
+| Pending > 14 days | 34 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-149, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-234, WRK-235, WRK-256, WRK-259, WRK-261, WRK-294, WRK-297 |
 | Working > 7 days | 2 | WRK-118, WRK-129 |
 | Blocked > 7 days | 8 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280 |
 
@@ -116,7 +116,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 95 | 2 | 7 |
+| High     | 96 | 2 | 7 |
 | Medium   | 83  | 2  | 1  |
 | Low      | 28  | 0  | 1  |
 
@@ -124,7 +124,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (42 items — 12 high, 25 medium, 5 low)
+### harness (43 items — 13 high, 25 medium, 5 low)
 
 #### harness / agent-ux
 
@@ -212,6 +212,12 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1014 | MEDIUM | improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through | pending |
+
+#### harness / workflow-gates
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1035 | HIGH | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending |
 
 ### engineering (117 items — 68 high, 38 medium, 11 low)
 
@@ -993,6 +999,7 @@
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ██░ 90% | n/a | - |
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1206,6 +1213,7 @@
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | medium | simple | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | medium | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | medium | simple | digitalmodel | - |
+| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | high | simple | workspace-hub | - |
 
 ### Working
 
@@ -1979,6 +1987,7 @@
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | medium | - |
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | archived | high | medium | - |
+| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending | high | simple | - |
 
 ### worldenergydata
 
@@ -2294,6 +2303,7 @@
 | WRK-1028 | Stage-isolated WRK lifecycle: per-stage skills + fresh-context entry + exit artifacts | archived | complex | workspace-hub | - |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | medium | workspace-hub | - |
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | archived | medium | workspace-hub | - |
+| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending | simple | workspace-hub | - |
 
 ### Medium
 
@@ -2637,6 +2647,7 @@
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | digitalmodel | - |
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | workspace-hub | - |
+| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending | high | workspace-hub | - |
 
 ### Medium
 
@@ -2962,7 +2973,7 @@
 
 ## By Computer
 
-### ace-linux-1 (156 active / 184 total)
+### ace-linux-1 (157 active / 185 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3150,6 +3161,7 @@
 | WRK-1030 | Add /resume slash command for WRK checkpoint resumption | archived | medium | simple | workspace-hub |
 | WRK-1031 | Single lifecycle HTML: embed full plan content inline, retire snapshot files | archived | high | medium | workspace-hub |
 | WRK-1034 | Enforce Stage 7 and Stage 17 user-review as hard blocking gates | archived | high | medium | workspace-hub |
+| WRK-1035 | Roll WRK-1034 Stage 5 retroactive-approval learning into work-queue-workflow SKILL | pending | high | simple | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 
