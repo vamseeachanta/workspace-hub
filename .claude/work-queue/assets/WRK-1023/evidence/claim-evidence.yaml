@@ -1,0 +1,6 @@
+version: 1
+wrk_id: WRK-1023
+owner: claude
+route: A
+claimed_at: 2026-03-09T01:22:00Z
+quota: available

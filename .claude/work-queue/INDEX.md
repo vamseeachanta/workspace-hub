@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-09T01:41:51Z by generate-index.py -->
+<!-- Generated: 2026-03-09T02:03:53Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-09T01:41:51Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-09T02:03:53Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 475
+**Total items:** 477
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 210 |
+| pending | 212 |
 | working | 4 |
 | blocked | 9 |
 | archived | 252 |
@@ -22,15 +22,15 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 222 |
-| medium | 208 |
+| high | 223 |
+| medium | 209 |
 | low | 44 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 87 |
+| simple | 89 |
 | medium | 224 |
 | complex | 97 |
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 44 |
+| harness | 46 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -69,7 +69,7 @@
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
-| workspace-hub | 168 |
+| workspace-hub | 167 |
 | worldenergydata | 90 |
 
 ### Plan Tracking
@@ -77,7 +77,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 185 / 475 |
+| Plans exist | 185 / 477 |
 | Plans cross-reviewed | 84 |
 | Plans approved | 106 |
 | Brochure pending | 8 |
@@ -89,9 +89,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 475 |
+| Total captured | 477 |
 | Total archived | 252 |
-| Completion rate | 252/475 (53%) |
+| Completion rate | 252/477 (53%) |
 | Monthly rate (current month) | 22 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -99,7 +99,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 210 | 28% |
+| Pending items with plans | 58 / 212 | 27% |
 | Plans cross-reviewed | 10 | 15% |
 | Plans user-approved | 10 | 15% |
 
@@ -116,15 +116,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 96 | 2 | 7 |
-| Medium   | 84  | 2  | 1  |
+| High     | 97 | 2 | 7 |
+| Medium   | 85  | 2  | 1  |
 | Low      | 30  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (44 items — 12 high, 25 medium, 7 low)
+### harness (46 items — 13 high, 26 medium, 7 low)
 
 #### harness / agent-teams
 
@@ -144,12 +144,8 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1024 | MEDIUM | chore(harness): increase context window limits for Claude and Codex | pending |
-
-#### harness / daily-report
-
-| ID | Priority | Title | Status |
-|----|----------|-------|--------|
-| WRK-1023 | MEDIUM | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending |
+| WRK-1050 | MEDIUM | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending |
+| WRK-1051 | MEDIUM | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending |
 
 #### harness / hooks
 
@@ -165,6 +161,12 @@
 | WRK-636 | MEDIUM | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending |
 | WRK-1018 | MEDIUM | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending |
 | WRK-182 | LOW | Predictive Session Planning | pending |
+
+#### harness / session-logging
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1052 | HIGH | feat(harness): log model, context limit, effort level at session start | pending |
 
 #### harness / skills
 
@@ -995,7 +997,6 @@
 | WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - 15% | n/a | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | - | n/a | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -1020,6 +1021,9 @@
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | medium | simple | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | medium | simple | acma-ansys05 | acma-ansys05 | acma-ansys05 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1052 | feat(harness): log model, context limit, effort level at session start | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -1228,7 +1232,6 @@
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | medium | simple | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | medium | medium | workspace-hub | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
-| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | medium | simple | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | medium | simple | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | medium | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | medium | simple | digitalmodel | - |
@@ -1237,6 +1240,9 @@
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | low | simple | workspace-hub | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | medium | medium | workspace-hub | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | high | medium | workspace-hub, digitalmodel, worldenergydata | - |
+| WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | medium | simple | - | - |
+| WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | medium | simple | - | - |
+| WRK-1052 | feat(harness): log model, context limit, effort level at session start | high | simple | - | - |
 
 ### Working
 
@@ -2013,7 +2019,6 @@
 | WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | medium | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | - |
-| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | - |
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | simple | - |
@@ -2361,6 +2366,7 @@
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | medium | workspace-hub | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | medium | workspace-hub, digitalmodel, worldenergydata | - |
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | simple | workspace-hub | - |
+| WRK-1052 | feat(harness): log model, context limit, effort level at session start | pending | simple | - | - |
 
 ### Medium
 
@@ -2563,7 +2569,6 @@
 | WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | workspace-hub | - |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | workspace-hub | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | simple | workspace-hub | - |
-| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | simple | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | simple | workspace-hub | - |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | workspace-hub | - |
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | simple | workspace-hub | - |
@@ -2574,6 +2579,8 @@
 | WRK-1040 | Nomenclature canonicalisation — eliminate session/stage/phase confusion | archived | medium | workspace-hub | - |
 | WRK-1041 | Lifecycle HTML — auto-refresh + on-demand /work html command | pending | simple | workspace-hub | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | pending | medium | workspace-hub | - |
+| WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | simple | - | - |
+| WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | simple | - | - |
 
 ### Low
 
@@ -2706,7 +2713,6 @@
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | workspace-hub | - |
 | WRK-1018 | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending | medium | workspace-hub | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | workspace-hub | - |
-| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | workspace-hub | - |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | workspace-hub | - |
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | workspace-hub | - |
 | WRK-1027 | DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS | pending | medium | digitalmodel | - |
@@ -2717,6 +2723,9 @@
 | WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | workspace-hub | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | low | workspace-hub | - |
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | high | workspace-hub | - |
+| WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | medium | - | - |
+| WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | medium | - | - |
+| WRK-1052 | feat(harness): log model, context limit, effort level at session start | pending | high | - | - |
 
 ### Medium
 
@@ -3229,7 +3238,6 @@
 | WRK-1020 | [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering | archived | medium | medium | workspace-hub |
 | WRK-1021 | Audit and migrate scheduled jobs to claude code schedule tasks on all workstations | pending | medium | medium | workspace-hub |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | pending | medium | simple | workspace-hub |
-| WRK-1023 | feat(harness): add per-provider model/effort/knobs summary to daily cron checks | pending | medium | simple | workspace-hub |
 | WRK-1024 | chore(harness): increase context window limits for Claude and Codex | pending | medium | simple | workspace-hub |
 | WRK-1025 | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending | medium | medium | workspace-hub |
 | WRK-1026 | work-queue-workflow Stage 5: add pseudocode requirement and tests/evals to planning stage | archived | medium | simple | workspace-hub |
@@ -3254,8 +3262,9 @@
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | medium | workspace-hub |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | workspace-hub, digitalmodel, worldenergydata |
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | high | simple | workspace-hub |
+| WRK-1052 | feat(harness): log model, context limit, effort level at session start | pending | high | simple | - |
 
-### ace-linux-2 (6 active / 13 total)
+### ace-linux-2 (7 active / 14 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3272,8 +3281,9 @@
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | archived | high | complex | workspace-hub, CAD-DEVELOPMENTS |
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | simple | CAD-DEVELOPMENTS |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | workspace-hub |
+| WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | medium | simple | - |
 
-### acma-ansys05 (12 active / 12 total)
+### acma-ansys05 (13 active / 13 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3289,6 +3299,7 @@
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | blocked | high | medium | aceengineer-admin |
 | WRK-589 | feat(orcaflex): dat-to-yaml pipeline — extract, legal-scan, import to digitalmodel | pending | high | medium | workspace-hub, client_projects, digitalmodel |
 | WRK-595 | feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05 | pending | high | medium | workspace-hub, digitalmodel |
+| WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | medium | simple | - |
 
 ### (unassigned) (22 active / 228 total)
 

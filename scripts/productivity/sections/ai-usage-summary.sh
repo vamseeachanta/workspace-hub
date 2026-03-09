@@ -130,11 +130,88 @@ else
 fi
 echo ""
 
-# ── Models in Use ─────────────────────────────────────────────────────────────
-echo "### Models in Use"
+# ── Active Provider Config ─────────────────────────────────────────────────────
+echo "### Active Provider Config"
 echo ""
-echo "| Tool | Model | Usage Notes |"
-echo "|------|-------|-------------|"
-echo "| claude | claude-sonnet-4-6 | Default; Opus 4.6 for Route C planning only |"
-echo "| codex | gpt-5.3-codex | Cross-review hard gate |"
-echo "| gemini | gemini-2.5-pro | Secondary review; \`echo content | gemini -p \"prompt\" -y\` |"
+python3 - "$WORKSPACE_ROOT" <<'PYEOF'
+import json, sys, re
+from pathlib import Path
+
+ws = Path(sys.argv[1])
+home = Path.home()
+
+def read_json(p):
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+def read_toml_key(p, key):
+    """Extract bare 'key = "value"' from a TOML file (no dependency on tomllib)."""
+    try:
+        for line in p.read_text(encoding="utf-8").splitlines():
+            m = re.match(rf'^\s*{re.escape(key)}\s*=\s*["\']?([^"\'#\n]+)["\']?', line)
+            if m:
+                return m.group(1).strip().strip('"\'')
+    except Exception:
+        pass
+    return None
+
+# Context window map: model alias/id → (full_name, context_k_tokens)
+CTX_MAP = {
+    # Claude
+    "sonnet":            ("claude-sonnet-4-6",  200),
+    "claude-sonnet-4-6": ("claude-sonnet-4-6",  200),
+    "opus":              ("claude-opus-4-6",     200),
+    "claude-opus-4-6":   ("claude-opus-4-6",     200),
+    "haiku":             ("claude-haiku-4-5",    200),
+    "claude-haiku-4-5":  ("claude-haiku-4-5",    200),
+    # Codex / OpenAI
+    "gpt-5.4":           ("gpt-5.4",             128),
+    "gpt-5.3-codex":     ("gpt-5.3-codex",       128),
+    "gpt-5.2-codex":     ("gpt-5.2-codex",       128),
+    "o4-mini":           ("o4-mini",              200),
+    "o3":                ("o3",                   200),
+    # Gemini
+    "gemini-3.1-pro-preview": ("gemini-3.1-pro-preview", 1000),
+    "gemini-2.5-pro":    ("gemini-2.5-pro",      1000),
+    "gemini-2.0-flash":  ("gemini-2.0-flash",     1000),
+}
+
+def ctx_label(model_alias):
+    entry = CTX_MAP.get(model_alias.lower() if model_alias else "")
+    if entry:
+        return f"{entry[1]}K"
+    return "?"
+
+rows = []
+
+# ── Claude ────────────────────────────────────────────────────────────────────
+claude_cfg   = read_json(home / ".claude/settings.json")
+claude_alias = claude_cfg.get("model") or "not set"
+# Check for extended thinking in repo settings
+repo_cfg      = read_json(ws / ".claude/settings.json")
+thinking_on   = repo_cfg.get("thinking") or claude_cfg.get("thinking")
+claude_effort = "thinking=on" if thinking_on else "thinking=off"
+rows.append(("claude", claude_alias, ctx_label(claude_alias), claude_effort, "~/.claude/settings.json"))
+
+# ── Codex — repo-local overrides user config ──────────────────────────────────
+codex_user  = home / ".codex/config.toml"
+codex_repo  = ws / ".codex/config.toml"
+codex_src   = codex_repo if codex_repo.exists() else codex_user
+codex_model  = read_toml_key(codex_src, "model") or "not set"
+codex_effort = read_toml_key(codex_src, "model_reasoning_effort") or "—"
+rows.append(("codex", codex_model, ctx_label(codex_model), f"effort={codex_effort}", codex_src.name))
+
+# ── Gemini ────────────────────────────────────────────────────────────────────
+gemini_cfg   = read_json(home / ".gemini/settings.json")
+gemini_model = (gemini_cfg.get("model") or {}).get("name") or str(gemini_cfg.get("model") or "not set")
+gemini_thinking = gemini_cfg.get("thinking", {})
+gemini_effort = f"thinking_budget={gemini_thinking.get('budget','—')}" if gemini_thinking else "—"
+rows.append(("gemini", gemini_model, ctx_label(gemini_model), gemini_effort, "~/.gemini/settings.json"))
+
+print("| Provider | Model | Context | Effort/Thinking | Config Source |")
+print("|----------|-------|---------|-----------------|---------------|")
+for provider, model, ctx, effort, src in rows:
+    print(f"| {provider} | {model} | {ctx} | {effort} | {src} |")
+PYEOF

@@ -1,0 +1,26 @@
+wrk_id: WRK-1023
+stage: 2
+completion_status: continue_to_planning
+gathered_at: "2026-03-09T01:15:00Z"
+
+target_file: scripts/productivity/sections/ai-usage-summary.sh
+config_sources:
+  claude:
+    user_config: ~/.claude/settings.json
+    key_field: model (string, e.g. "sonnet")
+    notes: no effort/thinking field; model only
+  codex:
+    user_config: ~/.codex/config.toml
+    repo_config: .codex/config.toml
+    key_fields: [model, model_reasoning_effort]
+    notes: repo-local overrides user config; both TOML files
+  gemini:
+    user_config: ~/.gemini/settings.json
+    key_field: model.name
+    notes: JSON format; nested under model.name
+
+skills:
+  core_used:
+    - work-queue-workflow
+    - workflow-gatepass
+    - session-start

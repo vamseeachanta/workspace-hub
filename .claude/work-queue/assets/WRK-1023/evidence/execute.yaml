@@ -1,0 +1,27 @@
+wrk_id: WRK-1023
+stage: 10
+executed_at: "2026-03-09T01:25:00Z"
+executor: claude
+computer: ace-linux-1
+
+steps_completed:
+  - extended_provider_config_block_with_context_and_effort
+  - context_window_map_all_providers
+  - effort_thinking_columns
+
+integrated_repo_tests:
+  - name: ai-usage-summary full run
+    scope: integrated
+    command: bash scripts/productivity/sections/ai-usage-summary.sh
+    result: pass
+    artifact_ref: scripts/productivity/sections/ai-usage-summary.sh
+  - name: active-provider-config section present
+    scope: integrated
+    command: "bash scripts/productivity/sections/ai-usage-summary.sh | grep -q 'Active Provider Config'"
+    result: pass
+    artifact_ref: scripts/productivity/sections/ai-usage-summary.sh
+  - name: codex effort column populated
+    scope: integrated
+    command: "bash scripts/productivity/sections/ai-usage-summary.sh | grep -q 'effort=medium'"
+    result: pass
+    artifact_ref: scripts/productivity/sections/ai-usage-summary.sh

@@ -1,0 +1,7 @@
+wrk_id: WRK-1023
+stage: 16
+updated_at: "2026-03-09T01:30:00Z"
+additions:
+  - file: scripts/productivity/sections/ai-usage-summary.sh
+    change: "Active Provider Config block: live model/context/effort reads for Claude+Codex+Gemini"
+no_new_external_dependencies: true

@@ -1,0 +1,16 @@
+wrk_id: WRK-1023
+stage: 15
+synthesized_at: "2026-03-09T01:30:00Z"
+recommendations:
+  - id: FW-01
+    title: "Session-start logging of model/context/effort (WRK-1052 captured)"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    notes: WRK-1052 created.
+  - id: FW-02
+    title: "Auto-flag expensive model (Opus/o3) when lighter model suffices"
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    notes: Future enhancement to provider config block.
