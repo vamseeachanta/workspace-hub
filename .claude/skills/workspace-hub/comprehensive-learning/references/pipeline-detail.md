@@ -1,0 +1,865 @@
+## Pipeline
+
+Run phases sequentially. Record each result (DONE / SKIPPED / FAILED + reason) for
+the Phase 10 report. Non-mandatory phases log failure and continue; fatal failures
+in Phases 1 or 4 set `_PIPELINE_EXIT=1`. Phase 10 always runs and is itself
+non-fatal (report-write failures log a warning only). Register Phase 10 as
+`trap EXIT` at pipeline start.
+
+---
+
+### Phase 1 — Insights  *(mandatory)*
+
+Invoke `/insights`. Sources:
+
+- `.claude/state/session-signals/*.jsonl`
+- `.claude/state/cc-insights/*.json`
+- `.claude/state/sessions/*.json`
+- `.claude/state/daily-summaries/*.md`
+- `logs/orchestrator/claude/session_YYYYMMDD.jsonl`          (hook-written tool-call stream)
+- `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`             (native Codex CLI sessions)
+- `~/.gemini/tmp/<project>/chats/session-*.json`             (native Gemini CLI sessions)
+- `logs/orchestrator/codex/WRK-*.log`                        (cross-review verdicts — populated by submit-to-codex.sh)
+- `logs/orchestrator/gemini/WRK-*.log`                       (cross-review verdicts — populated by submit-to-gemini.sh)
+
+Note: native session dirs (`~/.codex/`, `~/.gemini/`) are always populated when the CLIs are used
+and are the primary source for AI activity. Orchestrator dirs contain only cross-review invocations.
+Use orchestrator logs for WRK-specific verdicts; use native logs for broader usage pattern analysis.
+
+Extract: skill usage frequency, repeated tool call patterns, task success/failure
+signals, user correction events, **engineering audit signals** (wall_thickness, 
+fatigue, etc.), and **data provenance signals**.
+
+**Additional session-quality signals (flag in Phase 1 report):**
+
+| Signal | Check | Action if triggered |
+|--------|-------|---------------------|
+| Context reset discipline | Sessions with ≥3 unrelated WRK tasks but no `/clear` event in signals | Flag: "context pollution risk — multiple tasks without reset" |
+| Plan mode skipped | Multi-file edit session (≥3 files, ≥1 WRK) with no plan-mode invocation recorded | Flag: "plan mode not used before implementation" |
+| Agent loop / stuck pattern | Session where same tool+file pair appears ≥5× consecutively without progress | Flag: "possible agent loop — consider ultrathink or task decomposition" |
+| Task decomposition quality | WRK item with >15 tool calls before first commit | Flag: "WRK scope too large — split or add stopping conditions" |
+| Ensemble gate skipped | Route B/C WRK processed without `plan_ensemble: true` in frontmatter | Flag: "ensemble gate bypassed — plan confidence unknown" |
+| Low consensus score | `ensemble_consensus_score` < 70 on a completed WRK item | Flag: "low-confidence plan executed — review for rework risk" |
+| SPLIT not resolved | `synthesis.md` contains `[SPLIT:` lines but item proceeded to implementation | Flag: "unresolved SPLIT proceeded — log decision and outcome" |
+| Provider NO_OUTPUT rate | ≥3 consecutive ensemble runs where same provider emits NO_OUTPUT | Flag: "provider degraded — check CLI version / auth for <provider>" |
+| AI agent readiness | `session-signals/ai-readiness.jsonl` contains `"status":"warn"` | Flag: "AI agent <name> missing or outdated — see R-AI-CLI in readiness-issues.md" |
+| TDD pairing rate | `session-signals/test-health.jsonl` latest `overall_tdd_pairing_pct` < 70 | Flag: "TDD pairing rate <N>% — repos at risk: <list>" (source: WRK-236 test-health-check.sh) |
+| Agent gate-skip rate | Per-provider count of WRK items closed without `plan_reviewed: true` or missing cross-review artifact | Flag: "Agent <provider> skipped gates on N items — update anti-patterns in skills" |
+| Agent scope drift | Per-provider count of commits touching repos outside `target_repos` for the WRK | Flag: "Agent <provider> exceeded WRK scope N times — add scope-limit prohibitions" |
+| Agent over-eagerness | Claude sessions where `percent_complete` jumped 0→100 in a single turn with no cross-review log entry | Flag: "Claude gate-skip pattern detected — reinforce Never-archive-early rule" |
+
+Signal emitter status (WRK-305):
+
+| Signal | Event key | Emitter | Status |
+|--------|-----------|---------|--------|
+| Per-WRK tool-call counts | `session_tool_summary` | `emit-session-quality-signals.sh` (Stop hook) | **Wired** |
+| `/clear` invocation | `context_reset` | `emit-context-reset.sh` (call from `/clear` skill) | **Placeholder** — `/clear` is not interceptable by hooks; see `.claude/docs/hooks/session-quality-signals.md` |
+| Plan-mode transition | `plan_mode_start` / `plan_mode_end` | `emit-plan-mode-signal.sh` | **Placeholder** — no `PlanModeStart`/`PlanModeEnd` hook event exists yet; see `.claude/docs/hooks/session-quality-signals.md` |
+
+If a signal is absent for a check, skip the check and log
+`"signal not available — emitter not configured"`.
+
+### WRK-690 Signal Coverage Lessons (mandatory carry-forward)
+
+1. **Measure, then infer:** Keep `currently_measured` and `inferred` as separate fields.
+   Do not treat inference as evidence compliance. Inferred signals are never
+   counted as measured signals.
+2. **Emit signals in shared workflow scripts:** Add signal emission in shared
+   orchestrator scripts (`scripts/agents/*`, `scripts/work-queue/*`) so Codex,
+   Claude, and Gemini sessions all contribute consistently.
+3. **Normalize gate logs:** `log-gate-event.sh` must always include explicit
+   `signal:` and `action:` keys for machine parsing.
+4. **Rebuild weekly baseline from native stores:** Run
+   `scripts/work-queue/build-session-gate-analysis.py` before coverage audits so
+   weekly numbers reflect current signal contract.
+5. **Track per-agent source coverage:** Always include source breakdown
+   (`claude-native`, `codex-native`, `gemini-native`) to detect provider-specific
+   drift even when aggregate coverage looks healthy.
+6. **Emit daily gate-init/gate-missing matrix:** In Phase 1 output, include a
+   per-agent-by-day table for `init`, `set_active_wrk`, and any missing mandatory
+   signals so workflow drift is visible before close.
+
+---
+
+### Phase 1b — Drift Detection  *(non-mandatory, ace-linux-1 only)*
+
+After Phase 1 completes, run `scripts/session/detect-drift.sh` against the previous
+day's session log to detect rule violations from the prior session.
+
+```bash
+YESTERDAY=$(date -d "yesterday" +%Y%m%d)
+LAST_LOG="logs/orchestrator/claude/session_${YESTERDAY}.jsonl"
+bash scripts/session/detect-drift.sh --log "$LAST_LOG" --since "$YESTERDAY"
+```
+
+**Detection patterns:**
+
+| Pattern | Method | Output field |
+|---------|--------|-------------|
+| `python_runtime` | grep `cmd` fields for bare `python3` not preceded by `uv run` | `python_runtime_violations` |
+| `file_placement` | grep `path` fields for `src/*/tests/` write events | `file_placement_violations` |
+| `git_workflow` | `git log --since=<YYYYMMDD>` on real commits; filter against conventional-commit regex | `git_workflow_violations` |
+
+Git workflow sub-categories: `non_conventional`, `missing_wrk_ref`, `exempt_type`.
+
+**Output:** Appends a dated entry to `.claude/state/drift-summary.yaml` (gitignored).
+30-day rolling aggregate tracks which rules are drifted most often → informs
+`python-runtime.md` and `git-workflow.md` `## Session Learnings` updates.
+
+If the session log for yesterday is absent, Phase 1b logs `SKIP` (non-fatal).
+
+---
+
+### Phase 2 — Reflect  *(non-mandatory)*
+
+Invoke `/reflect`. Sources:
+
+- `.claude/state/reflect-history/`
+- `.claude/state/trends/*.json`
+- `git log --all --oneline` across repos
+
+Extract: cross-session patterns, velocity trends, recurring blockers.
+
+**Re-derivation check:** If any script in `scripts/analysis/` or `scripts/learning/`
+is newer than derived files in `.claude/state/patterns/` or `.claude/state/corrections/`,
+flag for manual re-derivation on the originating machine.
+
+---
+
+### Phase 3 — Knowledge  *(non-mandatory)*
+
+Invoke `/knowledge`. Sources: Phase 1 + 2 output + session context.
+
+Extract: new institutional knowledge worth persisting across sessions.
+
+**Memory staleness check:** For key claims in `.claude/memory/MEMORY.md` and topic
+files, spot-check 3–5 entries against current codebase reality (file paths, commands,
+test invocations). Flag stale entries for correction. Mark checked entries with
+`*verified: <date>*` or `*stale: <date>*`.
+
+---
+
+### Phase 3b — Memory Compaction  *(non-mandatory)*
+
+Run `scripts/memory/compact-memory.py` to prevent context-rot in memory files.
+
+**Trigger conditions (any one sufficient):**
+- `MEMORY.md` ≥ 180 lines (20-line safety margin before 200-line hard truncation)
+- Any topic file ≥ 140 lines
+- Phase 3 flagged ≥ 5 stale entries this run
+- First Sunday of the month (forced full compaction regardless of line counts)
+
+**Tier model enforced by compaction:**
+
+```
+MEMORY.md (≤150 lines)          — INDEX ONLY: section headers + pointers to topic files
+  └─ topic files (≤140 lines)   — ACTIVE facts, read on demand
+       └─ archive/              — RETIRED facts, never auto-loaded
+```
+
+**MEMORY.md content rules (enforced on every run):**
+- MUST NOT contain WRK status references — WRK state lives in `.claude/work-queue/` only
+- MUST NOT contain session snapshots (e.g., "File Hardening 2026-02-25" sections) older than 30 days
+- Each entry = pointer to a topic file or a slow-changing invariant (command, path, arch decision)
+
+**Eviction rules (applied in order, results written to `archive/`):**
+
+| Rule | Condition | Archive target |
+|------|-----------|----------------|
+| Done-WRK expiry | Bullet references WRK-NNN with `status: done` for >30 days | `archive/done-wrk.md` |
+| Session snapshot expiry | Section heading contains a date >30 days ago | `archive/done-sprints.md` |
+| Path staleness | File path in bullet does not exist on disk | `archive/stale-paths.md` |
+| Semantic dedup | Two bullets share >80% overlap → keep fresher/more specific | Delete older in-place |
+| Age eviction | Bullet not referenced in any session signal for 90+ days AND not marked `# keep` | `archive/aged-out.md` |
+
+**`# keep` marker:** Append to any bullet exempt from age eviction (foundational invariants only).
+
+**Promotion rules for WRK-635/636 session scan output:**
+- Scan writes to topic files ONLY — never directly to `MEMORY.md`
+- Before writing: check topic file headroom; if ≥ 130 lines, run compaction first
+- Overflow candidates (topic file still full after compaction) → `archive/session-scan-overflow.md`
+- Compaction may promote a new topic file section header to `MEMORY.md` index if not already present
+
+**Script output:** Log to `memory/compact-log.jsonl`:
+```json
+{"timestamp": "...", "lines_freed_memory": N, "lines_freed_topics": N,
+ "bullets_evicted": N, "bullets_archived": N, "trigger": "line-count|staleness|forced"}
+```
+
+**Phase 3b is non-mandatory:** failure logs and continues; does NOT set `_PIPELINE_EXIT=1`.
+If `compact-memory.py` does not yet exist, log `"Phase 3b: SKIPPED — script not yet built (WRK-637)"` and continue.
+
+---
+
+### Phase 3c — Memory Curation  *(non-mandatory)*
+
+Classify every bullet in every memory file by its ideal long-term home across the
+**full ecosystem** — harness files, source code, domain knowledge, config, tests,
+and specs. Generate promotion candidates only — do NOT auto-move or auto-write
+anything. Phase 7 converts candidates into WRK items for human review and execution.
+
+**Run `scripts/memory/curate-memory.py`** (part of WRK-637 deliverable).
+
+If script does not yet exist, log `"Phase 3c: SKIPPED — script not yet built (WRK-637)"` and continue.
+
+#### Full Ecosystem Destination Map
+
+```
+HARNESS ──────────────────────────────────────────────────────────────────────
+  skill        → .claude/skills/<category>/<name>/SKILL.md
+  rule         → .claude/rules/<domain>.md
+  doc          → .claude/docs/<topic>.md
+  memory-keep  → no action (fast-lookup facts that earn their context cost)
+
+SPECS & DOMAIN KNOWLEDGE ─────────────────────────────────────────────────────
+  module-spec  → specs/modules/<repo>/<module>.md
+  domain-doc   → <repo>/docs/domains/<domain>/<topic>.md
+  standards    → <repo>/docs/domains/<domain>/standards-inventory.md (append)
+
+CODE ─────────────────────────────────────────────────────────────────────────
+  utility-fn   → src/<repo>/<pkg>/utils/<module>.py  (new or append)
+  base-class   → src/<repo>/<pkg>/base/<class>.py
+  config-const → config/<domain>/<name>.yaml  (constants, thresholds, tables)
+  calc-example → docs/domains/<domain>/examples/calc-NNN-<name>.md
+
+TESTS ────────────────────────────────────────────────────────────────────────
+  test-fixture → tests/<domain>/conftest.py or fixtures/<name>.yaml
+  test-pattern → .claude/docs/testing-patterns.md  (coding-style appendix)
+
+ARCHIVE ──────────────────────────────────────────────────────────────────────
+  archive      → memory/archive/<category>.md  (handled by Phase 3b; flag here)
+```
+
+#### Classification Rules
+
+| Signal in bullet | Destination class | Example |
+|-----------------|-------------------|---------|
+| Module paths + test counts + component names + commit hashes | `module-spec` | Wall Thickness Framework section → `specs/modules/digitalmodel/wall-thickness.md` |
+| Engineering formula with derivation or constants | `domain-doc` or `calc-example` | Vogel IPR formula, DNV F103 current density tables |
+| Standards lookup table (resistivity, SN-curve, anode) | `config-const` | F103-2010 TABLE_5_1 values → `config/cathodic_protection/dnv_f103_tables.yaml` |
+| Reusable code pattern (≥3 lines, not yet a utility) | `utility-fn` | Plotly NaN fix `json.dumps(..., default=lambda o: None)`, LFS stub detector |
+| Recurring test setup or parameterisation observation | `test-pattern` or `test-fixture` | Bootstrap CI needs ≥10 annual maxima; EVA `n_bootstrap=50` for speed |
+| Multi-step procedure (Step 1 / Step 2 / numbered workflow) | `skill` | Cross-review CLI sequence, reconciliation workflow steps |
+| Hard prohibition / NEVER / must-not that spans multiple repos | `rule` | `sed -i` symlink danger, `awk` gawk portability |
+| Hard prohibition scoped to one repo/module | `domain-doc` + `memory-keep` | `NEVER reference 0113` → legal-deny-list + keep in memory |
+| Architecture or design decision with rationale | `domain-doc` or `module-spec` | Orchestrator context separation principle, 3-tier optional deps pattern |
+| Short command, path, active gotcha, user preference | `memory-keep` | Pytest invocations, `parents[N]` trap, Codex preference |
+| WRK-NNN (DONE/ARCHIVED) + date > 30 days | `archive` | `WRK-096 (02-08): Module flatten` |
+| Same content across ≥2 topic files | upgrade to `skill` or `doc` | Duplication signals missing structured home |
+
+#### Candidate Output
+
+**File:** `.claude/state/candidates/memory-promotion-candidates.md`
+
+Format per candidate:
+
+```markdown
+## Candidate: <destination-class>
+- Source:      memory/<file>.md § <section heading>
+- Preview:     "<first 80 chars of bullet>"
+- Destination: <destination-class>
+- Target path: <proposed path>
+- Repo:        <target repo or workspace-hub>
+- Rationale:   <one line — why this home is better than memory>
+- Occurrence:  <1 | cross-file: <list of files>>
+```
+
+#### Execution Tiers — Auto-Execute vs WRK Item
+
+Do NOT route everything through the WRK queue — that floods the queue with
+50-100 low-priority tasks that never get actioned. Use risk-tiered execution:
+
+**Tier A — Auto-execute immediately in Phase 3c:**
+
+These are pure text/data operations with no code authorship risk. Execute, then
+replace the source bullet with a single pointer line (`→ see <path>`).
+
+| Destination class | Auto-execute action |
+|-------------------|---------------------|
+| `archive` | Move bullet to `memory/archive/<category>.md` |
+| `module-spec` | Create/append `specs/modules/<repo>/<module>.md` |
+| `domain-doc` | Create/append `<repo>/docs/domains/<domain>/<topic>.md` |
+| `config-const` | Create `config/<domain>/<name>.yaml` with extracted constants/tables |
+| `calc-example` | Create `<repo>/docs/domains/<domain>/examples/calc-NNN-<name>.md` |
+| `standards` | Append to `<repo>/docs/domains/<domain>/standards-inventory.md` |
+| `rule` (append-only) | Append new rule entry to existing `.claude/rules/<domain>.md` |
+| `doc` (harness) | Create/append `.claude/docs/<topic>.md` |
+| `test-pattern` (notes only) | Append observation to `.claude/docs/testing-patterns.md` |
+| `memory-keep` | Mark reviewed; no file change |
+
+**Tier B — Create WRK item (human review required):**
+
+These require code authorship, TDD, or design judgment beyond text extraction.
+Route to Phase 7 as WRK candidates.
+
+| Destination class | Why WRK item |
+|-------------------|--------------|
+| `utility-fn` | New source code — TDD mandatory, API design judgment needed |
+| `base-class` | New source code — architecture decision |
+| `test-fixture` | Test code — must validate against real data |
+| `skill` | Skill design requires scope/invocation decisions beyond extraction |
+| `rule` (new file) | New rule file = policy decision, not just text extraction |
+| Any Tier A item that **fails legal pre-scan** | Promote only after client refs scrubbed |
+
+**Legal pre-scan for Tier A (mandatory before auto-execute):**
+
+Before writing any `domain-doc`, `config-const`, `calc-example`, or `standards`
+file, run:
+```bash
+echo "<bullet content>" | python3 scripts/legal/legal-sanity-scan.sh --stdin
+```
+If the scan flags a block-severity hit: skip auto-execute, write to
+`memory-promotion-candidates.md` as a Tier B WRK candidate with note
+`"legal-blocked: <violation>"`.
+
+**Pointer replacement rule (Tier A):**
+
+After auto-executing a bullet, replace it in the source topic file with:
+```
+- **<Original topic>**: → see `<target path>` *(promoted <date>)*
+```
+If the entire section is promoted, replace the section with a single pointer line.
+
+**Scope per run:** All topic files + MEMORY.md across every active project's
+memory dir (`~/.claude/projects/*/memory/`), not just workspace-hub.
+
+**Classification engine:** Gemini for bulk classification
+(`echo batch | gemini -p "classify..." -y`) in ≤50 bullet chunks.
+
+**Commit:** After all Tier A promotions, commit the created/modified files and
+updated memory files in a single chore commit per repo:
+`chore(memory): promote N memory bullets → <destination types> [comprehensive-learning]`
+
+---
+
+### Phase 4 — Improve  *(mandatory)*
+
+Invoke `/improve`. Sources:
+
+- `.claude/state/corrections/*.jsonl`
+- `.claude/state/accumulator.json`
+- `.claude/state/patterns/`
+- `.claude/state/pending-reviews/*.jsonl`
+- `.claude/state/learned-patterns.json`
+- `.claude/state/skill-scores.yaml`
+- `.claude/state/cc-user-insights.yaml`
+
+Extract: skill/memory improvements, correction-driven updates to ecosystem files.
+
+---
+
+### Phase 5 — Correction Trend Analysis  *(non-mandatory)*
+
+Read `corrections/*.jsonl` for the **rolling 90-day window** (use `--since` or filter
+by file date). Group by `type` and `tool` fields. For each group compute:
+- Occurrence count this week vs last week vs 4-week average
+- Top 3 most frequent correction types (by count)
+- Any type with count **increasing** week-over-week for 2+ consecutive weeks → flag
+  as structural issue, create WRK item: `"fix: recurring <type> correction pattern"`
+
+**Escalation WRK items must include diagnosis** (not just counts):
+- Which specific tool/file combinations triggered most corrections this week?
+- Top 3 error patterns (e.g., "missing null check", "wrong import path", "YAML parse error")
+- 2–3 recent JSONL correction entries as concrete examples
+- Suggested root cause: memory/skill mismatch vs codebase drift vs prompt pattern issue
+
+Without diagnosis, escalations are noise. If diagnosis cannot be extracted, log to
+report only — do not create a WRK item.
+
+**Bounding:** Only process files modified in the last 90 days. Run a full compaction
+(all-dates scan) at most once per quarter — log the last compaction date in
+`.claude/state/correction-trend-meta.json`.
+
+This closes the feedback loop on Phase 4 — verifying improvements are actually sticking.
+
+---
+
+### Phase 6 — WRK Feedback Loop + Ecosystem Health  *(non-mandatory)*
+
+Scan `.claude/work-queue/archive/` for WRK items where `source: comprehensive-learning/phase-7`
+(auto-created candidates). For each:
+- **Actioned** (status: done): record as positive signal for that candidate type
+- **Stale** (>30 days in pending with no activity): downgrade its candidate type's
+  score in `skill-scores.yaml`; log to learning report
+- **Never created pattern**: if occurrence count kept rising without a WRK item,
+  candidate threshold (currently ≤2) may be too high
+
+Output: candidate effectiveness score per type. Adjust Phase 7 thresholds accordingly.
+
+**Ecosystem health (nightly, via nightly cron Step 5):**
+
+- Run `scripts/readiness/nightly-readiness.sh` — surfaces R1/R5/R6/R-CODEX/
+  R-MODEL/R-REGISTRY/R-XPROV/R-SKILLS/R-HARNESS issues in `.claude/state/readiness-issues.md`
+- Surface open issues from `readiness-issues.md` in the Phase 10 report under
+  "Ecosystem Health" — include count and top 3 failures if any
+
+---
+
+### Phase 7 — Action Candidates  *(non-mandatory)*
+
+Read each candidate file. For every non-trivial, non-null entry: assess and create
+a WRK item. Reset candidate file after processing.
+
+**Candidate files:**
+
+| File | Domain | Assessment focus |
+|------|--------|-----------------|
+| `skill-candidates.md` | Skills | Repeated manual workflows → candidate skill |
+| `script-candidates.md` | Scripts | Recurring bash commands → candidate script |
+| `hook-candidates.md` | Hooks | Pre/post task patterns → candidate hook |
+| `mcp-candidates.md` | MCP tools | Tool-call gaps → candidate MCP integration |
+| `agent-candidates.md` | Agents | Complex sub-tasks → candidate agent type |
+| `planning-candidates.md` | Planning | Ensemble quality signals → prompt/stance improvements |
+| `memory-promotion-candidates.md` | Memory | Phase 3c output — memory bullets ready for promotion to doc/skill/rule |
+
+**Memory promotion WRK item template:**
+
+```markdown
+---
+id: WRK-NNN
+title: "docs(<repo>): promote memory § <section> → <destination-class>"
+status: pending
+priority: low
+source: comprehensive-learning/phase-7
+computer: ace-linux-1
+---
+## Context
+Auto-created from memory-promotion-candidates.md.
+Source: memory/<file>.md § <section>
+Destination class: <skill|rule|doc|module-spec|domain-doc|standards|utility-fn|
+                    base-class|config-const|calc-example|test-fixture|test-pattern|archive>
+Target path: <proposed path>
+Repo: <target repo>
+
+## Description
+<candidate description + bullet preview>
+
+## Acceptance Criteria
+- [ ] Content written to <target path> with appropriate structure for that file type
+- [ ] Memory bullet replaced with single pointer line (or evicted if fully captured)
+- [ ] Legal scan passes on destination file (mandatory for domain-doc, calc-example,
+      config-const, utility-fn)
+- [ ] Tests pass if destination is code (utility-fn, base-class, test-fixture)
+```
+
+**Also scan for signal-based candidates:**
+
+- `.claude/state/session-signals/*.jsonl` — high-frequency repetitive tool calls
+  suggest a missing script; failed patterns suggest missing validation hooks
+- `.claude/state/cc-insights/*.json` (tool_usage) — surface unreached capabilities
+- Tool call sequences repeating across sessions (Read→Edit→Bash) → scriptable workflow
+- Contributions from other machines (committed by ace-linux-2, acma-ansys05, etc.)
+
+**Code quality signal scan (test · lint · architecture · refactor):**
+
+| Signal | Source | Candidate action |
+|--------|--------|-----------------|
+| Same file edited ≥3× this week, no test file touched | `corrections/*.jsonl` `tool: Edit` | WRK: "add tests for `<file>`" |
+| `type: lint` correction recurring ≥2 weeks | `corrections/*.jsonl` | WRK: "add pre-commit lint hook / fix config for `<type>`" |
+| Architectural violation recurring (circular import, God object, hardcoded literal) | `corrections/*.jsonl` | WRK: "add guardrail hook for `<pattern>`" |
+| Read→Edit→Bash(fail)→Edit loop on same function across sessions | `sessions-archive/` (if available) or `session-signals/` | WRK: "refactor `<fn>` — brittle, repeated rework" |
+| No test file exists for a module touched in ≥2 sessions this week | `session-signals/` + `glob tests/` | WRK: "add unit tests for `<module>`" |
+
+Back-analysis path: if `sessions-archive/` is populated (see **Session Archive** below),
+scan raw session JSONL for the patterns above across all machines and all historical
+dates — not just the rolling window used for derived files. Future agent improvements
+will make this richer over time.
+
+**Skip a candidate if:**
+- Name field is empty or null
+- Description is a generic placeholder only
+- Occurrence count ≤ 2 (adjust threshold based on Phase 6 feedback)
+
+**Sanitization required:** Before writing candidate-derived content into WRK YAML/MD:
+- Strip `---` sequences that would terminate YAML frontmatter
+- Truncate title to 80 chars; replace newlines with space
+- Quote YAML scalars containing `:`, `#`, `"`, `'`, or `|`
+- Strip markdown control characters from free-text fields
+- Reject multiline values in scalar YAML fields (replace `\n` with space)
+- Validate the complete frontmatter block via
+  `python3 -c 'import yaml,sys; yaml.safe_load(sys.stdin)'` before writing;
+  discard and log if parse fails. Dependency check: if `python3 -c "import yaml"`
+  fails (PyYAML not installed), log "WARNING: yaml validation skipped — install
+  python3-yaml" and continue without validation rather than blocking the pipeline.
+
+**Cron preflight (ace-linux-1):** Before the first cron run, verify the dependency:
+```bash
+python3 -c "import yaml" || { echo "ERROR: install python3-yaml before scheduling cron"; exit 1; }
+```
+Add this check to `scripts/cron/comprehensive-learning-nightly.sh` as a preflight
+guard so cron failures are explicit rather than silently producing malformed WRK files.
+
+**WRK auto-creation pattern (concurrency-safe):**
+
+```bash
+# Use flock to prevent duplicate IDs from parallel or manual runs
+(
+  flock -x 200
+  NEXT_ID=$(bash scripts/work-queue/next-id.sh)
+  WRK_FILE=".claude/work-queue/pending/WRK-${NEXT_ID}.md"
+  # Write frontmatter + title + description to WRK_FILE
+  # Update state.yaml last_id inside the lock
+) 200>/tmp/workspace-hub-next-id.lock
+```
+
+**Category inference (mandatory at WRK creation):**
+Before writing the WRK file, infer category and subcategory:
+```bash
+CATEGORY_JSON=$(uv run --no-project python scripts/work-queue/infer-category.py "$WRK_TITLE" "$WRK_BODY_SNIPPET")
+WRK_CATEGORY=$(echo "$CATEGORY_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['category'])")
+WRK_SUBCATEGORY=$(echo "$CATEGORY_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['subcategory'])")
+```
+Write `category: $WRK_CATEGORY` and `subcategory: $WRK_SUBCATEGORY` into the frontmatter before saving.
+
+WRK item template:
+
+```markdown
+---
+id: WRK-NNN
+title: "[domain]: <candidate name> — auto-actioned from candidates"
+status: pending
+priority: low
+source: comprehensive-learning/phase-7
+computer: <MACHINE>
+category: <inferred-category>
+subcategory: <inferred-subcategory>
+---
+## Context
+Auto-created from `.claude/state/candidates/<type>-candidates.md`.
+Occurrence count: N | Sessions: ...
+
+## Description
+<candidate description>
+
+## Acceptance Criteria
+- [ ] Candidate assessed and implemented (or closed as not worth building)
+```
+
+Candidate file reset template:
+
+```markdown
+# <Type> Candidates
+*Updated by session-analysis.sh — do not edit manually*
+*Last run: <ISO8601 timestamp>*
+
+## Candidates
+
+<!-- Populated automatically by morning cron -->
+```
+
+---
+
+### Phase 8 — Learning Report Review  *(non-mandatory)*
+
+Read the last 4 learning reports from `.claude/state/learning-reports/`.
+For each phase, compare what was flagged vs what was flagged last run:
+
+- If the same correction type appears in Phase 5 of 3+ consecutive reports →
+  escalate: create a P1 WRK item (`"fix: <type> corrections not responding to improve"`)
+- If Phase 6 consistently shows stale auto-created WRK items → reduce candidate
+  actioning aggressiveness (raise occurrence threshold)
+- If Phase 3 memory staleness flags the same entry 2+ times → that entry is
+  structurally wrong; create WRK to fix it
+
+Prevents the pipeline from surfacing the same issues indefinitely without resolution.
+
+---
+
+### Phase 9 — Skill Coverage Audit  *(non-mandatory; run weekly, not nightly)*
+
+Cross-reference:
+1. All tasks completed this week (from `.claude/work-queue/archive/` WRK items)
+2. Available skills in `.claude/skills/`
+3. Tool call sequences in `session-signals/`
+
+Identify workflows performed manually (multi-step tool sequences) that:
+- Have no corresponding skill
+- Occurred ≥3 times this week
+- Each instance took >5 tool calls to complete
+
+Create candidate skill entries for the top 3 gaps. This is the proactive skill
+coverage check — catches automation opportunities that candidate files miss because
+they rely on the user triggering the pattern, not the pipeline discovering it.
+
+Run trigger: only if `$(date +%u)` == 7 (Sunday) or explicit invocation.
+
+---
+
+### Inter-phase: Commit Derived State  *(all modes — runs after Phase 9)*
+
+Commit derived state so ace-linux-1 can pull it in Phase 10a:
+
+```bash
+WS_HUB="$(git rev-parse --show-toplevel)"
+git -C "${WS_HUB}" add \
+  .claude/state/session-signals/ \
+  .claude/state/candidates/ \
+  .claude/state/corrections/ \
+  .claude/state/patterns/ \
+  .claude/state/skill-scores.yaml
+git -C "${WS_HUB}" -c core.hooksPath=/dev/null \
+  commit -m "chore: session learnings from $(hostname) $(date +%Y-%m-%d)" \
+  --allow-empty 2>/dev/null || true
+```
+
+`contribute` machines stop here. `full` mode (ace-linux-1) continues to Phase 10a.
+
+---
+
+### Phase 10a — Cross-Machine Compilation  *(full mode / ace-linux-1 only)*
+
+Skip if `CL_MODE != "full"` — log `"Phase 10a: SKIPPED (mode=${CL_MODE})"` and continue.
+
+1. `git pull --rebase` to pick up all machines' committed derived state
+2. Read `session-signals/` from all machines (identified by signal `hostname` field)
+3. Aggregate `skill-scores.yaml` entries across machines (union, keep latest per skill)
+4. Write cross-machine compilation report to:
+   `.claude/state/session-analysis/compilation-YYYYMMDD.md`
+   Sections: per-machine summary table, aggregated skill scores, cross-machine anti-patterns
+5. Record DONE/SKIPPED/FAILED in Phase 10 report
+
+---
+
+### Phase 10 — Report  *(always runs — registered via `trap EXIT`)*
+
+**Exit-code semantics:** Phase 10 is "always runs" but **not fatal** — a report-write
+failure logs a warning and returns; it does not change the pipeline exit code.
+At pipeline start, register the trap:
+```bash
+_PIPELINE_EXIT=0
+trap '_write_report; exit $_PIPELINE_EXIT' EXIT
+```
+
+Write `.claude/state/learning-reports/$(date +%Y-%m-%d-%H%M).md`:
+
+```markdown
+# Learning Report — <timestamp>
+
+| Phase | Status | Notes |
+|-------|--------|-------|
+| 1 Insights | DONE | <brief>. **Gate-skips: N**, **Scope-drift: N**. |
+| 2 Reflect | ... | re-derivation needed: yes/no |
+| 3 Knowledge | ... | Stale memory entries: N |
+| 3b Compaction | ... | lines_freed: N, bullets_evicted: N |
+| 4 Improve | ... | ... |
+| 5 Correction Trends | ... | escalated types: N |
+| 6 WRK Feedback | ... | stale auto-WRK: N, threshold adj: yes/no |
+| 7 Candidates | ... | WRK items created: N (incl. code-quality: N) |
+| 8 Report Review | ... | escalated recurring issues: N |
+| 9 Coverage Audit | ... | gaps found: N |
+| 10a Compilation | ... | machines: N, cross-patterns: N |
+| 10 Report | DONE | <elapsed>s total |
+
+AI agent readiness: <N> OK / <N> warn (from ai-readiness.jsonl)
+TDD pairing rate: <N>% overall (from test-health.jsonl)
+Resource Intelligence Coverage: <N>% (<N>/<N> tasks)
+
+Improvement Trends:
+- [Skill Candidate] <name>: <count> occurrences
+- [Script Candidate] <name>: <count> occurrences
+- [Hook Candidate] <name>: <count> occurrences
+- [Agent Candidate] <name>: <count> occurrences
+
+Machine: ace-linux-1 | Sources: ace-linux-1 + <N other machines via git>
+```
+
+**Exit codes:** 0 = all mandatory phases pass; 1 = fatal failure in mandatory phase.
+
+## Scheduling
+
+Use a wrapper script so each step is a hard gate or explicit best-effort:
+
+```bash
+# scripts/cron/comprehensive-learning-nightly.sh
+#!/usr/bin/env bash
+set -euo pipefail
+cd /mnt/local-analysis/workspace-hub
+
+# Step 1: pull derived state — hard gate (pipeline must not run on stale state)
+git pull --no-rebase origin main
+
+# Step 2: rsync raw sessions — best-effort, each independently
+rsync -az --no-delete --timeout=30 \
+  -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
+  ace-linux-2:.claude/state/sessions/ \
+  .claude/state/sessions-archive/ace-linux-2/ 2>/dev/null || true
+
+rsync -az --no-delete --timeout=30 \
+  -e "ssh -o ConnectTimeout=10 -o BatchMode=yes" \
+  ACMA-ANSYS05:.claude/state/sessions/ \
+  .claude/state/sessions-archive/acma-ansys05/ 2>/dev/null || true
+
+# Step 3: run pipeline
+exec claude --skill comprehensive-learning
+```
+
+Crontab entry (ace-linux-1):
+```bash
+0 22 * * * cd /mnt/local-analysis/workspace-hub && bash scripts/cron/comprehensive-learning-nightly.sh \
+  >> /mnt/local-analysis/workspace-hub/.claude/state/learning-reports/cron.log 2>&1
+```
+
+`git pull` is a hard gate — if it fails, `set -euo pipefail` aborts before the
+pipeline runs, preventing analysis on stale state. Each `rsync` is independently
+`|| true` so one offline machine cannot block the others or the pipeline.
+SSH key auth required (see **Session Archive** setup below).
+
+## Other Machines — End-of-Session Commit
+
+On ace-linux-2, acma-ansys05, acma-ws014 — run at session end:
+
+```bash
+cd /path/to/workspace-hub
+
+# 1. Commit derived state to git (fast, lightweight)
+git add .claude/state/candidates/ .claude/state/corrections/ \
+        .claude/state/patterns/ .claude/state/session-signals/
+git diff --staged --quiet || \
+  git commit -m "chore: session learnings from $(hostname)"
+# Pull with rebase first to avoid push rejection; retry once on transient fail
+git pull --rebase origin main && git push origin main || {
+  sleep 5
+  git pull --rebase origin main && git push origin main
+}
+
+# 2. Raw sessions are pulled by ace-linux-1 nightly via rsync (no action needed here)
+#    ace-linux-1 rsync: ace-linux-2:.claude/state/sessions/ → sessions-archive/ace-linux-2/
+```
+
+**On push conflict:** If `git pull --rebase` produces a conflict in a state file,
+prefer the incoming version from origin/main (`git checkout --ours <file> && git add <file>`)
+since ace-linux-1 is the authoritative analysis machine. Note: in `git rebase` context,
+`--ours` = the base branch (origin/main) and `--theirs` = your replayed local commits —
+the opposite of merge semantics. Then `git rebase --continue`.
+
+This is what acma-ansys05 contributes instead of running the full pipeline locally.
+
+## Integration with post-task-review.sh
+
+```
+→ Run /comprehensive-learning post-session to process learnings.
+```
+
+## Session Archive (ace-linux-1 local — not git)
+
+Raw session transcripts are centralised on ace-linux-1 via rsync. They are never
+committed to git — too large and binary-noisy. The 7.3 TB HDD on ace-linux-1 is
+the long-term store.
+
+```
+.claude/state/sessions-archive/
+  ace-linux-1/      # local sessions (symlink or copy of .claude/state/sessions/)
+  ace-linux-2/      # rsync'd nightly by ace-linux-1 cron
+  acma-ansys05/     # rsync'd when reachable
+  acma-ws014/       # rsync'd when reachable
+```
+
+**Why keep raw sessions:** As agent capabilities improve, re-running analysis on
+full decision traces (tool-call sequences, abandoned paths, correction events)
+surfaces signals that derived files lose. Back-analysis on the archive unlocks this
+retroactively — data collected today becomes more valuable over time.
+
+**Setup (once, on ace-linux-1):**
+
+For ace-linux-1 to `rsync` FROM contributor machines, ace-linux-1's SSH public key
+must be authorised on each contributor:
+
+```bash
+# Run on ace-linux-1 — push its public key to each contributor host
+ssh-copy-id <user>@ace-linux-2      # authorize ace-linux-1 on ace-linux-2
+ssh-copy-id <user>@ACMA-ANSYS05     # authorize ace-linux-1 on acma-ansys05
+# Test: ssh ace-linux-2 "ls ~/.claude/state/sessions/" should succeed without password
+```
+
+**Retention:** no automated purge policy — ace-linux-1 HDD capacity governs.
+Review annually; oldest sessions can be compressed (`gzip *.jsonl`) if space tightens.
+
+## State Files Committed to Git
+
+Gitignore exceptions in `.gitignore` (all under `.claude/state/`):
+
+| Path | Size | Why |
+|------|------|-----|
+| `candidates/` | ~26 KB | Feeds Phase 7; all machines contribute |
+| `corrections/` | ~3.4 MB | Feeds Phases 4+5; correction trend analysis |
+| `patterns/` | ~3.5 MB | Feeds Phases 2+4; already distilled |
+| `reflect-history/` | ~1.2 MB | Feeds Phase 2; avoids re-analysis |
+| `trends/` | ~136 KB | Feeds Phase 2 |
+| `session-signals/` | ~126 KB | Feeds Phases 1+7 |
+| `cc-insights/` | ~27 KB | Feeds Phase 7 |
+| `learned-patterns.json` | ~16 KB | Feeds Phase 4 |
+| `skill-scores.yaml` | ~8 KB | Feeds Phases 4+6 |
+| `cc-user-insights.yaml` | ~4 KB | Feeds Phase 4 |
+
+Not committed: `sessions/` (13 MB), `archive/` (29 MB), `session-reports/` (5.2 MB),
+`sessions-archive/` (grows unbounded) — raw data stays local on ace-linux-1 HDD.
+
+
+## Planning Quality Loop
+
+Planning is the highest-leverage phase of the work cycle — a bad plan compounds into
+bad implementation, rework, and late corrections. The ensemble planning system (WRK-303)
+produces structured signals in `scripts/planning/results/*/synthesis.md` that the
+nightly pipeline should harvest and act on.
+
+### Signals to harvest (nightly, from synthesis.md files)
+
+```
+scripts/planning/results/*/synthesis.md
+```
+
+For each synthesis file newer than last pipeline run, extract:
+
+| Signal | Source field | Pipeline action |
+|--------|-------------|----------------|
+| `CONSENSUS_SCORE` | `CONSENSUS_SCORE: N` line | Record per WRK; alert if avg drops below 65 over rolling 7 days |
+| SPLIT decisions | Lines matching `^\[SPLIT:` | Count per WRK; high SPLIT frequency → `planning-candidates.md` entry |
+| SPLIT topic categories | First word of each SPLIT decision text | Group by category; recurring categories → stance prompt improvement candidate |
+| Provider NO_OUTPUT | Files where content starts with `NO_OUTPUT:` | Count per provider per week; ≥3 consecutive → flag in Phase 1 |
+| Stance contribution | Agent file that introduced most SOLO insights | Track which stances catch issues others miss; low-value stances → prompt redesign candidate |
+| Plan→implementation drift | Compare WRK `## Plan` with correction events in same session | High drift → "plan was incomplete" signal; feed to planning prompt improvements |
+
+### planning-candidates.md entries
+
+Write to `.claude/state/candidates/planning-candidates.md`. Each entry should be:
+
+```markdown
+## Candidate: <type>
+- Occurrence: N times in last 7 days
+- Description: <what pattern was observed>
+- Signal source: synthesis.md / corrections.jsonl / session-signals
+- Suggested action: improve prompt / adjust stance / add new stance / change threshold
+```
+
+**Candidate types to watch for:**
+
+| Type | Trigger | Action |
+|------|---------|--------|
+| `stance-ineffective` | One stance contributes 0 SOLO insights across 5+ items | Redesign that stance's prompt focus |
+| `prompt-scope-creep` | Agents consistently raise out-of-scope concerns | Tighten stance prompts with explicit scope anchors |
+| `split-category-recurring` | Same decision category SPLITS ≥3 times in a week | Add a dedicated 4th stance for that category (e.g., `claude-data-model`) |
+| `consensus-score-declining` | Rolling 7-day average drops >10 points | Review recent WRK items for scope inflation or ambiguous requests |
+| `provider-timeout-pattern` | Same provider times out on >20% of items | Investigate CLI version / prompt size; consider reducing context passed to that provider |
+| `plan-drift-high` | >3 corrections during implementation not covered by the plan | Audit synthesis prompt — merged plan may be too abstract |
+
+### Feeding learnings back to the ensemble system
+
+When a `planning-candidate` WRK item is actioned:
+
+1. **Prompt files** in `scripts/planning/prompts/` are updated or new stances added
+2. **Timeout** tuned via `ENSEMBLE_TIMEOUT` in cron environment or per-provider wrapper
+3. **synthesis.md prompt** updated if structured output is unreliable
+4. After changes: run `scripts/planning/ensemble-plan.sh --dry-run WRK-XXX` on 3 recent
+   items to validate prompt renders correctly before live run
+
+This is the self-improvement loop: **sessions produce planning signals → nightly pipeline
+analyses them → candidates surface improvements → WRK items implement them → next sessions
+run better plans**. Every improvement to the planning layer compounds across all future work.
+
+### Integration note: `unset CLAUDECODE` in synthesise.sh
+
+`synthesise.sh` calls `claude -p` as a subprocess with `unset CLAUDECODE` to prevent
+the CLI from detecting it is running inside a Claude Code session (which would alter
+behaviour or reject the call). This pattern should be preserved in any future script
+that calls `claude -p` from within a hook or pipeline context.
+
