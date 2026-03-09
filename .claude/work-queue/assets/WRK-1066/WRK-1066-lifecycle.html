@@ -118,7 +118,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
 <nav class="stage-strip">
   <div class="stage-strip-inner">
     <span class="stage-strip-label">Stages</span>
-    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-done" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-done" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-done" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-done" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-done" title="10 Work Execution">10</a><a href="#s11" class="sc sc-done" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-done" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-done" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-done" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-done" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-done" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-done" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-done" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
+    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-done" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-done" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-done" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-done" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-done" title="10 Work Execution">10</a><a href="#s11" class="sc sc-done" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-done" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-done" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-done" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-done" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-done" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-done" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-done" title="19 Close">19</a><a href="#s20" class="sc sc-done" title="20 Archive">20</a>
   </div>
 </nav>
 
@@ -463,7 +463,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">status</span><span class="schema-val">done</span></div></div>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">status</span><span class="schema-val">archived</span></div></div>
   </div>
 </section>
 <section class="stage-section" id="s20">
@@ -474,14 +474,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">status</span><span class="schema-val">archived</span></div></div>
   </div>
 </section>
 </div>
