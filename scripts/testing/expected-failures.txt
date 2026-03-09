@@ -1,0 +1,27 @@
+# expected-failures.txt — Known expected-failure test node IDs
+#
+# These tests are excluded from the "unexpected failures" count.
+# Format: one exact pytest node ID per line; # lines are comments.
+#
+# To update after a run:
+#   bash scripts/testing/run-all-tests.sh --repo <name> 2>&1 | grep "^FAILED\|^ERROR"
+# Add live-data / environment-dependent failures here.
+
+# assethold — live-data stock fetches and smoke test setup errors (12 FAILED + 5 ERROR)
+tests/modules/stocks/analysis/breakout/test_breakout_COST.py::test_run_process
+tests/modules/stocks/analysis/breakout/test_breakout_CVX.py::test_run_process
+tests/modules/stocks/analysis/breakout/test_breakout_RIG.py::test_run_process
+tests/modules/stocks/analysis/breakout/test_breakout_TCS.py::test_run_process
+tests/modules/stocks/analysis/breakout/test_breakout_TSLA.py::test_run_process
+tests/modules/stocks/analysis/breakout/test_breakout_WMT.py::test_run_process
+tests/modules/stocks/analysis/breakout/test_breakout_XOM.py::test_run_process
+tests/modules/stocks/analysis/investment/test_investment_ffn.py::test_run_process
+tests/modules/stocks/analysis/investment/test_investment_value.py::test_run_process
+tests/modules/stocks/analysis/portfolio/test_portfolio_AI.py::test_run_process
+tests/modules/stocks/data/test_data_AAPL.py::test_run_process
+tests/modules/stocks/data/test_data_RIG.py::test_run_process
+tests/test_smoke.py::TestFileOperations::test_csv_file_operations
+tests/test_smoke.py::TestFileOperations::test_excel_file_operations
+tests/test_smoke.py::TestExternalConnectivity::test_mock_api_request
+tests/test_smoke.py::TestExternalConnectivity::test_mock_financial_data_fetch
+tests/test_smoke.py::TestApplicationConfiguration::test_testing_environment_setup
