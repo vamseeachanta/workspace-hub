@@ -1,0 +1,9 @@
+wrk_id: WRK-1049
+updated_at: "2026-03-08T22:50:00Z"
+additions:
+  - type: pattern
+    description: session-lock.yaml written at Stage 1 — pid/hostname/locked_at fields
+  - type: pattern
+    description: claim-item.sh working/ pre-check — fast-fail collision guard pattern
+  - type: finding
+    description: process.md was a dual implementation of claim logic — now script-first only

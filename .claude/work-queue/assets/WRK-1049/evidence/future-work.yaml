@@ -1,0 +1,15 @@
+wrk_id: WRK-1049
+captured_at: "2026-03-08T22:50:00Z"
+recommendations:
+  - id: FW-01
+    title: Clean up stale session-lock.yaml on archive
+    disposition: spun-off-new
+    status: deferred
+    captured: true
+    notes: Captured as follow-up; will be added to pending queue
+  - id: FW-02
+    title: TOCTOU race hardening via flock
+    disposition: spun-off-new
+    status: deferred
+    captured: true
+    notes: Captured as follow-up; flock-based mutex for true atomicity

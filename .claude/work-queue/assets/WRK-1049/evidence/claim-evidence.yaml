@@ -1,0 +1,20 @@
+wrk_id: WRK-1049
+version: 1
+route: B
+claim_date: "2026-03-08T22:42:00Z"
+owner: claude
+orchestrator: claude
+best_fit_provider: claude
+session_owner: claude
+metadata_version: "1"
+agent_fit:
+  capability_match: matched
+  rationale: Route B / execution_workstations=ace-linux-1 / provider=claude
+blocking_state:
+  blocked: false
+  blocked_by: []
+quota_snapshot:
+  timestamp: "2026-03-08T22:42:00Z"
+  provider: claude
+  status: available
+  pct_remaining: 85

@@ -1,5 +1,6 @@
 reviewer: vamsee
 reviewed_at: "2026-03-08T22:20:00Z"
+confirmed_at: "2026-03-08T22:20:00Z"
 scope_approved: true
 notes: >
   Observed live: two terminals both picked up WRK-1037. Three root causes

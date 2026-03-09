@@ -1,8 +1,12 @@
+wrk_id: WRK-1049
+stage: plan_draft
 reviewer: vamsee
 reviewed_at: "2026-03-08T22:25:00Z"
 decision: approved
+approval_decision: approve_as_is
 notes: >
   Plan approved with refinement: clean up prose in process.md to reference scripts
   only (no inline bash); single source of execution — process.md is a thin
   pointer to canonical scripts, not a second implementation. Apply script-first
   principle throughout.
+approval_decision: approve_as_is

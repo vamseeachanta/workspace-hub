@@ -1,0 +1,28 @@
+events:
+- stage: plan_draft
+  published_at: "2026-03-08T22:26:00Z"
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  reviewer: vamsee
+  commit: c9076a2c33472f5de1a65836ca4b4edfb9bffd71
+  documents:
+    - .claude/work-queue/assets/WRK-1049/WRK-1049-lifecycle.html
+- stage: plan_final
+  published_at: "2026-03-08T22:41:00Z"
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  reviewer: vamsee
+  commit: c9076a2c33472f5de1a65836ca4b4edfb9bffd71
+  documents:
+    - .claude/work-queue/assets/WRK-1049/plan-html-review-final.md
+- stage: close_review
+  published_at: "2026-03-08T23:01:00Z"
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  reviewer: vamsee
+  commit: c9076a2c33472f5de1a65836ca4b4edfb9bffd71
+  documents:
+    - .claude/work-queue/assets/WRK-1049/WRK-1049-lifecycle.html

@@ -1,0 +1,22 @@
+events:
+- stage: plan_draft
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1049/WRK-1049-lifecycle.html
+  opened_at: "2026-03-08T22:20:00Z"
+  confirmed_at: "2026-03-08T22:26:00Z"
+  reviewer: vamsee
+- stage: plan_final
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1049/WRK-1049-lifecycle.html
+  opened_at: "2026-03-08T22:35:00Z"
+  confirmed_at: "2026-03-08T22:41:00Z"
+  reviewer: vamsee
+- stage: close_review
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1049/WRK-1049-lifecycle.html
+  opened_at: "2026-03-08T22:50:00Z"
+  confirmed_at: "2026-03-08T23:00:00Z"
+  reviewer: vamsee

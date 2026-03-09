@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-08T22:28:05Z by generate-index.py -->
+<!-- Generated: 2026-03-09T00:54:10Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-08T22:28:05Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-09T00:54:10Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,8 +13,8 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 211 |
-| working | 4 |
+| pending | 210 |
+| working | 5 |
 | blocked | 9 |
 | archived | 251 |
 
@@ -78,8 +78,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 185 / 475 |
-| Plans cross-reviewed | 83 |
-| Plans approved | 105 |
+| Plans cross-reviewed | 84 |
+| Plans approved | 106 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -99,9 +99,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 59 / 211 | 28% |
-| Plans cross-reviewed | 10 | 14% |
-| Plans user-approved | 10 | 14% |
+| Pending items with plans | 58 / 210 | 28% |
+| Plans cross-reviewed | 11 | 16% |
+| Plans user-approved | 11 | 16% |
 
 ### Aging
 
@@ -116,7 +116,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 97 | 2 | 7 |
+| High     | 96 | 3 | 7 |
 | Medium   | 84  | 2  | 1  |
 | Low      | 30  | 0  | 1  |
 
@@ -208,7 +208,7 @@
 |----|----------|-------|--------|
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
 | WRK-668 | HIGH | feat(work-queue): archive tooling contract and auto spin-off workflow | pending |
-| WRK-1049 | HIGH | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | pending |
+| WRK-1049 | HIGH | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | working |
 | WRK-118 | MEDIUM | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
@@ -1020,7 +1020,7 @@
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | working | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 
 ## By Status
 
@@ -1238,7 +1238,6 @@
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | low | simple | workspace-hub | - |
 | WRK-1045 | Session compliance audit — validate 3-agent gate adherence in live sessions after WRK-1035/1044 hardening | medium | medium | workspace-hub | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | high | medium | workspace-hub, digitalmodel, worldenergydata | - |
-| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | high | simple | workspace-hub | - |
 
 ### Working
 
@@ -1248,6 +1247,7 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
+| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | high | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -2037,7 +2037,7 @@
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | archived | high | medium | - |
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | medium | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | - |
-| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | pending | high | simple | - |
+| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | working | high | simple | - |
 
 ### worldenergydata
 
@@ -2361,7 +2361,7 @@
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | archived | medium | workspace-hub | - |
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | medium | workspace-hub | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | medium | workspace-hub, digitalmodel, worldenergydata | - |
-| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | pending | simple | workspace-hub | - |
+| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | working | simple | workspace-hub | - |
 
 ### Medium
 
@@ -2717,7 +2717,7 @@
 | WRK-1041 | Lifecycle HTML — auto-refresh + on-demand /work html command | pending | medium | workspace-hub | - |
 | WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | low | workspace-hub | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | low | workspace-hub | - |
-| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | pending | high | workspace-hub | - |
+| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | working | high | workspace-hub | - |
 
 ### Medium
 
@@ -3254,7 +3254,7 @@
 | WRK-1046 | Auto context-reset between WRK stages — checkpoint-driven subagent-per-stage execution | archived | high | medium | workspace-hub |
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | medium | workspace-hub |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | workspace-hub, digitalmodel, worldenergydata |
-| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | pending | high | simple | workspace-hub |
+| WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | working | high | simple | workspace-hub |
 
 ### ace-linux-2 (6 active / 13 total)
 
