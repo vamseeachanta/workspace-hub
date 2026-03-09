@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-09T11:15:34Z by generate-index.py -->
+<!-- Generated: 2026-03-09T11:21:50Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-09T11:15:34Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-09T11:21:50Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 503
+**Total items:** 504
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 227 |
+| pending | 228 |
 | working | 6 |
 | blocked | 9 |
 | archived | 261 |
@@ -23,7 +23,7 @@
 | Priority | Count |
 |----------|-------|
 | high | 230 |
-| medium | 227 |
+| medium | 228 |
 | low | 45 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 100 |
-| medium | 239 |
+| medium | 240 |
 | complex | 97 |
 
 ### By Category
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 171 |
+| workspace-hub | 172 |
 | worldenergydata | 90 |
 
 ### Plan Tracking
@@ -79,7 +79,7 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 192 / 503 |
+| Plans exist | 192 / 504 |
 | Plans cross-reviewed | 95 |
 | Plans approved | 117 |
 | Brochure pending | 8 |
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 503 |
+| Total captured | 504 |
 | Total archived | 261 |
-| Completion rate | 261/503 (52%) |
+| Completion rate | 261/504 (52%) |
 | Monthly rate (current month) | 31 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,7 +101,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 60 / 227 | 26% |
+| Pending items with plans | 60 / 228 | 26% |
 | Plans cross-reviewed | 11 | 15% |
 | Plans user-approved | 11 | 15% |
 
@@ -119,7 +119,7 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 100 | 3 | 7 |
-| Medium   | 96  | 3  | 1  |
+| Medium   | 97  | 3  | 1  |
 | Low      | 31  | 0  | 1  |
 
 ## By Category
@@ -1138,6 +1138,7 @@
 | WRK-1075 | feat(harness): API documentation generation — MkDocs pipeline for tier-1 repos | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1058 |
 | WRK-1076 | feat(harness): async completion notifications — cron, CI, benchmark failure alerts | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | pending | medium | simple | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -1372,6 +1373,7 @@
 | WRK-1075 | feat(harness): API documentation generation — MkDocs pipeline for tier-1 repos | medium | medium | - | - |
 | WRK-1076 | feat(harness): async completion notifications — cron, CI, benchmark failure alerts | medium | simple | - | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | medium | simple | workspace-hub | - |
+| WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | medium | medium | workspace-hub | - |
 
 ### Working
 
@@ -2198,6 +2200,7 @@
 | WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | pending | medium | medium | - |
 | WRK-1068 | feat(harness): WRK dependency graph — visualise blocked_by chains for sequencing | working | medium | simple | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | pending | medium | simple | - |
+| WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | medium | - |
 
 ### worldenergydata
 
@@ -2762,6 +2765,7 @@
 | WRK-1075 | feat(harness): API documentation generation — MkDocs pipeline for tier-1 repos | pending | medium | - | - |
 | WRK-1076 | feat(harness): async completion notifications — cron, CI, benchmark failure alerts | pending | simple | - | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | pending | simple | workspace-hub | - |
+| WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -3163,6 +3167,7 @@
 | WRK-1072 | feat(harness): release management — semantic versioning + changelog for tier-1 repos | pending | medium | - | - |
 | WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | pending | high | - | - |
 | WRK-1075 | feat(harness): API documentation generation — MkDocs pipeline for tier-1 repos | pending | medium | - | - |
+| WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -3268,7 +3273,7 @@
 
 ## By Computer
 
-### ace-linux-1 (176 active / 224 total)
+### ace-linux-1 (177 active / 225 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3496,6 +3501,7 @@
 | WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | pending | high | medium | - |
 | WRK-1075 | feat(harness): API documentation generation — MkDocs pipeline for tier-1 repos | pending | medium | medium | - |
 | WRK-1076 | feat(harness): async completion notifications — cron, CI, benchmark failure alerts | pending | medium | simple | - |
+| WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | medium | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 
