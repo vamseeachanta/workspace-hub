@@ -1,13 +1,6 @@
 wrk_id: WRK-1074
-current_stage: 13
-stage_name: Agent Cross-Review
-completed_stage: 12
-status: blocked_codex_quota
-next_action: "Codex quota resets 2026-03-14. Run: bash scripts/review/submit-to-codex.sh --file .claude/work-queue/assets/WRK-1074/review-synthesis.md then exit_stage.py WRK-1074 13"
-context_summary: "Stages 1-12 complete. 25 contract tests pass (17 digitalmodel + 8 worldenergydata). Stage 13 blocked: Codex quota exhausted until 2026-03-14."
-entry_reads:
-  - .claude/work-queue/assets/WRK-1074/checkpoint.yaml
-  - assets/WRK-1074/WRK-1074-lifecycle.html#s10-s12
-  - assets/WRK-1074/ac-test-matrix.md
-checkpointed_at: 2026-03-09T16:14:11Z
-human_gate: false
+current_stage: complete
+completed_stage: 20
+next_action: WRK complete — archive if not done
+context_summary: Stage 20 complete. WRK finished.
+checkpointed_at: 2026-03-09T18:02:08Z

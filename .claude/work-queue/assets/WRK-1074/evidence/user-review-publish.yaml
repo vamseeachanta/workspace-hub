@@ -8,7 +8,7 @@ events:
     documents:
       - ".claude/work-queue/assets/WRK-1074/WRK-1074-plan-draft.html"
       - ".claude/work-queue/pending/WRK-1074.md"
-    published_at: "2026-03-09T13:15:00Z"
+    published_at: "2026-03-09T13:25:00Z"
     reviewer: vamsee
   - stage: plan_final
     pushed_to_origin: true
@@ -19,4 +19,14 @@ events:
       - ".claude/work-queue/assets/WRK-1074/WRK-1074-lifecycle.html"
       - ".claude/work-queue/assets/WRK-1074/evidence/plan-final-review.yaml"
     published_at: "2026-03-09T15:28:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: "https://github.com/vamseeachanta/workspace-hub.git"
+    branch: main
+    commit: placeholder
+    documents:
+      - ".claude/work-queue/assets/WRK-1074/WRK-1074-implementation-review.html"
+      - ".claude/work-queue/assets/WRK-1074/evidence/user-review-close.yaml"
+    published_at: "2026-03-09T17:55:00Z"
     reviewer: vamsee

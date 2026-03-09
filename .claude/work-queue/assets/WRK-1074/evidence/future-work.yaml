@@ -1,0 +1,39 @@
+wrk_id: WRK-1074
+generated_at: 2026-03-09T17:40:00Z
+
+recommendations:
+  - id: FW-1
+    title: "Add assetutilities.common.database contract tests"
+    description: "Database contract requires DB fixture; defer to live_data test category"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
+    wrk_ref: null
+
+  - id: FW-2
+    title: "Add excel_utilities contract (file I/O fixtures needed)"
+    description: "Excel contract tests need fixture files; add in follow-on WRK with fixtures"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
+    wrk_ref: null
+
+  - id: FW-3
+    title: "Pin assetutilities version in worldenergydata uv.lock"
+    description: "worldenergydata installs assetutilities via git URL; add explicit version pin"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
+    wrk_ref: null
+
+  - id: FW-4
+    title: "Extend run-all-tests.sh contract step with count reporting"
+    description: "Add contract test count to summary table in run-all-tests.sh output"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    required_for_signoff: false
+    wrk_ref: null

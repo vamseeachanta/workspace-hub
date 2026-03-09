@@ -1,0 +1,28 @@
+wrk_id: WRK-1074
+generated_at: 2026-03-09T17:40:00Z
+
+additions:
+  - resource: "digitalmodel/tests/contracts/"
+    type: test_suite
+    description: "Contract tests asserting assetutilities public API stability — 17 tests"
+    path: digitalmodel/tests/contracts/
+
+  - resource: "worldenergydata/tests/contracts/"
+    type: test_suite
+    description: "Contract tests asserting assetutilities public API stability — 8 tests"
+    path: worldenergydata/tests/contracts/
+
+  - resource: "digitalmodel/docs/api-contracts.md"
+    type: documentation
+    description: "assetutilities API contract boundary documentation for digitalmodel"
+    path: digitalmodel/docs/api-contracts.md
+
+  - resource: "worldenergydata/docs/api-contracts.md"
+    type: documentation
+    description: "assetutilities API contract boundary documentation for worldenergydata"
+    path: worldenergydata/docs/api-contracts.md
+
+  - resource: "pytest.hookimpl(wrapper=True) pattern"
+    type: pattern
+    description: "pytest 8.x compatible hook implementation — use wrapper=True not hookwrapper=True"
+    path: null

@@ -1,0 +1,52 @@
+wrk_id: WRK-1074
+phase: close
+generated_at: 2026-03-09T17:45:00Z
+generator: stage-14-verify-gate-evidence
+
+overall: incomplete
+note: "User-review close gate (Stage 17 human gate) pending. All other gates PASS."
+
+gates:
+  - name: Plan gate
+    status: PASS
+  - name: Workstation contract gate
+    status: PASS
+  - name: Stage evidence gate
+    status: PASS
+  - name: Resource-intelligence gate
+    status: PASS
+  - name: Activation gate
+    status: PASS
+  - name: Agent log gate
+    status: PASS
+  - name: User-review HTML-open gate
+    status: PASS
+  - name: User-review publish gate
+    status: PASS
+  - name: Cross-review gate
+    status: PASS
+  - name: TDD gate
+    status: PASS
+  - name: Integrated test gate
+    status: PASS
+  - name: Legal gate
+    status: PASS
+  - name: Claim gate
+    status: PASS
+  - name: Future-work gate
+    status: PASS
+  - name: Resource-intelligence update gate
+    status: PASS
+  - name: User-review close gate
+    status: PENDING
+    note: "Stage 17 human gate — awaiting user review of implementation"
+  - name: Reclaim gate
+    status: WARN
+  - name: Approval ordering gate
+    status: PASS
+  - name: Stage evidence paths gate
+    status: PASS
+  - name: Plan publish predates approval gate
+    status: PASS
+  - name: Codex keyword in review gate
+    status: PASS
