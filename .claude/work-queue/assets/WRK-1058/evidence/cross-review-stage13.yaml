@@ -1,0 +1,63 @@
+wrk_id: WRK-1058
+stage: 13
+review_type: implementation
+reviewed_at: 2026-03-09T18:30:00-05:00
+
+providers:
+  codex:
+    verdict: REQUEST_CHANGES
+    result_file: "scripts/review/results/20260309T181950Z-check-all.sh-implementation-codex.md"
+    findings:
+      - id: P2
+        issue: "--ruff-only + --mypy-only together skip both checks, show PASS exit 0"
+        disposition: out_of_scope
+        reason: >
+          Pre-existing behavior in check-all.sh from WRK-1056. Not introduced by WRK-1058.
+          Captured as follow-on work item.
+      - id: P3
+        issue: "README heading match too strict (exact match only)"
+        disposition: accepted_by_design
+        reason: >
+          Explicitly approved in Stage 7 plan: "exact heading word match (e.g. ## Installation
+          passes, ## Installation Notes does not)". User-approved design decision.
+    findings_resolved: false
+    gate_override: true
+    override_by: vamsee
+    override_reason: >
+      P2 is pre-existing (WRK-1056 scope, not WRK-1058). P3 is explicitly approved design.
+      Neither issue was introduced by WRK-1058 changes. WRK-1058 scope is --docs flag only.
+
+  gemini:
+    verdict: REQUEST_CHANGES
+    result_file: "scripts/review/results/20260309T182045Z-check-all.sh-implementation-gemini.md"
+    findings:
+      - id: P2
+        issue: "No check if uv is installed before use"
+        disposition: out_of_scope
+        reason: >
+          Pre-existing behavior in check-all.sh from WRK-1056. Not introduced by WRK-1058.
+          The existing run_ruff() and run_mypy() also call uv without a pre-check.
+      - id: P3
+        issue: "Use jq instead of uv run python for JSON parsing"
+        disposition: rejected
+        reason: >
+          Policy (python-runtime.md) requires uv run --no-project python for all Python
+          invocations. jq is not a declared dependency. uv is the correct tool per workspace rules.
+    suggestions:
+      - "--docs-only flag: explicitly out of scope per approved plan (Stage 7)"
+    findings_resolved: false
+    gate_override: true
+    override_by: vamsee
+    override_reason: >
+      P2 is pre-existing (WRK-1056 scope). P3 rejected — policy requires uv.
+      WRK-1058 scope is --docs flag only; pre-existing concerns are tracked separately.
+
+synthesis:
+  wrk_scope: "--docs flag only (additive, warn-only); no changes to pre-existing flag handling"
+  adopted_from_reviews: []
+  deferred_as_follow_on:
+    - "--ruff-only + --mypy-only conflict validation (pre-existing WRK-1056 scope)"
+    - "uv existence check at script top (pre-existing WRK-1056 scope)"
+  explicitly_out_of_scope:
+    - "--docs-only flag (user-approved plan, Stage 7)"
+    - "README heading variant matching (user-approved strict match, Stage 7)"

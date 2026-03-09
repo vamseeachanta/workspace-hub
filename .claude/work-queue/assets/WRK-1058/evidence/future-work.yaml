@@ -1,0 +1,31 @@
+wrk_id: WRK-1058
+generated_at: "2026-03-09T18:35:00-05:00"
+
+recommendations:
+  - id: FW-1
+    title: Add --docs-only flag for symmetry with --ruff-only/--mypy-only
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: Explicitly out of scope for WRK-1058 per Stage 7 plan. Gemini suggestion.
+
+  - id: FW-2
+    title: Validate conflicting --ruff-only + --mypy-only combination (exit non-zero)
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: Pre-existing issue in check-all.sh from WRK-1056. Codex P2 in Stage 13 review.
+
+  - id: FW-3
+    title: Add uv existence check at check-all.sh startup
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: Pre-existing issue from WRK-1056. Gemini P2 in Stage 13 review.
+
+  - id: FW-4
+    title: Add test for --ruff-only --docs flag combination
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: Minor coverage gap identified in final code review.

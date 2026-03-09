@@ -1,0 +1,28 @@
+wrk_id: WRK-1058
+phase: close
+generated_at: "2026-03-09T18:45:00-05:00"
+summary: >
+  Gate evidence collected for WRK-1058 (docs quality checks --docs flag).
+  All pre-Stage-17 gates pass. Stage 17 user review gates pending human interaction.
+gates_passing:
+  - Plan gate
+  - Workstation contract gate
+  - Stage evidence gate
+  - Resource-intelligence gate
+  - Activation gate
+  - Agent log gate
+  - Cross-review gate
+  - TDD gate
+  - Integrated test gate
+  - Legal gate
+  - Claim gate
+  - Future-work gate
+  - Resource-intelligence update gate
+gates_pending_stage17:
+  - User-review HTML-open gate (close_review stage)
+  - User-review publish gate (close_review stage)
+  - User-review close gate (reviewer + reviewed_at)
+gates_warn_only:
+  - Reclaim gate (n/a — no reclaim triggered)
+  - Plan publish predates approval gate (timestamp parse warning)
+  - Reclaim n/a gate (no reclaim log — expected)

@@ -4,6 +4,9 @@ scope: integrated
 outcome: pass
 executed_at: "2026-03-09T15:30:00-05:00"
 provider: claude
+test_count: 29
+test_files:
+  - tests/quality/test_check_all.sh
 notes: >
   --docs flag implemented in check-all.sh. 14 tests (29 assertions) pass.
   Integration smoke across all 5 tier-1 repos shows docs: lines present.
@@ -17,5 +20,10 @@ integrated_repo_tests:
   - name: smoke test all repos with --docs
     scope: integrated
     command: "bash scripts/quality/check-all.sh --docs"
+    result: pass
+    artifact_ref: "scripts/quality/check-all.sh"
+  - name: combined flag smoke test (--ruff-only --docs)
+    scope: integrated
+    command: "bash scripts/quality/check-all.sh --ruff-only --docs --repo assetutilities"
     result: pass
     artifact_ref: "scripts/quality/check-all.sh"
