@@ -1,0 +1,64 @@
+wrk_id: WRK-1055
+stage: 15
+generated_at: 2026-03-09T22:45:00Z
+
+recommendations:
+  - id: fw-1
+    title: "WRK-578: systematic MCP registry audit with engineering keywords"
+    description: >
+      Run full keyword scan of registry.modelcontextprotocol.io for geospatial,
+      structural, marine, materials, offshore terms. Produce priority-ranked install list.
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    captured_in: WRK-578
+
+  - id: fw-2
+    title: "Install fetch MCP for live standards/documentation lookups"
+    description: >
+      fetch_mcp (Anthropic, MIT) is evaluated and trust-assessed. Install when
+      engineering WRKs need live access to DNV/API/ISO standards pages.
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    captured_in: WRK-1056
+
+  - id: fw-3
+    title: "SHA rotation process: quarterly review of pinned server versions"
+    description: >
+      Establish cron or manual review cadence for pinned MCP server SHAs.
+      Open chore: WRK when upstream has new commits since last pin date.
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    captured_in: WRK-1057
+
+  - id: fw-4
+    title: "Codex/Gemini MCP wiring on ace-linux-1"
+    description: >
+      Codex uses a different config format (AGENTS.md or codex.json).
+      Investigate and wire Semantic Scholar MCP for Codex once format confirmed.
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    captured_in: WRK-1058
+
+  - id: fw-5
+    title: "ace-linux-2 MCP setup (WRK-1012 scope)"
+    description: >
+      Wire same MCP catalog on ace-linux-2 once WRK-1012 completes machine setup.
+    disposition: spun-off-new
+    status: blocked
+    blocked_by: WRK-1012
+    captured: true
+    captured_in: WRK-1012
+
+  - id: fw-6
+    title: "Resource Intelligence skill update to prompt Semantic Scholar use"
+    description: >
+      Update resource-intelligence skill to explicitly suggest querying
+      Semantic Scholar MCP during Stage 2 for engineering literature search.
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    captured_in: WRK-1059

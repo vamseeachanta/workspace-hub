@@ -4,10 +4,13 @@ route: B
 orchestrator: claude
 best_fit_provider: claude
 alternate_provider: codex
+session_owner: vamsee
+metadata_version: "1"
 quota_snapshot:
   source: config/ai-tools/agent-quota-latest.json
   status: available
   pct_remaining: 80
+  timestamp: 2026-03-09T22:30:00Z
 agent_capability:
   best_fit: claude
   rationale: Route B medium complexity; Claude orchestrates, Codex as cross-review gate

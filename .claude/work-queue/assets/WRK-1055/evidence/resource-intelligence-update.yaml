@@ -1,0 +1,28 @@
+wrk_id: WRK-1055
+stage: 16
+updated_at: 2026-03-09T22:45:00Z
+
+additions:
+  - resource_id: semantic_scholar_mcp
+    resource_type: mcp_server
+    catalog_ref: config/ai-tools/mcp-servers.yaml
+    notes: >
+      Semantic Scholar MCP installed and active on ace-linux-1. Enables live
+      literature search (200M+ papers) from within agent context. SHA-pinned.
+      Trust assessment: PASS (2026-03-09).
+
+  - resource_id: fetch_mcp
+    resource_type: mcp_server
+    catalog_ref: config/ai-tools/mcp-servers.yaml
+    notes: >
+      Anthropic fetch MCP evaluated and trust-assessed. Ready to install on demand
+      for live web/documentation access. Status: evaluated.
+
+  - resource_id: mcp_registry_api
+    resource_type: api_endpoint
+    url: https://registry.modelcontextprotocol.io/v0.1/servers
+    notes: >
+      MCP registry API confirmed live and queryable with ?search=<keyword>&version=latest.
+      Useful for future server discovery during engineering WRK Resource Intelligence.
+
+updated_at: 2026-03-09T22:45:00Z

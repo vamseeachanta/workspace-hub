@@ -1,0 +1,91 @@
+wrk_id: WRK-1055
+stage: 10
+completed_at: 2026-03-09T22:45:00Z
+executor: claude
+scope: integrated
+route: B
+
+phases:
+  - phase: 1
+    name: create_mcp_servers_yaml
+    result: pass
+    artifacts:
+      - config/ai-tools/mcp-servers.yaml
+    actions:
+      - "Created config/ai-tools/mcp-servers.yaml with 2 entries (evaluated status)"
+      - "semantic_scholar_mcp: trust=pending, status=evaluated"
+      - "fetch_mcp: Anthropic first-party candidate, status=pending"
+
+  - phase: 2
+    name: trust_assessment_semantic_scholar
+    result: pass
+    actions:
+      - "GitHub API: latest commit SHA=95d41cfbb1d6c66d7d3ad66f42505cb5bbfe7f13 (2025-06-15)"
+      - "pyproject.toml reviewed: clean deps (mcp, requests, starlette, uvicorn)"
+      - "server.py reviewed: read-only calls to api.semanticscholar.org only"
+      - "No license file — documented; code safe for use"
+      - "Verdict: trust_assessment=pass"
+
+  - phase: 3
+    name: install_semantic_scholar_mcp
+    result: pass
+    actions:
+      - "claude mcp add semantic-scholar-mcp -s project -- uvx --from git+...@SHA"
+      - "Config written to .mcp.json (project root)"
+      - "uvx ... --help → responds correctly"
+      - "Rollback: claude mcp remove → entry removed"
+      - "Re-install → entry restored"
+      - "mcp-servers.yaml updated: status=active, commit_sha=95d41cfbb1..."
+
+  - phase: 4
+    name: registry_evaluation
+    result: pass
+    actions:
+      - "registry.modelcontextprotocol.io/v0.1/servers API confirmed live"
+      - "fetch_mcp (modelcontextprotocol/servers): trust assessed — Anthropic, MIT, 80k stars, actively maintained"
+      - "mcp-servers.yaml updated: fetch_mcp status=evaluated, trust_assessment=pass"
+
+  - phase: 5
+    name: write_mcp_servers_doc
+    result: pass
+    artifacts:
+      - .claude/docs/mcp-servers.md
+    actions:
+      - "Created .claude/docs/mcp-servers.md (84 lines before SHA rotation section)"
+      - "Sections: active servers, install procedure, trust checklist, removal, config location, risk"
+
+  - phase: 6
+    name: codex_cross_review
+    result: pass
+    actions:
+      - "Submitted to cross-review.sh all"
+      - "Claude: APPROVE | Gemini: APPROVE | Codex: REQUEST_CHANGES (P3 only)"
+      - "Codex finding: notes field inconsistency resolved — updated semantic_scholar_mcp notes"
+      - "Claude P3: added SHA rotation section to mcp-servers.md"
+
+integrated_repo_tests:
+  - name: mcp-servers-yaml-valid
+    scope: integrated
+    command: "uv run --no-project python -c \"import yaml; yaml.safe_load(open('config/ai-tools/mcp-servers.yaml'))\""
+    result: pass
+    artifact_ref: config/ai-tools/mcp-servers.yaml
+  - name: mcp-servers-yaml-entry-count
+    scope: integrated
+    command: "uv run --no-project python -c \"import yaml; d=yaml.safe_load(open('config/ai-tools/mcp-servers.yaml')); assert len(d['servers'])>=2\""
+    result: pass
+    artifact_ref: config/ai-tools/mcp-servers.yaml
+  - name: mcp-json-valid
+    scope: integrated
+    command: "python3 -c \"import json; json.load(open('.mcp.json'))\""
+    result: pass
+    artifact_ref: .mcp.json
+  - name: mcp-server-starts
+    scope: integrated
+    command: "timeout 10 uvx --from git+https://github.com/FujishigeTemma/semantic-scholar-mcp@95d41cfbb1d6c66d7d3ad66f42505cb5bbfe7f13 semantic-scholar-mcp --help"
+    result: pass
+    artifact_ref: .mcp.json
+  - name: mcp-docs-exists
+    scope: integrated
+    command: "test -f .claude/docs/mcp-servers.md && wc -l .claude/docs/mcp-servers.md"
+    result: pass
+    artifact_ref: .claude/docs/mcp-servers.md

@@ -1,0 +1,109 @@
+# ABOUTME: Engineering MCP server catalog for workspace-hub AI agents
+# ABOUTME: Managed by WRK-1055; see .claude/docs/mcp-servers.md for usage and trust policy
+#
+# Status values:
+#   active    — installed, configured, and verified on the target machine
+#   evaluated — trust assessment complete; not yet installed
+#   pending   — identified; trust assessment not yet performed
+#   removed   — previously active; uninstalled (see removed_at)
+#
+# Before promoting any entry to active:
+#   1. Complete trust checklist (source_repo, license, maintainer, permissions_review)
+#   2. Pin commit SHA (no floating branch references)
+#   3. Document rollback_command
+#   4. Install with -s project scope (not -s user)
+
+servers:
+
+  # ── LITERATURE & RESEARCH ────────────────────────────────────────────────
+
+  - id: semantic_scholar_mcp
+    name: Semantic Scholar MCP Server
+    status: active
+    use_case: >
+      Agent literature search — 200M+ papers, topic/year/field-of-study/OA-filter
+      queries from within Claude Code. Eliminates reliance on training-time
+      knowledge for domain references. Directly enhances Stage 2 (Resource
+      Intelligence) workflows.
+    runtime: uvx
+    install_command: >
+      claude mcp add semantic-scholar-mcp -s project --
+      uvx --from git+https://github.com/FujishigeTemma/semantic-scholar-mcp@<COMMIT_SHA>
+      semantic-scholar-mcp
+    source_repo: https://github.com/FujishigeTemma/semantic-scholar-mcp
+    auth_required: false
+    api_backend: https://api.semanticscholar.org
+    api_rate_limit: "1000 req/s unauthenticated; API key for higher limits"
+    commit_sha: 95d41cfbb1d6c66d7d3ad66f42505cb5bbfe7f13
+    license: none               # no LICENSE file in repo — minor concern, documented
+    maintainer: "FUJISHIGE TEMMA <tenma.x0@gmail.com>"
+    last_reviewed: 2026-03-09
+    permissions_review: >
+      Network: read-only calls to api.semanticscholar.org/graph/v1 only.
+      File system: none. Env vars: api_key optional (not required). Safe.
+    rollback_command: claude mcp remove semantic-scholar-mcp
+    trust_assessment: pass
+    related_wrk: WRK-579
+    machines: [ace-linux-1]
+    notes: >
+      No tagged releases — commit SHA pinning mandatory. Read-only network
+      access to api.semanticscholar.org. Single-contributor repo (FUJISHIGE TEMMA);
+      source code reviewed 2026-03-09 — clean, no suspicious behaviour.
+      Trust assessment PASS; promoted to active on 2026-03-09 (WRK-1055).
+
+  # ── REGISTRY CANDIDATES (Phase 4 evaluation) ─────────────────────────
+
+  - id: fetch_mcp
+    name: Fetch MCP Server (Anthropic)
+    status: evaluated
+    use_case: >
+      Web content retrieval for agents — fetches URLs and converts HTML to
+      markdown. Enables agents to access live documentation, standards pages,
+      and API references without leaving the agent context. Directly useful for
+      engineering WRKs referencing online standards (DNV, API, ISO, BSEE).
+    runtime: uvx
+    install_command: >
+      claude mcp add fetch -s project -- uvx mcp-server-fetch
+    source_repo: https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
+    auth_required: false
+    commit_sha: a97aba19eb218bedd37ae19c27893ee6659f1555
+    license: MIT
+    maintainer: "Anthropic, PBC. (Jack Adamson <jadamson@anthropic.com>)"
+    last_reviewed: 2026-03-09
+    permissions_review: >
+      Network: reads any URL provided by the agent. File system: none.
+      Env vars: none. Respects robots.txt via protego. Higher risk than
+      Semantic Scholar (unrestricted URLs) — agent must be trusted to
+      provide safe URLs. Acceptable for workspace-hub use cases.
+    rollback_command: claude mcp remove fetch
+    trust_assessment: pass
+    machines: [ace-linux-1]
+    notes: >
+      Official Anthropic-maintained server. MIT license. 80k+ stars on parent
+      repo. v0.6.3 pinned via PyPI. Actively maintained (last push 2026-03-07).
+      Broader URL access than Semantic Scholar — install when needed for
+      standards/documentation lookups. Not installed by default.
+
+  # Additional servers identified via registry.modelcontextprotocol.io scan
+  # will be appended here during Phase 4 execution.
+  # Template for new entries:
+  #
+  # - id: <snake_case_id>
+  #   name: "<Human Readable Name>"
+  #   status: pending
+  #   use_case: >
+  #     <one paragraph: what domain problem it solves for engineering agents>
+  #   runtime: uvx|npx|docker
+  #   install_command: >
+  #     claude mcp add <name> -s project -- <runtime> <package>@<version>
+  #   source_repo: <url>
+  #   auth_required: true|false
+  #   commit_sha: ""
+  #   license: ""
+  #   maintainer: ""
+  #   last_reviewed: ""
+  #   permissions_review: pending
+  #   rollback_command: claude mcp remove <name>
+  #   trust_assessment: pending
+  #   machines: [ace-linux-1]
+  #   notes: ""
