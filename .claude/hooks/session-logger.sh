@@ -49,6 +49,17 @@ ENTRY=$(jq -cn \
   2>/dev/null) \
   || ENTRY="{\"ts\":\"${TS}\",\"hook\":\"${HOOK_TYPE}\",\"tool\":\"${TOOL}\"}"
 
+# Emit session_params on first write of the daily log
+if [ ! -s "$LOG_FILE" ]; then
+    PARAMS_SCRIPT="${WS}/scripts/ai/session-params.py"
+    if [ -f "$PARAMS_SCRIPT" ]; then
+        PARAMS=$(uv run --no-project python "$PARAMS_SCRIPT" 2>/dev/null) || PARAMS=""
+        if [ -n "$PARAMS" ]; then
+            echo "$PARAMS" >> "$LOG_FILE" 2>/dev/null || true
+        fi
+    fi
+fi
+
 echo "$ENTRY" >> "$LOG_FILE" 2>/dev/null
 
 # Dual-write: also append to unified orchestrator log

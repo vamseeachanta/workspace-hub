@@ -1,0 +1,20 @@
+wrk_id: WRK-1052
+stage: 2
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - work-queue-workflow
+    - session-start
+    - workflow-gatepass
+  referenced:
+    - ai-usage-summary.sh Active Provider Config (WRK-1023)
+    - scripts/hooks/session-logger.sh
+    - scripts/ai/assessment/query-quota.sh
+key_files:
+  - scripts/hooks/session-logger.sh
+  - scripts/productivity/sections/ai-usage-summary.sh
+p1_risks: []
+notes: >
+  Logic already implemented in ai-usage-summary.sh (CTX_MAP + config reads).
+  Reuse as shared helper scripts/ai/session-params.py.
+  session-logger.sh already emits JSONL events — just add session_params event.

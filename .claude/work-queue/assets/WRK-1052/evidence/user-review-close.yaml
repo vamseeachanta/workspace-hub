@@ -1,0 +1,6 @@
+wrk_id: WRK-1052
+stage: 17
+reviewer: vamsee
+reviewed_at: "2026-03-09T03:35:00Z"
+decision: approved
+notes: Implementation approved — session_params emitting correctly on session start.

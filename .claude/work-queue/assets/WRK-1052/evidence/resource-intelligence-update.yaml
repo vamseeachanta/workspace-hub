@@ -1,0 +1,6 @@
+wrk_id: WRK-1052
+stage: 15
+updated_at: "2026-03-09T03:25:00Z"
+additions:
+  - scripts/ai/session-params.py — new helper, reusable for any session parameter logging
+no_additions_rationale: ""

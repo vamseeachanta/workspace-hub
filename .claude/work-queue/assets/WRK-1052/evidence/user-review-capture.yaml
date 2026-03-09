@@ -1,0 +1,7 @@
+wrk_id: WRK-1052
+stage: 1
+approval_decision: approve_as_is
+reviewer: vamsee
+confirmed_at: "2026-03-09T02:00:00Z"
+scope_approved: true
+notes: Captured from WRK-1023 session — log model/context/effort at session start.

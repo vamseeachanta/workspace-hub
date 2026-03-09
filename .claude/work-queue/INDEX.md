@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-09T03:10:09Z by generate-index.py -->
+<!-- Generated: 2026-03-09T03:19:41Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-09T03:10:09Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-09T03:19:41Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,8 +13,8 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 213 |
-| working | 4 |
+| pending | 212 |
+| working | 5 |
 | blocked | 9 |
 | archived | 253 |
 
@@ -78,8 +78,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 185 / 479 |
-| Plans cross-reviewed | 85 |
-| Plans approved | 107 |
+| Plans cross-reviewed | 86 |
+| Plans approved | 108 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -99,7 +99,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 213 | 27% |
+| Pending items with plans | 58 / 212 | 27% |
 | Plans cross-reviewed | 10 | 15% |
 | Plans user-approved | 10 | 15% |
 
@@ -116,7 +116,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 97 | 2 | 7 |
+| High     | 96 | 3 | 7 |
 | Medium   | 86  | 2  | 1  |
 | Low      | 30  | 0  | 1  |
 
@@ -166,7 +166,7 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1052 | HIGH | feat(harness): log model, context limit, effort level at session start | pending |
+| WRK-1052 | HIGH | feat(harness): log model, context limit, effort level at session start | working |
 
 #### harness / skills
 
@@ -1025,7 +1025,7 @@
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | medium | simple | ace-linux-2 | ace-linux-2 | ace-linux-2 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | medium | simple | acma-ansys05 | acma-ansys05 | acma-ansys05 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1052 | feat(harness): log model, context limit, effort level at session start | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1052 | feat(harness): log model, context limit, effort level at session start | working | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | - | - | - |
 | WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
@@ -1245,7 +1245,6 @@
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | high | medium | workspace-hub, digitalmodel, worldenergydata | - |
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | medium | simple | - | - |
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | medium | simple | - | - |
-| WRK-1052 | feat(harness): log model, context limit, effort level at session start | high | simple | - | - |
 | WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | medium | medium | workspace-hub | - |
 
 ### Working
@@ -1256,6 +1255,7 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
+| WRK-1052 | feat(harness): log model, context limit, effort level at session start | high | simple | - | - |
 
 ### Blocked
 
@@ -2373,7 +2373,7 @@
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | medium | workspace-hub | - |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | medium | workspace-hub, digitalmodel, worldenergydata | - |
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | simple | workspace-hub | - |
-| WRK-1052 | feat(harness): log model, context limit, effort level at session start | pending | simple | - | - |
+| WRK-1052 | feat(harness): log model, context limit, effort level at session start | working | simple | - | - |
 
 ### Medium
 
@@ -2735,7 +2735,7 @@
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | high | workspace-hub | - |
 | WRK-1050 | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending | medium | - | - |
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | medium | - | - |
-| WRK-1052 | feat(harness): log model, context limit, effort level at session start | pending | high | - | - |
+| WRK-1052 | feat(harness): log model, context limit, effort level at session start | working | high | - | - |
 
 ### Medium
 
@@ -3274,7 +3274,7 @@
 | WRK-1047 | chore(harness): keep all workstations ready so engineering work is never blocked by harness drift | archived | high | medium | workspace-hub |
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | workspace-hub, digitalmodel, worldenergydata |
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | high | simple | workspace-hub |
-| WRK-1052 | feat(harness): log model, context limit, effort level at session start | pending | high | simple | - |
+| WRK-1052 | feat(harness): log model, context limit, effort level at session start | working | high | simple | - |
 | WRK-1053 | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | pending | medium | medium | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)

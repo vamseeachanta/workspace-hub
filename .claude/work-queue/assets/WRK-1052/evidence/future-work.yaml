@@ -1,0 +1,11 @@
+wrk_id: WRK-1052
+stage: 15
+synthesized_at: "2026-03-09T03:25:00Z"
+recommendations:
+  - id: FW-01
+    title: "Add session_params to orchestrator log dual-write path"
+    priority: low
+    disposition: spun-off-new
+    status: pending
+    captured: true
+    notes: Currently only writes to state/sessions/; orchestrator log dual-write skips params.

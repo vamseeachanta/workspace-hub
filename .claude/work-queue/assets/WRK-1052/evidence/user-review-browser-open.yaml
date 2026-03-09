@@ -1,0 +1,17 @@
+wrk_id: WRK-1052
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1052/WRK-1052-lifecycle.html
+    opened_at: "2026-03-09T01:55:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1052/WRK-1052-lifecycle.html
+    opened_at: "2026-03-09T01:57:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1052/WRK-1052-lifecycle.html
+    opened_at: "2026-03-09T02:25:00Z"
+    reviewer: vamsee
