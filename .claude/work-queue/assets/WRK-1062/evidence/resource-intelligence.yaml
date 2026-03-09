@@ -1,0 +1,82 @@
+wrk_id: WRK-1062
+stage: 2
+completion_status: continue_to_planning
+researched_at: 2026-03-09
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+
+failure_landscape:
+  assethold_12:
+    root_cause: live yfinance/sec_edgar API calls — HTTP network requests at test time
+    categories:
+      - stock_breakout: 7 tests (COST, CVX, RIG, TCS, TSLA, WMT, XOM) in tests/modules/stocks/analysis/breakout/
+      - stock_data: 2 tests (AAPL, RIG) in tests/modules/stocks/data/
+      - stock_investment: 2 tests (ffn, value) in tests/modules/stocks/analysis/investment/
+      - portfolio: 1 test (AI) in tests/modules/stocks/analysis/portfolio/
+    additional: 5 smoke test errors (TestFileOperations, TestExternalConnectivity) — fixture wiring issue
+  assetutilities_21:
+    root_cause: platform-specific (Windows) or OrcaFlex-dependent — NOT live-data HTTP calls
+    implication: >
+      These are NOT live-data failures — they are platform/tool exclusions.
+      Already skipped via conftest.py pytest_ignore_collect() on Linux.
+      The 21 count may reflect un-skipped platform tests.
+      Scope for WRK-1062 = assethold 12 + clarify/document assetutilities situation.
+
+existing_infrastructure:
+  assethold:
+    conftest_mocks: "15 external modules pre-mocked (yfinance, sec_edgar, finvizfinance, ta, diskcache)"
+    fixtures_defined: "20+ fixtures including mock_yfinance, mock_web_scraping, sample_asset_data"
+    problem: "Mocks defined but tests call engine() directly — fixtures never injected"
+    markers_defined: [slow, integration, unit, external]
+    markers_missing: [live_data]
+    fixtures_dir: "tests/fixtures/ — exists but empty"
+  assetutilities:
+    conftest: "Platform guards + path extension; single config_file fixture"
+    markers_defined: [unit, integration, slow, llm, scrapy, selenium, database, api, etl]
+    markers_missing: [live_data, external]
+    fixtures_dir: "tests/fixtures/ — exists but empty"
+  runner:
+    run_all_tests_sh: "scripts/testing/run-all-tests.sh — WRK-1054 delivered; supports --repo filter"
+    expected_failures_txt: "scripts/testing/expected-failures.txt — 17 known failures tracked"
+
+recommended_approach:
+  tier1_markers:
+    description: "Add @pytest.mark.live_data to pytest.ini + tag all 12 failing assethold tests"
+    effort: low
+    outcome: "Tests categorized; can be excluded with -m 'not live_data'"
+  tier2_responses_library:
+    description: "Use responses library to intercept HTTP calls; wire assethold conftest fixtures to tests"
+    effort: medium
+    outcome: "Tests run deterministically without network; existing mocks leveraged"
+    dependency: "Add responses>=0.24.0 to assethold pyproject.toml test group"
+  tier3_stub_data:
+    description: "Manual JSON fixture files for each test; fallback if responses library insufficient"
+    effort: high
+    outcome: "Fully deterministic; higher maintenance burden"
+
+files_to_modify:
+  - assethold/pytest.ini  # add live_data marker
+  - assethold/pyproject.toml  # add responses dependency
+  - assethold/tests/conftest.py  # wire fixtures to tests
+  - "assethold/tests/modules/stocks/analysis/breakout/test_breakout_*.py (7 files)"
+  - "assethold/tests/modules/stocks/data/test_data_*.py (2 files)"
+  - "assethold/tests/modules/stocks/analysis/investment/test_investment_*.py (2 files)"
+  - assethold/tests/modules/stocks/analysis/portfolio/test_portfolio_AI.py
+  - assethold/tests/test_smoke.py
+  - scripts/testing/run-all-tests.sh  # --include-live flag
+  - scripts/testing/refresh-fixtures.sh  # new script documenting fixture update workflow
+
+risks:
+  - id: engine_not_injectable
+    description: "engine() may hardcode yfinance calls; need to verify injection point"
+    severity: medium
+  - id: assetutilities_scope
+    description: "21 failures may be platform/OrcaFlex not live-data; audit needed in Stage 10"
+    severity: medium
+  - id: missing_result_ymls
+    description: "Some tests need results/*.yml files to compare against; may need to generate from live data once"
+    severity: low

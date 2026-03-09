@@ -1,0 +1,9 @@
+wrk_id: WRK-1062
+plan_draft:
+  opened: true
+  opened_at: 2026-03-09T05:50:00Z
+  html_path: assets/WRK-1062/WRK-1062-plan-draft-review.html
+plan_final:
+  opened: true
+  opened_at: 2026-03-09T06:20:00Z
+  html_path: assets/WRK-1062/WRK-1062-plan-final-review.html

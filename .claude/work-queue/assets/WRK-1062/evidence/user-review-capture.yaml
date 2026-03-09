@@ -1,0 +1,10 @@
+wrk_id: WRK-1062
+stage: 1
+scope_approved: true
+reviewer: vamsee
+approved_at: 2026-03-09
+confirmed_at: 2026-03-09T06:30:00Z
+notes: >
+  Scope confirmed: replace live-data test dependencies with deterministic fixtures
+  in assetutilities (21 failures) and assethold (12 failures).
+  Touches test infrastructure only — no production code changes.
