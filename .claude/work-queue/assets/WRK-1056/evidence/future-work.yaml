@@ -1,0 +1,38 @@
+wrk_id: WRK-1056
+generated_at: 2026-03-09T15:00:00Z
+
+recommendations:
+  - id: FW-1
+    title: Documentation layout quality checks (ruff D rules + README sections)
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_id: WRK-1058
+
+  - id: FW-2
+    title: Reference documentation quality checks (API symbol audit + docs/ structure)
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_id: WRK-1059
+
+  - id: FW-3
+    title: Quality gap discovery (folders not covered by any quality check)
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_id: WRK-1060
+
+  - id: FW-4
+    title: Central ruff.toml at workspace root (unified baseline config)
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_id: WRK-1060
+
+  - id: FW-5
+    title: --json output flag for CI consumption
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_id: WRK-1058

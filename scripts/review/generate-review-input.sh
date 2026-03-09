@@ -127,6 +127,7 @@ else
     # Build scoped or full diff
     VALID_REPOS=()
     for repo in "${TARGET_REPOS[@]:-}"; do
+        [[ -z "$repo" ]] && continue
         repo_path="${REPO_ROOT}/${repo}"
         if [[ -d "$repo_path" ]]; then
             VALID_REPOS+=("$repo")
@@ -149,7 +150,8 @@ fi
 DIFF_TRUNCATED=false
 DIFF_MAX=300
 if [[ "$DIFF_LINE_COUNT" -gt "$DIFF_MAX" ]]; then
-    DIFF_CONTENT="$(echo "$DIFF_CONTENT" | head -n "$DIFF_MAX")"
+    # Use printf to avoid SIGPIPE from echo piped to head
+    DIFF_CONTENT="$(printf '%s\n' "$DIFF_CONTENT" | head -n "$DIFF_MAX" || true)"
     DIFF_TRUNCATED=true
 fi
 

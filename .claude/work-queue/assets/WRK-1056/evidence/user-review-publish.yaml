@@ -16,3 +16,11 @@ events:
     documents: [.claude/work-queue/assets/WRK-1056/plan-html-review-final.md]
     published_at: "2026-03-09T12:05:00Z"
     reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "placeholder-close-review"
+    documents: [.claude/work-queue/assets/WRK-1056/WRK-1056-lifecycle.html]
+    published_at: "2026-03-09T15:00:00Z"
+    reviewer: vamsee

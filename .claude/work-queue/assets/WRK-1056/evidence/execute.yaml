@@ -1,0 +1,37 @@
+wrk_id: WRK-1056
+stage: 10
+scope: integrated
+completed_at: 2026-03-09T14:00:00Z
+
+files_created:
+  - scripts/quality/check-all.sh
+  - assetutilities/.pre-commit-config.yaml
+  - assethold/.pre-commit-config.yaml
+  - tests/quality/test_check_all.sh
+
+files_modified:
+  - worldenergydata/.pre-commit-config.yaml
+  - OGManufacturing/.pre-commit-config.yaml
+
+integrated_repo_tests:
+  - name: test_check_all
+    scope: integrated
+    command: bash tests/quality/test_check_all.sh
+    result: pass
+    artifact_ref: tests/quality/test_check_all.sh
+  - name: yaml_validate_worldenergydata
+    scope: integrated
+    command: "uv run --no-project python -c \"import yaml; yaml.safe_load(open('worldenergydata/.pre-commit-config.yaml'))\""
+    result: pass
+    artifact_ref: worldenergydata/.pre-commit-config.yaml
+  - name: yaml_validate_ogmanufacturing
+    scope: integrated
+    command: "uv run --no-project python -c \"import yaml; yaml.safe_load(open('OGManufacturing/.pre-commit-config.yaml'))\""
+    result: pass
+    artifact_ref: OGManufacturing/.pre-commit-config.yaml
+
+notes: >
+  10/10 tests pass. YAML validated for both modified pre-commit files.
+  Smoke tests confirm --help (exit 0), --repo nonexistent (exit 1 + error message).
+  Mypy invocation uses uv run inside each repo (project venv) per Codex MAJOR fix.
+  Fixture-based tests — no live repo dependency.

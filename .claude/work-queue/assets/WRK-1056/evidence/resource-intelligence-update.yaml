@@ -1,0 +1,23 @@
+wrk_id: WRK-1056
+stage: 16
+updated_at: 2026-03-09T15:00:00Z
+
+additions:
+  - topic: uv_tool_run_vs_uv_run
+    learning: >
+      uv tool run <tool> runs in an isolated env (no project deps).
+      uv run <tool> inside a repo uses the project venv (correct for mypy).
+      Always use uv run mypy inside the repo; uv tool run ruff is fine (ruff needs no project deps).
+    source: WRK-1056 Codex cross-review MAJOR C1
+
+  - topic: pre_commit_minimal_snippet
+    learning: >
+      When creating .pre-commit-config.yaml from scratch, use a minimal ruff-only snippet.
+      Do NOT clone an existing repo's config (e.g. digitalmodel) which contains unrelated hooks.
+    source: WRK-1056 Codex cross-review MAJOR C3
+
+  - topic: bash_test_isolation
+    learning: >
+      Bash test scripts should use QUALITY_REPO_ROOT (or similar env override) + fixture dirs
+      to avoid live workspace dependency. grep-based assertion on real repos is non-deterministic.
+    source: WRK-1056 Codex cross-review MAJOR C2

@@ -6,3 +6,5 @@ session_id: session-20260309-wrk1056
 quota: available
 claimed_at: "2026-03-09T13:00:00Z"
 orchestrator: claude
+best_fit_provider: claude
+session_owner: claude

@@ -5,10 +5,10 @@
   "gates": [
     {
       "name": "Plan gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
     },
     {
       "name": "Workstation contract gate",
@@ -40,52 +40,52 @@
     },
     {
       "name": "Agent log gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "execute:missing-log ; cross-review:missing-log"
+      "details": "matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['review_wrapper_complete']"
     },
     {
       "name": "User-review HTML-open gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml: missing required stages ['close_review']"
+      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml: missing required stages ['close_review']"
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1056/review-synthesis.md"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1056/review.md"
     },
     {
       "name": "TDD gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "none"
+      "details": "test files=['ac-test-matrix.md']"
     },
     {
       "name": "Integrated test gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "execute evidence missing (required: evidence/execute.yaml)"
+      "details": "execute.yaml: integrated_repo_tests=3 (all passing)"
     },
     {
       "name": "Legal gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "artifact=missing, none"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1056/legal-scan.md, result=pass"
     },
     {
       "name": "Claim gate",
@@ -96,17 +96,17 @@
     },
     {
       "name": "Future-work gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "future-work evidence absent (legacy item \u2014 WARN)"
+      "details": "future-work.yaml: recommendations=5"
     },
     {
       "name": "Resource-intelligence update gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence-update.yaml missing"
+      "details": "resource-intelligence-update.yaml: additions=3"
     },
     {
       "name": "User-review close gate",
@@ -169,7 +169,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "codex keyword found in review artifacts (6 file(s) checked)"
+      "details": "codex keyword found in review artifacts (9 file(s) checked)"
     },
     {
       "name": "Publish commit uniqueness gate",
@@ -180,10 +180,10 @@
     },
     {
       "name": "Stage evidence paths gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[1] evidence path not found: .claude/work-queue/working/WRK-1056.md"
+      "details": "all stage evidence paths verified"
     },
     {
       "name": "Done/pending contradiction gate",
