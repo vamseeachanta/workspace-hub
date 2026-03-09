@@ -1,4 +1,4 @@
-generated_at: '2026-03-09T07:00:00Z'
+generated_at: '2026-03-09T12:19:38Z'
 stages:
 - evidence: .claude/work-queue/assets/WRK-1076/evidence/user-review-capture.yaml
   order: 1
@@ -75,9 +75,10 @@ stages:
 - evidence: pending
   order: 19
   stage: Close
-  status: pending
+  status: done
 - evidence: pending
   order: 20
   stage: Archive
-  status: pending
+  status: done
 wrk_id: WRK-1076
+reviewed_by: orchestrator
