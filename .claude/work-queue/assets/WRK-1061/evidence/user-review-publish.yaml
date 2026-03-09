@@ -1,7 +1,20 @@
 wrk_id: WRK-1061
-stage: 5
-published: true
-published_at: "2026-03-09T03:05:00Z"
-html_path: .claude/work-queue/assets/WRK-1061/WRK-1061-lifecycle.html
-commit_sha: pending
-notes: Lifecycle HTML generated and available locally for review
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 94e4a90ce6f0d46123e479b1ade9583b80d628b8
+    documents:
+      - .claude/work-queue/assets/WRK-1061/WRK-1061-lifecycle.html
+    published_at: "2026-03-09T03:05:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 94e4a90ce6f0d46123e479b1ade9583b80d628b8
+    documents:
+      - .claude/work-queue/assets/WRK-1061/WRK-1061-lifecycle.html
+    published_at: "2026-03-09T03:25:00Z"
+    reviewer: vamsee

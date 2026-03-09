@@ -7,11 +7,9 @@ recommendations:
     title: >
       Replace ls -t test snapshot sniffing with find-based mtime sort
     description: >
-      The current ls -t approach for finding the most recent test snapshot is
-      fragile (filenames with spaces/newlines). Replace with:
-      find "$TEST_RESULTS_DIR" -maxdepth 1 -name '*.md' -printf '%T@ %p\n' |
-      sort -rn | head -1 | awk '{print $2}'
-    disposition: captured
+      The current ls -t approach is fragile for filenames with spaces.
+      Replace with find -printf mtime-sort approach in a follow-up.
+    disposition: existing-updated
     status: deferred
     captured: false
     priority: low
@@ -20,22 +18,20 @@ recommendations:
     title: >
       Support committed-branch diff mode (git diff origin/main...HEAD)
     description: >
-      Current git diff HEAD misses changes already committed to a feature branch
-      but not yet merged. Add --diff-base flag to support
-      git diff <base>...HEAD for branch workflows.
-    disposition: captured
+      Add --diff-base flag to support branch workflow diffs that have
+      already been committed.
+    disposition: spun-off-new
     status: deferred
     captured: false
     priority: medium
 
   - id: FW-1061-003
     title: >
-      Integrate generate-review-input.sh into work-queue-workflow Stage 13 guidance
+      Integrate generate-review-input.sh into work-queue-workflow Stage 13
     description: >
-      Update work-queue-workflow/SKILL.md Stage 13 entry reads to reference
-      generate-review-input.sh as the canonical way to create review input files,
-      replacing the manual writing step.
-    disposition: captured
+      Update work-queue-workflow/SKILL.md Stage 13 to reference
+      generate-review-input.sh as the canonical review input generator.
+    disposition: existing-updated
     status: deferred
     captured: false
     priority: high
