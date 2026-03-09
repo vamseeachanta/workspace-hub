@@ -3,6 +3,7 @@ Entry: WRK-NNN-lifecycle.html#s7-s9, routing.yaml
 IMPORTANT: Write evidence files via Write tool only — never Bash echo/sed/cat.
 TDD MANDATORY: write failing tests before any implementation code.
 Checklist:
+0. EnterPlanMode — plan test and file strategy before any implementation writes
 1. Invoke superpowers/test-driven-development skill
 2. Write ALL failing tests first (Red); confirm test collection
 3. Implement minimum code to pass (Green); no untested code

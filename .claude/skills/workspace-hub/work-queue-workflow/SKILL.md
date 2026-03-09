@@ -181,6 +181,20 @@ Violations to avoid:
 Do not use shortened lifecycle variants for execution governance. This entrypoint
 must always resolve to the canonical 20-stage chain.
 
+## Plan-Mode Gates
+
+Invoke the `workspace-hub/plan-mode` skill at the start of these deliberative stages,
+before writing any artifact. `plan_mode: required` is recorded in each stage contract YAML.
+
+| Stage | Name | Trigger |
+|-------|------|---------|
+| Stage 4 | Plan Draft | Before first lifecycle HTML write |
+| Stage 6 | Cross-Review | Before synthesizing 3-provider verdicts |
+| Stage 10 | Work Execution | Before implementation file writes |
+| Stage 13 | Agent Cross-Review | Before recording implementation verdict |
+
+Pattern: `EnterPlanMode` → think → `ExitPlanMode` → write evidence via Write tool.
+
 ## Orchestrator Team Pattern
 
 **Hard rule:** No WRK may be fully executed in a single Claude conversation (Stage 1→20).

@@ -4,6 +4,7 @@ IMPORTANT: Write evidence files via Write tool only — never Bash echo/sed/cat.
 Mandatory: ALL 3 providers (Claude + Codex + Gemini) must review. No self-skip.
 Override only if user BOTH states quota unavailable AND explicitly instructs to continue.
 Checklist:
+0. EnterPlanMode — synthesize all inputs before writing any verdict artifact
 1. Send cross-review-package.md to Codex and Gemini simultaneously
 2. Collect all 3 verdicts (APPROVE|REVISE) with P1/P2 findings
 3. Synthesize into evidence/cross-review.yaml (verdict, reviewers[], p1_findings, p2_findings)
