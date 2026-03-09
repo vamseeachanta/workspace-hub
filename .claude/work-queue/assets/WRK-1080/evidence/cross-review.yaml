@@ -1,0 +1,19 @@
+wrk_id: WRK-1080
+stage: 6
+phase: 1
+reviewed_at: 2026-03-09
+providers:
+  codex:
+    verdict: MINOR
+    findings:
+      - No retention/pruning policy — added: 14 daily / 8 weekly / 6 monthly
+      - No lock file — added: /tmp/backup-workspace.lock
+      - Not atomic — fixed: rsync to _in-progress/, rename on success
+      - Recovery doc missing bootstrap/permissions — addressed in plan
+    deferred: []
+  gemini:
+    verdict: n/a
+    notes: Route A — single Codex review pass only
+overall_verdict: MINOR
+blocking_issues: 0
+deferred_issues: 0

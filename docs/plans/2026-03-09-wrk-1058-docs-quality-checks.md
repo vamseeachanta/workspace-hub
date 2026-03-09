@@ -4,9 +4,36 @@
 
 **Goal:** Extend `scripts/quality/check-all.sh` with a `--docs` flag that runs ruff D (pydocstyle) rules, checks README required sections, and warns when `docs/` is absent.
 
-**Architecture:** Add `run_ruff_docs()`, `check_readme_sections()`, and `check_docs_dir()` functions following the existing `run_ruff()`/`run_mypy()` pattern. Results stored in parallel `DOCS_RESULTS[]` map. `--docs` flag is additive (runs alongside ruff/mypy unless `--docs-only` is specified).
+**Architecture:** Add `run_ruff_docs()`, `check_readme_sections()`, and `check_docs_dir()` functions following the existing `run_ruff()`/`run_mypy()` pattern. Results stored in parallel `DOCS_RESULTS[]` map.
 
-**Tech Stack:** bash, `uv tool run ruff` (D rules), grep for README section matching.
+**Flag contract (explicit):**
+- `--docs` is additive: always adds docs checks on top of whatever else runs. Alone → runs ruff + mypy + docs (default behaviour + docs). Combined with `--ruff-only` → runs ruff + docs only. Combined with `--mypy-only` → runs mypy + docs only. No `--docs-only` mode.
+- All docs subchecks are warn-only: `run_ruff_docs` failure → `docstrings: WARN`; never raises exit code.
+- README heading match: `grep -qEi "^#+[[:space:]]*${section}$"` — exact heading word match (e.g. `## Installation` passes, `## Installation Notes` does not).
+- Output labels consistent across all subchecks: `PASS` / `WARN`.
+
+**Tech Stack:** bash 4.0+ (already required by existing `declare -A` usage), `uv tool run ruff` (D rules), `uv run --no-project python` for JSON count (no bare python3).
+
+**Runtime dependencies (inherited from check-all.sh — no new requirements):**
+
+| Tool | Min version | Already required by | Behavior if absent |
+|------|-------------|--------------------|--------------------|
+| bash | 4.0+ | `declare -A RUFF_RESULTS` in existing check-all.sh | Script exits with syntax error |
+| uv | 0.5.0+ | `uv tool run ruff` in existing run_ruff() | ruff_ver="(unavailable)", check skipped |
+| ruff | any | `uv tool run ruff` in existing run_ruff() | Managed via uv tool; auto-installed |
+| grep -E | POSIX | existing check-all.sh | system grep; present on all Linux targets |
+| tr | POSIX | existing check-all.sh | system coreutils; present on all Linux targets |
+| python (via uv) | 3.9+ | `uv run --no-project python` in hub scripts | If unavailable: count falls back to '?' |
+
+`run_ruff_docs()` unavailability behavior: if `uv tool run ruff` fails, exit_code≠0 → `docstrings: WARN (? issues)`. Never hard-fails. All 5 target machines are ace-linux-1 (Linux, bash 5.x, uv 0.5+, all tools confirmed present per WRK-1066 env audit).
+
+**Cross-review amendments applied:**
+- v1 P2: README heading-level grep (not bare text match)
+- v1 P3: exit code as primary signal; JSON count via `uv run --no-project python`
+- v2 P1: `python3 -c` → `uv run --no-project python -c` (policy compliance)
+- v2 P2: flag semantics clarified above; `--docs-only` dropped
+- v2 P2: added T13 (ruff D WARN + exit 0) and T14 (missing README.md WARN)
+- v2 P3: `docs-dir: OK` → `docs-dir: PASS` for label consistency
 
 ---
 
@@ -111,21 +138,39 @@ assert_contains "T11 readme: WARN" "readme: WARN" "$t11_out"
 echo "── T12: docs/ absent → WARN ──────────────────────────────"
 t12_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --repo worldenergydata 2>&1)" || true
 assert_contains "T12 docs-dir: WARN" "docs-dir: WARN" "$t12_out"
+
+# ---------------------------------------------------------------------------
+# T13: ruff D failure → docstrings: WARN, but overall exit 0 (warn-only)
+# ---------------------------------------------------------------------------
+echo "── T13: ruff D failure → WARN, exit 0 ───────────────────"
+t13_exit=0
+t13_out="$(MOCK_RUFF_DOCS_EXIT=1 run_check --docs --repo assetutilities 2>&1)" \
+  || t13_exit=$?
+assert_exit "T13 exit 0 despite ruff D failure" 0 "$t13_exit"
+assert_contains "T13 docstrings: WARN in output" "docstrings: WARN" "$t13_out"
+
+# ---------------------------------------------------------------------------
+# T14: missing README.md → readme: WARN (missing README.md)
+# ---------------------------------------------------------------------------
+echo "── T14: missing README.md → WARN ─────────────────────────"
+# ogmanufacturing fixture has no README.md (not created in setup)
+t14_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --repo ogmanufacturing 2>&1)" || true
+assert_contains "T14 readme: WARN (missing README.md)" "readme: WARN (missing README.md)" "$t14_out"
 ```
 
-**Step 5: Run tests — expect T8–T12 to FAIL (red)**
+**Step 5: Run tests — expect T8–T14 to FAIL (red)**
 
 ```bash
 bash tests/quality/test_check_all.sh 2>&1 | tail -20
 ```
 
-Expected: T1–T7 PASS, T8–T12 FAIL with "not found in" messages.
+Expected: T1–T7 PASS, T8–T14 FAIL with "not found in" messages.
 
 **Step 6: Commit**
 
 ```bash
 git add tests/quality/test_check_all.sh
-git commit -m "test(WRK-1058): add T8-T12 for --docs flag (red)"
+git commit -m "test(WRK-1058): add T8-T14 for --docs flag (red)"
 ```
 
 ---
@@ -168,15 +213,16 @@ declare -A DOCS_RESULTS=()
 ```bash
 run_ruff_docs() {
   local repo_name="$1" repo_path="$2"
-  local exit_code=0 output=""
-  output="$(cd "$repo_path" && uv tool run ruff check --select D . 2>&1)" || exit_code=$?
+  local exit_code=0 count=""
+  # Use exit code as primary signal; JSON format for stable issue count
+  (cd "$repo_path" && uv tool run ruff check --select D . --quiet 2>/dev/null) && exit_code=0 || exit_code=$?
   if [[ $exit_code -eq 0 ]]; then
     DOCS_RESULTS[$repo_name]+="docstrings: PASS  "
     return 0
   fi
-  local count
-  count="$(printf '%s\n' "$output" | grep -c '^\s*[0-9]' || true)"
-  DOCS_RESULTS[$repo_name]+="docstrings: WARN (${count:-?} issues)  "
+  count="$(cd "$repo_path" && uv tool run ruff check --select D . --output-format json 2>/dev/null \
+    | uv run --no-project python -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null || echo '?')"
+  DOCS_RESULTS[$repo_name]+="docstrings: WARN (${count} issues)  "
   return 0  # docs check is warn-only, never fails the build
 }
 ```
@@ -193,10 +239,9 @@ check_readme_sections() {
     DOCS_RESULTS[$repo_name]+="readme: WARN (missing README.md)  "
     return 0
   fi
-  local missing=() section content
-  content="$(tr '[:upper:]' '[:lower:]' < "$readme")"
+  local missing=() section
   for section in "${REQUIRED_README_SECTIONS[@]}"; do
-    grep -q "$section" <<< "$content" || missing+=("$section")
+    grep -qEi "^#+[[:space:]]*${section}$" "$readme" || missing+=("$section")
   done
   if [[ ${#missing[@]} -eq 0 ]]; then
     DOCS_RESULTS[$repo_name]+="readme: PASS  "
@@ -213,7 +258,7 @@ check_readme_sections() {
 check_docs_dir() {
   local repo_name="$1" repo_path="$2"
   if [[ -d "${repo_path}/docs" ]]; then
-    DOCS_RESULTS[$repo_name]+="docs-dir: OK"
+    DOCS_RESULTS[$repo_name]+="docs-dir: PASS"
   else
     DOCS_RESULTS[$repo_name]+="docs-dir: WARN (no docs/ directory)"
   fi

@@ -1,0 +1,21 @@
+wrk_id: WRK-1082
+stage: 6
+status: blocked
+block_reason: codex_quota_exhausted
+codex_resets_at: "2026-03-15T16:11:00Z"
+plan_version_reviewed: v10/final
+reviews:
+  claude:
+    verdict: APPROVE
+    reviewed_at: 2026-03-09
+    issues: []
+  codex:
+    verdict: QUOTA_BLOCKED
+    reviewed_at: 2026-03-09
+    attempts: 9
+    last_verdict: REVISE
+    all_majors_addressed: true
+    blocked_by_quota: true
+  gemini:
+    verdict: NOT_ATTEMPTED
+    reason: codex_must_approve_first

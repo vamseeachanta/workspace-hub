@@ -1,0 +1,6 @@
+wrk_id: WRK-1080
+stage: 1
+scope_approved: true
+reviewer: vamsee
+reviewed_at: 2026-03-09
+notes: Scope approved — rsync backup to ace-linux-2, daily cron, recovery doc

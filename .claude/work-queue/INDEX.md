@@ -1,37 +1,37 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-09T13:08:58Z by generate-index.py -->
+<!-- Generated: 2026-03-09T16:14:21Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-09T13:08:58Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-09T16:14:21Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 504
+**Total items:** 508
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 224 |
-| working | 4 |
-| blocked | 9 |
+| pending | 226 |
+| working | 5 |
+| blocked | 10 |
 | archived | 267 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 230 |
-| medium | 228 |
+| high | 233 |
+| medium | 229 |
 | low | 45 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 100 |
-| medium | 240 |
+| simple | 102 |
+| medium | 242 |
 | complex | 97 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 56 |
+| harness | 60 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 172 |
+| workspace-hub | 173 |
 | worldenergydata | 90 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 196 / 504 |
-| Plans cross-reviewed | 99 |
-| Plans approved | 121 |
+| Plans exist | 198 / 508 |
+| Plans cross-reviewed | 100 |
+| Plans approved | 123 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 504 |
+| Total captured | 508 |
 | Total archived | 267 |
-| Completion rate | 267/504 (53%) |
+| Completion rate | 267/508 (53%) |
 | Monthly rate (current month) | 37 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,9 +101,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 60 / 224 | 27% |
-| Plans cross-reviewed | 10 | 14% |
-| Plans user-approved | 10 | 14% |
+| Pending items with plans | 60 / 226 | 27% |
+| Plans cross-reviewed | 11 | 15% |
+| Plans user-approved | 12 | 17% |
 
 ### Aging
 
@@ -118,15 +118,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 98 | 2 | 7 |
-| Medium   | 95  | 2  | 1  |
+| High     | 99 | 3 | 8 |
+| Medium   | 96  | 2  | 1  |
 | Low      | 31  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (56 items — 14 high, 34 medium, 8 low)
+### harness (60 items — 17 high, 35 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -159,7 +159,7 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1074 | HIGH | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | pending |
+| WRK-1074 | HIGH | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | working |
 
 #### harness / ci-cd
 
@@ -174,6 +174,12 @@
 | WRK-1058 | MEDIUM | feat(harness): documentation layout quality checks — docstrings + README completeness | pending |
 | WRK-1059 | MEDIUM | feat(harness): reference documentation quality checks — API completeness + docs/ audit | pending |
 | WRK-1060 | LOW | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending |
+
+#### harness / dependency-pinning
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1082 | HIGH | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked |
 
 #### harness / doc-generation
 
@@ -244,11 +250,23 @@
 | WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
 | WRK-639 | LOW | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending |
 
+#### harness / static-analysis
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1081 | HIGH | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | pending |
+
 #### harness / test-coverage
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1067 | MEDIUM | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | pending |
+
+#### harness / type-stubs
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1079 | MEDIUM | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | pending |
 
 #### harness / uncategorised
 
@@ -278,6 +296,12 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1041 | MEDIUM | Lifecycle HTML — auto-refresh + on-demand /work html command | pending |
+
+#### harness / workspace-backup
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1080 | HIGH | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | pending |
 
 ### engineering (117 items — 68 high, 38 medium, 11 low)
 
@@ -1098,11 +1122,15 @@
 | WRK-1071 | feat(harness): performance benchmark harness — regression detection for engineering calculations | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1054 |
 | WRK-1072 | feat(harness): release management — semantic versioning + changelog for tier-1 repos | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1073 | feat(harness): repo onboarding maps — agent-readable entry points per tier-1 repo | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1075 | feat(harness): API documentation generation — MkDocs pipeline for tier-1 repos | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1058 |
 | WRK-1076 | feat(harness): async completion notifications — cron, CI, benchmark failure alerts | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | pending | medium | simple | acma-ansys05 | ace-linux-1 | acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1079 | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1056 |
+| WRK-1080 | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1056 |
+| WRK-1082 | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ❌ | ✅ | - | - | - |
 
 ## By Status
 
@@ -1330,10 +1358,12 @@
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | high | simple | - | - |
 | WRK-1071 | feat(harness): performance benchmark harness — regression detection for engineering calculations | medium | medium | - | - |
 | WRK-1072 | feat(harness): release management — semantic versioning + changelog for tier-1 repos | medium | medium | - | - |
-| WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | high | medium | - | - |
 | WRK-1075 | feat(harness): API documentation generation — MkDocs pipeline for tier-1 repos | medium | medium | - | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | medium | simple | workspace-hub | - |
 | WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | medium | medium | workspace-hub | - |
+| WRK-1079 | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | medium | medium | - | - |
+| WRK-1080 | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | high | simple | workspace-hub | - |
+| WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | high | medium | - | - |
 
 ### Working
 
@@ -1343,6 +1373,7 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
+| WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | high | medium | - | - |
 
 ### Blocked
 
@@ -1357,6 +1388,7 @@
 | WRK-133 | Update OrcaFlex license agreement with addresses and 3rd-party terms | high | medium | aceengineer-admin | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | high | simple | workspace-hub | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | high | complex | workspace-hub | - |
+| WRK-1082 | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | high | simple | - | - |
 
 ### Archived
 
@@ -2165,6 +2197,7 @@
 | WRK-1068 | feat(harness): WRK dependency graph — visualise blocked_by chains for sequencing | archived | medium | simple | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | pending | medium | simple | - |
 | WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | medium | - |
+| WRK-1080 | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | pending | high | simple | - |
 
 ### worldenergydata
 
@@ -2496,7 +2529,10 @@
 | WRK-1065 | feat(harness): context budget monitor — auto-checkpoint at 80% + session chunking guide | archived | simple | - | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | pending | simple | - | - |
 | WRK-1073 | feat(harness): repo onboarding maps — agent-readable entry points per tier-1 repo | archived | simple | - | - |
-| WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | pending | medium | - | - |
+| WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | working | medium | - | - |
+| WRK-1080 | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | pending | simple | workspace-hub | - |
+| WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | pending | medium | - | - |
+| WRK-1082 | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked | simple | - | - |
 
 ### Medium
 
@@ -2730,6 +2766,7 @@
 | WRK-1076 | feat(harness): async completion notifications — cron, CI, benchmark failure alerts | archived | simple | - | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | pending | simple | workspace-hub | - |
 | WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | workspace-hub | - |
+| WRK-1079 | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | pending | medium | - | - |
 
 ### Low
 
@@ -2887,6 +2924,8 @@
 | WRK-1073 | feat(harness): repo onboarding maps — agent-readable entry points per tier-1 repo | archived | high | - | - |
 | WRK-1076 | feat(harness): async completion notifications — cron, CI, benchmark failure alerts | archived | medium | - | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | pending | medium | workspace-hub | - |
+| WRK-1080 | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | pending | high | workspace-hub | - |
+| WRK-1082 | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked | high | - | - |
 
 ### Medium
 
@@ -3129,9 +3168,11 @@
 | WRK-1069 | feat(harness): per-WRK token cost attribution — track AI spend by work item | pending | medium | - | - |
 | WRK-1071 | feat(harness): performance benchmark harness — regression detection for engineering calculations | pending | medium | - | - |
 | WRK-1072 | feat(harness): release management — semantic versioning + changelog for tier-1 repos | pending | medium | - | - |
-| WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | pending | high | - | - |
+| WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | working | high | - | - |
 | WRK-1075 | feat(harness): API documentation generation — MkDocs pipeline for tier-1 repos | pending | medium | - | - |
 | WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | workspace-hub | - |
+| WRK-1079 | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | pending | medium | - | - |
+| WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | pending | high | - | - |
 
 ### Complex
 
@@ -3237,7 +3278,7 @@
 
 ## By Computer
 
-### ace-linux-1 (171 active / 225 total)
+### ace-linux-1 (175 active / 229 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3462,10 +3503,14 @@
 | WRK-1071 | feat(harness): performance benchmark harness — regression detection for engineering calculations | pending | medium | medium | - |
 | WRK-1072 | feat(harness): release management — semantic versioning + changelog for tier-1 repos | pending | medium | medium | - |
 | WRK-1073 | feat(harness): repo onboarding maps — agent-readable entry points per tier-1 repo | archived | high | simple | - |
-| WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | pending | high | medium | - |
+| WRK-1074 | feat(harness): cross-repo API contracts — interface tests for assetutilities consumers | working | high | medium | - |
 | WRK-1075 | feat(harness): API documentation generation — MkDocs pipeline for tier-1 repos | pending | medium | medium | - |
 | WRK-1076 | feat(harness): async completion notifications — cron, CI, benchmark failure alerts | archived | medium | simple | - |
 | WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | medium | workspace-hub |
+| WRK-1079 | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | pending | medium | medium | - |
+| WRK-1080 | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | pending | high | simple | workspace-hub |
+| WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | pending | high | medium | - |
+| WRK-1082 | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked | high | simple | - |
 
 ### ace-linux-2 (7 active / 14 total)
 
@@ -3843,4 +3888,6 @@
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | WRK-1062 | - | - |
 | WRK-1071 | feat(harness): performance benchmark harness — regression detection for engineering calculations | WRK-1054 | - | - |
 | WRK-1075 | feat(harness): API documentation generation — MkDocs pipeline for tier-1 repos | WRK-1058 | - | - |
+| WRK-1079 | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | WRK-1056 | - | - |
+| WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | WRK-1056 | - | - |
 

@@ -1,0 +1,14 @@
+wrk_id: WRK-1082
+stage: 6
+status: blocked
+next_action: resume_when_codex_quota_resets
+block_reason: codex_weekly_quota_exhausted
+codex_resets_at: "2026-03-15T16:11:00Z"
+context_summary: >
+  Plan went through 10 Codex review iterations; all MAJORs addressed.
+  Final plan (v10/final) has: harness-config.yaml single source of truth,
+  pip-audit via uv run, uv export --no-editable, exit code contract 0/1/2/3,
+  reports/ gitignored, setup-cron.sh as canonical cron installer.
+  Blocked at Stage 6 exit: Codex secondary quota full.
+  Resume: resubmit wrk-1082-plan-review-input-final.md to Codex when quota resets.
+updated_at: "2026-03-09"

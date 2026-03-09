@@ -1,11 +1,5 @@
 wrk_id: WRK-1058
-current_stage: 5
-stage_name: User Review - Plan Draft
-completed_stage: 4
-next_action: Execute stage 5: User Review - Plan Draft
-context_summary: Stage 4 complete. Next: stage 5 (User Review - Plan Draft).
-entry_reads:
-  - .claude/work-queue/assets/WRK-1058/checkpoint.yaml
-  - assets/WRK-1058/WRK-1058-lifecycle.html#s1-s4
-checkpointed_at: 2026-03-09T12:21:56Z
-human_gate: true
+stage: 5
+next_action: "Re-run Codex cross-review after quota reset (10:26 AM CDT). Command: scripts/review/cross-review.sh scripts/review/results/wrk-1058-plan-review-v2.md codex --type plan. Then exit Stage 5, proceed to Stage 6."
+context_summary: "Plan approved by user. Plan doc at docs/plans/2026-03-09-wrk-1058-docs-quality-checks.md. plan_claude.md/plan_gemini.md written. Codex HARD GATE blocked by quota exhaustion. Plan v2 in scripts/review/results/wrk-1058-plan-review-v2.md addresses P1/P2/P3 from initial Codex review."
+updated_at: 2026-03-09T08:16:00-05:00

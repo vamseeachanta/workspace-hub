@@ -11,6 +11,9 @@ commits:
   - repo: worldenergydata
     hash: 8e181d8
     message: "feat(contracts): add assetutilities API contract tests"
+  - repo: worldenergydata
+    hash: 8c6cf8e
+    message: "fix(contracts): update hookimpl to wrapper=True for pytest 8.x compat"
   - repo: workspace-hub
     hash: e7a3a7e0
     message: "feat(WRK-1074): add contracts step to run-all-tests.sh"
