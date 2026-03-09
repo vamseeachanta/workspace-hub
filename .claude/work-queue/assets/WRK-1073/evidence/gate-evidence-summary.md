@@ -17,8 +17,8 @@
 | Claim gate | PASS | claim.yaml: canonical claim evidence OK |
 | Future-work gate | PASS | future-work.yaml: recommendations=3 |
 | Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: no_additions_rationale=present |
-| User-review close gate | FAIL | user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at'] |
-| Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
+| User-review close gate | PASS | user-review-close.yaml: decision=approved |
+| Reclaim gate | WARN | reclaim.yaml: status=n/a (Stage 18 not triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=close) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
 | Browser open elapsed time gate | PASS | browser open elapsed time OK |
@@ -31,4 +31,4 @@
 | Done/pending contradiction gate | PASS | no done/pending contradictions found |
 | Plan publish predates approval gate | PASS | reviewed_at missing in user-review-plan-draft.yaml — skip |
 | Workstation contract (strict) gate | PASS | workstation contract fields present |
-| Reclaim n/a gate | WARN | n/a: Stage 18 is n/a and no reclaim log exists |
+| Reclaim n/a gate | WARN | n/a: Stage 18 is n/a; reclaim.yaml is placeholder |
