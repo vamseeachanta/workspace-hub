@@ -1,36 +1,36 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-09T04:48:17Z by generate-index.py -->
+<!-- Generated: 2026-03-09T10:20:26Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-09T04:48:17Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-09T10:20:26Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 491
+**Total items:** 490
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 217 |
-| working | 6 |
+| pending | 216 |
+| working | 5 |
 | blocked | 9 |
-| archived | 259 |
+| archived | 260 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 226 |
-| medium | 219 |
+| medium | 218 |
 | low | 45 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 94 |
+| simple | 93 |
 | medium | 233 |
 | complex | 97 |
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 53 |
+| harness | 51 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 189 / 491 |
-| Plans cross-reviewed | 92 |
-| Plans approved | 114 |
+| Plans exist | 189 / 490 |
+| Plans cross-reviewed | 93 |
+| Plans approved | 115 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,17 +91,17 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 491 |
-| Total archived | 259 |
-| Completion rate | 259/491 (53%) |
-| Monthly rate (current month) | 29 archived |
+| Total captured | 490 |
+| Total archived | 260 |
+| Completion rate | 260/490 (53%) |
+| Monthly rate (current month) | 30 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 217 | 27% |
+| Pending items with plans | 58 / 216 | 27% |
 | Plans cross-reviewed | 11 | 16% |
 | Plans user-approved | 11 | 16% |
 
@@ -110,23 +110,23 @@
 | Bucket | Count | Items |
 |--------|-------|-------|
 | Pending > 30 days | 15 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099 |
-| Pending > 14 days | 34 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-149, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-234, WRK-235, WRK-256, WRK-259, WRK-261, WRK-294, WRK-297 |
+| Pending > 14 days | 36 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-149, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-234, WRK-235, WRK-256, WRK-259, WRK-261, WRK-294, WRK-297, WRK-352, WRK-TEST-ENSEMBLE |
 | Working > 7 days | 2 | WRK-118, WRK-129 |
-| Blocked > 7 days | 8 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280 |
+| Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 97 | 3 | 7 |
-| Medium   | 89  | 3  | 1  |
+| High     | 97 | 2 | 7 |
+| Medium   | 88  | 3  | 1  |
 | Low      | 31  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (53 items — 14 high, 31 medium, 8 low)
+### harness (51 items — 13 high, 30 medium, 8 low)
 
 #### harness / agent-teams
 
@@ -162,12 +162,6 @@
 | WRK-1058 | MEDIUM | feat(harness): documentation layout quality checks — docstrings + README completeness | pending |
 | WRK-1059 | MEDIUM | feat(harness): reference documentation quality checks — API completeness + docs/ audit | pending |
 | WRK-1060 | LOW | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending |
-
-#### harness / cross-review-automation
-
-| ID | Priority | Title | Status |
-|----|----------|-------|--------|
-| WRK-1061 | HIGH | feat(harness): cross-review input auto-generation from WRK diff + context | working |
 
 #### harness / data-fixtures
 
@@ -224,7 +218,6 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1063 | MEDIUM | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | pending |
 | WRK-1063 | MEDIUM | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | working |
 
 #### harness / uncategorised
@@ -1062,10 +1055,9 @@
 | WRK-1058 | feat(harness): documentation layout quality checks — docstrings + README completeness | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1056 |
 | WRK-1059 | feat(harness): reference documentation quality checks — API completeness + docs/ audit | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1058 |
 | WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1059 |
-| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | scripts/review, tests/testing | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
+| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | scripts/review, tests/testing | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1062 | feat(harness): engineering test fixtures — deterministic data layer for live-data tests | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1054 |
-| WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | working | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | working | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1064 | feat(harness): pre-push CI gate — test + quality checks on every push | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | WRK-1054, WRK-1056 |
 
 ## By Status
@@ -1289,7 +1281,6 @@
 | WRK-1059 | feat(harness): reference documentation quality checks — API completeness + docs/ audit | medium | medium | - | - |
 | WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | low | medium | - | - |
 | WRK-1062 | feat(harness): engineering test fixtures — deterministic data layer for live-data tests | high | medium | - | - |
-| WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | medium | simple | - | - |
 | WRK-1064 | feat(harness): pre-push CI gate — test + quality checks on every push | medium | simple | - | - |
 
 ### Working
@@ -1300,7 +1291,6 @@
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
-| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | high | medium | scripts/review, tests/testing | - |
 | WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | medium | simple | - | - |
 
 ### Blocked
@@ -1580,6 +1570,7 @@
 | WRK-1055 | feat(harness): engineering MCP servers — domain tools for AI agents | medium | medium | - | - |
 | WRK-1056 | feat(harness): code quality automation — ruff + mypy across tier-1 repos | medium | medium | - | - |
 | WRK-1057 | feat(harness): repo health dashboard — dirty state, branch, test signal per repo | medium | simple | - | - |
+| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | high | medium | scripts/review, tests/testing | - |
 
 ## By Repository
 
@@ -1932,13 +1923,13 @@
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
-| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | working | high | medium | - |
+| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | archived | high | medium | - |
 
 ### tests/testing
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
-| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | working | high | medium | - |
+| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | archived | high | medium | - |
 
 ### workspace-hub
 
@@ -2439,7 +2430,7 @@
 | WRK-1049 | work-queue: prevent concurrent session claim collision — session lock + process.md deprecation | archived | simple | workspace-hub | - |
 | WRK-1052 | feat(harness): log model, context limit, effort level at session start | archived | simple | - | - |
 | WRK-1054 | feat(harness): unified test runner and result aggregation across tier-1 repos | archived | medium | - | - |
-| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | working | medium | scripts/review, tests/testing | - |
+| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | archived | medium | scripts/review, tests/testing | - |
 | WRK-1062 | feat(harness): engineering test fixtures — deterministic data layer for live-data tests | pending | medium | - | - |
 
 ### Medium
@@ -2662,7 +2653,6 @@
 | WRK-1057 | feat(harness): repo health dashboard — dirty state, branch, test signal per repo | archived | simple | - | - |
 | WRK-1058 | feat(harness): documentation layout quality checks — docstrings + README completeness | pending | medium | - | - |
 | WRK-1059 | feat(harness): reference documentation quality checks — API completeness + docs/ audit | pending | medium | - | - |
-| WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | pending | simple | - | - |
 | WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | working | simple | - | - |
 | WRK-1064 | feat(harness): pre-push CI gate — test + quality checks on every push | pending | simple | - | - |
 
@@ -2813,7 +2803,6 @@
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | medium | - | - |
 | WRK-1052 | feat(harness): log model, context limit, effort level at session start | archived | high | - | - |
 | WRK-1057 | feat(harness): repo health dashboard — dirty state, branch, test signal per repo | archived | medium | - | - |
-| WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | pending | medium | - | - |
 | WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | working | medium | - | - |
 | WRK-1064 | feat(harness): pre-push CI gate — test + quality checks on every push | pending | medium | - | - |
 
@@ -3052,7 +3041,7 @@
 | WRK-1058 | feat(harness): documentation layout quality checks — docstrings + README completeness | pending | medium | - | - |
 | WRK-1059 | feat(harness): reference documentation quality checks — API completeness + docs/ audit | pending | medium | - | - |
 | WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending | low | - | - |
-| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | working | high | scripts/review, tests/testing | - |
+| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | archived | high | scripts/review, tests/testing | - |
 | WRK-1062 | feat(harness): engineering test fixtures — deterministic data layer for live-data tests | pending | high | - | - |
 
 ### Complex
@@ -3159,7 +3148,7 @@
 
 ## By Computer
 
-### ace-linux-1 (167 active / 213 total)
+### ace-linux-1 (165 active / 212 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3371,9 +3360,8 @@
 | WRK-1058 | feat(harness): documentation layout quality checks — docstrings + README completeness | pending | medium | medium | - |
 | WRK-1059 | feat(harness): reference documentation quality checks — API completeness + docs/ audit | pending | medium | medium | - |
 | WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending | low | medium | - |
-| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | working | high | medium | scripts/review, tests/testing |
+| WRK-1061 | feat(harness): cross-review input auto-generation from WRK diff + context | archived | high | medium | scripts/review, tests/testing |
 | WRK-1062 | feat(harness): engineering test fixtures — deterministic data layer for live-data tests | pending | high | medium | - |
-| WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | pending | medium | simple | - |
 | WRK-1063 | feat(harness): engineering spec templates — Route C domain starters for structural, marine, energy | working | medium | simple | - |
 | WRK-1064 | feat(harness): pre-push CI gate — test + quality checks on every push | pending | medium | simple | - |
 

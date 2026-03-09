@@ -18,3 +18,14 @@ events:
       - .claude/work-queue/assets/WRK-1061/WRK-1061-lifecycle.html
     published_at: "2026-03-09T03:25:00Z"
     reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 121a91c917de741e41cbdaaaa735fcef6687a234
+    documents:
+      - .claude/work-queue/assets/WRK-1061/WRK-1061-lifecycle.html
+      - scripts/review/generate-review-input.sh
+      - tests/testing/test-generate-review-input.sh
+    published_at: "2026-03-09T05:30:00Z"
+    reviewer: vamsee
