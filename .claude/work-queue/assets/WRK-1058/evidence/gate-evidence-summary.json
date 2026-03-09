@@ -47,17 +47,17 @@
     },
     {
       "name": "User-review HTML-open gate",
-      "status": "WARN",
-      "ok": false,
-      "warn": true,
-      "details": "user-review-browser-open.yaml: missing required stages ['close_review'] — pending Stage 17"
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
-      "status": "WARN",
-      "ok": false,
-      "warn": true,
-      "details": "user-review-publish.yaml: missing required stages ['close_review'] — pending Stage 17"
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
@@ -110,17 +110,17 @@
     },
     {
       "name": "User-review close gate",
-      "status": "WARN",
-      "ok": false,
-      "warn": true,
-      "details": "user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at'] — pending Stage 17"
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "details": "reclaim.yaml: status=n/a (Stage 18 not triggered \u2014 WARN)"
     },
     {
       "name": "Approval ordering gate",
@@ -211,7 +211,7 @@
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "n/a: Stage 18 is n/a and no reclaim log exists"
+      "details": "n/a: Stage 18 is n/a; reclaim.yaml is placeholder"
     }
   ]
 }

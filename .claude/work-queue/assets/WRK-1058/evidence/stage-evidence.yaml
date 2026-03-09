@@ -1,6 +1,6 @@
 wrk_id: WRK-1058
-generated_at: '2026-03-09T17:47:31Z'
-reviewed_by: claude
+generated_at: '2026-03-09T18:54:09Z'
+reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
 stages:
@@ -150,7 +150,7 @@ stages:
   evidence: n/a
 - order: 19
   stage: Close
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
@@ -158,7 +158,7 @@ stages:
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
