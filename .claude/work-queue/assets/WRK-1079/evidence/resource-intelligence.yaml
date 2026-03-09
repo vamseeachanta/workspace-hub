@@ -1,0 +1,30 @@
+wrk_id: WRK-1079
+stage: 2
+completion_status: continue_to_planning
+gathered_at: 2026-03-09
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+  reference_docs:
+    - .claude/rules/python-runtime.md
+    - .claude/rules/testing.md
+    - assetutilities/pyproject.toml
+
+findings:
+  - "py.typed marker ABSENT — PEP 561 compliance required before any type annotations are visible to consumers"
+  - "TrackedQuantity and UnitMismatchError already fully typed — no work needed"
+  - "unit_checked partially typed — tighten Callable subscripts only"
+  - "SaveData, ReadData, Transform all UNTYPED — in data.py (1200 lines, violates 400L limit)"
+  - "WorkingWithYAML partially typed (1/15 methods) — medium effort"
+  - "FileManagement uses attribute-access cfg (AttributeDict-like) — annotate cfg as Any (pragmatic)"
+  - "AttributeDict: canonical in update_deep.py; duplicate in data.py — annotate canonical only"
+  - "update_deep_dictionary: single function, MutableMapping[str, Any] return type"
+  - "disallow_untyped_defs = true already set in all 3 repos — must annotate completely"
+  - "data.py has bug: DataFrame_To_xlsx_xlsxwriter missing self — mypy will surface this"
+  - "Consumer mypy configs: no ignore_missing_imports — consumer errors will surface after py.typed added"
+  - "python_version = 3.8 in all repos — ParamSpec not available natively (typing_extensions needed)"
+
+no_blockers: true
+scope_risk: medium  # data.py is 1200 lines; annotation work must be scoped to the 10 symbols only
