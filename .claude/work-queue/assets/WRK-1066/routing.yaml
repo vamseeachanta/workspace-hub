@@ -1,0 +1,7 @@
+wrk_id: WRK-1066
+route: A
+routed_at: "2026-03-09T11:40:00Z"
+computer: ace-linux-1
+orchestrator: claude
+execution_agent: claude
+notes: Route A — simple complexity; single computer ace-linux-1; Claude orchestrates and executes.

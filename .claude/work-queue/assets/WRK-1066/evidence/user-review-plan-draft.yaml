@@ -1,0 +1,10 @@
+wrk_id: WRK-1066
+stage: 5
+approval_decision: approve_as_is
+decision: approved
+reviewer: vamsee
+reviewed_at: 2026-03-09
+notes: >
+  Plan approved. For unreachable machines (acma-ansys05 — Windows, no SSH from ace-linux-1),
+  keep work item open and defer drift-fix execution to a session running locally on that
+  workstation. env-audit.sh should mark unreachable machines in the YAML rather than failing.
