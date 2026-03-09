@@ -4,3 +4,8 @@
 set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 bash "$REPO_ROOT/scripts/setup/install-all-hooks.sh" --quiet
+
+# Rebuild symbol index if src/ files changed (WRK-1085)
+if git diff --name-only ORIG_HEAD HEAD 2>/dev/null | grep -q '/src/'; then
+    uv run --no-project python "$REPO_ROOT/scripts/search/build-symbol-index.py" --quiet
+fi
