@@ -23,14 +23,14 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1063/evidence/user-review-plan-draft.yaml
 - order: 6
   stage: Cross-Review Plan
-  status: n/a
-  evidence: route-a-skip
-  notes: "Route A \u2014 cross-review folded into Stage 13"
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1063/evidence/cross-review-implementation-codex.md
+  notes: "Route A — Codex single-pass review; MINOR verdict, P2s resolved"
 - order: 7
   stage: User Review Plan Final
-  status: n/a
+  status: done
   evidence: .claude/work-queue/assets/WRK-1063/plan-html-review-final.md
-  notes: "Route A \u2014 plan final review in plan-html-review-final.md"
+  notes: "Route A — plan final confirmed by vamsee"
 - order: 8
   stage: Claim/Activation
   status: done
@@ -79,10 +79,10 @@ stages:
 - order: 19
   stage: Close
   status: done
-  evidence: pending-close
+  evidence: .claude/work-queue/archive/2026-03/WRK-1063.md
 - order: 20
   stage: Archive
   status: done
-  evidence: pending-archive
+  evidence: .claude/work-queue/archive/2026-03/WRK-1063.md
 generated_at: '2026-03-09T10:39:23Z'
 reviewed_by: orchestrator
