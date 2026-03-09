@@ -51,6 +51,9 @@ case "$cmd" in
         session_update_timestamp
 
         echo "Initialized session '$sid' with orchestrator '$provider'."
+        _LOG_ACTION="${AGENTS_DIR}/../../scripts/audit/log-action.sh"
+        [[ -x "$_LOG_ACTION" ]] && bash "$_LOG_ACTION" session_start "init" \
+          --wrk "WRK-SESSION" --provider "$provider" 2>/dev/null || true
         if [[ -x "$GATE_LOGGER" ]]; then
             bash "$GATE_LOGGER" "WRK-SESSION" "session" "session_wrapper_start" "$provider" "session_id=${sid}"
             bash "$GATE_LOGGER" "WRK-SESSION" "session" "init" "$provider" "session_id=${sid}"
@@ -98,6 +101,8 @@ case "$cmd" in
             echo "No active session to deregister." >&2
         fi
         session_clear
+        _LOG_ACTION="${AGENTS_DIR}/../../scripts/audit/log-action.sh"
+        [[ -x "$_LOG_ACTION" ]] && bash "$_LOG_ACTION" session_end "end" 2>/dev/null || true
         clear_script="$AGENTS_DIR/../work-queue/clear-active-wrk.sh"
         if [[ -f "$clear_script" ]]; then
             bash "$clear_script" 2>/dev/null || true

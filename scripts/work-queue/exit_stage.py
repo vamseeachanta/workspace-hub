@@ -331,6 +331,15 @@ def _main() -> None:
     # Emit stage_complete log event (non-blocking)
     _log_complete(wrk_id, stage, repo_root)
 
+    # Append to immutable audit trail (non-blocking, WRK-1087)
+    import subprocess as _sp
+    _log_action = os.path.join(repo_root, "scripts", "audit", "log-action.sh")
+    if os.path.isfile(_log_action):
+        _sp.run(
+            ["bash", _log_action, "stage_exit", f"stage-{stage}", "--wrk", wrk_id],
+            capture_output=True, timeout=5,
+        )
+
     # Validate written checkpoint (non-blocking)
     checkpoint_path = os.path.join(assets_root, wrk_id, "checkpoint.yaml")
     _validate_checkpoint(checkpoint_path)

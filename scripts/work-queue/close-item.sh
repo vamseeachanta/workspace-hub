@@ -329,4 +329,9 @@ else
   echo "Proposing commit: git add . && git commit -m 'chore(work-queue): close $WRK_ID'"
 fi
 
+LOG_ACTION="${WORKSPACE_ROOT}/scripts/audit/log-action.sh"
+if [[ -x "$LOG_ACTION" ]]; then
+  bash "$LOG_ACTION" wrk_close "$WRK_ID" --wrk "$WRK_ID" 2>/dev/null || true
+fi
+
 echo "✔ $WRK_ID closed successfully."
