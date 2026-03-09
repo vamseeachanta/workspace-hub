@@ -1,0 +1,18 @@
+wrk_id: WRK-1085
+generated_at: "2026-03-09T23:05:00Z"
+additions:
+  - resource: "scripts/search/build-symbol-index.py"
+    type: pattern
+    notes: >
+      AST-based symbol indexer pattern. Walk src/ roots, emit JSONL.
+      Modeled on scripts/readiness/build-specs-index.py.
+  - resource: "scripts/search/find-symbol.sh"
+    type: pattern
+    notes: >
+      jq-primary lookup with grep+python fallback. Includes mtime freshness
+      check. Pattern for fast index queries.
+  - resource: "config/search/symbol-index.jsonl"
+    type: runtime_cache
+    notes: >
+      Generated artifact — gitignored. 22,697 symbols from 2,644 files.
+      Rebuild: uv run --no-project python scripts/search/build-symbol-index.py

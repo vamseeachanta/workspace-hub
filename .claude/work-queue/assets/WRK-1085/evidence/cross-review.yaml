@@ -1,0 +1,48 @@
+stage: 6
+wrk_id: WRK-1085
+artifact: cross-review
+reviewed_at: "2026-03-09T00:00:00Z"
+
+reviews:
+  - provider: codex
+    verdict: MAJOR
+    findings:
+      - id: C1
+        severity: major
+        description: "Tracked generated file + hook rebuilds = worktree churn"
+        resolution: "FIXED — gitignore added; git rm --cached run"
+      - id: C2
+        severity: major
+        description: "Mission says 'all repos', plan hardcodes 5"
+        resolution: "FIXED — mission updated to 'five tier-1 Python repos'"
+      - id: C3
+        severity: major
+        description: "Freshness under-specified (post-merge only)"
+        resolution: "FIXED — mtime freshness check added to find-symbol.sh"
+      - id: C4
+        severity: minor
+        description: "Test gaps: duplicate symbols, fallback paths, stale-index detection"
+        resolution: "DEFERRED — captured as follow-on WRK"
+
+  - provider: gemini
+    verdict: MAJOR
+    findings:
+      - id: G1
+        severity: major
+        description: "Python-only AST walker misses other languages"
+        resolution: "ACCEPTED — scope is tier-1 Python repos; polyglot is future WRK"
+      - id: G2
+        severity: major
+        description: "Generated index in config/ should be in cache/untracked"
+        resolution: "FIXED — gitignore added"
+      - id: G3
+        severity: major
+        description: "TDD ordering: tests should come before implementation"
+        resolution: "NOTED — retroactive WRK; TDD first on future items"
+      - id: G4
+        severity: major
+        description: "Hook insufficiency (post-merge only)"
+        resolution: "FIXED — freshness check added to find-symbol.sh"
+
+all_major_resolved: true
+deferred_minors: ["C4 — test coverage gaps for fallback paths"]

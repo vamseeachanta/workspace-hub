@@ -36,6 +36,23 @@ if [[ ! -f "$SYMBOL_INDEX" ]]; then
     exit 1
 fi
 
+# Freshness check: warn if any src/ file is newer than the index
+index_mtime=$(stat -c %Y "$SYMBOL_INDEX" 2>/dev/null || stat -f %m "$SYMBOL_INDEX" 2>/dev/null || echo 0)
+stale=false
+for repo in assethold assetutilities digitalmodel OGManufacturing worldenergydata; do
+    src_dir="$REPO_ROOT/$repo/src"
+    [[ -d "$src_dir" ]] || continue
+    newer=$(find "$src_dir" -name "*.py" -newer "$SYMBOL_INDEX" -print -quit 2>/dev/null || true)
+    if [[ -n "$newer" ]]; then
+        stale=true
+        break
+    fi
+done
+if [[ "$stale" == "true" ]]; then
+    echo "Warning: symbol index may be stale — src/ files changed since last build." >&2
+    echo "Rebuild: uv run --no-project python scripts/search/build-symbol-index.py" >&2
+fi
+
 # --- jq path (fast) ---
 if command -v jq &>/dev/null; then
     jq_filter='. | select(.symbol == $name)'
