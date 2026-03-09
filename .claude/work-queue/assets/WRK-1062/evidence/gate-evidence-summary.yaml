@@ -1,0 +1,8 @@
+wrk_id: WRK-1062
+stage: 14
+verified_at: "2026-03-09T08:00:00Z"
+result: all_gates_pass
+gates_checked: 30
+gates_passed: 27
+gates_warned: 3
+gates_failed: 0

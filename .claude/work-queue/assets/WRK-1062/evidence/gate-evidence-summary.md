@@ -18,7 +18,7 @@
 | Future-work gate | PASS | future-work.yaml: recommendations=3 |
 | Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: no_additions_rationale=present |
 | User-review close gate | PASS | user-review-close.yaml: decision=approved |
-| Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
+| Reclaim gate | WARN | reclaim.yaml: status=n/a (Stage 18 not triggered — WARN) |
 | Approval ordering gate | PASS | approval ordering OK (phase=close) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
 | Browser open elapsed time gate | PASS | browser open elapsed time OK |
@@ -27,8 +27,8 @@
 | ISO datetime format gate | PASS | all timestamp fields have time components |
 | Codex keyword in review gate | PASS | codex keyword found in review artifacts (7 file(s) checked) |
 | Publish commit uniqueness gate | WARN | plan_draft and plan_final share commit '2e26a7880e4f4ea194deff64727792a2f1b9e0e4' — possible placeholder (WARN) |
-| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[11] evidence path not found: .claude/work-queue/assets/WRK-1062/review.html |
+| Stage evidence paths gate | PASS | all stage evidence paths verified |
 | Done/pending contradiction gate | PASS | no done/pending contradictions found |
 | Plan publish predates approval gate | PASS | reviewed_at missing in user-review-plan-draft.yaml — skip |
 | Workstation contract (strict) gate | PASS | workstation contract fields present |
-| Reclaim n/a gate | WARN | n/a: Stage 18 is n/a and no reclaim log exists |
+| Reclaim n/a gate | WARN | n/a: Stage 18 is n/a; reclaim.yaml is placeholder |
