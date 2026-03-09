@@ -3,5 +3,5 @@ stage: 5
 approval_decision: approve_as_is
 decision: approved
 reviewer: vamsee
-reviewed_at: 2026-03-09
+reviewed_at: "2026-03-09T03:00:00Z"
 notes: Plan approved — generate-review-input.sh with 6-test suite

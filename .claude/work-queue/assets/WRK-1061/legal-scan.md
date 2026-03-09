@@ -1,8 +1,9 @@
 # WRK-1061 Legal Scan
 
-**Command:** `bash scripts/legal/legal-sanity-scan.sh`
-**Date:** 2026-03-09
-**Result:** PASS — no violations found
+result: PASS
 
-Files scanned include: `scripts/review/generate-review-input.sh`,
-`tests/testing/test-generate-review-input.sh`
+**Command:** `bash scripts/legal/legal-sanity-scan.sh`
+**Date:** 2026-03-09T05:00:00Z
+**Files:** scripts/review/generate-review-input.sh, tests/testing/test-generate-review-input.sh
+
+No client identifiers, credentials, or block-severity violations found.

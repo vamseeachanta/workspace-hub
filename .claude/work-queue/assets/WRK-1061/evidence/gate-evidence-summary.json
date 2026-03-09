@@ -22,7 +22,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage-evidence.yaml: stage order 14 must be done|n/a before close (found in_progress)"
+      "details": "stage-evidence.yaml: stage order 17 must be done|n/a before close (found pending)"
     },
     {
       "name": "Resource-intelligence gate",
@@ -82,10 +82,10 @@
     },
     {
       "name": "Legal gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1061/legal-scan.md, result=missing"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1061/legal-scan.md, result=PASS"
     },
     {
       "name": "Claim gate",
@@ -96,10 +96,10 @@
     },
     {
       "name": "Future-work gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "future-work.yaml: recommendations[1] captured must be true before close"
+      "details": "future-work.yaml: recommendations=3"
     },
     {
       "name": "Resource-intelligence update gate",
@@ -159,10 +159,10 @@
     },
     {
       "name": "ISO datetime format gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-capture.yaml.reviewed_at: date-only value '2026-03-09' \u2014 time component required"
+      "details": "all timestamp fields have time components"
     },
     {
       "name": "Codex keyword in review gate",
@@ -183,7 +183,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[1] evidence path not found: evidence/user-review-capture.yaml"
+      "details": "stage-evidence.yaml: stage[17] evidence path not found: .claude/work-queue/assets/WRK-1061/evidence/user-review-close.yaml"
     },
     {
       "name": "Done/pending contradiction gate",
@@ -194,10 +194,10 @@
     },
     {
       "name": "Plan publish predates approval gate",
-      "status": "WARN",
-      "ok": false,
-      "warn": true,
-      "details": "cannot parse reviewed_at: '2026-03-09'"
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "plan publish ordering OK (published=2026-03-09T03:05:00Z, reviewed=2026-03-09T03:00:00Z)"
     },
     {
       "name": "Workstation contract (strict) gate",

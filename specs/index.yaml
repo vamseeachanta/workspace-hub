@@ -1,13 +1,13 @@
-generated: '2026-03-08'
-total_specs: 1548
+generated: '2026-03-09'
+total_specs: 1563
 by_category:
   archive: 10
   data-sources: 13
-  modules: 117
+  modules: 119
   other: 24
   repos: 1344
-  templates: 15
-  wrk: 25
+  templates: 20
+  wrk: 33
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 187
+  workspace-hub: 202
   worldenergydata: 216
 by_wrk:
   WRK-0: 8
@@ -245,12 +245,26 @@ by_wrk:
   WRK-687: 1
   WRK-690: 1
   WRK-1000: 1
-  WRK-1002: 1
+  WRK-1002: 2
   WRK-1003: 2
   WRK-1004: 1
   WRK-1005: 1
-  WRK-1019: 2
+  WRK-1008: 1
+  WRK-1013: 1
+  WRK-1017: 1
+  WRK-1019: 3
   WRK-1020: 2
+  WRK-1030: 1
+  WRK-1034: 1
+  WRK-1035: 3
+  WRK-1036: 2
+  WRK-1037: 1
+  WRK-1044: 1
+  WRK-1045: 1
+  WRK-1052: 1
+  WRK-1054: 1
+  WRK-1057: 1
+  WRK-1061: 1
 specs:
 - path: specs/architecture/agent-vision.md
   title: Superintelligent Engineering Agent Architecture Blueprint
@@ -961,6 +975,22 @@ specs:
   wrk_refs:
   - WRK-41
   mtime: '2026-02-24'
+- path: specs/modules/humming-inventing-pelican.md
+  title: WRK-1035 Plan — Beef up user-review stages in work-queue-workflow SKILL
+  description: WRK-1034 revealed that Stage 5 and Stage 7 approval artifacts were written with retroactive timestamps before
+    the user had explicitly responded in conversation. The current skills say "user must re...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - humming-inventing-pelican
+  wrk_refs:
+  - WRK-1002
+  - WRK-1017
+  - WRK-1019
+  - WRK-1030
+  - WRK-1034
+  - WRK-1035
+  mtime: '2026-03-08'
 - path: specs/modules/import-anthropic-knowledge-work-plugins.md
   title: Import Anthropic Knowledge-Work-Plugins into Workspace-Hub
   description: Import 55+ skills and 40+ commands from [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins)
@@ -1393,6 +1423,18 @@ specs:
   wrk_refs:
   - WRK-131
   mtime: '2026-02-18'
+- path: specs/modules/virtual-dancing-thimble.md
+  title: WRK-1035 — Stage 7 Plan Final Review (HARD GATE)
+  description: '`generate_review()` reads the WRK body (`.claude/work-queue/pending/WRK-1035.md`), NOT the plan.md at `specs/wrk/WRK-1035/plan.md`.
+    So plan sections don''t appear in HTML.'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - virtual-dancing-thimble
+  wrk_refs:
+  - WRK-1035
+  - WRK-1036
+  mtime: '2026-03-08'
 - path: specs/modules/work-queue-index-generator.md
   title: Work Queue Index Generator
   description: Create a Python script that parses all work item frontmatter and generates a structured `INDEX.md` with multiple
@@ -19811,6 +19853,45 @@ specs:
   - plan-template
   wrk_refs: []
   mtime: '2026-03-04'
+- path: specs/templates/route-c-energy.md
+  title: Route C Energy
+  description: '<!-- Copy this template with: scripts/work-queue/new-spec.sh WRK-NNN energy --> <!-- Extends route-c-generic.md
+    with Oil & Gas / Energy domain sections -->'
+  category: templates
+  repo: workspace-hub
+  tags:
+  - route-c-energy
+  wrk_refs: []
+  mtime: '2026-03-09'
+- path: specs/templates/route-c-generic.md
+  title: Route C Generic
+  description: '<!-- Copy this template with: scripts/work-queue/new-spec.sh WRK-NNN [domain] -->'
+  category: templates
+  repo: workspace-hub
+  tags:
+  - route-c-generic
+  wrk_refs: []
+  mtime: '2026-03-09'
+- path: specs/templates/route-c-marine.md
+  title: Route C Marine
+  description: '<!-- Copy this template with: scripts/work-queue/new-spec.sh WRK-NNN marine --> <!-- Extends route-c-generic.md
+    with Naval Architecture / Offshore Marine domain sections -->'
+  category: templates
+  repo: workspace-hub
+  tags:
+  - route-c-marine
+  wrk_refs: []
+  mtime: '2026-03-09'
+- path: specs/templates/route-c-structural.md
+  title: Route C Structural
+  description: '<!-- Copy this template with: scripts/work-queue/new-spec.sh WRK-NNN structural --> <!-- Extends route-c-generic.md
+    with Structural / FEA domain sections -->'
+  category: templates
+  repo: workspace-hub
+  tags:
+  - route-c-structural
+  wrk_refs: []
+  mtime: '2026-03-09'
 - path: specs/templates/skill-invocation-log-template.yaml
   title: Skill Invocation Log Template
   description: ''
@@ -19870,6 +19951,15 @@ specs:
   wrk_refs:
   - WRK-0
   mtime: '2026-03-07'
+- path: specs/templates/user-review-capture.yaml
+  title: User Review Capture
+  description: ''
+  category: templates
+  repo: workspace-hub
+  tags:
+  - user-review-capture
+  wrk_refs: []
+  mtime: '2026-03-08'
 - path: specs/templates/user-review-common-draft-template.yaml
   title: User Review Common Draft Template
   description: ''
@@ -19926,6 +20016,17 @@ specs:
   - WRK-1004
   - WRK-1005
   mtime: '2026-03-05'
+- path: specs/wrk/WRK-1013/plan.md
+  title: WRK-1013 Plan — Fix Anthropic Guide Violations
+  description: 'Comply with Anthropic official skill guide:'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1013
+  wrk_refs:
+  - WRK-1013
+  mtime: '2026-03-09'
 - path: specs/wrk/WRK-1019/plan.md
   title: 'WRK-1019 Plan: repo-portfolio-steering Skill'
   description: 'date: 2026-03-05 wrk_id: WRK-1019 route: C complexity: complex orchestrator: claude'
@@ -19951,6 +20052,90 @@ specs:
   - WRK-1019
   - WRK-1020
   mtime: '2026-03-08'
+- path: specs/wrk/WRK-1035/plan.md
+  title: WRK-1035 Plan — Work-Queue Lifecycle Hardening
+  description: Harden the work-queue lifecycle against retroactive approval fabrication, stage-skipping, Codex bypass, and
+    skill context-rot by enforcing machine-level gates, tightening skill contracts, pruning v...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1035
+  wrk_refs:
+  - WRK-1035
+  mtime: '2026-03-08'
+- path: specs/wrk/WRK-1036/plan.md
+  title: 'WRK-1036 Plan — Agent teams lifecycle: audit, session-start, session-exit tidy'
+  description: Audit stale agent teams, expose actionable team state during session start, and add deterministic session-exit
+    cleanup so archived-team directories and orphaned task directories do not accumulate.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1036
+  wrk_refs:
+  - WRK-1008
+  - WRK-1036
+  - WRK-1037
+  mtime: '2026-03-08'
+- path: specs/wrk/WRK-1044/plan.md
+  title: WRK-1044 Plan — Deterministic Gate Enforcement D1-D16
+  description: Convert 16 deterministic gate rules (D1-D16) from LLM prose into verifiable scripts/hooks. Fix P1 bug in `exit_stage.py`
+    Stage 1 path resolution. Add `--json` CI flag to `verify-gate-evidence.py`. ...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1044
+  wrk_refs:
+  - WRK-1044
+  - WRK-1045
+  mtime: '2026-03-08'
+- path: specs/wrk/WRK-1052/plan.md
+  title: 'WRK-1052 Plan: Log model/context/effort at session start'
+  description: '**Route A — Simple**. Two changes:'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1052
+  wrk_refs:
+  - WRK-1052
+  mtime: '2026-03-09'
+- path: specs/wrk/WRK-1054/plan.md
+  title: WRK-1054 Plan
+  description: 'Route B — inline plan. See working/WRK-1054.md ## Plan section.'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1054
+  wrk_refs:
+  - WRK-1054
+  mtime: '2026-03-09'
+- path: specs/wrk/WRK-1057/plan.md
+  title: WRK-1057 Plan — repo-health.sh dashboard
+  description: 'Single command shows health of every workspace-hub repo: git state, branch, last commit, and last test result.'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1057
+  wrk_refs:
+  - WRK-1057
+  mtime: '2026-03-09'
+- path: specs/wrk/WRK-1061/plan.md
+  title: 'WRK-1061 Plan: generate-review-input.sh'
+  description: Auto-generate a structured cross-review input file from the WRK item and its git diff, so agents stop hand-writing
+    review bundles and the review is always complete.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1061
+  wrk_refs:
+  - WRK-1061
+  mtime: '2026-03-09'
 - path: specs/wrk/WRK-118/plan.md
   title: WRK-118 AI Agent Utilization Strategy — Plan
   description: (feature | bugfix | refactor | test-writing | research | docs → primary + rationale)

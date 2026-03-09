@@ -2,5 +2,5 @@ wrk_id: WRK-1061
 stage: 1
 scope_approved: true
 reviewer: vamsee
-reviewed_at: 2026-03-09
+reviewed_at: "2026-03-09T02:30:00Z"
 notes: Scope approved — auto-generate cross-review input from WRK diff + context

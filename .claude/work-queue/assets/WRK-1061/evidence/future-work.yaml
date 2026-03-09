@@ -11,7 +11,7 @@ recommendations:
       Replace with find -printf mtime-sort approach in a follow-up.
     disposition: existing-updated
     status: deferred
-    captured: false
+    captured: true
     priority: low
 
   - id: FW-1061-002
@@ -22,7 +22,7 @@ recommendations:
       already been committed.
     disposition: spun-off-new
     status: deferred
-    captured: false
+    captured: true
     priority: medium
 
   - id: FW-1061-003
@@ -33,5 +33,5 @@ recommendations:
       generate-review-input.sh as the canonical review input generator.
     disposition: existing-updated
     status: deferred
-    captured: false
+    captured: true
     priority: high
