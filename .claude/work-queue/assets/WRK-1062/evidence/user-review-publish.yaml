@@ -1,4 +1,20 @@
 wrk_id: WRK-1062
-published: true
-published_at: 2026-03-09T06:25:00Z
-notes: Plan reviewed and approved by vamsee in session
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 2e26a7880e4f4ea194deff64727792a2f1b9e0e4
+    documents:
+      - assets/WRK-1062/WRK-1062-plan-draft-review.html
+    published_at: 2026-03-09T06:35:00Z
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 2e26a7880e4f4ea194deff64727792a2f1b9e0e4
+    documents:
+      - assets/WRK-1062/WRK-1062-plan-final-review.html
+    published_at: 2026-03-09T06:35:00Z
+    reviewer: vamsee

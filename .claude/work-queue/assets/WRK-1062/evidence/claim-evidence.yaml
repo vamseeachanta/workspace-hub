@@ -1,6 +1,21 @@
-wrk_id: WRK-1062
-stage: 8
-claimed_by: claude
-claimed_at: 2026-03-09
-session_id: session-20260309
-computer: ace-linux-1
+claim_date: "2026-03-09T06:35:00Z"
+wrk_id: "WRK-1062"
+route: "B"
+orchestrator: "claude"
+best_fit_provider: "claude"
+alternate_provider: ""
+metadata_version: "1"
+session_owner: "claude"
+agent_fit:
+  capability_match: "matched"
+  rationale: "Route B / execution_workstations=[ace-linux-1] / provider=claude"
+blocking_state:
+  blocked: false
+  blocked_by: []
+  notes: ""
+quota_snapshot:
+  timestamp: "2026-03-09T06:35:00Z"
+  provider: "claude"
+  status: "available"
+  pct_remaining: 80
+  source: "config/ai-tools/agent-quota-latest.json"

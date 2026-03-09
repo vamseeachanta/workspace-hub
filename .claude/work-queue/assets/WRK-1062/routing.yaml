@@ -1,0 +1,11 @@
+wrk_id: WRK-1062
+stage: 9
+route: B
+complexity: medium
+execution_workstations: [ace-linux-1]
+orchestrator: claude
+routed_at: 2026-03-09T06:40:00Z
+rationale: >
+  Route B — medium complexity. Single repo execution (assethold primary, scripts/testing).
+  4-phase plan: markers → HTTP mocking → runner update → refresh script.
+  ace-linux-1 execution confirmed.
