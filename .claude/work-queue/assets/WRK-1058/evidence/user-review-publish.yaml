@@ -1,0 +1,20 @@
+wrk_id: WRK-1058
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 2fe270cd
+    documents:
+      - .claude/work-queue/assets/WRK-1058/WRK-1058-lifecycle.html
+    published_at: 2026-03-09T08:08:00-05:00
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b6911e501df782f56eb7001fa048597c86da5716
+    documents:
+      - .claude/work-queue/assets/WRK-1058/WRK-1058-lifecycle.html
+    published_at: 2026-03-09T10:34:00-05:00
+    reviewer: vamsee

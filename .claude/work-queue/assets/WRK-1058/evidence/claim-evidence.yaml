@@ -1,0 +1,12 @@
+wrk_id: WRK-1058
+version: 1
+stage: 8
+route: B
+best_fit_provider: claude
+session_owner: vamsee
+owner: claude
+session_id: session-20260309-124614
+claimed_at: 2026-03-09T10:35:00-05:00
+quota_snapshot:
+  status: available
+  pct_remaining: 80

@@ -3,3 +3,5 @@ session_pid: 502106
 hostname: ace-linux-1
 locked_at: "2026-03-09T12:16:36Z"
 status: in_progress
+status: claimed
+claimed_at: "2026-03-09T17:47:31Z"

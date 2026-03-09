@@ -1,0 +1,12 @@
+wrk_id: WRK-1058
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1058/WRK-1058-lifecycle.html
+    opened_at: 2026-03-09T08:07:00-05:00
+    reviewer: vamsee
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1058/WRK-1058-lifecycle.html
+    opened_at: 2026-03-09T10:33:00-05:00
+    reviewer: vamsee
