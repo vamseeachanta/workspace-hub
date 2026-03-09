@@ -1,0 +1,35 @@
+wrk_id: WRK-1065
+stage: 2
+completion_status: continue_to_planning
+assessed_at: 2026-03-09T11:02:00Z
+
+existing_assets:
+  - path: scripts/work-queue/checkpoint.sh
+    relevance: Core script to invoke at 85% threshold; reads active-wrk state
+  - path: .claude/state/active-wrk
+    relevance: Plain-text file with current WRK ID — context-monitor reads this
+  - path: .claude/state/
+    relevance: State dir exists; context-warning.yaml will land here (or assets/)
+  - path: .claude/docs/
+    relevance: Target location for session-chunking.md
+  - path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    relevance: Stage 10 section needs chunking guidance added
+
+gaps:
+  - scripts/hooks/context-monitor.sh does not exist
+  - .claude/docs/session-chunking.md does not exist
+  - No context-budget signal available from Claude API/hooks directly; monitor must use
+    heuristic (line count of session log or hook event if available)
+
+risks:
+  - Claude does not expose real-time token usage to hooks; context-monitor.sh will
+    need to rely on a proxy signal (e.g., session log size or manual trigger via hook)
+  - This is a Route A (simple) item — keep deliverables minimal and practical
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+  reference_used:
+    - checkpoint.sh interface (existing)

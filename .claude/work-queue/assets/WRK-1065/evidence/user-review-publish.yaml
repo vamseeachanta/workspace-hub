@@ -1,0 +1,32 @@
+wrk_id: WRK-1065
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 402d7ffe
+    published_at: "2026-03-09T11:10:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1065/WRK-1065-lifecycle.html
+      - .claude/work-queue/assets/WRK-1065/evidence/user-review-plan-draft.yaml
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 402d7ffe
+    published_at: "2026-03-09T11:25:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1065/WRK-1065-lifecycle.html
+      - .claude/work-queue/assets/WRK-1065/evidence/plan-final-review.yaml
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 3cc0016f
+    published_at: "2026-03-09T11:58:00Z"
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1065/WRK-1065-lifecycle.html
+      - .claude/work-queue/assets/WRK-1065/evidence/user-review-close.yaml

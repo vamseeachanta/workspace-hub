@@ -1,0 +1,15 @@
+wrk_id: WRK-1065
+version: 1
+owner: vamsee
+claimed_at: "2026-03-09T11:28:00Z"
+route: A
+orchestrator_agent: claude
+session_id: session-20260309-112800
+best_fit_provider: claude
+session_owner: vamsee
+quota_snapshot:
+  status: available
+  pct_remaining: 45
+  timestamp: "2026-03-09T11:28:00Z"
+  provider: claude
+  source: config/ai-tools/agent-quota-latest.json

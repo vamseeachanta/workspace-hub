@@ -1,0 +1,13 @@
+wrk_id: WRK-1065
+phase: close
+verified_at: "2026-03-09T12:02:00Z"
+result: PASS
+gates_checked: 30
+gates_passed: 30
+gates_warned: 3
+gates_failed: 0
+warnings:
+  - reclaim_gate: n/a (Stage 18 not triggered)
+  - publish_commit_uniqueness: plan_draft and plan_final share commit (expected for Route A single-session)
+  - reclaim_na: Stage 18 is n/a
+summary: "All orchestrator gates have documented evidence."

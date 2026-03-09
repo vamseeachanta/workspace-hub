@@ -1,0 +1,14 @@
+wrk_id: WRK-1068
+stage: 6
+route: A
+providers_required: [codex]
+reviewer: codex
+codex:
+  verdict: request_changes_resolved
+  finding_count: 4
+  major_count: 4
+  minor_count: 0
+  all_majors_resolved: true
+  review_file: evidence/cross-review-codex.md
+overall_verdict: approved
+reviewed_at: 2026-03-09T11:05:00Z

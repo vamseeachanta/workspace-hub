@@ -1,0 +1,21 @@
+claim_date: "2026-03-09T11:08:18Z"
+wrk_id: "WRK-1068"
+route: "A"
+orchestrator: "claude"
+best_fit_provider: "claude"
+alternate_provider: ""
+metadata_version: "1"
+session_owner: "vamsee"
+agent_fit:
+  capability_match: "matched"
+  rationale: "Route A / execution_workstations=[ace-linux-1] / provider=claude"
+blocking_state:
+  blocked: false
+  blocked_by: []
+  notes: ""
+quota_snapshot:
+  timestamp: "2026-03-09T11:08:18Z"
+  provider: "claude"
+  status: "available"
+  pct_remaining: 85
+  source: "config/ai-tools/agent-quota-latest.json"

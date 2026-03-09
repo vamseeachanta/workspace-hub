@@ -60,6 +60,9 @@ case "$subcmd" in
         done
         echo "── blocked/ ──"
         ls -1 "$WORK_ITEM_ROOT/blocked" 2>/dev/null || true
+        if dep_summary=$(uv run --no-project python "$(dirname "$AGENTS_DIR")/work-queue/dep_graph.py" --summary 2>/dev/null); then
+            echo "$dep_summary"
+        fi
         ;;
     approve-batch)
         # WRK-159: List approvable items and approve selected ones

@@ -1,0 +1,32 @@
+wrk_id: WRK-1068
+stage: 10
+scope: integrated
+executed_at: 2026-03-09T11:20:00Z
+commits:
+  - hash: 3cc0016f1251709e51f061d47674f7fd168276a1
+    message: "feat(WRK-1068): dep-graph.py + work.sh footer + TDD tests"
+files_created:
+  - scripts/work-queue/dep_graph.py
+  - scripts/work-queue/tests/test_dep_graph.py
+files_modified:
+  - scripts/agents/work.sh
+integrated_repo_tests:
+  - name: dep_graph unit tests — all 19 scenarios
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/test_dep_graph.py -v
+    result: pass
+    artifact_ref: assets/WRK-1068/ac-test-matrix.md
+  - name: dep_graph live queue summary
+    scope: integrated
+    command: uv run --no-project python scripts/work-queue/dep_graph.py --summary
+    result: pass
+    artifact_ref: assets/WRK-1068/evidence/execute.yaml
+  - name: work.sh list footer integration
+    scope: integrated
+    command: bash scripts/agents/work.sh --provider claude list
+    result: pass
+    artifact_ref: assets/WRK-1068/evidence/execute.yaml
+test_count: 19
+test_files:
+  - scripts/work-queue/tests/test_dep_graph.py
+test_summary: 19 passed, 0 failed

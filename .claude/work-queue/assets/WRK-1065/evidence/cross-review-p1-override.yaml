@@ -1,0 +1,14 @@
+wrk_id: WRK-1065
+stage: 6
+reviewer: vamsee
+overridden_at: "2026-03-09T11:22:00Z"
+override_reason: >
+  P1 (no live hook signal) addressed by reframing context-monitor.sh as a pure callable
+  utility with no hook dependency. Invocation contract documented: called explicitly by
+  operator or wrapper, not auto-fired from a hook event. Plan updated accordingly.
+  All other findings (P2 threshold, P2 resume path, P3 edge cases) addressed in updated plan.
+findings_addressed:
+  - P1: reframed as callable utility; no hook dependency required
+  - P2: threshold standardized to 80% in title, body, ACs, docs, tests
+  - P2: resume path changed to /work run WRK-NNN in all references
+  - P3: edge-case tests added to plan (no-active-wrk, duplicate calls, checkpoint failure)

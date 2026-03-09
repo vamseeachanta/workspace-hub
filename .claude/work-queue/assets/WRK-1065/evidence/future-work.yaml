@@ -1,0 +1,22 @@
+wrk_id: WRK-1065
+stage: 15
+synthesized_at: "2026-03-09T11:53:00Z"
+recommendations:
+  - id: fw-1065-1
+    description: Wire context-monitor.sh to a real Claude hook event when native token-usage signals become available
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    capture_wrk: ""
+  - id: fw-1065-2
+    description: Add context-monitor invocation to session-start hook as an optional pre-flight check
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    capture_wrk: ""
+  - id: fw-1065-3
+    description: Extend session-chunking.md with worked examples of multi-session WRK handoffs (complex route)
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    capture_wrk: ""

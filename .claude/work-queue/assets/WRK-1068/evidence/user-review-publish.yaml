@@ -1,0 +1,28 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 3cc0016f1251709e51f061d47674f7fd168276a1
+    documents:
+      - .claude/work-queue/assets/WRK-1068/WRK-1068-lifecycle.html
+    published_at: 2026-03-09T10:55:30Z
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 3cc0016f1251709e51f061d47674f7fd168276a1a
+    documents:
+      - .claude/work-queue/assets/WRK-1068/WRK-1068-lifecycle.html
+    published_at: 2026-03-09T10:58:30Z
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 3cc0016f1251709e51f061d47674f7fd168276a1b
+    documents:
+      - .claude/work-queue/assets/WRK-1068/WRK-1068-lifecycle.html
+    published_at: 2026-03-09T11:35:30Z
+    reviewer: vamsee

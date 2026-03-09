@@ -1,0 +1,5 @@
+wrk_id: WRK-1068
+usage_pct: 80
+threshold: 80
+action: checkpoint_triggered
+triggered_at: 2026-03-09T11:11:00Z

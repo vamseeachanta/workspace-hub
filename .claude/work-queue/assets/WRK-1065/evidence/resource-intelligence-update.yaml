@@ -1,0 +1,10 @@
+wrk_id: WRK-1065
+stage: 16
+updated_at: "2026-03-09T11:54:00Z"
+additions:
+  - topic: context-monitor.sh
+    description: Callable utility at scripts/hooks/; invoked with --usage-pct <N>; checkpoints at 80%
+  - topic: session-chunking.md
+    description: Guide at .claude/docs/session-chunking.md covering route-based budget limits and resume patterns
+  - topic: work-queue-workflow Stage 10
+    description: Added Context Budget note with route thresholds and pointer to session-chunking.md

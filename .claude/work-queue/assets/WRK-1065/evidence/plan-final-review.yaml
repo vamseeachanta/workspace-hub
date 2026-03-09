@@ -1,0 +1,9 @@
+wrk_id: WRK-1065
+stage: 7
+decision: passed
+confirmed_by: vamsee
+confirmed_at: "2026-03-09T11:25:00Z"
+reviewed_at: "2026-03-09T11:25:00Z"
+notes: >
+  Threshold changed to 80% (auto-compact fires at 83%; 80% is safe pre-trigger).
+  Steps 2-4 approved as-is.

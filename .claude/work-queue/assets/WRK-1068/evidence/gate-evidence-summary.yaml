@@ -1,0 +1,10 @@
+wrk_id: WRK-1068
+stage: 14
+result: PASS
+verified_at: 2026-03-09T11:50:00Z
+total_gates: 29
+ok_gates: 29
+warn_gates: 3
+missing_gates: 0
+command: uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-1068
+notes: All orchestrator gates documented. Warns are expected (reclaim n/a, no continuity break).

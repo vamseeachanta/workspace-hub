@@ -1,0 +1,8 @@
+wrk_id: WRK-1065
+stage: 1
+decision: approved
+scope_approved: true
+reviewer: vamsee
+confirmed_at: 2026-03-09T11:00:00Z
+reviewed_at: 2026-03-09T11:00:00Z
+notes: "Scope approved as-is."

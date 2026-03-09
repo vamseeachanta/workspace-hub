@@ -1,0 +1,10 @@
+wrk_id: WRK-1068
+stage: 16
+additions:
+  - area: work-queue tooling
+    learning: dep_graph.py — graphlib.TopologicalSorter works for sparse DAGs; multiline blocked_by YAML must be handled separately from inline list variant
+    files: [scripts/work-queue/dep_graph.py]
+  - area: work-queue frontmatter parsing
+    learning: bare `blocked_by:` must NOT pre-populate [] — must leave key absent for multiline fallback to run
+    files: [scripts/work-queue/dep_graph.py]
+completed_at: 2026-03-09T11:40:00Z

@@ -1,0 +1,21 @@
+wrk_id: WRK-1068
+stage: 15
+recommendations:
+  - id: FW-1
+    title: "Persist dep-graph nightly to assets/dep-graph.dot"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: Currently only written on explicit --dot flag; nightly cron generation would be useful
+  - id: FW-2
+    title: "Add --json output for programmatic consumption"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: JSON output of unblocked list + critical path useful for other scripts
+  - id: FW-3
+    title: "Integrate dep-graph into /work report output"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: Beyond just /work list footer

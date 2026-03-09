@@ -1,0 +1,30 @@
+wrk_id: WRK-1065
+stage: 10
+scope: integrated
+executed_at: "2026-03-09T11:45:00Z"
+executor: claude
+phases:
+  - phase: 1
+    description: Implement all 4 deliverables
+    status: done
+integrated_repo_tests:
+  - name: context-monitor shell tests
+    scope: integrated
+    command: bash tests/hooks/test-context-monitor.sh
+    result: pass
+    artifact_ref: tests/hooks/test-context-monitor.sh
+  - name: context-monitor --usage-pct 70 smoke
+    scope: integrated
+    command: "bash scripts/hooks/context-monitor.sh --usage-pct 70"
+    result: pass
+    artifact_ref: scripts/hooks/context-monitor.sh
+  - name: context-monitor --usage-pct 80 smoke
+    scope: integrated
+    command: "bash scripts/hooks/context-monitor.sh --usage-pct 80"
+    result: pass
+    artifact_ref: scripts/hooks/context-monitor.sh
+deliverables:
+  - scripts/hooks/context-monitor.sh
+  - .claude/docs/session-chunking.md
+  - tests/hooks/test-context-monitor.sh
+  - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md (Stage 10 edit)

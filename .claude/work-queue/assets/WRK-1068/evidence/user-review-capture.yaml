@@ -1,0 +1,7 @@
+wrk_id: WRK-1068
+stage: 1
+scope_approved: true
+reviewer: vamsee
+approved_at: 2026-03-09T10:51:00Z
+confirmed_at: 2026-03-09T10:51:00Z
+notes: Scope approved — dep-graph.py + ASCII table + DOT file + /work list footer

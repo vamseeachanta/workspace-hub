@@ -1,0 +1,43 @@
+wrk_id: WRK-1068
+stage: 2
+completion_status: continue_to_planning
+gathered_at: 2026-03-09
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - feature-dev:code-explorer
+
+key_files:
+  - path: .claude/work-queue/scripts/generate-index.py
+    purpose: Primary pattern — frontmatter parsing, polyglot shebang, normalize(), QUEUE_ROOT derivation
+  - path: scripts/agents/work.sh
+    purpose: /work list implementation; footer must be appended after blocked/ section (lines 38-63)
+  - path: scripts/work-queue/queue-status.sh
+    purpose: Existing summary output patterns to harmonise with
+
+findings:
+  blocked_by_formats:
+    - inline_list: "blocked_by: [WRK-019, WRK-171]"
+    - multiline_list: "blocked_by:\n  - WRK-618"
+    - empty_inline: "blocked_by: []"
+    - bare_empty: "blocked_by:"  # must normalise to []
+  graph_tool: graphlib.TopologicalSorter  # Python 3.9+ stdlib; Python >=3.11 confirmed
+  no_existing_dot_infrastructure: true
+  footer_integration_point: work.sh list) case — append after blocked/ section
+  edge_cases:
+    - circular_deps: catch graphlib.CycleError and report
+    - archived_blockers: treat archived blocker as satisfied (node becomes unblocked)
+    - blocked_folder_items_with_empty_blocked_by: exclude from unblocked (use status field)
+  scale: ~490 items, ~15-20 with non-empty blocked_by; performance not a concern
+
+implementation_approach:
+  algorithm: DP over topological order for critical path; graphlib.TopologicalSorter
+  outputs:
+    - ascii_critical_path_table
+    - dot_file: scripts/work-queue/dep-graph.dot
+    - unblocked_leaf_list
+    - summary_line_for_work_list_footer
+  cli_flags: [--category, --critical-path, --dot, --summary]
