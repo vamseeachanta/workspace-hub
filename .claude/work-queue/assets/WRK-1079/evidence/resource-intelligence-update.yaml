@@ -1,0 +1,23 @@
+wrk_id: WRK-1079
+generated_at: 2026-03-09T20:00:00Z
+
+additions:
+  - resource: "assetutilities/src/assetutilities/py.typed"
+    type: marker_file
+    description: "PEP 561 marker enabling mypy to use inline annotations from assetutilities in consumers"
+    path: assetutilities/src/assetutilities/py.typed
+
+  - resource: "assetutilities/pyproject.toml [[tool.mypy.overrides]] for data.py"
+    type: configuration
+    description: "Per-module mypy override disabling disallow_untyped_defs for data.py legacy helper classes"
+    path: assetutilities/pyproject.toml
+
+  - resource: "PEP 561 + from __future__ import annotations pattern"
+    type: pattern
+    description: "Required combo for Python 3.9 type annotations: py.typed marker + future annotations import + type: ignore[import-untyped] for yaml/etc."
+    path: null
+
+  - resource: "mypy per-module override pattern for mixed annotation files"
+    type: pattern
+    description: "Use [[tool.mypy.overrides]] to selectively disable disallow_untyped_defs for legacy files with many unannotated helpers"
+    path: null

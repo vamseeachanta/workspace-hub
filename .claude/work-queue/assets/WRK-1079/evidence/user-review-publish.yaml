@@ -1,20 +1,29 @@
 wrk_id: WRK-1079
 events:
   - stage: plan_draft
-    pushed_to_origin: false
+    pushed_to_origin: true
     remote: origin
     branch: main
-    commit: ""
+    commit: 1f3f1f445dfcef8229a376cc4efcac0a8cecfab7
     documents:
       - .claude/work-queue/assets/WRK-1079/WRK-1079-plan-draft.html
     published_at: "2026-03-09T18:00:00Z"
     reviewer: vamsee
   - stage: plan_final
-    pushed_to_origin: false
+    pushed_to_origin: true
     remote: origin
     branch: main
-    commit: ""
+    commit: 1f3f1f445dfcef8229a376cc4efcac0a8cecfab7
     documents:
       - .claude/work-queue/assets/WRK-1079/WRK-1079-plan-final.html
     published_at: "2026-03-09T19:10:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 555981b
+    documents:
+      - .claude/work-queue/assets/WRK-1079/WRK-1079-lifecycle.html
+    published_at: "2026-03-09T20:10:00Z"
     reviewer: vamsee
