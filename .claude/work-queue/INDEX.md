@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-09T21:56:41Z by generate-index.py -->
+<!-- Generated: 2026-03-09T22:04:39Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-09T21:56:41Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-09T22:04:39Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -14,9 +14,9 @@
 | Status | Count |
 |--------|-------|
 | pending | 226 |
-| working | 6 |
+| working | 5 |
 | blocked | 10 |
-| archived | 272 |
+| archived | 273 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 58 |
+| harness | 57 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -92,9 +92,9 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 514 |
-| Total archived | 272 |
-| Completion rate | 272/514 (53%) |
-| Monthly rate (current month) | 41 archived |
+| Total archived | 273 |
+| Completion rate | 273/514 (53%) |
+| Monthly rate (current month) | 42 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -102,8 +102,8 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | Pending items with plans | 58 / 226 | 26% |
-| Plans cross-reviewed | 12 | 17% |
-| Plans user-approved | 13 | 18% |
+| Plans cross-reviewed | 11 | 16% |
+| Plans user-approved | 12 | 17% |
 
 ### Aging
 
@@ -118,7 +118,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 97 | 4 | 8 |
+| High     | 97 | 3 | 8 |
 | Medium   | 98  | 2  | 1  |
 | Low      | 31  | 0  | 1  |
 
@@ -126,7 +126,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (58 items — 16 high, 34 medium, 8 low)
+### harness (57 items — 15 high, 34 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -154,12 +154,6 @@
 | WRK-1024 | MEDIUM | chore(harness): increase context window limits for Claude and Codex | pending |
 | WRK-1050 | MEDIUM | chore(harness): verify Codex config on ace-linux-2 (WRK-1024 follow-up) | pending |
 | WRK-1051 | MEDIUM | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending |
-
-#### harness / audit-trail
-
-| ID | Priority | Title | Status |
-|----|----------|-------|--------|
-| WRK-1087 | HIGH | feat(harness): agent audit trail — immutable action log across all sessions | working |
 
 #### harness / ci-cd
 
@@ -1128,7 +1122,7 @@
 | WRK-1084 | Integrate skills.sh as reference for all skill lifecycle operations | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
+| WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
@@ -1374,7 +1368,6 @@
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | high | simple | workspace-hub, assethold, assetutilities, digitalmodel, OGManufacturing, worldenergydata | - |
-| WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | high | medium | - | - |
 
 ### Blocked
 
@@ -1667,6 +1660,7 @@
 | WRK-1079 | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | medium | medium | - | - |
 | WRK-1080 | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | high | simple | workspace-hub | - |
 | WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | high | medium | - | - |
+| WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | high | medium | - | - |
 
 ## By Repository
 
@@ -2548,7 +2542,7 @@
 | WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | archived | medium | - | - |
 | WRK-1082 | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked | simple | - | - |
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | pending | medium | - | - |
-| WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | working | medium | - | - |
+| WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | medium | - | - |
 
 ### Medium
 
@@ -3196,7 +3190,7 @@
 | WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | archived | high | - | - |
 | WRK-1083 | Plan-mode integration for work-queue-workflow stages | pending | medium | workspace-hub | - |
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | pending | high | - | - |
-| WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | working | high | - | - |
+| WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | high | - | - |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | - | - |
 
 ### Complex
@@ -3304,7 +3298,7 @@
 
 ## By Computer
 
-### ace-linux-1 (175 active / 234 total)
+### ace-linux-1 (174 active / 234 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3540,7 +3534,7 @@
 | WRK-1084 | Integrate skills.sh as reference for all skill lifecycle operations | pending | medium | simple | workspace-hub |
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | pending | high | medium | - |
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | pending | medium | simple | - |
-| WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | working | high | medium | - |
+| WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | high | medium | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | medium | complex | - |
 
 ### ace-linux-2 (7 active / 14 total)

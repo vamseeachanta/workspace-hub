@@ -1,0 +1,21 @@
+wrk_id: WRK-1087
+generated_at: 2026-03-09T22:00:00Z
+recommendations:
+  - wrk_id: WRK-1090
+    title: "feat(audit): extend audit trail to ace-linux-2 and acma-ansys05 agents"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: >
+      Current implementation covers ace-linux-1 only. Extend session.sh integration
+      to remote machines so multi-machine sessions contribute to the same audit log
+      (or per-machine logs with aggregation query support).
+  - wrk_id: WRK-1091
+    title: "feat(audit): audit log aggregation dashboard — HTML report from monthly JSONL"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: >
+      Build a generate-audit-report.py script that reads monthly JSONL files and
+      produces an HTML summary (actions by provider, wrk_id, session) similar to
+      the gate-evidence-summary HTML output.
