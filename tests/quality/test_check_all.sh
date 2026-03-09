@@ -53,12 +53,21 @@ for repo in assetutilities digitalmodel assethold; do
   printf '\n[tool.mypy]\npython_version = "3.9"\n' >> "${FIXTURE_ROOT}/${repo}/pyproject.toml"
 done
 
-# Mock uv: controlled by MOCK_RUFF_EXIT / MOCK_MYPY_EXIT env vars
+# Mock uv: controlled by MOCK_RUFF_EXIT / MOCK_MYPY_EXIT / MOCK_RUFF_DOCS_EXIT env vars
 cat > "${MOCK_DIR}/uv" << 'MOCK_UV'
 #!/usr/bin/env bash
 case "$*" in
   "tool run ruff --version"*) echo "ruff 0.3.0 (mock)"; exit 0 ;;
   "run mypy --version"*)      echo "mypy 1.9.0 (mock)"; exit 0 ;;
+  "tool run ruff check --select D ."*)
+    if [[ "${MOCK_RUFF_DOCS_EXIT:-0}" -ne 0 ]]; then
+      echo "src/foo.py:1:1: D100 Missing docstring in public module"
+      echo "Found 1 error."
+      exit 1
+    fi
+    echo "All checks passed."
+    exit 0
+    ;;
   "tool run ruff check"*)
     if [[ "${MOCK_RUFF_EXIT:-0}" -ne 0 ]]; then
       echo "src/foo.py:1:1: E501 Line too long (101 > 100)"
@@ -81,6 +90,28 @@ esac
 MOCK_UV
 chmod +x "${MOCK_DIR}/uv"
 export PATH="${MOCK_DIR}:${PATH}"
+
+# Docs fixtures: assetutilities gets full README; worldenergydata gets partial README
+cat > "${FIXTURE_ROOT}/assetutilities/README.md" <<'EOF'
+# assetutilities
+## Installation
+Run `uv install`.
+## Usage
+Import the module.
+## Examples
+See tests/.
+EOF
+
+cat > "${FIXTURE_ROOT}/worldenergydata/README.md" <<'EOF'
+# worldenergydata
+## Overview
+Energy data.
+EOF
+# worldenergydata has no Installation/Usage/Examples — triggers WARN
+
+mkdir -p "${FIXTURE_ROOT}/assetutilities/docs"
+# worldenergydata intentionally has no docs/
+# ogmanufacturing intentionally has no README.md
 
 run_check() {
   QUALITY_REPO_ROOT="$FIXTURE_ROOT" bash "$CHECK_SCRIPT" "$@"
@@ -151,6 +182,61 @@ echo "── T7: unknown flag exits 1 ──────────────
 unk_exit=0; unk_out="$(run_check --bad-flag 2>&1)" || unk_exit=$?
 assert_exit "T7 unknown flag exits 1" 1 "$unk_exit"
 assert_contains "T7 shows ERROR" "ERROR" "$unk_out"
+
+# ---------------------------------------------------------------------------
+# T8: --docs flag appears in --help
+# ---------------------------------------------------------------------------
+echo "── T8: --help shows --docs ───────────────────────────────"
+assert_contains "T8 --help shows --docs" "--docs" "$help_out"
+
+# ---------------------------------------------------------------------------
+# T9: --docs produces docs: lines in output
+# ---------------------------------------------------------------------------
+echo "── T9: --docs produces docs: lines ──────────────────────"
+t9_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --repo assetutilities 2>&1)" || true
+assert_contains "T9 docs: line present" "docs:" "$t9_out"
+
+# ---------------------------------------------------------------------------
+# T10: README with all sections → readme: PASS
+# ---------------------------------------------------------------------------
+echo "── T10: README all sections → PASS ───────────────────────"
+t10_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --repo assetutilities 2>&1)" || true
+assert_contains "T10 readme: PASS" "readme: PASS" "$t10_out"
+
+# ---------------------------------------------------------------------------
+# T11: README missing sections → WARN, exit 0
+# ---------------------------------------------------------------------------
+echo "── T11: README missing sections → WARN, exit 0 ──────────"
+t11_exit=0
+t11_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --repo worldenergydata 2>&1)" \
+  || t11_exit=$?
+assert_exit "T11 exit 0 on readme WARN" 0 "$t11_exit"
+assert_contains "T11 readme: WARN" "readme: WARN" "$t11_out"
+
+# ---------------------------------------------------------------------------
+# T12: docs/ absent → docs-dir: WARN in output
+# ---------------------------------------------------------------------------
+echo "── T12: docs/ absent → WARN ──────────────────────────────"
+t12_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --repo worldenergydata 2>&1)" || true
+assert_contains "T12 docs-dir: WARN" "docs-dir: WARN" "$t12_out"
+
+# ---------------------------------------------------------------------------
+# T13: ruff D failure → docstrings: WARN, but overall exit 0 (warn-only)
+# ---------------------------------------------------------------------------
+echo "── T13: ruff D failure → WARN, exit 0 ───────────────────"
+t13_exit=0
+t13_out="$(MOCK_RUFF_DOCS_EXIT=1 run_check --docs --repo assetutilities 2>&1)" \
+  || t13_exit=$?
+assert_exit "T13 exit 0 despite ruff D failure" 0 "$t13_exit"
+assert_contains "T13 docstrings: WARN in output" "docstrings: WARN" "$t13_out"
+
+# ---------------------------------------------------------------------------
+# T14: missing README.md → readme: WARN (missing README.md)
+# ---------------------------------------------------------------------------
+echo "── T14: missing README.md → WARN ─────────────────────────"
+# ogmanufacturing fixture has no README.md
+t14_out="$(MOCK_RUFF_DOCS_EXIT=0 run_check --docs --repo ogmanufacturing 2>&1)" || true
+assert_contains "T14 readme: WARN (missing README.md)" "readme: WARN (missing README.md)" "$t14_out"
 
 # ---------------------------------------------------------------------------
 # Summary
