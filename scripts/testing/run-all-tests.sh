@@ -96,6 +96,16 @@ for config in "${REPO_CONFIGS[@]}"; do
     fi
 done
 
+# ── Contract tests (digitalmodel + worldenergydata) ──────────────────────────
+
+for repo in digitalmodel worldenergydata; do
+    if [[ -d "${REPO_ROOT}/${repo}/tests/contracts" ]]; then
+        PYTHONPATH="${REPO_ROOT}/${repo}/src:${REPO_ROOT}/assetutilities/src" \
+            uv run --project "${REPO_ROOT}/${repo}" python -m pytest \
+            "${REPO_ROOT}/${repo}/tests/contracts/" -v --tb=short -m contracts
+    fi
+done
+
 # ── Render summary table and exit code ────────────────────────────────────────
 
 uv run --no-project python - <<PYEOF
