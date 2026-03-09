@@ -21,7 +21,7 @@ import pytest
 # Make the parse_pytest_output module importable
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts" / "testing"))
 
-from parse_pytest_output import parse_summary, build_record
+from parse_pytest_output import parse_summary, build_record, parse_failed_node_ids
 
 
 # ── fixtures ──────────────────────────────────────────────────────────────────
@@ -244,3 +244,64 @@ class TestBuildRecord:
         )
         assert record["status"] == "error"
         assert record["passed"] == 0
+
+
+# ── parse_failed_node_ids tests ───────────────────────────────────────────────
+
+class TestParseFailedNodeIds:
+    def test_failed_line(self):
+        output = "FAILED tests/test_foo.py::TestBar::test_baz - AssertionError: mismatch"
+        ids = parse_failed_node_ids(output)
+        assert "tests/test_foo.py::TestBar::test_baz" in ids
+
+    def test_error_line_extracted(self):
+        """ERROR lines must be extracted — required for expected-failure matching."""
+        output = "ERROR tests/test_smoke.py::TestSetup::test_init - TypeError: missing"
+        ids = parse_failed_node_ids(output)
+        assert "tests/test_smoke.py::TestSetup::test_init" in ids
+
+    def test_parameterized_id_preserved(self):
+        """Parameterized suffix [a-b] must be preserved in full node ID."""
+        output = "FAILED tests/test_param.py::test_case[a-b] - AssertionError"
+        ids = parse_failed_node_ids(output)
+        assert "tests/test_param.py::test_case[a-b]" in ids
+
+    def test_parameterized_error_id_preserved(self):
+        output = "ERROR tests/test_param.py::test_setup[scenario1] - ValueError"
+        ids = parse_failed_node_ids(output)
+        assert "tests/test_param.py::test_setup[scenario1]" in ids
+
+    def test_failed_no_separator(self):
+        """FAILED line without ' - ' separator still captured."""
+        output = "FAILED tests/test_foo.py::test_baz"
+        ids = parse_failed_node_ids(output)
+        assert "tests/test_foo.py::test_baz" in ids
+
+    def test_mixed_failed_and_error(self):
+        output = (
+            "FAILED tests/test_a.py::test_one - AssertionError\n"
+            "ERROR tests/test_b.py::TestSetup::test_init - TypeError\n"
+            "FAILED tests/test_c.py::test_param[x] - ValueError"
+        )
+        ids = parse_failed_node_ids(output)
+        assert ids == {
+            "tests/test_a.py::test_one",
+            "tests/test_b.py::TestSetup::test_init",
+            "tests/test_c.py::test_param[x]",
+        }
+
+    def test_error_expected_failure_matching(self):
+        """ERROR node IDs in expected-failure set suppress unexpected count."""
+        raw = "2 passed, 0 failed, 1 error in 0.5s\nERROR tests/test_smoke.py::TestSetup::test_init - TypeError"
+        failed = parse_failed_node_ids(raw)
+        expected = {"tests/test_smoke.py::TestSetup::test_init"}
+        record = build_record(
+            repo="myrepo",
+            exit_code=1,
+            raw_output=raw,
+            failed_node_ids=failed,
+            expected_failures=expected,
+        )
+        assert record["status"] == "ok"
+        assert record["unexpected"] == 0
+        assert record["expected_fail"] == 1

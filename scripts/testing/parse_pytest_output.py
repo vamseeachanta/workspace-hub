@@ -51,16 +51,22 @@ def parse_summary(raw_output: str) -> dict[str, int]:
 
 
 def parse_failed_node_ids(raw_output: str) -> set[str]:
-    """Extract failed test node IDs from verbose pytest output.
+    """Extract failed/errored test node IDs from verbose pytest output.
 
     Matches lines like:
       FAILED tests/test_foo.py::TestBar::test_baz - AssertionError
-      FAILED tests/test_foo.py::test_baz
+      FAILED tests/test_foo.py::test_baz[a-b]
+      ERROR  tests/test_foo.py::TestBar::test_setup - TypeError
+
+    Preserves full node IDs including parameterized suffixes (e.g. [a-b]).
     """
     node_ids: set[str] = set()
-    pattern = re.compile(r"^FAILED\s+([\w/.\-:]+)", re.MULTILINE)
+    # Match FAILED or ERROR; capture up to the first " - " separator or EOL
+    pattern = re.compile(r"^(?:FAILED|ERROR)\s+([^\s].*?)(?:\s+-\s+|\s*$)", re.MULTILINE)
     for m in pattern.finditer(raw_output):
-        node_ids.add(m.group(1).strip())
+        node_id = m.group(1).strip()
+        if node_id:
+            node_ids.add(node_id)
     return node_ids
 
 
