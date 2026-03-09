@@ -1,0 +1,12 @@
+wrk_id: WRK-1054
+stage: 6
+phase: plan
+codex_verdict: MINOR
+gemini_verdict: REQUEST_CHANGES
+overall_verdict: APPROVED_WITH_REVISIONS
+revisions_made: true
+revision_summary: >
+  Plan revised: Python helper (parse_pytest_output.py) replaces bash parsing;
+  all pytest exit codes handled; expected-failures.txt dedicated file;
+  4-repo scope explicit; test fixtures expanded to cover all exit-code paths.
+completed_at: 2026-03-09

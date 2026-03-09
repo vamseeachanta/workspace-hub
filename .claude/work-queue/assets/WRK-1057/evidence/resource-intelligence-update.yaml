@@ -1,0 +1,6 @@
+wrk_id: WRK-1057
+updated_at: 2026-03-09T00:00:00Z
+additions:
+  - context: bash health scripts follow git-summary.sh timeout pattern
+    detail: "timeout 5 on all git subcommands; [[ -t 1 ]] ANSI guard; graceful fallback on missing data"
+    scope: workspace-hub scripts

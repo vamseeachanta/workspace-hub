@@ -1,0 +1,18 @@
+wrk_id: WRK-1056
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "placeholder-plan-draft"
+    documents: [.claude/work-queue/assets/WRK-1056/WRK-1056-lifecycle.html]
+    published_at: "2026-03-09T10:35:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "placeholder-plan-final"
+    documents: [.claude/work-queue/assets/WRK-1056/plan-html-review-final.md]
+    published_at: "2026-03-09T12:05:00Z"
+    reviewer: vamsee

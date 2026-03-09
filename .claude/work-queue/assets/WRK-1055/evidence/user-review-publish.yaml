@@ -1,0 +1,22 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: d502dc68
+    published_at: 2026-03-09T22:00:00Z
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1055/WRK-1055-lifecycle.html
+      - .claude/work-queue/assets/WRK-1055/evidence/user-review-plan-draft.yaml
+
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: d502dc68
+    published_at: 2026-03-09T22:30:00Z
+    reviewer: vamsee
+    documents:
+      - .claude/work-queue/assets/WRK-1055/WRK-1055-lifecycle.html
+      - .claude/work-queue/assets/WRK-1055/evidence/plan-final-review.yaml

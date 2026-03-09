@@ -1,0 +1,10 @@
+wrk_id: WRK-1054
+stage: 9
+route: B
+computer: ace-linux-1
+orchestrator: claude
+execution_workstations: [ace-linux-1]
+routed_at: "2026-03-09T10:06:00Z"
+rationale: >
+  Route B (medium complexity). Single machine (ace-linux-1). Claude orchestrator.
+  Implementation is bash + Python scripts — no external compute required.

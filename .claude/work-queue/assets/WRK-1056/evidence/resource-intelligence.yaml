@@ -1,0 +1,39 @@
+wrk_id: WRK-1056
+stage: 2
+completion_status: continue_to_planning
+completed_at: 2026-03-09
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - python-runtime
+
+findings:
+  repo_paths:
+    assetutilities: assetutilities/
+    digitalmodel: digitalmodel/
+    worldenergydata: worldenergydata/
+    assethold: assethold/
+    ogmanufacturing: OGManufacturing/   # note capital letters
+
+  ruff_config:
+    none_have_tool_ruff_section: true
+    note: pass --config pyproject.toml; ruff reads it gracefully even without [tool.ruff]
+
+  mypy_config:
+    has_tool_mypy: [assetutilities, digitalmodel, worldenergydata, assethold]
+    no_mypy_config: [OGManufacturing]
+    fallback_for_ogmanufacturing: "--ignore-missing-imports"
+
+  pre_commit:
+    ruff_already_present: [digitalmodel]
+    needs_ruff_hook_inserted: [worldenergydata, OGManufacturing]
+    no_pre_commit_file: [assetutilities, assethold]
+    note: assetutilities + assethold will need .pre-commit-config.yaml created
+
+  scripts_quality_dir: does_not_exist_yet
+  reference_script: scripts/qa/generate-qa-report.sh
+  ruff_hook_template: digitalmodel/.pre-commit-config.yaml (astral-sh/ruff-pre-commit rev v0.1.8)
+
+  tool_invocation: uv tool run ruff / uv tool run mypy (no system install assumed)

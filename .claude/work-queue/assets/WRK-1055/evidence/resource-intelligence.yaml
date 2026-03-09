@@ -1,0 +1,115 @@
+wrk_id: WRK-1055
+stage: 2
+completion_status: continue_to_planning
+assessed_at: 2026-03-09
+
+sources:
+  known_mcp_registries:
+    - name: "MCP Official Registry"
+      url: "https://registry.modelcontextprotocol.io"
+      notes: >
+        ~2000 servers; 407% growth since September 2025 launch. Backed by Anthropic,
+        GitHub, PulseMCP, Microsoft. Programmatic API for server discovery. Primary
+        source for execution-stage engineering-keyword scan.
+    - name: "Awesome MCP Servers"
+      url: "https://github.com/punkpeye/awesome-mcp-servers"
+      notes: "Curated community list; companion mcpservers.org (270+ remote servers)."
+    - name: "MCPMarket.com"
+      url: "https://mcpmarket.com/categories/data-science-ml"
+      notes: "5804+ listings; Data Science & ML category well-populated."
+
+  known_mcp_candidates:
+    - id: semantic_scholar_mcp
+      name: "Semantic Scholar MCP Server"
+      url: "https://github.com/FujishigeTemma/semantic-scholar-mcp"
+      engineering_relevance: high
+      install_complexity: low
+      auth_required: false
+      runtime: uv
+      install_command: >
+        uv run --with "git+https://github.com/FujishigeTemma/semantic-scholar-mcp"
+        semantic-scholar-mcp serve
+      claude_add_command: >
+        claude mcp add semantic-scholar-mcp -s project --
+        uv run --with "git+https://github.com/FujishigeTemma/semantic-scholar-mcp"
+        semantic-scholar-mcp serve
+      version_pin_note: "No tagged releases; must pin to a specific commit SHA at install time"
+      notes: "Wraps S2AG API — 200M+ papers, topic/year/OA-filter search. uv runtime matches toolchain."
+      trust_flags:
+        - "No releases — install from main; pin commit SHA"
+        - "Permissions: read-only calls to api.semanticscholar.org, no file system access"
+        - "Single-contributor repo; source code review required before wiring into settings"
+      related_wrk: WRK-579
+
+    - id: arxiv_mcp_candidate
+      name: "arXiv MCP wrapper (community)"
+      engineering_relevance: high
+      install_complexity: medium
+      auth_required: false
+      blocker: "No first-party server; WRK-578 registry audit needed to find vetted wrapper"
+
+    - id: bsee_api_candidate
+      name: "BSEE/BOEM Offshore Data API wrapper"
+      engineering_relevance: high
+      install_complexity: high
+      auth_required: false
+      blocker: "No MCP server exists — custom development, separate WRK required"
+
+  existing_config:
+    mcp_servers_yaml_exists: false
+    mcp_servers_yaml_path: "config/ai-tools/mcp-servers.yaml"
+    claude_settings_mcp_count: 0
+    claude_settings_path: "/home/vamsee/.claude/settings.json"
+    claude_settings_note: "No mcpServers key present; two plugins active; greenfield wiring required"
+    mcp_docs_exist: false
+    pattern_reference: "config/ai-tools/subscriptions.yaml — header convention for mcp-servers.yaml"
+
+skills:
+  core_used:
+    - "specs/online-resources/catalog.yaml"
+    - "specs/online-resources/follow-on-candidates.md"
+    - "WRK-578 — registry audit (pending)"
+    - "WRK-579 — Semantic Scholar install (absorbed by WRK-1055)"
+    - "/home/vamsee/.claude/settings.json"
+
+gaps:
+  - "MCP registry API not queried live — deferred to execution"
+  - "awesome_mcp_servers engineering-keyword scan — WRK-578 task"
+  - "semantic_scholar_mcp commit SHA pinning — happens at install time in execution"
+  - "Trust assessment (source code review) deferred to execution stage"
+  - "Node.js/npx availability on ace-linux-1 not confirmed (uv servers are fine)"
+
+risks:
+  - id: supply_chain
+    severity: high
+    description: >
+      Untrusted MCP servers can read full agent context and exfiltrate prompts/secrets.
+      Every server needs documented trust assessment before wiring into Claude settings.
+  - id: no_pinned_release
+    severity: medium
+    description: >
+      semantic-scholar-mcp has no tagged releases. Must pin commit SHA at install time
+      and record in mcp-servers.yaml.
+  - id: toolchain_dependency
+    severity: low
+    description: >
+      Future servers may require npx/node. workspace-hub standard is uv.
+      semantic-scholar-mcp uses uv — safe. Check future servers.
+
+recommendations:
+  start_with: semantic_scholar_mcp
+  reason: >
+    Lowest install complexity, free, no auth, uv runtime, 200M papers — immediately
+    useful for any engineering WRK needing literature references.
+  additional_candidates:
+    - id: arxiv_mcp_candidate
+      priority: medium
+      blocker: "WRK-578 registry audit first"
+    - id: bsee_api_candidate
+      priority: medium
+      blocker: "Separate WRK for custom wrapper"
+  plan_deliverables_confirmed:
+    - "config/ai-tools/mcp-servers.yaml — new file (follows subscriptions.yaml pattern)"
+    - ".claude/docs/mcp-servers.md — usage patterns + trust assessment template"
+    - "semantic_scholar_mcp installed, commit-pinned, tested with engineering query"
+    - "mcpServers block added to /home/vamsee/.claude/settings.json"

@@ -1,0 +1,16 @@
+claim_date: 2026-03-09T22:30:00Z
+wrk_id: WRK-1055
+route: B
+orchestrator: claude
+best_fit_provider: claude
+alternate_provider: codex
+quota_snapshot:
+  source: config/ai-tools/agent-quota-latest.json
+  status: available
+  pct_remaining: 80
+agent_capability:
+  best_fit: claude
+  rationale: Route B medium complexity; Claude orchestrates, Codex as cross-review gate
+user_html_blocker:
+  status: opened
+  opened_at: 2026-03-09T22:00:00Z

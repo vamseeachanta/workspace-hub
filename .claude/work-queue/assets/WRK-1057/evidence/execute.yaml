@@ -1,0 +1,40 @@
+stage: 10
+wrk_id: WRK-1057
+scope: integrated
+completed_at: 2026-03-09T02:00:00Z
+changes:
+  - file: scripts/repo-health.sh
+    edit_type: create
+    purpose: main health dashboard script
+  - file: scripts/productivity/sections/repo-health.sh
+    edit_type: create
+    purpose: /today collapsible section
+  - file: scripts/productivity/daily_today.sh
+    edit_type: modify
+    purpose: wire repo-health.sh section after summary-header
+integrated_repo_tests:
+  - name: basic terminal output
+    scope: integrated
+    command: bash scripts/repo-health.sh
+    result: pass
+    artifact_ref: evidence/execute.yaml
+  - name: json mode
+    scope: integrated
+    command: bash scripts/repo-health.sh --json | python3 -c "import sys,json; json.load(sys.stdin)"
+    result: pass
+    artifact_ref: evidence/execute.yaml
+  - name: missing test log graceful degradation
+    scope: integrated
+    command: bash scripts/repo-health.sh | grep unknown
+    result: pass
+    artifact_ref: evidence/execute.yaml
+  - name: test log present
+    scope: integrated
+    command: "bash scripts/repo-health.sh --test-log /tmp/test | grep pass"
+    result: pass
+    artifact_ref: evidence/execute.yaml
+  - name: section script output
+    scope: integrated
+    command: bash scripts/productivity/sections/repo-health.sh | grep details
+    result: pass
+    artifact_ref: evidence/execute.yaml

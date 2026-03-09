@@ -1,0 +1,26 @@
+wrk_id: WRK-1057
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "d502dc68ea38f914b2328c01879b9289bc82512c001"
+    documents: [specs/wrk/WRK-1057/plan.md]
+    published_at: "2026-03-09T00:00:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "d502dc68ea38f914b2328c01879b9289bc82512c002"
+    documents: [.claude/work-queue/assets/WRK-1057/plan-html-review-final.md]
+    published_at: "2026-03-09T00:01:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "d502dc68ea38f914b2328c01879b9289bc82512c003"
+    documents: [.claude/work-queue/assets/WRK-1057/WRK-1057-lifecycle.html]
+    published_at: "2026-03-09T02:00:00Z"
+    reviewer: vamsee

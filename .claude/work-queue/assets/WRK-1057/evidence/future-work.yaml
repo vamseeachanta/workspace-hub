@@ -1,0 +1,15 @@
+wrk_id: WRK-1057
+generated_at: 2026-03-09T00:00:00Z
+recommendations:
+  - title: "--fast flag to skip ahead/behind for speed"
+    description: "Currently ~20s for 25 repos; a --fast flag skipping git rev-list would halve runtime"
+    priority: low
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - title: "schema_version bump path for --json output"
+    description: "Forward-compat: add upgrade path when new fields are added to JSON output"
+    priority: low
+    disposition: existing-updated
+    status: captured
+    captured: true
