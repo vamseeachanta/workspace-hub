@@ -1,0 +1,55 @@
+wrk_id: WRK-1075
+stage: 10
+scope: integrated
+completed_at: 2026-03-09T16:45:00Z
+
+files_created:
+  - scripts/docs/build-api-docs.sh
+  - tests/docs/test_build_api_docs.sh
+  - config/docs/docs-manifest.yaml
+  - assetutilities/mkdocs.yml
+  - assetutilities/docs/api/index.md
+  - assetutilities/.github/workflows/docs.yml
+  - digitalmodel/mkdocs.yml
+  - digitalmodel/docs/api/index.md
+  - digitalmodel/.github/workflows/docs.yml
+  - worldenergydata/mkdocs.yml
+  - worldenergydata/docs/api/index.md
+  - worldenergydata/.github/workflows/docs.yml
+  - assethold/mkdocs.yml
+  - assethold/docs/api/index.md
+  - assethold/.github/workflows/docs.yml
+  - OGManufacturing/mkdocs.yml
+  - OGManufacturing/docs/api/index.md
+  - OGManufacturing/.github/workflows/docs.yml
+
+files_modified:
+  - assetutilities/pyproject.toml
+  - digitalmodel/pyproject.toml
+  - worldenergydata/pyproject.toml
+  - assethold/pyproject.toml
+  - OGManufacturing/pyproject.toml
+  - digitalmodel/.gitignore
+
+integrated_repo_tests:
+  - name: test_build_api_docs
+    scope: integrated
+    command: bash tests/docs/test_build_api_docs.sh
+    result: pass
+    artifact_ref: tests/docs/test_build_api_docs.sh
+  - name: live_build_all_5_repos
+    scope: integrated
+    command: bash scripts/docs/build-api-docs.sh
+    result: pass
+    artifact_ref: scripts/docs/build-api-docs.sh
+  - name: yaml_validate_docs_manifest
+    scope: integrated
+    command: "uv run --no-project python -c \"import yaml; yaml.safe_load(open('config/docs/docs-manifest.yaml'))\""
+    result: pass
+    artifact_ref: config/docs/docs-manifest.yaml
+
+notes: >
+  21/21 TDD tests pass. All 5 repos build successfully (5/5 PASS).
+  Build uses uv run --group docs mkdocs to isolate docs deps.
+  enable_inventory: false prevents network hangs from mkdocstrings.
+  docs_dir: docs/api scopes build to API docs only (avoids legacy content).

@@ -6,7 +6,7 @@ events:
     commit: "289dad11984835d505742c7b51d2ee9689a873c4"
     documents:
       - ".claude/work-queue/assets/WRK-1075/WRK-1075-lifecycle.html"
-    published_at: "2026-03-09T10:25:00Z"
+    published_at: "2026-03-09T10:45:00Z"
     reviewer: vamsee
   - stage: plan_final
     pushed_to_origin: true
@@ -16,4 +16,13 @@ events:
     documents:
       - ".claude/work-queue/assets/WRK-1075/WRK-1075-lifecycle.html"
     published_at: "2026-03-09T11:00:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "532071d5"
+    documents:
+      - .claude/work-queue/assets/WRK-1075/WRK-1075-lifecycle.html
+    published_at: "2026-03-09T17:00:00Z"
     reviewer: vamsee
