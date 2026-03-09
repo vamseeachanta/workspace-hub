@@ -1,0 +1,9 @@
+wrk_id: WRK-1013
+metadata_version: 1
+claimed_at: "2026-03-07T05:05:00Z"
+orchestrator: claude
+status: claimed
+hostname: ace-linux-1
+route: A
+session_pid: 0
+notes: Retroactive claim record — WRK-1013 executed in-session without formal claim-item.sh.

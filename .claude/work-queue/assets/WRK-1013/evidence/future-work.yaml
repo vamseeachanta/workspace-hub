@@ -1,0 +1,11 @@
+wrk_id: WRK-1013
+recommendations:
+  - disposition: spun-off-new
+    wrk_id: WRK-1053
+    title: Convert deterministic skill loops to scripts
+    status: captured
+    captured: true
+    notes: >
+      Phase 9 (Skill Coverage Audit) in comprehensive-learning SKILL.md and similar
+      deterministic loops belong in scripts rather than LLM prose. WRK-1053 created
+      to track this follow-up.

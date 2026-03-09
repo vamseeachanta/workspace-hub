@@ -1,0 +1,29 @@
+wrk_id: WRK-1013
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 25bd7c51
+    documents:
+      - .claude/work-queue/assets/WRK-1013/WRK-1013-lifecycle.html
+    published_at: "2026-03-07T05:35:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: daa6e6ed
+    documents:
+      - .claude/work-queue/assets/WRK-1013/WRK-1013-lifecycle.html
+    published_at: "2026-03-07T06:05:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: dcf22a98
+    documents:
+      - .claude/work-queue/assets/WRK-1013/WRK-1013-lifecycle.html
+    published_at: "2026-03-08T22:05:00Z"
+    reviewer: vamsee

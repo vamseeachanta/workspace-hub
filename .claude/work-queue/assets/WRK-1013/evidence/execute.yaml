@@ -1,0 +1,35 @@
+wrk_id: WRK-1013
+executed_at: "2026-03-08T06:00:00Z"
+orchestrator: claude
+commit_hash: dcf22a98
+implementation_summary: >
+  Deleted 78 README.md files from skill folders. Refactored 6 oversized SKILL.md files
+  by extracting bulk content (pipeline detail, API references, patterns, standards tables)
+  into references/ subdirectories. Each SKILL.md now acts as a thin orchestrator under
+  5000 words referencing specific references/ files.
+integrated_repo_tests:
+  - name: readme-violation-count-zero
+    scope: integrated
+    command: "find .claude/skills -name README.md | grep -v '^.claude/skills/README.md' | wc -l"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1013/evidence/test-results.md
+  - name: comprehensive-learning-word-count
+    scope: integrated
+    command: "wc -w .claude/skills/workspace-hub/comprehensive-learning/SKILL.md"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1013/evidence/test-results.md
+  - name: production-forecaster-word-count
+    scope: integrated
+    command: "wc -w .claude/skills/data/energy/production-forecaster/SKILL.md"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1013/evidence/test-results.md
+  - name: pandasai-skill-word-count
+    scope: integrated
+    command: "wc -w .claude/skills/ai/prompting/pandasai/SKILL.md"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1013/evidence/test-results.md
+  - name: structural-analysis-word-count
+    scope: integrated
+    command: "wc -w .claude/skills/engineering/marine-offshore/structural-analysis/SKILL.md"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1013/evidence/test-results.md

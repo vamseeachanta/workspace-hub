@@ -1,0 +1,10 @@
+wrk_id: WRK-1013
+stage: plan_draft
+reviewer: vamsee
+reviewed_at: "2026-03-07T05:30:00Z"
+decision: approved
+approval_decision: approve_as_is
+notes: >
+  Plan approved. WRK-1013 Route A: delete README.md from skill folders,
+  refactor 6 oversized SKILL.md files with references/ extraction.
+  Script-first principle applied.

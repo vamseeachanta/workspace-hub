@@ -1,0 +1,10 @@
+wrk_id: WRK-1013
+stage: 5
+approval_decision: approve_as_is
+review_cycle_id: stage5-2026-03-07
+reviewer: vamsee
+confirmed_at: "2026-03-07T05:30:00Z"
+notes: >
+  WRK-1013 is Route A (simple). Plan approved: batch-delete README.md files from
+  skill folders, refactor 6 oversized SKILL.md files. Script-first principle:
+  process.md is a pointer only. No inline bash.
