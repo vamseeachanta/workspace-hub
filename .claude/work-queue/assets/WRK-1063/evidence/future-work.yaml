@@ -1,0 +1,21 @@
+wrk_id: "WRK-1063"
+generated_at: "2026-03-09T08:00:00Z"
+recommendations:
+  - id: fw-1
+    title: "Link exact .claude/docs/ file paths in domain templates"
+    rationale: "P3 from Codex: loose docs references reduce traceability; exact paths would be immediately actionable"
+    disposition: spun-off-new
+    status: not-started
+    captured: true
+  - id: fw-2
+    title: "Add route-c-subsea.md template for pipeline/umbilical/subsea tree WRKs"
+    rationale: "Subsea work is a distinct domain from marine surface ops; warrants its own checklist (DNV-OS-F101, API 17D)"
+    disposition: spun-off-new
+    status: not-started
+    captured: true
+  - id: fw-3
+    title: "Wire new-spec.sh into /work add capture flow to suggest domain"
+    rationale: "WRK-1063 AC said 'update /work add capture to suggest relevant template'; deferred as separate WRK"
+    disposition: spun-off-new
+    status: not-started
+    captured: true

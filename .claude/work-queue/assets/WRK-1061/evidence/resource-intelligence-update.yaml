@@ -1,0 +1,20 @@
+wrk_id: WRK-1061
+stage: 16
+updated_at: "2026-03-09T05:00:00Z"
+
+additions:
+  - topic: generate-review-input.sh
+    finding: >
+      New script at scripts/review/generate-review-input.sh auto-generates
+      cross-review input files. Accepts WRK-NNN and --phase N. Output goes to
+      scripts/review/results/wrk-NNN-phase-N-review-input.md. Integrates
+      directly with cross-review.sh.
+    applicable_wrk_types: [Route B, Route C]
+
+  - topic: WRK frontmatter target_repos
+    finding: >
+      target_repos field must be present in WRK frontmatter for scoped diff.
+      Default (missing or []) falls back to full workspace diff. For harness
+      items, set target_repos: [scripts/review, tests/testing] or similar
+      to scope to implementation files only.
+    applicable_wrk_types: [all]

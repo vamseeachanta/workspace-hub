@@ -1,0 +1,18 @@
+wrk_id: "WRK-1063"
+updated_at: "2026-03-09T08:00:00Z"
+additions:
+  - artifact: specs/templates/route-c-generic.md
+    type: template
+    notes: "Base Route C spec skeleton; used by new-spec.sh as default"
+  - artifact: specs/templates/route-c-structural.md
+    type: template
+    notes: "Structural/FEA domain; ISO 19902, DNV-OS-C101, API RP 2A, API 579"
+  - artifact: specs/templates/route-c-marine.md
+    type: template
+    notes: "Marine/offshore domain; DNV-RP-C205, DNV-RP-C203, API RP 2SK"
+  - artifact: specs/templates/route-c-energy.md
+    type: template
+    notes: "O&G energy domain; BSEE 30 CFR 250, NACE MR0175, SPE-PRMS"
+  - artifact: scripts/work-queue/new-spec.sh
+    type: script
+    notes: "Copies correct domain template to specs/wrk/WRK-NNN/spec.md; rejects unknown domains"

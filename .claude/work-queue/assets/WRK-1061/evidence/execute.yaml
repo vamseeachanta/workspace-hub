@@ -1,0 +1,33 @@
+wrk_id: WRK-1061
+stage: 10
+scope: integrated
+executed_at: 2026-03-09
+executor: claude
+workstation: ace-linux-1
+
+artifacts_created:
+  - scripts/review/generate-review-input.sh
+  - tests/testing/test-generate-review-input.sh
+
+integrated_repo_tests:
+  - name: test-generate-review-input
+    scope: integrated
+    command: bash tests/testing/test-generate-review-input.sh
+    result: pass
+    artifact_ref: tests/testing/test-generate-review-input.sh
+  - name: smoke-test-wrk-1061-generation
+    scope: integrated
+    command: bash scripts/review/generate-review-input.sh WRK-1061 --phase 1
+    result: pass
+    artifact_ref: scripts/review/results/wrk-1061-phase-1-review-input.md
+  - name: smoke-test-missing-wrk-error
+    scope: integrated
+    command: "! bash scripts/review/generate-review-input.sh WRK-9999-NONEXISTENT 2>/dev/null"
+    result: pass
+    artifact_ref: scripts/review/generate-review-input.sh
+
+notes: >
+  10/10 tests pass. Script handles: frontmatter extraction, scoped/full git diff,
+  300-line truncation with warning, checkpoint summary, test snapshot sniffing,
+  focus prompts by subcategory+complexity. Codex/Gemini robustness suggestions
+  incorporated (awk fallbacks, git repo check, mkdir -p, graceful missing files).

@@ -1,0 +1,10 @@
+wrk_id: WRK-1061
+stage: 9
+route: B
+execution_machine: ace-linux-1
+orchestrator: claude
+subagents: []
+routing_rationale: >
+  Medium complexity, harness/cross-review-automation, single bash script + tests.
+  All work on ace-linux-1. No subagents needed — direct execution by orchestrator.
+routed_at: 2026-03-09

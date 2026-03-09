@@ -119,13 +119,13 @@ if ! git -C "$REPO_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
 fi
 
 # Allow test injection of diff line count for truncation test
+VALID_REPOS=()
 if [[ -n "${_TEST_INJECT_DIFF_LINES:-}" ]] && [[ "$_TEST_INJECT_DIFF_LINES" -gt 0 ]]; then
     # Generate synthetic diff for testing
     DIFF_CONTENT="$(awk -v n="$_TEST_INJECT_DIFF_LINES" 'BEGIN{for(i=1;i<=n;i++) print "+line "i}')"
     DIFF_LINE_COUNT="$_TEST_INJECT_DIFF_LINES"
 else
     # Build scoped or full diff
-    VALID_REPOS=()
     for repo in "${TARGET_REPOS[@]:-}"; do
         [[ -z "$repo" ]] && continue
         repo_path="${REPO_ROOT}/${repo}"
@@ -155,9 +155,12 @@ if [[ "$DIFF_LINE_COUNT" -gt "$DIFF_MAX" ]]; then
     DIFF_TRUNCATED=true
 fi
 
-# Changed files list
+# Changed files list (scoped same as diff when VALID_REPOS set)
 if [[ -n "${_TEST_INJECT_DIFF_LINES:-}" ]]; then
     CHANGED_FILES="(synthetic diff — ${DIFF_LINE_COUNT} lines)"
+elif [[ ${#VALID_REPOS[@]} -gt 0 ]]; then
+    CHANGED_FILES="$(git -C "$REPO_ROOT" diff HEAD --name-only -- "${VALID_REPOS[@]}" 2>/dev/null || echo "(no changes detected)")"
+    [[ -z "$CHANGED_FILES" ]] && CHANGED_FILES="(no changes detected)"
 else
     CHANGED_FILES="$(git -C "$REPO_ROOT" diff HEAD --name-only 2>/dev/null || echo "(no changes detected)")"
     [[ -z "$CHANGED_FILES" ]] && CHANGED_FILES="(no changes detected)"

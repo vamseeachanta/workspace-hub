@@ -1,0 +1,8 @@
+stage: 1
+wrk_id: "WRK-1063"
+reviewer: "vamsee"
+confirmed_at: "2026-03-09T08:00:00Z"
+scope_approved: true
+notes: "Route A simple item — user invoked /work run WRK-1063 indicating scope acceptance"
+n/a: true
+n/a_reason: "Route A simple; user invoked run directly"

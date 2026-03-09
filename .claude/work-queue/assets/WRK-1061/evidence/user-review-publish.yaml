@@ -1,0 +1,7 @@
+wrk_id: WRK-1061
+stage: 5
+published: true
+published_at: "2026-03-09T03:05:00Z"
+html_path: .claude/work-queue/assets/WRK-1061/WRK-1061-lifecycle.html
+commit_sha: pending
+notes: Lifecycle HTML generated and available locally for review

@@ -1,0 +1,28 @@
+stage: 2
+wrk_id: "WRK-1063"
+completed_at: "2026-03-09T08:00:00Z"
+completion_status: continue_to_planning
+
+existing_artifacts:
+  - path: specs/templates/plan-template.md
+    relevance: "Base plan template structure to reference for consistency"
+  - path: specs/templates/plan-template-minimal.md
+    relevance: "Minimal template variant"
+  - path: ".claude/rules/coding-style.md"
+    relevance: "File naming conventions"
+  - path: ".claude/rules/legal-compliance.md"
+    relevance: "No client references in templates"
+
+skills:
+  core_used:
+    - workspace-hub/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+
+gaps_identified: []
+risk_level: low
+notes: >
+  Route A simple item. All deliverables are new Markdown files plus one bash script.
+  No external dependencies. Existing plan-template.md provides structural reference.
+  Engineering domain standards (DNV, ABS, API, IACS) are well-known and can be
+  embedded inline without external lookups.

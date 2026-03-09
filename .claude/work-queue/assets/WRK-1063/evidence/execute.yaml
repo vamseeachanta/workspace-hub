@@ -1,0 +1,38 @@
+wrk_id: WRK-1063
+stage: 10
+scope: integrated
+completed_at: "2026-03-09T08:30:00Z"
+
+files_created:
+  - specs/templates/route-c-generic.md
+  - specs/templates/route-c-structural.md
+  - specs/templates/route-c-marine.md
+  - specs/templates/route-c-energy.md
+  - scripts/work-queue/new-spec.sh
+
+integrated_repo_tests:
+  - name: new-spec-structural
+    scope: integrated
+    command: "bash scripts/work-queue/new-spec.sh WRK-9999 structural && rm -rf specs/wrk/WRK-9999"
+    result: pass
+    artifact_ref: scripts/work-queue/new-spec.sh
+  - name: new-spec-marine
+    scope: integrated
+    command: "bash scripts/work-queue/new-spec.sh WRK-9999 marine && rm -rf specs/wrk/WRK-9999"
+    result: pass
+    artifact_ref: scripts/work-queue/new-spec.sh
+  - name: new-spec-energy
+    scope: integrated
+    command: "bash scripts/work-queue/new-spec.sh WRK-9999 energy && rm -rf specs/wrk/WRK-9999"
+    result: pass
+    artifact_ref: scripts/work-queue/new-spec.sh
+  - name: new-spec-generic-default
+    scope: integrated
+    command: "bash scripts/work-queue/new-spec.sh WRK-9999 && rm -rf specs/wrk/WRK-9999"
+    result: pass
+    artifact_ref: scripts/work-queue/new-spec.sh
+  - name: new-spec-unknown-domain-rejects
+    scope: integrated
+    command: "! bash scripts/work-queue/new-spec.sh WRK-9999 unknown 2>&1 | grep -q 'Error'"
+    result: pass
+    artifact_ref: scripts/work-queue/new-spec.sh

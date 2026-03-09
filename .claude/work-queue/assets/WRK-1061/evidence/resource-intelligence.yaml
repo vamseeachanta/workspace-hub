@@ -1,0 +1,31 @@
+wrk_id: WRK-1061
+stage: 2
+completion_status: continue_to_planning
+completed_at: 2026-03-09
+
+skills:
+  core_used:
+    - work-queue (lifecycle, stage contracts)
+    - work-queue-workflow (Route B execution depth)
+    - workflow-gatepass (gate evidence schema)
+
+key_findings:
+  - cross-review.sh accepts any file path as first arg — no changes needed to integrate
+  - Output filename must follow pattern: results/wrk-NNN-phase-N-review-input.md
+  - Existing review inputs (wrk-659, wrk-691) use sections: context, deliverables, ACs, focus
+  - run-all-tests.sh produces JSONL+markdown summary; script can sniff last output file
+  - WRK frontmatter is YAML (---...---); target_repos field lists submodule dirs
+  - Git diff scoped by path: git diff HEAD -- <repo1> <repo2>
+  - Checkpoint.yaml has context_summary field for last-run summary
+
+files_relevant:
+  - scripts/review/cross-review.sh
+  - scripts/review/results/wrk-659-phase-1-review-input.md
+  - scripts/review/results/wrk-691-plan-review-input.md
+  - scripts/testing/run-all-tests.sh
+  - .claude/work-queue/pending/WRK-1061.md
+
+risks:
+  - Large diffs: truncation at 300 lines must include a summary of remaining changes
+  - target_repos may list repos not yet initialized as submodules — need graceful handling
+  - Test snapshot file detection: run-all-tests.sh output location varies; best-effort
