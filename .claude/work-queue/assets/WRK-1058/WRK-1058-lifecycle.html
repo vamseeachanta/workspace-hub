@@ -118,7 +118,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
 <nav class="stage-strip">
   <div class="stage-strip-inner">
     <span class="stage-strip-label">Stages</span>
-    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-active" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-pending" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-pending" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-pending" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-pending" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-pending" title="10 Work Execution">10</a><a href="#s11" class="sc sc-pending" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-pending" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
+    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-done" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-active" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-pending" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-pending" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-pending" title="10 Work Execution">10</a><a href="#s11" class="sc sc-pending" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-pending" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-pending" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-pending" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-pending" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-pending" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-pending" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-pending" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
   </div>
 </nav>
 
@@ -193,7 +193,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ `--docs` flag runs ruff D rules on all 5 tier-1 repos</li><li>☐ README section check reports missing sections per repo</li><li>☐ docs/ presence reported as warning (not hard fail)</li><li>☐ Output integrated into check-all.sh report table</li><li>☐ Codex cross-review passes</li></ul><div class="section-label">Plan</div><ul class="item-list"><li>Full plan: `docs/plans/2026-03-09-wrk-1058-docs-quality-checks.md`</li><li>**Route B — 4 tasks:**</li><li>1. **Task 1 — Test fixtures (TDD red):** Add T8–T12 to `tests/quality/test_check_all.sh`; add README fixtures + `MOCK_RUFF_DOCS_EXIT` to mock uv; commit red.</li><li>2. **Task 2 — Implementation:** Add `--docs` flag, `run_ruff_docs()` (ruff D rules, warn-only), `check_readme_sections()` (case-insensitive grep for installation/usage/examples), `check_docs_dir()` (warn if absent) to `check-all.sh`; integrate into main loop; run T8–T12 green; commit.</li><li>3. **Task 3 — Smoke test:** Run `--docs --repo assethold` (live) + `--docs` full run; verify exit 0 and `docs:` lines appear for all repos.</li><li>4. **Task 4 — Gate evidence:** Write `execute.yaml` + `ac-test-matrix.md`; all 12 tests PASS; proceed to Codex cross-revi</li></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-1058.md</code></li></ul>
+    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ `--docs` flag runs ruff D rules on all 5 tier-1 repos (warn-only, never raises exit code)</li><li>☐ README heading check: exact match `grep -qEi &quot;^#+[[:space:]]*${section}$&quot;` for installation/usage/examples</li><li>☐ Missing README.md → `readme: WARN (missing README.md)`, exit 0</li><li>☐ docs/ presence reported as PASS/WARN (consistent label with other subchecks)</li><li>☐ `--docs` is additive: alone = ruff+mypy+docs; with `--ruff-only` = ruff+docs; with `--mypy-only` = mypy+docs</li><li>☐ Output integrated into check-all.sh report table per repo</li><li>☐ 14 tests pass (T1–T14), including T13 (ruff D WARN + exit 0) and T14 (missing README WARN)</li><li>☐ Codex cross-review passes</li></ul><div class="section-label">Plan</div><ul class="item-list"><li>Full plan: `docs/plans/2026-03-09-wrk-1058-docs-quality-checks.md`</li><li>**Route B — 4 tasks:**</li><li>1. **Task 1 — Test fixtures (TDD red):** Add T8–T12 to `tests/quality/test_check_all.sh`; add README fixtures + `MOCK_RUFF_DOCS_EXIT` to mock uv; commit red.</li><li>2. **Task 2 — Implementation:** Add `--docs` flag, `run_ruff_docs()` (ruff D rules, warn-only), `check_readme_sections()` (case-insensitive grep for installation/usage/examples), `check_docs_dir()` (warn if absent) to `check-all.sh`; integrate into main loop; run T8–T12 green; commit.</li><li>3. **Task 3 — Smoke test:** Run `--docs --repo assethold` (live) + `--docs` full run; verify exit 0 and `docs:` lines appear for all repos.</li><li>4. **Task 4 — Gate evidence:** Write `execute.yaml` + `ac-test-matrix.md`; all 12 tests PASS; proceed to Codex cross-revi</li></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-1058.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s5">
@@ -204,14 +204,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">human_interactive · heavy · GATE</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-active">active</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-human">human_interactive</span>
       <span class="badge b-gate">gate</span>
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s6">
@@ -222,14 +222,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · medium</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Cross-review summary</div><table><thead><tr><th>Round</th><th>Provider</th><th>Verdict</th><th>P1</th><th>P2</th></tr></thead><tbody></tbody></table><p style="margin:8px 0 4px">Overall: <span class="badge badge-fail"></span> &nbsp; <span class="badge badge-fail">P1 open</span> &nbsp;<span style="font-size:.82rem;color:var(--muted)">1 round(s)</span></p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s7">
@@ -240,14 +240,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">human_interactive · heavy · GATE</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-active">active</span>
       <span class="badge b-human">human_interactive</span>
       <span class="badge b-gate">gate</span>
       <span class="chevron">▼</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-final.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s8">

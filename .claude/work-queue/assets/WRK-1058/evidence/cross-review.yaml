@@ -1,0 +1,46 @@
+wrk_id: WRK-1058
+stage: 6
+review_type: plan
+reviewed_at: 2026-03-09
+
+providers:
+  claude:
+    verdict: APPROVE
+    result_file: assets/WRK-1058/plan_claude.md
+    summary: Plan is sound. Suggested heading-level grep (adopted). Flagged python3 usage (fixed).
+
+  gemini:
+    verdict: REQUEST_CHANGES
+    result_file: assets/WRK-1058/plan_gemini.md
+    findings_resolved: true
+    summary: Bash 4.0+ (pre-existing), README grep (fixed), ruff count (fixed). All resolved.
+
+  codex:
+    verdict: REQUEST_CHANGES
+    result_file: assets/WRK-1058/plan_codex.md
+    gate_override: true
+    override_by: vamsee
+    override_date: 2026-03-09
+    override_reason: >
+      9 rounds of review. All substantive code concerns resolved (regex safety, uv compliance,
+      T1-T18 coverage, CRLF, labels). Remaining v9 issues are documentation meta-concerns
+      for a warn-only script. Implementation cross-review (Stage 13) is the real quality gate.
+    findings_resolved_summary:
+      - v1-v2: heading grep, uv compliance, test T13/T14
+      - v3-v5: flag semantics, hardcoded literals, T15/T16/T17
+      - v6-v8: deps table, fenced-code documented, out-of-scope markdown documented
+      - v9: wording typo in review input (not plan defect)
+
+synthesis:
+  plan_changes_adopted:
+    - Heading grep: grep -qEi "^#+[[:space:]]*{section}[[:space:]]*$" with hardcoded literals
+    - uv run --no-project python for JSON count (not bare python3)
+    - docs-dir: PASS/WARN labels (consistent)
+    - CRLF: tr -d '\r' before grep
+    - T13-T18 tests added covering warn-only, missing README, no-docs/, suffix-no-match, CRLF, tool-unavail
+    - Deps table added to plan
+    - Out-of-scope markdown variants documented (Setext, BOM, fenced code, closing ATX)
+  deferred:
+    - Flag truth table (prose is sufficient for additive --docs)
+    - Fenced code block regression fixture (accepted known limitation)
+    - bash contract note (already established by #!/usr/bin/env bash shebang)

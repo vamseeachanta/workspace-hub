@@ -1,0 +1,21 @@
+wrk_id: WRK-1058
+stage: 6
+reviewer: vamsee
+overridden_at: 2026-03-09
+override_reason: >
+  Codex entered a non-convergent review loop over 9 rounds. All substantive code
+  concerns resolved (regex safety, uv compliance, T1-T18 coverage, CRLF, labels).
+  Remaining Codex v9 P1 was a wording error in the review input document, not a
+  plan defect. Gemini/Claude both had P1/P2 findings that were resolved. The
+  Codex plan gate is overridden by user; implementation cross-review (Stage 13)
+  is the binding quality gate for this warn-only bash script extension.
+providers_with_p1:
+  - codex
+  - gemini
+p1_findings_resolved:
+  - provider: gemini
+    finding: Bash 4.0+ associative arrays (pre-existing requirement, not new)
+    resolution: Documented as inherited; existing check-all.sh already uses declare -A
+  - provider: codex
+    finding: v9 — wording typo in review summary ("suppress ruff/mypy" phrasing)
+    resolution: Wording error in review input; actual plan flag behavior is correct
