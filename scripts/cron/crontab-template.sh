@@ -25,6 +25,10 @@
 # Nightly session analysis; runs at 03:00 after learning pipeline completes.
 # CRON: 0  3  * * *  cd $WORKSPACE_HUB && bash scripts/cron/session-analysis-nightly.sh >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
 
+# Weekly env parity audit (Sunday 03:15); overwrites config/ai_agents/ai-tools-status.yaml.
+# Timeout 60s; finishes by 03:16 — no overlap with 03:30 model-ID job.
+# CRON: 15 3  * * 0  cd $WORKSPACE_HUB && timeout 60 bash scripts/maintenance/ai-tools-status.sh >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
+
 # Weekly model-ID refresh (Sunday 03:30); updates config/agents/model-registry.yaml.
 # CRON: 30 3  * * 0  cd $WORKSPACE_HUB && bash scripts/cron/update-model-ids.sh >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
 

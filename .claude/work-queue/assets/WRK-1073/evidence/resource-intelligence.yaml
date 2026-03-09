@@ -1,0 +1,51 @@
+wrk_id: WRK-1073
+stage: 2
+completion_status: continue_to_planning
+gathered_at: "2026-03-09"
+
+findings:
+  existing_agents_md:
+    assetutilities: "Contract pointer only (5 lines) — safe to replace with onboarding content"
+    digitalmodel: "Contract pointer only (5 lines) — safe to replace"
+    worldenergydata: "19 lines with repo role + gates — needs onboarding content added/merged"
+    assethold: "Contract pointer only (5 lines) — safe to replace"
+    OGManufacturing: "Has AGENTS.md (5 lines, contract pointer) at /OGManufacturing/"
+
+  repo_structures:
+    assetutilities:
+      src_package: "src/assetutilities/ — calculation.py, engine.py, cli/, calculations/, common/"
+      test_command: "uv run python -m pytest tests/ --noconftest"
+      depends_on: []
+    digitalmodel:
+      src_package: "src/digitalmodel/ — engine.py, asset_integrity/, cathodic_protection/, gis/, hydrodynamics/, field_development/"
+      test_command: "PYTHONPATH=src uv run python -m pytest"
+      depends_on: [assetutilities]
+    worldenergydata:
+      src_package: "src/worldenergydata/ — bsee/, eia/, drilling/, analysis/, economics/"
+      test_command: "PYTHONPATH='src:../assetutilities/src' uv run python -m pytest --noconftest"
+      depends_on: [assetutilities]
+    assethold:
+      src_package: "src/assethold/ — engine.py, fundamentals.py, analysis/, modules/, options/"
+      test_command: "uv run python -m pytest tests/ --noconftest"
+      depends_on: [assetutilities]
+    OGManufacturing:
+      src_package: "src/ogmanufacturing/ — drilling/, surveillance/"
+      test_command: "uv run python -m pytest tests/"
+      depends_on: []
+
+  config_onboarding: "config/onboarding/ does not exist — will create"
+  scripts_onboarding: "scripts/onboarding/ does not exist — will create"
+  session_start_skill: "session-start SKILL.md — integration point for repo-map.yaml load when target_repos set"
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - repo-capability-map
+    - session-start
+
+risks:
+  - "AGENTS.md ≤20-line limit is tight — content must be concise"
+  - "OGManufacturing is at path /OGManufacturing/ inside workspace-hub (non-standard path)"
+  - "worldenergydata AGENTS.md has useful existing content — merge carefully"

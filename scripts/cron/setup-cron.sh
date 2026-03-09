@@ -79,6 +79,7 @@ if [[ "$CRON_VARIANT" == "full" ]]; then
   ENTRIES+=(
     "0  2  * * *  cd ${HUB_Q} && bash scripts/cron/comprehensive-learning-nightly.sh >> \"${LOG}\" 2>&1"
     "0  3  * * *  cd ${HUB_Q} && bash scripts/cron/session-analysis-nightly.sh >> \"${LOG}\" 2>&1"
+    "15 3  * * 0  cd ${HUB_Q} && timeout 60 bash scripts/maintenance/ai-tools-status.sh >> \"${LOG}\" 2>&1"
     "30 3  * * 0  cd ${HUB_Q} && bash scripts/cron/update-model-ids.sh >> \"${LOG}\" 2>&1"
     "0  4  * * 1  cd ${HUB_Q} && bash scripts/cron/skills-curation.sh >> \"${LOG}\" 2>&1"
     "0  */4 * * * cd ${HUB_Q} && bash scripts/repository-sync-auto >> \"${LOG}\" 2>&1"

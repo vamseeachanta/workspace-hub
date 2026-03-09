@@ -168,6 +168,10 @@ Violations to avoid:
 
    ### Stage 10 — Work Execution
 
+   **Context Budget**: Route A <40%, Route B <70%, Route C = plan multi-session.
+   At 80%: call `bash scripts/hooks/context-monitor.sh --usage-pct 80` to auto-checkpoint.
+   See `.claude/docs/session-chunking.md` for chunking patterns.
+
    Skills: `file-taxonomy` → `coding-style` → `superpowers:test-driven-development` → `superpowers:systematic-debugging`.
    Execution summary (in lifecycle HTML S10): what changed + why; key files (path/edit-type/purpose); key lines with excerpts.
    User-review checkpoints (5/7/17): open lifecycle HTML, review Gate-Pass section, push to origin before presenting to user.

@@ -3,7 +3,7 @@ stage: 5
 approval_decision: approve_as_is
 decision: approved
 reviewer: vamsee
-reviewed_at: 2026-03-09
+reviewed_at: "2026-03-09T10:30:00Z"
 notes: >
   Plan approved. For unreachable machines (acma-ansys05 — Windows, no SSH from ace-linux-1),
   keep work item open and defer drift-fix execution to a session running locally on that

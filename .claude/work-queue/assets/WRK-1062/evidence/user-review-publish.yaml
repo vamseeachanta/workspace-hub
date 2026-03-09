@@ -18,3 +18,12 @@ events:
       - assets/WRK-1062/WRK-1062-plan-final-review.html
     published_at: 2026-03-09T06:35:00Z
     reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: d32ef1ae
+    documents:
+      - .claude/work-queue/assets/WRK-1062/WRK-1062-lifecycle.html
+    published_at: 2026-03-09T07:45:00Z
+    reviewer: vamsee

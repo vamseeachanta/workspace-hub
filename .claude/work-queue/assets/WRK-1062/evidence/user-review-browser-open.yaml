@@ -10,3 +10,8 @@ events:
     html_ref: assets/WRK-1062/WRK-1062-plan-final-review.html
     opened_at: 2026-03-09T06:20:00Z
     reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1062/WRK-1062-lifecycle.html
+    opened_at: 2026-03-09T07:40:00Z
+    reviewer: vamsee

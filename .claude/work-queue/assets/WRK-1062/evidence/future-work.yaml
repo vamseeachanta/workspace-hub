@@ -1,0 +1,31 @@
+wrk_id: WRK-1062
+stage: 15
+completed_at: 2026-03-09T07:45:00Z
+recommendations:
+  - id: fw-1
+    title: "Convert live_data tests to builder-backed deterministic assertions"
+    description: >
+      12 tests still have @pytest.mark.live_data — refactor to use builders.py mocks
+      and remove live_data marker. Requires updating results YAMLs per test.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    captured_as: TBD
+  - id: fw-2
+    title: "Fix --include-live flag to bypass expected-failures suppression"
+    description: >
+      When --include-live is active, live_data entries in expected-failures.txt
+      should be excluded so actual failures surface as failures.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    captured_as: TBD
+  - id: fw-3
+    title: "Wire sec_filing_data() into mock_sec_downloader() in builders.py"
+    description: >
+      builders.py sec_filing_data() is not connected to mock_sec_downloader().
+      Minor consistency improvement.
+    disposition: existing-updated
+    status: captured
+    captured: true
+    captured_as: TBD

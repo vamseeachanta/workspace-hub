@@ -46,6 +46,7 @@ workstations:
   acma-ansys05:
     ws_hub_path: null
     ssh_target: null
+    linux_reachable: false
     report_path: .claude/state/harness-readiness-acma-ansys05.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
 

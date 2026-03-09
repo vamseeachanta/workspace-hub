@@ -301,7 +301,8 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Execution record</div><p style="color:var(--muted);font-size:.85rem;">Execution evidence present.</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/execute.yaml</code></li></ul>
+    <div class="section-label">Execution record</div><div class="schema"><div class="schema-row"><span class="schema-key">commits</span><span class="schema-val">[{&#x27;repo&#x27;: &#x27;assethold&#x27;, &#x27;hash&#x27;: &#x27;7e74318&#x27;, &#x27;message&#x27;: &#x27;feat(testing): add live_data markers and deterministic fixture infrastructure&#x27;}, {&#x27;repo&#x27;: &#x27;assetutilities&#x27;, &#x27;hash&#x27;: &#x27;6117efa&#x27;, &#x27;message&#x27;: &#x27;feat(testing): add live_data marker to pytest.ini&#x27;}, {&#x27;repo&#x27;: &#x27;workspace-hub&#x27;, &#x27;hash&#x27;: &#x27;d32ef1ae&#x27;, &#x27;message&#x27;: &#x27;feat(WRK-1062): live_data fixture infrastructure — clean test signal&#x27;}]</span></div><div class="schema-row"><span class="schema-key">summary</span><span class="schema-val">Phase 1: live_data marker registered in pytest.ini (both repos). 12 integration tests and 5 smoke tests tagged. Default run: 990 pass, 0 fail (17 deselected as live_data). Phase 2: tests/fixtures/data/ created with 3 JSON stubs; builders.py with 6 mock helpers. Phase 2 test refactor skipped — tests compare against results YAMLs; markers sufficient. Phase 3: run-all-tests.sh --include-live flag added; expected-failures.txt updated. Phase 4: refresh-fixtures.sh created and verified.
+</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/execute.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s11">

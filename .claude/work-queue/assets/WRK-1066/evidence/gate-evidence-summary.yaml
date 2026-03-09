@@ -1,0 +1,9 @@
+wrk_id: WRK-1066
+verified_at: "2026-03-09T12:22:00Z"
+result: pass
+gates_ok: 27
+gates_missing: 0
+gates_warn: 2
+warn_detail:
+  - reclaim gate (no reclaim triggered — expected)
+  - reclaim n/a gate (stage 18 n/a — expected)

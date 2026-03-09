@@ -1,0 +1,7 @@
+wrk_id: WRK-1073
+stage: 5
+approval_decision: approve_as_is
+decision: approved
+reviewer: vamsee
+approved_at: "2026-03-09"
+notes: "Plan approved — 4-phase: AGENTS.md x5, repo-map.yaml + generator, session-start integration, Codex cross-review"

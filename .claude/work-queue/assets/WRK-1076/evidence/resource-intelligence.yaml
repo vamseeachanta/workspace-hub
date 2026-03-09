@@ -1,0 +1,40 @@
+wrk_id: WRK-1076
+stage: 2
+assessed_at: "2026-03-09"
+completion_status: continue_to_planning
+
+context:
+  existing_scripts:
+    - scripts/cron/crontab-template.sh  # cron jobs reference point
+    - scripts/hooks/  # existing hook scripts location
+    - scripts/cron/comprehensive-learning-nightly.sh  # nightly job to wire into
+    - scripts/cron/setup-cron.sh  # cron installer
+  log_structure:
+    - logs/daily/  # existing daily log pattern
+    - logs/  # root log dir exists
+  related_wrk_state:
+    WRK-1064: pending  # pre-push hook not yet built
+    WRK-1071: pending  # benchmark runner not yet built
+  key_patterns:
+    - JSONL log files already used elsewhere (session logs, orchestrator logs)
+    - Hook scripts in scripts/hooks/ follow bash shebang pattern
+    - Cron jobs append >> logfile 2>&1 pattern
+
+plan:
+  files_to_create:
+    - scripts/notify.sh  # writer shim
+    - scripts/hooks/session-start-notify.sh  # reader for session start
+    - logs/notifications/.gitkeep  # ensure directory tracked
+  files_to_modify:
+    - scripts/cron/crontab-template.sh  # add 7-day retention purge entry
+    - scripts/cron/comprehensive-learning-nightly.sh  # wire notify.sh at exit
+  wiring_notes:
+    - WRK-1064 (pre-push hook): will call notify.sh when it is built — add comment placeholder
+    - WRK-1071 (benchmark runner): will call notify.sh when built — add comment placeholder
+    - Session-start hook wiring: scripts/hooks/session-start-notify.sh called from session-start hook
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass

@@ -1,0 +1,42 @@
+wrk_id: WRK-1062
+stage: 10
+scope: integrated
+executed_at: 2026-03-09T07:30:00Z
+provider: claude
+phases_completed: [1, 2, 3, 4]
+
+commits:
+  - repo: assethold
+    hash: 7e74318
+    message: "feat(testing): add live_data markers and deterministic fixture infrastructure"
+  - repo: assetutilities
+    hash: 6117efa
+    message: "feat(testing): add live_data marker to pytest.ini"
+  - repo: workspace-hub
+    hash: d32ef1ae
+    message: "feat(WRK-1062): live_data fixture infrastructure — clean test signal"
+
+integrated_repo_tests:
+  - name: assethold default run
+    scope: integrated
+    command: "cd assethold && uv run python -m pytest tests/ --noconftest -m 'not live_data' -q"
+    result: pass
+    artifact_ref: assets/WRK-1062/evidence/execute.yaml
+  - name: run-all-tests.sh --repo assethold
+    scope: integrated
+    command: "bash scripts/testing/run-all-tests.sh --repo assethold"
+    result: pass
+    artifact_ref: assets/WRK-1062/evidence/execute.yaml
+  - name: refresh-fixtures.sh --dry-run
+    scope: repo
+    command: "bash scripts/testing/refresh-fixtures.sh --dry-run"
+    result: pass
+    artifact_ref: assets/WRK-1062/evidence/execute.yaml
+
+summary: >
+  Phase 1: live_data marker registered in pytest.ini (both repos). 12 integration tests
+  and 5 smoke tests tagged. Default run: 990 pass, 0 fail (17 deselected as live_data).
+  Phase 2: tests/fixtures/data/ created with 3 JSON stubs; builders.py with 6 mock helpers.
+  Phase 2 test refactor skipped — tests compare against results YAMLs; markers sufficient.
+  Phase 3: run-all-tests.sh --include-live flag added; expected-failures.txt updated.
+  Phase 4: refresh-fixtures.sh created and verified.

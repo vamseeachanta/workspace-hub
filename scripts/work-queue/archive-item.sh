@@ -111,6 +111,13 @@ fi
 
 echo "✔ Archived: ${ITEM_ID} -> archive/$(date +%Y-%m)/${BASENAME}"
 
+# Remove stale checkpoint so /work run does not try to resume an archived item
+CHECKPOINT="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}/checkpoint.yaml"
+if [[ -f "$CHECKPOINT" ]]; then
+  rm "$CHECKPOINT"
+  echo "✔ Checkpoint removed: ${ITEM_ID}"
+fi
+
 # Regenerate lifecycle HTML so Stage 20 shows as done (not stale active/pending)
 LIFECYCLE_HTML="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}/${ITEM_ID}-lifecycle.html"
 if uv run --no-project python "${WORKSPACE_ROOT}/scripts/work-queue/generate-html-review.py" "${ITEM_ID}" --lifecycle 2>/dev/null; then

@@ -19,3 +19,4 @@ quota_snapshot:
   status: "available"
   pct_remaining: 80
   source: "config/ai-tools/agent-quota-latest.json"
+claim_expires_at: 2026-03-10T06:35:00Z

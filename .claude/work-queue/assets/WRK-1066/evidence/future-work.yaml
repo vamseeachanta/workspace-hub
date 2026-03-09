@@ -1,0 +1,32 @@
+wrk_id: WRK-1066
+generated_at: "2026-03-09T12:06:00Z"
+
+recommendations:
+  - id: fw-1
+    title: "Collect acma-ansys05 tool versions (Windows local session)"
+    description: >
+      acma-ansys05 is Windows-only with no SSH from ace-linux-1. Run
+      ai-tools-status.sh locally in a Git Bash session on acma-ansys05 to
+      populate its row in ai-tools-status.yaml.
+    disposition: spun-off-new
+    status: open
+    captured: true
+
+  - id: fw-2
+    title: "Add collection_warnings field when reachable < 2"
+    description: >
+      When fewer than 2 machines are reachable, drift comparison is
+      meaningless. Add a collection_warnings block to ai-tools-status.yaml
+      flagging this condition.
+    disposition: spun-off-new
+    status: open
+    captured: true
+
+  - id: fw-3
+    title: "Document ssh_target: null = local assumption in ai-tools-status.sh header"
+    description: >
+      Add a comment near the machine-loop section noting that ssh_target: null
+      is treated as localhost (ace-linux-1) per harness-config.yaml convention.
+    disposition: existing-updated
+    status: open
+    captured: true

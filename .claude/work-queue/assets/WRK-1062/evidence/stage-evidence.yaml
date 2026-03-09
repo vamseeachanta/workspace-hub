@@ -51,7 +51,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Multi-provider review completed.
-  evidence: scripts/review/results/wrk-000-review.md
+  evidence: scripts/review/results/wrk-1062-phase-1-review-input.md
 - order: 7
   stage: User Review - Plan (Final)
   status: done
@@ -75,7 +75,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Entered canonical /work route.
-  evidence: /work
+  evidence: .claude/work-queue/assets/WRK-1062/routing.yaml
 - order: 10
   stage: Work Execution
   status: done

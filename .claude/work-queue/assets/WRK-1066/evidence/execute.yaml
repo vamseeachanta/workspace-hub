@@ -1,0 +1,52 @@
+wrk_id: WRK-1066
+stage: 10
+scope: integrated
+executed_at: "2026-03-09T11:50:00Z"
+provider: claude
+
+deliverables:
+  - file: scripts/readiness/harness-config.yaml
+    change: added linux_reachable=false to acma-ansys05
+    status: done
+  - file: scripts/maintenance/ai-tools-status.sh
+    change: created — reads harness-config.yaml, PATH-explicit SSH, npm list -g version extraction
+    status: done
+  - file: config/ai_agents/ai-tools-status.yaml
+    change: regenerated with collection_summary + per-tool status + drift block
+    status: done
+  - file: scripts/cron/crontab-template.sh
+    change: added weekly env parity audit comment (Sunday 03:15, full role)
+    status: done
+  - file: scripts/cron/setup-cron.sh
+    change: added ai-tools-status.sh entry to ENTRIES array (full role)
+    status: done
+
+remediation_note: >
+  ace-linux-1 already has all npm-channel tools at current versions (claude=2.1.71,
+  codex=0.111.0, gemini=0.32.1, gh=2.86.0). MEMORY.md version data was stale.
+  No remediation required on ace-linux-1.
+
+deferred:
+  - machine: acma-ansys05
+    reason: Windows, no SSH from ace-linux-1
+    action: run ai-tools-status.sh locally in a future Windows session to populate versions
+  - machine: ace-linux-2
+    reason: offline at time of execution (SSH + Tailscale both unreachable)
+    action: reachable on next run (weekly cron will auto-collect)
+
+integrated_repo_tests:
+  - name: script-runs-exit-0
+    scope: integrated
+    command: bash scripts/maintenance/ai-tools-status.sh
+    result: pass
+    artifact_ref: config/ai_agents/ai-tools-status.yaml
+  - name: cron-dry-run
+    scope: integrated
+    command: bash scripts/cron/setup-cron.sh --dry-run
+    result: pass
+    artifact_ref: scripts/cron/setup-cron.sh
+  - name: harness-config-linux-reachable-field
+    scope: integrated
+    command: "grep linux_reachable scripts/readiness/harness-config.yaml"
+    result: pass
+    artifact_ref: scripts/readiness/harness-config.yaml

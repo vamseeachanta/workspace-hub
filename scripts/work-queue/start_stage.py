@@ -312,6 +312,27 @@ def _main() -> None:
     assets_root = os.path.join(repo_root, ".claude", "work-queue", "assets")
     output_dir = os.path.join(assets_root, wrk_id)
 
+    # Detect already-archived items (stale checkpoint left behind)
+    queue_dir = os.path.join(repo_root, ".claude", "work-queue")
+    in_active = any(
+        os.path.exists(os.path.join(queue_dir, d, f"{wrk_id}.md"))
+        for d in ("pending", "working", "blocked", "done")
+    )
+    if not in_active:
+        import glob as _ag
+        archived = _ag.glob(os.path.join(queue_dir, "archive", "*", f"{wrk_id}.md"))
+        if archived:
+            print(
+                f"✔ {wrk_id} is already archived — nothing to resume.",
+                file=sys.stderr,
+            )
+            # Clean up stale checkpoint if present
+            stale_cp = os.path.join(output_dir, "checkpoint.yaml")
+            if os.path.exists(stale_cp):
+                os.remove(stale_cp)
+                print(f"  Removed stale checkpoint for {wrk_id}.", file=sys.stderr)
+            sys.exit(0)
+
     # Stage 1: write session-lock.yaml + active-wrk pre-validation
     if stage == 1:
         import datetime

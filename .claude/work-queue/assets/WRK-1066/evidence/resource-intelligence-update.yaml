@@ -1,0 +1,26 @@
+wrk_id: WRK-1066
+generated_at: "2026-03-09T12:07:00Z"
+phase: post-execution
+
+additions:
+  - resource: scripts/maintenance/ai-tools-status.sh
+    type: script
+    description: >
+      New maintenance script: reads harness-config.yaml, SSHes to reachable
+      Linux machines with explicit PATH, collects npm-channel tool versions,
+      computes drift, writes config/ai_agents/ai-tools-status.yaml.
+    relevance: high
+
+  - resource: config/ai_agents/ai-tools-status.yaml
+    type: artifact
+    description: >
+      Canonical tool-version snapshot. Regenerated weekly by ai-tools-status.sh
+      cron. Fields: collection_summary, per-machine reachable/tools, drift block.
+    relevance: high
+
+  - resource: scripts/readiness/harness-config.yaml
+    type: config
+    description: >
+      Added linux_reachable field to acma-ansys05 (false) to signal Windows
+      machines that cannot be reached via SSH from ace-linux-1.
+    relevance: medium
