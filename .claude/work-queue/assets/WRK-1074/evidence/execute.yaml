@@ -1,0 +1,67 @@
+wrk_id: WRK-1074
+stage: 10
+scope: integrated
+executed_at: 2026-03-09T16:30:00Z
+executor: claude
+
+commits:
+  - repo: digitalmodel
+    hash: a9c1840a9
+    message: "feat(contracts): add assetutilities API contract tests"
+  - repo: worldenergydata
+    hash: 8e181d8
+    message: "feat(contracts): add assetutilities API contract tests"
+  - repo: workspace-hub
+    hash: e7a3a7e0
+    message: "feat(WRK-1074): add contracts step to run-all-tests.sh"
+
+files_created:
+  - digitalmodel/tests/contracts/conftest.py
+  - digitalmodel/tests/contracts/test_assetutilities_data_contract.py
+  - digitalmodel/tests/contracts/test_assetutilities_yml_contract.py
+  - digitalmodel/tests/contracts/test_assetutilities_units_contract.py
+  - digitalmodel/tests/contracts/test_assetutilities_common_contract.py
+  - digitalmodel/docs/api-contracts.md
+  - worldenergydata/tests/contracts/conftest.py
+  - worldenergydata/tests/contracts/test_assetutilities_data_contract.py
+  - worldenergydata/tests/contracts/test_assetutilities_engine_contract.py
+  - worldenergydata/docs/api-contracts.md
+
+files_modified:
+  - scripts/testing/run-all-tests.sh
+
+integrated_repo_tests:
+  - name: "digitalmodel contract tests"
+    scope: integrated
+    command: "cd digitalmodel && PYTHONPATH=src:../assetutilities/src uv run python -m pytest tests/contracts/ -v -m contracts"
+    result: passed
+    artifact_ref: "digitalmodel/tests/contracts/"
+    count: 17
+
+  - name: "worldenergydata contract tests"
+    scope: integrated
+    command: "cd worldenergydata && PYTHONPATH=src:../assetutilities/src uv run python -m pytest tests/contracts/ -v -m contracts"
+    result: passed
+    artifact_ref: "worldenergydata/tests/contracts/"
+    count: 8
+
+  - name: "cross-repo contract total"
+    scope: integrated
+    command: "25 tests across digitalmodel (17) and worldenergydata (8)"
+    result: passed
+    artifact_ref: ".claude/work-queue/assets/WRK-1074/"
+    count: 25
+
+cross_review_findings_addressed:
+  - id: P2-pythonpath
+    status: addressed
+    note: "worldenergydata docs/api-contracts.md documents git URL install and version pinning gap"
+  - id: P2-ymlInput
+    status: addressed
+    note: "pytest.importorskip used in test_ymlInput_importable — SKIP not FAIL on removal"
+  - id: P3-longrepr
+    status: addressed
+    note: "conftest.py uses report.sections.append() instead of mutating longrepr — compatible with pytest 8.4.2"
+  - id: P3-module-version
+    status: addressed
+    note: "try/except importlib.metadata.version with fallback to assetutilities.__version__"

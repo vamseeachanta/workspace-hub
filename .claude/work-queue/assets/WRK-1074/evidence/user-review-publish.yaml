@@ -1,0 +1,22 @@
+wrk_id: WRK-1074
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: "https://github.com/vamseeachanta/workspace-hub.git"
+    branch: main
+    commit: "180b398186a3a3c5e8a48d28570f0f615f1b2e80"
+    documents:
+      - ".claude/work-queue/assets/WRK-1074/WRK-1074-plan-draft.html"
+      - ".claude/work-queue/pending/WRK-1074.md"
+    published_at: "2026-03-09T13:15:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: "https://github.com/vamseeachanta/workspace-hub.git"
+    branch: main
+    commit: "180b398186a3a3c5e8a48d28570f0f615f1b2e80"
+    documents:
+      - ".claude/work-queue/assets/WRK-1074/WRK-1074-lifecycle.html"
+      - ".claude/work-queue/assets/WRK-1074/evidence/plan-final-review.yaml"
+    published_at: "2026-03-09T15:28:00Z"
+    reviewer: vamsee

@@ -1,0 +1,12 @@
+wrk_id: WRK-1074
+stage: 9
+routed_at: 2026-03-09T15:45:00Z
+route: B
+execution_machine: ace-linux-1
+orchestrator: claude
+execution_workstations: [ace-linux-1]
+target_repos:
+  - digitalmodel
+  - worldenergydata
+  - assetutilities (read-only — source of contracts)
+rationale: "Route B (medium): Contract tests across 2 consumer repos. Single machine (ace-linux-1). No heavy compute required. Claude orchestrates inline."
