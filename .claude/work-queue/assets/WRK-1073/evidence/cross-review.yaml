@@ -1,0 +1,18 @@
+wrk_id: WRK-1073
+stage: 6
+providers:
+  codex:
+    status: unavailable
+    reason: "Quota exhausted at review time"
+    verdict: n/a
+  gemini:
+    status: complete
+    verdict: REQUEST_CHANGES
+    severity: minor
+    issues_resolved:
+      - "YAML frontmatter in AGENTS.md for reliable machine parsing"
+      - "Error handling added to generator (warn+skip missing, fail-fast malformed)"
+      - "Auto-regeneration mechanism documented (manual trigger noted in script)"
+overall_verdict: minor_resolved
+gate: pass
+completed_at: "2026-03-09"

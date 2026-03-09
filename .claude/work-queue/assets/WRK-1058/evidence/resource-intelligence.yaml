@@ -1,0 +1,50 @@
+wrk_id: WRK-1058
+stage: 2
+completion_status: continue_to_planning
+gathered_at: 2026-03-09
+
+findings:
+  check_all_sh:
+    path: scripts/quality/check-all.sh
+    lines: 213
+    pattern: run_ruff() + run_mypy() functions; parallel results maps; summary table
+    extend_pattern: add run_ruff_docs() + check_readme() + --docs flag, same structure
+  repos:
+    - name: assetutilities
+      readme: present; sections — Developer Guide, Overview, Capabilities, Setups Needed
+      docs_dir: present
+      ruff_d_rules: none configured
+    - name: digitalmodel
+      readme: present; sections — Capabilities, Vision, Key Features, Core Capabilities
+      docs_dir: present
+      ruff_d_rules: none configured
+    - name: worldenergydata
+      readme: present; sections — Overview, Quick Start, Installation, Basic Usage
+      docs_dir: present
+      ruff_d_rules: none configured
+    - name: assethold
+      readme: present; sections — Summary, Usage, Technical Details, Daily Portfolio Strategy
+      docs_dir: present
+      ruff_d_rules: none configured
+    - name: ogmanufacturing
+      readme: present; sections — Mission, Tech Stack, Structure, Commands, Modules
+      docs_dir: present
+      ruff_d_rules: none configured
+  readme_required_sections:
+    - installation  # case-insensitive match
+    - usage
+    - examples
+  gaps:
+    - No ruff D rules in any repo (add via CLI args, not pyproject.toml changes)
+    - README sections vary — assetutilities missing examples; OGManufacturing missing all 3
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - testing (TDD for check-all.sh tests)
+
+risks:
+  - ruff D rules may produce large violation counts — make docs check non-blocking (warn only) initially
+  - README section matching must be case-insensitive and handle emoji-prefixed headers

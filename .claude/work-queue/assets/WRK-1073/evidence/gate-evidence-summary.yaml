@@ -1,0 +1,12 @@
+wrk_id: WRK-1073
+verified_at: 2026-03-09T11:00:00Z
+result: pass
+gates_ok: 28
+gates_missing: 0
+gates_warn: 2
+warn_detail:
+  - reclaim gate (no reclaim triggered — expected)
+  - reclaim n/a gate (stage 18 n/a — expected)
+note: >
+  user-review-close.yaml is stage 17 — not yet collected (stage 14 runs before stage 17).
+  Will be finalized at stage 17 user review.

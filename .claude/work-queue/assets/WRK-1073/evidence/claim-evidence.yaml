@@ -1,0 +1,10 @@
+wrk_id: WRK-1073
+version: 1
+owner: claude
+route: A
+session_id: session-20260309-wrk-1073
+quota: available
+claimed_at: "2026-03-09T09:40:00Z"
+orchestrator: claude
+best_fit_provider: claude
+session_owner: claude

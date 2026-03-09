@@ -1,0 +1,53 @@
+wrk_id: WRK-1073
+stage: 10
+scope: integrated
+executed_at: 2026-03-09T10:00:00Z
+provider: claude
+
+deliverables:
+  - file: assetutilities/AGENTS.md
+    change: replaced contract pointer with YAML frontmatter onboarding map (purpose, entry_points, test_command, depends_on, maturity)
+    status: done
+  - file: digitalmodel/AGENTS.md
+    change: replaced contract pointer with YAML frontmatter onboarding map
+    status: done
+  - file: worldenergydata/AGENTS.md
+    change: replaced generic contract with YAML frontmatter onboarding map (preserved repo role note)
+    status: done
+  - file: assethold/AGENTS.md
+    change: replaced contract pointer with YAML frontmatter onboarding map
+    status: done
+  - file: OGManufacturing/AGENTS.md
+    change: replaced contract pointer with YAML frontmatter onboarding map
+    status: done
+  - file: scripts/onboarding/generate-repo-map.py
+    change: created — reads YAML frontmatter from AGENTS.md + pyproject.toml fallback, outputs repo-map.yaml
+    status: done
+  - file: config/onboarding/repo-map.yaml
+    change: generated — 5 repos, all required fields present
+    status: done
+  - file: .claude/skills/workspace-hub/session-start/SKILL.md
+    change: added step 5b — loads repo-map context when active WRK has target_repos set
+    status: done
+
+integrated_repo_tests:
+  - name: generator produces repo-map.yaml
+    scope: integrated
+    command: uv run --no-project python scripts/onboarding/generate-repo-map.py
+    result: pass
+    artifact_ref: config/onboarding/repo-map.yaml
+  - name: repo-map.yaml has 5 repos with required fields
+    scope: integrated
+    command: "uv run --no-project python -c \"import yaml; data=yaml.safe_load(open('config/onboarding/repo-map.yaml')); assert len(data['repos'])==5\""
+    result: pass
+    artifact_ref: config/onboarding/repo-map.yaml
+  - name: all AGENTS.md ≤20 lines with frontmatter
+    scope: integrated
+    command: "uv run --no-project python -c \"...line count + frontmatter check...\""
+    result: pass
+    artifact_ref: assetutilities/AGENTS.md
+  - name: generator idempotent re-run
+    scope: integrated
+    command: uv run --no-project python scripts/onboarding/generate-repo-map.py
+    result: pass
+    artifact_ref: config/onboarding/repo-map.yaml

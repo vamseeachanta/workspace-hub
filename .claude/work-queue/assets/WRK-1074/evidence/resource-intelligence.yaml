@@ -1,0 +1,62 @@
+wrk_id: WRK-1074
+stage: 2
+completion_status: continue_to_planning
+gathered_at: "2026-03-09"
+
+summary: |
+  41 unique import sources from assetutilities across 40+ files in digitalmodel and worldenergydata.
+  Core dependencies: SaveData, FileManagement, WorkingWithYAML, engine, update_deep_dictionary,
+  constants, units.TrackedQuantity. An empty tests/contracts/ directory exists in digitalmodel.
+  A boilerplate test_api_contracts.py exists but is unused. run-all-tests.sh has integration
+  hooks at scripts/testing/run-all-tests.sh. worldenergydata has 0 contract tests.
+  assetutilities version 0.0.8; installed via pip in digitalmodel, git URL in worldenergydata.
+
+key_findings:
+  - "41 unique import sources from assetutilities; top: SaveData (19), WorkingWithYAML (18), engine (13), FileManagement (10)"
+  - "digitalmodel/tests/contracts/ directory exists but is empty — ready for contract tests"
+  - "digitalmodel/tests/infrastructure/contracts/test_api_contracts.py: 73-line boilerplate (unused)"
+  - "worldenergydata has no contract tests — needs tests/contracts/ directory created"
+  - "run-all-tests.sh covers all tier-1 repos; integration step exists with expected-failures tracking"
+  - "All repos use pytest with markers; PYTHONPATH setup consistent (src + tests per repo)"
+  - "units system (TrackedQuantity, unit_checked) imported in digitalmodel — contract needed"
+  - "assetutilities installed as editable local path in dev; version 0.0.8"
+
+skills:
+  core_used:
+    - work-queue
+    - repo-capability-map
+    - testing
+    - python-runtime
+  recommended:
+    - work-queue-workflow
+    - superpowers:test-driven-development
+
+risk_factors:
+  - "assetutilities installed as git URL in worldenergydata — version pinning gap"
+  - "Many imports use deprecated ymlInput pattern alongside WorkingWithYAML"
+  - "Database imports in worldenergydata require live DB — must mark appropriately"
+
+contract_surface:
+  digitalmodel:
+    - "assetutilities.common.data.SaveData"
+    - "assetutilities.common.file_management.FileManagement"
+    - "assetutilities.common.yml_utilities.WorkingWithYAML"
+    - "assetutilities.common.update_deep.update_deep_dictionary"
+    - "assetutilities.engine.engine"
+    - "assetutilities.units.quantity.TrackedQuantity"
+    - "assetutilities.constants (G, E_STEEL, RHO_*)"
+    - "assetutilities.common.visualization (matplotlib templates)"
+  worldenergydata:
+    - "assetutilities.common.data.SaveData"
+    - "assetutilities.common.yml_utilities.WorkingWithYAML"
+    - "assetutilities.common.file_management.FileManagement"
+    - "assetutilities.common.database.Database"
+    - "assetutilities.engine.engine"
+
+implementation_approach: |
+  Option A (consumer-side contracts): tests/contracts/ in each consuming repo.
+  - digitalmodel: ≥3 files targeting top import surfaces
+  - worldenergydata: ≥2 files targeting top import surfaces
+  - Each test imports the real assetutilities (no mocks) and asserts signature/type stability
+  - Integrate as separate step in run-all-tests.sh after unit tests
+  - Failed contract output includes: symbol name, assetutilities version, consumer test name

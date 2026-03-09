@@ -1,0 +1,21 @@
+wrk_id: WRK-1073
+stage: 15
+recommendations:
+  - id: FW-1
+    title: "Add JSON Schema/Pydantic validation for AGENTS.md frontmatter and repo-map.yaml"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    source: gemini-stage13-review
+  - id: FW-2
+    title: "CI/CD check: auto-run generate-repo-map.py and verify repo-map.yaml is current"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    source: gemini-stage13-review
+  - id: FW-3
+    title: "Cross-check depends_on in AGENTS.md against actual pyproject.toml dependencies"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    source: gemini-stage13-review

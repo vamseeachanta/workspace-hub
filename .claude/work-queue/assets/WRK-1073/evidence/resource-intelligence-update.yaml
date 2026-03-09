@@ -1,0 +1,7 @@
+wrk_id: WRK-1073
+stage: 16
+no_additions_rationale: >
+  No new external resources discovered. Work was purely internal —
+  reading existing AGENTS.md files and pyproject.toml, writing YAML frontmatter.
+  No new skills, APIs, or external documentation referenced.
+completed_at: 2026-03-09T10:45:00Z

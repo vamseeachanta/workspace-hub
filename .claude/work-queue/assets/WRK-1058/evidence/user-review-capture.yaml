@@ -1,0 +1,6 @@
+wrk_id: WRK-1058
+stage: 1
+scope_approved: true
+reviewer: vamsee
+reviewed_at: 2026-03-09
+notes: Scope approved — extend check-all.sh with --docs flag for ruff D rules and README completeness checks across all 5 tier-1 repos.

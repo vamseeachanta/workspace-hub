@@ -117,6 +117,19 @@ If a `computer:` field exists in recent working/ items or in `.claude/state/`,
 note which machine was last active. Prompt user to confirm if working on a different
 machine today (multi-machine handoff check).
 
+### 5b. Repo-Map Context (when target_repos set)
+
+If a WRK is active (`working/WRK-NNN.md`) with a non-empty `target_repos` field, read
+`config/onboarding/repo-map.yaml` and surface the matching repo entries. This eliminates
+codebase orientation overhead at Stage 10.
+
+```python
+# Example: active WRK has target_repos: [digitalmodel, assetutilities]
+# → Load and display matching entries from config/onboarding/repo-map.yaml
+```
+
+If `config/onboarding/repo-map.yaml` is absent, skip silently (non-blocking).
+
 ### 6. Mandatory `/work` Handoff and Approval Gate
 
 Before any implementation begins:
