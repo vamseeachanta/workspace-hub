@@ -1,9 +1,13 @@
 wrk_id: WRK-1049
-updated_at: "2026-03-08T22:50:00Z"
+stage: 16
+updated_at: "2026-03-09T01:00:00Z"
+
 additions:
-  - type: pattern
-    description: session-lock.yaml written at Stage 1 — pid/hostname/locked_at fields
-  - type: pattern
-    description: claim-item.sh working/ pre-check — fast-fail collision guard pattern
-  - type: finding
-    description: process.md was a dual implementation of claim logic — now script-first only
+  - file: scripts/work-queue/start_stage.py
+    change: "Stage 1 now writes session-lock.yaml (pid/hostname/locked_at/status) + P4 active-wrk warn"
+  - file: scripts/work-queue/claim-item.sh
+    change: "working/ pre-check guard + atomic mv with race error + status:claimed lock update"
+  - file: scripts/work-queue/tests/test-claim-collision.sh
+    change: "New T1-T5 test suite for collision guard and lock behavior"
+
+no_new_external_dependencies: true

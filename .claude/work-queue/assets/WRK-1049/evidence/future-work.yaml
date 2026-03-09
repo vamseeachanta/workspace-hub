@@ -1,15 +1,27 @@
 wrk_id: WRK-1049
-captured_at: "2026-03-08T22:50:00Z"
+stage: 15
+synthesized_at: "2026-03-09T01:00:00Z"
+
 recommendations:
   - id: FW-01
-    title: Clean up stale session-lock.yaml on archive
+    title: "Fix duplicate status: keys in session-lock.yaml (append vs in-place update)"
+    priority: low
     disposition: spun-off-new
-    status: deferred
+    status: pending
     captured: true
-    notes: Captured as follow-up; will be added to pending queue
+    notes: >
+      claim-item.sh appends 'status: claimed' to session-lock.yaml resulting in two
+      'status:' keys (YAML forbids duplicate keys). Needs sed/awk in-place replacement.
+      Low risk now since audit trail is functional, but violates strict YAML spec.
+
   - id: FW-02
-    title: TOCTOU race hardening via flock
+    title: "Extend T5 to drive concurrent claims through claim-item.sh with gate stubs library"
+    priority: low
     disposition: spun-off-new
-    status: deferred
+    status: pending
     captured: true
-    notes: Captured as follow-up; flock-based mutex for true atomicity
+    notes: >
+      T5 currently tests mv atomicity directly. A higher-fidelity race test would
+      drive two concurrent claim-item.sh calls. Requires a test-fixtures library
+      that can populate all required gate artifacts for synthetic WRK IDs.
+      Consider alongside WRK-1045 (session compliance audit) work.
