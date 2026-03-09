@@ -1,0 +1,12 @@
+wrk_id: WRK-1070
+stage: 9
+route: A
+computer: ace-linux-1
+orchestrator: claude
+complexity: simple
+execution_strategy: single-agent
+parallel_agents: false
+routed_at: "2026-03-09T21:50:00Z"
+notes: >
+  Route A — single orchestrator (Claude) on ace-linux-1.
+  Proceeding to Stage 10 work execution.

@@ -1,0 +1,42 @@
+wrk_id: WRK-1070
+stage: 6
+review_type: plan
+reviewed_at: "2026-03-09T20:25:00Z"
+
+providers:
+  gemini:
+    verdict: REQUEST_CHANGES
+    result_file: scripts/review/results/20260309T204526Z-wrk-1070-plan-review-input.md-plan-gemini.md
+    findings:
+      - severity: P1
+        issue: "Tooling fragmentation — gitleaks vs detect-secrets conflict"
+        resolution: "FIXED — standardized on gitleaks only; detect-secrets removed from plan"
+      - severity: P2
+        issue: "Ambiguous baseline storage location"
+        resolution: "FIXED — consolidated to config/quality/secrets-baseline.json"
+      - severity: P3
+        issue: "Tests don't verify pre-commit hook integration"
+        resolution: "FIXED — added test (d): grep check for gitleaks hook in all repos"
+  codex:
+    verdict: REQUEST_CHANGES
+    result_file: scripts/review/results/20260309T213707Z-wrk-1070-plan-review-v2-input.md-plan-codex.md
+    findings:
+      - severity: H1
+        issue: "Hub-root .gitleaks.toml not auto-applied to per-repo hooks (need explicit --config path)"
+        resolution: "FIXED — each hook now passes args: [--config, ../.gitleaks.toml]"
+      - severity: H2
+        issue: "Dashboard AC not in execution steps"
+        resolution: "FIXED — deferred to WRK-1057, removed from WRK-1070 ACs"
+      - severity: M1
+        issue: "scripts/hooks/pre-push.sh doesn't exist"
+        resolution: "FIXED — WRK-1070 creates the stub file"
+      - severity: M2
+        issue: "Single shared baseline risky for multi-repo scans"
+        resolution: "FIXED — per-repo secrets-baseline-<repo>.json following bandit pattern"
+
+plan_updated: true
+plan_version: v3
+plan_changes_summary: >
+  v3 changes: explicit --config path per hook; per-repo baselines;
+  WRK-1070 creates pre-push.sh stub; dashboard deferred to WRK-1057;
+  5th test for config path integration.

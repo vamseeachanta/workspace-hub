@@ -1,0 +1,42 @@
+wrk_id: WRK-1070
+stage: 16
+generated_at: "2026-03-09T22:15:00Z"
+
+additions:
+  - resource: scripts/security/secrets-scan.sh
+    type: script
+    description: >
+      Full-history gitleaks scan wrapper for all tier-1 repos + hub.
+      Flags: --repo for targeted scans. Uses per-repo baselines.
+      Mirror of legal-sanity-scan.sh pattern.
+
+  - resource: .gitleaks.toml
+    type: config
+    description: >
+      Hub-root gitleaks config with allowlist for test tokens, placeholder values.
+      Referenced by all pre-commit hooks via explicit --config path.
+
+  - resource: config/quality/secrets-baseline-*.json
+    type: data
+    description: >
+      Per-repo gitleaks baselines (6 repos). Currently empty stubs.
+      Populate via `gitleaks detect --source <repo> --report-format json` once gitleaks installed.
+
+  - resource: scripts/hooks/pre-push.sh
+    type: script
+    description: >
+      Pre-push gate stub. Calls secrets-scan.sh when gitleaks available.
+      WRK-1064 will add more gates.
+
+  - resource: tests/quality/test_secrets_scan.sh
+    type: test
+    description: >
+      8-assertion bash test suite for secrets scanning infrastructure.
+
+patterns_learned:
+  - pattern: gitleaks pre-commit hook requires explicit --config path in submodule repos
+    reason: "pre-commit runs from repo root; hub-root .gitleaks.toml is at ../ relative path"
+  - pattern: per-repo baselines follow config/quality/secrets-baseline-<repo>.json convention
+    reason: "aligns with existing bandit-baseline-<repo>.json pattern"
+  - pattern: gitleaks auto-installed by pre-commit when language: golang declared
+    reason: "worldenergydata pre-commit config demonstrated this pattern; no manual install needed for pre-commit"

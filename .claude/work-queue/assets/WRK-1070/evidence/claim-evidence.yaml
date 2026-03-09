@@ -1,0 +1,22 @@
+claim_date: "2026-03-09T21:44:11Z"
+wrk_id: "WRK-1070"
+route: "A"
+orchestrator: "claude"
+best_fit_provider: "claude"
+alternate_provider: "gemini"
+metadata_version: "1"
+session_owner: "claude-sonnet-4-6"
+set_active_wrk: true
+agent_fit:
+  capability_match: "confirmed"
+  rationale: "Route A / execution_workstations=[ace-linux-1] / orchestrator=claude"
+blocking_state:
+  blocked: false
+  blocked_by: []
+  notes: ""
+quota_snapshot:
+  timestamp: "2026-03-09T21:44:11Z"
+  provider: "claude"
+  status: "available"
+  pct_remaining: 85
+  source: "config/ai-tools/agent-quota-latest.json"
