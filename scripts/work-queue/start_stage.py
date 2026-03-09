@@ -312,6 +312,20 @@ def _main() -> None:
     assets_root = os.path.join(repo_root, ".claude", "work-queue", "assets")
     output_dir = os.path.join(assets_root, wrk_id)
 
+    # Stage 1: write session-lock.yaml so claim-item.sh can detect concurrent sessions
+    if stage == 1:
+        import datetime
+        import socket
+        ev_dir = Path(output_dir) / "evidence"
+        ev_dir.mkdir(parents=True, exist_ok=True)
+        lock_path = ev_dir / "session-lock.yaml"
+        lock_path.write_text(
+            f"wrk_id: {wrk_id}\n"
+            f"session_pid: {os.getpid()}\n"
+            f"hostname: {socket.gethostname()}\n"
+            f"locked_at: \"{datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')}\"\n"
+        )
+
     route_stage(contract, wrk_id, stage, output_dir, assets_root)
 
     # Auto-regenerate lifecycle HTML so user always sees current state

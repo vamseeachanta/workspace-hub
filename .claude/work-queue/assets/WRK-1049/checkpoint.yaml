@@ -1,11 +1,12 @@
 wrk_id: WRK-1049
-current_stage: 5
-stage_name: User Review - Plan Draft
-completed_stage: 4
-next_action: Execute stage 5: User Review - Plan Draft
-context_summary: Stage 4 complete. Next: stage 5 (User Review - Plan Draft).
+current_stage: 6
+stage_name: Cross-Review
+completed_stage: 5
+next_action: Execute stage 6: Cross-Review
+context_summary: Stage 5 complete. Next: stage 6 (Cross-Review).
 entry_reads:
   - .claude/work-queue/assets/WRK-1049/checkpoint.yaml
-  - assets/WRK-1049/WRK-1049-lifecycle.html#s1-s4
-checkpointed_at: 2026-03-08T22:26:29Z
-human_gate: true
+  - assets/WRK-1049/WRK-1049-lifecycle.html#s1-s5
+  - assets/WRK-1049/evidence/user-review-plan-draft.yaml
+checkpointed_at: 2026-03-09T00:43:36Z
+human_gate: false

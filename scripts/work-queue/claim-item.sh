@@ -14,6 +14,16 @@ QUEUE_DIR="${WORKSPACE_ROOT}/.claude/work-queue"
 GATE_LOGGER="${WORKSPACE_ROOT}/scripts/work-queue/log-gate-event.sh"
 QUOTA_FILE="${WORKSPACE_ROOT}/config/ai-tools/agent-quota-latest.json"
 
+# Guard: reject concurrent claim if already in working/
+if [[ -f "${QUEUE_DIR}/working/${WRK_ID}.md" ]]; then
+  echo "✖ Error: ${WRK_ID} is already in working/ — another session may be active." >&2
+  lock_file="${QUEUE_DIR}/assets/${WRK_ID}/evidence/session-lock.yaml"
+  if [[ -f "$lock_file" ]]; then
+    echo "  Session lock: $(grep -E 'hostname|locked_at|session_pid' "$lock_file" | tr '\n' '  ')" >&2
+  fi
+  exit 1
+fi
+
 FILE_PATH=""
 if [[ -f "${QUEUE_DIR}/pending/${WRK_ID}.md" ]]; then
   FILE_PATH="${QUEUE_DIR}/pending/${WRK_ID}.md"

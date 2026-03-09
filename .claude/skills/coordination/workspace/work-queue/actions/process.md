@@ -72,37 +72,18 @@ done
 
 If the item is skipped due to unmet dependencies, select the next item by priority and repeat from Step 1.
 
-## Step 4: Auto-Claim
+## Step 4: Claim via Script (HARD RULE — never mv manually)
 
-Claiming happens automatically when processing begins -- no manual intervention required.
-
-The item is moved from `pending/` to `working/` in both master and repo-local queues:
+Run the canonical claim script:
 
 ```bash
-# Ensure working/ directory exists
-mkdir -p "${QUEUE_DIR}/working"
-
-# Master queue
-mv "${QUEUE_DIR}/pending/${ITEM_FILE}" "${QUEUE_DIR}/working/${ITEM_FILE}"
-
-# Repo-local queues
-for REPO in ${TARGET_REPOS}; do
-  REPO_QUEUE="${WORKSPACE_ROOT}/${REPO}/.claude/work-queue"
-  mkdir -p "${REPO_QUEUE}/working"
-  if [[ -f "${REPO_QUEUE}/pending/${ITEM_FILE}" ]]; then
-    mv "${REPO_QUEUE}/pending/${ITEM_FILE}" "${REPO_QUEUE}/working/${ITEM_FILE}"
-  fi
-done
+bash scripts/work-queue/claim-item.sh WRK-NNN
 ```
 
-Update frontmatter automatically (both copies):
-```yaml
-status: working
-claimed_at: <ISO 8601 timestamp>
-route: A  # or B or C
-```
+This is the **only** valid claim path. The script handles all gate evidence, quota
+checks, session-lock validation, status updates, and the atomic pending→working move.
 
-This replaces the previous manual claim step. The item transitions to `working` status as soon as the process pipeline selects it and dependencies are satisfied.
+If `claim-item.sh` exits non-zero, **stop** — do not proceed to Stage 9.
 
 ## Step 5: Pre-check (Repo Readiness)
 
