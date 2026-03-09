@@ -82,6 +82,10 @@ logs/*
 !logs/orchestrator/
 logs/orchestrator/*
 !logs/orchestrator/README.md
+!logs/audit/
+logs/audit/*.jsonl
+logs/audit/*.jsonl.gz
+!logs/audit/.gitkeep
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
