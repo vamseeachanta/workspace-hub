@@ -35,6 +35,9 @@
 # Weekly skills curation (Monday 04:00); archives stale skills, validates frontmatter.
 # CRON: 0  4  * * 1  cd $WORKSPACE_HUB && bash scripts/cron/skills-curation.sh >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
 
+# Notification log 7-day retention (daily 04:30); purges old JSONL files (WRK-1076).
+# CRON: 30 4  * * *  cd $WORKSPACE_HUB && find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true
+
 # Repository sync every 4 hours; pulls from remotes, pushes derived state.
 # CRON: 0  */4 * * * cd $WORKSPACE_HUB && bash scripts/repository-sync-auto >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
 

@@ -1,0 +1,7 @@
+wrk_id: WRK-1076
+stage: 9
+route: A
+complexity: simple
+execution_machine: ace-linux-1
+routed_at: "2026-03-09"
+rationale: "Route A — two bash scripts + cron wiring. No cross-repo changes. Single machine."

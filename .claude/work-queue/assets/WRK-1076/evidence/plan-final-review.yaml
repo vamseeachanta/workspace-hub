@@ -2,5 +2,5 @@ wrk_id: WRK-1076
 stage: 7
 decision: passed
 confirmed_by: vamsee
-confirmed_at: "2026-03-09"
+confirmed_at: "2026-03-09T07:00:00Z"
 notes: "Plan confirmed. Proceed to implementation."

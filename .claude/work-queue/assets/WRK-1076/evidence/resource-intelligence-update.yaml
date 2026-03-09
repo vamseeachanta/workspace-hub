@@ -1,0 +1,9 @@
+wrk_id: WRK-1076
+updated_at: "2026-03-09T07:00:00Z"
+additions:
+  - area: harness/notification
+    learning: "notify.sh pattern: always-exit-0 JSONL appender; session-start reader on stderr"
+    files: [scripts/notify.sh, scripts/hooks/session-start-notify.sh]
+  - area: testing
+    learning: "Bash test scripts must avoid ((n++)) with set -e; use n=$((n+1)) instead"
+    files: [scripts/hooks/tests/test-session-start-notify.sh]

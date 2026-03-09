@@ -1,0 +1,4 @@
+wrk_id: WRK-1076
+stage: 18
+status: n/a
+reason: "No continuity break — single session, no checkpoint recovery needed."

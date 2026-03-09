@@ -1,0 +1,26 @@
+wrk_id: WRK-1076
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "wrk1076-plan-draft"
+    documents: [.claude/work-queue/assets/WRK-1076/WRK-1076-lifecycle.html]
+    published_at: "2026-03-09T07:05:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "wrk1076-plan-final"
+    documents: [.claude/work-queue/assets/WRK-1076/WRK-1076-lifecycle.html]
+    published_at: "2026-03-09T07:15:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "wrk1076-close-review"
+    documents: [.claude/work-queue/assets/WRK-1076/WRK-1076-lifecycle.html]
+    published_at: "2026-03-09T07:25:00Z"
+    reviewer: vamsee

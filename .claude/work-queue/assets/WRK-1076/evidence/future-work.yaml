@@ -1,0 +1,21 @@
+wrk_id: WRK-1076
+generated_at: "2026-03-09T07:00:00Z"
+recommendations:
+  - id: FW-1
+    title: "Tighten 24h filter in session-start-notify.sh to pure timestamp parsing"
+    description: "Current fallback uses find -newer which is fragile on parent dir mtime changes."
+    disposition: spun-off-new
+    status: pending
+    captured: true
+  - id: FW-2
+    title: "Wire notify.sh into WRK-1064 pre-push hook when that WRK is implemented"
+    description: "Placeholder comment exists in notify.sh; needs actual wiring in WRK-1064."
+    disposition: spun-off-new
+    status: pending
+    captured: true
+  - id: FW-3
+    title: "Wire notify.sh into WRK-1071 benchmark runner when that WRK is implemented"
+    description: "Placeholder comment exists in notify.sh; needs actual wiring in WRK-1071."
+    disposition: spun-off-new
+    status: pending
+    captured: true

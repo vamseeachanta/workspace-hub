@@ -384,3 +384,6 @@ data/modules/**/cache/
 data/document-index/index.jsonl
 data/document-index/summaries/
 data/document-index/enhancement-plan.yaml
+
+# Async notification log — runtime JSONL (WRK-1076)
+logs/notifications/*.jsonl

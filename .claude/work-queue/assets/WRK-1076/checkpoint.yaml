@@ -1,12 +1,12 @@
 wrk_id: WRK-1076
-current_stage: 8
-stage_name: Claim / Activation
-completed_stage: 7
-next_action: Execute stage 8: Claim / Activation
-context_summary: Stage 7 complete. Next: stage 8 (Claim / Activation).
+current_stage: 19
+stage_name: Close
+completed_stage: 18
+next_action: Execute stage 19: Close
+context_summary: Stage 18 complete. Next: stage 19 (Close).
 entry_reads:
   - .claude/work-queue/assets/WRK-1076/checkpoint.yaml
-  - assets/WRK-1076/evidence/plan-final-review.yaml
-checkpointed_at: 2026-03-09T12:01:25Z
+  - assets/WRK-1076/evidence/user-review-close.yaml
+  - assets/WRK-1076/evidence/gate-evidence-summary.yaml
+checkpointed_at: 2026-03-09T12:16:31Z
 human_gate: false
-chained_stages: [[8, 9]]

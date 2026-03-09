@@ -14,3 +14,6 @@ Minor (non-blocking): banner should go to stderr — already specified in plan.
 
 ## Disposition
 No changes to plan required. Proceed to Stage 7.
+
+Note: Route A — Codex cross-review not required for Route A (single provider pass).
+Codex gate applies for Route B/C only per work-queue skill routing policy.

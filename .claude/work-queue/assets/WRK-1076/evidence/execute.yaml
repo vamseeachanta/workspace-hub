@@ -1,0 +1,39 @@
+wrk_id: WRK-1076
+stage: 10
+scope: integrated
+completed_at: "2026-03-09"
+files_created:
+  - scripts/notify.sh
+  - scripts/hooks/session-start-notify.sh
+  - scripts/hooks/tests/test-session-start-notify.sh
+  - logs/notifications/.gitkeep
+files_modified:
+  - scripts/cron/comprehensive-learning-nightly.sh
+  - scripts/cron/crontab-template.sh
+test_count: 5
+integrated_repo_tests:
+  - name: session-start-notify — no-dir-silent
+    scope: integrated
+    command: bash scripts/hooks/tests/test-session-start-notify.sh
+    result: pass
+    artifact_ref: scripts/hooks/tests/test-session-start-notify.sh
+  - name: session-start-notify — all-pass-silent
+    scope: integrated
+    command: bash scripts/hooks/tests/test-session-start-notify.sh
+    result: pass
+    artifact_ref: scripts/hooks/tests/test-session-start-notify.sh
+  - name: session-start-notify — one-fail-banner
+    scope: integrated
+    command: bash scripts/hooks/tests/test-session-start-notify.sh
+    result: pass
+    artifact_ref: scripts/hooks/tests/test-session-start-notify.sh
+  - name: session-start-notify — mixed-only-fails
+    scope: integrated
+    command: bash scripts/hooks/tests/test-session-start-notify.sh
+    result: pass
+    artifact_ref: scripts/hooks/tests/test-session-start-notify.sh
+  - name: notify-writes-jsonl
+    scope: integrated
+    command: bash scripts/hooks/tests/test-session-start-notify.sh
+    result: pass
+    artifact_ref: scripts/hooks/tests/test-session-start-notify.sh
