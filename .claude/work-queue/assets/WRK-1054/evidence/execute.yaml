@@ -1,0 +1,25 @@
+wrk_id: WRK-1054
+stage: 10
+scope: integrated
+commit: f4502b92fe194b3efc606694e9becbcf61f9da28
+completed_at: "2026-03-09T10:30:00Z"
+summary: >
+  Implemented run-all-tests.sh, parse_pytest_output.py, expected-failures.txt,
+  test_parse_pytest_output.py. Fixed ERROR parsing + parameterized IDs (Codex).
+  27 unit tests pass.
+integrated_repo_tests:
+  - name: "parse_pytest_output unit tests"
+    scope: integrated
+    command: "uv run --no-project python -m pytest tests/testing/test_parse_pytest_output.py -v"
+    result: passed
+    artifact_ref: "tests/testing/test_parse_pytest_output.py"
+  - name: "assetutilities integration run"
+    scope: integrated
+    command: "bash scripts/testing/run-all-tests.sh --repo assetutilities"
+    result: passed
+    artifact_ref: "scripts/testing/run-all-tests.sh"
+  - name: "assethold integration run (expected failures)"
+    scope: integrated
+    command: "bash scripts/testing/run-all-tests.sh --repo assethold"
+    result: passed
+    artifact_ref: "scripts/testing/expected-failures.txt"

@@ -1,0 +1,9 @@
+wrk_id: WRK-1054
+stage: 16
+additions:
+  - area: "scripts/testing/"
+    detail: "run-all-tests.sh + parse_pytest_output.py unified runner created"
+  - area: "tests/testing/"
+    detail: "27 unit tests for parse_pytest_output parser"
+  - area: "scripts/testing/expected-failures.txt"
+    detail: "17 assethold live-data expected failure node IDs populated"

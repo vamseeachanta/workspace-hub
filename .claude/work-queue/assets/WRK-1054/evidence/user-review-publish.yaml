@@ -4,7 +4,7 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: "main"
-    commit: "d502dc68ea38f914b2328c01879b9289bc82512c"
+    commit: "65f8af41a3e1650f0e82ed8d71526422341c41c9"
     documents: [".claude/work-queue/assets/WRK-1054/WRK-1054-lifecycle.html"]
     published_at: "2026-03-09T10:00:30Z"
     reviewer: vamsee
@@ -12,7 +12,15 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: "main"
-    commit: "d502dc68ea38f914b2328c01879b9289bc82512c"
+    commit: "f4502b92fe194b3efc606694e9becbcf61f9da28"
     documents: [".claude/work-queue/assets/WRK-1054/WRK-1054-lifecycle.html"]
     published_at: "2026-03-09T10:04:30Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: "main"
+    commit: "57824856159c8c1f90b8614626c4e4cc20dace25"
+    documents: [".claude/work-queue/assets/WRK-1054/WRK-1054-lifecycle.html"]
+    published_at: "2026-03-09T11:25:30Z"
     reviewer: vamsee

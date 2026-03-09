@@ -1,0 +1,21 @@
+wrk_id: WRK-1054
+stage: 15
+recommendations:
+  - id: FW-1054-1
+    title: "Run digitalmodel and worldenergydata; populate expected-failures"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Both repos need uv setup; add to expected-failures after first run"
+  - id: FW-1054-2
+    title: "Handle param IDs containing hyphen-space in expected-failure matching"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Codex edge case; no current repos have this pattern"
+  - id: FW-1054-3
+    title: "Add --junitxml mode for CI structured output"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Gemini suggestion; useful for CI dashboards"
