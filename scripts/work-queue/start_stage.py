@@ -312,18 +312,34 @@ def _main() -> None:
     assets_root = os.path.join(repo_root, ".claude", "work-queue", "assets")
     output_dir = os.path.join(assets_root, wrk_id)
 
-    # Stage 1: write session-lock.yaml so claim-item.sh can detect concurrent sessions
+    # Stage 1: write session-lock.yaml + active-wrk pre-validation
     if stage == 1:
         import datetime
         import socket
+        workspace_root_path = Path(repo_root)
         ev_dir = Path(output_dir) / "evidence"
         ev_dir.mkdir(parents=True, exist_ok=True)
+
+        # P4: warn if another WRK is still active
+        active_wrk_path = workspace_root_path / ".claude" / "state" / "active-wrk"
+        if active_wrk_path.exists():
+            current = active_wrk_path.read_text().strip()
+            if current and current != wrk_id:
+                working_dir = workspace_root_path / ".claude" / "work-queue" / "working"
+                if (working_dir / f"{current}.md").exists():
+                    print(
+                        f"⚠ Warning: active-wrk={current} is still in working/. "
+                        f"Starting {wrk_id} anyway — verify no collision.",
+                        flush=True,
+                    )
+
         lock_path = ev_dir / "session-lock.yaml"
         lock_path.write_text(
             f"wrk_id: {wrk_id}\n"
             f"session_pid: {os.getpid()}\n"
             f"hostname: {socket.gethostname()}\n"
             f"locked_at: \"{datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')}\"\n"
+            f"status: in_progress\n"
         )
 
     route_stage(contract, wrk_id, stage, output_dir, assets_root)

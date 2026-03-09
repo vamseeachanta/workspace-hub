@@ -23,6 +23,6 @@ events:
   remote: origin
   branch: main
   reviewer: vamsee
-  commit: c9076a2c33472f5de1a65836ca4b4edfb9bffd71
+  commit: b0f2cff5b91955d898b6269fddda3864ad4f099b
   documents:
     - .claude/work-queue/assets/WRK-1049/WRK-1049-lifecycle.html

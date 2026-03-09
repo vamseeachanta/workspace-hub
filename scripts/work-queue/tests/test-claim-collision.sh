@@ -112,6 +112,34 @@ else
     FAIL=$((FAIL + 1))
 fi
 
+# ── T5: Atomic mv race — exactly one mover wins ──────────────────────────────
+# Tests the core race-safety guarantee: mv uses rename(2) so only one concurrent
+# caller can succeed when two race to move the same source file.
+echo "T5: atomic mv race — exactly one mover wins, second exits non-zero"
+T5_DIR="$(mktemp -d)"
+T5_SRC="${T5_DIR}/source.md"
+T5_DEST1="${T5_DIR}/dest1.md"
+T5_DEST2="${T5_DIR}/dest2.md"
+echo "content" > "$T5_SRC"
+
+result1=0; result2=0
+mv "$T5_SRC" "$T5_DEST1" 2>/dev/null & pid1=$!
+mv "$T5_SRC" "$T5_DEST2" 2>/dev/null & pid2=$!
+wait $pid1 || result1=$?
+wait $pid2 || result2=$?
+
+# Exactly one dest file should exist (the winning mv)
+dest_count=$(ls "${T5_DIR}"/dest*.md 2>/dev/null | wc -l)
+TOTAL=$((TOTAL + 1))
+if [[ $dest_count -eq 1 ]]; then
+    echo "  PASS: T5 exactly one mv won (dest files: $dest_count, exit codes: $result1/$result2)"
+    PASS=$((PASS + 1))
+else
+    echo "  FAIL: T5 expected 1 winner, got dest_count=$dest_count (exit codes: $result1/$result2)"
+    FAIL=$((FAIL + 1))
+fi
+rm -rf "$T5_DIR"
+
 # ── Summary ──────────────────────────────────────────────────────────────────
 echo ""
 echo "Results: $PASS passed, $FAIL failed, $TOTAL total"

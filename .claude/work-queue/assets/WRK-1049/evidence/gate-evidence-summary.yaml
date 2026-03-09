@@ -1,0 +1,13 @@
+wrk_id: WRK-1049
+generated_at: "2026-03-08T23:00:00Z"
+phase: close
+result: pending_stage17
+hard_fail_count: 0
+warn_count: 3
+gates_ok: 27
+gates_warn: 3
+gates_pending: 1
+pending_gates:
+  - name: User-review close gate
+    reason: Stage 17 approval pending
+    warn: true

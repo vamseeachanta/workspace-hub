@@ -1,14 +1,14 @@
 {
-  "wrk_id": "WRK-1049",
+  "wrk_id": "WRK-684",
   "phase": "close",
-  "summary_file": "assets/WRK-1049/evidence/gate-evidence-summary.json",
+  "summary_file": "assets/WRK-684/evidence/gate-evidence-summary.json",
   "gates": [
     {
       "name": "Plan gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
+      "details": "reviewed=False, approved=False, artifact=plan-review-final.html, confirmation=confirmation block incomplete \u2014 confirmed_by, confirmed_at, decision=missing (need 'passed')"
     },
     {
       "name": "Workstation contract gate",
@@ -22,98 +22,98 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml: stages=20, contract=20-stage"
+      "details": "stage-evidence.yaml: stages=19, contract=19-stage"
     },
     {
       "name": "Resource-intelligence gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3"
+      "details": "resource-intelligence-summary.md: user_decision missing (legacy summary \u2014 WARN)"
     },
     {
       "name": "Activation gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "activation.yaml: activation evidence OK"
+      "details": "activation.yaml missing"
     },
     {
       "name": "Agent log gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']"
+      "details": "routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log"
     },
     {
       "name": "User-review HTML-open gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
+      "details": "user-review-browser-open.yaml missing"
     },
     {
       "name": "User-review publish gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
+      "details": "user-review-publish.yaml missing"
     },
     {
       "name": "Cross-review gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1049/review.md"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-684/review.html"
     },
     {
       "name": "TDD gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "test files=['ac-test-matrix.md']"
+      "details": "test files=['variation-test-results.md']"
     },
     {
       "name": "Integrated test gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "execute.yaml: integrated_repo_tests=3 (all passing)"
+      "details": "execute evidence missing (required: evidence/execute.yaml)"
     },
     {
       "name": "Legal gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1049/legal-scan.md, result=PASS"
+      "details": "artifact=missing, none"
     },
     {
       "name": "Claim gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "claim-evidence.yaml: version=1, owner=claude, quota=available(null)"
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "claim-evidence.yaml: metadata_version='' (legacy schema \u2014 WARN only)"
     },
     {
       "name": "Future-work gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "future-work.yaml: recommendations=2"
+      "details": "future-work evidence absent (legacy item \u2014 WARN)"
     },
     {
       "name": "Resource-intelligence update gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "resource-intelligence-update.yaml: additions=3"
+      "details": "resource-intelligence-update.yaml missing"
     },
     {
       "name": "User-review close gate",
-      "status": "PENDING",
+      "status": "FAIL",
       "ok": false,
-      "warn": true,
-      "details": "user-review-close.yaml: Stage 17 approval pending — fields ['reviewer', 'reviewed_at'] will be populated at Stage 17"
+      "warn": false,
+      "details": "user-review-close.yaml missing"
     },
     {
       "name": "Reclaim gate",
@@ -141,7 +141,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "browser open elapsed time OK"
+      "details": "user-review-browser-open.yaml absent \u2014 skip elapsed check"
     },
     {
       "name": "Sentinel values gate",
@@ -152,10 +152,10 @@
     },
     {
       "name": "Claim artifact path gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "canonical claim artifact found: claim-evidence.yaml"
+      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
     },
     {
       "name": "ISO datetime format gate",
@@ -169,21 +169,21 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "codex keyword found in review artifacts (5 file(s) checked)"
+      "details": "no review files found \u2014 skip codex keyword check (handled by cross-review gate)"
     },
     {
       "name": "Publish commit uniqueness gate",
-      "status": "WARN",
-      "ok": false,
-      "warn": true,
-      "details": "plan_draft and plan_final share commit 'c9076a2c33472f5de1a65836ca4b4edfb9bffd71' \u2014 possible placeholder (WARN)"
-    },
-    {
-      "name": "Stage evidence paths gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml: all paths resolved (stage[13] fixed to evidence/cross-review-impl.md)"
+      "details": "user-review-publish.yaml absent \u2014 skip commit uniqueness check"
+    },
+    {
+      "name": "Stage evidence paths gate",
+      "status": "FAIL",
+      "ok": false,
+      "warn": false,
+      "details": "stage-evidence.yaml: stage[2] evidence path not found: .claude/work-queue/assets/WRK-684/evidence/resource-intelligence.yaml"
     },
     {
       "name": "Done/pending contradiction gate",
@@ -197,7 +197,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "plan publish ordering OK (published=2026-03-08T22:26:00Z, reviewed=2026-03-08T22:25:00Z)"
+      "details": "user-review-publish.yaml absent \u2014 skip"
     },
     {
       "name": "Workstation contract (strict) gate",
@@ -211,7 +211,7 @@
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "n/a: Stage 18 is n/a and no reclaim log exists"
+      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
     }
   ]
 }

@@ -1310,17 +1310,60 @@ def _esc(s: str) -> str:
 def detect_stage_statuses(
     wrk_id: str, assets_dir: str, fm: dict, body_md: str, queue_dir: str
 ) -> dict:
-    """Return {stage_n (int): 'done'|'active'|'pending'|'na'}."""
+    """Return {stage_n (int): 'done'|'active'|'pending'|'na'}.
+
+    Reads ``evidence/stage-evidence.yaml`` as the authoritative source when
+    present (written by exit_stage.py in WRK-1046+).  Falls back to artifact
+    heuristics for older WRKs.
+    """
+    import yaml as _yaml
+
     ev = Path(assets_dir) / "evidence"
     ad = Path(assets_dir)
 
+    # ── Primary: stage-evidence.yaml (authoritative) ─────────────────────────
+    stage_ev_path = ev / "stage-evidence.yaml"
+    if stage_ev_path.exists():
+        try:
+            data = _yaml.safe_load(stage_ev_path.read_text()) or {}
+            stages_list = data.get("stages", [])
+            if stages_list:
+                _STATUS_MAP = {
+                    "done": "done",
+                    "n/a": "na",
+                    "na": "na",
+                    "in_progress": "active",
+                    "pending": "pending",
+                    "blocked": "active",
+                }
+                statuses: dict = {}
+                for entry in stages_list:
+                    # Support both `order:` (WRK-1046+ schema) and `stage:` (older schema)
+                    order = entry.get("order") or entry.get("stage")
+                    raw = str(entry.get("status", "pending")).strip().lower()
+                    if order is not None:
+                        statuses[int(order)] = _STATUS_MAP.get(raw, "pending")
+                # Fill any missing stages as pending
+                for n in range(1, 21):
+                    statuses.setdefault(n, "pending")
+                # Safety override: if archive file exists, S19+S20 must be done
+                # (handles retroactively-written stage-evidence.yaml that omit close/archive)
+                if list(Path(queue_dir).glob(f"archive/**/{wrk_id}.md")):
+                    statuses[19] = "done"
+                    statuses[20] = "done"
+                return statuses
+        except Exception:
+            pass  # Fall through to heuristics on parse error
+
+    # ── Fallback: artifact-presence heuristics (pre-WRK-1046 items) ──────────
     def ev_exists(*names):
         return any((ev / n).exists() for n in names)
 
     completions = {
         1: True,  # WRK file found → S1 done
         2: ev_exists("resource-intelligence.yaml"),
-        3: bool(fm.get("complexity") and fm.get("route")),
+        # S3 Triage: only require complexity field (route: absent from many WRKs)
+        3: bool(fm.get("complexity")),
         4: ("## Plan" in body_md
             or bool(fm.get("spec_ref") and Path(fm["spec_ref"]).exists())),
         5: ev_exists("user-review-plan-draft.yaml"),
@@ -1332,7 +1375,8 @@ def detect_stage_statuses(
         8: (ev_exists("claim.yaml", "claim-evidence.yaml") or (ad / "claim-evidence.yaml").exists()),
         9: (ev_exists("claim.yaml", "claim-evidence.yaml") or (ad / "claim-evidence.yaml").exists()),
         10: ev_exists("execute.yaml"),
-        11: ev_exists("gate-evidence-summary.json"),
+        # S11 Artifact Generation: check for the lifecycle HTML, not S14's gate summary
+        11: (ad / f"{wrk_id}-lifecycle.html").exists(),
         12: ((ad / "variation-test-results.md").exists()
              or (ad / "test-summary.md").exists()
              or (ad / "test-results.md").exists()
@@ -1356,13 +1400,12 @@ def detect_stage_statuses(
         20: bool(list(Path(queue_dir).glob(f"archive/**/{wrk_id}.md"))),
     }
 
-    statuses: dict = {}
+    statuses = {}
     found_active = False
     for n in range(1, 21):
         if n == 18:
             reclaim_path = ev / "reclaim.yaml"
             if reclaim_path.exists():
-                import yaml as _yaml
                 try:
                     rdata = _yaml.safe_load(reclaim_path.read_text()) or {}
                     statuses[18] = "na" if str(rdata.get("status", "")).strip().lower() == "n/a" else "done"

@@ -341,7 +341,17 @@ if [[ -f "$STAGE_UPDATER" ]]; then
 fi
 
 mkdir -p "${QUEUE_DIR}/working"
-mv "$FILE_PATH" "${QUEUE_DIR}/working/${WRK_ID}.md"
+mv "$FILE_PATH" "${QUEUE_DIR}/working/${WRK_ID}.md" || {
+  echo "✖ ${WRK_ID} claim race: source gone (another session claimed first)." >&2
+  exit 1
+}
+
+# Update session-lock status to claimed (audit trail)
+lock_file="${QUEUE_DIR}/assets/${WRK_ID}/evidence/session-lock.yaml"
+if [[ -f "$lock_file" ]]; then
+  printf "status: claimed\nclaimed_at: \"%s\"\n" \
+    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$lock_file"
+fi
 
 uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"
 
