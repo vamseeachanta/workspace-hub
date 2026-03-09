@@ -26,6 +26,7 @@ OPT_FIX=false
 OPT_REPO=""
 OPT_RUFF_ONLY=false
 OPT_MYPY_ONLY=false
+OPT_DOCS=false
 
 usage() {
   cat <<'EOF'
@@ -39,6 +40,7 @@ Options:
                      worldenergydata, assethold, ogmanufacturing)
   --ruff-only        Skip mypy
   --mypy-only        Skip ruff
+  --docs             Run ruff D (pydocstyle) rules + README + docs/ checks
   --help             Show this help
 
 Exit code: 0 if all checks pass, 1 if any fail.
@@ -51,6 +53,7 @@ while [[ $# -gt 0 ]]; do
     --repo)      OPT_REPO="${2:?--repo requires a value}"; shift 2 ;;
     --ruff-only) OPT_RUFF_ONLY=true;  shift ;;
     --mypy-only) OPT_MYPY_ONLY=true;  shift ;;
+    --docs)       OPT_DOCS=true;         shift ;;
     --help|-h)   usage; exit 0 ;;
     *) echo "ERROR: Unknown flag: $1" >&2; usage >&2; exit 1 ;;
   esac
@@ -99,6 +102,7 @@ PASS_COUNT=0
 FAIL_COUNT=0
 declare -A RUFF_RESULTS=()
 declare -A MYPY_RESULTS=()
+declare -A DOCS_RESULTS=()
 
 pad_label() { printf '%-19s' "$1"; }
 
@@ -162,6 +166,55 @@ run_mypy() {
   return 1
 }
 
+run_ruff_docs() {
+  local repo_name="$1" repo_path="$2"
+  local output exit_code=0
+  output="$(cd "$repo_path" && uv tool run ruff check --select D . \
+    --output-format json --quiet 2>/dev/null)" || exit_code=$?
+  if [[ $exit_code -eq 0 ]]; then
+    DOCS_RESULTS[$repo_name]+="docstrings: PASS  "
+    return 0
+  fi
+  local count
+  count="$(printf '%s\n' "$output" \
+    | uv run --no-project python -c \
+        "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null \
+    || echo '?')"
+  DOCS_RESULTS[$repo_name]+="docstrings: WARN (${count} issues)  "
+  return 0  # docs check is warn-only, never fails the build
+}
+
+REQUIRED_README_SECTIONS=(installation usage examples)
+
+check_readme_sections() {
+  local repo_name="$1" repo_path="$2"
+  local readme="${repo_path}/README.md"
+  if [[ ! -f "$readme" ]]; then
+    DOCS_RESULTS[$repo_name]+="readme: WARN (missing README.md)  "
+    return 0
+  fi
+  local missing=() section
+  for section in "${REQUIRED_README_SECTIONS[@]}"; do
+    grep -qEi "^#+[[:space:]]*${section}$" "$readme" || missing+=("$section")
+  done
+  if [[ ${#missing[@]} -eq 0 ]]; then
+    DOCS_RESULTS[$repo_name]+="readme: PASS  "
+  else
+    DOCS_RESULTS[$repo_name]+="readme: WARN (missing: ${missing[*]})  "
+  fi
+  return 0
+}
+
+check_docs_dir() {
+  local repo_name="$1" repo_path="$2"
+  if [[ -d "${repo_path}/docs" ]]; then
+    DOCS_RESULTS[$repo_name]+="docs-dir: PASS"
+  else
+    DOCS_RESULTS[$repo_name]+="docs-dir: WARN (no docs/ directory)"
+  fi
+  return 0
+}
+
 # ---------------------------------------------------------------------------
 # Main loop — collect failures, never abort early
 # ---------------------------------------------------------------------------
@@ -189,6 +242,14 @@ for repo_name in "${REPO_ORDER[@]}"; do
     run_mypy "$repo_name" "$repo_path" || mypy_exit=$?
     echo "${label} mypy: ${MYPY_RESULTS[$repo_name]}"
     [[ $mypy_exit -ne 0 ]] && repo_failed=true
+  fi
+
+  if $OPT_DOCS; then
+    DOCS_RESULTS[$repo_name]=""
+    run_ruff_docs "$repo_name" "$repo_path"
+    check_readme_sections "$repo_name" "$repo_path"
+    check_docs_dir "$repo_name" "$repo_path"
+    echo "${label} docs: ${DOCS_RESULTS[$repo_name]}"
   fi
 
   if $repo_failed; then
