@@ -16,6 +16,7 @@ blocking_condition: "review.md missing or not all 3 providers reviewed"
 codex_unavailable_action: park_blocked
 log_action: implementation_cross_reviewed
 context_budget_kb: 8
+plan_mode: required
 lm_judgment_required:
   - id: N3
     rule: "Implementation cross-review finding correctly classified P1 vs P2 vs P3"

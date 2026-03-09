@@ -1,5 +1,10 @@
-reviewer: ""
-reviewed_at: ""
-confirmed_at: ""
-decision: pending
-notes: "Populate at Stage 17 user review before closing."
+wrk_id: WRK-1058
+stage: 17
+reviewer: vamsee
+reviewed_at: "2026-03-09T19:00:00-05:00"
+confirmed_at: "2026-03-09T19:00:00-05:00"
+decision: approved
+approval_decision: approve_as_is
+notes: >
+  Stage 17 approved. --docs flag implementation complete. 29 assertions pass.
+  Cross-review overrides accepted (pre-existing issues out of scope). Ready to close.

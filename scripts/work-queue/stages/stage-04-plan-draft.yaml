@@ -16,6 +16,7 @@ exit_artifacts:
 blocking_condition: "lifecycle HTML Stage 4 section absent"
 log_action: plan_draft_complete
 context_budget_kb: 8
+plan_mode: required
 lm_judgment_required:
   - id: N2
     rule: "Pseudocode is semantically correct for the algorithm described"

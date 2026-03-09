@@ -16,3 +16,4 @@ exit_artifacts:
 blocking_condition: "execute.yaml missing or integrated_repo_tests < 3 entries"
 log_action: work_executed
 context_budget_kb: 16
+plan_mode: required

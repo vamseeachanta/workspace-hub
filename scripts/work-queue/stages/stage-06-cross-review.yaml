@@ -16,6 +16,7 @@ blocking_condition: "cross-review.yaml missing or not all 3 providers reviewed"
 codex_unavailable_action: park_blocked
 log_action: cross_review_complete
 context_budget_kb: 8
+plan_mode: required
 lm_judgment_required:
   - id: N3
     rule: "Cross-review finding correctly classified as P1 vs P2 vs P3"
