@@ -1,0 +1,19 @@
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    browser: system-default
+    html_ref: ".claude/work-queue/assets/WRK-1081/WRK-1081-lifecycle.html"
+    opened_at: "2026-03-09T18:04:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    opened_in_default_browser: true
+    browser: system-default
+    html_ref: ".claude/work-queue/assets/WRK-1081/WRK-1081-lifecycle.html"
+    opened_at: "2026-03-09T19:15:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: system-default
+    html_ref: ".claude/work-queue/assets/WRK-1081/WRK-1081-lifecycle.html"
+    opened_at: "2026-03-09T21:05:00Z"
+    reviewer: vamsee
