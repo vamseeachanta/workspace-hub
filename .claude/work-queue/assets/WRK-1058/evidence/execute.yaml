@@ -1,0 +1,21 @@
+wrk_id: WRK-1058
+stage: 10
+scope: integrated
+outcome: pass
+executed_at: "2026-03-09T15:30:00-05:00"
+provider: claude
+notes: >
+  --docs flag implemented in check-all.sh. 14 tests (29 assertions) pass.
+  Integration smoke across all 5 tier-1 repos shows docs: lines present.
+  Docs subchecks warn-only — exit code unaffected by docs results.
+integrated_repo_tests:
+  - name: test_check_all.sh unit tests
+    scope: integrated
+    command: "bash tests/quality/test_check_all.sh"
+    result: pass
+    artifact_ref: "tests/quality/test_check_all.sh"
+  - name: smoke test all repos with --docs
+    scope: integrated
+    command: "bash scripts/quality/check-all.sh --docs"
+    result: pass
+    artifact_ref: "scripts/quality/check-all.sh"
