@@ -30,14 +30,23 @@ REPO_CONFIGS=(
 # ── Argument parsing ──────────────────────────────────────────────────────────
 FILTER_REPO=""
 JSON_OUT=""
+INCLUDE_LIVE=false
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --repo)     FILTER_REPO="$2"; shift 2 ;;
-        --json-out) JSON_OUT="$2";    shift 2 ;;
+        --repo)         FILTER_REPO="$2"; shift 2 ;;
+        --json-out)     JSON_OUT="$2";    shift 2 ;;
+        --include-live) INCLUDE_LIVE=true; shift ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;
     esac
 done
+
+# live_data exclusion flag — applied to repos that carry live_data markers
+if [[ "$INCLUDE_LIVE" == "false" ]]; then
+    LIVE_FLAG='-m "not live_data"'
+else
+    LIVE_FLAG=""
+fi
 
 # ── Run one repo ──────────────────────────────────────────────────────────────
 
@@ -73,6 +82,11 @@ JSONL_RECORDS=""
 for config in "${REPO_CONFIGS[@]}"; do
     IFS=':' read -r name rel_dir pythonpath pytest_args <<< "$config"
     [[ -n "$FILTER_REPO" && "$name" != "$FILTER_REPO" ]] && continue
+
+    # Append live_data exclusion for repos that use live_data markers
+    if [[ "$name" == "assethold" || "$name" == "assetutilities" ]]; then
+        pytest_args="${pytest_args} ${LIVE_FLAG}"
+    fi
 
     record="$(run_repo "$name" "$rel_dir" "$pythonpath" "$pytest_args")"
     JSONL_RECORDS="${JSONL_RECORDS}${record}"$'\n'

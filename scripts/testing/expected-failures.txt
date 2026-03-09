@@ -7,7 +7,9 @@
 #   bash scripts/testing/run-all-tests.sh --repo <name> 2>&1 | grep "^FAILED\|^ERROR"
 # Add live-data / environment-dependent failures here.
 
-# assethold — live-data stock fetches and smoke test setup errors (12 FAILED + 5 ERROR)
+# live_data tests — only expected with --include-live
+# (excluded by default via -m "not live_data"; listed here as safety net if
+#  --include-live is used and these tests still fail due to network issues)
 tests/modules/stocks/analysis/breakout/test_breakout_COST.py::test_run_process
 tests/modules/stocks/analysis/breakout/test_breakout_CVX.py::test_run_process
 tests/modules/stocks/analysis/breakout/test_breakout_RIG.py::test_run_process
