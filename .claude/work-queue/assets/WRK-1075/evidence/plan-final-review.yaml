@@ -1,0 +1,7 @@
+wrk_id: WRK-1075
+stage: 7
+decision: passed
+confirmed_by: vamsee
+confirmed_at: "2026-03-09T11:15:00Z"
+plan_version: v3
+notes: "Final plan approved. Three-phase MkDocs pipeline with pilot-first approach, repo-local CI, derived manifest."

@@ -1,0 +1,80 @@
+wrk_id: WRK-1075
+stage: 2
+completion_status: continue_to_planning
+summary: >
+  No mkdocs/mkdocstrings tooling exists in any tier-1 repo. All 5 repos have docs/
+  directories and Python src/ layouts. 4 repos use Sphinx. CI exists in 3 repos
+  (digitalmodel, worldenergydata, assethold). Hub has check-all.sh pattern to follow
+  for the build script. OGManufacturing (5 files) should be a lightweight config only.
+
+findings:
+  existing_tooling:
+    mkdocs_installed: false
+    mkdocstrings_installed: false
+    sphinx_used_in: [assetutilities, digitalmodel, worldenergydata, assethold]
+    ci_workflows:
+      digitalmodel: "11 GitHub Actions workflows (quality-gates.yml pattern reusable)"
+      worldenergydata: "4 workflows"
+      assethold: "1 workflow"
+      assetutilities: "none"
+      ogmanufacturing: "none"
+    existing_scripts: "scripts/quality/check-all.sh (213L) — direct template for build-api-docs.sh"
+    docs_manifest: "config/docs/ does not exist; docs-manifest.yaml absent"
+
+  tier1_repo_structures:
+    assetutilities:
+      src_root: "src/assetutilities/"
+      python_files: 123
+      modules: [calculations, base_configs, cli, common, constants, devtools]
+    digitalmodel:
+      src_root: "src/digitalmodel/"
+      python_files: 1483
+      modules: [infrastructure, marine_ops, nde, orcaflex, orcawave, production_engineering]
+    worldenergydata:
+      src_root: "src/worldenergydata/"
+      python_files: 948
+      modules: [modules, analysis, base_configs, brazil_anp, bsee, canada, eia_us]
+    assethold:
+      src_root: "src/assethold/"
+      python_files: 85
+      modules: [analysis, base_configs, common, modules, options, portfolio]
+    ogmanufacturing:
+      src_root: "src/ogmanufacturing/"
+      python_files: 5
+      modules: [minimal — editable dep on assetutilities]
+
+  gaps:
+    - mkdocs + mkdocstrings not yet installed in any repo
+    - No hub-level scripts/docs/ directory or build-api-docs.sh
+    - No config/docs/docs-manifest.yaml
+    - Docstring completeness varies; WRK-1058 tooling validates format but enforcement deferred
+    - OGManufacturing too minimal for full doc pipeline (lightweight config only)
+
+skills:
+  core_used:
+    - "work-queue"
+    - "work-queue-workflow"
+    - "workflow-gatepass"
+    - "wrk-lifecycle-testpack"
+  discovered: []
+
+risks:
+  - id: R1
+    description: "Sphinx vs MkDocs conflict — existing Sphinx docs/ may confuse contributors"
+    mitigation: "Keep Sphinx docs/; MkDocs generates to site/ (gitignored). Document clearly."
+  - id: R2
+    description: "digitalmodel has 1,483 Python files — mkdocstrings build time may be slow"
+    mitigation: "Incremental builds; --repo flag to build one at a time; measure in TDD"
+  - id: R3
+    description: "Broken/missing docstrings fail CI build"
+    mitigation: "This is desired behavior per AC; run docs build after WRK-1058 checks pass"
+
+recommendations:
+  - "Use mkdocs 1.6+ and mkdocstrings[python] 0.27+ (griffe backend)"
+  - "Follow check-all.sh pattern for build-api-docs.sh (--repo, --serve flags)"
+  - "Roll out: assetutilities → digitalmodel → worldenergydata → assethold → ogmanufacturing"
+  - "OGManufacturing: include in script but with lightweight config (minimal modules)"
+  - "Wire into existing CI: extend quality-gates.yml in digitalmodel; create new workflows in others"
+  - "Store generated site/ in .gitignore; serve locally only"
+
+researched_at: "2026-03-09"

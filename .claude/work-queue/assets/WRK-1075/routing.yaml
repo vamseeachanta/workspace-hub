@@ -1,0 +1,11 @@
+wrk_id: WRK-1075
+stage: 9
+route: B
+computer: ace-linux-1
+orchestrator: claude
+execution_agent: claude
+rationale: >
+  Route B medium complexity. Hub workspace work (scripts/docs, config/docs, tier-1 repo
+  configs). All execution on ace-linux-1. Claude as orchestrator throughout.
+  No HPC or Windows-only tooling required.
+routed_at: "2026-03-09T12:10:00Z"

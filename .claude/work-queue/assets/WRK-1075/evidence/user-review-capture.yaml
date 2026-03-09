@@ -1,0 +1,8 @@
+wrk_id: WRK-1075
+stage: 1
+scope_approved: true
+reviewer: vamsee
+decision: approve_as_is
+notes: "Scope approved as-is. WRK-1058 blocker resolved (archived)."
+reviewed_at: "2026-03-09T10:00:00Z"
+confirmed_at: "2026-03-09T10:00:00Z"
