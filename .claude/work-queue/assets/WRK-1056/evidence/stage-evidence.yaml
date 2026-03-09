@@ -1,6 +1,6 @@
 wrk_id: WRK-1056
-generated_at: '2026-03-09T04:00:10Z'
-reviewed_by: claude
+generated_at: '2026-03-09T04:48:16Z'
+reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
 stages:
@@ -146,11 +146,11 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Not needed — no continuity break in this run.
+  comment: "Not needed \u2014 no continuity break in this run."
   evidence: n/a
 - order: 19
   stage: Close
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
@@ -158,7 +158,7 @@ stages:
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
