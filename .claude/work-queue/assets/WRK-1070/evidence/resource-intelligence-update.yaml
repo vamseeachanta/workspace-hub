@@ -38,5 +38,5 @@ patterns_learned:
     reason: "pre-commit runs from repo root; hub-root .gitleaks.toml is at ../ relative path"
   - pattern: per-repo baselines follow config/quality/secrets-baseline-<repo>.json convention
     reason: "aligns with existing bandit-baseline-<repo>.json pattern"
-  - pattern: gitleaks auto-installed by pre-commit when language: golang declared
+  - pattern: "gitleaks auto-installed by pre-commit when language: golang declared"
     reason: "worldenergydata pre-commit config demonstrated this pattern; no manual install needed for pre-commit"

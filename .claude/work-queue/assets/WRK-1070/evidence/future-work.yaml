@@ -10,22 +10,21 @@ recommendations:
       pre-commit will auto-install it on first commit per repo. For the secrets-scan.sh
       full-history scanner, gitleaks must be installed manually or via CI.
     priority: high
-    disposition: captured
+    disposition: spun-off-new
     status: pending
-    captured: false
+    captured: true
     suggested_wrk: null
 
   - id: FW-2
     title: "Run gitleaks generate-baseline to populate actual findings"
     description: >
-      Current baselines are empty stubs. Need to run `gitleaks detect --source <repo>
-      --report-format json --report-path config/quality/secrets-baseline-<repo>.json`
-      on each repo to capture actual pre-existing findings (if any). This is safe to
-      do once gitleaks is installed.
+      Current baselines are empty stubs. Need to run gitleaks detect on each
+      repo to capture actual pre-existing findings (if any). Safe to do once
+      gitleaks is installed.
     priority: medium
-    disposition: captured
+    disposition: spun-off-new
     status: pending
-    captured: false
+    captured: true
     suggested_wrk: null
 
   - id: FW-3
@@ -35,7 +34,7 @@ recommendations:
       suite execution and other quality gates. The hook is live and calls secrets-scan.sh
       when gitleaks is available.
     priority: medium
-    disposition: existing_wrk
+    disposition: existing-updated
     status: pending
     captured: true
     suggested_wrk: WRK-1064
@@ -46,7 +45,7 @@ recommendations:
       Dashboard integration was explicitly deferred from WRK-1070 to WRK-1057 per
       Codex cross-review recommendation. secrets-scan.sh exit code is the signal.
     priority: low
-    disposition: existing_wrk
+    disposition: existing-updated
     status: pending
     captured: true
     suggested_wrk: WRK-1057
@@ -58,7 +57,7 @@ recommendations:
       of all 5 tier-1 repos should be done once gitleaks is installed to confirm
       no historical secrets exist. Update baselines accordingly.
     priority: high
-    disposition: captured
+    disposition: spun-off-new
     status: pending
-    captured: false
+    captured: true
     suggested_wrk: null

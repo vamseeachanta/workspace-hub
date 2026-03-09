@@ -1,6 +1,6 @@
 wrk_id: WRK-1070
-generated_at: '2026-03-09T21:47:30Z'
-reviewed_by: claude
+generated_at: '2026-03-09T22:21:04Z'
+reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
 stages:
@@ -34,8 +34,9 @@ stages:
   human_decision_required: 'no'
   owner: orchestrator
   blocker: 'no'
-  comment: Draft plan and artifact generated.
-  evidence: specs/wrk/WRK-1070/plan.md
+  comment: "Draft plan and artifact generated (Route A \u2014 plan inlined in WRK\
+    \ file)."
+  evidence: .claude/work-queue/working/WRK-1070.md
 - order: 5
   stage: User Review - Plan (Draft)
   status: done
@@ -43,7 +44,7 @@ stages:
   owner: user + orchestrator
   blocker: 'no'
   comment: Tough questions, tradeoffs, and test/eval updates reviewed.
-  evidence: .claude/work-queue/assets/WRK-1070/plan-html-review-draft.md
+  evidence: .claude/work-queue/assets/WRK-1070/evidence/user-review-plan-draft.yaml
 - order: 6
   stage: Cross-Review
   status: done
@@ -51,7 +52,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Multi-provider review completed.
-  evidence: scripts/review/results/wrk-000-review.md
+  evidence: scripts/review/results/wrk-1070-plan-review-input.md
 - order: 7
   stage: User Review - Plan (Final)
   status: done
@@ -67,7 +68,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Claim evidence and active WRK set.
-  evidence: .claude/work-queue/assets/WRK-1070/evidence/claim.yaml
+  evidence: .claude/work-queue/assets/WRK-1070/evidence/claim-evidence.yaml
 - order: 9
   stage: Work-Queue Routing Skill
   status: done
@@ -75,7 +76,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Entered canonical /work route.
-  evidence: /work
+  evidence: n/a
 - order: 10
   stage: Work Execution
   status: done
@@ -91,7 +92,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Review artifacts generated.
-  evidence: .claude/work-queue/assets/WRK-1070/review.html
+  evidence: .claude/work-queue/assets/WRK-1070/review.md
 - order: 12
   stage: TDD / Eval
   status: done
@@ -99,7 +100,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Tests/evals completed and recorded.
-  evidence: .claude/work-queue/assets/WRK-1070/evidence/test-results.md
+  evidence: .claude/work-queue/assets/WRK-1070/ac-test-matrix.md
 - order: 13
   stage: Agent Cross-Review
   status: done
@@ -107,7 +108,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Implementation cross-review package complete.
-  evidence: .claude/work-queue/assets/WRK-1070/cross-review-package.md
+  evidence: .claude/work-queue/assets/WRK-1070/evidence/cross-review-implementation.md
 - order: 14
   stage: Verify Gate Evidence
   status: done
@@ -150,7 +151,7 @@ stages:
   evidence: .claude/work-queue/assets/WRK-1070/evidence/reclaim.yaml
 - order: 19
   stage: Close
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
@@ -158,7 +159,7 @@ stages:
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'

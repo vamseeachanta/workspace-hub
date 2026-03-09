@@ -1,6 +1,7 @@
 # WRK-1070 Legal Scan
 
 Run: scripts/legal/legal-sanity-scan.sh
+result: PASS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Legal Sanity Scanner
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
