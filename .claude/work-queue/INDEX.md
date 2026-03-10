@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T18:31:59Z by generate-index.py -->
+<!-- Generated: 2026-03-10T18:36:09Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T18:31:59Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T18:36:09Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -1141,7 +1141,7 @@
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
@@ -1369,7 +1369,7 @@
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | medium | medium | workspace-hub | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | high | complex | workspace-hub | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | medium | medium | workspace-hub | - |
-| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | low | simple | workspace-hub | - |
+| WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | low | simple | workspace-hub | - |
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | medium | medium | workspace-hub | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | medium | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - |
 
@@ -2297,7 +2297,7 @@
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | simple | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | low | simple | - |
-| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | pending | low | simple | - |
+| WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | low | simple | - |
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | - |
 
@@ -2955,7 +2955,7 @@
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | simple | workspace-hub | - |
 | WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending | medium | - | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | simple | workspace-hub | - |
-| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | pending | simple | workspace-hub | - |
+| WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | simple | workspace-hub | - |
 
 ## By Complexity
 
@@ -3077,7 +3077,7 @@
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | archived | high | workspace-hub | - |
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | workspace-hub | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | low | workspace-hub | - |
-| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | pending | low | workspace-hub | - |
+| WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | low | workspace-hub | - |
 
 ### Medium
 
@@ -3701,7 +3701,7 @@
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | simple | workspace-hub |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | workspace-hub |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | low | simple | workspace-hub |
-| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | pending | low | simple | workspace-hub |
+| WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | low | simple | workspace-hub |
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | workspace-hub |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata |
 
