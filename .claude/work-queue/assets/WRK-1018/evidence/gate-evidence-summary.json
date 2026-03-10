@@ -5,10 +5,10 @@
   "gates": [
     {
       "name": "Plan gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
     },
     {
       "name": "Workstation contract gate",
@@ -33,10 +33,10 @@
     },
     {
       "name": "Activation gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "activation.yaml: session_id missing"
+      "details": "activation.yaml: activation evidence OK"
     },
     {
       "name": "Agent log gate",
@@ -47,17 +47,17 @@
     },
     {
       "name": "User-review HTML-open gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
+      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
@@ -75,10 +75,10 @@
     },
     {
       "name": "Integrated test gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "execute.yaml: integrated_repo_tests[1] missing fields: ['scope', 'command', 'artifact_ref']"
+      "details": "execute.yaml: integrated_repo_tests=3 (all passing)"
     },
     {
       "name": "Legal gate",
@@ -138,10 +138,10 @@
     },
     {
       "name": "Browser open elapsed time gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "browser open elapsed time OK"
+      "details": "stage=close_review: approval confirmed only 0s after browser open (min 300s required)"
     },
     {
       "name": "Sentinel values gate",
@@ -173,10 +173,10 @@
     },
     {
       "name": "Publish commit uniqueness gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "insufficient commit data \u2014 skip uniqueness check"
+      "details": "all three publish stages share commit '71c367c0' (likely placeholder)"
     },
     {
       "name": "Stage evidence paths gate",
@@ -194,10 +194,10 @@
     },
     {
       "name": "Plan publish predates approval gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "plan_draft publish event not found \u2014 skip"
+      "details": "plan_draft published_at (2026-03-10T23:30:00Z) < reviewed_at (2026-03-10T23:35:00Z): publish predates approval"
     },
     {
       "name": "Workstation contract (strict) gate",
