@@ -386,6 +386,21 @@ Scan `.claude/work-queue/archive/` for WRK items where `source: comprehensive-le
 
 Output: candidate effectiveness score per type. Adjust Phase 7 thresholds accordingly.
 
+**Future-work surfacing (after WRK feedback loop):**
+
+Run `scripts/work-queue/scan-future-work.py --days 30 --candidates-file
+.claude/state/candidates/script-candidates.md` to find `future-work.yaml`
+recommendations from the last 30 days that are still unqueued.
+
+A recommendation is unqueued when:
+- `captured: false` (author did not queue it), OR
+- `captured: true` but `capture_ref` is a `WRK-NNN` id with no matching queue file
+
+Each unqueued item is appended to `script-candidates.md` for Phase 7 pick-up.
+Phase 7 converts these to WRK items using the standard auto-creation pattern.
+
+If the script is absent, log `"Phase 6: future-work scan SKIPPED — scan-future-work.py not found"` and continue.
+
 **Ecosystem health (nightly, via nightly cron Step 5):**
 
 - Run `scripts/readiness/nightly-readiness.sh` — surfaces R1/R5/R6/R-CODEX/
