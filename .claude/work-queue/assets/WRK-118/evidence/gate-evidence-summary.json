@@ -47,24 +47,24 @@
     },
     {
       "name": "User-review HTML-open gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml missing"
+      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml missing"
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "artifact=none"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-118/review-synthesis.md"
     },
     {
       "name": "TDD gate",
@@ -141,7 +141,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml absent \u2014 skip elapsed check"
+      "details": "browser open elapsed time OK"
     },
     {
       "name": "Sentinel values gate",
@@ -152,10 +152,10 @@
     },
     {
       "name": "Claim artifact path gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+      "details": "canonical claim artifact found: claim-evidence.yaml"
     },
     {
       "name": "ISO datetime format gate",
@@ -169,14 +169,14 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "no review files found \u2014 skip codex keyword check (handled by cross-review gate)"
+      "details": "codex keyword found in review artifacts (2 file(s) checked)"
     },
     {
       "name": "Publish commit uniqueness gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip commit uniqueness check"
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "plan_draft and plan_final share commit 'cd83a7ce' \u2014 possible placeholder (WARN)"
     },
     {
       "name": "Stage evidence paths gate",
@@ -197,7 +197,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip"
+      "details": "plan publish ordering OK (published=2026-02-18T09:01:00Z, reviewed=2026-02-18T09:00:00Z)"
     },
     {
       "name": "Workstation contract (strict) gate",

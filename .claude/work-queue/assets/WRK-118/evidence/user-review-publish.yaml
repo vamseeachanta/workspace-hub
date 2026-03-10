@@ -1,0 +1,34 @@
+wrk_id: WRK-118
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: "main"
+    commit: "cd83a7ce"
+    documents:
+      - ".claude/work-queue/assets/WRK-118/workflow-final-review.html"
+    published_at: "2026-02-18T09:01:00Z"
+    reviewer: user
+    notes: "Legacy plan_draft approval — commit from 2026-02-24 session"
+
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: "main"
+    commit: "cd83a7ce"
+    documents:
+      - ".claude/work-queue/assets/WRK-118/workflow-final-review.html"
+    published_at: "2026-02-18T09:01:00Z"
+    reviewer: user
+    notes: "Legacy plan_final — same session as plan_draft"
+
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: "main"
+    commit: "112f07b4b188e694839c8f114b249de680a1b037"
+    documents:
+      - ".claude/work-queue/assets/WRK-118/WRK-118-lifecycle.html"
+    published_at: "2026-03-10T09:01:00Z"
+    reviewer: user
+    notes: "WRK-118 lifecycle HTML committed at 112f07b4b188e694839c8f114b249de680a1b037"

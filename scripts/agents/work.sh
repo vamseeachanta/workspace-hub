@@ -47,7 +47,9 @@ case "$subcmd" in
                 _title="$(wrk_get_frontmatter_value "$_wrk_file" "title" 2>/dev/null || true)"
                 _complexity="$(wrk_get_frontmatter_value "$_wrk_file" "complexity" 2>/dev/null || true)"
                 if [[ -n "$_title" ]]; then
-                    _classification="$(bash -c "source '$_classifier' && classify_task '$_title'" 2>/dev/null || true)"
+                    _classification="$(bash --noprofile --norc -c \
+                        ". \"\$1\"; classify_task \"\$2\"" -- "$_classifier" "$_title" \
+                        2>/dev/null || true)"
                     if [[ -n "$_classification" ]]; then
                         _tier="$(echo "$_classification" | jq -r '.tier' 2>/dev/null || true)"
                         _primary="$(echo "$_classification" | jq -r '.primary_provider' 2>/dev/null || true)"
