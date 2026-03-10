@@ -108,7 +108,7 @@ for key in "${REPO_ORDER[@]}"; do
         CVE_RESULTS[$key]="skip:no-requirements"
     else
         # Capture both stdout and exit code; pip-audit exits 1 when vulns found
-        cve_json=$(echo "$req_txt" | uvx pip-audit --format=json --stdin 2>/dev/null || true)
+        cve_json=$(echo "$req_txt" | uvx pip-audit --format=json -r /dev/stdin 2>/dev/null || true)
         [[ -z "$cve_json" ]] && cve_json="[]"
         blocking=$(echo "$cve_json" | uv run --no-project python -c "
 import json, sys
@@ -116,36 +116,16 @@ try:
     data = json.load(sys.stdin)
 except Exception:
     data = []
-count = 0
-for pkg in data:
-    for v in pkg.get('vulns', []):
-        sev = str(v.get('severity', '')).upper()
-        if sev in ('HIGH', 'CRITICAL'):
-            count += 1
-print(count)
-" 2>/dev/null || echo "0")
-        warn_count=$(echo "$cve_json" | uv run --no-project python -c "
-import json, sys
-try:
-    data = json.load(sys.stdin)
-except Exception:
-    data = []
-count = 0
-for pkg in data:
-    for v in pkg.get('vulns', []):
-        sev = str(v.get('severity', '')).upper()
-        if sev in ('MEDIUM', 'LOW'):
-            count += 1
+# pip-audit JSON: list of {name, version, vulns:[...]} OR {dependencies:[...]}
+pkgs = data.get('dependencies', data) if isinstance(data, dict) else data
+count = sum(len(pkg.get('vulns', [])) for pkg in pkgs if isinstance(pkg, dict))
 print(count)
 " 2>/dev/null || echo "0")
         if [[ "$blocking" -gt 0 ]]; then
-            echo "$(pad_label "$key") CVE: HIGH/CRITICAL ($blocking blocking)"
+            echo "$(pad_label "$key") CVE: BLOCKING ($blocking vuln(s))"
             CVE_RESULTS[$key]="blocking:$blocking"
             CVE_BLOCKING_REPOS+=("$key")
             EXIT_CODE=1
-        elif [[ "$warn_count" -gt 0 ]]; then
-            echo "$(pad_label "$key") CVE: WARN ($warn_count medium/low)"
-            CVE_RESULTS[$key]="warn:$warn_count"
         else
             CVE_RESULTS[$key]="ok"
         fi
@@ -175,7 +155,8 @@ if [[ ${#CVE_BLOCKING_REPOS[@]} -gt 0 ]]; then
     LOCKFILE="$REPO_ROOT/.claude/work-queue/state.yaml.lock"
     (
         flock --timeout 10 200 || { echo "WARN: flock timeout — skipping auto-WRK capture"; exit 0; }
-        NEXT_ID=$(bash "$SCRIPTS_ROOT/scripts/work-queue/next-id.sh" 2>/dev/null || echo "WRK-AUTO")
+        NEXT_NUM=$(bash "$SCRIPTS_ROOT/scripts/work-queue/next-id.sh" 2>/dev/null || echo "AUTO")
+        NEXT_ID="WRK-${NEXT_NUM}"
         PENDING_DIR="$REPO_ROOT/.claude/work-queue/pending"
         mkdir -p "$PENDING_DIR"
         TMPFILE=$(mktemp)

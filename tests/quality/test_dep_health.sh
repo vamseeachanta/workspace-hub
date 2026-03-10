@@ -87,11 +87,11 @@ exit "${MOCK_UVX_EXIT:-0}"
 EOF
     chmod +x "$mock_dir/uvx"
 
-    # Mock next-id.sh (used for auto-WRK)
+    # Mock next-id.sh (used for auto-WRK) — returns bare number like real script
     mkdir -p "$mock_dir/../scripts/work-queue"
     cat > "$mock_dir/../scripts/work-queue/next-id.sh" << 'EOF'
 #!/usr/bin/env bash
-echo "WRK-9999"
+echo "9999"
 EOF
     chmod +x "$mock_dir/../scripts/work-queue/next-id.sh"
 }
@@ -194,7 +194,7 @@ echo "T4: CVE HIGH finding exits 1"
     MOCK_DIR_T4="$TMPDIR_T4/.mock"
     make_mock_dir "$MOCK_DIR_T4"
     mkdir -p "$TMPDIR_T4/.claude/work-queue/pending" "$TMPDIR_T4/logs/quality"
-    CVE_JSON='[{"name":"requests","version":"2.28.0","vulns":[{"id":"CVE-2023-1234","fix_versions":["2.31.0"],"aliases":[],"description":"test","severity":"HIGH"}]}]'
+    CVE_JSON='[{"name":"requests","version":"2.28.0","vulns":[{"id":"CVE-2023-1234","fix_versions":["2.31.0"],"aliases":[],"description":"test"}]}]'
     OUT=$(QUALITY_REPO_ROOT="$TMPDIR_T4" \
           PATH="$MOCK_DIR_T4:$PATH" \
           SCRIPTS_OVERRIDE="$MOCK_DIR_T4/.." \
@@ -202,9 +202,9 @@ echo "T4: CVE HIGH finding exits 1"
           MOCK_UVX_PIPAUDIT="$CVE_JSON" \
           MOCK_UVX_EXIT=1 \
           bash "$SCRIPT" 2>&1); rc=$?
-    if [[ $rc -eq 1 ]]; then pass "T4: CVE HIGH → exit 1";
+    if [[ $rc -eq 1 ]]; then pass "T4: CVE vuln → exit 1";
     else fail "T4: expected exit 1, got $rc"; fi
-    assert_contains "T4: CVE/HIGH in output" "cve\|high\|critical" "$OUT"
+    assert_contains "T4: CVE/BLOCKING in output" "cve\|blocking\|vuln" "$OUT"
     rm -rf "$TMPDIR_T4"
 }
 
@@ -251,7 +251,7 @@ echo "T6: auto-WRK creation on HIGH CVE"
     MOCK_DIR_T6="$TMPDIR_T6/.mock"
     make_mock_dir "$MOCK_DIR_T6"
     mkdir -p "$TMPDIR_T6/.claude/work-queue/pending" "$TMPDIR_T6/logs/quality"
-    CVE_JSON='[{"name":"requests","version":"2.28.0","vulns":[{"id":"CVE-2023-9999","severity":"HIGH"}]}]'
+    CVE_JSON='[{"name":"requests","version":"2.28.0","vulns":[{"id":"CVE-2023-9999","fix_versions":["2.31.0"],"aliases":[],"description":"test"}]}]'
     QUALITY_REPO_ROOT="$TMPDIR_T6" \
     PATH="$MOCK_DIR_T6:$PATH" \
     SCRIPTS_OVERRIDE="$MOCK_DIR_T6/.." \
