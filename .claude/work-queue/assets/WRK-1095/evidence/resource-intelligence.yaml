@@ -1,0 +1,49 @@
+wrk_id: WRK-1095
+stage: 2
+generated_at: "2026-03-10T00:00:00Z"
+completion_status: continue_to_planning
+
+existing_infrastructure:
+  - radon==6.0.1 already pinned via uvx in check-all.sh (run_radon function, line 212)
+  - check_mypy_ratchet.py — template for ratchet pattern (scripts/quality/)
+  - mypy-baseline.yaml — template for baseline schema (config/quality/)
+  - check-all.sh --radon flag (warn-only, line 52/75) — to be upgraded
+  - pre-push.sh integrates check-all.sh + mypy_ratchet — extension point ready
+  - SKIP_MYPY_REASON bypass env var pattern — reuse as SKIP_COMPLEXITY_REASON
+
+complexity_baseline_data:
+  assetutilities:
+    avg_cc: 3.03
+    high_cc_count: 9       # CC > 10 (rank D+)
+    very_high_cc_count: 2  # CC > 20 (rank E+)
+  digitalmodel:
+    avg_cc: 3.48
+    high_cc_count: 72      # CC > 10 (rank D+)
+    very_high_cc_count: 15 # CC > 20 — legacy code (benchmark_plotter, report_generator)
+  worldenergydata:
+    avg_cc: 3.55
+    high_cc_count: 39      # CC > 10 (rank D+)
+    very_high_cc_count: 3  # CC > 20
+  assethold:
+    avg_cc: 3.07
+    high_cc_count: 1       # CC > 10
+    very_high_cc_count: 1  # CC > 20
+  OGManufacturing:
+    avg_cc: 1.72
+    high_cc_count: 0
+    very_high_cc_count: 0
+
+design_notes:
+  - CC>20 hard block must be a ratchet (baseline-relative), not absolute.
+    Reason: digitalmodel already has 15 CC>20 functions; absolute block would
+    immediately fail every push.
+  - Ratchet fails only when high_cc_count or very_high_cc_count INCREASES vs baseline.
+  - Baseline auto-update when complexity improves (consistent with mypy/coverage ratchets).
+  - workspace-hub has no src/ dir — skip (same pattern as mypy_ratchet).
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - check_mypy_ratchet.py (pattern reference)
