@@ -117,6 +117,12 @@ fi
 
 echo "✔ Archived: ${ITEM_ID} -> archive/$(date +%Y-%m)/${BASENAME}"
 
+# Best-effort knowledge capture (non-blocking — never fails the archive gate)
+CAPTURE_SCRIPT="${WORKSPACE_ROOT}/scripts/knowledge/capture-wrk-summary.sh"
+if [[ -x "${CAPTURE_SCRIPT}" ]]; then
+  bash "${CAPTURE_SCRIPT}" "${ITEM_ID}" || true
+fi
+
 # Remove stale checkpoint so /work run does not try to resume an archived item
 CHECKPOINT="${WORKSPACE_ROOT}/.claude/work-queue/assets/${ITEM_ID}/checkpoint.yaml"
 if [[ -f "$CHECKPOINT" ]]; then

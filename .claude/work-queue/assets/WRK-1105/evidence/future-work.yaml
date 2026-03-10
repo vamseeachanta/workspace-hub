@@ -1,0 +1,45 @@
+wrk_id: WRK-1105
+stage: 15
+generated_at: "2026-03-10T22:00:00Z"
+recommendations:
+  - id: FW-1
+    title: "rebuild-from-archive.sh — reconstruct knowledge-base from archive/*.md history"
+    description: >
+      When knowledge-base/ is lost (machine re-provision), provide a script that
+      reads .claude/work-queue/archive/**/*.md and reconstructs wrk-completions.jsonl
+      from WRK frontmatter. Referenced in the ADR rebuild path.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: medium
+
+  - id: FW-2
+    title: "Nightly knowledge-base size guard in eval-memory-quality.py"
+    description: >
+      Track knowledge-base JSONL size (entry count, file size in bytes) as a
+      new metric in eval-memory-quality.py. Warn when wrk-completions.jsonl
+      exceeds 5MB or 5000 entries to guide future archival/sharding.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low
+
+  - id: FW-3
+    title: "Cross-machine knowledge-base sync (ace-linux-2)"
+    description: >
+      knowledge-base/ is currently ace-linux-1 only. Add rsync-based sync
+      script to replicate to ace-linux-2 nightly. Out of scope for WRK-1105.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low
+
+  - id: FW-4
+    title: "Extend career-learnings.yaml with finance and software entries review"
+    description: >
+      Current seed has 10 entries covering engineering, finance, and software patterns.
+      Expand with more detailed domain-specific entries after user review session.
+    disposition: existing-updated
+    status: captured
+    captured: true
+    priority: low

@@ -67,6 +67,17 @@ Read `.claude/state/session-snapshot.md`. If the snapshot is less than 48 hours 
 (check the timestamp in the file), surface the `## Ideas / Notes` section and the
 WRK summary. If older than 48h, skip.
 
+### 2b. Knowledge Base Surfacing
+
+If the active WRK is known, query the knowledge base for relevant past work:
+
+```bash
+bash scripts/knowledge/query-knowledge.sh --category <wrk-category> --limit 3
+```
+
+Surface up to 3 relevant entries as "Past work context:" with entry ID and mission snippet.
+If `knowledge-base/` does not exist or is empty, skip silently.
+
 ### 3. Quota Status
 
 Read `config/ai-tools/agent-quota-latest.json`. Surface the weekly utilization for

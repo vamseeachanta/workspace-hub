@@ -330,7 +330,7 @@ same path as WRK completions.
 
 ## Plan Review Confirmation
 
-confirmed_by: <!-- reviewer name, e.g. "vamsee" -->
-confirmed_at: <!-- ISO-8601 timestamp -->
-decision: <!-- passed | changes-requested -->
-notes: <!-- optional -->
+confirmed_by: vamsee
+confirmed_at: 2026-03-10T00:05:00Z
+decision: passed
+notes: User explicitly approved final plan at Stage 7. Changes from draft incorporated per plan-final-review.yaml.

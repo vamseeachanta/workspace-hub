@@ -1,12 +1,12 @@
 wrk_id: WRK-1105
-current_stage: 8
-stage_name: Claim / Activation
-completed_stage: 7
-next_action: Execute stage 8: Claim / Activation
-context_summary: Stage 7 complete. Next: stage 8 (Claim / Activation).
+current_stage: 10
+stage_name: Work Execution
+completed_stage: 9
+next_action: Execute stage 10: Work Execution
+context_summary: Stage 9 complete. Next: stage 10 (Work Execution).
 entry_reads:
   - .claude/work-queue/assets/WRK-1105/checkpoint.yaml
-  - assets/WRK-1105/evidence/plan-final-review.yaml
-checkpointed_at: 2026-03-10T20:30:30Z
+  - assets/WRK-1105/WRK-1105-lifecycle.html#s7-s9
+  - assets/WRK-1105/routing.yaml
+checkpointed_at: 2026-03-10T20:36:04Z
 human_gate: false
-chained_stages: [[8, 9]]

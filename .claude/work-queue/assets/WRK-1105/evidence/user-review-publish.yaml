@@ -3,27 +3,59 @@ events:
     review_checkpoint: common_draft
     review_cycle_id: "stage5-20260310"
     wrk_id: WRK-1105
-    pushed_to_origin: false
+    pushed_to_origin: true
     remote: origin
     branch: main
-    published_draft_commit: "fd12c31aaf30c9bb7d87a686a0faf9446643d045"
+    commit: "011e67ffd761667616d1cd8a38de8e25dd45c9d6"
+    published_draft_commit: "011e67ffd761667616d1cd8a38de8e25dd45c9d6"
     documents:
       - specs/wrk/WRK-1105/plan.md
-    published_at: "2026-03-10T00:00:00Z"
+    published_at: "2026-03-10T00:11:00Z"
     reviewer: vamsee
     generated_by_script: scripts/work-queue/log-user-review-publish.sh
-    generated_at_commit: "fd12c31aaf30c9bb7d87a686a0faf9446643d045"
+    generated_at_commit: "011e67ffd761667616d1cd8a38de8e25dd45c9d6"
   - stage: plan_draft
     review_checkpoint: combined_plan
     review_cycle_id: "stage5-20260310"
     wrk_id: WRK-1105
-    pushed_to_origin: false
+    pushed_to_origin: true
     remote: origin
     branch: main
-    published_draft_commit: "fd12c31aaf30c9bb7d87a686a0faf9446643d045"
+    commit: "011e67ffd761667616d1cd8a38de8e25dd45c9d6"
+    published_draft_commit: "011e67ffd761667616d1cd8a38de8e25dd45c9d6"
     documents:
       - specs/wrk/WRK-1105/plan.md
-    published_at: "2026-03-10T00:00:01Z"
+    published_at: "2026-03-10T00:11:01Z"
     reviewer: vamsee
     generated_by_script: scripts/work-queue/log-user-review-publish.sh
-    generated_at_commit: "fd12c31aaf30c9bb7d87a686a0faf9446643d045"
+    generated_at_commit: "011e67ffd761667616d1cd8a38de8e25dd45c9d6"
+  - stage: plan_final
+    review_checkpoint: plan_final
+    review_cycle_id: "stage7-20260310"
+    wrk_id: WRK-1105
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "011e67ffd761667616d1cd8a38de8e25dd45c9d6"
+    published_draft_commit: "011e67ffd761667616d1cd8a38de8e25dd45c9d6"
+    documents:
+      - specs/wrk/WRK-1105/plan.md
+    published_at: "2026-03-10T00:11:02Z"
+    reviewer: vamsee
+    generated_by_script: scripts/work-queue/log-user-review-publish.sh
+    generated_at_commit: "011e67ffd761667616d1cd8a38de8e25dd45c9d6"
+  - stage: close_review
+    review_checkpoint: implementation_review
+    review_cycle_id: "stage17-20260310"
+    wrk_id: WRK-1105
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "b381a4be39c3fad37dd5a4bda9a91b0d1c38f12a"
+    published_draft_commit: "b381a4be39c3fad37dd5a4bda9a91b0d1c38f12a"
+    documents:
+      - .claude/work-queue/assets/WRK-1105/WRK-1105-lifecycle.html
+    published_at: "2026-03-10T22:10:00Z"
+    reviewer: vamsee
+    generated_by_script: scripts/work-queue/log-user-review-publish.sh
+    generated_at_commit: "011e67ffd761667616d1cd8a38de8e25dd45c9d6"

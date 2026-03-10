@@ -60,6 +60,9 @@ wheels/
 *~
 .DS_Store
 
+# Benchmark run artifacts (transient; baseline is committed at config/testing/)
+scripts/testing/benchmark-results/
+
 # Temporary and cache files
 .cache/
 .pytest_cache/
@@ -408,3 +411,8 @@ config/search/symbol-index.jsonl
 # Doc drift quality logs — runtime generated (WRK-1093)
 logs/quality/*.yaml
 logs/quality/*.log
+
+# knowledge-base/ — machine-local runtime JSONL (rebuilt from archive/ if lost)
+knowledge-base/*.jsonl
+knowledge-base/*.lock
+knowledge-base/*.tmp

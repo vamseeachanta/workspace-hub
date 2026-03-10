@@ -257,6 +257,54 @@ def audit(
     return candidates, "".join(report_lines)
 
 
+# ── MEMORY.md WRK ARCHIVED bullet router ────────────────────────────────────
+
+_ARCHIVED_BULLET_RE = re.compile(r"^\s*-\s+\*\*WRK-(\d+)\s+ARCHIVED\*\*")
+
+
+def route_memory_md_archived_bullets(
+    memory_root: Path,
+    work_queue_root: Path,
+    dry_run: bool = False,
+) -> int:
+    """
+    Detect WRK ARCHIVED bullets in MEMORY.md and route each to knowledge-base/
+    via capture-wrk-summary.sh (best-effort, non-blocking).
+
+    Returns the count of bullets routed (or that would be routed in dry-run).
+    MEMORY.md is not modified by this function — call migrate_memory_to_knowledge
+    separately for that.
+    """
+    memory_md = memory_root / "MEMORY.md"
+    if not memory_md.exists():
+        return 0
+
+    routed = 0
+    capture_script = work_queue_root.parent.parent / "scripts" / "knowledge" / "capture-wrk-summary.sh"
+
+    for line in memory_md.read_text(encoding="utf-8").splitlines():
+        m = _ARCHIVED_BULLET_RE.match(line)
+        if not m:
+            continue
+        wrk_id = f"WRK-{m.group(1)}"
+        if dry_run:
+            print(f"[compact-memory] [dry-run] Would route {wrk_id} to knowledge-base/")
+            routed += 1
+            continue
+        if capture_script.exists():
+            try:
+                subprocess.run(
+                    ["bash", str(capture_script), wrk_id],
+                    timeout=30,
+                    check=False,
+                )
+            except Exception:
+                pass  # best-effort: never block compaction
+        routed += 1
+
+    return routed
+
+
 # ── Phase C — Apply ──────────────────────────────────────────────────────────
 
 def apply_evictions(
@@ -370,6 +418,7 @@ def main() -> int:
                 break
         if wq_root is None:
             wq_root = memory_root.parent  # fallback: no WRK lookups will match
+    assert wq_root is not None  # mypy: narrowed above
 
     # Check triggers (skip if --force or --dry-run forces a run)
     if not args.force and not args.dry_run:
@@ -388,6 +437,9 @@ def main() -> int:
         return 0
 
     # Phase C — apply
+    # Route MEMORY.md WRK ARCHIVED bullets to knowledge-base/ before evicting topic files
+    route_memory_md_archived_bullets(memory_root, wq_root, dry_run=False)
+
     lines_freed_topics, bullets_archived = apply_evictions(memory_root, candidates, trigger)
 
     # Write audit report

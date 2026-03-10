@@ -1,12 +1,13 @@
 wrk_id: WRK-1071
-current_stage: 8
-stage_name: Claim / Activation
-completed_stage: 7
-next_action: Execute stage 8: Claim / Activation
-context_summary: Stage 7 complete. Next: stage 8 (Claim / Activation).
+title: "feat(harness): performance benchmark harness — regression detection for engineering calculations"
+checkpointed_at: "2026-03-10T19:32:41Z"
+current_stage: 17
+stage_name: "User Review - Implementation"
 entry_reads:
-  - .claude/work-queue/assets/WRK-1071/checkpoint.yaml
-  - assets/WRK-1071/evidence/plan-final-review.yaml
-checkpointed_at: 2026-03-10T19:21:43Z
-human_gate: false
-chained_stages: [[8, 9]]
+  - .claude/work-queue/assets/WRK-1071/evidence/stage-evidence.yaml
+  - .claude/work-queue/assets/WRK-1071/evidence/resource-intelligence.yaml
+  - .claude/work-queue/working/WRK-1071.md
+decisions_this_session: []
+artifacts_written: []
+next_action: ""
+context_summary: []
