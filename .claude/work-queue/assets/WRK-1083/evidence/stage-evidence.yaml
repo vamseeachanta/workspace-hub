@@ -51,7 +51,7 @@ stages:
     owner: agents
     blocker: "no"
     comment: Multi-provider review completed.
-    evidence: scripts/review/results/wrk-000-review.md
+    evidence: scripts/review/results/20260310T150017Z-wrk-1083-cross-review-input.md-plan-claude.md
   - order: 7
     stage: User Review - Plan (Final)
     status: done
@@ -75,7 +75,7 @@ stages:
     owner: orchestrator
     blocker: "no"
     comment: Entered canonical /work route.
-    evidence: /work
+    evidence: .claude/work-queue/assets/WRK-1083/routing.yaml
   - order: 10
     stage: Work Execution
     status: done
@@ -91,7 +91,7 @@ stages:
     owner: agents
     blocker: "no"
     comment: Review artifacts generated.
-    evidence: .claude/work-queue/assets/WRK-1083/review.html
+    evidence: .claude/work-queue/assets/WRK-1083/WRK-1083-lifecycle.html
   - order: 12
     stage: TDD / Eval
     status: done
@@ -147,7 +147,7 @@ stages:
     owner: orchestrator
     blocker: "no"
     comment: Not needed in this run.
-    evidence: .claude/work-queue/assets/WRK-1083/evidence/reclaim.yaml
+    evidence: n/a
   - order: 19
     stage: Close
     status: pending

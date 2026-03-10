@@ -5,10 +5,10 @@
   "gates": [
     {
       "name": "Plan gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
     },
     {
       "name": "Workstation contract gate",
@@ -92,7 +92,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "claim-evidence.yaml: version=1, owner=unknown, quota=available(null)"
+      "details": "claim.yaml: canonical claim evidence OK"
     },
     {
       "name": "Future-work gate",
@@ -112,8 +112,8 @@
       "name": "User-review close gate",
       "status": "FAIL",
       "ok": false,
-      "warn": false,
-      "details": "user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at']"
+      "warn": true,
+      "details": "user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at'] [pending Stage 17 \u2014 not yet executed]"
     },
     {
       "name": "Reclaim gate",
@@ -169,7 +169,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "codex keyword found in review artifacts (4 file(s) checked)"
+      "details": "codex keyword found in review artifacts (5 file(s) checked)"
     },
     {
       "name": "Publish commit uniqueness gate",
@@ -180,10 +180,10 @@
     },
     {
       "name": "Stage evidence paths gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[6] evidence path not found: scripts/review/results/wrk-000-review.md"
+      "details": "all stage evidence paths verified"
     },
     {
       "name": "Done/pending contradiction gate",

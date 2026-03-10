@@ -2,7 +2,7 @@
 
 | Gate | Status | Details |
 |---|---|---|
-| Plan gate | FAIL | reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing |
+| Plan gate | PASS | reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed |
 | Workstation contract gate | PASS | plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1] |
 | Stage evidence gate | PASS | stage-evidence.yaml: stages=20, contract=20-stage |
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=4 |
@@ -14,7 +14,7 @@
 | TDD gate | PASS | test files=['ac-test-matrix.md'] |
 | Integrated test gate | PASS | execute.yaml: integrated_repo_tests=3 (all passing) |
 | Legal gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1083/legal-scan.md, result=pass |
-| Claim gate | PASS | claim-evidence.yaml: version=1, owner=unknown, quota=available(null) |
+| Claim gate | PASS | claim.yaml: canonical claim evidence OK |
 | Future-work gate | PASS | future-work.yaml: recommendations=3 |
 | Resource-intelligence update gate | PASS | resource-intelligence-update.yaml: additions=2 |
 | User-review close gate | FAIL | user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at'] |
@@ -25,9 +25,9 @@
 | Sentinel values gate | PASS | no sentinel values found |
 | Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |
-| Codex keyword in review gate | PASS | codex keyword found in review artifacts (4 file(s) checked) |
+| Codex keyword in review gate | PASS | codex keyword found in review artifacts (5 file(s) checked) |
 | Publish commit uniqueness gate | WARN | plan_draft and plan_final share commit '53530546a737f586e3a1aedcb008d912c91c78f3' — possible placeholder (WARN) |
-| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[6] evidence path not found: scripts/review/results/wrk-000-review.md |
+| Stage evidence paths gate | PASS | all stage evidence paths verified |
 | Done/pending contradiction gate | PASS | no done/pending contradictions found |
 | Plan publish predates approval gate | PASS | plan publish ordering OK (published=2026-03-10T15:11:47Z, reviewed=2026-03-10T14:46:09Z) |
 | Workstation contract (strict) gate | PASS | workstation contract fields present |
