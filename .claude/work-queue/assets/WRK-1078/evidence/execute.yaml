@@ -1,0 +1,20 @@
+wrk_id: WRK-1078
+stage: 10
+executed_at: "2026-03-10"
+commits:
+  - hash: "869c81ce"
+    message: "fix(WRK-1078): Windows/MINGW64 WRK pipeline compatibility gaps"
+  - hash: "ec95f63f"
+    message: "chore(WRK-1078): fix UTF-16/cp1252 encoding in stage prompt files"
+files_changed:
+  - scripts/work-queue/log-user-review-browser-open.sh
+  - .claude/work-queue/scripts/archive-item.sh
+  - scripts/work-queue/validate-queue-state.sh
+  - scripts/work-queue/verify-log-presence.sh
+  - scripts/work-queue/start_stage.py
+  - scripts/work-queue/exit_stage.py
+  - scripts/setup/verify-setup.sh
+  - .claude/docs/new-machine-setup.md
+phases_complete: [1, 2, 3, 4, 5]
+notes: "Implementation complete. Parallel agents used for phases 1-4 simultaneously."
+integrated_repo_tests: []

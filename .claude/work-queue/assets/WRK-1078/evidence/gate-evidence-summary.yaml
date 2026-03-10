@@ -1,0 +1,12 @@
+wrk_id: WRK-1078
+stage: 14
+phase: claim
+verified_at: "2026-03-10T11:00:00Z"
+result: PASS
+gates_ok: 15
+gates_warn: 2
+gates_fail: 0
+warn_notes:
+  - "claim gate: legacy item schema (non-blocking)"
+  - "reclaim gate: no reclaim triggered (non-blocking)"
+command: "uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-1078 --phase claim"
