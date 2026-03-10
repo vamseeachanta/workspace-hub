@@ -1,0 +1,16 @@
+wrk_id: WRK-1018
+tested_at: "2026-03-10T23:30:00Z"
+method: manual-verification
+results:
+  - test: "scan --days 30 returns 6 unqueued items (captured:false)"
+    status: PASS
+  - test: "--candidates-file appends well-formed MD block"
+    status: PASS
+  - test: "malformed YAML file produces WARNING on stderr, continues"
+    status: PASS
+  - test: "no items found exits 0 with summary message"
+    status: PASS
+  - test: "captured:true with no capture_ref WRK ID is skipped (not flagged)"
+    status: PASS
+tdd_red_commit: n/a
+tdd_green_commit: "79a9584ce999ccb58ea5e67cf2e0c0b330e0c12f"

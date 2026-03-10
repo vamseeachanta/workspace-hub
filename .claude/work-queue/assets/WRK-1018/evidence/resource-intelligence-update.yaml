@@ -1,0 +1,6 @@
+wrk_id: WRK-1018
+updated_at: "2026-03-10T23:30:00Z"
+new_resources:
+  - path: scripts/work-queue/scan-future-work.py
+    type: script
+    description: Scans future-work.yaml files for unqueued recommendations

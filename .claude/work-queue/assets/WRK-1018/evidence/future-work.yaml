@@ -6,3 +6,4 @@ notes: >
   No follow-up items identified. The implementation is minimal and
   self-contained. Future extensions (e.g. --include-title-match flag for
   looser deduplication) can be added if needed, but are not blocking.
+no_follow_ups_rationale: Route A simple item — implementation self-contained; no follow-on work needed.

@@ -15,3 +15,7 @@ artifacts:
 notes: >
   Route A execution. Title-matching abandoned in favour of explicit captured:false
   + capture_ref WRK-ID existence check — avoids false positives.
+
+integrated_repo_tests:
+  - name: scan-future-work manual verification
+    result: PASS
