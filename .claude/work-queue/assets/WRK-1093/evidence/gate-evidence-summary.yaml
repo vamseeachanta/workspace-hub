@@ -1,0 +1,8 @@
+wrk_id: WRK-1093
+phase: close
+overall: partial
+missing_gates:
+  - user-review-close (Stage 17 hard gate — awaiting user)
+passing_gates: 26
+failing_gates: 1
+generated_at: 2026-03-10T15:20:00Z
