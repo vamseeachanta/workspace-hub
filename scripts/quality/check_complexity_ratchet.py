@@ -1,33 +1,14 @@
 #!/usr/bin/env python3
-"""check_complexity_ratchet.py — Enforce per-repo radon cyclomatic complexity ratchet (WRK-1095).
+"""check_complexity_ratchet.py — Radon cyclomatic complexity ratchet gate (WRK-1095).
 
-Enforcement rule per repo:
-  actual <= baseline  → PASS (equal or improved)
-  actual >  baseline  → FAIL (regression)
+Metrics tracked per repo:
+  high_cc_count      — functions at radon rank D+ (CC >= 11), label "CC > 10"
+  very_high_cc_count — functions at radon rank E+ (CC >= 16), label "CC > 20"
 
-Tracked metrics:
-  high_cc_count      — functions with CC > 10 (rank D+)
-  very_high_cc_count — functions with CC > 20 (rank E+)
-
-When actual < baseline, the baseline is auto-updated (no auto-commit).
-
-Repos marked ``exempt: true`` are skipped (require ``exempt_reason``).
-
-If SKIP_COMPLEXITY_REASON env var is set, all checks are skipped and the
-reason is logged in the report for audit trail.
-
-Usage:
-    check_complexity_ratchet.py \\
-        --baseline config/quality/complexity-baseline.yaml
-
-    check_complexity_ratchet.py \\
-        --init \\
-        --baseline config/quality/complexity-baseline.yaml \\
-        [--repo-root /path/to/workspace-hub]
-
-Exit codes:
-    0 — all repos PASS (or bypass active, or --init mode)
-    1 — one or more repos FAIL or schema error
+Ratchet: actual <= baseline → PASS; actual > baseline → FAIL.
+Auto-updates baseline when complexity improves (no auto-commit).
+SKIP_COMPLEXITY_REASON env var: bypass all checks (audit-logged).
+Exit 0 = PASS, 1 = FAIL.
 """
 
 import argparse
@@ -44,9 +25,9 @@ except ImportError:
     _YAML_AVAILABLE = False
 
 
-# ---------------------------------------------------------------------------
+# ---
 # Repo configuration
-# ---------------------------------------------------------------------------
+# ---
 
 DEFAULT_REPO_ROOT = Path(__file__).parents[2]
 
@@ -58,14 +39,17 @@ REPOS: dict[str, str] = {
     "ogmanufacturing": "OGManufacturing",
 }
 
-# Radon rank thresholds
-_HIGH_CC_THRESHOLD = 10   # CC > 10 = rank D+
-_VERY_HIGH_CC_THRESHOLD = 20  # CC > 20 = rank E+
+# Radon rank thresholds used for -n flag.
+# radon -n D: shows rank D+ (CC >= 11); radon -n E: shows rank E+ (CC >= 16).
+# Baselines and checks use identical invocations, so the ratchet is self-consistent
+# even though the human-readable labels say ">10" and ">20".
+_HIGH_CC_THRESHOLD = 10   # maps to radon rank D (-n D, CC >= 11)
+_VERY_HIGH_CC_THRESHOLD = 20  # maps to radon rank E (-n E, CC >= 16)
 
 
-# ---------------------------------------------------------------------------
+# ---
 # Schema validation
-# ---------------------------------------------------------------------------
+# ---
 
 
 def _validate_baseline(data: dict) -> str | None:
@@ -84,9 +68,9 @@ def _validate_baseline(data: dict) -> str | None:
     return None
 
 
-# ---------------------------------------------------------------------------
+# ---
 # Core ratchet logic
-# ---------------------------------------------------------------------------
+# ---
 
 
 def check_repo(
@@ -109,21 +93,23 @@ def check_repo(
     a_very = int(actual.get("very_high_cc_count", 0))
 
     improved = a_high < b_high or a_very < b_very
-    failed_metric = None
+    failed_metrics: list[str] = []
 
     if a_high > b_high:
-        failed_metric = f"high_cc_count: {a_high} > baseline {b_high} (+{a_high - b_high})"
-    elif a_very > b_very:
-        failed_metric = f"very_high_cc_count: {a_very} > baseline {b_very} (+{a_very - b_very})"
+        failed_metrics.append(f"high_cc_count: {a_high} > baseline {b_high} (+{a_high - b_high})")
+    if a_very > b_very:
+        failed_metrics.append(
+            f"very_high_cc_count: {a_very} > baseline {b_very} (+{a_very - b_very})"
+        )
 
-    if failed_metric:
+    if failed_metrics:
         return {
             "repo": repo,
             "status": "fail",
             "actual": actual,
             "baseline": baseline,
             "improved": False,
-            "message": f"{repo}: {failed_metric}",
+            "message": f"{repo}: {'; '.join(failed_metrics)}",
         }
 
     return {
@@ -135,33 +121,23 @@ def check_repo(
     }
 
 
-# ---------------------------------------------------------------------------
+# ---
 # Radon runner
-# ---------------------------------------------------------------------------
+# ---
 
 
 def _count_functions_above_threshold(repo_path: Path, threshold: int) -> int:
-    """Run radon cc and count functions with CC > threshold."""
-    rank_map = {10: "D", 20: "E"}
-    radon_rank = rank_map.get(threshold)
-    if radon_rank is None:
-        # Fallback: use F for any threshold > 25
-        radon_rank = "F" if threshold > 25 else "E"
-
+    """Run radon cc and count functions at or above threshold rank."""
+    radon_rank = {10: "D", 20: "E"}.get(threshold, "E")
     try:
         result = subprocess.run(
             ["uvx", "radon==6.0.1", "cc", "src/", "-n", radon_rank],
-            capture_output=True,
-            text=True,
-            cwd=repo_path,
-            timeout=120,
+            capture_output=True, text=True, cwd=repo_path, timeout=120,
         )
-        # Count function lines (lines starting with 4 spaces then M/F/C)
-        count = sum(
+        return sum(
             1 for line in result.stdout.splitlines()
             if line.startswith("    ") and len(line) > 4 and line[4] in ("M", "F", "C")
         )
-        return count
     except (subprocess.TimeoutExpired, FileNotFoundError):
         return -1
 
@@ -187,9 +163,9 @@ def _run_radon(repo_path: Path) -> tuple[dict, str]:
     }, f"high_cc={high_cc} very_high_cc={very_high_cc}"
 
 
-# ---------------------------------------------------------------------------
+# ---
 # Report formatting
-# ---------------------------------------------------------------------------
+# ---
 
 
 def _format_report(
@@ -238,9 +214,9 @@ def _format_report(
     return "\n".join(lines)
 
 
-# ---------------------------------------------------------------------------
+# ---
 # Baseline writer
-# ---------------------------------------------------------------------------
+# ---
 
 
 def _write_baseline(
@@ -280,9 +256,9 @@ def _write_baseline(
     )
 
 
-# ---------------------------------------------------------------------------
+# ---
 # Main
-# ---------------------------------------------------------------------------
+# ---
 
 
 def main(argv: list[str] | None = None) -> int:
