@@ -1,5 +1,5 @@
 wrk_id: WRK-633
-generated_at: '2026-03-10T11:52:55Z'
+generated_at: '2026-03-10T11:54:57Z'
 reviewed_by: orchestrator
 stages:
 - order: 1
@@ -72,9 +72,13 @@ stages:
   evidence: n/a
 - order: 18
   stage: Close
-  status: pending
+  status: done
   evidence: scripts/work-queue/close-item.sh
 - order: 19
   stage: Archive
-  status: done
+  status: pending
   evidence: scripts/work-queue/archive-item.sh
+- order: 20
+  stage: Comprehensive Learning
+  status: done
+  evidence: n/a
