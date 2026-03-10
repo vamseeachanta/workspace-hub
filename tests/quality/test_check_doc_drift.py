@@ -13,9 +13,9 @@ def test_load_symbol_index_reads_jsonl(tmp_path):
 
     index_file = tmp_path / "symbol-index.jsonl"
     entries = [
-        {"name": "foo", "repo": "assethold", "kind": "function"},
-        {"name": "bar", "repo": "assethold", "kind": "class"},
-        {"name": "baz", "repo": "assetutilities", "kind": "function"},
+        {"symbol": "foo_function", "repo": "assethold", "kind": "function"},
+        {"symbol": "BarClass", "repo": "assethold", "kind": "class"},
+        {"symbol": "baz_util", "repo": "assetutilities", "kind": "function"},
     ]
     index_file.write_text("\n".join(json.dumps(e) for e in entries) + "\n")
 
@@ -24,7 +24,7 @@ def test_load_symbol_index_reads_jsonl(tmp_path):
     assert isinstance(result, list)
     assert len(result) == 3
     assert all(isinstance(item, dict) for item in result)
-    assert result[0]["name"] == "foo"
+    assert result[0]["symbol"] == "foo_function"
 
 
 def test_load_symbol_index_missing_file_exits_cleanly(tmp_path):
@@ -70,10 +70,10 @@ def test_compute_drift_score_all_documented():
     from scripts.quality.check_doc_drift import compute_drift_score
 
     symbols = [
-        {"name": "alpha", "repo": "myrepo"},
-        {"name": "beta", "repo": "myrepo"},
+        {"symbol": "alpha_func", "repo": "myrepo"},
+        {"symbol": "BetaClass", "repo": "myrepo"},
     ]
-    doc_mentions = {"alpha", "beta", "gamma"}
+    doc_mentions = {"alpha_func", "BetaClass", "gamma_util"}
 
     score = compute_drift_score(symbols, doc_mentions, repo="myrepo")
 
@@ -85,8 +85,8 @@ def test_compute_drift_score_none_documented():
     from scripts.quality.check_doc_drift import compute_drift_score
 
     symbols = [
-        {"name": "alpha", "repo": "myrepo"},
-        {"name": "beta", "repo": "myrepo"},
+        {"symbol": "alpha_func", "repo": "myrepo"},
+        {"symbol": "BetaClass", "repo": "myrepo"},
     ]
     doc_mentions: set = set()
 
@@ -143,11 +143,9 @@ def test_detect_staleness_uses_batch_not_per_file(tmp_path):
     from scripts.quality.check_doc_drift import detect_staleness
 
     modified = {"src/foo.py", "src/bar.py"}
-    docs_path = tmp_path / "docs"
-    docs_path.mkdir()
 
-    assert detect_staleness("src/foo.py", modified_files=modified, docs_path=docs_path) is True
-    assert detect_staleness("src/baz.py", modified_files=modified, docs_path=docs_path) is False
+    assert detect_staleness("src/foo.py", modified_files=modified) is True
+    assert detect_staleness("src/baz.py", modified_files=modified) is False
 
 
 # ---------------------------------------------------------------------------

@@ -77,8 +77,13 @@ def build_doc_mention_set(repo_path: Path) -> set[str]:
         doc_files.extend(docs_dir.rglob("*.rst"))
         doc_files.extend(docs_dir.rglob("*.txt"))
 
-    # Regex: Python identifier characters (word boundary via look-around)
+    # Only count identifiers that look like Python names:
+    # - At least 4 chars, or contain an underscore, or start with uppercase (class-like)
+    # - Whole-word only (no substring matches)
     ident_pat = re.compile(r"(?<!\w)([A-Za-z_]\w*)(?!\w)")
+
+    def _is_symbol_like(name: str) -> bool:
+        return len(name) >= 4 or "_" in name or (name[0].isupper() and len(name) >= 2)
 
     for doc_file in doc_files:
         try:
@@ -86,7 +91,9 @@ def build_doc_mention_set(repo_path: Path) -> set[str]:
         except OSError:
             continue
         for match in ident_pat.finditer(text):
-            mentions.add(match.group(1))
+            name = match.group(1)
+            if _is_symbol_like(name):
+                mentions.add(name)
 
     return mentions
 
@@ -99,7 +106,7 @@ def compute_drift_score(
     if not repo_symbols:
         return 0.0
     undocumented = sum(
-        1 for s in repo_symbols if s.get("name") not in doc_mentions
+        1 for s in repo_symbols if s.get("symbol") not in doc_mentions
     )
     return undocumented / len(repo_symbols)
 
@@ -115,6 +122,7 @@ def batch_git_modified_files(repo_path: Path) -> set[str]:
             [
                 "git",
                 "log",
+                "--since=90.days",
                 "--diff-filter=M",
                 "--name-only",
                 "--format=",
@@ -124,6 +132,13 @@ def batch_git_modified_files(repo_path: Path) -> set[str]:
             text=True,
             timeout=30,
         )
+        if result.returncode != 0:
+            print(
+                f"WARNING: git log failed for {repo_path}: {result.stderr[:200]}",
+                file=sys.stderr,
+            )
+            _modified_files_cache[key] = set()
+            return set()
         files: set[str] = set()
         for line in result.stdout.splitlines():
             line = line.strip()
@@ -131,15 +146,14 @@ def batch_git_modified_files(repo_path: Path) -> set[str]:
                 files.add(line)
         _modified_files_cache[key] = files
         return files
-    except (subprocess.SubprocessError, OSError):
+    except (subprocess.SubprocessError, OSError) as exc:
+        print(f"WARNING: batch_git_modified_files error for {repo_path}: {exc}", file=sys.stderr)
         _modified_files_cache[key] = set()
         return set()
 
 
-def detect_staleness(
-    file_path: str, modified_files: set[str], docs_path: Path
-) -> bool:
-    """Return True if file_path is in the pre-batched modified_files set."""
+def detect_staleness(file_path: str, modified_files: set[str]) -> bool:
+    """Return True if file_path appears in the recently-modified files set (last 90 days)."""
     return file_path in modified_files
 
 
@@ -163,19 +177,16 @@ def run_drift_check(
         drift_score = compute_drift_score(symbols, doc_mentions, repo=repo_name)
 
         modified = batch_git_modified_files(repo_path)
-        docs_path = repo_path / "docs"
-
         stale_files = [
             f for f in modified
-            if f.endswith(".py")
-            and detect_staleness(f, modified_files=modified, docs_path=docs_path)
+            if f.endswith(".py") and detect_staleness(f, modified_files=modified)
         ]
 
         repo_symbols = [s for s in symbols if s.get("repo") == repo_name]
         undocumented = [
-            s.get("name", "")
+            s.get("symbol", "")
             for s in repo_symbols
-            if s.get("name") not in doc_mentions
+            if s.get("symbol") not in doc_mentions
         ]
 
         report[repo_name] = {
