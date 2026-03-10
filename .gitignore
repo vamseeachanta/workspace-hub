@@ -86,6 +86,10 @@ logs/orchestrator/*
 logs/audit/*.jsonl
 logs/audit/*.jsonl.gz
 !logs/audit/.gitkeep
+!logs/quality/
+logs/quality/*.yaml
+logs/quality/*.log
+!logs/quality/.gitkeep
 !logs/hooks/
 logs/hooks/*.jsonl
 !logs/hooks/.gitkeep
