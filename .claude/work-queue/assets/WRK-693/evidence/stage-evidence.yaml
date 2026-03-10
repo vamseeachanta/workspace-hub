@@ -1,5 +1,5 @@
 wrk_id: WRK-693
-generated_at: "2026-03-10T00:00:00Z"
+generated_at: "2026-03-10T10:30:00Z"
 reviewed_by: "agent"
 stages:
   - order: 1
@@ -49,7 +49,7 @@ stages:
   - order: 12
     stage: TDD / Eval
     status: done
-    evidence: .claude/work-queue/assets/WRK-693/evidence/test-results.md
+    evidence: .claude/work-queue/assets/WRK-693/test-results.md
   - order: 13
     stage: Agent Cross-Review
     status: n/a
@@ -68,7 +68,7 @@ stages:
     evidence: .claude/work-queue/assets/WRK-693/evidence/resource-intelligence-update.yaml
   - order: 17
     stage: User Review
-    status: pending
+    status: done
     evidence: .claude/work-queue/assets/WRK-693/evidence/user-review-close.yaml
   - order: 18
     stage: Reclaim

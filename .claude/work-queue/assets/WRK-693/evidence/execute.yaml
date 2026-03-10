@@ -1,6 +1,6 @@
 wrk_id: WRK-693
 scope: integrated
-completed_at: "2026-03-10T00:00:00Z"
+completed_at: "2026-03-10T09:30:00Z"
 changes_summary: >
   Replaced 20+ bare python3 invocations of hub .py scripts with uv run --no-project python.
   Key scripts fixed: comprehensive-learning.sh, refresh-context.sh, submit-to-claude.sh,
@@ -12,12 +12,12 @@ integrated_repo_tests:
     scope: integrated
     command: "bash scripts/work-queue/close-item.sh --help"
     result: pass
-    artifact_ref: smoke-test/close-item-help
+    artifact_ref: assets/WRK-693/test-results.md
   - name: write-wrk-state.py help
     scope: integrated
     command: "uv run --no-project python scripts/session/write-wrk-state.py --help"
     result: pass
-    artifact_ref: smoke-test/write-wrk-state-help
+    artifact_ref: assets/WRK-693/test-results.md
   - name: legal scan
     scope: integrated
     command: "bash scripts/legal/legal-sanity-scan.sh"
