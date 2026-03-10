@@ -91,7 +91,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Review artifacts generated.
-  evidence: .claude/work-queue/assets/WRK-1094/review.html
+  evidence: .claude/work-queue/assets/WRK-1094/WRK-1094-lifecycle.html
 - order: 12
   stage: TDD / Eval
   status: done
@@ -99,7 +99,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Tests/evals completed and recorded.
-  evidence: .claude/work-queue/assets/WRK-1094/evidence/test-results.md
+  evidence: .claude/work-queue/assets/WRK-1094/ac-test-matrix.md
 - order: 13
   stage: Agent Cross-Review
   status: done
@@ -107,7 +107,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Implementation cross-review package complete.
-  evidence: .claude/work-queue/assets/WRK-1094/cross-review-package.md
+  evidence: .claude/work-queue/assets/WRK-1094/evidence/agent-cross-review.yaml
 - order: 14
   stage: Verify Gate Evidence
   status: done
@@ -147,7 +147,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Not needed in this run.
-  evidence: .claude/work-queue/assets/WRK-1094/evidence/reclaim.yaml
+  evidence: n/a
 - order: 19
   stage: Close
   status: pending

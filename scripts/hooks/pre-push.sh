@@ -115,9 +115,29 @@ else
         fi
     done
 
+    # ── Config drift check on changed harness files (WRK-1094) ───────────────
+    # Must run BEFORE the early exit so root-only harness pushes are checked.
+    CONFIG_DRIFT_SCRIPT="${REPO_ROOT}/scripts/quality/check_config_drift.py"
+    HARNESS_FILES=(CLAUDE.md AGENTS.md CODEX.md GEMINI.md)
+    _harness_changed=false
+    for hf in "${HARNESS_FILES[@]}"; do
+        if echo "${CHANGED_FILES:-}" | grep -q "$hf"; then
+            _harness_changed=true
+            break
+        fi
+    done
+    if [[ "$_harness_changed" == "true" && -f "$CONFIG_DRIFT_SCRIPT" ]]; then
+        echo "[pre-push] Harness file changed — running config drift check..." >&2
+        _HARNESS_EXIT=0
+        uv run --no-project python "$CONFIG_DRIFT_SCRIPT" 2>&1 || _HARNESS_EXIT=$?
+        # Config drift failures will propagate into OVERALL_EXIT after the early-exit
+        # guard below — store result for use after repos loop.
+        _HARNESS_DRIFT_EXIT=$_HARNESS_EXIT
+    fi
+
     if [[ ${#REPOS_TO_CHECK[@]} -eq 0 ]]; then
         echo "[pre-push] No tier-1 repo changes detected — skipping repo CI gate." >&2
-        exit 0
+        exit "${_HARNESS_DRIFT_EXIT:-0}"
     fi
 fi
 
@@ -189,6 +209,23 @@ if [[ "${MYPY_RATCHET_GATE:-0}" == "1" ]]; then
     else
         echo "[pre-push] WARNING: mypy ratchet script or baseline not found — skipping" >&2
     fi
+fi
+
+# ── Config drift check — RUN_ALL path (WRK-1094) ────────────────────────────
+# When RUN_ALL=true (new branch or --all flag), CHANGED_FILES is not set so the
+# harness-change detection inside the else branch above did not run.  Run the
+# full drift check unconditionally for new-branch / --all pushes.
+if [[ "$RUN_ALL" == "true" ]]; then
+    _CD_SCRIPT="${REPO_ROOT}/scripts/quality/check_config_drift.py"
+    if [[ -f "$_CD_SCRIPT" ]]; then
+        echo "[pre-push] RUN_ALL — running config drift check..." >&2
+        uv run --no-project python "$_CD_SCRIPT" 2>&1 || OVERALL_EXIT=1
+    fi
+fi
+
+# Propagate any harness-drift failure captured before the early-exit point.
+if [[ "${_HARNESS_DRIFT_EXIT:-0}" -ne 0 ]]; then
+    OVERALL_EXIT=1
 fi
 
 exit "$OVERALL_EXIT"

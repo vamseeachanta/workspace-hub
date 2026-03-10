@@ -34,6 +34,7 @@ OPT_VULTURE=false
 OPT_STATIC=false
 OPT_MYPY_RATCHET=false
 OPT_DRIFT=false
+OPT_CONFIG_DRIFT=false
 
 usage() {
   cat <<'EOF'
@@ -55,6 +56,7 @@ Options:
   --api              Run public-symbol docstring coverage audit (warn-only)
   --mypy-ratchet     Run mypy error count ratchet gate (WRK-1092)
   --drift            Run documentation drift detector (warn-only, WRK-1093)
+  --config-drift     Run agent harness config drift detector (WRK-1094)
   --help             Show this help
 
 Exit code: 0 if all checks pass, 1 if any fail.
@@ -75,6 +77,7 @@ while [[ $# -gt 0 ]]; do
     --static)        OPT_STATIC=true;        shift ;;
     --mypy-ratchet)  OPT_MYPY_RATCHET=true;  shift ;;
     --drift)         OPT_DRIFT=true;          shift ;;
+    --config-drift)  OPT_CONFIG_DRIFT=true;   shift ;;
     --help|-h)       usage; exit 0 ;;
     *) echo "ERROR: Unknown flag: $1" >&2; usage >&2; exit 1 ;;
   esac
@@ -523,6 +526,24 @@ fi
 
 if $OPT_DRIFT; then
   run_doc_drift
+fi
+
+# ---------------------------------------------------------------------------
+# Config drift gate (WRK-1094) — FAIL on new regressions, WARN on known debt
+# ---------------------------------------------------------------------------
+run_config_drift() {
+  local drift_script="${REPO_ROOT}/scripts/quality/check_config_drift.py"
+  echo ""
+  echo "=== Config Drift Check (harness files) ==="
+  if [[ ! -f "$drift_script" ]]; then
+    echo "WARNING: check_config_drift.py not found — skipping" >&2
+    return 0
+  fi
+  uv run --no-project python "$drift_script" 2>&1
+}
+
+if $OPT_CONFIG_DRIFT; then
+  run_config_drift || FAIL_COUNT=$((FAIL_COUNT + 1))
 fi
 
 # ---------------------------------------------------------------------------

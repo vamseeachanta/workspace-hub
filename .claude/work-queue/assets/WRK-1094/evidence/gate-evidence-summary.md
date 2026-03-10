@@ -27,7 +27,7 @@
 | ISO datetime format gate | PASS | all timestamp fields have time components |
 | Codex keyword in review gate | PASS | codex keyword found in review artifacts (5 file(s) checked) |
 | Publish commit uniqueness gate | PASS | publish commits appear unique across stages |
-| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[11] evidence path not found: .claude/work-queue/assets/WRK-1094/review.html |
+| Stage evidence paths gate | PASS | all stage evidence paths verified |
 | Done/pending contradiction gate | PASS | no done/pending contradictions found |
 | Plan publish predates approval gate | PASS | plan publish ordering OK (published=2026-03-10 10:25:00+00:00, reviewed=2026-03-10T10:20:00Z) |
 | Workstation contract (strict) gate | PASS | workstation contract fields present |

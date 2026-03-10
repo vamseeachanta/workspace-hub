@@ -1,0 +1,8 @@
+wrk_id: WRK-1100
+updated_at: 2026-03-10T15:35:00Z
+additions:
+  - topic: whats-next.sh process_file guard order
+    learning: >
+      Guard placement in process_file() matters — early returns before working/blocked section
+      routing suppress items from those sections too. Scope guards to specific loc values.
+    source: Codex cross-review Phase 1 finding

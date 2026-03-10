@@ -9,4 +9,6 @@
 
 ## Confirmation
 
-User confirmed final plan: approved by vamsee 2026-03-10.
+confirmed_by: vamsee
+confirmed_at: 2026-03-10T15:00:00Z
+decision: passed

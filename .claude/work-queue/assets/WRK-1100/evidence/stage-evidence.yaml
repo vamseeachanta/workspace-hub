@@ -11,7 +11,7 @@ stages:
     owner: orchestrator
     blocker: "no"
     comment: WRK created with baseline metadata.
-    evidence: .claude/work-queue/working/WRK-1100.md
+    evidence: .claude/work-queue/pending/WRK-1100.md
   - order: 2
     stage: Resource Intelligence
     status: done
@@ -27,7 +27,7 @@ stages:
     owner: orchestrator
     blocker: "no"
     comment: Route, priority, complexity, and workstations set.
-    evidence: .claude/work-queue/working/WRK-1100.md
+    evidence: .claude/work-queue/pending/WRK-1100.md
   - order: 4
     stage: Plan Draft
     status: done
