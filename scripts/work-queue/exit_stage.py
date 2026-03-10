@@ -340,6 +340,21 @@ def _main() -> None:
             capture_output=True, timeout=5,
         )
 
+    # Emit stage_exit signal to session-signals pipeline (WRK-1102 Fix 6)
+    import json as _json
+    from datetime import datetime as _dt
+    _today = _dt.utcnow().strftime("%Y-%m-%d")
+    _signals_dir = os.path.join(repo_root, "state", "session-signals")
+    _signal_file = os.path.join(_signals_dir, f"{_today}.jsonl")
+    try:
+        os.makedirs(_signals_dir, exist_ok=True)
+        _signal = {"event": "stage_exit", "wrk": wrk_id, "stage": stage,
+                   "date": _today, "timestamp": _dt.utcnow().isoformat() + "Z"}
+        with open(_signal_file, "a", encoding="utf-8") as _sf:
+            _sf.write(_json.dumps(_signal) + "\n")
+    except OSError:
+        pass  # non-blocking
+
     # Validate written checkpoint (non-blocking)
     checkpoint_path = os.path.join(assets_root, wrk_id, "checkpoint.yaml")
     _validate_checkpoint(checkpoint_path)

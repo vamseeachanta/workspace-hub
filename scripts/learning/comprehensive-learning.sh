@@ -114,6 +114,11 @@ run_py_phase() {
 echo "--- Step 0: Aggregating machine contributions ---"
 git -C "$WS_HUB" pull --no-rebase origin main --quiet || echo "Warning: git pull failed"
 
+# --- Pre-Phase 1: Codex session ingestion (best-effort, WRK-1102 Fix 6) ---
+echo "--- Pre-Phase 1: Codex Ingestion ---"
+bash "${WS_HUB}/scripts/analysis/ingest-codex-sessions.sh" > /tmp/cl_codex_ingest.log 2>&1 || \
+    echo "ingest-codex: best-effort step skipped (non-blocking)"
+
 # --- Phase 1: Insights (mandatory) ---
 echo "--- Phase 1: Insights ---"
 if bash "${WS_HUB}/scripts/analysis/session-analysis.sh" ${ANALYSIS_DATE_ARG} > /tmp/cl_phase1.log 2>&1; then
@@ -150,7 +155,7 @@ fi
 
 # --- Phase 2: Reflect (non-mandatory) ---
 echo "--- Phase 2: Reflect ---"
-REFLECT_SCRIPT="${WS_HUB}/.claude/skills/coordination/workspace/claude-reflect/scripts/daily-reflect.sh"
+REFLECT_SCRIPT="${WS_HUB}/scripts/analysis/daily-reflect.sh"
 if [[ -f "$REFLECT_SCRIPT" ]]; then
     if WORKSPACE_ROOT="$WS_HUB" bash "$REFLECT_SCRIPT" > /tmp/cl_phase2.log 2>&1; then
         log_phase "2 Reflect" "DONE" "Daily reflection completed"
@@ -158,12 +163,12 @@ if [[ -f "$REFLECT_SCRIPT" ]]; then
         log_phase "2 Reflect" "FAILED" "daily-reflect.sh failed"
     fi
 else
-    log_phase "2 Reflect" "SKIPPED" "Not found"
+    log_phase "2 Reflect" "SKIPPED" "Not found: ${REFLECT_SCRIPT}"
 fi
 
 # --- Phase 3: Knowledge (non-mandatory) ---
 echo "--- Phase 3: Knowledge ---"
-KNOWLEDGE_SCRIPT="${WS_HUB}/.claude/skills/coordination/workspace/knowledge-manager/scripts/knowledge-capture.sh"
+KNOWLEDGE_SCRIPT="${WS_HUB}/scripts/analysis/knowledge-capture.sh"
 if [[ -f "$KNOWLEDGE_SCRIPT" ]]; then
     if WORKSPACE_HUB="$WS_HUB" bash "$KNOWLEDGE_SCRIPT" > /tmp/cl_phase3.log 2>&1; then
         log_phase "3 Knowledge" "DONE" "Knowledge captured"
@@ -171,7 +176,7 @@ if [[ -f "$KNOWLEDGE_SCRIPT" ]]; then
         log_phase "3 Knowledge" "FAILED" "knowledge-capture.sh failed"
     fi
 else
-    log_phase "3 Knowledge" "SKIPPED" "Not found"
+    log_phase "3 Knowledge" "SKIPPED" "Not found: ${KNOWLEDGE_SCRIPT}"
 fi
 
 # Additional Phase 3: Memory Staleness Check

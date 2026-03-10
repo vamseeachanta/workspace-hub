@@ -70,7 +70,7 @@ ${PYTHON} scripts/readiness/build-specs-index.py || \
 # Step 3c: run pipeline (WRK-1076: notify on completion)
 # Cron usage: bash scripts/cron/comprehensive-learning-nightly.sh >> /mnt/local-analysis/workspace-hub/.claude/state/learning-reports/cron.log 2>&1
 _nightly_exit=0
-claude --skill comprehensive-learning || _nightly_exit=$?
+bash scripts/learning/comprehensive-learning.sh || _nightly_exit=$?
 bash scripts/notify.sh cron nightly-learning \
   "$([ "${_nightly_exit}" -eq 0 ] && echo pass || echo fail)" \
   "exit_code=${_nightly_exit}" || true

@@ -66,7 +66,7 @@ SIGNAL_FILES=()
 if [[ -d "$SIGNALS_DIR" ]]; then
     while IFS= read -r -d '' f; do
         SIGNAL_FILES+=("$f")
-    done < <(find "$SIGNALS_DIR" -name "${ANALYSIS_DATE}-*.jsonl" -print0 2>/dev/null || true)
+    done < <(find "$SIGNALS_DIR" \( -name "${ANALYSIS_DATE}-*.jsonl" -o -name "${ANALYSIS_DATE}.jsonl" \) -print0 2>/dev/null || true)
 fi
 
 N_SESSIONS="${#SIGNAL_FILES[@]}"
