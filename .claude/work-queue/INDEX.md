@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T18:01:46Z by generate-index.py -->
+<!-- Generated: 2026-03-10T18:03:05Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T18:01:46Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T18:03:05Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 531
+**Total items:** 532
 
 ### By Status
 
@@ -16,13 +16,13 @@
 | pending | 219 |
 | working | 3 |
 | blocked | 10 |
-| archived | 299 |
+| archived | 300 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 243 |
+| high | 244 |
 | medium | 241 |
 | low | 46 |
 
@@ -30,7 +30,7 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 113 |
+| simple | 114 |
 | medium | 253 |
 | complex | 99 |
 
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 194 |
+| workspace-hub | 195 |
 | worldenergydata | 99 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 214 / 531 |
-| Plans cross-reviewed | 127 |
-| Plans approved | 150 |
+| Plans exist | 214 / 532 |
+| Plans cross-reviewed | 128 |
+| Plans approved | 151 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,10 +91,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 531 |
-| Total archived | 299 |
-| Completion rate | 299/531 (56%) |
-| Monthly rate (current month) | 65 archived |
+| Total captured | 532 |
+| Total archived | 300 |
+| Completion rate | 300/532 (56%) |
+| Monthly rate (current month) | 66 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -1126,6 +1126,7 @@
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
@@ -1681,6 +1682,7 @@
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | high | simple | workspace-hub | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | high | simple | workspace-hub | - |
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | high | medium | workspace-hub | - |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | high | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -2271,6 +2273,7 @@
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | medium | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | - |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | simple | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | simple | - |
 
@@ -2627,6 +2630,7 @@
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | archived | simple | workspace-hub | - |
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | medium | workspace-hub | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | complex | workspace-hub | - |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | simple | workspace-hub | - |
 
 ### Medium
 
@@ -3043,6 +3047,7 @@
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | workspace-hub | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | archived | high | workspace-hub | - |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | workspace-hub | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | workspace-hub | - |
 
 ### Medium
@@ -3409,7 +3414,7 @@
 
 ## By Computer
 
-### ace-linux-1 (165 active / 251 total)
+### ace-linux-1 (165 active / 252 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3662,6 +3667,7 @@
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | medium | workspace-hub |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | workspace-hub |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | workspace-hub |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | simple | workspace-hub |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | workspace-hub |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | simple | workspace-hub |
 
