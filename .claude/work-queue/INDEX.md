@@ -1,37 +1,37 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T01:15:39Z by generate-index.py -->
+<!-- Generated: 2026-03-10T03:02:07Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T01:15:39Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T03:02:07Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 514
+**Total items:** 521
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 222 |
-| working | 5 |
+| pending | 228 |
+| working | 4 |
 | blocked | 10 |
-| archived | 277 |
+| archived | 279 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 235 |
-| medium | 233 |
+| high | 237 |
+| medium | 238 |
 | low | 45 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 104 |
-| medium | 245 |
+| simple | 109 |
+| medium | 248 |
 | complex | 98 |
 
 ### By Category
@@ -40,48 +40,48 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 53 |
+| harness | 56 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
 | business | 6 |
 | maintenance | 6 |
 | personal | 4 |
-| uncategorised | 7 |
+| uncategorised | 8 |
 
 ### By Repository
 
 | Repository | Count |
 |------------|-------|
 | CAD-DEVELOPMENTS | 2 |
-| OGManufacturing | 11 |
+| OGManufacturing | 17 |
 | TBD-client2-repo | 5 |
 | aceengineer-admin | 4 |
 | aceengineer-strategy | 1 |
 | aceengineer-website | 14 |
 | achantas-data | 9 |
 | acma-projects | 5 |
-| assethold | 6 |
-| assetutilities | 8 |
+| assethold | 13 |
+| assetutilities | 15 |
 | client_projects | 1 |
-| digitalmodel | 170 |
+| digitalmodel | 177 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 177 |
-| worldenergydata | 92 |
+| workspace-hub | 183 |
+| worldenergydata | 99 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 204 / 514 |
-| Plans cross-reviewed | 110 |
-| Plans approved | 133 |
+| Plans exist | 205 / 521 |
+| Plans cross-reviewed | 111 |
+| Plans approved | 134 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,17 +91,17 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 514 |
-| Total archived | 277 |
-| Completion rate | 277/514 (54%) |
-| Monthly rate (current month) | 46 archived |
+| Total captured | 521 |
+| Total archived | 279 |
+| Completion rate | 279/521 (54%) |
+| Monthly rate (current month) | 48 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 59 / 222 | 27% |
+| Pending items with plans | 59 / 228 | 26% |
 | Plans cross-reviewed | 11 | 16% |
 | Plans user-approved | 12 | 17% |
 
@@ -111,22 +111,22 @@
 |--------|-------|-------|
 | Pending > 30 days | 15 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099 |
 | Pending > 14 days | 36 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-149, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-234, WRK-235, WRK-256, WRK-259, WRK-261, WRK-294, WRK-297, WRK-352, WRK-TEST-ENSEMBLE |
-| Working > 7 days | 3 | WRK-118, WRK-129, WRK-637 |
+| Working > 7 days | 2 | WRK-118, WRK-129 |
 | Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 95 | 3 | 8 |
-| Medium   | 96  | 2  | 1  |
+| High     | 96 | 2 | 8 |
+| Medium   | 101  | 2  | 1  |
 | Low      | 31  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (53 items — 13 high, 32 medium, 8 low)
+### harness (56 items — 13 high, 35 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -162,6 +162,12 @@
 | WRK-1059 | MEDIUM | feat(harness): reference documentation quality checks — API completeness + docs/ audit | pending |
 | WRK-1060 | LOW | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending |
 
+#### harness / config
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1094 | MEDIUM | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending |
+
 #### harness / data-pipeline
 
 | ID | Priority | Title | Status |
@@ -174,6 +180,12 @@
 |----|----------|-------|--------|
 | WRK-1082 | HIGH | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked |
 
+#### harness / docs
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1093 | MEDIUM | Documentation currency — detect when README/docs drift from code | pending |
+
 #### harness / hooks
 
 | ID | Priority | Title | Status |
@@ -185,6 +197,14 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1071 | MEDIUM | feat(harness): performance benchmark harness — regression detection for engineering calculations | pending |
+
+#### harness / quality
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1090 | HIGH | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | pending |
+| WRK-1092 | HIGH | Type coverage ratchet — mypy error count can only decrease across 5 repos | pending |
+| WRK-1095 | MEDIUM | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending |
 
 #### harness / release-management
 
@@ -211,14 +231,11 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-234 | HIGH | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending |
+| WRK-234 | HIGH | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending |
 | WRK-235 | HIGH | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending |
 | WRK-577 | HIGH | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending |
 | WRK-633 | HIGH | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending |
-| WRK-637 | HIGH | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working |
-| WRK-638 | HIGH | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending |
 | WRK-658 | HIGH | fix(workflow): enforce gate+logging contract for every AI agent | pending |
-| WRK-667 | HIGH | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending |
 | WRK-692 | HIGH | feat(session): interactive session analysis — codex-orchestrator variant | pending |
 | WRK-1005 | HIGH | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working |
 | WRK-230 | MEDIUM | Untitled | pending |
@@ -236,6 +253,12 @@
 | WRK-1053 | MEDIUM | chore(skills): convert deterministic skill loops to scripts — non-deterministic → deterministic path | pending |
 | WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
 | WRK-639 | LOW | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending |
+
+#### harness / testing
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1091 | HIGH | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending |
 
 #### harness / uncategorised
 
@@ -569,7 +592,7 @@
 | WRK-006 | LOW | Upload videos from iPhone to YouTube | blocked |
 | WRK-008 | LOW | Upload photos from multiple devices to achantas-media | pending |
 
-### uncategorised (7 items — 3 high, 2 medium, 2 low)
+### uncategorised (8 items — 3 high, 3 medium, 2 low)
 
 #### uncategorised / uncategorised
 
@@ -579,6 +602,7 @@
 | WRK-624 | HIGH | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | pending |
 | WRK-634 | HIGH | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending |
 | WRK-475 | MEDIUM | feat(marine_ops): wire Open-Meteo Marine API into weather-window module | pending |
+| WRK-638 | MEDIUM | Memory quality eval harness | pending |
 | WRK-1089 | MEDIUM | Split check-all.sh by responsibility (400L hard limit violated) | pending |
 | WRK-581 | LOW | feat(worldenergydata): evaluate IEA Methane Tracker for ESG module | pending |
 | WRK-TEST-ENSEMBLE | LOW | Smoke test for ensemble planning | pending |
@@ -789,7 +813,7 @@
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | WRK-231 |
 | WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-231 |
-| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 90% | n/a | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | ░░░ 25% | n/a | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 80% | n/a | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -993,8 +1017,8 @@
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | █░░ 50% | ⏳ pending | WRK-632 |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | medium | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | medium | small | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-635 |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | n/a | - |
-| WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-637 |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
+| WRK-638 | Memory quality eval harness | pending | medium | simple | ace-linux-1 | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | assetutilities | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
@@ -1003,7 +1027,7 @@
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 5% | n/a | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-679 | test(review): standardize execute gate variation tests | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-680 | governance(review): strengthen archive gate validation | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
@@ -1101,6 +1125,13 @@
 | WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
 ## By Status
 
@@ -1139,7 +1170,7 @@
 | WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | medium | medium | worldenergydata, digitalmodel | drilling_economics |
 | WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | medium | medium | workspace-hub | - |
 | WRK-230 | Untitled | medium | medium | - | - |
-| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | high | complex | workspace-hub | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | high | complex | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | high | complex | workspace-hub | - |
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | medium | complex | digitalmodel | - |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | medium | medium | aceengineer-website, worldenergydata | - |
@@ -1277,7 +1308,7 @@
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | high | simple | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | medium | medium | workspace-hub | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | medium | small | workspace-hub | - |
-| WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | high | small | workspace-hub | - |
+| WRK-638 | Memory quality eval harness | medium | simple | - | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | low | medium | workspace-hub | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | high | medium | workspace-hub | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | high | medium | assetutilities | - |
@@ -1285,7 +1316,6 @@
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | medium | medium | digitalmodel | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | medium | medium | workspace-hub | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | high | medium | workspace-hub | - |
-| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | high | medium | workspace-hub | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | high | medium | workspace-hub | - |
 | WRK-679 | test(review): standardize execute gate variation tests | medium | medium | workspace-hub | - |
 | WRK-680 | governance(review): strengthen archive gate validation | medium | medium | workspace-hub | - |
@@ -1330,6 +1360,13 @@
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | medium | simple | - | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | medium | complex | - | - |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | medium | medium | - | - |
+| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
+| WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | high | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | medium | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | medium | simple | workspace-hub | - |
 
 ### Working
 
@@ -1337,7 +1374,6 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | high | medium | workspace-hub | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
 
@@ -1587,6 +1623,8 @@
 | WRK-610 | Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub | high | complex | workspace-hub, CAD-DEVELOPMENTS | - |
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | high | simple | CAD-DEVELOPMENTS | - |
 | WRK-624 | chore(work-queue): review and harden workflow — linear stage schematic + agent completion gates | high | complex | workspace-hub | - |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | high | medium | workspace-hub | - |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | high | medium | workspace-hub | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | high | medium | workspace-hub | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
@@ -1651,6 +1689,7 @@
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
 | WRK-540 | feat(OGManufacturing/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | - |
 | WRK-542 | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | - |
 | WRK-544 | feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | - |
@@ -1662,6 +1701,11 @@
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
+| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | pending | high | medium | - |
+| WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | pending | high | simple | - |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
+| WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
 
 ### TBD-client2-repo
 
@@ -1738,9 +1782,16 @@
 | WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | pending | medium | complex | - |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | pending | low | complex | - |
 | WRK-053 | assethold test coverage improvement | archived | medium | medium | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
+| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | pending | high | medium | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | - |
+| WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | pending | high | simple | - |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
+| WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
 
 ### assetutilities
 
@@ -1748,12 +1799,19 @@
 |-----|-------|--------|----------|------------|--------|
 | WRK-052 | assetutilities test coverage improvement | archived | high | complex | - |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
 | WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
+| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | pending | high | medium | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | - |
+| WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | pending | high | simple | - |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
+| WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
 
 ### client_projects
 
@@ -1839,6 +1897,7 @@
 | WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | medium | complex | well_design |
 | WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | drilling_economics |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | complex | decommissioning_analytics |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
 | WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | high | simple | - |
 | WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | archived | high | medium | - |
 | WRK-242 | Multi-format export as automatic pipeline output stage | archived | high | medium | - |
@@ -1935,6 +1994,12 @@
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
+| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | pending | high | medium | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | - |
+| WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | pending | high | simple | - |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
+| WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
 
 ### doris
 
@@ -2068,7 +2133,7 @@
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | high | medium | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | high | simple | - |
 | WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | archived | high | medium | - |
-| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | high | complex | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | complex | - |
 | WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | archived | medium | simple | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | blocked | high | simple | - |
@@ -2112,14 +2177,13 @@
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | medium | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | medium | small | - |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working | high | medium | - |
-| WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | - |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | archived | high | medium | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | medium | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | medium | - |
-| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | high | medium | - |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | archived | high | medium | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | medium | - |
 | WRK-679 | test(review): standardize execute gate variation tests | pending | medium | medium | - |
 | WRK-680 | governance(review): strengthen archive gate validation | pending | medium | medium | - |
@@ -2185,6 +2249,13 @@
 | WRK-1080 | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | archived | high | simple | - |
 | WRK-1083 | Plan-mode integration for work-queue-workflow stages | pending | medium | medium | - |
 | WRK-1084 | Integrate skills.sh as reference for all skill lifecycle operations | pending | medium | simple | - |
+| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | pending | high | medium | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | - |
+| WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | pending | high | simple | - |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
+| WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
+| WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | - |
 
 ### worldenergydata
 
@@ -2250,6 +2321,7 @@
 | WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | medium | complex | well_design |
 | WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | drilling_economics |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | complex | decommissioning_analytics |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | high | medium | - |
 | WRK-242 | Multi-format export as automatic pipeline output stage | archived | high | medium | - |
 | WRK-246 | LNG terminal dataset — queryable module and aceengineer website data card | archived | medium | medium | - |
@@ -2282,6 +2354,12 @@
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
+| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | pending | high | medium | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | - |
+| WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | pending | high | simple | - |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
+| WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
 
 ## By Priority
 
@@ -2370,7 +2448,7 @@
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | medium | workspace-hub | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | simple | workspace-hub | - |
 | WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | archived | medium | workspace-hub | - |
-| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | complex | workspace-hub | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | complex | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | complex | workspace-hub | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | medium | worldenergydata | - |
 | WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | simple | digitalmodel | - |
@@ -2482,13 +2560,12 @@
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | simple | frontierdeepwater, TBD-client2-repo | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | medium | workspace-hub | - |
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | simple | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working | medium | workspace-hub | - |
-| WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | small | workspace-hub | - |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | archived | medium | workspace-hub | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | medium | workspace-hub | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | medium | assetutilities | - |
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | complex | workspace-hub | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | medium | workspace-hub | - |
-| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | medium | workspace-hub | - |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | archived | medium | workspace-hub | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | medium | workspace-hub | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | medium | workspace-hub | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | archived | medium | workspace-hub | - |
@@ -2524,6 +2601,9 @@
 | WRK-1082 | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked | simple | - | - |
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | archived | medium | - | - |
 | WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | medium | - | - |
+| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | pending | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
+| WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | pending | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 
 ### Medium
 
@@ -2702,6 +2782,7 @@
 | WRK-631 | feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients | pending | complex | frontierdeepwater, TBD-client2-repo | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | workspace-hub | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | small | workspace-hub | - |
+| WRK-638 | Memory quality eval harness | pending | simple | - | - |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | worldenergydata | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | digitalmodel | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | workspace-hub | - |
@@ -2762,6 +2843,10 @@
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | pending | simple | - | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | complex | - | - |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | - | - |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | simple | workspace-hub | - |
 
 ### Low
 
@@ -2886,6 +2971,7 @@
 | WRK-615 | Organize files and establish directory structure in CAD-DEVELOPMENTS | archived | high | CAD-DEVELOPMENTS | - |
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | frontierdeepwater, TBD-client2-repo | - |
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
+| WRK-638 | Memory quality eval harness | pending | medium | - | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working | medium | workspace-hub | - |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | workspace-hub | - |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | pending | medium | workspace-hub | - |
@@ -2923,6 +3009,10 @@
 | WRK-1082 | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked | high | - | - |
 | WRK-1084 | Integrate skills.sh as reference for all skill lifecycle operations | pending | medium | workspace-hub | - |
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | pending | medium | - | - |
+| WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | pending | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -3110,7 +3200,7 @@
 | WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal system prompts + knowledge base | pending | high | TBD-client2-repo | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | workspace-hub | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | workspace-hub | - |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working | high | workspace-hub | - |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | archived | high | workspace-hub | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | workspace-hub | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | workspace-hub | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | assetutilities | - |
@@ -3118,7 +3208,7 @@
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | digitalmodel | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | workspace-hub | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | workspace-hub | - |
-| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | high | workspace-hub | - |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | archived | high | workspace-hub | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | workspace-hub | - |
 | WRK-679 | test(review): standardize execute gate variation tests | pending | medium | workspace-hub | - |
 | WRK-680 | governance(review): strengthen archive gate validation | pending | medium | workspace-hub | - |
@@ -3173,6 +3263,9 @@
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | archived | high | - | - |
 | WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | high | - | - |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | - | - |
+| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | pending | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 
 ### Complex
 
@@ -3252,7 +3345,7 @@
 | WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/, tests/ | archived | medium | - | - |
 | WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | medium | digitalmodel, worldenergydata | well_design |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | worldenergydata, digitalmodel, aceengineer-website | decommissioning_analytics |
-| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | high | workspace-hub | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | workspace-hub | - |
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | medium | digitalmodel | - |
 | WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | archived | medium | digitalmodel | - |
@@ -3279,7 +3372,7 @@
 
 ## By Computer
 
-### ace-linux-1 (170 active / 234 total)
+### ace-linux-1 (175 active / 241 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3304,7 +3397,7 @@
 | WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | worldenergydata, digitalmodel |
 | WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | pending | medium | medium | workspace-hub |
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | archived | high | medium | workspace-hub |
-| WRK-234 | MISSION: Self-improving agent ecosystem — sessions drive skills, skills drive better sessions | pending | high | complex | workspace-hub |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | complex | workspace-hub |
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | medium | complex | digitalmodel |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | pending | medium | medium | aceengineer-website, worldenergydata |
@@ -3419,8 +3512,8 @@
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | frontierdeepwater, TBD-client2-repo |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | medium | workspace-hub |
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | workspace-hub, frontierdeepwater, TBD-client2-repo |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working | high | medium | workspace-hub |
-| WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | workspace-hub |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | archived | high | medium | workspace-hub |
+| WRK-638 | Memory quality eval harness | pending | medium | simple | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | workspace-hub |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | workspace-hub |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | medium | assetutilities |
@@ -3429,7 +3522,7 @@
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | workspace-hub |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | medium | workspace-hub |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | medium | workspace-hub |
-| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | high | medium | workspace-hub |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | archived | high | medium | workspace-hub |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | medium | workspace-hub |
 | WRK-681 | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending | medium | medium | workspace-hub |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | high | medium | workspace-hub |
@@ -3517,6 +3610,13 @@
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | pending | medium | simple | - |
 | WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | high | medium | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | medium | complex | - |
+| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | pending | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold |
+| WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | pending | high | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
+| WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
+| WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 
@@ -3882,7 +3982,6 @@
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | - | - | WRK-628 |
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | WRK-632 | - | WRK-628 |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | WRK-635 | - | - |
-| WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | WRK-637 | - | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | WRK-638 | - | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | WRK-683 | - | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | WRK-691 | - | - |
