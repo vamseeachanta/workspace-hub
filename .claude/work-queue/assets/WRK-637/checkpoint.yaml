@@ -1,13 +1,11 @@
 wrk_id: WRK-637
-current_stage: 4
-stage_name: Plan Draft
-completed_stage: 3
-next_action: Execute stage 4: Plan Draft
-context_summary: Stage 3 complete. Next: stage 4 (Plan Draft).
+current_stage: 5
+stage_name: User Review - Plan Draft
+completed_stage: 4
+next_action: Execute stage 5: User Review - Plan Draft
+context_summary: Stage 4 complete. Next: stage 5 (User Review - Plan Draft).
 entry_reads:
   - .claude/work-queue/assets/WRK-637/checkpoint.yaml
-  - pending/WRK-637.md
-  - assets/WRK-637/evidence/resource-intelligence.yaml
-checkpointed_at: 2026-03-10T00:28:42Z
-human_gate: false
-chained_stages: [[2, 3, 4]]
+  - assets/WRK-637/WRK-637-lifecycle.html#s1-s4
+checkpointed_at: 2026-03-10T00:29:42Z
+human_gate: true

@@ -1,5 +1,10 @@
-{"wrk_id": "WRK-1064", "phase": "close", "pass": false, "missing": ["User-review close gate"], "warn": ["Reclaim gate", "Reclaim n/a gate"]}
-   "name": "Plan gate",
+{
+  "wrk_id": "WRK-1064",
+  "phase": "close",
+  "summary_file": "assets/WRK-1064/evidence/gate-evidence-summary.json",
+  "gates": [
+    {
+      "name": "Plan gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
@@ -105,10 +110,10 @@
     },
     {
       "name": "User-review close gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-close.yaml: missing fields: ['reviewer', 'reviewed_at']"
+      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",
