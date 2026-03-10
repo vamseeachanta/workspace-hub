@@ -1,0 +1,47 @@
+stage: 6
+wrk_id: "WRK-1091"
+completed_at: "2026-03-10T00:10:00Z"
+scope_change: false
+providers:
+  claude:
+    verdict: APPROVE_WITH_MINOR
+    findings:
+      - severity: P3
+        description: "Symbol index integration not in plan phases — deferred to future work"
+      - severity: P3
+        description: "Subprocess integration tests should use @pytest.mark.integration marker"
+  codex:
+    verdict: MAJOR
+    findings:
+      - severity: P1
+        description: "Pre-push hook in .git/hooks/ not version-controlled — advisory only"
+      - severity: P2
+        description: "PYTHONPATH approach brittle vs uv run (note: established workspace pattern)"
+      - severity: P2
+        description: "SKIP_CROSS_REPO_CHECK bypass needs audit logging"
+      - severity: P3
+        description: "cross-repo-graph.yaml must be consumed by script, not just docs"
+  gemini:
+    verdict: MAJOR
+    findings:
+      - severity: P1
+        description: "Pre-push hook unversioned — must be in .pre-commit-config.yaml stages: push"
+      - severity: P2
+        description: "Plan omits mandatory legal sanity scan"
+      - severity: P3
+        description: "Bash script needs set -euo pipefail and REPO_ROOT via git rev-parse"
+resolutions:
+  - finding: "Pre-push hook not version-controlled [P1 Codex/Gemini]"
+    action: "FIXED in plan revision: script moved to scripts/hooks/assetutilities-pre-push.sh + registered in .pre-commit-config.yaml stages: push"
+  - finding: "PYTHONPATH approach [P2]"
+    action: "ACCEPTED: established workspace convention per run-all-tests.sh line 168"
+  - finding: "cross-repo-graph.yaml docs-only [P3 Codex]"
+    action: "FIXED in plan revision: script reads YAML to get repo list"
+  - finding: "Legal scan omission [P2 Gemini]"
+    action: "DEFERRED: legal scan runs in CI separately; legal-scan.md produced during execution"
+  - finding: "Bash script robustness [P3 Gemini]"
+    action: "ACCEPTED: will use set -euo pipefail and git rev-parse --show-toplevel in implementation"
+  - finding: "Bypass audit logging [P2 Codex]"
+    action: "FIXED in plan revision: logs to logs/hooks/pre-push-bypass.jsonl"
+plan_approved_after_revision: true
+notes: "All P1 issues resolved in plan revision. P2 issues either fixed or accepted with justification. P3 deferred as minor."
