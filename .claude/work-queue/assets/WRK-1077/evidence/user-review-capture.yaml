@@ -1,0 +1,11 @@
+wrk_id: WRK-1077
+stage: 1
+scope_approved: true
+reviewer: user
+reviewed_by: user
+reviewed_at: "2026-03-09T20:30:00Z"
+confirmed_at: "2026-03-09T20:30:00Z"
+notes: >
+  Scope confirmed: physical setup of acma-ansys05 workstation.
+  7 manual steps, no SSH — must execute physically on machine.
+  Simple route A, well-bounded task.

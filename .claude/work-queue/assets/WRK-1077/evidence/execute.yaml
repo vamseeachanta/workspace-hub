@@ -1,0 +1,62 @@
+wrk_id: "WRK-1077"
+executed_at: "2026-03-09T22:30:00Z"
+executor: "claude"
+execution_host: "acma-ansys05"
+route: "A"
+steps_completed:
+  - step: 1
+    action: "verify-setup.sh baseline run"
+    result: "11 PASS, 7 WARN, 0 FAIL — baseline captured"
+  - step: 2
+    action: "fix claim-item.sh re.sub lambda (Windows backslash escape bug)"
+    result: "PASS — WRK-1077 claim succeeded"
+  - step: 3
+    action: "fix dev-env-check.sh hostname lowercase (CURRENT_HOSTNAME tr pipe)"
+    result: "PASS — manifest acma-ansys05.yml found correctly"
+  - step: 4
+    action: "fix verify-setup.sh keybindings Python — uv + cygpath -w"
+    result: "PASS — keybindings.json: submitPrompt=ctrl+enter"
+  - step: 5
+    action: "fix manifest workspace_root (C: -> D:)"
+    result: "PASS — OGManufacturing repo detected OK"
+  - step: 6
+    action: "fix verify-setup.sh Python section — prefer uv over python3 stub"
+    result: "PASS — python found via uv: Python 3.11.13; PyYAML available"
+  - step: 7
+    action: "fix verify-setup.sh statusline check — accept statusLine key"
+    result: "PASS — statusline configured"
+  - step: 8
+    action: "initialize CAD-DEVELOPMENTS submodule"
+    result: "PASS — all submodules initialised"
+  - step: 9
+    action: "add Windows path probe to dev-env-check.sh (windows_exe_paths section)"
+    result: "PASS — ANSYS found via path fallback"
+  - step: 10
+    action: "update manifest with windows_exe_paths (ANSYS v252 Aqwa.exe)"
+    result: "PASS — manifest extended with exe path"
+final_verify_setup_result: "15 PASS, 3 WARN, 0 FAIL"
+final_dev_env_check_result: "OGManufacturing OK; ANSYS OK (path-check); OrcaFlex MISS (not installed)"
+acceptance_criteria_met: true
+notes: >
+  Remaining 3 WARNs are non-actionable: Windows cron (Task Scheduler),
+  SSH key (user must generate), .env.example (not required here).
+  OrcaFlex MISS is expected — software not installed on this machine.
+  All scripts updated for cross-platform compatibility (Linux + Windows/MINGW64).
+
+integrated_repo_tests:
+  - name: "verify-setup final run"
+    scope: "integrated"
+    command: "PYTHONIOENCODING=utf-8 bash scripts/setup/verify-setup.sh"
+    result: "pass"
+    artifact_ref: ".claude/work-queue/assets/WRK-1077/test-results.md"
+  - name: "dev-env-check manifest probe"
+    scope: "integrated"
+    command: "PYTHONIOENCODING=utf-8 bash scripts/operations/system/dev-env-check.sh"
+    result: "pass"
+    artifact_ref: ".claude/work-queue/assets/WRK-1077/test-results.md"
+  - name: "legal sanity scan"
+    scope: "integrated"
+    command: "bash scripts/legal/legal-sanity-scan.sh"
+    result: "pass"
+    artifact_ref: ".claude/work-queue/assets/WRK-1077/legal-scan.md"
+tdd_ref: ".claude/work-queue/assets/WRK-1077/test-results.md"

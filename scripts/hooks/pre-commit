@@ -2,6 +2,10 @@
 set -euo pipefail
 # Pre-commit checks — skill validation moved to nightly cron (WRK-308)
 
+# Ensure uv is in PATH (Windows: ~/.local/bin not always in hook PATH).
+# Linux/macOS: uv typically in /usr/local/bin or ~/.local/bin already.
+export PATH="${HOME}/.local/bin:${HOME}/.cargo/bin:/usr/local/bin:${PATH}"
+
 # WRK-307: Enforce lean-session Stop hook limit (best-effort, non-blocking)
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 bash "${REPO_ROOT}/scripts/review/check-stop-hooks.sh" || true
@@ -82,7 +86,7 @@ if [[ "$needs_resource_intelligence_checks" -eq 1 ]]; then
   fi
 
   if [[ -f "${REPO_ROOT}/data/document-index/resource-intelligence-maturity.yaml" && -f "${REPO_ROOT}/data/document-index/resource-intelligence-maturity.md" ]]; then
-    python3 "${REPO_ROOT}/.claude/skills/workspace-hub/resource-intelligence/scripts/sync-maturity-summary.py" \
+    uv run --no-project python "${REPO_ROOT}/.claude/skills/workspace-hub/resource-intelligence/scripts/sync-maturity-summary.py" \
       --yaml "${REPO_ROOT}/data/document-index/resource-intelligence-maturity.yaml" \
       --markdown "${REPO_ROOT}/data/document-index/resource-intelligence-maturity.md" \
       --check
