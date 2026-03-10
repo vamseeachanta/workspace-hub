@@ -10,3 +10,8 @@ events:
     html_ref: .claude/work-queue/assets/WRK-1092/WRK-1092-lifecycle.html
     opened_at: 2026-03-10T03:55:00Z
     reviewer: user
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1092/WRK-1092-lifecycle.html
+    opened_at: 2026-03-10T04:05:00Z
+    reviewer: user

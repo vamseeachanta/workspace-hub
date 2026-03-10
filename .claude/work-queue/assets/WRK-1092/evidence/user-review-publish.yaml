@@ -18,3 +18,12 @@ events:
       - .claude/work-queue/assets/WRK-1092/WRK-1092-lifecycle.html
     published_at: 2026-03-10T04:05:00Z
     reviewer: user
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 0d5d4ddca412ba5da4d974b3bcc16e0a95094df2
+    documents:
+      - .claude/work-queue/assets/WRK-1092/WRK-1092-lifecycle.html
+    published_at: 2026-03-10T04:06:00Z
+    reviewer: user
