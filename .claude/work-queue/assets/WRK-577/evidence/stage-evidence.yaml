@@ -1,5 +1,5 @@
 wrk_id: WRK-577
-generated_at: '2026-03-10T11:20:33Z'
+generated_at: '2026-03-10T11:26:36Z'
 reviewed_by: orchestrator
 stages:
 - order: 1
@@ -80,5 +80,5 @@ stages:
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   evidence: scripts/work-queue/archive-item.sh
