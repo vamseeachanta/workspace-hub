@@ -1796,15 +1796,88 @@ def render_lifecycle_stage_body(
         status_val = str(fm.get("status", ""))
         commit = str(fm.get("commit", ""))
         pairs = [("status", status_val), ("commit", commit)]
-        return (
+        base = (
             '<div class="section-label">Stage record</div>'
             + _render_schema_block([(k, v) for k, v in pairs if v])
         )
+        if stage_n == 20:
+            base += _build_archive_readiness_card(assets_dir)
+        return base
 
     # Default: active stage with awaiting note, done stage with generic note
     if status == "active":
         return '<div class="awaiting">In progress — evidence pending.</div>'
     return '<p style="color:var(--muted);font-size:.85rem;">Stage completed.</p>'
+
+
+def _build_archive_readiness_card(assets_dir: str) -> str:
+    """Build an Archive Readiness card for Stage 20 HTML (WRK-668)."""
+    tooling_path = os.path.join(assets_dir, "evidence", "archive-tooling.yaml")
+    if not os.path.exists(tooling_path):
+        return (
+            '<div class="ri-callout">'
+            '<div class="ri-callout-inner ri-absent">'
+            '<div class="ri-label ri-absent">Archive Readiness</div>'
+            '<div class="ri-field">evidence/archive-tooling.yaml absent — run archive gates before archiving.</div>'
+            "</div></div>"
+        )
+    try:
+        with open(tooling_path, encoding="utf-8") as fh:
+            data = yaml.safe_load(fh) or {}
+    except Exception as exc:
+        return f'<div class="ri-callout"><div class="ri-field">archive-tooling.yaml parse error: {html_escape(str(exc))}</div></div>'
+
+    readiness = str(data.get("archive_readiness", "")).strip().lower()
+    badge_cls = {"pass": "pass", "soft-fail": "warn", "hard-fail": "fail"}.get(readiness, "warn")
+    badge_label = readiness or "unknown"
+
+    _GATES = [
+        ("merge_status", "Merge"),
+        ("sync_status", "Sync"),
+        ("html_verification_ref", "HTML verification"),
+        ("legal_scan_ref", "Legal scan"),
+        ("document_index_ref", "Document index"),
+    ]
+    _STUBS = {"checked (manual)", "manual", "stub", "todo", "tbd", ""}
+
+    rows = []
+    for field, label in _GATES:
+        val = str(data.get(field, "")).strip()
+        exemption = str(data.get(f"{field.split('_ref')[0]}_exemption" if field.endswith("_ref") else "", "")).strip()
+        if field == "document_index_ref":
+            exemption = str(data.get("document_index_exemption", "")).strip()
+        if not val and exemption:
+            icon, cls = "⚠", "warn"
+            display = f"exempt: {html_escape(exemption[:60])}"
+        elif val.lower() in _STUBS:
+            icon, cls = "✖", "fail"
+            display = html_escape(val or "missing")
+        else:
+            icon, cls = "✔", "pass"
+            display = html_escape(os.path.basename(val) if "/" in val else val)
+        rows.append(
+            f'<tr><td>{html_escape(label)}</td>'
+            f'<td class="gate-{cls}">{icon} {display}</td></tr>'
+        )
+
+    spin_offs = data.get("spin_off_wrks") or []
+    spinoff_html = ""
+    if spin_offs:
+        items = "".join(f"<li>{html_escape(str(w))}</li>" for w in spin_offs)
+        spinoff_html = f'<div class="ri-label" style="margin-top:.6rem;">Spin-off WRKs</div><ul style="margin:.2rem 0 0 1.2rem;font-size:.82rem;">{items}</ul>'
+
+    return (
+        '<div class="ri-callout" style="margin-top:.8rem;">'
+        '<div class="ri-callout-inner">'
+        f'<div class="ri-label">Archive Readiness <span class="badge badge-{badge_cls}" style="margin-left:.4rem;">{html_escape(badge_label)}</span></div>'
+        '<table style="width:100%;font-size:.82rem;border-collapse:collapse;margin-top:.4rem;">'
+        "<thead><tr><th style='text-align:left;padding:.15rem .4rem;'>Gate</th>"
+        "<th style='text-align:left;padding:.15rem .4rem;'>Status</th></tr></thead>"
+        f"<tbody>{''.join(rows)}</tbody>"
+        "</table>"
+        f"{spinoff_html}"
+        "</div></div>"
+    )
 
 
 def _build_ri_callout(assets_dir: str) -> str:

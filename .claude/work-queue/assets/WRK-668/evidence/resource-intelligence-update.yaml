@@ -1,0 +1,10 @@
+wrk_id: WRK-668
+stage: 16
+generated_at: "2026-03-09T01:15:00Z"
+additions:
+  - skill: work-queue-workflow
+    note: "archive-tooling.yaml is now a required Stage 20 evidence artifact; --phase archive is the correct verifier call"
+  - skill: workflow-gatepass
+    note: "gate_checks_archive.py follows same return convention as gate_checks_extra.py: (True/None/False, msg)"
+  - pattern: archive-spinoff
+    note: "create-spinoff-wrk.sh: pass source WRK + blocker description; uses uv run python for YAML mutation (not sed)"

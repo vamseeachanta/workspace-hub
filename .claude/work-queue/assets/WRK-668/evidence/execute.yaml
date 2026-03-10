@@ -1,0 +1,30 @@
+wrk_id: WRK-668
+stage: 10
+scope: integrated
+started_at: "2026-03-09T00:30:00Z"
+completed_at: "2026-03-09T01:00:00Z"
+orchestrator: claude
+integrated_repo_tests:
+  - name: test_archive_readiness T1-T3
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_archive_readiness.py -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_archive_readiness.py
+  - name: gate_verifier_hardening T11-T33
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_gate_verifier_hardening.py -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_gate_verifier_hardening.py
+  - name: d_item_gates T1-T30
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_d_item_gates.py -v"
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_d_item_gates.py
+deliverables:
+  - scripts/work-queue/gate_checks_archive.py
+  - scripts/work-queue/templates/archive-tooling-template.yaml
+  - scripts/work-queue/tests/test_archive_readiness.py
+  - scripts/work-queue/create-spinoff-wrk.sh
+  - "verify-gate-evidence.py: --phase archive added"
+  - "generate-html-review.py: Archive Readiness card added"
+  - "archive-item.sh: stubs replaced, --phase archive, Stage 20 hard gate"

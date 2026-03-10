@@ -1,0 +1,7 @@
+wrk_id: WRK-668
+stage: 9
+route: B
+execution_workstations: [ace-linux-1]
+orchestrator: claude
+routed_at: "2026-03-09T00:27:00Z"
+notes: "Route B medium — standard execution on ace-linux-1"
