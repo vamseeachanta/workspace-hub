@@ -96,7 +96,20 @@ phase_classify() {
 }
 ```
 
-Add stub `route_to_memory()`, `route_to_skill_scores()`, `route_to_rules()` functions that append formatted entries to their target files.
+Add stub functions:
+- `route_to_memory()`: append a formatted line to `memory/MEMORY.md` (append-only, safe)
+- `route_to_skill_scores()`: **read-modify-write** YAML (not append) — read `state/skill-scores.yaml`, increment usage count, write back; Phase 6 loads this as structured YAML (pipeline.py:383)
+- `route_to_rules()`: append violation summary to appropriate `rules/` section file
+
+**Amendment (Codex P2)**: Also update `scripts/improve/lib/apply.sh`:
+- `apply.sh:53` sources `classify.sh` and calls `call_anthropic_api()` when `IMPROVE_API_ENHANCE=true`
+- Remove `IMPROVE_API_ENHANCE` flag from the nightly invocation path, or replace the conditional with a deterministic fallback
+- Do not delete `call_anthropic_api()` until `apply.sh` dependency is resolved
+
+**Amendment (Gemini)**: Guard `jq` calls against malformed JSONL:
+```bash
+event=$(echo "$line" | jq -r '.event // empty' 2>/dev/null || true)
+```
 
 Remove `curl` and OAuth credential dependency entirely.
 
@@ -112,6 +125,18 @@ Call site: add pre-Phase-1 step in `scripts/learning/comprehensive-learning.sh`.
 
 **TDD**: `tests/session-analysis/test_stage_exit_signal.bats`
 
+**Amendment (Codex P1)**: `stage_exit` emission must come from `exit_stage.py`, not the Stop hook. Two options:
+- Option A: emit JSONL signal in `exit_stage.py` alongside the existing audit write in `log-action.sh`
+- Option B: add a pre-Phase-1 ingester in `comprehensive-learning.sh` that reads `logs/audit/agent-actions-*.jsonl` and converts `stage_exit` events to signal format
+
+Option A is preferred (single-source-of-truth). Add to `exit_stage.py`:
+```python
+# Emit session-signal alongside audit write
+signal = {"event": "stage_exit", "wrk": wrk_id, "stage": stage_num,
+          "date": today_str, "timestamp": now_iso}
+append_jsonl(signal_file, signal)
+```
+
 ---
 
 ### Fix 4 — Create missing phase scripts (medium, TDD first)
@@ -126,12 +151,14 @@ Call site: add pre-Phase-1 step in `scripts/learning/comprehensive-learning.sh`.
 #### `scripts/analysis/knowledge-capture.sh` (<100 lines)
 - Read signal files from `state/session-signals/YYYY-MM-DD.jsonl`
 - Extract new domain facts (WRK patterns, tool usage)
-- Append to `state/learned-patterns.json`
+- Write to `state/learned-patterns.jsonl` (jsonl, NOT json — avoids append corruption)
 
-Update `scripts/learning/comprehensive-learning.sh`:
-- Line 155: point Phase 2 to `scripts/analysis/daily-reflect.sh`
-- Line 167: point Phase 3 to `scripts/analysis/knowledge-capture.sh`
+**Amendment (Codex P1 — REQUIRED)**: Update `scripts/learning/comprehensive-learning.sh`:
+- Line 151: update Phase 2 call site to `scripts/analysis/daily-reflect.sh`
+- Line 164: update Phase 3 call site to `scripts/analysis/knowledge-capture.sh`
 - Line 182: verify Phase 4 already points to `scripts/improve/improve.sh` (correct)
+
+Without these call-site updates, the new scripts are dead code and phases remain SKIPPED.
 
 ---
 
@@ -174,6 +201,7 @@ Update `comprehensive-learning.sh` `run_py_phase()` to call each module directly
 | `tests/session-analysis/test_phase_scripts_exist.bats` | 4 | bats |
 | `tests/session-analysis/test_pipeline_modules.py` | 5 | pytest |
 | `tests/session-analysis/test_stage_exit_signal.bats` | 6 | bats |
+| `tests/session-analysis/test_classify_routing.bats` | 7 | bats — added per Gemini review |
 
 Write each test before the corresponding fix. All tests must pass before marking fix done.
 
