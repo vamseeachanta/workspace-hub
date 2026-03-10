@@ -1,0 +1,38 @@
+stage: 10
+wrk_id: "WRK-1083"
+scope: integrated
+executed_at: "2026-03-09T18:30:00Z"
+completed_at: "2026-03-09T19:00:00Z"
+phases_completed:
+  - phase: 1
+    label: "plan-mode skill creation"
+    artifacts:
+      - .claude/skills/workspace-hub/plan-mode/SKILL.md
+  - phase: 2
+    label: "stage contract annotations"
+    artifacts:
+      - scripts/work-queue/stages/stage-04-plan-draft.yaml
+      - scripts/work-queue/stages/stage-06-cross-review.yaml
+      - scripts/work-queue/stages/stage-10-work-execution.yaml
+      - scripts/work-queue/stages/stage-13-agent-cross-review.yaml
+  - phase: 3
+    label: "work-queue-workflow skill wiring"
+    artifacts:
+      - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+integrated_repo_tests:
+  - name: "plan-mode-skill-exists"
+    scope: integrated
+    command: "test -f .claude/skills/workspace-hub/plan-mode/SKILL.md"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1083/evidence/execute.yaml
+  - name: "stage04-plan-mode-required"
+    scope: integrated
+    command: "grep -q 'plan_mode: required' scripts/work-queue/stages/stage-04-plan-draft.yaml"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1083/evidence/execute.yaml
+  - name: "workflow-skill-plan-mode-gates"
+    scope: integrated
+    command: "grep -q 'Plan-Mode Gates' .claude/skills/workspace-hub/work-queue-workflow/SKILL.md"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1083/evidence/execute.yaml
+test_count: 3

@@ -1,0 +1,20 @@
+wrk_id: WRK-1099
+claimed_at: "2026-03-10T06:38:00Z"
+confirmed_at: "2026-03-10T06:38:00Z"
+route: A
+orchestrator: claude
+best_fit_provider: claude
+metadata_version: "1"
+session_owner: vamsee
+agent_fit:
+  capability_match: confirmed
+  rationale: Route A / execution_workstations=[ace-linux-1] / provider=claude
+blocking_state:
+  blocked: false
+  blocked_by: []
+quota_snapshot:
+  timestamp: "2026-03-10T06:38:00Z"
+  provider: claude
+  status: available
+  pct_remaining: 70
+  source: config/ai-tools/agent-quota-latest.json

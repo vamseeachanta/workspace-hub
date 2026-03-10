@@ -2,12 +2,32 @@ wrk_id: WRK-1099
 completed_at: "2026-03-10T15:07:46Z"
 scope: integrated
 commits:
-  - hash: "TBD"
+  - hash: "53530546"
     message: "feat(WRK-1099): whats-next — subcategory filter + workstation-aware sort"
     repo: workspace-hub
 integrated_repo_tests:
-  - name: whats_next_bats
+  - name: subcategory_filter_test
     scope: integrated
-    command: /tmp/bats-core/bin/bats tests/work-queue/test_whats_next.bats
+    command: bats tests/work-queue/test_whats_next.bats --filter "subcategory filters"
+    result: pass
+    artifact_ref: tests/work-queue/test_whats_next.bats
+  - name: category_subcategory_and_test
+    scope: integrated
+    command: bats tests/work-queue/test_whats_next.bats --filter "AND filter"
+    result: pass
+    artifact_ref: tests/work-queue/test_whats_next.bats
+  - name: subcategory_without_category_test
+    scope: integrated
+    command: bats tests/work-queue/test_whats_next.bats --filter "without --category"
+    result: pass
+    artifact_ref: tests/work-queue/test_whats_next.bats
+  - name: workstation_partition_test
+    scope: integrated
+    command: bats tests/work-queue/test_whats_next.bats --filter "local machine"
+    result: pass
+    artifact_ref: tests/work-queue/test_whats_next.bats
+  - name: full_bats_suite
+    scope: integrated
+    command: bats tests/work-queue/test_whats_next.bats
     result: pass
     artifact_ref: tests/work-queue/test_whats_next.bats

@@ -1,0 +1,30 @@
+wrk_id: "WRK-1083"
+generated_at: "2026-03-10T15:15:00Z"
+recommendations:
+  - id: FW-1
+    title: "Plan-mode enforcement script in verify-gate-evidence.py"
+    description: >
+      Add a gate check that reads plan_mode: required from stage YAML and verifies
+      that a plan-mode invocation artifact (or EnterPlanMode signal) exists in WRK
+      evidence before allowing stage advancement.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-2
+    title: "TDD tests for plan-mode gate logic"
+    description: >
+      Write failing tests: 'given stage with plan_mode: required and no evidence,
+      verify-gate-evidence exits non-zero'; 'given plan-mode artifact present, gate passes'.
+      Implement enforcement to make tests green.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-3
+    title: "Reconsider Stage 10 mandatory plan-mode"
+    description: >
+      Stage 10 (work execution) mandatory plan-mode may create friction for
+      routine low-risk tasks. Consider 'plan_mode: required_if_complex' or
+      limiting to Stages 4, 6, 13 only.
+    disposition: existing-updated
+    status: captured
+    captured: true

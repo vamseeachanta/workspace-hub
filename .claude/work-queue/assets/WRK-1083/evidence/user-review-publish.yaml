@@ -1,0 +1,28 @@
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 53530546a737f586e3a1aedcb008d912c91c78f3
+  documents:
+  - .claude/work-queue/assets/WRK-1083/WRK-1083-lifecycle.html
+  published_at: '2026-03-10T15:11:47Z'
+  reviewer: vamsee
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 53530546a737f586e3a1aedcb008d912c91c78f3
+  documents:
+  - .claude/work-queue/assets/WRK-1083/WRK-1083-lifecycle.html
+  published_at: '2026-03-10T15:11:47Z'
+  reviewer: vamsee
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 2943580842b751f3213cfb07410dc68c2e66abe9
+  documents:
+  - .claude/work-queue/assets/WRK-1083/WRK-1083-lifecycle.html
+  published_at: '2026-03-10T15:16:01Z'
+  reviewer: vamsee

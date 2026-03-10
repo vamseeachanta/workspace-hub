@@ -1,0 +1,19 @@
+wrk_id: WRK-1099
+generated_at: "2026-03-10T15:15:00Z"
+recommendations:
+  - id: FW-1
+    title: "Group remote items per machine when 3+ workstations present"
+    description: >
+      Current brief format shows [other machines: WRK-X WRK-Y]. When 3+ machines
+      are in play, grouping by machine name would be more informative.
+    disposition: existing-updated
+    status: captured
+    captured: true
+  - id: FW-2
+    title: "Add --subcategory to /work list command"
+    description: >
+      The /work list command uses a separate code path. Add --subcategory support
+      there too for consistency with whats-next.sh.
+    disposition: spun-off-new
+    status: captured
+    captured: true

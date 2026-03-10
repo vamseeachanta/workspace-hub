@@ -1,0 +1,13 @@
+wrk_id: "WRK-1083"
+route: "B"
+provider: "claude"
+execution_workstation: "ace-linux-1"
+routed_at: "2026-03-09T18:05:00Z"
+rationale: "Route B medium complexity; skills/YAML-only changes; execution on ace-linux-1 (workspace-hub)"
+phases:
+  - phase: 1
+    label: "plan-mode skill creation + stage annotations"
+    subagent: claude
+  - phase: 2
+    label: "workflow skill wiring + P3 fixes"
+    subagent: claude

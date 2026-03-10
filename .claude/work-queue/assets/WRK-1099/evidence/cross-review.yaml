@@ -1,0 +1,35 @@
+wrk_id: WRK-1099
+phase: 1
+reviewed_at: 2026-03-10T06:30:00Z
+
+providers:
+  claude:
+    verdict: REQUEST_CHANGES
+    result_file: scripts/review/results/20260310T145402Z-wrk-1099-phase-1-review-input.md-implementation-claude.md
+  codex:
+    verdict: REQUEST_CHANGES
+    result_file: scripts/review/results/20260310T145500Z-wrk-1099-phase-1-review-input.md-implementation-codex.md
+    note: Codex quota exhausted — Claude Opus fallback
+  gemini:
+    verdict: APPROVE
+    result_file: scripts/review/results/wrk-1099-phase-1-review-input.md
+
+findings_addressed:
+  - id: P1-tdd
+    severity: P1
+    description: Tests listed last — TDD violation
+    resolution: Plan reordered — tests first (step 1), implementation follows
+  - id: P2-subcategory-alone
+    severity: P2
+    description: --subcategory without --category undefined
+    resolution: Plan updated — subcategory alone filters across all categories
+  - id: P2-hostname
+    severity: P2
+    description: Repeated $(hostname) subshell forks + FQDN risk
+    resolution: Plan updated — cache THIS_HOST=$(hostname -s) once at top
+
+deferred_findings:
+  - id: P3-array-naming
+    severity: P3
+    description: ALL_CAPS array names could be confused with env vars
+    resolution: deferred — current naming is consistent with existing script style
