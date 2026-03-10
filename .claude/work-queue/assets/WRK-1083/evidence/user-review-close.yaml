@@ -1,5 +1,7 @@
-reviewer: ""
-reviewed_at: ""
-confirmed_at: ""
-decision: pending
-notes: "Populate at Stage 17 user review before closing."
+reviewer: vamsee
+reviewed_at: "2026-03-10T15:34:56Z"
+confirmed_at: "2026-03-10T15:34:56Z"
+decision: approved
+wrk_id: WRK-1083
+stage: 17
+notes: "All 5 ACs confirmed. Plan-mode skill + 4 stage annotations + workflow wiring complete."
