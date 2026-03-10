@@ -400,3 +400,7 @@ logs/notifications/*.jsonl
 # Search symbol index — runtime generated cache (WRK-1085)
 # Rebuild: uv run --no-project python scripts/search/build-symbol-index.py
 config/search/symbol-index.jsonl
+
+# Doc drift quality logs — runtime generated (WRK-1093)
+logs/quality/*.yaml
+logs/quality/*.log

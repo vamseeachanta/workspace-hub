@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T13:46:46Z by generate-index.py -->
+<!-- Generated: 2026-03-10T13:48:15Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T13:46:46Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T13:48:15Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 525
+**Total items:** 526
 
 ### By Status
 
@@ -16,21 +16,21 @@
 | pending | 220 |
 | working | 5 |
 | blocked | 10 |
-| archived | 290 |
+| archived | 291 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 241 |
-| medium | 238 |
+| medium | 239 |
 | low | 45 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 111 |
+| simple | 112 |
 | medium | 250 |
 | complex | 98 |
 
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 188 |
+| workspace-hub | 189 |
 | worldenergydata | 99 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 209 / 525 |
-| Plans cross-reviewed | 121 |
-| Plans approved | 144 |
+| Plans exist | 209 / 526 |
+| Plans cross-reviewed | 122 |
+| Plans approved | 145 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,10 +91,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 525 |
-| Total archived | 290 |
-| Completion rate | 290/525 (55%) |
-| Monthly rate (current month) | 58 archived |
+| Total captured | 526 |
+| Total archived | 291 |
+| Completion rate | 291/526 (55%) |
+| Monthly rate (current month) | 59 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -1026,6 +1026,7 @@
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-691 |
+| WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-694 | Per-session log files in session-logger.sh | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | medium | - | ace-linux-1 | ace-linux-1, ace-linux-2 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
@@ -1617,6 +1618,7 @@
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | high | medium | workspace-hub | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | high | medium | workspace-hub | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | high | medium | workspace-hub | - |
+| WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | medium | simple | workspace-hub | - |
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | high | medium | workspace-hub | - |
@@ -2190,6 +2192,7 @@
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | high | medium | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | archived | high | medium | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | archived | high | medium | - |
+| WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | archived | medium | simple | - |
 | WRK-694 | Per-session log files in session-logger.sh | pending | medium | simple | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | medium | - |
@@ -2797,6 +2800,7 @@
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working | simple | workspace-hub | - |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | simple | workspace-hub | - |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | worldenergydata | - |
+| WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | archived | simple | workspace-hub | - |
 | WRK-694 | Per-session log files in session-logger.sh | pending | simple | workspace-hub | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | simple | workspace-hub | - |
@@ -2979,6 +2983,7 @@
 | WRK-638 | Memory quality eval harness | archived | medium | workspace-hub | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working | medium | workspace-hub | - |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | workspace-hub | - |
+| WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | archived | medium | workspace-hub | - |
 | WRK-694 | Per-session log files in session-logger.sh | pending | medium | workspace-hub | - |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | medium | workspace-hub | - |
@@ -3381,7 +3386,7 @@
 
 ## By Computer
 
-### ace-linux-1 (168 active / 245 total)
+### ace-linux-1 (168 active / 246 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3538,6 +3543,7 @@
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | medium | worldenergydata |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | archived | high | medium | workspace-hub |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | archived | high | medium | workspace-hub |
+| WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | archived | medium | simple | workspace-hub |
 | WRK-694 | Per-session log files in session-logger.sh | pending | medium | simple | workspace-hub |
 | WRK-TEST-ENSEMBLE | Smoke test for ensemble planning | pending | low | simple | workspace-hub |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | medium | simple | workspace-hub |

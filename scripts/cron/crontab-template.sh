@@ -42,6 +42,9 @@
 # Notification log 7-day retention (daily 04:30); purges old JSONL files (WRK-1076).
 # CRON: 30 4  * * *  cd $WORKSPACE_HUB && find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true
 
+# Nightly doc drift baseline refresh (02:30); detects symbol-to-doc drift across repos.
+# CRON: 30 2  * * *  cd $WORKSPACE_HUB && uv run --no-project python scripts/quality/check_doc_drift.py --update-baseline >> $WORKSPACE_HUB/logs/quality/doc-drift-$(date +\%Y\%m\%d).yaml 2>&1
+
 # Repository sync every 4 hours; pulls from remotes, pushes derived state.
 # CRON: 0  */4 * * * cd $WORKSPACE_HUB && bash scripts/repository-sync-auto >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
 

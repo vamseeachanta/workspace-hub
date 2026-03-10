@@ -1,9 +1,6 @@
 """TDD tests for check_doc_drift.py — WRK-1093."""
 import json
 import subprocess
-from pathlib import Path
-
-import pytest
 
 
 # ---------------------------------------------------------------------------
