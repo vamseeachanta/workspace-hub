@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T16:03:19Z by generate-index.py -->
+<!-- Generated: 2026-03-10T16:55:05Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T16:03:19Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T16:55:05Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 529
+**Total items:** 530
 
 ### By Status
 
@@ -16,13 +16,13 @@
 | pending | 219 |
 | working | 4 |
 | blocked | 10 |
-| archived | 296 |
+| archived | 297 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 243 |
+| high | 244 |
 | medium | 240 |
 | low | 45 |
 
@@ -30,7 +30,7 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 112 |
+| simple | 113 |
 | medium | 252 |
 | complex | 99 |
 
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 192 |
+| workspace-hub | 193 |
 | worldenergydata | 99 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 213 / 529 |
-| Plans cross-reviewed | 126 |
-| Plans approved | 149 |
+| Plans exist | 214 / 530 |
+| Plans cross-reviewed | 127 |
+| Plans approved | 150 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,10 +91,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 529 |
-| Total archived | 296 |
-| Completion rate | 296/529 (56%) |
-| Monthly rate (current month) | 64 archived |
+| Total captured | 530 |
+| Total archived | 297 |
+| Completion rate | 297/530 (56%) |
+| Monthly rate (current month) | 65 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -214,7 +214,6 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1102 | HIGH | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | pending |
 | WRK-207 | MEDIUM | fix(ai): align weekly quota reporting with authoritative Claude source | pending |
 | WRK-636 | MEDIUM | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending |
 | WRK-1018 | MEDIUM | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending |
@@ -261,6 +260,7 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
+| WRK-1106 | HIGH | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | pending |
 | WRK-118 | MEDIUM | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
@@ -1124,9 +1124,10 @@
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1350,9 +1351,9 @@
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | medium | simple | workspace-hub | - |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | medium | medium | workspace-hub | - |
-| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | high | medium | workspace-hub | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | medium | medium | workspace-hub | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | high | complex | workspace-hub | - |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | high | simple | workspace-hub | - |
 
 ### Working
 
@@ -1678,6 +1679,7 @@
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | high | simple | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | high | simple | workspace-hub | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | high | simple | workspace-hub | - |
+| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | high | medium | workspace-hub | - |
 
 ## By Repository
 
@@ -2265,9 +2267,10 @@
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | simple | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | archived | high | simple | - |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | medium | - |
-| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | pending | high | medium | - |
+| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | medium | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | - |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | pending | high | simple | - |
 
 ### worldenergydata
 
@@ -2620,8 +2623,9 @@
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | simple | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | simple | workspace-hub | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | archived | simple | workspace-hub | - |
-| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | pending | medium | workspace-hub | - |
+| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | medium | workspace-hub | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | complex | workspace-hub | - |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | pending | simple | workspace-hub | - |
 
 ### Medium
 
@@ -3036,6 +3040,7 @@
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | workspace-hub | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | archived | high | workspace-hub | - |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | pending | high | workspace-hub | - |
 
 ### Medium
 
@@ -3291,7 +3296,7 @@
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | workspace-hub | - |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | workspace-hub | - |
-| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | pending | high | workspace-hub | - |
+| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | workspace-hub | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | workspace-hub | - |
 
 ### Complex
@@ -3400,7 +3405,7 @@
 
 ## By Computer
 
-### ace-linux-1 (166 active / 249 total)
+### ace-linux-1 (166 active / 250 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3650,9 +3655,10 @@
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | simple | workspace-hub |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | archived | high | simple | workspace-hub |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | medium | workspace-hub |
-| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | pending | high | medium | workspace-hub |
+| WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | medium | workspace-hub |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | workspace-hub |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | workspace-hub |
+| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | pending | high | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 

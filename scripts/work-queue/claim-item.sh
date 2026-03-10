@@ -14,8 +14,17 @@ QUEUE_DIR="${WORKSPACE_ROOT}/.claude/work-queue"
 GATE_LOGGER="${WORKSPACE_ROOT}/scripts/work-queue/log-gate-event.sh"
 QUOTA_FILE="${WORKSPACE_ROOT}/config/ai-tools/agent-quota-latest.json"
 
-# Guard: reject concurrent claim if already in working/
+# Guard: reject concurrent claim if already in working/; allow resume if previously activated.
 if [[ -f "${QUEUE_DIR}/working/${WRK_ID}.md" ]]; then
+  activation_file="${QUEUE_DIR}/assets/${WRK_ID}/evidence/activation.yaml"
+  if [[ -f "$activation_file" ]]; then
+    _existing_session="$(awk -F': ' '/^session_id:/ {gsub(/"/, "", $2); print $2; exit}' \
+      "$activation_file" 2>/dev/null || true)"
+    if [[ -n "$_existing_session" ]]; then
+      echo "⚠ ${WRK_ID} already claimed — resuming" >&2
+      exit 0
+    fi
+  fi
   echo "✖ Error: ${WRK_ID} is already in working/ — another session may be active." >&2
   lock_file="${QUEUE_DIR}/assets/${WRK_ID}/evidence/session-lock.yaml"
   if [[ -f "$lock_file" ]]; then

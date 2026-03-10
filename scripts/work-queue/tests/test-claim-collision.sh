@@ -140,6 +140,62 @@ else
 fi
 rm -rf "$T5_DIR"
 
+# ── T6: resume path — working/ + activation.yaml with session_id → exit 0 ───
+echo "T6: resume — item in working/ with activation.yaml (non-empty session_id) → exit 0"
+mkdir -p "${QUEUE_DIR}/assets/${TEST_WRK}/evidence"
+cat > "${QUEUE_DIR}/working/${TEST_WRK}.md" << 'STUB'
+---
+id: WRK-TEST-COLLISION
+status: working
+STUB
+cat > "${QUEUE_DIR}/assets/${TEST_WRK}/evidence/activation.yaml" << 'ACT'
+wrk_id: WRK-TEST-COLLISION
+session_id: "sess-resume-test-abc"
+orchestrator_agent: claude
+activated_at: "2026-03-10T00:00:00Z"
+ACT
+result=0
+output=$(bash "$CLAIM_SCRIPT" "$TEST_WRK" 2>&1) || result=$?
+TOTAL=$((TOTAL + 1))
+if [[ $result -eq 0 ]] && echo "$output" | grep -qi "resuming"; then
+    echo "  PASS: T6 resume → exit 0 with resume message"
+    PASS=$((PASS + 1))
+else
+    echo "  FAIL: T6 expected exit=0 + 'resuming' message (got exit=$result)"
+    echo "  output: $output"
+    FAIL=$((FAIL + 1))
+fi
+rm -f "${QUEUE_DIR}/working/${TEST_WRK}.md"
+rm -f "${QUEUE_DIR}/assets/${TEST_WRK}/evidence/activation.yaml"
+
+# ── T7: collision guard — working/ + activation.yaml with empty session_id → exit 1
+echo "T7: collision — item in working/ with activation.yaml but empty session_id → exit 1"
+mkdir -p "${QUEUE_DIR}/assets/${TEST_WRK}/evidence"
+cat > "${QUEUE_DIR}/working/${TEST_WRK}.md" << 'STUB'
+---
+id: WRK-TEST-COLLISION
+status: working
+STUB
+cat > "${QUEUE_DIR}/assets/${TEST_WRK}/evidence/activation.yaml" << 'ACT'
+wrk_id: WRK-TEST-COLLISION
+session_id: ""
+orchestrator_agent: claude
+activated_at: "2026-03-10T00:00:00Z"
+ACT
+result=0
+output=$(bash "$CLAIM_SCRIPT" "$TEST_WRK" 2>&1) || result=$?
+TOTAL=$((TOTAL + 1))
+if [[ $result -eq 1 ]] && echo "$output" | grep -q "already in working/"; then
+    echo "  PASS: T7 empty session_id → exit 1 collision guard preserved"
+    PASS=$((PASS + 1))
+else
+    echo "  FAIL: T7 expected exit=1 + 'already in working/' (got exit=$result)"
+    echo "  output: $output"
+    FAIL=$((FAIL + 1))
+fi
+rm -f "${QUEUE_DIR}/working/${TEST_WRK}.md"
+rm -f "${QUEUE_DIR}/assets/${TEST_WRK}/evidence/activation.yaml"
+
 # ── Summary ──────────────────────────────────────────────────────────────────
 echo ""
 echo "Results: $PASS passed, $FAIL failed, $TOTAL total"
