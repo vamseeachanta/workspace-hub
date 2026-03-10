@@ -18,6 +18,10 @@
 
 # ── ROLE: full (ace-linux-1) ──────────────────────────────────────────────────
 
+# Nightly dependency health check (WRK-1090); checks uv.lock freshness, outdated
+# packages, CVE advisories across 5 repos; auto-captures WRK on HIGH/CRITICAL CVEs.
+# CRON: 0  1  * * *  cd $WORKSPACE_HUB && bash scripts/quality/dep-health.sh >> $WORKSPACE_HUB/logs/quality/dep-health-cron.log 2>&1
+
 # Nightly comprehensive learning pipeline (10 phases); runs at 02:00 to avoid
 # overlap with session work.  Log rotated by logrotate (see /etc/logrotate.d/).
 # CRON: 0  2  * * *  cd $WORKSPACE_HUB && bash scripts/cron/comprehensive-learning-nightly.sh >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
