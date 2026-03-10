@@ -78,3 +78,7 @@ stages:
   stage: Close
   status: done
   evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  evidence: scripts/work-queue/archive-item.sh
