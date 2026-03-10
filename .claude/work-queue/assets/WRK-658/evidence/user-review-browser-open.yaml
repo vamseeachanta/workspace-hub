@@ -9,3 +9,8 @@ events:
     html_ref: .claude/work-queue/assets/WRK-658/workflow-final-review.html
     opened_at: "2026-03-10T03:00:00Z"
     reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-658/WRK-658-lifecycle.html
+    opened_at: "2026-03-10T04:20:00Z"
+    reviewer: vamsee

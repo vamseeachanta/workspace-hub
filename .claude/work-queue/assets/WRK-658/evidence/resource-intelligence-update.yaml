@@ -1,0 +1,16 @@
+wrk_id: WRK-658
+updated_at: "2026-03-10T04:30:00Z"
+additions:
+  - key: check_agent_log_gate_wrk_frontmatter
+    value: >
+      check_agent_log_gate() now accepts wrk_frontmatter param with two-tier
+      legacy discriminator: id<658 → skip; id>=658, created_at<LOG_GATE_SINCE → skip;
+      otherwise enforce. LOG_GATE_SINCE = 2026-03-09T00:00:00Z.
+  - key: codex_gemini_harness_files
+    value: >
+      CODEX.md and GEMINI.md exist at workspace root directing providers to use
+      wrapper scripts (session.sh, work.sh, plan.sh, execute.sh, review.sh).
+  - key: orchestrator_gate_contract_multi_provider
+    value: >
+      orchestrator-gate-contract.md documents full log schema, required action
+      names per phase, and applies to Claude/Codex/Gemini.

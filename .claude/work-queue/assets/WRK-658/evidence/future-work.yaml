@@ -1,0 +1,43 @@
+wrk_id: WRK-658
+generated_at: "2026-03-10T04:30:00Z"
+recommendations:
+  - id: FW-1
+    title: "verify-gate-evidence.py file decomposition (400-line limit)"
+    rationale: >
+      File is 2148 lines (hard limit: 400). Split into: yaml_helpers,
+      gate_checks_core, gate_checks_hardening, verify_gate_evidence (CLI).
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    severity: P2
+    notes: Pre-existing issue flagged by WRK-658 implementation cross-review
+  - id: FW-2
+    title: "Normalize claim artifact path resolution"
+    rationale: >
+      Claim artifact lookup uses different canonical/legacy paths in different
+      gate functions. Normalize behind a single helper.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    severity: P1
+    notes: Pre-existing issue flagged by Codex review
+  - id: FW-3
+    title: "user-review-close gate: accept confirmed_at as alias for reviewed_at"
+    rationale: >
+      Stage 17 contract allows confirmed_at but check_user_review_close_gate
+      requires reviewed_at. Unify the field acceptance.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    severity: P1
+    notes: Pre-existing issue flagged by Codex review
+  - id: FW-4
+    title: "run_checks_json: replace stdout scraping with structured return"
+    rationale: >
+      run_checks_json rebuilds pass/fail state by scraping human-readable stdout.
+      Should read gate-evidence-summary.json instead.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    severity: P2
+    notes: Pre-existing issue flagged by Claude review
