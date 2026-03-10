@@ -1,0 +1,18 @@
+wrk_id: WRK-1108
+stage: 16
+additions:
+  - topic: WhatsApp MCP integration
+    finding: |
+      lharries/whatsapp-mcp (5,400 stars, Go+Python) is the most mature personal-use
+      WhatsApp MCP server. Uses unofficial whatsmeow library — account ban risk.
+      delltrak/wamcp has 63 tools and supports both unofficial Baileys and official
+      Meta Cloud API. Prompt injection via received messages is a known risk for all servers.
+    added_to_memory: false
+    notes: Low-priority, no memory entry needed; details in research-findings.md
+  - topic: No scheduled re-check needed
+    finding: |
+      Original item scheduled a 2026-04-10 re-check assuming no integration existed.
+      Multiple servers exist now — scheduled_check date is obsolete.
+    added_to_memory: false
+no_additions_rationale: null
+completed_at: 2026-03-10T00:00:00Z

@@ -1,0 +1,17 @@
+wrk_id: WRK-1108
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1108/WRK-1108-lifecycle.html
+    opened_at: "2026-03-10T08:06:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1108/WRK-1108-lifecycle.html
+    opened_at: "2026-03-10T08:14:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1108/workflow-final-review.html
+    opened_at: "2026-03-10T09:00:00Z"
+    reviewer: vamsee

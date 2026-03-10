@@ -1,37 +1,37 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T18:03:05Z by generate-index.py -->
+<!-- Generated: 2026-03-10T18:31:59Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T18:03:05Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T18:31:59Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 532
+**Total items:** 535
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 219 |
+| pending | 221 |
 | working | 3 |
 | blocked | 10 |
-| archived | 300 |
+| archived | 301 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 244 |
-| medium | 241 |
-| low | 46 |
+| medium | 243 |
+| low | 47 |
 
 ### By Complexity
 
 | Complexity | Count |
 |------------|-------|
-| simple | 114 |
-| medium | 253 |
+| simple | 115 |
+| medium | 255 |
 | complex | 99 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 48 |
+| harness | 50 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -61,27 +61,27 @@
 | aceengineer-website | 14 |
 | achantas-data | 9 |
 | acma-projects | 5 |
-| assethold | 13 |
-| assetutilities | 15 |
+| assethold | 14 |
+| assetutilities | 16 |
 | client_projects | 1 |
-| digitalmodel | 177 |
+| digitalmodel | 178 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 195 |
-| worldenergydata | 99 |
+| workspace-hub | 198 |
+| worldenergydata | 100 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 214 / 532 |
-| Plans cross-reviewed | 128 |
-| Plans approved | 151 |
+| Plans exist | 214 / 535 |
+| Plans cross-reviewed | 129 |
+| Plans approved | 152 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,17 +91,17 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 532 |
-| Total archived | 300 |
-| Completion rate | 300/532 (56%) |
-| Monthly rate (current month) | 66 archived |
+| Total captured | 535 |
+| Total archived | 301 |
+| Completion rate | 301/535 (56%) |
+| Monthly rate (current month) | 67 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 56 / 219 | 26% |
+| Pending items with plans | 56 / 221 | 25% |
 | Plans cross-reviewed | 9 | 14% |
 | Plans user-approved | 10 | 15% |
 
@@ -119,14 +119,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 89 | 1 | 8 |
-| Medium   | 98  | 2  | 1  |
+| Medium   | 100  | 2  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (48 items — 5 high, 35 medium, 8 low)
+### harness (50 items — 5 high, 37 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -161,6 +161,12 @@
 |----|----------|-------|--------|
 | WRK-1059 | MEDIUM | feat(harness): reference documentation quality checks — API completeness + docs/ audit | pending |
 | WRK-1060 | LOW | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending |
+
+#### harness / context
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1111 | MEDIUM | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending |
 
 #### harness / data-pipeline
 
@@ -275,6 +281,12 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-1041 | MEDIUM | Lifecycle HTML — auto-refresh + on-demand /work html command | pending |
+
+#### harness / workstations
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1110 | MEDIUM | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending |
 
 ### engineering (117 items — 68 high, 38 medium, 11 low)
 
@@ -1128,7 +1140,10 @@
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1354,7 +1369,9 @@
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | medium | medium | workspace-hub | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | high | complex | workspace-hub | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | medium | medium | workspace-hub | - |
-| WRK-1108 | Investigate WhatsApp MCP integration for Claude | low | simple | workspace-hub | - |
+| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | low | simple | workspace-hub | - |
+| WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | medium | medium | workspace-hub | - |
+| WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | medium | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - |
 
 ### Working
 
@@ -1683,6 +1700,7 @@
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | high | simple | workspace-hub | - |
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | high | medium | workspace-hub | - |
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | high | simple | workspace-hub | - |
+| WRK-1108 | Investigate WhatsApp MCP integration for Claude | low | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -1800,6 +1818,7 @@
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
+| WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | - |
 
 ### assetutilities
 
@@ -1820,6 +1839,7 @@
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
+| WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | - |
 
 ### client_projects
 
@@ -2008,6 +2028,7 @@
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
+| WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | - |
 
 ### doris
 
@@ -2275,7 +2296,10 @@
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | - |
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | simple | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | - |
-| WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | simple | - |
+| WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | low | simple | - |
+| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | pending | low | simple | - |
+| WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | - |
+| WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | - |
 
 ### worldenergydata
 
@@ -2380,6 +2404,7 @@
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
+| WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | - |
 
 ## By Priority
 
@@ -2877,6 +2902,8 @@
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | workspace-hub | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | workspace-hub | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | workspace-hub | - |
+| WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | workspace-hub | - |
+| WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - |
 
 ### Low
 
@@ -2927,7 +2954,8 @@
 | WRK-1042 | tidy-agent-teams: sentinel file support for non-conforming team names | pending | simple | workspace-hub | - |
 | WRK-1043 | tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05 | pending | simple | workspace-hub | - |
 | WRK-1060 | feat(harness): quality gap discovery — audit folders not covered by quality checks | pending | medium | - | - |
-| WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | simple | workspace-hub | - |
+| WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | simple | workspace-hub | - |
+| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | pending | simple | workspace-hub | - |
 
 ## By Complexity
 
@@ -3048,7 +3076,8 @@
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | workspace-hub | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | archived | high | workspace-hub | - |
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | workspace-hub | - |
-| WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | workspace-hub | - |
+| WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | low | workspace-hub | - |
+| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | pending | low | workspace-hub | - |
 
 ### Medium
 
@@ -3307,6 +3336,8 @@
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | workspace-hub | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | workspace-hub | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | workspace-hub | - |
+| WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | workspace-hub | - |
+| WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - |
 
 ### Complex
 
@@ -3414,7 +3445,7 @@
 
 ## By Computer
 
-### ace-linux-1 (165 active / 252 total)
+### ace-linux-1 (167 active / 255 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3669,7 +3700,10 @@
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | workspace-hub |
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | simple | workspace-hub |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | workspace-hub |
-| WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | simple | workspace-hub |
+| WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | low | simple | workspace-hub |
+| WRK-1109 | Install and configure lharries/whatsapp-mcp on ace-linux-1 | pending | low | simple | workspace-hub |
+| WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | medium | workspace-hub |
+| WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata |
 
 ### ace-linux-2 (7 active / 14 total)
 
