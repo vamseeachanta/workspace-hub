@@ -1,0 +1,5 @@
+wrk_id: WRK-693
+generated_at: "2026-03-10T00:00:00Z"
+additions:
+  - topic: python-runtime
+    note: "close-item.sh fully fixed; submit-to-*.sh python3 fallbacks removed; comprehensive-learning.sh and refresh-context.sh now use uv run"

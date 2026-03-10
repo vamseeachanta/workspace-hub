@@ -50,7 +50,22 @@ check_blockers() {
   fi
 }
 
-declare -a WORKING_ITEMS NEWLY_UNBLOCKED HIGH_UNBLOCKED MED_UNBLOCKED EXT_BLOCKED
+has_recent_session_lock() {
+  local wrk_id="$1"
+  local lock="$QUEUE_DIR/assets/$wrk_id/evidence/session-lock.yaml"
+  [[ ! -f "$lock" ]] && return 1
+  local locked_at
+  locked_at=$(get_field "$lock" "locked_at")
+  [[ -z "$locked_at" ]] && return 1
+  local now lock_ts age
+  now=$(date +%s)
+  lock_ts=$(date -d "$locked_at" +%s 2>/dev/null) || return 1
+  age=$(( now - lock_ts ))
+  # Reject future-dated locks (clock skew) and stale locks (>2h)
+  [[ $age -gt -86400 && $age -lt 7200 ]]
+}
+
+declare -a WORKING_ITEMS UNCLAIMED_ACTIVE NEWLY_UNBLOCKED HIGH_UNBLOCKED MED_UNBLOCKED EXT_BLOCKED
 
 process_file() {
   local f="$1" loc="$2"
@@ -87,6 +102,10 @@ process_file() {
   fi
 
   if [[ "$bstatus" == "clear" ]]; then
+    # Check for unclaimed active session (pending/ + recent lock)
+    if has_recent_session_lock "$id"; then
+      UNCLAIMED_ACTIVE+=("$row"); return
+    fi
     # Was it previously blocked (had WRK deps that are now cleared)?
     local raw_ids
     raw_ids=$(echo "$blocked_by" | tr -d '[]' | tr -d ' ' | grep -v '^$' || true)
@@ -130,6 +149,7 @@ printf "\033[1m║   scope: %-36s║\033[0m\n" "$scope_label"
 echo "\033[1m╚══════════════════════════════════════════════╝\033[0m"
 
 print_section "▶  WORKING — in progress"              "\033[36m" WORKING_ITEMS
+print_section "⚠  IN-PROGRESS UNCLAIMED — session active, not yet claimed" "\033[33m" UNCLAIMED_ACTIVE
 print_section "★  HIGH PRIORITY — ready to start"     "\033[32m" HIGH_UNBLOCKED
 print_section "↑  NEWLY UNBLOCKED — blockers cleared" "\033[33m" NEWLY_UNBLOCKED
 # Cap medium section
@@ -180,5 +200,5 @@ else
 fi
 
 echo ""
-echo "Summary: \033[36m${#WORKING_ITEMS[@]} working\033[0m · \033[32m${#HIGH_UNBLOCKED[@]} high ready\033[0m · \033[33m${#NEWLY_UNBLOCKED[@]} newly unblocked\033[0m · ${#MED_UNBLOCKED[@]} medium · \033[31m${#EXT_BLOCKED[@]} blocked\033[0m"
+echo "Summary: \033[36m${#WORKING_ITEMS[@]} working\033[0m · \033[33m${#UNCLAIMED_ACTIVE[@]} unclaimed\033[0m · \033[32m${#HIGH_UNBLOCKED[@]} high ready\033[0m · \033[33m${#NEWLY_UNBLOCKED[@]} newly unblocked\033[0m · ${#MED_UNBLOCKED[@]} medium · \033[31m${#EXT_BLOCKED[@]} blocked\033[0m"
 echo ""

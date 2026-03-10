@@ -4,7 +4,7 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: main
-    commit: a16ba5c7
+    commit: b1bfb5aa
     documents:
       - .claude/work-queue/assets/WRK-1097/WRK-1097-lifecycle.html
     published_at: "2026-03-10T06:20:00Z"
@@ -13,8 +13,17 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: main
-    commit: a16ba5c7
+    commit: 7617e73a
     documents:
       - .claude/work-queue/assets/WRK-1097/WRK-1097-lifecycle.html
     published_at: "2026-03-10T06:55:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: a16ba5c7
+    documents:
+      - .claude/work-queue/assets/WRK-1097/WRK-1097-lifecycle.html
+    published_at: "2026-03-10T07:35:00Z"
     reviewer: vamsee

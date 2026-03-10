@@ -238,13 +238,8 @@ while [[ "$attempt" -le "$CLAUDE_RETRIES" ]]; do
   [[ "$exit_code" -ne 0 ]] && LAST_EXIT_CODE=$exit_code
 
   if [[ "$exit_code" -eq 0 ]]; then
-    if command -v uv >/dev/null 2>&1; then
-      uv run --no-project python "$RENDERER" --provider claude --input "$raw_file" > "$rendered_file" 2>/dev/null
-      render_exit=$?
-    else
-      python3 "$RENDERER" --provider claude --input "$raw_file" > "$rendered_file" 2>/dev/null
-      render_exit=$?
-    fi
+    uv run --no-project python "$RENDERER" --provider claude --input "$raw_file" > "$rendered_file" 2>/dev/null
+    render_exit=$?
   else
     render_exit=1
   fi

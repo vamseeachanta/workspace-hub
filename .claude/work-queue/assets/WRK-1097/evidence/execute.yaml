@@ -1,0 +1,41 @@
+wrk_id: WRK-1097
+stage: 10
+executed_at: "2026-03-10T07:15:00Z"
+scope: integrated
+route: B
+provider: claude
+
+files_created:
+  - scripts/work-queue/active-sessions.sh
+  - .claude/skills/workspace-hub/active-sessions/SKILL.md
+  - scripts/work-queue/tests/test_unclaimed_detection.py
+
+files_modified:
+  - scripts/work-queue/whats-next.sh
+  - scripts/work-queue/start_stage.py
+  - .claude/skills/workspace-hub/whats-next/SKILL.md
+  - .claude/skills/workspace-hub/session-start/SKILL.md
+  - .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+
+test_count: 10
+test_files:
+  - scripts/work-queue/tests/test_unclaimed_detection.py
+
+integrated_repo_tests:
+  - name: unclaimed-detection-tests
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/test_unclaimed_detection.py -v
+    result: pass
+    artifact_ref: scripts/work-queue/tests/test_unclaimed_detection.py
+  - name: full-work-queue-tests
+    scope: integrated
+    command: uv run --no-project python -m pytest scripts/work-queue/tests/ -v --tb=short -q
+    result: pass
+    artifact_ref: scripts/work-queue/tests/
+  - name: active-sessions-smoke
+    scope: integrated
+    command: bash scripts/work-queue/active-sessions.sh --unclaimed-only
+    result: pass
+    artifact_ref: scripts/work-queue/active-sessions.sh
+
+completed_at: "2026-03-10T07:20:00Z"

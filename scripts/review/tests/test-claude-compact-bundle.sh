@@ -7,7 +7,7 @@ trap 'rm -rf "$TMP_DIR"' EXIT
 
 SOURCE="$ROOT_DIR/specs/wrk/WRK-624/plan.md"
 OUT="$TMP_DIR/claude-bundle.md"
-python3 "$ROOT_DIR/scripts/review/build-claude-plan-bundle.py" --input "$SOURCE" --output "$OUT"
+uv run --no-project python "$ROOT_DIR/scripts/review/build-claude-plan-bundle.py" --input "$SOURCE" --output "$OUT"
 
 src_bytes="$(wc -c < "$SOURCE")"
 out_bytes="$(wc -c < "$OUT")"

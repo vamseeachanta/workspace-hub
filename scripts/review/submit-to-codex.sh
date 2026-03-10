@@ -197,15 +197,7 @@ EOF
   }
 
   run_renderer() {
-    if command -v uv >/dev/null 2>&1; then
-      # uv present: use it exclusively (no silent python3 fallback)
-      uv run --no-project python "$RENDERER" --provider codex --input "$raw_file"
-      return
-    fi
-    if command -v python3 >/dev/null 2>&1; then
-      python3 "$RENDERER" --provider codex --input "$raw_file" && return
-    fi
-    return 127
+    uv run --no-project python "$RENDERER" --provider codex --input "$raw_file"
   }
 
   prompt_for_run="$FULL_PROMPT"

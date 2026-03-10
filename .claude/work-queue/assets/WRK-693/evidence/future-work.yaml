@@ -1,0 +1,15 @@
+wrk_id: WRK-693
+generated_at: "2026-03-10T00:00:00Z"
+recommendations:
+  - id: FW-1
+    title: "Fix remaining inline python3 -c calls in session/productivity scripts to use uv"
+    rationale: "ai-usage-summary.sh, session-analysis.sh, summary-header.sh, wrk-health.sh all use python3 - heredocs; these are stdlib-only but for strict compliance should use uv run"
+    disposition: existing-updated
+    status: deferred
+    captured: true
+  - id: FW-2
+    title: "Add pre-commit hook to catch new bare python3 .py script invocations"
+    rationale: "Prevent regression — detect bare python3 calling a .py file in scripts/"
+    disposition: spun-off-new
+    status: deferred
+    captured: true

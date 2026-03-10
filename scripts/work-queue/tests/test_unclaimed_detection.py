@@ -410,7 +410,7 @@ class TestStartStagePendingGuard:
         )
         (fake_repo / ".claude" / "work-queue" / "assets" / wrk_id).mkdir(parents=True)
 
-        result = self._run(wrk_id, 9, fake_repo / ".claude" / "work-queue")
+        result = self._run(wrk_id, 9, fake_repo)
         assert result.returncode == 0, (
             f"Expected exit 0 for stage 9 with item in working/, got {result.returncode}.\n"
             f"stdout: {result.stdout}\nstderr: {result.stderr}"
@@ -426,8 +426,46 @@ class TestStartStagePendingGuard:
         )
         (fake_repo / ".claude" / "work-queue" / "assets" / wrk_id).mkdir(parents=True)
 
-        result = self._run(wrk_id, 2, fake_repo / ".claude" / "work-queue")
+        result = self._run(wrk_id, 2, fake_repo)
         assert result.returncode == 0, (
             f"Expected exit 0 for stage 2 with item in pending/, got {result.returncode}.\n"
             f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+
+    def test_stage9_with_item_in_blocked_exits_nonzero(
+        self, fake_repo: Path
+    ) -> None:
+        """Test 11: stage 9 + item in blocked/ → exit(1); blocked items are not claimed."""
+        wrk_id = "WRK-9911"
+        (fake_repo / ".claude" / "work-queue" / "blocked" / f"{wrk_id}.md").write_text(
+            f"---\nid: {wrk_id}\n---\n"
+        )
+        (fake_repo / ".claude" / "work-queue" / "assets" / wrk_id).mkdir(parents=True)
+
+        result = self._run(wrk_id, 9, fake_repo)
+        assert result.returncode != 0, (
+            f"Expected non-zero exit for stage 9 with item in blocked/, got 0.\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+        assert "claim" in result.stderr.lower(), (
+            f"Expected 'claim' in stderr for blocked item, got:\n{result.stderr}"
+        )
+
+    def test_stage9_with_item_in_done_exits_nonzero(
+        self, fake_repo: Path
+    ) -> None:
+        """Test 12: stage 9 + item in done/ → exit(1); done items are not in working/."""
+        wrk_id = "WRK-9912"
+        (fake_repo / ".claude" / "work-queue" / "done" / f"{wrk_id}.md").write_text(
+            f"---\nid: {wrk_id}\n---\n"
+        )
+        (fake_repo / ".claude" / "work-queue" / "assets" / wrk_id).mkdir(parents=True)
+
+        result = self._run(wrk_id, 9, fake_repo)
+        assert result.returncode != 0, (
+            f"Expected non-zero exit for stage 9 with item in done/, got 0.\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+        assert "claim" in result.stderr.lower(), (
+            f"Expected 'claim' in stderr for done item, got:\n{result.stderr}"
         )

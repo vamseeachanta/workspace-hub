@@ -43,6 +43,7 @@ the archive, so items whose deps have been completed are correctly shown as read
 | Section | Meaning |
 |---|---|
 | ▶ WORKING | Currently active in working/ |
+| ⚠ IN-PROGRESS UNCLAIMED | Pending items with session-lock < 2h old (not yet claimed) |
 | ★ HIGH PRIORITY | High-priority, no blockers, ready to start |
 | ↑ NEWLY UNBLOCKED | Had WRK blockers that are now all archived |
 | · MEDIUM | Medium-priority, no blockers |
@@ -58,6 +59,9 @@ the archive, so items whose deps have been completed are correctly shown as read
 
 ## Notes
 
+- Use `bash scripts/work-queue/active-sessions.sh` for a full session audit including
+  claimed items. The ⚠ IN-PROGRESS UNCLAIMED section in whats-next shows only pending
+  items — active-sessions.sh shows both claimed and unclaimed in one view.
 - "Newly unblocked" means the item previously had `blocked_by: [WRK-NNN]` entries
   that are now in the archive — these are the highest-leverage next items since their
   infrastructure is now ready.

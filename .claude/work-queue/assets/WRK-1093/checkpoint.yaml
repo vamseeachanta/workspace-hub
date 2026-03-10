@@ -1,0 +1,12 @@
+wrk_id: WRK-1093
+current_stage: 7
+stage_name: User Review - Plan Final
+completed_stage: 6
+next_action: Execute stage 7: User Review - Plan Final
+context_summary: Stage 6 complete. Next: stage 7 (User Review - Plan Final).
+entry_reads:
+  - .claude/work-queue/assets/WRK-1093/checkpoint.yaml
+  - assets/WRK-1093/WRK-1093-lifecycle.html#s1-s6
+  - assets/WRK-1093/evidence/cross-review.yaml
+checkpointed_at: 2026-03-10T12:30:50Z
+human_gate: true

@@ -1,12 +1,11 @@
 wrk_id: WRK-1097
-current_stage: 8
-stage_name: Claim / Activation
-completed_stage: 7
-next_action: Execute stage 8: Claim / Activation
-context_summary: Stage 7 complete. Next: stage 8 (Claim / Activation).
+current_stage: 17
+stage_name: User Review - Implementation
+completed_stage: 16
+next_action: Execute stage 17: User Review - Implementation
+context_summary: Stage 16 complete. Next: stage 17 (User Review - Implementation).
 entry_reads:
   - .claude/work-queue/assets/WRK-1097/checkpoint.yaml
-  - assets/WRK-1097/evidence/plan-final-review.yaml
-checkpointed_at: 2026-03-10T11:47:48Z
-human_gate: false
-chained_stages: [[8, 9]]
+  - assets/WRK-1097/WRK-1097-lifecycle.html#s10-s16
+checkpointed_at: 2026-03-10T12:17:04Z
+human_gate: true

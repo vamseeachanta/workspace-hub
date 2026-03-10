@@ -98,30 +98,7 @@ Violations to avoid:
 
    ### Stage 4 — Plan Draft Creation
 
-   Produce the plan artifact (`specs/wrk/WRK-NNN/plan.md`) before Stage 5 review.
-
-   **Pseudocode requirement** (for non-trivial logic — ≥3 steps or branching):
-   Include function-level pseudocode blocks inside the plan for every significant
-   algorithm, gate check, or decision workflow.
-   Format:
-   ```
-   function_name(inputs) → output  # objective in one line
-     1. step one
-     2. step two (branch: if X then A, else B)
-     3. return result
-   ```
-   N/A allowed with explicit reason: `n/a_reason: "pure-doc WRK — no logic"`
-
-   **Tests/Evals requirement:**
-   List ≥3 test or verification cases in the plan before Stage 5 review.
-   Format: `test_name | scenario (happy/edge/error) | expected result`
-
-   **Plan sections required** (Route B/C minimum):
-   - Mission / What / Why
-   - Phases with numbered steps
-   - Pseudocode blocks for each phase with non-trivial logic
-   - Tests and Evals list
-   - Risks and Out of Scope
+   Produce `specs/wrk/WRK-NNN/plan.md`. Required sections (Route B/C): Mission/What/Why, Phases, Pseudocode (for logic ≥3 steps; N/A+reason allowed), Tests/Evals ≥3 entries (`name|happy/edge/error|expected`), Risks/Out of Scope.
 
    ### Stage 5 — Plan Draft (Human-in-Loop Interactive)
 
@@ -140,21 +117,9 @@ Violations to avoid:
 
    **Stage 5 process:** Open lifecycle HTML (`xdg-open`) + push to origin BEFORE presenting any recommendation. Walk plan section-by-section. Write `evidence/user-review-plan-draft.yaml` with decision log.
 
-   **Stage 5 exit checklist — ALL must be true before Stage 6:**
-   - [ ] Plan HTML opened in browser (`xdg-open`) and pushed to origin
-   - [ ] Lifecycle HTML updated with Stage 5 evidence and approval block
-   - [ ] Interactive walk-through completed section-by-section with user
-   - [ ] User has explicitly approved (not just "ok" — scope/criteria/risk decisions)
-   - [ ] `user-review-plan-draft.yaml` written with decision log
-   - [ ] Plan artifacts updated from user decisions
-   - [ ] Pseudocode produced for all non-trivial logic (or N/A with reason)
-   - [ ] Tests/Evals list written (≥3 entries or N/A with reason) and reviewed
-   - [ ] (Route B/C only) All 3 agents completed interactive planning sessions;
-         `plan_claude.md`, `plan_codex.md`, `plan_gemini.md` saved in assets/WRK-NNN/;
-         synthesis merged into final `specs/wrk/WRK-NNN/plan.md`; conflicts resolved
+   **Stage 5 exit** (ALL required): Plan HTML opened+pushed; lifecycle HTML updated; walk-through done section-by-section; explicit approval (not just "ok"); `user-review-plan-draft.yaml` written; plan updated from decisions; pseudocode for non-trivial logic; tests/evals ≥3 entries; (Route B/C) all 3 agents completed, synthesis merged.
 
-   Stage 5→6 enforced by checker (WRK-1017):
-   `uv run --no-project python scripts/work-queue/verify-gate-evidence.py --stage5-check WRK-NNN`
+   Enforced: `uv run --no-project python scripts/work-queue/verify-gate-evidence.py --stage5-check WRK-NNN`
 
    ### Stage 6 — Cross-Review
 
@@ -244,14 +209,20 @@ absorbed. Pre-existing patterns → capture as new WRK items in
 - Stage micro-skills (20): `.claude/skills/workspace-hub/stages/stage-NN-*.md`
 - Gate hook: `scripts/work-queue/gate_check.py` (Write PreToolUse, supplemental)
 
-## Version History
+## Stage 8 — Claim/Activation (HARD GATE before Stage 9)
 
-- **1.8.0** (2026-03-08): Deliverables section in lifecycle HTML at close; stage-evidence path update rule on close; D/N classification → WRK-1044 (WRK-1035)
-- **1.7.0** (2026-03-08): Stage 4 pseudocode req + Stage 6 cross-review pseudocode checklist; browser-open-before-approve rule (WRK-1035)
-- **1.6.0** (2026-03-08): Canonical terminology table: WRK session/stage/phase/step/checkpoint/resume (WRK-1040)
-- **1.5.0** (2026-03-07): Stage 5 dispatch via `stage5-plan-dispatch.sh`; Codex+Gemini parallel (WRK-1020)
-- **1.4.0** (2026-03-07): Stage 5 synthesis interactive with user — diff table, no auto-merge (WRK-1020)
-- **1.3.0** (2026-03-07): Stage 5 route-split; named plan artifacts; exit checklist expanded to 9 items (WRK-1020)
+**HARD GATE**: `claim-item.sh` MUST be run before starting Stage 9.
+
+```bash
+bash scripts/work-queue/claim-item.sh WRK-NNN
+```
+
+Use `bash scripts/work-queue/active-sessions.sh` to verify no other session is active
+on this item before claiming. If another session appears as unclaimed for the same WRK,
+investigate — do not claim and proceed without understanding the collision.
+
+Stage 9 (`start_stage.py WRK-NNN 9`) enforces this: it will exit 1 if the WRK is still
+in `pending/` and print a reminder to run `claim-item.sh`.
 
 ## Practical Lessons (WRK-690)
 
@@ -263,22 +234,8 @@ absorbed. Pre-existing patterns → capture as new WRK items in
 
 ## Lifecycle HTML — Deliverables Section (WRK-1035)
 
-At Stage 17/18 (Close), regenerate lifecycle HTML with a **Deliverables** section appended at the end:
-
-```
-## Deliverables
-| Artifact | Type | Path |
-|----------|------|------|
-| <file> | <script|skill|test|yaml|...> | <relative path> |
-```
-
-Source: `exit_artifacts` fields across all completed stage contracts + the WRK body's `## What` section.
-Purpose: makes the HTML a self-contained record of what the WRK produced; reviewers see outcomes without reading evidence files.
-Implementation target: `generate-html-review.py --lifecycle` → append deliverables table from `future-work.yaml` + stage-evidence exit_artifacts. (WRK-1041 scope)
+At Stage 17/18 (Close): regenerate lifecycle HTML with a **Deliverables** table (`exit_artifacts` + WRK `## What` section). Use `generate-html-review.py --lifecycle`. (WRK-1041 scope)
 
 ## Stage-Evidence Path After Close (WRK-1035)
 
-`stage-evidence.yaml` stage[1/2/9] evidence paths reference `working/WRK-NNN.md`.
-After `close-item.sh` moves the WRK to `done/`, those paths become stale and fail `archive-item.sh`.
-
-**Rule**: When `close-item.sh` moves a WRK from `working/` to `done/`, update any `stage-evidence.yaml` entries whose `evidence:` field references `working/WRK-NNN.md` → `done/WRK-NNN.md`. Add this as a step in `close-item.sh` after the `mv` command. (WRK-1044 D-scope)
+When `close-item.sh` moves a WRK from `working/` to `done/`, update `stage-evidence.yaml` entries referencing `working/WRK-NNN.md` → `done/WRK-NNN.md`. (WRK-1044 D-scope)

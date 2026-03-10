@@ -102,7 +102,7 @@ fi
 # Build Python command
 # ---------------------------------------------------------------------------
 PYTHON_CMD=(
-    python3 "$PIPELINE_PY"
+    uv run --no-project python "$PIPELINE_PY"
     --diameter "$DIAMETER"
     --length   "$LENGTH"
     --velocity "$VELOCITY"

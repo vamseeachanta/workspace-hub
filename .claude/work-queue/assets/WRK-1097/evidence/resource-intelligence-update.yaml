@@ -1,0 +1,13 @@
+wrk_id: WRK-1097
+stage: 16
+updated_at: "2026-03-10T07:30:00Z"
+additions:
+  - item: "active-sessions.sh — new reusable script for session liveness audit"
+    category: scripts
+    note: "Age-only heuristic v1; PID check removed (session_pid is start_stage.py — short-lived)"
+  - item: "workspace-hub:active-sessions skill — new skill wrapping active-sessions.sh"
+    category: skills
+    note: "Reusable across session-start, whats-next, claim-item contexts"
+  - item: "session_pid in session-lock.yaml is NOT a live session PID"
+    category: patterns
+    note: "It's the start_stage.py PID — exits immediately. Use age-based liveness only."

@@ -96,7 +96,7 @@ run_py_phase() {
     echo "--- Phase ${phase_num}: ${phase_name} ---"
     
     local output
-    output=$(python3 "$ANALYSIS_PY" "$phase_num")
+    output=$(uv run --no-project python "$ANALYSIS_PY" "$phase_num")
     
     # Extract the PHASE_RESULT line
     local result_line

@@ -1,0 +1,25 @@
+wrk_id: WRK-693
+scope: integrated
+completed_at: "2026-03-10T00:00:00Z"
+changes_summary: >
+  Replaced 20+ bare python3 invocations of hub .py scripts with uv run --no-project python.
+  Key scripts fixed: comprehensive-learning.sh, refresh-context.sh, submit-to-claude.sh,
+  submit-to-codex.sh, submit-to-gemini.sh, gmsh_openfoam_orcaflex.sh,
+  test-provider-transport.sh (16 calls), test-claude-compact-bundle.sh.
+  Removed python3 fallback branches from all three submit-to-*.sh scripts.
+integrated_repo_tests:
+  - name: close-item.sh help
+    scope: integrated
+    command: "bash scripts/work-queue/close-item.sh --help"
+    result: pass
+    artifact_ref: smoke-test/close-item-help
+  - name: write-wrk-state.py help
+    scope: integrated
+    command: "uv run --no-project python scripts/session/write-wrk-state.py --help"
+    result: pass
+    artifact_ref: smoke-test/write-wrk-state-help
+  - name: legal scan
+    scope: integrated
+    command: "bash scripts/legal/legal-sanity-scan.sh"
+    result: pass
+    artifact_ref: assets/WRK-693/legal-scan.md

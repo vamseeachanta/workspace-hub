@@ -191,7 +191,7 @@ write_state_to_wrk() {
     ts="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
     # Delegate YAML frontmatter update to Python helper
-    python3 "$PYTHON_HELPER" \
+    uv run --no-project python "$PYTHON_HELPER" \
         --wrk-path "$wrk_file" \
         --last-updated "$ts" \
         --progress-notes "$progress_notes" \
@@ -226,7 +226,7 @@ write_subagent_checkpoint() {
     local active_wrk_ids="$1"
     local modified_files="$2"
 
-    python3 "$CHECKPOINT_HELPER" \
+    uv run --no-project python "$CHECKPOINT_HELPER" \
         --workspace "$WORKSPACE_HUB" \
         --active-wrk "$active_wrk_ids" \
         --modified-files "$modified_files" \

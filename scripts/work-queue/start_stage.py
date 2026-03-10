@@ -333,6 +333,17 @@ def _main() -> None:
                 print(f"  Removed stale checkpoint for {wrk_id}.", file=sys.stderr)
             sys.exit(0)
 
+    # Stage guard: stages ≥9 require item to be in working/ (claimed)
+    if stage >= 9:
+        working_path = Path(queue_dir) / "working" / f"{wrk_id}.md"
+        if not working_path.exists():
+            print(
+                f"✖ {wrk_id} is not in working/ — claim it before starting stage {stage}:\n"
+                f"  bash scripts/work-queue/claim-item.sh {wrk_id}",
+                file=sys.stderr,
+            )
+            sys.exit(1)
+
     # Stage 1: write session-lock.yaml + active-wrk pre-validation
     if stage == 1:
         import datetime
