@@ -2,5 +2,5 @@ wrk_id: WRK-1095
 stage: 1
 reviewer: vamsee
 scope_approved: true
-confirmed_at: "2026-03-10T00:00:00Z"
+confirmed_at: "2026-03-10T08:30:00Z"
 notes: "Scope approved as-is: complexity ratchet converting warn-only radon to enforcing gate"

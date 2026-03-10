@@ -1,0 +1,29 @@
+events:
+  - stage: plan_draft
+    review_checkpoint: common_draft
+    review_cycle_id: "stage5-20260310"
+    wrk_id: WRK-1105
+    pushed_to_origin: false
+    remote: origin
+    branch: main
+    published_draft_commit: "fd12c31aaf30c9bb7d87a686a0faf9446643d045"
+    documents:
+      - specs/wrk/WRK-1105/plan.md
+    published_at: "2026-03-10T00:00:00Z"
+    reviewer: vamsee
+    generated_by_script: scripts/work-queue/log-user-review-publish.sh
+    generated_at_commit: "fd12c31aaf30c9bb7d87a686a0faf9446643d045"
+  - stage: plan_draft
+    review_checkpoint: combined_plan
+    review_cycle_id: "stage5-20260310"
+    wrk_id: WRK-1105
+    pushed_to_origin: false
+    remote: origin
+    branch: main
+    published_draft_commit: "fd12c31aaf30c9bb7d87a686a0faf9446643d045"
+    documents:
+      - specs/wrk/WRK-1105/plan.md
+    published_at: "2026-03-10T00:00:01Z"
+    reviewer: vamsee
+    generated_by_script: scripts/work-queue/log-user-review-publish.sh
+    generated_at_commit: "fd12c31aaf30c9bb7d87a686a0faf9446643d045"

@@ -1,0 +1,12 @@
+wrk_id: WRK-1009
+current_stage: 8
+stage_name: Claim / Activation
+completed_stage: 7
+next_action: Execute stage 8: Claim / Activation
+context_summary: Stage 7 complete. Next: stage 8 (Claim / Activation).
+entry_reads:
+  - .claude/work-queue/assets/WRK-1009/checkpoint.yaml
+  - assets/WRK-1009/evidence/plan-final-review.yaml
+checkpointed_at: 2026-03-10T19:18:01Z
+human_gate: false
+chained_stages: [[8, 9]]

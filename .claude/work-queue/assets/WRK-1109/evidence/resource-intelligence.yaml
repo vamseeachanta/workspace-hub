@@ -1,0 +1,36 @@
+wrk_id: WRK-1109
+stage: 2
+completion_status: continue_to_planning
+assessed_at: 2026-03-10T00:00:00Z
+
+environment:
+  go_installed: false
+  go_available_via: "sudo apt install golang-go (v1.22)"
+  uv_installed: true
+  uv_version: "0.10.0"
+  claude_interface: "Claude Code CLI (/usr/bin/claude) — NOT Claude Desktop GUI"
+  mcp_config_path: "~/.claude/settings.json"
+  mcp_servers_current: "{}"
+  docs_integrations_dir: false
+
+clarification:
+  scope_adjustment: >
+    WRK item says "Claude Desktop" but this machine uses Claude Code CLI.
+    MCP servers for Claude Code are configured under mcpServers in ~/.claude/settings.json.
+    Proceeding with Claude Code CLI as the target; no change to ACs needed.
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workspace-hub:ecosystem-terminology
+  referenced:
+    - python-runtime
+
+blockers: []
+
+risk_notes:
+  - Go binary must be built from source (whatsapp-mcp is a Go project)
+  - QR code auth requires interactive session with display — needs local terminal or VNC
+  - whatsmeow is unofficial; ToS risk for automated messaging
+  - Prompt injection risk: received WhatsApp messages fed to Claude

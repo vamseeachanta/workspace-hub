@@ -1,0 +1,84 @@
+wrk_id: WRK-1009
+stage: 6
+reviewed_at: "2026-03-10T00:00:00Z"
+review_artifact: scripts/review/results/wrk-1009-plan-cross-review.md
+scope_change: false
+
+providers:
+  claude:
+    verdict: APPROVE
+    severity: minor
+    findings:
+      - id: C1
+        severity: P3
+        description: >
+          Phase 0 heuristics risk over-classification. Mitigate by using 3-way classifier
+          (candidate/not_candidate/needs_human_review) and human review of output.
+        resolution: already in plan (3-way classifier; human review before conversion WRK)
+      - id: C2
+        severity: P3
+        description: >
+          comprehensive-learning Step 4b failure policy should be non-blocking (|| true)
+          consistent with other steps.
+        resolution: incorporate during Stage 10 implementation
+
+  codex:
+    verdict: APPROVE
+    severity: minor
+    findings:
+      - id: X1
+        severity: P2
+        description: >
+          Retirement rule underspecified for missing/stale usage data. Without valid
+          measurement window, retirement creates false positives.
+        resolution: SKIP result when usage data absent — incorporated in plan decision ③
+      - id: X2
+        severity: P2
+        description: >
+          Bash is brittle for YAML/frontmatter parsing. Use uv run --no-project python
+          helpers throughout.
+        resolution: incorporated as plan decision ⑥ (uv run python helpers)
+      - id: X3
+        severity: P3
+        description: >
+          Atomic writes missing from original plan — partial cron artifacts risk state
+          corruption.
+        resolution: incorporated (temp+rename pattern in Phase 2)
+      - id: X4
+        severity: P3
+        description: >
+          /reflect integration target unclear — verify owning renderer before assuming
+          shell section hook.
+        resolution: verify during Stage 10 Phase 3
+
+  gemini:
+    verdict: APPROVE
+    severity: minor
+    findings:
+      - id: G1
+        severity: P3
+        description: >
+          Eval YAML declarations should list exact markers/sections expected, not vague
+          prose assertions (improves repeatability of checks).
+        resolution: incorporate in pilot eval YAML design during Phase 1
+      - id: G2
+        severity: P3
+        description: >
+          Script-candidate scan should emit both md and JSON outputs; replace same-day
+          artifacts (not append).
+        resolution: incorporated (plan now requires both outputs, atomic replace)
+      - id: G3
+        severity: P3
+        description: >
+          /today and /reflect sections must degrade gracefully when no nightly report exists.
+        resolution: incorporate during Phase 3 implementation
+
+synthesis:
+  consensus: APPROVE
+  p1_findings: 0
+  p2_findings: 2
+  p3_findings: 5
+  action: >
+    All P2 findings (X1, X2) already incorporated into plan via user review decisions.
+    P3 findings are implementation-time reminders for Stage 10. No plan revision needed.
+    Proceed to Stage 7 (User Review Plan Final).

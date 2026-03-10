@@ -1,5 +1,13 @@
-wrk_id: WRK-1095
-stage: 5
-opened_at: "2026-03-10T00:00:00Z"
-html_path: .claude/work-queue/assets/WRK-1095/WRK-1095-lifecycle.html
-method: xdg-open
+events:
+  - stage: plan_draft
+    html_ref: ".claude/work-queue/assets/WRK-1095/WRK-1095-lifecycle.html"
+    opened_in_default_browser: true
+    browser: default
+    opened_at: "2026-03-10T09:00:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    html_ref: ".claude/work-queue/assets/WRK-1095/WRK-1095-lifecycle.html"
+    opened_in_default_browser: true
+    browser: default
+    opened_at: "2026-03-10T09:20:00Z"
+    reviewer: vamsee

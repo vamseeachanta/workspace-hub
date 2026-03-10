@@ -1,0 +1,49 @@
+wrk_id: WRK-1009
+stage: 2
+generated_at: "2026-03-10T00:00:00Z"
+completion_status: continue_to_planning
+
+skills:
+  core_used:
+    - coordination/workspace/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - skill-creator:skill-creator
+    - verify:skill-eval
+
+existing_assets:
+  scripts:
+    - path: scripts/skills/validate-skills.sh
+      purpose: Validates skill frontmatter (name, description, version fields)
+    - path: scripts/skills/check-skill-pipeline-health.sh
+      purpose: Checks skill pipeline health (hook installed, recent updates, pending reviews)
+    - path: scripts/skills/generate-skill-summary.py
+      purpose: Generates SKILLS_SUMMARY.md/html from all SKILL.md files
+    - path: scripts/cron/comprehensive-learning-nightly.sh
+      purpose: Nightly orchestrator; Step 4 runs validate-skills.sh
+    - path: scripts/learning/comprehensive-learning.sh
+      purpose: 10-phase pipeline; Phase 7 = code-quality scan
+  skills:
+    - path: .claude/skills/workspace-hub/work-queue/SKILL.md
+      purpose: Work queue lifecycle reference (20 stages, gate contracts)
+    - path: .claude/skills/workspace-hub/workflow-gatepass/SKILL.md
+      purpose: Gate enforcement (R-25/R-26/R-27)
+  state:
+    - path: .claude/state/skill-scores.yaml
+      purpose: Existing skill quality scores (from comprehensive-learning Phase)
+
+gaps:
+  - No scripts/skills/run-skill-evals.sh exists yet
+  - No specs/skills/skill-eval-framework.md exists yet
+  - verify:skill-eval SKILL.md does not exist
+  - No skill-curation-nightly.sh exists yet
+  - No A/B eval scaffold exists
+  - comprehensive-learning has no skill-eval phase
+
+total_skills: 508
+notes: >
+  Route B (medium) — inline plan in WRK file. Implementation targets
+  scripts/skills/run-skill-evals.sh + specs/skills/skill-eval-framework.md
+  + 3 pilot evals + comprehensive-learning integration hook.
+  External skill discovery (openai/skills, anthropics/skills) is a stretch goal
+  deferred to follow-on WRK unless fits within scope.

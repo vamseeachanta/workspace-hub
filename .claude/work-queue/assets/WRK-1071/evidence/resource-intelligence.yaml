@@ -1,0 +1,118 @@
+wrk_id: WRK-1071
+stage: 2
+assessed_at: "2026-03-10"
+completion_status: continue_to_planning
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - testing
+    - python-runtime
+
+findings:
+  existing_infra:
+    pytest_benchmark_installed:
+      assetutilities: false
+      digitalmodel: true
+      worldenergydata: true_optional_dev
+    benchmarks_dir_exists:
+      assetutilities: false
+      digitalmodel: true  # contains generic algo benchmarks only, no domain calcs
+      worldenergydata: false  # has tests/performance/ with BenchmarkFixture conftest
+    run_benchmarks_sh_exists: false
+    benchmark_baseline_exists: false
+
+  repos:
+    assetutilities:
+      pyproject_path: "assetutilities/pyproject.toml"
+      has_pytest_benchmark: false
+      test_root: "assetutilities/src/assetutilities/tests/"
+      notes: >
+        pytest-benchmark absent from all dependency groups. Tests live under
+        src/assetutilities/tests/ not a repo-root tests/ dir. CP calcs are NOT
+        here — they live in digitalmodel. Heavy modules: riser/pipeline/fatigue.
+      heavy_modules:
+        - path: "assetutilities/src/assetutilities/calculations/scr_fatigue.py"
+          entry_point: "keulegan_carpenter_number(), soil_interaction_fatigue_factor()"
+          notes: >
+            SCR fatigue: KC number, soil interaction factor, VIV onset screening.
+            Pure math, no I/O — ideal benchmark target.
+        - path: "assetutilities/src/assetutilities/calculations/pipeline_dnv.py"
+          entry_point: "module-level functions"
+          notes: DNV pipeline design checks (burst/collapse). Synthetic-input benchmark.
+
+    digitalmodel:
+      pyproject_path: "digitalmodel/pyproject.toml"
+      has_pytest_benchmark: true  # in main dependencies
+      test_root: "digitalmodel/tests/"
+      benchmarks_dir_note: >
+        tests/benchmarks/ EXISTS but contains only generic list/string/dict
+        benchmarks — no domain engineering calcs. Domain CP and wall-thickness
+        benchmarks must be added.
+      heavy_modules:
+        - path: "digitalmodel/src/digitalmodel/infrastructure/base_solvers/hydrodynamics/cathodic_protection.py"
+          entry_point: "CathodicProtection.router(cfg)"
+          notes: >
+            Routes to 4 standard methods (ABS_gn_ships_2018, DNV_RP_F103_2010,
+            ABS_gn_offshore_2018, DNV_RP_B401_offshore). 128 existing tests pass.
+            Primary CP benchmark target. Note: infrastructure.common.cathodic_protection
+            is a deprecated shim — use infrastructure.base_solvers.hydrodynamics.
+        - path: "digitalmodel/src/digitalmodel/structural/analysis/wall_thickness.py"
+          entry_point: "module-level analyzer classes/functions"
+          notes: >
+            DNV-ST-F101 + API RP 1111 checks: burst, collapse, propagation buckling,
+            combined loading. Multi-code parametric sweep is a strong benchmark target.
+
+    worldenergydata:
+      pyproject_path: "worldenergydata/pyproject.toml"
+      has_pytest_benchmark: true_optional_dev  # in [project.optional-dependencies].dev only
+      test_root: "worldenergydata/tests/"
+      notes: >
+        tests/performance/ EXISTS with conftest.py that already sets up BenchmarkFixture
+        (try/except guard). WRK-1071 AC says tests/benchmarks/ — plan must decide
+        whether to create tests/benchmarks/ or reuse/rename tests/performance/.
+      heavy_modules:
+        - path: "worldenergydata/src/worldenergydata/eia_us/production/state_production.py"
+          entry_point: "StateProductionLoader.load(records, state)"
+          notes: >
+            Converts raw EIA API records to normalised DataFrame for 12 major
+            producing states. Pure pandas transform, no I/O in benchmark path.
+        - path: "worldenergydata/src/worldenergydata/eia_us/production/basin_production.py"
+          entry_point: "BasinProductionLoader.load(records)"
+          notes: >
+            DPR basin-level production loader for 7 EIA basins. Benchmark with
+            synthetic large record sets to measure aggregation throughput.
+
+  related_wrk_1054_summary: >
+    WRK-1054 (archived) delivered scripts/testing/run-all-tests.sh and
+    scripts/testing/parse_pytest_output.py. run-all-tests.sh is the direct model
+    for run-benchmarks.sh: same repo config table, uv run invocations, --repo flag.
+    run-benchmarks.sh should call pytest --benchmark-only --benchmark-json=<path>
+    per repo; a new parse_benchmark_output.py consumes the JSON and compares against
+    config/testing/benchmark-baseline.json, flagging >20% regressions.
+
+  cron_notes: >
+    No benchmark entry in scripts/cron/crontab-template.sh. Weekly Sunday slots
+    at 03:15 (env-parity) and 03:30 (model-ID) are taken; 04:00 is available.
+
+recommendations:
+  - >
+    CP calcs location mismatch: WRK-1071 body says "assetutilities: CP calcs"
+    but CathodicProtection lives in digitalmodel. Plan should target assetutilities
+    for riser/fatigue calcs (scr_fatigue.py) not CP.
+  - >
+    assetutilities: add pytest-benchmark to [dependency-groups].benchmark (new group)
+    or .test. Do not add to main deps.
+  - >
+    digitalmodel: tests/benchmarks/ exists — add two new files:
+    test_cp_benchmarks.py and test_wall_thickness_benchmarks.py.
+  - >
+    worldenergydata: reuse tests/performance/conftest.py; create tests/benchmarks/
+    pointing to it or add benchmark files directly in tests/performance/.
+  - >
+    run-benchmarks.sh: model on run-all-tests.sh. Key additions: --save-baseline
+    flag writes config/testing/benchmark-baseline.json; compare mode flags >20%.
+  - >
+    Weekly cron: Sunday 04:00 slot, log to logs/quality/benchmark-cron.log.

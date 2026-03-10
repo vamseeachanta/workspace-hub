@@ -1,0 +1,11 @@
+wrk_id: WRK-1105
+stage: plan_draft
+review_checkpoint: common_draft
+review_cycle_id: "stage5-20260310"
+draft_commit: "fd12c31aaf30c9bb7d87a686a0faf9446643d045"
+approval_decision: approve_as_is
+reviewed_at: "2026-03-10T00:00:00Z"
+reviewed_by: vamsee
+capture_method: manual_live_review
+generated_at_commit: "fd12c31aaf30c9bb7d87a686a0faf9446643d045"
+notes: "Common draft approved in live Stage 5 session."

@@ -1,0 +1,16 @@
+wrk_id: WRK-1009
+stage: 5
+reviewed_at: "2026-03-10T00:00:00Z"
+reviewer: vamsee
+decision: approved
+approval_decision: approve_as_is
+changes_requested:
+  - eval_defs_location: central (specs/skills/evals/) not per-skill
+  - ab_mode: static schema validation only, no live model runs
+  - retirement_threshold: 0.05 baseline_usage_rate + min 10 invocations (conservative)
+  - pilot_skills: work-queue, workflow-gatepass, comprehensive-learning (unchanged)
+  - new_scope: add Phase 0 skill-to-script conversion scan
+plan_artifact: .claude/work-queue/pending/WRK-1009.md
+notes: >
+  User approved plan with 4 scoping decisions + 1 new scope item (script-conversion scan).
+  All changes incorporated into ## Plan section before this gate was written.

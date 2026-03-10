@@ -1,5 +1,5 @@
 wrk_id: WRK-1009
-generated_at: "2026-03-07T06:49:59Z"
+generated_at: "2026-03-10T00:00:00Z"
 reviewed_by: "agent"
 autonomy_maturity_level: "L2"
 human_steers_agents_execute: true
@@ -11,156 +11,156 @@ stages:
     owner: orchestrator
     blocker: "no"
     comment: WRK created with baseline metadata.
-    evidence: .claude/work-queue/working/WRK-1009.md
+    evidence: .claude/work-queue/pending/WRK-1009.md
   - order: 2
     stage: Resource Intelligence
     status: done
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: Resource/document intelligence pack captured.
+    comment: Resource/document intelligence pack captured (508 skills, existing scripts inventoried).
     evidence: .claude/work-queue/assets/WRK-1009/evidence/resource-intelligence.yaml
   - order: 3
     stage: Triage
     status: done
-    human_decision_required: "yes"
+    human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: Route, priority, complexity, and workstations set.
-    evidence: .claude/work-queue/working/WRK-1009.md
+    comment: Route B (medium), ace-linux-1, orchestrator=claude.
+    evidence: .claude/work-queue/pending/WRK-1009.md
   - order: 4
     stage: Plan Draft
     status: done
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: Draft plan and artifact generated.
-    evidence: specs/wrk/WRK-1009/plan.md
+    comment: Inline ## Plan written (Route B) — 3 phases, test strategy table, scope boundary.
+    evidence: .claude/work-queue/pending/WRK-1009.md
   - order: 5
     stage: User Review - Plan (Draft)
     status: done
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: Tough questions, tradeoffs, and test/eval updates reviewed.
-    evidence: .claude/work-queue/assets/WRK-1009/plan-html-review-draft.md
+    comment: Approved with 5 scoping decisions; plan updated before gate written.
+    evidence: .claude/work-queue/assets/WRK-1009/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
     status: done
     human_decision_required: "no"
     owner: agents
     blocker: "no"
-    comment: Multi-provider review completed.
-    evidence: scripts/review/results/wrk-000-review.md
+    comment: All 3 providers APPROVE; 0 P1/P2 findings unresolved; P3 notes for Stage 10.
+    evidence: .claude/work-queue/assets/WRK-1009/evidence/cross-review.yaml
   - order: 7
     stage: User Review - Plan (Final)
-    status: done
+    status: pending
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: Final plan reviewed with gate-pass section.
-    evidence: .claude/work-queue/assets/WRK-1009/plan-html-review-final.md
+    comment: Pending Stage 6.
+    evidence: n/a
   - order: 8
     stage: Claim / Activation
-    status: done
+    status: pending
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: Claim evidence and active WRK set.
-    evidence: .claude/work-queue/assets/WRK-1009/evidence/claim.yaml
+    comment: Pending Stage 7.
+    evidence: n/a
   - order: 9
     stage: Work-Queue Routing Skill
-    status: done
+    status: pending
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: Entered canonical /work route.
-    evidence: /work
+    comment: Pending Stage 8.
+    evidence: n/a
   - order: 10
     stage: Work Execution
-    status: done
+    status: pending
     human_decision_required: "no"
     owner: agents
     blocker: "no"
-    comment: Implementation completed under active claim.
-    evidence: .claude/work-queue/assets/WRK-1009/evidence/execute.yaml
+    comment: Pending Stage 9.
+    evidence: n/a
   - order: 11
     stage: Artifact Generation
-    status: done
+    status: pending
     human_decision_required: "no"
     owner: agents
     blocker: "no"
-    comment: Review artifacts generated.
-    evidence: .claude/work-queue/assets/WRK-1009/review.html
+    comment: Pending Stage 10.
+    evidence: n/a
   - order: 12
     stage: TDD / Eval
-    status: done
+    status: pending
     human_decision_required: "no"
     owner: agents
     blocker: "no"
-    comment: Tests/evals completed and recorded.
-    evidence: .claude/work-queue/assets/WRK-1009/evidence/test-results.md
+    comment: Pending Stage 10.
+    evidence: n/a
   - order: 13
     stage: Agent Cross-Review
-    status: done
+    status: pending
     human_decision_required: "no"
     owner: agents
     blocker: "no"
-    comment: Implementation cross-review package complete.
-    evidence: .claude/work-queue/assets/WRK-1009/cross-review-package.md
+    comment: Pending Stage 12.
+    evidence: n/a
   - order: 14
     stage: Verify Gate Evidence
-    status: done
+    status: pending
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: Gate verifier passed.
-    evidence: scripts/work-queue/verify-gate-evidence.py
+    comment: Pending Stage 13.
+    evidence: n/a
   - order: 15
     stage: Future Work Synthesis
-    status: done
+    status: pending
     human_decision_required: "yes"
     owner: orchestrator
     blocker: "no"
-    comment: Follow-up disposition captured.
-    evidence: .claude/work-queue/assets/WRK-1009/evidence/future-work.yaml
+    comment: Pending Stage 14.
+    evidence: n/a
   - order: 16
     stage: Resource Intelligence Update
-    status: done
+    status: pending
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: New resources captured post execution.
-    evidence: .claude/work-queue/assets/WRK-1009/evidence/resource-intelligence-update.yaml
+    comment: Pending Stage 15.
+    evidence: n/a
   - order: 17
     stage: User Review - Implementation
-    status: done
+    status: pending
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: Close package reviewed including gate-pass section.
-    evidence: .claude/work-queue/assets/WRK-1009/evidence/user-review-close.yaml
+    comment: Pending Stage 16.
+    evidence: n/a
   - order: 18
     stage: Reclaim
     status: n/a
     human_decision_required: "no"
     owner: orchestrator
     blocker: "no"
-    comment: Not needed in this run.
-    evidence: .claude/work-queue/assets/WRK-1009/evidence/reclaim.yaml
+    comment: Not anticipated; set n/a.
+    evidence: n/a
   - order: 19
     stage: Close
     status: pending
     human_decision_required: "yes"
     owner: orchestrator
     blocker: "no"
-    comment: Awaiting final close operation.
-    evidence: scripts/work-queue/close-item.sh
+    comment: Pending Stage 17.
+    evidence: n/a
   - order: 20
     stage: Archive
     status: pending
     human_decision_required: "yes"
     owner: orchestrator
     blocker: "no"
-    comment: Awaiting merge/sync completion.
-    evidence: scripts/work-queue/archive-item.sh
+    comment: Pending Stage 19.
+    evidence: n/a
