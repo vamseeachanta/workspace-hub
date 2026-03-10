@@ -54,8 +54,32 @@ if [[ "$HTML_PATH" != /* ]]; then
 fi
 [[ -f "$HTML_PATH" ]] || { echo "ERROR: HTML file not found: $HTML_REF" >&2; exit 1; }
 
+_open_browser() {
+  local path="$1"
+  case "$(uname -s)" in
+    Linux*)
+      xdg-open "$path" >/dev/null 2>&1
+      ;;
+    Darwin*)
+      open "$path" >/dev/null 2>&1
+      ;;
+    MINGW*|MSYS*|CYGWIN*)
+      local native_path
+      if command -v cygpath &>/dev/null; then
+        native_path="$(cygpath -w "$path")"
+      else
+        native_path="$path"
+      fi
+      cmd.exe /c start "" "$native_path" >/dev/null 2>&1
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
 if [[ "$DO_OPEN" == "true" ]]; then
-  if ! xdg-open "$HTML_PATH" >/dev/null 2>&1; then
+  if ! _open_browser "$HTML_PATH"; then
     echo "ERROR: failed to open HTML in default browser: $HTML_PATH" >&2
     exit 1
   fi

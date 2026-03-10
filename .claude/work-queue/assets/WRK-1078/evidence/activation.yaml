@@ -1,0 +1,9 @@
+wrk_id: WRK-1078
+stage: 8
+activated_at: "2026-03-10"
+provider: claude
+orchestrator_agent: "claude"
+session_id: "claude-20260310-ACMA-ANSYS05"
+hostname: ACMA-ANSYS05
+execution_workstation: ace-linux-1
+status: active

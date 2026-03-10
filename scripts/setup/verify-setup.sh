@@ -231,7 +231,9 @@ if [[ -n "$_py_bin" ]]; then
     _warn "PyYAML not installed — run: uv tool install pyyaml (or pip3 install pyyaml)"
   fi
 else
-  _fail "python not found — install Python 3.10+ or uv"
+  _fail "python not found — install uv or Python 3.10+"
+  _warn "  uv installer: curl -LsSf https://astral.sh/uv/install.sh | sh"
+  _warn "  Windows/MINGW64: add \$USERPROFILE/.local/bin to PATH after install"
 fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────

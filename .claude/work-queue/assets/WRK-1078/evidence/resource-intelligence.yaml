@@ -1,0 +1,56 @@
+wrk_id: WRK-1078
+stage: 2
+generated_at: "2026-03-10"
+
+affected_files:
+  # Gap 1: xdg-open → cross-platform opener
+  - path: scripts/work-queue/log-user-review-browser-open.sh
+    line: 58
+    issue: bare xdg-open call; fails on Windows (no xdg-open) and macOS
+    fix: replace with cross-platform open_browser() helper function
+
+  # Gap 2: sed -i — AUDIT COMPLETE
+  # MINGW64 bundles GNU sed — sed -i "..." works without empty-string arg.
+  # All 30+ occurrences use GNU sed syntax. No changes needed for MINGW64.
+  # Note: macOS (BSD sed) would need sed -i '' — out of scope for this WRK.
+  - path: scripts/work-queue/sed-i-audit
+    issue: NONE — GNU sed on MINGW64 handles sed -i correctly
+    fix: no changes required
+
+  # Gap 3: uv install check in verify-setup.sh
+  - path: scripts/setup/verify-setup.sh
+    line: 234
+    issue: failure message "install Python 3.10+ or uv" gives no Windows-specific path
+    fix: add Windows uv install hint ($USERPROFILE/.local/bin/uv or curl installer)
+
+  # Gap 4: bare python3 calls in pipeline scripts
+  - path: .claude/work-queue/scripts/archive-item.sh
+    lines: [59, 79]
+    issue: bare python3 calls fail if python3 not in PATH on Windows
+    fix: replace with uv run --no-project python
+
+  # Gap 5 (bonus, discovered during stage 2): Python Unicode stdout encoding
+  - path: scripts/work-queue/checkpoint_writer.py
+    lines: [158, 165]
+    issue: box-drawing chars (╔═╗╚╝) fail on Windows cp1252 console
+    fix: add sys.stdout.reconfigure(encoding='utf-8', errors='replace') at entry point
+  - path: scripts/work-queue/exit_stage.py
+    issue: imports checkpoint_writer; encoding error propagates here
+    fix: add PYTHONIOENCODING guard or reconfigure at __main__ block
+  - path: scripts/work-queue/start_stage.py
+    issue: same encoding issue in _print_checkpoint_resume
+    fix: same guard
+
+  # Gap 5 (from WRK): Crontab documentation
+  - path: .claude/docs/new-machine-setup.md
+    section: "5. Cron Jobs"
+    issue: Windows section mentions Task Scheduler but doesn't explicitly state
+           cron is Linux-only and WRK routing automation requires ace-linux-1
+    fix: add callout box clarifying cron limitation
+
+out_of_scope:
+  - macOS BSD sed compatibility (separate concern)
+  - scripts/data/batchtools/ python3 calls (not WRK pipeline)
+  - scripts/productivity/sections/ python3 heredocs (not WRK pipeline)
+  - review test scripts python3 calls (test harnesses, not pipeline)
+  - xdg-open in third-party .venv packages (not owned code)

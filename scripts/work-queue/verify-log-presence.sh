@@ -13,7 +13,7 @@ FAIL=0
 
 count_valid_json() {
   local path="$1"
-  python3 -c "
+  uv run --no-project python -c "
 import json, sys
 ok=0; total=0
 for line in open(sys.argv[1]):

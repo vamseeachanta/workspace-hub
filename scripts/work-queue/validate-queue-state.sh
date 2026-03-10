@@ -4,7 +4,7 @@ set -euo pipefail
 
 WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 
-python3 - "$WORKSPACE_ROOT" <<'PY'
+uv run --no-project python - "$WORKSPACE_ROOT" <<'PY'
 import re
 import sys
 from datetime import datetime, timezone

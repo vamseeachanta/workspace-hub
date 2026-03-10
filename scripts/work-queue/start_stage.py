@@ -288,6 +288,9 @@ def _regenerate_lifecycle_html(wrk_id: str, repo_root: str) -> None:
 # ── CLI entrypoint ────────────────────────────────────────────────────────────
 
 def _main() -> None:
+    import sys
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     if len(sys.argv) < 3:
         print("Usage: start_stage.py WRK-NNN N", file=sys.stderr)
         sys.exit(1)

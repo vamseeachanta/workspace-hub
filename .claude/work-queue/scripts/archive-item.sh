@@ -56,7 +56,7 @@ ARCHIVE_PATH="${ARCHIVE_DIR}/${BASENAME}"
 
 # Update status to archived
 NOW_ISO=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-python3 <<EOF
+uv run --no-project python <<EOF
 import re
 with open("$ITEM_FILE", 'r') as f:
     content = f.read()
@@ -76,6 +76,6 @@ EOF
 rm "$ITEM_FILE"
 
 # Regenerate index
-python3 "${QUEUE_DIR}/scripts/generate-index.py"
+uv run --no-project python "${QUEUE_DIR}/scripts/generate-index.py"
 
 echo "✔ Archived: ${ITEM_ID} -> archive/$(date +%Y-%m)/${BASENAME}"
