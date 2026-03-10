@@ -60,6 +60,12 @@ process_file() {
   category=$(get_field "$f" "category")
   [[ -n "$FILTER_CATEGORY" && "$category" != *"$FILTER_CATEGORY"* ]] && return
 
+  # Skip periodic-review items (standing + cadence) — they self-schedule, not daily work
+  local _standing _cadence
+  _standing=$(get_field "$f" "standing")
+  _cadence=$(get_field "$f" "cadence")
+  [[ "$_standing" == "true" && -n "$_cadence" ]] && return
+
   status=$(get_field "$f" "status")
   priority=$(get_field "$f" "priority")
   subcategory=$(get_field "$f" "subcategory")
