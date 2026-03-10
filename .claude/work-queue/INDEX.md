@@ -1,13 +1,13 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T13:38:33Z by generate-index.py -->
+<!-- Generated: 2026-03-10T13:41:26Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T13:38:33Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T13:41:26Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 525
+**Total items:** 526
 
 ### By Status
 
@@ -16,13 +16,13 @@
 | pending | 220 |
 | working | 6 |
 | blocked | 10 |
-| archived | 289 |
+| archived | 290 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
-| high | 240 |
+| high | 241 |
 | medium | 239 |
 | low | 45 |
 
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 112 |
-| medium | 249 |
+| medium | 250 |
 | complex | 98 |
 
 ### By Category
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 188 |
+| workspace-hub | 189 |
 | worldenergydata | 99 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 209 / 525 |
-| Plans cross-reviewed | 119 |
-| Plans approved | 142 |
+| Plans exist | 209 / 526 |
+| Plans cross-reviewed | 121 |
+| Plans approved | 144 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,10 +91,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 525 |
-| Total archived | 289 |
-| Completion rate | 289/525 (55%) |
-| Monthly rate (current month) | 57 archived |
+| Total captured | 526 |
+| Total archived | 290 |
+| Completion rate | 290/526 (55%) |
+| Monthly rate (current month) | 58 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -102,8 +102,8 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | Pending items with plans | 56 / 220 | 25% |
-| Plans cross-reviewed | 10 | 15% |
-| Plans user-approved | 11 | 16% |
+| Plans cross-reviewed | 11 | 16% |
+| Plans user-approved | 12 | 18% |
 
 ### Aging
 
@@ -1117,10 +1117,11 @@
 | WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-1093 | Documentation currency — detect when README/docs drift from code | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1093 | Documentation currency — detect when README/docs drift from code | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
@@ -1671,6 +1672,7 @@
 | WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | high | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | high | medium | workspace-hub | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | high | simple | workspace-hub | - |
 
 ## By Repository
@@ -2254,6 +2256,7 @@
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | - |
+| WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | medium | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | pending | high | simple | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | pending | high | simple | - |
@@ -2606,6 +2609,7 @@
 | WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | archived | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | archived | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | medium | workspace-hub | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | simple | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | pending | simple | workspace-hub | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | pending | simple | workspace-hub | - |
@@ -3275,6 +3279,7 @@
 | WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | archived | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | archived | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | working | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | workspace-hub | - |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | workspace-hub | - |
 
 ### Complex
@@ -3382,7 +3387,7 @@
 
 ## By Computer
 
-### ace-linux-1 (169 active / 245 total)
+### ace-linux-1 (169 active / 246 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3627,6 +3632,7 @@
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | workspace-hub |
+| WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | medium | workspace-hub |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | workspace-hub |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | pending | high | simple | workspace-hub |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | pending | high | simple | workspace-hub |

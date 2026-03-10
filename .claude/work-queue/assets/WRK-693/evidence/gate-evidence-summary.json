@@ -19,17 +19,17 @@
     },
     {
       "name": "Stage evidence gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "stage-evidence.yaml: stages=19, contract=19-stage"
-    },
-    {
-      "name": "Resource-intelligence gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "resource-intelligence evidence absent (legacy item \u2014 WARN)"
+      "details": "stage-evidence.yaml: stage order 17 must be done|n/a before close (found pending)"
+    },
+    {
+      "name": "Resource-intelligence gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3"
     },
     {
       "name": "Activation gate",
@@ -75,17 +75,17 @@
     },
     {
       "name": "Integrated test gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "execute evidence missing (required: evidence/execute.yaml)"
+      "details": "execute.yaml: integrated_repo_tests=3 (all passing)"
     },
     {
       "name": "Legal gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "artifact=missing, none"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-693/legal-scan.md, result=missing"
     },
     {
       "name": "Claim gate",
@@ -96,24 +96,24 @@
     },
     {
       "name": "Future-work gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "future-work evidence absent (legacy item \u2014 WARN)"
+      "details": "future-work.yaml: recommendations=2"
     },
     {
       "name": "Resource-intelligence update gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence-update.yaml missing"
+      "details": "resource-intelligence-update.yaml: additions=1"
     },
     {
       "name": "User-review close gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-close.yaml missing"
+      "details": "user-review-close.yaml: decision=approved"
     },
     {
       "name": "Reclaim gate",
@@ -124,17 +124,17 @@
     },
     {
       "name": "Approval ordering gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "approval ordering OK (phase=close)"
+      "details": "timestamp ordering violation: claim-evidence.claimed_at (2026-03-10T00:00:00Z) >= execute.executed_at (2026-03-10T00:00:00Z)"
     },
     {
       "name": "Midnight UTC sentinel gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "no midnight UTC sentinel found"
+      "details": "midnight UTC sentinel detected in user-review-close.yaml.reviewed_at: 2026-03-10T00:00:00Z"
     },
     {
       "name": "Browser open elapsed time gate",
@@ -145,17 +145,17 @@
     },
     {
       "name": "Sentinel values gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "no sentinel values found"
-    },
-    {
-      "name": "Claim artifact path gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+      "details": "claim-evidence.yaml: route='' (empty)"
+    },
+    {
+      "name": "Claim artifact path gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "canonical claim artifact found: claim-evidence.yaml"
     },
     {
       "name": "ISO datetime format gate",
@@ -183,7 +183,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[1] evidence path not found: .claude/work-queue/working/WRK-693.md"
+      "details": "stage-evidence.yaml: stage[5] evidence path not found: .claude/work-queue/assets/WRK-693/evidence/user-review-common-draft.yaml"
     },
     {
       "name": "Done/pending contradiction gate",
@@ -211,7 +211,7 @@
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "details": "n/a: Stage 18 is n/a and no reclaim log exists"
     }
   ]
 }
