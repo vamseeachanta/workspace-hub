@@ -12,3 +12,9 @@ events:
     html_ref: .claude/work-queue/assets/WRK-1094/WRK-1094-plan-final.html
     opened_at: 2026-03-10T10:40:00Z
     reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1094/WRK-1094-lifecycle.html
+    opened_at: 2026-03-10T12:25:00Z
+    reviewer: vamsee

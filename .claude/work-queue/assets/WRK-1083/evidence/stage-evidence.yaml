@@ -1,5 +1,5 @@
 wrk_id: WRK-1083
-generated_at: '2026-03-10T15:36:04Z'
+generated_at: '2026-03-10T15:37:30Z'
 reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
@@ -158,7 +158,7 @@ stages:
   evidence: scripts/work-queue/close-item.sh
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'

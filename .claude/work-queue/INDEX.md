@@ -1,29 +1,29 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T15:17:40Z by generate-index.py -->
+<!-- Generated: 2026-03-10T15:37:31Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T15:17:40Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T15:37:31Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 527
+**Total items:** 529
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
 | pending | 218 |
-| working | 6 |
+| working | 7 |
 | blocked | 10 |
-| archived | 293 |
+| archived | 294 |
 
 ### By Priority
 
 | Priority | Count |
 |----------|-------|
 | high | 242 |
-| medium | 239 |
+| medium | 241 |
 | low | 45 |
 
 ### By Complexity
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 112 |
-| medium | 251 |
+| medium | 253 |
 | complex | 98 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 49 |
+| harness | 50 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 190 |
+| workspace-hub | 192 |
 | worldenergydata | 99 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 212 / 527 |
-| Plans cross-reviewed | 125 |
-| Plans approved | 148 |
+| Plans exist | 214 / 529 |
+| Plans cross-reviewed | 126 |
+| Plans approved | 149 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,10 +91,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 527 |
-| Total archived | 293 |
-| Completion rate | 293/527 (56%) |
-| Monthly rate (current month) | 61 archived |
+| Total captured | 529 |
+| Total archived | 294 |
+| Completion rate | 294/529 (56%) |
+| Monthly rate (current month) | 62 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -118,15 +118,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 90 | 2 | 8 |
-| Medium   | 97  | 4  | 1  |
+| High     | 89 | 3 | 8 |
+| Medium   | 98  | 4  | 1  |
 | Low      | 31  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (49 items — 7 high, 34 medium, 8 low)
+### harness (50 items — 7 high, 35 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -214,7 +214,7 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1102 | HIGH | feat(session-analysis): close the loop — fix signal pipeline, validate all phases, dust off session analysis end-to-end | pending |
+| WRK-1102 | HIGH | fix(comprehensive-learning): repair the modular chain — signal naming, missing phase scripts, redundant cron, God-Object pipeline.py | pending |
 | WRK-207 | MEDIUM | fix(ai): align weekly quota reporting with authoritative Claude source | pending |
 | WRK-636 | MEDIUM | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending |
 | WRK-1018 | MEDIUM | feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates | pending |
@@ -244,6 +244,12 @@
 | WRK-586 | LOW | feat(skills): auto-fetch IACS Blue Book UR updates | pending |
 | WRK-639 | LOW | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending |
 
+#### harness / training
+
+| ID | Priority | Title | Status |
+|----|----------|-------|--------|
+| WRK-1103 | MEDIUM | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending |
+
 #### harness / uncategorised
 
 | ID | Priority | Title | Status |
@@ -255,7 +261,7 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
-| WRK-1100 | HIGH | fix(whats-next): exclude standing+cadence items from priority list | pending |
+| WRK-1100 | HIGH | fix(whats-next): exclude standing+cadence items from priority list | working |
 | WRK-118 | MEDIUM | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
@@ -1101,6 +1107,7 @@
 | WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1082 | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ❌ | ✅ | - | - | - |
 | WRK-1083 | Plan-mode integration for work-queue-workflow stages | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
+| WRK-1083 | Plan-mode integration for work-queue-workflow stages | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1084 | Integrate skills.sh as reference for all skill lifecycle operations | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1117,9 +1124,10 @@
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | - | - |
+| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | working | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | ███ 100% | - | - |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1102 | feat(session-analysis): close the loop — fix signal pipeline, validate all phases, dust off session analysis end-to-end | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1102 | fix(comprehensive-learning): repair the modular chain — signal naming, missing phase scripts, redundant cron, God-Object pipeline.py | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
 
@@ -1342,9 +1350,9 @@
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | medium | medium | - | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | medium | simple | workspace-hub | - |
-| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | high | simple | workspace-hub | - |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | medium | medium | workspace-hub | - |
-| WRK-1102 | feat(session-analysis): close the loop — fix signal pipeline, validate all phases, dust off session analysis end-to-end | high | medium | workspace-hub | - |
+| WRK-1102 | fix(comprehensive-learning): repair the modular chain — signal naming, missing phase scripts, redundant cron, God-Object pipeline.py | high | medium | workspace-hub | - |
+| WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | medium | medium | workspace-hub | - |
 
 ### Working
 
@@ -1356,6 +1364,7 @@
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
 | WRK-1083 | Plan-mode integration for work-queue-workflow stages | medium | medium | workspace-hub | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | high | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -1660,6 +1669,7 @@
 | WRK-1079 | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | medium | medium | - | - |
 | WRK-1080 | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | high | simple | workspace-hub | - |
 | WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | high | medium | - | - |
+| WRK-1083 | Plan-mode integration for work-queue-workflow stages | medium | medium | workspace-hub | - |
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | high | medium | - | - |
 | WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | high | medium | - | - |
 | WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
@@ -2243,6 +2253,7 @@
 | WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | medium | - |
 | WRK-1080 | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | archived | high | simple | - |
 | WRK-1083 | Plan-mode integration for work-queue-workflow stages | working | medium | medium | - |
+| WRK-1083 | Plan-mode integration for work-queue-workflow stages | archived | medium | medium | - |
 | WRK-1084 | Integrate skills.sh as reference for all skill lifecycle operations | pending | medium | simple | - |
 | WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | archived | high | medium | - |
 | WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | archived | high | medium | - |
@@ -2254,9 +2265,10 @@
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | medium | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | simple | - |
-| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | pending | high | simple | - |
+| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | working | high | simple | - |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | medium | - |
-| WRK-1102 | feat(session-analysis): close the loop — fix signal pipeline, validate all phases, dust off session analysis end-to-end | pending | high | medium | - |
+| WRK-1102 | fix(comprehensive-learning): repair the modular chain — signal naming, missing phase scripts, redundant cron, God-Object pipeline.py | pending | high | medium | - |
+| WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | - |
 
 ### worldenergydata
 
@@ -2608,8 +2620,8 @@
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | medium | workspace-hub | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | simple | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | simple | workspace-hub | - |
-| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | pending | simple | workspace-hub | - |
-| WRK-1102 | feat(session-analysis): close the loop — fix signal pipeline, validate all phases, dust off session analysis end-to-end | pending | medium | workspace-hub | - |
+| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | working | simple | workspace-hub | - |
+| WRK-1102 | fix(comprehensive-learning): repair the modular chain — signal naming, missing phase scripts, redundant cron, God-Object pipeline.py | pending | medium | workspace-hub | - |
 
 ### Medium
 
@@ -2845,6 +2857,7 @@
 | WRK-1078 | Audit and fix WRK pipeline Windows/Git Bash compatibility gaps | pending | medium | workspace-hub | - |
 | WRK-1079 | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | archived | medium | - | - |
 | WRK-1083 | Plan-mode integration for work-queue-workflow stages | working | medium | workspace-hub | - |
+| WRK-1083 | Plan-mode integration for work-queue-workflow stages | archived | medium | workspace-hub | - |
 | WRK-1084 | Integrate skills.sh as reference for all skill lifecycle operations | pending | simple | workspace-hub | - |
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | pending | simple | - | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | complex | - | - |
@@ -2854,6 +2867,7 @@
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | simple | workspace-hub | - |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | workspace-hub | - |
+| WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | workspace-hub | - |
 
 ### Low
 
@@ -3022,7 +3036,7 @@
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | workspace-hub | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | workspace-hub | - |
-| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | pending | high | workspace-hub | - |
+| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | working | high | workspace-hub | - |
 
 ### Medium
 
@@ -3270,6 +3284,7 @@
 | WRK-1079 | feat(harness): type stubs for assetutilities public API — enable mypy in consumers | archived | medium | - | - |
 | WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | archived | high | - | - |
 | WRK-1083 | Plan-mode integration for work-queue-workflow stages | working | medium | workspace-hub | - |
+| WRK-1083 | Plan-mode integration for work-queue-workflow stages | archived | medium | workspace-hub | - |
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | archived | high | - | - |
 | WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | high | - | - |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | - | - |
@@ -3278,7 +3293,8 @@
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | workspace-hub | - |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | workspace-hub | - |
-| WRK-1102 | feat(session-analysis): close the loop — fix signal pipeline, validate all phases, dust off session analysis end-to-end | pending | high | workspace-hub | - |
+| WRK-1102 | fix(comprehensive-learning): repair the modular chain — signal naming, missing phase scripts, redundant cron, God-Object pipeline.py | pending | high | workspace-hub | - |
+| WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | workspace-hub | - |
 
 ### Complex
 
@@ -3385,7 +3401,7 @@
 
 ## By Computer
 
-### ace-linux-1 (167 active / 247 total)
+### ace-linux-1 (168 active / 249 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3618,6 +3634,7 @@
 | WRK-1081 | feat(harness): extended static analysis — bandit, radon, vulture across tier-1 repos | archived | high | medium | - |
 | WRK-1082 | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked | high | simple | - |
 | WRK-1083 | Plan-mode integration for work-queue-workflow stages | working | medium | medium | workspace-hub |
+| WRK-1083 | Plan-mode integration for work-queue-workflow stages | archived | medium | medium | workspace-hub |
 | WRK-1084 | Integrate skills.sh as reference for all skill lifecycle operations | pending | medium | simple | workspace-hub |
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | archived | high | medium | - |
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | pending | medium | simple | - |
@@ -3633,9 +3650,10 @@
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | medium | workspace-hub |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | workspace-hub |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | simple | workspace-hub |
-| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | pending | high | simple | workspace-hub |
+| WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | working | high | simple | workspace-hub |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | medium | workspace-hub |
-| WRK-1102 | feat(session-analysis): close the loop — fix signal pipeline, validate all phases, dust off session analysis end-to-end | pending | high | medium | workspace-hub |
+| WRK-1102 | fix(comprehensive-learning): repair the modular chain — signal naming, missing phase scripts, redundant cron, God-Object pipeline.py | pending | high | medium | workspace-hub |
+| WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 

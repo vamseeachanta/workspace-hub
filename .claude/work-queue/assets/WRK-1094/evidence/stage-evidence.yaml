@@ -35,7 +35,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Draft plan and artifact generated.
-  evidence: specs/wrk/WRK-1094/plan.md
+  evidence: .claude/work-queue/working/WRK-1094.md
 - order: 5
   stage: User Review - Plan (Draft)
   status: done
@@ -43,7 +43,7 @@ stages:
   owner: user + orchestrator
   blocker: 'no'
   comment: Tough questions, tradeoffs, and test/eval updates reviewed.
-  evidence: .claude/work-queue/assets/WRK-1094/plan-html-review-draft.md
+  evidence: .claude/work-queue/assets/WRK-1094/WRK-1094-plan-draft.html
 - order: 6
   stage: Cross-Review
   status: done
@@ -51,7 +51,7 @@ stages:
   owner: agents
   blocker: 'no'
   comment: Multi-provider review completed.
-  evidence: scripts/review/results/wrk-000-review.md
+  evidence: scripts/review/results/wrk-1094-phase-1-review-input.md
 - order: 7
   stage: User Review - Plan (Final)
   status: done
@@ -59,7 +59,7 @@ stages:
   owner: user + orchestrator
   blocker: 'no'
   comment: Final plan reviewed with gate-pass section.
-  evidence: .claude/work-queue/assets/WRK-1094/plan-html-review-final.md
+  evidence: .claude/work-queue/assets/WRK-1094/WRK-1094-plan-final.html
 - order: 8
   stage: Claim / Activation
   status: done
@@ -67,7 +67,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Claim evidence and active WRK set.
-  evidence: .claude/work-queue/assets/WRK-1094/evidence/claim.yaml
+  evidence: .claude/work-queue/assets/WRK-1094/evidence/claim-evidence.yaml
 - order: 9
   stage: Work-Queue Routing Skill
   status: done
@@ -75,7 +75,7 @@ stages:
   owner: orchestrator
   blocker: 'no'
   comment: Entered canonical /work route.
-  evidence: /work
+  evidence: .claude/work-queue/assets/WRK-1094/routing.yaml
 - order: 10
   stage: Work Execution
   status: done
