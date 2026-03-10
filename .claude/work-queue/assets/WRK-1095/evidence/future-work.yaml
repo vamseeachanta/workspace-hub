@@ -1,0 +1,22 @@
+wrk_id: WRK-1095
+stage: 15
+generated_at: "2026-03-10T19:45:00Z"
+recommendations:
+  - id: FW-1
+    title: "Refactor check_mypy_ratchet.py + check_complexity_ratchet.py to shared ratchet_utils.py"
+    rationale: "Both scripts exceed 400-line limit. Shared baseline I/O and report formatting would halve each file."
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-2
+    title: "Catch OSError in _count_functions_above_threshold (shared gap with mypy_ratchet)"
+    rationale: "uvx binary permission error would cause unhandled exception instead of graceful skip."
+    disposition: existing-updated
+    status: captured
+    captured: true
+  - id: FW-3
+    title: "Add complexity ratchet to WRK-234 parent mission metrics dashboard"
+    rationale: "WRK-234 tracks ecosystem self-healing metrics; complexity trend should be visible."
+    disposition: existing-updated
+    status: captured
+    captured: true

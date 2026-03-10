@@ -1,0 +1,9 @@
+wrk_id: WRK-1095
+stage: 16
+generated_at: "2026-03-10T19:45:00Z"
+additions:
+  - "check_complexity_ratchet.py: new enforcing gate script (scripts/quality/)"
+  - "complexity-baseline.yaml: per-repo D+/E+ function counts (config/quality/)"
+  - "check-all.sh: --complexity-ratchet flag added"
+  - "pre-push.sh: COMPLEXITY_RATCHET_GATE=1 opt-in gate added"
+  - "radon rank clarification: -n D = CC>=11 (not CC>10); -n E = CC>=16 (not CC>20)"
