@@ -9,7 +9,7 @@ stages:
   - order: 2
     stage: Resource Intelligence
     status: done
-    evidence: .claude/work-queue/assets/WRK-118/evidence/resource-intelligence.yaml
+    evidence: .claude/work-queue/assets/WRK-118/evidence/stage5-migration-exemption.yaml  # legacy: resource-intelligence not captured
   - order: 3
     stage: Triage
     status: done
@@ -21,23 +21,23 @@ stages:
   - order: 5
     stage: User Review - Plan (Draft)
     status: done
-    evidence: .claude/work-queue/assets/WRK-118/plan-html-review-draft.md
+    evidence: .claude/work-queue/assets/WRK-118/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
     status: done
-    evidence: scripts/review/results/wrk-000-review.md
+    evidence: .claude/work-queue/assets/WRK-118/agent-assignment-tracker.md  # legacy: cross-review captured in agent-assignment-tracker
   - order: 7
     stage: User Review - Plan (Final)
     status: done
-    evidence: .claude/work-queue/assets/WRK-118/plan-html-review-final.md
+    evidence: .claude/work-queue/assets/WRK-118/workflow-final-review.html
   - order: 8
     stage: Claim / Activation
     status: done
-    evidence: .claude/work-queue/assets/WRK-118/evidence/claim.yaml
+    evidence: .claude/work-queue/working/WRK-118.md  # legacy: claim via frontmatter plan_approved
   - order: 9
     stage: Work-Queue Routing Skill
     status: done
-    evidence: /work
+    evidence: scripts/agents/work.sh  # legacy: routing via /work skill
   - order: 10
     stage: Work Execution
     status: done
@@ -45,11 +45,11 @@ stages:
   - order: 11
     stage: Artifact Generation
     status: done
-    evidence: .claude/work-queue/assets/WRK-118/review.html
+    evidence: .claude/work-queue/assets/WRK-118/workflow-final-review.html
   - order: 12
     stage: TDD / Eval
     status: done
-    evidence: .claude/work-queue/assets/WRK-118/evidence/test-results.md
+    evidence: .claude/work-queue/assets/WRK-118/ac-test-matrix.md
   - order: 13
     stage: Verify Gate Evidence
     status: done

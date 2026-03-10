@@ -1,0 +1,27 @@
+wrk_id: WRK-118
+stage: 16
+stage_name: Resource Intelligence Update
+updated_at: "2026-03-10T09:00:00Z"
+provider: claude
+
+additions:
+  - artifact: config/agents/behavior-contract.yaml
+    change: "task_type_matrix: 9 task types with primary/secondary/rationale/quality_gate"
+    impact: provider routing decisions for all future WRK items
+
+  - artifact: docs/modules/ai/agent-delegation-templates.md
+    change: "New reference doc: task_agents maps for 11 task type × route combinations"
+    impact: agent assignment templating
+
+  - artifact: scripts/agents/work.sh
+    change: "Routing recommendation block in run subcommand (Phase 3)"
+    impact: every /work run displays task classifier recommendation
+
+  - artifact: .claude/state/provider-assessments/
+    change: "Directory + template + README for empirical provider performance tracking"
+    impact: enables evidence-based provider assignment over time
+
+quota_snapshot:
+  claude: "N/A (authoritative source unavailable)"
+  codex: "77% remaining (332/1400 msgs)"
+  gemini: "100% remaining (0/1000 msgs)"

@@ -1,0 +1,10 @@
+wrk_id: WRK-118
+stage: 8
+stage_name: Claim / Activation
+activated_at: "2026-02-18T09:00:00Z"
+set_active_wrk: true
+session_id: "legacy-2026-02-18"
+orchestrator_agent: claude
+notes: >
+  Legacy activation — item was moved to working/ on 2026-02-18 when plan was
+  approved. Predates formal activation.yaml requirement.

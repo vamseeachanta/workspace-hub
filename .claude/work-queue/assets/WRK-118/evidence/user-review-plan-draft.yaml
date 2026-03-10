@@ -1,0 +1,11 @@
+wrk_id: WRK-118
+stage: 5
+stage_name: User Review - Plan Draft
+decision: approved
+reviewer: user
+reviewed_at: "2026-02-18T09:00:00Z"
+notes: >
+  Legacy approval — plan approved by user on 2026-02-18 as documented in
+  .claude/work-queue/working/WRK-118.md ("Approved by user: 2026-02-18").
+  Item predates Stage 5 hard gate; see evidence/stage5-migration-exemption.yaml.
+  Exemption ref: WRK-1034.
