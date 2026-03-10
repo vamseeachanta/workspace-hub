@@ -1,4 +1,4 @@
-# Stage 3 Prompt Package — WRK-1078
+# Stage 3 Prompt Package â€” WRK-1078
 ## Stage: Triage
 **Invocation:** chained_agent
 **Weight:** light
@@ -11,7 +11,7 @@
 
 ### assets/WRK-NNN/evidence/resource-intelligence.yaml
 ```
-[entry_reads: assets/WRK-NNN/evidence/resource-intelligence.yaml — file not found]
+[entry_reads: assets/WRK-NNN/evidence/resource-intelligence.yaml â€” file not found]
 ```
 
 **Blocking condition:** pending/WRK-NNN.md missing route/workstations/orchestrator fields

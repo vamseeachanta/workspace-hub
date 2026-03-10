@@ -1,4 +1,4 @@
-# Stage 4 Prompt Package — WRK-1078
+# Stage 4 Prompt Package â€” WRK-1078
 ## Stage: Plan Draft
 **Invocation:** chained_agent
 **Weight:** medium
@@ -11,12 +11,12 @@
 
 ### pending/WRK-NNN.md
 ```
-[entry_reads: pending/WRK-NNN.md — file not found]
+[entry_reads: pending/WRK-NNN.md â€” file not found]
 ```
 
 ### assets/WRK-NNN/evidence/resource-intelligence.yaml
 ```
-[entry_reads: assets/WRK-NNN/evidence/resource-intelligence.yaml — file not found]
+[entry_reads: assets/WRK-NNN/evidence/resource-intelligence.yaml â€” file not found]
 ```
 
 **Blocking condition:** lifecycle HTML Stage 4 section absent

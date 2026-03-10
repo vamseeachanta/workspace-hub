@@ -1,4 +1,4 @@
-# Stage 2 Prompt Package — WRK-1078
+# Stage 2 Prompt Package â€” WRK-1078
 ## Stage: Resource Intelligence
 **Invocation:** task_agent
 **Weight:** medium
@@ -11,7 +11,7 @@
 
 ### pending/WRK-NNN.md
 ```
-[entry_reads: pending/WRK-NNN.md — file not found]
+[entry_reads: pending/WRK-NNN.md â€” file not found]
 ```
 
 **Blocking condition:** resource-intelligence.yaml missing completion_status or skills.core_used

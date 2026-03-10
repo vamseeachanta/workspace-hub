@@ -1,4 +1,4 @@
-# Stage 9 Prompt Package — WRK-1078
+# Stage 9 Prompt Package â€” WRK-1078
 ## Stage: Work-Queue Routing
 **Invocation:** chained_agent
 **Weight:** light
@@ -11,7 +11,7 @@
 
 ### assets/WRK-NNN/evidence/activation.yaml
 ```
-[entry_reads: assets/WRK-NNN/evidence/activation.yaml — file not found]
+[entry_reads: assets/WRK-NNN/evidence/activation.yaml â€” file not found]
 ```
 
 **Blocking condition:** routing.yaml missing
