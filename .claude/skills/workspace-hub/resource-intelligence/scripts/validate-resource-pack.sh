@@ -398,4 +398,60 @@ if [[ -n "$index_ref" && "$index_ref" != "not_applicable" ]]; then
   fi
 fi
 
+# ── WRK-667 Phase 3: evidence/resource-intelligence.yaml checks ───────────────
+# Validate content when present; warn-only when absent (verify-gate-evidence.py gates on presence).
+RI_EVIDENCE="${ASSET_DIR}/evidence/resource-intelligence.yaml"
+
+if [[ ! -f "$RI_EVIDENCE" ]]; then
+  echo "WARN: evidence/resource-intelligence.yaml absent — run Stage 2 Resource Intelligence to populate" >&2
+else
+
+ri_completion="$(grep -E '^completion_status:' "$RI_EVIDENCE" | sed 's/.*: *//' | tr -d '"' | tr -d "'")"
+ri_completion="${ri_completion#"${ri_completion%%[![:space:]]*}"}"
+ri_completion="${ri_completion%"${ri_completion##*[![:space:]]}"}"
+if [[ -z "$ri_completion" ]]; then
+  echo "evidence/resource-intelligence.yaml: completion_status field missing" >&2
+  exit 35
+fi
+if [[ "$ri_completion" != "continue_to_planning" && "$ri_completion" != "pause_and_revise" ]]; then
+  echo "evidence/resource-intelligence.yaml: completion_status must be continue_to_planning or pause_and_revise (found: ${ri_completion})" >&2
+  exit 36
+fi
+
+ri_core_count=0
+in_core_used=0
+while IFS= read -r line; do
+  if [[ "$line" =~ ^[[:space:]]*core_used: ]]; then
+    in_core_used=1
+    continue
+  fi
+  if [[ "$in_core_used" -eq 1 ]]; then
+    if [[ "$line" =~ ^[[:space:]]*-[[:space:]]+ ]]; then
+      ri_core_count=$(( ri_core_count + 1 ))
+    elif [[ "$line" =~ ^[[:space:]]*[a-z_]+: && ! "$line" =~ ^[[:space:]]*- ]]; then
+      in_core_used=0
+    fi
+  fi
+done < "$RI_EVIDENCE"
+
+if [[ "$ri_core_count" -lt 3 ]]; then
+  echo "evidence/resource-intelligence.yaml: skills.core_used must list at least 3 entries (found: ${ri_core_count})" >&2
+  exit 37
+fi
+
+# Warn-only: resource_pack_ref in WRK frontmatter
+for folder in working pending done archived; do
+  wrk_file="${ROOT}/.claude/work-queue/${folder}/${WRK_ID}.md"
+  [[ -f "$wrk_file" ]] && break
+  wrk_file=""
+done
+if [[ -n "${wrk_file:-}" ]]; then
+  rp_ref="$(awk '/^---/{f++} f==2{next} f==1 && /^resource_pack_ref:/{print $2; exit}' "$wrk_file" || true)"
+  if [[ -z "$rp_ref" || "$rp_ref" == "null" || "$rp_ref" == "~" ]]; then
+    echo "WARN: ${WRK_ID} frontmatter is missing resource_pack_ref — add: resource_pack_ref: .claude/work-queue/assets/${WRK_ID}/resource-pack.md" >&2
+  fi
+fi
+
+fi  # end: evidence/resource-intelligence.yaml present check
+
 echo "Resource Intelligence artifacts valid for ${WRK_ID}"

@@ -1,5 +1,8 @@
 # Sources — WRK-667
 
+- AGENTS
+- WORKSPACE
+
 | Source | Type | Path | Notes |
 |--------|------|------|-------|
 | resource-intelligence SKILL.md | skill | `.claude/skills/workspace-hub/resource-intelligence/SKILL.md` | v1.1.0 |

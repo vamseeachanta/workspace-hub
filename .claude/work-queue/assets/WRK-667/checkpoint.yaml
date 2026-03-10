@@ -1,12 +1,12 @@
 wrk_id: WRK-667
-current_stage: 8
-stage_name: Claim / Activation
-completed_stage: 7
-next_action: Execute stage 8: Claim / Activation
-context_summary: Stage 7 complete. Next: stage 8 (Claim / Activation).
+current_stage: 10
+stage_name: Work Execution
+completed_stage: 9
+next_action: Execute stage 10: Work Execution
+context_summary: Stage 9 complete. Next: stage 10 (Work Execution).
 entry_reads:
   - .claude/work-queue/assets/WRK-667/checkpoint.yaml
-  - assets/WRK-667/evidence/plan-final-review.yaml
-checkpointed_at: 2026-03-10T01:18:45Z
+  - assets/WRK-667/WRK-667-lifecycle.html#s7-s9
+  - assets/WRK-667/routing.yaml
+checkpointed_at: 2026-03-10T01:24:45Z
 human_gate: false
-chained_stages: [[8, 9]]

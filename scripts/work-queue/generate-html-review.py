@@ -1256,6 +1256,17 @@ td{color:var(--muted);}td strong{color:var(--ink);}
   .schema-row{grid-template-columns:1fr;}}
 @media print{body{background:#fff;}.stage-strip{position:static;}
   .stage-body.collapsed{display:block;}}
+.ri-callout{max-width:1100px;margin:18px auto 0;padding:0 24px;}
+.ri-callout-inner{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);
+  border-radius:10px;padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:flex-start;}
+.ri-callout-inner.ri-absent{border-left-color:#d97706;background:#fffbeb;}
+.ri-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);
+  font-weight:700;margin-bottom:4px;}
+.ri-label.ri-absent{color:#d97706;}
+.ri-field{font-size:.83rem;line-height:1.4;}
+.ri-field strong{color:var(--ink);display:block;font-size:.68rem;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted);}
+.ri-conf-high{color:var(--done)}.ri-conf-medium{color:#92400e}.ri-conf-low{color:#991b1b}
 """
 
 LIFECYCLE_JS = """
@@ -1796,6 +1807,73 @@ def render_lifecycle_stage_body(
     return '<p style="color:var(--muted);font-size:.85rem;">Stage completed.</p>'
 
 
+def _build_ri_callout(assets_dir: str) -> str:
+    """Build an RI summary callout HTML block (top-level, graceful degradation)."""
+    ri_path = os.path.join(assets_dir, "evidence", "resource-intelligence.yaml")
+    if not os.path.exists(ri_path):
+        return (
+            '<div class="ri-callout">'
+            '<div class="ri-callout-inner ri-absent">'
+            '<div class="ri-label ri-absent">Resource Intelligence</div>'
+            '<div class="ri-field">evidence/resource-intelligence.yaml absent — Stage 2 not yet complete.</div>'
+            "</div></div>"
+        )
+    try:
+        with open(ri_path, encoding="utf-8") as fh:
+            ri: dict = yaml.safe_load(fh) or {}
+    except Exception:
+        return ""
+
+    completion = _esc(str(ri.get("completion_status", "—")))
+    p1_gaps = ri.get("top_p1_gaps") or []
+    p1_count = len(p1_gaps) if isinstance(p1_gaps, list) else 0
+    p1_label = "none" if p1_count == 0 else str(p1_count)
+    skills_block = ri.get("skills") or {}
+    core_used = skills_block.get("core_used") or []
+    core_count = len(core_used) if isinstance(core_used, list) else 0
+    domain = ri.get("domain") or {}
+    problem_text = _esc(str(domain.get("problem", "")).strip())[:180]
+    qs = ri.get("quality_signals") or {}
+    confidence = str(qs.get("confidence", "")).strip()
+    missing_rate = qs.get("missing_artifact_rate")
+    plan_edits = qs.get("plan_edits_required")
+    conf_cls = {"high": "ri-conf-high", "medium": "ri-conf-medium", "low": "ri-conf-low"}.get(
+        confidence, ""
+    )
+    conf_html = (
+        f'<span class="{conf_cls}">{_esc(confidence)}</span>' if confidence else "—"
+    )
+    qs_html = ""
+    if confidence or missing_rate is not None or plan_edits is not None:
+        qs_parts = []
+        if missing_rate is not None:
+            qs_parts.append(f"artifact-gap {_esc(str(missing_rate))}")
+        if plan_edits is not None:
+            qs_parts.append(f"plan-edits {_esc(str(plan_edits))}")
+        qs_html = (
+            f'<div class="ri-field"><strong>Quality</strong>{conf_html}'
+            + (f" &middot; {_esc(' · '.join(qs_parts))}" if qs_parts else "")
+            + "</div>"
+        )
+    problem_html = (
+        f'<div class="ri-field" style="flex-basis:100%;max-width:72ch;">'
+        f"<strong>Problem</strong>{problem_text}</div>"
+        if problem_text
+        else ""
+    )
+    return (
+        '<div class="ri-callout">'
+        '<div class="ri-callout-inner">'
+        '<div style="flex-basis:100%"><div class="ri-label">Resource Intelligence</div></div>'
+        f'<div class="ri-field"><strong>Status</strong>{completion}</div>'
+        f'<div class="ri-field"><strong>P1 gaps</strong>{_esc(p1_label)}</div>'
+        f'<div class="ri-field"><strong>Skills used</strong>{_esc(str(core_count))}</div>'
+        + qs_html
+        + problem_html
+        + "</div></div>"
+    )
+
+
 def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
     """Generate single lifecycle HTML for WRK-NNN from evidence files on disk."""
     workspace_root = os.popen("git rev-parse --show-toplevel").read().strip()
@@ -1894,6 +1972,8 @@ def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
   </div>
 </section>"""
 
+    ri_callout_html = _build_ri_callout(assets_dir)
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1925,6 +2005,8 @@ def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
     {strip_chips}
   </div>
 </nav>
+
+{ri_callout_html}
 
 <div class="content">
 {stage_sections_html}

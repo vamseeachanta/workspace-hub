@@ -49,3 +49,16 @@ constraints:
 
 top_p2_gaps: []                           # gaps that weaken planning but don't block
 top_p3_gaps: []                           # enhancement-only gaps
+
+# ── Quality Signals (optional; populate after all artifacts are complete) ─────
+# Not gate-checked today; surfaced in lifecycle HTML callout and comparison examples.
+# See SKILL.md "Canonical Usage Path" for derivation rules.
+quality_signals:
+  missing_artifact_rate: 0.0            # float 0.0–1.0; 0.0 = all required files present
+  plan_edits_required: 0                # count of plan-draft iterations needed after Stage 2
+  confidence: high                      # high | medium | low (derived)
+  # confidence = high iff ALL of:
+  #   - missing_artifact_rate == 0.0
+  #   - top_p1_gaps empty OR ≥1 P1 gap resolved and documented
+  #   - every resources.yaml source has retrieval_date + canonical_storage_path
+  # confidence = medium when one condition not met; low when two or more not met

@@ -1,0 +1,45 @@
+wrk_id: WRK-667
+stage: 10
+scope: integrated
+provider: claude
+orchestrator: claude
+started_at: "2026-03-10T01:20:00Z"
+completed_at: "2026-03-10T02:52:00Z"
+
+phases_completed:
+  - phase: 1
+    description: "Canonical usage path documentation added to SKILL.md"
+    artifact: .claude/skills/workspace-hub/resource-intelligence/SKILL.md
+  - phase: 2
+    description: "quality_signals schema block added to resource-intelligence-template.yaml"
+    artifact: .claude/skills/workspace-hub/resource-intelligence/templates/resource-intelligence-template.yaml
+  - phase: 3
+    description: "validate-resource-pack.sh RI evidence checks + T1-T4 tests"
+    artifact: .claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh
+  - phase: 4
+    description: "RI summary callout (_build_ri_callout) added to generate-html-review.py"
+    artifact: scripts/work-queue/generate-html-review.py
+  - phase: 5
+    description: "Before/after comparison examples with rubric"
+    artifact: .claude/work-queue/assets/WRK-667/evidence/ri-comparison-examples.md
+
+bugs_fixed:
+  - description: "(( ri_core_count++ )) arithmetic exit under set -euo pipefail; replaced with ri_core_count=$(( ri_core_count + 1 ))"
+    file: .claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh
+
+integrated_repo_tests:
+  - name: "RI script test suite (T1–T4 + existing)"
+    scope: integrated
+    command: "bash .claude/skills/workspace-hub/resource-intelligence/tests/test-resource-intelligence-scripts.sh"
+    result: pass
+    artifact_ref: .claude/skills/workspace-hub/resource-intelligence/tests/test-resource-intelligence-scripts.sh
+  - name: "generate-html-review.py WRK-667 lifecycle"
+    scope: integrated
+    command: "uv run --no-project python scripts/work-queue/generate-html-review.py WRK-667"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-667/WRK-667-lifecycle.html
+  - name: "validate-resource-pack.sh WRK-667"
+    scope: integrated
+    command: "bash .claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh WRK-667"
+    result: pass
+    artifact_ref: .claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh
