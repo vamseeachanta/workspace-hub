@@ -1,0 +1,4 @@
+wrk_id: WRK-1078
+stage: 18
+reclaim_needed: false
+reason: "Single continuous session — no continuity break occurred"
