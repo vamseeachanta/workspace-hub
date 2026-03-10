@@ -1,0 +1,21 @@
+wrk_id: WRK-638
+generated_at: "2026-03-09T10:35:00Z"
+recommendations:
+  - id: FW-638-1
+    title: Integrate eval into nightly cron pipeline
+    description: >
+      Run eval-memory-quality.py before and after compact-memory.py in the nightly
+      comprehensive-learning cron to track quality trends over time.
+    disposition: existing-updated
+    status: captured
+    captured: true
+    target_wrk: WRK-635
+  - id: FW-638-2
+    title: Add pct_stale_paths to default output (not opt-in)
+    description: >
+      Once machine-portability concern is resolved, include stale path % in
+      default output. Currently opt-in to avoid cross-machine false positives.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    target_wrk: null

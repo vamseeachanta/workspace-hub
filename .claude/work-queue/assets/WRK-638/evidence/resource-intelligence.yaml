@@ -1,0 +1,14 @@
+wrk_id: WRK-638
+generated_at: "2026-03-09T10:00:00Z"
+completion_status: continue_to_planning
+summary: >
+  Spin-off from WRK-637. Existing scripts: compact-memory.py, curate-memory.py in
+  scripts/memory/. Tests in tests/memory/. No eval harness exists yet. Route A (simple)
+  — single file, clear scope, ≤50 lines implementation.
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workspace-hub:work
+risks: []
+blockers: []
