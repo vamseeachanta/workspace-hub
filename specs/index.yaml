@@ -1,13 +1,13 @@
-generated: '2026-03-09'
-total_specs: 1563
+generated: '2026-03-10'
+total_specs: 1580
 by_category:
   archive: 10
   data-sources: 13
-  modules: 119
+  modules: 123
   other: 24
   repos: 1344
   templates: 20
-  wrk: 33
+  wrk: 46
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,10 +26,11 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 202
+  workspace-hub: 219
   worldenergydata: 216
 by_wrk:
   WRK-0: 8
+  WRK-1: 1
   WRK-5: 1
   WRK-9: 1
   WRK-10: 1
@@ -159,6 +160,7 @@ by_wrk:
   WRK-299: 1
   WRK-300: 1
   WRK-304: 1
+  WRK-305: 1
   WRK-306: 1
   WRK-308: 1
   WRK-309: 3
@@ -223,13 +225,16 @@ by_wrk:
   WRK-621: 1
   WRK-622: 1
   WRK-623: 1
-  WRK-624: 5
+  WRK-624: 6
+  WRK-637: 1
   WRK-655: 2
   WRK-656: 3
   WRK-657: 1
+  WRK-658: 1
   WRK-660: 1
   WRK-663: 2
   WRK-664: 1
+  WRK-668: 1
   WRK-669: 2
   WRK-670: 2
   WRK-671: 2
@@ -244,6 +249,7 @@ by_wrk:
   WRK-686: 1
   WRK-687: 1
   WRK-690: 1
+  WRK-700: 1
   WRK-1000: 1
   WRK-1002: 2
   WRK-1003: 2
@@ -264,7 +270,19 @@ by_wrk:
   WRK-1052: 1
   WRK-1054: 1
   WRK-1057: 1
+  WRK-1058: 1
+  WRK-1059: 1
   WRK-1061: 1
+  WRK-1062: 2
+  WRK-1066: 1
+  WRK-1073: 1
+  WRK-1074: 1
+  WRK-1079: 1
+  WRK-1081: 1
+  WRK-1083: 1
+  WRK-1085: 1
+  WRK-1087: 2
+  WRK-1090: 1
 specs:
 - path: specs/architecture/agent-vision.md
   title: Superintelligent Engineering Agent Architecture Blueprint
@@ -1021,6 +1039,18 @@ specs:
   - integrate-engineering-units-into-diffraction-analysis
   wrk_refs: []
   mtime: '2026-02-18'
+- path: specs/modules/jaunty-wibbling-wren.md
+  title: 'WRK-1059 Plan: Reference Documentation Quality Checks'
+  description: 'WRK-1058 added `--docs` to `check-all.sh` covering: ruff D docstrings (warn-only), README section validation
+    (installation/usage/examples), and docs/ dir presence.'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - jaunty-wibbling-wren
+  wrk_refs:
+  - WRK-1058
+  - WRK-1059
+  mtime: '2026-03-09'
 - path: specs/modules/jiggly-knitting-brooks.md
   title: 'Plan: WRK-597 Geotechnical Module — Phase Split, Skills, Package Adoption'
   description: WRK-597 defines a geotechnical module covering 5 sub-domains (foundations, piles, anchors, on-bottom stability,
@@ -1435,6 +1465,29 @@ specs:
   - WRK-1035
   - WRK-1036
   mtime: '2026-03-08'
+- path: specs/modules/wild-squishing-cloud.md
+  title: 'WRK-1085 Plan: Cross-Repo Search Indexing'
+  description: Agents repeatedly run 3–5 Glob/Grep rounds to answer "where is X implemented?" across tier-1 repos. A pre-built
+    symbol index answers in one lookup. This plan adds a ripgrep wrapper for pattern sear...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wild-squishing-cloud
+  wrk_refs:
+  - WRK-1085
+  mtime: '2026-03-09'
+- path: specs/modules/wondrous-prancing-ripple.md
+  title: 'Implementation Plan: WRK-1083 — Plan-Mode Integration for Work-Queue-Workflow Stages'
+  description: EnterPlanMode prevents file writes during deliberative WRK stages, ensuring agents think through the full approach
+    before committing artifacts. Currently only Stage 4 references it (in prose), with...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wondrous-prancing-ripple
+  wrk_refs:
+  - WRK-305
+  - WRK-1083
+  mtime: '2026-03-09'
 - path: specs/modules/work-queue-index-generator.md
   title: Work Queue Index Generator
   description: Create a Python script that parses all work item frontmatter and generates a structured `INDEX.md` with multiple
@@ -1948,6 +2001,17 @@ specs:
   - manifests
   wrk_refs: []
   mtime: '2026-02-24'
+- path: specs/modules/hardware-inventory/manifests/acma-ansys05.yml
+  title: Acma Ansys05
+  description: ''
+  category: modules
+  repo: workspace-hub
+  tags:
+  - acma-ansys05
+  - hardware-inventory
+  - manifests
+  wrk_refs: []
+  mtime: '2026-03-09'
 - path: specs/modules/hardware-inventory/manifests/vamsee-linux1.yml
   title: Vamsee Linux1
   description: ''
@@ -19990,6 +20054,17 @@ specs:
   wrk_refs:
   - WRK-0
   mtime: '2026-03-07'
+- path: specs/wrk/WRK-1081/plan.md
+  title: WRK-1081 Plan
+  description: 'Plan artifact reference. Full plan: `.claude/work-queue/assets/WRK-1081/plan-draft.md`'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1081
+  wrk_refs:
+  - WRK-1081
+  mtime: '2026-03-09'
 - path: specs/wrk/WRK-1003/plan.md
   title: WRK-1003 Execution Plan
   description: ''
@@ -20136,6 +20211,110 @@ specs:
   wrk_refs:
   - WRK-1061
   mtime: '2026-03-09'
+- path: specs/wrk/WRK-1062/plan.md
+  title: 'WRK-1062 Plan: Engineering Test Fixtures — Deterministic Data Layer'
+  description: Mock `yfinance.Ticker` and SEC edgar functions at the **Python object level** using `unittest.mock.patch` —
+    works with `--noconftest`, bypasses HTTP entirely, reliable across yfinance library inter...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1062
+  wrk_refs:
+  - WRK-1062
+  mtime: '2026-03-09'
+- path: specs/wrk/WRK-1062/wrk-1062-deterministic-fixtures.md
+  title: 'WRK-1062 Plan: Engineering Test Fixtures — Deterministic Data Layer'
+  description: Mock `yfinance.Ticker` and SEC edgar functions at the **Python object level** using `unittest.mock.patch` —
+    works with `--noconftest`, bypasses HTTP entirely, reliable across yfinance library inter...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - wrk-1062
+  - wrk-1062-deterministic-fixtures
+  wrk_refs:
+  - WRK-1062
+  mtime: '2026-03-09'
+- path: specs/wrk/WRK-1066/plan.md
+  title: WRK-1066 Plan — Environment Parity Audit
+  description: 'Route: A (simple) — inline plan, single executor (claude on ace-linux-1). Revised through 12 rounds of Codex
+    cross-review.'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1066
+  wrk_refs:
+  - WRK-1066
+  mtime: '2026-03-09'
+- path: specs/wrk/WRK-1073/plan.md
+  title: WRK-1073 Plan — Repo Onboarding Maps
+  description: Give every AI agent an instant orientation to any tier-1 repo through AGENTS.md files and a hub-level repo-map.yaml.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1073
+  wrk_refs:
+  - WRK-1073
+  mtime: '2026-03-09'
+- path: specs/wrk/WRK-1074/plan.md
+  title: WRK-1074 Plan — Cross-Repo API Contracts
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1074
+  wrk_refs:
+  - WRK-1074
+  mtime: '2026-03-09'
+- path: specs/wrk/WRK-1079/plan.md
+  title: 'WRK-1079 Plan: PEP 561 Type Stubs for assetutilities Public API'
+  description: Add PEP 561 inline type annotations to assetutilities contracted public API symbols to enable mypy type checking
+    in consumers (digitalmodel, worldenergydata) without errors.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1079
+  wrk_refs:
+  - WRK-1079
+  mtime: '2026-03-09'
+- path: specs/wrk/WRK-1087/plan.md
+  title: WRK-1087 Agent Audit Trail — Implementation Plan
+  description: '**Goal:** Append-only SHA256-chained JSONL audit log of every significant agent action, queryable and verifiable.'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1087
+  wrk_refs:
+  - WRK-1087
+  mtime: '2026-03-09'
+- path: specs/wrk/WRK-1087/wrk-1087-agent-audit-trail.md
+  title: WRK-1087 Agent Audit Trail — Implementation Plan
+  description: '**Goal:** Append-only SHA256-chained JSONL audit log of every significant agent action, queryable and verifiable.'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - wrk-1087
+  - wrk-1087-agent-audit-trail
+  wrk_refs:
+  - WRK-1087
+  mtime: '2026-03-09'
+- path: specs/wrk/WRK-1090/plan.md
+  title: 'WRK-1090 — Dependency Health: uv.lock Freshness, CVE Advisories, Outdated Deps'
+  description: Build `scripts/quality/dep-health.sh` to check dependency health across 5 tier-1 Python repos (assetutilities,
+    digitalmodel, worldenergydata, assethold, OGManufacturing).
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1090
+  wrk_refs:
+  - WRK-1090
+  mtime: '2026-03-10'
 - path: specs/wrk/WRK-118/plan.md
   title: WRK-118 AI Agent Utilization Strategy — Plan
   description: (feature | bugfix | refactor | test-writing | research | docs → primary + rationale)
@@ -20274,6 +20453,17 @@ specs:
   wrk_refs:
   - WRK-624
   mtime: '2026-02-27'
+- path: specs/wrk/WRK-637/plan.md
+  title: 'WRK-637 Plan Draft — Memory Governance: Compaction, Tiering, Eviction'
+  description: '**Route:** B (Medium) | **Computer:** ace-linux-1 | **Drafted:** 2026-03-09'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-637
+  wrk_refs:
+  - WRK-637
+  mtime: '2026-03-10'
 - path: specs/wrk/WRK-655/plan.md
   title: WRK-655 Resource Intelligence Skill and Stage Contract
   description: Route C plan to operationalize Resource Intelligence as a first-class skill with a validator-ready artifact
@@ -20292,6 +20482,20 @@ specs:
   - WRK-624
   - WRK-655
   mtime: '2026-03-01'
+- path: specs/wrk/WRK-658/plan.md
+  title: 'Plan: WRK-658 — Enforce Gate + Logging Contract for Every AI Agent'
+  description: Extend the gate+logging contract to Codex and Gemini agents. The infrastructure (`log-gate-event.sh`, `workflow-guards.sh`,
+    `check_agent_log_gate()`) already works.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-658
+  wrk_refs:
+  - WRK-1
+  - WRK-658
+  - WRK-700
+  mtime: '2026-03-10'
 - path: specs/wrk/WRK-663/plan.md
   title: 'Plan: WRK-663 — Queue Triage'
   description: Classify the 160+ pending work items into actionable categories and identify the top 10 immediate implementation
@@ -20345,6 +20549,18 @@ specs:
   - WRK-655
   - WRK-664
   mtime: '2026-03-01'
+- path: specs/wrk/WRK-668/plan.md
+  title: 'WRK-668 Plan: Archive Tooling Contract and Auto Spin-off Workflow'
+  description: '**Route**: B | **Complexity**: medium | **Priority**: high **Approved**: pending Stage 5 user review'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-668
+  wrk_refs:
+  - WRK-624
+  - WRK-668
+  mtime: '2026-03-10'
 - path: specs/wrk/WRK-670/plan.md
   title: WRK-670 Plan
   description: Execute a Codex-orchestrated `/work` gate run and collect parity evidence against WRK-657.
