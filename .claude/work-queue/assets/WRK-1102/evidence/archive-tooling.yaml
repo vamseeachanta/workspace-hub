@@ -1,0 +1,18 @@
+wrk_id: WRK-1102
+merge_status: n/a-direct-commit
+sync_status: in-sync
+html_verification_ref: .claude/work-queue/assets/WRK-1102/workflow-final-review.html
+legal_scan_ref: .claude/work-queue/assets/WRK-1102/legal-scan.md
+archive_readiness: pass
+document_index_exemption: "hub-only item — no document-index entries affected"
+spin_off_wrks: []
+absorbed_wrks:
+  - id: WRK-636
+    cross_ref: WRK-1102
+    note: Codex session ingestion absorbed into Fix 6 (ingest-codex-sessions.sh)
+  - id: WRK-1018
+    cross_ref: WRK-1102
+    note: WRK-1018 phase 7 action candidates absorbed into Fix 5 scope (future work FW-1)
+  - id: WRK-1025
+    cross_ref: WRK-1102
+    note: Stage-exit signal emission absorbed into Fix 6 (exit_stage.py signal write)
