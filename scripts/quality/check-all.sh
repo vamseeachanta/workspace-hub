@@ -33,6 +33,7 @@ OPT_RADON=false
 OPT_VULTURE=false
 OPT_STATIC=false
 OPT_MYPY_RATCHET=false
+OPT_DRIFT=false
 
 usage() {
   cat <<'EOF'
@@ -53,6 +54,7 @@ Options:
   --docs             Run ruff D (pydocstyle) rules + README + docs/ checks
   --api              Run public-symbol docstring coverage audit (warn-only)
   --mypy-ratchet     Run mypy error count ratchet gate (WRK-1092)
+  --drift            Run documentation drift detector (warn-only, WRK-1093)
   --help             Show this help
 
 Exit code: 0 if all checks pass, 1 if any fail.
@@ -72,6 +74,7 @@ while [[ $# -gt 0 ]]; do
     --vulture)   OPT_VULTURE=true;    shift ;;
     --static)        OPT_STATIC=true;        shift ;;
     --mypy-ratchet)  OPT_MYPY_RATCHET=true;  shift ;;
+    --drift)         OPT_DRIFT=true;          shift ;;
     --help|-h)       usage; exit 0 ;;
     *) echo "ERROR: Unknown flag: $1" >&2; usage >&2; exit 1 ;;
   esac
@@ -481,6 +484,21 @@ for repo_name in "${REPO_ORDER[@]}"; do
 done
 
 # ---------------------------------------------------------------------------
+# Doc drift gate (WRK-1093) — runs once; warn-only (never increments FAIL_COUNT)
+# ---------------------------------------------------------------------------
+run_doc_drift() {
+  local drift_script="${REPO_ROOT}/scripts/quality/check_doc_drift.py"
+  echo ""
+  echo "=== Doc Drift Check (warn-only) ==="
+  if [[ ! -f "$drift_script" ]]; then
+    echo "WARNING: check_doc_drift.py not found — skipping" >&2
+    return 0
+  fi
+  uv run --no-project python "$drift_script" 2>&1 || true
+  return 0
+}
+
+# ---------------------------------------------------------------------------
 # Mypy ratchet gate (WRK-1092) — runs once across all repos
 # ---------------------------------------------------------------------------
 if $OPT_MYPY_RATCHET; then
@@ -501,6 +519,10 @@ if $OPT_MYPY_RATCHET; then
   else
     PASS_COUNT=$((PASS_COUNT + 1))
   fi
+fi
+
+if $OPT_DRIFT; then
+  run_doc_drift
 fi
 
 # ---------------------------------------------------------------------------
