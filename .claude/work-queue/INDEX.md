@@ -1,20 +1,20 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T17:16:44Z by generate-index.py -->
+<!-- Generated: 2026-03-10T18:01:46Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T17:16:44Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T18:01:46Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 532
+**Total items:** 531
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
 | pending | 219 |
-| working | 4 |
+| working | 3 |
 | blocked | 10 |
 | archived | 299 |
 
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 244 |
+| high | 243 |
 | medium | 241 |
 | low | 46 |
 
@@ -30,7 +30,7 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 114 |
+| simple | 113 |
 | medium | 253 |
 | complex | 99 |
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 49 |
+| harness | 48 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -71,7 +71,7 @@
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 195 |
+| workspace-hub | 194 |
 | worldenergydata | 99 |
 
 ### Plan Tracking
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 214 / 532 |
-| Plans cross-reviewed | 128 |
-| Plans approved | 151 |
+| Plans exist | 214 / 531 |
+| Plans cross-reviewed | 127 |
+| Plans approved | 150 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 532 |
+| Total captured | 531 |
 | Total archived | 299 |
-| Completion rate | 299/532 (56%) |
+| Completion rate | 299/531 (56%) |
 | Monthly rate (current month) | 65 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -118,7 +118,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 89 | 2 | 8 |
+| High     | 89 | 1 | 8 |
 | Medium   | 98  | 2  | 1  |
 | Low      | 32  | 0  | 1  |
 
@@ -126,7 +126,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (49 items — 6 high, 35 medium, 8 low)
+### harness (48 items — 5 high, 35 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -260,7 +260,6 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
-| WRK-1106 | HIGH | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | working |
 | WRK-118 | MEDIUM | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | working |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
@@ -1127,7 +1126,6 @@
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | working | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | n/a | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 
@@ -1364,7 +1362,6 @@
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
-| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | high | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -2274,7 +2271,6 @@
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | medium | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | - |
-| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | working | high | simple | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | simple | - |
 
@@ -2631,7 +2627,6 @@
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | archived | simple | workspace-hub | - |
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | medium | workspace-hub | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | complex | workspace-hub | - |
-| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | working | simple | workspace-hub | - |
 
 ### Medium
 
@@ -3048,7 +3043,6 @@
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | workspace-hub | - |
 | WRK-1100 | fix(whats-next): exclude standing+cadence items from priority list | archived | high | workspace-hub | - |
-| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | working | high | workspace-hub | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | workspace-hub | - |
 
 ### Medium
@@ -3415,7 +3409,7 @@
 
 ## By Computer
 
-### ace-linux-1 (166 active / 252 total)
+### ace-linux-1 (165 active / 251 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3668,7 +3662,6 @@
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | medium | workspace-hub |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | workspace-hub |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | pending | high | complex | workspace-hub |
-| WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | working | high | simple | workspace-hub |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | workspace-hub |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | pending | low | simple | workspace-hub |
 

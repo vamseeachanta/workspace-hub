@@ -1,7 +1,7 @@
 autonomy_maturity_level: L2
-generated_at: '2026-03-10T17:16:43Z'
+generated_at: '2026-03-10T18:01:44Z'
 human_steers_agents_execute: true
-reviewed_by: claude
+reviewed_by: orchestrator
 stages:
 - blocker: 'no'
   comment: WRK created with baseline metadata.
@@ -154,7 +154,7 @@ stages:
   order: 19
   owner: orchestrator
   stage: Close
-  status: pending
+  status: done
 - blocker: 'no'
   comment: Awaiting merge/sync completion.
   evidence: scripts/work-queue/archive-item.sh
