@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T00:44:53Z by generate-index.py -->
+<!-- Generated: 2026-03-10T01:15:39Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T00:44:53Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T01:15:39Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -80,8 +80,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 204 / 514 |
-| Plans cross-reviewed | 109 |
-| Plans approved | 132 |
+| Plans cross-reviewed | 110 |
+| Plans approved | 133 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -102,8 +102,8 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | Pending items with plans | 59 / 222 | 27% |
-| Plans cross-reviewed | 10 | 14% |
-| Plans user-approved | 11 | 16% |
+| Plans cross-reviewed | 11 | 16% |
+| Plans user-approved | 12 | 17% |
 
 ### Aging
 
@@ -996,7 +996,7 @@
 | WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | n/a | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-637 |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
-| WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
+| WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | assetutilities | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-661 | analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-662 | analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
