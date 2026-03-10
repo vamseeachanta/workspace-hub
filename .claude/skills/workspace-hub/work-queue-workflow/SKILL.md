@@ -3,8 +3,8 @@ name: work-queue-workflow
 description: >
   Explicit entrypoint skill for the WRK work-queue lifecycle workflow. Points to
   the canonical work-queue process and gatepass enforcement sequence.
-version: 1.7.0
-updated: 2026-03-08
+version: 1.7.1
+updated: 2026-03-10
 category: workspace-hub
 triggers:
   - work-queue workflow

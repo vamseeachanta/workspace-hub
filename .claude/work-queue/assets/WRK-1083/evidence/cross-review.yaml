@@ -1,0 +1,27 @@
+wrk_id: WRK-1083
+stage: 6
+completed_at: "2026-03-10T15:05:00Z"
+providers:
+  claude:
+    verdict: REQUEST_CHANGES
+    result_file: evidence/cross-review-claude.md
+    p3_findings_fixed: true
+    p1_p2_deferred: true
+  codex:
+    verdict: UNAVAILABLE
+    reason: usage_limit_exceeded
+    result_file: evidence/cross-review-codex.md
+  gemini:
+    verdict: UNAVAILABLE
+    reason: model_capacity_exhausted
+    result_file: evidence/cross-review-gemini.md
+fallback: allow-no-codex
+consensus: claude_only_1_of_3
+p3_fixes_applied:
+  - writing-plans explicitly invoked in skill body step 2
+  - work-queue-workflow/SKILL.md bumped to v1.7.1
+deferred_findings:
+  - P1a: enforcement mechanism (WRK-305 follow-on)
+  - P1b: TDD/enforcement tests (new WRK to capture)
+  - P2a: verify-gate-evidence.py update (new WRK to capture)
+  - P2b: Stage 10 justification (documented in skill rationale)
