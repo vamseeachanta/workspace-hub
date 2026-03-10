@@ -83,12 +83,6 @@ process_file() {
   subcategory=$(get_field "$f" "subcategory")
   [[ -n "$FILTER_SUBCATEGORY" && "$subcategory" != *"$FILTER_SUBCATEGORY"* ]] && return
 
-  # Skip periodic-review items (standing + cadence) — they self-schedule, not daily work
-  local _standing _cadence
-  _standing=$(get_field "$f" "standing")
-  _cadence=$(get_field "$f" "cadence")
-  [[ "$_standing" == "true" && -n "$_cadence" ]] && return
-
   status=$(get_field "$f" "status")
   priority=$(get_field "$f" "priority")
   computer=$(get_field "$f" "computer")
@@ -106,6 +100,15 @@ process_file() {
 
   if [[ "$status" == "blocked" ]]; then
     EXT_BLOCKED+=("$row|${bstatus#active:}"); return
+  fi
+
+  # Skip periodic-review items (standing + cadence) from ready-to-start buckets only.
+  # Items in working/ or blocked/ always display regardless of standing+cadence.
+  if [[ "$loc" == "pending" ]]; then
+    local _standing _cadence
+    _standing=$(get_field "$f" "standing")
+    _cadence=$(get_field "$f" "cadence")
+    [[ "$_standing" == "true" && -n "$_cadence" ]] && return
   fi
 
   if [[ "$bstatus" == "clear" ]]; then

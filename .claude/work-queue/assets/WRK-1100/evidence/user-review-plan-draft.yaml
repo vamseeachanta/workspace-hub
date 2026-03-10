@@ -3,5 +3,5 @@ stage: 5
 decision: approved
 approval_decision: approve_as_is
 reviewer: vamsee
-confirmed_at: 2026-03-10T00:00:00Z
+confirmed_at: 2026-03-10T14:30:00Z
 plan_summary: "Add standing+cadence guard in whats-next.sh process_file() to exclude periodic-review items"

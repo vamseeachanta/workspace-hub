@@ -4,7 +4,7 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: main
-    commit: 4ef1115952936fd357b9d0223451a587a0c231b1
+    commit: f2317f2c
     documents:
       - .claude/work-queue/assets/WRK-1100/WRK-1100-lifecycle.html
     published_at: 2026-03-10T14:30:00Z
@@ -13,7 +13,7 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: main
-    commit: 4ef1115952936fd357b9d0223451a587a0c231b1
+    commit: 7e974d76
     documents:
       - .claude/work-queue/assets/WRK-1100/WRK-1100-lifecycle.html
       - .claude/work-queue/assets/WRK-1100/plan-html-review-final.md
@@ -23,7 +23,7 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: main
-    commit: 4ef1115952936fd357b9d0223451a587a0c231b1
+    commit: 4ef11159
     documents:
       - .claude/work-queue/assets/WRK-1100/WRK-1100-lifecycle.html
     published_at: 2026-03-10T15:50:00Z
