@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T20:30:02Z by generate-index.py -->
+<!-- Generated: 2026-03-10T20:33:34Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T20:30:02Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T20:33:34Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -14,9 +14,9 @@
 | Status | Count |
 |--------|-------|
 | pending | 219 |
-| working | 5 |
+| working | 4 |
 | blocked | 10 |
-| archived | 302 |
+| archived | 303 |
 
 ### By Priority
 
@@ -30,8 +30,8 @@
 
 | Complexity | Count |
 |------------|-------|
-| simple | 114 |
-| medium | 256 |
+| simple | 115 |
+| medium | 255 |
 | complex | 100 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 49 |
+| harness | 48 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -54,17 +54,17 @@
 | Repository | Count |
 |------------|-------|
 | CAD-DEVELOPMENTS | 2 |
-| OGManufacturing | 16 |
+| OGManufacturing | 17 |
 | TBD-client2-repo | 5 |
 | aceengineer-admin | 4 |
 | aceengineer-strategy | 1 |
 | aceengineer-website | 14 |
 | achantas-data | 9 |
 | acma-projects | 5 |
-| assethold | 13 |
-| assetutilities | 16 |
+| assethold | 14 |
+| assetutilities | 17 |
 | client_projects | 1 |
-| digitalmodel | 179 |
+| digitalmodel | 180 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
@@ -72,7 +72,7 @@
 | scripts/review | 1 |
 | tests/testing | 1 |
 | workspace-hub | 199 |
-| worldenergydata | 100 |
+| worldenergydata | 101 |
 
 ### Plan Tracking
 
@@ -80,8 +80,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 218 / 536 |
-| Plans cross-reviewed | 132 |
-| Plans approved | 155 |
+| Plans cross-reviewed | 133 |
+| Plans approved | 156 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,9 +92,9 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 536 |
-| Total archived | 302 |
-| Completion rate | 302/536 (56%) |
-| Monthly rate (current month) | 68 archived |
+| Total archived | 303 |
+| Completion rate | 303/536 (57%) |
+| Monthly rate (current month) | 69 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -119,14 +119,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 89 | 2 | 8 |
-| Medium   | 98  | 3  | 1  |
+| Medium   | 98  | 2  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (49 items — 5 high, 36 medium, 8 low)
+### harness (48 items — 5 high, 35 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -239,7 +239,6 @@
 | WRK-681 | MEDIUM | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending |
 | WRK-685 | MEDIUM | feat(skills): update /today to highlight availability of unused preview AI models | pending |
 | WRK-1000 | MEDIUM | fix(work-queue): restore /work skill compatibility in Codex CLI | pending |
-| WRK-1009 | MEDIUM | Skill upkeep and curation — evals, A/B tests, daily cron integration | working |
 | WRK-1010 | MEDIUM | Skill capability assessment for WRK-624 workflow governance skill set | pending |
 | WRK-1016 | MEDIUM | chore(harness): review all settings.json and ecosystem configs for peak productivity | pending |
 | WRK-1025 | MEDIUM | feat(session): execution-stage analytics — structured signals from Stage 10 work execution | pending |
@@ -1044,7 +1043,6 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | ace-linux-2 | ace-linux-2 | ace-linux-2 | codex | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | gemini | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ░░░ 30% | n/a | - |
-| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | n/a | - |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ✅ | ██░ 85% | n/a | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1, ace-linux-2, acma-ansys05 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 20% | n/a | - |
@@ -1127,6 +1125,7 @@
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
@@ -1135,7 +1134,7 @@
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1102 | fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | - | - |
+| WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | working | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1107 | assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | archived | low | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
@@ -1377,7 +1376,6 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
-| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | medium | medium | workspace-hub | - |
 | WRK-1071 | feat(harness): performance benchmark harness — regression detection for engineering calculations | medium | medium | assetutilities, digitalmodel, worldenergydata | - |
 | WRK-1105 | Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems | high | complex | workspace-hub | - |
 
@@ -1695,6 +1693,7 @@
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | high | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | medium | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | high | medium | workspace-hub | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | high | simple | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | high | simple | workspace-hub | - |
@@ -1732,6 +1731,7 @@
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 
 ### TBD-client2-repo
 
@@ -1817,6 +1817,7 @@
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | - |
 
 ### assetutilities
@@ -1838,6 +1839,7 @@
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | - |
 
 ### client_projects
@@ -2027,6 +2029,7 @@
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | - |
 
@@ -2232,7 +2235,6 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | archived | high | medium | - |
-| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | working | medium | medium | - |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | medium | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | medium | - |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | - |
@@ -2284,6 +2286,7 @@
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | - |
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | medium | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | - |
@@ -2405,6 +2408,7 @@
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | medium | - |
 
 ## By Priority
@@ -2850,7 +2854,6 @@
 | WRK-694 | Per-session log files in session-logger.sh | pending | simple | workspace-hub | - |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | workspace-hub | - |
 | WRK-1001 | Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo | pending | simple | workspace-hub | - |
-| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | working | medium | workspace-hub | - |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | workspace-hub | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | workspace-hub | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | archived | medium | workspace-hub | - |
@@ -2899,6 +2902,7 @@
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | - | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | simple | workspace-hub | - |
 | WRK-1101 | feat(session): extend detect-drift.sh to parse Codex JSONL log format | pending | medium | workspace-hub | - |
 | WRK-1103 | learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings | pending | medium | workspace-hub | - |
@@ -3072,6 +3076,7 @@
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | pending | medium | - | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | workspace-hub | - |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | archived | high | workspace-hub | - |
@@ -3288,7 +3293,6 @@
 | WRK-1003 | test(gatepass): codex orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | workspace-hub | - |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | archived | high | workspace-hub | - |
-| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | working | medium | workspace-hub | - |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | workspace-hub | - |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | workspace-hub | - |
 | WRK-1013 | chore(skills): fix Anthropic guide violations — README.md in skill folders, oversized SKILL.md files | archived | medium | workspace-hub | - |
@@ -3448,7 +3452,7 @@
 
 ## By Computer
 
-### ace-linux-1 (168 active / 256 total)
+### ace-linux-1 (167 active / 256 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3612,7 +3616,6 @@
 | WRK-1002 | test(gatepass): claude orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | workspace-hub |
 | WRK-1004 | test(gatepass): gemini orchestrator — work-queue lifecycle end-to-end with circle math TDD | archived | high | medium | workspace-hub |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | archived | high | medium | workspace-hub |
-| WRK-1009 | Skill upkeep and curation — evals, A/B tests, daily cron integration | working | medium | medium | workspace-hub |
 | WRK-1010 | Skill capability assessment for WRK-624 workflow governance skill set | pending | medium | medium | workspace-hub |
 | WRK-1011 | feat(work-queue): workflow-html skill — mandatory consistent HTML review artifact for all WRK items | archived | medium | medium | workspace-hub |
 | WRK-1012 | chore(plugins): install and verify official Claude Code plugins on all 3 workstations | pending | high | simple | workspace-hub |
@@ -3691,6 +3694,7 @@
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | high | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | archived | medium | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | archived | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
+| WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | archived | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | workspace-hub |
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | archived | high | medium | workspace-hub |
 | WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | workspace-hub |

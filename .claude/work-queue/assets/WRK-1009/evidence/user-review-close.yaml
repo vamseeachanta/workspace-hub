@@ -1,5 +1,10 @@
-reviewer: ""
-reviewed_at: ""
-confirmed_at: ""
-decision: pending
-notes: "Populate at Stage 17 user review before closing."
+wrk_id: WRK-1009
+stage: 17
+reviewer: vamsee
+reviewed_at: "2026-03-10T19:55:00Z"
+confirmed_at: "2026-03-10T19:55:00Z"
+decision: approved
+notes: >
+  User approved Stage 17 implementation close. All 13 ACs pass, 9/9 TDD tests
+  pass, legal scan clean. Skill eval harness, curation pipeline, and nightly
+  integration complete.
