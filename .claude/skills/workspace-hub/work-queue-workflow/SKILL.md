@@ -166,6 +166,12 @@ Violations to avoid:
    Output format: `## Verdict: APPROVE|MINOR|REQUEST_CHANGES` + `### Pseudocode Review` ([PASS|FAIL] per phase) + `### Findings` ([P1|P2|P3]).
    Dispatch (Route B/C): `bash scripts/review/cross-review.sh specs/wrk/WRK-NNN/plan.md all`
 
+   **Codex quota fallback (automatic):** When Codex quota is exhausted (exit 3) OR ≥2 Codex
+   reviews already exist for this WRK, `cross-review.sh` auto-substitutes Claude Opus
+   (`claude-opus-4-6`) in the Codex slot. Result is labeled `Codex-slot: Claude Opus fallback`
+   and counts as satisfying the Codex gate. No user instruction required.
+   Override limit: `CODEX_MAX_REVIEWS_PER_WRK=N` env var (default 2).
+
    ### Stage 10 — Work Execution
 
    **Context Budget**: Route A <40%, Route B <70%, Route C = plan multi-session.

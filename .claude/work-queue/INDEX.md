@@ -1,19 +1,19 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T03:44:07Z by generate-index.py -->
+<!-- Generated: 2026-03-10T03:54:30Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T03:44:07Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T03:54:30Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
-**Total items:** 521
+**Total items:** 520
 
 ### By Status
 
 | Status | Count |
 |--------|-------|
-| pending | 223 |
+| pending | 222 |
 | working | 7 |
 | blocked | 10 |
 | archived | 281 |
@@ -22,7 +22,7 @@
 
 | Priority | Count |
 |----------|-------|
-| high | 237 |
+| high | 236 |
 | medium | 238 |
 | low | 45 |
 
@@ -31,7 +31,7 @@
 | Complexity | Count |
 |------------|-------|
 | simple | 109 |
-| medium | 248 |
+| medium | 247 |
 | complex | 98 |
 
 ### By Category
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 55 |
+| harness | 54 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -54,34 +54,34 @@
 | Repository | Count |
 |------------|-------|
 | CAD-DEVELOPMENTS | 2 |
-| OGManufacturing | 17 |
+| OGManufacturing | 16 |
 | TBD-client2-repo | 5 |
 | aceengineer-admin | 4 |
 | aceengineer-strategy | 1 |
 | aceengineer-website | 14 |
 | achantas-data | 9 |
 | acma-projects | 5 |
-| assethold | 13 |
-| assetutilities | 15 |
+| assethold | 12 |
+| assetutilities | 14 |
 | client_projects | 1 |
-| digitalmodel | 177 |
+| digitalmodel | 176 |
 | doris | 21 |
 | frontierdeepwater | 11 |
 | sabithaandkrishnaestates | 1 |
 | saipem | 3 |
 | scripts/review | 1 |
 | tests/testing | 1 |
-| workspace-hub | 184 |
-| worldenergydata | 99 |
+| workspace-hub | 183 |
+| worldenergydata | 98 |
 
 ### Plan Tracking
 
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 207 / 521 |
-| Plans cross-reviewed | 115 |
-| Plans approved | 138 |
+| Plans exist | 206 / 520 |
+| Plans cross-reviewed | 114 |
+| Plans approved | 137 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -91,9 +91,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total captured | 521 |
+| Total captured | 520 |
 | Total archived | 281 |
-| Completion rate | 281/521 (54%) |
+| Completion rate | 281/520 (54%) |
 | Monthly rate (current month) | 50 archived |
 | Monthly rate (prior month) | 67 archived |
 
@@ -101,9 +101,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 57 / 223 | 26% |
-| Plans cross-reviewed | 12 | 17% |
-| Plans user-approved | 13 | 19% |
+| Pending items with plans | 57 / 222 | 26% |
+| Plans cross-reviewed | 11 | 16% |
+| Plans user-approved | 12 | 17% |
 
 ### Aging
 
@@ -118,7 +118,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 92 | 5 | 8 |
+| High     | 91 | 5 | 8 |
 | Medium   | 100  | 2  | 1  |
 | Low      | 31  | 0  | 1  |
 
@@ -126,7 +126,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (55 items — 12 high, 35 medium, 8 low)
+### harness (54 items — 11 high, 35 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -202,7 +202,6 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1090 | HIGH | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | working |
 | WRK-1092 | HIGH | Type coverage ratchet — mypy error count can only decrease across 5 repos | working |
 | WRK-1095 | MEDIUM | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending |
 
@@ -258,7 +257,7 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-1091 | HIGH | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending |
+| WRK-1091 | HIGH | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | working |
 
 #### harness / uncategorised
 
@@ -1123,8 +1122,7 @@
 | WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | medium | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | medium | - | - | - | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ✅ | ✅ | ✅ | - | - | - |
-| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | working | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ✅ | ✅ | - | - | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
@@ -1355,7 +1353,6 @@
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | medium | simple | - | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | medium | complex | - | - |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | medium | medium | - | - |
-| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | medium | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
@@ -1370,7 +1367,7 @@
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | high | medium | workspace-hub | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
-| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | high | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 
 ### Blocked
@@ -1699,7 +1696,6 @@
 | WRK-608 | chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files | pending | medium | medium | - |
 | WRK-609 | chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files | pending | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
-| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | working | high | medium | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | working | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
@@ -1784,8 +1780,7 @@
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
-| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | working | high | medium | - |
-| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | working | high | medium | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | working | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
@@ -1804,8 +1799,7 @@
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
-| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | working | high | medium | - |
-| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | working | high | medium | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | working | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
@@ -1992,8 +1986,7 @@
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
-| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | working | high | medium | - |
-| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | working | high | medium | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | working | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
@@ -2248,8 +2241,7 @@
 | WRK-1080 | chore(harness): workspace backup strategy — skills, memory, queue, configs off ace-linux-1 | archived | high | simple | - |
 | WRK-1083 | Plan-mode integration for work-queue-workflow stages | pending | medium | medium | - |
 | WRK-1084 | Integrate skills.sh as reference for all skill lifecycle operations | pending | medium | simple | - |
-| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | working | high | medium | - |
-| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | working | high | medium | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | working | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
@@ -2353,8 +2345,7 @@
 | WRK-1048 | CV gap analysis + repo project alignment for Power Generation Controls Engineer role | pending | high | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
-| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | working | high | medium | - |
-| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | working | high | medium | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | working | high | simple | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | - |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | - |
@@ -2600,8 +2591,7 @@
 | WRK-1082 | chore(harness): dependency pinning audit — lock file hygiene + CVE scan across tier-1 repos | blocked | simple | - | - |
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | archived | medium | - | - |
 | WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | medium | - | - |
-| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | working | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
-| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | working | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | working | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 
 ### Medium
@@ -3262,8 +3252,7 @@
 | WRK-1085 | feat(harness): search indexing — fast cross-repo code and content search | archived | high | - | - |
 | WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | high | - | - |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | - | - |
-| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | working | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
-| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | working | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 
 ### Complex
@@ -3371,7 +3360,7 @@
 
 ## By Computer
 
-### ace-linux-1 (173 active / 241 total)
+### ace-linux-1 (172 active / 240 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3609,8 +3598,7 @@
 | WRK-1086 | feat(harness): module scaffolding — new engineering module boilerplate generator | pending | medium | simple | - |
 | WRK-1087 | feat(harness): agent audit trail — immutable action log across all sessions | archived | high | medium | - |
 | WRK-1088 | feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets | pending | medium | complex | - |
-| WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | working | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
-| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | pending | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold |
+| WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | working | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | working | high | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | WRK-1093 | Documentation currency — detect when README/docs drift from code | pending | medium | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |

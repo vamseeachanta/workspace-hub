@@ -1,0 +1,30 @@
+wrk_id: WRK-658
+scope: integrated
+completed_at: "2026-03-10T04:10:00Z"
+provider: claude
+phases_completed:
+  - phase: 1
+    description: "14 failing TDD tests + fixtures created"
+    status: done
+  - phase: 2
+    description: "CODEX.md, GEMINI.md, check_agent_log_gate() extended — 14 PASS"
+    status: done
+  - phase: 3
+    description: "orchestrator-gate-contract.md updated with log schema + action names"
+    status: done
+integrated_repo_tests:
+  - name: test-provider-logging T1-T14
+    scope: integrated
+    command: bash scripts/agents/tests/test-provider-logging.sh
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-658/evidence/test-results.md
+  - name: verify-gate-evidence claim phase
+    scope: integrated
+    command: uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-658 --phase claim
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-658/evidence/gate-evidence-summary.json
+  - name: legal-sanity-scan
+    scope: integrated
+    command: bash scripts/legal/legal-sanity-scan.sh
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-658/legal-scan.md

@@ -163,6 +163,7 @@ run_claude_once() {
   if command -v timeout >/dev/null 2>&1; then
     ${SETSID_CMD:+"$SETSID_CMD"} timeout "$CLAUDE_TIMEOUT_SECONDS" "$CLAUDE_CMD" \
       -p "$SHORT_PROMPT" \
+      ${CLAUDE_MODEL:+--model "$CLAUDE_MODEL"} \
       --allowedTools 'Read' \
       --add-dir "$run_dir" \
       --permission-mode bypassPermissions \
@@ -174,6 +175,7 @@ run_claude_once() {
   elif command -v perl >/dev/null 2>&1; then
     ${SETSID_CMD:+"$SETSID_CMD"} perl -e 'alarm shift; exec @ARGV' "$CLAUDE_TIMEOUT_SECONDS" "$CLAUDE_CMD" \
       -p "$SHORT_PROMPT" \
+      ${CLAUDE_MODEL:+--model "$CLAUDE_MODEL"} \
       --allowedTools 'Read' \
       --add-dir "$run_dir" \
       --permission-mode bypassPermissions \
@@ -185,6 +187,7 @@ run_claude_once() {
   else
     ${SETSID_CMD:+"$SETSID_CMD"} "$CLAUDE_CMD" \
       -p "$SHORT_PROMPT" \
+      ${CLAUDE_MODEL:+--model "$CLAUDE_MODEL"} \
       --allowedTools 'Read' \
       --add-dir "$run_dir" \
       --permission-mode bypassPermissions \

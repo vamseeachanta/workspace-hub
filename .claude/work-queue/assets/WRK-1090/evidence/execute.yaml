@@ -1,0 +1,30 @@
+wrk_id: WRK-1090
+stage: 10
+scope: integrated
+completed_at: "2026-03-10T03:37:40Z"
+commit: "bea4e91b5a3e678e23f71f649f3aecfb93ced647"
+files_created:
+  - scripts/quality/dep-health.sh
+  - tests/quality/test_dep_health.sh
+files_modified:
+  - scripts/cron/crontab-template.sh
+integrated_repo_tests:
+  - name: dep-health TDD suite
+    scope: integrated
+    command: bash tests/quality/test_dep_health.sh
+    result: pass
+    artifact_ref: tests/quality/test_dep_health.sh
+  - name: T1 stale lock exits 1
+    scope: repo
+    command: bash tests/quality/test_dep_health.sh
+    result: pass
+    artifact_ref: tests/quality/test_dep_health.sh
+  - name: T4 CVE HIGH exits 1
+    scope: repo
+    command: bash tests/quality/test_dep_health.sh
+    result: pass
+    artifact_ref: tests/quality/test_dep_health.sh
+test_counts:
+  total: 11
+  pass: 11
+  fail: 0

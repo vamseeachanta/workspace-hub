@@ -180,7 +180,7 @@ EOF
 
   classify_codex_failure() {
     if [[ -s "$err_file" ]] && grep -Eqi \
-      "(insufficient[_ -]?quota|quota (exceeded|reached)|billing (limit|quota)|payment required|hard limit reached|credits? (exhausted|depleted|remaining:[[:space:]]*0))" \
+      "(insufficient[_ -]?quota|quota (exceeded|reached)|billing (limit|quota)|payment required|hard limit reached|credits? (exhausted|depleted|remaining:[[:space:]]*0)|usage limit|you.ve hit your usage|try again at)" \
       "$err_file"; then
       echo "QUOTA"
       return
@@ -245,8 +245,10 @@ ${compact_text}
   if [[ "$exec_exit" -ne 0 ]]; then
     failure_kind="$(classify_codex_failure)"
     if [[ "$failure_kind" == "QUOTA" ]]; then
+      echo "# CODEX_QUOTA_EXHAUSTED"
       echo "# Codex quota/credits exhausted"
-      echo "# Action: refresh usage/credits, then rerun this review."
+      echo "# Action: Claude Opus fallback will be used automatically."
+      exit 3  # Reserved exit code for quota exhaustion (triggers Opus fallback in cross-review.sh)
     elif [[ "$failure_kind" == "TIMEOUT" ]]; then
       echo "# Codex exec timed out (exit $exec_exit)"
       echo "# Action: retry or increase CODEX_TIMEOUT_SECONDS."

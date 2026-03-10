@@ -1,6 +1,6 @@
 {
   "wrk_id": "WRK-1090",
-  "phase": "claim",
+  "phase": "archive",
   "summary_file": "assets/WRK-1090/evidence/gate-evidence-summary.json",
   "gates": [
     {
@@ -36,28 +36,28 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "matched routing:['work_queue_skill'], plan:['plan_draft_complete']"
+      "details": "matched routing:['work_queue_skill'], plan:['plan_draft_complete'], execute:['execute_wrapper_complete', 'tdd_eval'], cross-review:['agent_cross_review', 'review_wrapper_complete']"
     },
     {
       "name": "User-review HTML-open gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml: stages=['plan_draft', 'plan_final']"
+      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml: stages=['plan_draft', 'plan_final']"
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1090/review-synthesis.md"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1090/review.html"
     },
     {
       "name": "Claim gate",
@@ -78,7 +78,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "approval ordering OK (phase=claim)"
+      "details": "approval ordering OK (phase=archive)"
     },
     {
       "name": "Midnight UTC sentinel gate",
@@ -89,10 +89,10 @@
     },
     {
       "name": "Browser open elapsed time gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "stage=plan_draft: approval confirmed only -85500s after browser open (min 300s required)"
+      "details": "browser open elapsed time OK"
     },
     {
       "name": "Sentinel values gate",
@@ -116,11 +116,11 @@
       "details": "all timestamp fields have time components"
     },
     {
-      "name": "Stage1 capture gate",
-      "status": "PASS",
-      "ok": true,
+      "name": "Archive readiness gate",
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-09 00:00:00+00:00"
+      "details": "archive-tooling.yaml absent: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1090/evidence/archive-tooling.yaml"
     }
   ]
 }

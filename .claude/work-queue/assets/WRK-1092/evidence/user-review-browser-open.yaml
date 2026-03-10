@@ -1,0 +1,12 @@
+wrk_id: WRK-1092
+events:
+  - stage: plan_draft
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1092/WRK-1092-lifecycle.html
+    opened_at: 2026-03-10T03:45:00Z
+    reviewer: user
+  - stage: plan_final
+    opened_in_default_browser: true
+    html_ref: .claude/work-queue/assets/WRK-1092/WRK-1092-lifecycle.html
+    opened_at: 2026-03-10T03:55:00Z
+    reviewer: user

@@ -1,0 +1,23 @@
+wrk_id: WRK-1092
+stage: 2
+completion_status: continue_to_planning
+gathered_at: 2026-03-09T00:00:00Z
+
+skills:
+  core_used:
+    - scripts/testing/check_coverage_ratchet.py   # direct model — same pattern for mypy
+    - config/testing/coverage-baseline.yaml        # format reference for mypy-baseline.yaml
+    - scripts/hooks/pre-push.sh                    # integration point for new gate
+    - scripts/quality/check-all.sh                 # --mypy-ratchet flag target
+
+key_findings:
+  - "check_coverage_ratchet.py uses yaml baseline + json results; mypy variant will use yaml baseline + run mypy inline (no separate results JSON — mypy outputs error count directly)"
+  - "coverage baseline lives in config/testing/; mypy baseline will go to config/quality/mypy-baseline.yaml"
+  - "pre-push.sh already has PRE_PUSH_CHECK_ALL_SCRIPT override for testability"
+  - "check-all.sh run_mypy() already runs mypy per repo and stores MYPY_RESULTS[]; error count is parseable from final summary line"
+  - "OGManufacturing has no pyproject.toml mypy config — use --ignore-missing-imports as fallback (same as check-all.sh)"
+  - "Route A (simple) — inline plan, no spec_ref needed"
+
+risks:
+  - "mypy may not be installed in all 5 repo venvs — script must handle SKIP gracefully (same as coverage ratchet exempt pattern)"
+  - "mypy error count parsing: 'Found N errors in M files' or 'Success: no issues found' — both must be handled"

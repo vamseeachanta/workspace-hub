@@ -1,12 +1,12 @@
 wrk_id: WRK-1090
-current_stage: 8
-stage_name: Claim / Activation
-completed_stage: 7
-next_action: Execute stage 8: Claim / Activation
-context_summary: Stage 7 complete. Next: stage 8 (Claim / Activation).
+current_stage: 13
+stage_name: Agent Cross-Review
+completed_stage: 12
+next_action: Execute stage 13: Agent Cross-Review
+context_summary: Stage 12 complete. Next: stage 13 (Agent Cross-Review).
 entry_reads:
   - .claude/work-queue/assets/WRK-1090/checkpoint.yaml
-  - assets/WRK-1090/evidence/plan-final-review.yaml
-checkpointed_at: 2026-03-10T03:16:15Z
+  - assets/WRK-1090/WRK-1090-lifecycle.html#s10-s12
+  - assets/WRK-1090/ac-test-matrix.md
+checkpointed_at: 2026-03-10T03:39:00Z
 human_gate: false
-chained_stages: [[8, 9]]

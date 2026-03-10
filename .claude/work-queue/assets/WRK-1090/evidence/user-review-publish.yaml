@@ -8,7 +8,7 @@ events:
     documents:
       - .claude/work-queue/pending/WRK-1090.md
       - .claude/work-queue/assets/WRK-1090/WRK-1090-lifecycle.html
-    published_at: "2026-03-09T23:50:00Z"
+    published_at: "2026-03-10T00:05:00Z"
     reviewer: vamsee
   - stage: plan_final
     pushed_to_origin: true
@@ -18,5 +18,15 @@ events:
     documents:
       - .claude/work-queue/pending/WRK-1090.md
       - .claude/work-queue/assets/WRK-1090/WRK-1090-lifecycle.html
-    published_at: "2026-03-09T23:55:00Z"
+    published_at: "2026-03-10T00:10:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: pending
+    documents:
+      - .claude/work-queue/assets/WRK-1090/WRK-1090-lifecycle.html
+      - .claude/work-queue/assets/WRK-1090/evidence/test-results.md
+    published_at: "2026-03-10T04:46:00Z"
     reviewer: vamsee
