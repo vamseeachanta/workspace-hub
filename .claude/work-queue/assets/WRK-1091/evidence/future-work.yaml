@@ -1,0 +1,27 @@
+wrk_id: "WRK-1091"
+generated_at: "2026-03-10T10:13:00Z"
+recommendations:
+  - id: FW-1
+    title: "Register @pytest.mark.integration in pytest.ini"
+    description: "Add integration marker to scripts/testing/ pytest.ini to suppress warning"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-2
+    title: "Add bypass audit logging to run-cross-repo-integration.sh standalone"
+    description: "Currently only pre-push hook logs bypass; standalone script should also log"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-3
+    title: "Symbol index integration — find-symbol.sh for API change detection"
+    description: "Use find-symbol.sh to identify which downstream files reference changed symbols"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+  - id: FW-4
+    title: "CI/CD server-side equivalent of pre-push hook"
+    description: "Codex noted that local hooks are advisory; add GitHub Actions job for assetutilities changes"
+    disposition: spun-off-new
+    status: captured
+    captured: true

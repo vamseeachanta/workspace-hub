@@ -1,0 +1,13 @@
+wrk_id: "WRK-1091"
+updated_at: "2026-03-10T10:14:00Z"
+additions:
+  - resource: "scripts/testing/run-cross-repo-integration.sh"
+    description: "Cross-repo integration test runner — reads graph YAML, runs @pytest.mark.contracts"
+    available_from: "2026-03-10"
+  - resource: "config/deps/cross-repo-graph.yaml"
+    description: "Machine-readable dependency graph for 4 tier-1 repos"
+    available_from: "2026-03-10"
+  - resource: "scripts/hooks/assetutilities-pre-push.sh"
+    description: "Version-controlled pre-push hook for assetutilities — triggers cross-repo check"
+    available_from: "2026-03-10"
+notes: "New tooling available for future WRKs that need cross-repo test coordination"
