@@ -1,11 +1,30 @@
 wrk_id: WRK-1018
-stages:
-  plan_draft:
-    published_at: "2026-03-10T23:29:00Z"
-    commit: inline
-  plan_final:
-    published_at: "2026-03-10T23:29:00Z"
-    commit: inline
-  close_review:
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 71c367c0
+    documents:
+      - specs/wrk/WRK-1018/plan.md
+    published_at: "2026-03-10T23:30:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 71c367c0
+    documents:
+      - specs/wrk/WRK-1018/plan.md
+    published_at: "2026-03-10T23:30:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 71c367c0
+    documents:
+      - scripts/work-queue/scan-future-work.py
+      - .claude/skills/workspace-hub/comprehensive-learning/references/pipeline-detail.md
     published_at: "2026-03-10T23:36:00Z"
-    commit: 363c8e51
+    reviewer: vamsee

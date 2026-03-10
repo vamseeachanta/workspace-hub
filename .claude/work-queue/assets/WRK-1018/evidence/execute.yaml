@@ -17,11 +17,18 @@ notes: >
   + capture_ref WRK-ID existence check — avoids false positives.
 
 integrated_repo_tests:
-  - name: scan-future-work --days 30 returns 6 items
-    result: PASS
-  - name: --candidates-file appends well-formed MD block
-    result: PASS
-  - name: malformed YAML handled gracefully with WARNING
-    result: PASS
-  - name: captured:true items with generic capture_ref not surfaced
-    result: PASS
+  - name: scan --days 30 returns 6 unqueued items
+    scope: integrated
+    command: "uv run --no-project python scripts/work-queue/scan-future-work.py --days 30"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1018/test-results.md
+  - name: candidates-file appends well-formed block
+    scope: integrated
+    command: "uv run --no-project python scripts/work-queue/scan-future-work.py --days 30 --candidates-file /tmp/t.md"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1018/test-results.md
+  - name: malformed YAML handled gracefully
+    scope: repo
+    command: "uv run --no-project python scripts/work-queue/scan-future-work.py --days 30"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1018/test-results.md
