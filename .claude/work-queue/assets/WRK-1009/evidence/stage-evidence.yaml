@@ -1,5 +1,5 @@
 wrk_id: WRK-1009
-generated_at: '2026-03-10T20:33:00Z'
+generated_at: '2026-03-10T20:34:27Z'
 reviewed_by: orchestrator
 autonomy_maturity_level: L2
 human_steers_agents_execute: true
@@ -162,7 +162,7 @@ stages:
   evidence: n/a
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   human_decision_required: 'yes'
   owner: orchestrator
   blocker: 'no'
