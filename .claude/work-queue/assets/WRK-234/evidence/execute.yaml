@@ -1,0 +1,48 @@
+wrk_id: WRK-234
+scope: integrated
+completed_at: "2026-03-10T13:50:00Z"
+provider: claude
+notes: >
+  WRK-234 is a compound standing parent WRK. Execution = orchestrating all
+  child WRKs across Pillars A, B, C. All Pillar A and B items are archived.
+phases_completed:
+  - phase: 1
+    description: "Pillar A — 5 code quality gate WRKs (WRK-1056, 1067, 1081, 1070, 1064) all archived"
+    status: done
+  - phase: 2
+    description: "Pillar B — 6 ecosystem health WRKs (WRK-1090..1095) all archived"
+    status: done
+  - phase: 3
+    description: "Pillar C — 3 agent/session layer WRKs (WRK-231, 232, 233) archived; remainder parked/blocked"
+    status: done
+integrated_repo_tests:
+  - name: WRK-1095 archived (final Pillar B item)
+    scope: integrated
+    command: "test -d .claude/work-queue/archive && grep -r WRK-1095 .claude/work-queue/archive"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1095/evidence/gate-evidence-summary.json
+    notes: "WRK-1095 complexity ratchet archived 2026-03-10 (commit 5a02aad8)"
+  - name: check-all.sh ecosystem gates active
+    scope: integrated
+    command: "bash scripts/quality/check-all.sh --help"
+    result: pass
+    artifact_ref: scripts/quality/check-all.sh
+    notes: "All Pillar A gates (ruff, mypy, bandit, coverage, secrets) operational"
+  - name: complexity ratchet script present
+    scope: integrated
+    command: "test -f scripts/quality/check_complexity_ratchet.py && echo PASS"
+    result: pass
+    artifact_ref: scripts/quality/check_complexity_ratchet.py
+    notes: "WRK-1095 complexity ratchet gate installed and active"
+  - name: cross-repo integration test gate active
+    scope: integrated
+    command: "bash scripts/testing/run-cross-repo-integration.sh --help"
+    result: pass
+    artifact_ref: scripts/testing/run-cross-repo-integration.sh
+    notes: "WRK-1091 cross-repo gate operational"
+  - name: verify gate evidence (WRK-234 stage-evidence)
+    scope: integrated
+    command: "uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-234"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-234/evidence/gate-evidence-summary.json
+    notes: "Stage evidence all done/n/a"

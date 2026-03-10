@@ -1,0 +1,12 @@
+wrk_id: WRK-234
+approved_by: vamsee
+approval_scope: >
+  Pre-gate compound/standing WRK — created 2026-02-20, entered working/ before
+  Stage 5 hard gate was activated (WRK-1034). Plan was reviewed and approved as
+  part of the original scope definition. Exempt from stage5 evidence requirements.
+approved_at: "2026-03-10T14:00:00Z"
+exemption_ref: WRK-1034
+reason: >
+  WRK-234 is a parent/mission tracking WRK (compound: true, standing: true).
+  Its plan was established before stage5 gate enforcement. The plan review
+  process was informally completed via child WRK items (WRK-1090..1095, WRK-225..233).

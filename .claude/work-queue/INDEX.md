@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T20:34:29Z by generate-index.py -->
+<!-- Generated: 2026-03-10T20:54:03Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T20:34:29Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T20:54:03Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,10 +13,10 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 219 |
+| pending | 218 |
 | working | 4 |
 | blocked | 10 |
-| archived | 304 |
+| archived | 305 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 48 |
+| harness | 47 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -80,8 +80,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 219 / 537 |
-| Plans cross-reviewed | 134 |
-| Plans approved | 157 |
+| Plans cross-reviewed | 135 |
+| Plans approved | 158 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,16 +92,16 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 537 |
-| Total archived | 304 |
-| Completion rate | 304/537 (57%) |
-| Monthly rate (current month) | 70 archived |
+| Total archived | 305 |
+| Completion rate | 305/537 (57%) |
+| Monthly rate (current month) | 71 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 57 / 219 | 26% |
+| Pending items with plans | 57 / 218 | 26% |
 | Plans cross-reviewed | 11 | 16% |
 | Plans user-approved | 12 | 17% |
 
@@ -110,7 +110,7 @@
 | Bucket | Count | Items |
 |--------|-------|-------|
 | Pending > 30 days | 15 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099 |
-| Pending > 14 days | 39 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-149, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-234, WRK-235, WRK-256, WRK-259, WRK-261, WRK-294, WRK-297, WRK-310, WRK-311, WRK-343, WRK-352, WRK-TEST-ENSEMBLE |
+| Pending > 14 days | 38 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-149, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-235, WRK-256, WRK-259, WRK-261, WRK-294, WRK-297, WRK-310, WRK-311, WRK-343, WRK-352, WRK-TEST-ENSEMBLE |
 | Working > 7 days | 2 | WRK-118, WRK-129 |
 | Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
@@ -118,7 +118,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 89 | 2 | 8 |
+| High     | 88 | 2 | 8 |
 | Medium   | 98  | 2  | 1  |
 | Low      | 32  | 0  | 1  |
 
@@ -126,7 +126,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (48 items — 5 high, 35 medium, 8 low)
+### harness (47 items — 4 high, 35 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -230,7 +230,6 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
-| WRK-234 | HIGH | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending |
 | WRK-235 | HIGH | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending |
 | WRK-230 | MEDIUM | Untitled | pending |
 | WRK-578 | MEDIUM | feat(skills): audit MCP registry for engineering-domain servers | pending |
@@ -809,7 +808,7 @@
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | WRK-231 |
 | WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-231 |
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | █░░ 72% | n/a | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | archived | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 80% | n/a | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -1182,7 +1181,6 @@
 | WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | medium | medium | worldenergydata, digitalmodel | drilling_economics |
 | WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | medium | medium | workspace-hub | - |
 | WRK-230 | Untitled | medium | medium | - | - |
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | high | complex | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | high | complex | workspace-hub | - |
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | medium | complex | digitalmodel | - |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | medium | medium | aceengineer-website, worldenergydata | - |
@@ -1561,6 +1559,7 @@
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | high | medium | workspace-hub | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | high | simple | workspace-hub | - |
 | WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | high | medium | workspace-hub | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | high | complex | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | high | medium | worldenergydata | - |
 | WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | high | simple | digitalmodel | - |
 | WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | high | medium | digitalmodel | - |
@@ -1717,7 +1716,7 @@
 
 | ID | Title | Status | Priority | Complexity | Module |
 |-----|-------|--------|----------|------------|--------|
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | archived | high | complex | - |
 | WRK-540 | feat(OGManufacturing/structural): Implement API RP 2A — API RP 2A WSD | pending | high | high | - |
 | WRK-542 | feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural  | pending | medium | low | - |
 | WRK-544 | feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C | pending | high | low | - |
@@ -1810,7 +1809,7 @@
 | WRK-021 | Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks | pending | medium | complex | - |
 | WRK-023 | Property GIS development timeline with future projection and Google Earth animation | pending | low | complex | - |
 | WRK-053 | assethold test coverage improvement | archived | medium | medium | - |
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | archived | high | complex | - |
 | WRK-366 | assethold root cleanup — .agent-os/, business/, agents/, empty dirs | archived | medium | medium | - |
 | WRK-1067 | feat(harness): test coverage enforcement — per-repo coverage gate at 80% minimum | archived | medium | medium | - |
 | WRK-1070 | feat(harness): secrets audit — automated scan for hardcoded credentials across all repos | archived | high | simple | - |
@@ -1828,7 +1827,7 @@
 |-----|-------|--------|----------|------------|--------|
 | WRK-052 | assetutilities test coverage improvement | archived | high | complex | - |
 | WRK-122 | Licensed Software Usage Workflow & Burden Reduction | archived | high | medium | - |
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | archived | high | complex | - |
 | WRK-350 | Fix pre-existing test failures in assetutilities | archived | medium | medium | - |
 | WRK-367 | assetutilities src/ cleanup — orphaned src/modules/ and src/validators/ | archived | medium | simple | - |
 | WRK-616 | chore(wrk-309): convert document-intelligence findings into structured data sources | pending | medium | medium | - |
@@ -1928,7 +1927,7 @@
 | WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | medium | complex | well_design |
 | WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | drilling_economics |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | complex | decommissioning_analytics |
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | archived | high | complex | - |
 | WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | high | simple | - |
 | WRK-241 | Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow | archived | high | medium | - |
 | WRK-242 | Multi-format export as automatic pipeline output stage | archived | high | medium | - |
@@ -2167,7 +2166,7 @@
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | high | medium | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | high | simple | - |
 | WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | archived | high | medium | - |
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | archived | high | complex | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | complex | - |
 | WRK-270 | Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API | archived | medium | simple | - |
 | WRK-280 | ABS standards acquisition: create folder + download CP Guidance Notes | blocked | high | simple | - |
@@ -2372,7 +2371,7 @@
 | WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | medium | complex | well_design |
 | WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | drilling_economics |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | complex | decommissioning_analytics |
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | archived | high | complex | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | high | medium | - |
 | WRK-242 | Multi-format export as automatic pipeline output stage | archived | high | medium | - |
 | WRK-246 | LNG terminal dataset — queryable module and aceengineer website data card | archived | medium | medium | - |
@@ -2501,7 +2500,7 @@
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | medium | workspace-hub | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | simple | workspace-hub | - |
 | WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | archived | medium | workspace-hub | - |
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | complex | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | archived | complex | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | complex | workspace-hub | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | medium | worldenergydata | - |
 | WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | simple | digitalmodel | - |
@@ -3428,7 +3427,7 @@
 | WRK-204 | digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/, tests/ | archived | medium | - | - |
 | WRK-218 | Well bore design analysis — slim-hole vs. standard-hole hydraulic and mechanical trade-offs | archived | medium | digitalmodel, worldenergydata | well_design |
 | WRK-220 | Offshore decommissioning analytics — data-driven lifecycle planning module | archived | medium | worldenergydata, digitalmodel, aceengineer-website | decommissioning_analytics |
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | archived | high | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | workspace-hub | - |
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | medium | digitalmodel | - |
 | WRK-272 | CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update | archived | medium | digitalmodel | - |
@@ -3457,7 +3456,7 @@
 
 ## By Computer
 
-### ace-linux-1 (167 active / 257 total)
+### ace-linux-1 (166 active / 257 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3482,7 +3481,7 @@
 | WRK-219 | Batch drilling economics analysis — campaign scheduling and cost optimization | pending | medium | medium | worldenergydata, digitalmodel |
 | WRK-227 | Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum | pending | medium | medium | workspace-hub |
 | WRK-229 | Skills curation — online research, knowledge graph review, update index, session-input health check | archived | high | medium | workspace-hub |
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | archived | high | complex | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | complex | workspace-hub |
 | WRK-256 | Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps | pending | medium | complex | digitalmodel |
 | WRK-259 | BSEE field economics case study — calibrated NPV/IRR with cost data foundation | pending | medium | medium | aceengineer-website, worldenergydata |
