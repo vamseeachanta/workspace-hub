@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T18:36:09Z by generate-index.py -->
+<!-- Generated: 2026-03-10T18:49:19Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T18:36:09Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T18:49:19Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -14,9 +14,9 @@
 | Status | Count |
 |--------|-------|
 | pending | 221 |
-| working | 3 |
+| working | 2 |
 | blocked | 10 |
-| archived | 301 |
+| archived | 302 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 50 |
+| harness | 49 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -80,8 +80,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 214 / 535 |
-| Plans cross-reviewed | 129 |
-| Plans approved | 152 |
+| Plans cross-reviewed | 130 |
+| Plans approved | 153 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,9 +92,9 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 535 |
-| Total archived | 301 |
-| Completion rate | 301/535 (56%) |
-| Monthly rate (current month) | 67 archived |
+| Total archived | 302 |
+| Completion rate | 302/535 (56%) |
+| Monthly rate (current month) | 68 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
@@ -111,7 +111,7 @@
 |--------|-------|-------|
 | Pending > 30 days | 15 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099 |
 | Pending > 14 days | 39 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-149, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-234, WRK-235, WRK-256, WRK-259, WRK-261, WRK-294, WRK-297, WRK-310, WRK-311, WRK-343, WRK-352, WRK-TEST-ENSEMBLE |
-| Working > 7 days | 3 | WRK-118, WRK-129, WRK-684 |
+| Working > 7 days | 2 | WRK-118, WRK-129 |
 | Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
 ### Priority Distribution (active items only)
@@ -119,14 +119,14 @@
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
 | High     | 89 | 1 | 8 |
-| Medium   | 100  | 2  | 1  |
+| Medium   | 100  | 1  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (50 items — 5 high, 37 medium, 8 low)
+### harness (49 items — 5 high, 36 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -237,7 +237,6 @@
 | WRK-579 | MEDIUM | feat(skills): install Semantic Scholar MCP server for literature search | pending |
 | WRK-597 | MEDIUM | feat(digitalmodel): geotechnical module — umbrella tracker | pending |
 | WRK-681 | MEDIUM | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending |
-| WRK-684 | MEDIUM | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working |
 | WRK-685 | MEDIUM | feat(skills): update /today to highlight availability of unused preview AI models | pending |
 | WRK-1000 | MEDIUM | fix(work-queue): restore /work skill compatibility in Codex CLI | pending |
 | WRK-1009 | MEDIUM | Skill upkeep and curation — evals, A/B tests, daily cron integration | pending |
@@ -811,7 +810,7 @@
 | WRK-231 | session-analysis skill — first-class session mining as foundation for skills, gaps, and agent improvement | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | - |
 | WRK-232 | session-bootstrap skill — one-time historical session analysis per machine | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ✅ | ███ 100% | n/a | WRK-231 |
 | WRK-233 | Assess and simplify existing workflows in light of session-analysis self-learning loop | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | WRK-231 |
-| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | ░░░ 25% | n/a | - |
+| WRK-234 | MISSION: Self-healing and self-improving repo ecosystem — code, deps, types, tests, docs, and agents all improve automatically | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | █░░ 72% | n/a | - |
 | WRK-235 | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | ██░ 80% | n/a | - |
 | WRK-239 | BSEE field pipeline skill — zero-config agent-callable wrapper | archived | high | medium | - | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
 | WRK-240 | Diffraction spec converter skill — register as named agent-callable skill | archived | high | simple | - | ace-linux-1 | ace-linux-1 | - | digitalmodel | - | ❌ | ❌ | ❌ | ❌ | ███ 100% | n/a | - |
@@ -1030,7 +1029,7 @@
 | WRK-679 | test(review): standardize execute gate variation tests | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-680 | governance(review): strengthen archive gate validation | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-681 | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working | medium | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
+| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | archived | medium | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | simple | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | WRK-683 |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | worldenergydata | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
@@ -1379,7 +1378,6 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
-| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 
 ### Blocked
 
@@ -1634,6 +1632,7 @@
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | high | medium | workspace-hub | - |
 | WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | high | medium | workspace-hub | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | high | medium | workspace-hub | - |
+| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | high | medium | workspace-hub | - |
 | WRK-692 | feat(session): interactive session analysis — codex-orchestrator variant | high | medium | workspace-hub | - |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | medium | simple | workspace-hub | - |
@@ -2218,7 +2217,7 @@
 | WRK-679 | test(review): standardize execute gate variation tests | pending | medium | medium | - |
 | WRK-680 | governance(review): strengthen archive gate validation | pending | medium | medium | - |
 | WRK-681 | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending | medium | medium | - |
-| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working | medium | simple | - |
+| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | archived | medium | simple | - |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | simple | - |
 | WRK-687 | arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation | pending | high | medium | - |
 | WRK-691 | feat(session): interactive session analysis — assess loaded rules, skills, and context at session start | archived | high | medium | - |
@@ -2841,7 +2840,7 @@
 | WRK-679 | test(review): standardize execute gate variation tests | pending | medium | workspace-hub | - |
 | WRK-680 | governance(review): strengthen archive gate validation | pending | medium | workspace-hub | - |
 | WRK-681 | feat(skills): add anti-pattern sections (no-to-do lists) to agent skills | pending | medium | workspace-hub | - |
-| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working | simple | workspace-hub | - |
+| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | archived | simple | workspace-hub | - |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | simple | workspace-hub | - |
 | WRK-688 | eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration | pending | medium | worldenergydata | - |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | archived | simple | workspace-hub | - |
@@ -3031,7 +3030,7 @@
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | frontierdeepwater, TBD-client2-repo | - |
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
 | WRK-638 | Memory quality eval harness | archived | medium | workspace-hub | - |
-| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working | medium | workspace-hub | - |
+| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | archived | medium | workspace-hub | - |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | workspace-hub | - |
 | WRK-693 | fix(scripts): audit and replace bare python3 with uv across all hub scripts | archived | medium | workspace-hub | - |
 | WRK-694 | Per-session log files in session-logger.sh | pending | medium | workspace-hub | - |
@@ -3743,7 +3742,7 @@
 | WRK-1051 | chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) | pending | medium | simple | - |
 | WRK-1077 | acma-ansys05 workstation readiness setup | pending | medium | simple | workspace-hub |
 
-### (unassigned) (23 active / 229 total)
+### (unassigned) (22 active / 229 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3972,7 +3971,7 @@
 | WRK-481 | feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing | pending | high | moderate | digitalmodel |
 | WRK-679 | test(review): standardize execute gate variation tests | pending | medium | medium | workspace-hub |
 | WRK-680 | governance(review): strengthen archive gate validation | pending | medium | medium | workspace-hub |
-| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | working | medium | simple | workspace-hub |
+| WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | archived | medium | simple | workspace-hub |
 | WRK-685 | feat(skills): update /today to highlight availability of unused preview AI models | pending | medium | simple | workspace-hub |
 | WRK-1000 | fix(work-queue): restore /work skill compatibility in Codex CLI | pending | medium | medium | workspace-hub |
 | WRK-1089 | Split check-all.sh by responsibility (400L hard limit violated) | pending | medium | medium | - |

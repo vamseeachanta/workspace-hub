@@ -1,0 +1,13 @@
+wrk_id: WRK-684
+metadata_version: "1.0"
+stage: 8
+claimed_at: "2026-03-02T14:27:00Z"
+confirmed_at: "2026-03-02T14:27:00Z"
+best_fit_provider: gemini
+session_owner: vamsee
+route: B
+orchestrator: gemini
+quota_snapshot:
+  status: available
+  pct_remaining: 80
+notes: Legacy backfill — claim occurred 2026-03-02 under gemini orchestrator.

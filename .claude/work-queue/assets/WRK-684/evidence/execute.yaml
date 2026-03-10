@@ -1,0 +1,27 @@
+wrk_id: WRK-684
+stage: 10
+scope: integrated
+description: >
+  Implemented learning-outcomes.sh section for /today report pipeline.
+  Parses comprehensive-learning reports to extract: gate skips, scope drift,
+  TDD pairing rate, RI coverage, stale memory count, AI readiness, improvement candidates.
+  Graceful fallback when no reports present.
+executed_at: "2026-03-02T14:30:00Z"
+completed_at: "2026-03-02T14:30:00Z"
+integrated_repo_tests:
+  - name: Report parsing accuracy
+    scope: integrated
+    command: "bash scripts/productivity/sections/learning-outcomes.sh (mock report)"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-684/variation-test-results.md
+  - name: Fallback when no reports
+    scope: integrated
+    command: "REPORTS_DIR=/tmp/missing bash scripts/productivity/sections/learning-outcomes.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-684/variation-test-results.md
+  - name: Integration into /today pipeline
+    scope: integrated
+    command: "bash scripts/productivity/daily_today.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-684/variation-test-results.md
+notes: Legacy backfill — execution completed 2026-03-02.
