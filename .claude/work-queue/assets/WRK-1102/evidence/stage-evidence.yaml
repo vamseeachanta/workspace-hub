@@ -1,0 +1,83 @@
+wrk_id: WRK-1102
+stages:
+  - stage: 1
+    name: Capture
+    status: done
+    evidence: evidence/user-review-capture.yaml
+    completed_at: 2026-03-10T00:00:00Z
+  - stage: 2
+    name: Resource Intelligence
+    status: in_progress
+    evidence: evidence/resource-intelligence.yaml
+  - stage: 3
+    name: Triage
+    status: pending
+    evidence: n/a
+  - stage: 4
+    name: Plan Draft
+    status: pending
+    evidence: n/a
+  - stage: 5
+    name: User Review Plan Draft
+    status: pending
+    evidence: evidence/user-review-plan-draft.yaml
+  - stage: 6
+    name: Cross-Review
+    status: pending
+    evidence: n/a
+  - stage: 7
+    name: User Review Plan Final
+    status: pending
+    evidence: evidence/plan-final-review.yaml
+  - stage: 8
+    name: Claim/Activation
+    status: pending
+    evidence: n/a
+  - stage: 9
+    name: Work-Queue Routing
+    status: pending
+    evidence: n/a
+  - stage: 10
+    name: Work Execution
+    status: pending
+    evidence: n/a
+  - stage: 11
+    name: Artifact Generation
+    status: pending
+    evidence: n/a
+  - stage: 12
+    name: TDD / Eval
+    status: pending
+    evidence: n/a
+  - stage: 13
+    name: Agent Cross-Review
+    status: pending
+    evidence: n/a
+  - stage: 14
+    name: Verify Gate Evidence
+    status: pending
+    evidence: evidence/gate-evidence-summary.json
+  - stage: 15
+    name: Future Work Synthesis
+    status: pending
+    evidence: evidence/future-work.yaml
+  - stage: 16
+    name: Resource Intelligence Update
+    status: pending
+    evidence: evidence/resource-intelligence-update.yaml
+  - stage: 17
+    name: User Review Implementation
+    status: pending
+    evidence: evidence/user-review-close.yaml
+  - stage: 18
+    name: Reclaim
+    status: n/a
+    evidence: n/a
+  - stage: 19
+    name: Close
+    status: pending
+    evidence: n/a
+  - stage: 20
+    name: Archive
+    status: pending
+    evidence: n/a
