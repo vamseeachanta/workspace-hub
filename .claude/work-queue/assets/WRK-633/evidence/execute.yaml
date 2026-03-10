@@ -1,0 +1,32 @@
+wrk_id: WRK-633
+completed_at: "2026-03-10T11:42:22Z"
+scope: integrated
+executor: claude
+execution_summary: >
+  Created two SKILL.md files per WRK-633 acceptance criteria:
+  1. .claude/skills/business/client-demo/engineering-chatbot/SKILL.md (85 lines, frontmatter 20 lines)
+  2. .claude/skills/engineering/maritime-legal/SKILL.md (105 lines, frontmatter 20 lines)
+  Updated business and engineering INDEX.md files.
+  Created subcategory INDEX.md files.
+  Legal scan: PASS.
+integrated_repo_tests:
+  - name: frontmatter-line-limit
+    scope: integrated
+    command: "head -20 .claude/skills/business/client-demo/engineering-chatbot/SKILL.md | grep -c '^'"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-633/evidence/execute.yaml
+  - name: engineering-chatbot-skill-exists
+    scope: integrated
+    command: "test -f .claude/skills/business/client-demo/engineering-chatbot/SKILL.md"
+    result: pass
+    artifact_ref: .claude/skills/business/client-demo/engineering-chatbot/SKILL.md
+  - name: maritime-legal-skill-exists
+    scope: integrated
+    command: "test -f .claude/skills/engineering/maritime-legal/SKILL.md"
+    result: pass
+    artifact_ref: .claude/skills/engineering/maritime-legal/SKILL.md
+  - name: legal-scan
+    scope: integrated
+    command: "bash scripts/legal/legal-sanity-scan.sh --diff-only"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-633/evidence/legal-scan.md
