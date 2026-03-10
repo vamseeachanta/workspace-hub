@@ -1,0 +1,55 @@
+stage: 2
+wrk_id: "WRK-1098"
+completed_at: "2026-03-10T06:05:00Z"
+completion_status: continue_to_planning
+
+existing_skills:
+  - name: ecosystem-health
+    path: .claude/skills/workspace-hub/ecosystem-health/SKILL.md
+    relevance: low  # health checks, not terminology
+  - name: file-taxonomy
+    path: .claude/skills/workspace-hub/file-taxonomy/SKILL.md
+    relevance: medium  # output file placement patterns
+  - name: repo-structure
+    path: .claude/skills/workspace-hub/repo-structure/SKILL.md
+    relevance: medium  # repo layout standards
+
+gaps:
+  - No centralized terminology/naming reference skill
+  - No canonical repo name table with aliases
+  - No relationship vocabulary definition
+  - No acronym expansion guide (WRK, GTM, CP, VIV)
+  - No deprecated/forbidden name list
+
+key_reference_files:
+  - .claude/rules/coding-style.md
+  - config/onboarding/repo-map.yaml
+  - MEMORY.md  # machine names, tier-1 repo list
+  - .claude/rules/git-workflow.md
+  - .claude/docs/workspace-structure.md
+  - docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md
+
+tier_1_repos:
+  - assetutilities
+  - digitalmodel
+  - worldenergydata
+  - assethold
+  - OGManufacturing
+
+machines:
+  - ace-linux-1  # primary orchestrator
+  - ace-linux-2  # secondary Linux
+  - acma-ansys05  # Windows / OrcaFlex
+
+risks:
+  - Legal: must not include client project codenames (.legal-deny-list.yaml)
+  - Harness file size: AGENTS.md/CODEX.md/GEMINI.md ≤20 lines
+  - Cross-review gate: Codex/Gemini must validate terminology table
+
+skills:
+  core_used:
+    - coordination/workspace/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - workspace-hub/repo-structure
+    - workspace-hub/file-taxonomy

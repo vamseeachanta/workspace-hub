@@ -1,0 +1,9 @@
+stage: 16
+wrk_id: "WRK-1098"
+completed_at: "2026-03-10T11:36:00Z"
+
+additions:
+  - item: "ecosystem-terminology skill pattern — two-table approach (tier-1 + other submodules)"
+    rationale: "Codex cross-review revealed scope mismatch; splitting into core/other is the right pattern for partial-authoritative skill files"
+  - item: "Slash command format: frontmatter with @skill reference on one line"
+    rationale: "Confirmed working pattern from workspace-hub:whats-next command"

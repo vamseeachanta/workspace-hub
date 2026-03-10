@@ -1,0 +1,16 @@
+wrk_id: WRK-1098
+stage: 13
+completed_at: "2026-03-10T11:20:00Z"
+
+providers:
+  - name: codex
+    verdict: APPROVE
+    artifact: .claude/work-queue/assets/WRK-1098/evidence/cross-review-codex.md
+    notes: "v1: REQUEST_CHANGES (MAJOR+MEDIUM); v2 after fixes: APPROVE — no remaining issues"
+  - name: gemini
+    verdict: n/a
+    artifact: n/a
+    notes: "Route A — single provider review sufficient; Codex is hard gate and passed"
+
+overall_verdict: APPROVE
+hard_gate_passed: true

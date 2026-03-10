@@ -1,0 +1,23 @@
+stage: 15
+wrk_id: "WRK-1098"
+completed_at: "2026-03-10T11:35:00Z"
+
+recommendations:
+  - id: FW-1
+    title: "Update ecosystem-terminology when new submodules are added"
+    disposition: existing-updated
+    status: captured
+    captured: true
+    notes: "Section 1 Other Submodules table should be updated when .gitmodules changes"
+  - id: FW-2
+    title: "Fix AGENTS.md 20-line limit violation (currently 28 lines)"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Separate debt WRK; do not modify AGENTS.md within this WRK scope"
+  - id: FW-3
+    title: "Add terminology propagation to CODEX.md/GEMINI.md adapters"
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    notes: "Thin adapters; keep as a future skill loading reference"

@@ -1,0 +1,42 @@
+stage: 10
+wrk_id: "WRK-1098"
+completed_at: "2026-03-10T11:30:00Z"
+scope: integrated
+
+deliverables:
+  - path: .claude/skills/workspace-hub/ecosystem-terminology/SKILL.md
+    status: created
+    description: "Canonical ecosystem terminology skill — 6 sections, all submodules, full acronym table"
+  - path: .claude/commands/workspace-hub/ecosystem-terminology.md
+    status: created
+    description: "Slash command registration for /ecosystem-terminology"
+  - path: CLAUDE.md
+    status: modified
+    description: "Added Terminology reference to Quick Reference (line 11; 16 lines total, within 20-line limit)"
+
+integrated_repo_tests:
+  - name: legal-scan
+    scope: integrated
+    command: "bash scripts/legal/legal-sanity-scan.sh"
+    result: pass
+    artifact_ref: "evidence/legal-scan-result.txt"
+  - name: claude-md-line-count
+    scope: integrated
+    command: "wc -l CLAUDE.md"
+    result: pass
+    artifact_ref: "16 lines, within 20-line limit"
+  - name: all-6-sections-present
+    scope: integrated
+    command: "grep -c '^## [0-9]' .claude/skills/workspace-hub/ecosystem-terminology/SKILL.md"
+    result: pass
+    artifact_ref: "6 sections confirmed"
+  - name: codex-cross-review-v1
+    scope: integrated
+    command: "bash scripts/review/submit-to-codex.sh --file wrk-1098-phase-1-review-input.md"
+    result: pass
+    artifact_ref: "evidence/cross-review-codex.md (REQUEST_CHANGES — fixed)"
+  - name: codex-cross-review-v2
+    scope: integrated
+    command: "bash scripts/review/submit-to-codex.sh --file wrk-1098-phase-2-review-input.md"
+    result: pass
+    artifact_ref: "evidence/cross-review-codex.md (APPROVE)"
