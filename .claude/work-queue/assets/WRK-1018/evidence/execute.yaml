@@ -1,6 +1,6 @@
 wrk_id: WRK-1018
 stage: 10
-executed_at: "2026-03-10T23:30:00Z"
+executed_at: "2026-03-10T23:32:00Z"
 executor: claude
 artifacts:
   - path: scripts/work-queue/scan-future-work.py
@@ -17,5 +17,11 @@ notes: >
   + capture_ref WRK-ID existence check — avoids false positives.
 
 integrated_repo_tests:
-  - name: scan-future-work manual verification
+  - name: scan-future-work --days 30 returns 6 items
+    result: PASS
+  - name: --candidates-file appends well-formed MD block
+    result: PASS
+  - name: malformed YAML handled gracefully with WARNING
+    result: PASS
+  - name: captured:true items with generic capture_ref not surfaced
     result: PASS

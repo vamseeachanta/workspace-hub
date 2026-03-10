@@ -8,7 +8,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
     },
     {
       "name": "Workstation contract gate",
@@ -36,7 +36,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "activation.yaml missing"
+      "details": "activation.yaml: session_id missing"
     },
     {
       "name": "Agent log gate",
@@ -50,14 +50,14 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-browser-open.yaml missing"
+      "details": "user-review-browser-open.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
     },
     {
       "name": "User-review publish gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-publish.yaml missing"
+      "details": "user-review-publish.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
     },
     {
       "name": "Cross-review gate",
@@ -78,7 +78,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "execute.yaml: integrated_repo_tests must be a list"
+      "details": "execute.yaml: integrated_repo_tests[1] missing fields: ['scope', 'command', 'artifact_ref']"
     },
     {
       "name": "Legal gate",
@@ -96,17 +96,17 @@
     },
     {
       "name": "Future-work gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "future-work.yaml: empty recommendations and no_follow_ups_rationale missing"
+      "details": "future-work.yaml: no_follow_ups_rationale=present"
     },
     {
       "name": "Resource-intelligence update gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence-update.yaml missing"
+      "details": "resource-intelligence-update.yaml: no_additions_rationale=present"
     },
     {
       "name": "User-review close gate",
@@ -141,7 +141,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml absent \u2014 skip elapsed check"
+      "details": "browser open elapsed time OK"
     },
     {
       "name": "Sentinel values gate",
@@ -152,10 +152,10 @@
     },
     {
       "name": "Claim artifact path gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+      "details": "canonical claim artifact found: claim-evidence.yaml"
     },
     {
       "name": "ISO datetime format gate",
@@ -176,14 +176,14 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip commit uniqueness check"
+      "details": "insufficient commit data \u2014 skip uniqueness check"
     },
     {
       "name": "Stage evidence paths gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[1] evidence path not found: .claude/work-queue/pending/WRK-1018.md"
+      "details": "stage-evidence.yaml: stage[9] evidence path not found: /work run WRK-1018"
     },
     {
       "name": "Done/pending contradiction gate",
@@ -197,7 +197,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip"
+      "details": "plan_draft publish event not found \u2014 skip"
     },
     {
       "name": "Workstation contract (strict) gate",

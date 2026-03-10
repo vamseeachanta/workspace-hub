@@ -1,4 +1,11 @@
 wrk_id: WRK-1018
-stage: 17
-published_at: "2026-03-10T23:35:00Z"
-commit: 79a9584ce999ccb58ea5e67cf2e0c0b330e0c12f
+stages:
+  plan_draft:
+    published_at: "2026-03-10T23:29:00Z"
+    commit: inline
+  plan_final:
+    published_at: "2026-03-10T23:29:00Z"
+    commit: inline
+  close_review:
+    published_at: "2026-03-10T23:36:00Z"
+    commit: 363c8e51

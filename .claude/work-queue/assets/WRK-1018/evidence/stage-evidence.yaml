@@ -75,7 +75,7 @@ stages:
     owner: orchestrator
     blocker: "no"
     comment: Entered via /work run WRK-1018.
-    evidence: /work run WRK-1018
+    evidence: .claude/work-queue/working/WRK-1018.md
   - order: 10
     stage: Work Execution
     status: done
