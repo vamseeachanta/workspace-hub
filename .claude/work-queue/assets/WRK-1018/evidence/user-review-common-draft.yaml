@@ -3,6 +3,7 @@ stage: 5
 reviewed_at: "2026-03-10T23:35:00Z"
 reviewer: vamsee
 scope_approved: true
+approval_decision: approve_as_is
 notes: >
   Route A simple item. Inline plan approved by user at session start
   (user said "I approve stage 1"). No separate HTML review required
