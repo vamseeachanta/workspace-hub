@@ -40,10 +40,10 @@
     },
     {
       "name": "Agent log gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log"
+      "details": "legacy WRK (id=235 < 658) \u2014 log gate skipped"
     },
     {
       "name": "User-review HTML-open gate",

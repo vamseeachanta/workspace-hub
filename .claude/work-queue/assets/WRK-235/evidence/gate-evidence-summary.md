@@ -7,7 +7,7 @@
 | Stage evidence gate | PASS | stage-evidence.yaml: stages=19, contract=19-stage |
 | Resource-intelligence gate | FAIL | resource-intelligence evidence absent (legacy item — WARN) |
 | Activation gate | FAIL | activation.yaml missing |
-| Agent log gate | FAIL | routing:missing-log ; plan:missing-log ; execute:missing-log ; cross-review:missing-log |
+| Agent log gate | PASS | legacy WRK (id=235 < 658) — log gate skipped |
 | User-review HTML-open gate | FAIL | user-review-browser-open.yaml missing |
 | User-review publish gate | FAIL | user-review-publish.yaml missing |
 | Cross-review gate | FAIL | artifact=none |

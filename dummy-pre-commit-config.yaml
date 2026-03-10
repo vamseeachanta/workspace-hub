@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: dummy
+        name: dummy
+        entry: ./dummy-pre-push.sh
+        language: script
+        stages: [push]
+        pass_filenames: false

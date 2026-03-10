@@ -1,14 +1,14 @@
 {
-  "wrk_id": "WRK-633",
-  "phase": "archive",
-  "summary_file": "assets/WRK-633/evidence/gate-evidence-summary.json",
+  "wrk_id": "WRK-1097",
+  "phase": "claim",
+  "summary_file": "assets/WRK-1097/evidence/gate-evidence-summary.json",
   "gates": [
     {
       "name": "Plan gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
+      "details": "reviewed=True, approved=True, artifact=WRK-1097-plan-final.html, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
     },
     {
       "name": "Workstation contract gate",
@@ -22,7 +22,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3"
+      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=5"
     },
     {
       "name": "Activation gate",
@@ -36,35 +36,35 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "legacy WRK (id=633 < 658) \u2014 log gate skipped"
+      "details": "matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete']"
     },
     {
       "name": "User-review HTML-open gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
+      "details": "user-review-browser-open.yaml: stages=['plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
+      "details": "user-review-publish.yaml: stages=['plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-633/review.md"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1097/review-synthesis.md"
     },
     {
       "name": "Claim gate",
-      "status": "WARN",
-      "ok": false,
-      "warn": true,
-      "details": "claim evidence absent (legacy item \u2014 WARN)"
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "claim-evidence.yaml: version=1, owner=unknown, quota=available(null)"
     },
     {
       "name": "Reclaim gate",
@@ -78,7 +78,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "approval ordering OK (phase=archive)"
+      "details": "approval ordering OK (phase=claim)"
     },
     {
       "name": "Midnight UTC sentinel gate",
@@ -116,11 +116,11 @@
       "details": "all timestamp fields have time components"
     },
     {
-      "name": "Archive readiness gate",
-      "status": "FAIL",
-      "ok": false,
+      "name": "Stage1 capture gate",
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "archive-tooling.yaml absent: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-633/evidence/archive-tooling.yaml"
+      "details": "stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-10T05:10:00Z"
     }
   ]
 }

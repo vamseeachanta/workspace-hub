@@ -1,0 +1,11 @@
+wrk_id: WRK-1097
+stage: 5
+reviewed_at: "2026-03-10T06:30:00Z"
+approval_decision: approve_as_is
+decision: approved
+reviewer: vamsee
+notes: >
+  Approved with skill additions. Plan covers active-sessions.sh as reusable
+  capability, session-start skill update, whats-next skill update, and
+  work-queue-workflow Stage 8 hard gate. PID-primary detection with cross-machine
+  age fallback selected as the kill-proof approach.

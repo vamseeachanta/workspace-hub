@@ -1,0 +1,8 @@
+wrk_id: WRK-633
+confirmed_at: "2026-03-10T11:33:00Z"
+reviewed_at: "2026-03-10T11:33:00Z"
+reviewer: vamsee
+approval_decision: approve_as_is
+notes: >
+  Plan draft approved. Create engineering-chatbot-demo and maritime-legal SKILL.md
+  files following existing skill patterns. Frontmatter ≤20 lines.

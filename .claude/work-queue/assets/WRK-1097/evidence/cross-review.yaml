@@ -1,0 +1,20 @@
+wrk_id: WRK-1097
+stage: 6
+completed_at: "2026-03-10T06:40:00Z"
+reviews:
+  - provider: codex
+    verdict: REQUEST_CHANGES
+    artifact: assets/WRK-1097/plan_codex.md
+    major_findings:
+      - "PID check invalid — session_pid is start_stage.py (short-lived); removed from plan"
+      - "claimed/unclaimed classification ambiguous — use queue location as canonical source"
+      - "Timing thresholds inconsistent — unified to 2h"
+    resolution: fixed_in_plan_v2
+  - provider: gemini
+    verdict: MINOR
+    artifact: assets/WRK-1097/plan_gemini.md
+    minor_findings:
+      - "PID reuse risk (corroborates Codex HIGH)"
+      - "start_stage.py error message needs actionable claim command"
+    resolution: fixed_in_plan_v2
+overall_verdict: fixed_and_ready

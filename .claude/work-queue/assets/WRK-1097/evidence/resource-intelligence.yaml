@@ -1,0 +1,39 @@
+wrk_id: WRK-1097
+stage: 2
+completion_status: continue_to_planning
+generated_at: "2026-03-10T06:00:00Z"
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workspace-hub:whats-next
+    - workspace-hub:wrk-resume
+    - superpowers:systematic-debugging
+
+key_files:
+  - path: scripts/work-queue/whats-next.sh
+    role: Primary file — add UNCLAIMED section detection
+    lines: 179
+  - path: scripts/work-queue/start_stage.py
+    role: Add working/ guard at stage entry
+    lines: ~380
+  - path: .claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    role: Stage 8 contract annotation
+  - path: scripts/work-queue/claim-item.sh
+    role: Reference — session-lock.yaml format (locked_at, session_pid, hostname)
+
+session_lock_schema:
+  fields: [hostname, locked_at, session_pid, status]
+  location: assets/WRK-NNN/evidence/session-lock.yaml
+  stale_heuristic: locked_at older than 2 hours or session_pid not running
+
+implementation_notes:
+  - whats-next.sh check_session_lock function needed; check pid liveness or age
+  - start_stage.py check: if item in pending/ not working/ → warn + print claim cmd
+  - SKILL.md Stage 8: change "suggestion" language to hard gate language
+  - No new deps; pure bash + Python stdlib
+
+risks:
+  - False positives from stale session-lock.yaml (mitigated by pid/age check)
+  - start_stage.py guard must be non-blocking for Stage 1/2 (pre-claim stages)

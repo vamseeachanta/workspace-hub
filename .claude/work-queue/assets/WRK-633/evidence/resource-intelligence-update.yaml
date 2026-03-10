@@ -1,0 +1,5 @@
+wrk_id: WRK-633
+updated_at: "2026-03-10T11:43:00Z"
+no_additions_rationale: >
+  No new external resources or tooling discovered during this skill creation.
+  Skills reference existing worldenergydata loaders (WRK-320) already tracked.

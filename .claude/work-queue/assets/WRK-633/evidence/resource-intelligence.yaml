@@ -1,0 +1,13 @@
+wrk_id: WRK-633
+generated_at: "2026-03-10T11:30:00Z"
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - work-queue
+    - writing-skills
+    - workspace-hub:ecosystem-terminology
+summary: >
+  Skill creation task — existing skill patterns in .claude/skills/ provide format reference.
+  No external resources needed. Existing skills in engineering/marine-offshore/ and
+  business/legal/ inform the new skill structures. No blockers identified.
+user_decision: proceed
