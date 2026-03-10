@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T11:26:38Z by generate-index.py -->
+<!-- Generated: 2026-03-10T11:40:40Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T11:26:38Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T11:40:40Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,10 +13,10 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 224 |
+| pending | 223 |
 | working | 4 |
 | blocked | 10 |
-| archived | 286 |
+| archived | 287 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 53 |
+| harness | 52 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -80,8 +80,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 208 / 524 |
-| Plans cross-reviewed | 117 |
-| Plans approved | 140 |
+| Plans cross-reviewed | 118 |
+| Plans approved | 141 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,16 +92,16 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 524 |
-| Total archived | 286 |
-| Completion rate | 286/524 (55%) |
-| Monthly rate (current month) | 55 archived |
+| Total archived | 287 |
+| Completion rate | 287/524 (55%) |
+| Monthly rate (current month) | 56 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 56 / 224 | 25% |
+| Pending items with plans | 56 / 223 | 25% |
 | Plans cross-reviewed | 10 | 15% |
 | Plans user-approved | 11 | 16% |
 
@@ -118,7 +118,7 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 93 | 2 | 8 |
+| High     | 92 | 2 | 8 |
 | Medium   | 100  | 2  | 1  |
 | Low      | 31  | 0  | 1  |
 
@@ -126,7 +126,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (53 items — 10 high, 35 medium, 8 low)
+### harness (52 items — 9 high, 35 medium, 8 low)
 
 #### harness / agent-cost-tracking
 
@@ -234,7 +234,6 @@
 | WRK-633 | HIGH | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending |
 | WRK-692 | HIGH | feat(session): interactive session analysis — codex-orchestrator variant | pending |
 | WRK-1005 | HIGH | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | working |
-| WRK-1098 | HIGH | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | pending |
 | WRK-230 | MEDIUM | Untitled | pending |
 | WRK-578 | MEDIUM | feat(skills): audit MCP registry for engineering-domain servers | pending |
 | WRK-579 | MEDIUM | feat(skills): install Semantic Scholar MCP server for literature search | pending |
@@ -1124,7 +1123,7 @@
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
-| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | n/a | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 
 ## By Status
@@ -1355,7 +1354,6 @@
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | medium | simple | workspace-hub | - |
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | high | medium | workspace-hub | - |
-| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | high | simple | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | high | simple | workspace-hub | - |
 
 ### Working
@@ -1672,6 +1670,7 @@
 | WRK-1090 | Dependency health — uv.lock freshness, CVE advisories, outdated deps across 5 repos | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | high | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | high | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
+| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | high | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -2255,7 +2254,7 @@
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | - |
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | pending | high | medium | - |
-| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | pending | high | simple | - |
+| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | pending | high | simple | - |
 
 ### worldenergydata
@@ -2606,7 +2605,7 @@
 | WRK-1091 | Cross-repo integration test gate — detect API breaks between assetutilities, digitalmodel, worldenergydata | archived | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold | - |
 | WRK-1092 | Type coverage ratchet — mypy error count can only decrease across 5 repos | archived | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | pending | medium | workspace-hub | - |
-| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | pending | simple | workspace-hub | - |
+| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | simple | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | pending | simple | workspace-hub | - |
 
 ### Medium
@@ -3017,7 +3016,7 @@
 | WRK-1094 | Config drift — CLAUDE.md/AGENTS.md/CODEX.md/GEMINI.md sync and validation across all repos | pending | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing | - |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | workspace-hub | - |
-| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | pending | high | workspace-hub | - |
+| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | workspace-hub | - |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | pending | high | workspace-hub | - |
 
 ### Medium
@@ -3379,7 +3378,7 @@
 
 ## By Computer
 
-### ace-linux-1 (171 active / 244 total)
+### ace-linux-1 (170 active / 244 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3625,7 +3624,7 @@
 | WRK-1095 | Complexity ratchet — radon cyclomatic complexity progressive gate across 5 repos | pending | medium | simple | workspace-hub, assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | WRK-1096 | Add HydroComp NavCad electric-motor resources to workspace library | pending | medium | simple | workspace-hub |
 | WRK-1097 | fix(work-queue): surface unclaimed-but-active items in /whats-next to prevent cross-wired confusion | pending | high | medium | workspace-hub |
-| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | pending | high | simple | workspace-hub |
+| WRK-1098 | feat(workspace-hub): repo ecosystem terminology skill — canonical names, abbreviations, and relationships for humans and coding assistants | archived | high | simple | workspace-hub |
 | WRK-1099 | feat(work-queue): whats-next.sh — subcategory filter + workstation-aware sort | pending | high | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)

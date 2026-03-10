@@ -1,5 +1,5 @@
 wrk_id: WRK-1098
-generated_at: "2026-03-10T11:40:00Z"
+generated_at: '2026-03-10T11:40:38Z'
 reviewed_by: orchestrator
 stages:
 - order: 1
@@ -18,7 +18,7 @@ stages:
   stage: Plan Draft
   status: done
   evidence: n/a
-  notes: "Plan provided by user inline"
+  notes: Plan provided by user inline
 - order: 5
   stage: User Review - Plan (Draft)
   status: done
@@ -77,9 +77,9 @@ stages:
   evidence: n/a
 - order: 19
   stage: Close
-  status: pending
+  status: done
   evidence: n/a
 - order: 20
   stage: Archive
-  status: pending
+  status: done
   evidence: n/a
