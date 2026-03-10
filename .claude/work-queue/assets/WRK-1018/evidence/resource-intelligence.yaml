@@ -1,0 +1,11 @@
+wrk_id: WRK-1018
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - work-queue
+    - comprehensive-learning
+    - work-queue-workflow
+notes: >
+  Route A simple item — resource intelligence gathered from existing skill context.
+  No external docs needed; pipeline-detail.md already in context.
