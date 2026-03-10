@@ -1,0 +1,44 @@
+wrk_id: WRK-637
+stage: 10
+scope: repo
+completed_at: 2026-03-09T01:00:00Z
+
+files_created:
+  - scripts/memory/compact-memory.py
+  - scripts/memory/curate-memory.py
+  - tests/memory/conftest.py
+  - tests/memory/test_compact_memory.py
+  - tests/memory/test_curate_memory.py
+
+tdd_summary:
+  tests_written_first: true
+  initial_state: all_red
+  final_state: 21_pass_0_fail
+  test_files:
+    - tests/memory/test_compact_memory.py  # 13 tests (T3 split into 2 for opt-in check-paths)
+    - tests/memory/test_curate_memory.py   # 8 tests (3 added in Stage 13 cross-review)
+
+integrated_repo_tests:
+  - name: memory compaction unit tests (21 total after Stage 13 additions)
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/memory/ -q"
+    result: pass
+    artifact_ref: "tests/memory/test_compact_memory.py"
+  - name: memory curation unit tests
+    scope: repo
+    command: "uv run --no-project python -m pytest tests/memory/test_curate_memory.py -q"
+    result: pass
+    artifact_ref: "tests/memory/test_curate_memory.py"
+  - name: dry-run on real memory files
+    scope: integrated
+    command: "uv run --no-project python scripts/memory/compact-memory.py --memory-root ~/.claude/projects/.../memory/ --work-queue-root .claude/work-queue --dry-run"
+    result: pass
+    artifact_ref: "scripts/memory/compact-memory.py"
+
+key_design_decisions:
+  - "eviction rule order: done-wrk → stale-path → stale-command(opt-in) → dedup → trim-to-limit"
+  - "# keep exempts age/trim eviction only — done-WRK and path staleness still apply"
+  - "atomic writes via .tmp + rename throughout"
+  - "zero-change run always writes compact-log.jsonl entry"
+  - "dedup threshold: 90% (raised from 80% in plan to avoid false positives on short bullets)"
+  - "trim-to-limit: age-evict un-marked bullets from bottom when file still exceeds 140L after rules 1-3"

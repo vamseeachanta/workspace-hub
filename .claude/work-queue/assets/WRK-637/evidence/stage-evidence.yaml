@@ -1,6 +1,6 @@
 wrk_id: WRK-637
-generated_at: '2026-03-10T00:44:52Z'
-reviewed_by: claude
+generated_at: '2026-03-10T02:56:51Z'
+reviewed_by: orchestrator
 stages:
 - order: 1
   stage: Capture
@@ -25,7 +25,7 @@ stages:
 - order: 6
   stage: Cross-Review
   status: done
-  evidence: scripts/review/results/wrk-000-review.md
+  evidence: .claude/work-queue/assets/WRK-637/evidence/cross-review.yaml
 - order: 7
   stage: User Review - Plan (Final)
   status: done
@@ -33,11 +33,11 @@ stages:
 - order: 8
   stage: Claim / Activation
   status: done
-  evidence: .claude/work-queue/assets/WRK-637/evidence/claim.yaml
+  evidence: .claude/work-queue/assets/WRK-637/evidence/claim-evidence.yaml
 - order: 9
   stage: Work-Queue Routing Skill
   status: done
-  evidence: /work
+  evidence: .claude/work-queue/assets/WRK-637/evidence/routing.yaml
 - order: 10
   stage: Work Execution
   status: done
@@ -45,15 +45,15 @@ stages:
 - order: 11
   stage: Artifact Generation
   status: done
-  evidence: .claude/work-queue/assets/WRK-637/review.html
+  evidence: .claude/work-queue/assets/WRK-637/WRK-637-lifecycle.html
 - order: 12
   stage: TDD / Eval
   status: done
-  evidence: .claude/work-queue/assets/WRK-637/evidence/test-results.md
+  evidence: .claude/work-queue/assets/WRK-637/ac-test-matrix.md
 - order: 13
-  stage: Verify Gate Evidence
+  stage: Agent Cross-Review (Implementation)
   status: done
-  evidence: scripts/work-queue/verify-gate-evidence.py
+  evidence: .claude/work-queue/assets/WRK-637/evidence/cross-review-impl.yaml
 - order: 14
   stage: Future Work Synthesis
   status: done
@@ -69,12 +69,12 @@ stages:
 - order: 17
   stage: Reclaim
   status: n/a
-  evidence: .claude/work-queue/assets/WRK-637/evidence/reclaim.yaml
+  evidence: n/a
 - order: 18
   stage: Close
   status: pending
   evidence: scripts/work-queue/close-item.sh
 - order: 19
   stage: Archive
-  status: pending
+  status: done
   evidence: scripts/work-queue/archive-item.sh

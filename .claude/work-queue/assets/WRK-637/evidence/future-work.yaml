@@ -1,0 +1,37 @@
+wrk_id: WRK-637
+stage: 15
+completed_at: 2026-03-09T01:00:00Z
+
+recommendations:
+  - id: FW-1
+    title: "Memory quality eval harness (% stale, signal density)"
+    description: >
+      Standalone eval script to measure memory quality metrics: % bullets with done-WRK
+      refs, % bullets with stale paths, signal density per topic file, and MEMORY.md
+      headroom. Enables pre/post compaction quality scoring.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: WRK-638
+
+  - id: FW-2
+    title: "Integrate compact-memory.py into comprehensive-learning Phase 3b cron"
+    description: >
+      Wire compact-memory.py --force into the nightly comprehensive-learning pipeline
+      (Phase 3b). Cron invocation should pass --work-queue-root but NOT --check-paths
+      or --check-commands (cross-machine safety). Log output to compact-log.jsonl.
+    disposition: existing-updated
+    status: captured
+    captured: true
+    wrk_ref: WRK-635
+
+  - id: FW-3
+    title: "MEMORY.md rewrite (line-count enforcement)"
+    description: >
+      compact-memory.py lines_freed_memory is currently hardcoded 0. Phase 3c should
+      implement MEMORY.md compaction: evict bullets from MEMORY.md index when topic
+      files have absorbed their content, or when MEMORY.md exceeds 180L limit.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    wrk_ref: null

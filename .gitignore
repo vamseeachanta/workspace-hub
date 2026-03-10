@@ -249,6 +249,8 @@ workspace-*.json
 .swarm/
 memory/
 !.claude/memory/
+!scripts/memory/
+!tests/memory/
 *.memory.json
 *.session.json
 ai-memory/
