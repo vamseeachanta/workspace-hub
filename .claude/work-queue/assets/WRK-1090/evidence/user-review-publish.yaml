@@ -1,0 +1,22 @@
+wrk_id: WRK-1090
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b42381dfe361473a6a2eb5718efefa50a671e2a7
+    documents:
+      - .claude/work-queue/pending/WRK-1090.md
+      - .claude/work-queue/assets/WRK-1090/WRK-1090-lifecycle.html
+    published_at: "2026-03-09T23:50:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: b42381dfe361473a6a2eb5718efefa50a671e2a7
+    documents:
+      - .claude/work-queue/pending/WRK-1090.md
+      - .claude/work-queue/assets/WRK-1090/WRK-1090-lifecycle.html
+    published_at: "2026-03-09T23:55:00Z"
+    reviewer: vamsee

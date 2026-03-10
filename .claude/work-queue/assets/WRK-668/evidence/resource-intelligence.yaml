@@ -1,0 +1,52 @@
+wrk_id: WRK-668
+stage: 2
+completion_status: continue_to_planning
+generated_at: "2026-03-09T00:05:00Z"
+
+skills:
+  core_used:
+    - work-queue-workflow
+    - workflow-gatepass
+    - feature-dev:code-explorer
+
+key_files:
+  - path: scripts/work-queue/archive-item.sh
+    note: "Archive executor; merge/sync gates are stubs (lines 36-38)"
+  - path: scripts/work-queue/close-item.sh
+    note: "Close executor; model for hardening archive-item.sh"
+  - path: scripts/work-queue/verify-gate-evidence.py
+    note: "Gate verifier (~2100 lines); no --phase archive exists"
+  - path: scripts/work-queue/generate-html-review.py
+    note: "HTML generator; stage 19/20 block at lines 1794-1802 needs Archive Readiness card"
+  - path: scripts/work-queue/stages/stage-20-archive.yaml
+    note: "Archive stage contract — underspecified (gap)"
+  - path: scripts/work-queue/next-id.sh
+    note: "ID allocation for spin-off script"
+  - path: scripts/work-queue/tests/test_gate_verifier_hardening.py
+    note: "Test pattern (T11-T33) to follow for archive gate tests"
+  - path: .claude/work-queue/assets/WRK-624/gap-review-user.json
+    note: "User decision source: archive=revise"
+
+gaps:
+  - id: GAP-A
+    description: "No --phase archive in verify-gate-evidence.py; archive-item.sh uses --phase close"
+  - id: GAP-B
+    description: "Merge/sync gates are explicit stubs (no actual validation)"
+  - id: GAP-C
+    description: "No canonical archive evidence schema (archive-tooling.yaml)"
+  - id: GAP-D
+    description: "No Archive Readiness HTML section in generate-html-review.py"
+  - id: GAP-E
+    description: "No spin-off creation script; next-id.sh exists but no full WRK scaffolder"
+  - id: GAP-F
+    description: "Stage 20 evidence update is best-effort (silent degradation)"
+  - id: GAP-G
+    description: "Zero tests for archive-specific gate checks"
+
+implementation_order:
+  - "Step 1: Archive evidence schema + template (archive-tooling.yaml)"
+  - "Step 2: TDD — write 3 test scenarios before implementation"
+  - "Step 3: check_archive_readiness() + --phase archive in verify-gate-evidence.py"
+  - "Step 4: create-spinoff-wrk.sh"
+  - "Step 5: HTML Archive Readiness card in generate-html-review.py"
+  - "Step 6: Harden archive-item.sh (replace stubs, call --phase archive)"
