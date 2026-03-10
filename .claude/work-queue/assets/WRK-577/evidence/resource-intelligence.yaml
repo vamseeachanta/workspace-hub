@@ -1,0 +1,21 @@
+wrk_id: WRK-577
+stage: 2
+generated_at: "2026-02-25T11:30:00Z"
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+  consulted:
+    - workspace-hub/validate-skills.sh
+    - scripts/skills/
+context:
+  skill_validator: scripts/skills/validate-skills.sh
+  target_files: 9
+  failure_modes:
+    - missing_frontmatter: 2
+    - yaml_syntax_errors: 3
+    - missing_name_field: 4
+  approach: Route B — inspect each file, infer frontmatter from sibling skills
+notes: "Skill validator at scripts/skills/validate-skills.sh is canonical gate. Target: 503 files, 0 skipped."

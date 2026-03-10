@@ -1,0 +1,31 @@
+wrk_id: WRK-577
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 9e77098c
+    documents:
+      - specs/wrk/WRK-577/wrk-577-normalize-skill-frontmatter.md
+    published_at: "2026-03-10T10:50:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: c949dc1bca7542a6305829ea021c1138bfc904d0
+    documents:
+      - specs/wrk/WRK-577/plan.md
+      - .claude/work-queue/assets/WRK-577/plan-html-review-final.md
+    published_at: "2026-03-10T10:58:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: e388f3d1
+    documents:
+      - .claude/work-queue/assets/WRK-577/evidence/user-review-close.yaml
+      - .claude/work-queue/working/WRK-577.md
+    published_at: "2026-03-10T11:20:00Z"
+    reviewer: vamsee
