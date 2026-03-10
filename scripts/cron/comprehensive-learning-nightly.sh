@@ -47,6 +47,12 @@ echo "--- Skill validation $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/skills/validate-skills.sh .claude/skills || \
   echo "WARNING: skill validation issues found — see above"
 
+# Step 4b: skill curation (best-effort — WRK-1009)
+echo "--- Skill curation $(date +%Y-%m-%dT%H:%M:%S) ---"
+SKILL_CURATION_SCRIPT="scripts/cron/skill-curation-nightly.sh"
+[[ -f "$SKILL_CURATION_SCRIPT" ]] && bash "$SKILL_CURATION_SCRIPT" || \
+  echo "INFO: skill-curation-nightly.sh not found at $SKILL_CURATION_SCRIPT"
+
 # Step 5: readiness checks (best-effort — 9 checks, WRK-308)
 echo "--- Readiness checks $(date +%Y-%m-%dT%H:%M:%S) ---"
 READINESS_SCRIPT="scripts/readiness/nightly-readiness.sh"

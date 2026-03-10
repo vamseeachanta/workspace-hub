@@ -1,0 +1,22 @@
+wrk_id: WRK-1009
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "555db9bc8332cd23d3aca2ed2d54cf780fda0236"
+    documents:
+      - .claude/work-queue/assets/WRK-1009/WRK-1009-lifecycle.html
+      - specs/wrk/WRK-1009/plan.md
+    published_at: "2026-03-10T14:10:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "555db9bc8332cd23d3aca2ed2d54cf780fda0236"
+    documents:
+      - .claude/work-queue/assets/WRK-1009/WRK-1009-lifecycle.html
+      - specs/wrk/WRK-1009/plan.md
+    published_at: "2026-03-10T14:35:00Z"
+    reviewer: vamsee

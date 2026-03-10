@@ -1,0 +1,36 @@
+wrk_id: WRK-1009
+stage: 16
+generated_at: "2026-03-10T15:05:00Z"
+additions:
+  - type: script
+    path: scripts/skills/run_skill_evals.py
+    description: Skill eval runner — reads central eval YAML defs, checks SKILL.md, emits JSONL
+  - type: script
+    path: scripts/skills/identify_script_candidates.py
+    description: Skill→script conversion scanner — 3-way classifier, outputs md+json
+  - type: script
+    path: scripts/skills/detect_duplicate_skills.py
+    description: Duplicate skill name detector across all 393+ skills
+  - type: script
+    path: scripts/skills/check_retirement_candidates.py
+    description: Retirement flagging — 0.05/10inv threshold, SKIP on missing data
+  - type: script
+    path: scripts/cron/skill-curation-nightly.sh
+    description: Nightly curation pipeline orchestrator
+  - type: spec
+    path: specs/skills/skill-eval-framework.md
+    description: Eval schema spec — capability/procedural, PASS/WARN/FAIL/SKIP, atomic writes
+  - type: spec
+    path: specs/skills/evals/
+    description: Central eval definitions for work-queue, workflow-gatepass, comprehensive-learning
+  - type: state
+    path: .claude/state/skill-eval-results/
+    description: Nightly JSONL eval results (one file per date)
+  - type: state
+    path: .claude/state/skill-retirement-candidates/
+    description: JSON retirement candidate reports (one file per date)
+new_patterns_learned:
+  - pattern: skill_eval_threshold
+    value: "baseline_usage_rate < 0.05 AND calls_in_period < 10; SKIP if data absent"
+  - pattern: skill_duplicate_count
+    value: "8 duplicates found across 393 SKILL.md files (2026-03-10)"

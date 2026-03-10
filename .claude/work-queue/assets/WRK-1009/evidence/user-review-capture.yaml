@@ -1,0 +1,8 @@
+wrk_id: WRK-1009
+stage: 1
+scope_approved: true
+confirmed_at: "2026-03-10T14:00:00Z"
+reviewer: vamsee
+notes: >
+  WRK captured from session notes (2026-03-04). Scope: skill eval harness,
+  A/B tests, curation cron. Approved as medium complexity Route B.

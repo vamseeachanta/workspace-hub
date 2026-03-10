@@ -1,0 +1,51 @@
+wrk_id: WRK-1009
+stage: 10
+executed_at: "2026-03-10T19:43:02Z"
+scope: integrated
+phases_completed:
+  - phase: 0
+    description: Skill→script conversion scan
+    files_created:
+      - scripts/skills/identify_script_candidates.py
+      - scripts/skills/identify-script-candidates.sh
+  - phase: 1
+    description: Eval framework + TDD
+    files_created:
+      - specs/skills/skill-eval-framework.md
+      - specs/skills/evals/work-queue.yaml
+      - specs/skills/evals/workflow-gatepass.yaml
+      - specs/skills/evals/comprehensive-learning.yaml
+      - scripts/skills/run_skill_evals.py
+      - scripts/skills/run-skill-evals.sh
+      - scripts/skills/tests/test_skill_evals.sh
+  - phase: 2
+    description: Curation tooling
+    files_created:
+      - scripts/cron/skill-curation-nightly.sh
+      - scripts/skills/detect_duplicate_skills.py
+      - scripts/skills/check_retirement_candidates.py
+    files_modified:
+      - scripts/cron/comprehensive-learning-nightly.sh
+  - phase: 3
+    description: Daily report integration
+    files_created:
+      - scripts/productivity/sections/skill-evals.sh
+test_count: 9
+test_files:
+  - scripts/skills/tests/test_skill_evals.sh
+integrated_repo_tests:
+  - name: skill-eval-tests
+    scope: integrated
+    command: bash scripts/skills/tests/test_skill_evals.sh
+    result: pass
+    artifact_ref: scripts/skills/tests/test_skill_evals.sh
+  - name: skill-evals-run
+    scope: repo
+    command: bash scripts/skills/run-skill-evals.sh
+    result: pass
+    artifact_ref: .claude/state/skill-eval-results/
+  - name: duplicate-detection
+    scope: repo
+    command: uv run --no-project python scripts/skills/detect_duplicate_skills.py
+    result: pass
+    artifact_ref: scripts/skills/detect_duplicate_skills.py
