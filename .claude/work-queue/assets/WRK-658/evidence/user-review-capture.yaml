@@ -1,0 +1,6 @@
+wrk_id: WRK-658
+stage: 1
+scope_approved: true
+reviewer: vamsee
+reviewed_at: "2026-03-09T00:00:00Z"
+notes: "Scope approved — enforce gate+logging contract for every AI agent across Claude/Codex/Gemini"

@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-10T00:33:23Z by generate-index.py -->
+<!-- Generated: 2026-03-10T00:44:53Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-10T00:33:23Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-10T00:44:53Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,8 +13,8 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 223 |
-| working | 4 |
+| pending | 222 |
+| working | 5 |
 | blocked | 10 |
 | archived | 277 |
 
@@ -79,9 +79,9 @@
 | Metric | Count |
 |--------|-------|
 | Ensemble planning complete | 0 |
-| Plans exist | 203 / 514 |
-| Plans cross-reviewed | 108 |
-| Plans approved | 131 |
+| Plans exist | 204 / 514 |
+| Plans cross-reviewed | 109 |
+| Plans approved | 132 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -101,7 +101,7 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 58 / 223 | 26% |
+| Pending items with plans | 59 / 222 | 27% |
 | Plans cross-reviewed | 10 | 14% |
 | Plans user-approved | 11 | 16% |
 
@@ -111,14 +111,14 @@
 |--------|-------|-------|
 | Pending > 30 days | 15 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099 |
 | Pending > 14 days | 36 | WRK-005, WRK-008, WRK-021, WRK-023, WRK-032, WRK-036, WRK-039, WRK-043, WRK-045, WRK-046, WRK-047, WRK-048, WRK-050, WRK-075, WRK-099, WRK-125, WRK-126, WRK-137, WRK-140, WRK-148, WRK-149, WRK-171, WRK-180, WRK-181, WRK-182, WRK-219, WRK-227, WRK-234, WRK-235, WRK-256, WRK-259, WRK-261, WRK-294, WRK-297, WRK-352, WRK-TEST-ENSEMBLE |
-| Working > 7 days | 2 | WRK-118, WRK-129 |
+| Working > 7 days | 3 | WRK-118, WRK-129, WRK-637 |
 | Blocked > 7 days | 9 | WRK-006, WRK-064, WRK-069, WRK-121, WRK-130, WRK-131, WRK-133, WRK-280, WRK-664 |
 
 ### Priority Distribution (active items only)
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 96 | 2 | 8 |
+| High     | 95 | 3 | 8 |
 | Medium   | 96  | 2  | 1  |
 | Low      | 31  | 0  | 1  |
 
@@ -215,7 +215,7 @@
 | WRK-235 | HIGH | ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation | pending |
 | WRK-577 | HIGH | chore(workspace-hub): normalize SKILL.md frontmatter for 9 skipped skills | pending |
 | WRK-633 | HIGH | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending |
-| WRK-637 | HIGH | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending |
+| WRK-637 | HIGH | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working |
 | WRK-638 | HIGH | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending |
 | WRK-658 | HIGH | fix(workflow): enforce gate+logging contract for every AI agent | pending |
 | WRK-667 | HIGH | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending |
@@ -993,7 +993,7 @@
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, frontierdeepwater, TBD-client2-repo | - | ❌ | ❌ | ❌ | ❌ | █░░ 50% | ⏳ pending | WRK-632 |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | medium | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | medium | small | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | ace-linux-1, acma-ansys05 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-635 |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | n/a | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-637 |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | WRK-638 |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
@@ -1003,7 +1003,7 @@
 | WRK-664 | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-665 | docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - 5% | n/a | - |
 | WRK-666 | feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
-| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
+| WRK-667 | feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-668 | feat(work-queue): archive tooling contract and auto spin-off workflow | pending | high | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | codex | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-679 | test(review): standardize execute gate variation tests | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-680 | governance(review): strengthen archive gate validation | pending | medium | medium | - | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
@@ -1277,7 +1277,6 @@
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | high | simple | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | medium | medium | workspace-hub | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | medium | small | workspace-hub | - |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | high | medium | workspace-hub | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | high | small | workspace-hub | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | low | medium | workspace-hub | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | high | medium | workspace-hub | - |
@@ -1338,6 +1337,7 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-118 | AI agent utilization strategy — leverage Claude, Codex, Gemini for planning, development, testing workflows | medium | complex | workspace-hub | - |
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | high | medium | workspace-hub | - |
 | WRK-684 | feat(skills): define roll-up outcomes for comprehensive-learning skill into /today report | medium | simple | workspace-hub | - |
 | WRK-1005 | assess(orchestrators): cross-provider capability assessment — Claude vs Codex vs Gemini | high | medium | workspace-hub | - |
 
@@ -2112,7 +2112,7 @@
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | medium | - |
 | WRK-636 | feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline | pending | medium | small | - |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | - |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working | high | medium | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | - |
@@ -2482,7 +2482,7 @@
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | simple | frontierdeepwater, TBD-client2-repo | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | medium | workspace-hub | - |
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | simple | workspace-hub, frontierdeepwater, TBD-client2-repo | - |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | medium | workspace-hub | - |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working | medium | workspace-hub | - |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | small | workspace-hub | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | medium | workspace-hub | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | medium | assetutilities | - |
@@ -3110,7 +3110,7 @@
 | WRK-629 | feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal system prompts + knowledge base | pending | high | TBD-client2-repo | - |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | workspace-hub | - |
 | WRK-635 | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending | medium | workspace-hub | - |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | workspace-hub | - |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working | high | workspace-hub | - |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | workspace-hub | - |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | workspace-hub | - |
 | WRK-660 | analysis(assetutilities): test coverage gap audit — 5 untested modules via Gemini | pending | high | assetutilities | - |
@@ -3419,7 +3419,7 @@
 | WRK-632 | feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | pending | high | simple | frontierdeepwater, TBD-client2-repo |
 | WRK-633 | feat(workspace-hub): create missing roadshow skills — engineering-chatbot-demo + maritime-legal | pending | high | medium | workspace-hub |
 | WRK-634 | feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime | pending | high | simple | workspace-hub, frontierdeepwater, TBD-client2-repo |
-| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | pending | high | medium | workspace-hub |
+| WRK-637 | feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot | working | high | medium | workspace-hub |
 | WRK-638 | feat(memory): ecosystem-catalog.yaml — machine-readable destination map for curate-memory.py | pending | high | small | workspace-hub |
 | WRK-639 | chore(skills): audit and resolve _diverged/ and incoming/ skill directories | pending | low | medium | workspace-hub |
 | WRK-658 | fix(workflow): enforce gate+logging contract for every AI agent | pending | high | medium | workspace-hub |

@@ -1,0 +1,107 @@
+wrk_id: WRK-658
+stage: 2
+completed_at: "2026-03-09T12:00:00Z"
+completion_status: continue_to_planning
+
+skills:
+  core_used:
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
+    - .claude/docs/orchestrator-gate-contract.md
+    - .claude/docs/orchestrator-pattern.md
+    - AGENTS.md
+
+relevant_files:
+  wrappers:
+    - scripts/agents/session.sh
+    - scripts/agents/work.sh
+    - scripts/agents/plan.sh
+    - scripts/agents/execute.sh
+    - scripts/agents/review.sh
+    - scripts/agents/lib/workflow-guards.sh
+    - scripts/agents/lib/session-store.sh
+  logging:
+    - scripts/work-queue/log-gate-event.sh
+    - scripts/work-queue/log-user-review-browser-open.sh
+  validator:
+    - scripts/work-queue/verify-gate-evidence.py
+  claim_close:
+    - scripts/work-queue/claim-item.sh
+    - scripts/work-queue/close-item.sh
+    - scripts/work-queue/archive-item.sh
+  gate_checks:
+    - scripts/work-queue/gate_check.py
+    - scripts/work-queue/gate_checks_extra.py
+    - scripts/work-queue/validate-stage-gate-policy.py
+  stage_contracts:
+    - scripts/work-queue/stages/stage-06-cross-review.yaml
+    - scripts/work-queue/stages/stage-10-work-execution.yaml
+    - scripts/work-queue/stages/stage-13-agent-cross-review.yaml
+  docs:
+    - .claude/docs/orchestrator-gate-contract.md
+    - .claude/docs/orchestrator-pattern.md
+    - AGENTS.md
+  tests:
+    - tests/work-queue/test-gate-signal-logging.sh
+    - scripts/agents/tests/test-plan-gate.sh
+    - scripts/agents/tests/test-session-wrapper.sh
+    - scripts/agents/tests/test-pipeline.sh
+
+existing_patterns:
+  - "log-gate-event.sh EXISTS: appends YAML blocks to .claude/work-queue/logs/WRK-NNN-{stage}.log"
+  - "log_gate_event_if_available() defined in workflow-guards.sh; called in all 5 wrappers"
+  - "session.sh: logs session_wrapper_start, init, session_wrapper_complete"
+  - "work.sh: logs work_wrapper_start, work_queue_skill, work_wrapper_complete"
+  - "plan.sh: logs plan_wrapper_start, stage5_gate_fail, plan_draft_complete, plan_wrapper_complete"
+  - "execute.sh: logs execute_wrapper_start, work_execution, tdd_eval, execute_wrapper_complete"
+  - "review.sh: logs review_wrapper_start, cross_review, agent_cross_review, review_wrapper_complete"
+  - "check_agent_log_gate() in verify-gate-evidence.py enforces log presence at claim/close phases"
+  - "claim-item.sh and close-item.sh invoke GATE_LOGGER at key checkpoints"
+  - "execute.sh: provider-agnostic dispatch via providers/{claude,codex,gemini}.sh"
+
+gaps:
+  - id: G1
+    severity: P1
+    description: >
+      CODEX.md and GEMINI.md absent at workspace root. Non-Claude agents have no
+      adapter file explicitly mandating wrapper invocation or log emission.
+  - id: G2
+    severity: P1
+    description: >
+      .claude/work-queue/logs/ is empty for WRK-658. Agent log gate FAILs because
+      no WRK-658-{routing,plan,execute,cross-review}.log files exist.
+  - id: G3
+    severity: P2
+    description: >
+      gate_check.py Bash bypass: agents writing evidence via Bash (echo/cat/sed)
+      bypass the PreToolUse Write hook entirely.
+  - id: G4
+    severity: P2
+    description: >
+      providers/codex.sh and providers/gemini.sh need verification that they emit
+      log-gate-event.sh calls before/after dispatch.
+  - id: G5
+    severity: P2
+    description: >
+      No confirmed sandbox WRK for Phase 3 cross-agent rehearsal.
+  - id: G6
+    severity: P3
+    description: >
+      .claude/docs/orchestrator-gate-contract.md does not state the contract applies
+      to all AI agents or reference logging artifact paths.
+
+risks:
+  - id: R1
+    description: >
+      Codex/Gemini can bypass wrappers and write evidence via Bash, defeating log gate.
+    mitigation: >
+      Create CODEX.md/GEMINI.md with explicit wrapper mandate; log-presence check
+      fails for missing provider entries.
+  - id: R2
+    description: >
+      AGENTS.md is at 20-line limit. New gate mandate content cannot be added directly.
+    mitigation: >
+      Add content to .claude/docs/orchestrator-gate-contract.md; reference from AGENTS.md.
+  - id: R3
+    description: Concurrent wrapper calls from parallel sessions could corrupt log files.
+    mitigation: Append-only >> already used; add flock if race occurs in practice.

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WRK-637 Lifecycle — feat(memory): memory governance — compaction, tiering, evict</title>
+  <title>WRK-667 Lifecycle — feat(work-queue): strengthen Resource Intelligence skill wit</title>
   <style>
 :root{--bg:#f3efe6;--panel:#fffdf8;--ink:#172126;--muted:#55636b;
   --accent:#0f766e;--accent-2:#8a5a2b;--line:#d9d0c0;
@@ -103,14 +103,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
 <header class="hero">
   <div class="hero-inner">
     <p class="eyebrow">Lifecycle Tracker &middot; Route B &middot; harness</p>
-    <h1>WRK-637 — feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot</h1>
+    <h1>WRK-667 — feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact</h1>
     <p class="lede">Single lifecycle document tracking all 20 stages from capture to archive.</p>
     <div class="meta-row">
       <div class="pill"><strong>Priority</strong>high</div>
-      <div class="pill"><strong>Workstation</strong>[&#x27;ace-linux-1&#x27;]</div>
+      <div class="pill"><strong>Workstation</strong>ace-linux-1</div>
       <div class="pill"><strong>Orchestrator</strong>claude</div>
       <div class="pill"><strong>Category</strong>harness</div>
-      <div class="pill"><strong>Created</strong>2026-02-27</div>
+      <div class="pill"><strong>Created</strong>2026-03-01</div>
     </div>
   </div>
 </header>
@@ -139,7 +139,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">feat(memory): memory governance — compaction, tiering, eviction to prevent context-rot</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">high</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>pending/WRK-637.md</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">feat(work-queue): strengthen Resource Intelligence skill with measurable quality impact</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">high</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>pending/WRK-667.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s2">
@@ -157,7 +157,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">completion_status</span><span class="schema-val">continue_to_planning</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">completion_status</span><span class="schema-val">continue_to_planning</span></div><div class="schema-row"><span class="schema-key">domain.problem</span><span class="schema-val">The Resource Intelligence stage exists (built by WRK-655) but lacks measurable quality metrics — there is no evidence it</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">Extend the existing resource-intelligence skill with: (1) a metrics schema capturing RI quality signals per WRK, (2) val</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s3">
@@ -175,7 +175,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">[&#x27;ace-linux-1&#x27;]</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
+    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">B</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">medium</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">ace-linux-1</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
   </div>
 </section>
 <section class="stage-section" id="s4">
@@ -193,7 +193,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ `compact-memory.py --dry-run` runs cleanly on current memory files, audits correctly</li><li>☐ Done-WRK eviction correctly moves expired WRK references to archive</li><li>☐ Path staleness check correctly flags ≥1 stale path from current memory files</li><li>☐ Compaction frees ≥10 lines in MEMORY.md or topic files on first run</li><li>☐ MEMORY.md stays ≤180 lines after full scan from WRK-635 (282 Claude + 252 Codex sessions)</li><li>☐ `# keep` exemption works correctly — kept bullets survive eviction pass</li><li>☐ comprehensive-learning SKILL.md updated with Phase 3b entry</li><li>☐ `compact-log.jsonl` written and human-readable</li><li>☐ `scan-sessions.py` checks headroom before writing (WRK-635 integration)</li></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-637.md</code></li></ul>
+    <div class="section-label">Acceptance Criteria</div><ul class="ac-list"><li>☐ Confirm and document the canonical `resource-intelligence` skill usage path in work-queue flow docs</li><li>☐ Define measurable impact metrics (minimum):</li><li>☐ plan rework reduction</li><li>☐ missing-artifact reduction at claim/close</li><li>☐ cross-review blocker reduction attributable to resource gaps</li><li>☐ Add a standard per-WRK artifact schema for resource intelligence outputs</li><li>☐ Add validator checks for required resource intelligence refs on new/touched WRKs</li><li>☐ Add HTML summary block showing resource intelligence findings and confidence</li><li>☐ Produce at least 3 comparison examples (before/after) demonstrating quality lift</li><li>☐ Cross-review with Claude, Codex, Gemini and synthesize verdict</li></ul><div class="section-label">Plan</div><ul class="item-list"></ul><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>working/WRK-667.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s5">
@@ -211,7 +211,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-draft.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s6">
@@ -229,7 +229,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Cross-review summary</div><table><thead><tr><th>Round</th><th>Provider</th><th>Verdict</th><th>P1</th><th>P2</th></tr></thead><tbody></tbody></table><p style="margin:8px 0 4px">Overall: <span class="badge badge-pass">APPROVE</span> &nbsp; <span class="badge badge-fail">P1 open</span> &nbsp;<span style="font-size:.82rem;color:var(--muted)">1 round(s)</span></p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
+    <div class="section-label">Cross-review summary</div><p style="font-size:.85rem;color:var(--muted);">Cross-review evidence present.</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/cross-review-*.md</code></li><li><code>evidence/cross-review.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s7">
@@ -247,7 +247,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">confirmed_by</span><span class="schema-val">vamsee</span></div><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">passed</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/plan-final-review.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-plan-final.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s8">

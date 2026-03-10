@@ -1,0 +1,79 @@
+wrk_id: WRK-667
+generated_at: "2026-03-09T08:00:00Z"
+generated_by: claude
+stage: 2
+
+target_repos:
+  - workspace-hub
+
+skills:
+  core_used:
+    - coordination/workspace/work-queue
+    - workspace-hub/resource-intelligence
+    - workspace-hub/work-queue-workflow
+  related:
+    - workspace-hub/comprehensive-learning
+    - workspace-hub/workflow-gatepass
+
+completion_status: continue_to_planning
+top_p1_gaps: []
+
+domain:
+  problem: >
+    The Resource Intelligence stage exists (built by WRK-655) but lacks measurable
+    quality metrics — there is no evidence it reduces plan rework, missing artifacts, or
+    cross-review blockers compared to pre-RI execution.
+  architecture_decision: >
+    Extend the existing resource-intelligence skill with: (1) a metrics schema capturing
+    RI quality signals per WRK, (2) validator checks for required RI refs on
+    new/touched WRKs, (3) HTML summary block for lifecycle HTML, and (4) at least 3
+    before/after comparison examples derived from archived WRKs.
+
+existing_files:
+  - path: .claude/skills/workspace-hub/resource-intelligence/SKILL.md
+    status: existing
+    notes: "Full skill v1.1.0 — built by WRK-655; has templates, scripts, tests"
+  - path: .claude/skills/workspace-hub/resource-intelligence/templates/resource-intelligence-template.yaml
+    status: existing
+    notes: "Artifact template for evidence/resource-intelligence.yaml"
+  - path: .claude/skills/workspace-hub/resource-intelligence/scripts/init-resource-pack.sh
+    status: existing
+    notes: "Scaffolds companion files (resource-pack.md, sources.md, etc.)"
+  - path: .claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh
+    status: existing
+    notes: "Validates that companion files are present"
+  - path: scripts/work-queue/verify-gate-evidence.py
+    status: existing
+    notes: "check_resource_intelligence_gate: validates completion_status, skills.core_used ≥3, p1 consistency"
+  - path: scripts/work-queue/stages/stage-02-resource-intelligence.yaml
+    status: existing
+    notes: "Stage 2 contract: entry_reads, exit_artifacts, blocking_condition"
+  - path: scripts/work-queue/stages/stage-16-resource-intelligence-update.yaml
+    status: existing
+    notes: "Stage 16 contract for resource-intelligence-update.yaml"
+  - path: scripts/work-queue/create-resource-pack.sh
+    status: existing
+    notes: "Creates resource pack scaffold at hub level"
+  - path: .claude/work-queue/archive/2026-03/WRK-624.md
+    status: reference
+    notes: "Parent WRK; user gap review: resource_intelligence=revise"
+  - path: .claude/work-queue/done/WRK-655.md
+    status: reference
+    notes: "Created the RI skill; cross-review codex=REQUEST_CHANGES(resolved), gemini=APPROVE"
+
+constraints:
+  - Must not add ceremony — implementation must remain lightweight for WRK authors
+  - Quality metrics must be derivable from existing artifacts (no new author burden)
+  - HTML summary block must integrate with generate-html-review.py --lifecycle output
+  - Comparison examples must use real archived WRKs (not synthetic data)
+  - Cross-review with all three providers is required (Route B)
+
+top_p2_gaps:
+  - "No measurable quality metrics schema defined for RI outcomes (plan rework, artifact completeness, cross-review blocker rate)"
+  - "No HTML summary block for RI findings in lifecycle HTML; generate-html-review.py does not render RI section"
+  - "No before/after comparison examples demonstrating quality lift exist in the codebase"
+  - "validate-resource-pack.sh does not verify RI refs in WRK frontmatter (plan_approved, spec_ref, etc.)"
+
+top_p3_gaps:
+  - "resource-intelligence-summary.md template lacks confidence rating field"
+  - "No nightly cron to scan for WRKs missing RI evidence before Stage 3"

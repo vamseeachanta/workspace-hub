@@ -1,0 +1,19 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: "https://github.com/vamseeachanta/workspace-hub.git"
+    branch: main
+    commit: pending
+    documents:
+      - ".claude/work-queue/assets/WRK-637/WRK-637-lifecycle.html"
+    published_at: "2026-03-09T00:05:30Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: "https://github.com/vamseeachanta/workspace-hub.git"
+    branch: main
+    commit: pending
+    documents:
+      - ".claude/work-queue/assets/WRK-637/WRK-637-lifecycle.html"
+    published_at: "2026-03-09T00:10:30Z"
+    reviewer: vamsee

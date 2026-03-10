@@ -1,0 +1,5 @@
+wrk_id: WRK-667
+generated_at: "2026-03-09T08:00:00Z"
+routing_overrides: []
+agent_fit: claude
+quota_risk: low

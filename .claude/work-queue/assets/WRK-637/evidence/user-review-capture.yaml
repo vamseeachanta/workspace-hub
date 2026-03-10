@@ -1,6 +1,9 @@
 wrk_id: WRK-637
 stage: 1
 scope_approved: true
+approval_decision: approve_as_is
+confirmed_by: vamsee
 reviewer: vamsee
+confirmed_at: 2026-03-09T00:00:00Z
 approved_at: 2026-03-09T00:00:00Z
 notes: "Scope approved as-is — memory governance compaction script, tier model, eviction rules, Phase 3b integration."
