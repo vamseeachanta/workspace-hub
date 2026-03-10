@@ -1,0 +1,6 @@
+wrk_id: WRK-1080
+stage: 7
+confirmed_by: vamsee
+reviewed_at: 2026-03-09
+decision: passed
+notes: Final plan approved including atomic snapshots, retention policy, lock file

@@ -1,0 +1,32 @@
+wrk_id: WRK-1067
+stage: 15
+generated_at: "2026-03-09T23:15:00Z"
+recommendations:
+  - id: FW-1
+    title: "CI/CD enforcement: add coverage ratchet gate to GitHub Actions"
+    description: >
+      Both Codex and Gemini flagged that running full test suite with coverage
+      on pre-push is slow for developer UX. Move hard enforcement to CI/CD pipeline.
+      Local pre-push remains as opt-in gate.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    related_wrk: ""
+  - id: FW-2
+    title: "Baseline update automation: script to refresh coverage-baseline.yaml"
+    description: >
+      Currently baseline is updated manually. Add a script or CI step to
+      auto-update coverage-baseline.yaml when all repos pass (ratchet-up behavior).
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    related_wrk: ""
+  - id: FW-3
+    title: "Extend coverage baseline to OGManufacturing repo"
+    description: >
+      OGManufacturing was not included in the initial baseline. Add it once
+      run-all-tests.sh includes it in REPO_CONFIGS.
+    disposition: existing-updated
+    status: captured
+    captured: true
+    related_wrk: ""

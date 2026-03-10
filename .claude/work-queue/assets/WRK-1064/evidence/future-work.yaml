@@ -1,0 +1,30 @@
+wrk_id: WRK-1064
+stage: 15
+recommendations:
+  - id: fw-1
+    title: Safe JSONL serialisation for bypass log
+    description: >
+      Bypass JSONL uses bash printf interpolation; ref names containing " produce
+      invalid JSONL. Replace with python -c json.dumps for correctness.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low
+  - id: fw-2
+    title: OGManufacturing coverage baseline
+    description: >
+      OGManufacturing is excluded from coverage extraction in run-all-tests.sh.
+      Add a coverage baseline and extend the ratchet to include it.
+    disposition: spun-off-new
+    status: captured
+    captured: true
+    priority: low
+  - id: fw-3
+    title: Install hooks on all developer machines
+    description: >
+      install-hooks.sh should be added to session-start or onboarding docs
+      so new sessions automatically have the pre-push gate active.
+    disposition: existing-updated
+    status: captured
+    captured: true
+    priority: medium

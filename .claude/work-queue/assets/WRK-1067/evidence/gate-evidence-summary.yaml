@@ -1,0 +1,8 @@
+wrk_id: WRK-1067
+phase: close
+generated_at: "2026-03-09T23:20:00Z"
+overall_status: pending_stage17
+gates_passing: 26
+gates_failing: 1
+gates_warning: 4
+notes: "All gates PASS except user-review-close (Stage 17 hard gate — awaiting user confirmation)"

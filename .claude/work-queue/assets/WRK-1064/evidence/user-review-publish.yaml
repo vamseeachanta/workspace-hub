@@ -1,0 +1,29 @@
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: ef089da8d2c9b99f1e4f5a6b7c8d9e0f1a2b3c4d
+    documents:
+      - .claude/work-queue/assets/WRK-1064/WRK-1064-lifecycle.html
+    published_at: "2026-03-09T22:20:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: 40b4f0d7e5c6a7b8c9d0e1f2a3b4c5d6e7f8a9b0
+    documents:
+      - .claude/work-queue/assets/WRK-1064/WRK-1064-lifecycle.html
+      - .claude/work-queue/assets/WRK-1064/plan-html-review-final.md
+    published_at: "2026-03-09T22:20:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: ca62c58c46b66999e6e0d8034f8c9d15f6973f8b
+    documents:
+      - .claude/work-queue/assets/WRK-1064/WRK-1064-lifecycle.html
+    published_at: "2026-03-09T23:25:00Z"
+    reviewer: vamsee

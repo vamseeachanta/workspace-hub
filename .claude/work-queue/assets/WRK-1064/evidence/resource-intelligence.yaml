@@ -1,0 +1,89 @@
+wrk_id: WRK-1064
+stage: 2
+stage_name: Resource Intelligence
+completion_status: continue_to_planning
+assessed_at: "2026-03-09"
+
+existing_hooks:
+  pre_push_stub:
+    path: scripts/hooks/pre-push.sh
+    status: exists
+    note: >
+      WRK-1070 stub (12 lines). Runs secrets-scan.sh (gitleaks, optional).
+      Comments explicitly state WRK-1064 will add test+quality gates. Extend in-place.
+  install_reference:
+    path: scripts/development/ai-review/install-codex-hooks.sh
+    note: >
+      Reference pattern: iterates REPOS array, checks .git exists,
+      writes/symlinks hook, chmod +x. Backs up existing hooks.
+  hub_git_hooks:
+    pre_push: absent (only .sample exists) — no backup/merge needed
+    pre_commit: present — runs staged-file validation
+
+run_all_tests_flags:
+  path: scripts/testing/run-all-tests.sh
+  exit_codes: {0: all pass, 1: failure}
+  flags:
+    - "--repo <name>   # assetutilities|digitalmodel|worldenergydata|assethold"
+    - "--json-out <file>"
+    - "--include-live"
+  gap: OGManufacturing NOT in run-all-tests.sh REPO_CONFIGS — must resolve in plan
+
+check_all_flags:
+  path: scripts/quality/check-all.sh
+  exit_codes: {0: pass, 1: fail}
+  flags:
+    - "--repo <name>   # includes ogmanufacturing"
+    - "--fix | --ruff-only | --mypy-only | --bandit | --radon | --vulture | --static"
+    - "--docs | --api"
+  env_override: QUALITY_REPO_ROOT
+
+submodules:
+  tier1_python:
+    - name: assetutilities
+      path: assetutilities
+    - name: digitalmodel
+      path: digitalmodel
+    - name: worldenergydata
+      path: worldenergydata
+    - name: assethold
+      path: assethold
+    - name: OGManufacturing
+      path: OGManufacturing
+  note: 23 total submodules; only these 5 are in scope
+
+changed_repo_detection:
+  approach: >
+    Pre-push stdin: <local_ref> <local_oid> <remote_ref> <remote_oid>.
+    Use git diff --name-only <remote_oid>..<local_oid> to find touched paths.
+    Edge: remote_oid all-zeros → new branch (use local_oid alone).
+    Edge: local_oid all-zeros → delete branch (skip).
+
+session_log_path:
+  recommended: logs/hooks/pre-push-bypass.jsonl
+  write_pattern: >
+    mkdir -p "${REPO_ROOT}/logs/hooks"
+    printf '%s\n' "$entry" >> "${REPO_ROOT}/logs/hooks/pre-push-bypass.jsonl"
+  note: >
+    git --no-verify skips all hooks — hook cannot intercept its own bypass.
+    Use GIT_PRE_PUSH_SKIP env-var convention as soft bypass that logs.
+
+skills:
+  core_used:
+    - scripts-over-llm-judgment (delegate to check-all.sh + run-all-tests.sh)
+    - changed-only detection via git diff name-only stdin parsing
+    - symlink-based hook installation from install-codex-hooks.sh pattern
+    - append-only JSONL logging to logs/ (log-action.sh pattern)
+    - REPO_ROOT via git rev-parse --show-toplevel, never hardcoded
+
+planning_decisions_required:
+  - id: ogmanufacturing_gap
+    note: Add OGManufacturing to run-all-tests.sh, or call pytest directly from hook
+  - id: no_verify_semantics
+    note: Use GIT_PRE_PUSH_SKIP env-var (hook checks, logs, exits 0)
+  - id: submodule_hook_shim
+    note: >
+      Symlink from submodule .git/hooks/pre-push → relative path to hub script is fragile.
+      Write a tiny shim that resolves hub root and calls the real script.
+  - id: hub_has_no_pyproject
+    note: At hub level, gate = secrets scan only (no ruff/mypy/tests)

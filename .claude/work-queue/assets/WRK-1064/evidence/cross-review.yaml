@@ -1,0 +1,26 @@
+wrk_id: WRK-1064
+stage: 6
+route: A
+providers_reviewed: [claude]
+claude_verdict: MAJOR
+overall_verdict: MAJOR_RESOLVED
+reviewed_at: "2026-03-09T00:00:00Z"
+findings_resolved:
+  - id: major-1
+    severity: MAJOR
+    description: New-branch push (remote_oid=zeros) causes git diff to fail under set -euo pipefail
+    resolution: Added remote_oid=zeros guard to fall back to run_all=true before diff
+  - id: minor-1
+    severity: MINOR
+    description: Submodule .git is a file not dir; hooks path resolution fails
+    resolution: Use git -C sub rev-parse --git-dir to resolve actual hooks dir
+  - id: minor-2
+    severity: MINOR
+    description: logs/hooks/ directory does not exist
+    resolution: Add logs/hooks/.gitkeep; add mkdir -p before log append
+  - id: minor-3
+    severity: MINOR
+    description: Bypass JSONL schema undefined
+    resolution: Schema defined in plan with all required fields
+plan_updated: true
+ready_for_stage_7: true

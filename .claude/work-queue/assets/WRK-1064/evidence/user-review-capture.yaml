@@ -1,0 +1,11 @@
+wrk_id: WRK-1064
+stage: 1
+scope_approved: true
+approved_by: vamsee
+reviewer: vamsee
+approved_at: 2026-03-09
+confirmed_at: "2026-03-09T22:05:00Z"
+notes: >
+  Scope approved: pre-push hook (pre-push.sh + install-hooks.sh),
+  changed-only default, full-suite --all flag, --no-verify logging.
+  Out of scope: CI/CD pipeline, server-side hooks, Windows.

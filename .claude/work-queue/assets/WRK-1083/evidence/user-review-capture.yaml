@@ -1,0 +1,6 @@
+wrk_id: WRK-1083
+stage: 1
+scope_approved: true
+reviewer: vamsee
+approved_at: "2026-03-09"
+notes: "Scope approved — identify plan-mode stages, create/extend planning skill, update work-queue-workflow contracts"

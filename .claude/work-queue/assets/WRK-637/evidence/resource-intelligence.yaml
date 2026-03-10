@@ -1,0 +1,47 @@
+wrk_id: WRK-637
+stage: 2
+completion_status: continue_to_planning
+assessed_at: 2026-03-09T00:00:00Z
+
+skills:
+  core_used:
+    - workspace-hub/comprehensive-learning
+    - workspace-hub/work-queue
+    - workspace-hub/improve
+  referenced:
+    - workspace-hub/knowledge
+    - workspace-hub/reflect
+
+key_findings:
+  - Phase 3b entry already present in comprehensive-learning SKILL.md (line 73) and
+    pipeline-detail.md (lines 142-190) — spec is fully written; script just needs building
+  - Phase 3c (Memory Curation, curate-memory.py) is also listed as part of WRK-637 deliverable
+    (pipeline-detail.md line 201) — must be included in scope
+  - Memory files current state: MEMORY.md=136L, engineering-modules.md=173L (OVER 150 limit),
+    ai-orchestration.md=124L, shell-git-patterns.md=85L, working-style.md=19L
+  - engineering-modules.md already exceeds the 150-line topic file limit — first compaction run
+    will have real work to do
+  - No scripts/memory/ directory exists yet — must create from scratch
+  - archive/ directory for memory does not exist — must create
+  - compact-log.jsonl location: memory/ dir (inside ~/.claude/projects/.../memory/)
+  - curate-memory.py: classifies bullets into memory-keep/domain-doc/skill-update/archive
+    (from pipeline-detail.md Phase 3c)
+
+risks:
+  - Memory files live outside workspace-hub repo (in ~/.claude/projects/.../memory/) —
+    scripts must use correct absolute path resolution
+  - Command spot-checking runs subprocesses (5s timeout) — must not hang on slow commands
+  - Idempotency requirement: second run on already-compacted files must produce zero evictions
+
+files_to_create:
+  - scripts/memory/compact-memory.py
+  - scripts/memory/curate-memory.py
+  - home memory archive dir (runtime, not in repo)
+
+files_to_modify:
+  - comprehensive-learning/references/pipeline-detail.md (Phase 3b script path confirmation)
+
+test_strategy:
+  - TDD: write pytest tests under tests/memory/ before implementation
+  - Test dry-run output, eviction logic, keep-marker exemption, idempotency
+  - At least 3 PASS required before implementation ships

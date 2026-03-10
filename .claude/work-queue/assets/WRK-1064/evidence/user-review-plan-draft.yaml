@@ -1,0 +1,10 @@
+wrk_id: WRK-1064
+stage: 5
+approval_decision: approve_as_is
+decision: approved
+approved_by: vamsee
+approved_at: 2026-03-09
+notes: >
+  Plan approved inline. Scope: extend pre-push.sh stub, add ogmanufacturing to
+  run-all-tests.sh, new install-hooks.sh with submodule shims,
+  GIT_PRE_PUSH_SKIP env-var for bypass logging, TDD tests.

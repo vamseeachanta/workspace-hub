@@ -1,0 +1,67 @@
+wrk_id: WRK-1059
+stage: 2
+completion_status: continue_to_planning
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workflow-gatepass
+    - tdd
+
+existing_assets:
+  check_all_sh: scripts/quality/check-all.sh
+  test_check_all_sh: tests/quality/test_check_all.sh
+  current_docs_flag: |
+    --docs already covers: ruff D (warn-only), README sections
+    (installation/usage/examples), docs/ dir presence.
+    WRK-1058 added these. WRK-1059 adds further checks.
+
+findings:
+  repo_inventory:
+    - name: assethold
+      src_files_with_def: 83
+      docs_dir: present (no index.md, no changelog)
+      build_system: none
+      all_files: 20
+    - name: assetutilities
+      src_files_with_def: 118
+      docs_dir: present (no index.md, no changelog)
+      build_system: none
+      all_files: 34
+    - name: digitalmodel
+      src_files_with_def: 1194
+      docs_dir: present (no index.md; CHANGELOG.md at root)
+      build_system: none
+      all_files: 467
+    - name: worldenergydata
+      src_files_with_def: 805
+      docs_dir: present (no index.md, no changelog)
+      build_system: none
+      all_files: 396
+    - name: ogmanufacturing
+      src_files_with_def: 2
+      docs_dir: present (no index.md, no changelog)
+      build_system: none
+      all_files: 8
+
+  build_system_note: |
+    None of the 5 repos use Sphinx (docs/conf.py) or mkdocs (mkdocs.yml).
+    Detection is straightforward file presence check.
+
+  api_audit_approach: |
+    AST-parse each repo's src/ to enumerate:
+    1. Public classes/functions (not starting with _)
+    2. Check each for presence of a docstring
+    3. Compute coverage %: (symbols_with_docstring / total_public_symbols) * 100
+    A Python helper script (scripts/quality/api-audit.py) is the right
+    approach to avoid shell complexity. check-all.sh calls it.
+
+plan_notes: |
+  Implementation:
+  1. scripts/quality/api-audit.py — AST-based public symbol + docstring audit; prints JSON
+  2. Extend check-all.sh --docs: add check_docs_structure() (index.md/rst + changelog)
+     and detect_build_system() (sphinx/mkdocs/none)
+  3. Add --api flag to check-all.sh: calls api-audit.py, reports coverage %
+  4. Extend tests/quality/test_check_all.sh with new test cases (T15-T20 approx)
+  5. check-all.sh stays under 400L; api-audit.py under 200L

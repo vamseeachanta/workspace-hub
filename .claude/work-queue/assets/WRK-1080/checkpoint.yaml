@@ -1,12 +1,12 @@
 wrk_id: WRK-1080
-current_stage: 7
-stage_name: User Review - Plan Final
-completed_stage: 6
-next_action: Execute stage 7: User Review - Plan Final
-context_summary: Stage 6 complete. Next: stage 7 (User Review - Plan Final).
+current_stage: 8
+stage_name: Claim / Activation
+completed_stage: 7
+next_action: Execute stage 8: Claim / Activation
+context_summary: Stage 7 complete. Next: stage 8 (Claim / Activation).
 entry_reads:
   - .claude/work-queue/assets/WRK-1080/checkpoint.yaml
-  - assets/WRK-1080/WRK-1080-lifecycle.html#s1-s6
-  - assets/WRK-1080/evidence/cross-review.yaml
-checkpointed_at: 2026-03-09T15:42:30Z
-human_gate: true
+  - assets/WRK-1080/evidence/plan-final-review.yaml
+checkpointed_at: 2026-03-09T17:37:19Z
+human_gate: false
+chained_stages: [[8, 9]]

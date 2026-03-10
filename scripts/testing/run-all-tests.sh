@@ -25,18 +25,21 @@ REPO_CONFIGS=(
     "digitalmodel:digitalmodel:src:"
     "worldenergydata:worldenergydata:src:--noconftest"
     "assethold:assethold::tests/ --noconftest --tb=short -q"
+    "OGManufacturing:OGManufacturing::tests/"
 )
 
 # ── Argument parsing ──────────────────────────────────────────────────────────
 FILTER_REPO=""
 JSON_OUT=""
 INCLUDE_LIVE=false
+COVERAGE=false
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --repo)         FILTER_REPO="$2"; shift 2 ;;
         --json-out)     JSON_OUT="$2";    shift 2 ;;
         --include-live) INCLUDE_LIVE=true; shift ;;
+        --coverage)     COVERAGE=true; shift ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;
     esac
 done
@@ -62,7 +65,13 @@ run_repo() {
     local tmpout exit_code=0
     tmpout="$(mktemp)"
 
-    local cmd="uv run python -m pytest -v $pytest_args"
+    # Coverage: add --cov-report=json (structured); do NOT add --cov=src (repos own source config)
+    local cov_args=""
+    if [[ "$COVERAGE" == "true" ]]; then
+        cov_args="--cov-report=json --cov-report=term-missing"
+    fi
+
+    local cmd="uv run python -m pytest -v $pytest_args $cov_args"
 
     if [[ -n "$pythonpath" ]]; then
         (cd "$repo_dir" && PYTHONPATH="$pythonpath" eval "$cmd" >"$tmpout" 2>&1) || exit_code=$?
@@ -95,6 +104,62 @@ for config in "${REPO_CONFIGS[@]}"; do
         echo "$record" >> "$JSON_OUT"
     fi
 done
+
+# ── Coverage: extract results and run ratchet gate ───────────────────────────
+
+if [[ "$COVERAGE" == "true" ]]; then
+    COVERAGE_RESULTS="${SCRIPT_DIR}/coverage-results.json"
+    COVERAGE_BASELINE="${REPO_ROOT}/config/testing/coverage-baseline.yaml"
+    COVERAGE_REPORTS_DIR="${SCRIPT_DIR}/coverage-reports"
+    RATCHET="${SCRIPT_DIR}/check_coverage_ratchet.py"
+    DATESTAMP="$(date +%Y%m%d)"
+    REPORT_OUT="${COVERAGE_REPORTS_DIR}/WRK-1067-coverage-${DATESTAMP}.txt"
+
+    mkdir -p "$COVERAGE_REPORTS_DIR"
+
+    # Extract coverage % from each repo's coverage.json and build results mapping
+    uv run --no-project python - <<PYEOF2
+import json, sys
+from pathlib import Path
+
+repo_root = Path("${REPO_ROOT}")
+repos = {
+    "assetutilities": repo_root / "assetutilities",
+    "digitalmodel":   repo_root / "digitalmodel",
+    "worldenergydata": repo_root / "worldenergydata",
+    "assethold":      repo_root / "assethold",
+}
+filter_repo = "${FILTER_REPO}"
+results = {}
+for name, repo_dir in repos.items():
+    if filter_repo and name != filter_repo:
+        continue
+    cov_json = repo_dir / "coverage.json"
+    if cov_json.exists():
+        data = json.loads(cov_json.read_text())
+        pct = data.get("totals", {}).get("percent_covered", 0.0)
+        results[name] = round(float(pct), 2)
+    else:
+        print(f"  [coverage] no coverage.json found for {name}", file=sys.stderr)
+
+Path("${COVERAGE_RESULTS}").write_text(json.dumps(results, indent=2))
+print(f"  [coverage] results written to ${COVERAGE_RESULTS}")
+PYEOF2
+
+    # Run ratchet check if baseline exists
+    if [[ -f "$COVERAGE_BASELINE" ]]; then
+        echo ""
+        echo "── Coverage ratchet gate ──────────────────────────────────────"
+        uv run --no-project python "$RATCHET" \
+            --baseline "$COVERAGE_BASELINE" \
+            --results  "$COVERAGE_RESULTS" \
+            --report-out "$REPORT_OUT"
+        echo "  Report: $REPORT_OUT"
+    else
+        echo "  [coverage] No baseline found at $COVERAGE_BASELINE — skipping ratchet gate."
+        echo "  Run once to create baseline, then commit config/testing/coverage-baseline.yaml"
+    fi
+fi
 
 # ── Contract tests (digitalmodel + worldenergydata) ──────────────────────────
 

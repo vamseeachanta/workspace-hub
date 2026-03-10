@@ -1,0 +1,24 @@
+# Coverage baseline for WRK-1067 coverage ratchet gate.
+# Enforcement: actual >= max(80, baseline-2) when baseline >= 80
+#              actual >= baseline-2          when baseline < 80
+# Update by running: scripts/testing/run-all-tests.sh --coverage
+# Then copy per-repo % here and increment updated_at.
+schema_version: "1"
+updated_at: "2026-03-09"
+repos:
+  assethold:
+    coverage_pct: 76.86
+    updated_at: "2026-03-09"
+    note: "Below 80% — ratchet-only enforcement. Hard floor activates when baseline crosses 80%."
+  assetutilities:
+    coverage_pct: 41.17
+    updated_at: "2026-03-09"
+    note: "Below 80% — ratchet-only enforcement. Many contracted API modules pending TDD."
+  digitalmodel:
+    coverage_pct: 2.95
+    updated_at: "2026-03-09"
+    note: "Below 80% — ratchet-only enforcement. Tests have import errors; TDD work needed."
+  worldenergydata:
+    coverage_pct: 40.42
+    updated_at: "2026-03-09"
+    note: "Below 80% — ratchet-only enforcement. Test errors in bsee/analysis; TDD work needed."

@@ -1,0 +1,40 @@
+wrk_id: WRK-1064
+stage: 10
+route: A
+orchestrator: claude
+scope: integrated
+completed_at: "2026-03-09T23:15:00Z"
+files_created:
+  - scripts/hooks/pre-push.sh
+  - scripts/hooks/install-hooks.sh
+  - logs/hooks/.gitkeep
+  - tests/hooks/test_pre_push.py
+files_modified:
+  - scripts/testing/run-all-tests.sh
+tdd_summary:
+  tests_written_first: true
+  test_file: tests/hooks/test_pre_push.py
+  test_count: 10
+  pass_count: 10
+  fail_count: 0
+  runtime_seconds: 0.52
+  bug_found_and_fixed: >
+    Legacy coverage gate used hardcoded run-all-tests.sh path instead of $RUN_TESTS
+    override variable, causing tests to run the real suite and timeout. Fixed by
+    using $RUN_TESTS on line 170 of pre-push.sh.
+integrated_repo_tests:
+  - name: pre-push hook test suite
+    scope: integrated
+    command: uv run --no-project python -m pytest tests/hooks/test_pre_push.py -v
+    result: pass
+    artifact_ref: tests/hooks/test_pre_push.py
+  - name: hook help smoke test
+    scope: integrated
+    command: bash scripts/hooks/pre-push.sh --help
+    result: pass
+    artifact_ref: scripts/hooks/pre-push.sh
+  - name: hook syntax check
+    scope: integrated
+    command: bash -n scripts/hooks/pre-push.sh
+    result: pass
+    artifact_ref: scripts/hooks/pre-push.sh
