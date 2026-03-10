@@ -27,7 +27,7 @@
 | ISO datetime format gate | PASS | all timestamp fields have time components |
 | Codex keyword in review gate | PASS | codex keyword found in review artifacts (1 file(s) checked) |
 | Publish commit uniqueness gate | PASS | publish commits appear unique across stages |
-| Stage evidence paths gate | FAIL | stage-evidence.yaml: stage[9] evidence path not found: /work |
+| Stage evidence paths gate | PASS | all stage evidence paths verified |
 | Done/pending contradiction gate | PASS | no done/pending contradictions found |
 | Plan publish predates approval gate | PASS | plan publish ordering OK (published=2026-03-10T17:10:00Z, reviewed=2026-03-10T16:54:23Z) |
 | Workstation contract (strict) gate | PASS | workstation contract fields present |

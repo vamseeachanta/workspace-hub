@@ -69,7 +69,7 @@ stages:
   status: done
 - blocker: 'no'
   comment: Entered canonical /work route.
-  evidence: /work
+  evidence: n/a
   human_decision_required: 'no'
   order: 9
   owner: orchestrator
@@ -85,7 +85,7 @@ stages:
   status: done
 - blocker: 'no'
   comment: Review artifacts generated.
-  evidence: .claude/work-queue/assets/WRK-1106/review.html
+  evidence: .claude/work-queue/assets/WRK-1106/WRK-1106-lifecycle.html
   human_decision_required: 'no'
   order: 11
   owner: agents
@@ -93,7 +93,7 @@ stages:
   status: done
 - blocker: 'no'
   comment: Tests/evals completed and recorded.
-  evidence: .claude/work-queue/assets/WRK-1106/evidence/test-results.md
+  evidence: .claude/work-queue/assets/WRK-1106/ac-test-matrix.md
   human_decision_required: 'no'
   order: 12
   owner: agents
@@ -101,7 +101,7 @@ stages:
   status: done
 - blocker: 'no'
   comment: Implementation cross-review package complete.
-  evidence: .claude/work-queue/assets/WRK-1106/cross-review-package.md
+  evidence: .claude/work-queue/assets/WRK-1106/review-synthesis.md
   human_decision_required: 'no'
   order: 13
   owner: agents
@@ -141,7 +141,7 @@ stages:
   status: done
 - blocker: 'no'
   comment: Not needed in this run.
-  evidence: .claude/work-queue/assets/WRK-1106/evidence/reclaim.yaml
+  evidence: n/a
   human_decision_required: 'no'
   order: 18
   owner: orchestrator

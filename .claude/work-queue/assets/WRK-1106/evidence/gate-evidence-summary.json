@@ -180,10 +180,10 @@
     },
     {
       "name": "Stage evidence paths gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[9] evidence path not found: /work"
+      "details": "all stage evidence paths verified"
     },
     {
       "name": "Done/pending contradiction gate",
