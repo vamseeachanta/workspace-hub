@@ -5,10 +5,10 @@
   "gates": [
     {
       "name": "Plan gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=True, approved=True, artifact=WRK-1106-lifecycle.html, confirmation=confirmed_by=present, confirmed_at=present, decision=passed"
     },
     {
       "name": "Workstation contract gate",
@@ -33,31 +33,31 @@
     },
     {
       "name": "Agent log gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "routing:missing-log ; plan:missing-log"
+      "details": "matched routing:['work_queue_skill'], plan:['plan_draft_complete']"
     },
     {
       "name": "User-review HTML-open gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml: missing required stages ['plan_draft', 'plan_final']"
+      "details": "user-review-browser-open.yaml: stages=['plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml missing"
+      "details": "user-review-publish.yaml: stages=['plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "artifact=none"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1106/review-synthesis.md"
     },
     {
       "name": "Claim gate",
@@ -103,10 +103,10 @@
     },
     {
       "name": "Claim artifact path gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+      "details": "canonical claim artifact found: claim-evidence.yaml"
     },
     {
       "name": "ISO datetime format gate",
@@ -117,10 +117,10 @@
     },
     {
       "name": "Stage1 capture gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-capture.yaml: confirmed_at missing"
+      "details": "stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-10T16:58:59Z"
     }
   ]
 }

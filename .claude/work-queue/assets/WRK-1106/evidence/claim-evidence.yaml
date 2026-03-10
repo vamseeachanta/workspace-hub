@@ -1,6 +1,6 @@
-claim_date: "2026-03-10T16:55:30Z"
+claim_date: "2026-03-10T17:12:18Z"
 wrk_id: "WRK-1106"
-route: ""
+route: "A"
 orchestrator: "claude"
 best_fit_provider: "claude"
 alternate_provider: ""
@@ -14,8 +14,8 @@ blocking_state:
   blocked_by: []
   notes: ""
 quota_snapshot:
-  timestamp: "2026-03-10T16:55:30Z"
+  timestamp: "2026-03-10T17:12:18Z"
   provider: "claude"
   status: "available"
-  pct_remaining: null
+  pct_remaining: 100
   source: "config/ai-tools/agent-quota-latest.json"

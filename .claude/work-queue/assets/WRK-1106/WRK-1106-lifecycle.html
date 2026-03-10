@@ -113,7 +113,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
 
 <header class="hero">
   <div class="hero-inner">
-    <p class="eyebrow">Lifecycle Tracker &middot; Route  &middot; harness</p>
+    <p class="eyebrow">Lifecycle Tracker &middot; Route A &middot; harness</p>
     <h1>WRK-1106 — fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN</h1>
     <p class="lede">Single lifecycle document tracking all 20 stages from capture to archive.</p>
     <div class="meta-row">
@@ -152,7 +152,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val"></span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">simple</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">high</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>pending/WRK-1106.md</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">title</span><span class="schema-val">fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN</span></div><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">A</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">simple</span></div><div class="schema-row"><span class="schema-key">priority</span><span class="schema-val">high</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>pending/WRK-1106.md</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s2">
@@ -188,7 +188,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">simple</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">ace-linux-1</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
+    <div class="section-label">Triage decisions</div><div class="schema"><div class="schema-row"><span class="schema-key">route</span><span class="schema-val">A</span></div><div class="schema-row"><span class="schema-key">complexity</span><span class="schema-val">simple</span></div><div class="schema-row"><span class="schema-key">computer</span><span class="schema-val">ace-linux-1</span></div><div class="schema-row"><span class="schema-key">orchestrator</span><span class="schema-val">claude</span></div></div>
   </div>
 </section>
 <section class="stage-section" id="s4">
@@ -404,7 +404,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <p style="color:var(--muted);font-size:.85rem;">Future work recorded.</p>
+    <div class="section-label">Future work</div><table><tr><th>Title</th><th>Disposition</th><th>Captured</th></tr><tr><td>claim-item.sh pct_remaining null sentinel for max-tier providers</td><td>existing-updated</td><td>True</td></tr><tr><td>Queue state validation — pre-existing errors in other WRKs should not block WRK-1106 claim</td><td>spun-off-new</td><td>True</td></tr></table>
   </div>
 </section>
 <section class="stage-section" id="s16">
@@ -422,7 +422,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <p style="color:var(--muted);font-size:.85rem;">Resource intelligence updated.</p>
+    <div class="section-label">Additions</div><ul class="item-list"><li>{&#x27;type&#x27;: &#x27;pattern&#x27;, &#x27;description&#x27;: &#x27;claim-item.sh resume vs collision: activation.yaml + non-empty session_id discriminates safe resume from concurrent collision&#x27;, &#x27;target&#x27;: &#x27;.claude/skills/coordination/workspace/work-queue/SKILL.md&#x27;}</li></ul>
   </div>
 </section>
 <section class="stage-section" id="s17">
