@@ -1,5 +1,5 @@
 # Repo Ecosystem Roadmap — 2026 H1
-*WRK-235 | Established: 2026-02-20 | Last updated: 2026-03-09 | Cadence: monthly review (first Friday)*
+*WRK-235 | Established: 2026-02-20 | Last updated: 2026-03-10 | Cadence: monthly review (first Friday)*
 
 ## Ecosystem Vision — August 2026
 
@@ -13,13 +13,13 @@ net-shrinking. Provider strategy is validated by cost data.
 ## Repo Assessment
 *Pending WRK = items with `status: pending` targeting repo. Archived WRK = completed items.*
 *Strategic value 1–5, Agentic readiness 1–5 (1=low, 5=high). Investment: high/medium/low/defer.*
-*Updated: 2026-03-09*
+*Updated: 2026-03-10*
 
 | Repo | Strategic Value | Agentic Readiness | Pending WRK | Archived WRK | Priority | August 2026 Target |
 |------|:-:|:-:|:-:|:-:|----------|---------------------|
-| `workspace-hub` | 5 | **5** | 73 | 121 | **high** | Autonomous session lifecycle; self-improving loop live |
-| `digitalmodel` | 5 | 3 | 99 | 103 | **high** | All major modules agent-callable; test coverage ≥80% |
-| `worldenergydata` | 5 | 3 | 30 | 94 | **high** | All sources queryable by agents; refresh scheduled |
+| `workspace-hub` | 5 | **5** | 77 | 131 | **high** | Autonomous session lifecycle; self-improving loop live |
+| `digitalmodel` | 5 | 3 | 106 | 103 | **high** | All major modules agent-callable; test coverage ≥80% |
+| `worldenergydata` | 5 | 3 | 36 | 94 | **high** | All sources queryable by agents; refresh scheduled |
 | `assethold` | 4 | **4** | 5 | 14 | **high** | Agents run daily strategy autonomously |
 | `assetutilities` | 4 | **4** | 11 | 34 | **high** | Shared utilities stable; used by assethold and agents |
 | `aceengineer-website` | 5 | 2 | 6 | 15 | **high** | Agents generate + publish content from module outputs |
@@ -39,9 +39,12 @@ net-shrinking. Provider strategy is validated by cost data.
 | `hobbies` | 1 | 1 | 0 | 0 | defer | Personal; no compound value |
 | `sabithaandkrishnaestates` | 1 | 2 | 0 | 0 | defer | No pending items; reactive only |
 
-**Agentic readiness note (March 2026):** `workspace-hub` upgraded 4→5: pre-push CI gate, coverage
-ratchet, secrets scan, cross-repo symbol index, MkDocs pipeline, PEP 561 types, static analysis
-harness, onboarding maps all landed (WRK-1062–1085). `assethold`/`assetutilities` upgraded 3→4:
+**Agentic readiness note (March 2026):** `workspace-hub` upgraded 4→5 and holding: pre-push CI gate,
+coverage ratchet, secrets scan, cross-repo symbol index, MkDocs pipeline, PEP 561 types, static
+analysis harness, onboarding maps all landed (WRK-1062–1085). New this week (2026-03-10):
+cross-repo integration test gate (WRK-1091), mypy error-count ratchet (WRK-1092), immutable agent
+audit trail (WRK-1087), dependency health check (WRK-1090), AI agent gate+logging contract (WRK-658),
+skill frontmatter normalization (WRK-577). `assethold`/`assetutilities` upgraded 3→4:
 deterministic fixtures, PEP 561 types, bandit baseline, ruff/mypy hooks in place.
 
 **Critical path repos**: `workspace-hub`, `digitalmodel`, `worldenergydata`, `assethold`, `assetutilities`,
@@ -88,9 +91,12 @@ cross-review verdicts (tracked via WRK-237), consolidate to Claude + selective C
 3. **Data queryability** (`worldenergydata`) — BSEE, EIA, drilling cost, GIS data exists.
    Agents cannot query it autonomously. WRK-171, WRK-219, WRK-254, WRK-417 are the path.
 
-4. **Agentic workflow infrastructure** — ✅ substantial progress in Q1 2026: pre-push CI gate,
-   coverage ratchet, secrets scan, cross-repo symbol index, MkDocs API docs, static analysis harness
-   (WRK-1062–1085). Remaining: plan-mode integration (WRK-1083), skills.sh adoption (WRK-1084).
+4. **Agentic workflow infrastructure** — ✅ substantial progress in Q1 2026 continuing: pre-push CI
+   gate, coverage ratchet, secrets scan, symbol index, MkDocs, PEP 561, static analysis, onboarding
+   maps (WRK-1062–1085). Added this week: cross-repo integration test gate (WRK-1091), mypy ratchet
+   (WRK-1092), agent audit trail (WRK-1087), dep health (WRK-1090), agent gate+log contract (WRK-658),
+   ecosystem terminology skill (WRK-1098). Remaining: plan-mode integration (WRK-1083), skills.sh
+   adoption (WRK-1084). **Theme 4 is ~90% complete** — diminishing returns ahead.
 
 5. **Client-facing content automation** (`aceengineer-website`, WRK-148, WRK-259, WRK-261, WRK-382) —
    agents should generate portfolio content and case studies from module outputs, not manual writing.
@@ -140,7 +146,7 @@ August 2026 engineering-AI vision. Park explicitly.
 5. Horizon skill output: any `park` items now `do now`? Any `do now` items now obsolete?
 6. Update this document's `Last updated` date and Investment Themes if landscape has shifted.
 
-*Last reviewed: 2026-03-09 — Next review: 2026-04-03 (first Friday of April)*
+*Last reviewed: 2026-03-10 (mid-month spot check) — Next monthly review: 2026-04-03 (first Friday of April)*
 
 ---
 
