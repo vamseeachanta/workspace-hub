@@ -35,6 +35,7 @@ OPT_STATIC=false
 OPT_MYPY_RATCHET=false
 OPT_DRIFT=false
 OPT_CONFIG_DRIFT=false
+OPT_COMPLEXITY_RATCHET=false
 
 usage() {
   cat <<'EOF'
@@ -50,6 +51,7 @@ Options:
   --mypy-only        Skip ruff
   --bandit           Run bandit security scan (MEDIUM+ new findings block)
   --radon            Run radon cyclomatic complexity (warn-only)
+  --complexity-ratchet  Run radon complexity ratchet gate (WRK-1095)
   --vulture          Run vulture dead-code detection (warn-only)
   --static           Run all three: bandit + radon + vulture
   --docs             Run ruff D (pydocstyle) rules + README + docs/ checks
@@ -77,8 +79,9 @@ while [[ $# -gt 0 ]]; do
     --static)        OPT_STATIC=true;        shift ;;
     --mypy-ratchet)  OPT_MYPY_RATCHET=true;  shift ;;
     --drift)         OPT_DRIFT=true;          shift ;;
-    --config-drift)  OPT_CONFIG_DRIFT=true;   shift ;;
-    --help|-h)       usage; exit 0 ;;
+    --config-drift)       OPT_CONFIG_DRIFT=true;        shift ;;
+    --complexity-ratchet) OPT_COMPLEXITY_RATCHET=true;  shift ;;
+    --help|-h)            usage; exit 0 ;;
     *) echo "ERROR: Unknown flag: $1" >&2; usage >&2; exit 1 ;;
   esac
 done
@@ -544,6 +547,29 @@ run_config_drift() {
 
 if $OPT_CONFIG_DRIFT; then
   run_config_drift || FAIL_COUNT=$((FAIL_COUNT + 1))
+fi
+
+# ---------------------------------------------------------------------------
+# Complexity ratchet gate (WRK-1095) — runs once across all repos
+# ---------------------------------------------------------------------------
+if $OPT_COMPLEXITY_RATCHET; then
+  COMPLEXITY_RATCHET_SCRIPT="${REPO_ROOT}/scripts/quality/check_complexity_ratchet.py"
+  COMPLEXITY_RATCHET_BASELINE="${REPO_ROOT}/config/quality/complexity-baseline.yaml"
+  echo ""
+  echo "=== Complexity Ratchet Gate ==="
+  complexity_ratchet_exit=0
+  if [[ -f "$COMPLEXITY_RATCHET_SCRIPT" && -f "$COMPLEXITY_RATCHET_BASELINE" ]]; then
+    uv run --no-project python "$COMPLEXITY_RATCHET_SCRIPT" \
+      --baseline "$COMPLEXITY_RATCHET_BASELINE" \
+      --repo-root "$REPO_ROOT" || complexity_ratchet_exit=$?
+  else
+    echo "WARNING: complexity ratchet script or baseline not found — skipping" >&2
+  fi
+  if [[ $complexity_ratchet_exit -ne 0 ]]; then
+    FAIL_COUNT=$((FAIL_COUNT + 1))
+  else
+    PASS_COUNT=$((PASS_COUNT + 1))
+  fi
 fi
 
 # ---------------------------------------------------------------------------

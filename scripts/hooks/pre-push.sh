@@ -211,6 +211,24 @@ if [[ "${MYPY_RATCHET_GATE:-0}" == "1" ]]; then
     fi
 fi
 
+# ── Complexity ratchet gate (WRK-1095) — opt-in via COMPLEXITY_RATCHET_GATE=1 ─
+# Radon runs can take 30-90s across all repos; opt-in avoids slowing every push.
+if [[ "${COMPLEXITY_RATCHET_GATE:-0}" == "1" ]]; then
+    COMPLEXITY_RATCHET_SCRIPT="${REPO_ROOT}/scripts/quality/check_complexity_ratchet.py"
+    COMPLEXITY_RATCHET_BASELINE="${REPO_ROOT}/config/quality/complexity-baseline.yaml"
+    if [[ -f "$COMPLEXITY_RATCHET_SCRIPT" && -f "$COMPLEXITY_RATCHET_BASELINE" ]]; then
+        echo "[pre-push] Running complexity ratchet gate..." >&2
+        if ! uv run --no-project python "$COMPLEXITY_RATCHET_SCRIPT" \
+                --baseline "$COMPLEXITY_RATCHET_BASELINE" \
+                --repo-root "$REPO_ROOT"; then
+            echo "[pre-push] FAIL: complexity ratchet gate" >&2
+            OVERALL_EXIT=1
+        fi
+    else
+        echo "[pre-push] WARNING: complexity ratchet script or baseline not found — skipping" >&2
+    fi
+fi
+
 # ── Config drift check — RUN_ALL path (WRK-1094) ────────────────────────────
 # When RUN_ALL=true (new branch or --all flag), CHANGED_FILES is not set so the
 # harness-change detection inside the else branch above did not run.  Run the
