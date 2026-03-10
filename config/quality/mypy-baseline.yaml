@@ -1,0 +1,27 @@
+# Mypy error count baseline for WRK-1092 ratchet gate.
+# Enforcement: actual <= baseline → PASS; actual > baseline → FAIL (regression).
+# When actual < baseline, baseline is auto-updated (no auto-commit).
+# Update by running: uv run --no-project python scripts/quality/check_mypy_ratchet.py --init
+schema_version: "1"
+updated_at: "2026-03-09"
+repos:
+  assetutilities:
+    error_count: 941
+    updated_at: "2026-03-09"
+    note: "941 errors in 83 files — mostly missing type annotations."
+  digitalmodel:
+    error_count: 1
+    updated_at: "2026-03-09"
+    note: "1 error (syntax error in projectScheduleD01.py prevents further checking)."
+  worldenergydata:
+    error_count: 3414
+    updated_at: "2026-03-09"
+    note: "3414 errors in 547 files — mostly missing type annotations."
+  assethold:
+    error_count: 320
+    updated_at: "2026-03-09"
+    note: "320 errors in 48 files — mostly missing type annotations."
+  ogmanufacturing:
+    error_count: 0
+    updated_at: "2026-03-09"
+    note: "Clean — no issues found in 5 source files."

@@ -173,4 +173,22 @@ else
     echo "[pre-push] Coverage baseline or ratchet script not found — skipping coverage gate." >&2
 fi
 
+# ── Mypy ratchet gate (WRK-1092) — opt-in via MYPY_RATCHET_GATE=1 ───────────
+# Mypy runs can take 60-180s across all repos; opt-in avoids slowing every push.
+if [[ "${MYPY_RATCHET_GATE:-0}" == "1" ]]; then
+    MYPY_RATCHET_SCRIPT="${REPO_ROOT}/scripts/quality/check_mypy_ratchet.py"
+    MYPY_RATCHET_BASELINE="${REPO_ROOT}/config/quality/mypy-baseline.yaml"
+    if [[ -f "$MYPY_RATCHET_SCRIPT" && -f "$MYPY_RATCHET_BASELINE" ]]; then
+        echo "[pre-push] Running mypy ratchet gate..." >&2
+        if ! uv run --no-project python "$MYPY_RATCHET_SCRIPT" \
+                --baseline "$MYPY_RATCHET_BASELINE" \
+                --repo-root "$REPO_ROOT"; then
+            echo "[pre-push] FAIL: mypy ratchet gate" >&2
+            OVERALL_EXIT=1
+        fi
+    else
+        echo "[pre-push] WARNING: mypy ratchet script or baseline not found — skipping" >&2
+    fi
+fi
+
 exit "$OVERALL_EXIT"

@@ -32,6 +32,7 @@ OPT_BANDIT=false
 OPT_RADON=false
 OPT_VULTURE=false
 OPT_STATIC=false
+OPT_MYPY_RATCHET=false
 
 usage() {
   cat <<'EOF'
@@ -51,6 +52,7 @@ Options:
   --static           Run all three: bandit + radon + vulture
   --docs             Run ruff D (pydocstyle) rules + README + docs/ checks
   --api              Run public-symbol docstring coverage audit (warn-only)
+  --mypy-ratchet     Run mypy error count ratchet gate (WRK-1092)
   --help             Show this help
 
 Exit code: 0 if all checks pass, 1 if any fail.
@@ -68,8 +70,9 @@ while [[ $# -gt 0 ]]; do
     --bandit)    OPT_BANDIT=true;     shift ;;
     --radon)     OPT_RADON=true;      shift ;;
     --vulture)   OPT_VULTURE=true;    shift ;;
-    --static)    OPT_STATIC=true;     shift ;;
-    --help|-h)   usage; exit 0 ;;
+    --static)        OPT_STATIC=true;        shift ;;
+    --mypy-ratchet)  OPT_MYPY_RATCHET=true;  shift ;;
+    --help|-h)       usage; exit 0 ;;
     *) echo "ERROR: Unknown flag: $1" >&2; usage >&2; exit 1 ;;
   esac
 done
@@ -476,6 +479,29 @@ for repo_name in "${REPO_ORDER[@]}"; do
     PASS_COUNT=$((PASS_COUNT + 1))
   fi
 done
+
+# ---------------------------------------------------------------------------
+# Mypy ratchet gate (WRK-1092) — runs once across all repos
+# ---------------------------------------------------------------------------
+if $OPT_MYPY_RATCHET; then
+  MYPY_RATCHET_SCRIPT="${REPO_ROOT}/scripts/quality/check_mypy_ratchet.py"
+  MYPY_RATCHET_BASELINE="${REPO_ROOT}/config/quality/mypy-baseline.yaml"
+  echo ""
+  echo "=== Mypy Ratchet Gate ==="
+  mypy_ratchet_exit=0
+  if [[ -f "$MYPY_RATCHET_SCRIPT" && -f "$MYPY_RATCHET_BASELINE" ]]; then
+    uv run --no-project python "$MYPY_RATCHET_SCRIPT" \
+      --baseline "$MYPY_RATCHET_BASELINE" \
+      --repo-root "$REPO_ROOT" || mypy_ratchet_exit=$?
+  else
+    echo "WARNING: mypy ratchet script or baseline not found — skipping" >&2
+  fi
+  if [[ $mypy_ratchet_exit -ne 0 ]]; then
+    FAIL_COUNT=$((FAIL_COUNT + 1))
+  else
+    PASS_COUNT=$((PASS_COUNT + 1))
+  fi
+fi
 
 # ---------------------------------------------------------------------------
 # Summary
