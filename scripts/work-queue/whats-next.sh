@@ -2,21 +2,27 @@
 # whats-next.sh — Refresh and display the prioritised "run now" work list.
 # Scans pending/working/blocked WRK items, resolves blocker archive status,
 # and outputs a categorised table with parallel execution hints.
-# Usage: bash scripts/work-queue/whats-next.sh [--category <name>]
+# Usage: bash scripts/work-queue/whats-next.sh [--category <name>] [--subcategory <name>]
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 QUEUE_DIR="$REPO_ROOT/.claude/work-queue"
+THIS_HOST=$(hostname -s)
 FILTER_CATEGORY="harness"   # default: harness-focused view
+FILTER_SUBCATEGORY=""
 SHOW_ALL=false
 MED_LIMIT=20
+_CATEGORY_EXPLICIT=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --category)  FILTER_CATEGORY="$2"; shift 2 ;;
-    --all)       SHOW_ALL=true; FILTER_CATEGORY=""; shift ;;
-    --limit)     MED_LIMIT="$2"; shift 2 ;;
+    --category)     FILTER_CATEGORY="$2"; _CATEGORY_EXPLICIT=true; shift 2 ;;
+    --subcategory)  FILTER_SUBCATEGORY="$2"; shift 2 ;;
+    --all)          SHOW_ALL=true; FILTER_CATEGORY=""; shift ;;
+    --limit)        MED_LIMIT="$2"; shift 2 ;;
     *) shift ;;
   esac
 done
+# --subcategory alone clears the default category filter (cross-category search)
+[[ -n "$FILTER_SUBCATEGORY" && "$_CATEGORY_EXPLICIT" == false ]] && FILTER_CATEGORY=""
 
 get_field() { grep -m1 "^$2:" "$1" 2>/dev/null | sed "s/^$2: *//" | tr -d '"' || true; }
 
@@ -74,6 +80,8 @@ process_file() {
   id=$(get_field "$f" "id"); [[ -z "$id" ]] && return
   category=$(get_field "$f" "category")
   [[ -n "$FILTER_CATEGORY" && "$category" != *"$FILTER_CATEGORY"* ]] && return
+  subcategory=$(get_field "$f" "subcategory")
+  [[ -n "$FILTER_SUBCATEGORY" && "$subcategory" != *"$FILTER_SUBCATEGORY"* ]] && return
 
   # Skip periodic-review items (standing + cadence) — they self-schedule, not daily work
   local _standing _cadence
@@ -83,7 +91,6 @@ process_file() {
 
   status=$(get_field "$f" "status")
   priority=$(get_field "$f" "priority")
-  subcategory=$(get_field "$f" "subcategory")
   computer=$(get_field "$f" "computer")
   title=$(get_field "$f" "title" | cut -c1-48)
   blocked_by=$(grep -m1 "^blocked_by:" "$f" 2>/dev/null | sed 's/^blocked_by: *//' || echo "[]")
@@ -135,10 +142,37 @@ print_section() {
   printf "${colour}%s\033[0m\n" "$label"
   printf "%-12s %-8s %-26s %-15s %s\n" "WRK" "PRI" "SUBCATEGORY" "MACHINE" "TITLE"
   echo "$HR"
+  # Partition into local vs remote rows
+  local _local_rows=() _remote_ids=()
   for row in "${_arr[@]}"; do
+    IFS='|' read -r id pri sub cpu ttl _rest <<< "$row"
+    if [[ "$cpu" == "$THIS_HOST" ]]; then
+      _local_rows+=("$row")
+    else
+      _remote_ids+=("$id")
+    fi
+  done
+  local has_local=$(( ${#_local_rows[@]} > 0 ))
+  local has_remote=$(( ${#_remote_ids[@]} > 0 ))
+  # Show sub-header only when both local and remote present
+  if [[ $has_local -eq 1 && $has_remote -eq 1 ]]; then
+    echo "  [this machine: $THIS_HOST]"
+  fi
+  for row in "${_local_rows[@]}"; do
     IFS='|' read -r id pri sub cpu ttl _rest <<< "$row"
     printf "%-12s %-8s %-26s %-15s %s\n" "$id" "$pri" "$sub" "$cpu" "$ttl"
   done
+  # Remote items: brief one-liner when local items exist, full rows when only remote
+  if [[ $has_remote -eq 1 ]]; then
+    if [[ $has_local -eq 1 ]]; then
+      printf "  [other machines: %s]\n" "${_remote_ids[*]}"
+    else
+      for row in "${_arr[@]}"; do
+        IFS='|' read -r id pri sub cpu ttl _rest <<< "$row"
+        printf "%-12s %-8s %-26s %-15s %s\n" "$id" "$pri" "$sub" "$cpu" "$ttl"
+      done
+    fi
+  fi
 }
 
 echo ""
