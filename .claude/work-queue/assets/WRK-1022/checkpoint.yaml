@@ -1,0 +1,16 @@
+wrk_id: WRK-1022
+stage: 10
+next_action: >
+  Monitor 10 sessions on Linux (ace-linux-1/ace-linux-2) and Windows
+  (acma-ansys05) using the workstations skill terminal reference.
+  When 10 sessions pass without terminal friction, proceed to Stage 17
+  (User Review - Implementation) then close.
+context_summary: >
+  Terminal Keyboard Shortcuts Reference section added to workstations/SKILL.md.
+  Covers copy/paste, new-line, tab navigation, AI agent CLI commands, and
+  productivity shortcuts for Linux and Windows Git Bash. Monitoring gate:
+  10 sessions on Linux + Windows before close.
+updated_at: "2026-03-10T00:00:00Z"
+entry_reads:
+  - .claude/work-queue/working/WRK-1022.md
+  - .claude/skills/workspace-hub/workstations/SKILL.md

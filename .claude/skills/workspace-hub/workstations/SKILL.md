@@ -198,6 +198,79 @@ machines:
     cron_variant: full
 ```
 
+## Terminal Keyboard Shortcuts Reference
+
+Consistent terminal commands across all workstations. Refer to this when switching machines.
+
+### Copy / Paste
+
+| Action | Linux Terminal | Windows Terminal Git Bash |
+|--------|---------------|---------------------------|
+| Copy selected text | `Ctrl+Shift+C` | `Ctrl+C` (with text selected) |
+| Paste | `Ctrl+Shift+V` | `Ctrl+V` or `Shift+Insert` |
+| Copy (mouse) | Select text → auto-copies | Select text → right-click → Copy |
+| Paste (mouse) | Middle-click | Right-click → Paste |
+
+> **Windows Git Bash note**: `Ctrl+C` is context-sensitive — with text selected it copies; without selection it sends interrupt signal.
+
+### New Line (Multi-line Input)
+
+| Context | Linux | Windows Git Bash |
+|---------|-------|-----------------|
+| AI agent multi-line input | `\` + Enter or `Shift+Enter` (claude/gemini) | Same |
+| Bash shell continuation | `\` + Enter | Same |
+| Heredoc | `<<'EOF'` … `EOF` | Same (via Git Bash) |
+
+### Terminal Tabs / Windows
+
+| Action | Linux (GNOME Terminal) | Windows Terminal |
+|--------|------------------------|-----------------|
+| New tab | `Ctrl+Shift+T` | `Ctrl+Shift+T` |
+| Close tab | `Ctrl+Shift+W` | `Ctrl+Shift+W` |
+| Next tab | `Ctrl+PgDn` or `Ctrl+Tab` | `Ctrl+Tab` |
+| Previous tab | `Ctrl+PgUp` or `Ctrl+Shift+Tab` | `Ctrl+Shift+Tab` |
+| Switch to tab N | `Alt+N` (1–9) | `Ctrl+Alt+N` (1–9) |
+| New window | `Ctrl+Shift+N` | `Ctrl+Shift+N` |
+| Split pane (Windows Terminal) | — | `Alt+Shift+D` |
+
+### AI Agent CLI Commands
+
+| Action | claude | codex | gemini |
+|--------|--------|-------|--------|
+| Start | `claude` | `codex` | `gemini` |
+| Submit single-line | `Enter` | `Enter` | `Enter` |
+| Multi-line input | `Shift+Enter` or `\`+Enter | `\`+Enter | `Shift+Enter` |
+| Interrupt running task | `Ctrl+C` | `Ctrl+C` | `Ctrl+C` |
+| Exit REPL | `Ctrl+D` or `/exit` | `Ctrl+D` or `exit` | `Ctrl+D` or `/exit` |
+| Clear screen | `Ctrl+L` | `Ctrl+L` | `Ctrl+L` |
+
+### General Productivity Shortcuts
+
+| Action | Shortcut | Notes |
+|--------|----------|-------|
+| Clear screen | `Ctrl+L` | Cross-platform |
+| Cancel / interrupt | `Ctrl+C` | Sends SIGINT to foreground process |
+| End-of-file / exit shell | `Ctrl+D` | Exits agent REPL or shell |
+| Move to line start | `Ctrl+A` | readline — works in Git Bash too |
+| Move to line end | `Ctrl+E` | readline — works in Git Bash too |
+| Reverse history search | `Ctrl+R` | Type to search; Enter to run |
+| Insert last argument | `Alt+.` | Linux bash; not in Git Bash |
+| Background process | `Ctrl+Z` then `bg` | Linux only |
+| Persistent session | `tmux new -s <name>` | Survives disconnects; critical for long agent runs |
+| Reattach tmux | `tmux attach -t <name>` | After reconnect |
+| Search command history | `history \| grep <cmd>` | Cross-platform |
+
+### Interrupt vs. Quit (Linux)
+
+| Signal | Keys | Effect |
+|--------|------|--------|
+| SIGINT | `Ctrl+C` | Interrupt foreground process |
+| SIGQUIT | `Ctrl+\` | Quit + core dump |
+| SIGTSTP | `Ctrl+Z` | Suspend to background |
+| EOF | `Ctrl+D` | Close stdin / exit shell |
+
+---
+
 ## AI CLI Availability
 
 Which machines have AI agent CLIs installed. Update when installs change.
