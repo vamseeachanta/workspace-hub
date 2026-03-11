@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-11T12:03:03Z by generate-index.py -->
+<!-- Generated: 2026-03-11T12:12:47Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-11T12:03:03Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-11T12:12:47Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -13,10 +13,10 @@
 
 | Status | Count |
 |--------|-------|
-| pending | 213 |
-| working | 4 |
+| pending | 212 |
+| working | 3 |
 | blocked | 10 |
-| archived | 319 |
+| archived | 321 |
 
 ### By Priority
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 39 |
+| harness | 38 |
 | engineering | 117 |
 | data | 25 |
 | platform | 13 |
@@ -80,8 +80,8 @@
 |--------|-------|
 | Ensemble planning complete | 0 |
 | Plans exist | 225 / 546 |
-| Plans cross-reviewed | 149 |
-| Plans approved | 171 |
+| Plans cross-reviewed | 150 |
+| Plans approved | 172 |
 | Brochure pending | 8 |
 | Brochure updated/synced | 8 |
 
@@ -92,16 +92,16 @@
 | Metric | Value |
 |--------|-------|
 | Total captured | 546 |
-| Total archived | 319 |
-| Completion rate | 319/546 (58%) |
-| Monthly rate (current month) | 85 archived |
+| Total archived | 321 |
+| Completion rate | 321/546 (59%) |
+| Monthly rate (current month) | 87 archived |
 | Monthly rate (prior month) | 67 archived |
 
 ### Plan Coverage
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Pending items with plans | 57 / 213 | 27% |
+| Pending items with plans | 57 / 212 | 27% |
 | Plans cross-reviewed | 9 | 14% |
 | Plans user-approved | 9 | 14% |
 
@@ -118,15 +118,15 @@
 
 | Priority | Pending | Working | Blocked |
 |----------|---------|---------|---------|
-| High     | 89 | 1 | 8 |
-| Medium   | 92  | 3  | 1  |
+| High     | 88 | 2 | 8 |
+| Medium   | 92  | 1  | 1  |
 | Low      | 32  | 0  | 1  |
 
 ## By Category
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (39 items — 4 high, 27 medium, 8 low)
+### harness (38 items — 4 high, 26 medium, 8 low)
 
 #### harness / agent-teams
 
@@ -246,10 +246,9 @@
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
 | WRK-664 | HIGH | feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning | blocked |
-| WRK-1123 | HIGH | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | pending |
+| WRK-1123 | HIGH | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | working |
 | WRK-635 | MEDIUM | feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory | pending |
 | WRK-680 | MEDIUM | governance(review): strengthen archive gate validation | pending |
-| WRK-1124 | MEDIUM | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | working |
 
 #### harness / workstations
 
@@ -1116,14 +1115,14 @@
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | n/a | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub, digitalmodel | - | ❌ | ✅ | ❌ | ❌ | - | n/a | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ✅ | ✅ | ✅ | ███ 100% | n/a | - |
-| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | working | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | - |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | archived | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | medium | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | claude | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
-| WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | pending | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ❌ | ❌ | - | - | - |
-| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | working | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | - | - | - |
+| WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | working | high | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | - | - | ❌ | ❌ | ✅ | ✅ | - | - | - |
+| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | ace-linux-1 | ace-linux-1 | ace-linux-1 | - | workspace-hub | - | ❌ | ❌ | ✅ | ✅ | ███ 100% | - | - |
 
 ## By Status
 
@@ -1343,7 +1342,6 @@
 | WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | medium | medium | workspace-hub | - |
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | medium | medium | workspace-hub | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | medium | medium | workspace-hub | - |
-| WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | high | simple | - | - |
 
 ### Working
 
@@ -1351,8 +1349,7 @@
 |-----|-------|----------|------------|-------|--------|
 | WRK-129 | Standardize analysis reporting for each OrcaFlex structure type | high | complex | digitalmodel | - |
 | WRK-1022 | Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents | medium | simple | workspace-hub | - |
-| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | medium | medium | workspace-hub | - |
-| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | medium | simple | workspace-hub | - |
+| WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | high | simple | - | - |
 
 ### Blocked
 
@@ -1691,7 +1688,9 @@
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | high | simple | workspace-hub | - |
 | WRK-1108 | Investigate WhatsApp MCP integration for Claude | low | simple | workspace-hub | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | medium | simple | workspace-hub | - |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | medium | medium | workspace-hub | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | high | simple | workspace-hub | - |
+| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | medium | simple | workspace-hub | - |
 
 ## By Repository
 
@@ -2301,13 +2300,13 @@
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | medium | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | - |
-| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | working | medium | medium | - |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | archived | medium | medium | - |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | - |
 | WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | medium | - |
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | medium | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | medium | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | simple | - |
-| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | working | medium | simple | - |
+| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | - |
 
 ### worldenergydata
 
@@ -2668,7 +2667,7 @@
 | WRK-1106 | fix(claim-item): allow resume of already-claimed WRK via /work run WRK-NNN | archived | simple | workspace-hub | - |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | complex | workspace-hub, digitalmodel | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | simple | workspace-hub | - |
-| WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | pending | simple | - | - |
+| WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | working | simple | - | - |
 
 ### Medium
 
@@ -2919,12 +2918,12 @@
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | workspace-hub | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | simple | workspace-hub | - |
-| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | working | medium | workspace-hub | - |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | archived | medium | workspace-hub | - |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | workspace-hub | - |
 | WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | workspace-hub | - |
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | workspace-hub | - |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | workspace-hub | - |
-| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | working | simple | workspace-hub | - |
+| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | simple | workspace-hub | - |
 
 ### Low
 
@@ -3101,8 +3100,8 @@
 | WRK-1109 | Set up WhatsApp MCP for Claude CLI on ace-linux-1 | pending | low | workspace-hub | - |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | workspace-hub | - |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | workspace-hub | - |
-| WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | pending | high | - | - |
-| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | working | medium | workspace-hub | - |
+| WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | working | high | - | - |
+| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | workspace-hub | - |
 
 ### Medium
 
@@ -3364,7 +3363,7 @@
 | WRK-1110 | enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap | pending | medium | workspace-hub | - |
 | WRK-1111 | feat(context): @ file reference pipeline — auto-include key schemas and configs in CLAUDE.md | pending | medium | workspace-hub, assethold, assetutilities, digitalmodel, worldenergydata | - |
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | workspace-hub | - |
-| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | working | medium | workspace-hub | - |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | archived | medium | workspace-hub | - |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | workspace-hub | - |
 | WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | workspace-hub | - |
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | workspace-hub | - |
@@ -3477,7 +3476,7 @@
 
 ## By Computer
 
-### ace-linux-1 (162 active / 266 total)
+### ace-linux-1 (160 active / 266 total)
 
 | ID | Title | Status | Priority | Complexity | Repos |
 |-----|-------|--------|----------|------------|-------|
@@ -3739,14 +3738,14 @@
 | WRK-1112 | feat(review): limit cross-review iterations to 3 and announce limit upfront | pending | medium | medium | workspace-hub |
 | WRK-1113 | feat(doc-intel): squeeze max value from document corpus — parametric wrappers, index consolidation, exhaustion marking | pending | high | complex | workspace-hub, digitalmodel |
 | WRK-1114 | feat(work-queue): machine-partitioned WRK ID ranges — prevent ID clash between machines | archived | medium | simple | workspace-hub |
-| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | working | medium | medium | workspace-hub |
+| WRK-1115 | Unified Plan+Lifecycle HTML — single refresh per WRK item | archived | medium | medium | workspace-hub |
 | WRK-1116 | Extract + integrate website-building skill patterns from Nate Herk video | pending | medium | medium | workspace-hub |
 | WRK-1117 | Windows/Git Bash: fix comprehensive-learning push path + signal generation | pending | medium | medium | workspace-hub |
 | WRK-1118 | Cross-platform bash sweep — replace bc/python3/nproc in all scripts | pending | medium | medium | workspace-hub |
 | WRK-1119 | feat(harness): defined permission model — replace dangerouslySkipPermissions with allow/deny lists | pending | medium | medium | workspace-hub |
 | WRK-1120 | fix(work-queue): atomic ID reservation — prevent concurrent new-item ID collisions | archived | high | simple | workspace-hub |
-| WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | pending | high | simple | - |
-| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | working | medium | simple | workspace-hub |
+| WRK-1123 | fix(work-queue): Stage 1 guard missing — start_stage.py writes session-lock on pending items | working | high | simple | - |
+| WRK-1124 | fix(whats-next): surface in-progress WRK items (checkpoint.yaml) in working panorama | archived | medium | simple | workspace-hub |
 
 ### ace-linux-2 (7 active / 14 total)
 

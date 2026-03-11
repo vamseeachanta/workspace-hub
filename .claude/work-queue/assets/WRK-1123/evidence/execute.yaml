@@ -1,0 +1,26 @@
+wrk_id: WRK-1123
+stage: 10
+files_changed:
+  - scripts/work-queue/start_stage.py
+  - scripts/work-queue/tests/test_start_stage_guards.py (new)
+integrated_repo_tests:
+  - name: "pytest unit tests (test_start_stage_guards.py)"
+    scope: integrated
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_start_stage_guards.py -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1123/ac-test-matrix.md
+  - name: "smoke test: stage 1 on non-working item exits 1"
+    scope: integrated
+    command: "uv run --no-project python scripts/work-queue/start_stage.py WRK-9999 1"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1123/ac-test-matrix.md
+  - name: "regression: existing test_stage1_gate.py still passes"
+    scope: repo
+    command: "uv run --no-project python -m pytest scripts/work-queue/tests/test_stage1_gate.py -v"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1123/ac-test-matrix.md
+summary: >
+  Added _stage1_working_guard() and _maybe_purge_stale_lock() to start_stage.py.
+  Stage 1 now exits 1 if item not in working/. Stale lock auto-purged when PID dead
+  and age > 2h. P1 fix: PermissionError handled separately (live process, different owner).
+executed_at: "2026-03-11T12:00:00Z"

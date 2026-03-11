@@ -1,0 +1,8 @@
+wrk_id: WRK-1123
+stage: 7
+decision: passed
+confirmed_by: vamsee
+confirmed_at: "2026-03-11T11:45:00Z"
+notes: >
+  Route A plan approved. Three steps: stale-lock purge helper, stage-1 working/ guard,
+  unit tests. Codex cross-review APPROVE after P1 fix (PermissionError handling).

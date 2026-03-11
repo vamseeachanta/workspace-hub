@@ -1,0 +1,22 @@
+wrk_id: WRK-1123
+stage: 15
+recommendations:
+  - id: FW-1
+    title: "Validate wrk_id against ^WRK-\\d+$ before path construction"
+    priority: medium
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: >
+      Codex/Gemini flagged path traversal risk. All three reviewers agree wrk_id
+      should be validated. Pre-existing issue across whole file, warrants own WRK.
+  - id: FW-2
+    title: "Make PyYAML a hard dependency; remove brittle _load_yaml fallback"
+    priority: low
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: >
+      Fallback parser breaks on colon-containing values (URLs, timestamps).
+      PyYAML already present in the environment; enforcing it removes dead code.
+no_follow_ups_rationale: "Core fix complete and verified. FW-1/FW-2 are pre-existing tech debt."

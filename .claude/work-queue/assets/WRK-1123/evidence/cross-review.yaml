@@ -1,0 +1,18 @@
+wrk_id: WRK-1123
+stage: 6
+files_reviewed:
+  - scripts/work-queue/start_stage.py
+  - scripts/work-queue/tests/test_start_stage_guards.py (new, 7 tests)
+claude_verdict: REQUEST_CHANGES
+codex_verdict: REQUEST_CHANGES
+gemini_verdict: REQUEST_CHANGES
+codex_is_hard_gate: true
+codex_passed: true
+review_notes: >
+  Claude P1: PermissionError in _maybe_purge_stale_lock caught with dead-PID exception
+  — live process (different owner) would be silently purged. Fixed: separate
+  PermissionError branch that returns early. Claude P2: stage>=9 guard duplicated body
+  instead of calling _stage1_working_guard — fixed by consolidating both guards.
+  Codex/Gemini: pre-existing P1 (wrk_id path traversal) and P2 (brittle YAML fallback)
+  — not introduced by this WRK, deferred as future work.
+completed_at: "2026-03-11T12:10:00Z"

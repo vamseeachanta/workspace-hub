@@ -32,3 +32,12 @@ implementation_plan:
 
 complexity_confirmed: simple
 route: A
+completion_status: continue_to_planning
+top_p1_gaps: []
+
+skills:
+  core_used:
+    - work-queue-workflow
+    - testing
+    - cross-review
+    - python-runtime
