@@ -141,7 +141,10 @@
       "Bash(nc:*)",
       "Bash(ncat:*)",
       "Bash(python -c:*)",
-      "Bash(python3 -c:*)"
+      "Bash(python3 -c:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git push --force-with-lease:*)"
     ]
   },
   "enabledMcpjsonServers": [],
