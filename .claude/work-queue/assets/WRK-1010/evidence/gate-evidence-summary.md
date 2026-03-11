@@ -1,4 +1,4 @@
-# Gate Evidence Summary (WRK-1010, phase=claim)
+# Gate Evidence Summary (WRK-1010, phase=archive)
 
 | Gate | Status | Details |
 |---|---|---|
@@ -7,15 +7,15 @@
 | Resource-intelligence gate | PASS | resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3 |
 | Activation gate | PASS | activation.yaml: activation evidence OK |
 | Agent log gate | PASS | pre-cutoff backfill (id=1010, created_at=2026-03-04T00:00:00Z) — log gate skipped |
-| User-review HTML-open gate | PASS | user-review-browser-open.yaml: stages=['plan_draft', 'plan_final'] |
-| User-review publish gate | PASS | user-review-publish.yaml: stages=['plan_draft', 'plan_final'] |
+| User-review HTML-open gate | PASS | user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
+| User-review publish gate | PASS | user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final'] |
 | Cross-review gate | PASS | artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1010/review.md |
 | Claim gate | PASS | claim-evidence.yaml: version=1, owner=unknown, quota=available(null) |
-| Reclaim gate | WARN | reclaim.yaml absent (no reclaim triggered — WARN) |
-| Approval ordering gate | PASS | approval ordering OK (phase=claim) |
+| Reclaim gate | WARN | reclaim.yaml: status=n/a (Stage 18 not triggered — WARN) |
+| Approval ordering gate | PASS | approval ordering OK (phase=archive) |
 | Midnight UTC sentinel gate | PASS | no midnight UTC sentinel found |
 | Browser open elapsed time gate | PASS | browser open elapsed time OK |
 | Sentinel values gate | PASS | no sentinel values found |
 | Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |
-| Stage1 capture gate | PASS | stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-04T00:00:00Z |
+| Archive readiness gate | WARN | archive-tooling.yaml: document_index_ref absent — exemption accepted: hub-only item — assessment deliverables in specs/skills/; no document-index entries affected |

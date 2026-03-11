@@ -1,0 +1,15 @@
+wrk_id: WRK-1010
+phase: close
+verified_at: "2026-03-11T02:30:00Z"
+verifier: verify-gate-evidence.py
+result: PASS
+missing_count: 0
+warn_count: 2
+
+summary: "All orchestrator gates have documented evidence."
+
+warnings:
+  - name: Reclaim gate
+    details: "reclaim.yaml: status=n/a (Stage 18 not triggered — WARN)"
+  - name: Reclaim n/a gate
+    details: "n/a: Stage 18 is n/a; reclaim.yaml is placeholder"

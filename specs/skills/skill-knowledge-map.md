@@ -53,7 +53,9 @@
 ```
 
 **Reading the DAG:**
-- `session-start` is the mandatory entry gate; it feeds queue context into `work-queue-workflow`.
+- `session-start` is the mandatory entry gate; it hands off to `work-queue` (via `/work` command)
+  for item selection and execution — NOT directly to `work-queue-workflow` (corrected per
+  session-start/SKILL.md §Step 3 which calls `/work run`, routing through work-queue).
 - `work-queue-workflow` is the start-to-finish entrypoint that delegates execution policy
   to `work-queue` (data model, scripts) and gate enforcement to `workflow-gatepass`.
 - `resource-intelligence` is a stage-scoped sub-skill invoked at Stages 2 and 16 only.

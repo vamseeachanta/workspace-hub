@@ -15,7 +15,7 @@
 | work-queue | 5 | Medium (work-queue-workflow) | retain |
 | workflow-gatepass | 4 | Medium (work-queue, work-queue-workflow) | retain-with-clarification |
 | wrk-lifecycle-testpack | 3 | Low | retain-with-clarification |
-| work-queue-workflow | 2 | HIGH (work-queue, workflow-gatepass) | merge into work-queue |
+| work-queue-workflow | 3 | HIGH (work-queue, workflow-gatepass) | merge into work-queue (contingent) |
 | comprehensive-learning | 5 | Low | retain |
 | session-start | 4 | Low-Medium (work-queue) | retain |
 | resource-intelligence | 5 | Low | retain |
@@ -84,7 +84,7 @@
 | 4 | Plan Mode gates (4 stages) | §Plan-Mode Gates | **pass** — 4 stages listed with triggers; pattern stated (EnterPlanMode → think → ExitPlanMode → write) |
 | 5 | Orchestrator Team Pattern with scope-discovery rule | §Orchestrator Team Pattern | **partial** — R-28 scope-discovery rule is useful; but conditional pause triggers list (R-27) duplicates content from workflow-gatepass §No-Bypass Rules with slightly different wording |
 
-**Delta score: 2** — The canonical terminology section (§Canonical Terminology) is the primary unique value of this skill — it prevents session/stage/phase confusion. The Stage Gate Policy table consolidates information from work-queue and workflow-gatepass but does not add new authoritative content. The Start-to-Finish Chain (§Start-to-Finish Chain) is largely a curated pointer to the other two skills. A capable model with work-queue and workflow-gatepass loaded would largely replicate this skill's guidance, except for the terminology definitions.
+**Delta score: 3** (revised from 2 — Codex review found undercounted unique content) — In addition to §Canonical Terminology, the skill contains Stage 8 claim enforcement detail, lifecycle-HTML update duties, and execution constraints at Stage 10/13 that are not duplicated in work-queue. While much of the Stage Gate Policy table is consolidated from other skills, these operational specifics push the delta above "minor terminology aid" to "material workflow scaffolding." A bare model with work-queue and workflow-gatepass loaded would replicate most guidance but miss the Stage 8/10/13 operational specifics and the enforcement protocol at those stages.
 
 ---
 
@@ -158,7 +158,7 @@
 | work-queue | Ad-hoc task logging; no stage contracts; no complexity routing | 20-stage lifecycle with named artifacts, scripts, and hard gates | **5** |
 | workflow-gatepass | Would enforce some gates but skip others; no close minimum checklist | 12 named gates; 12 explicit no-bypass rules; machine-checkable evidence | **4** |
 | wrk-lifecycle-testpack | Would write tests but not know the specific gate evidence data shape | 6-test minimum; explicit field schema; signal-coverage rule | **3** |
-| work-queue-workflow | Would navigate lifecycle with work-queue + workflow-gatepass; might conflate terminology | Canonical terminology; Stage Gate Policy consolidation; Plan-Mode gates | **2** |
+| work-queue-workflow | Would navigate lifecycle with work-queue + workflow-gatepass; might conflate terminology | Canonical terminology; Stage Gate Policy consolidation; Plan-Mode gates; Stage 8 claim enforcement; lifecycle-HTML duties; execution constraints | **3** |
 | comprehensive-learning | Would run learning phases ad-hoc; no machine routing; sessions would be polluted with analysis work | Lean-session design; machine routing; phase ordering; cron scheduling | **5** |
 | session-start | Would check queue and quotas informally; no structured briefing | Structured briefing with file paths, thresholds, category ordering, drift-rule preload | **4** |
 | resource-intelligence | Would mine resources informally; no gate artifact; no STOP guards between stages | Ordered mining checklist; Category→Mining Map; STOP guards; measurable quality signals | **5** |
@@ -337,19 +337,34 @@ Only the 4 HARD gate stages are evaluated here (stages 1, 5, 7, 17); auto-procee
 ### Candidate 1: work-queue-workflow — MERGE into work-queue
 
 **Evidence:**
-- Overlap score 3 (full redundancy on lifecycle routing)
-- Delta score 2 (unique value only in §Canonical Terminology, §Plan-Mode Gates, §Orchestrator Team Pattern)
+- Overlap score 3 (full redundancy on lifecycle routing entrypoint)
+- Delta score 3 (revised up from 2 — Codex review identified additional unique content:
+  Stage 8 claim enforcement, lifecycle-HTML update duties, execution constraints at Stage 10/13)
 - §intro is explicit: skill "delegates to canonical work-queue and workflow-gatepass contracts"
 - §Source of Truth table says the authoritative files are work-queue/SKILL.md and workflow-gatepass/SKILL.md
 
-**Proposed merge targets:**
-- §Canonical Terminology → work-queue §Canonical Terminology (new section)
-- §Plan-Mode Gates → work-queue §Plan-Mode Gates (new section)
-- §Orchestrator Team Pattern → work-queue §Orchestrator Team Pattern (new section)
-- §Stage 4/5/6/10 detailed protocols → work-queue §Stage Contracts (inline expansion of relevant rows)
-- Retire work-queue-workflow as a separate file; retain trigger keywords as aliases pointing to work-queue
+**⚠ Governance conflict identified (Codex review finding):**
+`work-queue-workflow/SKILL.md §Stage Gate Policy` lists Stage 2=Triage, Stage 3=Resource Intelligence,
+which is reversed from the canonical order in `work-queue/SKILL.md` (Stage 2=Resource Intelligence,
+Stage 3=Triage). This is not harmless duplication — it is an active stage-order conflict.
+**The merge recommendation is contingent on resolving this conflict first.**
 
-**Risk:** Low. work-queue already contains the canonical 20-stage lifecycle. The merge adds ~80 lines.
+**Proposed merge targets (contingent on stage-order conflict resolution):**
+- §Canonical Terminology → work-queue §Canonical Terminology (new section)
+- §Plan-Mode Gates → work-queue §Plan-Mode Gates (new section) [note: plan-mode/SKILL.md also exists
+  and may own this contract — verify ownership before merging]
+- §Orchestrator Team Pattern → work-queue §Orchestrator Team Pattern (new section)
+- §Stage 4/5/6/10 detailed protocols → work-queue §Stage Contracts (inline expansion)
+- §Stage 8 claim enforcement → work-queue §Stage 8 (de-duplicate with canonical)
+- Retire work-queue-workflow; retain trigger keywords as aliases pointing to work-queue
+
+**Risk:** MEDIUM (revised from Low). Stage-order conflict must be resolved first.
+Merge adds ~80 lines but requires reconciling conflicting stage numbering.
+
+**Out-of-scope skills noted (Codex recommendation):**
+- `plan-mode/SKILL.md` — exists at `.claude/skills/workspace-hub/plan-mode/SKILL.md`;
+  owns Plan-Mode Gates contract; not in original WRK-624 scope. Should be added to a follow-up assessment.
+- `workflow-html` — renderer skill, not active governance constraint; correctly excluded from scope.
 
 ---
 
@@ -395,7 +410,7 @@ or for isolated debugging sessions."
 
 | # | Title | Type | Priority | Rationale |
 |---|-------|------|:--------:|-----------|
-| FW-1 | Merge work-queue-workflow unique content into work-queue and retire standalone skill | maintenance | HIGH | Delta score 2; overlap score 3; §intro says skill just delegates; reduces maintenance surface |
+| FW-1 | Merge work-queue-workflow unique content into work-queue and retire standalone skill | maintenance | HIGH | Delta score 3; overlap score 3; §intro says skill just delegates; reduces maintenance surface; contingent on resolving stage-order conflict first |
 | FW-2 | Extract cross-review inline protocol to standalone cross-review/SKILL.md | maintenance | HIGH | No standalone file is a gap; protocol currently split across two files with inconsistencies |
 | FW-3 | Clarify improve §Trigger Conditions to note comprehensive-learning supersedes standalone invocation | maintenance | MEDIUM | Ambiguous session-exit trigger could cause models to run /improve inline during sessions |
 | FW-4 | Add cross-reference in wrk-lifecycle-testpack pointing to workflow-gatepass as gate definition authority | maintenance | LOW | Producer-consumer relationship not documented; aids navigation |

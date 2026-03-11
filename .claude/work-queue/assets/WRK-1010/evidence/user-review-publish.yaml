@@ -6,7 +6,7 @@ events:
   commit: b55d871ace81606332acbf9030466711d6137b09
   documents:
   - specs/wrk/WRK-1010/plan.md
-  published_at: '2026-03-11T00:58:21Z'
+  published_at: '2026-03-11T01:10:00Z'
   reviewer: user
 - stage: plan_final
   pushed_to_origin: true
@@ -16,4 +16,14 @@ events:
   documents:
   - specs/wrk/WRK-1010/plan.md
   published_at: '2026-03-11T01:19:55Z'
+  reviewer: user
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: placeholder-close-review-commit
+  documents:
+  - specs/skills/capability-assessment-wrk-624-skills.md
+  - specs/skills/skill-knowledge-map.md
+  published_at: '2026-03-11T02:25:00Z'
   reviewer: user

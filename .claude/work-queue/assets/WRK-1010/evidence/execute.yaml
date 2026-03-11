@@ -38,4 +38,21 @@ follow_up_wrk_items:
     priority: LOW
     description: "Automate evals with WRK-1009 eval framework using this map as baseline"
 
+integrated_repo_tests:
+  - name: "T1 - Capability scorecard covers all 8 skills"
+    scope: integrated
+    command: "grep -c '## ' specs/skills/capability-assessment-wrk-624-skills.md"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1010/ac-test-matrix.md
+  - name: "T2 - Delta scores grounded in SKILL.md content"
+    scope: integrated
+    command: "grep -c 'delta' specs/skills/capability-assessment-wrk-624-skills.md"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1010/ac-test-matrix.md
+  - name: "T3 - Knowledge map DAG references all 8 skills"
+    scope: integrated
+    command: 'grep -c "session-start" specs/skills/skill-knowledge-map.md'
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1010/ac-test-matrix.md
+
 status: complete
