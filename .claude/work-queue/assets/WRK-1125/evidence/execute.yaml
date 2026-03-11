@@ -8,9 +8,23 @@ changes_summary: >
   Added WORKING_PARKED array and WRK_NOTES/WRK_NOT_BEFORE associative arrays.
   process_file() routes working items with note to PARKED. print_section() prints
   dim annotation lines. Added PARKED section render; updated summary line.
-commit: "20a2d3e64ec1fe62afce4ba41b918e2e42cc4a3a"
+commit: "7cc3748504c3ac865d00209c3ee701ea75676729"
 integrated_repo_tests:
-  - repo: workspace-hub
+  - name: harness-category-smoke
+    scope: repo
     command: "bash scripts/work-queue/whats-next.sh --category harness"
-    result: PASS
+    result: pass
+    artifact_ref: ".claude/work-queue/assets/WRK-1125/ac-test-matrix.md"
     notes: "WRK-1022 in PARKED with note; WRK-1109 in UNCLAIMED with not_before annotation"
+  - name: full-queue-smoke
+    scope: repo
+    command: "bash scripts/work-queue/whats-next.sh --all"
+    result: pass
+    artifact_ref: ".claude/work-queue/assets/WRK-1125/ac-test-matrix.md"
+    notes: "Full queue renders without errors; annotation lines display for all sections"
+  - name: subcategory-filter-smoke
+    scope: repo
+    command: "bash scripts/work-queue/whats-next.sh --category harness --subcategory work-queue"
+    result: pass
+    artifact_ref: ".claude/work-queue/assets/WRK-1125/ac-test-matrix.md"
+    notes: "WRK-1125 in WORKING (no note); WRK-1022 in PARKED"
