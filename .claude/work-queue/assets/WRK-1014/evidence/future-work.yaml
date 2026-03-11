@@ -1,0 +1,31 @@
+wrk_id: WRK-1014
+generated_at: "2026-03-10T11:00:00Z"
+
+recommendations:
+  - id: FW-1
+    title: "Add stage-04a-plan-mode-ideation.yaml contract file"
+    rationale: >
+      Create formal YAML contract for Stage 4a matching stage-NN-*.yaml pattern
+      (weight, parallelism, entry_reads, exit_artifacts, blocking_condition).
+    effort: simple
+    status: pending
+    captured: true
+    disposition: spun-off-new
+
+  - id: FW-2
+    title: "Add stage-04a micro-skill (.claude/skills/workspace-hub/stages/stage-04a.md)"
+    rationale: Dedicated stage micro-skill for Stage 4a matching existing stage-NN-*.md pattern.
+    effort: simple
+    status: pending
+    captured: true
+    disposition: spun-off-new
+
+  - id: FW-3
+    title: "Benchmark self-verification pass quality in practice"
+    rationale: >
+      After 5+ WRKs using the new pattern, measure whether explicit coverage instruction
+      and self-verification pass produce measurable reduction in Stage 6 MAJOR findings.
+    effort: medium
+    status: pending
+    captured: true
+    disposition: spun-off-new

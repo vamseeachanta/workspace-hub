@@ -1,0 +1,60 @@
+wrk_id: WRK-1014
+stage: 10
+stage_name: Work Execution
+executed_at: "2026-03-10T10:00:00Z"
+provider: claude
+
+phases_completed:
+  - phase: 1
+    description: "Update work-queue/SKILL.md — tools array, lifecycle list, stage contracts"
+    status: done
+    artifacts: [.claude/skills/coordination/workspace/work-queue/SKILL.md]
+    completed_at: "2026-03-10T10:00:00Z"
+  - phase: 2
+    description: "Update work-queue-workflow/SKILL.md — Start-to-Finish Chain step 3"
+    status: done
+    artifacts: [.claude/skills/workspace-hub/work-queue-workflow/SKILL.md]
+    completed_at: "2026-03-10T10:05:00Z"
+  - phase: 3
+    description: "Update process.md — Mermaid flowchart + Stage 4 contract prose"
+    status: done
+    artifacts: [.claude/work-queue/process.md]
+    completed_at: "2026-03-10T10:10:00Z"
+
+integrated_repo_tests:
+  - name: "EnterPlanMode in SKILL.md tools array"
+    scope: repo
+    command: "grep 'EnterPlanMode' .claude/skills/coordination/workspace/work-queue/SKILL.md"
+    result: pass
+    artifact_ref: ".claude/skills/coordination/workspace/work-queue/SKILL.md"
+  - name: "4a/4b rows in Stage Contracts table"
+    scope: repo
+    command: "grep '4a' .claude/skills/coordination/workspace/work-queue/SKILL.md"
+    result: pass
+    artifact_ref: ".claude/skills/coordination/workspace/work-queue/SKILL.md"
+  - name: "Mermaid 4a node in process.md"
+    scope: repo
+    command: "grep '4a: Plan Mode Ideation' .claude/work-queue/process.md"
+    result: pass
+    artifact_ref: ".claude/work-queue/process.md"
+  - name: "Explicit coverage instruction in process.md"
+    scope: repo
+    command: "grep 'explicit' .claude/work-queue/process.md"
+    result: pass
+    artifact_ref: ".claude/work-queue/process.md"
+  - name: "SKILL.md line count <= 250"
+    scope: repo
+    command: "wc -l .claude/skills/coordination/workspace/work-queue/SKILL.md"
+    result: pass
+    artifact_ref: ".claude/skills/coordination/workspace/work-queue/SKILL.md"
+    notes: "250 lines — at limit"
+
+acceptance_criteria_final:
+  skill_md_stage_contracts_split: true
+  mermaid_flowchart_updated: true
+  tools_array_updated: true
+  workflow_skill_chain_updated: true
+  process_md_updated: true
+  explicit_coverage_instruction: true
+  self_verification_pass_at_4b: true
+  line_count_within_limit: true

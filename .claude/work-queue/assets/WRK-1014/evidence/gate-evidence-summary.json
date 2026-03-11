@@ -8,7 +8,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "reviewed=False, approved=False, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
     },
     {
       "name": "Workstation contract gate",
@@ -29,14 +29,14 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "resource-intelligence evidence absent (legacy item \u2014 WARN)"
+      "details": "resource-intelligence.yaml: invalid completion_status"
     },
     {
       "name": "Activation gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "activation.yaml missing"
+      "details": "activation.yaml: activation evidence OK"
     },
     {
       "name": "Agent log gate",
@@ -50,7 +50,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "user-review-browser-open.yaml missing"
+      "details": "user-review-browser-open.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
     },
     {
       "name": "User-review publish gate",
@@ -78,7 +78,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "execute evidence missing (required: evidence/execute.yaml)"
+      "details": "execute.yaml: integrated_repo_tests[1] missing fields: ['artifact_ref']"
     },
     {
       "name": "Legal gate",
@@ -99,14 +99,14 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "future-work evidence absent (legacy item \u2014 WARN)"
+      "details": "future-work.yaml: empty recommendations and no_follow_ups_rationale missing"
     },
     {
       "name": "Resource-intelligence update gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "resource-intelligence-update.yaml missing"
+      "details": "resource-intelligence-update.yaml: add additions[] or no_additions_rationale"
     },
     {
       "name": "User-review close gate",
@@ -124,38 +124,38 @@
     },
     {
       "name": "Approval ordering gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "approval ordering OK (phase=close)"
+      "details": "timestamp ordering violation: claim-evidence.claimed_at (2026-03-10T00:00:00Z) >= execute.executed_at (2026-03-10T00:00:00Z)"
     },
     {
       "name": "Midnight UTC sentinel gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "no midnight UTC sentinel found"
+      "details": "midnight UTC sentinel detected in user-review-plan-draft.yaml.reviewed_at: 2026-03-10T00:00:00Z"
     },
     {
       "name": "Browser open elapsed time gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml absent \u2014 skip elapsed check"
+      "details": "browser open elapsed time OK"
     },
     {
       "name": "Sentinel values gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "no sentinel values found"
-    },
-    {
-      "name": "Claim artifact path gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "no claim artifact found (expected evidence/claim-evidence.yaml)"
+      "details": "claim-evidence.yaml: route='' (empty)"
+    },
+    {
+      "name": "Claim artifact path gate",
+      "status": "PASS",
+      "ok": true,
+      "warn": false,
+      "details": "canonical claim artifact found: claim-evidence.yaml"
     },
     {
       "name": "ISO datetime format gate",
@@ -169,7 +169,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "no review files found \u2014 skip codex keyword check (handled by cross-review gate)"
+      "details": "codex keyword found in review artifacts (1 file(s) checked)"
     },
     {
       "name": "Publish commit uniqueness gate",
@@ -183,7 +183,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[1] evidence path not found: .claude/work-queue/working/WRK-1014.md"
+      "details": "stage-evidence.yaml: stage[5] evidence path not found: .claude/work-queue/assets/WRK-1014/plan-html-review-draft.md"
     },
     {
       "name": "Done/pending contradiction gate",

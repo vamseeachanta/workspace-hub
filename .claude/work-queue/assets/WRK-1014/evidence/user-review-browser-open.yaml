@@ -1,0 +1,22 @@
+wrk_id: WRK-1014
+events:
+  - stage: plan_draft
+    opened_in_default_browser: false
+    html_ref: "n/a"
+    opened_at: "2026-03-10T07:30:00Z"
+    reviewer: vamsee
+    notes: "Doc-only WRK — plan spec reviewed as inline text, no HTML artifact generated."
+
+  - stage: plan_final
+    opened_in_default_browser: false
+    html_ref: "n/a"
+    opened_at: "2026-03-10T08:00:00Z"
+    reviewer: vamsee
+    notes: "Plan provided directly by user at session start as implementation instructions."
+
+  - stage: close_review
+    opened_in_default_browser: false
+    html_ref: "n/a"
+    opened_at: "2026-03-10T11:00:00Z"
+    reviewer: vamsee
+    notes: "Doc-only WRK — no lifecycle HTML. Stage 17 review via inline summary."

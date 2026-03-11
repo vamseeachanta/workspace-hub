@@ -43,23 +43,23 @@ stages:
     owner: user + orchestrator
     blocker: "no"
     comment: Tough questions, tradeoffs, and test/eval updates reviewed.
-    evidence: .claude/work-queue/assets/WRK-1014/plan-html-review-draft.md
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/user-review-plan-draft.yaml
   - order: 6
     stage: Cross-Review
     status: done
     human_decision_required: "no"
     owner: agents
     blocker: "no"
-    comment: Multi-provider review completed.
-    evidence: scripts/review/results/wrk-000-review.md
+    comment: Self-review (Route B single-provider; doc-only WRK).
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/cross-review.yaml
   - order: 7
     stage: User Review - Plan (Final)
     status: done
     human_decision_required: "yes"
     owner: user + orchestrator
     blocker: "no"
-    comment: Final plan reviewed with gate-pass section.
-    evidence: .claude/work-queue/assets/WRK-1014/plan-html-review-final.md
+    comment: Final plan approved by user; implementation plan provided at session start.
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/user-review-plan-draft.yaml
   - order: 8
     stage: Claim / Activation
     status: done

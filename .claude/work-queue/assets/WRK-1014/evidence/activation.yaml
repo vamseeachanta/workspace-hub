@@ -1,0 +1,8 @@
+wrk_id: WRK-1014
+stage: 8
+stage_name: Claim / Activation
+activated_at: "2026-03-10T08:05:00Z"
+set_active_wrk: true
+session_id: "2026-03-10-claude-sonnet-4-6"
+orchestrator_agent: claude
+notes: Activated via user instruction at session start. Doc-only WRK; no quota concerns.
