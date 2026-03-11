@@ -43,7 +43,9 @@
       "Bash(rm -rf /)",
       "Bash(curl:*)",
       "Bash(wget:*)",
-      "Bash(eval:*)"
+      "Bash(eval:*)",
+      "Bash(sudo:*)",
+      "Bash(chmod 777:*)"
     ]
   },
   "enabledMcpjsonServers": [],

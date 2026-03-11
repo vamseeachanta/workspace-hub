@@ -1,0 +1,38 @@
+wrk_id: WRK-1016
+stage: 16
+updated_at: "2026-03-10T12:35:00Z"
+updated_by: claude
+
+additions:
+  - path: .claude/hooks/check-encoding.sh
+    type: hook
+    note: "Optimised — 7.272s→0.276s via git diff HEAD~1..HEAD"
+  - path: .claude/settings.json
+    type: config
+    note: "Deny list: added Bash(sudo:*) and Bash(chmod 777:*)"
+
+new_resources_discovered:
+  - path: .claude/hooks/check-encoding.sh
+    type: hook
+    note: "Optimised non-precommit path. Now uses git diff HEAD~1..HEAD (0.276s vs 7.272s)"
+  - path: .claude/settings.json
+    type: config
+    note: "Deny list hardened: added Bash(sudo:*) and Bash(chmod 777:*)"
+
+patterns_confirmed:
+  - pattern: "Harness file ≤20 line limit enforced across all submodule CLAUDE.md files"
+    evidence: "6 files all ≤20 lines after this WRK"
+  - pattern: "Hook latency threshold: 2s — all hooks well under this after check-encoding.sh optimisation"
+  - pattern: "Non-precommit hook scan scope: git diff HEAD~1..HEAD is 26x faster than git ls-files for relevant subsets"
+
+skills_updated: []
+
+documents_updated:
+  - path: .claude/rules/coding-style.md
+    note: "Agent harness file ≤20 line limit already present; no change needed"
+
+knowledge_base_entries:
+  - category: harness
+    entry: "check-encoding.sh non-precommit path: use git diff HEAD~1..HEAD for 26x speedup over git ls-files"
+  - category: harness
+    entry: "Harness file ≤20 line adapter pattern: see assetutilities/CLAUDE.md as template"

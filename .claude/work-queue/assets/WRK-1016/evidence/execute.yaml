@@ -1,0 +1,129 @@
+wrk_id: WRK-1016
+stage: 10
+executed_at: "2026-03-10T12:00:00Z"
+executor: claude
+status: complete
+
+improvements_applied:
+  - id: 1
+    description: "Slim assetutilities/CLAUDE.md 31→14 lines"
+    file: assetutilities/CLAUDE.md
+    before_lines: 31
+    after_lines: 14
+    status: done
+
+  - id: 2
+    description: "Slim digitalmodel/CLAUDE.md 31→14 lines"
+    file: digitalmodel/CLAUDE.md
+    before_lines: 31
+    after_lines: 14
+    status: done
+
+  - id: 3
+    description: "Slim assethold/CLAUDE.md 31→14 lines"
+    file: assethold/CLAUDE.md
+    before_lines: 31
+    after_lines: 14
+    status: done
+
+  - id: 4
+    description: "Slim worldenergydata/CLAUDE.md 54→18 lines"
+    file: worldenergydata/CLAUDE.md
+    before_lines: 54
+    after_lines: 18
+    status: done
+
+  - id: 5
+    description: "Slim AGENTS.md 27→15 lines"
+    file: AGENTS.md
+    before_lines: 27
+    after_lines: 15
+    status: done
+
+  - id: 6
+    description: "Slim .claude/global/CLAUDE.md 35→18 lines"
+    file: .claude/global/CLAUDE.md
+    before_lines: 35
+    after_lines: 18
+    status: done
+
+  - id: 7
+    description: "Permissions hardening: add Bash(sudo:*) and Bash(chmod 777:*) to deny list"
+    file: .claude/settings.json
+    status: done
+
+  - id: 8
+    description: "check-encoding.sh: non-precommit path optimised 7.272s→0.276s via git diff HEAD~1..HEAD"
+    file: .claude/hooks/check-encoding.sh
+    before_latency_s: 7.272
+    after_latency_s: 0.276
+    status: done
+
+  - id: 9
+    description: "OGManufacturing/pyproject.toml: add [tool.ruff] section with line-length=100, target-version=py311"
+    file: OGManufacturing/pyproject.toml
+    status: deferred
+    note: "OGManufacturing submodule is not checked out on ace-linux-1 (empty dir). pyproject.toml cannot be written. Defer to WRK item when submodule is populated."
+
+hook_latency_table:
+  - hook: .claude/hooks/check-encoding.sh
+    latency_s: 0.276
+    flag: false
+  - hook: .claude/hooks/session-logger.sh
+    latency_s: 0.045
+    flag: false
+  - hook: .claude/hooks/propagate-ecosystem-check.sh
+    latency_s: 0.007
+    flag: false
+  - hook: .claude/hooks/readiness/readiness.sh
+    latency_s: 0.011
+    flag: false
+  - hook: .claude/hooks/consume-signals.sh
+    latency_s: 0.015
+    flag: false
+  - hook: .claude/hooks/emit-session-quality-signals.sh
+    latency_s: 0.047
+    flag: false
+
+harness_file_compliance:
+  - file: .claude/global/CLAUDE.md
+    lines: 18
+    compliant: true
+  - file: AGENTS.md
+    lines: 15
+    compliant: true
+  - file: assetutilities/CLAUDE.md
+    lines: 14
+    compliant: true
+  - file: digitalmodel/CLAUDE.md
+    lines: 14
+    compliant: true
+  - file: assethold/CLAUDE.md
+    lines: 14
+    compliant: true
+  - file: worldenergydata/CLAUDE.md
+    lines: 18
+    compliant: true
+
+integrated_repo_tests:
+  - name: legal-scan
+    scope: repo
+    command: "bash scripts/legal/legal-sanity-scan.sh"
+    result: PASS
+    artifact_ref: .claude/work-queue/assets/WRK-1016/legal-scan.md
+    notes: "Legal scan — no client identifier leakage"
+  - name: harness-file-compliance
+    scope: repo
+    command: "wc -l .claude/global/CLAUDE.md AGENTS.md assetutilities/CLAUDE.md digitalmodel/CLAUDE.md assethold/CLAUDE.md worldenergydata/CLAUDE.md"
+    result: PASS
+    artifact_ref: .claude/work-queue/assets/WRK-1016/evidence/tdd-eval.yaml
+    notes: "All 6 harness files ≤20 lines"
+  - name: hook-latency
+    scope: repo
+    command: "time bash .claude/hooks/check-encoding.sh < /dev/null"
+    result: PASS
+    artifact_ref: .claude/work-queue/assets/WRK-1016/evidence/execute.yaml
+    notes: "check-encoding.sh: 0.276s (was 7.272s, 96.9% improvement)"
+
+legal_scan: PASS
+legal_artifact: .claude/work-queue/assets/WRK-1016/evidence/legal-scan.yaml

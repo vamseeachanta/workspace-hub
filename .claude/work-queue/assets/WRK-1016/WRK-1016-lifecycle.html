@@ -129,11 +129,11 @@ td{color:var(--muted);}td strong{color:var(--ink);}
 <nav class="stage-strip">
   <div class="stage-strip-inner">
     <span class="stage-strip-label">Stages</span>
-    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-done" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-done" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-done" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-done" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-done" title="10 Work Execution">10</a><a href="#s11" class="sc sc-done" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-done" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-done" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-done" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-done" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-done" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-done" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-pending" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
+    <a href="#s1" class="sc sc-done" title="01 Capture">1</a><a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a><a href="#s3" class="sc sc-done" title="03 Triage">3</a><a href="#s4" class="sc sc-done" title="04 Plan Draft">4</a><a href="#s5" class="sc sc-done" title="05 User Review — Plan Draft">5</a><a href="#s6" class="sc sc-done" title="06 Cross-Review">6</a><a href="#s7" class="sc sc-done" title="07 User Review — Plan Final">7</a><a href="#s8" class="sc sc-done" title="08 Claim / Activation">8</a><a href="#s9" class="sc sc-done" title="09 Work-Queue Routing">9</a><a href="#s10" class="sc sc-done" title="10 Work Execution">10</a><a href="#s11" class="sc sc-done" title="11 Artifact Generation">11</a><a href="#s12" class="sc sc-done" title="12 TDD / Eval">12</a><a href="#s13" class="sc sc-done" title="13 Agent Cross-Review">13</a><a href="#s14" class="sc sc-done" title="14 Verify Gate Evidence">14</a><a href="#s15" class="sc sc-done" title="15 Future Work Synthesis">15</a><a href="#s16" class="sc sc-done" title="16 Resource Intelligence Update">16</a><a href="#s17" class="sc sc-done" title="17 User Review — Implementation">17</a><a href="#s18" class="sc sc-na" title="18 Reclaim">18</a><a href="#s19" class="sc sc-done" title="19 Close">19</a><a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
   </div>
 </nav>
 
-<div class="ri-callout"><div class="ri-callout-inner"><div style="flex-basis:100%"><div class="ri-label">Resource Intelligence</div></div><div class="ri-field"><strong>Status</strong>complete</div><div class="ri-field"><strong>P1 gaps</strong>none</div><div class="ri-field"><strong>Skills used</strong>6</div></div></div>
+<div class="ri-callout"><div class="ri-callout-inner"><div style="flex-basis:100%"><div class="ri-label">Resource Intelligence</div></div><div class="ri-field"><strong>Status</strong>continue_to_planning</div><div class="ri-field"><strong>P1 gaps</strong>none</div><div class="ri-field"><strong>Skills used</strong>6</div></div></div>
 
 <div class="content">
 
@@ -170,7 +170,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">completion_status</span><span class="schema-val">complete</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">completion_status</span><span class="schema-val">continue_to_planning</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/resource-intelligence.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s3">
@@ -332,7 +332,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Gate evidence</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-???-lifecycle.html</code></li></ul>
+    <div class="section-label">Gate evidence</div><div class="schema"><div class="schema-row"><span class="schema-key">gates</span><span class="schema-val">0/0 gates PASS</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/gate-evidence-summary.json</code></li><li><code>WRK-???-lifecycle.html</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s12">
@@ -404,7 +404,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <p style="color:var(--muted);font-size:.85rem;">Future work recorded.</p>
+    <div class="section-label">Future work</div><table><tr><th>Title</th><th>Disposition</th><th>Captured</th></tr><tr><td>OGManufacturing pyproject.toml: add ruff + pytest canonical baseline</td><td>spun-off-new</td><td>True</td></tr><tr><td>Add Bash(chmod -R 777:*) to deny list in settings.json</td><td>existing-updated</td><td>True</td></tr><tr><td>Comprehensive-learning Phase 10: canonical settings baseline</td><td>existing-updated</td><td>True</td></tr><tr><td>Add pre-commit hook for harness file line count enforcement</td><td>spun-off-new</td><td>True</td></tr></table>
   </div>
 </section>
 <section class="stage-section" id="s16">
@@ -422,7 +422,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <p style="color:var(--muted);font-size:.85rem;">Resource intelligence updated.</p>
+    <div class="section-label">Additions</div><ul class="item-list"><li>{&#x27;path&#x27;: &#x27;.claude/hooks/check-encoding.sh&#x27;, &#x27;type&#x27;: &#x27;hook&#x27;, &#x27;note&#x27;: &#x27;Optimised — 7.272s→0.276s via git diff HEAD~1..HEAD&#x27;}</li><li>{&#x27;path&#x27;: &#x27;.claude/settings.json&#x27;, &#x27;type&#x27;: &#x27;config&#x27;, &#x27;note&#x27;: &#x27;Deny list: added Bash(sudo:*) and Bash(chmod 777:*)&#x27;}</li></ul>
   </div>
 </section>
 <section class="stage-section" id="s17">
@@ -440,7 +440,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-close.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-close.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s18">
@@ -469,14 +469,14 @@ td{color:var(--muted);}td strong{color:var(--ink);}
       <div class="smeta">task_agent · light</div>
     </div>
     <div class="sbadges">
-      <span class="badge b-pending">pending</span>
+      <span class="badge b-done">done</span>
       <span class="badge b-agent">task_agent</span>
       
-      <span class="chevron">▼</span>
+      <span class="chevron">▲</span>
     </div>
   </div>
-  <div class="stage-body collapsed">
-    <p style="color:var(--muted);font-size:.85rem;margin:12px 0;">Pending.</p>
+  <div class="stage-body">
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">status</span><span class="schema-val">done</span></div><div class="schema-row"><span class="schema-key">commit</span><span class="schema-val">None</span></div></div>
   </div>
 </section>
 <section class="stage-section" id="s20">

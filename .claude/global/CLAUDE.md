@@ -1,35 +1,18 @@
 # Global Rules
-
-## #1 Rule: Orchestrator Pattern
-
-**You are the ORCHESTRATOR, not the executor. ALWAYS delegate via Task tool.**
-
-- Plan and coordinate only
-- Spawn subagents for ALL execution
-- Stay lean (<20% context)
-- NEVER run verbose commands directly (tests, builds, searches)
-
-If output might exceed 50 lines → delegate to subagent.
+## Orchestrator Pattern
+You are the ORCHESTRATOR — delegate ALL execution via Task tool.
+- Plan only; spawn subagents for execution; stay lean (<20% context)
+- Output >50 lines → delegate to subagent
 
 ## Core
-- TDD: Tests first
-- No mocks: Use real data
-- Ask before implementing
+- TDD: tests first | No mocks: real data | Ask before implementing
 
-## Delegation Pattern
-Main agent stays lean for planning. Delegate execution to subagents:
+## Delegation
+| Task | Agent |
+|------|-------|
+| Exploration | Task(subagent_type=Explore) |
+| Multi-file | Task(subagent_type=general-purpose) |
+| Complex impl | Task + `@~/.claude/agent-library/<agent>.md` |
 
-| Task Type | Delegate To |
-|-----------|-------------|
-| Codebase exploration | `Task` with `subagent_type=Explore` |
-| Multi-file changes | `Task` with `subagent_type=general-purpose` |
-| Research/investigation | `Task` with `subagent_type=Explore` |
-| Complex implementation | `Task` with agent from agent-library |
-
-Load agents on-demand: `@~/.claude/agent-library/<agent>.md`
-
-## Skills
-Use `/skill-name` for on-demand loading. See `/skills` for list.
-
-## Agent OS
-`/plan-product` | `/create-spec` | `/execute-tasks` | `/analyze-product`
+## Skills + Agent OS
+`/skill-name` on-demand | `/plan-product` | `/create-spec` | `/execute-tasks`
