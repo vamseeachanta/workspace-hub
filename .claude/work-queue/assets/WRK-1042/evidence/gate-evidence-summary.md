@@ -18,4 +18,4 @@
 | Sentinel values gate | PASS | no sentinel values found |
 | Claim artifact path gate | PASS | canonical claim artifact found: claim-evidence.yaml |
 | ISO datetime format gate | PASS | all timestamp fields have time components |
-| Archive readiness gate | FAIL | archive-tooling.yaml absent: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1042/evidence/archive-tooling.yaml |
+| Archive readiness gate | WARN | archive-tooling.yaml: document_index_ref is empty and no exemption note; set document_index_ref or add document_index_exemption to proceed (soft-fail) |

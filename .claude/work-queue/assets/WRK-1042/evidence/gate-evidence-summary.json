@@ -117,10 +117,10 @@
     },
     {
       "name": "Archive readiness gate",
-      "status": "FAIL",
+      "status": "WARN",
       "ok": false,
-      "warn": false,
-      "details": "archive-tooling.yaml absent: /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1042/evidence/archive-tooling.yaml"
+      "warn": true,
+      "details": "archive-tooling.yaml: document_index_ref is empty and no exemption note; set document_index_ref or add document_index_exemption to proceed (soft-fail)"
     }
   ]
 }
