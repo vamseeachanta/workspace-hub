@@ -1,0 +1,41 @@
+wrk_id: WRK-1010
+stage: 10
+executed_at: "2026-03-11T01:45:00Z"
+orchestrator: claude
+route: B
+
+deliverables:
+  - path: specs/skills/skill-knowledge-map.md
+    lines: 179
+    description: "DAG + per-skill boundary table for all 8 skills"
+  - path: specs/skills/capability-assessment-wrk-624-skills.md
+    lines: 420
+    description: "Full scorecard with capability, delta, overlap, procedural, and recommendations"
+
+key_findings:
+  - "work-queue-workflow should be merged into work-queue (delta=2, overlap=3, content merges cleanly)"
+  - "cross-review needs a standalone SKILL.md (delta=3, split across two files)"
+  - "improve §Trigger Conditions needs clarification re: session vs standalone invocation"
+  - "High-retain skills: work-queue(5), comprehensive-learning(5), resource-intelligence(5)"
+
+follow_up_wrk_items:
+  - id: FW-1
+    priority: HIGH
+    description: "Merge work-queue-workflow into work-queue — 3 sections worth preserving"
+  - id: FW-2
+    priority: HIGH
+    description: "Create standalone cross-review SKILL.md from inline definition"
+  - id: FW-3
+    priority: MEDIUM
+    description: "Clarify improve §Trigger Conditions vs comprehensive-learning prohibition"
+  - id: FW-4
+    priority: MEDIUM
+    description: "Raise workflow-gatepass procedural completeness from 0.75 to 1.0"
+  - id: FW-5
+    priority: LOW
+    description: "Update knowledge map post-assessment (living doc)"
+  - id: FW-6
+    priority: LOW
+    description: "Automate evals with WRK-1009 eval framework using this map as baseline"
+
+status: complete

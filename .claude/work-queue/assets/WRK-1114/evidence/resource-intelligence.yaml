@@ -1,6 +1,12 @@
 stage: 2
 wrk_id: WRK-1114
 generated_at: 2026-03-10T00:00:00Z
+completion_status: continue_to_planning
+skills:
+  core_used:
+    - workspace-hub/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-gatepass
 key_files:
   - path: scripts/work-queue/next-id.sh
     role: primary target — machine-range logic to be added here

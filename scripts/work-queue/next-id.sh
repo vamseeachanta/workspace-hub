@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 # next-id.sh - Return the next sequential WRK-NNN ID
+#
+# Machine-partitioned ID ranges (config/work-queue/machine-ranges.yaml):
+#   ace-linux-1        1 – 4999   (default; current IDs ~1114)
+#   acma-ansys05    5000 – 9999   (Windows / orcaflex machine)
+#   ace-linux-2    10000 – 14999  (reserved)
+#   gali-linux-compute-1  15000 – 19999  (heavy-compute / HPC)
+#
+# Allocation policy: each machine reads its floor from the config table.
+# If MAX_ID < floor (e.g. first ID on a new machine), NEXT_ID is set to
+# floor. Otherwise NEXT_ID = MAX_ID + 1 as usual.
+#
+# Re-allocation policy: when MAX_ID is within 50 of the ceiling, request
+# a new range block from the workspace-hub maintainer and update the config.
+#
 # Validates state.yaml last_id against actual files and auto-corrects drift.
 set -euo pipefail
 
@@ -56,6 +70,24 @@ if (( MAX_FILE_ID > STATE_LAST_ID )); then
   fi
 fi
 
-# ── Step 5: Return the next ID ──
+# ── Step 5: Apply machine-range floor ──
+RANGES_FILE="${WORKSPACE_ROOT}/config/work-queue/machine-ranges.yaml"
+MACHINE_FLOOR=0
+if [[ -f "$RANGES_FILE" ]]; then
+  # Parse the floor for the current hostname (simple grep; no yq dependency)
+  THIS_HOST="${HOSTNAME:-$(hostname)}"
+  MACHINE_FLOOR=$(awk -v host="$THIS_HOST" '
+    /hostname:/ { in_host = ($NF == host) }
+    in_host && /floor:/ { print $NF; exit }
+  ' "$RANGES_FILE")
+  MACHINE_FLOOR=${MACHINE_FLOOR:-0}
+fi
+
+if (( MACHINE_FLOOR > 0 && MAX_ID < MACHINE_FLOOR )); then
+  >&2 echo "next-id: applying machine floor ${MACHINE_FLOOR} for ${HOSTNAME:-$(hostname)} (MAX_ID=${MAX_ID})"
+  MAX_ID=$((MACHINE_FLOOR - 1))
+fi
+
+# ── Step 6: Return the next ID ──
 NEXT_ID=$((MAX_ID + 1))
 printf "%03d" "$NEXT_ID"
