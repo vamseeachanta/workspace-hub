@@ -30,6 +30,7 @@ hooks:
     memory_store "spec_complete_$(date +%s)" "Specification documented"
 requires: []
 see_also: []
+tags: []
 ---
 
 # SPARC Specification Agent

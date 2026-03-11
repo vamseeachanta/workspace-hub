@@ -20,6 +20,7 @@ triggers:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # OrcaWave Mesh Generation Skill

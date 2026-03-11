@@ -15,6 +15,7 @@ tools: [Bash, Read]
 related_skills: [repo-sync, work-queue]
 requires: []
 see_also: []
+tags: []
 ---
 
 # Commit Workflow Skill

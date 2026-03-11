@@ -22,6 +22,7 @@ hooks:
   post: |
 requires: []
 see_also: []
+tags: []
 ---
 
 # Agent Orchestration Skill

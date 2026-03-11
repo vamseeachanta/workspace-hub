@@ -21,6 +21,7 @@ requires: []
 see_also:
   - docs/strategy/drillbotics-engagement.md
   - docs/vision/VISION.md
+tags: []
 ---
 
 # SPE Drillbotics — Mode V (Virtual Track) Skill

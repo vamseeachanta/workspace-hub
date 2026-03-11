@@ -3,6 +3,7 @@ name: financial-analysis
 version: "1.0.0"
 category: engineering
 description: "Domain expertise for financial markets, investment analysis, corporate finance, risk management, and energy finance."
+tags: []
 ---
 
 # Financial Analysis Expert

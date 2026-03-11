@@ -4,6 +4,7 @@ description: Comprehensive GitHub integration modes for workflow orchestration, 
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub Integration Modes Skill

@@ -23,6 +23,7 @@ triggers:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 # AQWA Analysis Skill
 

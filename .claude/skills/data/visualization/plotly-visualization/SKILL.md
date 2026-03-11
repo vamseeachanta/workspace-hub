@@ -8,6 +8,7 @@ globs:
   - src/assetutilities/common/visualizations.py
   - src/assetutilities/common/visualization.py
 alwaysApply: false
+tags: []
 ---
 
 # Plotly Visualization Skill

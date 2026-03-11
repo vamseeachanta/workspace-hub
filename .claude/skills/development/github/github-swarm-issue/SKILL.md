@@ -4,6 +4,7 @@ description: GitHub issue-based swarm coordination for intelligent task decompos
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub Swarm Issue Skill

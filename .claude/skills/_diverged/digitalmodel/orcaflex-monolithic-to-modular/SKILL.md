@@ -13,6 +13,7 @@ triggers:
 - monolithic to spec.yml
 - semantic validation OrcaFlex
 canonical_ref: "engineering/marine-offshore/orcaflex-monolithic-to-modular"
+tags: []
 ---
 # OrcaFlex Monolithic to Modular Converter
 

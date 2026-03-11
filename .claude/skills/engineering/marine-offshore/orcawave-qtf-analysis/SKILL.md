@@ -19,6 +19,7 @@ triggers:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # OrcaWave QTF Analysis Skill

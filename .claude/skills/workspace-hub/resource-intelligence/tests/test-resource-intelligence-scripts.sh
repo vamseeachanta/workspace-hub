@@ -6,6 +6,22 @@ INIT="${ROOT}/.claude/skills/workspace-hub/resource-intelligence/scripts/init-re
 VALIDATE="${ROOT}/.claude/skills/workspace-hub/resource-intelligence/scripts/validate-resource-pack.sh"
 SYNC="${ROOT}/.claude/skills/workspace-hub/resource-intelligence/scripts/sync-maturity-summary.py"
 
+# Cross-platform Python resolver: use uv python find once (in workspace context, before pushd),
+# then invoke the resolved absolute path directly — avoids per-call uv startup overhead and
+# Windows Store python3 stub.
+if command -v uv &>/dev/null; then
+  _UV_PY="$(uv python find 2>/dev/null || true)"
+  if [[ -n "$_UV_PY" ]]; then
+    # Convert Windows path to POSIX (cygpath available in MINGW64).
+    if command -v cygpath &>/dev/null; then
+      _UV_PY="$(cygpath -u "$_UV_PY" 2>/dev/null || echo "$_UV_PY")"
+    fi
+    export _UV_PY
+    python3() { "$_UV_PY" "$@"; }
+    export -f python3
+  fi
+fi
+
 tmpdir="$(mktemp -d)"
 trap 'rm -rf "$tmpdir"' EXIT
 

@@ -4,6 +4,7 @@ description: Analyze BSEE HSE (Health, Safety, Environment) incident data for ri
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # HSE Risk Analyzer

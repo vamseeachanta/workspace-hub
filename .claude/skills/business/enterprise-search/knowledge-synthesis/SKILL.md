@@ -11,6 +11,7 @@ related_skills:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Knowledge Synthesis

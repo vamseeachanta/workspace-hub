@@ -24,6 +24,7 @@ requires:
   - scripts/review/orchestrator-variation-check.sh
   - scripts/work-queue/parse-session-logs.sh
 invoke: wrk-lifecycle-testpack
+tags: []
 ---
 # WRK Lifecycle Testpack
 

@@ -2,7 +2,7 @@ hostname: acma-ansys05
 alias: orcaflex-license-machine
 os: windows
 role: simulation-license-host
-workspace_root: C:\workspace-hub
+workspace_root: D:\workspace-hub
 repos:
   - OGManufacturing
 agent_clis:
@@ -12,4 +12,11 @@ agent_clis:
 domain_tools:
   orcaflex: ">=11.0"
   ansys: ">=2023"
-notes: "Windows workstation. Hosts OrcaFlex and ANSYS licenses. No SSH — access physically or via GUI. Git Bash (MINGW64) required for bash scripts."
+# Windows-specific executable paths for tools not registered in PATH.
+# Used by dev-env-check.sh when `command -v` probe fails (MINGW/Windows).
+# Paths are Windows-native (backslashes); script converts via cygpath.
+windows_exe_paths:
+  ansys: 'C:\Program Files\ANSYS Inc\v252\aqwa\bin\winx64\Aqwa.exe'
+  orcaflex: ''
+# orcaflex: not installed on this machine (license host only — OrcaFlex not present)
+notes: "Windows workstation. Hosts OrcaFlex and ANSYS licenses. No SSH — access physically or via GUI. Git Bash (MINGW64) required for bash scripts. ANSYS v252 at Program Files/ANSYS Inc/v252."

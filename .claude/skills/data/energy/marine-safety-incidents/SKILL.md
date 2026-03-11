@@ -4,6 +4,7 @@ description: Collect, analyze, and report marine safety incident data from 7 glo
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Marine Safety Incidents Skill

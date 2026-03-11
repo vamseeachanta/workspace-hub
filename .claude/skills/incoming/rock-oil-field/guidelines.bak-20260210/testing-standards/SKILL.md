@@ -3,6 +3,7 @@ name: testing-standards
 version: "1.0.0"
 category: standards
 description: "Testing Standards — guidelines and best practices."
+tags: []
 ---
 
 # Testing Standards Skill

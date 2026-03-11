@@ -146,7 +146,7 @@ def upsert(field: str, value: str) -> None:
     global frontmatter
     line = f"{field}: {value}"
     if re.search(rf"^{re.escape(field)}:", frontmatter, re.MULTILINE):
-        frontmatter = re.sub(rf"^{re.escape(field)}:.*$", line, frontmatter, flags=re.MULTILINE)
+        frontmatter = re.sub(rf"^{re.escape(field)}:.*$", lambda m: line, frontmatter, flags=re.MULTILINE)
     else:
         frontmatter = frontmatter.rstrip() + "\n" + line
 

@@ -31,6 +31,7 @@ hooks:
     memory_store "pseudo_complete_$(date +%s)" "Algorithms designed"
 requires: []
 see_also: []
+tags: []
 ---
 
 # SPARC Pseudocode Agent

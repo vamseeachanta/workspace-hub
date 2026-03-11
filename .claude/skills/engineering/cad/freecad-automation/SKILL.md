@@ -26,6 +26,7 @@ capabilities:
 - validation
 requires: []
 see_also: []
+tags: []
 ---
 # FreeCAD Automation Skill
 

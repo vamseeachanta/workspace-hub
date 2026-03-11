@@ -4,6 +4,7 @@ description: Web Scraper Energy (user)
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Web Scraper Energy Skill

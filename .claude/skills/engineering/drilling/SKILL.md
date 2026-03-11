@@ -3,6 +3,7 @@ name: drilling
 version: "1.0.0"
 category: engineering
 description: "Domain expertise for drilling engineering covering well planning, hydraulics, well control, and drilling operations analysis."
+tags: []
 ---
 
 # Drilling Expert

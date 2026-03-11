@@ -30,6 +30,7 @@ requires:
   - scripts/work-queue/gate_check.py
   - scripts/work-queue/stages/stage-NN-*.yaml
 invoke: workflow-gatepass
+tags: []
 ---
 # Workflow Gatepass
 

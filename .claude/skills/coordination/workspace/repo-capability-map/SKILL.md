@@ -17,6 +17,7 @@ tools: [Read, Write, Edit, Bash, Grep, Glob, Task]
 related_skills: [repository-health-analyzer, work-queue, claude-reflect, compliance-check]
 requires: []
 see_also: []
+tags: []
 ---
 
 # Repo Capability Map

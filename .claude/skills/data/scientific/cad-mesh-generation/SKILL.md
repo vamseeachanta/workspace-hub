@@ -6,6 +6,7 @@ description: "CAD and Mesh Generation Skill"
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # CAD and Mesh Generation Skill

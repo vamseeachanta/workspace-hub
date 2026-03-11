@@ -30,6 +30,7 @@ hooks:
     echo "GOAP planning complete - action sequence generated"
 requires: []
 see_also: []
+tags: []
 ---
 
 # Goal-Oriented Action Planning (GOAP)

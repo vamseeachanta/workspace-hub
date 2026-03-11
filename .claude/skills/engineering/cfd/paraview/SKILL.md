@@ -25,6 +25,7 @@ requires: []
 see_also:
 - openfoam
 - blender-interface
+tags: []
 ---
 # ParaView AI Interface Skill
 

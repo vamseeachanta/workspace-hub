@@ -5,7 +5,7 @@ version: 1.0.0
 category: workspace-hub
 author: workspace-hub
 type: skill
-last_updated: 2026-02-19
+last_updated: 2026-03-10
 wrk_ref: WRK-212
 related_skills:
   - orchestrator-routing
@@ -33,12 +33,54 @@ how to keep the main orchestrator responsive while subagents work.
 ## Core Constraint
 
 ```
-MAX_TEAMMATES = 3  (set in .claude/settings.json — git-tracked)
+MAX_TEAMMATES = 10  (set in .claude/settings.json — git-tracked)
+Recommended sweet spot: 2–3 teammates for this workspace's workload
 ```
 
 Default to **fewer agents**, not more. Spawn only as many as strictly needed.
 Coordination overhead grows quadratically; benefits only appear when tasks are
 truly parallel and long-running.
+
+`MAX_TEAMMATES=10` is a ceiling, not a target. The realistic effective range
+for workspace-hub engineering work is **2–3 teammates**. Raising it above that
+adds token cost with diminishing returns given the predominantly sequential
+solver-pipeline nature of the work.
+
+## Workspace Work Profile (Updated 2026-03-10)
+
+This workspace is **engineering-heavy with sequential solver pipelines**. Most
+work does NOT benefit from teams. Use this table before spawning:
+
+| Work Type | Team Useful? | Notes |
+|-----------|-------------|-------|
+| OrcaWave/AQWA solver runs | **No** | Sequential: mesh → solve → validate → report |
+| WRK item staged pipeline | **No** | Each stage depends on previous stage output |
+| Cross-review (Claude/Codex/Gemini) | **No** | Already scripted via `cross-review.sh` |
+| L01–L06 validation cases | **Maybe** | Cases are independent — 2-3 agents viable |
+| Multi-repo exploration | **Maybe** | Parallel file reads across submodules |
+| Documentation/reporting | **No** | Single-pass generation |
+| Bulk transforms (50+ files) | **Yes** | One agent per batch |
+
+**Key insight**: The biggest efficiency gain in this workspace comes from
+**better WRK scoping** (1-2 goals per session), not from parallelising with
+teams. Use teams only when tasks are genuinely independent AND > 20 min each.
+
+## Activation
+
+Agent teams are **disabled globally by default** and must be explicitly
+enabled per workspace:
+
+```json
+// .claude/settings.json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "MAX_TEAMMATES": "10"
+  }
+}
+```
+
+This workspace has teams enabled. New workspaces start with teams OFF.
 
 ## Decision Matrix: Team vs Sequential
 

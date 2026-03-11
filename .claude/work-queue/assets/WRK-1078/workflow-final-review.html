@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1078 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1078 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>Audit and fix WRK pipeline Windows/Git Bash compatibility gaps</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>B</div>
+    <div class="pill"><strong>Orchestrator</strong><br>unknown</div>
+    <div class="pill"><strong>Provider</strong><br>unknown</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — Audit and patch the following known gaps: 1. **uv not available** — `verify-gate-evidence.py`, `generate-index.py`, `close-item.sh` all invo...</summary><div class="panel"><p>Audit and patch the following known gaps:</p>
+<ol>
+<li><strong>uv not available</strong> — <code>verify-gate-evidence.py</code>, <code>generate-index.py</code>,
+   <code>close-item.sh</code> all invoke <code>uv run</code>; add Windows fallback or installer hint</li>
+<li><strong><code>xdg-open</code> missing</strong> — Stage 5/7/17 HTML review gates use <code>xdg-open</code>;
+   replace with cross-platform opener (<code>start</code> on Windows, <code>open</code> on macOS)</li>
+<li><strong><code>sed -i</code> MINGW64 behaviour</strong> — audit scripts using <code>sed -i</code> for
+   in-place edit; MINGW64 requires <code>sed -i ''</code> or <code>sed -i.bak</code></li>
+<li><strong><code>python3</code> bare calls</strong> — audit remaining bare <code>python3</code> invocations
+   (related to WRK-693); ensure <code>uv run --no-project python</code> or add fallback</li>
+<li><strong>Crontab</strong> — document that cron-based automation is ace-linux-1 only;
+   add note to Windows setup guide</li>
+</ol></div></details>
+
+  <details open><summary><strong>Why</strong> — acma-ansys05 (orcaflex-license-machine) can run Claude Code and has all AI CLIs installed, but hits friction on pipeline scripts due to Linu...</summary><div class="panel"><p>acma-ansys05 (orcaflex-license-machine) can run Claude Code and has all AI
+CLIs installed, but hits friction on pipeline scripts due to Linux assumptions.
+Fixing these gaps enables proper WRK routing to that machine.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] `xdg-open` calls replaced with cross-platform opener helper - [ ] `sed -i` usage audited; MINGW64-safe where needed - [ ] `uv` install...</summary><div class="panel"><ul>
+<li>[ ] <code>xdg-open</code> calls replaced with cross-platform opener helper</li>
+<li>[ ] <code>sed -i</code> usage audited; MINGW64-safe where needed</li>
+<li>[ ] <code>uv</code> install check added to <code>verify-setup.sh</code> Windows path with hint</li>
+<li>[ ] <code>dev-env-check.sh</code> runs without error on acma-ansys05</li>
+<li>[ ] Windows compatibility notes added to <code>.claude/docs/new-machine-setup.md</code></li>
+<li>[ ] All changes pass existing test suite on ace-linux-1</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — ### Phase 1 — Cross-platform browser opener (xdg-open) - **File**: `scripts/work-queue/log-user-review-browser-open.sh` - Replace the `xdg-o...</summary><div class="panel"><h3>Phase 1 — Cross-platform browser opener (xdg-open)</h3>
+<ul>
+<li><strong>File</strong>: <code>scripts/work-queue/log-user-review-browser-open.sh</code></li>
+<li>Replace the <code>xdg-open "$HTML_PATH"</code> call with a <code>_open_browser()</code> helper
+  that detects OS via <code>uname</code>/<code>OSTYPE</code> and routes to <code>xdg-open</code> (Linux),
+  <code>open</code> (macOS), or <code>start ""</code> (Windows/MINGW64)</li>
+<li>Test: <code>bash scripts/work-queue/log-user-review-browser-open.sh WRK-TEST --stage plan_draft --html /path/to/test.html --no-open</code> still works</li>
+</ul>
+<h3>Phase 2 — archive-item.sh python3 → uv</h3>
+<ul>
+<li><strong>File</strong>: <code>.claude/work-queue/scripts/archive-item.sh</code></li>
+<li>Line 59: <code>python3 &lt;&lt;EOF</code> → <code>uv run --no-project python &lt;&lt;EOF</code></li>
+<li>Line 79: <code>python3 "${QUEUE_DIR}/scripts/generate-index.py"</code> → <code>uv run --no-project python ...</code></li>
+<li>Test: run archive on a dummy item; confirm index regenerates</li>
+</ul>
+<h3>Phase 3 — verify-setup.sh Windows uv hint</h3>
+<ul>
+<li><strong>File</strong>: <code>scripts/setup/verify-setup.sh</code></li>
+<li>In the <code>_fail "python not found"</code> branch, add a Windows-specific hint:
+  <code>If on Windows/MINGW64: $USERPROFILE/.local/bin/uv or run the uv installer</code></li>
+<li>Test: <code>bash scripts/setup/verify-setup.sh</code> still produces clean output on Linux</li>
+</ul>
+<h3>Phase 4 — Fix Python Unicode encoding on Windows console</h3>
+<ul>
+<li><strong>File</strong>: <code>scripts/work-queue/start_stage.py</code> and <code>exit_stage.py</code></li>
+<li>Add <code>import sys; sys.stdout.reconfigure(encoding='utf-8', errors='replace')</code>
+  near top of <code>_main()</code> in both files (after arg parse, before any print)</li>
+<li>This ensures box-drawing characters in checkpoint_writer don't crash cp1252</li>
+<li>Test: run both scripts without <code>PYTHONIOENCODING</code> env var on Windows; verify output</li>
+</ul>
+<h3>Phase 5 — Crontab/new-machine-setup.md callout</h3>
+<ul>
+<li><strong>File</strong>: <code>.claude/docs/new-machine-setup.md</code> §5 Cron Jobs</li>
+<li>Add a callout note: <em>"Windows machines (ACMA-ANSYS05, acma-ws014) use Windows
+  Task Scheduler for contribute-minimal tasks. Full cron automation (nightly
+  pipeline, comprehensive-learning) runs on ace-linux-1 only."</em></li>
+</ul>
+<h3>Test Strategy</h3>
+<ul>
+<li>Run <code>PYTHONIOENCODING=</code> (empty) uv run start_stage.py WRK-1078 → should not crash</li>
+<li>Run <code>bash scripts/work-queue/log-user-review-browser-open.sh</code> with <code>--no-open</code> on MINGW64</li>
+<li>Run <code>bash scripts/setup/verify-setup.sh</code> → all PASS/WARN, no crash</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — # WRK-1078 Plan — Final Review confirmed_by: user confirmed_at: 2026-03-10T10:35:00Z decision: passed ## Summary User approved the final pla...</summary><div class="panel"><h4>Draft</h4><p><em>Not available.</em></p><h4>Final</h4><h1>WRK-1078 Plan — Final Review</h1>
+<p>confirmed_by: user
+confirmed_at: 2026-03-10T10:35:00Z
+decision: passed</p>
+<h2>Summary</h2>
+<p>User approved the final plan at Stage 7. All 5 phases approved:
+1. xdg-open → _open_browser() with cygpath -w + cmd.exe /c start
+2. python3 → uv run --no-project python (3 pipeline scripts)
+3. UTF-8 stdout reconfigure in start_stage.py + exit_stage.py
+4. verify-setup.sh Windows uv install hint
+5. new-machine-setup.md crontab Linux-only callout</p>
+<p>Codex P1 finding (cygpath path conversion) resolved before Stage 7.</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 0 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6"><em>No integrated/repo tests recorded.</em></td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1078, phase=claim) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1078, phase=claim)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=ace-linux-1, execution_workstations=ace-linux-1</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill', 'work_wrapper_complete'], plan:['plan_draft_complete', 'plan_wrapper_complete']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=D:\workspace-hub.claude\work-queue\assets\WRK-1078\review.md</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>WARN</td>
+<td>claim evidence absent (legacy item — WARN)</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=claim)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Stage1 capture gate</td>
+<td>PASS</td>
+<td>stage1 capture gate passed: reviewer=user, confirmed_at=2026-03-10T09:50:00Z</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1078 stage: 15 generated_at: &quot;2026-03-10T10:45:00Z&quot; recommendations: - title: &quot;Verify WRK-1078 fixes on acma-ansys05 after WRK-1...</summary><div class="panel"><p>wrk_id: WRK-1078
+stage: 15
+generated_at: "2026-03-10T10:45:00Z"</p>
+<p>recommendations:
+  - title: "Verify WRK-1078 fixes on acma-ansys05 after WRK-1077 machine setup"
+    priority: medium
+    rationale: "WRK-1077 is prerequisite — run verify-setup.sh on acma-ansys05"</p>
+<ul>
+<li>
+<p>title: "Add regression tests for _open_browser() cross-platform opener"
+    priority: low
+    rationale: "Shell tests covering Linux, macOS, and Windows MINGW64 branches"</p>
+</li>
+<li>
+<p>title: "Fix start_stage.py to write UTF-8 prompt files on Windows"
+    priority: medium
+    rationale: "Stage prompt files generated as cp1252 on Windows; needs PYTHONIOENCODING guard in generator"
+    create_wrk: true</p>
+</li>
+</ul></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1078 stages: - order: 1 stage: Capture status: done evidence: evidence/user-review-capture.yaml - order: 2 stage: Resource Intel...</summary><div class="panel"><p>wrk_id: WRK-1078
+stages:
+  - order: 1
+    stage: Capture
+    status: done
+    evidence: evidence/user-review-capture.yaml
+  - order: 2
+    stage: Resource Intelligence
+    status: done
+    evidence: evidence/resource-intelligence.yaml
+  - order: 3
+    stage: Triage
+    status: done
+  - order: 4
+    stage: Plan Draft
+    status: done
+    evidence: plan_claude.md
+  - order: 5
+    stage: User Review Plan Draft
+    status: done
+    evidence: evidence/user-review-plan-draft.yaml
+  - order: 6
+    stage: Cross-Review
+    status: done
+    evidence: evidence/cross-review.yaml
+  - order: 7
+    stage: User Review Plan Final
+    status: done
+    evidence: evidence/plan-final-review.yaml
+  - order: 8
+    stage: Claim/Activation
+    status: done
+    evidence: evidence/claim-evidence.yaml
+  - order: 9
+    stage: Work-Queue Routing
+    status: done
+    evidence: routing.yaml
+  - order: 10
+    stage: Work Execution
+    status: done
+    evidence: evidence/execute.yaml
+  - order: 11
+    stage: Artifact Generation
+    status: done
+    evidence: WRK-1078-lifecycle.html
+  - order: 12
+    stage: TDD / Eval
+    status: done
+    evidence: ac-test-matrix.md
+  - order: 13
+    stage: Agent Cross-Review
+    status: done
+    evidence: review.md
+  - order: 14
+    stage: Verify Gate Evidence
+    status: in_progress
+  - order: 15
+    stage: Future Work Synthesis
+    status: done
+    evidence: evidence/future-work.yaml
+  - order: 16
+    stage: Resource Intelligence Update
+    status: done
+    evidence: evidence/resource-intelligence-update.yaml
+  - order: 17
+    stage: User Review Implementation
+    status: pending
+  - order: 18
+    stage: Reclaim
+    status: n/a
+  - order: 19
+    stage: Close
+    status: pending
+  - order: 20
+    stage: Archive
+    status: pending</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 45 assets indexed.</summary><div class="panel"><ul><li><code>ac-test-matrix.md</code></li><li><code>checkpoint.yaml</code></li><li><code>cross-review-plan.md</code></li><li><code>evidence/ac-test-matrix.md</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review-claude.md</code></li><li><code>evidence/cross-review-codex.md</code></li><li><code>evidence/cross-review-gemini.md</code></li><li><code>evidence/cross-review-implementation.md</code></li><li><code>evidence/cross-review-p1-override.yaml</code></li><li><code>evidence/cross-review.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/gate-evidence-summary.yaml</code></li><li><code>evidence/legal-scan.yaml</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/reclaim.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/routing-log.yaml</code></li><li><code>evidence/session-lock.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>plan_claude.md</code></li><li><code>plan_codex.md</code></li><li><code>plan_gemini.md</code></li><li><code>review.md</code></li><li><code>routing.yaml</code></li><li><code>stage-2-prompt.md</code></li><li><code>stage-3-prompt.md</code></li><li><code>stage-4-prompt.md</code></li><li><code>stage-6-prompt.md</code></li><li><code>stage-8-prompt.md</code></li><li><code>stage-9-prompt.md</code></li><li><code>WRK-1078-lifecycle.html</code></li></ul></div></details>
+</body>
+</html>

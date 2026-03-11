@@ -4,6 +4,7 @@ description: Automated release coordination and deployment with swarm orchestrat
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub Release Manager Skill

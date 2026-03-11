@@ -1,0 +1,29 @@
+wrk_id: WRK-1078
+events:
+- stage: plan_draft
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 869c81ce
+  documents:
+  - WRK-1078-lifecycle.html
+  published_at: "2026-03-10T10:20:00Z"
+  reviewer: user
+- stage: plan_final
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 869c81ce
+  documents:
+  - WRK-1078-lifecycle.html
+  published_at: "2026-03-10T10:25:00Z"
+  reviewer: user
+- stage: close_review
+  pushed_to_origin: true
+  remote: origin
+  branch: main
+  commit: 7992be30
+  documents:
+  - WRK-1078-lifecycle.html
+  published_at: "2026-03-10T11:05:00Z"
+  reviewer: user

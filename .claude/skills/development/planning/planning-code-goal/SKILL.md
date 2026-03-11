@@ -30,6 +30,7 @@ hooks:
     echo "Code goal planning complete - milestones defined"
 requires: []
 see_also: []
+tags: []
 ---
 
 # Code-Centric Goal-Oriented Action Planning

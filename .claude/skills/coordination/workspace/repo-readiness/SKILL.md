@@ -23,6 +23,7 @@ related_skills:
   - sparc-workflow
 requires: []
 see_also: []
+tags: []
 ---
 
 # Repository Readiness Skill

@@ -21,6 +21,7 @@ related_skills:
   - repo-readiness
 requires: []
 see_also: []
+tags: []
 ---
 
 # Pytest Fixture Generator

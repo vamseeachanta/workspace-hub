@@ -6,6 +6,7 @@ description: "Excel Translation Skill"
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Excel Translation Skill

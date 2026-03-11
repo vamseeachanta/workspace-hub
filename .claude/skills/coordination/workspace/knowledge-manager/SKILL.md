@@ -25,6 +25,7 @@ scripts:
   - scripts/knowledge-stats.sh
 requires: []
 see_also: []
+tags: []
 ---
 
 # Knowledge Manager

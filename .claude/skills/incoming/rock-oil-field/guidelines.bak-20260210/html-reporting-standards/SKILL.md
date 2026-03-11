@@ -3,6 +3,7 @@ name: html-reporting-standards
 version: "1.0.0"
 category: standards
 description: "HTML Reporting Standards — guidelines and best practices."
+tags: []
 ---
 
 # HTML Reporting Standards Skill

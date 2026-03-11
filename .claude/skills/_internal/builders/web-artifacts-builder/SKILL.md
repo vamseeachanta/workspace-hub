@@ -8,6 +8,7 @@ related_skills:
   - frontend-design
   - algorithmic-art
   - theme-factory
+tags: []
 ---
 
 # Web Artifacts Builder Skill

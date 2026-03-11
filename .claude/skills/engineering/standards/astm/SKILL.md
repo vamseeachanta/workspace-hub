@@ -6,6 +6,7 @@ description: "ASTM Standards Specialist"
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # ASTM Standards Specialist

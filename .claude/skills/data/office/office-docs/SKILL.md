@@ -3,6 +3,7 @@ name: office-docs
 version: "1.0.0"
 category: data
 description: "Automate Microsoft Office and PDF document workflows including generation, manipulation, and template-based document processing."
+tags: []
 ---
 
 # Office Docs Skills Library

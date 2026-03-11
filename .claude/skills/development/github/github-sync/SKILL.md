@@ -4,6 +4,7 @@ description: Multi-repository synchronization coordinator for version alignment,
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub Sync Coordinator Skill

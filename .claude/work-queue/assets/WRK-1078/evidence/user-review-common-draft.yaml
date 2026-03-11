@@ -1,0 +1,11 @@
+wrk_id: WRK-1078
+stage: 5
+approval_decision: approve_as_is
+review_cycle_id: "2026-03-10-plan-review"
+confirmed_by: user
+confirmed_at: "2026-03-10T09:50:00Z"
+html_opened: true
+notes: >
+  User reviewed and approved common-draft plan. Route B medium complexity.
+  All 5 phases approved: cross-platform browser opener, uv migration,
+  verify-setup.sh hint, UTF-8 stdout reconfigure, crontab docs callout.

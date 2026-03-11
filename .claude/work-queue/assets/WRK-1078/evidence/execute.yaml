@@ -1,0 +1,45 @@
+wrk_id: WRK-1078
+stage: 10
+executed_at: "2026-03-10T10:00:00Z"
+commits:
+  - hash: "869c81ce"
+    message: "fix(WRK-1078): Windows/MINGW64 WRK pipeline compatibility gaps"
+  - hash: "ec95f63f"
+    message: "chore(WRK-1078): fix UTF-16/cp1252 encoding in stage prompt files"
+files_changed:
+  - scripts/work-queue/log-user-review-browser-open.sh
+  - .claude/work-queue/scripts/archive-item.sh
+  - scripts/work-queue/validate-queue-state.sh
+  - scripts/work-queue/verify-log-presence.sh
+  - scripts/work-queue/start_stage.py
+  - scripts/work-queue/exit_stage.py
+  - scripts/setup/verify-setup.sh
+  - .claude/docs/new-machine-setup.md
+phases_complete: [1, 2, 3, 4, 5]
+notes: "Implementation complete. Parallel agents used for phases 1-4 simultaneously."
+integrated_repo_tests:
+  - name: "browser-opener cross-platform (MINGW64)"
+    scope: integrated
+    command: "grep -c 'cmd.exe /c start' scripts/work-queue/log-user-review-browser-open.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1078/evidence/execute.yaml
+  - name: "archive-item.sh uv migration"
+    scope: integrated
+    command: "grep -c 'uv run --no-project' .claude/work-queue/scripts/archive-item.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1078/evidence/execute.yaml
+  - name: "validate-queue-state.sh uv migration"
+    scope: integrated
+    command: "grep -c 'uv run --no-project' scripts/work-queue/validate-queue-state.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1078/evidence/execute.yaml
+  - name: "start_stage.py UTF-8 reconfigure present"
+    scope: integrated
+    command: "grep -c 'sys.stdout.reconfigure' scripts/work-queue/start_stage.py"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1078/evidence/execute.yaml
+  - name: "verify-setup.sh Windows uv hint present"
+    scope: integrated
+    command: "grep -c 'USERPROFILE' scripts/setup/verify-setup.sh"
+    result: pass
+    artifact_ref: .claude/work-queue/assets/WRK-1078/evidence/execute.yaml

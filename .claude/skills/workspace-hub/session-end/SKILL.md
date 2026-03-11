@@ -24,6 +24,7 @@ capabilities:
   - learning-capture
 requires: []
 invoke: session-end
+tags: []
 ---
 # Session End Skill
 

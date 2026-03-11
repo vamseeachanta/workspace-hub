@@ -1,0 +1,30 @@
+wrk_id: WRK-1077
+stage: 2
+produced_at: "2026-03-09T20:35:00Z"
+completion_status: continue_to_planning
+top_p1_gaps: []
+skills:
+  core_used:
+    - work-queue
+    - verify-setup
+    - dev-env-check
+findings:
+  manifest:
+    path: specs/modules/hardware-inventory/manifests/acma-ansys05.yml
+    status: EXISTS
+    notes: >
+      Already committed. Hostname = acma-ansys05,
+      repos: [OGManufacturing], agent_clis: claude>=1.0, codex>=0.1, gemini>=0.1
+  scripts:
+    install_hooks: "scripts/setup/install-all-hooks.sh (EXISTS — idempotent)"
+    verify_setup: "scripts/setup/verify-setup.sh (EXISTS — reports PASS/WARN/FAIL)"
+    dev_env_check: "scripts/operations/system/dev-env-check.sh (EXISTS)"
+  config:
+    bashrc_snippets: "config/shell/bashrc-snippets.sh (EXISTS)"
+    keybindings: "config/claude/keybindings.json (EXISTS)"
+  windows_notes:
+    - Shell rc file on Windows Git Bash is ~/.bash_profile (not ~/.bashrc)
+    - verify-setup.sh auto-detects MINGW and uses ~/.bash_profile
+    - Cron WARN expected on Windows — AC explicitly allows it
+  no_code_changes_needed: true
+  execution_only: true

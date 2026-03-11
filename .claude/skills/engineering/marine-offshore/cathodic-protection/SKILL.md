@@ -37,6 +37,7 @@ capabilities:
   - DNV_RP_F103_2010: Submarine pipeline SACP design — bracelet anodes, buried conditions, DNV-RP-F103 2010
   - DNV_RP_B401_offshore: Offshore fixed platform SACP — jacket/GBS structures, zonal design, DNV-RP-B401 2021
 requires: []
+tags: []
 ---
 # Cathodic Protection Skill
 

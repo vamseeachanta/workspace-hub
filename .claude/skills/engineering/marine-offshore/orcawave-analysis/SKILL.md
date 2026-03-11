@@ -21,6 +21,7 @@ triggers:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 # OrcaWave Analysis Skill
 

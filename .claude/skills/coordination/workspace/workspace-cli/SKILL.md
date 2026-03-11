@@ -19,6 +19,7 @@ related_skills:
   - sparc-workflow
 requires: []
 see_also: []
+tags: []
 ---
 
 # Workspace CLI Skill

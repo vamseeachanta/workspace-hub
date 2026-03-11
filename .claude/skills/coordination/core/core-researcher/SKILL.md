@@ -31,6 +31,7 @@ hooks:
     memory_search "research_*" | head -5
 requires: []
 see_also: []
+tags: []
 ---
 
 # Core Researcher Skill

@@ -17,9 +17,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_HUB="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 MANIFESTS_DIR="$WORKSPACE_HUB/specs/modules/hardware-inventory/manifests"
 LOG_FILE="${HOME}/.dev-env-check.log"
-CURRENT_HOSTNAME="$(hostname)"
+CURRENT_HOSTNAME="$(hostname | tr '[:upper:]' '[:lower:]')"
 MANIFEST_FILE="$MANIFESTS_DIR/${CURRENT_HOSTNAME}.yml"
 VERSION_TIMEOUT=1   # seconds per CLI version probe
+
+# Detect platform (Linux vs Windows/MINGW)
+WH_OS="linux"
+case "$(uname -s 2>/dev/null)" in
+  MINGW*|CYGWIN*|MSYS*) WH_OS="windows" ;;
+esac
 
 # ---------------------------------------------------------------------------
 # Colors
@@ -146,6 +152,56 @@ check_tools_parallel() {
 }
 
 # ---------------------------------------------------------------------------
+# Windows path probe — for GUI tools not registered in PATH.
+# Reads windows_exe_paths from manifest: "tool: 'C:\path\to\exe'"
+# Converts Windows path to POSIX via cygpath (available in MINGW64/Git Bash).
+# ---------------------------------------------------------------------------
+probe_windows_exe() {
+    local tool="$1"
+    local win_path="$2"
+    local min_ver="$3"
+
+    if [ -z "$win_path" ]; then
+        miss "$tool — not installed (no exe path configured)"
+        return
+    fi
+
+    local posix_path=""
+    if command -v cygpath &>/dev/null; then
+        posix_path="$(cygpath -u "$win_path" 2>/dev/null || echo "")"
+    else
+        # Fallback: naive Windows→POSIX conversion (bash 4+)
+        local drv rest
+        drv="$(printf '%s' "${win_path%%:*}" | tr '[:upper:]' '[:lower:]')"
+        rest="${win_path#*:}"
+        posix_path="/${drv}${rest//\\//}"
+    fi
+
+    if [ -z "$posix_path" ] || [ ! -f "$posix_path" ]; then
+        miss "$tool — exe not found at: $win_path"
+    else
+        ok "$tool — found at $win_path (>=${min_ver} — path-check; not in PATH)"
+    fi
+}
+
+# Reads the windows_exe_paths section of the manifest and probes each entry.
+check_tools_windows_paths() {
+    local file="$1"
+    while IFS= read -r entry; do
+        [ -z "$entry" ] && continue
+        local tool win_path min_ver
+        tool="${entry%%:*}"
+        win_path="${entry#*: }"
+        # Strip any surrounding quotes left by yaml_map_items
+        win_path="$(printf '%s' "$win_path" | tr -d "'\"")"
+        # Look up minimum version from domain_tools section
+        min_ver="$(grep -E "^  ${tool}:" "$file" | head -1 \
+            | grep -oE '[0-9]+(\.[0-9]+)*' | head -1 || echo "0")"
+        probe_windows_exe "$tool" "$win_path" "${min_ver:-0}"
+    done < <(yaml_map_items "$file" "windows_exe_paths")
+}
+
+# ---------------------------------------------------------------------------
 # Guard: manifest must exist
 # ---------------------------------------------------------------------------
 if [ ! -f "$MANIFEST_FILE" ]; then
@@ -188,10 +244,19 @@ while IFS= read -r repo; do
 done < <(yaml_list_items "$MANIFEST_FILE" "repos")
 
 # ---------------------------------------------------------------------------
-# 3. Domain Tools  (parallel probes)
+# 3. Domain Tools  (parallel probes + Windows path fallback)
 # ---------------------------------------------------------------------------
 printf '\n%bDomain Tools%b\n' "$BOLD" "$RESET"
 check_tools_parallel "domain_tools" "$MANIFEST_FILE"
+
+# On Windows, also probe tools via windows_exe_paths (for GUI apps not in PATH).
+if [ "$WH_OS" = "windows" ]; then
+    has_windows_paths="$(yaml_map_items "$MANIFEST_FILE" "windows_exe_paths" 2>/dev/null | head -1)"
+    if [ -n "$has_windows_paths" ]; then
+        printf '\n%bDomain Tools (Windows path fallback)%b\n' "$BOLD" "$RESET"
+        check_tools_windows_paths "$MANIFEST_FILE"
+    fi
+fi
 
 # ---------------------------------------------------------------------------
 # Footer

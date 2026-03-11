@@ -7,6 +7,7 @@ globs:
   - src/assetutilities/common/data_management.py
   - src/assetutilities/common/data.py
 alwaysApply: false
+tags: []
 ---
 
 # Data Management Skill

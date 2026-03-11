@@ -79,7 +79,7 @@ If check 6 fails, convert flagged files with iconv or uv Python.
 
 | # | Check | Command | Pass |
 |---|-------|---------|------|
-| 7 | Index generates | `uv run --no-project python scripts/work-queue/generate-index.py` | exit 0 |
+| 7 | Index generates | `uv run --no-project python .claude/work-queue/scripts/generate-index.py` | exit 0 |
 | 8 | No orphan WRK items | All `working/` items have `plan_approved: true` | 0 violations |
 | 9 | No gate violations | `working/` items have `plan_reviewed: true` (Route B/C only) | 0 violations |
 
@@ -173,7 +173,7 @@ count=$(grep -c working-tree-encoding "$REPO/.gitattributes" 2>/dev/null || echo
 ### Step 2: Group 2 checks
 ```bash
 echo "=== Group 2: Work Queue Integrity ==="
-uv run --no-project python "$REPO/scripts/work-queue/generate-index.py" >/dev/null 2>&1 \
+uv run --no-project python "$REPO/.claude/work-queue/scripts/generate-index.py" >/dev/null 2>&1 \
     && echo "  [PASS] Index generates" \
     || echo "  [FAIL] Index generation failed"
 

@@ -4,6 +4,7 @@ description: Energy Data Visualizer (user)
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Energy Data Visualizer Skill

@@ -29,6 +29,7 @@ hooks:
     memory_store "planner_end_$(date +%s)" "Completed planning: $TASK"
 requires: []
 see_also: []
+tags: []
 ---
 
 # Core Planner Skill

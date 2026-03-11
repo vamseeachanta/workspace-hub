@@ -34,6 +34,7 @@ hooks:
     memory_store "refine_complete_$(date +%s)" "Code refined and tested"
 requires: []
 see_also: []
+tags: []
 ---
 
 # SPARC Refinement Agent

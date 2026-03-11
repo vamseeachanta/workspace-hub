@@ -4,6 +4,7 @@ description: Fetch real-time and historical metocean data from NDBC, CO-OPS, Ope
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Metocean Data Fetcher Skill

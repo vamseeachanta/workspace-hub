@@ -114,10 +114,10 @@ fi
 echo ""
 echo "--- Claude statusline"
 CLAUDE_SETTINGS="${HOME}/.claude/settings.json"
-if [[ -f "$CLAUDE_SETTINGS" ]] && grep -q "statusBarEnabled" "$CLAUDE_SETTINGS" 2>/dev/null; then
-  _pass "statusBarEnabled present in ~/.claude/settings.json"
+if [[ -f "$CLAUDE_SETTINGS" ]] && grep -q "statusBarEnabled\|statusLine" "$CLAUDE_SETTINGS" 2>/dev/null; then
+  _pass "statusline configured in ~/.claude/settings.json"
 else
-  _warn "statusBarEnabled not found in ~/.claude/settings.json — run: claude config set statusBarEnabled true"
+  _warn "statusline not configured in ~/.claude/settings.json — run: claude config set statusBarEnabled true"
 fi
 
 # ── 7. Crontab (Linux only) ───────────────────────────────────────────────────
@@ -173,11 +173,21 @@ if [[ ! -f "$KEYBINDINGS_FILE" ]]; then
   _warn "~/.claude/keybindings.json absent — submitPrompt not standardised"
   echo "       Fix: bash ${WORKSPACE_HUB}/scripts/setup/new-machine-setup.sh"
 else
-  if command -v python3 &>/dev/null; then
-    _submit=$(python3 -c "
+  # Prefer uv (cross-platform, no Windows Store stub issue), fall back to python3
+  _py_cmd=""
+  if command -v uv &>/dev/null; then
+    _py_cmd="uv run --no-project python"
+  elif command -v python3 &>/dev/null; then
+    _py_cmd="python3"
+  fi
+  if [[ -n "$_py_cmd" ]]; then
+    # Convert POSIX path to native OS path for Python (MINGW64 /c/... → C:\...)
+    _kb_native="$KEYBINDINGS_FILE"
+    command -v cygpath &>/dev/null && _kb_native="$(cygpath -w "$KEYBINDINGS_FILE" 2>/dev/null || echo "$KEYBINDINGS_FILE")"
+    _submit=$($_py_cmd -c "
 import json, pathlib
 try:
-    d=json.loads(pathlib.Path('${KEYBINDINGS_FILE}').read_text())
+    d=json.loads(pathlib.Path(r'${_kb_native}').read_text())
     print(d.get('submitPrompt',''))
 except Exception:
     print('')
@@ -188,7 +198,7 @@ except Exception:
       _warn "keybindings.json: submitPrompt=${_submit:-unset} (expected ctrl+enter)"
     fi
   else
-    _pass "keybindings.json present (python3 absent — cannot parse)"
+    _pass "keybindings.json present (no python available — cannot parse)"
   fi
 fi
 
@@ -205,16 +215,25 @@ fi
 # ── 10. Python ────────────────────────────────────────────────────────────────
 echo ""
 echo "--- Python"
-if command -v python3 &>/dev/null; then
-  PY_VER=$(python3 --version 2>&1 | head -1)
-  _pass "python3 found: ${PY_VER}"
-  if python3 -c "import yaml" &>/dev/null; then
+# Prefer uv (cross-platform, avoids Windows Store stub); fall back to python3
+_py_bin=""
+if command -v uv &>/dev/null; then
+  _py_bin="uv run --no-project python"
+elif command -v python3 &>/dev/null; then
+  _py_bin="python3"
+fi
+if [[ -n "$_py_bin" ]]; then
+  PY_VER=$($_py_bin --version 2>&1 | head -1)
+  _pass "python found via ${_py_bin%% *}: ${PY_VER}"
+  if $_py_bin -c "import yaml" &>/dev/null; then
     _pass "PyYAML available (required for WRK pipeline)"
   else
-    _warn "PyYAML not installed — run: pip3 install pyyaml"
+    _warn "PyYAML not installed — run: uv tool install pyyaml (or pip3 install pyyaml)"
   fi
 else
-  _fail "python3 not found — install Python 3.10+"
+  _fail "python not found — install uv or Python 3.10+"
+  _warn "  uv installer: curl -LsSf https://astral.sh/uv/install.sh | sh"
+  _warn "  Windows/MINGW64: add \$USERPROFILE/.local/bin to PATH after install"
 fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────

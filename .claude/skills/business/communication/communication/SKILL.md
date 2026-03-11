@@ -3,6 +3,7 @@ name: communication
 version: "1.0.0"
 category: business
 description: "Integrate team communication, collaboration tools, and scheduling workflows across platforms like Slack, email, and calendar systems."
+tags: []
 ---
 
 # Communication Skills Library

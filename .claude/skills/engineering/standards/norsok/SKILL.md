@@ -6,6 +6,7 @@ description: "NORSOK Standards Specialist"
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # NORSOK Standards Specialist

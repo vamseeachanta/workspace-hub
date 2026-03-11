@@ -1,0 +1,14 @@
+wrk_id: WRK-1078
+stage: 8
+claimed_by: claude
+hostname: ACMA-ANSYS05
+claimed_at: "2026-03-10"
+session_pid: 21764
+session_id: "claude-20260310-ACMA-ANSYS05"
+session_owner: "claude"
+orchestrator_agent: "claude"
+best_fit_provider: "claude"
+route: B
+stage7_gate: passed
+plan_approved: true
+notes: "Continuing session — item already in working/. Claim written directly."

@@ -22,6 +22,7 @@ related_skills:
   - agent-os-framework
 requires: []
 see_also: []
+tags: []
 ---
 
 # Python Project Template

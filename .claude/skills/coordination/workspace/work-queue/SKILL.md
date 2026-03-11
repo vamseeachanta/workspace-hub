@@ -29,6 +29,7 @@ scripts:
   - ../../../../scripts/agents/review.sh
 requires: []
 see_also: [session-start, workflow-gatepass, wrk-lifecycle-testpack, work-queue-workflow]
+tags: []
 ---
 
 # Work Queue Skill

@@ -14,6 +14,7 @@ related_skills:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Single-Cell RNA-seq Quality Control

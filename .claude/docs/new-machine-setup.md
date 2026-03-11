@@ -177,6 +177,12 @@ Reference: `scripts/cron/crontab-template.sh`
 Two tasks required — see `scripts/cron/crontab-template.sh` for the exact
 arguments.  `setup-cron.sh` prints the instructions when run on Windows.
 
+> **Note:** Full nightly automation (comprehensive-learning, session-analysis,
+> repository-sync) runs on **ace-linux-1 only** — it has a cron daemon.
+> Windows machines (ACMA-ANSYS05, acma-ws014) are `contribute-minimal` and
+> use Windows Task Scheduler for two tasks only; cron is not available on
+> Windows/MINGW64.
+
 ---
 
 ### 6. SSH Key Setup
@@ -269,6 +275,7 @@ crontab entries, SSH key, env vars, Python + PyYAML.
 - The bashrc-snippets file sets `GIT_CONFIG_PARAMETERS` to enforce LF
 - Default workspace path example: `D:/workspace-hub` — adjust alias in
   `config/shell/bashrc-snippets.sh` to match your drive
+- Cron: not available on Windows — use Windows Task Scheduler; full nightly pipeline runs on ace-linux-1 only
 
 ---
 

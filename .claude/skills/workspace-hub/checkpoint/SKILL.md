@@ -19,6 +19,7 @@ related_skills:
 tools: [Read, Write, Bash]
 see_also:
   - scripts/work-queue/checkpoint.sh
+tags: []
 ---
 
 # Checkpoint Skill

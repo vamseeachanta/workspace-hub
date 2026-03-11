@@ -1,0 +1,11 @@
+wrk_id: WRK-1078
+stage: 9
+routed_at: "2026-03-10"
+route: B
+execution_workstation: ace-linux-1
+orchestrator: claude
+complexity: medium
+routing_decision: >
+  Route B (medium complexity). 5 phases, 6 file changes, single repo
+  (workspace-hub). Execution on ace-linux-1. Verify on acma-ansys05
+  after WRK-1077 machine setup is complete.

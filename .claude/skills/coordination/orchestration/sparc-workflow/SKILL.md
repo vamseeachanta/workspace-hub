@@ -25,6 +25,7 @@ hooks:
   post: |
 requires: []
 see_also: []
+tags: []
 ---
 
 # SPARC Workflow Skill

@@ -6,6 +6,7 @@ category: data/energy
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # NPV Analyzer

@@ -18,6 +18,7 @@ triggers:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 # OrcaFlex Line Wizard Skill
 

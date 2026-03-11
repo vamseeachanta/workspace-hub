@@ -24,6 +24,7 @@ requires:
 see_also:
 - freecad-automation
 - blender-interface
+tags: []
 ---
 # CFD Pipeline Workflow Skill
 

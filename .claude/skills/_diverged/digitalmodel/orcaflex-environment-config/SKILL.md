@@ -16,6 +16,7 @@ triggers:
 - environmental loading
 - seabed properties
 canonical_ref: "engineering/marine-offshore/orcaflex-environment-config"
+tags: []
 ---
 # OrcaFlex Environment Configuration Skill
 

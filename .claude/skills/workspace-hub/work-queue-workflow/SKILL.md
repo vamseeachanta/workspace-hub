@@ -24,6 +24,7 @@ capabilities:
 requires:
   - .claude/work-queue/process.md
 invoke: work-queue-workflow
+tags: []
 ---
 # Work-Queue Workflow
 

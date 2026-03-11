@@ -12,6 +12,7 @@ related_skills:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Statistical Analysis Skill

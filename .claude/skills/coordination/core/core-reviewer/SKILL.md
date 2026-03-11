@@ -30,6 +30,7 @@ hooks:
     echo "📝 Review summary stored in memory"
 requires: []
 see_also: []
+tags: []
 ---
 
 # Core Reviewer Skill

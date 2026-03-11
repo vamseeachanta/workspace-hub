@@ -32,6 +32,7 @@ see_also:
   - templates/resource-intelligence-summary.md
   - templates/resource-intelligence-template.yaml
   - scripts/init-resource-pack.sh
+tags: []
 ---
 
 # Resource Intelligence

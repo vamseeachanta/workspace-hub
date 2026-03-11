@@ -1,0 +1,10 @@
+wrk_id: WRK-1078
+stage: 6
+override_reason: >
+  Codex P1 finding (cygpath path conversion) was identified and fully resolved
+  before Stage 7. The _open_browser() helper now uses cmd.exe /c start with
+  cygpath -w conversion. Fix was implemented and verified in the same session.
+reviewer: user
+reviewed_at: "2026-03-10T10:30:00Z"
+finding: "start needs cygpath -w for POSIX→native path conversion on MINGW64"
+resolution: "FIXED — cmd.exe /c start with cygpath -w in _open_browser()"

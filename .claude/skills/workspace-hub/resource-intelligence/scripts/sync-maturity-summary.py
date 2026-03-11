@@ -98,7 +98,7 @@ def main() -> int:
     yaml_path = yaml_path.resolve()
     md_path = md_path.resolve()
     yaml_text = yaml_path.read_text()
-    yaml_rel = str(yaml_path.relative_to(repo_root))
+    yaml_rel = str(yaml_path.relative_to(repo_root)).replace("\\", "/")
     try:
         schema_version = extract(r'^schema_version:\s*"?(.*?)"?$', yaml_text)
         canonical_md = extract(r"^\s+canonical_markdown_ref:\s*(.*?)$", yaml_text)
@@ -113,7 +113,7 @@ def main() -> int:
             f"expected {SUPPORTED_SCHEMA_VERSION}, got {schema_version}\n"
         )
         return 1
-    actual_md_rel = str(md_path.relative_to(repo_root))
+    actual_md_rel = str(md_path.relative_to(repo_root)).replace("\\", "/")
     if canonical_md != actual_md_rel:
         sys.stderr.write(
             f"Markdown path does not match YAML tracking.canonical_markdown_ref: "

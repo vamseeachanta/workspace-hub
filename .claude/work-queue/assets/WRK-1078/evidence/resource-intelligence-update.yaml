@@ -1,0 +1,27 @@
+wrk_id: WRK-1078
+stage: 16
+updated_at: "2026-03-10T10:45:00Z"
+
+learnings:
+  - topic: Windows MINGW64 platform compat
+    finding: >
+      sed -i is NOT a problem on MINGW64 — GNU sed handles it without empty-string arg.
+      The MINGW64 issue is cp1252 console encoding for Python scripts using Unicode chars.
+    files_affected:
+      - scripts/work-queue/start_stage.py
+      - scripts/work-queue/exit_stage.py
+      - scripts/work-queue/checkpoint_writer.py
+
+  - topic: xdg-open replacement pattern
+    finding: >
+      Cross-platform opener: uname -s dispatch, Linux→xdg-open, Darwin→open,
+      MINGW/MSYS/CYGWIN→cmd.exe /c start "" "$(cygpath -w "$path")".
+      cygpath -w is required — start "" rejects POSIX paths (/d/...).
+    canonical_pattern: scripts/work-queue/log-user-review-browser-open.sh
+
+  - topic: python3 in pipeline scripts
+    finding: >
+      archive-item.sh, validate-queue-state.sh, verify-log-presence.sh all had
+      bare python3 calls. Replaced with uv run --no-project python.
+      validate-queue-state and verify-log-presence were found by Codex P2 review.
+no_additions_rationale: "No new resource-intelligence maturity changes for this platform-compat fix"

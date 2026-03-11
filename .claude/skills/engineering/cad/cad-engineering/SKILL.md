@@ -24,6 +24,7 @@ triggers:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 # CAD Engineering Skill
 

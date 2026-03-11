@@ -28,6 +28,7 @@ capabilities:
   - multi-machine-routing
   - cron-integration
 requires: []
+tags: []
 ---
 # Workstations Skill — Machine Registry
 

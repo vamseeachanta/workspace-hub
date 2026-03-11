@@ -26,6 +26,7 @@ hooks:
     command -v jq &>/dev/null || { echo "ERROR: jq required"; exit 1; }
 requires: []
 see_also: []
+tags: []
 ---
 
 # Smart Agent Router

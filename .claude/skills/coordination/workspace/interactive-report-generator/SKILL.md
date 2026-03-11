@@ -21,6 +21,7 @@ related_skills:
   - yaml-workflow-executor
 requires: []
 see_also: []
+tags: []
 ---
 
 # Interactive Report Generator

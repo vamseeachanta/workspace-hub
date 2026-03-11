@@ -20,6 +20,7 @@ triggers:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 # OrcaFlex Installation Analysis Skill
 

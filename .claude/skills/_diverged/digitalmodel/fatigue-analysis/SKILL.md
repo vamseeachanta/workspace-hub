@@ -5,6 +5,7 @@ description: Perform fatigue analysis using S-N curves and damage accumulation m
   for marine and offshore structural components.
 updated: '2026-01-07'
 canonical_ref: "engineering/marine-offshore/fatigue-analysis"
+tags: []
 ---
 # Fatigue Analysis Skill
 
