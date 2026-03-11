@@ -17,6 +17,7 @@ triggers:
 - .dat model files
 - .sim simulation files
 canonical_ref: "engineering/marine-offshore/orcaflex-modeling"
+tags: []
 ---
 # OrcaFlex Modeling Skill
 

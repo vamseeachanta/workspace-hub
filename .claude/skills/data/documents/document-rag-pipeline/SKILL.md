@@ -12,6 +12,7 @@ related_skills:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Document RAG Pipeline Skill

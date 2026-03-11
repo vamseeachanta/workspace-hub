@@ -37,6 +37,7 @@ hooks:
     fi
 requires: []
 see_also: []
+tags: []
 ---
 
 # Core Coder Skill

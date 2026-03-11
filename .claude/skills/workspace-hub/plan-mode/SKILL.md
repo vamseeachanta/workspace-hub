@@ -14,6 +14,7 @@ triggers:
 related_skills:
   - workspace-hub/work-queue-workflow
   - superpowers/writing-plans
+tags: []
 ---
 # Plan-Mode Gates
 

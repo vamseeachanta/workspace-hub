@@ -15,6 +15,7 @@ triggers:
 - gitignore update
 - log file cleanup
 - untracked files
+tags: []
 ---
 
 # Repository Cleanup Skill

@@ -6,6 +6,7 @@ description: "pdf-large-reader Skill"
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # pdf-large-reader Skill

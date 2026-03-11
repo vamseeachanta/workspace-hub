@@ -17,6 +17,7 @@ related_skills: [work-queue, session-analysis, skill-learner]
 see_also:
   - .claude/work-queue/working/WRK-228.md
   - .claude/docs/archive-horizon-followups.md
+tags: []
 ---
 
 # Agentic Horizon Skill

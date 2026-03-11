@@ -3,6 +3,7 @@ name: logging-standards
 version: "1.0.0"
 category: standards
 description: "Logging Standards — guidelines and best practices."
+tags: []
 ---
 
 # Logging Standards Skill

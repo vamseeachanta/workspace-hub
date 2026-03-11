@@ -19,6 +19,7 @@ triggers:
 - wave-structure interaction
 - frequency domain analysis
 canonical_ref: "engineering/marine-offshore/orcawave-analysis"
+tags: []
 ---
 # OrcaWave Analysis Skill
 

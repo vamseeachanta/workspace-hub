@@ -24,6 +24,7 @@ requires: []
 see_also:
 - freecad-automation
 - gmsh-meshing
+tags: []
 ---
 # Blender AI Interface Skill
 

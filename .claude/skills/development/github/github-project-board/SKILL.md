@@ -4,6 +4,7 @@ description: Synchronize AI swarms with GitHub Projects for visual task manageme
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub Project Board Sync Skill

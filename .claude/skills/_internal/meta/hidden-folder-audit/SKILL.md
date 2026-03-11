@@ -10,6 +10,7 @@ triggers:
 - .agent-os cleanup
 - .ai cleanup
 - dot folder review
+tags: []
 ---
 
 # Hidden Folder Audit Skill

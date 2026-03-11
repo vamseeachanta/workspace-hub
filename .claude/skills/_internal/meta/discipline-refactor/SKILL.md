@@ -22,6 +22,7 @@ calls_subagents:
   - Plan
   - general-purpose
   - Bash
+tags: []
 ---
 
 # Discipline-Based Refactor (v2.0)

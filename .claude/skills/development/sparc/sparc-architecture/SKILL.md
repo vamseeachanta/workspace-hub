@@ -31,6 +31,7 @@ hooks:
     memory_store "arch_complete_$(date +%s)" "System architecture defined"
 requires: []
 see_also: []
+tags: []
 ---
 
 # SPARC Architecture Agent

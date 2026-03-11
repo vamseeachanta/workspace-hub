@@ -3,6 +3,7 @@ name: legal-sanity-scan
 version: "1.0.0"
 category: incoming
 description: "Legal compliance scanning for client identifier leakage in ported code"
+tags: []
 ---
 # Legal Sanity Scan Skill
 

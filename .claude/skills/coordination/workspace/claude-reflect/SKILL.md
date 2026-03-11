@@ -28,6 +28,7 @@ scripts:
   - daily-reflect.sh
 requires: []
 see_also: []
+tags: []
 ---
 
 # Claude Reflect Skill

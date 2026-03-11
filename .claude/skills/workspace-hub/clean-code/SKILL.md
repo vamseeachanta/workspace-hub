@@ -10,6 +10,7 @@ requires: []
 see_also: [repo-structure, file-taxonomy, infrastructure-layout]
 updated: 2026-02-25
 changelog: "v2.1.0 — Module Migration Shim Protocol (WRK-602): API compat check, diverged-API handling, patch.object scope for shim modules; v2.0.0 — God Object splits, horizontal-split, parallel team"
+tags: []
 ---
 
 # Clean Code — Enforcement Rules for Python Repos

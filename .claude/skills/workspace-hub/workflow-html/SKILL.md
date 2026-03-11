@@ -27,6 +27,7 @@ tools: [Read, Write, Bash]
 see_also:
   - .claude/work-queue/assets/WRK-624/workflow-governance-review.html
   - scripts/work-queue/generate-html-review.py
+tags: []
 ---
 
 # Workflow HTML Skill

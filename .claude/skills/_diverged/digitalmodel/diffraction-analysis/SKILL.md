@@ -15,6 +15,7 @@ triggers:
   - panel method
   - frequency domain
 canonical_ref: "engineering/marine-offshore/diffraction-analysis"
+tags: []
 ---
 
 # Diffraction Analysis Master Skill

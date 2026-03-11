@@ -1,4 +1,4 @@
-# Stage 8 Prompt Package — WRK-1077
+# Stage 8 Prompt Package â€” WRK-1077
 ## Stage: Claim / Activation
 **Invocation:** chained_agent
 **Weight:** light
@@ -13,7 +13,7 @@
 
 ### assets/WRK-NNN/evidence/plan-final-review.yaml
 ```
-[entry_reads: assets/WRK-NNN/evidence/plan-final-review.yaml — file not found]
+[entry_reads: assets/WRK-NNN/evidence/plan-final-review.yaml â€” file not found]
 ```
 
 **Blocking condition:** claim-evidence.yaml or activation.yaml missing

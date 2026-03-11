@@ -20,6 +20,7 @@ see_also:
   - .claude/work-queue/working/WRK-232.md
   - .claude/state/skill-scores.yaml
   - .claude/state/session-analysis/
+tags: []
 ---
 
 # Session Bootstrap Skill

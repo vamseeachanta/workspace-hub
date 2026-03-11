@@ -23,6 +23,7 @@ see_also:
   - .claude/state/skill-scores.yaml
   - .claude/state/candidates/
   - .claude/state/session-signals/
+tags: []
 ---
 
 # Session Analysis Skill

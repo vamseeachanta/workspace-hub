@@ -13,6 +13,7 @@ related_skills:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Response Drafting Skill Summary

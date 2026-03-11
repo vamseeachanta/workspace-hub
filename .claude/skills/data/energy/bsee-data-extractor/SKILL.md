@@ -4,6 +4,7 @@ description: Extract and process BSEE (Bureau of Safety and Environmental Enforc
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # BSEE Data Extractor

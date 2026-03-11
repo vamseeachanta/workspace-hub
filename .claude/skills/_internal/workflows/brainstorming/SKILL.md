@@ -9,6 +9,7 @@ related_skills:
   - writing-plans
   - sparc-workflow
   - product-roadmap
+tags: []
 ---
 
 # Brainstorming Skill

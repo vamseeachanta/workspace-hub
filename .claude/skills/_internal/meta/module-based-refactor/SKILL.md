@@ -24,6 +24,7 @@ triggers:
 - hidden folder cleanup
 - hidden folder consolidation
 - merge hidden folders
+tags: []
 ---
 
 # Module-Based Refactor Skill

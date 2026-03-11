@@ -3,6 +3,7 @@ name: legal-sanity-review
 version: "1.0.0"
 category: _internal
 description: "Legal Sanity Review Workflow — mandatory pre-gate in the cross-review cycle"
+tags: []
 ---
 
 # Legal Sanity Review Workflow

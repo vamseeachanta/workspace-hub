@@ -15,6 +15,7 @@ triggers:
 - spec.yml template
 - template library
 canonical_ref: "engineering/marine-offshore/orcaflex-model-generator"
+tags: []
 ---
 # OrcaFlex Modular Model Generator
 

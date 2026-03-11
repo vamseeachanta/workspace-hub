@@ -21,6 +21,7 @@ related_skills:
   - python-project-template
 requires: []
 see_also: []
+tags: []
 ---
 
 # Agent OS Framework

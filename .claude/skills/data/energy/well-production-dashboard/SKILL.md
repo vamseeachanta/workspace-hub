@@ -4,6 +4,7 @@ description: Create interactive well production dashboards with real-time monito
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Well Production Dashboard Skill

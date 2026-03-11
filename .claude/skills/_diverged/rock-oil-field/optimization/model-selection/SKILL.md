@@ -4,6 +4,7 @@ version: "1.0.0"
 category: optimization
 description: "Model Selection — guidelines and best practices."
 canonical_ref: "ai/optimization/model-selection"
+tags: []
 ---
 
 # Model Selection Skill

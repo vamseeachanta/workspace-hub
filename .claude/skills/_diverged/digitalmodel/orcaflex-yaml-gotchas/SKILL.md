@@ -14,6 +14,7 @@ triggers:
 - OrcaFlex YAML gotcha
 - OrcaFlex SaveData
 canonical_ref: "engineering/marine-offshore/orcaflex-yaml-gotchas"
+tags: []
 ---
 # OrcaFlex YAML Gotchas
 

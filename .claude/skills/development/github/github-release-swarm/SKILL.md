@@ -4,6 +4,7 @@ description: Orchestrate complex software releases using AI swarms that handle e
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub Release Swarm Skill

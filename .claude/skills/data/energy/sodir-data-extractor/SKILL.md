@@ -4,6 +4,7 @@ description: SODIR Data Extractor (user)
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # SODIR Data Extractor Skill

@@ -4,6 +4,7 @@ description: Comprehensive pull request management with swarm coordination for a
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub PR Manager Skill

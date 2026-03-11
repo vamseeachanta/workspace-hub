@@ -18,6 +18,7 @@ triggers:
 - mooring discretization
 - structural mesh
 canonical_ref: "engineering/cad/gmsh-meshing"
+tags: []
 ---
 # GMSH Meshing Skill
 

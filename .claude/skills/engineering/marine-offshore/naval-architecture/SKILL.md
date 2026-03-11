@@ -3,6 +3,7 @@ name: naval-architecture
 version: "1.0.0"
 category: engineering
 description: "Marine and offshore vessel analysis covering hydrostatics, stability, seakeeping, RAO interpretation, and diffraction analysis review."
+tags: []
 ---
 
 # Naval Architecture

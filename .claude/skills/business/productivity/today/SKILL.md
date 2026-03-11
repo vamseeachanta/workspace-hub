@@ -10,6 +10,7 @@ related_skills:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Today - Daily Productivity Skill

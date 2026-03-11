@@ -20,6 +20,7 @@ related_skills:
   - sparc-workflow
 requires: []
 see_also: []
+tags: []
 ---
 
 # Repository Sync Skill

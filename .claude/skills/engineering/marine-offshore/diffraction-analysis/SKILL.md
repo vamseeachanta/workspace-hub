@@ -17,6 +17,7 @@ triggers:
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Diffraction Analysis Master Skill

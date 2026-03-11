@@ -19,6 +19,7 @@ tools:
 related_skills:
   - python-project-template
   - yaml-workflow-executor
+tags: []
 ---
 
 # Bash Script Framework

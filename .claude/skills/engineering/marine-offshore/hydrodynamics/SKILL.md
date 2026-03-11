@@ -7,6 +7,7 @@ updated: '2026-01-07'
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 # Hydrodynamics Skill
 

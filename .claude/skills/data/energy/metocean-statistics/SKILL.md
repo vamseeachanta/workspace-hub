@@ -4,6 +4,7 @@ description: Statistical analysis of metocean data including extreme value analy
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Metocean Statistics Skill

@@ -4,6 +4,7 @@ description: Intelligent issue management and project coordination with automate
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub Issue Tracker Skill

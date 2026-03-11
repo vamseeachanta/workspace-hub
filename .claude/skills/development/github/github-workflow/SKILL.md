@@ -4,6 +4,7 @@ description: GitHub Actions workflow automation for intelligent CI/CD pipelines 
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub Workflow Automation Skill

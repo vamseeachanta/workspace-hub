@@ -6,6 +6,7 @@ category: workspace-hub
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # document-batch

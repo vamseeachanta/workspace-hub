@@ -3,6 +3,7 @@ name: orcaflex-jumper-analysis
 version: "1.0.0"
 category: incoming
 description: "OrcaFlex rigid and flexible jumper stress and VIV analysis"
+tags: []
 ---
 # OrcaFlex Jumper Analysis Skill
 

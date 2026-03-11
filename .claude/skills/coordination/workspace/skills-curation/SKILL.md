@@ -30,6 +30,7 @@ see_also:
   - .claude/state/skills-graph-review-log.jsonl
   - .claude/work-queue/working/WRK-231.md
 requires: []
+tags: []
 ---
 
 # Skills Curation Skill

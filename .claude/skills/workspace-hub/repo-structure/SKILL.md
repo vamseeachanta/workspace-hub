@@ -8,6 +8,7 @@ applies-to: [claude, codex, gemini]
 capabilities: []
 requires: []
 see_also: [file-taxonomy, infrastructure-layout, clean-code]
+tags: []
 ---
 
 # Repo Structure — Canonical Source Layout

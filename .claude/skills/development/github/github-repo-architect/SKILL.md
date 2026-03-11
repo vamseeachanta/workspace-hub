@@ -4,6 +4,7 @@ description: Repository structure optimization and multi-repo management with sw
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub Repository Architect Skill

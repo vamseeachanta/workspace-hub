@@ -36,6 +36,7 @@ see_also:
   - orcawave-to-orcaflex
 wrk_ref: WRK-380
 spec_ref: specs/modules/wrk-380-gmsh-openfoam-orcaflex-pipeline.md
+tags: []
 ---
 
 # Gmsh → OpenFOAM → OrcaFlex Multi-Physics Pipeline Skill

@@ -8,6 +8,7 @@ applies-to: [claude, codex, gemini]
 capabilities: []
 requires: []
 see_also: [repo-structure, clean-code]
+tags: []
 ---
 
 # File Taxonomy — Where Does This File Go?

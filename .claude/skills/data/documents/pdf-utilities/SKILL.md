@@ -6,6 +6,7 @@ description: "Read, extract, edit, and manipulate PDF documents including table 
 globs:
   - src/assetutilities/modules/pdf_utilities/**
 alwaysApply: false
+tags: []
 ---
 
 # PDF Utilities Skill

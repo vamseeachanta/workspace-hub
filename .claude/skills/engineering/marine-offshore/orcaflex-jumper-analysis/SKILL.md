@@ -11,6 +11,7 @@ promoted: 2026-02-18
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # OrcaFlex Jumper Analysis Skill

@@ -16,6 +16,7 @@ related_skills:
   - compliance-check
 requires: []
 see_also: []
+tags: []
 ---
 
 # Legal Sanity Skill

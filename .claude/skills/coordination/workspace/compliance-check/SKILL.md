@@ -22,6 +22,7 @@ related_skills:
   - workspace-cli
 requires: []
 see_also: []
+tags: []
 ---
 
 # Compliance Check Skill

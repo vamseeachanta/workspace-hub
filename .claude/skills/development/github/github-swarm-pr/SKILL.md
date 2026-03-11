@@ -4,6 +4,7 @@ description: Pull request swarm management for multi-agent code review and valid
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub Swarm PR Skill

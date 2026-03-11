@@ -21,6 +21,7 @@ triggers:
 - .DAT files
 - .MES files
 canonical_ref: "engineering/marine-offshore/aqwa-analysis"
+tags: []
 ---
 # AQWA Analysis Skill
 

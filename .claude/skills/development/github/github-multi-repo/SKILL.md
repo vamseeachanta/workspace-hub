@@ -4,6 +4,7 @@ description: Cross-repository swarm orchestration for organization-wide automati
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # GitHub Multi-Repo Skill

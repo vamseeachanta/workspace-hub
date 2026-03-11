@@ -4,6 +4,7 @@ description: Perform offshore field development economic analysis with NPV, MIRR
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # FDAS Economics Skill

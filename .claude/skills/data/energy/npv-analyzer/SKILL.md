@@ -4,6 +4,7 @@ description: Perform NPV analysis and economic evaluation for oil & gas assets. 
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # NPV Analyzer

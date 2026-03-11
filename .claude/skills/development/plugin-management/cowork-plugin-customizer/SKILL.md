@@ -9,6 +9,7 @@ related_skills: []
 capabilities: []
 requires: []
 see_also: []
+tags: []
 ---
 
 # Cowork Plugin Customization

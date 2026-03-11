@@ -6,6 +6,7 @@ description: Perform structural analysis including stress calculations, buckling
   wall thickness assessment, and safety factor reporting.
 updated: '2026-02-15'
 canonical_ref: "engineering/marine-offshore/structural-analysis"
+tags: []
 ---
 # Structural Analysis Skill
 
