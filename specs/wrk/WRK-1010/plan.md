@@ -18,12 +18,17 @@
 
 **Exit artifact:** `specs/skills/skill-knowledge-map.md`
 
-## Phase 1 — Capability Evaluation (per skill)
+## Phase 1 — Capability Evaluation (per skill) — Static/Heuristic
+
+**Scope:** Static analysis of SKILL.md content only (no runtime model execution).
 
 For each of the 8 skills:
 - Define 3-5 core claimed behaviors from SKILL.md
-- Design 1 representative task that exercises those behaviors
-- Score: pass (behavior manifests) / partial / fail
+- Assess whether the skill provides sufficient protocol/procedure for each behavior
+  (i.e., would a model following this skill produce the claimed output?)
+- Score: pass (claim is fully specified with verifiable exit conditions) /
+         partial (claim present but vague or missing exit artifact) /
+         fail (claim made but no procedural guidance given)
 
 Record in scorecard table in `specs/skills/capability-assessment-wrk-624-skills.md`.
 
@@ -35,21 +40,32 @@ Record in scorecard table in `specs/skills/capability-assessment-wrk-624-skills.
 
 ## Phase 3 — Skill vs Skill Overlap Analysis
 
-Evaluate 4 pairs for overlap:
+**3A — Coarse full-matrix scan (all 8 skills):**
+Build an 8×8 overlap matrix at coarse level. For each pair, assess: do they share
+triggers, claim the same outputs, or describe the same workflow step?
+Score: 0=clearly disjoint, 1=some shared vocabulary, 2=overlapping claims, 3=full redundancy.
+Identify top pairs by score for deep-dive.
+
+**3B — Deep review of top-overlap pairs (initially 4):**
 - `work-queue` vs `work-queue-workflow` — lifecycle routing overlap?
 - `workflow-gatepass` vs `wrk-lifecycle-testpack` — gate compliance overlap?
 - `session-start` vs `work-queue` — session-init redundancy?
 - `comprehensive-learning` vs `workspace-hub:improve` — scope boundary clear?
+(Expand to other high-scoring pairs if 3A reveals new candidates)
 
 Score overlap: 0-3 (0=no overlap, 3=full redundancy → merge/retire)
 
-## Phase 4 — Procedural Compliance Eval
+## Phase 4 — Procedural Completeness Eval — Static/Heuristic
+
+**Scope:** Static analysis only — evaluate documentation quality, not runtime compliance.
 
 For skills with prescribed step sequences (session-start, workflow-gatepass,
 work-queue-workflow):
-- List required stage order from SKILL.md
-- Verify model follows it when skill is injected
-- Score: stages-followed / total-required
+- List required stage order as defined in SKILL.md
+- Assess whether each stage has: clear trigger, exit artifact, and blocking condition
+- Score: stages-with-complete-spec / total-stages
+  (0.0 = none fully specified, 1.0 = all stages have complete spec)
+- Note: runtime compliance testing deferred to WRK-1009 (eval framework)
 
 ## Deliverables
 
@@ -63,15 +79,23 @@ work-queue-workflow):
 ## Approach Notes
 
 - Phase 0 verifiable: all 8 SKILL.md files read and boundary tables populated
-- Capability scores are reproducible by re-reading the SKILL.md claims
-- Delta scores are documented reasoning (not automated), but grounded in SKILL.md claims
-- At least 1 concrete retirement or merge recommendation required before Stage 12 passes
+- Capability scores cite the exact SKILL.md section supporting the score
+- Delta score rubric: 0=no unique protocol, 1=minor terminology aid,
+  3=material workflow scaffolding, 5=strong deterministic protocol with artifacts/blockers/handoffs
+- Recommendation gate: "at least 1 concrete recommendation" — valid outcomes include
+  retain-with-clarification, tighten-boundaries, merge, or retire (no forced retirement)
+- Assessment doc per-skill schema: claimed behaviors | SKILL.md citation | score |
+  rationale | delta | overlap notes | recommendation
 
 ## Tough Questions
 
 1. **Is a "with vs without" eval feasible without running actual tasks?**
-   → For this manual run: yes — we assess based on skill content richness (does it
-   add protocol/procedure a bare model wouldn't have?). WRK-1009 will add runtime evals.
+   → YES (Gemini MINOR resolved): This entire WRK is static/heuristic analysis of
+   SKILL.md content. "With skill" = model has protocol/procedure specified in SKILL.md.
+   "Without skill" = bare model has no such protocol. Delta score reflects how much
+   procedural guidance the skill adds beyond what a capable model would do naturally.
+   Runtime execution tests are out of scope — deferred to WRK-1009.
+   Phases 1 and 4 have been updated to be explicit about static-only scope.
 
 2. **What if cross-review skill has no SKILL.md?**
    → Treat inline documentation in work-queue-workflow/SKILL.md as its definition.
@@ -97,7 +121,7 @@ work-queue-workflow):
 - [ ] All 8 skills assessed across all 4 eval dimensions
 - [ ] Per-skill scorecard with delta scores (with vs without)
 - [ ] Skill-vs-skill overlap matrix for 4 pairs
-- [ ] At least one concrete retirement or merge recommendation with evidence
+- [ ] At least one concrete recommendation (retain/refine/merge/retire) with evidence
 - [ ] Follow-up WRK items captured for each recommendation
 - [ ] Assessment links back to WRK-624 governance review findings
 - [ ] Knowledge map updated post-assessment with boundary corrections
