@@ -416,3 +416,4 @@ logs/quality/*.log
 knowledge-base/*.jsonl
 knowledge-base/*.lock
 knowledge-base/*.tmp
+.worktrees/
