@@ -4,12 +4,18 @@ recommendations:
   - id: FW-1
     title: "Infer better status for working/ items without checkpoint (ACTIVE vs READY)"
     priority: low
+    status: open
+    captured: true
+    disposition: spun-off-new
     rationale: >
-      Items in working/ with no checkpoint show READY which is technically misleading.
+      Items in working/ with no checkpoint show READY which is misleading.
       Could show ACTIVE as default for working/ items.
   - id: FW-2
     title: "Auto-write session-lock.yaml from start_stage.py"
     priority: medium
+    status: open
+    captured: true
+    disposition: spun-off-new
     rationale: >
       The SKILL.md session-lock write note is prose guidance. Automate it in
       start_stage.py so every stage entry refreshes the lock without manual copy-paste.

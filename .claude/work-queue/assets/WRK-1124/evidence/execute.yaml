@@ -9,11 +9,25 @@ files_changed:
     edit_type: modify
     purpose: Add session-lock.yaml write instruction to session-resume path
 tests_run:
-  - bash -n scripts/work-queue/whats-next.sh  # syntax OK
-  - bash scripts/work-queue/whats-next.sh --category harness  # live output verified
+  - bash -n scripts/work-queue/whats-next.sh
+  - bash scripts/work-queue/whats-next.sh --category harness
 result: PASS
 integrated_repo_tests:
-  - name: whats-next live run
+  - name: syntax check
     scope: integrated
     result: pass
-    notes: All 6 ACs verified via live output
+    command: bash -n scripts/work-queue/whats-next.sh
+    artifact_ref: scripts/work-queue/whats-next.sh
+    notes: whats-next.sh passes bash syntax check
+  - name: checkpoint items in UNCLAIMED
+    scope: integrated
+    result: pass
+    command: bash scripts/work-queue/whats-next.sh --category harness
+    artifact_ref: scripts/work-queue/whats-next.sh
+    notes: WRK-1109 and WRK-1123 surfaced in UNCLAIMED via checkpoint.yaml
+  - name: Stage+Status+PID columns visible
+    scope: integrated
+    result: pass
+    command: bash scripts/work-queue/whats-next.sh --category harness
+    artifact_ref: scripts/work-queue/whats-next.sh
+    notes: All rows show Stage N / — and WAITING/START/READY; WRK-1069 shows PID
