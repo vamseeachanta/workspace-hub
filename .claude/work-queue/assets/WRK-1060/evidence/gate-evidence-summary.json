@@ -1,6 +1,6 @@
 {
   "wrk_id": "WRK-1060",
-  "phase": "claim",
+  "phase": "archive",
   "summary_file": "assets/WRK-1060/evidence/gate-evidence-summary.json",
   "gates": [
     {
@@ -36,21 +36,21 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "matched routing:['work_queue_skill'], plan:['plan_draft_complete']"
+      "details": "matched routing:['work_queue_skill'], plan:['plan_draft_complete'], execute:['execute_wrapper_complete'], cross-review:['agent_cross_review']"
     },
     {
       "name": "User-review HTML-open gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml: stages=['plan_draft', 'plan_final']"
+      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml: stages=['plan_draft', 'plan_final']"
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
@@ -78,7 +78,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "approval ordering OK (phase=claim)"
+      "details": "approval ordering OK (phase=archive)"
     },
     {
       "name": "Midnight UTC sentinel gate",
@@ -116,11 +116,11 @@
       "details": "all timestamp fields have time components"
     },
     {
-      "name": "Stage1 capture gate",
-      "status": "PASS",
-      "ok": true,
-      "warn": false,
-      "details": "stage1 capture gate passed: reviewer=vamsee, confirmed_at=2026-03-11T12:00:00Z"
+      "name": "Archive readiness gate",
+      "status": "WARN",
+      "ok": false,
+      "warn": true,
+      "details": "archive-tooling.yaml: document_index_ref absent \u2014 exemption accepted: hub-only item \u2014 quality scripts and harness config only"
     }
   ]
 }

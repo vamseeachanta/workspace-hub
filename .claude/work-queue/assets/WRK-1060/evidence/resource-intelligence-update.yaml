@@ -1,0 +1,19 @@
+wrk_id: WRK-1060
+updated_at: "2026-03-11T19:35:00Z"
+no_additions_rationale: >
+  Existing resource-intelligence.yaml captured the relevant facts.
+  New learnings captured in future-work.yaml FW-1..4.
+
+new_patterns_learned:
+  - worldenergydata has yamllint, commitizen, windows_path_guard already in pre-commit
+  - hardcoded coverage maps need verification against actual .pre-commit-config.yaml
+  - partial_for pattern in coverage map works well for repo-specific overrides
+
+artifacts_produced:
+  - scripts/quality/quality_gap_report.py
+  - config/quality/quality-gap-report.yaml
+  - scripts/quality/check-all.sh (--gap flag)
+
+tools_confirmed:
+  - check-all.sh already runs ruff check . across repo root (covers scripts/ implicitly)
+  - api-audit.py available but not in any repo pre-commit (future work FW-3)

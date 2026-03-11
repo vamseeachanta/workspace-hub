@@ -1,0 +1,32 @@
+wrk_id: WRK-1060
+stage: 15
+recommendations:
+  - id: FW-1
+    title: "Add contract tests reading .pre-commit-config.yaml for coverage accuracy"
+    priority: medium
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Codex review noted tests validate map against itself — contract tests prevent map drift"
+  - id: FW-2
+    title: "Extend gap report to parse .pre-commit-config.yaml dynamically"
+    priority: low
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Derive coverage from actual repo configs instead of hardcoded map"
+  - id: FW-3
+    title: "Add pydocstyle (ruff D rules) to assetutilities/assethold check-all.sh --docs"
+    priority: medium
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Top cross-cutting gap affecting 4 repos; low effort"
+  - id: FW-4
+    title: "Wire ratchet gates (mypy, complexity) into per-repo pre-commit"
+    priority: high
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Baselines exist; integration gap prevents enforcement on commit"
+no_follow_ups_rationale: "Core feature complete. FW-1..4 captured for follow-up."

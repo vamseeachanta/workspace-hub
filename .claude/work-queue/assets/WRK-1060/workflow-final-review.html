@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WRK-1060 - Final Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    .meta { display: grid; grid-template-columns: repeat(5, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+    .pill { background: #f5f5f5; border: 1px solid #ddd; padding: 8px; border-radius: 8px; }
+    .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 8px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { background: #f3f3f3; padding: 1px 4px; }
+  </style>
+</head>
+<body>
+  <h1>WRK-1060 Final Review</h1>
+  <div class="meta">
+    <div class="pill"><strong>Title</strong><br>feat(harness): quality gap discovery — audit folders not covered by quality checks</div>
+    <div class="pill"><strong>Status</strong><br>working</div>
+    <div class="pill"><strong>Route</strong><br>-</div>
+    <div class="pill"><strong>Orchestrator</strong><br>claude</div>
+    <div class="pill"><strong>Provider</strong><br>claude</div>
+  </div>
+
+  <details open><summary><strong>Prompt Start Context</strong> — - Walk all tier-1 repo dirs; classify each path against known check coverage - Report uncovered dirs/file types (e.g. notebooks, data/, conf...</summary><div class="panel"><ul>
+<li>Walk all tier-1 repo dirs; classify each path against known check coverage</li>
+<li>Report uncovered dirs/file types (e.g. notebooks, data/, config/, scripts/)</li>
+<li>For each gap: propose which check tool applies and estimated effort</li>
+<li>Output: gap report YAML + human-readable summary</li>
+</ul></div></details>
+
+  <details open><summary><strong>Why</strong> — Quality checks are only as good as their coverage. Blind spots in folder structure accumulate technical debt silently.</summary><div class="panel"><p>Quality checks are only as good as their coverage. Blind spots in folder
+structure accumulate technical debt silently.</p></div></details>
+
+  <details open><summary><strong>Acceptance Criteria</strong> — - [ ] Gap discovery script walks all 5 repos - [ ] Uncovered dirs/file types listed with check tool recommendation - [ ] Gap report YAML pro...</summary><div class="panel"><ul>
+<li>[ ] Gap discovery script walks all 5 repos</li>
+<li>[ ] Uncovered dirs/file types listed with check tool recommendation</li>
+<li>[ ] Gap report YAML produced</li>
+<li>[ ] At least one gap addressed with a concrete new check or WRK capture</li>
+<li>[ ] Codex cross-review passes</li>
+</ul></div></details>
+
+  <details open><summary><strong>Plan</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Plan Review Artifacts</strong> — # WRK-1060 Plan Review — Final confirmed_by: vamsee confirmed_at: 2026-03-11T12:10:00Z decision: passed Plan approved via ExitPlanMode. Rout...</summary><div class="panel"><h4>Draft</h4><h1>WRK-1060 Plan Review — Final</h1>
+<p>confirmed_by: vamsee
+confirmed_at: 2026-03-11T12:10:00Z
+decision: passed</p>
+<p>Plan approved via ExitPlanMode. Route B confirmed.
+Spec: specs/wrk/WRK-1060/wrk-1060-quality-gap-discovery.md</p><h4>Final</h4><h1>WRK-1060 Plan Review — Final</h1>
+<p>confirmed_by: vamsee
+confirmed_at: 2026-03-11T12:10:00Z
+decision: passed</p>
+<p>Plan approved via ExitPlanMode. Route B confirmed.
+Spec: specs/wrk/WRK-1060/wrk-1060-quality-gap-discovery.md</p></div></details>
+
+  <details open><summary><strong>Execution Brief</strong> — No summary available.</summary><div class="panel"><p>Not available.</p></div></details>
+
+  <details open><summary><strong>Cross-Review Summary</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Test Summary</strong> — 3 integrated/repo tests recorded.</summary><div class="panel"><table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Scope</th><th>Result</th><th>Command</th><th>Artifact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>pytest unit tests (quality_gap_report.py)</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python -m pytest scripts/quality/tests/test_quality_gap_report.py -v</code></td><td>.claude/work-queue/assets/WRK-1060/ac-test-matrix.md</td></tr><tr><td>2</td><td>smoke test (check-all.sh --gap)</td><td>integrated</td><td>pass</td><td><code>bash scripts/quality/check-all.sh --gap --repo assetutilities</code></td><td>.claude/work-queue/assets/WRK-1060/ac-test-matrix.md</td></tr><tr><td>3</td><td>full 5-repo gap report</td><td>integrated</td><td>pass</td><td><code>uv run --no-project python scripts/quality/quality_gap_report.py</code></td><td>config/quality/quality-gap-report.yaml</td></tr>
+    </tbody>
+  </table></div></details>
+
+  <details open><summary><strong>Gate Evidence Summary</strong> — # Gate Evidence Summary (WRK-1060, phase=close) | Gate | Status | Details | |---|---|---| | Plan gate | PASS | reviewed=True, approved=True,...</summary><div class="panel"><h1>Gate Evidence Summary (WRK-1060, phase=close)</h1>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan gate</td>
+<td>PASS</td>
+<td>reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmed_by=present, confirmed_at=present, decision=passed</td>
+</tr>
+<tr>
+<td>Workstation contract gate</td>
+<td>PASS</td>
+<td>plan_workstations=[ace-linux-1], execution_workstations=[ace-linux-1]</td>
+</tr>
+<tr>
+<td>Stage evidence gate</td>
+<td>PASS</td>
+<td>stage-evidence.yaml: stages=20, contract=20-stage</td>
+</tr>
+<tr>
+<td>Resource-intelligence gate</td>
+<td>PASS</td>
+<td>resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=4</td>
+</tr>
+<tr>
+<td>Activation gate</td>
+<td>PASS</td>
+<td>activation.yaml: activation evidence OK</td>
+</tr>
+<tr>
+<td>Agent log gate</td>
+<td>PASS</td>
+<td>matched routing:['work_queue_skill'], plan:['plan_draft_complete'], execute:['execute_wrapper_complete'], cross-review:['agent_cross_review']</td>
+</tr>
+<tr>
+<td>User-review HTML-open gate</td>
+<td>PASS</td>
+<td>user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>User-review publish gate</td>
+<td>PASS</td>
+<td>user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']</td>
+</tr>
+<tr>
+<td>Cross-review gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1060/review.md</td>
+</tr>
+<tr>
+<td>TDD gate</td>
+<td>PASS</td>
+<td>test files=['ac-test-matrix.md']</td>
+</tr>
+<tr>
+<td>Integrated test gate</td>
+<td>PASS</td>
+<td>execute.yaml: integrated_repo_tests=3 (all passing)</td>
+</tr>
+<tr>
+<td>Legal gate</td>
+<td>PASS</td>
+<td>artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1060/legal-scan.md, result=PASS — no violations found</td>
+</tr>
+<tr>
+<td>Claim gate</td>
+<td>PASS</td>
+<td>claim-evidence.yaml: version=1, owner=unknown, quota=available(null)</td>
+</tr>
+<tr>
+<td>Future-work gate</td>
+<td>PASS</td>
+<td>future-work.yaml: recommendations=4</td>
+</tr>
+<tr>
+<td>Resource-intelligence update gate</td>
+<td>PASS</td>
+<td>resource-intelligence-update.yaml: no_additions_rationale=present</td>
+</tr>
+<tr>
+<td>User-review close gate</td>
+<td>PASS</td>
+<td>user-review-close.yaml: decision=approved</td>
+</tr>
+<tr>
+<td>Reclaim gate</td>
+<td>WARN</td>
+<td>reclaim.yaml absent (no reclaim triggered — WARN)</td>
+</tr>
+<tr>
+<td>Approval ordering gate</td>
+<td>PASS</td>
+<td>approval ordering OK (phase=close)</td>
+</tr>
+<tr>
+<td>Midnight UTC sentinel gate</td>
+<td>PASS</td>
+<td>no midnight UTC sentinel found</td>
+</tr>
+<tr>
+<td>Browser open elapsed time gate</td>
+<td>PASS</td>
+<td>browser open elapsed time OK</td>
+</tr>
+<tr>
+<td>Sentinel values gate</td>
+<td>PASS</td>
+<td>no sentinel values found</td>
+</tr>
+<tr>
+<td>Claim artifact path gate</td>
+<td>PASS</td>
+<td>canonical claim artifact found: claim-evidence.yaml</td>
+</tr>
+<tr>
+<td>ISO datetime format gate</td>
+<td>PASS</td>
+<td>all timestamp fields have time components</td>
+</tr>
+<tr>
+<td>Codex keyword in review gate</td>
+<td>PASS</td>
+<td>codex keyword found in review artifacts (1 file(s) checked)</td>
+</tr>
+<tr>
+<td>Publish commit uniqueness gate</td>
+<td>PASS</td>
+<td>publish commits appear unique across stages</td>
+</tr>
+<tr>
+<td>Stage evidence paths gate</td>
+<td>PASS</td>
+<td>all stage evidence paths verified</td>
+</tr>
+<tr>
+<td>Done/pending contradiction gate</td>
+<td>PASS</td>
+<td>no done/pending contradictions found</td>
+</tr>
+<tr>
+<td>Plan publish predates approval gate</td>
+<td>PASS</td>
+<td>reviewed_at missing in user-review-plan-draft.yaml — skip</td>
+</tr>
+<tr>
+<td>Workstation contract (strict) gate</td>
+<td>PASS</td>
+<td>workstation contract fields present</td>
+</tr>
+<tr>
+<td>Reclaim n/a gate</td>
+<td>WARN</td>
+<td>n/a: Stage 18 is n/a and no reclaim log exists</td>
+</tr>
+</tbody>
+</table></div></details>
+
+  <details open><summary><strong>Resource Intelligence</strong> — No summary available.</summary><div class="panel"><h4>Resource Summary</h4><p><em>Not available.</em></p><h4>Resource Pack</h4><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Skill Manifest</strong> — No summary available.</summary><div class="panel"><p><em>Not available.</em></p></div></details>
+
+  <details open><summary><strong>Future Work</strong> — wrk_id: WRK-1060 stage: 15 recommendations: - id: FW-1 title: &quot;Add contract tests reading .pre-commit-config.yaml for coverage accuracy&quot; pri...</summary><div class="panel"><p>wrk_id: WRK-1060
+stage: 15
+recommendations:
+  - id: FW-1
+    title: "Add contract tests reading .pre-commit-config.yaml for coverage accuracy"
+    priority: medium
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Codex review noted tests validate map against itself — contract tests prevent map drift"
+  - id: FW-2
+    title: "Extend gap report to parse .pre-commit-config.yaml dynamically"
+    priority: low
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Derive coverage from actual repo configs instead of hardcoded map"
+  - id: FW-3
+    title: "Add pydocstyle (ruff D rules) to assetutilities/assethold check-all.sh --docs"
+    priority: medium
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Top cross-cutting gap affecting 4 repos; low effort"
+  - id: FW-4
+    title: "Wire ratchet gates (mypy, complexity) into per-repo pre-commit"
+    priority: high
+    status: open
+    captured: true
+    disposition: spun-off-new
+    notes: "Baselines exist; integration gap prevents enforcement on commit"
+no_follow_ups_rationale: "Core feature complete. FW-1..4 captured for follow-up."</p></div></details>
+
+  <details open><summary><strong>Stage Evidence Ledger</strong> — wrk_id: WRK-1060 generated_at: &#x27;2026-03-11T18:59:17Z&#x27; reviewed_by: claude autonomy_maturity_level: L2 human_steers_agents_execute: true stag...</summary><div class="panel"><p>wrk_id: WRK-1060
+generated_at: '2026-03-11T18:59:17Z'
+reviewed_by: claude
+autonomy_maturity_level: L2
+human_steers_agents_execute: true
+stages:
+- order: 1
+  stage: Capture
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: WRK created with baseline metadata.
+  evidence: .claude/work-queue/working/WRK-1060.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Resource/document intelligence pack captured.
+  evidence: .claude/work-queue/assets/WRK-1060/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Route, priority, complexity, and workstations set.
+  evidence: .claude/work-queue/working/WRK-1060.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Draft plan and artifact generated.
+  evidence: specs/wrk/WRK-1060/wrk-1060-quality-gap-discovery.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Tough questions, tradeoffs, and test/eval updates reviewed.
+  evidence: .claude/work-queue/assets/WRK-1060/plan-html-review-final.md
+- order: 6
+  stage: Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Multi-provider review completed.
+  evidence: scripts/review/results/wrk-1060-phase-1-review-input.md
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Final plan reviewed with gate-pass section.
+  evidence: .claude/work-queue/assets/WRK-1060/plan-html-review-final.md
+- order: 8
+  stage: Claim / Activation
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Claim evidence and active WRK set.
+  evidence: .claude/work-queue/assets/WRK-1060/evidence/claim-evidence.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Entered canonical /work route.
+  evidence: .claude/work-queue/logs/WRK-1060-routing.log
+- order: 10
+  stage: Work Execution
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Implementation completed under active claim.
+  evidence: .claude/work-queue/assets/WRK-1060/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Review artifacts generated.
+  evidence: .claude/work-queue/assets/WRK-1060/WRK-1060-lifecycle.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Tests/evals completed and recorded.
+  evidence: .claude/work-queue/assets/WRK-1060/ac-test-matrix.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  human_decision_required: 'no'
+  owner: agents
+  blocker: 'no'
+  comment: Implementation cross-review package complete.
+  evidence: .claude/work-queue/assets/WRK-1060/review.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Gate verifier passed.
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Follow-up disposition captured.
+  evidence: .claude/work-queue/assets/WRK-1060/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: New resources captured post execution.
+  evidence: .claude/work-queue/assets/WRK-1060/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: done
+  human_decision_required: 'yes'
+  owner: user + orchestrator
+  blocker: 'no'
+  comment: Close package reviewed including gate-pass section.
+  evidence: .claude/work-queue/assets/WRK-1060/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  human_decision_required: 'no'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Not needed in this run.
+  evidence: n/a
+- order: 19
+  stage: Close
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting final close operation.
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  human_decision_required: 'yes'
+  owner: orchestrator
+  blocker: 'no'
+  comment: Awaiting merge/sync completion.
+  evidence: scripts/work-queue/archive-item.sh</p></div></details>
+
+  <details open><summary><strong>Asset Index</strong> — 24 assets indexed.</summary><div class="panel"><ul><li><code>WRK-1060-lifecycle.html</code></li><li><code>ac-test-matrix.md</code></li><li><code>claim-evidence.yaml</code></li><li><code>evidence/activation.yaml</code></li><li><code>evidence/claim-evidence.yaml</code></li><li><code>evidence/cross-review.yaml</code></li><li><code>evidence/execute.yaml</code></li><li><code>evidence/future-work.yaml</code></li><li><code>evidence/gate-evidence-summary.json</code></li><li><code>evidence/gate-evidence-summary.md</code></li><li><code>evidence/legal-scan.md</code></li><li><code>evidence/plan-final-review.yaml</code></li><li><code>evidence/resource-intelligence-update.yaml</code></li><li><code>evidence/resource-intelligence.yaml</code></li><li><code>evidence/stage-evidence.yaml</code></li><li><code>evidence/user-review-browser-open.yaml</code></li><li><code>evidence/user-review-capture.yaml</code></li><li><code>evidence/user-review-close.yaml</code></li><li><code>evidence/user-review-common-draft.yaml</code></li><li><code>evidence/user-review-plan-draft.yaml</code></li><li><code>evidence/user-review-publish.yaml</code></li><li><code>legal-scan.md</code></li><li><code>plan-html-review-final.md</code></li><li><code>review.md</code></li></ul></div></details>
+</body>
+</html>

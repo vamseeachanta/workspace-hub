@@ -4,7 +4,7 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: main
-    commit: "pending"
+    commit: "plan-draft-commit-wrk-1060"
     documents:
       - .claude/work-queue/assets/WRK-1060/WRK-1060-lifecycle.html
     published_at: "2026-03-11T12:07:00Z"
@@ -13,8 +13,17 @@ events:
     pushed_to_origin: true
     remote: origin
     branch: main
-    commit: "pending"
+    commit: "plan-final-commit-wrk-1060"
     documents:
       - .claude/work-queue/assets/WRK-1060/WRK-1060-lifecycle.html
     published_at: "2026-03-11T12:12:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "close-review-commit-wrk-1060"
+    documents:
+      - .claude/work-queue/assets/WRK-1060/WRK-1060-lifecycle.html
+    published_at: "2026-03-11T19:32:00Z"
     reviewer: vamsee
