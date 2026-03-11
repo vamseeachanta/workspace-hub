@@ -1,0 +1,829 @@
+# Permission audit merge — WRK-1119
+# threshold: 5 (minimum combined count)
+
+already_covered:  # 17 patterns
+  - prefix: ls
+    count: 9690
+    pattern: "Bash(ls:*)"
+  - prefix: python3
+    count: 1500
+    pattern: "Bash(python3:*)"
+  - prefix: git add
+    count: 1158
+    pattern: "Bash(git add:*)"
+  - prefix: wc
+    count: 850
+    pattern: "Bash(wc:*)"
+  - prefix: git log
+    count: 507
+    pattern: "Bash(git log:*)"
+  - prefix: git diff
+    count: 496
+    pattern: "Bash(git diff:*)"
+  - prefix: git commit
+    count: 261
+    pattern: "Bash(git commit:*)"
+  - prefix: which
+    count: 170
+    pattern: "Bash(which:*)"
+  - prefix: git stash
+    count: 59
+    pattern: "Bash(git stash:*)"
+  - prefix: git pull
+    count: 41
+    pattern: "Bash(git pull:*)"
+  - prefix: pwd
+    count: 32
+    pattern: "Bash(pwd)"
+  - prefix: jq
+    count: 30
+    pattern: "Bash(jq:*)"
+  - prefix: tree
+    count: 29
+    pattern: "Bash(tree:*)"
+  - prefix: ./scripts/repository_sync
+    count: 25
+    pattern: "Bash(./scripts/*:*)"
+  - prefix: git checkout
+    count: 17
+    pattern: "Bash(git checkout:*)"
+  - prefix: python
+    count: 7
+    pattern: "Bash(python:*)"
+  - prefix: git branch
+    count: 6
+    pattern: "Bash(git branch:*)"
+
+suggested_additions:  # 193 patterns
+  - prefix: grep
+    count: 6266
+    suggested_allow_pattern: "Bash(grep:*)"
+    example_command: "grep -rl \'CAD-DEVELOPMENTS\|cad-dev\|FEA\|hull\|mesh\|calculix\|freecad\|fcstd\' /mnt/workspace-hub/.claude/work-queue/pending/ 2>/dev/null | sort"
+  - prefix: cat
+    count: 5944
+    suggested_allow_pattern: "Bash(cat:*)"
+    example_command: "cat /mnt/local-analysis/workspace-hub/.claude/work-queue/working/WRK-1049* 2>/dev/null || ls /mnt/local-analysis/workspace-hub/.claude/work-queue/working/ 2>/dev/null"
+  - prefix: uv run
+    count: 5258
+    suggested_allow_pattern: "Bash(uv run:*)"
+    example_command: "uv run --no-project python scripts/work-queue/start_stage.py WRK-1097 2 2>&1 | head -40"
+  - prefix: cd
+    count: 4848
+    suggested_allow_pattern: "Bash(cd:*)"
+    example_command: "cd /mnt/workspace-hub/CAD-DEVELOPMENTS && python3 -c \"
+  - prefix: find
+    count: 4195
+    suggested_allow_pattern: "Bash(find:*)"
+    example_command: "find /mnt/local-analysis/workspace-hub/.claude/work-queue -name \'WRK-1049*\' 2>/dev/null"
+  - prefix: bash
+    count: 2728
+    suggested_allow_pattern: "Bash(bash:*)"
+    example_command: "bash -n /mnt/workspace-hub/scripts/setup/weekly-engineering-update.sh && echo \'weekly-engineering-update.sh: syntax OK\"
+  - prefix: git
+    count: 2045
+    suggested_allow_pattern: "Bash(git:*)"
+    example_command: "git -C /mnt/local-analysis/workspace-hub log --oneline -1 | awk '{print $1}"
+  - prefix: sed
+    count: 1569
+    suggested_allow_pattern: "Bash(sed:*)"
+    example_command: "sed -i \'s/^last_id:.*/last_id: 1106/\' .claude/work-queue/state.yaml && uv run --no-project python .claude/work-queue/scripts/generate-index.py 2>&1 | tail -3"
+  - prefix: head
+    count: 914
+    suggested_allow_pattern: "Bash(head:*)"
+    example_command: "head -10 /mnt/workspace-hub/.claude/work-queue/pending/WRK-608.md /mnt/workspace-hub/.claude/work-queue/pending/WRK-609.md /mnt/workspace-hub/.claude/work-queue/pending/WRK-616.md /mnt/workspace-hub/.claude/work-queue/pending/WRK-630.md 2>/dev/null"
+  - prefix: timeout
+    count: 776
+    suggested_allow_pattern: "Bash(timeout:*)"
+    example_command: "timeout 10 claude plugin list 2>/tmp/plugin-err.txt 1>/tmp/plugin-out.txt; echo \'exit:$?\'; cat /tmp/plugin-out.txt; cat /tmp/plugin-err.txt"
+  - prefix: git status
+    count: 743
+    suggested_allow_pattern: "Bash(git status:*)"
+    example_command: "git status --short 2>&1 | head -40"
+  - prefix: mkdir
+    count: 730
+    suggested_allow_pattern: "Bash(mkdir:*)"
+    example_command: "mkdir -p /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-148 && cp \'/home/vamsee/Downloads/WhatSie/file.pdf\' /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-148/ace-gtm-strategy-2026-02-16.pdf"
+  - prefix: for
+    count: 691
+    suggested_allow_pattern: "Bash(for:*)"
+    example_command: "for f in .claude/work-queue/pending/WRK-*.md; do if ! grep -q \'## Plan\' \'$f\'; then basename \'$f\'; fi; done | head -20"
+  - prefix: PYTHONPATH=\"src:../assetutilities/src\
+    count: 683
+    suggested_allow_pattern: "Bash(PYTHONPATH=\"src:../assetutilities/src\":*)"
+    example_command: "PYTHONPATH=\'src:../assetutilities/src\' python3 -m pytest tests/unit/hse/ -v --tb=short --noconftest 2>&1 | tail -30"
+  - prefix: rm
+    count: 394
+    suggested_allow_pattern: "Bash(rm:*)"
+    example_command: "rm -f /tmp/md-to-pdf-test.md /tmp/md-to-pdf-test.html /tmp/md-to-pdf-test.png /tmp/md-to-pdf-test.pdf /tmp/md-to-pdf-nocover.pdf"
+  - prefix: ssh
+    count: 394
+    suggested_allow_pattern: "Bash(ssh:*)"
+    example_command: "ssh ace-linux-1 'cd /mnt/local-analysis/workspace-hub && git -C CAD-DEVELOPMENTS fetch origin 2>&1 && git -C CAD-DEVELOPMENTS status 2>&1 && echo \'---LOG---\' && git -C CAD-DEVELOPMENTS log --oneline -20 2>&1"
+  - prefix: echo
+    count: 389
+    suggested_allow_pattern: "Bash(echo:*)"
+    example_command: "echo \'$(cat /tmp/wrk-1097-plan-review.md)\' | gemini -p \'You are a senior engineer reviewing an implementation plan. Give a structured review with verdict: APPROVE, MINOR issues, or MAJOR issues. Be concise.\' -y 2>&1 | tail -60"
+  - prefix: cp
+    count: 279
+    suggested_allow_pattern: "Bash(cp:*)"
+    example_command: "cp \'/home/vamsee/Downloads/WhatSie/anumn_file.pdf\' /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-148/ace-gtm-strategy-styled-2026-02-16.pdf"
+  - prefix: PYTHONPATH='src:../assetutilities/src
+    count: 275
+    suggested_allow_pattern: "Bash(PYTHONPATH='src:../assetutilities/src':*)"
+    example_command: "PYTHONPATH='src:../assetutilities/src' python3 -m pytest tests/unit/sodir/ -v --tb=short --noconftest -q 2>&1 | tail -10"
+  - prefix: xdg-open
+    count: 271
+    suggested_allow_pattern: "Bash(xdg-open:*)"
+    example_command: "xdg-open /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/workflow-visual.html 2>/dev/null &"
+  - prefix: ps
+    count: 241
+    suggested_allow_pattern: "Bash(ps:*)"
+    example_command: "ps aux | grep \'test-harness-readiness\|nightly-readiness\|ai-agent\' | grep -v grep | head -5"
+  - prefix: git show
+    count: 225
+    suggested_allow_pattern: "Bash(git show:*)"
+    example_command: "git show 16ca0a46 --name-only | grep -E \'active-sessions|whats-next|start_stage|test_unclaimed|active-sessions/SKILL|whats-next/SKILL|session-start/SKILL|work-queue-workflow\' | head -20"
+  - prefix: tail
+    count: 203
+    suggested_allow_pattern: "Bash(tail:*)"
+    example_command: "tail -5 /tmp/claude-1000/-mnt-local-analysis-workspace-hub/tasks/a7c0417.output 2>/dev/null && echo \'---\' && tail -5 /tmp/claude-1000/-mnt-local-analysis-workspace-hub/tasks/a25a1a8.output 2>/dev/null && echo \'---\' && tail -5 /tmp/claude-1000/-mnt-local-analysis-workspace-hub/tasks/a2edf89.output 2>/dev/null"
+  - prefix: mv
+    count: 180
+    suggested_allow_pattern: "Bash(mv:*)"
+    example_command: "mv /mnt/local-analysis/workspace-hub/.claude/work-queue/pending/WRK-200.md /mnt/local-analysis/workspace-hub/.claude/work-queue/working/WRK-200.md && echo \'moved to working/\"
+  - prefix: chmod
+    count: 180
+    suggested_allow_pattern: "Bash(chmod:*)"
+    example_command: "chmod +x /mnt/local-analysis/workspace-hub/scripts/agents/tests/test-wrk-locking.sh && bash /mnt/local-analysis/workspace-hub/scripts/agents/tests/test-wrk-locking.sh"
+  - prefix: git push
+    count: 169
+    suggested_allow_pattern: "Bash(git push:*)"
+    example_command: "git push"
+  - prefix: \
+    count: 168
+    suggested_allow_pattern: "Bash(\:*)"
+    example_command: "\"
+  - prefix: PYTHONPATH=src
+    count: 135
+    suggested_allow_pattern: "Bash(PYTHONPATH=src:*)"
+    example_command: "PYTHONPATH=src python3 -m pytest tests/unit/analysis/daily_strategy/test_signals.py -v --tb=short --noconftest 2>&1 | tail -8"
+  - prefix: codex
+    count: 124
+    suggested_allow_pattern: "Bash(codex:*)"
+    example_command: "codex exec --help 2>&1 | head -30"
+  - prefix: python3 -m
+    count: 118
+    suggested_allow_pattern: "Bash(python3 -m:*)"
+    example_command: "python3 -m pytest /mnt/local-analysis/workspace-hub/assetutilities/tests/ --noconftest -q --tb=no 2>&1 | tail -20"
+  - prefix: CLAUDE_SESSION_ID=\"session-$(date
+    count: 108
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=\"session-$(date:*)"
+    example_command: "CLAUDE_SESSION_ID=\'session-$(date +%Y%m%d)-wrk-1047\' \"
+  - prefix: COMMIT=$(git
+    count: 103
+    suggested_allow_pattern: "Bash(COMMIT=$(git:*)"
+    example_command: "COMMIT=$(git rev-parse HEAD)"
+  - prefix: gh
+    count: 94
+    suggested_allow_pattern: "Bash(gh:*)"
+    example_command: "gh api repos/BEMRosetta/BEMRosetta/releases/latest --jq '.tag_name, .name, (.assets[] | \'\(.name) \(.browser_download_url)\')' 2>&1"
+  - prefix: lsof
+    count: 77
+    suggested_allow_pattern: "Bash(lsof:*)"
+    example_command: "lsof /mnt/local-analysis/workspace-hub/.git/index.lock 2>/dev/null || echo \'no process\"
+  - prefix: GIT_OPTIONAL_LOCKS=0
+    count: 70
+    suggested_allow_pattern: "Bash(GIT_OPTIONAL_LOCKS=0:*)"
+    example_command: "GIT_OPTIONAL_LOCKS=0 timeout 20 git -C /mnt/local-analysis/workspace-hub status --short --ignore-submodules --no-renames 2>&1"
+  - prefix: du
+    count: 63
+    suggested_allow_pattern: "Bash(du:*)"
+    example_command: "du -sh ~/.claude/projects/ /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/ /mnt/local-analysis/workspace-hub/.claude/state/ /mnt/local-analysis/workspace-hub/config/ /mnt/local-analysis/workspace-hub/logs/ 2>/dev/null"
+  - prefix: pip3
+    count: 56
+    suggested_allow_pattern: "Bash(pip3:*)"
+    example_command: "pip3 list --user 2>/dev/null | grep -iE 'meshio|pyfoam|pyvista|gmsh"
+  - prefix: git rev-parse
+    count: 54
+    suggested_allow_pattern: "Bash(git rev-parse:*)"
+    example_command: "git rev-parse --short HEAD"
+  - prefix: scripts/review/cross-review.sh
+    count: 53
+    suggested_allow_pattern: "Bash(scripts/review/cross-review.sh:*)"
+    example_command: "scripts/review/cross-review.sh scripts/review/results/wrk-1058-plan-review-input.md all --type plan 2>&1 | tail -30"
+  - prefix: pdftotext
+    count: 50
+    suggested_allow_pattern: "Bash(pdftotext:*)"
+    example_command: "pdftotext /mnt/local-analysis/workspace-hub/digitalmodel/docs/modules/artificial_lift/references/09_Predicting_the_Dynamometer_Card_of_a_Rod_Pump.pdf - 2>/dev/null | head -200"
+  - prefix: export
+    count: 50
+    suggested_allow_pattern: "Bash(export:*)"
+    example_command: "export CLAUDE_SESSION_ID=\'$(cat .claude/state/active-wrk 2>/dev/null || echo 'session-2026-03-11')\"
+  - prefix: file
+    count: 47
+    suggested_allow_pattern: "Bash(file:*)"
+    example_command: "file /usr/bin/gmsh; head -5 /usr/bin/gmsh 2>/dev/null; which python python3 2>&1"
+  - prefix: claude
+    count: 45
+    suggested_allow_pattern: "Bash(claude:*)"
+    example_command: "claude --help 2>&1 | grep -i \'usage\|quota\|stat\|credit\' || true"
+  - prefix: GIT_DIR=/mnt/local-analysis/workspace-hub/digitalmodel/.git
+    count: 44
+    suggested_allow_pattern: "Bash(GIT_DIR=/mnt/local-analysis/workspace-hub/digitalmodel/.git:*)"
+    example_command: "GIT_DIR=/mnt/local-analysis/workspace-hub/digitalmodel/.git GIT_WORK_TREE=/mnt/local-analysis/workspace-hub/digitalmodel git ls-files --error-unmatch src/digitalmodel/hydrodynamics/hull_library/lookup.py 2>&1"
+  - prefix: crontab
+    count: 42
+    suggested_allow_pattern: "Bash(crontab:*)"
+    example_command: "crontab -l 2>/dev/null | head -30; echo \'---\'; ssh ace-linux-2 \'echo SSH OK; df -h /mnt/ 2>/dev/null | head -5\' 2>&1 | head -10"
+  - prefix: scripts/review/submit-to-codex.sh
+    count: 41
+    suggested_allow_pattern: "Bash(scripts/review/submit-to-codex.sh:*)"
+    example_command: "scripts/review/submit-to-codex.sh --file /tmp/wrk-1056-plan-review.md 2>&1 &"
+  - prefix: journalctl
+    count: 36
+    suggested_allow_pattern: "Bash(journalctl:*)"
+    example_command: "journalctl --user -u org.gnome.Shell -b --no-pager 2>/dev/null | grep -i -E 'dock|dash|error' | tail -20"
+  - prefix: time
+    count: 35
+    suggested_allow_pattern: "Bash(time:*)"
+    example_command: "time bash /mnt/local-analysis/workspace-hub/scripts/readiness/nightly-readiness.sh > /tmp/nr_out.txt 2>&1; echo \'Exit: $?\'; wc -l /tmp/nr_out.txt"
+  - prefix: kill
+    count: 35
+    suggested_allow_pattern: "Bash(kill:*)"
+    example_command: "kill $(lsof -ti:8765) 2>/dev/null; echo \'HTTP server stopped\"
+  - prefix: PYTHONPATH=\"src:/mnt/local-analysis/workspace-hub/assetutilities/src\
+    count: 34
+    suggested_allow_pattern: "Bash(PYTHONPATH=\"src:/mnt/local-analysis/workspace-hub/assetutilities/src\":*)"
+    example_command: "PYTHONPATH=\'src:/mnt/local-analysis/workspace-hub/assetutilities/src\' python3 -m pytest tests/visualization/test_csv_parser.py tests/structural/fatigue/test_sn_curves.py -v --tb=short --noconftest -q 2>&1 | tail -15"
+  - prefix: NOW=$(date
+    count: 34
+    suggested_allow_pattern: "Bash(NOW=$(date:*)"
+    example_command: "NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  - prefix: date
+    count: 33
+    suggested_allow_pattern: "Bash(date:*)"
+    example_command: "date"
+  - prefix: SESSION_ID=$(cat
+    count: 32
+    suggested_allow_pattern: "Bash(SESSION_ID=$(cat:*)"
+    example_command: "SESSION_ID=$(cat logs/orchestrator/claude/session_*.jsonl 2>/dev/null | tail -1 | uv run --no-project python -c \'import sys,json; d=json.loads(sys.stdin.read()); print(d.get('session_id',''))\' 2>/dev/null) || SESSION_ID=$(date +%Y%m%d_%H%M%S)"
+  - prefix: SESSION_ID=$(date
+    count: 32
+    suggested_allow_pattern: "Bash(SESSION_ID=$(date:*)"
+    example_command: "SESSION_ID=$(date -u +%Y%m%dT%H%M%SZ)-$$"
+  - prefix: REPO=/mnt/local-analysis/workspace-hub/digitalmodel
+    count: 32
+    suggested_allow_pattern: "Bash(REPO=/mnt/local-analysis/workspace-hub/digitalmodel:*)"
+    example_command: "REPO=/mnt/local-analysis/workspace-hub/digitalmodel"
+  - prefix: rg
+    count: 30
+    suggested_allow_pattern: "Bash(rg:*)"
+    example_command: "rg \'python3\' scripts/ .claude/hooks/ .claude/work-queue/scripts/ --glob=\'*.sh\' | grep -v \'uv run\' | grep -v \'^\s*#\' | grep -v \'python3.*not\' | grep -v \'echo\|printf\|#\"
+  - prefix: test
+    count: 28
+    suggested_allow_pattern: "Bash(test:*)"
+    example_command: "test -f /mnt/local-analysis/workspace-hub/scripts/session/load-assessment.sh && echo \'EXISTS\' || echo \'MISSING\"
+  - prefix: SDIR=\"/mnt/local-analysis/workspace-hub/data/document-index/summaries\
+    count: 28
+    suggested_allow_pattern: "Bash(SDIR=\"/mnt/local-analysis/workspace-hub/data/document-index/summaries\":*)"
+    example_command: "SDIR=\'/mnt/local-analysis/workspace-hub/data/document-index/summaries\"
+  - prefix: dpkg
+    count: 27
+    suggested_allow_pattern: "Bash(dpkg:*)"
+    example_command: "dpkg -l | grep -E 'gnome-shell|ubuntu-desktop|kde-plasma|xfce4-panel|cinnamon' 2>/dev/null | head -20"
+  - prefix: HASH=$(git
+    count: 24
+    suggested_allow_pattern: "Bash(HASH=$(git:*)"
+    example_command: "HASH=$(git rev-parse HEAD)"
+  - prefix: ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1120
+    count: 24
+    suggested_allow_pattern: "Bash(ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1120:*)"
+    example_command: "ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1120"
+  - prefix: SUMDIR=\"/mnt/local-analysis/workspace-hub/data/document-index/summaries\
+    count: 24
+    suggested_allow_pattern: "Bash(SUMDIR=\"/mnt/local-analysis/workspace-hub/data/document-index/summaries\":*)"
+    example_command: "SUMDIR=\'/mnt/local-analysis/workspace-hub/data/document-index/summaries\"
+  - prefix: PYTHONPATH=digitalmodel/src
+    count: 23
+    suggested_allow_pattern: "Bash(PYTHONPATH=digitalmodel/src:*)"
+    example_command: "PYTHONPATH=digitalmodel/src python3 -m pytest digitalmodel/tests/specialized/cathodic_protection/test_cathodic_protection_b401.py -v 2>&1"
+  - prefix: systemctl
+    count: 23
+    suggested_allow_pattern: "Bash(systemctl:*)"
+    example_command: "systemctl --user status 2>/dev/null | head -5; echo \'---services---\'; systemctl list-units --state=failed 2>/dev/null | head -10"
+  - prefix: gemini
+    count: 20
+    suggested_allow_pattern: "Bash(gemini:*)"
+    example_command: "gemini -p \'Code review: is this bash script correct? Provide APPROVE/MINOR/MAJOR verdict with findings.\' -y < scripts/quality/check-all.sh 2>&1"
+  - prefix: bats
+    count: 20
+    suggested_allow_pattern: "Bash(bats:*)"
+    example_command: "bats tests/session-analysis/test_signal_file_detection.bats 2>&1"
+  - prefix: SESSION_ID=\"claude-$(date
+    count: 20
+    suggested_allow_pattern: "Bash(SESSION_ID=\"claude-$(date:*)"
+    example_command: "SESSION_ID=\'claude-$(date +%Y%m%d-%H%M%S)\"
+  - prefix: CODEX_TIMEOUT_SECONDS=180
+    count: 19
+    suggested_allow_pattern: "Bash(CODEX_TIMEOUT_SECONDS=180:*)"
+    example_command: "CODEX_TIMEOUT_SECONDS=180 scripts/review/submit-to-codex.sh --file scripts/review/results/wrk-1070-plan-review-input.md 2>&1 &"
+  - prefix: PYTHONPATH=/mnt/local-analysis/workspace-hub/digitalmodel/src
+    count: 19
+    suggested_allow_pattern: "Bash(PYTHONPATH=/mnt/local-analysis/workspace-hub/digitalmodel/src:*)"
+    example_command: "PYTHONPATH=/mnt/local-analysis/workspace-hub/digitalmodel/src uv --project /mnt/local-analysis/workspace-hub/digitalmodel run mypy /mnt/local-analysis/workspace-hub/digitalmodel/src/ --ignore-missing-imports 2>&1 | tail -10 && echo \'DIGITAL_DONE\"
+  - prefix: touch
+    count: 19
+    suggested_allow_pattern: "Bash(touch:*)"
+    example_command: "touch data/modules/bsee/bin/apichanges/.gitkeep && ls -la data/modules/bsee/bin/apichanges/.gitkeep"
+  - prefix: {
+    count: 18
+    suggested_allow_pattern: "Bash({:*)"
+    example_command: "{ crontab -l 2>/dev/null; echo \'# skills-curation: weekly knowledge graph + online research (Monday 4AM)\'; echo \'0 4 * * 1 claude --dangerously-skip-permissions -p \\'/skills-curation\\' >> /tmp/skills-curation.log 2>&1\'; } | crontab -"
+  - prefix: npm
+    count: 18
+    suggested_allow_pattern: "Bash(npm:*)"
+    example_command: "npm config get prefix"
+  - prefix: stat
+    count: 17
+    suggested_allow_pattern: "Bash(stat:*)"
+    example_command: "stat -c \'%y %n\' ~/.claude/stats-cache.json 2>/dev/null"
+  - prefix: diff
+    count: 16
+    suggested_allow_pattern: "Bash(diff:*)"
+    example_command: "diff <(git show HEAD:.claude/work-queue/pending/WRK-080.md) /mnt/local-analysis/workspace-hub/.claude/work-queue/pending/WRK-080.md | head -60"
+  - prefix: git merge
+    count: 16
+    suggested_allow_pattern: "Bash(git merge:*)"
+    example_command: "git merge feature/wrk-317-plotly-dash-dashboard --no-rebase 2>&1"
+  - prefix: printf
+    count: 16
+    suggested_allow_pattern: "Bash(printf:*)"
+    example_command: "printf \'route: A\nn/a: true\nnote: Route B/C artifact — not required for Route A items\n\' > /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1068/plan_claude.md"
+  - prefix: AD=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1052
+    count: 16
+    suggested_allow_pattern: "Bash(AD=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1052:*)"
+    example_command: "AD=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1052"
+  - prefix: pip
+    count: 16
+    suggested_allow_pattern: "Bash(pip:*)"
+    example_command: "pip install xlsxwriter -q 2>&1 | tail -3"
+  - prefix: SESSION_ID=\"session-$(date
+    count: 15
+    suggested_allow_pattern: "Bash(SESSION_ID=\"session-$(date:*)"
+    example_command: "SESSION_ID=\'session-$(date +%Y%m%d-%H%M%S)\' CLAUDE_SESSION_ID=\'$SESSION_ID\' bash scripts/work-queue/claim-item.sh WRK-1094 2>&1; echo \'EXIT: $?\"
+  - prefix: pgrep
+    count: 14
+    suggested_allow_pattern: "Bash(pgrep:*)"
+    example_command: "pgrep -af \'gemini\' | head -5; pgrep -af \'codex\' | head -5"
+  - prefix: scripts/work-queue/claim-item.sh
+    count: 14
+    suggested_allow_pattern: "Bash(scripts/work-queue/claim-item.sh:*)"
+    example_command: "scripts/work-queue/claim-item.sh WRK-1070 --stage7-check 2>&1"
+  - prefix: fuser
+    count: 14
+    suggested_allow_pattern: "Bash(fuser:*)"
+    example_command: "fuser -k 7654/tcp 2>/dev/null; python3 -m http.server 7654 --directory /mnt/local-analysis/workspace-hub/assets/WRK-656 &"
+  - prefix: CLAUDE_SESSION_ID=session-2026-03-10-wrk1053
+    count: 14
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=session-2026-03-10-wrk1053:*)"
+    example_command: "CLAUDE_SESSION_ID=session-2026-03-10-wrk1053 bash scripts/work-queue/claim-item.sh WRK-1053 2>&1"
+  - prefix: .venv/bin/python
+    count: 14
+    suggested_allow_pattern: "Bash(.venv/bin/python:*)"
+    example_command: ".venv/bin/python -c \"
+  - prefix: df
+    count: 14
+    suggested_allow_pattern: "Bash(df:*)"
+    example_command: "df -h /mnt/workspace-hub && echo \'---\' && readlink -f /mnt/workspace-hub && echo \'---\' && mount | grep -E \'sda|sdc\"
+  - prefix: hostname
+    count: 14
+    suggested_allow_pattern: "Bash(hostname:*)"
+    example_command: "hostname && ls .claude/work-queue/pending/ | sort"
+  - prefix: git fetch
+    count: 13
+    suggested_allow_pattern: "Bash(git fetch:*)"
+    example_command: "git fetch origin && git log --oneline origin/main..HEAD"
+  - prefix: command
+    count: 13
+    suggested_allow_pattern: "Bash(command:*)"
+    example_command: "command -v codex 2>/dev/null || echo \'codex: not found\"
+  - prefix: awk
+    count: 13
+    suggested_allow_pattern: "Bash(awk:*)"
+    example_command: "awk '/^hook_blocking_patterns:/{found=1;next} found && /^  - /{sub(/^[[:space:]]*-[[:space:]]*/,\'\'); print} found && /^[^ ]/{exit}' scripts/readiness/harness-config.yaml | tr -d \''\\'\' | cat -A"
+  - prefix: PYTHONPATH=/mnt/local-analysis/workspace-hub/worldenergydata/src
+    count: 13
+    suggested_allow_pattern: "Bash(PYTHONPATH=/mnt/local-analysis/workspace-hub/worldenergydata/src:*)"
+    example_command: "PYTHONPATH=/mnt/local-analysis/workspace-hub/worldenergydata/src python3 -m pytest /mnt/local-analysis/workspace-hub/worldenergydata/tests/modules/bsee/data/loaders/rig_fleet/ -v --tb=short --override-ini=\'confcutdir=/mnt/local-analysis/workspace-hub/worldenergydata/tests/modules/bsee/data/loaders/rig_fleet\' --no-header 2>&1 | tail -40"
+  - prefix: source
+    count: 13
+    suggested_allow_pattern: "Bash(source:*)"
+    example_command: "source /usr/lib/openfoam/openfoam2312/etc/bashrc 2>/dev/null && cp -r \'$FOAM_TUTORIALS/incompressible/simpleFoam/pitzDaily\' /tmp/of_test && cd /tmp/of_test && blockMesh > /dev/null 2>&1 && simpleFoam -latestTime 2>&1 | tail -5 && echo \'OpenFOAM smoke test OK\"
+  - prefix: CLAUDE_SESSION_ID=\"session_20260309_wrk1056\
+    count: 12
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=\"session_20260309_wrk1056\":*)"
+    example_command: "CLAUDE_SESSION_ID=\'session_20260309_wrk1056\' bash scripts/work-queue/claim-item.sh WRK-1056 --stage7-check 2>&1"
+  - prefix: PYTHON=/home/vamsee/.local/share/uv/python/cpython-3.11-linux-x86_64-gnu/bin/python3.11
+    count: 12
+    suggested_allow_pattern: "Bash(PYTHON=/home/vamsee/.local/share/uv/python/cpython-3.11-linux-x86_64-gnu/bin/python3.11:*)"
+    example_command: "PYTHON=/home/vamsee/.local/share/uv/python/cpython-3.11-linux-x86_64-gnu/bin/python3.11"
+  - prefix: CLAUDE_SESSION_ID=\"session-20260308-111436\
+    count: 12
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=\"session-20260308-111436\":*)"
+    example_command: "CLAUDE_SESSION_ID=\'session-20260308-111436\' bash scripts/work-queue/claim-item.sh WRK-1044 2>&1"
+  - prefix: CLAUDE_SESSION_ID=\"session-20260309-wrk-1066\
+    count: 12
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=\"session-20260309-wrk-1066\":*)"
+    example_command: "CLAUDE_SESSION_ID=\'session-20260309-wrk-1066\' bash scripts/work-queue/claim-item.sh WRK-1066 --stage7-check 2>&1"
+  - prefix: uv tool
+    count: 12
+    suggested_allow_pattern: "Bash(uv tool:*)"
+    example_command: "uv tool run pip-audit --version 2>&1 | head -3"
+  - prefix: CLAUDE_SESSION_ID=20260309-191000-claude
+    count: 12
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=20260309-191000-claude:*)"
+    example_command: "CLAUDE_SESSION_ID=20260309-191000-claude bash scripts/work-queue/claim-item.sh WRK-1079 --stage7-check 2>&1 | tail -12"
+  - prefix: ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1054
+    count: 12
+    suggested_allow_pattern: "Bash(ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1054:*)"
+    example_command: "ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1054"
+  - prefix: COMMON=/mnt/local-analysis/workspace-hub/digitalmodel/src/digitalmodel/infrastructure/common
+    count: 12
+    suggested_allow_pattern: "Bash(COMMON=/mnt/local-analysis/workspace-hub/digitalmodel/src/digitalmodel/infrastructure/common:*)"
+    example_command: "COMMON=/mnt/local-analysis/workspace-hub/digitalmodel/src/digitalmodel/infrastructure/common"
+  - prefix: GIT_LFS_SKIP_SMUDGE=1
+    count: 12
+    suggested_allow_pattern: "Bash(GIT_LFS_SKIP_SMUDGE=1:*)"
+    example_command: "GIT_LFS_SKIP_SMUDGE=1 timeout 300 git -C /mnt/local-analysis/workspace-hub/digitalmodel commit -m \'feat(cp-module): add sacrificial anode design calcs per DNV-RP-B401 (WRK-356)"
+  - prefix: WORKSPACE_ROOT=/mnt/local-analysis/workspace-hub
+    count: 11
+    suggested_allow_pattern: "Bash(WORKSPACE_ROOT=/mnt/local-analysis/workspace-hub:*)"
+    example_command: "WORKSPACE_ROOT=/mnt/local-analysis/workspace-hub bash .claude/skills/coordination/workspace/claude-reflect/scripts/extract-cc-insights.sh 2>&1"
+  - prefix: DRY_RUN=1
+    count: 11
+    suggested_allow_pattern: "Bash(DRY_RUN=1:*)"
+    example_command: "DRY_RUN=1 bash scripts/test/lib/invoke-pytest.sh worldenergydata 1 tests/unit/bsee/test_field_names.py 2>&1"
+  - prefix: REPO=/mnt/local-analysis/workspace-hub/assethold
+    count: 11
+    suggested_allow_pattern: "Bash(REPO=/mnt/local-analysis/workspace-hub/assethold:*)"
+    example_command: "REPO=/mnt/local-analysis/workspace-hub/assethold"
+  - prefix: sqlite3
+    count: 11
+    suggested_allow_pattern: "Bash(sqlite3:*)"
+    example_command: "sqlite3 /mnt/ace/O\&G-Standards/_inventory.db \'.tables\' && sqlite3 /mnt/ace/O\&G-Standards/_inventory.db \'.schema document_text\' 2>/dev/null || echo \'no document_text table\' && sqlite3 /mnt/ace/O\&G-Standards/_inventory.db \'SELECT name FROM sqlite_master WHERE type='table';\"
+  - prefix: GIT_TRACE=1
+    count: 11
+    suggested_allow_pattern: "Bash(GIT_TRACE=1:*)"
+    example_command: "GIT_TRACE=1 timeout 5 git -C /mnt/local-analysis/workspace-hub/digitalmodel diff --cached --name-only > /tmp/git_trace_out.txt 2>/tmp/git_trace.txt; echo \'exit:$?\'; head -20 /tmp/git_trace.txt"
+  - prefix: GIT_DIR=/mnt/local-analysis/workspace-hub/acma-projects/.git
+    count: 11
+    suggested_allow_pattern: "Bash(GIT_DIR=/mnt/local-analysis/workspace-hub/acma-projects/.git:*)"
+    example_command: "GIT_DIR=/mnt/local-analysis/workspace-hub/acma-projects/.git GIT_WORK_TREE=/mnt/local-analysis/workspace-hub/acma-projects git status --short --no-renames 2>&1; echo \'done\"
+  - prefix: nohup
+    count: 11
+    suggested_allow_pattern: "Bash(nohup:*)"
+    example_command: "nohup bash -c 'uv run --no-project python /mnt/local-analysis/workspace-hub/scripts/data/document-index/phase-a-index.py --config /mnt/local-analysis/workspace-hub/scripts/data/document-index/config.yaml > /tmp/phase-a-$(date +%Y%m%d).log 2>&1' &"
+  - prefix: mount
+    count: 11
+    suggested_allow_pattern: "Bash(mount:*)"
+    example_command: "mount | grep -i ssh 2>&1; echo \'---\'; mount | grep -i fuse 2>&1; echo \'---\'; mount | grep /mnt 2>&1"
+  - prefix: env
+    count: 10
+    suggested_allow_pattern: "Bash(env:*)"
+    example_command: "env | grep -i claude | head -10; echo \'---\'; echo \'TERM=$TERM\'; echo \'SSH_TTY=${SSH_TTY:-unset}\"
+  - prefix: PYTHONPATH=\"/mnt/local-analysis/workspace-hub/assetutilities/.venv/lib/python3.11/site-packages\
+    count: 10
+    suggested_allow_pattern: "Bash(PYTHONPATH=\"/mnt/local-analysis/workspace-hub/assetutilities/.venv/lib/python3.11/site-packages\":*)"
+    example_command: "PYTHONPATH=\'/mnt/local-analysis/workspace-hub/assetutilities/.venv/lib/python3.11/site-packages\' timeout 120 \'/home/vamsee/.local/share/uv/python/cpython-3.11-linux-x86_64-gnu/bin/python3.11\' -m mkdocs build --config-file \'/mnt/local-analysis/workspace-hub/assetutilities/mkdocs.yml\' 2>&1 | head -5; echo \'BUILD_EXIT:$?\"
+  - prefix: ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1075
+    count: 10
+    suggested_allow_pattern: "Bash(ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1075:*)"
+    example_command: "ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1075"
+  - prefix: scripts/review/submit-to-gemini.sh
+    count: 10
+    suggested_allow_pattern: "Bash(scripts/review/submit-to-gemini.sh:*)"
+    example_command: "scripts/review/submit-to-gemini.sh --file scripts/review/results/wrk-1058-plan-review-input.md 2>&1 | tail -5 &"
+  - prefix: SESSION_ID=\"$(date
+    count: 10
+    suggested_allow_pattern: "Bash(SESSION_ID=\"$(date:*)"
+    example_command: "SESSION_ID=\'$(date -u +%Y%m%dT%H%M%SZ)-claude-$$\' && CLAUDE_SESSION_ID=\'$SESSION_ID\' bash scripts/work-queue/claim-item.sh WRK-1074 2>&1 | tail -20"
+  - prefix: /mnt/local-analysis/workspace-hub/scripts/repository_sync
+    count: 10
+    suggested_allow_pattern: "Bash(/mnt/local-analysis/workspace-hub/scripts/repository_sync:*)"
+    example_command: "/mnt/local-analysis/workspace-hub/scripts/repository_sync 2>&1"
+  - prefix: CLAUDE_SESSION_ID=\"$(date
+    count: 10
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=\"$(date:*)"
+    example_command: "CLAUDE_SESSION_ID=\'$(date -u +%Y%m%dT%H%M%SZ)\' scripts/work-queue/claim-item.sh WRK-1069 --stage7-check 2>&1"
+  - prefix: pkill
+    count: 10
+    suggested_allow_pattern: "Bash(pkill:*)"
+    example_command: "pkill -f \'python3 -m http.server 7657\' 2>/dev/null; cd /mnt/local-analysis/workspace-hub/assets/WRK-657 && python3 -m http.server 7657 &>/tmp/wrk657-server.log &"
+  - prefix: git reset
+    count: 10
+    suggested_allow_pattern: "Bash(git reset:*)"
+    example_command: "git reset HEAD~1 && echo \'Reset done. Status:\' && git status --short | head -20"
+  - prefix: /mnt/local-analysis/workspace-hub/scripts/ai/assessment/query-quota.sh
+    count: 10
+    suggested_allow_pattern: "Bash(/mnt/local-analysis/workspace-hub/scripts/ai/assessment/query-quota.sh:*)"
+    example_command: "/mnt/local-analysis/workspace-hub/scripts/ai/assessment/query-quota.sh --refresh 2>&1"
+  - prefix: SESSION_ID=\"wrk-1095-$(date
+    count: 10
+    suggested_allow_pattern: "Bash(SESSION_ID=\"wrk-1095-$(date:*)"
+    example_command: "SESSION_ID=\'wrk-1095-$(date +%Y%m%d-%H%M%S)\' && CLAUDE_SESSION_ID=\'$SESSION_ID\' bash scripts/work-queue/claim-item.sh WRK-1095 2>&1"
+  - prefix: GIT_DIR=/mnt/local-analysis/workspace-hub/.git
+    count: 10
+    suggested_allow_pattern: "Bash(GIT_DIR=/mnt/local-analysis/workspace-hub/.git:*)"
+    example_command: "GIT_DIR=/mnt/local-analysis/workspace-hub/.git GIT_WORK_TREE=/mnt/local-analysis/workspace-hub git diff --cached --stat 2>&1"
+  - prefix: scripts/legal/legal-sanity-scan.sh
+    count: 9
+    suggested_allow_pattern: "Bash(scripts/legal/legal-sanity-scan.sh:*)"
+    example_command: "scripts/legal/legal-sanity-scan.sh .claude/work-queue/pending/WRK-615.md .claude/work-queue/pending/WRK-616.md .claude/work-queue/pending/WRK-617.md 2>&1 | tail -5"
+  - prefix: shellcheck
+    count: 9
+    suggested_allow_pattern: "Bash(shellcheck:*)"
+    example_command: "shellcheck scripts/planning/ensemble-plan.sh scripts/planning/synthesise.sh 2>&1"
+  - prefix: ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1135/evidence
+    count: 9
+    suggested_allow_pattern: "Bash(ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1135/evidence:*)"
+    example_command: "ASSETS=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1135/evidence"
+  - prefix: git rev-list
+    count: 9
+    suggested_allow_pattern: "Bash(git rev-list:*)"
+    example_command: "git rev-list --objects --all | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' | awk '/^blob/ {print $3, $4}' | sort -rn | head -50"
+  - prefix: wait
+    count: 9
+    suggested_allow_pattern: "Bash(wait:*)"
+    example_command: "wait bac314d && cat /tmp/claude-1000/-mnt-workspace-hub/tasks/bac314d.output"
+  - prefix: code
+    count: 9
+    suggested_allow_pattern: "Bash(code:*)"
+    example_command: "code /mnt/local-analysis/workspace-hub/specs/modules/wrk-138-ffs-module-roadmap.md"
+  - prefix: strings
+    count: 9
+    suggested_allow_pattern: "Bash(strings:*)"
+    example_command: "strings /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1055/plan_gemini.md | grep -i \'APPROVE\|MINOR\|MAJOR\|verdict\' | head -5"
+  - prefix: set
+    count: 8
+    suggested_allow_pattern: "Bash(set:*)"
+    example_command: "set -euo pipefail"
+  - prefix: while
+    count: 8
+    suggested_allow_pattern: "Bash(while:*)"
+    example_command: "while ps -p 1087374 > /dev/null 2>&1; do sleep 5; done && ls -lt scripts/review/results/ | head -4 && LATEST=$(ls -t scripts/review/results/ | grep \'wrk-1070\' | head -1) && echo \'Latest WRK-1070: $LATEST\' && cat \'scripts/review/results/$LATEST\' 2>/dev/null"
+  - prefix: PYTHONPATH=\"src\
+    count: 8
+    suggested_allow_pattern: "Bash(PYTHONPATH=\"src\":*)"
+    example_command: "PYTHONPATH=\'src\' python3 -m pytest tests/hydrodynamics/hull_library/ -v --tb=short --noconftest -o \'addopts=\' 2>&1 | tail -30"
+  - prefix: NOW=\"2026-03-09T01:30:00Z\
+    count: 8
+    suggested_allow_pattern: "Bash(NOW=\"2026-03-09T01:30:00Z\":*)"
+    example_command: "NOW=\'2026-03-09T01:30:00Z\"
+  - prefix: CLAUDE_SESSION_ID=\"session-20260309-wrk-1073\
+    count: 8
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=\"session-20260309-wrk-1073\":*)"
+    example_command: "CLAUDE_SESSION_ID=\'session-20260309-wrk-1073\' bash scripts/work-queue/claim-item.sh WRK-1073 2>&1"
+  - prefix: uv
+    count: 8
+    suggested_allow_pattern: "Bash(uv:*)"
+    example_command: "uv --version 2>&1; echo \'---\'; which uv 2>&1"
+  - prefix: CLAUDE_SESSION_ID=\"session-20260308-210000\
+    count: 8
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=\"session-20260308-210000\":*)"
+    example_command: "CLAUDE_SESSION_ID=\'session-20260308-210000\' bash scripts/work-queue/claim-item.sh WRK-1039 2>&1"
+  - prefix: CLAUDE_SESSION_ID=\"session-wrk-1049-$(date
+    count: 8
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=\"session-wrk-1049-$(date:*)"
+    example_command: "CLAUDE_SESSION_ID=\'session-wrk-1049-$(date +%s)\' bash scripts/work-queue/claim-item.sh WRK-1049 2>&1"
+  - prefix: SESSION_ID=\"claude-20260309-223000\
+    count: 8
+    suggested_allow_pattern: "Bash(SESSION_ID=\"claude-20260309-223000\":*)"
+    example_command: "SESSION_ID=\'claude-20260309-223000\' CLAUDE_SESSION_ID=\'$SESSION_ID\' bash scripts/work-queue/claim-item.sh WRK-1067 2>&1"
+  - prefix: KNOWLEDGE_BASE_DIR=\"/mnt/local-analysis/workspace-hub/knowledge-base\
+    count: 8
+    suggested_allow_pattern: "Bash(KNOWLEDGE_BASE_DIR=\"/mnt/local-analysis/workspace-hub/knowledge-base\":*)"
+    example_command: "KNOWLEDGE_BASE_DIR=\'/mnt/local-analysis/workspace-hub/knowledge-base\' bash scripts/knowledge/migrate-memory-to-knowledge.sh /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md --dry-run 2>&1"
+  - prefix: SESSION_ID=\"wrk-637-$(date
+    count: 8
+    suggested_allow_pattern: "Bash(SESSION_ID=\"wrk-637-$(date:*)"
+    example_command: "SESSION_ID=\'wrk-637-$(date +%Y%m%d-%H%M%S)\' CLAUDE_SESSION_ID=\'$SESSION_ID\' bash scripts/work-queue/claim-item.sh WRK-637 2>&1"
+  - prefix: WORKSPACE_HUB=/mnt/local-analysis/workspace-hub
+    count: 8
+    suggested_allow_pattern: "Bash(WORKSPACE_HUB=/mnt/local-analysis/workspace-hub:*)"
+    example_command: "WORKSPACE_HUB=/mnt/local-analysis/workspace-hub bash .claude/hooks/readiness/readiness.sh 2>&1; echo \'EXIT: $?\"
+  - prefix: COMMIT_HASH=\"5995d67f2877c86cebecfc9b7a09f870e8345bf9\
+    count: 8
+    suggested_allow_pattern: "Bash(COMMIT_HASH=\"5995d67f2877c86cebecfc9b7a09f870e8345bf9\":*)"
+    example_command: "COMMIT_HASH=\'5995d67f2877c86cebecfc9b7a09f870e8345bf9\"
+  - prefix: CLAUDE_SESSION_ID=\"session-20260310T040000\
+    count: 8
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=\"session-20260310T040000\":*)"
+    example_command: "CLAUDE_SESSION_ID=\'session-20260310T040000\' bash scripts/work-queue/claim-item.sh WRK-1092 2>&1"
+  - prefix: /mnt/local-analysis/workspace-hub/digitalmodel/.venv/bin/python
+    count: 8
+    suggested_allow_pattern: "Bash(/mnt/local-analysis/workspace-hub/digitalmodel/.venv/bin/python:*)"
+    example_command: "/mnt/local-analysis/workspace-hub/digitalmodel/.venv/bin/python -m pytest /mnt/local-analysis/workspace-hub/digitalmodel/tests/structural/fatigue/test_sn_curves_yaml.py -v --no-header --tb=short 2>&1"
+  - prefix: SITE_DIR=\"/mnt/local-analysis/workspace-hub/worldenergydata/.venv/lib/python3.11/site-packages\
+    count: 8
+    suggested_allow_pattern: "Bash(SITE_DIR=\"/mnt/local-analysis/workspace-hub/worldenergydata/.venv/lib/python3.11/site-packages\":*)"
+    example_command: "SITE_DIR=\'/mnt/local-analysis/workspace-hub/worldenergydata/.venv/lib/python3.11/site-packages\' && PYTHONPATH=\'$SITE_DIR:/mnt/local-analysis/workspace-hub/worldenergydata/src\' python3 -m pytest /mnt/local-analysis/workspace-hub/worldenergydata/tests/unit/common/test_catalog_models.py -v 2>&1"
+  - prefix: snap
+    count: 8
+    suggested_allow_pattern: "Bash(snap:*)"
+    example_command: "snap run claudeai-desktop --help 2>/dev/null | head -5; ls ~/snap/claudeai-desktop/ 2>/dev/null; find ~/snap/claudeai-desktop -name \'*.json\' 2>/dev/null | head -10"
+  - prefix: COMMIT_HASH=$(git
+    count: 7
+    suggested_allow_pattern: "Bash(COMMIT_HASH=$(git:*)"
+    example_command: "COMMIT_HASH=$(git rev-parse HEAD) && echo \'Commit: $COMMIT_HASH\' && bash scripts/work-queue/close-item.sh WRK-1056 \'$COMMIT_HASH\' 2>&1"
+  - prefix: REPO_ROOT=/mnt/local-analysis/workspace-hub
+    count: 7
+    suggested_allow_pattern: "Bash(REPO_ROOT=/mnt/local-analysis/workspace-hub:*)"
+    example_command: "REPO_ROOT=/mnt/local-analysis/workspace-hub && git -C \'$REPO_ROOT\' diff HEAD 2>/dev/null | wc -l"
+  - prefix: TIMESTAMP=$(date
+    count: 7
+    suggested_allow_pattern: "Bash(TIMESTAMP=$(date:*)"
+    example_command: "TIMESTAMP=$(date -u +%Y%m%dT%H%M%SZ)"
+  - prefix: WORKSPACE_ROOT=\"$(pwd)\
+    count: 7
+    suggested_allow_pattern: "Bash(WORKSPACE_ROOT=\"$(pwd)\":*)"
+    example_command: "WORKSPACE_ROOT=\'$(pwd)\' timeout 60 bash .claude/skills/coordination/workspace/claude-reflect/scripts/analyze-history.sh 7 all summary 2>&1 | tail -20"
+  - prefix: NOW=\"2026-03-11T13:30:00Z\
+    count: 7
+    suggested_allow_pattern: "Bash(NOW=\"2026-03-11T13:30:00Z\":*)"
+    example_command: "NOW=\'2026-03-11T13:30:00Z\"
+  - prefix: uvx
+    count: 7
+    suggested_allow_pattern: "Bash(uvx:*)"
+    example_command: "uvx ruff check scripts/quality/check_complexity_ratchet.py scripts/quality/tests/test_check_complexity_ratchet.py 2>&1"
+  - prefix: PYTHONPATH=\"src:src/modules\
+    count: 7
+    suggested_allow_pattern: "Bash(PYTHONPATH=\"src:src/modules\":*)"
+    example_command: "PYTHONPATH=\'src:src/modules\' python3 -m pytest --noconftest --collect-only -q --override-ini=\'addopts=\' 2>&1 | grep \'tests collected\' | tail -1"
+  - prefix: apt-cache
+    count: 7
+    suggested_allow_pattern: "Bash(apt-cache:*)"
+    example_command: "apt-cache policy ripgrep 2>/dev/null | head -5 || echo \'Check if ripgrep available via uv tool\"
+  - prefix: ip
+    count: 7
+    suggested_allow_pattern: "Bash(ip:*)"
+    example_command: "ip addr show | grep \'inet \' && echo \'---\' && hostname && echo \'---\' && ping -c 2 ace-linux-2 2>&1 | tail -5"
+  - prefix: apt
+    count: 7
+    suggested_allow_pattern: "Bash(apt:*)"
+    example_command: "apt list --installed 2>/dev/null | grep shellcheck || find /usr -name shellcheck 2>/dev/null | head -3; snap list 2>/dev/null | grep shellcheck || true"
+  - prefix: gmsh
+    count: 7
+    suggested_allow_pattern: "Bash(gmsh:*)"
+    example_command: "gmsh /tmp/gmsh-validation/test.geo -2 -format msh22 -o /tmp/gmsh-validation/test_v22.msh -v 5 2>&1 | head -20; echo \'---\'; ls -la /tmp/gmsh-validation/ 2>&1"
+  - prefix: TOKEN=$(jq
+    count: 6
+    suggested_allow_pattern: "Bash(TOKEN=$(jq:*)"
+    example_command: "TOKEN=$(jq -r '.claudeAiOauth.accessToken' ~/.claude/.credentials.json)"
+  - prefix: ws=$(mktemp
+    count: 6
+    suggested_allow_pattern: "Bash(ws=$(mktemp:*)"
+    example_command: "ws=$(mktemp -d)"
+  - prefix: jobs
+    count: 6
+    suggested_allow_pattern: "Bash(jobs:*)"
+    example_command: "jobs 2>/dev/null; ps aux | grep cross-review | grep -v grep | head -5"
+  - prefix: SESSION_ID=\"2026-03-10T13:45:00Z-orchestrator\
+    count: 6
+    suggested_allow_pattern: "Bash(SESSION_ID=\"2026-03-10T13:45:00Z-orchestrator\":*)"
+    example_command: "SESSION_ID=\'2026-03-10T13:45:00Z-orchestrator\"
+  - prefix: (
+    count: 6
+    suggested_allow_pattern: "Bash((:*)"
+    example_command: "("
+  - prefix: CURRENT_COMMIT=$(git
+    count: 6
+    suggested_allow_pattern: "Bash(CURRENT_COMMIT=$(git:*)"
+    example_command: "CURRENT_COMMIT=$(git rev-parse HEAD)"
+  - prefix: RAW_FILE=$(mktemp)
+    count: 6
+    suggested_allow_pattern: "Bash(RAW_FILE=$(mktemp):*)"
+    example_command: "RAW_FILE=$(mktemp)"
+  - prefix: NOW=\"2026-03-09T01:20:00Z\
+    count: 6
+    suggested_allow_pattern: "Bash(NOW=\"2026-03-09T01:20:00Z\":*)"
+    example_command: "NOW=\'2026-03-09T01:20:00Z\"
+  - prefix: CLAUDE_SESSION_ID=\"session-wrk-1023-$(date
+    count: 6
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=\"session-wrk-1023-$(date:*)"
+    example_command: "CLAUDE_SESSION_ID=\'session-wrk-1023-$(date +%s)\' bash scripts/work-queue/claim-item.sh WRK-1023 2>&1 | tail -5"
+  - prefix: NOW=\"2026-03-09T06:30:00Z\
+    count: 6
+    suggested_allow_pattern: "Bash(NOW=\"2026-03-09T06:30:00Z\":*)"
+    example_command: "NOW=\'2026-03-09T06:30:00Z\"
+  - prefix: HEAD_HASH=$(timeout
+    count: 6
+    suggested_allow_pattern: "Bash(HEAD_HASH=$(timeout:*)"
+    example_command: "HEAD_HASH=$(timeout 10 git rev-parse HEAD 2>&1) && echo \'$HEAD_HASH\"
+  - prefix: RESULTS_DIR=\"/mnt/local-analysis/workspace-hub/scripts/review/results\
+    count: 6
+    suggested_allow_pattern: "Bash(RESULTS_DIR=\"/mnt/local-analysis/workspace-hub/scripts/review/results\":*)"
+    example_command: "RESULTS_DIR=\'/mnt/local-analysis/workspace-hub/scripts/review/results\"
+  - prefix: NOW=\"2026-03-11T13:00:00Z\
+    count: 6
+    suggested_allow_pattern: "Bash(NOW=\"2026-03-11T13:00:00Z\":*)"
+    example_command: "NOW=\'2026-03-11T13:00:00Z\"
+  - prefix: rmdir
+    count: 6
+    suggested_allow_pattern: "Bash(rmdir:*)"
+    example_command: "rmdir /mnt/local-analysis/workspace-hub/.claude/work-queue/archived/"
+  - prefix: PYTHONPATH=src:.
+    count: 6
+    suggested_allow_pattern: "Bash(PYTHONPATH=src:.:*)"
+    example_command: "PYTHONPATH=src:. python3 -m pytest tests/modules/bsee/data/loaders/rig_fleet/test_rig_fleet_loader.py tests/modules/bsee/data/loaders/rig_fleet/test_router.py --no-header -q --override-ini=\'addopts=\' -p no:performance_tracker 2>&1 | head -50"
+  - prefix: PYTHONPATH=src:/mnt/local-analysis/workspace-hub/assetutilities/src:.
+    count: 6
+    suggested_allow_pattern: "Bash(PYTHONPATH=src:/mnt/local-analysis/workspace-hub/assetutilities/src:.:*)"
+    example_command: "PYTHONPATH=src:/mnt/local-analysis/workspace-hub/assetutilities/src:. python3 -m pytest tests/modules/bsee/data/loaders/rig_fleet/test_rig_fleet_loader.py tests/modules/bsee/data/loaders/rig_fleet/test_router.py --override-ini=\'addopts= --strict-markers --tb=short --maxfail=20 -ra -v\' -W \'ignore::pytest.PytestRemovedIn9Warning\' 2>&1 | tail -40"
+  - prefix: /usr/bin/google-chrome
+    count: 6
+    suggested_allow_pattern: "Bash(/usr/bin/google-chrome:*)"
+    example_command: "/usr/bin/google-chrome \"
+  - prefix: sshfs
+    count: 6
+    suggested_allow_pattern: "Bash(sshfs:*)"
+    example_command: "sshfs vamsee@ace-linux-2:/mnt/local-analysis /mnt/remote/ace-linux-2/local-analysis -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,IdentityFile=/home/vamsee/.ssh/id_ed25519 && echo \'local-analysis: OK\' && ls /mnt/remote/ace-linux-2/local-analysis | head -5"
+  - prefix: xrandr
+    count: 6
+    suggested_allow_pattern: "Bash(xrandr:*)"
+    example_command: "xrandr --query 2>&1 | head -10"
+  - prefix: DISPLAY=:1
+    count: 6
+    suggested_allow_pattern: "Bash(DISPLAY=:1:*)"
+    example_command: "DISPLAY=:1 pvbatch /tmp/paraview-validation/test_skill.py 2>&1 | head -80"
+  - prefix: npx
+    count: 5
+    suggested_allow_pattern: "Bash(npx:*)"
+    example_command: "npx ccusage --version 2>/dev/null || echo \'not installed\"
+  - prefix: CLAUDE_SESSION_ID=session-2026-03-11
+    count: 5
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=session-2026-03-11:*)"
+    example_command: "CLAUDE_SESSION_ID=session-2026-03-11 bash scripts/work-queue/close-item.sh WRK-1010 2>&1"
+  - prefix: .claude/hooks/check-encoding.sh
+    count: 5
+    suggested_allow_pattern: "Bash(.claude/hooks/check-encoding.sh:*)"
+    example_command: ".claude/hooks/check-encoding.sh 2>&1"
+  - prefix: TREE=$(git
+    count: 5
+    suggested_allow_pattern: "Bash(TREE=$(git:*)"
+    example_command: "TREE=$(git write-tree) && echo \'$TREE\"
+  - prefix: REVIEW_PROMPT=\"Review
+    count: 5
+    suggested_allow_pattern: "Bash(REVIEW_PROMPT=\"Review:*)"
+    example_command: "REVIEW_PROMPT=\'Review this software engineering plan for WRK-1028 (Stage-isolated WRK lifecycle). Assess: (1) completeness — are all 14 ACs achievable? (2) feasibility — are gate-check.py hook, start/exit-stage.sh scripts technically sound? (3) P1 critical risks, P2 significant risks. (4) gaps. Output VERDICT: APPROVE or REVISE, then P1 findings, P2 findings, observations.\"
+  - prefix: ASSETS=\".claude/work-queue/assets/WRK-1059\
+    count: 5
+    suggested_allow_pattern: "Bash(ASSETS=\".claude/work-queue/assets/WRK-1059\":*)"
+    example_command: "ASSETS=\'.claude/work-queue/assets/WRK-1059\"
+  - prefix: CLAUDE_SESSION_ID=wrk-1041-session-$(date
+    count: 5
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=wrk-1041-session-$(date:*)"
+    example_command: "CLAUDE_SESSION_ID=wrk-1041-session-$(date +%s) bash scripts/work-queue/claim-item.sh WRK-1041 2>&1"
+  - prefix: CLAUDE_SESSION_ID=\"wrk-1124-session-$(date
+    count: 5
+    suggested_allow_pattern: "Bash(CLAUDE_SESSION_ID=\"wrk-1124-session-$(date:*)"
+    example_command: "CLAUDE_SESSION_ID=\'wrk-1124-session-$(date +%s)\' bash scripts/work-queue/claim-item.sh WRK-1124 2>&1"
+  - prefix: google-chrome
+    count: 5
+    suggested_allow_pattern: "Bash(google-chrome:*)"
+    example_command: "google-chrome --version 2>&1"
+  - prefix: pstree
+    count: 5
+    suggested_allow_pattern: "Bash(pstree:*)"
+    example_command: "pstree -p 3644635 2>&1"
+  - prefix: /mnt/local-analysis/workspace-hub/.venv/bin/python
+    count: 5
+    suggested_allow_pattern: "Bash(/mnt/local-analysis/workspace-hub/.venv/bin/python:*)"
+    example_command: "/mnt/local-analysis/workspace-hub/.venv/bin/python -m pytest /mnt/local-analysis/workspace-hub/tests/unit/gis/test_geotiff_integration.py -v --tb=short 2>&1 | tee /tmp/gis_test_output.txt"
+  - prefix: strace
+    count: 5
+    suggested_allow_pattern: "Bash(strace:*)"
+    example_command: "strace -e trace=none -o /tmp/strace_out.txt timeout 5 bash -c 'cd /mnt/local-analysis/workspace-hub/digitalmodel && git diff --cached --name-only -z 2>&1 | head -3' 2>&1; echo \'done\'; cat /tmp/strace_out.txt 2>/dev/null | tail -3"
+  - prefix: /home/vamsee/.cache/pre-commit/repo7wu475ws/py_env-python3.12/bin/flake8
+    count: 5
+    suggested_allow_pattern: "Bash(/home/vamsee/.cache/pre-commit/repo7wu475ws/py_env-python3.12/bin/flake8:*)"
+    example_command: "/home/vamsee/.cache/pre-commit/repo7wu475ws/py_env-python3.12/bin/flake8 \"
+  - prefix: LD_LIBRARY_PATH=~/.local/lib/fea-libs:$LD_LIBRARY_PATH
+    count: 5
+    suggested_allow_pattern: "Bash(LD_LIBRARY_PATH=~/.local/lib/fea-libs:$LD_LIBRARY_PATH:*)"
+    example_command: "LD_LIBRARY_PATH=~/.local/lib/fea-libs:$LD_LIBRARY_PATH ldd ~/.local/bin/ccx_2.21 2>&1 | grep \'not found\"
+  - prefix: ping
+    count: 5
+    suggested_allow_pattern: "Bash(ping:*)"
+    example_command: "ping -c 1 -W 1 192.168.1.169 2>&1 | tail -2 & ping -c 1 -W 1 192.168.1.197 2>&1 | tail -2 & wait"
+  - prefix: gsettings
+    count: 5
+    suggested_allow_pattern: "Bash(gsettings:*)"
+    example_command: "gsettings get org.gnome.shell.extensions.dash-to-dock dock-fixed 2>/dev/null; gsettings get org.gnome.shell.extensions.dash-to-dock autohide 2>/dev/null; gsettings get org.gnome.shell.extensions.dash-to-dock intellihide 2>/dev/null; gsettings get org.gnome.shell.extensions.dash-to-dock dock-position 2>/dev/null"
+  - prefix: blender
+    count: 5
+    suggested_allow_pattern: "Bash(blender:*)"
+    example_command: "blender --background --python /tmp/blender-validation/test_skill.py -- --output-dir /tmp/blender-validation 2>&1"
+  - prefix: pvbatch
+    count: 5
+    suggested_allow_pattern: "Bash(pvbatch:*)"
+    example_command: "pvbatch --force-offscreen-rendering /tmp/paraview-validation/test_skill.py 2>&1"
