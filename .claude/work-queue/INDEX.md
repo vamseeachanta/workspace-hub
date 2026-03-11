@@ -1,9 +1,9 @@
 <!-- AUTO-GENERATED — do not edit by hand -->
-<!-- Generated: 2026-03-11T19:08:19Z by generate-index.py -->
+<!-- Generated: 2026-03-11T19:09:04Z by generate-index.py -->
 
 # Work Queue Index
 
-> Auto-generated on 2026-03-11T19:08:19Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
+> Auto-generated on 2026-03-11T19:09:04Z. Do not edit manually — run `python .claude/work-queue/scripts/generate-index.py` to regenerate.
 
 ## Summary
 
@@ -40,7 +40,7 @@
 
 | Category | Active Items |
 |----------|-------------|
-| harness | 40 |
+| harness | 41 |
 | engineering | 118 |
 | data | 25 |
 | platform | 13 |
@@ -126,7 +126,7 @@
 
 > Active items only (pending/working/blocked), grouped by category → subcategory, sorted HIGH→MEDIUM→LOW within each group.
 
-### harness (40 items — 6 high, 27 medium, 7 low)
+### harness (41 items — 7 high, 27 medium, 7 low)
 
 #### harness / agent-teams
 
@@ -182,6 +182,7 @@
 
 | ID | Priority | Title | Status |
 |----|----------|-------|--------|
+| WRK-1127 | HIGH | Feature-first planning with AI agent chunking [feature] | coordinating |
 | WRK-1129 | HIGH | Feature layer model — chunk-sizing, rules, template, SKILL.md, generate-index | working |
 | WRK-1130 | HIGH | Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md | pending |
 | WRK-1131 | HIGH | Feature layer process — stage contracts, workflow SKILL.md, whats-next | pending |
