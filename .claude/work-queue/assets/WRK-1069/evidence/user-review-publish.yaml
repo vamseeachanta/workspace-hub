@@ -1,0 +1,29 @@
+wrk_id: WRK-1069
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "0a0f66f32e87148ab61778f6bc85928da0ca1242"
+    documents:
+      - .claude/work-queue/assets/WRK-1069/WRK-1069-lifecycle.html
+    published_at: "2026-03-11T09:10:00Z"
+    reviewer: vamsee
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "0a0f66f32e87148ab61778f6bc85928da0ca1242"
+    documents:
+      - .claude/work-queue/assets/WRK-1069/WRK-1069-lifecycle.html
+    published_at: "2026-03-11T11:00:00Z"
+    reviewer: vamsee
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "2d07ee2b"
+    documents:
+      - .claude/work-queue/assets/WRK-1069/WRK-1069-lifecycle.html
+    published_at: "2026-03-11T11:51:00Z"
+    reviewer: vamsee

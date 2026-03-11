@@ -1,0 +1,10 @@
+wrk_id: WRK-1069
+stage: 7
+decision: passed
+confirmed_by: vamsee
+confirmed_at: "2026-03-11T11:00:00Z"
+notes: >
+  Final plan approved with Codex MAJOR findings addressed:
+  cost_usd primary source from JSONL, pricing.yaml fallback with effective_from dates,
+  explicit model join key with normalization, malformed record count in output,
+  evidence/cost-summary.yaml written at close, exit codes 0/1/2 specified.

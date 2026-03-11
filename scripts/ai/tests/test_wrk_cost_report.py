@@ -98,3 +98,39 @@ def test_load_records_missing_file_returns_empty():
     records, skipped = wcr.load_records(Path("/nonexistent/path.jsonl"))
     assert records == []
     assert skipped == 0
+
+
+def test_aggregate_skips_non_numeric_fields_no_orphan_bucket():
+    """Non-numeric tokens/cost: record is skipped and no empty bucket created."""
+    records = [
+        {"wrk": "WRK-BAD", "input_tokens": "not-a-number", "output_tokens": 0,
+         "cost_usd": 0.01, "provider": "claude"},
+        {"wrk": "WRK-OK", "input_tokens": 1000, "output_tokens": 100,
+         "cost_usd": 0.003, "provider": "claude"},
+    ]
+    result = wcr.aggregate_by_wrk(records)
+    assert "WRK-BAD" not in result
+    assert "WRK-OK" in result
+    assert result["WRK-OK"]["session_count"] == 1
+
+
+def test_format_cost_table_csv_mode_valid_csv():
+    """CSV mode output is parseable and handles commas/quotes in values."""
+    import csv as csv_mod
+    records = [{"wrk": "WRK-1,x", "input_tokens": 100, "output_tokens": 10,
+                "cost_usd": 0.01, "provider": 'prov"a'}]
+    data = wcr.aggregate_by_wrk(records)
+    output = wcr.format_cost_table(data, skipped=0, csv_mode=True)
+    rows = list(csv_mod.reader(output.splitlines()))
+    assert rows[0] == ["WRK-ID", "INPUT", "OUTPUT", "COST_USD", "SESSIONS", "PROVIDERS"]
+    assert rows[1][0] == "WRK-1,x"
+
+
+def test_format_cost_table_csv_skipped_not_in_stdout(capsys):
+    """CSV mode: skipped footer goes to stderr, not stdout."""
+    records, _ = wcr.load_records(_make_jsonl(SAMPLE_RECORDS))
+    data = wcr.aggregate_by_wrk(records)
+    output = wcr.format_cost_table(data, skipped=5, csv_mode=True)
+    assert "skipped" not in output
+    captured = capsys.readouterr()
+    assert "5 records skipped" in captured.err

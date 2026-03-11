@@ -8,14 +8,37 @@
 
 - When a script exists for a decision, gate check, or enforcement action → **call the script**
 - Never substitute LLM reasoning where a verifiable, repeatable script can run
-- LLM judgment is only the fallback when no script exists yet
+- **When no script exists yet and the operation is repeatable → create the script first, then call it**
+- LLM judgment is only the fallback when a script cannot reasonably be written
 - Corollary: if a rule matters, encode it in a script/hook — skill prose is context-rot prone
+
+### Create Scripts to Avoid LLM Overheads (Hard Rule)
+
+When an operation will recur or involves non-trivial logic, **write a script** instead of
+performing it inline via LLM reasoning. LLM prose is slow, non-deterministic, and not
+auditable — a script runs in milliseconds, produces the same output every time, and can
+be version-controlled and tested.
+
+**25% Repetition Rule (Hard Rule):** If there is a ≥25% chance the operation will be performed again — in the same WRK, a future WRK, or by another agent — **write a script instead of reasoning inline**. The cost of writing a 10-line script is always less than the cost of a second LLM pass over the same work.
+
+**Signals that a script is required:**
+- The operation could be expressed as a shell/Python one-liner or short program
+- The result is consumed again in a future session or by another tool
+- The operation involves parsing, counting, filtering, or transforming data
+- The same reasoning would need to be repeated across repos or files
+- Any doubt whether this will recur → assume it will; write the script
+
+**Do not:**
+- Re-derive facts LLM-style that a script already computes (e.g. gate coverage %)
+- Write multi-paragraph LLM analysis when `grep | wc -l` would suffice
+- Generate structured data (YAML/JSON) by hand when a script can produce it deterministically
 
 Examples:
 - Gate verification → `verify-gate-evidence.py WRK-NNN` (not LLM judgment)
 - Lifecycle HTML → `generate-html-review.py WRK-NNN --lifecycle` (not ad-hoc generation)
 - Stage exit → `exit_stage.py WRK-NNN N` (not LLM checklist)
 - Legal scan → `legal-sanity-scan.sh` (not LLM review)
+- API docstring coverage → `api-audit.py <repo> <src>` (not manual file-by-file review)
 
 ## Allowed Patterns
 

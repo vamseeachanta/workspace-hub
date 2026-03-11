@@ -1,0 +1,4 @@
+wrk_id: WRK-1069
+route: B
+routed_at: "2026-03-11T11:00:00Z"
+rationale: "Medium complexity — 1-2 scripts, clear outcome, single repo"

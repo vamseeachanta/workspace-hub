@@ -11,6 +11,8 @@ Data source: .claude/state/session-signals/cost-tracking.jsonl
 Primary cost field: cost_usd (recorded at session time — do not recalculate unless missing)
 """
 import argparse
+import csv
+import io
 import json
 import sys
 from pathlib import Path
@@ -46,6 +48,13 @@ def aggregate_by_wrk(
         wrk = str(r.get("wrk", "")).strip() or "unattributed"
         if wrk_filter and wrk != wrk_filter:
             continue
+        try:
+            in_tok = int(r.get("input_tokens", 0))
+            out_tok = int(r.get("output_tokens", 0))
+            cost = float(r.get("cost_usd", 0.0))
+        except (ValueError, TypeError):
+            print(f"[WARN] skipping record with non-numeric tokens/cost: {r}", file=sys.stderr)
+            continue
         if wrk not in result:
             result[wrk] = {
                 "input_tokens": 0,
@@ -54,13 +63,9 @@ def aggregate_by_wrk(
                 "session_count": 0,
                 "providers": set(),
             }
-        try:
-            result[wrk]["input_tokens"] += int(r.get("input_tokens", 0))
-            result[wrk]["output_tokens"] += int(r.get("output_tokens", 0))
-            result[wrk]["cost_usd"] += float(r.get("cost_usd", 0.0))
-        except (ValueError, TypeError):
-            print(f"[WARN] skipping record with non-numeric tokens/cost: {r}", file=sys.stderr)
-            continue
+        result[wrk]["input_tokens"] += in_tok
+        result[wrk]["output_tokens"] += out_tok
+        result[wrk]["cost_usd"] += cost
         result[wrk]["session_count"] += 1
         result[wrk]["providers"].add(str(r.get("provider", "unknown")))
     return result
@@ -74,13 +79,18 @@ def format_cost_table(
         return "(no records)"
     rows = sorted(data.items(), key=lambda x: x[1]["cost_usd"], reverse=True)
     if csv_mode:
-        lines = ["WRK-ID,INPUT,OUTPUT,COST_USD,SESSIONS,PROVIDERS"]
+        buf = io.StringIO()
+        writer = csv.writer(buf)
+        writer.writerow(["WRK-ID", "INPUT", "OUTPUT", "COST_USD", "SESSIONS", "PROVIDERS"])
         for wrk, d in rows:
             providers = "|".join(sorted(d["providers"]))
-            lines.append(
-                f"{wrk},{d['input_tokens']},{d['output_tokens']},"
-                f"{d['cost_usd']:.4f},{d['session_count']},{providers}"
-            )
+            writer.writerow([
+                wrk, d["input_tokens"], d["output_tokens"],
+                f"{d['cost_usd']:.4f}", d["session_count"], providers,
+            ])
+        if skipped:
+            sys.stderr.write(f"({skipped} records skipped — malformed JSON)\n")
+        return buf.getvalue().rstrip("\r\n")
     else:
         lines = [
             f"{'WRK-ID':<12} {'INPUT':>10} {'OUTPUT':>10} {'COST_USD':>10} "
@@ -95,9 +105,9 @@ def format_cost_table(
             )
         total = sum(d["cost_usd"] for d in data.values())
         lines += ["-" * 70, f"{'TOTAL':<12} {'':>10} {'':>10} ${total:>9.4f}"]
-    if skipped:
-        lines.append(f"\n({skipped} records skipped — malformed JSON)")
-    return "\n".join(lines)
+        if skipped:
+            lines.append(f"\n({skipped} records skipped — malformed JSON)")
+        return "\n".join(lines)
 
 
 def main() -> None:
@@ -108,10 +118,11 @@ def main() -> None:
                         help="Path to cost-tracking.jsonl")
     args = parser.parse_args()
 
-    records, skipped = load_records(Path(args.data_file))
-    if not records and not skipped:
+    data_path = Path(args.data_file)
+    if not data_path.exists():
         print(f"ERROR: data file not found: {args.data_file}", file=sys.stderr)
         sys.exit(2)
+    records, skipped = load_records(data_path)
     if not records:
         print("No valid cost records found.", file=sys.stderr)
         sys.exit(1)

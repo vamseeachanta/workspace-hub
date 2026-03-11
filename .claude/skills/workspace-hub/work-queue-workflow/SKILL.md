@@ -54,7 +54,20 @@ Violations to avoid:
 ## Start-to-Finish Chain
 
 1. Run `session-start`.
-2. Use `/work` to select/create the WRK item.
+2. Use `/work` to select/create the WRK item. **When resuming an existing WRK item**
+   (loading a checkpoint), write/refresh `assets/WRK-NNN/evidence/session-lock.yaml`
+   immediately after selecting the item:
+   ```bash
+   cat > .claude/work-queue/assets/WRK-NNN/evidence/session-lock.yaml <<EOF
+   wrk_id: WRK-NNN
+   session_pid: $$
+   hostname: $(hostname -s)
+   locked_at: "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+   status: in_progress
+   EOF
+   ```
+   This ensures `whats-next.sh` surfaces the item in IN-PROGRESS UNCLAIMED via both
+   the lock path and the checkpoint path.
 3. Stage 4a: Enter EnterPlanMode — open with explicit instruction "cover every requirement in
    the WRK spec before proceeding" (plan mode alone without this instruction degrades coverage
    by ~15 points). Draft full plan as text, iterate with user, then ExitPlanMode. Stage 4b:
@@ -87,6 +100,38 @@ Violations to avoid:
 
    **Hard gate rule (R-25):** Stages 1, 5, 7, 17 are hard gates. Agent must STOP and wait for
    explicit user approval. Silence is not approval. Do NOT advance until user responds.
+
+   **Continue rule (R-26 — MANDATORY):** After Stage 7 approval, execute stages 8–16 in
+   sequence WITHOUT asking the user for permission at each stage. Do NOT say "shall I
+   proceed?", "ready to execute?", or any equivalent. Just run each stage and move to the
+   next. Only stop at Stage 17 (next hard gate) or if a P1/scope-change condition is hit.
+   To check deterministically: `scripts/work-queue/is-human-gate.sh <N>` — exit 0 = STOP,
+   exit 1 = CONTINUE immediately. Never substitute LLM judgment for this script call.
+
+   **Stage banner rule (mandatory for ALL 20 stages):** Print a one-line banner at stage
+   entry AND stage exit. Only the current stage is shown — never a full list. Format:
+
+   ```
+   ── Stage N: <Name> ── START
+   ... work ...
+   ── Stage N: <Name> ── DONE
+   ```
+
+   At hard-gate pause points, append the specific question on the next line:
+
+   ```
+   ── Stage 7: User Review - Plan Final ── WAITING
+   Do you approve the revised plan? (yes/no)
+   ```
+
+   Stage names (canonical):
+   1 Capture | 2 Resource Intelligence | 3 Triage | 4 Plan Draft |
+   5 User Review - Plan Draft | 6 Cross-Review | 7 User Review - Plan Final |
+   8 Claim/Activation | 9 Work-Queue Routing | 10 Work Execution |
+   11 Artifact Generation | 12 TDD/Eval | 13 Agent Cross-Review |
+   14 Verify Gate Evidence | 15 Future Work Synthesis |
+   16 Resource Intelligence Update | 17 User Review - Close |
+   18 Reclaim | 19 Close | 20 Archive
 
    **Auto-proceed rule (R-26):** All other stages proceed automatically UNLESS a
    `conditional_pause_trigger` is met (see `scripts/work-queue/stage-gate-policy.yaml`).
@@ -235,6 +280,7 @@ in `pending/` and print a reminder to run `claim-item.sh`.
 - Per-agent coverage gaps are workflow defects even if aggregate metrics pass.
 - Multi-agent: keep WRK scope strict; out-of-scope side effects are non-blocking — document, don't revert.
 - Favor mechanical enforcement (scripts/linters/tests) over prose-only rules.
+- **Create scripts to avoid LLM overhead**: see `.claude/rules/patterns.md §Scripts Over LLM Judgment` (25% repetition rule — if ≥25% chance of recurrence, write the script first).
 
 ## Lifecycle HTML — Deliverables Section (WRK-1035)
 
