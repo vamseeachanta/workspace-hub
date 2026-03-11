@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="30">
   <title>WRK-1041 Lifecycle — Lifecycle HTML — auto-refresh (30s meta tag) for lifecycle +</title>
   <style>
 :root{--bg:#f3efe6;--panel:#fffdf8;--ink:#172126;--muted:#55636b;
@@ -314,7 +315,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Execution record</div><p style="color:var(--muted);font-size:.85rem;">Execution evidence present.</p><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/execute.yaml</code></li></ul>
+    <div class="section-label">Execution record</div><div class="schema"><div class="schema-row"><span class="schema-key">files_changed</span><span class="schema-val">[&#x27;scripts/work-queue/generate-html-review.py&#x27;, &#x27;tests/unit/test_generate_html_review.py&#x27;]</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/execute.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s11">
@@ -440,7 +441,7 @@ td{color:var(--muted);}td strong{color:var(--ink);}
     </div>
   </div>
   <div class="stage-body">
-    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">pending</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-close.yaml</code></li></ul>
+    <div class="section-label">Stage record</div><div class="schema"><div class="schema-row"><span class="schema-key">decision</span><span class="schema-val">approved</span></div></div><div class="section-label">Exit artifacts</div><ul class="item-list"><li><code>evidence/user-review-close.yaml</code></li></ul>
   </div>
 </section>
 <section class="stage-section" id="s18">

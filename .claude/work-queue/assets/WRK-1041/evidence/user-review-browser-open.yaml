@@ -12,3 +12,9 @@ events:
     html_ref: .claude/work-queue/assets/WRK-1041/WRK-1041-lifecycle.html
     opened_at: 2026-03-09T23:51:00Z
     reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    browser: default
+    html_ref: .claude/work-queue/assets/WRK-1041/workflow-final-review.html
+    opened_at: 2026-03-10T00:15:00Z
+    reviewer: vamsee
