@@ -1,0 +1,75 @@
+wrk_id: WRK-1084
+stage: 2
+completed_at: "2026-03-11"
+
+skills_sh_overview:
+  url: "https://skills.sh/"
+  description: "Open Agent Skills Ecosystem — reusable AI agent capabilities installable via `npx skillsadd <owner/repo>`"
+  supported_agents: ["Claude Code", "GitHub Copilot", "Cursor", "Cline", "Gemini", "20+ others"]
+  install_command: "npx skillsadd <owner/repo>"
+
+top_relevant_skills_identified:
+  - name: systematic-debugging
+    owner: obra/superpowers
+    installs: 27216
+    status: already_adopted
+    notes: "Already in workspace-hub as superpowers:systematic-debugging"
+  - name: test-driven-development
+    owner: obra/superpowers
+    installs: 22453
+    status: already_adopted
+    notes: "Already in workspace-hub as superpowers:test-driven-development"
+  - name: webapp-testing
+    owner: anthropics/skills
+    installs: 21413
+    status: candidate
+    notes: "Anthropic-published testing patterns; potential enhancement for TDD skill"
+  - name: writing-plans
+    owner: obra/superpowers
+    installs: 25266
+    status: already_adopted
+    notes: "Already in workspace-hub as superpowers:writing-plans"
+  - name: code-review-excellence
+    owner: wshobson/agents
+    installs: 7316
+    status: candidate
+    notes: "Could enhance cross-review skill or skill-learner"
+  - name: architecture-patterns
+    owner: wshobson/agents
+    installs: 7770
+    status: candidate
+    notes: "Potential enhancement for planning skills"
+  - name: frontend-design
+    owner: anthropics/skills
+    installs: 141000
+    status: already_adopted
+    notes: "Already in workspace-hub as frontend-design:frontend-design"
+
+key_finding: >
+  The workspace-hub superpowers/* namespace already mirrors obra/superpowers skills from
+  skills.sh (systematic-debugging, writing-plans, test-driven-development, etc.).
+  The main gap is that skill-learner, skills-curation, and skills-researcher SKILL.md files
+  do NOT reference skills.sh as a canonical external source during curation workflows.
+
+target_files_to_modify:
+  - path: ".claude/skills/coordination/workspace/skill-learner/SKILL.md"
+    change: "Add skills.sh external reference section"
+  - path: ".claude/skills/coordination/workspace/skills-curation/SKILL.md"
+    change: "Add skills.sh as input source in Phase 3 online research"
+  - path: ".claude/skills/coordination/workspace/skills-researcher/SKILL.md"
+    change: "Add skills.sh as primary source in Phase 3 online research"
+
+adoption_plan:
+  - "Wire skills.sh reference into 3 skill curation workflow files"
+  - "Fetch architecture-patterns skill from wshobson/agents and incorporate relevant patterns into planning skills"
+
+no_blockers: true
+
+skills:
+  core_used:
+    - skill-learner
+    - skills-curation
+    - skills-researcher
+  related: [work-queue, session-start]
+top_p1_gaps: []
+completion_status: continue_to_planning

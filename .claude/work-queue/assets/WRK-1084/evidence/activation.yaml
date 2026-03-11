@@ -1,0 +1,7 @@
+wrk_id: WRK-1084
+stage: 8
+set_active_wrk: true
+activated_at: "2026-03-10T00:00:00Z"
+session_id: "2026-03-10-wrk-1084"
+orchestrator_agent: claude
+notes: Plan approved by user; implementation dispatched this session

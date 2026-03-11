@@ -1,0 +1,28 @@
+wrk_id: WRK-1084
+stage: 10
+status: done
+executed_at: "2026-03-11T10:55:00Z"
+executor: claude
+changes:
+  - file: .claude/skills/coordination/workspace/skill-learner/SKILL.md
+    action: added External Reference skills.sh section after Prerequisites
+  - file: .claude/skills/coordination/workspace/skills-curation/SKILL.md
+    action: added skills.sh primary source in Phase 3 and added skills.sh Adoption Workflow section
+  - file: .claude/skills/coordination/workspace/skills-researcher/SKILL.md
+    action: prepended skills.sh check as step 2 in Phase 3 Online Research
+integrated_repo_tests:
+  - name: skill-learner has skills.sh reference
+    scope: repo
+    command: "grep -c 'skills.sh' .claude/skills/coordination/workspace/skill-learner/SKILL.md"
+    result: pass
+    artifact_ref: ac-test-matrix.md
+  - name: skills-curation has skills.sh in Phase 3
+    scope: repo
+    command: "grep -c 'skills.sh' .claude/skills/coordination/workspace/skills-curation/SKILL.md"
+    result: pass
+    artifact_ref: ac-test-matrix.md
+  - name: skills-researcher has skills.sh in Phase 3
+    scope: repo
+    command: "grep -c 'skills.sh' .claude/skills/coordination/workspace/skills-researcher/SKILL.md"
+    result: pass
+    artifact_ref: ac-test-matrix.md
