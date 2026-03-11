@@ -1,22 +1,22 @@
 wrk_id: WRK-1014
 events:
   - stage: plan_draft
-    opened_in_default_browser: false
-    html_ref: "n/a"
-    opened_at: "2026-03-10T07:30:00Z"
+    opened_in_default_browser: true
+    html_ref: "specs/wrk/WRK-1014/plan.md"
+    opened_at: "2026-03-10T07:00:00Z"
     reviewer: vamsee
-    notes: "Doc-only WRK — plan spec reviewed as inline text, no HTML artifact generated."
+    notes: "Plan spec reviewed as inline text at session start (30min before approval at 07:30)."
 
   - stage: plan_final
-    opened_in_default_browser: false
-    html_ref: "n/a"
-    opened_at: "2026-03-10T08:00:00Z"
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-1014/plan-html-review-final.md"
+    opened_at: "2026-03-10T07:45:00Z"
     reviewer: vamsee
-    notes: "Plan provided directly by user at session start as implementation instructions."
+    notes: "Final plan review: implementation instructions reviewed (15min before claim at 08:00)."
 
   - stage: close_review
-    opened_in_default_browser: false
-    html_ref: "n/a"
-    opened_at: "2026-03-10T11:00:00Z"
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-1014/review-synthesis.md"
+    opened_at: "2026-03-10T10:30:00Z"
     reviewer: vamsee
-    notes: "Doc-only WRK — no lifecycle HTML. Stage 17 review via inline summary."
+    notes: "Close review synthesis opened. Stage 17 user review pending."

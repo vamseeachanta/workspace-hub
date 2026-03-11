@@ -1,0 +1,36 @@
+wrk_id: WRK-1014
+events:
+  - stage: plan_draft
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "8c5ed55b"
+    documents:
+      - "specs/wrk/WRK-1014/plan.md"
+    published_at: "2026-03-10T11:45:00Z"
+    reviewer: vamsee
+    notes: "Plan spec and evidence package committed and pushed to origin/main."
+
+  - stage: plan_final
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "8c5ed55b"
+    documents:
+      - ".claude/skills/coordination/workspace/work-queue/SKILL.md"
+      - ".claude/skills/workspace-hub/work-queue-workflow/SKILL.md"
+      - ".claude/work-queue/process.md"
+    published_at: "2026-03-10T11:46:00Z"
+    reviewer: vamsee
+    notes: "All three implementation files pushed. Plan approved and implemented."
+
+  - stage: close_review
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "8c5ed55b"
+    documents:
+      - ".claude/work-queue/assets/WRK-1014/review-synthesis.md"
+    published_at: "2026-03-10T11:47:00Z"
+    reviewer: vamsee
+    notes: "Close review synthesis pushed to origin. Awaiting Stage 17 user approval."

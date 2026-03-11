@@ -67,7 +67,7 @@ stages:
     owner: orchestrator
     blocker: "no"
     comment: Claim evidence and active WRK set.
-    evidence: .claude/work-queue/assets/WRK-1014/evidence/claim.yaml
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/claim-evidence.yaml
   - order: 9
     stage: Work-Queue Routing Skill
     status: done
@@ -75,7 +75,7 @@ stages:
     owner: orchestrator
     blocker: "no"
     comment: Entered canonical /work route.
-    evidence: /work
+    evidence: .claude/work-queue/assets/WRK-1014/evidence/activation.yaml
   - order: 10
     stage: Work Execution
     status: done

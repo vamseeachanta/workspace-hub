@@ -8,7 +8,7 @@
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "reviewed=True, approved=True, artifact=missing, confirmation=plan artifact missing"
+      "details": "reviewed=True, approved=True, artifact=plan-html-review-final.md, confirmation=confirmation block incomplete \u2014 decision=approved (need 'passed')"
     },
     {
       "name": "Workstation contract gate",
@@ -26,10 +26,10 @@
     },
     {
       "name": "Resource-intelligence gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence.yaml: invalid completion_status"
+      "details": "resource-intelligence.yaml: completion_status=continue_to_planning, p1_count=0, core_skills=3"
     },
     {
       "name": "Activation gate",
@@ -47,45 +47,45 @@
     },
     {
       "name": "User-review HTML-open gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-browser-open.yaml: missing required stages ['plan_draft', 'plan_final', 'close_review']"
+      "details": "user-review-browser-open.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "User-review publish gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml missing"
+      "details": "user-review-publish.yaml: stages=['close_review', 'plan_draft', 'plan_final']"
     },
     {
       "name": "Cross-review gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "artifact=none"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1014/review-synthesis.md"
     },
     {
       "name": "TDD gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "none"
+      "details": "test files=['ac-test-matrix.md']"
     },
     {
       "name": "Integrated test gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "execute.yaml: integrated_repo_tests[1] missing fields: ['artifact_ref']"
+      "details": "execute.yaml: integrated_repo_tests=5 (all passing)"
     },
     {
       "name": "Legal gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "artifact=missing, none"
+      "details": "artifact=/mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1014/legal-scan.md, result=pass"
     },
     {
       "name": "Claim gate",
@@ -96,17 +96,17 @@
     },
     {
       "name": "Future-work gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "future-work.yaml: empty recommendations and no_follow_ups_rationale missing"
+      "details": "future-work.yaml: recommendations=3"
     },
     {
       "name": "Resource-intelligence update gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "resource-intelligence-update.yaml: add additions[] or no_additions_rationale"
+      "details": "resource-intelligence-update.yaml: additions=3"
     },
     {
       "name": "User-review close gate",
@@ -120,21 +120,21 @@
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "reclaim.yaml absent (no reclaim triggered \u2014 WARN)"
+      "details": "reclaim.yaml: status=n/a (Stage 18 not triggered \u2014 WARN)"
     },
     {
       "name": "Approval ordering gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "timestamp ordering violation: claim-evidence.claimed_at (2026-03-10T00:00:00Z) >= execute.executed_at (2026-03-10T00:00:00Z)"
+      "details": "approval ordering OK (phase=close)"
     },
     {
       "name": "Midnight UTC sentinel gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "midnight UTC sentinel detected in user-review-plan-draft.yaml.reviewed_at: 2026-03-10T00:00:00Z"
+      "details": "no midnight UTC sentinel found"
     },
     {
       "name": "Browser open elapsed time gate",
@@ -145,10 +145,10 @@
     },
     {
       "name": "Sentinel values gate",
-      "status": "FAIL",
-      "ok": false,
+      "status": "PASS",
+      "ok": true,
       "warn": false,
-      "details": "claim-evidence.yaml: route='' (empty)"
+      "details": "no sentinel values found"
     },
     {
       "name": "Claim artifact path gate",
@@ -169,21 +169,21 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "codex keyword found in review artifacts (1 file(s) checked)"
+      "details": "codex keyword found in review artifacts (2 file(s) checked)"
     },
     {
       "name": "Publish commit uniqueness gate",
-      "status": "PASS",
-      "ok": true,
+      "status": "FAIL",
+      "ok": false,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip commit uniqueness check"
+      "details": "all three publish stages share commit '8c5ed55b' (likely placeholder)"
     },
     {
       "name": "Stage evidence paths gate",
       "status": "FAIL",
       "ok": false,
       "warn": false,
-      "details": "stage-evidence.yaml: stage[5] evidence path not found: .claude/work-queue/assets/WRK-1014/plan-html-review-draft.md"
+      "details": "stage-evidence.yaml: stage[9] evidence path not found: /work"
     },
     {
       "name": "Done/pending contradiction gate",
@@ -197,7 +197,7 @@
       "status": "PASS",
       "ok": true,
       "warn": false,
-      "details": "user-review-publish.yaml absent \u2014 skip"
+      "details": "plan publish ordering OK (published=2026-03-10T11:45:00Z, reviewed=2026-03-10T07:30:00Z)"
     },
     {
       "name": "Workstation contract (strict) gate",
@@ -211,7 +211,7 @@
       "status": "WARN",
       "ok": false,
       "warn": true,
-      "details": "n/a: Stage 18 is n/a and no reclaim log exists"
+      "details": "n/a: Stage 18 is n/a; reclaim.yaml is placeholder"
     }
   ]
 }
