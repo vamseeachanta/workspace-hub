@@ -121,6 +121,28 @@ Route B/C: multi-provider cross-review (Claude + Codex + Gemini).
 
 See `work-queue-workflow/SKILL.md` §Complexity Routing for full detail.
 
+## Feature Layer (Epic-level work)
+
+When a work item exceeds chunk-sizing limits (`config/work-queue/chunk-sizing.yaml`),
+create a **Feature WRK** instead of a regular WRK:
+
+```bash
+# manually: copy config/work-queue/feature-template.md
+```
+
+Feature WRK lifecycle:
+- Full Stage 1–7 planning (Stage 6 cross-review + Stage 7 hard gate mandatory)
+- At Stage 7 exit → `new-feature.sh WRK-NNN` spawns child WRKs
+- Feature WRK status becomes `coordinating`; children queue as `pending`
+- Feature closes when all children are `archived`
+
+Key frontmatter fields:
+- `type: feature` — marks this as an orchestrating item
+- `children: [WRK-A, WRK-B]` — populated by new-feature.sh
+- Child WRKs carry `parent: WRK-NNN` and optional `blocked_by: [sibling]`
+
+Feature status: `scripts/work-queue/feature-status.sh WRK-NNN`
+
 ## Cross-Review (Route B/C)
 
 After each implementation phase:
@@ -257,6 +279,4 @@ Never archive or mark done until user explicitly confirms completion. Check all 
 
 ## Version History
 
-- **1.9.0** (2026-03-10): Stage 4a plan-mode ideation sub-stage + explicit coverage instruction (WRK-1014)
-- **1.8.0** (2026-03-08): Pruned to ≤250 lines; checkpoint validation; auto-resume (WRK-1035)
-- **1.7.0** (2026-03-07): Stage 7/17 hard blocking gates (WRK-1034)
+- **2.0.0** (2026-03-11): Feature layer section added (WRK-1129)
