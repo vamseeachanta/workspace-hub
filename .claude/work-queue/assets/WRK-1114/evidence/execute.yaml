@@ -1,0 +1,41 @@
+stage: 10
+wrk_id: WRK-1114
+executed_at: 2026-03-10T00:00:00Z
+provider: claude
+artifacts_created:
+  - config/work-queue/machine-ranges.yaml
+  - tests/work-queue/test-machine-id-ranges.sh
+artifacts_modified:
+  - scripts/work-queue/next-id.sh
+  - .claude/work-queue/state.yaml
+  - .claude/skills/coordination/workspace/work-queue/SKILL.md
+test_results:
+  total: 5
+  pass: 5
+  fail: 0
+  command: "bash tests/work-queue/test-machine-id-ranges.sh"
+integrated_repo_tests:
+  - name: "ace-linux-1 empty queue → floor ID 001"
+    scope: repo
+    result: pass
+    suite: tests/work-queue/test-machine-id-ranges.sh
+  - name: "acma-ansys05 empty queue → floor ID 5000"
+    scope: repo
+    result: pass
+    suite: tests/work-queue/test-machine-id-ranges.sh
+  - name: "ace-linux-1 MAX_ID=1113 → next ID 1114"
+    scope: repo
+    result: pass
+    suite: tests/work-queue/test-machine-id-ranges.sh
+  - name: "acma-ansys05 MAX_ID=5001 → next ID 5002"
+    scope: repo
+    result: pass
+    suite: tests/work-queue/test-machine-id-ranges.sh
+  - name: "range non-overlap invariant: ace-linux-1 ceiling < acma-ansys05 floor"
+    scope: repo
+    result: pass
+    suite: tests/work-queue/test-machine-id-ranges.sh
+legal_scan_ref: .claude/work-queue/assets/WRK-1114/evidence/legal-scan.yaml
+notes: >
+  Machine-range partitioning implemented. awk field fix required ($NF not $2).
+  ((PASS++)) bash set -e gotcha fixed with PASS=$((PASS+1)).

@@ -1,0 +1,19 @@
+wrk_id: WRK-1114
+generated_at: 2026-03-10T00:00:00Z
+no_follow_ups_rationale: ""
+items:
+  - id: FW-1
+    title: "Add test scenarios for ace-linux-2 and gali-linux-compute-1"
+    priority: low
+    rationale: "Current tests cover ace-linux-1 and acma-ansys05. Reserved machines are untested."
+    capture: false
+  - id: FW-2
+    title: "Automate ceiling-proximity alert (within 50 of ceiling)"
+    priority: low
+    rationale: "Re-allocation policy is documented but not mechanically enforced."
+    capture: false
+  - id: FW-3
+    title: "Add new-machine onboarding script to allocate range and update machine-ranges.yaml"
+    priority: low
+    rationale: "Manual process to add new machine; could be scripted."
+    capture: false

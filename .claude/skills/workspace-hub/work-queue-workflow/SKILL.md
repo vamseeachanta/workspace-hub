@@ -55,7 +55,11 @@ Violations to avoid:
 
 1. Run `session-start`.
 2. Use `/work` to select/create the WRK item.
-3. Ensure plan exists and user approval explicitly names WRK ID.
+3. Stage 4a: Enter EnterPlanMode — open with explicit instruction "cover every requirement in
+   the WRK spec before proceeding" (plan mode alone without this instruction degrades coverage
+   by ~15 points). Draft full plan as text, iterate with user, then ExitPlanMode. Stage 4b:
+   run self-verification pass (plan vs every AC) to close gaps, then write plan spec + HTML.
+   Ensure user approval explicitly names WRK ID.
 4. Run the canonical **20-stage lifecycle** (Capture -> Archive) from
    `workflow-gatepass`.
    See `workflow-html` SKILL for the single lifecycle HTML model — one file per WRK

@@ -1,0 +1,6 @@
+wrk_id: WRK-1114
+stage: 10
+scanned_at: 2026-03-10T00:00:00Z
+command: "bash scripts/legal/legal-sanity-scan.sh --diff-only"
+result: PASS
+violations: 0

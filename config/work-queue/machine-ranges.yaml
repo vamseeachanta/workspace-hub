@@ -1,0 +1,32 @@
+# Machine-partitioned WRK ID ranges
+#
+# Each machine owns a non-overlapping numeric range.
+# next-id.sh reads this file, detects $HOSTNAME, and enforces a floor.
+#
+# Re-allocation policy: when MAX_ID is within 50 of the ceiling,
+# request a new ceiling block from the workspace-hub maintainer and
+# update this file before continuing to issue IDs.
+#
+# To add a new machine: choose a floor above all existing ceilings,
+# set ceiling = floor + 4999, and document the hostname here.
+
+machines:
+  - hostname: ace-linux-1
+    floor: 1
+    ceiling: 4999
+    notes: "Primary development machine; current IDs ~1114"
+
+  - hostname: acma-ansys05
+    floor: 5000
+    ceiling: 9999
+    notes: "Windows machine (orcaflex/ansys); runs via Git Bash"
+
+  - hostname: ace-linux-2
+    floor: 10000
+    ceiling: 14999
+    notes: "Reserved for future use"
+
+  - hostname: gali-linux-compute-1
+    floor: 15000
+    ceiling: 19999
+    notes: "Heavy compute / HPC machine; reserved"

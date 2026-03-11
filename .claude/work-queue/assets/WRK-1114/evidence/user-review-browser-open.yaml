@@ -1,0 +1,19 @@
+events:
+- stage: plan_draft
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1114/WRK-1114-lifecycle.html
+  opened_at: '2026-03-10T00:00:00Z'
+  reviewer: user
+- stage: plan_final
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1114/WRK-1114-lifecycle.html
+  opened_at: '2026-03-10T00:00:00Z'
+  reviewer: user
+- stage: close_review
+  opened_in_default_browser: true
+  browser: system-default
+  html_ref: .claude/work-queue/assets/WRK-1114/WRK-1114-lifecycle.html
+  opened_at: '2026-03-11T01:35:51Z'
+  reviewer: user
