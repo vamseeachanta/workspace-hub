@@ -1,13 +1,13 @@
-generated: '2026-03-10'
-total_specs: 1580
+generated: '2026-03-11'
+total_specs: 1603
 by_category:
   archive: 10
   data-sources: 13
-  modules: 123
-  other: 24
+  modules: 128
+  other: 31
   repos: 1344
   templates: 20
-  wrk: 46
+  wrk: 57
 by_repo:
   OGManufacturing: 16
   aceengineer-admin: 21
@@ -26,7 +26,7 @@ by_repo:
   rock-oil-field: 9
   saipem: 2
   teamresumes: 28
-  workspace-hub: 219
+  workspace-hub: 242
   worldenergydata: 216
 by_wrk:
   WRK-0: 8
@@ -145,6 +145,8 @@ by_wrk:
   WRK-218: 1
   WRK-226: 1
   WRK-228: 1
+  WRK-234: 1
+  WRK-235: 1
   WRK-253: 1
   WRK-264: 1
   WRK-269: 1
@@ -210,6 +212,7 @@ by_wrk:
   WRK-569: 1
   WRK-572: 1
   WRK-573: 2
+  WRK-577: 2
   WRK-597: 1
   WRK-607: 1
   WRK-610: 1
@@ -225,7 +228,7 @@ by_wrk:
   WRK-621: 1
   WRK-622: 1
   WRK-623: 1
-  WRK-624: 6
+  WRK-624: 9
   WRK-637: 1
   WRK-655: 2
   WRK-656: 3
@@ -249,15 +252,20 @@ by_wrk:
   WRK-686: 1
   WRK-687: 1
   WRK-690: 1
+  WRK-693: 1
   WRK-700: 1
   WRK-1000: 1
   WRK-1002: 2
   WRK-1003: 2
   WRK-1004: 1
-  WRK-1005: 1
+  WRK-1005: 3
   WRK-1008: 1
+  WRK-1009: 6
+  WRK-1010: 3
   WRK-1013: 1
+  WRK-1014: 2
   WRK-1017: 1
+  WRK-1018: 1
   WRK-1019: 3
   WRK-1020: 2
   WRK-1030: 1
@@ -275,14 +283,20 @@ by_wrk:
   WRK-1061: 1
   WRK-1062: 2
   WRK-1066: 1
-  WRK-1073: 1
+  WRK-1073: 2
   WRK-1074: 1
   WRK-1079: 1
   WRK-1081: 1
-  WRK-1083: 1
+  WRK-1083: 3
   WRK-1085: 1
   WRK-1087: 2
   WRK-1090: 1
+  WRK-1098: 1
+  WRK-1100: 1
+  WRK-1102: 1
+  WRK-1105: 1
+  WRK-1115: 1
+  WRK-1117: 1
 specs:
 - path: specs/architecture/agent-vision.md
   title: Superintelligent Engineering Agent Architecture Blueprint
@@ -966,6 +980,16 @@ specs:
   - WRK-103
   - WRK-104
   mtime: '2026-02-09'
+- path: specs/modules/golden-puzzling-blum.md
+  title: WRK-1083 Stage 4 Plan — Plan-Mode Integration
+  description: 'All implementation commits are already done from a prior session:'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - golden-puzzling-blum
+  wrk_refs:
+  - WRK-1083
+  mtime: '2026-03-10'
 - path: specs/modules/greedy-weaving-lampson.md
   title: 'WRK-357 Plan: Extract Offshore Vessel Fleet Data from PDF Posters'
   description: Two Offshore Magazine survey posters (2010 heavy lift, 2011 pipelay) contain structured fleet data for offshore
@@ -1223,6 +1247,18 @@ specs:
   - proud-toasting-sunrise
   wrk_refs: []
   mtime: '2026-02-18'
+- path: specs/modules/purrfect-sauteeing-rabin.md
+  title: 'Plan: WRK-1014 — Add Stage 4a Plan Mode Ideation to WRK Lifecycle'
+  description: Stage 4 currently jumps straight to writing `specs/wrk/WRK-NNN/plan.md` and generating HTML. Iterating on a
+    wrong approach requires regenerating artifacts repeatedly (wasted disk/context). Insertin...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - purrfect-sauteeing-rabin
+  wrk_refs:
+  - WRK-1005
+  - WRK-1014
+  mtime: '2026-03-11'
 - path: specs/modules/quiet-soaring-truffle.md
   title: WRK-309 Implementation Plan — Document Intelligence
   description: Thousands of engineering standards, reports, and reference documents exist across three drives (`/mnt/ace`,
@@ -1282,6 +1318,17 @@ specs:
   wrk_refs:
   - WRK-66
   mtime: '2026-02-03'
+- path: specs/modules/robust-popping-wadler.md
+  title: 'Plan: WRK-1117 — Windows/Git Bash: fix comprehensive-learning push path + signal generation'
+  description: 'acma-ansys05 (Windows Git Bash) runs `comprehensive-learning.sh` at session exit but contributes zero learnings
+    to the pipeline. Two root causes:'
+  category: modules
+  repo: workspace-hub
+  tags:
+  - robust-popping-wadler
+  wrk_refs:
+  - WRK-1117
+  mtime: '2026-03-11'
 - path: specs/modules/serialized-snacking-pnueli.md
   title: 'Plan: WRK-617 — digitalmodel.ansys domain'
   description: ANSYS FEA assets exist in /mnt/ace but are inaccessible programmatically. WRK-617 creates `src/digitalmodel/ansys/`
@@ -1330,6 +1377,18 @@ specs:
   - session-to-summary-report-pipeline
   wrk_refs: []
   mtime: '2026-02-09'
+- path: specs/modules/silly-seeking-thacker.md
+  title: 'WRK-1098 Plan: Ecosystem Terminology Skill'
+  description: Coding assistants and new humans regularly use inconsistent names for repos, modules, machines, and concepts
+    in this ecosystem. The terminology is scattered across CLAUDE.md, MEMORY.md, AGENTS.md, ...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - silly-seeking-thacker
+  wrk_refs:
+  - WRK-1073
+  - WRK-1098
+  mtime: '2026-03-10'
 - path: specs/modules/skills-migration-plan.md
   title: Skills Migration Plan
   description: '**Created**: 2026-01-21 **Status**: Planning **Total Files**: 294 markdown files across both directories'
@@ -1586,6 +1645,17 @@ specs:
   wrk_refs:
   - WRK-98
   mtime: '2026-02-08'
+- path: specs/modules/wrk-1115-unified-plan-lifecycle-html.md
+  title: 'WRK-1115 Plan: Unified Plan+Lifecycle HTML'
+  description: Currently `generate-html-review.py` emits only one HTML file per WRK (`WRK-NNN-lifecycle.html`). Several stages
+    (12, 13) have no dedicated renderers, Stage 10 drops rich execution data, Stage 14 dr...
+  category: modules
+  repo: workspace-hub
+  tags:
+  - wrk-1115-unified-plan-lifecycle-html
+  wrk_refs:
+  - WRK-1115
+  mtime: '2026-03-11'
 - path: specs/modules/wrk-114-hull-panel-collection-and-catalog.md
   title: 'WRK-114: Hull Panel Collection and Catalog'
   description: Collect, inventory, and catalog hull panel geometries from 5 source directories into a consolidated, searchable
@@ -19860,6 +19930,90 @@ specs:
   - worldenergydata
   wrk_refs: []
   mtime: '2026-02-17'
+- path: specs/skills/capability-assessment-wrk-624-skills.md
+  title: Capability Assessment — WRK-624 Governance Skill Set
+  description: '**Produced by:** WRK-1010 Stage 10 (Work Execution) **Date:** 2026-03-10 **Assessment type:** Static/heuristic
+    — SKILL.md content analysis only. No runtime execution. **Linked review:** WRK-624 wor...'
+  category: other
+  repo: workspace-hub
+  tags:
+  - capability-assessment-wrk-624-skills
+  - skills
+  wrk_refs:
+  - WRK-624
+  - WRK-1010
+  mtime: '2026-03-11'
+- path: specs/skills/script-conversion-candidates.md
+  title: Skill Script Conversion Candidates
+  description: 'Generated: 2026-03-10T19:44:48Z Total skills scanned: 393'
+  category: other
+  repo: workspace-hub
+  tags:
+  - script-conversion-candidates
+  - skills
+  wrk_refs: []
+  mtime: '2026-03-10'
+- path: specs/skills/skill-eval-framework.md
+  title: Skill Eval Framework
+  description: Provide a deterministic, schema-validated mechanism to verify that SKILL.md files meet documented capability
+    and procedural contracts without requiring LLM reasoning.
+  category: other
+  repo: workspace-hub
+  tags:
+  - skill-eval-framework
+  - skills
+  wrk_refs:
+  - WRK-1009
+  mtime: '2026-03-10'
+- path: specs/skills/skill-knowledge-map.md
+  title: Skill Knowledge Map — WRK-624 Governance Skill Set
+  description: '**Produced by:** WRK-1010 Stage 10 (Work Execution) **Date:** 2026-03-10 **Scope:** 8 skills assessed for
+    WRK-624 workflow governance review'
+  category: other
+  repo: workspace-hub
+  tags:
+  - skill-knowledge-map
+  - skills
+  wrk_refs:
+  - WRK-624
+  - WRK-1010
+  mtime: '2026-03-11'
+- path: specs/skills/evals/comprehensive-learning.yaml
+  title: Comprehensive Learning
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - comprehensive-learning
+  - evals
+  - skills
+  wrk_refs:
+  - WRK-1009
+  mtime: '2026-03-10'
+- path: specs/skills/evals/work-queue.yaml
+  title: Work Queue
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - evals
+  - skills
+  - work-queue
+  wrk_refs:
+  - WRK-1009
+  mtime: '2026-03-10'
+- path: specs/skills/evals/workflow-gatepass.yaml
+  title: Workflow Gatepass
+  description: ''
+  category: other
+  repo: workspace-hub
+  tags:
+  - evals
+  - skills
+  - workflow-gatepass
+  wrk_refs:
+  - WRK-1009
+  mtime: '2026-03-10'
 - path: specs/templates/claim-evidence-template.yaml
   title: Claim Evidence Template
   description: ''
@@ -20091,6 +20245,30 @@ specs:
   - WRK-1004
   - WRK-1005
   mtime: '2026-03-05'
+- path: specs/wrk/WRK-1009/plan.md
+  title: 'WRK-1009 Plan — Skill upkeep and curation: evals, A/B tests, daily cron integration'
+  description: '**Route B — Medium complexity | ace-linux-1 | Orchestrator: Claude**'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1009
+  wrk_refs:
+  - WRK-1009
+  mtime: '2026-03-10'
+- path: specs/wrk/WRK-1010/plan.md
+  title: WRK-1010 Plan — Skill Capability Assessment for WRK-624 Governance Skill Set
+  description: '**Route:** B (Medium) **Target repos:** workspace-hub **Orchestrator:** claude (this session) with codex cross-review'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1010
+  wrk_refs:
+  - WRK-624
+  - WRK-1009
+  - WRK-1010
+  mtime: '2026-03-11'
 - path: specs/wrk/WRK-1013/plan.md
   title: WRK-1013 Plan — Fix Anthropic Guide Violations
   description: 'Comply with Anthropic official skill guide:'
@@ -20102,6 +20280,30 @@ specs:
   wrk_refs:
   - WRK-1013
   mtime: '2026-03-09'
+- path: specs/wrk/WRK-1014/plan.md
+  title: 'Plan: WRK-1014 — Add Stage 4a Plan Mode Ideation to WRK Lifecycle'
+  description: Insert a `EnterPlanMode` / `ExitPlanMode` sub-stage (4a) before existing Stage 4b artifact creation so the
+    orchestrator drafts the full plan scope as text before touching any files — higher quality...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1014
+  wrk_refs:
+  - WRK-1005
+  - WRK-1014
+  mtime: '2026-03-11'
+- path: specs/wrk/WRK-1018/plan.md
+  title: WRK-1018 Plan — scan-future-work Phase 6 integration
+  description: Route A (simple)
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1018
+  wrk_refs:
+  - WRK-1018
+  mtime: '2026-03-10'
 - path: specs/wrk/WRK-1019/plan.md
   title: 'WRK-1019 Plan: repo-portfolio-steering Skill'
   description: 'date: 2026-03-05 wrk_id: WRK-1019 route: C complexity: complex orchestrator: claude'
@@ -20281,6 +20483,18 @@ specs:
   wrk_refs:
   - WRK-1079
   mtime: '2026-03-09'
+- path: specs/wrk/WRK-1083/plan.md
+  title: 'WRK-1083 Plan: Plan-Mode Integration for Work-Queue-Workflow Stages'
+  description: Identify which WRK lifecycle stages benefit from `EnterPlanMode`, define activation contracts, and add a `plan-mode`
+    skill that automates deliberative-stage protection.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1083
+  wrk_refs:
+  - WRK-1083
+  mtime: '2026-03-10'
 - path: specs/wrk/WRK-1087/plan.md
   title: WRK-1087 Agent Audit Trail — Implementation Plan
   description: '**Goal:** Append-only SHA256-chained JSONL audit log of every significant agent action, queryable and verifiable.'
@@ -20314,6 +20528,42 @@ specs:
   - wrk-1090
   wrk_refs:
   - WRK-1090
+  mtime: '2026-03-10'
+- path: specs/wrk/WRK-1100/plan.md
+  title: WRK-1100 Plan
+  description: ''
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1100
+  wrk_refs:
+  - WRK-234
+  - WRK-235
+  - WRK-1100
+  mtime: '2026-03-10'
+- path: specs/wrk/WRK-1102/plan.md
+  title: 'WRK-1102 Plan: fix(comprehensive-learning) — Repair Modular Chain'
+  description: '**Route**: C | **Priority**: HIGH | **Complexity**: medium **Computer**: ace-linux-1 | **Target repo**: workspace-hub'
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1102
+  wrk_refs:
+  - WRK-1102
+  mtime: '2026-03-10'
+- path: specs/wrk/WRK-1105/plan.md
+  title: Knowledge persistence architecture — work-done summaries, resource-intelligence, career learnings
+  description: Design and implement a structured knowledge persistence system that routes WRK completion learnings out of
+    MEMORY.md into a queryable knowledge-base, integrates it with resource-intelligence Stage ...
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-1105
+  wrk_refs:
+  - WRK-1105
   mtime: '2026-03-10'
 - path: specs/wrk/WRK-118/plan.md
   title: WRK-118 AI Agent Utilization Strategy — Plan
@@ -20423,6 +20673,28 @@ specs:
   wrk_refs:
   - WRK-373
   mtime: '2026-02-24'
+- path: specs/wrk/WRK-577/plan.md
+  title: 'WRK-577 Plan: Normalize SKILL.md Frontmatter for 9 Skipped Skills'
+  description: Fix YAML frontmatter in 9 SKILL.md files so the skill loader reports 0 skipped skills.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - plan
+  - wrk-577
+  wrk_refs:
+  - WRK-577
+  mtime: '2026-03-10'
+- path: specs/wrk/WRK-577/wrk-577-normalize-skill-frontmatter.md
+  title: 'WRK-577 Plan: Normalize SKILL.md Frontmatter for 9 Skipped Skills'
+  description: Fix YAML frontmatter in 9 SKILL.md files so the skill loader reports 0 skipped skills.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - wrk-577
+  - wrk-577-normalize-skill-frontmatter
+  wrk_refs:
+  - WRK-577
+  mtime: '2026-03-10'
 - path: specs/wrk/WRK-624/plan.md
   title: WRK-624 Canonical Workflow Hardening
   description: Route C plan/spec for the canonical 9-stage work-item lifecycle, review matrix, closure enforcement, and ecosystem
@@ -20653,6 +20925,18 @@ specs:
   wrk_refs:
   - WRK-690
   mtime: '2026-03-03'
+- path: specs/wrk/WRK-693/wrk-693-fix-bare-python3.md
+  title: 'WRK-693: Fix bare python3 — uv audit across hub scripts'
+  description: Replace all bare `python3` invocations of hub `.py` scripts with `uv run --no-project python` to ensure PyYAML
+    and other non-stdlib deps are available in every invocation.
+  category: wrk
+  repo: workspace-hub
+  tags:
+  - wrk-693
+  - wrk-693-fix-bare-python3
+  wrk_refs:
+  - WRK-693
+  mtime: '2026-03-10'
 - path: digitalmodel/specs/module-registry.yaml
   title: digitalmodel
   description: Structured registry of all digitalmodel sub-modules for agent discovery
