@@ -118,11 +118,14 @@ def write_checkpoint(
     with open(cp_path, "w") as f:
         f.write("\n".join(lines) + "\n")
 
+    gate_question = nc.get("blocking_condition", "") if next_human_gate else ""
+
     return {
         "terminal": False,
         "next_stage": next_stage,
         "next_name": next_name,
         "human_gate": next_human_gate,
+        "gate_question": gate_question,
         "chained": chained,
     }
 
@@ -138,32 +141,59 @@ _STAGE_NAMES = {
 }
 
 
+def print_stage_banner(
+    stage: int,
+    name: str,
+    state: str,
+    gate_question: str = "",
+) -> None:
+    """Emit a single prominent stage-progress line.
+
+    state:         "START" | "DONE" | "WAITING"
+    gate_question: shown on the next line when state == "WAITING"
+    """
+    label = f"Stage {stage}: {name}"
+    line = f"{label} ── {state}"
+    print(f"\n{line}")
+    if state == "WAITING" and gate_question:
+        print(f"  → {gate_question}")
+    print()
+
+
 def print_stage_gate(wrk_id: str, completed_stage: int, cp_info: dict) -> None:
     """Print STAGE_GATE block for orchestrator to read."""
     if cp_info.get("terminal"):
-        print(f"\nStage {completed_stage} complete. WRK finished — proceed to archive.")
+        completed_name = _STAGE_NAMES.get(completed_stage, f"Stage {completed_stage}")
+        print_stage_banner(completed_stage, completed_name, "DONE")
+        print(f"WRK {wrk_id} finished — proceed to archive.")
         return
     next_stage = cp_info["next_stage"]
     next_name = cp_info["next_name"]
     human_gate = cp_info["human_gate"]
     action = "await_user_approval" if human_gate else "spawn_subagent"
     completed_name = _STAGE_NAMES.get(completed_stage, f"Stage {completed_stage}")
-    w = 52
 
-    def row(label: str, value: str) -> str:
-        content = f"  {label:<16}{value}"
-        return "║" + content + " " * max(w - len(content), 0) + "║"
+    # Prominent single-line banner — key for the user
+    print_stage_banner(completed_stage, completed_name, "DONE")
 
-    print("")
-    print("╔" + "═" * w + "╗")
-    print(row("STAGE_GATE", ""))
-    print(row("wrk_id:", wrk_id))
-    print(row("completed:", f"{completed_stage}  ({completed_name})"))
-    print(row("next_stage:", f"{next_stage}  ({next_name})"))
-    print(row("human_gate:", str(human_gate).lower()))
-    print(row("action:", action))
-    print("╚" + "═" * w + "╝")
-    print("")
+    # Next-stage banner: WAITING for human gates, context for agents
+    if human_gate:
+        gate_q = cp_info.get("gate_question", "")
+        print_stage_banner(next_stage, next_name, "WAITING", gate_q)
+    else:
+        w = 52
+
+        def row(label: str, value: str) -> str:
+            content = f"  {label:<16}{value}"
+            return "║" + content + " " * max(w - len(content), 0) + "║"
+
+        print("╔" + "═" * w + "╗")
+        print(row("STAGE_GATE", ""))
+        print(row("wrk_id:", wrk_id))
+        print(row("next_stage:", f"{next_stage}  ({next_name})"))
+        print(row("action:", action))
+        print("╚" + "═" * w + "╝")
+        print("")
 
 
 def validate_checkpoint(checkpoint_path: str) -> None:

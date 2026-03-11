@@ -223,6 +223,12 @@ uv run --no-project python .claude/work-queue/scripts/generate-index.py
 | `start_stage.py WRK-NNN N` | Stage entry (auto-prints resume block) |
 | `exit_stage.py WRK-NNN N` | Stage exit validation |
 
+## Work Execution Principle: Scripts Over LLM Overhead
+
+> Canonical rule: `.claude/rules/patterns.md §Scripts Over LLM Judgment` (includes the 25% repetition threshold).
+
+For every WRK item: if there is a ≥25% chance an operation will recur — write a script first, then call it. Scripts are reusable WRK assets; LLM prose is not.
+
 ## Parallel Work Policy
 
 - Independent tasks: separate WRKs with separate evidence packages.

@@ -24,42 +24,97 @@ import yaml
 import markdown
 from pathlib import Path
 
-# ── CSS design system (workflow-html SKILL §1) ───────────────────────────────
-CSS = """
+# ── CSS design system — SHARED across lifecycle.html and plan.html ────────────
+SHARED_CSS = """
 :root {
-  --bg:       #f3efe6;
-  --panel:    #fffdf8;
-  --ink:      #172126;
-  --muted:    #55636b;
-  --accent:   #0f766e;
-  --accent-2: #8a5a2b;
-  --line:     #d9d0c0;
-  --shadow:   0 16px 40px rgba(20,33,38,0.08);
-  --good:     #166534;
-  --warn:     #b45309;
-  --bad:      #b91c1c;
+  --bg:         #f3efe6;
+  --panel:      #fffdf8;
+  --ink:        #172126;
+  --muted:      #55636b;
+  --accent:     #0f766e;
+  --accent-2:   #8a5a2b;
+  --line:       #d9d0c0;
+  --shadow:     0 16px 40px rgba(20,33,38,0.08);
+  --good:       #166534;
+  --warn:       #b45309;
+  --bad:        #b91c1c;
+  --done:       #166534;   --done-bg:    #dcfce7;
+  --active:     #92400e;   --active-bg:  #fef3c7;
+  --pending:    #55636b;   --pending-bg: #f1f5f9;
+  --na:         #6b7280;   --na-bg:      #f3f4f6;
 }
 *{box-sizing:border-box;}
 body{font-family:Georgia,"Times New Roman",serif;
   background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
-  color:var(--ink);line-height:1.5;margin:0;}
+  color:var(--ink);line-height:1.55;margin:0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
 code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
-  background:rgba(27,31,35,0.05);padding:.2em .4em;border-radius:3px;}
+  background:rgba(27,31,35,0.06);padding:.2em .4em;border-radius:3px;font-size:.88em;}
 pre code{background:none;padding:0;}
-pre{background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
-  padding:14px 16px;overflow-x:auto;font-size:.88rem;}
+pre{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:#f6f8fa;border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-size:.88rem;margin:10px 0;}
 .panel,.artifact-box{background:#fff;padding:16px;border-radius:10px;
   border:1px solid var(--line);}
-.hero{padding:48px 24px 28px;border-bottom:1px solid rgba(23,33,38,0.08);
-  background:linear-gradient(135deg,rgba(15,118,110,0.08),rgba(138,90,43,0.10));}
-.hero-inner,.content{max-width:1180px;margin:0 auto;}
-.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;
-  color:var(--accent);font-weight:700;}
-h1{margin:10px 0 12px;font-size:clamp(1.75rem,3.2vw,3rem);line-height:1.02;}
-.lede{max-width:78ch;color:var(--muted);font-size:1.05rem;}
-.content{padding:28px 24px 56px;}
+/* ── Hero ── */
+.hero{padding:28px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.hero-brand{display:flex;align-items:center;gap:7px;margin-bottom:12px;text-decoration:none;}
+.hero-brand-logo{width:26px;height:26px;background:var(--accent);border-radius:5px;
+  color:#fff;font-weight:900;font-size:.82rem;display:inline-flex;align-items:center;
+  justify-content:center;flex-shrink:0;letter-spacing:-.5px;}
+.hero-brand-name{font-size:.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--muted);}
+.hero-nav-link{font-size:.72rem;color:var(--accent);text-decoration:none;margin-left:auto;
+  opacity:.75;font-weight:600;}
+.hero-nav-link:hover{opacity:1;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;
+  color:var(--accent);font-weight:700;margin:0 0 6px;}
+h1{margin:0 0 8px;font-size:clamp(1.75rem,3.2vw,3rem);line-height:1.02;}
+.lede{color:var(--muted);font-size:.92rem;margin:0 0 14px;max-width:72ch;}
+/* ── Meta chips (hero) ── */
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2px;}
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px;}
+.meta-chip{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:5px 10px;font-size:.8rem;}
+.meta-chip strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--accent-2);display:block;margin-bottom:1px;}
+/* ── Pill grid (plan/review meta grid) ── */
+.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;margin:14px 0 20px;}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-size:.9rem;}
+.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+.pill-stage{background:var(--active-bg);border-color:#fbbf24;font-weight:600;}
+.meta-break{flex-basis:100%;height:0;}
+.pill-stage strong{color:var(--active);}
+/* ── Stage strip (sticky) ── */
+.stage-strip{background:var(--panel);border-bottom:1px solid var(--line);
+  padding:12px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.stage-strip-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+.stage-strip-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);margin-right:6px;white-space:nowrap;}
+.sc{display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;font-size:.75rem;font-weight:700;
+  text-decoration:none;transition:transform .15s;}
+.sc:hover{transform:scale(1.15);}
+.sc-done{background:var(--done-bg);color:var(--done);}
+.sc-active{background:var(--active-bg);color:var(--active);
+  box-shadow:0 0 0 2px var(--active);animation:pulse 2s infinite;}
+.sc-pending{background:var(--pending-bg);color:var(--pending);}
+.sc-na{background:var(--na-bg);color:var(--na);}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--active);}
+  50%{box-shadow:0 0 0 4px rgba(146,64,14,0.3);}}
+/* ── Content & cards ── */
+.content{max-width:1100px;margin:0 auto;padding:24px 24px 56px;}
 .card{background:var(--panel);padding:26px;border-radius:18px;
   box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+.plan-body{line-height:1.65;}
+.plan-body p{margin:.6em 0;}
 h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:24px;
   color:var(--accent-2);letter-spacing:.02em;}
 h2[data-collapsed="true"]{margin-bottom:4px;}
@@ -70,30 +125,94 @@ h3{color:var(--ink);margin-top:18px;}
   border-left:6px solid var(--accent);padding:20px;margin-bottom:30px;
   border-radius:10px;}
 .exec-summary h2{margin-top:0;border:none;color:var(--accent);}
-table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem;}
-th,td{border-top:1px solid var(--line);padding:10px 8px;
-  text-align:left;vertical-align:top;}
-th{font-weight:700;text-transform:uppercase;letter-spacing:.06em;
-  font-size:.86rem;color:var(--ink);}
-.card p,.card li,.card td,.card th{color:var(--muted);}
-.card strong,.card code{color:var(--ink);}
-.meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:10px;margin:14px 0 20px;}
-.pill{background:var(--panel);border:1px solid var(--line);border-radius:10px;
-  padding:10px 14px;font-size:.9rem;}
-.pill strong{display:block;font-size:.72rem;text-transform:uppercase;
-  letter-spacing:.08em;color:var(--accent-2);margin-bottom:2px;}
+/* ── Data tables (unified across lifecycle + plan) ── */
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.9rem;}
+thead th{background:var(--panel);border-bottom:2px solid var(--accent);
+  font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.78rem;padding:8px 10px;text-align:left;color:var(--ink);}
+tbody td{border-bottom:1px solid var(--line);padding:7px 10px;
+  color:var(--muted);vertical-align:top;}
+tbody tr:last-child td{border-bottom:none;}
+tbody td strong,tbody td code{color:var(--ink);}
+tbody tr:hover>td{background:rgba(15,118,110,.03);}
+table.table-sm{font-size:.82rem;}
+table.table-sm thead th{padding:5px 8px;}
+table.table-sm tbody td{padding:4px 8px;}
+/* ── Badges ── */
 .badge{display:inline-block;padding:2px 8px;border-radius:999px;
-  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
-.badge-pass{background:#dcfce7;color:var(--good);}
-.badge-warn{background:#fef3c7;color:var(--warn);}
-.badge-fail{background:#fee2e2;color:var(--bad);}
-.badge-info{background:#dbeafe;color:#1d4ed8;}
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  white-space:nowrap;}
+.badge-pass,.b-done{background:#dcfce7;color:var(--good);}
+.badge-warn,.b-active{background:#fef3c7;color:var(--active);}
+.badge-fail,.b-pending{background:#fee2e2;color:var(--bad);}
+.badge-info,.b-chain{background:#dbeafe;color:#1d4ed8;}
+.b-na{background:var(--na-bg);color:var(--na);}
+.b-human{background:#ede9fe;color:#6d28d9;}
+.b-agent{background:#d1fae5;color:#065f46;}
+.b-light{background:#f0fdf4;color:#166534;}
+.b-medium{background:#fef9c3;color:#854d0e;}
+.b-heavy{background:#fee2e2;color:#991b1b;}
+.b-gate{background:#fce7f3;color:#9d174d;}
+/* ── Lifecycle stage sections ── */
+.stage-section{margin-bottom:16px;border-radius:14px;border:1px solid var(--line);
+  background:var(--panel);box-shadow:var(--shadow);overflow:hidden;}
+.stage-header{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;
+  padding:14px 18px;cursor:pointer;user-select:none;}
+.stage-header:hover{background:rgba(15,118,110,0.03);}
+.snum{font-size:1.5rem;font-weight:800;color:var(--line);text-align:center;line-height:1;}
+.stitle{font-size:.95rem;font-weight:700;color:var(--ink);margin:0;}
+.smeta{font-size:.76rem;color:var(--muted);margin:2px 0 0;}
+.sbadges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.chevron{font-size:.75rem;color:var(--muted);transition:transform .2s;}
+.stage-body{padding:0 18px 16px;border-top:1px solid var(--line);}
+.stage-body.collapsed{display:none;}
+.schema{background:#f8f9fa;border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;font-size:.82rem;margin:12px 0;}
+.schema-row{display:grid;grid-template-columns:160px 1fr;gap:4px 10px;margin:3px 0;}
+.schema-key{color:var(--accent);font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-weight:600;}
+.schema-val{color:var(--ink);word-break:break-word;max-width:640px;}
+.kv-val{word-break:break-word;max-width:640px;}
+.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--accent-2);font-weight:700;margin:14px 0 6px;}
+.item-list{margin:0;padding:0 0 0 18px;font-size:.87rem;}
+.item-list li{margin:3px 0;color:var(--muted);}
+.item-list li strong{color:var(--ink);}
+.ac-list{margin:0;padding:0 0 0 18px;font-size:.85rem;}
+.ac-list li{margin:4px 0;color:var(--muted);}
+.ac-list li strong{color:var(--ink);}
+.awaiting{background:var(--active-bg);border:1px solid #fcd34d;border-radius:8px;
+  padding:10px 14px;font-size:.86rem;color:var(--active);margin:12px 0;}
+/* ── RI callout ── */
+.ri-callout{max-width:1100px;margin:18px auto 0;padding:0 24px;}
+.ri-callout-inner{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);
+  border-radius:10px;padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:flex-start;}
+.ri-callout-inner.ri-absent{border-left-color:#d97706;background:#fffbeb;}
+.ri-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);
+  font-weight:700;margin-bottom:4px;}
+.ri-label.ri-absent{color:#d97706;}
+.ri-field{font-size:.83rem;line-height:1.4;}
+.ri-field strong{color:var(--ink);display:block;font-size:.68rem;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted);}
+.ri-conf-high{color:var(--done)}.ri-conf-medium{color:#92400e}.ri-conf-low{color:#991b1b}
+/* ── Layout helpers ── */
 .split{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
 @media(max-width:900px){.split{grid-template-columns:1fr;}}
+@media(max-width:700px){.stage-header{grid-template-columns:36px 1fr;}.sbadges{display:none;}
+  .schema-row{grid-template-columns:1fr;}}
 @media print{body{background:#fff;}.card{box-shadow:none;border:1px solid #ccc;}
-  tr,td,th{page-break-inside:avoid;}}
+  tr,td,th{page-break-inside:avoid;}.stage-strip{position:static;}
+  .stage-body.collapsed{display:block;}}
+/* ── Markdown table (plan.html) — inherits global table; slightly smaller ── */
+table.md-table{font-size:.87rem;}
+/* ── Brand footer ── */
+.brand-footer{text-align:center;padding:24px;color:var(--muted);font-size:.78rem;letter-spacing:.05em;}
+.brand-footer strong{color:var(--ink);}
+.brand-dm-logo{display:inline-block;width:18px;height:18px;background:var(--accent);border-radius:3px;color:#fff;font-weight:900;font-size:.7rem;line-height:18px;text-align:center;margin-right:5px;vertical-align:middle;}
 """
+
+# Backward-compat aliases — tests assert `mod.CSS` exists and contains design tokens
+CSS = SHARED_CSS
+LIFECYCLE_CSS = SHARED_CSS
 
 # ── JS interactivity (workflow-html SKILL §2) ─────────────────────────────────
 JS = """
@@ -1165,111 +1284,6 @@ def generate_review(wrk_id: str, artifact_type: str = "plan-draft",
 # LIFECYCLE HTML — single-file per WRK, stateless regeneration (WRK-1031)
 # ═══════════════════════════════════════════════════════════════════════════════
 
-LIFECYCLE_CSS = """
-:root{--bg:#f3efe6;--panel:#fffdf8;--ink:#172126;--muted:#55636b;
-  --accent:#0f766e;--accent-2:#8a5a2b;--line:#d9d0c0;
-  --shadow:0 12px 32px rgba(20,33,38,0.07);
-  --done:#166534;--done-bg:#dcfce7;--active:#92400e;--active-bg:#fef3c7;
-  --pending:#55636b;--pending-bg:#f1f5f9;--na:#6b7280;--na-bg:#f3f4f6;}
-*{box-sizing:border-box;}
-body{font-family:Georgia,"Times New Roman",serif;
-  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
-  color:var(--ink);line-height:1.55;margin:0;}
-a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
-code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;
-  background:rgba(27,31,35,0.06);padding:.15em .35em;border-radius:3px;font-size:.86em;}
-pre{background:#f6f8fa;border:1px solid var(--line);border-radius:7px;
-  padding:12px 14px;overflow-x:auto;font-size:.82rem;margin:10px 0;}
-.hero{padding:36px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
-  background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
-.hero-inner{max-width:1100px;margin:0 auto;}
-.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;
-  color:var(--accent);font-weight:700;margin:0 0 6px;}
-h1{margin:0 0 8px;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.06;}
-.lede{color:var(--muted);font-size:.92rem;margin:0 0 14px;max-width:72ch;}
-.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2px;}
-.pill{background:var(--panel);border:1px solid var(--line);border-radius:8px;
-  padding:5px 10px;font-size:.8rem;}
-.pill strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
-  color:var(--accent-2);display:block;margin-bottom:1px;}
-.stage-strip{background:var(--panel);border-bottom:1px solid var(--line);
-  padding:12px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
-.stage-strip-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
-.stage-strip-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;
-  color:var(--muted);margin-right:6px;white-space:nowrap;}
-.sc{display:inline-flex;align-items:center;justify-content:center;
-  width:30px;height:30px;border-radius:50%;font-size:.75rem;font-weight:700;
-  text-decoration:none;transition:transform .15s;}
-.sc:hover{transform:scale(1.15);}
-.sc-done{background:var(--done-bg);color:var(--done);}
-.sc-active{background:var(--active-bg);color:var(--active);
-  box-shadow:0 0 0 2px var(--active);animation:pulse 2s infinite;}
-.sc-pending{background:var(--pending-bg);color:var(--pending);}
-.sc-na{background:var(--na-bg);color:var(--na);}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--active);}
-  50%{box-shadow:0 0 0 4px rgba(146,64,14,0.3);}}
-.content{max-width:1100px;margin:0 auto;padding:24px 24px 64px;}
-.stage-section{margin-bottom:16px;border-radius:14px;border:1px solid var(--line);
-  background:var(--panel);box-shadow:var(--shadow);overflow:hidden;}
-.stage-header{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;
-  padding:14px 18px;cursor:pointer;user-select:none;}
-.stage-header:hover{background:rgba(15,118,110,0.03);}
-.snum{font-size:1.5rem;font-weight:800;color:var(--line);text-align:center;line-height:1;}
-.stitle{font-size:.95rem;font-weight:700;color:var(--ink);margin:0;}
-.smeta{font-size:.76rem;color:var(--muted);margin:2px 0 0;}
-.sbadges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
-.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.7rem;
-  font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
-.b-done{background:var(--done-bg);color:var(--done);}
-.b-active{background:var(--active-bg);color:var(--active);}
-.b-pending{background:var(--pending-bg);color:var(--pending);}
-.b-na{background:var(--na-bg);color:var(--na);}
-.b-human{background:#ede9fe;color:#6d28d9;}
-.b-agent{background:#d1fae5;color:#065f46;}
-.b-chain{background:#dbeafe;color:#1e40af;}
-.b-light{background:#f0fdf4;color:#166534;}
-.b-medium{background:#fef9c3;color:#854d0e;}
-.b-heavy{background:#fee2e2;color:#991b1b;}
-.b-gate{background:#fce7f3;color:#9d174d;}
-.chevron{font-size:.75rem;color:var(--muted);transition:transform .2s;}
-.stage-body{padding:0 18px 16px;border-top:1px solid var(--line);}
-.stage-body.collapsed{display:none;}
-.schema{background:#f8f9fa;border:1px solid var(--line);border-radius:8px;
-  padding:12px 14px;font-size:.82rem;margin:12px 0;}
-.schema-row{display:grid;grid-template-columns:160px 1fr;gap:4px 10px;margin:3px 0;}
-.schema-key{color:var(--accent);font-family:monospace;font-weight:600;}
-.schema-val{color:var(--ink);}
-.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
-  color:var(--accent-2);font-weight:700;margin:14px 0 6px;}
-.item-list{margin:0;padding:0 0 0 18px;font-size:.87rem;}
-.item-list li{margin:3px 0;color:var(--muted);}
-.item-list li strong{color:var(--ink);}
-.ac-list{margin:0;padding:0 0 0 18px;font-size:.85rem;}
-.ac-list li{margin:4px 0;color:var(--muted);}
-.ac-list li strong{color:var(--ink);}
-.awaiting{background:var(--active-bg);border:1px solid #fcd34d;border-radius:8px;
-  padding:10px 14px;font-size:.86rem;color:var(--active);margin:12px 0;}
-table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.84rem;}
-th,td{border-top:1px solid var(--line);padding:8px 7px;text-align:left;vertical-align:top;}
-th{font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.74rem;color:var(--ink);}
-td{color:var(--muted);}td strong{color:var(--ink);}
-@media(max-width:700px){.stage-header{grid-template-columns:36px 1fr;}.sbadges{display:none;}
-  .schema-row{grid-template-columns:1fr;}}
-@media print{body{background:#fff;}.stage-strip{position:static;}
-  .stage-body.collapsed{display:block;}}
-.ri-callout{max-width:1100px;margin:18px auto 0;padding:0 24px;}
-.ri-callout-inner{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);
-  border-radius:10px;padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:flex-start;}
-.ri-callout-inner.ri-absent{border-left-color:#d97706;background:#fffbeb;}
-.ri-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);
-  font-weight:700;margin-bottom:4px;}
-.ri-label.ri-absent{color:#d97706;}
-.ri-field{font-size:.83rem;line-height:1.4;}
-.ri-field strong{color:var(--ink);display:block;font-size:.68rem;text-transform:uppercase;
-  letter-spacing:.06em;color:var(--muted);}
-.ri-conf-high{color:var(--done)}.ri-conf-medium{color:#92400e}.ri-conf-low{color:#991b1b}
-"""
-
 LIFECYCLE_JS = """
 function toggle(header) {
   const body = header.nextElementSibling;
@@ -1457,8 +1471,32 @@ def _render_yaml_schema(data: dict, keys: list[str]) -> str:
     return _render_schema_block(pairs) if pairs else ""
 
 
-def _render_exit_artifacts(paths: list[str]) -> str:
-    items = "".join(f'<li><code>{_esc(p)}</code></li>' for p in paths)
+def _render_table(
+    headers: list,
+    rows_html: str,
+    compact: bool = False,
+) -> str:
+    """Render a semantically complete HTML table with thead/tbody.
+
+    Object model:
+      headers:   list[str] — column labels (escaped internally)
+      rows_html: str       — pre-built <tr>…</tr> content for tbody
+      compact:   bool      — use .table-sm for dense inline contexts
+    """
+    cls = ' class="table-sm"' if compact else ""
+    thead_cells = "".join(f"<th>{_esc(h)}</th>" for h in headers)
+    return (
+        f"<table{cls}><thead><tr>{thead_cells}</tr></thead>"
+        f"<tbody>{rows_html}</tbody></table>"
+    )
+
+
+def _render_exit_artifacts(paths: list[str], wrk_id: str = "") -> str:
+    def _sub(artifact: str) -> str:
+        if wrk_id:
+            artifact = artifact.replace("WRK-???", wrk_id).replace("WRK-NNN", wrk_id)
+        return artifact
+    items = "".join(f'<li><code>{_esc(_sub(p))}</code></li>' for p in paths)
     return (
         f'<div class="section-label">Exit artifacts</div>'
         f'<ul class="item-list">{items}</ul>'
@@ -1532,24 +1570,29 @@ def render_lifecycle_stage_body(
     # ── S4 Plan Draft ─────────────────────────────────────────────────────────
     if stage_n == 4:
         parts = ""
-        # Acceptance criteria from WRK body
+        # Acceptance criteria — support checkboxes (- [ ]), bullets (- /*/), and numbered lists
         ac_match = re.search(r"## Acceptance Criteria\n(.*?)(?=\n##|\Z)", body_md, re.DOTALL)
         if ac_match:
-            ac_lines = [
-                l.strip() for l in ac_match.group(1).splitlines()
-                if l.strip().startswith("- [")
-            ]
-            if ac_lines:
-                items = "".join(
-                    f'<li>{"☑" if l.startswith("- [x]") else "☐"} '
-                    f'{_esc(l[5:].strip())}</li>'
-                    for l in ac_lines[:20]
-                )
+            ac_raw = ac_match.group(1)
+            ac_items = []
+            for ln in ac_raw.splitlines():
+                ls = ln.strip()
+                if not ls:
+                    continue
+                if ls.startswith("- ["):
+                    done = ls.startswith("- [x]") or ls.startswith("- [X]")
+                    ac_items.append(("☑ " if done else "☐ ") + ls[5:].strip())
+                elif ls.startswith("- ") or ls.startswith("* "):
+                    ac_items.append("• " + ls[2:].strip())
+                elif re.match(r"^\d+\.", ls):
+                    ac_items.append(re.sub(r"^\d+\.\s*", "", ls))
+            if ac_items:
+                items = "".join(f'<li>{_esc(l)}</li>' for l in ac_items[:20])
                 parts += (
                     '<div class="section-label">Acceptance Criteria</div>'
                     f'<ul class="ac-list">{items}</ul>'
                 )
-        # Plan phases
+        # Plan phases — look in body_md first, then stage 4 evidence file
         plan_match = re.search(r"## Plan\n(.*?)(?=\n##|\Z)", body_md, re.DOTALL)
         if plan_match:
             plan_text = plan_match.group(1).strip()[:800]
@@ -1559,6 +1602,33 @@ def render_lifecycle_stage_body(
                 '<div class="section-label">Plan</div>'
                 f'<ul class="item-list">{items}</ul>'
             )
+        else:
+            # Look for plan doc referenced in stage-evidence.yaml (stage 4 evidence)
+            stage_ev_path = ev / "stage-evidence.yaml"
+            if stage_ev_path.exists():
+                try:
+                    _ws = os.popen("git rev-parse --show-toplevel").read().strip()
+                    _sev = yaml.safe_load(stage_ev_path.read_text(encoding="utf-8")) or {}
+                    for entry in (_sev.get("stages") or []):
+                        if isinstance(entry, dict) and int(entry.get("order", 0)) == 4:
+                            ref = str(entry.get("evidence", "")).strip()
+                            if ref:
+                                ref_path = (
+                                    Path(ref) if Path(ref).is_absolute()
+                                    else Path(_ws) / ref
+                                )
+                                if ref_path.exists():
+                                    _doc = ref_path.read_text(encoding="utf-8")
+                                    _heads = re.findall(r"^##\s+(.+)$", _doc, re.MULTILINE)
+                                    if _heads:
+                                        _items = "".join(f"<li>{_esc(h)}</li>" for h in _heads[:12])
+                                        parts += (
+                                            '<div class="section-label">Plan spec sections</div>'
+                                            f'<ul class="item-list">{_items}</ul>'
+                                        )
+                            break
+                except Exception:
+                    pass
         parts += _render_exit_artifacts([f"working/{fm.get('id', 'WRK-???')}.md"])
         return parts
 
@@ -1601,6 +1671,33 @@ def render_lifecycle_stage_body(
             if not all_reviewers:
                 for r in cr.get("reviewers", []):
                     all_reviewers.append({**r, "_round": ""})
+            # Fall back to providers dict format {claude: {verdict, summary, findings:[{severity,text}]}}
+            if not all_reviewers:
+                providers_dict = cr.get("providers", {})
+                if isinstance(providers_dict, dict):
+                    for pname, pdata in providers_dict.items():
+                        if not isinstance(pdata, dict):
+                            continue
+                        raw_findings = pdata.get("findings", [])
+                        norm_findings = []
+                        for fi in (raw_findings if isinstance(raw_findings, list) else []):
+                            if isinstance(fi, dict):
+                                norm_findings.append({
+                                    "id": "",
+                                    "severity": str(fi.get("severity", "")),
+                                    "summary": str(fi.get("text", fi.get("summary", ""))),
+                                    "resolution": str(fi.get("resolution", "")),
+                                })
+                        p1 = sum(1 for f in norm_findings if str(f.get("severity", "")).upper() == "P1")
+                        p2 = sum(1 for f in norm_findings if str(f.get("severity", "")).upper() in {"P2", "MINOR"})
+                        all_reviewers.append({
+                            "provider": pname,
+                            "final_verdict": str(pdata.get("verdict", "")),
+                            "p1_count": p1 or "",
+                            "p2_count": p2 or "",
+                            "findings": norm_findings,
+                            "_round": "",
+                        })
             def _sev_kind(sev: str) -> str:
                 s = sev.upper()
                 return "fail" if s == "P1" else ("warn" if s == "P2" else "info")
@@ -1611,12 +1708,14 @@ def render_lifecycle_stage_body(
                 provider = _esc(str(r.get("provider", "")))
                 v = str(r.get("final_verdict") or r.get("verdict", "")).upper()
                 v_kind = "pass" if v == "APPROVE" else ("fail" if v == "REQUEST_CHANGES" else "info")
-                p1 = r.get("p1_count", "")
+                p1_raw = r.get("p1_count", "")
                 p2 = r.get("p2_count", "")
-                rnd = _esc(r.get("_round", ""))
+                rnd_raw = r.get("_round", "")
+                rnd = _esc(rnd_raw) if rnd_raw else "1"
+                p1_display = _esc(str(p1_raw)) if p1_raw not in ("", None, 0) else "—"
                 summary_rows += (f"<tr><td>{rnd}</td><td><strong>{provider}</strong></td>"
                                  f"<td>{badge(v, v_kind)}</td>"
-                                 f"<td style='text-align:center'>{p1}</td>"
+                                 f"<td style='text-align:center'>{p1_display}</td>"
                                  f"<td style='text-align:center'>{p2}</td></tr>\n")
                 findings = r.get("findings", [])
                 if findings:
@@ -1638,16 +1737,27 @@ def render_lifecycle_stage_body(
                         f'<tbody>{frows}</tbody></table>'
                     )
             overall = str(cr.get("overall_verdict", "")).upper()
-            o_kind = "pass" if overall == "APPROVE" else "fail"
+            if "APPROVE" in overall or "PASS" in overall:
+                overall_badge = f'<span class="badge badge-pass">APPROVED</span>'
+            elif "P1" in overall:
+                overall_badge = f'<span class="badge badge-warn">P1 OPEN</span>'
+            else:
+                o_kind = "pass" if "APPROVE" in overall else "fail"
+                overall_badge = badge(overall, o_kind) if overall else (
+                    '<span class="badge b-pending">UNKNOWN</span>'
+                )
             p1_resolved = cr.get("all_p1_resolved", False)
-            p1_badge = badge("All P1 resolved", "pass") if p1_resolved else badge("P1 open", "fail")
+            if p1_resolved:
+                p1_overall_badge = '<span class="badge badge-pass">All P1 resolved</span>'
+            else:
+                p1_overall_badge = '<span class="badge badge-warn">P1 OPEN</span>'
             rounds_label = f"{cr.get('review_rounds', 1)} round(s)"
             html = (
                 '<div class="section-label">Cross-review summary</div>'
                 f'<table><thead><tr><th>Round</th><th>Provider</th><th>Verdict</th>'
                 f'<th>P1</th><th>P2</th></tr></thead><tbody>{summary_rows}</tbody></table>'
                 f'<p style="margin:8px 0 4px">'
-                f'Overall: {badge(overall, o_kind)} &nbsp; {p1_badge} &nbsp;'
+                f'Overall: {overall_badge} &nbsp; {p1_overall_badge} &nbsp;'
                 f'<span style="font-size:.82rem;color:var(--muted)">{rounds_label}</span></p>'
                 + findings_html
             )
@@ -1720,14 +1830,17 @@ def render_lifecycle_stage_body(
                     continue
                 name = _esc(str(t.get("name", "")))
                 result = str(t.get("result", "")).lower()
-                cmd = _esc(str(t.get("command", ""))[:70])
+                full_cmd = str(t.get("command", ""))
+                cmd = _esc(full_cmd[:70])
+                cmd_title = _esc(full_cmd)
                 cls = "b-done" if result == "pass" else ("b-pending" if result == "fail" else "")
                 badge_html = f'<span class="badge {cls}">{_esc(result)}</span>' if result else ""
-                rows += f"<tr><td>{name}</td><td>{badge_html}</td><td><code>{cmd}</code></td></tr>"
+                rows += (f"<tr><td>{name}</td><td>{badge_html}</td>"
+                         f'<td title="{cmd_title}"><code>{cmd}</code></td></tr>')
             if rows:
                 parts += (
                     '<div class="section-label" style="margin-top:.6rem;">Tests run</div>'
-                    f'<table><tr><th>Test</th><th>Result</th><th>Command</th></tr>{rows}</table>'
+                    + _render_table(["Test", "Result", "Command"], rows)
                 )
         return parts + _render_exit_artifacts(["evidence/execute.yaml"])
 
@@ -1735,13 +1848,21 @@ def render_lifecycle_stage_body(
     if stage_n == 11:
         gep = ev / "gate-evidence-summary.json"
         summary = ""
+        wrk_id_s11 = str(fm.get("id", ""))
         if gep.exists():
             try:
                 import json
                 ge = json.loads(gep.read_text(encoding="utf-8"))
-                passed = sum(1 for v in ge.values() if isinstance(v, dict)
-                             and v.get("status") == "PASS")
-                total = len([v for v in ge.values() if isinstance(v, dict)])
+                # Support {gates: [...]} list format (canonical) and legacy dict format
+                gate_list = ge.get("gates") if isinstance(ge.get("gates"), list) else None
+                if gate_list is not None:
+                    total = len(gate_list)
+                    passed = sum(1 for g in gate_list
+                                 if isinstance(g, dict) and g.get("status") == "PASS")
+                else:
+                    total = len([v for v in ge.values() if isinstance(v, dict)])
+                    passed = sum(1 for v in ge.values() if isinstance(v, dict)
+                                 and v.get("status") == "PASS")
                 summary = f"{passed}/{total} gates PASS"
             except Exception:
                 summary = "Gate evidence present"
@@ -1749,7 +1870,8 @@ def render_lifecycle_stage_body(
             '<div class="section-label">Gate evidence</div>'
             + _render_schema_block([("gates", summary)] if summary else [])
             + _render_exit_artifacts(["evidence/gate-evidence-summary.json",
-                                      f"WRK-???-lifecycle.html"])
+                                      f"WRK-???-lifecycle.html"],
+                                     wrk_id=wrk_id_s11)
         )
 
     # ── S12 TDD / Eval ────────────────────────────────────────────────────────
@@ -1759,12 +1881,21 @@ def render_lifecycle_stage_body(
             try:
                 lines = matrix_path.read_text(encoding="utf-8").splitlines()
                 rows = ""
+                header_cells: list = []
                 pass_count = fail_count = 0
                 for line in lines:
-                    if not line.startswith("|") or line.startswith("| #") or set(line.replace("|", "").replace("-", "").replace(" ", "")) == set():
+                    if not line.startswith("|"):
+                        continue
+                    # Separator row (e.g. |---|---|)
+                    if set(line.replace("|", "").replace("-", "").replace(" ", "")) == set():
                         continue
                     cells = [c.strip() for c in line.strip("|").split("|")]
                     if not cells:
+                        continue
+                    # Header row — capture once for <thead>
+                    if line.startswith("| #") or (cells and cells[0] in ("#", "AC #", "No.", "No")):
+                        if not header_cells:
+                            header_cells = cells
                         continue
                     result_cell = cells[-1] if cells else ""
                     result_upper = result_cell.upper()
@@ -1790,7 +1921,7 @@ def render_lifecycle_stage_body(
                     )
                     return (
                         f'<div class="section-label">AC test matrix &nbsp;{summary_badge}</div>'
-                        f'<table>{rows}</table>'
+                        + _render_table(header_cells or ["#", "AC", "Test", "Result"], rows)
                         + _render_exit_artifacts(["ac-test-matrix.md"])
                     )
             except Exception:
@@ -1861,12 +1992,12 @@ def render_lifecycle_stage_body(
                     rows += (
                         f'<tr><td>{_esc(str(gate.get("name", "")))}</td>'
                         f'<td><span class="badge {cls}">{_esc(st)}</span></td>'
-                        f'<td style="font-size:.82rem;color:var(--muted);">{details}</td></tr>'
+                        f'<td>{details}</td></tr>'
                     )
                 if rows:
                     return (
                         '<div class="section-label">Gate results</div>'
-                        f'<table><tr><th>Gate</th><th>Status</th><th>Details</th></tr>{rows}</table>'
+                        + _render_table(["Gate", "Status", "Details"], rows)
                     )
             except Exception:
                 pass
@@ -1885,8 +2016,7 @@ def render_lifecycle_stage_body(
             )
             return (
                 '<div class="section-label">Future work</div>'
-                f'<table><tr><th>Title</th><th>Disposition</th><th>Captured</th></tr>'
-                f'{rows}</table>'
+                + _render_table(["Title", "Disposition", "Captured"], rows)
             )
         return '<p style="color:var(--muted);font-size:.85rem;">Future work recorded.</p>'
 
@@ -1994,13 +2124,9 @@ def _build_archive_readiness_card(assets_dir: str) -> str:
         '<div class="ri-callout" style="margin-top:.8rem;">'
         '<div class="ri-callout-inner">'
         f'<div class="ri-label">Archive Readiness <span class="badge badge-{badge_cls}" style="margin-left:.4rem;">{html_escape(badge_label)}</span></div>'
-        '<table style="width:100%;font-size:.82rem;border-collapse:collapse;margin-top:.4rem;">'
-        "<thead><tr><th style='text-align:left;padding:.15rem .4rem;'>Gate</th>"
-        "<th style='text-align:left;padding:.15rem .4rem;'>Status</th></tr></thead>"
-        f"<tbody>{''.join(rows)}</tbody>"
-        "</table>"
-        f"{spinoff_html}"
-        "</div></div>"
+        + _render_table(["Gate", "Status"], "".join(rows), compact=True)
+        + f"{spinoff_html}"
+        + "</div></div>"
     )
 
 
@@ -2109,10 +2235,31 @@ def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
     title = _esc(str(fm.get("title", wrk_id)))
     route = str(fm.get("route", ""))
     category = str(fm.get("category", ""))
+    subcategory = str(fm.get("subcategory", ""))
     computer = str(fm.get("computer", ""))
-    orchestrator = str(fm.get("orchestrator", ""))
+    orchestrator = str(fm.get("orchestrator", "")).strip()
+    if not orchestrator:
+        # Fall back to reviewed_by in stage-evidence.yaml
+        _sev_path = Path(assets_dir) / "evidence" / "stage-evidence.yaml"
+        if _sev_path.exists():
+            try:
+                _sev_data = yaml.safe_load(_sev_path.read_text(encoding="utf-8")) or {}
+                orchestrator = str(_sev_data.get("reviewed_by", "")).strip()
+            except Exception:
+                pass
+    status = str(fm.get("status", ""))
     priority = str(fm.get("priority", ""))
     created = str(fm.get("created_at", ""))[:10]
+    _tr_raw = fm.get("target_repos", [])
+    target_repos = ", ".join(_tr_raw) if isinstance(_tr_raw, list) else str(_tr_raw)
+
+    # Compute stages done + active/next stage for hero
+    _stages_done = sum(1 for v in statuses.values() if v == "done")
+    _active_stage_n = next((n for n in range(1, 21) if statuses.get(n) == "active"), None)
+    if _active_stage_n is None:
+        _active_stage_n = next((n for n in range(1, 21) if statuses.get(n) == "pending"), None)
+    _active_stage_name = STAGE_NAMES.get(_active_stage_n, "") if _active_stage_n else ""
+    _stage_label = f"Stage {_active_stage_n}: {_active_stage_name}" if _active_stage_n else ""
 
     # Stage strip chips
     strip_chips = ""
@@ -2142,10 +2289,12 @@ def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
         collapsed_cls = "" if st in ("done", "active") else " collapsed"
 
         gate_badge = '<span class="badge b-gate">gate</span>' if is_gate else ""
-        smeta_parts = [p for p in [inv, wt] if p]
-        smeta = " · ".join(smeta_parts)
-        if is_gate:
-            smeta += " · GATE"
+        def _fmt_smeta_part(p: str) -> str:
+            return p.replace("_", " ").capitalize()
+        smeta_parts = [_fmt_smeta_part(p) for p in [inv, wt] if p]
+        smeta_text = " · ".join(smeta_parts)
+        gate_pill = (' · <span class="badge" style="font-size:.68rem;padding:2px 6px;">GATE</span>'
+                     if is_gate else "")
 
         body_html = render_lifecycle_stage_body(n, st, assets_dir, fm, body_md)
 
@@ -2155,7 +2304,7 @@ def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
     <div class="snum">{n}</div>
     <div>
       <div class="stitle">{_esc(name)}</div>
-      <div class="smeta">{_esc(smeta)}</div>
+      <div class="smeta">{_esc(smeta_text)}{gate_pill}</div>
     </div>
     <div class="sbadges">
       <span class="badge {badge_cls}">{_esc(badge_label)}</span>
@@ -2178,21 +2327,32 @@ def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="refresh" content="30">
   <title>{wrk_id} Lifecycle \u2014 {title[:60]}</title>
-  <style>{LIFECYCLE_CSS}</style>
+  <style>{SHARED_CSS}</style>
 </head>
 <body>
 
 <header class="hero">
   <div class="hero-inner">
-    <p class="eyebrow">Lifecycle Tracker &middot; Route {_esc(route)} &middot; {_esc(category)}</p>
+    <div class="hero-brand">
+      <div class="hero-brand-logo">DM</div>
+      <span class="hero-brand-name">digitalmodel &middot; workspace-hub</span>
+      <a class="hero-nav-link" href="{wrk_id}-plan.html">&#8599; Plan</a>
+    </div>
+    <p class="eyebrow">{wrk_id} &middot; LIFECYCLE TRACKER</p>
     <h1>{wrk_id} \u2014 {title}</h1>
-    <p class="lede">Single lifecycle document tracking all 20 stages from capture to archive.</p>
+    <p class="lede">{_esc(status.capitalize())} &middot; {_stages_done}/20 stages complete &middot; {_esc(priority)} priority</p>
     <div class="meta-row">
-      <div class="pill"><strong>Priority</strong>{_esc(priority)}</div>
+      {('<div class="pill pill-stage"><strong>Now</strong>' + _esc(_stage_label) + '</div>') if _stage_label else ''}
+      <div class="pill pill-stage"><strong>Status</strong>{_esc(status)}</div>
       <div class="pill"><strong>Workstation</strong>{_esc(computer)}</div>
       <div class="pill"><strong>Orchestrator</strong>{_esc(orchestrator)}</div>
-      <div class="pill"><strong>Category</strong>{_esc(category)}</div>
       <div class="pill"><strong>Created</strong>{_esc(created)}</div>
+      <div class="meta-break"></div>
+      {('<div class="pill"><strong>Repo</strong>' + _esc(target_repos) + '</div>') if target_repos else ''}
+      {('<div class="pill"><strong>Category</strong>' + _esc(category) + '</div>') if category else ''}
+      {('<div class="pill"><strong>Subcategory</strong>' + _esc(subcategory) + '</div>') if subcategory else ''}
+      {('<div class="pill"><strong>Priority</strong>' + _esc(priority) + '</div>') if priority else ''}
+      {('<div class="pill"><strong>Route</strong>Route ' + _esc(route) + '</div>') if route else ''}
     </div>
   </div>
 </header>
@@ -2209,6 +2369,11 @@ def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
 <div class="content">
 {stage_sections_html}
 </div>
+
+<footer class="brand-footer">
+  <span class="brand-dm-logo">DM</span>
+  <strong>digitalmodel</strong> &middot; workspace-hub &middot; work-queue
+</footer>
 
 <script>{LIFECYCLE_JS}</script>
 </body>
@@ -2264,24 +2429,74 @@ def generate_plan(wrk_id: str, output_file: str | None = None) -> None:
     if output_file is None:
         output_file = os.path.join(assets_dir, f"{wrk_id}-plan.html")
 
-    # Extract ## Plan section from body
+    # Extract ## Plan section — try body_md first, then spec docs in evidence/assets/specs
     plan_text = ""
     plan_match = re.search(r"(?:^|\n)##\s+Plan\s*\n(.*?)(?=\n##\s|\Z)", body_md, re.DOTALL)
     if plan_match:
         plan_text = plan_match.group(1).strip()
 
-    plan_html_body = markdown.markdown(plan_text) if plan_text else "<p><em>No plan section found.</em></p>"
+    if not plan_text:
+        # Look for plan doc referenced in stage-evidence.yaml (stage 4 evidence)
+        stage_ev_path = ev / "stage-evidence.yaml"
+        if stage_ev_path.exists():
+            try:
+                _sev = yaml.safe_load(stage_ev_path.read_text(encoding="utf-8")) or {}
+                for entry in (_sev.get("stages") or []):
+                    if isinstance(entry, dict) and int(entry.get("order", 0)) == 4:
+                        ref = str(entry.get("evidence", "")).strip()
+                        if ref:
+                            ref_path = (
+                                Path(ref) if Path(ref).is_absolute()
+                                else Path(workspace_root) / ref
+                            )
+                            if ref_path.exists():
+                                plan_doc = ref_path.read_text(encoding="utf-8")
+                                pm = re.search(r"(?:^|\n)##\s+Plan\s*\n(.*?)(?=\n##\s|\Z)", plan_doc, re.DOTALL)
+                                if pm:
+                                    plan_text = pm.group(1).strip()
+                                else:
+                                    # Use full doc as plan body (it IS the plan spec)
+                                    plan_text = plan_doc.strip()
+                        break
+            except Exception:
+                pass
+
+    if not plan_text:
+        # Fallback: glob for WRK spec doc in assets_dir and specs/modules/
+        _wrk_lower = wrk_id.lower()
+        _candidate_dirs = [Path(assets_dir), Path(workspace_root) / "specs" / "modules"]
+        for _dir in _candidate_dirs:
+            for _md in sorted(_dir.glob(f"{_wrk_lower}*.md")):
+                _doc = _md.read_text(encoding="utf-8")
+                pm = re.search(r"(?:^|\n)##\s+Plan\s*\n(.*?)(?=\n##\s|\Z)", _doc, re.DOTALL)
+                if pm:
+                    plan_text = pm.group(1).strip()
+                    break
+                elif "## Phase" in _doc or "## Files to Change" in _doc:
+                    plan_text = _doc.strip()
+                    break
+            if plan_text:
+                break
+
+    plan_html_body_raw = markdown.markdown(plan_text, extensions=["tables", "fenced_code"]) if plan_text else "<p><em>No plan section found.</em></p>"
+    # Add md-table class to tables generated by the Python markdown library
+    plan_html_body = plan_html_body_raw.replace("<table>", '<table class="md-table">')
 
     # Stage-circle strip (reuse detect_stage_statuses)
     statuses = detect_stage_statuses(wrk_id, assets_dir, fm, body_md, queue_dir)
+    _p_active_n = next((n for n in range(1, 21) if statuses.get(n) == "active"), None)
+    if _p_active_n is None:
+        _p_active_n = next((n for n in range(1, 21) if statuses.get(n) == "pending"), None)
+    _p_stage_name = STAGE_NAMES.get(_p_active_n, "") if _p_active_n else ""
+    _p_stage_label = f"Stage {_p_active_n}: {_p_stage_name}" if _p_active_n else ""
     strip_chips = ""
     for n in range(1, 21):
         st = statuses.get(n, "pending")
         cls = {"done": "sc-done", "active": "sc-active", "na": "sc-na"}.get(st, "sc-pending")
         name = STAGE_NAMES.get(n, str(n))
         strip_chips += (
-            f'<a href="#{wrk_id}-lifecycle.html#s{n}" class="sc {cls}" '
-            f'title="{_esc(str(n).zfill(2))} {_esc(name)}">{n}</a>'
+            f'<a href="{wrk_id}-lifecycle.html#s{n}" class="sc {cls}" '
+            f'title="{_esc(str(n).zfill(2))} {_esc(name)}">{n}</a> '
         )
 
     # Per-stage change log (optional)
@@ -2319,6 +2534,139 @@ def generate_plan(wrk_id: str, output_file: str | None = None) -> None:
     title = _esc(str(fm.get("title", wrk_id)))
     route = str(fm.get("route", ""))
     priority = str(fm.get("priority", ""))
+    complexity = str(fm.get("complexity", ""))
+    category = str(fm.get("category", ""))
+    subcategory = str(fm.get("subcategory", ""))
+    status = str(fm.get("status", ""))
+    created = str(fm.get("created_at", ""))[:10]
+    orchestrator = str(fm.get("orchestrator", "")).strip()
+    if not orchestrator:
+        _sev_path = Path(assets_dir) / "evidence" / "stage-evidence.yaml"
+        if _sev_path.exists():
+            try:
+                import yaml as _yaml
+                _sev_data = _yaml.safe_load(_sev_path.read_text(encoding="utf-8")) or {}
+                orchestrator = str(_sev_data.get("reviewed_by", "")).strip()
+            except Exception:
+                pass
+    computer = str(fm.get("computer", ""))
+    target_repos_raw = fm.get("target_repos", [])
+    target_repos = ", ".join(target_repos_raw) if isinstance(target_repos_raw, list) else str(target_repos_raw)
+
+    # Build meta-chips row — same fields as lifecycle hero (status/priority/workstation/orchestrator/created)
+    def _make_chip(label: str, value: str) -> str:
+        return (
+            f'<div class="pill">'
+            f'<strong>{_esc(label)}</strong>'
+            f'{_esc(value)}'
+            f'</div>'
+        )
+
+    def _make_chip_hl(label: str, value: str) -> str:
+        return (
+            f'<div class="pill pill-stage">'
+            f'<strong>{_esc(label)}</strong>'
+            f'{_esc(value)}'
+            f'</div>'
+        )
+
+    meta_chips_parts = []
+    if status:
+        meta_chips_parts.append(_make_chip_hl("Status", status))
+    if computer:
+        meta_chips_parts.append(_make_chip("Workstation", computer))
+    if orchestrator:
+        meta_chips_parts.append(_make_chip("Orchestrator", orchestrator))
+    if created:
+        meta_chips_parts.append(_make_chip("Created", created))
+    if target_repos or category or subcategory or priority or route:
+        meta_chips_parts.append('<div class="meta-break"></div>')
+    if target_repos:
+        meta_chips_parts.append(_make_chip("Repo", target_repos))
+    if category:
+        meta_chips_parts.append(_make_chip("Category", category))
+    if subcategory:
+        meta_chips_parts.append(_make_chip("Subcategory", subcategory))
+    if priority:
+        meta_chips_parts.append(_make_chip("Priority", priority))
+    if route:
+        meta_chips_parts.append(_make_chip("Route", f"Route {route}"))
+    _plan_stage_chip = (
+        f'<div class="pill pill-stage"><strong>Now</strong>{_esc(_p_stage_label)}</div>'
+        if _p_stage_label else ""
+    )
+    meta_chips_html = (
+        '<div class="meta-row">' + _plan_stage_chip + "".join(meta_chips_parts) + "</div>"
+        if (meta_chips_parts or _plan_stage_chip) else ""
+    )
+
+    # Lede: Route + complexity + target repos — describes the plan scope
+    lede_parts = []
+    if route:
+        lede_parts.append(f"Route {route}")
+    if complexity:
+        lede_parts.append(f"{complexity} complexity")
+    if target_repos:
+        lede_parts.append(target_repos)
+    if created:
+        lede_parts.append(created)
+    lede_text = " &middot; ".join(_esc(p) for p in lede_parts) if lede_parts else "Plan document"
+
+    # renderMarkdown — small vanilla JS (~80 lines) for .plan-body
+    # Primary table conversion is done server-side via Python markdown+tables extension.
+    # This JS handles any residual raw markdown that bypasses server rendering.
+    RENDER_MARKDOWN_JS = r"""
+function renderMarkdown(el) {
+  if (!el) return;
+  var html = el.innerHTML;
+
+  // Code blocks: ```[lang]\ncode\n``` — strip optional language tag from first line
+  html = html.replace(/```([a-zA-Z0-9]*)\n?([\s\S]*?)```/gs, function(_, lang, code) {
+    return '<pre><code>' + code.trim() + '</code></pre>';
+  });
+
+  // Pipe tables: detect blocks of 2+ consecutive lines starting with |
+  // Must run on the full string before line-by-line processing.
+  html = html.replace(/((?:(?:^|<br\/?>|\n)\s*\|[^\n<]+)+)/g, function(block) {
+    // Strip HTML tags (e.g. <p>, </p>) and split into raw pipe lines
+    var raw = block.replace(/<[^>]+>/g, '\n');
+    var lines = raw.split('\n').map(function(l){ return l.trim(); })
+      .filter(function(l){ return l.indexOf('|') === 0; });
+    if (lines.length < 2) return block;
+    // Find separator line (e.g. |---|---|)
+    var sepIdx = -1;
+    for (var i = 0; i < lines.length; i++) {
+      if (/^\|[\s\-|:]+\|?\s*$/.test(lines[i])) { sepIdx = i; break; }
+    }
+    if (sepIdx < 0) return block;
+    var headerLines = lines.slice(0, sepIdx);
+    var bodyLines = lines.slice(sepIdx + 1);
+    function cells(row) {
+      return row.replace(/^\||\|$/g, '').split('|').map(function(c){ return c.trim(); });
+    }
+    var thead = headerLines.map(function(row){
+      return '<tr>' + cells(row).map(function(c){ return '<th>' + c + '</th>'; }).join('') + '</tr>';
+    }).join('');
+    var tbody = bodyLines.map(function(row){
+      return '<tr>' + cells(row).map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>';
+    }).join('');
+    return '<table class="md-table"><thead>' + thead + '</thead><tbody>' + tbody + '</tbody></table>';
+  });
+
+  // Headings
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+
+  // Bold and italic — use /g flag to replace ALL occurrences
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+
+  el.innerHTML = html;
+}
+document.addEventListener('DOMContentLoaded', function(){
+  renderMarkdown(document.querySelector('.plan-body'));
+});
+"""
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -2326,19 +2674,32 @@ def generate_plan(wrk_id: str, output_file: str | None = None) -> None:
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="refresh" content="30">
-<title>{wrk_id} — Plan</title>
-<style>{CSS}</style>
+<title>{wrk_id} \u2014 Plan</title>
+<style>{SHARED_CSS}</style>
 </head>
 <body>
-<script>{JS}</script>
+
 <header class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">{wrk_id} &middot; Plan Document</div>
-    <h1>{title}</h1>
-    <p class="lede">Route {_esc(route)} &middot; Priority {_esc(priority)} &middot; Auto-refreshes every 30s</p>
-    <div class="stage-strip" style="margin-top:16px;">{strip_chips}</div>
+    <div class="hero-brand">
+      <div class="hero-brand-logo">DM</div>
+      <span class="hero-brand-name">digitalmodel &middot; workspace-hub</span>
+      <a class="hero-nav-link" href="{wrk_id}-lifecycle.html">&#8599; Lifecycle</a>
+    </div>
+    <p class="eyebrow">{wrk_id} &middot; PLAN DOCUMENT</p>
+    <h1>{wrk_id} \u2014 {title}</h1>
+    <p class="lede">{lede_text}</p>
+    {meta_chips_html}
   </div>
 </header>
+
+<nav class="stage-strip">
+  <div class="stage-strip-inner">
+    <span class="stage-strip-label">Stages</span>
+    {strip_chips}
+  </div>
+</nav>
+
 <div class="content">
   <div class="card">
     <h2>Current Plan</h2>
@@ -2346,11 +2707,18 @@ def generate_plan(wrk_id: str, output_file: str | None = None) -> None:
 {plan_html_body}
     </div>
   </div>
-  <div class="card" style="margin-top:16px;">
+  <div class="card">
     <h2>Stage Change Log</h2>
     {changelog_html}
   </div>
 </div>
+
+<footer class="brand-footer">
+  <span class="brand-dm-logo">DM</span>
+  <strong>digitalmodel</strong> &middot; workspace-hub &middot; work-queue
+</footer>
+
+<script>{LIFECYCLE_JS}{RENDER_MARKDOWN_JS}</script>
 </body>
 </html>"""
 

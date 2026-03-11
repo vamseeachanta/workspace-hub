@@ -23,12 +23,23 @@ def has_docstring(node: ast.AST) -> bool:
 
 
 def collect_symbols(tree: ast.Module) -> list[tuple[str, bool]]:
-    """Return (name, has_docstring) for all public module/class-level symbols."""
+    """Return (name, has_docstring) for public module-level and class-level symbols only.
+
+    Counts module-level functions/classes and methods directly inside public classes.
+    Nested/inner functions are excluded to avoid inflating coverage metrics.
+    """
     symbols: list[tuple[str, bool]] = []
-    for node in ast.walk(tree):
-        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+    for node in tree.body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
             if not node.name.startswith("_"):
                 symbols.append((node.name, has_docstring(node)))
+        elif isinstance(node, ast.ClassDef):
+            if not node.name.startswith("_"):
+                symbols.append((node.name, has_docstring(node)))
+                for member in node.body:
+                    if isinstance(member, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                        if not member.name.startswith("_"):
+                            symbols.append((member.name, has_docstring(member)))
     return symbols
 
 
@@ -38,8 +49,9 @@ def audit_path(src_path: Path) -> tuple[int, int]:
     with_doc = 0
     for py_file in sorted(src_path.rglob("*.py")):
         try:
-            tree = ast.parse(py_file.read_text(encoding="utf-8"))
-        except SyntaxError:
+            source = py_file.read_text(encoding="utf-8")
+            tree = ast.parse(source)
+        except (SyntaxError, UnicodeDecodeError, OSError):
             continue
         for _name, doc_present in collect_symbols(tree):
             total += 1

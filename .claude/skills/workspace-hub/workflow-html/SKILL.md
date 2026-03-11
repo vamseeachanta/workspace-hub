@@ -6,33 +6,21 @@ description: >
   by generate-html-review.py (--lifecycle / --plan) and regenerated on every stage exit via
   exit_stage.py. Defines the warm-parchment design system, rendering rules, and evidence-driven
   stateless generation. No manual HTML editing required.
-version: 2.0.0
-updated: 2026-03-10
+version: 2.3.0
+updated: 2026-03-11
 category: workspace-hub
 type: skill
 trigger: manual
 auto_execute: false
-capabilities:
-  - lifecycle_html_generation
-  - stage_status_detection
-  - evidence_driven_rendering
-  - design_system
-  - single_lifecycle_html
-related_skills:
-  - workspace-hub/workflow-gatepass
-  - workspace-hub/work-queue-workflow
-  - workspace-hub/wrk-lifecycle-testpack
-  - coordination/workspace/work-queue
+capabilities: [lifecycle_html_generation, stage_status_detection, evidence_driven_rendering, design_system]
+related_skills: [workspace-hub/workflow-gatepass, workspace-hub/work-queue-workflow, workspace-hub/wrk-lifecycle-testpack]
 tools: [Read, Write, Bash]
-see_also:
-  - .claude/work-queue/assets/WRK-624/workflow-governance-review.html
-  - scripts/work-queue/generate-html-review.py
+see_also: [scripts/work-queue/generate-html-review.py]
 ---
 
 # Workflow HTML Skill
 
 > Canonical HTML template and design system for all WRK review artifacts.
-> One file per WRK, updated progressively from Stage 1 to Stage 20.
 
 ---
 
@@ -45,370 +33,172 @@ see_also:
 | `WRK-NNN-lifecycle.html` | 20-stage progress, evidence, gate results | Stage 1 |
 | `WRK-NNN-plan.html` | Latest plan text, stage-circle strip, change log | Stage 4b |
 
-Both files include `<meta http-equiv="refresh" content="30">` — users refresh one stable URL.
-`exit_stage.py` regenerates both after every stage exit (plan.html failure is non-blocking).
+`plan-changelog.yaml` schema: list of `{stage, summary, changed_at}`.
+Absent file → "No plan changes recorded." graceful fallback.
 
 ### Commands
 
 ```bash
-generate-html-review.py WRK-NNN --lifecycle   # regenerate lifecycle.html
-generate-html-review.py WRK-NNN --plan        # regenerate plan.html
+# Regenerate both files
+uv run --no-project python scripts/work-queue/generate-html-review.py WRK-NNN --lifecycle
+uv run --no-project python scripts/work-queue/generate-html-review.py WRK-NNN --plan
+
+# Serve locally (cross-platform)
+cd .claude/work-queue/assets/WRK-NNN && python -m http.server 7782
+# Then open: http://localhost:7782/WRK-NNN-lifecycle.html
+
+# Both files auto-regenerate on every stage exit (exit_stage.py --lifecycle + --plan)
 ```
-
-### `plan.html` sections
-
-1. **HERO** — WRK title, route, priority, stage-circle progress strip
-2. **Current Plan** — `## Plan` section from WRK `.md` body, rendered as HTML
-3. **Stage Change Log** — per-stage entries from `evidence/plan-changelog.yaml` (optional)
-
-`plan-changelog.yaml` schema: list of `{stage, summary, changed_at}`.
-Absent file → "No plan changes recorded." graceful fallback.
-
-### `lifecycle.html` file lifecycle
-
-| When | What happens |
-|------|-------------|
-| Stage 1 (Capture) | Create file with HERO + METADATA + Stage 1 section (status: done) |
-| Each stage completion | Append or update `<section id="stage-N">` with evidence + status badge |
-| Stage 5 / 7 / 17 (human gates) | Add `<div class="approval-block">` inside the section before advancing |
-| Stage 20 (Archive) | File is complete; all 20 sections populated |
-
-### Stage section schema
-
-Each stage is one `<section>` block inside the main card:
-
-```html
-<section id="stage-N-slug" class="stage-section">
-  <h2>Stage N — {{stage_name}}</h2>
-  <div class="stage-meta">
-    <span class="badge badge-pass">done</span>
-    <span class="muted">Owner: orchestrator · Human decision: no</span>
-  </div>
-  <div class="stage-body">
-    <!-- What was done this stage: narrative, outputs, evidence paths -->
-    <p>{{summary}}</p>
-    <ul>
-      <li><strong>Evidence:</strong> <code>{{evidence_path}}</code></li>
-    </ul>
-  </div>
-  <!-- Only present when human_decision_required=yes -->
-  <div class="approval-block">
-    <strong>Approved by:</strong> {{approver}} &nbsp;|&nbsp;
-    <strong>At:</strong> {{approved_at}} &nbsp;|&nbsp;
-    <strong>Decision:</strong> <span class="badge badge-pass">passed</span>
-    <p class="approval-notes">{{notes}}</p>
-  </div>
-</section>
-```
-
-Gate-checker-readable confirmation fields (in Stage 7 section):
-```
-confirmed_by: user
-confirmed_at: 2026-03-07T12:35:00Z
-decision: passed
-```
-These must appear at line-start (no HTML comment wrapping) so `check_plan_confirmation()` can parse them.
-
-### Approval block CSS
-
-```css
-.approval-block {
-  margin-top: 16px; padding: 14px 18px;
-  background: #f0fdf4; border-left: 4px solid var(--good);
-  border-radius: 8px; font-size: 0.92rem;
-}
-.approval-notes { margin: 8px 0 0; color: var(--muted); }
-.stage-section   { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 16px; }
-.stage-meta      { margin: 6px 0 10px; font-size: 0.88rem; }
-```
-
-### Update rule
-
-After every stage completes:
-1. Update `<section id="stage-N">` status badge to `done` (or `warn`/`fail`).
-2. Fill `stage-body` with what was done, outputs, and evidence paths.
-3. If human decision required: add `approval-block` with approver, timestamp, decision.
-4. Push the updated file to origin and log publish evidence.
-
-**Do not defer HTML updates to close time.** The file must reflect current state at all times.
-
-### Gate artifact format reference
-
-Agents frequently produce wrong file names or formats. Use this table:
-
-| Gate | Expected file | Path | Key fields |
-|------|--------------|------|-----------|
-| Plan confirmation | `WRK-NNN-lifecycle.html` (Stage 7 section) | assets root | `confirmed_by:`, `confirmed_at:`, `decision: passed` at line-start |
-| Browser-open | `evidence/user-review-browser-open.yaml` | assets/evidence/ | `stage: plan_draft\|plan_final\|close_review` |
-| Publish | `evidence/user-review-publish.yaml` | assets/evidence/ | `stage: plan_draft\|plan_final\|close_review` |
-| Cross-review | `review.md` or `review.html` | assets root | verdict field |
-| Stage evidence | `evidence/stage-evidence.yaml` | assets/evidence/ | all 20 stages with status |
-| Resource intelligence | `evidence/resource-intelligence.yaml` | assets/evidence/ | `completion_status`, `skills.core_used` (≥3) |
-| Future work | `evidence/future-work.yaml` | assets/evidence/ | `recommendations[]` with `captured: true` |
-
-### Migration from snapshot model (complete as of WRK-1031)
-
-Snapshot files (`plan-draft-review.html`, `plan-final-review.html`, `implementation-review.html`,
-`workflow-final-review.html`) are deprecated and deleted. All content now lives in the lifecycle
-HTML, regenerated statlessly from evidence files. Completed in WRK-1031.
 
 ---
 
-## 1. Design System
+## 1. Good Practices
+
+Rules MUST be followed for HTML consistency across all WRK items:
+
+1. **Shared CSS only** — both HTML files use identical `SHARED_CSS` from the generator;
+   never introduce file-specific CSS variables or override inline styles for tables/chips.
+2. **Sticky stage strip** — both files have the same sticky `.stage-strip` nav with
+   numbered circles reflecting actual stage status from `evidence/stage-evidence.yaml`.
+3. **Hero chips are identical across both files** —
+   Row 1: `Now (amber) · Status (amber) · Workstation · Orchestrator · Created`;
+   Row 2: `Repo · Category · Subcategory · Priority · Route`.
+   Use `.meta-break` (flex-basis:100%) to force the row split. `pill-stage` = amber.
+   Eyebrow: `WRK-NNN · LIFECYCLE TRACKER` / `WRK-NNN · PLAN DOCUMENT` — no route/stage.
+4. **Markdown rendering** — `plan.html` runs `renderMarkdown()` JS on `.plan-body` at
+   `DOMContentLoaded`; supports headings, pipe tables, bold/italic, code blocks.
+5. **Auto-refresh** — both files have `<meta http-equiv="refresh" content="30">`.
+6. **Branding footer** — both files end with `<footer class="brand-footer">` containing
+   the digitalmodel logo mark.
+7. **No external deps** — all CSS and JS is inline; no CDN, no external fonts; uses system
+   `Georgia` serif / `SFMono` monospace stack.
+8. **Windows compatibility** — `file://` URLs work via `start` or file explorer;
+   `python -m http.server` preferred; no Linux-specific paths hardcoded in HTML output.
+9. **Table-first data display** — render multi-field evidence sets, comparisons, and lists
+   as `<table>` (not prose or `.schema-row` grids where tabular data fits better).
+   Always use the `_render_table(headers, rows_html, compact=False)` helper — it produces
+   correct `<thead>`/`<tbody>` structure; never emit bare `<table><tr><th>` or inline
+   `style=` on table elements. Use `compact=True` for dense inline contexts.
+
+---
+
+## 2. Design System
 
 Warm-parchment design system — all WRK HTML artifacts share it; never deviate. Key tokens:
-`--bg:#f3efe6` (parchment), `--panel:#fffdf8`, `--ink:#172126`, `--accent:#0f766e` (teal),
+`--bg:#f3efe6`, `--panel:#fffdf8`, `--ink:#172126`, `--accent:#0f766e` (teal),
 `--accent-2:#8a5a2b` (amber), `--good:#166534`, `--warn:#b45309`, `--bad:#b91c1c`.
 
-Body: Georgia serif, radial-gradient background. Code: SFMono monospace, 0.2em/0.4em padding.
-Layout primitives: `.hero` (48px padding, gradient), `.card` (border-radius 18px, shadow),
-`.exec-summary` (accent left-border callout), `.split` (2-col CSS grid, 1-col ≤900px).
-Badge classes: `.badge-pass` (green), `.badge-warn` (amber), `.badge-fail` (red), `.badge-info` (blue).
-Stage chip classes: `sc-done` (teal), `sc-active` (amber), `sc-pending` (grey), `sc-na` (light grey).
-Status badge classes: `b-done`, `b-active`, `b-pending`, `b-na`.
+Body: Georgia serif, radial-gradient background. Code: SFMono monospace.
+Layout: `.hero`, `.card`, `.exec-summary`, `.split` (2-col CSS grid, 1-col ≤900px).
+Stage chips: `sc-done` (teal) | `sc-active` (amber) | `sc-pending` (grey) | `sc-na`.
+Status badges: `b-done` | `b-active` | `b-pending` | `b-na`.
 
 Full CSS inline in `generate-html-review.py` — do not duplicate or hand-edit HTML output.
 
 ---
 
-## 2. Interactivity Layer
-
-Stage sections collapse/expand via `toggle(header)` JS function called `onclick` on `.stage-header`.
-Done/active stages start expanded; pending/na start collapsed (`.stage-body.collapsed` = `display:none`).
-Chevron shows `▲` (expanded) or `▼` (collapsed). Full JS embedded in generator output.
-
----
-
 ## 3. Lifecycle Structure
 
-### 3.1 Hero
+### 3.1 Stage Section Schema
 
-```html
-<header class="hero">
-  <div class="hero-inner">
-    <div class="eyebrow">WRK-NNN · Lifecycle</div>
-    <h1>{{title}}</h1>
-    <div class="meta">
-      <div class="pill"><strong>Route</strong>{{route}}</div>
-      <div class="pill"><strong>Category</strong>{{category}}</div>
-      <div class="pill"><strong>Computer</strong>{{computer}}</div>
-      <div class="pill"><strong>Orchestrator</strong>{{orchestrator}}</div>
-      <div class="pill"><strong>Priority</strong>{{priority}}</div>
-      <div class="pill"><strong>Created</strong>{{created_at|date}}</div>
-    </div>
-  </div>
-</header>
-```
+Each stage is `<section class="stage-section" id="sN">` with `.stage-header onclick=toggle()`,
+`.stage-title` (num + name + badge), and `.stage-body`. Gate stages (5, 7, 17) get a `b-gate`
+badge. Done/active stages start expanded; pending/na start collapsed (`stage-body collapsed`).
 
----
+Stage 7 gate-checker fields must appear at line-start (no HTML wrapping) so
+`check_plan_confirmation()` can parse `confirmed_by:`, `confirmed_at:`, `decision:`.
 
-### 3.2 Stage Strip
+### 3.2 Stage Evidence Sources
 
-Immediately after hero, before the stage sections card:
-
-```html
-<div class="stage-strip">
-  <a href="#s1" class="sc sc-done" title="01 Capture">1</a>
-  <a href="#s2" class="sc sc-done" title="02 Resource Intelligence">2</a>
-  ...
-  <a href="#s5" class="sc sc-active" title="05 User Review — Plan Draft">5</a>
-  ...
-  <a href="#s20" class="sc sc-pending" title="20 Archive">20</a>
-</div>
-```
-
-Strip chip classes: `sc-done` (teal) | `sc-active` (amber) | `sc-pending` (grey) | `sc-na` (light grey)
+| Stages | Evidence file(s) |
+|--------|-----------------|
+| 1 | WRK frontmatter |
+| 2 | `evidence/resource-intelligence.yaml` |
+| 3 | frontmatter `complexity` + `route` |
+| 4 | `## Plan` in WRK body |
+| 5 | `evidence/user-review-plan-draft.yaml` |
+| 6 | `evidence/cross-review*.md` |
+| 7 | `evidence/user-review-plan-final.yaml` |
+| 8–9 | `evidence/claim.yaml` |
+| 10 | `evidence/execute.yaml` |
+| 11, 14 | `evidence/gate-evidence-summary.json` |
+| 12 | `evidence/test-results.yaml` |
+| 13 | `evidence/cross-review-impl.md` |
+| 15 | `evidence/future-work.yaml` |
+| 16 | `evidence/resource-intelligence-update.yaml` |
+| 17 | `evidence/user-review-close.yaml` |
+| 18 | `evidence/reclaim.yaml` (or `na`) |
+| 19 | frontmatter `status: done` |
+| 20 | WRK file in `archive/` |
 
 ---
 
-### 3.3 Stage Section Schema
+## 4. Gate Artifact Format Reference
 
-Each of the 20 stages is a `<section>` block:
-
-```html
-<section class="stage-section" id="sN">
-  <div class="stage-header" onclick="toggle(this)">
-    <div class="stage-title">
-      <span class="stage-num">N</span>
-      <span class="stage-name">{{stage_name}}</span>
-      <span class="badge b-done">done</span>         <!-- status badge -->
-      <span class="badge b-gate">gate</span>         <!-- only for stages 5, 7, 17 -->
-    </div>
-    <div class="stage-smeta">human_interactive · heavy · GATE</div>
-    <span class="chevron">▲</span>
-  </div>
-  <div class="stage-body">
-    <!-- evidence-driven content rendered by generate_lifecycle() -->
-    <div class="schema">
-      <div class="schema-row">
-        <span class="schema-key">title</span>
-        <span class="schema-val">{{value}}</span>
-      </div>
-    </div>
-    <div class="section-label">Exit artifacts</div>
-    <ul class="item-list">
-      <li><code>evidence/resource-intelligence.yaml</code></li>
-    </ul>
-  </div>
-</section>
-```
-
-Status badge classes: `b-done` | `b-active` | `b-pending` | `b-na`
-
-**Collapsed bodies** have class `stage-body collapsed` (display:none via CSS).
-Done/active stages start expanded; pending/na start collapsed.
-
----
-
-### 3.4 Stage Evidence Sources
-
-Each stage body is rendered from canonical evidence files — never from HTML snapshots.
-
-| Stage | Name | Evidence file(s) |
-|-------|------|-----------------|
-| 1 | Capture | WRK frontmatter |
-| 2 | Resource Intelligence | `evidence/resource-intelligence.yaml` |
-| 3 | Triage | frontmatter `complexity` + `route` |
-| 4 | Plan Draft | `## Plan` in WRK body |
-| 5 | User Review — Plan Draft | `evidence/user-review-plan-draft.yaml` |
-| 6 | Cross-Review | `evidence/cross-review*.md` |
-| 7 | User Review — Plan Final | `evidence/user-review-plan-final.yaml` |
-| 8 | Claim / Activation | `evidence/claim.yaml` |
-| 9 | Work-Queue Routing | `evidence/claim.yaml` |
-| 10 | Work Execution | `evidence/execute.yaml` |
-| 11 | Artifact Generation | `evidence/gate-evidence-summary.json` |
-| 12 | TDD / Eval | `variation-test-results.md` or `evidence/test-results.yaml` |
-| 13 | Agent Cross-Review | `evidence/cross-review-impl.md` |
-| 14 | Verify Gate Evidence | `evidence/gate-evidence-summary.json` |
-| 15 | Future Work Synthesis | `evidence/future-work.yaml` |
-| 16 | Resource Intelligence Update | `evidence/resource-intelligence-update.yaml` |
-| 17 | User Review — Implementation | `evidence/user-review-close.yaml` |
-| 18 | Reclaim | `evidence/reclaim.yaml` (or `na`) |
-| 19 | Close | frontmatter `status: done` |
-| 20 | Archive | WRK file in `archive/` |
-
----
-
-## 4. Full Document Structure
-
-```
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WRK-NNN — {{title}} — Lifecycle</title>
-  <style>/* § 1 Design System */</style>
-</head>
-<body>
-
-  <!-- § 3.1 Hero with meta pills -->
-  <header class="hero">...</header>
-
-  <!-- § 3.2 Stage strip (20 chips linking to #sN) -->
-  <div class="stage-strip">...</div>
-
-  <!-- Stage sections card -->
-  <div class="content">
-    <div class="card">
-      <!-- 20 × <section class="stage-section" id="sN"> -->
-      ...
-    </div>
-  </div>
-
-  <!-- § 2 Interactivity Layer -->
-  <script>function toggle(header) { ... }</script>
-</body>
-</html>
-```
-
-The generator fully regenerates this structure each time from evidence files on disk.
-No manual HTML editing is needed or allowed.
+| Gate | Expected file | Key fields |
+|------|--------------|-----------|
+| Plan confirmation | `WRK-NNN-lifecycle.html` Stage 7 | `confirmed_by:`, `confirmed_at:`, `decision: passed` |
+| Browser-open | `evidence/user-review-browser-open.yaml` | `stage: plan_draft\|plan_final\|close_review` |
+| Cross-review | `review.md` or `review.html` | verdict field |
+| Stage evidence | `evidence/stage-evidence.yaml` | all 20 stages with status |
+| Resource intel | `evidence/resource-intelligence.yaml` | `completion_status`, `skills.core_used` ≥3 |
+| Future work | `evidence/future-work.yaml` | `recommendations[]` with `captured: true` |
 
 ---
 
 ## 5. Generator Script Integration
 
-`scripts/work-queue/generate-html-review.py` generates lifecycle HTML. The `--type` flags
-are **deprecated and removed** (WRK-1031). Use `--lifecycle` exclusively.
-
-### 5.1 Entry point
+`scripts/work-queue/generate-html-review.py` — `--type` flags deprecated (WRK-1031). Use `--lifecycle`.
 
 ```python
 def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
     """Generate WRK-NNN-lifecycle.html from evidence files on disk (stateless)."""
 ```
 
-Stage status detection (`detect_stage_statuses()`) reads canonical evidence files and
-returns `{stage_n: 'done'|'active'|'pending'|'na'}` — no HTML parsing, no state.
-
-### 5.2 CLI
-
-```bash
-# Generate (or regenerate) lifecycle HTML for WRK-1031
-uv run --no-project python scripts/work-queue/generate-html-review.py \
-  WRK-1031 --lifecycle
-
-# Explicit output path
-uv run --no-project python scripts/work-queue/generate-html-review.py \
-  WRK-1031 --lifecycle \
-  --output .claude/work-queue/assets/WRK-1031/WRK-1031-lifecycle.html
-```
-
-Default output: `.claude/work-queue/assets/WRK-NNN/WRK-NNN-lifecycle.html`
-
-### 5.3 Idempotency guarantee
-
-Re-running `--lifecycle` replaces the file with identical content if no evidence has
-changed. Safe to call at any stage gate without worrying about duplication.
+`detect_stage_statuses()` reads evidence files → `{stage_n: 'done'|'active'|'pending'|'na'}`.
+Re-running `--lifecycle` is idempotent — safe at any stage gate.
 
 ---
 
-## 6. Mandatory Usage (Workflow Harness Integration)
+## 6. Mandatory Usage
 
-Run `--lifecycle` at every stage gate. The generator is idempotent — re-running updates
-the HTML to reflect newly written evidence files without any other intervention.
-
-| Stage | Trigger | Command |
-|-------|---------|---------|
-| 5 — User Review Plan (Draft) | After writing `user-review-plan-draft.yaml` | `generate-html-review.py WRK-NNN --lifecycle` |
-| 7 — User Review Plan (Final) | After writing `user-review-plan-final.yaml` | `generate-html-review.py WRK-NNN --lifecycle` |
-| 11 — Artifact Generation | After execution phase completes | `generate-html-review.py WRK-NNN --lifecycle` |
-| 17 — User Review Implementation | Before user close review | `generate-html-review.py WRK-NNN --lifecycle` |
-| 19 — Close | Auto-called by `close-item.sh` | `generate-html-review.py WRK-NNN --lifecycle` |
-
-### Browser open (mandatory evidence)
+| Stage | Trigger | Action |
+|-------|---------|--------|
+| 5 | After `user-review-plan-draft.yaml` | `generate-html-review.py WRK-NNN --lifecycle` |
+| 7 | After `user-review-plan-final.yaml` | `generate-html-review.py WRK-NNN --lifecycle` |
+| 11 | After execution phase | `generate-html-review.py WRK-NNN --lifecycle` |
+| 17 | Before user close review | `generate-html-review.py WRK-NNN --lifecycle` |
+| 19 | Auto-called by `close-item.sh` | `generate-html-review.py WRK-NNN --lifecycle` |
 
 ```bash
 xdg-open .claude/work-queue/assets/WRK-NNN/WRK-NNN-lifecycle.html
-# log: html_open_default_browser signal via scripts/work-queue/log-user-review-browser-open.sh
+# log: via scripts/work-queue/log-user-review-browser-open.sh
 ```
 
 ---
 
-## 7. Compliance Checklist (per lifecycle HTML)
-
-Before presenting lifecycle HTML to the user:
+## 7. Compliance Checklist
 
 ```
-[ ] Generated via: uv run --no-project python scripts/work-queue/generate-html-review.py WRK-NNN --lifecycle
+[ ] Generated via generate-html-review.py WRK-NNN --lifecycle (uv run --no-project)
 [ ] Design system: warm-parchment CSS variables present (--bg #f3efe6, --accent #0f766e)
-[ ] Hero: eyebrow contains WRK-ID; H1 is the WRK title; meta pills populated
-[ ] Stage strip: 20 chips visible; done=teal, active=amber, pending=grey
+[ ] Hero: eyebrow=WRK-ID, H1=title, all meta pills populated
+[ ] Stage strip: 20 chips; done=teal, active=amber, pending=grey
 [ ] 20 stage sections present (id="s1" through id="s20")
-[ ] Active stage expanded; pending/na stages collapsed
-[ ] Gate stages (5, 7, 17) have "gate" badge
-[ ] Status badges use correct classes (b-done, b-active, b-pending, b-na)
-[ ] Stage toggle JS present and functional
-[ ] File opened in default browser and signal logged
+[ ] Active stage expanded; pending/na collapsed
+[ ] Gate stages (5, 7, 17) have "gate" badge; stage toggle JS present
+[ ] File opened in browser and signal logged
 ```
 
 ---
 
 ## Version History
 
-- **1.5.0** (2026-03-07): Stateless lifecycle generator; `--lifecycle` flag; `detect_stage_statuses()`; `--type` deprecated; snapshot files removed; 63 tests (WRK-1031)
-- **1.4.0** (2026-03-07): Single lifecycle HTML model; stage section schema; approval-block CSS; gate artifact format table (WRK-1026)
-- **1.3.0** (2026-03-05): `.panel` primitive; Plan Quality Eval Comparison section; evidence-driven plan source (WRK-1011)
-- **1.2.0** (2026-03-05): Gate-Pass Stage Status required for stages 5/7/17; stage-evidence.yaml integration
-- **1.1.0** (2026-03-04): `_suppress_duplicate_generated_sections()`; `_append_missing_key_sections()`; 29 unit tests (WRK-1011)
+- **2.3.0** (2026-03-11): Unified hero chips across both files (same 2-row layout); Status amber (pill-stage); Category+Subcategory row 2; `.meta-break` CSS; stage banner `Stage N: Name ── START/DONE/WAITING` in checkpoint_writer + start_stage
+- **2.2.0** (2026-03-11): Rule 9 (table-first); unified table CSS; _render_table() object model; lifecycle hero chips (Status/Priority/Workstation/Orchestrator/Created); dynamic lede
+- **2.1.0** (2026-03-11): Good Practices section; Commands reference; condensed to ≤200 lines
+- **2.0.0** (2026-03-10): Two-file model (lifecycle + plan); plan-changelog.yaml schema
+- **1.5.0** (2026-03-07): Stateless generator; `--lifecycle`; `detect_stage_statuses()`; 63 tests (WRK-1031)
+- **1.4.0** (2026-03-07): Single lifecycle HTML; stage section schema; approval-block (WRK-1026)
+- **1.3.0** (2026-03-05): `.panel` primitive; evidence-driven plan source (WRK-1011)
+- **1.1.0** (2026-03-04): `_suppress_duplicate_generated_sections()`; 29 unit tests
