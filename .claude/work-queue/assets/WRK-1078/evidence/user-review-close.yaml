@@ -2,6 +2,7 @@ wrk_id: WRK-1078
 stage: 17
 decision: approved
 reviewer: user
+reviewed_at: "2026-03-10T11:15:00Z"
 confirmed_at: "2026-03-10T11:15:00Z"
 html_opened: true
 implementation_confirmed: true

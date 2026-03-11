@@ -1,22 +1,17 @@
 wrk_id: WRK-1078
 stage: 5
+approval_decision: approve_as_is
+review_cycle_id: "2026-03-10-plan-review"
 plan_approved: true
 confirmed_by: user
-confirmed_at: "2026-03-10"
+confirmed_at: "2026-03-10T09:50:00Z"
 html_opened: true
-plan_location: inline  # Route B — plan in ## Plan section of pending/WRK-1078.md
+plan_location: inline
 phases_approved:
-  - "Phase 1: xdg-open → cross-platform opener in log-user-review-browser-open.sh"
-  - "Phase 2: archive-item.sh python3 → uv run --no-project python"
+  - "Phase 1: xdg-open -> cross-platform opener in log-user-review-browser-open.sh"
+  - "Phase 2: archive-item.sh python3 -> uv run --no-project python"
   - "Phase 3: verify-setup.sh Windows uv install hint"
   - "Phase 4: start_stage.py + exit_stage.py UTF-8 stdout reconfigure"
   - "Phase 5: new-machine-setup.md crontab Linux-only callout"
 decision: approved
-decision_log:
-  - section: "xdg-open gap" discussed: "Replace with cross-platform helper"
-  - section: "sed -i audit" discussed: "MINGW64 uses GNU sed — confirmed no changes needed"
-  - section: "uv hint" discussed: "Add Windows install hint to verify-setup.sh"
-  - section: "python3 in archive-item.sh" discussed: "2 lines replaced with uv run"
-  - section: "Unicode encoding" discussed: "stdout.reconfigure at _main() entry in start/exit_stage.py"
-  - section: "crontab docs" discussed: "Callout in new-machine-setup.md §5"
 notes: "User explicitly approved plan. sed-i audit confirmed no changes needed."

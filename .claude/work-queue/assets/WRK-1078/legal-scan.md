@@ -1,8 +1,8 @@
 # WRK-1078 Legal Scan
 
-**Date:** 2026-03-10
-**Command:** bash scripts/legal/legal-sanity-scan.sh --diff-only
-**Result:** PASS
+Date: 2026-03-10
+Command: bash scripts/legal/legal-sanity-scan.sh --diff-only
+result: PASS
 
 No violations found. All changed files checked:
 - scripts/work-queue/log-user-review-browser-open.sh

@@ -6,12 +6,20 @@ recommendations:
   - title: "Verify WRK-1078 fixes on acma-ansys05 after WRK-1077 machine setup"
     priority: medium
     rationale: "WRK-1077 is prerequisite — run verify-setup.sh on acma-ansys05"
+    disposition: existing-updated
+    status: deferred
+    captured: true
 
   - title: "Add regression tests for _open_browser() cross-platform opener"
     priority: low
     rationale: "Shell tests covering Linux, macOS, and Windows MINGW64 branches"
+    disposition: spun-off-new
+    status: deferred
+    captured: true
 
   - title: "Fix start_stage.py to write UTF-8 prompt files on Windows"
     priority: medium
     rationale: "Stage prompt files generated as cp1252 on Windows; needs PYTHONIOENCODING guard in generator"
-    create_wrk: true
+    disposition: spun-off-new
+    status: deferred
+    captured: true

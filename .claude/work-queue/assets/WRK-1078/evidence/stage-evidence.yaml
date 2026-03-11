@@ -1,76 +1,84 @@
 wrk_id: WRK-1078
+generated_at: '2026-03-11T00:43:57Z'
+reviewed_by: orchestrator
 stages:
-  - order: 1
-    stage: Capture
-    status: done
-    evidence: evidence/user-review-capture.yaml
-  - order: 2
-    stage: Resource Intelligence
-    status: done
-    evidence: evidence/resource-intelligence.yaml
-  - order: 3
-    stage: Triage
-    status: done
-  - order: 4
-    stage: Plan Draft
-    status: done
-    evidence: plan_claude.md
-  - order: 5
-    stage: User Review Plan Draft
-    status: done
-    evidence: evidence/user-review-plan-draft.yaml
-  - order: 6
-    stage: Cross-Review
-    status: done
-    evidence: evidence/cross-review.yaml
-  - order: 7
-    stage: User Review Plan Final
-    status: done
-    evidence: evidence/plan-final-review.yaml
-  - order: 8
-    stage: Claim/Activation
-    status: done
-    evidence: evidence/claim-evidence.yaml
-  - order: 9
-    stage: Work-Queue Routing
-    status: done
-    evidence: routing.yaml
-  - order: 10
-    stage: Work Execution
-    status: done
-    evidence: evidence/execute.yaml
-  - order: 11
-    stage: Artifact Generation
-    status: done
-    evidence: WRK-1078-lifecycle.html
-  - order: 12
-    stage: TDD / Eval
-    status: done
-    evidence: ac-test-matrix.md
-  - order: 13
-    stage: Agent Cross-Review
-    status: done
-    evidence: review.md
-  - order: 14
-    stage: Verify Gate Evidence
-    status: in_progress
-  - order: 15
-    stage: Future Work Synthesis
-    status: done
-    evidence: evidence/future-work.yaml
-  - order: 16
-    stage: Resource Intelligence Update
-    status: done
-    evidence: evidence/resource-intelligence-update.yaml
-  - order: 17
-    stage: User Review Implementation
-    status: pending
-  - order: 18
-    stage: Reclaim
-    status: n/a
-  - order: 19
-    stage: Close
-    status: pending
-  - order: 20
-    stage: Archive
-    status: pending
+- order: 1
+  stage: Capture
+  status: done
+  evidence: .claude/work-queue/working/WRK-1078.md
+- order: 2
+  stage: Resource Intelligence
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/evidence/resource-intelligence.yaml
+- order: 3
+  stage: Triage
+  status: done
+  evidence: .claude/work-queue/working/WRK-1078.md
+- order: 4
+  stage: Plan Draft
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/plan_claude.md
+- order: 5
+  stage: User Review - Plan (Draft)
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/evidence/user-review-plan-draft.yaml
+- order: 6
+  stage: Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/evidence/cross-review.yaml
+- order: 7
+  stage: User Review - Plan (Final)
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/evidence/plan-final-review.yaml
+- order: 8
+  stage: Claim / Activation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/evidence/claim-evidence.yaml
+- order: 9
+  stage: Work-Queue Routing Skill
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/routing.yaml
+- order: 10
+  stage: Work Execution
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/evidence/execute.yaml
+- order: 11
+  stage: Artifact Generation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/WRK-1078-lifecycle.html
+- order: 12
+  stage: TDD / Eval
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/ac-test-matrix.md
+- order: 13
+  stage: Agent Cross-Review
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/review.md
+- order: 14
+  stage: Verify Gate Evidence
+  status: done
+  evidence: scripts/work-queue/verify-gate-evidence.py
+- order: 15
+  stage: Future Work Synthesis
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/evidence/future-work.yaml
+- order: 16
+  stage: Resource Intelligence Update
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/evidence/resource-intelligence-update.yaml
+- order: 17
+  stage: User Review - Implementation
+  status: done
+  evidence: .claude/work-queue/assets/WRK-1078/evidence/user-review-close.yaml
+- order: 18
+  stage: Reclaim
+  status: n/a
+  evidence: .claude/work-queue/assets/WRK-1078/evidence/reclaim.yaml
+- order: 19
+  stage: Close
+  status: done
+  evidence: scripts/work-queue/close-item.sh
+- order: 20
+  stage: Archive
+  status: pending
+  evidence: .claude/work-queue/scripts/archive-item.sh
