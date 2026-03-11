@@ -335,16 +335,17 @@ if [[ -x "$LOG_ACTION" ]]; then
 fi
 
 # Cost summary at close — non-blocking; suppress only exit 1 (no data)
-if command -v uv &>/dev/null && [[ -f "scripts/ai/wrk_cost_report.py" ]]; then
+_COST_REPORT="${WORKSPACE_ROOT}/scripts/ai/wrk_cost_report.py"
+if command -v uv &>/dev/null && [[ -f "${_COST_REPORT}" ]]; then
     echo ""
     echo "=== AI Cost Summary: ${WRK_ID} ==="
     cost_output=""
     cost_rc=0
-    cost_output=$(uv run --no-project python scripts/ai/wrk_cost_report.py "${WRK_ID}" 2>&1) || cost_rc=$?
+    cost_output=$(uv run --no-project python "${_COST_REPORT}" "${WRK_ID}" 2>&1) || cost_rc=$?
     if [[ $cost_rc -eq 0 ]]; then
         echo "$cost_output"
         # Persist evidence artifact
-        assets_dir=".claude/work-queue/assets/${WRK_ID}/evidence"
+        assets_dir="${WORKSPACE_ROOT}/.claude/work-queue/assets/${WRK_ID}/evidence"
         mkdir -p "$assets_dir"
         printf "wrk_id: %s\ncost_report: |\n" "${WRK_ID}" > "${assets_dir}/cost-summary.yaml"
         echo "$cost_output" | sed 's/^/  /' >> "${assets_dir}/cost-summary.yaml"

@@ -37,11 +37,6 @@ def load_records(path: Path) -> tuple[list[dict], int]:
     return records, skipped
 
 
-def _normalize_model(model: str) -> str:
-    """Lowercase and strip common prefixes for pricing.yaml lookup."""
-    return model.lower().strip()
-
-
 def aggregate_by_wrk(
     records: list[dict], wrk_filter: str | None = None
 ) -> dict[str, dict]:
@@ -59,9 +54,13 @@ def aggregate_by_wrk(
                 "session_count": 0,
                 "providers": set(),
             }
-        result[wrk]["input_tokens"] += int(r.get("input_tokens", 0))
-        result[wrk]["output_tokens"] += int(r.get("output_tokens", 0))
-        result[wrk]["cost_usd"] += float(r.get("cost_usd", 0.0))
+        try:
+            result[wrk]["input_tokens"] += int(r.get("input_tokens", 0))
+            result[wrk]["output_tokens"] += int(r.get("output_tokens", 0))
+            result[wrk]["cost_usd"] += float(r.get("cost_usd", 0.0))
+        except (ValueError, TypeError):
+            print(f"[WARN] skipping record with non-numeric tokens/cost: {r}", file=sys.stderr)
+            continue
         result[wrk]["session_count"] += 1
         result[wrk]["providers"].add(str(r.get("provider", "unknown")))
     return result

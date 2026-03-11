@@ -40,11 +40,7 @@ models:
     effective_from: "2026-01-01"
     input_per_1m: 0.075
     output_per_1m: 0.30
-  sonnet-4-6:
-    provider: claude
-    effective_from: "2026-01-01"
-    input_per_1m: 3.00
-    output_per_1m: 15.00
+  # sonnet-4-6: legacy short-form alias for claude-sonnet-4-6 (same pricing)
 defaults:
   unknown_model:
     input_per_1m: 3.00
