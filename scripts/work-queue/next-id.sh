@@ -88,6 +88,26 @@ if (( MACHINE_FLOOR > 0 && MAX_ID < MACHINE_FLOOR )); then
   MAX_ID=$((MACHINE_FLOOR - 1))
 fi
 
-# ── Step 6: Return the next ID ──
+# ── Step 6: Atomically reserve the next ID via noclobber sentinel ──
+# noclobber (set -C) makes the redirect fail if the file already exists,
+# giving us atomic "create-or-fail" semantics without needing a lock file.
+# Callers overwrite the sentinel with full YAML content — no caller changes needed.
 NEXT_ID=$((MAX_ID + 1))
-printf "%03d" "$NEXT_ID"
+MAX_RETRIES=5
+ATTEMPT=0
+set -C  # enable noclobber
+while (( ATTEMPT < MAX_RETRIES )); do
+  SENTINEL="${QUEUE_DIR}/pending/WRK-${NEXT_ID}.md"
+  if { > "$SENTINEL"; } 2>/dev/null; then
+    # Successfully created sentinel — ID is ours
+    set +C
+    printf "%d" "$NEXT_ID"
+    exit 0
+  fi
+  # File already exists (collision); try the next integer
+  NEXT_ID=$((NEXT_ID + 1))
+  ATTEMPT=$((ATTEMPT + 1))
+done
+set +C
+>&2 echo "next-id: failed to reserve an ID after ${MAX_RETRIES} attempts (collision storm?)"
+exit 1
