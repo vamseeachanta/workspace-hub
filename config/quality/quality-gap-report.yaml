@@ -1,0 +1,180 @@
+schema_version: '1'
+generated_at: '2026-03-11T19:14:10.095223+00:00'
+repos:
+  assetutilities:
+    dir_gaps:
+      scripts/:
+        coverage: uncovered
+        recommended_tool: ruff
+        effort: low
+      examples/:
+        coverage: uncovered
+        recommended_tool: ruff
+        effort: low
+      docs/:
+        coverage: uncovered
+        recommended_tool: markdownlint
+        effort: low
+      config/:
+        coverage: uncovered
+        recommended_tool: yamllint
+        effort: medium
+      data/:
+        coverage: uncovered
+        recommended_tool: schema-validation
+        effort: high
+    dir_covered:
+      src/:
+        tools: &id001
+        - ruff
+        - mypy
+        - pytest
+        - bandit
+      tests/:
+        tools: &id002
+        - ruff
+        - pytest
+    cross_cutting_gaps:
+    - pydocstyle
+    - radon_complexity
+    - vulture_dead_code
+    - commitizen
+    - windows_path_guard
+    - api_audit
+    - ratchet_gates
+  digitalmodel:
+    dir_gaps:
+      scripts/:
+        coverage: uncovered
+        recommended_tool: ruff
+        effort: low
+      examples/:
+        coverage: uncovered
+        recommended_tool: ruff
+        effort: low
+      notebooks/:
+        coverage: partial
+        recommended_tool: nbqa
+        effort: medium
+      docs/:
+        coverage: partial
+        recommended_tool: markdownlint
+        effort: low
+      config/:
+        coverage: uncovered
+        recommended_tool: yamllint
+        effort: medium
+      data/:
+        coverage: uncovered
+        recommended_tool: schema-validation
+        effort: high
+    dir_covered:
+      src/:
+        tools: *id001
+      tests/:
+        tools: *id002
+    cross_cutting_gaps:
+    - commitizen
+    - api_audit
+    - ratchet_gates
+  worldenergydata:
+    dir_gaps:
+      scripts/:
+        coverage: uncovered
+        recommended_tool: ruff
+        effort: low
+      examples/:
+        coverage: uncovered
+        recommended_tool: ruff
+        effort: low
+      docs/:
+        coverage: partial
+        recommended_tool: markdownlint
+        effort: low
+      config/:
+        coverage: partial
+        recommended_tool: yamllint
+        effort: medium
+      data/:
+        coverage: uncovered
+        recommended_tool: schema-validation
+        effort: high
+    dir_covered:
+      src/:
+        tools: *id001
+      tests/:
+        tools: *id002
+    cross_cutting_gaps:
+    - pydocstyle
+    - radon_complexity
+    - vulture_dead_code
+    - api_audit
+    - ratchet_gates
+  assethold:
+    dir_gaps:
+      scripts/:
+        coverage: uncovered
+        recommended_tool: ruff
+        effort: low
+      examples/:
+        coverage: uncovered
+        recommended_tool: ruff
+        effort: low
+      docs/:
+        coverage: uncovered
+        recommended_tool: markdownlint
+        effort: low
+      config/:
+        coverage: uncovered
+        recommended_tool: yamllint
+        effort: medium
+      data/:
+        coverage: uncovered
+        recommended_tool: schema-validation
+        effort: high
+    dir_covered:
+      src/:
+        tools: *id001
+      tests/:
+        tools: *id002
+    cross_cutting_gaps:
+    - pydocstyle
+    - radon_complexity
+    - vulture_dead_code
+    - commitizen
+    - windows_path_guard
+    - api_audit
+    - ratchet_gates
+  ogmanufacturing:
+    dir_gaps:
+      scripts/:
+        coverage: uncovered
+        recommended_tool: ruff
+        effort: low
+      docs/:
+        coverage: uncovered
+        recommended_tool: markdownlint
+        effort: low
+      config/:
+        coverage: uncovered
+        recommended_tool: yamllint
+        effort: medium
+      data/:
+        coverage: uncovered
+        recommended_tool: schema-validation
+        effort: high
+    dir_covered:
+      src/:
+        tools: *id001
+      tests/:
+        tools: *id002
+    cross_cutting_gaps:
+    - pydocstyle
+    - radon_complexity
+    - vulture_dead_code
+    - commitizen
+    - api_audit
+    - ratchet_gates
+summary:
+  total_gaps: 25
+  repos_scanned: 5
