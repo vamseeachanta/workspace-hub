@@ -35,15 +35,29 @@ if [[ -n "$TOPIC" ]]; then
     FULL_QUERY="${FULL_QUERY} ${TOPIC}"
 fi
 
-uv run --no-project --with pymupdf --with rank_bm25 python3 - <<PYEOF
-import sys
-sys.path.insert(0, "${REPO_ROOT}")
+# Validate LIMIT is an integer before passing to Python
+if ! [[ "$LIMIT" =~ ^[0-9]+$ ]]; then
+    echo "Error: --limit must be a positive integer" >&2
+    exit 1
+fi
+
+# Pass all user-supplied strings via environment variables to avoid shell injection
+STANDARDS_QUERY="$FULL_QUERY" \
+STANDARDS_CODE="$CODE" \
+STANDARDS_INDEX_DIR="$INDEX_DIR" \
+STANDARDS_REPO_ROOT="$REPO_ROOT" \
+STANDARDS_LIMIT="$LIMIT" \
+uv run --no-project --with pymupdf --with rank_bm25 python3 - <<'PYEOF'
+import os, sys
+
+repo_root = os.environ["STANDARDS_REPO_ROOT"]
+sys.path.insert(0, repo_root)
 from scripts.standards.ingest_standards import query_standards
 
-query = "${FULL_QUERY}".strip()
-code = "${CODE}" or None
-limit = ${LIMIT}
-index_dir = "${INDEX_DIR}"
+query = os.environ["STANDARDS_QUERY"].strip()
+code = os.environ["STANDARDS_CODE"] or None
+limit = int(os.environ["STANDARDS_LIMIT"])
+index_dir = os.environ["STANDARDS_INDEX_DIR"]
 
 results = query_standards(query, index_dir, code_family=code, limit=limit)
 
