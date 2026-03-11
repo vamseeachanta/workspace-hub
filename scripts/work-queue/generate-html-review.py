@@ -983,6 +983,7 @@ def render_wrk_html(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="30">
   <title>{label}: {wrk_id} — {title[:60]}</title>
   <style>{CSS}</style>
 </head>
@@ -2052,6 +2053,7 @@ def generate_lifecycle(wrk_id: str, output_file: str | None = None) -> None:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="30">
   <title>{wrk_id} Lifecycle \u2014 {title[:60]}</title>
   <style>{LIFECYCLE_CSS}</style>
 </head>

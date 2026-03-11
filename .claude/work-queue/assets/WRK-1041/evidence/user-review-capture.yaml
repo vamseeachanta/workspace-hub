@@ -3,6 +3,7 @@ stage: 1
 scope_approved: true
 reviewer: vamsee
 reviewed_at: 2026-03-10T00:00:00Z
+confirmed_at: 2026-03-10T00:00:00Z
 notes: >
   Refined scope: maintain exactly 1 lifecycle HTML + 1 plan HTML per WRK item;
   auto-refresh or on-demand refresh so latest changes are always visible.

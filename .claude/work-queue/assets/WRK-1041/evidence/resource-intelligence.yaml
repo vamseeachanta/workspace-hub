@@ -2,6 +2,12 @@ wrk_id: WRK-1041
 stage: 2
 completion_status: continue_to_planning
 generated_at: 2026-03-10T00:00:00Z
+top_p1_gaps: []
+skills:
+  core_used:
+    - workspace-hub/work-queue
+    - workspace-hub/work-queue-workflow
+    - workspace-hub/workflow-html
 
 files_to_modify:
   - path: scripts/work-queue/generate-html-review.py

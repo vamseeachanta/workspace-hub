@@ -844,3 +844,26 @@ def test_generate_lifecycle_idempotent(tmp_path: Path, monkeypatch):
     mod.generate_lifecycle("WRK-T5", str(out))
     html2 = out.read_text(encoding="utf-8")
     assert html1 == html2
+
+
+# ── WRK-1041: meta refresh tag ────────────────────────────────────────────────
+
+
+def test_lifecycle_html_has_meta_refresh(tmp_path: Path, monkeypatch):
+    """generate_lifecycle() output must include a 30s meta refresh tag."""
+    mod = _load_html_module()
+    repo = tmp_path / "repo"
+    queue = repo / ".claude" / "work-queue"
+    _make_wrk_file(queue, "WRK-T6")
+    (queue / "assets" / "WRK-T6" / "evidence").mkdir(parents=True)
+    monkeypatch.setattr(mod.os, "popen", lambda *_a, **_k: io.StringIO(str(repo)))
+    out = queue / "assets" / "WRK-T6" / "WRK-T6-lifecycle.html"
+    mod.generate_lifecycle("WRK-T6", str(out))
+    html = out.read_text(encoding="utf-8")
+    assert '<meta http-equiv="refresh" content="30">' in html
+
+
+def test_review_html_has_meta_refresh(mod, minimal_meta, minimal_sections):
+    """render_wrk_html() output must include a 30s meta refresh tag."""
+    html = mod.render_wrk_html(minimal_meta, "plan-draft", minimal_sections)
+    assert '<meta http-equiv="refresh" content="30">' in html
