@@ -1,0 +1,12 @@
+wrk_id: WRK-1129
+stage: 1
+reviewed_at: "2026-03-11T19:02:38Z"
+confirmed_at: "2026-03-11T19:02:38Z"
+reviewer: vamsee
+confirmed_by: vamsee
+scope_approved: true
+notes: >
+  User approved scope: model artifacts for feature layer (child-a of WRK-1127).
+  In scope: chunk-sizing.yaml, feature-planning.md, feature-template.md,
+  SKILL.md Feature Layer section, generate-index.py normalize/status/badge/category.
+  Out of scope: tooling scripts (WRK-1130) and process integration (WRK-1131).

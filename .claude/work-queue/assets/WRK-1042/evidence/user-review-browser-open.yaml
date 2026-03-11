@@ -10,3 +10,8 @@ events:
     html_ref: ".claude/work-queue/assets/WRK-1042/plan-html-review-final.md"
     opened_at: "2026-03-11T18:31:00Z"
     reviewer: vamsee
+  - stage: close_review
+    opened_in_default_browser: true
+    html_ref: ".claude/work-queue/assets/WRK-1042/workflow-final-review.html"
+    opened_at: "2026-03-11T18:50:00Z"
+    reviewer: vamsee

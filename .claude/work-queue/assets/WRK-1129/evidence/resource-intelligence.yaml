@@ -1,0 +1,34 @@
+wrk_id: WRK-1129
+stage: 2
+produced_at: "2026-03-11T10:00:00Z"
+completion_status: continue_to_planning
+
+domain:
+  problem: >
+    Feature layer model artifacts not yet created. The feature spec (WRK-1127) defines
+    chunk-sizing heuristic, feature-planning rules, feature template, and generate-index.py
+    updates but none of these files exist yet. This child WRK delivers those artifacts.
+  key_files:
+    chunk_sizing_yaml:
+      path: config/work-queue/chunk-sizing.yaml
+      note: new file — machine-readable heuristic
+    feature_planning_md:
+      path: .claude/rules/feature-planning.md
+      note: new file — prose rules ≤400 lines
+    feature_template_md:
+      path: config/work-queue/feature-template.md
+      note: new file — WRK template with Decomposition section
+    generate_index_py:
+      path: .claude/work-queue/scripts/generate-index.py
+      note: >
+        Modify FRONTMATTER_FIELDS, normalize(), two active-status filters,
+        two CATEGORY_ORDER definitions, and row renderer for [feature] badge
+    work_queue_skill_md:
+      path: .claude/skills/coordination/workspace/work-queue/SKILL.md
+      note: add Feature Layer section after Complexity Routing; trim Version History to stay in budget
+
+skills:
+  core_used:
+    - work-queue
+    - work-queue-workflow
+    - workspace-hub:ecosystem-terminology

@@ -1,4 +1,4 @@
-claim_date: "2026-03-11T18:37:00Z"
+claim_date: "2026-03-11T18:59:16Z"
 wrk_id: "WRK-1060"
 route: ""
 orchestrator: "claude"
@@ -14,7 +14,7 @@ blocking_state:
   blocked_by: []
   notes: ""
 quota_snapshot:
-  timestamp: "2026-03-11T18:37:00Z"
+  timestamp: "2026-03-11T18:59:16Z"
   provider: "unknown"
   status: "available"
   pct_remaining: null
